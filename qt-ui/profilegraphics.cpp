@@ -38,12 +38,6 @@ static struct graphics_context last_gc;
 static double plot_scale = SCALE_SCREEN;
 #endif
 
-struct text_render_options {
-	double size;
-	color_indice_t color;
-	double hpos, vpos;
-};
-
 extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
@@ -436,24 +430,25 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	scene()->addItem(rect);
 
 	/* Depth profile */
-	plot_depth_profile();
-	plot_events(dc);
+	plot_depth_profile(); // TODO: PARTIALLY PORTED.
+	plot_events(dc); // PORTED
 
-	if (rulerEnabled && !printMode)
+	if (rulerEnabled && !printMode) // TODO: NOT PORTED.
 		create_ruler();
 
 	/* Temperature profile */
-	plot_temperature_profile();
+	plot_temperature_profile();	// PORTED
 
 	/* Cylinder pressure plot */
-	plot_cylinder_pressure();
+	plot_cylinder_pressure();	// PORTED
 
-	/* Text on top of all graphs.. */
+	/* Text on top of all graphs.. */ // TODO: NOT PORTED, ANY TEXT.
 	plot_temperature_text();
 	plot_depth_text();
 	plot_cylinder_pressure_text();
 	plot_deco_text();
 
+	// NOT PORTED.
 	/* Put the dive computer name in the lower left corner */
 	gc.leftx = 0; gc.rightx = 1.0;
 	gc.topy = 0; gc.bottomy = 1.0;
@@ -463,11 +458,13 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	// The Time ruler should be right after the DiveComputer:
 	timeMarkers->setPos(0, diveComputer->y());
 
+	// NOT PORTED.
 	if (PP_GRAPHS_ENABLED) {
 		plot_pp_gas_profile();
 		plot_pp_text();
 	}
 
+	// NOT PORTED.
 	plot_depth_scale();
 
 #if 0

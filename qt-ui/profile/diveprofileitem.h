@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsPolygonItem>
-
+#include "graphicsview-common.h"
 /* This is the Profile Item, it should be used for quite a lot of things
  on the profile view. The usage should be pretty simple:
 
@@ -18,6 +18,7 @@
  This is a generically item and should be used as a base for others, I think...
 */
 
+class DiveTextItem;
 class DiveCartesianAxis;
 class QAbstractTableModel;
 
@@ -57,6 +58,8 @@ public:
 	DiveTemperatureItem();
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+private:
+	void createTextItem(int seconds, int mkelvin);
 };
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem{
@@ -67,4 +70,7 @@ public:
 private:
 	QVector<QPolygonF> polygons;
 };
+
+QGraphicsItemGroup *plotText(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent);
+
 #endif

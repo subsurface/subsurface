@@ -2,12 +2,17 @@
 #include "diveplotdatamodel.h"
 #include "divecartesianaxis.h"
 #include "graphicsview-common.h"
+#include "divetextitem.h"
 #include "profile.h"
+#include "dive.h"
+#include "profilegraphics.h"
 
 #include <QPen>
 #include <QPainter>
 #include <QLinearGradient>
 #include <QDebug>
+#include <QApplication>
+#include <QGraphicsItem>
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
@@ -117,15 +122,46 @@ void DiveTemperatureItem::modelDataChanged()
 
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
+	int last = -300, last_printed_temp = 0, sec = 0;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
-		qreal verticalValue = dataModel->index(i, vDataColumn).data().toReal();
-		if(!verticalValue)
+		int mkelvin = dataModel->index(i, vDataColumn).data().toInt();
+		if(!mkelvin)
 			continue;
-		qreal horizontalValue = dataModel->index(i, hDataColumn).data().toReal();
-		QPointF point( hAxis->posAtValue(horizontalValue), vAxis->posAtValue(verticalValue));
+		int sec = dataModel->index(i, hDataColumn).data().toInt();
+		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin));
 		poly.append(point);
+
+		/* don't print a temperature
+		 * if it's been less than 5min and less than a 2K change OR
+		 * if it's been less than 2min OR if the change from the
+		 * last print is less than .4K (and therefore less than 1F) */
+		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
+		    (sec < last + 120) ||
+		    (abs(mkelvin - last_printed_temp) < 400))
+			continue;
+		last = sec;
+		if (mkelvin > 200000)
+			createTextItem(sec,mkelvin);
+		last_printed_temp = mkelvin;
 	}
 	setPolygon(poly);
+
+	/* it would be nice to print the end temperature, if it's
+	* different or if the last temperature print has been more
+	* than a quarter of the dive back */
+	int last_temperature = dataModel->data(dataModel->index(dataModel->rowCount()-1, DivePlotDataModel::TEMPERATURE)).toInt();
+	if (last_temperature > 200000 && ((abs(last_temperature - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))){
+		createTextItem(sec, last_temperature);
+	}
+}
+
+void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
+{
+	double deg;
+	const char *unit;
+	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
+	deg = get_temp_units(mkelvin, &unit);
+	plotText(&tro, QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)), QString("%1%2").arg(deg, 0, 'f', 1).arg(unit), this); //"%.2g%s"
 }
 
 void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -146,7 +182,6 @@ void DiveGasPressureItem::modelDataChanged()
 	QPolygonF boundingPoly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
 	polygons.clear();
 
-#define M_PRESSURE( ROW )
 	for (int i = 0; i < dataModel->rowCount(); i++) {
 		int sPressure = dataModel->index(i, DivePlotDataModel::SENSOR_PRESSURE).data().toInt();
 		int iPressure = dataModel->index(i, DivePlotDataModel::INTERPOLATED_PRESSURE).data().toInt();
@@ -181,4 +216,36 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 			painter->drawLine(poly[i-1],poly[i]);
 		}
 	}
+}
+
+QGraphicsItemGroup *plotText(text_render_options_t* tro, const QPointF& pos, const QString& text, QGraphicsItem *parent)
+{
+	QFont fnt(qApp->font());
+	QFontMetrics fm(fnt);
+
+	/*
+	if (printMode)
+		fnt.setPixelSize(tro->size);
+	*/
+
+	QGraphicsItemGroup *group = new QGraphicsItemGroup(parent);
+	QPainterPath textPath;
+	/* addText() uses bottom-left text baseline and the -3 offset is probably slightly off
+	 * for different font sizes. */
+	textPath.addText(0, fm.height() - 3, fnt, text);
+	QPainterPathStroker stroker;
+	stroker.setWidth(3);
+	QGraphicsPathItem *strokedItem = new QGraphicsPathItem(stroker.createStroke(textPath), group);
+	strokedItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
+	strokedItem->setPen(Qt::NoPen);
+
+	QGraphicsPathItem *textItem = new QGraphicsPathItem(textPath, group);
+	textItem->setBrush(QBrush(getColor(tro->color)));
+	textItem->setPen(Qt::NoPen);
+
+	group->setPos(pos);
+	//group->setPos(pos.x() + dx, pos.y() + dy);
+//	if (!printMode)
+		group->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	return group;
 }

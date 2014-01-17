@@ -36,4 +36,11 @@ extern QMap<color_indice_t, QVector<QColor> > profile_color;
 void fill_profile_color();
 QColor getColor(const color_indice_t i);
 
+struct text_render_options {
+	double size;
+	color_indice_t color;
+	double hpos, vpos;
+};
+
+typedef text_render_options text_render_options_t;
 #endif
