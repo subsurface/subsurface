@@ -277,6 +277,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	 * shown.
 	 */
 	struct plot_info pInfo = calculate_max_limits_new(d, currentdc);
+	create_plot_info_new(d, currentdc, &pInfo);
 	int maxtime = get_maxtime(&pInfo);
 	int maxdepth = get_maxdepth(&pInfo);
 

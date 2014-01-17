@@ -51,7 +51,7 @@ void DiveCartesianAxis::updateTicks()
 	double currValue = min;
 
 	// Remove the uneeded Ticks / Texts.
-	if (ticks.size() > steps) {
+	if (!ticks.isEmpty() && ticks.size() > steps) {
 		while (ticks.size() > steps) {
 			DiveLineItem *removedLine = ticks.takeLast();
 			removedLine->animatedHide();
