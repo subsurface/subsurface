@@ -75,6 +75,7 @@ private:
 	DiveProfileItem *diveProfileItem;
 	DiveCartesianPlane *cartesianPlane;
 	DiveTemperatureItem *temperatureItem;
+	DiveCartesianAxis *cylinderPressureAxis;
 	QList<DiveEventItem*> eventItems;
 };
 
