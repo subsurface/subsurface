@@ -220,10 +220,10 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		printf("   <rbt>%u</rbt>\n", value.rbt);
 		break;
 	case DC_SAMPLE_HEARTBEAT:
-		printf("   <heartbeat>%u</heartbeat>\n", value.heartbeat);
+		sample->heartbeat = value.heartbeat;
 		break;
 	case DC_SAMPLE_BEARING:
-		printf("   <bearing>%u</bearing>\n", value.bearing);
+		sample->bearing = value.bearing;
 		break;
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),

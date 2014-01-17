@@ -42,6 +42,8 @@ struct plot_data {
 	int stoptime_calc;
 	int stopdepth_calc;
 	int pressure_time;
+	int heartbeat;
+	int bearing;
 };
 //TODO: remove the calculatE_max_limits as soon as the new profile is done.
 void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc);

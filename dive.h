@@ -268,6 +268,8 @@ struct sample {
 	bool in_deco;
 	int cns;
 	int po2;
+	int heartbeat;
+	int bearing;
 };
 
 struct divetag {

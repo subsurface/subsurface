@@ -853,6 +853,10 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("po2.sample", double_to_permil, &sample->po2))
 		return;
+	if (MATCH("heartbeat", get_index, &sample->heartbeat))
+		return;
+	if (MATCH("bearing", get_index, &sample->bearing))
+		return;
 
 	switch (import_source) {
 	case DIVINGLOG:

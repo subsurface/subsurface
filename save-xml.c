@@ -330,6 +330,8 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		put_milli(b, " po2='", sample->po2, " bar'");
 		old->po2 = sample->po2;
 	}
+	show_index(b, sample->heartbeat, "heartbeat='", "'");
+	show_index(b, sample->bearing, "bearing='", "'");
 	put_format(b, " />\n");
 }
 

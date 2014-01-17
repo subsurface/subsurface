@@ -918,6 +918,8 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
 		else
 			entry->temperature = lasttemp;
+		entry->heartbeat = sample->heartbeat;
+		entry->bearing = sample->bearing;
 
 		lasttime = time;
 		lastdepth = depth;
@@ -1519,6 +1521,14 @@ static void plot_string(struct plot_data *entry, char *buf, int bufsize,
 				}
 			}
 		}
+	}
+	if (entry->heartbeat) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nheartbeat:%d"), buf2, entry->heartbeat);
+	}
+	if (entry->bearing) {
+		memcpy(buf2, buf, bufsize);
+		snprintf(buf, bufsize, translate("gettextFromC","%s\nbearing:%d"), buf2, entry->bearing);
 	}
 	free(buf2);
 }
