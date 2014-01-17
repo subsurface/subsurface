@@ -10,7 +10,7 @@ struct plot_info;
 class DivePlotDataModel : public QAbstractTableModel{
 Q_OBJECT
 public:
-	enum {DEPTH, TIME, PRESSURE, TEMPERATURE, USERENTERED, COLOR, COLUMNS};
+	enum {DEPTH, TIME, PRESSURE, TEMPERATURE, USERENTERED, COLOR, CYLINDERINDEX, SENSOR_PRESSURE, INTERPOLATED_PRESSURE, COLUMNS};
 	explicit DivePlotDataModel(QObject* parent = 0);
 	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

@@ -335,7 +335,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	scene()->addItem(temperatureItem);
 
-
 	emit startProfileState();
 }
 

@@ -31,6 +31,9 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 			case TEMPERATURE:	return item.temperature;
 			case COLOR:		return item.velocity;
 			case USERENTERED:	return false;
+			case CYLINDERINDEX: return item.cylinderindex;
+			case SENSOR_PRESSURE: return item.pressure[0];
+			case INTERPOLATED_PRESSURE: return item.pressure[1];
 		}
 	}
 	if (role == Qt::BackgroundRole) {
@@ -61,6 +64,9 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		case TEMPERATURE:	return tr("Temperature");
 		case COLOR:		return tr("Color");
 		case USERENTERED:	return tr("User Entered");
+		case CYLINDERINDEX: return tr("Cylinder Index");
+		case SENSOR_PRESSURE: return tr("Sensor Pressure");
+		case INTERPOLATED_PRESSURE: return tr("Interpolated Pressure");
 	}
 	return QVariant();
 }
