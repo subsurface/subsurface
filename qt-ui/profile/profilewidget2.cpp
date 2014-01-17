@@ -32,8 +32,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeAxis(new TimeAxis()),
 	depthController(new DiveRectItem()),
 	timeController(new DiveRectItem()),
-	diveProfileItem(new DiveProfileItem()),
-	temperatureItem(new DiveTemperatureItem()),
+	diveProfileItem(NULL),
+	temperatureItem(NULL),
 	cartesianPlane(new DiveCartesianPlane())
 {
 	setScene(new QGraphicsScene());
