@@ -360,7 +360,11 @@ void ProfileWidget2::resizeEvent(QResizeEvent* event)
 
 void ProfileWidget2::fixBackgroundPos()
 {
-	QPixmap p = QPixmap(":background").scaledToHeight(viewport()->height());
+	QPixmap toBeScaled(":background");
+	if (toBeScaled.isNull())
+		return;
+	QPixmap p = toBeScaled.scaledToHeight(viewport()->height());
+
 	int x = viewport()->width() / 2 - p.width() / 2;
 	DivePixmapItem *bg = background;
 	bg->setPixmap(p);
