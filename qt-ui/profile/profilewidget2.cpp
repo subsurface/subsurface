@@ -70,7 +70,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureAxis->setTickSize(2);
 	temperatureAxis->setTickInterval(300);
 
-	cylinderPressureAxis->setOrientation(DiveCartesianAxis::TopToBottom);
+	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	cylinderPressureAxis->setLine(0,20,0,60);
 	cylinderPressureAxis->setX(3);
 	cylinderPressureAxis->setTickSize(2);
@@ -335,6 +335,18 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
 	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	scene()->addItem(temperatureItem);
+
+	if(gasPressureItem){
+		scene()->removeItem(gasPressureItem);
+		delete gasPressureItem;
+	}
+	gasPressureItem = new DiveGasPressureItem();
+	gasPressureItem->setHorizontalAxis(timeAxis);
+	gasPressureItem->setVerticalAxis(cylinderPressureAxis);
+	gasPressureItem->setModel(dataModel);
+	gasPressureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
+	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	scene()->addItem(gasPressureItem);
 
 	emit startProfileState();
 }

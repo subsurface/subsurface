@@ -2,6 +2,7 @@
 #include "diveplotdatamodel.h"
 #include "divecartesianaxis.h"
 #include "graphicsview-common.h"
+#include "profile.h"
 
 #include <QPen>
 #include <QPainter>
@@ -131,4 +132,53 @@ void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 {
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
+}
+
+
+void DiveGasPressureItem::modelDataChanged()
+{
+	// We don't have enougth data to calculate things, quit.
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+		return;
+	int last_index = -1;
+	int lift_pen = false;
+	int first_plot = true;
+	QPolygonF boundingPoly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
+	polygons.clear();
+
+#define M_PRESSURE( ROW )
+	for (int i = 0; i < dataModel->rowCount(); i++) {
+		int sPressure = dataModel->index(i, DivePlotDataModel::SENSOR_PRESSURE).data().toInt();
+		int iPressure = dataModel->index(i, DivePlotDataModel::INTERPOLATED_PRESSURE).data().toInt();
+		int cylIndex = dataModel->index(i, DivePlotDataModel::CYLINDERINDEX).data().toInt();
+		int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
+		int mbar = sPressure ? sPressure : iPressure;
+
+		if (cylIndex != last_index) {
+			polygons.append(QPolygonF()); // this is the polygon that will be actually drawned on screen.
+			last_index = cylIndex;
+		}
+		if (!mbar) {
+			continue;
+		}
+
+		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+		boundingPoly.push_back(point); // The BoundingRect
+		polygons.last().push_back(point); // The polygon thta will be plotted.
+	}
+	setPolygon(boundingPoly);
+}
+
+void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	QPen pen;
+	pen.setCosmetic(true);
+	pen.setWidth(2);
+	Q_FOREACH(const QPolygonF& poly, polygons){
+		for (int i = 1, count = poly.count(); i < count; i++) {
+			pen.setBrush(QBrush(Qt::red)); // TODO: Fix the color.
+			painter->setPen(pen);
+			painter->drawLine(poly[i-1],poly[i]);
+		}
+	}
 }

@@ -59,4 +59,12 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 };
 
+class DiveGasPressureItem : public AbstractProfilePolygonItem{
+	Q_OBJECT
+public:
+	virtual void modelDataChanged();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+private:
+	QVector<QPolygonF> polygons;
+};
 #endif
