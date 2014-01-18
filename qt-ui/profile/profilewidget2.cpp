@@ -284,7 +284,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
-	profileYAxis->setMaximum(qMax<long>(pInfo.maxdepth + M_OR_FT(10,30), maxdepth * 2 / 3));
+	profileYAxis->setMaximum(maxdepth);
 	profileYAxis->updateTicks();
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
