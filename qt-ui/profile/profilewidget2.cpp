@@ -35,6 +35,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveProfileItem(NULL),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	temperatureItem(NULL),
+	gasPressureItem(NULL),
 	cartesianPlane(new DiveCartesianPlane())
 {
 	setScene(new QGraphicsScene());
