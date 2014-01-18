@@ -58,5 +58,7 @@ void fill_profile_color()
 
 QColor getColor(const color_indice_t i, bool isGrayscale = false)
 {
-	return profile_color[i].at((isGrayscale) ? 1 : 0);
+	if (profile_color.count() > i && i >= 0)
+		return profile_color[i].at((isGrayscale) ? 1 : 0);
+	return QColor(Qt::black);
 }

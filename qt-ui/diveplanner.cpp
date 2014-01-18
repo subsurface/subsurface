@@ -45,7 +45,9 @@ QString dpGasToStr(const divedatapoint& p)
 
 QColor getColor(const color_indice_t i)
 {
-	return profile_color[i].at(0);
+	if ( profile_color.count() > i && i >= 0)
+		return profile_color[i].at(0);
+	return QColor(Qt::black);
 }
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
