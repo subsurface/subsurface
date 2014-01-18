@@ -14,6 +14,7 @@
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
 #include "graphicsview-common.h"
+#include "divelineitem.h"
 
 class TemperatureAxis;
 class DiveEventItem;
@@ -33,7 +34,7 @@ struct DiveGasPressureItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
-    void fixBackgroundPos();
+	void fixBackgroundPos();
 public:
 	enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
 	enum Items{BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
@@ -78,6 +79,7 @@ private:
 	DiveTemperatureItem *temperatureItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
+	DiveLineItem *meanDepth;
 	QList<DiveEventItem*> eventItems;
 };
 

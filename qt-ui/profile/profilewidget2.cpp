@@ -36,7 +36,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	temperatureItem(NULL),
 	gasPressureItem(NULL),
-	cartesianPlane(new DiveCartesianPlane())
+	cartesianPlane(new DiveCartesianPlane()),
+	meanDepth(new DiveLineItem())
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -83,6 +84,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	depthController->setRect(0, 0, 10, 5);
 	timeController->setRect(0, 0, 10, 5);
 	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
+	meanDepth->setLine(0,0,96,0);
+	meanDepth->setX(3);
+	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
 
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
@@ -90,7 +94,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
 	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
-							timeAxis << depthController << timeController << temperatureAxis << cylinderPressureAxis;
+							timeAxis << depthController << timeController <<
+							temperatureAxis << cylinderPressureAxis <<
+							meanDepth;
 	Q_FOREACH(QGraphicsItem *item, stateItems) {
 		scene()->addItem(item);
 	}
@@ -294,7 +300,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
 	cylinderPressureAxis->updateTicks();
-
+	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 	dataModel->setDive(current_dive, pInfo);
 
 	if (diveProfileItem) {
