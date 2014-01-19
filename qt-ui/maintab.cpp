@@ -304,7 +304,7 @@ bool MainTab::eventFilter(QObject* object, QEvent* event)
 	// FocusIn for the starWidgets or RequestSoftwareInputPanel for tagWidget start the editing
 	if ((event->type() == QEvent::MouseButtonPress) ||
 	    (event->type() == QEvent::KeyPress && object == ui.dateTimeEdit) ||
-	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility || object == ui.buddy || object == ui.tagWidget))) {
+	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility || object == ui.buddy || object == ui.tagWidget || object || ui.divemaster))) {
 		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
 	}
