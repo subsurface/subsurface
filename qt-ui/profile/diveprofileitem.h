@@ -60,6 +60,7 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 private:
 	void createTextItem(int seconds, int mkelvin);
+	QList<DiveTextItem*> texts;
 };
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem{

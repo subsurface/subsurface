@@ -120,6 +120,8 @@ void DiveTemperatureItem::modelDataChanged()
 	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
 		return;
 
+	qDeleteAll(texts);
+	texts.clear();
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
 	int last = -300, last_printed_temp = 0, sec = 0;
@@ -159,9 +161,15 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 {
 	double deg;
 	const char *unit;
-	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT, LEFT, TOP};
+	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT};
 	deg = get_temp_units(mkelvin, &unit);
-	plotText(&tro, QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)), QString("%1%2").arg(deg, 0, 'f', 1).arg(unit), this); //"%.2g%s"
+
+	DiveTextItem *text = new DiveTextItem(this);
+	text->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+	text->setBrush(getColor(TEMP_TEXT));
+	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)));
+	text->setText(QString("%1%2").arg(deg, 0, 'f', 1).arg(unit));
+	// text->setSize(TEMP_TEXT_SIZE); //TODO: TEXT SIZE!
 }
 
 void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -216,9 +224,4 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 			painter->drawLine(poly[i-1],poly[i]);
 		}
 	}
-}
-
-QGraphicsItemGroup *plotText(text_render_options_t* tro, const QPointF& pos, const QString& text, QGraphicsItem *parent)
-{
-
 }
