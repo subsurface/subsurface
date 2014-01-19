@@ -1,6 +1,8 @@
 #include "divetooltipitem.h"
 #include "divecartesianaxis.h"
 #include "profile.h"
+#include "dive.h"
+#include "membuffer.h"
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QPen>
@@ -39,9 +41,11 @@ void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)
 {
 	clear();
 	int time = (pos.x() * gc->maxtime) / gc->maxx;
-	char buffer[500];
-	get_plot_details(gc, time, buffer, 500);
-	addToolTip(QString(buffer));
+	struct membuffer mb = { 0 };
+
+	get_plot_details(gc, time, &mb);
+	addToolTip(QString::fromUtf8(mb.buffer, mb.len));
+	free_buffer(&mb);
 
 	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
 	Q_FOREACH(QGraphicsItem *item, items) {
@@ -229,9 +233,11 @@ void ToolTipItem::refresh(const QPointF& pos)
 {
 	clear();
 	int time = timeAxis->valueAt( pos );
-	char buffer[500];
-	get_plot_details_new(&pInfo, time, buffer, 500);
-	addToolTip(QString(buffer));
+	struct membuffer mb = { 0 };
+
+	get_plot_details_new(&pInfo, time, &mb);
+	addToolTip(QString::fromUtf8(mb.buffer, mb.len));
+	free_buffer(&mb);
 
 	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
 	Q_FOREACH(QGraphicsItem *item, items) {

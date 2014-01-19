@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+struct membuffer;
+
 #define SCALE_SCREEN 1.0
 #define SCALE_PRINT (1.0 / get_screen_dpi())
 
@@ -39,7 +41,7 @@ struct graphics_context {
 typedef enum { SC_SCREEN, SC_PRINT } scale_mode_t;
 
 extern struct divecomputer *select_dc(struct divecomputer *main);
-extern void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufsize);
+extern void get_plot_details(struct graphics_context *gc, int time, struct membuffer *mb);
 
 struct options {
 	enum { PRETTY, TABLE, TWOPERPAGE } type;
