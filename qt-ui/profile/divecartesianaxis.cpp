@@ -27,7 +27,7 @@ void DiveCartesianAxis::setTextColor(const QColor& color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis() : orientation(LeftToRight)
+DiveCartesianAxis::DiveCartesianAxis() : orientation(LeftToRight), showTicks(true), showText(true)
 {
 
 }
@@ -50,16 +50,30 @@ void DiveCartesianAxis::updateTicks()
 	double steps = (max - min) / interval;
 	double currValue = min;
 
+	if (!showTicks && !ticks.empty()){
+		qDeleteAll(ticks);
+		ticks.clear();
+	}
+
+	if(!showText && !labels.empty()){
+			qDeleteAll(labels);
+			labels.clear();
+	}
+
 	// Remove the uneeded Ticks / Texts.
-	if (!ticks.isEmpty() && ticks.size() > steps) {
+	if (showTicks && !ticks.isEmpty() && ticks.size() > steps) {
 		while (ticks.size() > steps) {
 			DiveLineItem *removedLine = ticks.takeLast();
 			removedLine->animatedHide();
-			DiveTextItem *removedText = labels.takeLast();
-			removedText->animatedHide();
 		}
 	}
 
+	if (!labels.isEmpty() && labels.size() > steps) {
+		while (labels.size() > steps) {
+				DiveTextItem *removedText = labels.takeLast();
+				removedText->animatedHide();
+		}
+	}
 	// Move the remaining Ticks / Text to it's corerct position
 	// Regartind the possibly new values for the Axis
 	qreal begin, stepSize;
@@ -77,7 +91,6 @@ void DiveCartesianAxis::updateTicks()
 		stepSize = (m.x2() - m.x1());
 	}
 	stepSize = stepSize / steps;
-
 
 	for (int i = 0, count = ticks.size(); i < count; i++, currValue += interval) {
 		qreal childPos;
@@ -104,31 +117,56 @@ void DiveCartesianAxis::updateTicks()
 		} else {
 			childPos = begin - i * stepSize;
 		}
-		DiveLineItem *item = new DiveLineItem(this);
-		item->setPen(pen());
-		ticks.push_back(item);
+		DiveLineItem *item = NULL;
+		DiveTextItem *label = NULL;
 
-		DiveTextItem *label = new DiveTextItem(this);
-		label->setText(textForValue(currValue));
-		label->setBrush(QBrush(textColor));
-
+		if (showTicks){
+			item = new DiveLineItem(this);
+			item->setPen(pen());
+			ticks.push_back(item);
+		}
+		if (showText){
+			label = new DiveTextItem(this);
+			label->setText(textForValue(currValue));
+			label->setBrush(QBrush(textColor));
+		}
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
-			item->setLine(0, 0, 0, tickSize);
-			item->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene
-			item->animateMoveTo(childPos, m.y1() + tickSize); // anim it to scene.
-			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
-			label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
-			label->animateMoveTo(childPos, m.y1() + tickSize);
+			if (showTicks){
+				item->setLine(0, 0, 0, tickSize);
+				item->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene
+				item->animateMoveTo(childPos, m.y1() + tickSize); // anim it to scene.
+			}
+			if(showText){
+				label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+				label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
+				label->animateMoveTo(childPos, m.y1() + tickSize);
+			}
 		} else {
-			item->setLine(0, 0, tickSize, 0);
-			item->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
-			item->animateMoveTo(m.x1() - tickSize, childPos);
-			label->setAlignment(Qt::AlignVCenter| Qt::AlignRight);
-			label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
-			label->animateMoveTo(m.x1() - tickSize, childPos);
+			if(showTicks){
+				item->setLine(0, 0, tickSize, 0);
+				item->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
+				item->animateMoveTo(m.x1() - tickSize, childPos);
+			}
+			if(showText){
+				label->setAlignment(Qt::AlignVCenter| Qt::AlignRight);
+				label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
+				label->animateMoveTo(m.x1() - tickSize, childPos);
+			}
 		}
 	}
+}
+
+void DiveCartesianAxis::setShowText(bool show)
+{
+	showText = show;
+	updateTicks();
+}
+
+void DiveCartesianAxis::setShowTicks(bool show)
+{
+	showTicks = show;
+	updateTicks();
 }
 
 QString DiveCartesianAxis::textForValue(double value)

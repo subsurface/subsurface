@@ -362,6 +362,7 @@ QColor ProfileGraphicsView::getColor(const color_indice_t i)
 
 void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 {
+	return;
 	struct divecomputer *dc = NULL;
 
 	if (d)

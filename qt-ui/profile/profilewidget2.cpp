@@ -294,12 +294,10 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	profileYAxis->updateTicks();
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
-	//temperatureAxis->updateTicks();
 	timeAxis->setMaximum(maxtime);
 	timeAxis->updateTicks();
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
-	cylinderPressureAxis->updateTicks();
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 	dataModel->setDive(current_dive, pInfo);
 

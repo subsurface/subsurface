@@ -29,6 +29,8 @@ public:
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
+	void setShowTicks(bool show);
+	void setShowText(bool show);
 	int unitSystem;
 signals:
 	void sizeChanged();
@@ -43,6 +45,8 @@ protected:
 	double interval;
 	double tickSize;
 	QColor textColor;
+	bool showTicks;
+	bool showText;
 };
 
 class DepthAxis : public DiveCartesianAxis {

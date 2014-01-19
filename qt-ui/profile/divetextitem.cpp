@@ -7,6 +7,7 @@
 #include <QFontMetrics>
 #include <QBrush>
 #include <QPen>
+#include <QDebug>
 
 DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
 	textBackgroundItem(NULL),
@@ -50,10 +51,10 @@ void DiveTextItem::updateText()
 
 	QRectF rect = fm.boundingRect(text);
 	yPos = (internalAlignFlags & Qt::AlignTop) ? -rect.height() :
-			(internalAlignFlags & Qt::AlignBottom) ? 0 :
-	/*(internalAlignFlags & Qt::AlignVCenter  ? */ -rect.height() / 2;
+			(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
+	/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
 
-	yPos = (internalAlignFlags & Qt::AlignLeft ) ? 0 :
+	xPos = (internalAlignFlags & Qt::AlignLeft ) ? +rect.width() :
 		(internalAlignFlags & Qt::AlignHCenter) ?  -rect.width()/2 :
 	 /* (internalAlignFlags & Qt::AlignRight) */ -rect.width();
 
