@@ -324,6 +324,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		item->setVerticalAxis(profileYAxis);
 		item->setModel(dataModel);
 		item->setEvent(event);
+		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
 		event = event->next;
