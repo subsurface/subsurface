@@ -16,6 +16,7 @@ public:
 	void setText(QString text);
 	void clear();
 	void setCursorPosition(int position);
+	void wheelEvent(QWheelEvent *event);
 public slots:
         void reparse();
 	void completionSelected(QString);

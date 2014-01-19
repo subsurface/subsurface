@@ -27,6 +27,7 @@ TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NUL
 		addColor( QColor(Qt::green).darker(120) );
 		addColor( QColor(Qt::blue).darker(120) );
 	} // light text. get a dark background.
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 void TagWidget::setCompleter(QCompleter *completer)
@@ -187,3 +188,8 @@ void TagWidget::keyPressEvent(QKeyEvent *e) {
 	}
 }
 
+void TagWidget::wheelEvent(QWheelEvent *event) {
+	if (hasFocus()) {
+		GroupedLineEdit::wheelEvent(event);
+	}
+}
