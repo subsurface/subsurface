@@ -38,7 +38,6 @@ protected:
 	virtual QString textForValue(double value);
 
 	Orientation orientation;
-	QList<DiveLineItem*> ticks;
 	QList<DiveTextItem*> labels;
 	double min;
 	double max;

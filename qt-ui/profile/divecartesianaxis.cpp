@@ -50,22 +50,9 @@ void DiveCartesianAxis::updateTicks()
 	double steps = (max - min) / interval;
 	double currValue = min;
 
-	if (!showTicks && !ticks.empty()){
-		qDeleteAll(ticks);
-		ticks.clear();
-	}
-
 	if(!showText && !labels.empty()){
 			qDeleteAll(labels);
 			labels.clear();
-	}
-
-	// Remove the uneeded Ticks / Texts.
-	if (showTicks && !ticks.isEmpty() && ticks.size() > steps) {
-		while (ticks.size() > steps) {
-			DiveLineItem *removedLine = ticks.takeLast();
-			removedLine->animatedHide();
-		}
 	}
 
 	if (!labels.isEmpty() && labels.size() > steps) {
@@ -92,7 +79,7 @@ void DiveCartesianAxis::updateTicks()
 	}
 	stepSize = stepSize / steps;
 
-	for (int i = 0, count = ticks.size(); i < count; i++, currValue += interval) {
+	for (int i = 0, count = labels.size(); i < count; i++, currValue += interval) {
 		qreal childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 			childPos = begin + i * stepSize;
@@ -101,30 +88,22 @@ void DiveCartesianAxis::updateTicks()
 		}
 		labels[i]->setText(textForValue(currValue));
 		if ( orientation == LeftToRight || orientation == RightToLeft) {
-			ticks[i]->animateMoveTo(childPos, m.y1() + tickSize);
 			labels[i]->animateMoveTo(childPos, m.y1() + tickSize);
 		} else {
-			ticks[i]->animateMoveTo(m.x1() - tickSize, childPos);
 			labels[i]->animateMoveTo(m.x1() - tickSize, childPos);
 		}
 	}
 
 	// Add's the rest of the needed Ticks / Text.
-	for (int i = ticks.size(); i < steps; i++,  currValue += interval) {
+	for (int i = labels.size(); i < steps; i++,  currValue += interval) {
 		qreal childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 		childPos = begin + i * stepSize;
 		} else {
 			childPos = begin - i * stepSize;
 		}
-		DiveLineItem *item = NULL;
 		DiveTextItem *label = NULL;
 
-		if (showTicks){
-			item = new DiveLineItem(this);
-			item->setPen(pen());
-			ticks.push_back(item);
-		}
 		if (showText){
 			label = new DiveTextItem(this);
 			label->setText(textForValue(currValue));
@@ -132,22 +111,13 @@ void DiveCartesianAxis::updateTicks()
 		}
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
-			if (showTicks){
-				item->setLine(0, 0, 0, tickSize);
-				item->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene
-				item->animateMoveTo(childPos, m.y1() + tickSize); // anim it to scene.
-			}
+
 			if(showText){
 				label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 				label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
 				label->animateMoveTo(childPos, m.y1() + tickSize);
 			}
 		} else {
-			if(showTicks){
-				item->setLine(0, 0, tickSize, 0);
-				item->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
-				item->animateMoveTo(m.x1() - tickSize, childPos);
-			}
 			if(showText){
 				label->setAlignment(Qt::AlignVCenter| Qt::AlignRight);
 				label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
