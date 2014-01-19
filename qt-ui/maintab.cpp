@@ -838,8 +838,9 @@ void MainTab::on_buddy_textChanged()
 	markChangedWidget(ui.buddy);
 }
 
-void MainTab::on_divemaster_textChanged(const QString& text)
+void MainTab::on_divemaster_textChanged()
 {
+	QString text = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts).join(", ");
 	EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->divemaster, text) );
 	markChangedWidget(ui.divemaster);
 }
