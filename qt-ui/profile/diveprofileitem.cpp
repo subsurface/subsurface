@@ -220,32 +220,5 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 
 QGraphicsItemGroup *plotText(text_render_options_t* tro, const QPointF& pos, const QString& text, QGraphicsItem *parent)
 {
-	QFont fnt(qApp->font());
-	QFontMetrics fm(fnt);
 
-	/*
-	if (printMode)
-		fnt.setPixelSize(tro->size);
-	*/
-
-	QGraphicsItemGroup *group = new QGraphicsItemGroup(parent);
-	QPainterPath textPath;
-	/* addText() uses bottom-left text baseline and the -3 offset is probably slightly off
-	 * for different font sizes. */
-	textPath.addText(0, fm.height() - 3, fnt, text);
-	QPainterPathStroker stroker;
-	stroker.setWidth(3);
-	QGraphicsPathItem *strokedItem = new QGraphicsPathItem(stroker.createStroke(textPath), group);
-	strokedItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
-	strokedItem->setPen(Qt::NoPen);
-
-	QGraphicsPathItem *textItem = new QGraphicsPathItem(textPath, group);
-	textItem->setBrush(QBrush(getColor(tro->color)));
-	textItem->setPen(Qt::NoPen);
-
-	group->setPos(pos);
-	//group->setPos(pos.x() + dx, pos.y() + dy);
-//	if (!printMode)
-		group->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	return group;
 }

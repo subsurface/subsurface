@@ -2,21 +2,30 @@
 #define DIVETEXTITEM_H
 
 #include <QObject>
-#include <QGraphicsSimpleTextItem>
+#include <QGraphicsItemGroup>
+#include "graphicsview-common.h"
+#include <QBrush>
 
 /* A Line Item that has animated-properties. */
-class DiveTextItem :public QObject, public QGraphicsSimpleTextItem{
+class DiveTextItem :public QObject, public QGraphicsItemGroup{
 	Q_OBJECT
 	Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
 	DiveTextItem(QGraphicsItem* parent = 0);
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+	void setText(const QString& text);
 	void setAlignment(int alignFlags);
+	void setBrush(const QBrush& brush);
 	void animatedHide();
 	void animateMoveTo(qreal x, qreal y);
 private:
+	void updateText();
 	int internalAlignFlags;
+	QGraphicsPathItem *textBackgroundItem;
+	QGraphicsPathItem *textItem;
+	QString text;
+	color_indice_t colorIndex;
+	QBrush brush;
 };
 
 #endif

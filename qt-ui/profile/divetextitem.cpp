@@ -1,8 +1,17 @@
 #include "divetextitem.h"
 #include "animationfunctions.h"
-#include <QPropertyAnimation>
 
-DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsSimpleTextItem(parent)
+#include <QPropertyAnimation>
+#include <QApplication>
+#include <QFont>
+#include <QFontMetrics>
+#include <QBrush>
+#include <QPen>
+
+DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
+	textBackgroundItem(NULL),
+	textItem(NULL),
+	internalAlignFlags(0)
 {
 	setFlag(ItemIgnoresTransformations);
 }
@@ -10,31 +19,54 @@ DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsSimpleTextItem(paren
 void DiveTextItem::setAlignment(int alignFlags)
 {
 	internalAlignFlags = alignFlags;
-	update();
+	updateText();
 }
 
-void DiveTextItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void DiveTextItem::setBrush(const QBrush& b)
 {
-	/* This block of code corrects paints the Text on the
-	 * alignment choosed, but it created artifacts on the screen,
-	 * so I'm leaving this disabled for the time being.
-	 */
-// 	QRectF rect = boundingRect();
-// 	if (internalAlignFlags & Qt::AlignTop)
-// 		painter->translate(0, -rect.height());
-// // 	else if (internalAlignFlags & Qt::AlignBottom)
-// // 		painter->translate(0, rect.height()); this is the default, uneeded.
-// 	else if (internalAlignFlags & Qt::AlignVCenter)
-// 		painter->translate(0, -rect.height() / 2);
-//
-// // 	if (internalAlignFlags & Qt::AlignLeft )
-// // 		painter->translate(); // This is the default, uneeded.
-// 	if (internalAlignFlags & Qt::AlignHCenter)
-// 		painter->translate(-rect.width()/2, 0);
-// 	else if (internalAlignFlags & Qt::AlignRight)
-// 		painter->translate(-rect.width(), 0);
+	brush = b;
+	updateText();
+}
 
-	QGraphicsSimpleTextItem::paint(painter, option, widget);
+void DiveTextItem::setText(const QString& t)
+{
+	text = t;
+	updateText();
+}
+
+void DiveTextItem::updateText()
+{
+	if(!internalAlignFlags || text.isEmpty())
+		return;
+
+	delete textItem;
+	delete textBackgroundItem;
+
+	QFont fnt(qApp->font());
+	QFontMetrics fm(fnt);
+
+	QPainterPath textPath;
+	qreal xPos = 0, yPos = 0;
+
+	QRectF rect = fm.boundingRect(text);
+	yPos = (internalAlignFlags & Qt::AlignTop) ? -rect.height() :
+			(internalAlignFlags & Qt::AlignBottom) ? 0 :
+	/*(internalAlignFlags & Qt::AlignVCenter  ? */ -rect.height() / 2;
+
+	yPos = (internalAlignFlags & Qt::AlignLeft ) ? 0 :
+		(internalAlignFlags & Qt::AlignHCenter) ?  -rect.width()/2 :
+	 /* (internalAlignFlags & Qt::AlignRight) */ -rect.width();
+
+	textPath.addText( xPos, yPos, fnt, text);
+	QPainterPathStroker stroker;
+	stroker.setWidth(3);
+	textBackgroundItem = new QGraphicsPathItem(stroker.createStroke(textPath), this);
+	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
+	textBackgroundItem->setPen(Qt::NoPen);
+
+	textItem = new QGraphicsPathItem(textPath, this);
+	textItem->setBrush(brush);
+	textItem->setPen(Qt::NoPen);
 }
 
 void DiveTextItem::animatedHide()
