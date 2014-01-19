@@ -36,7 +36,7 @@ signals:
 	void sizeChanged();
 protected:
 	virtual QString textForValue(double value);
-
+	virtual QColor colorForValue(double value);
 	Orientation orientation;
 	QList<DiveTextItem*> labels;
 	double min;
@@ -51,11 +51,13 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 protected:
 	QString textForValue(double value);
+	QColor colorForValue(double value);
 };
 
 class TimeAxis : public DiveCartesianAxis {
 protected:
 	QString textForValue(double value);
+	QColor colorForValue(double value);
 };
 
 class TemperatureAxis : public DiveCartesianAxis{

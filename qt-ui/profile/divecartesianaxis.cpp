@@ -10,6 +10,13 @@
 #include <QGraphicsView>
 #include <QStyleOption>
 
+static QPen gridPen(){
+	QPen pen;
+	pen.setColor(getColor(TIME_GRID));
+	pen.setWidth(2);
+	pen.setCosmetic(true);
+	return pen;
+}
 void DiveCartesianAxis::setMaximum(double maximum)
 {
 	max = maximum;
@@ -29,7 +36,7 @@ void DiveCartesianAxis::setTextColor(const QColor& color)
 
 DiveCartesianAxis::DiveCartesianAxis() : orientation(LeftToRight), showTicks(true), showText(true)
 {
-
+	setPen(gridPen());
 }
 
 DiveCartesianAxis::~DiveCartesianAxis()
@@ -40,6 +47,11 @@ DiveCartesianAxis::~DiveCartesianAxis()
 void DiveCartesianAxis::setOrientation(Orientation o)
 {
 	orientation = o;
+}
+
+QColor DiveCartesianAxis::colorForValue(double value)
+{
+	return QColor(Qt::black);
 }
 
 void DiveCartesianAxis::updateTicks()
@@ -108,6 +120,7 @@ void DiveCartesianAxis::updateTicks()
 			label = new DiveTextItem(this);
 			label->setText(textForValue(currValue));
 			label->setBrush(QBrush(textColor));
+			label->setBrush(colorForValue(currValue));
 		}
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
@@ -223,6 +236,18 @@ QString DepthAxis::textForValue(double value)
 	return get_depth_string(value, false, false);
 }
 
+QColor DepthAxis::colorForValue(double value)
+{
+	Q_UNUSED(value);
+	return QColor(Qt::red);
+}
+
+QColor TimeAxis::colorForValue(double value)
+{
+	Q_UNUSED(value);
+	return QColor(Qt::blue);
+}
+
 QString TimeAxis::textForValue(double value)
 {
 	return QString::number(value / 60);
@@ -303,6 +328,7 @@ void DiveCartesianPlane::setup()
 		line->setLine(0, 0, horizontalSize, 0);
 		line->setPos(left,leftAxis->posAtValue(i));
 		line->setZValue(-1);
+		line->setPen(gridPen());
 		horizontalLines.push_back(line);
 		scene()->addItem(line);
 	}
@@ -312,6 +338,7 @@ void DiveCartesianPlane::setup()
 		line->setLine(0, 0, 0, verticalSize);
 		line->setPos(bottomAxis->posAtValue(i), top);
 		line->setZValue(-1);
+		line->setPen(gridPen());
 		verticalLines.push_back(line);
 		scene()->addItem(line);
 	}
