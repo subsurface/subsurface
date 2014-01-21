@@ -273,7 +273,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 	if (errno || *endp == buffer)
 		return NEITHER;
 	if (**endp == ',') {
-		if (val == rint(val)) {
+		if (IS_FP_SAME(val, rint(val))) {
 			/* we really want to send an error if this is a Subsurface native file
 			 * as this is likely indication of a bug - but right now we don't have
 			 * that information available */
@@ -594,8 +594,7 @@ static void fahrenheit(char *buffer, void *_temperature)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		/* Floating point equality is evil, but works for small integers */
-		if (val.fp == 32.0)
+		if (IS_FP_SAME(val.fp, 32.0))
 			break;
 		if (val.fp < 32.0)
 			temperature->mkelvin = C_to_mkelvin(val.fp);
