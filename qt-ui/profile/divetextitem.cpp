@@ -12,7 +12,7 @@
 DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
 	textBackgroundItem(NULL),
 	textItem(NULL),
-	internalAlignFlags(0)
+	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter)
 {
 	setFlag(ItemIgnoresTransformations);
 }
@@ -31,13 +31,18 @@ void DiveTextItem::setBrush(const QBrush& b)
 
 void DiveTextItem::setText(const QString& t)
 {
-	text = t;
+	internalText = t;
 	updateText();
+}
+
+const QString& DiveTextItem::text()
+{
+	return internalText;
 }
 
 void DiveTextItem::updateText()
 {
-	if(!internalAlignFlags || text.isEmpty())
+	if(internalText.isEmpty())
 		return;
 
 	delete textItem;
@@ -49,7 +54,7 @@ void DiveTextItem::updateText()
 	QPainterPath textPath;
 	qreal xPos = 0, yPos = 0;
 
-	QRectF rect = fm.boundingRect(text);
+	QRectF rect = fm.boundingRect(internalText);
 	yPos = (internalAlignFlags & Qt::AlignTop) ? -rect.height() :
 			(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
 	/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
@@ -58,7 +63,7 @@ void DiveTextItem::updateText()
 		(internalAlignFlags & Qt::AlignHCenter) ?  -rect.width()/2 :
 	 /* (internalAlignFlags & Qt::AlignRight) */ -rect.width();
 
-	textPath.addText( xPos, yPos, fnt, text);
+	textPath.addText( xPos, yPos, fnt, internalText);
 	QPainterPathStroker stroker;
 	stroker.setWidth(3);
 	textBackgroundItem = new QGraphicsPathItem(stroker.createStroke(textPath), this);

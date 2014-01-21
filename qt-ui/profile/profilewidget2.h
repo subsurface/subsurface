@@ -16,6 +16,7 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 
+class DiveTextItem;
 class TemperatureAxis;
 class DiveEventItem;
 struct DivePlotDataModel;
@@ -81,6 +82,7 @@ private:
 	DiveGasPressureItem *gasPressureItem;
 	DiveLineItem *meanDepth;
 	QList<DiveEventItem*> eventItems;
+	DiveTextItem *diveComputerText;
 };
 
 #endif

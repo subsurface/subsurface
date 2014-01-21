@@ -7,7 +7,7 @@
 #include "helpers.h"
 #include "profile.h"
 #include "diveeventitem.h"
-
+#include "divetextitem.h"
 #include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
@@ -37,7 +37,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureItem(NULL),
 	gasPressureItem(NULL),
 	cartesianPlane(new DiveCartesianPlane()),
-	meanDepth(new DiveLineItem())
+	meanDepth(new DiveLineItem()),
+	diveComputerText(new DiveTextItem())
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -92,10 +93,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	cartesianPlane->setLeftAxis(profileYAxis);
 	scene()->addItem(cartesianPlane);
 
+	diveComputerText->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+	diveComputerText->setBrush(getColor(TIME_TEXT));
+
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
 	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
 							timeAxis << depthController << timeController <<
-							temperatureAxis << cylinderPressureAxis <<
+							temperatureAxis << cylinderPressureAxis << diveComputerText <<
 							meanDepth;
 	Q_FOREACH(QGraphicsItem *item, stateItems) {
 		scene()->addItem(item);
@@ -353,6 +357,9 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	gasPressureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
 	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	scene()->addItem(gasPressureItem);
+
+	diveComputerText->setText(currentdc->model);
+	diveComputerText->setPos(1 , sceneRect().height());
 
 	emit startProfileState();
 }

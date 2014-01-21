@@ -18,12 +18,13 @@ public:
 	void setBrush(const QBrush& brush);
 	void animatedHide();
 	void animateMoveTo(qreal x, qreal y);
+	const QString& text();
 private:
 	void updateText();
 	int internalAlignFlags;
 	QGraphicsPathItem *textBackgroundItem;
 	QGraphicsPathItem *textItem;
-	QString text;
+	QString internalText;
 	color_indice_t colorIndex;
 	QBrush brush;
 };
