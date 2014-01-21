@@ -45,6 +45,11 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 	return QVariant();
 }
 
+plot_data* DivePlotDataModel::data()
+{
+	return plotData;
+}
+
 int DivePlotDataModel::rowCount(const QModelIndex& parent) const
 {
 	return sampleCount;

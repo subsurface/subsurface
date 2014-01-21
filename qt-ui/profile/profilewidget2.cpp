@@ -359,7 +359,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	scene()->addItem(gasPressureItem);
 
 	diveComputerText->setText(currentdc->model);
-	diveComputerText->setPos(1 , sceneRect().height());
+	diveComputerText->animateMoveTo(1 , sceneRect().height());
 
 	emit startProfileState();
 }

@@ -21,6 +21,7 @@
 class DiveTextItem;
 class DiveCartesianAxis;
 class QAbstractTableModel;
+struct plot_data;
 
 class AbstractProfilePolygonItem : public QObject, public QGraphicsPolygonItem{
 	Q_OBJECT
@@ -43,13 +44,16 @@ protected:
 	QAbstractTableModel *dataModel;
 	int hDataColumn;
 	int vDataColumn;
+	QList<DiveTextItem*> texts;
 };
 
 class DiveProfileItem : public AbstractProfilePolygonItem{
 	Q_OBJECT
+
 public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void modelDataChanged();
+	void plot_depth_sample(struct plot_data *entry,QFlags<Qt::AlignmentFlag> flags,const QColor& color);
 };
 
 class DiveTemperatureItem : public AbstractProfilePolygonItem{

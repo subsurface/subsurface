@@ -162,7 +162,7 @@ private:
 	void plot_single_temp_text(int sec, int mkelvin);
 	void plot_depth_text();
 	void plot_text_samples();
-	void plot_depth_sample(struct plot_data *entry, text_render_options_t *tro);
+	void plot_depth_sample(plot_data* entry, text_render_options_t* tro);
 	void plot_cylinder_pressure_text();
 	void plot_pressure_value(int mbar, int sec, double xalign, double yalign);
 	void plot_gas_value(int mbar, int sec, double xalign, double yalign, int o2, int he);

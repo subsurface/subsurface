@@ -103,6 +103,42 @@ void DiveProfileItem::modelDataChanged(){
 	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
+
+	qDeleteAll(texts);
+	texts.clear();
+
+	int last = -1;
+	for (int i = 0, count  = dataModel->rowCount(); i < count; i++) {
+
+		struct plot_data *entry = static_cast<DivePlotDataModel*>(dataModel)->data()+i;
+		if (entry->depth < 2000)
+			continue;
+
+		if ((entry == entry->max[2]) && entry->depth / 100 != last) {
+			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignTop, getColor(SAMPLE_DEEP));
+			last = entry->depth / 100;
+		}
+
+		if ((entry == entry->min[2]) && entry->depth / 100 != last) {
+			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
+			last = entry->depth / 100;
+		}
+
+		if (entry->depth != last)
+			last = -1;
+	}
+}
+
+void DiveProfileItem::plot_depth_sample(struct plot_data *entry,QFlags<Qt::AlignmentFlag> flags,const QColor& color)
+{
+	int decimals;
+	double d = get_depth_units(entry->depth, &decimals, NULL);
+	DiveTextItem *item = new DiveTextItem(this);
+	item->setPos(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth));
+	item->setText(QString("%1").arg(d, 0, 'f', 1));
+	item->setAlignment(flags);
+	item->setBrush(color);
+	texts.append(item);
 }
 
 DiveTemperatureItem::DiveTemperatureItem()

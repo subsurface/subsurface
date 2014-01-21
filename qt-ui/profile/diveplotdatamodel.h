@@ -18,6 +18,7 @@ public:
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	void clear();
 	void setDive(struct dive *d, const plot_info& pInfo);
+	plot_data* data();
 private:
 	int sampleCount;
 	plot_data *plotData;
