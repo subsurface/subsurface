@@ -18,7 +18,11 @@
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(modelDataChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(preferencesChanged()));
+}
+
+void AbstractProfilePolygonItem::preferencesChanged()
+{
 }
 
 void AbstractProfilePolygonItem::setHorizontalAxis(DiveCartesianAxis* horizontal)
@@ -36,6 +40,7 @@ void AbstractProfilePolygonItem::setHorizontalDataColumn(int column)
 void AbstractProfilePolygonItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
+	connect(dataModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged()));
 	modelDataChanged();
 }
 
@@ -102,6 +107,9 @@ void DiveProfileItem::modelDataChanged(){
 	if(polygon().isEmpty())
 		return;
 
+	show_reported_ceiling = prefs.profile_dc_ceiling;
+	reported_ceiling_in_red = prefs.profile_red_ceiling;
+
 	/* Show any ceiling we may have encountered */
 	if (prefs.profile_dc_ceiling && !prefs.profile_red_ceiling) {
 		QPolygonF p = polygon();
@@ -124,7 +132,7 @@ void DiveProfileItem::modelDataChanged(){
 	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
 	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
 	pat.setColorAt(0, getColor(DEPTH_TOP));
-	setBrush(QBrush(pat));
+	setBrush(QBrush(pat));AbstractProfilePolygonItem::preferencesChanged();
 
 	int last = -1;
 	for (int i = 0, count  = dataModel->rowCount(); i < count; i++) {
@@ -146,6 +154,14 @@ void DiveProfileItem::modelDataChanged(){
 		if (entry->depth != last)
 			last = -1;
 	}
+}
+
+void DiveProfileItem::preferencesChanged()
+{
+	//TODO: Only modelDataChanged() here if we need to rebuild the graph ( for instance,
+	// if the prefs.profile_dc_ceiling are enabled, but prefs.profile_red_ceiling is disabled
+	// and only if it changed something. let's not waste cpu cycles repoloting something we don't need to.
+		modelDataChanged();
 }
 
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry,QFlags<Qt::AlignmentFlag> flags,const QColor& color)
@@ -371,12 +387,6 @@ void DiveReportedCeiling::modelDataChanged()
 	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
 		return;
 
-	if (prefs.profile_dc_ceiling){
-		setVisible(prefs.profile_red_ceiling);
-	}else{
-		setVisible(false);
-	}
-
 	QPolygonF p;
 	p.append(QPointF(hAxis->posAtValue(0), vAxis->posAtValue(0)));
 	plot_data *entry = dataModel->data();
@@ -397,6 +407,15 @@ void DiveReportedCeiling::modelDataChanged()
 	pat.setColorAt(1, getColor(CEILING_DEEP));
 	setPen(QPen(QBrush(Qt::NoBrush),0));
 	setBrush(pat);
+}
+
+void DiveReportedCeiling::preferencesChanged()
+{
+	if (prefs.profile_dc_ceiling){
+		setVisible(prefs.profile_red_ceiling);
+	}else{
+		setVisible(false);
+	}
 }
 
 void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

@@ -38,6 +38,7 @@ public:
 	void setVerticalDataColumn(int column);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 public slots:
+	virtual void preferencesChanged();
 	virtual void modelDataChanged();
 protected:
 	DiveCartesianAxis *hAxis;
@@ -54,7 +55,11 @@ class DiveProfileItem : public AbstractProfilePolygonItem{
 public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void modelDataChanged();
+	virtual void preferencesChanged();
 	void plot_depth_sample(struct plot_data *entry,QFlags<Qt::AlignmentFlag> flags,const QColor& color);
+private:
+	unsigned int show_reported_ceiling;
+	unsigned int reported_ceiling_in_red;
 };
 
 class DiveTemperatureItem : public AbstractProfilePolygonItem{
@@ -93,5 +98,6 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem{
 public:
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void preferencesChanged();
 };
 #endif
