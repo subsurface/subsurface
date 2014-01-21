@@ -375,6 +375,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	diveComputerText->animateMoveTo(1 , sceneRect().height());
 
 	qDeleteAll(allTissues);
+	allTissues.clear();
 	for(int i = 0; i < 16; i++){
 		DiveCalculatedCeiling *tissueItem = new DiveCalculatedCeiling();
 		tissueItem->setHorizontalAxis(timeAxis);
@@ -382,6 +383,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		tissueItem->setModel(dataModel);
 		tissueItem->setVerticalDataColumn(DivePlotDataModel::TISSUE_1 + i);
 		tissueItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+		allTissues.append(tissueItem);
 		scene()->addItem(tissueItem);
 	}
 	emit startProfileState();
