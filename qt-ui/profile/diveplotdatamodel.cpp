@@ -34,6 +34,7 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 			case CYLINDERINDEX: return item.cylinderindex;
 			case SENSOR_PRESSURE: return item.pressure[0];
 			case INTERPOLATED_PRESSURE: return item.pressure[1];
+			case CEILING: return item.ceiling;
 			case SAC: return item.sac;
 		}
 	}
@@ -73,6 +74,7 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		case CYLINDERINDEX: return tr("Cylinder Index");
 		case SENSOR_PRESSURE: return tr("Pressure  S");
 		case INTERPOLATED_PRESSURE: return tr("Pressure I");
+		case CEILING: return tr("Ceiling");
 		case SAC: return tr("SAC");
 	}
 	return QVariant();

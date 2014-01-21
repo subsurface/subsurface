@@ -318,3 +318,30 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 		}
 	}
 }
+
+void DiveCalculatedCeiling::modelDataChanged()
+{
+	// We don't have enougth data to calculate things, quit.
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+		return;
+	AbstractProfilePolygonItem::modelDataChanged();
+	// Add 2 points to close the polygon.
+	QPolygonF poly = polygon();
+	QPointF p1 = poly.first();
+	QPointF p2 = poly.last();
+
+	poly.prepend(QPointF(p1.x(), vAxis->posAtValue(0)));
+	poly.append(QPointF(p2.x(), vAxis->posAtValue(0)));
+	setPolygon(poly);
+
+	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
+	pat.setColorAt(0, getColor(CALC_CEILING_SHALLOW));
+	pat.setColorAt(1, getColor(CALC_CEILING_DEEP));
+	setPen(QPen(QBrush(Qt::NoBrush),0));
+	setBrush(pat);
+}
+
+void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	QGraphicsPolygonItem::paint(painter, option, widget);
+}

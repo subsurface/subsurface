@@ -1312,6 +1312,7 @@ void ProfileGraphicsView::plot_depth_profile()
 			scene()->addItem(neatFill);
 		}
 	}
+
 	/* next show where we have been bad and crossed the dc's ceiling */
 	if (prefs.profile_dc_ceiling) {
 		pat.setColorAt(0, getColor(CEILING_SHALLOW));

@@ -38,7 +38,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasPressureItem(NULL),
 	cartesianPlane(new DiveCartesianPlane()),
 	meanDepth(new DiveLineItem()),
-	diveComputerText(new DiveTextItem())
+	diveComputerText(new DiveTextItem()),
+	diveCeiling(NULL)
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -357,6 +358,18 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	gasPressureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
 	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	scene()->addItem(gasPressureItem);
+
+	if(diveCeiling){
+		scene()->removeItem(diveCeiling);
+		delete diveCeiling;
+	}
+	diveCeiling = new DiveCalculatedCeiling();
+	diveCeiling->setHorizontalAxis(timeAxis);
+	diveCeiling->setVerticalAxis(profileYAxis);
+	diveCeiling->setModel(dataModel);
+	diveCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
+	diveCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	scene()->addItem(diveCeiling);
 
 	diveComputerText->setText(currentdc->model);
 	diveComputerText->animateMoveTo(1 , sceneRect().height());

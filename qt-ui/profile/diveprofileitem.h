@@ -65,7 +65,6 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 private:
 	void createTextItem(int seconds, int mkelvin);
-	QList<DiveTextItem*> texts;
 };
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem{
@@ -78,6 +77,14 @@ private:
 	void plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align);
 	void plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, int o2, int he);
 	QVector<QPolygonF> polygons;
+};
+
+class DiveCalculatedCeiling : public AbstractProfilePolygonItem{
+	Q_OBJECT
+
+public:
+	virtual void modelDataChanged();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 };
 
 #endif

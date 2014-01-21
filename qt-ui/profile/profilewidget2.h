@@ -32,6 +32,7 @@ struct DiveCartesianPlane;
 struct DiveTemperatureItem;
 struct plot_info;
 struct DiveGasPressureItem;
+struct DiveCalculatedCeiling;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -83,6 +84,7 @@ private:
 	DiveLineItem *meanDepth;
 	QList<DiveEventItem*> eventItems;
 	DiveTextItem *diveComputerText;
+	DiveCalculatedCeiling *diveCeiling;
 };
 
 #endif
