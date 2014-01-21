@@ -38,6 +38,11 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 			case SAC: return item.sac;
 		}
 	}
+
+	if (role == Qt::DisplayRole && index.column() >= TISSUE_1 && index.column() <= TISSUE_16){
+		return item.ceilings[ index.column() - TISSUE_1];
+	}
+
 	if (role == Qt::BackgroundRole) {
 		switch (index.column()) {
 			case COLOR:	return getColor((color_indice_t)(VELOCITY_COLORS_START_IDX + item.velocity));
@@ -76,6 +81,9 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		case INTERPOLATED_PRESSURE: return tr("Pressure I");
 		case CEILING: return tr("Ceiling");
 		case SAC: return tr("SAC");
+	}
+	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16){
+		return QString("Ceiling: %1").arg(section - TISSUE_1);
 	}
 	return QVariant();
 }

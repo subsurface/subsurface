@@ -85,6 +85,7 @@ private:
 	QList<DiveEventItem*> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveCalculatedCeiling *diveCeiling;
+	QList<DiveCalculatedCeiling*> allTissues;
 };
 
 #endif
