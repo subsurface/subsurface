@@ -95,8 +95,14 @@ void DivePlotDataModel::setDive(dive* d,const plot_info& pInfo)
 
 	if (d)
 		dc = select_dc(&d->dc);
+	diveId = d->id;
 	plotData = pInfo.entry;
 	sampleCount = pInfo.nr;
 	beginInsertRows(QModelIndex(), 0, sampleCount-1);
 	endInsertRows();
+}
+
+int DivePlotDataModel::id() const
+{
+	return diveId;
 }

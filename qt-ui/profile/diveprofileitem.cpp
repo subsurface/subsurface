@@ -32,7 +32,7 @@ void AbstractProfilePolygonItem::setHorizontalDataColumn(int column)
 	modelDataChanged();
 }
 
-void AbstractProfilePolygonItem::setModel(QAbstractTableModel* model)
+void AbstractProfilePolygonItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
 	modelDataChanged();
@@ -69,6 +69,9 @@ void AbstractProfilePolygonItem::modelDataChanged()
 		poly.append(point);
 	}
 	setPolygon(poly);
+
+	qDeleteAll(texts);
+	texts.clear();
 }
 
 void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
@@ -104,13 +107,10 @@ void DiveProfileItem::modelDataChanged(){
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
 
-	qDeleteAll(texts);
-	texts.clear();
-
 	int last = -1;
 	for (int i = 0, count  = dataModel->rowCount(); i < count; i++) {
 
-		struct plot_data *entry = static_cast<DivePlotDataModel*>(dataModel)->data()+i;
+		struct plot_data *entry = dataModel->data()+i;
 		if (entry->depth < 2000)
 			continue;
 
@@ -243,6 +243,54 @@ void DiveGasPressureItem::modelDataChanged()
 		polygons.last().push_back(point); // The polygon thta will be plotted.
 	}
 	setPolygon(boundingPoly);
+
+	int mbar, cyl;
+	int seen_cyl[MAX_CYLINDERS] = { false, };
+	int last_pressure[MAX_CYLINDERS] = { 0, };
+	int last_time[MAX_CYLINDERS] = { 0, };
+	struct plot_data *entry;
+	struct dive *dive = getDiveById(dataModel->id());
+	Q_ASSERT(dive != NULL);
+
+	cyl = -1;
+	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
+		entry = dataModel->data() + i;
+		mbar = GET_PRESSURE(entry);
+
+		if (!mbar)
+			continue;
+		if (cyl != entry->cylinderindex) {
+			cyl = entry->cylinderindex;
+			if (!seen_cyl[cyl]) {
+				plot_pressure_value(mbar, entry->sec, Qt::AlignLeft | Qt::AlignBottom);
+// 				plot_gas_value(mbar, entry->sec, LEFT, TOP,
+// 						get_o2(&dive->cylinder[cyl].gasmix),
+// 						get_he(&dive->cylinder[cyl].gasmix));
+				seen_cyl[cyl] = true;
+			}
+		}
+		last_pressure[cyl] = mbar;
+		last_time[cyl] = entry->sec;
+	}
+
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		if (last_time[cyl]) {
+			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignHCenter | Qt::AlignTop);
+		}
+	}
+}
+
+void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags)
+{
+	const char *unit;
+	int pressure = get_pressure_units(mbar, &unit);
+	//static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
+	DiveTextItem *text = new DiveTextItem(this);
+	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+	text->setText(QString("%1 %2").arg(pressure).arg(unit));
+	text->setAlignment(flags);
+	text->setBrush(getColor(PRESSURE_TEXT));
+	texts.push_back(text);
 }
 
 void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

@@ -18,6 +18,7 @@
  This is a generically item and should be used as a base for others, I think...
 */
 
+class DivePlotDataModel;
 class DiveTextItem;
 class DiveCartesianAxis;
 class QAbstractTableModel;
@@ -32,7 +33,7 @@ public:
 	AbstractProfilePolygonItem();
 	void setVerticalAxis(DiveCartesianAxis *vertical);
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
-	void setModel(QAbstractTableModel *model);
+	void setModel(DivePlotDataModel *model);
 	void setHorizontalDataColumn(int column);
 	void setVerticalDataColumn(int column);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
@@ -41,7 +42,7 @@ public slots:
 protected:
 	DiveCartesianAxis *hAxis;
 	DiveCartesianAxis *vAxis;
-	QAbstractTableModel *dataModel;
+	DivePlotDataModel *dataModel;
 	int hDataColumn;
 	int vDataColumn;
 	QList<DiveTextItem*> texts;
@@ -69,13 +70,13 @@ private:
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem{
 	Q_OBJECT
+
 public:
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 private:
+	void plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align);
 	QVector<QPolygonF> polygons;
 };
-
-QGraphicsItemGroup *plotText(text_render_options_t *tro,const QPointF& pos, const QString& text, QGraphicsItem *parent);
 
 #endif

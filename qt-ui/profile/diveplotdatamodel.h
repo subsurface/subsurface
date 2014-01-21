@@ -19,9 +19,11 @@ public:
 	void clear();
 	void setDive(struct dive *d, const plot_info& pInfo);
 	plot_data* data();
+	int id() const;
 private:
 	int sampleCount;
 	plot_data *plotData;
+	int diveId;
 };
 
 #endif
