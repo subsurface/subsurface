@@ -103,7 +103,7 @@ void DiveProfileItem::modelDataChanged(){
 		return;
 
 	/* Show any ceiling we may have encountered */
-	if (prefs.profile_dc_ceiling) {
+	if (prefs.profile_dc_ceiling && !prefs.profile_red_ceiling) {
 		QPolygonF p = polygon();
 		plot_data *entry = dataModel->data() + dataModel->rowCount()-1;
 		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
