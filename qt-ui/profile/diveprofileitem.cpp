@@ -6,6 +6,7 @@
 #include "profile.h"
 #include "dive.h"
 #include "profilegraphics.h"
+#include "preferences.h"
 
 #include <QPen>
 #include <QPainter>
@@ -17,7 +18,7 @@
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
-
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(modelDataChanged()));
 }
 
 void AbstractProfilePolygonItem::setHorizontalAxis(DiveCartesianAxis* horizontal)
@@ -79,7 +80,7 @@ void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 	// This paints the Polygon + Background. I'm setting the pen to QPen() so we don't get a black line here,
 	// after all we need to plot the correct velocities colors later.
-	setPen(QPen());
+	setPen(Qt::NoPen);
 	QGraphicsPolygonItem::paint(painter, option, widget);
 
 	// Here we actually paint the boundaries of the Polygon using the colors that the model provides.
@@ -100,6 +101,24 @@ void DiveProfileItem::modelDataChanged(){
 	AbstractProfilePolygonItem::modelDataChanged();
 	if(polygon().isEmpty())
 		return;
+
+	/* Show any ceiling we may have encountered */
+	if (prefs.profile_dc_ceiling) {
+		QPolygonF p = polygon();
+		plot_data *entry = dataModel->data() + dataModel->rowCount()-1;
+		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
+			if (!entry->in_deco) {
+				/* not in deco implies this is a safety stop, no ceiling */
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(0)));
+			} else if (entry->stopdepth < entry->depth) {
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->stopdepth)));
+			} else {
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth)));
+			}
+		}
+		setPolygon(p);
+	}
+
 		// This is the blueish gradient that the Depth Profile should have.
 	// It's a simple QLinearGradient with 2 stops, starting from top to bottom.
 	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
