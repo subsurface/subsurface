@@ -102,9 +102,10 @@ void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	}
 }
 
-void DiveProfileItem::modelDataChanged(){
+void DiveProfileItem::modelDataChanged()
+{
 	AbstractProfilePolygonItem::modelDataChanged();
-	if(polygon().isEmpty())
+	if (polygon().isEmpty())
 		return;
 
 	show_reported_ceiling = prefs.profile_dc_ceiling;
@@ -132,7 +133,8 @@ void DiveProfileItem::modelDataChanged(){
 	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
 	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
 	pat.setColorAt(0, getColor(DEPTH_TOP));
-	setBrush(QBrush(pat));AbstractProfilePolygonItem::preferencesChanged();
+	setBrush(QBrush(pat));
+	AbstractProfilePolygonItem::preferencesChanged();
 
 	int last = -1;
 	for (int i = 0, count  = dataModel->rowCount(); i < count; i++) {
@@ -198,7 +200,7 @@ void DiveTemperatureItem::modelDataChanged()
 	int last = -300, last_printed_temp = 0, sec = 0;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int mkelvin = dataModel->index(i, vDataColumn).data().toInt();
-		if(!mkelvin)
+		if (!mkelvin)
 			continue;
 		int sec = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin));
@@ -223,7 +225,8 @@ void DiveTemperatureItem::modelDataChanged()
 	* different or if the last temperature print has been more
 	* than a quarter of the dive back */
 	int last_temperature = dataModel->data(dataModel->index(dataModel->rowCount()-1, DivePlotDataModel::TEMPERATURE)).toInt();
-	if (last_temperature > 200000 && ((abs(last_temperature - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))){
+	if (last_temperature > 200000 &&
+	    ((abs(last_temperature - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
 		createTextItem(sec, last_temperature);
 	}
 }
@@ -345,7 +348,7 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 	QPen pen;
 	pen.setCosmetic(true);
 	pen.setWidth(2);
-	Q_FOREACH(const QPolygonF& poly, polygons){
+	Q_FOREACH(const QPolygonF& poly, polygons) {
 		for (int i = 1, count = poly.count(); i < count; i++) {
 			pen.setBrush(QBrush(Qt::red)); // TODO: Fix the color.
 			painter->setPen(pen);
@@ -411,9 +414,9 @@ void DiveReportedCeiling::modelDataChanged()
 
 void DiveReportedCeiling::preferencesChanged()
 {
-	if (prefs.profile_dc_ceiling){
+	if (prefs.profile_dc_ceiling) {
 		setVisible(prefs.profile_red_ceiling);
-	}else{
+	} else {
 		setVisible(false);
 	}
 }
