@@ -226,22 +226,19 @@ void DiveGasPressureItem::modelDataChanged()
 	QPolygonF boundingPoly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
 	polygons.clear();
 
-	for (int i = 0; i < dataModel->rowCount(); i++) {
-		int sPressure = dataModel->index(i, DivePlotDataModel::SENSOR_PRESSURE).data().toInt();
-		int iPressure = dataModel->index(i, DivePlotDataModel::INTERPOLATED_PRESSURE).data().toInt();
-		int cylIndex = dataModel->index(i, DivePlotDataModel::CYLINDERINDEX).data().toInt();
-		int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
-		int mbar = sPressure ? sPressure : iPressure;
+	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
+		plot_data* entry = dataModel->data() + i;
+		int mbar = GET_PRESSURE(entry);
 
-		if (cylIndex != last_index) {
+		if (entry->cylinderindex != last_index) {
 			polygons.append(QPolygonF()); // this is the polygon that will be actually drawned on screen.
-			last_index = cylIndex;
+			last_index = entry->cylinderindex;
 		}
 		if (!mbar) {
 			continue;
 		}
 
-		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+		QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(mbar));
 		boundingPoly.push_back(point); // The BoundingRect
 		polygons.last().push_back(point); // The polygon thta will be plotted.
 	}
