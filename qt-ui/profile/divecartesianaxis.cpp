@@ -184,7 +184,8 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	double size = max - min;
 	// unused for now:
 	// double distanceFromOrigin = value - min;
-	double percent = (value - min) / size;
+	double percent =  IS_FP_SAME(min,max) ? 0.0 : (value - min) / size;
+
 
 	double realSize = orientation == LeftToRight || orientation == RightToLeft?
 				m.x2() - m.x1() :
