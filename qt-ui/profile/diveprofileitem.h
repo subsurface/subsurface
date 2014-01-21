@@ -87,4 +87,11 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 };
 
+class DiveReportedCeiling : public AbstractProfilePolygonItem{
+	Q_OBJECT
+
+public:
+	virtual void modelDataChanged();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+};
 #endif

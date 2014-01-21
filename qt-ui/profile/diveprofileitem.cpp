@@ -364,3 +364,42 @@ void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsI
 {
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
+
+
+void DiveReportedCeiling::modelDataChanged()
+{
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+		return;
+
+	if (prefs.profile_dc_ceiling){
+		setVisible(prefs.profile_red_ceiling);
+	}else{
+		setVisible(false);
+	}
+
+	QPolygonF p;
+	p.append(QPointF(hAxis->posAtValue(0), vAxis->posAtValue(0)));
+	plot_data *entry = dataModel->data();
+	for (int i = 0, count = dataModel->rowCount(); i < count; i++, entry++) {
+		if (entry->in_deco && entry->stopdepth) {
+			if (entry->stopdepth < entry->depth) {
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->stopdepth)));
+			} else {
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth)));
+			}
+		} else {
+			p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(0)));
+		}
+	}
+	setPolygon(p);
+	QLinearGradient pat(0, p.boundingRect().top(), 0, p.boundingRect().bottom());
+	pat.setColorAt(0, getColor(CEILING_SHALLOW));
+	pat.setColorAt(1, getColor(CEILING_DEEP));
+	setPen(QPen(QBrush(Qt::NoBrush),0));
+	setBrush(pat);
+}
+
+void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	QGraphicsPolygonItem::paint(painter, option, widget);
+}

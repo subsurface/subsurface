@@ -39,7 +39,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	cartesianPlane(new DiveCartesianPlane()),
 	meanDepth(new DiveLineItem()),
 	diveComputerText(new DiveTextItem()),
-	diveCeiling(NULL)
+	diveCeiling(NULL),
+	reportedCeiling(NULL)
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -386,6 +387,18 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		allTissues.append(tissueItem);
 		scene()->addItem(tissueItem);
 	}
+
+	if(reportedCeiling){
+		scene()->removeItem(reportedCeiling);
+		delete reportedCeiling;
+	}
+	reportedCeiling = new DiveReportedCeiling();
+	reportedCeiling->setHorizontalAxis(timeAxis);
+	reportedCeiling->setVerticalAxis(profileYAxis);
+	reportedCeiling->setModel(dataModel);
+	reportedCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
+	reportedCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	scene()->addItem(reportedCeiling);
 	emit startProfileState();
 }
 
