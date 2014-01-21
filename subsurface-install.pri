@@ -2,13 +2,17 @@ marbledir.files = $$MARBLEDIR
 doc.files = $$DOC_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 exists($$[QT_INSTALL_TRANSLATIONS]) {
-	qt_translation_dir = $$[QT_INSTALL_TRANSLATIONS]/
+        qt_translation_dir = $$[QT_INSTALL_TRANSLATIONS]
 } else: exists(/usr/share/qt4/translations) {
 	# On some cross-compilation environments, the translations are either missing or not
 	# where they're expected to be. In such cases, try copying from the system.
 	qt_translation_dir = /usr/share/qt4/translations
 }
-qttranslation.files = $$join(QTTRANSLATIONS," "$$qt_translation_dir/,$$qt_translation_dir/)
+
+# Prepend the Qt translation dir so we can actually find the files
+qttranslation.files =
+for(translation, QTTRANSLATIONS): \
+    qttranslation.files += $${qt_translation_dir}/$$translation
 
 nltab = $$escape_expand(\\n\\t)
 
