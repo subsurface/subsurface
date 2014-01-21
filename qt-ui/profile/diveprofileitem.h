@@ -76,6 +76,7 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 private:
 	void plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align);
+	void plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, int o2, int he);
 	QVector<QPolygonF> polygons;
 };
 

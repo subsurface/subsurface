@@ -263,9 +263,9 @@ void DiveGasPressureItem::modelDataChanged()
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
 				plot_pressure_value(mbar, entry->sec, Qt::AlignLeft | Qt::AlignBottom);
-// 				plot_gas_value(mbar, entry->sec, LEFT, TOP,
-// 						get_o2(&dive->cylinder[cyl].gasmix),
-// 						get_he(&dive->cylinder[cyl].gasmix));
+				plot_gas_value(mbar, entry->sec, Qt::AlignLeft | Qt::AlignTop,
+						get_o2(&dive->cylinder[cyl].gasmix),
+						get_he(&dive->cylinder[cyl].gasmix));
 				seen_cyl[cyl] = true;
 			}
 		}
@@ -284,10 +284,22 @@ void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::Alig
 {
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
-	//static text_render_options_t tro = {PRESSURE_TEXT_SIZE, PRESSURE_TEXT, xalign, yalign};
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
 	text->setText(QString("%1 %2").arg(pressure).arg(unit));
+	text->setAlignment(flags);
+	text->setBrush(getColor(PRESSURE_TEXT));
+	texts.push_back(text);
+}
+
+void DiveGasPressureItem::plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, int o2, int he)
+{
+	QString gas  = (is_air(o2, he)) ? tr("air") :
+					  (he == 0) ? QString(tr("EAN%1")).arg((o2 + 5) / 10) :
+						      QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10);
+	DiveTextItem *text = new DiveTextItem(this);
+	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+	text->setText(gas);
 	text->setAlignment(flags);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
