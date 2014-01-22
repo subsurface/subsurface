@@ -2,13 +2,13 @@
 #include "divelineitem.h"
 #include "divetextitem.h"
 #include "helpers.h"
-
+#include "preferences.h"
 #include <QPen>
 #include <QGraphicsScene>
 #include <QDebug>
-#include <QPropertyAnimation>
 #include <QGraphicsView>
 #include <QStyleOption>
+#include <QSettings>
 
 static QPen gridPen(){
 	QPen pen;
@@ -140,6 +140,13 @@ void DiveCartesianAxis::updateTicks()
 	}
 }
 
+void DiveCartesianAxis::animateChangeLine(const QLineF& newLine)
+{
+	setLine(newLine);
+	updateTicks();
+	sizeChanged();
+}
+
 void DiveCartesianAxis::setShowText(bool show)
 {
 	showText = show;
@@ -243,6 +250,25 @@ QColor DepthAxis::colorForValue(double value)
 	return QColor(Qt::red);
 }
 
+DepthAxis::DepthAxis()
+{
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+	settingsChanged(); // force the correct size of the line.
+}
+
+void DepthAxis::settingsChanged()
+{
+	QSettings s;
+
+	s.beginGroup("TecDetails");
+	bool ppGraph = s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool();
+	if (ppGraph) {
+		animateChangeLine(QLineF(0,2,0,60));
+	} else {
+		animateChangeLine(QLineF(0,2,0,98));
+	}
+}
+
 QColor TimeAxis::colorForValue(double value)
 {
 	Q_UNUSED(value);
@@ -278,7 +304,7 @@ void DiveCartesianPlane::setBottomAxis(DiveCartesianAxis* axis)
 
 QLineF DiveCartesianPlane::horizontalLine() const
 {
-	return (bottomAxis) ? bottomAxis->line() : QLineF() ;
+	return (bottomAxis) ? bottomAxis->line() : QLineF();
 }
 
 void DiveCartesianPlane::setHorizontalLine(QLineF line)
@@ -299,7 +325,7 @@ void DiveCartesianPlane::setVerticalLine(QLineF line)
 
 QLineF DiveCartesianPlane::verticalLine() const
 {
-	return (leftAxis) ? leftAxis->line() : QLineF() ;
+	return (leftAxis) ? leftAxis->line() : QLineF();
 }
 
 void DiveCartesianPlane::setup()

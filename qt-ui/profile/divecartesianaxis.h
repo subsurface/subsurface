@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QGraphicsLineItem>
+
+class QPropertyAnimation;
 class DiveTextItem;
 class DiveLineItem;
 
@@ -21,7 +23,6 @@ public:
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
 	void setTickSize(qreal size);
-	void updateTicks();
 	double minimum() const;
 	double maximum() const;
 	qreal valueAt(const QPointF& p);
@@ -31,7 +32,10 @@ public:
 	void setTextColor(const QColor& color);
 	void setShowTicks(bool show);
 	void setShowText(bool show);
+	void animateChangeLine(const QLineF& newLine);
 	int unitSystem;
+public slots:
+	void updateTicks();
 signals:
 	void sizeChanged();
 protected:
@@ -49,9 +53,14 @@ protected:
 };
 
 class DepthAxis : public DiveCartesianAxis {
+	Q_OBJECT
+public:
+	DepthAxis();
 protected:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
+private slots:
+	void settingsChanged();
 };
 
 class TimeAxis : public DiveCartesianAxis {

@@ -64,7 +64,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeAxis->setTickInterval(600); // 10 to 10 minutes?
 
 	// Default Sizes of the Items.
-	profileYAxis->setLine(0, 0, 0, 90);
 	profileYAxis->setX(2);
 	profileYAxis->setTickSize(1);
 	gasYAxis->setLine(0, 0, 0, 20);
@@ -188,7 +187,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileState->assignProperty(this, "backgroundBrush", getColor(::BACKGROUND));
 	profileState->assignProperty(background, "y",  backgroundOffCanvas);
 	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
+	//profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
 	profileState->assignProperty(gasYAxis, "x", 0);
 	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
 	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);

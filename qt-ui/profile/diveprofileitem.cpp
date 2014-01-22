@@ -135,7 +135,6 @@ void DiveProfileItem::modelDataChanged()
 	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
-	AbstractProfilePolygonItem::preferencesChanged();
 
 	int last = -1;
 	for (int i = 0, count  = dataModel->rowCount(); i < count; i++) {
