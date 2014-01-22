@@ -116,6 +116,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	reportedCeiling->setZValue(1);
 	scene()->addItem(reportedCeiling);
 
+	diveCeiling = new DiveCalculatedCeiling();
+	diveCeiling->setHorizontalAxis(timeAxis);
+	diveCeiling->setVerticalAxis(profileYAxis);
+	diveCeiling->setModel(dataModel);
+	diveCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
+	diveCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	diveCeiling->setZValue(1);
+	scene()->addItem(diveCeiling);
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
@@ -372,19 +381,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	gasPressureItem->setZValue(1);
 	scene()->addItem(gasPressureItem);
-
-	if(diveCeiling){
-		scene()->removeItem(diveCeiling);
-		delete diveCeiling;
-	}
-	diveCeiling = new DiveCalculatedCeiling();
-	diveCeiling->setHorizontalAxis(timeAxis);
-	diveCeiling->setVerticalAxis(profileYAxis);
-	diveCeiling->setModel(dataModel);
-	diveCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
-	diveCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	diveCeiling->setZValue(1);
-	scene()->addItem(diveCeiling);
 
 	diveComputerText->setText(currentdc->model);
 	diveComputerText->animateMoveTo(1 , sceneRect().height());

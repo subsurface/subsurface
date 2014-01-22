@@ -367,6 +367,8 @@ void DiveCalculatedCeiling::modelDataChanged()
 	AbstractProfilePolygonItem::modelDataChanged();
 	// Add 2 points to close the polygon.
 	QPolygonF poly = polygon();
+	if (poly.isEmpty())
+		return;
 	QPointF p1 = poly.first();
 	QPointF p2 = poly.last();
 
