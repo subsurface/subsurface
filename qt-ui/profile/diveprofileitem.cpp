@@ -7,6 +7,7 @@
 #include "dive.h"
 #include "profilegraphics.h"
 #include "preferences.h"
+#include "helpers.h"
 
 #include <QPen>
 #include <QPainter>
@@ -384,7 +385,6 @@ void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsI
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-
 void DiveReportedCeiling::modelDataChanged()
 {
 	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
@@ -424,4 +424,29 @@ void DiveReportedCeiling::preferencesChanged()
 void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	QGraphicsPolygonItem::paint(painter, option, widget);
+}
+
+MeanDepthLine::MeanDepthLine()
+{
+	leftText = new DiveTextItem(this);
+	leftText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	leftText->setBrush(getColor(MEAN_DEPTH));
+	rightText = new DiveTextItem(this);
+	rightText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	rightText->setBrush(getColor(MEAN_DEPTH));
+	leftText->setPos(0, 0);
+	rightText->setPos(line().length(), 0);
+}
+
+void MeanDepthLine::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
+{
+	QGraphicsLineItem::setLine(x1, y1, x2, y2);
+	leftText->setPos(x1, 0);
+	rightText->setPos(x2, 0);
+}
+
+void MeanDepthLine::setMeanDepth(int value)
+{
+	leftText->setText(get_depth_string(value, false, false));
+	rightText->setText(get_depth_string(value, false, false));
 }

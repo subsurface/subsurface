@@ -37,7 +37,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureItem(NULL),
 	gasPressureItem(NULL),
 	cartesianPlane(new DiveCartesianPlane()),
-	meanDepth(new DiveLineItem()),
+	meanDepth(new MeanDepthLine()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(NULL),
 	reportedCeiling(NULL)
@@ -304,6 +304,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	timeAxis->updateTicks();
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
+	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 	dataModel->setDive(current_dive, pInfo);
 

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QGraphicsPolygonItem>
 #include "graphicsview-common.h"
+#include "divelineitem.h"
+
 /* This is the Profile Item, it should be used for quite a lot of things
  on the profile view. The usage should be pretty simple:
 
@@ -99,5 +101,17 @@ public:
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void preferencesChanged();
+};
+
+class MeanDepthLine : public DiveLineItem {
+	Q_OBJECT
+public:
+	MeanDepthLine();
+	void setMeanDepth(int value);
+	void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
+private:
+	int meanDepth;
+	DiveTextItem *leftText;
+	DiveTextItem *rightText;
 };
 #endif

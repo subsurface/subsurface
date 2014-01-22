@@ -59,9 +59,9 @@ void DiveTextItem::updateText()
 			(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
 	/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
 
-	xPos = (internalAlignFlags & Qt::AlignLeft ) ? +rect.width() :
+	xPos = (internalAlignFlags & Qt::AlignLeft ) ? -rect.width() :
 		(internalAlignFlags & Qt::AlignHCenter) ?  -rect.width()/2 :
-	 /* (internalAlignFlags & Qt::AlignRight) */ -rect.width();
+	 /* (internalAlignFlags & Qt::AlignRight) */ 0;
 
 	textPath.addText( xPos, yPos, fnt, internalText);
 	QPainterPathStroker stroker;

@@ -16,6 +16,7 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 
+class MeanDepthLine;
 class DiveReportedCeiling;
 class DiveTextItem;
 class TemperatureAxis;
@@ -83,7 +84,7 @@ private:
 	DiveTemperatureItem *temperatureItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
-	DiveLineItem *meanDepth;
+	MeanDepthLine *meanDepth;
 	QList<DiveEventItem*> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveCalculatedCeiling *diveCeiling;
