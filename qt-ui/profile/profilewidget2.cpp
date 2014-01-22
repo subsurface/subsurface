@@ -388,7 +388,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	qDeleteAll(allTissues);
 	allTissues.clear();
 	for(int i = 0; i < 16; i++){
-		DiveCalculatedCeiling *tissueItem = new DiveCalculatedCeiling();
+		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
 		tissueItem->setHorizontalAxis(timeAxis);
 		tissueItem->setVerticalAxis(profileYAxis);
 		tissueItem->setModel(dataModel);

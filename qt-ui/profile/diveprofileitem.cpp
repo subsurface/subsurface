@@ -388,6 +388,18 @@ void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsI
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
+DiveCalculatedTissue::DiveCalculatedTissue()
+{
+	preferencesChanged();
+}
+
+void DiveCalculatedTissue::preferencesChanged()
+{
+	QSettings s;
+	s.beginGroup("TecDetails");
+	setVisible(s.value("calcalltissues").toBool());
+}
+
 void DiveReportedCeiling::modelDataChanged()
 {
 	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)

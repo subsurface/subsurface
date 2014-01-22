@@ -103,6 +103,13 @@ public:
 	virtual void preferencesChanged();
 };
 
+class DiveCalculatedTissue : public DiveCalculatedCeiling {
+	Q_OBJECT
+public:
+	DiveCalculatedTissue();
+	void preferencesChanged();
+};
+
 class MeanDepthLine : public DiveLineItem {
 	Q_OBJECT
 public:
