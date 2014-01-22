@@ -107,6 +107,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 		scene()->addItem(item);
 	}
 
+	reportedCeiling = new DiveReportedCeiling();
+	reportedCeiling->setHorizontalAxis(timeAxis);
+	reportedCeiling->setVerticalAxis(profileYAxis);
+	reportedCeiling->setModel(dataModel);
+	reportedCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
+	reportedCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	reportedCeiling->setZValue(1);
+	scene()->addItem(reportedCeiling);
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
@@ -394,18 +403,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		scene()->addItem(tissueItem);
 	}
 
-	if(reportedCeiling){
-		scene()->removeItem(reportedCeiling);
-		delete reportedCeiling;
-	}
-	reportedCeiling = new DiveReportedCeiling();
-	reportedCeiling->setHorizontalAxis(timeAxis);
-	reportedCeiling->setVerticalAxis(profileYAxis);
-	reportedCeiling->setModel(dataModel);
-	reportedCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
-	reportedCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	reportedCeiling->setZValue(1);
-	scene()->addItem(reportedCeiling);
 	emit startProfileState();
 }
 

@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QGraphicsItem>
+#include <QSettings>
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(): QObject(), QGraphicsPolygonItem(),
 	hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
@@ -42,6 +43,7 @@ void AbstractProfilePolygonItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
 	connect(dataModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged()));
+	connect(dataModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(modelDataChanged()));
 	modelDataChanged();
 }
 
@@ -413,11 +415,9 @@ void DiveReportedCeiling::modelDataChanged()
 
 void DiveReportedCeiling::preferencesChanged()
 {
-	if (prefs.profile_dc_ceiling) {
-		setVisible(prefs.profile_red_ceiling);
-	} else {
-		setVisible(false);
-	}
+	QSettings s;
+	s.beginGroup("TecDetails");
+	setVisible(s.value("redceiling").toBool());
 }
 
 void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
