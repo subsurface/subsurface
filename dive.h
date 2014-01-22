@@ -20,7 +20,7 @@
     (void) (&_max1 == &_max2);      \
     _max1 > _max2 ? _max1 : _max2; })
 
-#define IS_FP_SAME(_a,_b) (abs((_a) - (_b)) < 0.000001)
+#define IS_FP_SAME(_a,_b) (abs((_a) - (_b)) < 0.000001 * MAX(abs(_a), abs(_b)))
 
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
