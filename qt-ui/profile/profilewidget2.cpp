@@ -90,6 +90,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	meanDepth->setLine(0,0,96,0);
 	meanDepth->setX(3);
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+	meanDepth->setZValue(1);
 
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
@@ -319,6 +320,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	diveProfileItem->setModel(dataModel);
 	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
 	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	diveProfileItem->setZValue(0);
 	scene()->addItem(diveProfileItem);
 
 	qDeleteAll(eventItems);
@@ -347,6 +349,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	temperatureItem->setModel(dataModel);
 	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
 	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	temperatureItem->setZValue(1);
 	scene()->addItem(temperatureItem);
 
 	if(gasPressureItem){
@@ -359,6 +362,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	gasPressureItem->setModel(dataModel);
 	gasPressureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
 	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	gasPressureItem->setZValue(1);
 	scene()->addItem(gasPressureItem);
 
 	if(diveCeiling){
@@ -371,6 +375,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	diveCeiling->setModel(dataModel);
 	diveCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
 	diveCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	diveCeiling->setZValue(1);
 	scene()->addItem(diveCeiling);
 
 	diveComputerText->setText(currentdc->model);
@@ -385,6 +390,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		tissueItem->setModel(dataModel);
 		tissueItem->setVerticalDataColumn(DivePlotDataModel::TISSUE_1 + i);
 		tissueItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+		tissueItem->setZValue(1);
 		allTissues.append(tissueItem);
 		scene()->addItem(tissueItem);
 	}
@@ -399,6 +405,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	reportedCeiling->setModel(dataModel);
 	reportedCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
 	reportedCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	reportedCeiling->setZValue(1);
 	scene()->addItem(reportedCeiling);
 	emit startProfileState();
 }
