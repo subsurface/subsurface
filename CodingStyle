@@ -50,6 +50,14 @@
 	b = a + (c + d +
 		 f + z);
 
+- in a C++ constructor initialization list, the colon is on the same line and
+  continuation lines are aligned as the rule above:
+
+	ClassName::ClassName() : x(1), y(2),
+				 z(3)
+	{
+	}
+
 - unfortunate inconsistency:
   -- C code usually uses underscores to structure names
 
