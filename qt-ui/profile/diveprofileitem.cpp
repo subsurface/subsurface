@@ -284,6 +284,10 @@ void DiveGasPressureItem::modelDataChanged()
 	}
 	setPolygon(boundingPoly);
 
+	//TODO: Instead of deleting all texts, move the existing ones to it's new location.
+	qDeleteAll(texts);
+	texts.clear();
+
 	int mbar, cyl;
 	int seen_cyl[MAX_CYLINDERS] = { false, };
 	int last_pressure[MAX_CYLINDERS] = { 0, };
