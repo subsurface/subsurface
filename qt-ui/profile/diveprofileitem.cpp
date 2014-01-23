@@ -249,6 +249,7 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)));
 	text->setText(QString("%1%2").arg(deg, 0, 'f', 1).arg(unit));
 	// text->setSize(TEMP_TEXT_SIZE); //TODO: TEXT SIZE!
+	texts.append(text);
 }
 
 void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
