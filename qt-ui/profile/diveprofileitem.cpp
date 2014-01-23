@@ -107,6 +107,9 @@ void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 void DiveProfileItem::modelDataChanged()
 {
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1 || dataModel->rowCount() == 0)
+		return;
+
 	AbstractProfilePolygonItem::modelDataChanged();
 	if (polygon().isEmpty())
 		return;

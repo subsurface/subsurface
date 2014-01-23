@@ -155,6 +155,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureItem->setZValue(1);
 	scene()->addItem(temperatureItem);
 
+	diveProfileItem = new DiveProfileItem();
+	diveProfileItem->setHorizontalAxis(timeAxis);
+	diveProfileItem->setVerticalAxis(profileYAxis);
+	diveProfileItem->setModel(dataModel);
+	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
+	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	diveProfileItem->setZValue(0);
+	scene()->addItem(diveProfileItem);
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
@@ -355,20 +364,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 	dataModel->setDive(current_dive, pInfo);
-
-	if (diveProfileItem) {
-		//diveProfileItem->animateDelete();
-		scene()->removeItem(diveProfileItem);
-		delete diveProfileItem;
-	}
-	diveProfileItem = new DiveProfileItem();
-	diveProfileItem->setHorizontalAxis(timeAxis);
-	diveProfileItem->setVerticalAxis(profileYAxis);
-	diveProfileItem->setModel(dataModel);
-	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
-	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	diveProfileItem->setZValue(0);
-	scene()->addItem(diveProfileItem);
 
 	qDeleteAll(eventItems);
 	eventItems.clear();
