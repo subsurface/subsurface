@@ -37,6 +37,7 @@ struct DiveGasPressureItem;
 struct DiveCalculatedCeiling;
 struct DiveReportedCeiling;
 struct DiveCalculatedTissue;
+struct PartialPressureGasItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -91,6 +92,7 @@ private:
 	DiveCalculatedCeiling *diveCeiling;
 	QList<DiveCalculatedTissue*> allTissues;
 	DiveReportedCeiling *reportedCeiling;
+	PartialPressureGasItem *pn2GasItem;
 };
 
 #endif

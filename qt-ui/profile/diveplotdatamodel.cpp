@@ -36,6 +36,7 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 			case INTERPOLATED_PRESSURE: return item.pressure[1];
 			case CEILING: return item.ceiling;
 			case SAC: return item.sac;
+			case PN2: return item.pn2;
 		}
 	}
 
@@ -81,6 +82,7 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		case INTERPOLATED_PRESSURE: return tr("Pressure I");
 		case CEILING: return tr("Ceiling");
 		case SAC: return tr("SAC");
+		case PN2: return tr("PN2");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16){
 		return QString("Ceiling: %1").arg(section - TISSUE_1);

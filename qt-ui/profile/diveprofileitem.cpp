@@ -471,3 +471,53 @@ void MeanDepthLine::setMeanDepth(int value)
 	leftText->setText(get_depth_string(value, false, false));
 	rightText->setText(get_depth_string(value, false, false));
 }
+
+void PartialPressureGasItem::modelDataChanged()
+{
+	//AbstractProfilePolygonItem::modelDataChanged();
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1 || dataModel->rowCount() == 0)
+		return;
+
+	plot_data *entry = dataModel->data();
+	QPolygonF poly;
+	alertPoly.clear();
+	QSettings s;
+	s.beginGroup("TecDetails");
+	double threshould = s.value(threshouldKey).toDouble();
+
+	for(int i = 0;  i < dataModel->rowCount(); i++, entry++){
+		double value = dataModel->index(i, vDataColumn).data().toDouble();
+		int time = dataModel->index(i, hDataColumn).data().toInt();
+		QPointF point(hAxis->posAtValue(time), vAxis->posAtValue(value));
+		poly.push_back( point );
+		if (value >= threshould)
+			alertPoly.push_back(point);
+	}
+
+	setPolygon(poly);
+	/*
+	createPPLegend(trUtf8("pN" UTF8_SUBSCRIPT_2),getColor(PN2), legendPos);
+	*/
+}
+void PartialPressureGasItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{//TODO: fix the colors.
+	painter->setPen(getColor(PN2));
+	painter->drawPolyline(polygon());
+	painter->setPen(getColor(PN2_ALERT));
+	painter->drawPolyline(alertPoly);
+}
+
+void PartialPressureGasItem::setThreshouldSettingsKey(const QString& threshouldSettingsKey)
+{
+	threshouldKey = threshouldSettingsKey;
+}
+
+PartialPressureGasItem::PartialPressureGasItem()
+{
+
+}
+
+void PartialPressureGasItem::preferencesChanged()
+{
+    AbstractProfilePolygonItem::preferencesChanged();
+}

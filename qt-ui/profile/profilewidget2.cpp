@@ -54,7 +54,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	// Creating the needed items.
 	// ORDER: {BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-	gasYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	timeAxis->setOrientation(DiveCartesianAxis::LeftToRight);
 
 	// Defaults of the Axis Coordinates:
@@ -66,7 +65,14 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	// Default Sizes of the Items.
 	profileYAxis->setX(2);
 	profileYAxis->setTickSize(1);
+
+	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
+	gasYAxis->setX(3);
 	gasYAxis->setLine(0, 0, 0, 20);
+	gasYAxis->setTickInterval(1);
+	gasYAxis->setTickSize(2);
+	gasYAxis->setY(70);
+	scene()->addItem(gasYAxis);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setLine(0, 60, 0, 90);
@@ -99,7 +105,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
 	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
-	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis << gasYAxis <<
+	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis <<
 							timeAxis << depthController << timeController <<
 							temperatureAxis << cylinderPressureAxis << diveComputerText <<
 							meanDepth;
@@ -163,6 +169,16 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
 	diveProfileItem->setZValue(0);
 	scene()->addItem(diveProfileItem);
+
+	pn2GasItem = new PartialPressureGasItem();
+	pn2GasItem->setHorizontalAxis(timeAxis);
+	pn2GasItem->setVerticalAxis(gasYAxis);
+	pn2GasItem->setModel(dataModel);
+	pn2GasItem->setVerticalDataColumn(DivePlotDataModel::PN2);
+	pn2GasItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	pn2GasItem->setZValue(0);
+	pn2GasItem->setThreshouldSettingsKey("pn2threshold");
+	scene()->addItem(pn2GasItem);
 
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
@@ -245,7 +261,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileState->assignProperty(background, "y",  backgroundOffCanvas);
 	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
 	//profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
-	profileState->assignProperty(gasYAxis, "x", 0);
+	profileState->assignProperty(gasYAxis, "x", profileYAxisOnCanvas);
 	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
 	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);
 	profileState->assignProperty(timeController, "y", timeControllerOffCanvas);
@@ -363,6 +379,13 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
+
+	qreal pp = floor(pInfo.maxpp * 10.0) / 10.0 + 0.2;
+	gasYAxis->setMaximum(pp);
+	gasYAxis->setMinimum(0);
+	gasYAxis->setTickInterval(pp > 4 ? 0.5 : 0.25);
+	gasYAxis->updateTicks();
+
 	dataModel->setDive(current_dive, pInfo);
 
 	// The event items are a bit special since we don't know how many events are going to

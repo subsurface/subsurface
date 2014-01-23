@@ -121,4 +121,17 @@ private:
 	DiveTextItem *leftText;
 	DiveTextItem *rightText;
 };
+
+class PartialPressureGasItem : public AbstractProfilePolygonItem{
+	Q_OBJECT
+public:
+	PartialPressureGasItem();
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void modelDataChanged();
+	virtual void preferencesChanged();
+	void setThreshouldSettingsKey(const QString& threshouldSettingsKey);
+private:
+	QPolygonF alertPoly;
+	QString threshouldKey;
+};
 #endif
