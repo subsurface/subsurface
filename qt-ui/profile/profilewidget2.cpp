@@ -125,6 +125,18 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveCeiling->setZValue(1);
 	scene()->addItem(diveCeiling);
 
+	for(int i = 0; i < 16; i++){
+		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
+		tissueItem->setHorizontalAxis(timeAxis);
+		tissueItem->setVerticalAxis(profileYAxis);
+		tissueItem->setModel(dataModel);
+		tissueItem->setVerticalDataColumn(DivePlotDataModel::TISSUE_1 + i);
+		tissueItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+		tissueItem->setZValue(1);
+		allTissues.append(tissueItem);
+		scene()->addItem(tissueItem);
+	}
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
@@ -384,21 +396,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 	diveComputerText->setText(currentdc->model);
 	diveComputerText->animateMoveTo(1 , sceneRect().height());
-
-	qDeleteAll(allTissues);
-	allTissues.clear();
-	for(int i = 0; i < 16; i++){
-		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
-		tissueItem->setHorizontalAxis(timeAxis);
-		tissueItem->setVerticalAxis(profileYAxis);
-		tissueItem->setModel(dataModel);
-		tissueItem->setVerticalDataColumn(DivePlotDataModel::TISSUE_1 + i);
-		tissueItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-		tissueItem->setZValue(1);
-		allTissues.append(tissueItem);
-		scene()->addItem(tissueItem);
-	}
-
 	emit startProfileState();
 }
 
