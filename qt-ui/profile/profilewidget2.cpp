@@ -146,6 +146,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasPressureItem->setZValue(1);
 	scene()->addItem(gasPressureItem);
 
+	temperatureItem = new DiveTemperatureItem();
+	temperatureItem->setHorizontalAxis(timeAxis);
+	temperatureItem->setVerticalAxis(temperatureAxis);
+	temperatureItem->setModel(dataModel);
+	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
+	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	temperatureItem->setZValue(1);
+	scene()->addItem(temperatureItem);
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
@@ -376,19 +385,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		eventItems.push_back(item);
 		event = event->next;
 	}
-
-	if(temperatureItem){
-		scene()->removeItem(temperatureItem);
-		delete temperatureItem;
-	}
-	temperatureItem = new DiveTemperatureItem();
-	temperatureItem->setHorizontalAxis(timeAxis);
-	temperatureItem->setVerticalAxis(temperatureAxis);
-	temperatureItem->setModel(dataModel);
-	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
-	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	temperatureItem->setZValue(1);
-	scene()->addItem(temperatureItem);
 
 	diveComputerText->setText(currentdc->model);
 	diveComputerText->animateMoveTo(1 , sceneRect().height());

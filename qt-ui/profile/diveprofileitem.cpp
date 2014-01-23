@@ -192,7 +192,7 @@ DiveTemperatureItem::DiveTemperatureItem()
 void DiveTemperatureItem::modelDataChanged()
 {
 	// We don't have enougth data to calculate things, quit.
-	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1 || dataModel->rowCount() == 0)
 		return;
 
 	qDeleteAll(texts);
