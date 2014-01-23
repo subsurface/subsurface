@@ -258,7 +258,7 @@ void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 void DiveGasPressureItem::modelDataChanged()
 {
 	// We don't have enougth data to calculate things, quit.
-	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1)
+	if (!hAxis || !vAxis || !dataModel || hDataColumn == -1 || vDataColumn == -1 || dataModel->rowCount() == 0)
 		return;
 	int last_index = -1;
 	int lift_pen = false;
