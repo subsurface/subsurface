@@ -365,9 +365,11 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 	dataModel->setDive(current_dive, pInfo);
 
+	// The event items are a bit special since we don't know how many events are going to
+	// exist on a dive, so I cant create cache items for that. that's why they are here
+	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-
 	struct event *event = currentdc->events;
 	while (event) {
 		DiveEventItem *item = new DiveEventItem();
