@@ -190,6 +190,16 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	pheGasItem->setThreshouldSettingsKey("phethreshold");
 	scene()->addItem(pheGasItem);
 
+	pheGasItem = new PartialPressureGasItem();
+	pheGasItem->setHorizontalAxis(timeAxis);
+	pheGasItem->setVerticalAxis(gasYAxis);
+	pheGasItem->setModel(dataModel);
+	pheGasItem->setVerticalDataColumn(DivePlotDataModel::PO2);
+	pheGasItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
+	pheGasItem->setZValue(0);
+	pheGasItem->setThreshouldSettingsKey("po2threshold");
+	scene()->addItem(pheGasItem);
+
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
 	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };

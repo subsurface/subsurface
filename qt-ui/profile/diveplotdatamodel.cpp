@@ -38,6 +38,7 @@ QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 			case SAC: return item.sac;
 			case PN2: return item.pn2;
 			case PHE: return item.phe;
+			case PO2: return item.po2;
 		}
 	}
 
@@ -85,6 +86,7 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		case SAC: return tr("SAC");
 		case PN2: return tr("PN2");
 		case PHE: return tr("PHE");
+		case PO2: return tr("PO2");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16){
 		return QString("Ceiling: %1").arg(section - TISSUE_1);

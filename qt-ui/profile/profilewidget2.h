@@ -94,6 +94,7 @@ private:
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
+	PartialPressureGasItem *po2GasItem;
 };
 
 #endif
