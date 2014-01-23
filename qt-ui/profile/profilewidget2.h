@@ -93,6 +93,7 @@ private:
 	QList<DiveCalculatedTissue*> allTissues;
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
+	PartialPressureGasItem *pheGasItem;
 };
 
 #endif
