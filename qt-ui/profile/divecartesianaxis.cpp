@@ -56,6 +56,8 @@ QColor DiveCartesianAxis::colorForValue(double value)
 
 void DiveCartesianAxis::updateTicks()
 {
+	if (!scene())
+		return;
 	QLineF m = line();
 	// unused so far:
 	// QGraphicsView *view = scene()->views().first();
@@ -124,7 +126,6 @@ void DiveCartesianAxis::updateTicks()
 		}
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
-
 			if(showText){
 				label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 				label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
