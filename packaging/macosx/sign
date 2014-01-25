@@ -23,23 +23,30 @@ cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtWidgets.framework/Contents/Info.plist staging/
 cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtXml.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtXml.framework/Resources/
 
 echo -- signing staging/Subsurface.app
-cd staging
 
 echo -- signing Qt frameworks
-
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/?/QtCore
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtDeclarative.framework/Versions/?/QtDeclarative
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/?/QtGui
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/?/QtNetwork
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/?/QtScript
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/?/QtSql
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/?/QtSvg
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/?/QtWebkit
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/?/QtXml
-#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/?/QtXmlPatterns
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtCore.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtGui.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtNetwork.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtScript.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtSql.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtSvg.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtWebKit.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtMultimedia.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtMultimediaWidgets.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtOpenGL.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtPositioning.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtPrintSupport.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtQml.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtQuick.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtSensors.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtWebKitWidgets.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtWidgets.framework/
+codesign --verbose --force -s G2PU7Q4ELP staging/Subsurface.app/Contents/Frameworks/QtXml.framework/
 
 echo -- signing plugins
-find ./Subsurface.app/Contents -name \*.dylib | xargs codesign -s G2PU7Q4ELP
+find staging/Subsurface.app/Contents -name \*.dylib | xargs codesign --verbose --force -s G2PU7Q4ELP
 
 echo -- finally sign .app
-codesign -s G2PU7Q4ELP -v --deep ./Subsurface.app
+codesign --verbose --force -s G2PU7Q4ELP -v staging/Subsurface.app/Contents/MacOS/Subsurface
+codesign --verbose --force -s G2PU7Q4ELP -v staging/Subsurface.app

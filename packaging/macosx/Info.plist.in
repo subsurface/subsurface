@@ -11,7 +11,7 @@
 	<key>CFBundleSignature</key>
 	<string>SBSF</string>
 	<key>CFBundleExecutable</key>
-	<string>subsurface</string>
+	<string>Subsurface</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.hohndel.subsurface</string>
 	<key>CFBundleInfoDictionaryVersion</key>
