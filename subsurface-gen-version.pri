@@ -13,7 +13,7 @@ exists(.git/HEAD): {
 	PRODVERSION_STRING = $$system("sh scripts/get-version win $$FULL_VERSION || $${VERSION}.0.0")
 	VERSION_STRING = $$system("sh scripts/get-version linux $$FULL_VERSION || $${VERSION}")
 	version_h.depends = $$VERSION_SCRIPT $$PWD/.git/$$system("$$SET_GIT_DIR=$$PWD/.git git rev-parse --symbolic-full-name HEAD")
-	version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT $$VER_OS`\\\" > ${QMAKE_FILE_OUT}
+	version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT linux`\\\" > ${QMAKE_FILE_OUT}
 	version_h.input = GIT_HEAD
 	version_h.output = $$VERSION_FILE
 	version_h.variable_out = GENERATED_FILES
