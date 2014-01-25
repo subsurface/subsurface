@@ -969,6 +969,55 @@ the column specification, select the _OK_ button and the dive will be imported a
 listed in the *Dive List* tab of _Subsurface_.
 
 
+[[S_ImportingManualCSV]]
+==== Importing dives from manually kept CSV file
+
+If one keeps dive logs in a spreadsheet, we do have an option to import
+those dives as well. The spreadsheet must be exported to a CSV file and
+this file can then be imported to _Subsurface_. A recommended field
+separator for the export is tabulator, as comma might be used in the
+fields themselves.
+
+Similarly to importing dives in CSV format, you need to know internals
+of the format you are going to import. However, when importing manually
+kept log files, the information needed is quite different as we are
+importing only metadata, not profile samples.
+
+a. Which character separates the different columns within a single line of data? This
+field separator should be either a comma (,), semicolon (;) or a TAB
+character. This could be determined by opening the file with a text
+editor. If it is commma-delimited, then the comma
+characters between the values are clearly visible. If no commas are evident, the file
+is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+
+b. Which data columns need to be imported into _Subsurface_?. We do not
+currently have any mandatory input fields, but e.g. dive duration is
+quite crucial for the log marking to make any sense. Possible options
+can be seen in following screenshot and you should include all the
+fields that are available in both your log file and in Subsurface
+import.
+
+c. Unit used for depth, weight and temperature. We consider depth to be
+either feet or meters, weight kilograms or pounds and temperature either
+Celsius or Fahrenheit. However, you can only select _Metric_ or
+_Impearial_, no mixture of them for different fields.
+
+Importing manually kept CSV log files is quite straight forward, but as
+there might be many fields and counting the field numbers is error
+prone, please do validate the imported data before saving the log file.
+
+To import your dives, select _Import->Import Log Files_ from the menu
+bar. If the selected file list includes any files ending with .csv, you
+are presented with the following configuration dialog (select the tab
+called _Manual dives_):
+
+image::images/ManualCSVDownload.jpg["FIGURE: download dialog for Manual CSV logs",align="center"]
+
+Configure your input fields as appropriate, and when everything is done
+select the _OK_ button to perform the import. New dives should appear in
+the *Dive List* area of _Subsurface_.
+
+
 [[S_Companion]]
 === Importing GPS coordinates with the Subsurface Companion app for mobile phones
 If you have an Android device with GPS, you can obtain the coordinates of the
