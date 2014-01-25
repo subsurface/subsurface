@@ -417,3 +417,100 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params, error);
 	free(mem.buffer);
 }
+
+void parse_manual_file(const char *filename, int sepidx, int units, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, char **error)
+{
+	struct memblock mem;
+	int pnr=0;
+	char *params[33];
+	char numberbuf[MAXCOLDIGITS];
+	char datebuf[MAXCOLDIGITS];
+	char timebuf[MAXCOLDIGITS];
+	char durationbuf[MAXCOLDIGITS];
+	char locationbuf[MAXCOLDIGITS];
+	char gpsbuf[MAXCOLDIGITS];
+	char maxdepthbuf[MAXCOLDIGITS];
+	char meandepthbuf[MAXCOLDIGITS];
+	char buddybuf[MAXCOLDIGITS];
+	char notesbuf[MAXCOLDIGITS];
+	char weightbuf[MAXCOLDIGITS];
+	char tagsbuf[MAXCOLDIGITS];
+	char separator_index[MAXCOLDIGITS];
+	char unit[MAXCOLDIGITS];
+	time_t now;
+	struct tm *timep;
+	char curdate[9];
+	char curtime[6];
+
+	if ( numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS ) {
+		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
+		*error = malloc(len);
+		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
+
+		return;
+	}
+	snprintf(numberbuf, MAXCOLDIGITS, "%d", numberf);
+	snprintf(datebuf, MAXCOLDIGITS, "%d", datef);
+	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
+	snprintf(durationbuf, MAXCOLDIGITS, "%d", durationf);
+	snprintf(locationbuf, MAXCOLDIGITS, "%d", locationf);
+	snprintf(gpsbuf, MAXCOLDIGITS, "%d", gpsf);
+	snprintf(maxdepthbuf, MAXCOLDIGITS, "%d", maxdepthf);
+	snprintf(meandepthbuf, MAXCOLDIGITS, "%d", meandepthf);
+	snprintf(buddybuf, MAXCOLDIGITS, "%d", buddyf);
+	snprintf(notesbuf, MAXCOLDIGITS, "%d", notesf);
+	snprintf(weightbuf, MAXCOLDIGITS, "%d", weightf);
+	snprintf(tagsbuf, MAXCOLDIGITS, "%d", tagsf);
+	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
+	snprintf(unit, MAXCOLDIGITS, "%d", units);
+	time(&now);
+	timep = localtime(&now);
+	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
+
+	/* As the parameter is numeric, we need to ensure that the leading zero
+	* is not discarded during the transform, thus prepend time with 1 */
+	strftime(curtime, sizeof(curtime), "1%H%M", timep);
+
+	params[pnr++] = "numberField";
+	params[pnr++] = numberbuf;
+	params[pnr++] = "dateField";
+	params[pnr++] = datebuf;
+	params[pnr++] = "timeField";
+	params[pnr++] = timebuf;
+	params[pnr++] = "durationField";
+	params[pnr++] = durationbuf;
+	params[pnr++] = "locationField";
+	params[pnr++] = locationbuf;
+	params[pnr++] = "gpsField";
+	params[pnr++] = gpsbuf;
+	params[pnr++] = "maxDepthField";
+	params[pnr++] = maxdepthbuf;
+	params[pnr++] = "meanDepthField";
+	params[pnr++] = meandepthbuf;
+	params[pnr++] = "buddyField";
+	params[pnr++] = buddybuf;
+	params[pnr++] = "notesField";
+	params[pnr++] = notesbuf;
+	params[pnr++] = "weightField";
+	params[pnr++] = weightbuf;
+	params[pnr++] = "tagsField";
+	params[pnr++] = tagsbuf;
+	params[pnr++] = "date";
+	params[pnr++] = curdate;
+	params[pnr++] = "time";
+	params[pnr++] = curtime;
+	params[pnr++] = "separatorIndex";
+	params[pnr++] = separator_index;
+	params[pnr++] = "units";
+	params[pnr++] = unit;
+	params[pnr++] = NULL;
+
+	if (filename == NULL)
+		return;
+
+	if (try_to_xslt_open_csv(filename, &mem, error, "manualCSV"))
+		return;
+
+	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params, error);
+	free(mem.buffer);
+}
