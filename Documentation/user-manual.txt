@@ -900,7 +900,7 @@ be imported.
 ==== Importing dives in CSV format
 
 Sometimes dive computers export dive information as files with
-_comma-separated variables_ (.CSV). For example, the APD Inspiration and Evolution
+_comma-separated values_ (.CSV). For example, the APD Inspiration and Evolution
 closed circuit rebreather (CCR) systems export dive information in CSV format that
 normally contains information about a single dive only. These
 files can easily be imported into _Subsurface_. CSV files are normally organised into
@@ -945,7 +945,10 @@ for the above example:
 	ppO2:		column 4
 
 Armed with this information, the import into _Subsurface_ is straightforward. Select
-_Import->Import CSV_ from the main menu. The following dialogue appears:
+_Import->Import Log Files_ from the main menu. In the appearing file
+selection menu, select one or more CSV files. Format is detected by the file
+extension, and a common configuration dialog is presented for all the
+files with CSV extension. The configuration dialog is following:
 
 image::images/CSVDownload.jpg["FIGURE: CSV download dialogue",align="center"]
 
