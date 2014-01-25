@@ -679,6 +679,10 @@ import your divelog. _Subsurface_ will import divelogs from a range of other
 dive log software. Some software is supported natively (e.g. divelogs.de,
 JDiveLog, MacDive, and Suunto DM4), for others you have to export your logbook
 to XML and then _Subsurface_ can import that XML file (Suunto DM3, DivingLog).
+We do support importing CSV log files, with APD LogViewer, XP5 and Sensus being
+preconfigured, but the import being flexible, our users can configure their own
+imports as well. Also manually kept log files (e.g. in spreadsheet) can be
+imported by configuring the CSV import.
 _Subsurface_ can also import UDDF and UDCF files that are used by some divelog
 software and even some divecomputers like the Heinrichs & Weikamp DR5. Finally,
 for some divelog software we currently suggest to import your logbook first
