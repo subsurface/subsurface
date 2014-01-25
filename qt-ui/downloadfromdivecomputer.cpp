@@ -348,7 +348,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			for (int i = dive_table.nr - 1; i >= previousLast; i--)
 				delete_single_dive(i);
 		} else {
-			process_dives(TRUE, preferDownloaded());
+			process_dives(true, preferDownloaded());
 		}
 	} else {
 		updateState(CANCELLED);

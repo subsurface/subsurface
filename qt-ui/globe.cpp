@@ -266,7 +266,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	}
 	centerOn(lon, lat, true);
 	editingDiveLocation = false;
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	mainWindow()->refreshDisplay();
 }
 

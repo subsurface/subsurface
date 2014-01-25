@@ -533,7 +533,7 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	reload(currentLayout, false);
 	fixMessyQtModelBehaviour();
 	restoreSelection();
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 }
 
 void DiveListView::mergeTripAbove()
@@ -552,13 +552,13 @@ void DiveListView::removeFromTrip()
 	struct dive *d;
 	for_each_dive(i, d) {
 		if (d->selected)
-			remove_dive_from_trip(d, FALSE);
+			remove_dive_from_trip(d, false);
 	}
 	rememberSelection();
 	reload(currentLayout, false);
 	fixMessyQtModelBehaviour();
 	restoreSelection();
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 }
 
 void DiveListView::newTripAbove()
@@ -577,7 +577,7 @@ void DiveListView::newTripAbove()
 	trip->expanded = 1;
 	reload(currentLayout, false);
 	fixMessyQtModelBehaviour();
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	restoreSelection();
 }
 
@@ -620,7 +620,7 @@ void DiveListView::addToTripAbove()
 		}
 	}
 	trip->expanded = 1;
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	reload(currentLayout, false);
 	restoreSelection();
 	fixMessyQtModelBehaviour();
@@ -641,9 +641,9 @@ void DiveListView::markDiveInvalid()
 	if (amount_selected == 0) {
 		mainWindow()->cleanUpEmpty();
 	}
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	mainWindow()->refreshDisplay();
-	if(prefs.display_invalid_dives == FALSE) {
+	if(prefs.display_invalid_dives == false) {
 		clearSelection();
 		// select top dive that isn't marked invalid
 		rememberSelection();
@@ -672,7 +672,7 @@ void DiveListView::deleteDive()
 	if (amount_selected == 0) {
 		mainWindow()->cleanUpEmpty();
 	}
-	mark_divelist_changed(TRUE);
+	mark_divelist_changed(true);
 	mainWindow()->refreshDisplay();
 	if(lastDiveNr != -1){
 		clearSelection();
@@ -770,7 +770,7 @@ void DiveListView::saveSelectedDivesAs()
 	settings.endGroup();
 
 	QByteArray bt = QFile::encodeName(fileName);
-	save_dives_logic(bt.data(), TRUE);
+	save_dives_logic(bt.data(), true);
 }
 
 void DiveListView::exportSelectedDivesAsUDDF()

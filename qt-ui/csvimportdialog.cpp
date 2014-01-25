@@ -60,7 +60,7 @@ void CSVImportDialog::on_buttonBox_accepted()
 		free(error);
 		error = NULL;
 	}
-	process_dives(TRUE, FALSE);
+	process_dives(true, false);
 
 	mainWindow()->refreshDisplay();
 }

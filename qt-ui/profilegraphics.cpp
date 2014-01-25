@@ -183,8 +183,8 @@ void ProfileGraphicsView::addBookmark()
 	QPointF scenePos = mapToScene(viewPos);
 	int seconds = scenePos.x() / gc.maxx * (gc.rightx - gc.leftx) + gc.leftx;
 	add_event(current_dc, seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
-	mark_divelist_changed(TRUE);
-	plot(current_dive, TRUE);
+	mark_divelist_changed(true);
+	plot(current_dive, true);
 }
 
 void ProfileGraphicsView::changeGas()
@@ -198,8 +198,8 @@ void ProfileGraphicsView::changeGas()
 	validate_gas(gas.toUtf8().constData(), &o2, &he);
 	int seconds = scenePos.x() / gc.maxx * (gc.rightx - gc.leftx) + gc.leftx;
 	add_gas_switch_event(current_dive, current_dc, seconds, get_gasidx(current_dive, o2, he));
-	mark_divelist_changed(TRUE);
-	plot(current_dive, TRUE);
+	mark_divelist_changed(true);
+	plot(current_dive, true);
 }
 
 void ProfileGraphicsView::hideEvents()
@@ -220,7 +220,7 @@ void ProfileGraphicsView::hideEvents()
 				}
 			}
 		}
-		plot(current_dive, TRUE);
+		plot(current_dive, true);
 	}
 }
 
@@ -229,7 +229,7 @@ void ProfileGraphicsView::unhideEvents()
 	for (int i = 0; i < evn_used; i++) {
 		ev_namelist[i].plot_ev = true;
 	}
-	plot(current_dive, TRUE);
+	plot(current_dive, true);
 }
 
 void ProfileGraphicsView::removeEvent()
@@ -251,8 +251,8 @@ void ProfileGraphicsView::removeEvent()
 			*ep = event->next;
 			free(event);
 		}
-		mark_divelist_changed(TRUE);
-		plot(current_dive, TRUE);
+		mark_divelist_changed(true);
+		plot(current_dive, true);
 	}
 }
 
@@ -348,7 +348,7 @@ void ProfileGraphicsView::clear()
 void ProfileGraphicsView::refresh()
 {
 	clear();
-	plot(current_dive, TRUE);
+	plot(current_dive, true);
 }
 
 void ProfileGraphicsView::setPrintMode(bool mode, bool grayscale)
@@ -715,7 +715,7 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 {
 	int i;
 	int mbar, cyl;
-	int seen_cyl[MAX_CYLINDERS] = { FALSE, };
+	int seen_cyl[MAX_CYLINDERS] = { false, };
 	int last_pressure[MAX_CYLINDERS] = { 0, };
 	int last_time[MAX_CYLINDERS] = { 0, };
 	struct plot_data *entry;
@@ -738,7 +738,7 @@ void ProfileGraphicsView::plot_cylinder_pressure_text()
 				plot_gas_value(mbar, entry->sec, LEFT, TOP,
 						get_o2(&dive->cylinder[cyl].gasmix),
 						get_he(&dive->cylinder[cyl].gasmix));
-				seen_cyl[cyl] = TRUE;
+				seen_cyl[cyl] = true;
 			}
 		}
 		last_pressure[cyl] = mbar;
@@ -882,8 +882,8 @@ void ProfileGraphicsView::plot_cylinder_pressure()
 {
 	int i;
 	int last_index = -1;
-	int lift_pen = FALSE;
-	int first_plot = TRUE;
+	int lift_pen = false;
+	int first_plot = true;
 
 	if (!get_cylinder_pressure_range(&gc))
 		return;
@@ -895,10 +895,10 @@ void ProfileGraphicsView::plot_cylinder_pressure()
 
 		mbar = GET_PRESSURE(entry);
 		if (entry->cylinderindex != last_index) {
-			lift_pen = TRUE;
+			lift_pen = true;
 		}
 		if (!mbar) {
-			lift_pen = TRUE;
+			lift_pen = true;
 			continue;
 		}
 
@@ -917,10 +917,10 @@ void ProfileGraphicsView::plot_cylinder_pressure()
 				item->setPen(pen);
 				scene()->addItem(item);
 			} else {
-				first_plot = FALSE;
+				first_plot = false;
 				from = QPointF(SCALEGC(entry->sec, mbar));
 			}
-			lift_pen = FALSE;
+			lift_pen = false;
 		} else {
 			to = QPointF(SCALEGC(entry->sec, mbar));
 			QGraphicsLineItem *item = new QGraphicsLineItem(from.x(), from.y(), to.x(), to.y());
