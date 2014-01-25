@@ -30,6 +30,10 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 	ui->CSVSeparator->addItem(",");
 	ui->CSVSeparator->addItem(";");
 	ui->knownImports->setCurrentIndex(1);
+	ui->ManualSeparator->addItem("Tab");
+	ui->ManualSeparator->addItem(",");
+	ui->ManualSeparator->addItem(";");
+	ui->knownImports->setCurrentIndex(1);
 
 	connect(ui->CSVDepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->CSVTime, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
@@ -41,7 +45,6 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) :
 	connect(ui->cnsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	connect(ui->CSVstopdepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
-	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(unknownImports()));
 }
 
 DiveLogImportDialog::~DiveLogImportDialog()
@@ -53,19 +56,41 @@ DiveLogImportDialog::~DiveLogImportDialog()
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	char *error = NULL;
-	for (int i = 0; i < fileNames.size(); ++i) {
-		parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
-				ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
-				VALUE_IF_CHECKED(CSVpo2),
-				VALUE_IF_CHECKED(CSVcns),
-				VALUE_IF_CHECKED(CSVstopdepth),
-				ui->CSVSeparator->currentIndex(),
-				specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-				&error);
-		if (error != NULL) {
-			mainWindow()->showError(error);
-			free(error);
-			error = NULL;
+
+	if (ui->tabWidget->currentIndex() == 0) {
+		for (int i = 0; i < fileNames.size(); ++i) {
+			parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
+			               ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
+			               VALUE_IF_CHECKED(CSVpo2),
+			               VALUE_IF_CHECKED(CSVcns),
+			               VALUE_IF_CHECKED(CSVstopdepth),
+			               ui->CSVSeparator->currentIndex(),
+			               specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+			               &error);
+			if (error != NULL) {
+				mainWindow()->showError(error);
+				free(error);
+				error = NULL;
+			}
+		}
+	} else {
+		for (int i = 0; i < fileNames.size(); ++i) {
+			parse_manual_file(fileNames[i].toUtf8().data(),
+			               ui->ManualSeparator->currentIndex(),
+			               ui->Units->currentIndex(),
+			               VALUE_IF_CHECKED(DiveNumber),
+			               VALUE_IF_CHECKED(Date), VALUE_IF_CHECKED(Time),
+			               VALUE_IF_CHECKED(Duration), VALUE_IF_CHECKED(Location),
+			               VALUE_IF_CHECKED(Gps), VALUE_IF_CHECKED(MaxDepth),
+			               VALUE_IF_CHECKED(MeanDepth), VALUE_IF_CHECKED(Buddy),
+			               VALUE_IF_CHECKED(Notes), VALUE_IF_CHECKED(Weight),
+			               VALUE_IF_CHECKED(Tags),
+			               &error);
+			if (error != NULL) {
+				mainWindow()->showError(error);
+				free(error);
+				error = NULL;
+			}
 		}
 	}
 	process_dives(true, false);
