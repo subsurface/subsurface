@@ -265,8 +265,8 @@ a down-arrow:
 image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
 Use the drop-down list to select the cylinder type you used for this dive. The
-*Size* of the cylinder as well as its working pressure (*WorkPress*) will auto
-matically be shown in the dialogue.
+*Size* of the cylinder as well as its working pressure (*WorkPress*) will
+automatically be shown in the dialogue.
 
 Now you need to indicate the starting pressure and the ending pressure of the
 gas used during your dive. The unit of pressure (metric/imperial) corresponds
@@ -928,14 +928,14 @@ Note that each title may comprise more than one word, for instance 'Dive Time (s
 in the above data example. Before being able to import the data to _Subsurface_ one first
 needs to know:
 
-a. Which character separates the different colums within a single line of data? This
+a. Which character separates the different columns within a single line of data? This
 field separator should be either a comma (,) or a TAB character. This could be determined
-by opening the file with a text editor. If it is commma-delimited, then the comma
+by opening the file with a text editor. If it is comma-delimited, then the comma
 characters between the values are clearly visible. If no commas are evident, the file
 is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
 
 b. Which data columns need to be imported into _Subsurface_?. The Dive Time and
-Depth colums are always required. Open the file using a text editor and note the
+Depth columns are always required. Open the file using a text editor and note the
 titles of the columns to be imported and their column positions. For instance
 for the above example:
 
@@ -986,7 +986,7 @@ importing only metadata, not profile samples.
 a. Which character separates the different columns within a single line of data? This
 field separator should be either a comma (,), semicolon (;) or a TAB
 character. This could be determined by opening the file with a text
-editor. If it is commma-delimited, then the comma
+editor. If it is comma-delimited, then the comma
 characters between the values are clearly visible. If no commas are evident, the file
 is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
 
@@ -1000,7 +1000,7 @@ import.
 c. Unit used for depth, weight and temperature. We consider depth to be
 either feet or meters, weight kilograms or pounds and temperature either
 Celsius or Fahrenheit. However, you can only select _Metric_ or
-_Impearial_, no mixture of them for different fields.
+_Imperial_, no mixture of them for different fields.
 
 Importing manually kept CSV log files is quite straight forward, but as
 there might be many fields and counting the field numbers is error
@@ -1298,7 +1298,7 @@ open a further selection of which gas is being switched to, the list based on
 the available gases defined in the Equipment Tab. By right-clicking while over
 an existing marker, the menu extends adding options to allow deletion of the
 marker or to allow all markers of that type to be hidden. Hidden events can be
-restored to view by selecteing Unhide all events from the context menu.
+restored to view by selecting Unhide all events from the context menu.
 
 === The *Information Box*
 
@@ -1454,7 +1454,7 @@ computer and appearing as different dives in the *Dive List* panel. You can
 merge these dives onto a single dive by selecting the appropriate dives and
 right-clicking them to bring up the context menu. Then select *Merge selected
 dives*. It may be necessary to edit the dive information in the *Dive Notes*
-panelto reflect events or conditions that apply to the merged dive. The figure
+panel to reflect events or conditions that apply to the merged dive. The figure
 below shows the depth profile two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
