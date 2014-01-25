@@ -2,24 +2,44 @@
 # Hash is 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 but it doesn't seem to
 # find the key by hash
 
+echo -- copy over the Info.plist files
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtCore.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtCore.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtGui.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtGui.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtNetwork.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtNetwork.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtScript.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtScript.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtSql.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtSql.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtSvg.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtSvg.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtWebKit.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtWebKit.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtMultimedia.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtMultimedia.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtMultimediaWidgets.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtMultimediaWidgets.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtOpenGL.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtOpenGL.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtPositioning.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtPositioning.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtPrintSupport.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtPrintSupport.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtQml.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtQml.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtQuick.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtQuick.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtSensors.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtSensors.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtWebKitWidgets.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtWebKitWidgets.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtWidgets.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtWidgets.framework/Resources/
+cp ~/Qt5.2.0/5.2.0/clang_64/lib/QtXml.framework/Contents/Info.plist staging/Subsurface.app/Contents/Frameworks/QtXml.framework/Resources/
+
 echo -- signing staging/Subsurface.app
 cd staging
 
 echo -- signing Qt frameworks
 
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/4/QtCore
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtDeclarative.framework/Versions/4/QtDeclarative
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/4/QtGui
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/4/QtScript
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/4/QtSql
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/4/QtSvg
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/4/QtWebkit
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/4/QtXml
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/4/QtXmlPatterns
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/?/QtCore
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtDeclarative.framework/Versions/?/QtDeclarative
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/?/QtGui
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/?/QtNetwork
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/?/QtScript
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/?/QtSql
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/?/QtSvg
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/?/QtWebkit
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/?/QtXml
+#codesign -s G2PU7Q4ELP ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/?/QtXmlPatterns
 
 echo -- signing plugins
-find ./Subsurface.app/Contents/PlugIns -name \*.dylib | xargs codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk
+find ./Subsurface.app/Contents -name \*.dylib | xargs codesign -s G2PU7Q4ELP
 
 echo -- finally sign .app
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app
+codesign -s G2PU7Q4ELP -v --deep ./Subsurface.app
