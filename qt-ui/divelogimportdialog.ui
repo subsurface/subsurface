@@ -240,6 +240,428 @@
        <zorder>CSVstopdepth</zorder>
       </widget>
      </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Manual dives</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>331</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Field Configuration</string>
+       </property>
+       <widget class="QCheckBox" name="DiveNumberCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>81</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Dive #</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="DateCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>71</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Date</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="TimeCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Time</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="DurationCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Duration</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="TagsCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>180</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Tags</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="LocationCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>150</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Location</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="GpsCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>180</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Gps</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="MaxDepthCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>30</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Max depth</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="MeanDepthCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>60</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Mean depth</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="BuddyCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>90</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Buddy</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="NotesCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>120</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Notes</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="WeightCheck">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>150</y>
+          <width>94</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Weight</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="DiveNumber">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>30</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Date">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>60</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Time">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>90</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Duration">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>120</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Location">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>150</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Gps">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>180</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="MaxDepth">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>30</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Buddy">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>90</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Weight">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>150</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Tags">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>180</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Notes">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>120</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="MeanDepth">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>60</y>
+          <width>56</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>10</y>
+         <width>120</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Field Separator</string>
+       </property>
+       <widget class="QComboBox" name="ManualSeparator">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>85</width>
+          <height>29</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_6">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>100</y>
+         <width>120</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Units</string>
+       </property>
+       <widget class="QComboBox" name="Units">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>85</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Metric</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Imperial</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item>
@@ -392,6 +814,198 @@
    <sender>stopdepthCheckBox</sender>
    <signal>clicked(bool)</signal>
    <receiver>CSVstopdepth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DiveNumberCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>DiveNumber</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DateCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Date</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TimeCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Time</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LocationCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Location</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GpsCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Gps</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MaxDepthCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MaxDepth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MeanDepthCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MeanDepth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BuddyCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Buddy</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>NotesCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Notes</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TagsCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Tags</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>WeightCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Weight</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DurationCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Duration</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
