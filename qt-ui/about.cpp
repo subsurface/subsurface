@@ -19,7 +19,7 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget* parent, Qt::WindowFlags f)
 	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>" \
 		"Subsurface %1 </span><br><br>" \
 		"Multi-platform divelog software<br>" \
-		"<span style='font-size: 8pt'>Linus Torvalds, Dirk Hohndel, and others, 2011, 2012, 2013</span>").arg(VERSION_STRING));
+		"<span style='font-size: 8pt'>Linus Torvalds, Dirk Hohndel, and others, 2011-2014</span>").arg(VERSION_STRING));
 	licenseButton = new QPushButton(tr("&License"));
 	websiteButton = new QPushButton(tr("&Website"));
 	ui.buttonBox->addButton(licenseButton, QDialogButtonBox::ActionRole);
