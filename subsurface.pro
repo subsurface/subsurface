@@ -7,6 +7,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 	QT += webkitwidgets
 }
 INCLUDEPATH += qt-ui $$PWD
+DEPENDPATH += qt-ui
 
 mac: TARGET = Subsurface
 else: TARGET = subsurface
