@@ -84,7 +84,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
-	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
+	// disabled as this column is pointless outside the disabled planner
+	// ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(BuddyCompletionModel::instance(), ui.buddy);
 	completers.divemaster = new QCompleter(DiveMasterCompletionModel::instance(), ui.divemaster);
 	completers.location = new QCompleter(LocationCompletionModel::instance(), ui.location);

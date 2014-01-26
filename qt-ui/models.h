@@ -81,7 +81,7 @@ private:
 class CylindersModel : public CleanerTableModel {
 Q_OBJECT
 public:
-	enum Column {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, COLUMNS};
+	enum Column {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, /* DEPTH, */ COLUMNS};
 
 	explicit CylindersModel(QObject* parent = 0);
 	static CylindersModel *instance();
