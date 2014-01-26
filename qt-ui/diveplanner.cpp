@@ -1429,11 +1429,13 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cyl->depth.mm) {
 			dp = create_dp(0, cyl->depth.mm, cyl->gasmix.o2.permille, cyl->gasmix.he.permille, 0);
-			if (diveplan.dp)
+			if (diveplan.dp) {
 				dp->next = diveplan.dp->next;
-			else
+				diveplan.dp->next = dp;
+			} else {
 				dp->next = NULL;
-			diveplan.dp->next = dp;
+				diveplan.dp = dp;
+			}
 		}
 	}
 #if DEBUG_PLAN
