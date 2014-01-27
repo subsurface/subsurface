@@ -27,7 +27,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	stateMachine(new QStateMachine(this)),
 	background (new DivePixmapItem()),
 	profileYAxis(new DepthAxis()),
-	gasYAxis(new DiveCartesianAxis()),
+	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
 	timeAxis(new TimeAxis()),
 	depthController(new DiveRectItem()),
@@ -72,6 +72,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasYAxis->setTickInterval(1);
 	gasYAxis->setTickSize(2);
 	gasYAxis->setY(70);
+	gasYAxis->setMinimum(0);
+	gasYAxis->setModel(dataModel);
 	scene()->addItem(gasYAxis);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
@@ -89,6 +91,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeAxis->setLine(0,0,96,0);
 	timeAxis->setX(3);
 	timeAxis->setTickSize(1);
+
 	depthController->setRect(0, 0, 10, 5);
 	timeController->setRect(0, 0, 10, 5);
 	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
@@ -170,35 +173,24 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveProfileItem->setZValue(0);
 	scene()->addItem(diveProfileItem);
 
-	pn2GasItem = new PartialPressureGasItem();
-	pn2GasItem->setHorizontalAxis(timeAxis);
-	pn2GasItem->setVerticalAxis(gasYAxis);
-	pn2GasItem->setModel(dataModel);
-	pn2GasItem->setVerticalDataColumn(DivePlotDataModel::PN2);
-	pn2GasItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	pn2GasItem->setZValue(0);
-	pn2GasItem->setThreshouldSettingsKey("pn2threshold");
-	scene()->addItem(pn2GasItem);
+#define CREATE_PP_GAS( ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS ) \
+	ITEM = new PartialPressureGasItem(); \
+	ITEM->setHorizontalAxis(timeAxis); \
+	ITEM->setVerticalAxis(gasYAxis); \
+	ITEM->setModel(dataModel); \
+	ITEM->setVerticalDataColumn(DivePlotDataModel::VERTICAL_COLUMN); \
+	ITEM->setHorizontalDataColumn(DivePlotDataModel::TIME); \
+	ITEM->setZValue(0); \
+	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS); \
+	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS); \
+	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT)); \
+	ITEM->preferencesChanged(); \
+	scene()->addItem(ITEM);
 
-	pheGasItem = new PartialPressureGasItem();
-	pheGasItem->setHorizontalAxis(timeAxis);
-	pheGasItem->setVerticalAxis(gasYAxis);
-	pheGasItem->setModel(dataModel);
-	pheGasItem->setVerticalDataColumn(DivePlotDataModel::PHE);
-	pheGasItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	pheGasItem->setZValue(0);
-	pheGasItem->setThreshouldSettingsKey("phethreshold");
-	scene()->addItem(pheGasItem);
-
-	pheGasItem = new PartialPressureGasItem();
-	pheGasItem->setHorizontalAxis(timeAxis);
-	pheGasItem->setVerticalAxis(gasYAxis);
-	pheGasItem->setModel(dataModel);
-	pheGasItem->setVerticalDataColumn(DivePlotDataModel::PO2);
-	pheGasItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	pheGasItem->setZValue(0);
-	pheGasItem->setThreshouldSettingsKey("po2threshold");
-	scene()->addItem(pheGasItem);
+	CREATE_PP_GAS( pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
+	CREATE_PP_GAS( pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
+	CREATE_PP_GAS( po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
+#undef CREATE_PP_GAS
 
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 
@@ -387,6 +379,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	int maxtime = get_maxtime(&pInfo);
 	int maxdepth = get_maxdepth(&pInfo);
 
+	dataModel->setDive(current_dive, pInfo);
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);
@@ -400,14 +393,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
-	qreal pp = floor(pInfo.maxpp * 10.0) / 10.0 + 0.2;
-	gasYAxis->setMaximum(pp);
-	gasYAxis->setMinimum(0);
-	gasYAxis->setTickInterval(pp > 4 ? 0.5 : 0.25);
-	gasYAxis->updateTicks();
-
-	dataModel->setDive(current_dive, pInfo);
-
+	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
 	// while all other items are up there on the constructor.

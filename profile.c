@@ -1249,6 +1249,59 @@ static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
 	}
 }
 
+
+static void calculate_gas_information_new(struct dive *dive,  struct plot_info *pi)
+{
+	int i;
+	double amb_pressure;
+
+	for (i = 1; i < pi->nr; i++) {
+		int fo2, fhe;
+		struct plot_data *entry = pi->entry + i;
+		int cylinderindex = entry->cylinderindex;
+
+		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
+		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
+		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
+		double ratio = (double)fhe / (1000.0 - fo2);
+
+		if (entry->po2) {
+			/* we have an O2 partial pressure in the sample - so this
+			 * is likely a CC dive... use that instead of the value
+			 * from the cylinder info */
+			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
+			entry->po2 = po2;
+			entry->phe = (amb_pressure - po2) * ratio;
+			entry->pn2 = amb_pressure - po2 - entry->phe;
+		} else {
+			entry->po2 = fo2 / 1000.0 * amb_pressure;
+			entry->phe = fhe / 1000.0 * amb_pressure;
+			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
+		}
+
+		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
+		 * so there is no difference in calculating between OC and CC
+		 * EAD takes O2 + N2 (air) into account
+		 * END just uses N2 */
+		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
+		entry->ead = (entry->depth + 10000) *
+			(entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
+		entry->end = (entry->depth + 10000) *
+			(amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
+		entry->eadd = (entry->depth + 10000) *
+			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
+				N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
+				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
+		if (entry->mod < 0)
+			entry->mod = 0;
+		if (entry->ead < 0)
+			entry->ead = 0;
+		if (entry->end < 0)
+			entry->end = 0;
+		if (entry->eadd < 0)
+			entry->eadd = 0;
+	}
+}
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -1313,7 +1366,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	calculate_sac(dive, pi);                    /* Calculate sac */
 	if (prefs.profile_calc_ceiling)             /* Then, calculate deco information */
 		calculate_deco_information(dive, dc, pi, false);
-	calculate_gas_information(dive, pi);       /* And finaly calculate gas partial pressures */
+	calculate_gas_information_new(dive, pi);       /* And finaly calculate gas partial pressures */
 	pi->meandepth = dive->dc.meandepth.mm;
 	analyze_plot_info(pi);
 }

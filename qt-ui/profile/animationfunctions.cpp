@@ -7,6 +7,14 @@ namespace Animations {
 void hide(QObject* obj)
 {
 	QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
+	animation->setStartValue(1);
+	animation->setEndValue(0);
+	animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void animDelete(QObject* obj)
+{
+	QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
 	obj->connect(animation, SIGNAL(finished()), SLOT(deleteLater()));
 	animation->setStartValue(1);
 	animation->setEndValue(0);

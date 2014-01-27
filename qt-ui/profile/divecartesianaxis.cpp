@@ -3,6 +3,8 @@
 #include "divetextitem.h"
 #include "helpers.h"
 #include "preferences.h"
+#include "diveplotdatamodel.h"
+#include "animationfunctions.h"
 #include <QPen>
 #include <QGraphicsScene>
 #include <QDebug>
@@ -20,13 +22,12 @@ static QPen gridPen(){
 void DiveCartesianAxis::setMaximum(double maximum)
 {
 	max = maximum;
-	emit sizeChanged();
+	emit maxChanged();
 }
 
 void DiveCartesianAxis::setMinimum(double minimum)
 {
 	min = minimum;
-	emit sizeChanged();
 }
 
 void DiveCartesianAxis::setTextColor(const QColor& color)
@@ -64,15 +65,16 @@ void DiveCartesianAxis::updateTicks()
 	double steps = (max - min) / interval;
 	double currValue = min;
 
-	if(!showText && !labels.empty()){
+	if(!showText && !labels.isEmpty()){
 			qDeleteAll(labels);
 			labels.clear();
 	}
-
+	if (steps < 1)
+		return;
 	if (!labels.isEmpty() && labels.size() > steps) {
 		while (labels.size() > steps) {
 				DiveTextItem *removedText = labels.takeLast();
-				removedText->animatedHide();
+				Animations::animDelete(removedText);
 		}
 	}
 	// Move the remaining Ticks / Text to it's corerct position
@@ -290,7 +292,7 @@ QString TemperatureAxis::textForValue(double value)
 void DiveCartesianPlane::setLeftAxis(DiveCartesianAxis* axis)
 {
 	leftAxis = axis;
-	connect(leftAxis, SIGNAL(sizeChanged()), this, SLOT(setup()));
+	connect(leftAxis, SIGNAL(maxChanged()), this, SLOT(setup()));
 	if (bottomAxis)
 		setup();
 }
@@ -298,7 +300,7 @@ void DiveCartesianPlane::setLeftAxis(DiveCartesianAxis* axis)
 void DiveCartesianPlane::setBottomAxis(DiveCartesianAxis* axis)
 {
 	bottomAxis = axis;
-	connect(bottomAxis, SIGNAL(sizeChanged()), this, SLOT(setup()));
+	connect(bottomAxis, SIGNAL(maxChanged()), this, SLOT(setup()));
 	if (leftAxis)
 		setup();
 }
@@ -370,4 +372,39 @@ void DiveCartesianPlane::setup()
 		verticalLines.push_back(line);
 		scene()->addItem(line);
 	}
+}
+
+PartialGasPressureAxis::PartialGasPressureAxis()
+{
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(preferencesChanged()));
+}
+
+void PartialGasPressureAxis::setModel(DivePlotDataModel* m)
+{
+	model = m;
+	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(preferencesChanged()));
+	preferencesChanged();
+}
+
+void PartialGasPressureAxis::preferencesChanged()
+{
+	QSettings s;
+	s.beginGroup("TecDetails");
+	bool showPhe = s.value("phegraph").toBool();
+	bool showPn2 = s.value("pn2graph").toBool();
+	bool showPo2 = s.value("po2graph").toBool();
+	setVisible(showPhe || showPn2 || showPo2);
+	if (!model->rowCount())
+		return;
+
+	double max = showPhe ? model->pheMax() : -1;
+	if (showPn2 && model->pn2Max() > max)
+		 max = model->pn2Max();
+	if( showPo2 && model->po2Max() > max)
+		max = model->po2Max();
+
+	qreal pp = floor(max * 10.0) / 10.0 + 0.2;
+	setMaximum(pp);
+	setTickInterval( pp > 4 ? 0.5 : 0.25 );
+	updateTicks();
 }

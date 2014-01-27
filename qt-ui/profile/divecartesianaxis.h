@@ -7,6 +7,7 @@
 class QPropertyAnimation;
 class DiveTextItem;
 class DiveLineItem;
+class DivePlotDataModel;
 
 class DiveCartesianAxis : public QObject, public QGraphicsLineItem{
 	Q_OBJECT
@@ -38,6 +39,7 @@ public slots:
 	void updateTicks();
 signals:
 	void sizeChanged();
+	void maxChanged();
 protected:
 	virtual QString textForValue(double value);
 	virtual QColor colorForValue(double value);
@@ -73,6 +75,17 @@ class TemperatureAxis : public DiveCartesianAxis{
 	Q_OBJECT
 protected:
 	QString textForValue(double value);
+};
+
+class PartialGasPressureAxis : public DiveCartesianAxis{
+	Q_OBJECT
+public:
+	PartialGasPressureAxis();
+	void setModel(DivePlotDataModel *model);
+public slots:
+	void preferencesChanged();
+private:
+	DivePlotDataModel *model;
 };
 
 // This is a try. Maybe the CartesianPlane should have the X and Y

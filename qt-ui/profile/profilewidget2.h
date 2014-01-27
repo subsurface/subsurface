@@ -38,6 +38,7 @@ struct DiveCalculatedCeiling;
 struct DiveReportedCeiling;
 struct DiveCalculatedTissue;
 struct PartialPressureGasItem;
+struct PartialGasPressureAxis;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -76,7 +77,7 @@ private:
 	// In the meantime, keep it here.
 	struct plot_info *plotInfo;
 	DepthAxis *profileYAxis ;
-	DiveCartesianAxis *gasYAxis;
+	PartialGasPressureAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
 	DiveRectItem *depthController;

@@ -130,8 +130,13 @@ public:
 	virtual void modelDataChanged();
 	virtual void preferencesChanged();
 	void setThreshouldSettingsKey(const QString& threshouldSettingsKey);
+	void setVisibilitySettingsKey(const QString& setVisibilitySettingsKey);
+	void setColors(const QColor& normalColor, const QColor& alertColor);
 private:
 	QPolygonF alertPoly;
 	QString threshouldKey;
+	QString visibilityKey;
+	QColor normalColor;
+	QColor alertColor;
 };
 #endif

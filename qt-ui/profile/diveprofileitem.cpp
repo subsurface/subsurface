@@ -30,6 +30,7 @@ void AbstractProfilePolygonItem::preferencesChanged()
 void AbstractProfilePolygonItem::setHorizontalAxis(DiveCartesianAxis* horizontal)
 {
 	hAxis = horizontal;
+	connect(hAxis, SIGNAL(sizeChanged()), this, SLOT(modelDataChanged()));
 	modelDataChanged();
 }
 
@@ -43,13 +44,14 @@ void AbstractProfilePolygonItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
 	connect(dataModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged()));
-	connect(dataModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(modelDataChanged()));
 	modelDataChanged();
 }
 
 void AbstractProfilePolygonItem::setVerticalAxis(DiveCartesianAxis* vertical)
 {
 	vAxis = vertical;
+	connect(vAxis, SIGNAL(sizeChanged()), this, SLOT(modelDataChanged()));
+	connect(vAxis, SIGNAL(maxChanged()), this, SLOT(modelDataChanged()));
 	modelDataChanged();
 }
 
@@ -257,7 +259,6 @@ void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 }
-
 
 void DiveGasPressureItem::modelDataChanged()
 {
@@ -484,7 +485,6 @@ void PartialPressureGasItem::modelDataChanged()
 	QSettings s;
 	s.beginGroup("TecDetails");
 	double threshould = s.value(threshouldKey).toDouble();
-
 	for(int i = 0;  i < dataModel->rowCount(); i++, entry++){
 		double value = dataModel->index(i, vDataColumn).data().toDouble();
 		int time = dataModel->index(i, hDataColumn).data().toInt();
@@ -493,17 +493,17 @@ void PartialPressureGasItem::modelDataChanged()
 		if (value >= threshould)
 			alertPoly.push_back(point);
 	}
-
 	setPolygon(poly);
 	/*
 	createPPLegend(trUtf8("pN" UTF8_SUBSCRIPT_2),getColor(PN2), legendPos);
 	*/
 }
+
 void PartialPressureGasItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{//TODO: fix the colors.
-	painter->setPen(getColor(PN2));
+{
+	painter->setPen(normalColor);
 	painter->drawPolyline(polygon());
-	painter->setPen(getColor(PN2_ALERT));
+	painter->setPen(alertColor);
 	painter->drawPolyline(alertPoly);
 }
 
@@ -514,10 +514,22 @@ void PartialPressureGasItem::setThreshouldSettingsKey(const QString& threshouldS
 
 PartialPressureGasItem::PartialPressureGasItem()
 {
-
 }
 
 void PartialPressureGasItem::preferencesChanged()
 {
-    AbstractProfilePolygonItem::preferencesChanged();
+	QSettings s;
+	s.beginGroup("TecDetails");
+	setVisible( s.value(visibilityKey).toBool() );
+}
+
+void PartialPressureGasItem::setVisibilitySettingsKey(const QString& key)
+{
+	visibilityKey = key;
+}
+
+void PartialPressureGasItem::setColors(const QColor& normal, const QColor& alert)
+{
+	normalColor = normal;
+	alertColor = alert;
 }

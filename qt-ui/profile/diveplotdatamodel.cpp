@@ -122,3 +122,23 @@ int DivePlotDataModel::id() const
 {
 	return diveId;
 }
+
+#define MAX_PPGAS_FUNC( GAS, GASFUNC ) \
+double DivePlotDataModel::GASFUNC() \
+{ \
+	double ret = -1; \
+	for(int i = 0, count = rowCount(); i < count; i++){ \
+		if (plotData[i].GAS > ret) \
+			ret = plotData[i].GAS; \
+	} \
+	return ret; \
+}
+
+MAX_PPGAS_FUNC(phe, pheMax);
+MAX_PPGAS_FUNC(pn2, pn2Max);
+MAX_PPGAS_FUNC(po2, po2Max);
+
+void DivePlotDataModel::emitDataChanged()
+{
+	emit dataChanged(QModelIndex(), QModelIndex());
+}

@@ -22,6 +22,10 @@ public:
 	void setDive(struct dive *d, const plot_info& pInfo);
 	plot_data* data();
 	int id() const;
+	double pheMax();
+	double pn2Max();
+	double po2Max();
+	void emitDataChanged();
 private:
 	int sampleCount;
 	plot_data *plotData;
