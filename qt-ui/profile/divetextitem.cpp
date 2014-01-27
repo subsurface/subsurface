@@ -42,11 +42,13 @@ const QString& DiveTextItem::text()
 
 void DiveTextItem::updateText()
 {
-	if(internalText.isEmpty())
-		return;
-
 	delete textItem;
+	textItem = NULL;
 	delete textBackgroundItem;
+	textBackgroundItem = NULL;
+	if(internalText.isEmpty()){
+		return;
+	}
 
 	QFont fnt(qApp->font());
 	QFontMetrics fm(fnt);

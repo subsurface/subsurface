@@ -71,6 +71,7 @@ void DiveCartesianAxis::updateTicks()
 	}
 	if (steps < 1)
 		return;
+
 	if (!labels.isEmpty() && labels.size() > steps) {
 		while (labels.size() > steps) {
 				DiveTextItem *removedText = labels.takeLast();
@@ -102,12 +103,14 @@ void DiveCartesianAxis::updateTicks()
 		} else {
 			childPos = begin - i * stepSize;
 		}
+
 		labels[i]->setText(textForValue(currValue));
 		if ( orientation == LeftToRight || orientation == RightToLeft) {
 			labels[i]->animateMoveTo(childPos, m.y1() + tickSize);
 		} else {
 			labels[i]->animateMoveTo(m.x1() - tickSize, childPos);
 		}
+		labels[i]->setVisible( i % 2 );
 	}
 
 	// Add's the rest of the needed Ticks / Text.
@@ -121,9 +124,6 @@ void DiveCartesianAxis::updateTicks()
 		DiveTextItem *label = NULL;
 
 		if (showText){
-			QString text = textForValue(currValue);
-			if(text.isEmpty())
-				continue; // Do not create or do anything with an empty string.
 			label = new DiveTextItem(this);
 			label->setText(textForValue(currValue));
 			label->setBrush(QBrush(textColor));
@@ -143,6 +143,7 @@ void DiveCartesianAxis::updateTicks()
 				label->animateMoveTo(m.x1() - tickSize, childPos);
 			}
 		}
+		label->setVisible( i % 2 );
 	}
 }
 
@@ -283,7 +284,10 @@ QColor TimeAxis::colorForValue(double value)
 
 QString TimeAxis::textForValue(double value)
 {
-	return QString::number(value / 60);
+	int nr = value / 60;
+	if (maximum() < 600 )
+		return QString("%1:%2").arg(nr).arg( (int)value%60, 2, 10, QChar('0'));
+	return  QString::number(nr);
 }
 
 QString TemperatureAxis::textForValue(double value)

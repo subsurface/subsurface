@@ -387,6 +387,23 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 	timeAxis->setMaximum(maxtime);
+
+	int i, incr;
+	static int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
+	/* Time markers: at most every 10 seconds, but no more than 12 markers.
+	 * We start out with 10 seconds and increment up to 30 minutes,
+	 * depending on the dive time.
+	 * This allows for 6h dives - enough (I hope) for even the craziest
+	 * divers - but just in case, for those 8h depth-record-breaking dives,
+	 * we double the interval if this still doesn't get us to 12 or fewer
+	 * time markers */
+	i = 0;
+	while (i < 7 && maxtime / increments[i] > 12)
+		i++;
+	incr = increments[i];
+	while (maxtime / incr > 12)
+		incr *= 2;
+	timeAxis->setTickInterval(incr);
 	timeAxis->updateTicks();
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
