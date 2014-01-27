@@ -62,3 +62,16 @@ QColor getColor(const color_indice_t i, bool isGrayscale = false)
 		return profile_color[i].at((isGrayscale) ? 1 : 0);
 	return QColor(Qt::black);
 }
+
+QColor getSacColor(int sac, int avg_sac)
+{
+	int sac_index = 0;
+	int delta = sac - avg_sac + 7000;
+
+	sac_index = delta / 2000;
+	if (sac_index < 0)
+		sac_index = 0;
+	if (sac_index > SAC_COLORS - 1)
+		sac_index = SAC_COLORS - 1;
+	return getColor((color_indice_t)(SAC_COLORS_START_IDX + sac_index), false);
+}
