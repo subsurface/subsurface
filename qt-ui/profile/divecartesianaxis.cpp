@@ -121,12 +121,15 @@ void DiveCartesianAxis::updateTicks()
 		DiveTextItem *label = NULL;
 
 		if (showText){
+			QString text = textForValue(currValue);
+			if(text.isEmpty())
+				continue; // Do not create or do anything with an empty string.
 			label = new DiveTextItem(this);
 			label->setText(textForValue(currValue));
 			label->setBrush(QBrush(textColor));
 			label->setBrush(colorForValue(currValue));
+			labels.push_back(label);
 		}
-		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			if(showText){
 				label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
