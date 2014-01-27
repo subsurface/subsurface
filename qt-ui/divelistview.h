@@ -49,6 +49,7 @@ public slots:
 	void saveSelectedDivesAs();
 	void exportSelectedDivesAsUDDF();
 	void shiftTimes();
+	void loadImages();
 	void uploadToDivelogsDE();
 
 signals:
@@ -71,6 +72,8 @@ private:
 	void restoreExpandedRows();
 	int lastVisibleColumn();
 	void selectTrip ( dive_trip_t* trip );
+	QString lastUsedImageDir();
+	void updateLastUsedImageDir(const QString& s);
 };
 
 #endif // DIVELISTVIEW_H

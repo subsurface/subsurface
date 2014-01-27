@@ -54,6 +54,7 @@ HEADERS = \
 	qt-ui/starwidget.h \
 	qt-ui/subsurfacewebservices.h \
 	qt-ui/tableview.h \
+	qt-ui/exif.h \
 	sha1.h \
 	statistics.h \
 	subsurface-icon.h \
@@ -114,6 +115,7 @@ SOURCES =  \
 	qt-ui/starwidget.cpp \
 	qt-ui/subsurfacewebservices.cpp \
 	qt-ui/tableview.cpp \
+	qt-ui/exif.cpp \
 	save-xml.c \
 	sha1.c \
 	statistics.c \
@@ -153,6 +155,7 @@ FORMS = \
 	qt-ui/printoptions.ui \
 	qt-ui/renumber.ui \
 	qt-ui/shifttimes.ui \
+	qt-ui/shiftimagetimes.ui \
 	qt-ui/webservices.ui \
 	qt-ui/tableview.ui \
 	qt-ui/divelogimportdialog.ui \

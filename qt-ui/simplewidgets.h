@@ -9,6 +9,7 @@ class QAbstractButton;
 
 #include "ui_renumber.h"
 #include "ui_shifttimes.h"
+#include "ui_shiftimagetimes.h"
 
 class MinMaxAvgWidget : public QWidget{
 	Q_OBJECT
@@ -52,6 +53,18 @@ private slots:
 private:
 	explicit ShiftTimesDialog(QWidget *parent);
 	Ui::ShiftTimesDialog ui;
+};
+
+class ShiftImageTimesDialog : public QDialog {
+	Q_OBJECT
+public:
+	static ShiftImageTimesDialog *instance();
+	int amount;
+private slots:
+	void buttonClicked(QAbstractButton *button);
+private:
+	explicit ShiftImageTimesDialog(QWidget *parent);
+	Ui::ShiftImageTimesDialog ui;
 };
 
 bool isGnome3Session();

@@ -156,6 +156,26 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent): QDialog(parent)
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
 }
+ShiftImageTimesDialog* ShiftImageTimesDialog::instance()
+{
+	static ShiftImageTimesDialog* self = new ShiftImageTimesDialog(mainWindow());
+	return self;
+}
+
+void ShiftImageTimesDialog::buttonClicked(QAbstractButton* button)
+{
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
+		if (ui.backwards->isChecked())
+			amount *= -1;
+	}
+}
+
+ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent): QDialog(parent)
+{
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+}
 
 bool isGnome3Session()
 {

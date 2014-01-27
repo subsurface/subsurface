@@ -614,6 +614,11 @@ static inline struct dive *getDiveById(int id)
 	}
 	return dive;
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
@@ -691,6 +696,10 @@ extern void clear_events(void);
 extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
 extern int total_weight(struct dive *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #define DIVE_ERROR_PARSE 1
 #define DIVE_ERROR_PLAN 2

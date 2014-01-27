@@ -10,6 +10,8 @@
 #include "mainwindow.h"
 #include "subsurfacewebservices.h"
 #include "../display.h"
+#include "exif.h"
+#include "../file.h"
 #include <QApplication>
 #include <QHeaderView>
 #include <QDebug>
@@ -21,6 +23,9 @@
 #include <QKeyEvent>
 #include <QMenu>
 #include <QFileDialog>
+#include <string>
+#include <iostream>
+
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(new QLineEdit(this))
@@ -735,6 +740,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
 		popup.addAction(tr("export As UDDF"), this, SLOT(exportSelectedDivesAsUDDF()));
 		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
+		popup.addAction(tr("load images"), this, SLOT(loadImages()));
 	}
 	if (d)
 		popup.addAction(tr("upload dive(s) to divelogs.de"), this, SLOT(uploadToDivelogsDE()));
@@ -794,7 +800,90 @@ void DiveListView::shiftTimes()
 	ShiftTimesDialog::instance()->show();
 }
 
+void DiveListView::loadImages()
+{
+	struct memblock mem;
+	EXIFInfo exif;
+	int code;
+	time_t imagetime;
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image Files"), lastUsedImageDir(), tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
+
+	if (fileNames.isEmpty())
+		return;
+
+	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
+
+	ShiftImageTimesDialog* shiftDialog = ShiftImageTimesDialog::instance();
+	shiftDialog->exec();
+
+	for (int i = 0; i < fileNames.size(); ++i) {
+		struct tm tm;
+		int year, month, day, hour, min, sec;
+		readfile(fileNames.at(i).toUtf8().data(), &mem);
+		code = exif.parseFrom((const unsigned char *) mem.buffer, (unsigned) mem.size);
+		free(mem.buffer);
+		sscanf(exif.DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
+		tm.tm_year = year;
+		tm.tm_mon = month - 1;
+		tm.tm_mday = day;
+		tm.tm_hour = hour;
+		tm.tm_min = min;
+		tm.tm_sec = sec;
+		imagetime = utc_mktime(&tm) + shiftDialog->amount;
+		int j = 0;
+		struct dive *dive;
+		for_each_dive(j, dive){
+			if (!dive->selected)
+				continue;
+			if (dive->when - 3600 < imagetime && dive->when + dive->duration.seconds + 3600 > imagetime){
+				if (dive->when > imagetime) {
+					;  // Before dive
+					add_event(&(dive->dc), 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					mainWindow()->refreshDisplay();
+					mark_divelist_changed(true);
+				}
+				else if (dive->when + dive->duration.seconds < imagetime){
+					;  // After dive
+					add_event(&(dive->dc), dive->duration.seconds, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					mainWindow()->refreshDisplay();
+					mark_divelist_changed(true);
+				}
+				else {
+					add_event(&(dive->dc), imagetime - dive->when, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					mainWindow()->refreshDisplay();
+					mark_divelist_changed(true);
+				}
+				if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)){
+					dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
+					dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
+					mark_divelist_changed(true);
+					mainWindow()->refreshDisplay();
+				}
+			}
+		}
+	}
+}
+
 void DiveListView::uploadToDivelogsDE()
 {
 	DivelogsDeWebServices::instance()->prepareDivesForUpload();
+}
+
+QString DiveListView::lastUsedImageDir()
+{
+	QSettings settings;
+	QString lastImageDir = QDir::homePath();
+
+	settings.beginGroup("FileDialog");
+	if (settings.contains("LastImageDir"))
+		if (QDir::setCurrent(settings.value("LastImageDir").toString()))
+			lastImageDir = settings.value("LastIamgeDir").toString();
+	return lastImageDir;
+}
+
+void DiveListView::updateLastUsedImageDir(const QString& dir)
+{
+	QSettings s;
+	s.beginGroup("FileDialog");
+	s.setValue("LastImageDir", dir);
 }

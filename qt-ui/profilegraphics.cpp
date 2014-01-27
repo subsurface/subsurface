@@ -1018,6 +1018,13 @@ void ProfileGraphicsView::plot_one_event(struct event *ev)
 	item->setPos(x, y);
 	scene()->addItem(item);
 
+	if (ev->type == 123){
+		QPixmap picture;
+		picture.load(ev->name);
+		scene()->addPixmap(picture.scaledToHeight(100, Qt::SmoothTransformation))->setPos(x, y + 10);
+	}
+
+
 	/* we display the event on screen - so translate (with the correct context for events) */
 	QString name = gettextFromC::instance()->tr(ev->name);
 	if (ev->value) {

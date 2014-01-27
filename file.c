@@ -156,7 +156,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, char **err
 	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
 }
 
-static timestamp_t parse_date(const char *date)
+timestamp_t parse_date(const char *date)
 {
 	int hour, min, sec;
 	struct tm tm;
