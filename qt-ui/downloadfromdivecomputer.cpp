@@ -87,7 +87,12 @@ void DownloadFromDCWidget::runDialog()
 
 void DownloadFromDCWidget::updateProgressBar()
 {
-	ui.progressBar->setValue(progress_bar_fraction *100);
+	if (*progress_bar_text != '\0') {
+		ui.progressBar->setFormat(progress_bar_text);
+	} else {
+		ui.progressBar->setFormat("%p%");
+		ui.progressBar->setValue(progress_bar_fraction *100);
+	}
 }
 
 void DownloadFromDCWidget::updateState(states state)
@@ -126,19 +131,30 @@ void DownloadFromDCWidget::updateState(states state)
 		markChildrenAsEnabled();
 	}
 
-	// DOWNLOAD is finally done, close the dialog and go back to the main window
+	// DOWNLOAD is finally done, but we don't know if there was an error as libdivecomputer doesn't pass
+	// that information on to us
+	// so check the progressBar text and if no error was reported, close the dialog and go back to the main window
+	// otherwise treat this as if the download was cancelled
 	else if (currentState == DOWNLOADING && state == DONE) {
 		timer->stop();
-		ui.progressBar->setValue(100);
-		markChildrenAsEnabled();
-		ui.ok->setText(tr("OK"));
-		accept();
+		if (QString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
+			updateProgressBar();
+			markChildrenAsEnabled();
+			progress_bar_text = "";
+			ui.ok->setText(tr("Retry"));
+		} else {
+			ui.progressBar->setValue(100);
+			markChildrenAsEnabled();
+			ui.ok->setText(tr("OK"));
+			accept();
+		}
 	}
 
 	// DOWNLOAD is started.
 	else if (state == DOWNLOADING) {
 		timer->start();
 		ui.progressBar->setValue(0);
+		updateProgressBar();
 		ui.progressBar->show();
 		markChildrenAsDisabled();
 	}
