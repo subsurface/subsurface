@@ -36,7 +36,7 @@ public:
 	void animateChangeLine(const QLineF& newLine);
 	int unitSystem;
 public slots:
-	void updateTicks();
+	virtual void updateTicks();
 signals:
 	void sizeChanged();
 	void maxChanged();
@@ -66,6 +66,9 @@ private slots:
 };
 
 class TimeAxis : public DiveCartesianAxis {
+	Q_OBJECT
+public:
+	virtual void updateTicks();
 protected:
 	QString textForValue(double value);
 	QColor colorForValue(double value);

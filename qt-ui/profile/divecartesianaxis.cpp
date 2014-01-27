@@ -110,7 +110,6 @@ void DiveCartesianAxis::updateTicks()
 		} else {
 			labels[i]->animateMoveTo(m.x1() - tickSize, childPos);
 		}
-		labels[i]->setVisible( i % 2 );
 	}
 
 	// Add's the rest of the needed Ticks / Text.
@@ -143,7 +142,6 @@ void DiveCartesianAxis::updateTicks()
 				label->animateMoveTo(m.x1() - tickSize, childPos);
 			}
 		}
-		label->setVisible( i % 2 );
 	}
 }
 
@@ -288,6 +286,16 @@ QString TimeAxis::textForValue(double value)
 	if (maximum() < 600 )
 		return QString("%1:%2").arg(nr).arg( (int)value%60, 2, 10, QChar('0'));
 	return  QString::number(nr);
+}
+
+void TimeAxis::updateTicks()
+{
+	DiveCartesianAxis::updateTicks();
+	if (maximum() > 600){
+		for(int i = 0; i < labels.count(); i++){
+			labels[i]->setVisible(i % 2);
+		}
+	}
 }
 
 QString TemperatureAxis::textForValue(double value)
