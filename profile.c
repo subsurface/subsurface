@@ -1355,8 +1355,7 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	if (prefs.profile_calc_ceiling)             /* reset deco information to start the calculation */
-		init_decompression(dive);
+	init_decompression(dive);
 	if (last_pi_entry)                          /* Create the new plot data */
 		free((void *)last_pi_entry);
 	last_pi_entry = populate_plot_entries(dive, dc, pi);
@@ -1364,8 +1363,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	setup_gas_sensor_pressure(dive, dc, pi);    /* Try to populate our gas pressure knowledge */
 	populate_pressure_information(dive, dc, pi);/* .. calculate missing pressure entries */
 	calculate_sac(dive, pi);                    /* Calculate sac */
-	if (prefs.profile_calc_ceiling)             /* Then, calculate deco information */
-		calculate_deco_information(dive, dc, pi, false);
+	calculate_deco_information(dive, dc, pi, false);
 	calculate_gas_information_new(dive, pi);       /* And finaly calculate gas partial pressures */
 	pi->meandepth = dive->dc.meandepth.mm;
 	analyze_plot_info(pi);
