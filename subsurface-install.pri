@@ -126,38 +126,39 @@ mac {
 	# We just need to drop a few files here and there
 
 	# This is a fake rule just to create some rules in the target file
-	nl = $$escape_expand(\\n)
 	dummy.target = dummy-only-for-var-expansion
-	dummy.commands	= $${nl}prefix = /usr$${nl}\
-BINDIR = $(prefix)/bin$${nl}\
-DATADIR = $(prefix)/share$${nl}\
-DOCDIR = $(DATADIR)/subsurface/Documentation$${nl}\
-DESKTOPDIR = $(DATADIR)/applications$${nl}\
-ICONPATH = $(DATADIR)/icons/hicolor$${nl}\
-ICONDIR = $(ICONPATH)/scalable/apps$${nl}\
-MANDIR = $(DATADIR)/man/man1$${nl}
+	dummy.commands	= $$escape_expand(\\n)prefix = /usr
+
+	QMAKE_EXTRA_VARIABLES = BINDIR DATADIR DOCDIR DESKTOPDIR ICONPATH ICONDIR MANDIR
+	BINDIR = $(prefix)/bin
+	DATADIR = $(prefix)/share
+	DOCDIR = $(EXPORT_DATADIR)/subsurface/Documentation
+	DESKTOPDIR = $(EXPORT_DATADIR)/applications
+	ICONPATH = $(EXPORT_DATADIR)/icons/hicolor
+	ICONDIR = $(EXPORT_ICONPATH)/scalable/apps
+	MANDIR = $(EXPORT_DATADIR)/man/man1
 
 	QMAKE_EXTRA_TARGETS += dummy
 
 	WINDOWSSTAGING = ./packaging/windows
 
-	target.path = /$(BINDIR)
+	target.path = /$(EXPORT_BINDIR)
 	target.files = $$TARGET
 
-	desktop.path = /$(DESKTOPDIR)
+	desktop.path = /$(EXPORT_DESKTOPDIR)
 	desktop.files = $$DESKTOP_FILE
-	manpage.path = /$(MANDIR)
+	manpage.path = /$(EXPORT_MANDIR)
 	manpage.files = $$MANPAGE
 
-	icon.path = /$(ICONDIR)
+	icon.path = /$(EXPORT_ICONDIR)
 	icon.files = $$ICON
 
-	marbledir.path = /$(DATADIR)/subsurface/data
-	doc.path = /$(DOCDIR)
+	marbledir.path = /$(EXPORT_DATADIR)/subsurface/data
+	doc.path = /$(EXPORT_DOCDIR)
 
 	doc.CONFIG += no_check_exist
 
-	translation.path = /$(DATADIR)/subsurface/translations
+	translation.path = /$(EXPORT_DATADIR)/subsurface/translations
 	translation.CONFIG += no_check_exist
 
 	INSTALLS += target desktop manpage doc marbledir translation icon
