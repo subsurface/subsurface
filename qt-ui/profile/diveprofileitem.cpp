@@ -438,6 +438,13 @@ void DiveReportedCeiling::modelDataChanged()
 	setBrush(pat);
 }
 
+void DiveCalculatedCeiling::preferencesChanged()
+{
+	QSettings s;
+	s.beginGroup("TecDetails");
+	setVisible(s.value("calcceiling").toBool());
+}
+
 void DiveReportedCeiling::preferencesChanged()
 {
 	QSettings s;

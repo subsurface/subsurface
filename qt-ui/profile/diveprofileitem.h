@@ -92,6 +92,7 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem{
 public:
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void preferencesChanged();
 };
 
 class DiveReportedCeiling : public AbstractProfilePolygonItem{
