@@ -151,12 +151,12 @@ void DiveProfileItem::modelDataChanged()
 			continue;
 
 		if ((entry == entry->max[2]) && entry->depth / 100 != last) {
-			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignTop, getColor(SAMPLE_DEEP));
+			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_DEEP));
 			last = entry->depth / 100;
 		}
 
 		if ((entry == entry->min[2]) && entry->depth / 100 != last) {
-			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
+			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignTop, getColor(SAMPLE_SHALLOW));
 			last = entry->depth / 100;
 		}
 
@@ -288,11 +288,8 @@ void DiveGasPressureItem::modelDataChanged()
 		polygons.last().push_back(point); // The polygon thta will be plotted.
 	}
 	setPolygon(boundingPoly);
-
-	//TODO: Instead of deleting all texts, move the existing ones to it's new location.
 	qDeleteAll(texts);
 	texts.clear();
-
 	int mbar, cyl;
 	int seen_cyl[MAX_CYLINDERS] = { false, };
 	int last_pressure[MAX_CYLINDERS] = { 0, };
@@ -311,8 +308,8 @@ void DiveGasPressureItem::modelDataChanged()
 		if (cyl != entry->cylinderindex) {
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
-				plot_pressure_value(mbar, entry->sec, Qt::AlignLeft | Qt::AlignBottom);
-				plot_gas_value(mbar, entry->sec, Qt::AlignLeft | Qt::AlignTop,
+				plot_pressure_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
+				plot_gas_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
 						get_o2(&dive->cylinder[cyl].gasmix),
 						get_he(&dive->cylinder[cyl].gasmix));
 				seen_cyl[cyl] = true;
@@ -324,7 +321,7 @@ void DiveGasPressureItem::modelDataChanged()
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignHCenter | Qt::AlignTop);
+			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignRight | Qt::AlignTop);
 		}
 	}
 }
@@ -334,7 +331,7 @@ void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::Alig
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
 	DiveTextItem *text = new DiveTextItem(this);
-	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar)-0.5);
 	text->setText(QString("%1 %2").arg(pressure).arg(unit));
 	text->setAlignment(flags);
 	text->setBrush(getColor(PRESSURE_TEXT));
@@ -376,6 +373,7 @@ DiveCalculatedCeiling::DiveCalculatedCeiling()
 	gradientFactor->setY(0);
 	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
 	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+	preferencesChanged();
 }
 
 void DiveCalculatedCeiling::modelDataChanged()
@@ -401,9 +399,8 @@ void DiveCalculatedCeiling::modelDataChanged()
 	setPen(QPen(QBrush(Qt::NoBrush),0));
 	setBrush(pat);
 
-	gradientFactor->setX(poly.boundingRect().width()/2);
+	gradientFactor->setX(poly.boundingRect().width()/2 + poly.boundingRect().x());
 	gradientFactor->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
-	qDebug() << gradientFactor->pos() << mapToScene(gradientFactor->pos());
 }
 
 void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

@@ -137,7 +137,7 @@ void DiveCartesianAxis::updateTicks()
 			}
 		} else {
 			if(showText){
-				label->setAlignment(Qt::AlignVCenter| Qt::AlignRight);
+				label->setAlignment(Qt::AlignVCenter| Qt::AlignLeft);
 				label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
 				label->animateMoveTo(m.x1() - tickSize, childPos);
 			}

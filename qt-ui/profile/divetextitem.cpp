@@ -57,7 +57,7 @@ void DiveTextItem::updateText()
 	qreal xPos = 0, yPos = 0;
 
 	QRectF rect = fm.boundingRect(internalText);
-	yPos = (internalAlignFlags & Qt::AlignTop) ? -rect.height() :
+	yPos = (internalAlignFlags & Qt::AlignTop) ? 0 :
 			(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
 	/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
 
