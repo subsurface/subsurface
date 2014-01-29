@@ -1091,11 +1091,16 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
-		for (j = t0 + 1; j <= t1; j++) {
+		int time_stepsize = 20;
+		if (t0 != t1 && t1 - t0 < time_stepsize)
+			time_stepsize = t1 - t0;
+		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-							  &dive->cylinder[entry->cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
+							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
 			tissue_tolerance = min_pressure;
+			if (j - t0 < time_stepsize)
+				time_stepsize = j - t0;
 		}
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
