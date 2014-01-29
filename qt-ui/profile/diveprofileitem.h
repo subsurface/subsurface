@@ -90,9 +90,12 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem{
 	Q_OBJECT
 
 public:
+	DiveCalculatedCeiling();
 	virtual void modelDataChanged();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void preferencesChanged();
+private:
+	DiveTextItem *gradientFactor;
 };
 
 class DiveReportedCeiling : public AbstractProfilePolygonItem{
