@@ -78,8 +78,6 @@ one highlights more than one dive the last highlighted dive is the _selected
 dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab
 of the *Dive Info* panel.
 
-//^
-
 [[S_ViewPanels]]
 
 image::images/main_window.jpg["The Main Window",align="center"]
@@ -256,11 +254,9 @@ The + button at the top right allows you to add more cylinders for this dive.
 The dark dustbin icon on the left allows you to delete information for a
 cylinder.
 
-Start by selecting a cylinder type. The AL80 cylinder is shown as the default
-cylinder type (you can change this default in the preferences if you usually
-dive with a different type of tank). If you wish to change the tank used on this
-dive, click on the AL80. This will bring up a dropdown list, accessible through
-a down-arrow:
+Start by selecting a cylinder type on the left-hand side of the table.  To select
+a cylinder click in the *cylinder type* box. This brings up a list button that can be
+used to display a dropdown list of cylinders:
 
 image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
@@ -279,7 +275,7 @@ fields empty. After typing the information for the cylinder then
 either press _ENTER_ on the keyboard or click outside the cell that contains
 the cursor. Add information for any additional cylinders by using the + button
 at the top right hand. Here is an example of a complete description for a
-dive using two cylinders (air and EAN40):
+dive using two cylinders (air and EAN50):
 
 image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
@@ -405,7 +401,7 @@ Now it is time to hook up your dive computer to your PC:
 your brand and type)
 
  - In _Subsurface_, from the Main Menu, select _Import -> Import From Dive Computer_.
-The following dialogue appears:
+Dialogue *A* inthe figure below appears:
 
 
 image::images/ImportFromDC1.jpg["FIGURE: Download dialogue 1",align="center"]
@@ -431,7 +427,21 @@ technical details to find the appropriate port information for your dive
 computer and, in some cases, how to do the correct settings to the operating system
 of your _Subsurface_ computer.
 
- -  Click the _OK_ button.
+ -  Click the _OK_ button. Dialogue *B* in the figure above appears.
+
+ - With communication established, watch how your data is retrieved from your
+dive computer!
+Depending on your make of computer and/or number of dives, this
+could take some time. Please be patient. The _Download_ dialogue shows a
+progress bar at the bottom of the dialogue (but for some dive computers the
+progress information could be inaccurate as we cannot determine how much downloadable
+data there is until all data have been downloaded). When download of the dive information
+is complete, all the imported dives appear
+in the Dive List, sorted by date and time. Disconnect and switch off the dive
+computer to conserve its battery power.
+If you select a particular dive, the Dive Profile panel shows an informative
+graph of dive depth against time for that particular dive.
+
 
  - If there is a problem in communicating with your dive computer, an error
 message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
@@ -441,14 +451,16 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 ****
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Check the following:
-1) Is the dive computer still in PC-communication or Upload mode?
+Check the following: 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or
 replace the battery.
 3) Is the cable faulty? Does the cable work perfectly using other software? Has
 it worked before, or is this the first time you are using the cable?
 4) Consult *Appendix A* and make sure you specified the correct Mount Point
-(see above). If your _Subsurface_ computer does not recognise the USB adaptor by
+(see above).
+5) On Unix-like operating systems, do you have write permission to the USB port? If not, consult appendix *A*.
+
+If your _Subsurface_ computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility that the cable or USB adaptor is faulty. A faulty cable is the most
 common cause of communication failure between dive computer and _Subsurface_
@@ -476,21 +488,6 @@ as well as contextual information about the dives recorded on the dive
 computer.
 ****
 
- - With communication established, watch how your data is retrieved from your
-dive computer!
-Depending on your make of computer and/or number of dives, this
-could take some time. Please be patient. The _Download_ dialogue shows a
-progress bar at the bottom of the dialogue (but for some dive computers the
-progress information could be inaccurate as we cannot determine until after all
-data was downloaded how much downloadable data there is):
-
-image::images/ImportFromDC2.jpg["FIGURE: Download dialogue 2",align="center"]
-
-When download of the dive information is complete, all the imported dives appear
-in the Dive List, sorted by date and time. Disconnect and switch off the dive
-computer to conserve its battery power.
-If you select a particular dive, the Dive Profile panel shows an informative
-graph of dive depth against time for that particular dive.
 
 [[S_EditDiveInfo]]
 ==== Updating the dive information imported from your dive computer.
@@ -609,11 +606,9 @@ automatically inserts the gas composition(% oxygen) in the table. The + button a
 the top right allows you to add more cylinders for this dive. The dark dustbin
 icon on the left allows you to delete information for a cylinder.
 
-Start by selecting a cylinder type. The AL80 cylinder is shown as the default
-cylinder type (you can change this default in the preferences if you usually
-dive with a different type of tank). If you wish to change the tank used on this
-dive, click on the AL80. This will bring up a drop-down list, accessible through
-a down-arrow:
+Start by selecting a cylinder type on the left-hand side of the table.  To select a
+cylinder click in the *cylinder type* box. This brings up a list button that can be used
+to display a dropdown list of cylinders:
 
 image::images/CylinderDataEntry2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
@@ -954,7 +949,7 @@ selection menu, select one or more CSV files. Format is detected by the file
 extension, and a common configuration dialog is presented for all the
 files with CSV extension. The configuration dialog is following:
 
-image::images/CSVDownload.jpg["FIGURE: CSV download dialogue",align="center"]
+image::images/Import_CSV1.jpg["FIGURE: CSV download dialogue",align="center"]
 
 Specify the name of the CSV file or select it from the browser button on the right.
 There are pre-configured definitions for some dive computers, e.g. the APD
@@ -976,46 +971,48 @@ listed in the *Dive List* tab of _Subsurface_.
 [[S_ImportingManualCSV]]
 ==== Importing dives from manually kept CSV file
 
-If one keeps dive logs in a spreadsheet, we do have an option to import
-those dives as well. The spreadsheet must be exported to a CSV file and
-this file can then be imported to _Subsurface_. A recommended field
-separator for the export is tabulator, as comma might be used in the
-fields themselves.
-
-Similarly to importing dives in CSV format, you need to know internals
-of the format you are going to import. However, when importing manually
+If one keeps dive logs in a spreadsheet, there is an option to import
+those dives as well. Spreadsheet data, exported as a CSV file, can
+be imported to _Subsurface_. When importing manually
 kept log files, the information needed is quite different as we are
 importing only metadata, not profile samples.
 
-a. Which character separates the different columns within a single line of data? This
-field separator should be either a comma (,), semicolon (;) or a TAB
-character. This could be determined by opening the file with a text
-editor. If it is comma-delimited, then the comma
-characters between the values are clearly visible. If no commas are evident, the file
-is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+Similarly to importing dives in CSV format (see above), one needs to
+know the internal format
+of the CSV data to import.
 
-b. Which data columns need to be imported into _Subsurface_?. We do not
-currently have any mandatory input fields, but e.g. dive duration is
-quite crucial for the log marking to make any sense. Possible options
-can be seen in following screenshot and you should include all the
-fields that are available in both your log file and in Subsurface
+a. Which character separates the different columns within a single line of data? This
+should be either a comma (,), semicolon (;) or a TAB
+character, and could be determined by opening the file with a text
+editor. If it is comma-delimited, then the comma
+characters between the values are clearly visible. If no commas are evident and the data
+are in clear columns, the file
+is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+A recommended field separator for the export is tab, as comma might be used in the
+fields themselves.
+
+b. Which columns need to be imported into _Subsurface_?. We do not
+currently have any mandatory input fields, but some, e.g. dive duration
+are crucial for the log file to make any sense. Possible options
+can be seen in the image below and one should include all the
+fields that are available in both your log file and in the Subsurface
 import.
 
-c. Unit used for depth, weight and temperature. We consider depth to be
+c. Units used for depth, weight and temperature. We consider depth to be
 either feet or meters, weight kilograms or pounds and temperature either
 Celsius or Fahrenheit. However, you can only select _Metric_ or
-_Imperial_, no mixture of them for different fields.
+_Imperial_. No mixture of unit systems is allowed for the different fields.
 
 Importing manually kept CSV log files is quite straight forward, but as
 there might be many fields and counting the field numbers is error
-prone, please do validate the imported data before saving the log file.
+prone. Therefore validation of the data to be imported is critical.
 
 To import your dives, select _Import->Import Log Files_ from the menu
-bar. If the selected file list includes any files ending with .csv, you
-are presented with the following configuration dialog (select the tab
-called _Manual dives_):
+bar. If the CSV option in the dropdown list is selected and the file list
+includes file names ending with .CSV, one can select the
+_Manual dives_ tab that will bring up the following configuration dialog:
 
-image::images/ManualCSVDownload.jpg["FIGURE: download dialog for Manual CSV logs",align="center"]
+image::images/Import_CSV2.jpg["FIGURE: Download dialog for Manual CSV logs",align="center"]
 
 Configure your input fields as appropriate, and when everything is done
 select the _OK_ button to perform the import. New dives should appear in
@@ -1033,7 +1030,8 @@ You will receive a confirmation mail with instructions and a personal *DIVERID*,
 a long number that gives access to the companion app capabilities.
 
 - Download the app from
-https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store] or from http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
+https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store] or
+from http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
 ==== Using the Subsurface companion app on your smartphone
 
@@ -1500,9 +1498,7 @@ the appropriate information from the Main Menu: _File->Preferences->Graph_.
 
 Now you need to select the print options. To do this, select _File->Print_ from
 the Main menu. The following dialogue appears (see the image on the left [A],
-below):
-
-image::images/PrintDivelog.jpg["FIGURE: Print dialogue",align="center"]
+below).
 
 Under _Print type_ you need to select one of three options:
 
@@ -1530,12 +1526,16 @@ You can _Preview_ the printed page by selecting the _Preview_ button on the
 dialogue. After preview, changes to the options in the print dialogue can be made
 to give a layout that fits personal taste.
 
+image::images/PrintDiveLog.jpg["FIGURE: Print dialogue",align="center"]
+
 Now, select the _Print_ button in the dialogue. This activates the regular print
-dialogue used by your operating system, allowing you to choose a printer and
-to set its properties. Remember to set the print resolution of the printer to
-an appropriate value by changing the printer properties. Finally, print the
-dives. Above on the right (B) is an example of the output for one particular
-dive.
+dialogue used by your operating system (image [B] in the middle, above), allowing
+you to choose a printer and to set its properties (image [C] on the right, above).
+Remember to set the print resolution of the printer to an appropriate value by changing
+the printer properties. Finally, print the dives. Below is a (rather small) example of
+the output for one particular page.
+
+image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
 
 [[S_Preferences]]
@@ -1551,6 +1551,8 @@ leave the settings panel by selecting *OK*.
 === Defaults
 
 There are four settings in the *Defaults* panel:
+
+image::images/Preferences1.jpg["FIGURE: Preferences defaults page",align="center"]
 
   ** *Lists and tables*: Here you can specify the font type and font size of the
 Dive Table panel. By decreasing the font size of the Dive table,
@@ -1569,6 +1571,8 @@ the dive list.
 the *Equipment* tab of the *Dive Notes* panel.
 
 === Units
+image::images/Preferences2.jpg["FIGURE: Preferences Units page",align="center"]
+
 Here you can choose between metric and imperial measures of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
 at the top, you can specify that all units are in the chosen measurement system
@@ -1577,6 +1581,8 @@ a mixture with some measurements being metric while others are in imperial
 measures.
 
 === Graph
+image::images/Preferences3.jpg["FIGURE: Preferences Graph page",align="center"]
+
 This panel allows two type of selections:
 
 * *Show*: Here you specify the amount of information that is shown as part of
@@ -1733,7 +1739,7 @@ computer prefers (e.g. bluetooth, USB, infrared).
 	  http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
 
 [[S_HowFindDeviceName]]
-=== How to Find the Device Name for USB devices
+=== How to Find the Device Name for USB devices and set its write permission
 [icon="images/icons/usb.jpg"]
 [NOTE]
 When you connect your dive computer by using a USB connector, usually
@@ -1782,8 +1788,22 @@ Within your terminal you should see a message similar to this one:
 
 You see that in the third line from the bottom, the USB adapter is
 detected and is connected to +ttyUSB3+. Now you use this information in
-the import settings as +/dev/ttyUSB3+. Your dive computer interface is
-connected and you should be able to import your dives.
+the import settings as +/dev/ttyUSB3+. This directs Subsurface to the correct USB port.
+
+Ensuring you have write permission to the USB serial port:
+
+On Unix-like operating systems the USB ports can only be accessed by users who are members
+of the +dialout+ group. If you are not root, the user may not be a member of that group and
+will not be able to use the USB port. Let us assume your username is 'johnB'.
+
+ - As root, type: +usermod -a -G dialout johnB+  (Ubuntu users: +sudo -a -G dialout johnB+)
+This makes johnB a member of the +dialout+ group.
+ - Type: +id johnB+     This lists all the groups that johnB belongs to and verifies that
+the appropriate group membership has been created. The +dialout+ group should be listed
+among the different IDs.
+
+With the appropriate device name (e.g. +dev/ttyUSB3+) and with write permission to the USB
+port, your dive computer interface can connect and you should be able to import your dives.
 
 [[S_HowFindBluetoothDeviceName]]
 === Setting up bluetooth enabled devices
