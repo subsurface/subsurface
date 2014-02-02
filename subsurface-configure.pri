@@ -55,7 +55,7 @@ PKG_CONFIG_OUT = $$system($$PKG_CONFIG --version 2> $$NUL)
 #
 !isEmpty(LIBDCDEVEL) {
 	# find it next to our sources
-	INCLUDEPATH += ../libdivecomputer/include
+	INCLUDEPATH += ../libdivecomputer/include $$OUT_PWD/../libdivecomputer/include
 	LIBS += ../libdivecomputer/src/.libs/libdivecomputer.a
 	LIBDC_LA = ../libdivecomputer/src/libdivecomputer.la
 } else:!isEmpty(CROSS_PATH):exists($${CROSS_PATH}"/lib/libdivecomputer.a"):exists($${CROSS_PATH}"/lib/libusb-1.0.a") {
