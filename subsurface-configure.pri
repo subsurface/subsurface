@@ -89,11 +89,6 @@ PKG_CONFIG_OUT = $$system($$PKG_CONFIG --version 2> $$NUL)
 # run them. They also come with pkg-config files, but those are missing on
 # Mac (where they are part of the XCode-supplied tools).
 #
-XML2_CFLAGS = $$system(xml2-config --cflags 2>$$NUL)
-XSLT_CFLAGS = $$system(xslt-config --cflags 2>$$NUL)
-XML2_LIBS = $$system(xml2-config --libs 2>$$NUL)
-XSLT_LIBS = $$system(xslt-config --libs 2>$$NUL)
-
 link_pkgconfig {
 	isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
 		XML2_CFLAGS = $$system($$PKG_CONFIG --cflags libxml2 2> $$NUL)
@@ -107,11 +102,20 @@ link_pkgconfig {
 		XSLT_CFLAGS = $$system($$PKG_CONFIG --cflags libxslt 2> $$NUL)
 		XSLT_LIBS = $$system($$PKG_CONFIG --libs libxslt 2> $$NUL)
 	}
-	isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
-		error("Could not find libxml2. Did you forget to install it?")
-	isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS): \
-		error("Could not find libxslt. Did you forget to install it?")
 }
+isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS) {
+	XML2_CFLAGS = $$system(xml2-config --cflags 2>$$NUL)
+	XML2_LIBS = $$system(xml2-config --libs 2>$$NUL)
+}
+isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS) {
+	XSLT_CFLAGS = $$system(xslt-config --cflags 2>$$NUL)
+	XSLT_LIBS = $$system(xslt-config --libs 2>$$NUL)
+}
+isEmpty(XML2_CFLAGS)|isEmpty(XML2_LIBS): \
+	error("Could not find libxml2. Did you forget to install it?")
+isEmpty(XSLT_CFLAGS)|isEmpty(XSLT_LIBS): \
+	error("Could not find libxslt. Did you forget to install it?")
+
 
 QMAKE_CFLAGS *= $$XML2_CFLAGS $$XSLT_CFLAGS
 QMAKE_CXXFLAGS *= $$XML2_CFLAGS $$XSLT_CFLAGS
