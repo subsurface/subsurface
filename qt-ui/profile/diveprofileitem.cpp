@@ -432,7 +432,7 @@ void DiveCalculatedTissue::preferencesChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");
-	setVisible(s.value("calcalltissues").toBool());
+	setVisible(s.value("calcalltissues").toBool() && s.value("calcceiling").toBool());
 }
 
 void DiveReportedCeiling::modelDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
