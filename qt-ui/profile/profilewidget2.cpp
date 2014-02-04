@@ -14,6 +14,7 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QDebug>
+#include <QScrollBar>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -24,6 +25,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
 	currentState(INVALID),
+	zoomLevel(0),
 	stateMachine(new QStateMachine(this)),
 	background (new DivePixmapItem()),
 	profileYAxis(new DepthAxis()),
@@ -50,7 +52,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-
+	setMouseTracking(true);
 	// Creating the needed items.
 	// ORDER: {BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
@@ -476,3 +478,72 @@ void ProfileWidget2::fixBackgroundPos()
 	bg->setPixmap(p);
 	bg->setX(mapToScene(x, 0).x());
 }
+
+void ProfileWidget2::wheelEvent(QWheelEvent* event)
+{
+// 	if (!toolTip)
+// 		return;
+
+	// doesn't seem to work for Qt 4.8.1
+	// setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+	// Scale the view / do the zoom
+// 	QPoint toolTipPos = mapFromScene(toolTip->pos());
+
+	double scaleFactor = 1.15;
+	if (event->delta() > 0 && zoomLevel < 20) {
+		scale(scaleFactor, scaleFactor);
+		zoomLevel++;
+	} else if (event->delta() < 0 && zoomLevel > 0) {
+		// Zooming out
+		scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+		zoomLevel--;
+	}
+
+	scrollViewTo(event->pos());
+// 	toolTip->setPos(mapToScene(toolTipPos));
+// 	toolBarProxy->setPos(mapToScene(TOOLBAR_POS));
+// 	if (zoomLevel != 0) {
+// 		toolBarProxy->hide();
+// 	} else {
+// 		toolBarProxy->show();
+// 	}
+}
+
+void ProfileWidget2::scrollViewTo(const QPoint& pos)
+{
+/* since we cannot use translate() directly on the scene we hack on
+ * the scroll bars (hidden) functionality */
+	if (!zoomLevel)
+		return;
+	QScrollBar *vs = verticalScrollBar();
+	QScrollBar *hs = horizontalScrollBar();
+	const qreal yRat = pos.y() / sceneRect().height();
+	const qreal xRat = pos.x() / sceneRect().width();
+	const int vMax = vs->maximum();
+	const int hMax = hs->maximum();
+	const int vMin = vs->minimum();
+	const int hMin = hs->minimum();
+	/* QScrollBar receives crazy negative values for minimum */
+	vs->setValue(yRat * (vMax - vMin) + vMin * 0.9);
+	hs->setValue(xRat * (hMax - hMin) + hMin * 0.9);
+}
+
+void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
+{
+// 	if (!toolTip)
+// 		return;
+//
+// 	toolTip->refresh(&gc,  mapToScene(event->pos()));
+// 	QPoint toolTipPos = mapFromScene(toolTip->pos());
+
+
+	if (zoomLevel == 0) {
+		QGraphicsView::mouseMoveEvent(event);
+	} else {/*
+		toolTip->setPos(mapToScene(toolTipPos));
+		toolBarProxy->setPos(mapToScene(TOOLBAR_POS));*/
+		scrollViewTo(event->pos());
+	}
+}
+
