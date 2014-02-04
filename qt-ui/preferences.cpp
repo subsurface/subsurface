@@ -157,6 +157,7 @@ void PreferencesDialog::syncSettings()
 	SB("redceiling", ui.red_ceiling);
 	SB("calcceiling", ui.calculated_ceiling);
 	SB("calcceiling3m", ui.increment_3m);
+	prefs.calc_ceiling_3m_incr = ui.increment_3m->isChecked() ? 1 : 0;
 	SB("calcndltts", ui.calc_ndl_tts);
 	SB("calcalltissues", ui.all_tissues);
 	s.setValue("gflow", ui.gflow->value());

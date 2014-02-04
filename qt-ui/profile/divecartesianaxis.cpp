@@ -21,12 +21,16 @@ static QPen gridPen(){
 }
 void DiveCartesianAxis::setMaximum(double maximum)
 {
+	if (max == maximum)
+		return;
 	max = maximum;
 	emit maxChanged();
 }
 
 void DiveCartesianAxis::setMinimum(double minimum)
 {
+	if (min == minimum)
+		return;
 	min = minimum;
 }
 
@@ -255,7 +259,7 @@ QColor DepthAxis::colorForValue(double value)
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis()
+DepthAxis::DepthAxis() : showWithPPGraph(false)
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 	settingsChanged(); // force the correct size of the line.
@@ -267,11 +271,16 @@ void DepthAxis::settingsChanged()
 
 	s.beginGroup("TecDetails");
 	bool ppGraph = s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool();
+	if ( ppGraph == showWithPPGraph){
+		return;
+	}
+
 	if (ppGraph) {
 		animateChangeLine(QLineF(0,2,0,60));
 	} else {
 		animateChangeLine(QLineF(0,2,0,98));
 	}
+	showWithPPGraph = ppGraph;
 }
 
 QColor TimeAxis::colorForValue(double value)
@@ -419,6 +428,9 @@ void PartialGasPressureAxis::preferencesChanged()
 		max = model->po2Max();
 
 	qreal pp = floor(max * 10.0) / 10.0 + 0.2;
+	if (maximum() == pp)
+		return;
+
 	setMaximum(pp);
 	setTickInterval( pp > 4 ? 0.5 : 0.25 );
 	updateTicks();

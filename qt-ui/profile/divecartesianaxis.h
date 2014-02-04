@@ -63,6 +63,8 @@ protected:
 	QColor colorForValue(double value);
 private slots:
 	void settingsChanged();
+private:
+	bool showWithPPGraph;
 };
 
 class TimeAxis : public DiveCartesianAxis {

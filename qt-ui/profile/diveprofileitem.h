@@ -123,7 +123,7 @@ class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
 	DiveCalculatedTissue();
-	void preferencesChanged();
+	virtual void preferencesChanged();
 };
 
 class MeanDepthLine : public DiveLineItem {

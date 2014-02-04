@@ -471,9 +471,8 @@ void DiveCalculatedCeiling::preferencesChanged()
 	if ( dataModel && is3mIncrement != shouldShow3mIncrement){
 		// recalculate that part.
 		dataModel->calculateDecompression();
-		is3mIncrement = shouldShow3mIncrement;
 	}
-
+	is3mIncrement = shouldShow3mIncrement;
 	setVisible(s.value("calcceiling").toBool());
 }
 
