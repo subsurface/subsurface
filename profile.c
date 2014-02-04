@@ -1151,7 +1151,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 /* Let's try to do some deco calculations.
  * Needs to be run before calculate_gas_information so we know that if we have a po2, where in ccr-mode.
  */
-static void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
+void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;

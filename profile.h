@@ -53,6 +53,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi);
 struct plot_info *analyze_plot_info(struct plot_info *pi);
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi);
+void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode);
 
 struct ev_select {
 	char *ev_name;

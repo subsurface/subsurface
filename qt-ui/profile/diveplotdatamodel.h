@@ -3,6 +3,8 @@
 
 #include <QAbstractTableModel>
 
+#include "display.h"
+
 struct dive;
 struct plot_data;
 struct plot_info;
@@ -19,16 +21,16 @@ public:
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 	void clear();
-	void setDive(struct dive *d, const plot_info& pInfo);
-	plot_data* data();
+	void setDive(struct dive *d,  const plot_info& pInfo);
+	const plot_info& data() const;
 	int id() const;
 	double pheMax();
 	double pn2Max();
 	double po2Max();
 	void emitDataChanged();
+	void calculateDecompression();
 private:
-	int sampleCount;
-	plot_data *plotData;
+	plot_info pInfo;
 	int diveId;
 };
 
