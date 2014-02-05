@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QSettings>
 #include <QGraphicsView>
+#include <QDebug>
 
 #define PORT_IN_PROGRESS 1
 #ifdef PORT_IN_PROGRESS
@@ -223,7 +224,8 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis* axis)
 void ToolTipItem::refresh(const QPointF& pos)
 {
 	clear();
-	int time = timeAxis->posAtValue( pos.x() );
+	int time = timeAxis->valueAt( pos );
+	qDebug() << "time" << time;
 	char buffer[500];
 	get_plot_details_new(&pInfo, time, buffer, 500);
 	addToolTip(QString(buffer));

@@ -525,7 +525,7 @@ void ProfileWidget2::scrollViewTo(const QPoint& pos)
 
 void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
 {
-	//toolTipItem->refresh(&gc,  mapToScene(event->pos()));
+	toolTipItem->refresh(mapToScene(event->pos()));
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);
