@@ -56,6 +56,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 	setMouseTracking(true);
 
+	toolTipItem->setTimeAxis(timeAxis);
 	scene()->addItem(toolTipItem);
 
 	// Creating the needed items.
@@ -387,6 +388,8 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	int maxdepth = get_maxdepth(&pInfo);
 
 	dataModel->setDive(current_dive, pInfo);
+	toolTipItem->setPlotInfo(pInfo);
+
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);

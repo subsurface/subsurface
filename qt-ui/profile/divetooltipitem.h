@@ -6,7 +6,9 @@
 #include <QPair>
 #include <QRectF>
 #include <QIcon>
+#include "display.h"
 
+class DiveCartesianAxis;
 class QGraphicsLineItem;
 class QGraphicsSimpleTextItem;
 class QGraphicsPixmapItem;
@@ -33,10 +35,13 @@ public:
 	void clear();
 	void addToolTip(const QString& toolTip, const QIcon& icon = QIcon());
 	void refresh(struct graphics_context* gc, QPointF pos);
-	bool isExpanded();
+	void refresh(const QPointF& pos);
+	bool isExpanded() const;
 	void persistPos();
 	void readPos();
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+	void setTimeAxis(DiveCartesianAxis *axis);
+	void setPlotInfo(const plot_info& plot);
 public slots:
 	void setRect(const QRectF& rect);
 
@@ -49,6 +54,8 @@ private:
 	Status status;
 	QRectF rectangle;
 	QRectF nextRectangle;
+	DiveCartesianAxis *timeAxis;
+	plot_info pInfo;
 };
 
 #endif

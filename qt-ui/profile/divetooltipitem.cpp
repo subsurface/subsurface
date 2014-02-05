@@ -1,4 +1,6 @@
 #include "divetooltipitem.h"
+#include "divecartesianaxis.h"
+#include "profile.h"
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QPen>
@@ -176,7 +178,7 @@ void ToolTipItem::updateTitlePosition()
 	}
 }
 
-bool ToolTipItem::isExpanded() {
+bool ToolTipItem::isExpanded() const {
 	return status == EXPANDED;
 }
 
@@ -206,4 +208,29 @@ void ToolTipItem::readPos()
 		value = QPointF(0,0);
 	}
 	setPos(value);
+}
+
+void ToolTipItem::setPlotInfo(const plot_info& plot)
+{
+	pInfo = plot;
+}
+
+void ToolTipItem::setTimeAxis(DiveCartesianAxis* axis)
+{
+	timeAxis = axis;
+}
+
+void ToolTipItem::refresh(const QPointF& pos)
+{
+	clear();
+	int time = timeAxis->posAtValue( pos.x() );
+	char buffer[500];
+	get_plot_details_new(&pInfo, time, buffer, 500);
+	addToolTip(QString(buffer));
+
+	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
+	Q_FOREACH(QGraphicsItem *item, items) {
+		if (!item->toolTip().isEmpty())
+			addToolTip(item->toolTip());
+	}
 }

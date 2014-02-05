@@ -1538,6 +1538,20 @@ void get_plot_details(struct graphics_context *gc, int time, char *buf, int bufs
 		plot_string(entry, buf, bufsize, pi->has_ndl);
 }
 
+void get_plot_details_new(struct plot_info *pi, int time, char *buf, int bufsize)
+{
+	struct plot_data *entry = NULL;
+	int i;
+
+	for (i = 0; i < pi->nr; i++) {
+		entry = pi->entry + i;
+		if (entry->sec >= time)
+			break;
+	}
+	if (entry)
+		plot_string(entry, buf, bufsize, pi->has_ndl);
+}
+
 /* Compare two plot_data entries and writes the results into a string */
 void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum)
 {
