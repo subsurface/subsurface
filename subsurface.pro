@@ -73,7 +73,8 @@ HEADERS = \
 	qt-ui/profile/divecartesianaxis.h \
 	qt-ui/profile/diveplotdatamodel.h \
 	qt-ui/profile/diveprofileitem.h \
-	qt-ui/profile/diveeventitem.h
+	qt-ui/profile/diveeventitem.h \
+	qt-ui/profile/divetooltipitem.h
 
 SOURCES =  \
 	deco.c \
@@ -134,7 +135,8 @@ SOURCES =  \
 	qt-ui/profile/divecartesianaxis.cpp \
 	qt-ui/profile/diveplotdatamodel.cpp \
 	qt-ui/profile/diveprofileitem.cpp \
-	qt-ui/profile/diveeventitem.cpp
+	qt-ui/profile/diveeventitem.cpp \
+	qt-ui/profile/divetooltipitem.cpp
 
 linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
