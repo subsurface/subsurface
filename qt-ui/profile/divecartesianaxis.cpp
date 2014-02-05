@@ -259,18 +259,26 @@ QColor DepthAxis::colorForValue(double value)
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis() : showWithPPGraph(false)
-{
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-	settingsChanged(); // force the correct size of the line.
-}
-
-void DepthAxis::settingsChanged()
+static bool isPPGraphEnabled()
 {
 	QSettings s;
 
 	s.beginGroup("TecDetails");
-	bool ppGraph = s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool();
+	return s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool();
+}
+
+DepthAxis::DepthAxis() : showWithPPGraph(false)
+{
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+
+	 // force the correct size of the line.
+	showWithPPGraph = !isPPGraphEnabled();
+	settingsChanged();
+}
+
+void DepthAxis::settingsChanged()
+{
+	bool ppGraph = isPPGraphEnabled();
 	if ( ppGraph == showWithPPGraph){
 		return;
 	}
