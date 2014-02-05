@@ -518,15 +518,10 @@ void ProfileWidget2::scrollViewTo(const QPoint& pos)
 		return;
 	QScrollBar *vs = verticalScrollBar();
 	QScrollBar *hs = horizontalScrollBar();
-	const qreal yRat = pos.y() / sceneRect().height();
-	const qreal xRat = pos.x() / sceneRect().width();
-	const int vMax = vs->maximum();
-	const int hMax = hs->maximum();
-	const int vMin = vs->minimum();
-	const int hMin = hs->minimum();
-	/* QScrollBar receives crazy negative values for minimum */
-	vs->setValue(yRat * (vMax - vMin) + vMin * 0.9);
-	hs->setValue(xRat * (hMax - hMin) + hMin * 0.9);
+	const qreal yRat = (qreal)pos.y() / viewport()->height();
+	const qreal xRat = (qreal)pos.x() / viewport()->width();
+	vs->setValue(yRat * vs->maximum());
+	hs->setValue(xRat * hs->maximum());
 }
 
 void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
