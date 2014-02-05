@@ -671,16 +671,16 @@ the new data should be saved.
 Maybe you have a lot of dives logged using other dive log software. You don't
 have to type all information by hand into _Subsurface_, because you can probably
 import your divelog. _Subsurface_ will import divelogs from a range of other
-dive log software. Some software is supported natively (e.g. divelogs.de,
-JDiveLog, MacDive, and Suunto DM4), for others you have to export your logbook
-to XML and then _Subsurface_ can import that XML file (Suunto DM3, DivingLog).
+dive log software. Some software is supported natively, for others you have to
+export your logbook to XML and then _Subsurface_ can import that XML file.
 We do support importing CSV log files, with APD LogViewer, XP5 and Sensus being
-preconfigured, but the import being flexible, our users can configure their own
-imports as well. Also manually kept log files (e.g. in spreadsheet) can be
+preconfigured, but the import being flexible, users can configure their own
+imports as well. Manually kept log files (e.g. in spreadsheet) can also be
 imported by configuring the CSV import.
 _Subsurface_ can also import UDDF and UDCF files that are used by some divelog
 software and even some divecomputers like the Heinrichs & Weikamp DR5. Finally,
-for some divelog software we currently suggest to import your logbook first
+for some divelog software like Mares Dive Organiser we currently suggest to
+import your logbook first
 into a webservice like _divelogs.de_ and then import them from there with
 _Subsurface_, as divelogs.de supports a few additional logbook formats that
 _Subsurface_ currently cannot parse.
@@ -691,84 +691,30 @@ there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) _Subsurface_
 will not create duplicate entries.
 
-[[S_ImportingDivesSuunto]]
-==== Importing dives from *Suunto Divemanager 3 (DM3)*
+==== Using the universal import dialogue
 
-Before you can start importing dives from 'Suunto Divemanager', you first
-have to export the dives you want to import. _Subsurface_ does not import
-directly from the 'Suunto Divemanager' log files. The following procedures
-can be used for Linux and Windows.
+Importing dives from other software is performed through a unified interface that
+is activated by selecting _Import_ from the Main Menu, then clicking on
+_Import Log Files_. This brings up the dialogue *A* below.
 
-===== Export from *Suunto Divemanager*
+image::images/Import1.jpg["FIGURE: Import dialogue: step 1",align="center"]
 
- - Start 'Suunto Divemanager' and log in with the name containing the logs
- - Do not start the import wizard to import dives from your computer.
- - In the navigation tree on the left side of the program-window, select your
-dives.
- - Within the list of dives, select the dives you would like to import later:
-	* To select certain dives: hold 'ctrl' and click the dive
-	* To select all dives:  Select the first dive, hold down shift and select the
-last dive
- - With the dives marked, use the program menu 'File -> Export'
- - The export pop-up will show
- - Within this pop-up, there is one field called Export Path.
-	* Click the browse button next to the field Export Path
-		** A file-manager like window pops up
-		** Navigate to the directory where you want to store the Divelog.SDE file
-		** Optionally change the name of the file you want to save
-		** Click 'Save'
-	* You are back in the Export pop-up. Press the button 'Export'
- - Your dives are now exported to the file Divelogs.SDE.
-
-===== Reading Suunto Divemanager Export in Subsurface
-
-The file Divelogs.SDE can now be opened (or imported) in _Subsurface_.
-
-[[S_ImportingDivesSuuntoDM4]]
-==== Importing dives from *Suunto Divemanager 4 (DM4)*
-
-To import divelog from 'Suunto DM4', you need to locate the DM4 database
-where the dives are stored. You can either look for the original
-database or take a backup of the dives. Both methods are described here.
-
-===== Locating the Suunto DM4 database
-
- * Start Suunto DM4
- * Select 'Help -> About'
- * Click 'Copy' after text 'Copy log folder path to clipboard'
- * Now open Windows Explorer
- * Paste the address to the path box at the top of the File Explorer
- * The database is called DM4.db
-
-===== Backing up Suunto DM4
-
- * Start Suunto DM4
- * Select 'File - Create backup'
- * From the file menu select the location and name for the backup, we'll
-   use DM4 in here with the default extension .bak
- * Click 'Save'
- * Your dives are now exported to the file DM4.bak
-
-===== Reading Suunto DM4 backup in _Subsurface_
-
-Importing the logs from DM4 does not require any special steps. You just
-do the following:
-
- * Open the following menu 'File -> Import File(s)'
- * Browse your directories to the location where your DM4 backup is
-   stored
- * Select the backup file you want to import and click 'Open'
-
-It is also possible to do the importing from command line:
-
-      subsurface MyDives.xml --import DM4.bak
+Towards the bottom right is a dropdown selector with a default lable
+of _Dive Log Files_ which gives access to the different types of direct imports
+available, as in dialogue *B*, above. Currently these are XML, UDDF, UDCF,
+JDiveLog, Suunto Dive Manager (DM3 and DM4), MacDive (XML), DivingLog 5.0 (XML),
+Kenozooid (UDDF) and CSV dive logs. Selecting
+the appropriate file in the file list of the dialogue opens the imported dive
+log in the _Subsurface_ *Dive List*.
 
 ==== Importing from Mares Dive Organiser V2.1
 
 Mares Dive Organiser is a Windows application. The dive log is kept as a
 Microsoft SQL Compact Edition data base with a .SDF filename extension. The
 data base includes all Dive Organiser-registered divers on the particular
-computer and all Mares dive computers used. The safest way to obtain a copy
+computer and all Mares dive computers used. Since
+Mares utilise proprietory Windows software not compatible with multi-platform software,
+these dive logs cannot be directly imported into _Subsurface_. The safest way to obtain a copy
 of this data base is, within Dive Organiser, to select Database -> Backup
 from the main menu and to back up the data base to your desk top. This
 creates a zipped file DiveOrganiserxxxxx.dbf. Rename the file to
@@ -790,110 +736,15 @@ _Subsurface_.
 
 The import of dive information from _divelogs.de_ is simple, using a single
 dialogue box. Select _Import->Import form Divelogs.de_ from the Main Menu. This
-brings up a dialogue box (see figure on left [A] below). You need to enter a
+brings up a dialogue box (see figure on left [*A*] below). You need to enter a
 user-ID and password for _divelogs.de_ into the appropriate fields. Then select
 the _Download_ button. Download from _divelogs.de_ starts immediately, evident
 on a progress bar in the dialogue box. At the and of the download, the
-successful status is indicated (see figure on the right [B], below). Select the
+successful status is indicated (see figure on the right [*B*], below). Select the
 _Apply_ button. The imported dives appear in the *Dive List* panel.
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 
-
-==== Importing dives from *MacDive*
-
-Importing logs from MacDive is as easy as it gets. Do the following
-steps in Subsurface:
-
- - Open the following menu _File - Import File(s)_
- - Browse your directories to the location where your MacDive logs are
-   stored
- - Select the log file(s) you want to import and click 'open'
- - Click the OK button in the pop-up
-
-After a few moments, you see your existing logs in _Subsurface_. Now you can
-edit your dives like explained in the section <<S_EditDiveInfo, Updating the
-Dive Information>>.
-
-_Subsurface_ imports all the relevant dive information
-excluding the used equipment and diver name.
-
-It is also possible to do the import from command line:
-
-      subsurface MyDives.xml --import MacDiveDives.xml
-
-[[S_ImportingDivinglog]]
-==== Importing dives from *DivingLog 5.0*
-
-Before you can start importing dives from _DivingLog_ you first have to
-export those dives. Unfortunately DivingLog XML files give us no
-indication on the preferences set on your system. So in order for
-_Subsurface_ to be able to successfully import XML files from DivingLog
-you first need to make sure that your copy of DivingLog is configured
-to use the Metric system (you can easily change this in 'File ->
-Preferences -> Units and Language' by clicking the 'Metric'
-button). Then do the following:
-
- - In Divinglog open the 'File -> Export -> XML' menu
- - Select the dives that you want to export
- - Click on the export button and select the filename
-
-This file can now be opened in _Subsurface_ (as described in the previous
-sections).
-
-[[S_ImportingDivesJDiveLog]]
-==== Importing dives from *JDiveLog*
-
-JDiveLog stores its information in files with the extension of .jlb that contain
-all the information  except images  in XML format.
-
-By using  _File -> Import File(s)_ from the Main Menu you get a pop-up asking
-for the file name.  To import your JDiveLog file(s) do the following:
-
- - Open _File -> Import File(s)_ on the menu
- - Browse your directories to the location where your *.jlb file is
- - Select your existing *.jlb file and click 'open'
- - Click the OK button in the pop-up
-
-After a few moments, you see your existing logs in _Subsurface_. Now you can
-edit your dives like explained in the section <<S_EditDiveInfo, Updating the
-Dive Information>>.
-
-Information that is imported from JDiveLog into the *location* field:
-
- - Extended dive location information
-
-Information that is merged into the *notes* field:
-
- - Used amount of weight
- - Used type of suit
- - Used type of gloves
- - Type of dive
- - Dive activity
-
-Alternatively, you can start _Subsurface_ with the --import command line
-which will have the same effect:
-
-      subsurface MyDives.xml --import JDiveLogDives.jlb
-
-will open your divelog (assuming that's called MyDives.xml) and then
-import the dives from JdivelogDives.jlb. You can now save the combined
-divelog back as MyDives.xml.
-
-[[S_Importingkenozooid]]
-==== Importing dives from *Kenozooid*
-
-_Kenozooid_ uses UDDF to store dives and is tested to work with _Subsurface_.
-Make sure you are not using compressed files when importing to _Subsurface_
-or uncompress them manually beforehand.
-
-[[S_ImportingUDDF]]
-==== Importing UDDF Dives
-
-_Subsurface_ supports UDDF as a generic import format.
-Some attributes in your file may not get processed properly. Select
-_Import->Import Files_ from the Main Menu. Then select the UDDF file to
-be imported.
 
 [[S_ImportingCSV]]
 ==== Importing dives in CSV format
@@ -1151,9 +1002,9 @@ You have to download dive(s) from a dive computer or enter dives manually into
 _Subsurface_ before obtaining the GPS coordinates from the server. The download
 dialog can be reached via _Ctrl+G_ or from the _Subsurface_ Main Menu _Import
 -> Import GPS data from Subsurface Service_, resulting in the image on the
-left (A), below. On first use the DIVERID text box will be blank. Provide the
+left (*A*), below. On first use the DIVERID text box will be blank. Provide the
 DIVERID. Then select the _Download_ button and the download begins. When this
-is completed you see the screen on the right (B), below:
+is completed you see the screen on the right (*B*), below:
 
 image::images/DownloadGPS.jpg["FIGURE: Downloading Companion app GPS data",align="center"]
 
@@ -1340,7 +1191,7 @@ Many actions within _Subsurface_ are dependent on a context menu that is used
 mostly to manipulate  groups of dives. The context menu is found by selecting
 a dive or a group of dives and then right-clicking.
 
-image::images/ContextMenu.png["Figure: Context Menu",align="center"]
+image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
 
 The context menu is used in many manipulations described below.
 
