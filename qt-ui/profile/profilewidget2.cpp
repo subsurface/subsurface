@@ -351,7 +351,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// Starting the transitions:
 	stateMachine->start();
-
+	scene()->installEventFilter(this);
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
@@ -533,5 +533,15 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
 		toolTipItem->setPos(mapToScene(toolTipPos));
 		scrollViewTo(event->pos());
 	}
+}
+
+bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
+{
+	QGraphicsScene *s = qobject_cast<QGraphicsScene*>(object);
+	if (s && event->type() == QEvent::GraphicsSceneHelp){
+		event->ignore();
+		return true;
+	}
+	return QGraphicsView::eventFilter(object, event);
 }
 

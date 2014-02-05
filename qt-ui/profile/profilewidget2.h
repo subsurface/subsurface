@@ -51,6 +51,7 @@ public:
 
 	ProfileWidget2(QWidget *parent);
 	void plotDives(QList<dive*> dives);
+	virtual bool eventFilter(QObject*, QEvent*);
 
 public slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
