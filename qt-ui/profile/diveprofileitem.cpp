@@ -113,12 +113,13 @@ void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	QPen pen;
 	pen.setCosmetic(true);
 	pen.setWidth(2);
+	QPolygonF poly = polygon();
 	// This paints the colors of the velocities.
 	for (int i = 1, count = dataModel->rowCount(); i < count; i++) {
 		QModelIndex colorIndex = dataModel->index(i, DivePlotDataModel::COLOR);
 		pen.setBrush(QBrush(colorIndex.data(Qt::BackgroundRole).value<QColor>()));
 		painter->setPen(pen);
-		painter->drawLine(polygon()[i-1],polygon()[i]);
+		painter->drawLine(poly[i-1],poly[i]);
 	}
 }
 

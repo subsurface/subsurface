@@ -225,7 +225,6 @@ void ToolTipItem::refresh(const QPointF& pos)
 {
 	clear();
 	int time = timeAxis->valueAt( pos );
-	qDebug() << "time" << time;
 	char buffer[500];
 	get_plot_details_new(&pInfo, time, buffer, 500);
 	addToolTip(QString(buffer));
