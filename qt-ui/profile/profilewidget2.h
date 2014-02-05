@@ -16,6 +16,7 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 
+class ToolTipItem;
 class MeanDepthLine;
 class DiveReportedCeiling;
 class DiveTextItem;
@@ -75,6 +76,7 @@ private:
 	QStateMachine *stateMachine;
 	int zoomLevel;
 	DivePixmapItem *background ;
+	ToolTipItem *toolTipItem;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.

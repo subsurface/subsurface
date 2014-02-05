@@ -8,6 +8,7 @@
 #include "profile.h"
 #include "diveeventitem.h"
 #include "divetextitem.h"
+#include "divetooltipitem.h"
 #include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
@@ -28,6 +29,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	zoomLevel(0),
 	stateMachine(new QStateMachine(this)),
 	background (new DivePixmapItem()),
+	toolTipItem(new ToolTipItem()),
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
@@ -53,6 +55,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 	setMouseTracking(true);
+
+	scene()->addItem(toolTipItem);
+
 	// Creating the needed items.
 	// ORDER: {BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
@@ -481,14 +486,11 @@ void ProfileWidget2::fixBackgroundPos()
 
 void ProfileWidget2::wheelEvent(QWheelEvent* event)
 {
-// 	if (!toolTip)
-// 		return;
-
 	// doesn't seem to work for Qt 4.8.1
 	// setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	// Scale the view / do the zoom
-// 	QPoint toolTipPos = mapFromScene(toolTip->pos());
+	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 
 	double scaleFactor = 1.15;
 	if (event->delta() > 0 && zoomLevel < 20) {
@@ -501,13 +503,7 @@ void ProfileWidget2::wheelEvent(QWheelEvent* event)
 	}
 
 	scrollViewTo(event->pos());
-// 	toolTip->setPos(mapToScene(toolTipPos));
-// 	toolBarProxy->setPos(mapToScene(TOOLBAR_POS));
-// 	if (zoomLevel != 0) {
-// 		toolBarProxy->hide();
-// 	} else {
-// 		toolBarProxy->show();
-// 	}
+	toolTipItem->setPos(mapToScene(toolTipPos));
 }
 
 void ProfileWidget2::scrollViewTo(const QPoint& pos)
@@ -526,18 +522,12 @@ void ProfileWidget2::scrollViewTo(const QPoint& pos)
 
 void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
 {
-// 	if (!toolTip)
-// 		return;
-//
-// 	toolTip->refresh(&gc,  mapToScene(event->pos()));
-// 	QPoint toolTipPos = mapFromScene(toolTip->pos());
-
-
+	//toolTipItem->refresh(&gc,  mapToScene(event->pos()));
+	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);
-	} else {/*
-		toolTip->setPos(mapToScene(toolTipPos));
-		toolBarProxy->setPos(mapToScene(TOOLBAR_POS));*/
+	} else {
+		toolTipItem->setPos(mapToScene(toolTipPos));
 		scrollViewTo(event->pos());
 	}
 }
