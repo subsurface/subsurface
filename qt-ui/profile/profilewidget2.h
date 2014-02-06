@@ -63,14 +63,7 @@ protected:
 
 signals:
 	void startProfileState();
-	void startAddState();
-	void startPlanState();
 	void startEmptyState();
-	void startEditState();
-	void startHideGasState();
-	void startShowGasState();
-	void startShowTissueState();
-	void startHideTissueState();
 private:
 	DivePlotDataModel *dataModel;
 	State currentState;

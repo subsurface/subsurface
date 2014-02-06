@@ -208,44 +208,17 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	// TopLevel States
 	QState *emptyState = new QState();
 	QState *profileState = new QState();
-	QState *editState = new QState();
-	QState *addState = new QState();
-	QState *planState = new QState();
 
 	// Conections:
 	stateMachine->addState(emptyState);
 	stateMachine->addState(profileState);
-	stateMachine->addState(editState);
-	stateMachine->addState(addState);
-	stateMachine->addState(planState);
 	stateMachine->setInitialState(emptyState);
 
 	// All Empty State Connections.
 	QSignalTransition *tEmptyToProfile = emptyState->addTransition(this, SIGNAL(startProfileState()), profileState);
-	QSignalTransition *tEmptyToAdd = emptyState->addTransition(this, SIGNAL(startAddState()), addState);
-	QSignalTransition *tEmptyToPlan = emptyState->addTransition(this, SIGNAL(startPlanState()), planState);
-
-	// All Plan Connections
-	QSignalTransition *tPlanToEmpty = planState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
-	QSignalTransition *tPlanToProfile = planState->addTransition(this, SIGNAL(startProfileState()), profileState);
-	QSignalTransition *tPlanToAdd = planState->addTransition(this, SIGNAL(startAddState()), addState);
-
-	// All Add Dive Connections
-	QSignalTransition *tAddToEmpty = addState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
-	QSignalTransition *tAddToPlan = addState->addTransition(this, SIGNAL(startPlanState()), planState);
-	QSignalTransition *tAddToProfile = addState->addTransition(this, SIGNAL(startProfileState()), profileState);
 
 	// All Profile State Connections
-	QSignalTransition *tProfileToEdit = profileState->addTransition(this, SIGNAL(startEditState()), editState);
 	QSignalTransition *tProfileToEmpty = profileState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
-	QSignalTransition *tProfileToPlan = profileState->addTransition(this, SIGNAL(startPlanState()), planState);
-	QSignalTransition *tProfileToAdd = profileState->addTransition(this, SIGNAL(startAddState()), addState);
-
-	// All "Edit" state connections
-	QSignalTransition *tEditToEmpty = editState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
-	QSignalTransition *tEditToPlan = editState->addTransition(this, SIGNAL(startPlanState()), planState);
-	QSignalTransition *tEditToProfile = editState->addTransition(this, SIGNAL(startProfileState()), profileState);
-	QSignalTransition *tEditToAdd = editState->addTransition(this, SIGNAL(startAddState()), addState);
 
 	// Constants:
 	const int backgroundOnCanvas = 0;
@@ -253,7 +226,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	const int profileYAxisOnCanvas = 3;
 	const int profileYAxisOffCanvas = profileYAxis->boundingRect().width() - 10;
 	// unused so far:
-	// const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
+	const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
 	const int depthControllerOnCanvas = sceneRect().height() - depthController->boundingRect().height();
 	const int timeControllerOnCanvas = sceneRect().height() - timeController->boundingRect().height();
 	const int gasYAxisOffCanvas = gasYAxis->boundingRect().width() - 10;
@@ -280,43 +253,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	profileState->assignProperty(this, "backgroundBrush", getColor(::BACKGROUND));
 	profileState->assignProperty(background, "y",  backgroundOffCanvas);
 	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	//profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
+	profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
 	profileState->assignProperty(gasYAxis, "x", profileYAxisOnCanvas);
 	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
 	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);
 	profileState->assignProperty(timeController, "y", timeControllerOffCanvas);
 	profileState->assignProperty(cartesianPlane, "verticalLine", profileYAxisExpanded);
 	profileState->assignProperty(cartesianPlane, "horizontalLine", timeAxis->line());
-
-	// Edit, everything but the background and gasYAxis are shown.
-	editState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
-	editState->assignProperty(background, "y",  backgroundOffCanvas);
-	editState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	editState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
-	editState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
-	editState->assignProperty(timeAxis, "y", timeAxisEditMode);
-	editState->assignProperty(depthController, "y", depthControllerOnCanvas);
-	editState->assignProperty(timeController, "y", timeControllerOnCanvas);
-
-	// Add, everything but the background and gasYAxis are shown.
-	addState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
-	addState->assignProperty(background, "y",  backgroundOffCanvas);
-	addState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	addState->assignProperty(profileYAxis, "rect", profileYAxisExpanded);
-	addState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
-	addState->assignProperty(timeAxis, "y", timeAxisEditMode);
-	addState->assignProperty(depthController, "y", depthControllerOnCanvas);
-	addState->assignProperty(timeController, "y", timeControllerOnCanvas);
-
-	// Plan, everything but the background and gasYAxis are shown.
-	planState->assignProperty(this, "backgroundBrush", QBrush(Qt::darkGray));
-	planState->assignProperty(background, "y",  backgroundOffCanvas);
-	planState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	planState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
-	planState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
-	planState->assignProperty(timeAxis, "y", timeAxisEditMode);
-	planState->assignProperty(depthController, "y", depthControllerOnCanvas);
-	planState->assignProperty(timeController, "y", timeControllerOnCanvas);
 
 	// All animations for the State Transitions.
 	QPropertyAnimation *backgroundYAnim = new QPropertyAnimation(background, "y");
@@ -329,9 +272,10 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 // Animations
 	QList<QSignalTransition*> transitions;
-	transitions << tAddToEmpty << tAddToPlan << tAddToProfile << tEditToAdd << tEditToEmpty << tEditToPlan <<
-		       tEditToProfile << tEmptyToAdd << tEmptyToPlan << tEmptyToProfile << tProfileToAdd <<
-		       tProfileToEdit << tProfileToEmpty << tProfileToPlan << tPlanToAdd << tPlanToEmpty << tPlanToProfile;
+	transitions
+		<< tEmptyToProfile
+		<< tProfileToEmpty;
+
 	Q_FOREACH(QSignalTransition *s, transitions) {
 		s->addAnimation(backgroundYAnim);
 		s->addAnimation(depthAxisAnim);
@@ -345,9 +289,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 		// Configuration so we can search for the States later, and it helps debugging.
 	emptyState->setObjectName("Empty State");
 	profileState->setObjectName("Profile State");
-	addState->setObjectName("Add State");
-	editState->setObjectName("Edit State");
-	planState->setObjectName("Plan State");
 
 	// Starting the transitions:
 	stateMachine->start();
@@ -367,6 +308,8 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	struct dive *d = dives.first();
 	if (!d)
 		return;
+
+		emit startProfileState();
 
 	// Here we need to probe for the limits of the dive.
 	// There's already a function that does exactly that,
@@ -441,7 +384,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 	diveComputerText->setText(currentdc->model);
 	diveComputerText->animateMoveTo(1 , sceneRect().height());
-	emit startProfileState();
 }
 
 void ProfileWidget2::settingsChanged()
@@ -455,9 +397,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
 	QMenu m;
 	m.addAction("Set Empty", this, SIGNAL(startEmptyState()));
 	m.addAction("Set Profile", this, SIGNAL(startProfileState()));
-	m.addAction("Set Add", this, SIGNAL(startAddState()));
-	m.addAction("Set Edit", this, SIGNAL(startEditState()));
-	m.addAction("Set Plan", this, SIGNAL(startPlanState()));
 	m.exec(event->globalPos());
 }
 
