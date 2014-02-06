@@ -912,3 +912,63 @@ void MainWindow::editCurrentDive()
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
 }
+
+#define TOOLBOX_PREF_PROFILE(PREFS)\
+	QSettings s; \
+	s.beginGroup("TecDetails"); \
+	s.setValue(#PREFS, triggered); \
+	PreferencesDialog::instance()->emitSettingsChanged();
+
+void MainWindow::on_profCalcAllTissues_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(calcalltissues);
+}
+void MainWindow::on_profCalcCeiling_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(calcceiling);
+}
+void MainWindow::on_profDcCeiling_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(dcceiling);
+}
+void MainWindow::on_profEad_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(ead);
+}
+void MainWindow::on_profIncrement3m_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(calcceiling3m);
+}
+void MainWindow::on_profMod_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(mod);
+}
+void MainWindow::on_profNtl_tts_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(calcndltts);
+}
+void MainWindow::on_profPhe_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(phegraph);
+}
+void MainWindow::on_profPn2_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(pn2graph);
+}
+void MainWindow::on_profPO2_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(po2graph);
+}
+void MainWindow::on_profRuler_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(rulergraph);
+}
+void MainWindow::on_profSAC_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(show_sac);
+}
+void MainWindow::on_profUnusedTanks_clicked(bool triggered)
+{
+	TOOLBOX_PREF_PROFILE(display_unused_tanks);
+}
+#undef TOOLBOX_PREF_PROFILE

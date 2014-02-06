@@ -14,6 +14,7 @@ Q_OBJECT
 public:
 	static PreferencesDialog* instance();
 	void showEvent(QShowEvent* );
+	void emitSettingsChanged();
 signals:
 	void settingsChanged();
 public slots:
