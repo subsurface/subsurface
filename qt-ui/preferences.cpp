@@ -137,6 +137,49 @@ void PreferencesDialog::rememberPrefs()
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
 
+
+#define GET_UNIT(name, field, f, t)				\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.units.field = (v.toInt() == (t)) ? (t) : (f); \
+	else							\
+		prefs.units.field = default_prefs.units.field
+
+#define GET_BOOL(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toInt() ? true : false;		\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_DOUBLE(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toDouble();			\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_INT(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = v.toInt();			\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_TXT(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = strdup(v.toString().toUtf8().constData());			\
+	else							\
+		prefs.field = default_prefs.field
+
+#define GET_TXT(name, field)					\
+	v = s.value(QString(name));				\
+	if (v.isValid())					\
+		prefs.field = strdup(v.toString().toUtf8().constData());			\
+	else							\
+		prefs.field = default_prefs.field
+
 void PreferencesDialog::syncSettings()
 {
 	QSettings s;
@@ -201,7 +244,66 @@ void PreferencesDialog::syncSettings()
 	}
 	s.setValue("UseSystemLanguage", ui.languageSystemDefault->isChecked());
 	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
+	s.endGroup();
+	// This code was on the mainwindow, it should belong nowhere, but since we dind't
+	// correctly fixed this code yet ( too much stuff on the code calling preferences )
+	// force this here.
 
+	QVariant v;
+	s.beginGroup("Units");
+	if (s.value("unit_system").toString() == "metric") {
+		prefs.unit_system = METRIC;
+		prefs.units = SI_units;
+	} else if (s.value("unit_system").toString() == "imperial") {
+		prefs.unit_system = IMPERIAL;
+		prefs.units = IMPERIAL_units;
+	} else {
+		prefs.unit_system = PERSONALIZE;
+		GET_UNIT("length", length, units::FEET, units::METERS);
+		GET_UNIT("pressure", pressure, units::PSI, units::BAR);
+		GET_UNIT("volume", volume, units::CUFT, units::LITER);
+		GET_UNIT("temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
+		GET_UNIT("weight", weight, units::LBS, units::KG);
+	}
+	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
+	s.endGroup();
+	s.beginGroup("TecDetails");
+	GET_BOOL("po2graph", pp_graphs.po2);
+	GET_BOOL("pn2graph", pp_graphs.pn2);
+	GET_BOOL("phegraph", pp_graphs.phe);
+	GET_DOUBLE("po2threshold", pp_graphs.po2_threshold);
+	GET_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
+	GET_DOUBLE("phethreshold", pp_graphs.phe_threshold);
+	GET_BOOL("mod", mod);
+	GET_DOUBLE("modppO2", mod_ppO2);
+	GET_BOOL("ead", ead);
+	GET_BOOL("redceiling", profile_red_ceiling);
+	GET_BOOL("dcceiling", profile_dc_ceiling);
+	GET_BOOL("calcceiling", profile_calc_ceiling);
+	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
+	GET_BOOL("calcndltts", calc_ndl_tts);
+	GET_BOOL("calcalltissues", calc_all_tissues);
+	GET_INT("gflow", gflow);
+	GET_INT("gfhigh", gfhigh);
+	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	GET_BOOL("show_sac", show_sac);
+	GET_BOOL("display_unused_tanks", display_unused_tanks);
+	s.endGroup();
+
+	s.beginGroup("GeneralSettings");
+	GET_TXT("default_filename", default_filename);
+	GET_TXT("default_cylinder", default_cylinder);
+	s.endGroup();
+
+	s.beginGroup("Display");
+	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
+	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
+	qApp->setFont(defaultFont);
+	GET_TXT("divelist_font", divelist_font);
+	GET_INT("font_size", font_size);
+	GET_INT("displayinvalid", display_invalid_dives);
+	s.endGroup();
 	emit settingsChanged();
 }
 
