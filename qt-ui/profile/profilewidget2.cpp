@@ -292,6 +292,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 
 	// Starting the transitions:
 	stateMachine->start();
+	qApp->processEvents();
 	scene()->installEventFilter(this);
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
