@@ -591,6 +591,22 @@ void MainWindow::readSettings()
 	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
 	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
 	qApp->setFont(defaultFont);
+	s.endGroup();
+
+	s.beginGroup("TecDetails");
+	ui.profCalcAllTissues->setChecked(s.value("calcalltissues").toBool());
+	ui.profCalcCeiling->setChecked(s.value("calcceiling").toBool());
+	ui.profDcCeiling->setChecked(s.value("dcceiling").toBool());
+	ui.profEad->setChecked(s.value("ead").toBool());
+	ui.profIncrement3m->setChecked(s.value("calcceiling3m").toBool());
+	ui.profMod->setChecked(s.value("mod").toBool());
+	ui.profNtl_tts->setChecked(s.value("calcndltts").toBool());
+	ui.profPhe->setChecked(s.value("phegraph").toBool());
+	ui.profPn2->setChecked(s.value("pn2graph").toBool());
+	ui.profPO2->setChecked(s.value("po2graph").toBool());
+	ui.profRuler->setChecked(s.value("rulergraph").toBool());
+	ui.profSAC->setChecked(s.value("show_sac").toBool());
+
 }
 
 void MainWindow::writeSettings()
