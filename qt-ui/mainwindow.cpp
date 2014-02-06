@@ -826,42 +826,52 @@ void MainWindow::editCurrentDive()
 
 void MainWindow::on_profCalcAllTissues_clicked(bool triggered)
 {
+	prefs.calc_all_tissues = triggered;
 	TOOLBOX_PREF_PROFILE(calcalltissues);
 }
 void MainWindow::on_profCalcCeiling_clicked(bool triggered)
 {
+	prefs.profile_calc_ceiling = triggered;
 	TOOLBOX_PREF_PROFILE(calcceiling);
 }
 void MainWindow::on_profDcCeiling_clicked(bool triggered)
 {
+	prefs.profile_dc_ceiling = triggered;
 	TOOLBOX_PREF_PROFILE(dcceiling);
 }
 void MainWindow::on_profEad_clicked(bool triggered)
 {
+	prefs.ead = triggered;
 	TOOLBOX_PREF_PROFILE(ead);
 }
 void MainWindow::on_profIncrement3m_clicked(bool triggered)
 {
+	prefs.calc_ceiling_3m_incr = triggered;
 	TOOLBOX_PREF_PROFILE(calcceiling3m);
 }
 void MainWindow::on_profMod_clicked(bool triggered)
 {
+	prefs.mod = triggered;
 	TOOLBOX_PREF_PROFILE(mod);
 }
 void MainWindow::on_profNtl_tts_clicked(bool triggered)
 {
+	prefs.calc_ndl_tts = triggered;
 	TOOLBOX_PREF_PROFILE(calcndltts);
 }
 void MainWindow::on_profPhe_clicked(bool triggered)
 {
+	prefs.pp_graphs.phe = triggered;
 	TOOLBOX_PREF_PROFILE(phegraph);
 }
 void MainWindow::on_profPn2_clicked(bool triggered)
 {
+	prefs.pp_graphs.pn2 = triggered;
 	TOOLBOX_PREF_PROFILE(pn2graph);
 }
 void MainWindow::on_profPO2_clicked(bool triggered)
 {
+	prefs.pp_graphs.po2 = triggered;
 	TOOLBOX_PREF_PROFILE(po2graph);
 }
 void MainWindow::on_profRuler_clicked(bool triggered)
@@ -870,10 +880,8 @@ void MainWindow::on_profRuler_clicked(bool triggered)
 }
 void MainWindow::on_profSAC_clicked(bool triggered)
 {
+	prefs.show_sac = triggered;
 	TOOLBOX_PREF_PROFILE(show_sac);
 }
-void MainWindow::on_profUnusedTanks_clicked(bool triggered)
-{
-	TOOLBOX_PREF_PROFILE(display_unused_tanks);
-}
+
 #undef TOOLBOX_PREF_PROFILE

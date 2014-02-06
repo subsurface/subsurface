@@ -118,7 +118,6 @@ private slots:
 	void on_profPn2_clicked(bool triggered);
 	void on_profRuler_clicked(bool triggered);
 	void on_profSAC_clicked(bool triggered);
-	void on_profUnusedTanks_clicked(bool triggered);
 
 protected:
 	void closeEvent(QCloseEvent *);
