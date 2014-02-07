@@ -692,6 +692,7 @@ beginning time of the dives to be significantly different) _Subsurface_
 will not create duplicate entries.
 
 ==== Using the universal import dialogue
+[[Unified_import]]
 
 Importing dives from other software is performed through a unified interface that
 is activated by selecting _Import_ from the Main Menu, then clicking on
@@ -701,33 +702,36 @@ image::images/Import1.jpg["FIGURE: Import dialogue: step 1",align="center"]
 
 Towards the bottom right is a dropdown selector with a default lable
 of _Dive Log Files_ which gives access to the different types of direct imports
-available, as in dialogue *B*, above. Currently these are XML, UDDF, UDCF,
-JDiveLog, Suunto Dive Manager (DM3 and DM4), MacDive (XML), DivingLog 5.0 (XML),
-Kenozooid (UDDF) and CSV dive logs. Selecting
-the appropriate file in the file list of the dialogue opens the imported dive
-log in the _Subsurface_ *Dive List*.
+available, as in dialogue *B*, above. Currently these are:
+
+ - XML-formatted dive logs
+ - UDDF-formatted dive logs
+ - UDCF-formatted dive logs
+ - JDiveLog
+ - Suunto Dive Manager (DM3 and DM4)
+ - MacDive (XML)
+ - DivingLog 5.0 (XML)
+ - Kenozooid (UDDF)
+ - CSV (text-based and spreadsheet-based) dive logs.
+
+Selecting the appropriate file in the file list of the dialogue opens
+the imported dive log in the _Subsurface_ *Dive List*. A few other formats, not
+accessible through the Import dialogue are also supported, as explained below.
 
 ==== Importing from Mares Dive Organiser V2.1
 
-Mares Dive Organiser is a Windows application. The dive log is kept as a
-Microsoft SQL Compact Edition data base with a .SDF filename extension. The
-data base includes all Dive Organiser-registered divers on the particular
-computer and all Mares dive computers used. Since
-Mares utilise proprietory Windows software not compatible with multi-platform software,
-these dive logs cannot be directly imported into _Subsurface_. The safest way to obtain a copy
-of this data base is, within Dive Organiser, to select Database -> Backup
-from the main menu and to back up the data base to your desk top. This
-creates a zipped file DiveOrganiserxxxxx.dbf. Rename the file to
-DiveOrganiserxxxxx.zip. Inside the zipped directory is a file _DiveOrganiser.sdf_.
-Extract it from the zipped folder to your Desktop.
+Mares dive logs need to be imported using a three-step process,
+using _www.divelogs.de_ as a mechanism to extract the dive information from
+the file.
 
-Then use _www.divelogs.de_ as a mechanism to extract the dive information from
-the file. Create a user account in divelogs.de , log into that web site, then
-select Import Logbook -> Dive Organiser from the menu on the left hand side.
+ - Export dive log data from Mares Dive Organiser to your desktop. See
+xref:Mares_Export[Appendix C] for more information.
+ - Import the data into _www.divelogs.de_. Create a user account in
+_www.divelogs.de_, log into that web site, then
+select _Import Logbook -> Dive Organiser_ from the menu on the left hand side.
 Follow the instructions carefully to transfer the dive information from the
-Dive Organiser data base to divelogs.de.
-
-Then follow the instructions below to import dives from divelogs.de to
+Dive Organiser data base to _www.divelogs.de_.
+ - Then follow the instructions below to import dives from _divelogs.de_ to
 _Subsurface_.
 
 
@@ -854,7 +858,7 @@ either feet or meters, weight kilograms or pounds and temperature either
 Celsius or Fahrenheit. However, you can only select _Metric_ or
 _Imperial_. No mixture of unit systems is allowed for the different fields.
 
-Importing manually kept CSV log files is quite straight forward, but as
+Importing manually kept CSV log files is quite straight forward, but
 there might be many fields and counting the field numbers is error
 prone. Therefore validation of the data to be imported is critical.
 
@@ -1812,3 +1816,101 @@ this, but it is reported to be solved sometimes by one of these steps:
    the built-in one of your computer
  * switch to different bluetooth drivers for your hardware
  * switch off WiFi while using Bluetooth
+
+
+== APPENDIX C: Exporting Dive log information from external dive log software.
+
+The import of dive log data from external dive log software is mostly performed using
+the dialogue found by selecting _Import_ from the Main Menu, then clicking on
+_Import Log Files_. This is a single-step process, more information about which can be found
+xref:Unified_import[here.]
+However, in some cases, a two-step process may be required:
+
+ - Export the forieign dive log data to format that is accessible from _Subsurface_.
+ - Import the accessible dive log data into _Subsurface_.
+
+This appendix provides some information about approaches to export dive log data from foreign
+dive log software. The procedures below mostly apply to Linux and/or Windows.
+
+[[S_ImportingDivesSuunto]]
+=== Exporting dives from *Suunto Divemanager 3 (DM3)*
+
+ - Start 'Suunto Divemanager' and log in with the name containing the logs
+ - Do not start the import wizard to import dives from your computer.
+ - In the navigation tree on the left side of the program-window, select your
+dives.
+ - Within the list of dives, select the dives you would like to import later:
+	* To select certain dives: hold 'ctrl' and click the dive
+	* To select all dives:  Select the first dive, hold down shift and select the
+last dive
+ - With the dives marked, use the program menu 'File -> Export'
+ - The export pop-up will show
+ - Within this pop-up, there is one field called Export Path.
+	* Click the browse button next to the field Export Path
+		** A file-manager like window pops up
+		** Navigate to the directory where you want to store the Divelog.SDE file
+		** Optionally change the name of the file you want to save
+		** Click 'Save'
+	* You are back in the Export pop-up. Press the button 'Export'
+ - Your dives are now exported to the file Divelogs.SDE.
+
+
+[[S_ImportingDivesSuuntoDM4]]
+=== Exporting dives from *Suunto Divemanager 4 (DM4)*
+
+To import divelog from 'Suunto DM4', you need to locate the DM4 database
+where the dives are stored. You can either look for the original
+database or take a backup of the dives. Both methods are described here.
+
+Locating the Suunto DM4 database:
+
+ * Start Suunto DM4
+ * Select 'Help -> About'
+ * Click 'Copy' after text 'Copy log folder path to clipboard'
+ * Now open Windows Explorer
+ * Paste the address to the path box at the top of the File Explorer
+ * The database is called DM4.db
+
+Backing up Suunto DM4:
+
+ * Start Suunto DM4
+ * Select 'File - Create backup'
+ * From the file menu select the location and name for the backup, we'll
+   use DM4 in here with the default extension .bak
+ * Click 'Save'
+ * Your dives are now exported to the file DM4.bak
+
+
+=== Exporting from Mares Dive Organiser V2.1
+[[Mares_Export]]
+
+Mares Dive Organiser is a Windows application. The dive log is kept as a
+Microsoft SQL Compact Edition data base with a .SDF filename extension. The
+data base includes all Dive Organiser-registered divers on the particular
+computer and all Mares dive computers used. Since
+Mares utilise proprietory Windows software not compatible with multi-platform software,
+these dive logs cannot be directly imported into _Subsurface_. The safest way to obtain a copy
+these dive data base is to export the information to another compatibale format
+which can be imported into _Subsurface_.
+
+ - Within Dive Organiser, select
+_Database -> Backup_ from the main menu and back up the data base to the desk top.
+This creates a zipped file DiveOrganiserxxxxx.dbf.
+ - Rename the file to
+DiveOrganiserxxxxx.zip. Inside the zipped directory is a file _DiveOrganiser.sdf_.
+ - Extract it from the zipped folder to your Desktop.
+
+[[S_ImportingDivinglog]]
+=== Exporting dives from *DivingLog 5.0*
+
+Unfortunately DivingLog XML files give us no
+indication on the preferences set on your system. So in order for
+_Subsurface_ to be able to successfully import XML files from DivingLog
+you first need to make sure that your copy of DivingLog is configured
+to use the Metric system (you can easily change this in 'File ->
+Preferences -> Units and Language' by clicking the 'Metric'
+button). Then do the following:
+
+ - In Divinglog open the 'File -> Export -> XML' menu
+ - Select the dives that you want to export
+ - Click on the export button and select the filename
