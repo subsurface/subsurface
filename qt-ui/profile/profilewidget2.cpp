@@ -16,6 +16,7 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QDebug>
+#include <QSettings>
 #include <QScrollBar>
 
 #ifndef QT_NO_DEBUG
@@ -124,8 +125,7 @@ void ProfileWidget2::setupItemOnScene()
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
-	gasYAxis->setTickSize(2);
-	gasYAxis->setY(70);
+	gasYAxis->setTickSize(1);
 	gasYAxis->setMinimum(0);
 	gasYAxis->setModel(dataModel);
 
@@ -205,6 +205,22 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.time.pos.off.setY(110);
 	itemPos.time.expanded.setP1(QPointF(0,0));
 	itemPos.time.expanded.setP2(QPointF(94,0));
+
+	// Partial Gas Axis Config
+	itemPos.partialgas.pos.on.setX(97);
+	itemPos.partialgas.pos.on.setY(60);
+	itemPos.partialgas.pos.off.setX(110);
+	itemPos.partialgas.pos.off.setY(60);
+	itemPos.partialgas.expanded.setP1(QPointF(0,0));
+	itemPos.partialgas.expanded.setP2(QPointF(0,30));
+
+	// cylinder axis config
+	itemPos.cylinder.pos.on.setX(3);
+	itemPos.cylinder.pos.on.setY(20);
+	itemPos.cylinder.pos.off.setX(-10);
+	itemPos.cylinder.pos.off.setY(20);
+	itemPos.cylinder.expanded.setP1(QPointF(0,0));
+	itemPos.cylinder.expanded.setP2(QPointF(0,20));
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
@@ -330,6 +346,8 @@ void ProfileWidget2::resizeEvent(QResizeEvent* event)
 
 void ProfileWidget2::fixBackgroundPos()
 {
+	if(currentState != EMPTY)
+		return;
 	QPixmap toBeScaled;
 	if (!backgrounds.keys().contains(backgroundFile)){
 		backgrounds[backgroundFile] = QPixmap(backgroundFile);
@@ -402,24 +420,19 @@ void ProfileWidget2::setEmptyState()
 	backgroundFile = QString(":poster%1").arg( rand()%3 +1);
 	currentState = EMPTY;
 	fixBackgroundPos();
-	Animations::moveTo(background, background->x(), itemPos.background.on.y());
-	Animations::moveTo(profileYAxis, itemPos.depth.pos.off);
+	profileYAxis->setPos(itemPos.depth.pos.off);
+	gasYAxis->setPos(itemPos.partialgas.pos.off);
+	timeAxis->setPos(itemPos.time.pos.off);
+	background->setY( itemPos.background.on.y());
 	toolTipItem->setVisible(false);
-	gasYAxis->setVisible(false);
 	temperatureAxis->setVisible(false);
-	Animations::moveTo(timeAxis,itemPos.time.pos.off);
-	diveProfileItem->setVisible(false);
-	cylinderPressureAxis->setVisible(false);
+	cylinderPressureAxis->setPos(itemPos.cylinder.pos.off);
 	temperatureItem->setVisible(false);
-	gasPressureItem->setVisible(false);
 	cartesianPlane->setVisible(false);
 	meanDepth->setVisible(false);
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
-	pn2GasItem->setVisible(false);
-	pheGasItem->setVisible(false);
-	po2GasItem->setVisible(false);
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		tissue->setVisible(false);
 	}
@@ -437,28 +450,33 @@ void ProfileWidget2::setProfileState()
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND));
 
-	Animations::moveTo(background, background->x(), itemPos.background.off.y(), 1500);
+	background->setVisible(false);
 	toolTipItem->setVisible(true);
 
-	Animations::moveTo(profileYAxis,itemPos.depth.pos.on);
-	profileYAxis->setLine(itemPos.depth.expanded);
+	profileYAxis->setPos(itemPos.depth.pos.on);
+	QSettings s;
+	s.beginGroup("TecDetails");
+	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
+		profileYAxis->setLine(itemPos.depth.shrinked);
+	}else{
+		profileYAxis->setLine(itemPos.depth.expanded);
+	}
 
-// 	gasYAxis->setVisible(true);
-// 	temperatureAxis->setVisible(true);
-	Animations::moveTo(timeAxis, itemPos.time.pos.on);
+	gasYAxis->setPos(itemPos.partialgas.pos.on);
+	gasYAxis->setLine(itemPos.partialgas.expanded);
+
+	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
-	diveProfileItem->setVisible(true);
-// 	cylinderPressureAxis->setVisible(true);
+
+	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
+	cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
+
 // 	temperatureItem->setVisible(true);
-// 	gasPressureItem->setVisible(true);
 // 	cartesianPlane->setVisible(true);
 // 	meanDepth->setVisible(true);
 // 	diveComputerText->setVisible(true);
 // 	diveCeiling->setVisible(true);
 // 	reportedCeiling->setVisible(true);
-// 	pn2GasItem->setVisible(true);
-// 	pheGasItem->setVisible(true);
-// 	po2GasItem->setVisible(true);
 // 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 // 		tissue->setVisible(true);
 // 	}

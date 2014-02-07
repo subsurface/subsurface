@@ -90,10 +90,6 @@ void DiveCartesianAxis::updateTicks()
 	double steps = (max - min) / interval;
 	double currValue = min;
 
-	if(!labels.isEmpty()){
-			qDeleteAll(labels);
-			labels.clear();
-	}
 	if (steps < 1)
 		return;
 
