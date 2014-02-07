@@ -146,7 +146,7 @@ void ProfileWidget2::setupItemOnScene()
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
 
-	diveComputerText->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
@@ -490,15 +490,23 @@ void ProfileWidget2::setProfileState()
 
 	cartesianPlane->setVisible(true);
 	meanDepth->setVisible(true);
+
 	diveComputerText->setVisible(true);
-	cartesianPlane->setHorizontalLine( timeAxis->line() );
-	cartesianPlane->setVerticalLine( profileYAxis->line() );
-// 	diveCeiling->setVisible(true);
-// 	reportedCeiling->setVisible(true);
-// 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
-// 		tissue->setVisible(true);
-// 	}
-// 	Q_FOREACH(DiveEventItem *event, eventItems){
-// 		event->setVisible(true);
-// 	}
+	diveComputerText->setPos(itemPos.dcLabel.on);
+
+	cartesianPlane->setHorizontalLine( itemPos.time.expanded );
+	cartesianPlane->setVerticalLine( itemPos.depth.expanded );
+
+	diveCeiling->setVisible(s.value("calcceiling").toBool());
+	reportedCeiling->setVisible(s.value("dcceiling").toBool());
+
+	if(s.value("calcalltissues").toBool()){
+		Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+			tissue->setVisible(true);
+		}
+	}
+	// Only set visible the ones that should be visible, but how?
+	Q_FOREACH(DiveEventItem *event, eventItems){
+		event->setVisible(true);
+	}
 }

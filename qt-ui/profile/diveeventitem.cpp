@@ -99,7 +99,6 @@ void DiveEventItem::setupToolTipString()
 
 void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visible)
 {
-
 }
 
 void DiveEventItem::recalculatePos()
