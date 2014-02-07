@@ -35,5 +35,4 @@ void moveTo(QObject* obj, const QPointF& pos, int msecs)
 	moveTo(obj, pos.x(), pos.y(), msecs);
 }
 
-
 }

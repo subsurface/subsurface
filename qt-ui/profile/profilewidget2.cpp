@@ -120,7 +120,7 @@ void ProfileWidget2::setupItemOnScene()
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10,30));
-	profileYAxis->setTickSize(2);
+	profileYAxis->setTickSize(1);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
@@ -268,7 +268,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	profileYAxis->setMaximum(maxdepth);
 	profileYAxis->updateTicks();
 
-	qDebug() << "More profile..." << profileYAxis->minimum() << profileYAxis->maximum() << profileYAxis->tickInterval() << profileYAxis->tickSize();
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 	timeAxis->setMaximum(maxtime);

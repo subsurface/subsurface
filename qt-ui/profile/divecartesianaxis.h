@@ -34,8 +34,6 @@ public:
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
-	void setShowTicks(bool show);
-	void setShowText(bool show);
 	void animateChangeLine(const QLineF& newLine);
 	int unitSystem;
 public slots:
@@ -53,8 +51,6 @@ protected:
 	double interval;
 	double tick_size;
 	QColor textColor;
-	bool showTicks;
-	bool showText;
 };
 
 class DepthAxis : public DiveCartesianAxis {
