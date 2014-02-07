@@ -55,14 +55,13 @@ public:
 
 public slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
+	void setEmptyState();
+	void setProfileState();
+
 protected:
 	virtual void resizeEvent(QResizeEvent* event);
 	virtual void wheelEvent(QWheelEvent* event);
 	virtual void mouseMoveEvent(QMouseEvent* event);
-
-signals:
-	void startProfileState();
-	void startEmptyState();
 private: /*methods*/
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint& pos);
@@ -74,7 +73,9 @@ private:
 	DivePlotDataModel *dataModel;
 	State currentState;
 	int zoomLevel;
-	DivePixmapItem *background ;
+	QHash<QString, QPixmap> backgrounds;
+	DivePixmapItem *background;
+	QString backgroundFile;
 	ToolTipItem *toolTipItem;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.

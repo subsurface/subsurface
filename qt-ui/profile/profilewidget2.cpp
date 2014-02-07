@@ -9,6 +9,7 @@
 #include "diveeventitem.h"
 #include "divetextitem.h"
 #include "divetooltipitem.h"
+#include "animationfunctions.h"
 #include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
@@ -76,8 +77,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	setupItemSizes();
 	setupItemOnScene();
 	addItemsToScene();
-
 	scene()->installEventFilter(this);
+	setEmptyState();
+
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
@@ -112,6 +114,7 @@ void ProfileWidget2::addItemsToScene()
 
 void ProfileWidget2::setupItemOnScene()
 {
+	background->setZValue(9999);
 	toolTipItem->setTimeAxis(timeAxis);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
@@ -296,16 +299,17 @@ void ProfileWidget2::settingsChanged()
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
 {
 	QGraphicsView::resizeEvent(event);	DiveRectItem *depthController;
-	DiveRectItem *timeController;
-
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
+	fixBackgroundPos();
 }
 
 void ProfileWidget2::fixBackgroundPos()
 {
-	QPixmap toBeScaled(":background");
-	if (toBeScaled.isNull())
-		return;
+	QPixmap toBeScaled;
+	if (!backgrounds.keys().contains(backgroundFile)){
+		backgrounds[backgroundFile] = QPixmap(backgroundFile);
+	}
+	toBeScaled = backgrounds[backgroundFile];
 	QPixmap p = toBeScaled.scaledToHeight(viewport()->height());
 	int x = viewport()->width() / 2 - p.width() / 2;
 	background->setPixmap(p);
@@ -362,4 +366,46 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 		return true;
 	}
 	return QGraphicsView::eventFilter(object, event);
+}
+
+void ProfileWidget2::setEmptyState()
+{
+	// Then starting Empty State, move the background up.
+	if (currentState == EMPTY)
+		return;
+
+	backgroundFile = QString(":poster%1").arg( rand()%3 +1);
+	currentState = EMPTY;
+	fixBackgroundPos();
+	background->setVisible(true);
+	Animations::moveTo(background, background->x(), 0);
+
+	toolTipItem->setVisible(false);
+	profileYAxis->setVisible(false);
+	gasYAxis->setVisible(false);
+	temperatureAxis->setVisible(false);
+	timeAxis->setVisible(false);
+	diveProfileItem->setVisible(false);
+	cylinderPressureAxis->setVisible(false);
+	temperatureItem->setVisible(false);
+	gasPressureItem->setVisible(false);
+	cartesianPlane->setVisible(false);
+	meanDepth->setVisible(false);
+	diveComputerText->setVisible(false);
+	diveCeiling->setVisible(false);
+	reportedCeiling->setVisible(false);
+	pn2GasItem->setVisible(false);
+	pheGasItem->setVisible(false);
+	po2GasItem->setVisible(false);
+	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+		tissue->setVisible(false);
+	}
+	Q_FOREACH(DiveEventItem *event, eventItems){
+		event->setVisible(false);
+	}
+}
+
+void ProfileWidget2::setProfileState()
+{
+
 }
