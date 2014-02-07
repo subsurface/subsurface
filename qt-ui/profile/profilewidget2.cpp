@@ -36,15 +36,15 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	timeAxis(new TimeAxis()),
 	depthController(new DiveRectItem()),
 	timeController(new DiveRectItem()),
-	diveProfileItem(NULL),
+	diveProfileItem(new DiveProfileItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
-	temperatureItem(NULL),
-	gasPressureItem(NULL),
+	temperatureItem(new DiveTemperatureItem()),
+	gasPressureItem(new DiveGasPressureItem()),
 	cartesianPlane(new DiveCartesianPlane()),
 	meanDepth(new MeanDepthLine()),
 	diveComputerText(new DiveTextItem()),
-	diveCeiling(NULL),
-	reportedCeiling(NULL)
+	diveCeiling(new DiveCalculatedCeiling()),
+	reportedCeiling(new DiveReportedCeiling())
 {
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0, 0, 100, 100);
@@ -124,76 +124,26 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 		scene()->addItem(item);
 	}
 
-	reportedCeiling = new DiveReportedCeiling();
-	reportedCeiling->setHorizontalAxis(timeAxis);
-	reportedCeiling->setVerticalAxis(profileYAxis);
-	reportedCeiling->setModel(dataModel);
-	reportedCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
-	reportedCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	reportedCeiling->setZValue(1);
-	scene()->addItem(reportedCeiling);
-
-	diveCeiling = new DiveCalculatedCeiling();
-	diveCeiling->setHorizontalAxis(timeAxis);
-	diveCeiling->setVerticalAxis(profileYAxis);
-	diveCeiling->setModel(dataModel);
-	diveCeiling->setVerticalDataColumn(DivePlotDataModel::CEILING);
-	diveCeiling->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	diveCeiling->setZValue(1);
-	scene()->addItem(diveCeiling);
+	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
+	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 
 	for(int i = 0; i < 16; i++){
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
-		tissueItem->setHorizontalAxis(timeAxis);
-		tissueItem->setVerticalAxis(profileYAxis);
-		tissueItem->setModel(dataModel);
-		tissueItem->setVerticalDataColumn(DivePlotDataModel::TISSUE_1 + i);
-		tissueItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-		tissueItem->setZValue(1);
+		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1+i);
 		allTissues.append(tissueItem);
-		scene()->addItem(tissueItem);
 	}
 
-	gasPressureItem = new DiveGasPressureItem();
-	gasPressureItem->setHorizontalAxis(timeAxis);
-	gasPressureItem->setVerticalAxis(cylinderPressureAxis);
-	gasPressureItem->setModel(dataModel);
-	gasPressureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
-	gasPressureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	gasPressureItem->setZValue(1);
-	scene()->addItem(gasPressureItem);
-
-	temperatureItem = new DiveTemperatureItem();
-	temperatureItem->setHorizontalAxis(timeAxis);
-	temperatureItem->setVerticalAxis(temperatureAxis);
-	temperatureItem->setModel(dataModel);
-	temperatureItem->setVerticalDataColumn(DivePlotDataModel::TEMPERATURE);
-	temperatureItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	temperatureItem->setZValue(1);
-	scene()->addItem(temperatureItem);
-
-	diveProfileItem = new DiveProfileItem();
-	diveProfileItem->setHorizontalAxis(timeAxis);
-	diveProfileItem->setVerticalAxis(profileYAxis);
-	diveProfileItem->setModel(dataModel);
-	diveProfileItem->setVerticalDataColumn(DivePlotDataModel::DEPTH);
-	diveProfileItem->setHorizontalDataColumn(DivePlotDataModel::TIME);
-	diveProfileItem->setZValue(0);
-	scene()->addItem(diveProfileItem);
+	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS( ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS ) \
 	ITEM = new PartialPressureGasItem(); \
-	ITEM->setHorizontalAxis(timeAxis); \
-	ITEM->setVerticalAxis(gasYAxis); \
-	ITEM->setModel(dataModel); \
-	ITEM->setVerticalDataColumn(DivePlotDataModel::VERTICAL_COLUMN); \
-	ITEM->setHorizontalDataColumn(DivePlotDataModel::TIME); \
-	ITEM->setZValue(0); \
+	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS); \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS); \
 	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT)); \
-	ITEM->preferencesChanged(); \
-	scene()->addItem(ITEM);
+	ITEM->preferencesChanged();
 
 	CREATE_PP_GAS( pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
 	CREATE_PP_GAS( pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
@@ -300,6 +250,17 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	mainWindow()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
 #endif
 }
+void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
+{
+		item->setHorizontalAxis(hAxis);
+		item->setVerticalAxis(vAxis);
+		item->setModel(model);
+		item->setVerticalDataColumn(vData);
+		item->setHorizontalDataColumn(hData);
+		item->setZValue(zValue);
+		scene()->addItem(item);
+}
+
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDives(QList<dive*> dives)
@@ -310,7 +271,9 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	if (!d)
 		return;
 
+	if ((*stateMachine->configuration().begin())->objectName() != "Profile State") {
 		emit startProfileState();
+	}
 
 	// Here we need to probe for the limits of the dive.
 	// There's already a function that does exactly that,

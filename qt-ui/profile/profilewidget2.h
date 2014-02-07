@@ -40,6 +40,7 @@ struct DiveReportedCeiling;
 struct DiveCalculatedTissue;
 struct PartialPressureGasItem;
 struct PartialGasPressureAxis;
+struct AbstractProfilePolygonItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -52,6 +53,7 @@ public:
 	ProfileWidget2(QWidget *parent);
 	void plotDives(QList<dive*> dives);
 	virtual bool eventFilter(QObject*, QEvent*);
+	void setupItem( AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 
 public slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
