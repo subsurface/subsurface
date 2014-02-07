@@ -27,6 +27,8 @@ public:
 	void setTickSize(qreal size);
 	double minimum() const;
 	double maximum() const;
+	double tickInterval() const;
+	double tickSize() const;
 	qreal valueAt(const QPointF& p);
 	qreal percentAt(const QPointF& p);
 	qreal posAtValue(qreal value);
@@ -49,7 +51,7 @@ protected:
 	double min;
 	double max;
 	double interval;
-	double tickSize;
+	double tick_size;
 	QColor textColor;
 	bool showTicks;
 	bool showText;

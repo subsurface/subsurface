@@ -117,8 +117,12 @@ void ProfileWidget2::setupItemOnScene()
 	background->setZValue(9999);
 	toolTipItem->setTimeAxis(timeAxis);
 
+	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
+	profileYAxis->setMinimum(0);
+	profileYAxis->setTickInterval(M_OR_FT(10,30));
+	profileYAxis->setTickSize(2);
+
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	gasYAxis->setX(3);
 	gasYAxis->setTickInterval(1);
 	gasYAxis->setTickSize(2);
 	gasYAxis->setY(70);
@@ -126,12 +130,10 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setModel(dataModel);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	temperatureAxis->setX(3);
 	temperatureAxis->setTickSize(2);
 	temperatureAxis->setTickInterval(300);
 
 	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	cylinderPressureAxis->setX(3);
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
@@ -265,6 +267,8 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);
 	profileYAxis->updateTicks();
+
+	qDebug() << "More profile..." << profileYAxis->minimum() << profileYAxis->maximum() << profileYAxis->tickInterval() << profileYAxis->tickSize();
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 	timeAxis->setMaximum(maxtime);
@@ -400,11 +404,11 @@ void ProfileWidget2::setEmptyState()
 	currentState = EMPTY;
 	fixBackgroundPos();
 	Animations::moveTo(background, background->x(), itemPos.background.on.y());
-	profileYAxis->setPos(itemPos.depth.pos.off);
+	Animations::moveTo(profileYAxis, itemPos.depth.pos.off);
 	toolTipItem->setVisible(false);
 	gasYAxis->setVisible(false);
 	temperatureAxis->setVisible(false);
-	timeAxis->setPos(itemPos.time.pos.off);
+	Animations::moveTo(timeAxis,itemPos.time.pos.off);
 	diveProfileItem->setVisible(false);
 	cylinderPressureAxis->setVisible(false);
 	temperatureItem->setVisible(false);
@@ -437,16 +441,14 @@ void ProfileWidget2::setProfileState()
 	Animations::moveTo(background, background->x(), itemPos.background.off.y(), 1500);
 	toolTipItem->setVisible(true);
 
-	profileYAxis->setPos(itemPos.depth.pos.on);
+	Animations::moveTo(profileYAxis,itemPos.depth.pos.on);
 	profileYAxis->setLine(itemPos.depth.expanded);
 
-	qDebug() << "ProfileAxisPos" << profileYAxis->pos() << "Line" << profileYAxis->line() << scene()->items().indexOf(profileYAxis);
 // 	gasYAxis->setVisible(true);
 // 	temperatureAxis->setVisible(true);
-	timeAxis->setPos(itemPos.time.pos.on);
+	Animations::moveTo(timeAxis, itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
-	qDebug() << "timeAxisPos" << timeAxis->pos() << "Line" << timeAxis->line() << scene()->items().indexOf(timeAxis);
-// 	diveProfileItem->setVisible(true);
+	diveProfileItem->setVisible(true);
 // 	cylinderPressureAxis->setVisible(true);
 // 	temperatureItem->setVisible(true);
 // 	gasPressureItem->setVisible(true);

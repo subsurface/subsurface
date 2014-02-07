@@ -30,4 +30,10 @@ void moveTo(QObject* obj, qreal x, qreal y, int msecs)
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
+void moveTo(QObject* obj, const QPointF& pos, int msecs)
+{
+	moveTo(obj, pos.x(), pos.y(), msecs);
+}
+
+
 }

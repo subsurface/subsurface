@@ -20,14 +20,24 @@ static QPen gridPen(){
 	return pen;
 }
 
-void DiveCartesianAxis::setup(double minimum, double maximum, double interval, DiveCartesianAxis::Orientation o, qreal tickSize, const QPointF& pos)
+void DiveCartesianAxis::setup(double minimum, double maximum, double interval, DiveCartesianAxis::Orientation o, qreal tick_size, const QPointF& pos)
 {
 	setMinimum(minimum);
 	setMaximum(maximum);
 	setTickInterval(interval);
 	setOrientation(o);
-	setTickSize(tickSize);
+	setTickSize(tick_size);
 	setPos(pos);
+}
+
+double DiveCartesianAxis::tickInterval() const
+{
+	return interval;
+}
+
+double DiveCartesianAxis::tickSize() const
+{
+	return tick_size;
 }
 
 void DiveCartesianAxis::setMaximum(double maximum)
@@ -121,9 +131,9 @@ void DiveCartesianAxis::updateTicks()
 
 		labels[i]->setText(textForValue(currValue));
 		if ( orientation == LeftToRight || orientation == RightToLeft) {
-			labels[i]->animateMoveTo(childPos, m.y1() + tickSize);
+			labels[i]->animateMoveTo(childPos, m.y1() + tick_size);
 		} else {
-			labels[i]->animateMoveTo(m.x1() - tickSize, childPos);
+			labels[i]->animateMoveTo(m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -147,14 +157,14 @@ void DiveCartesianAxis::updateTicks()
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			if(showText){
 				label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
-				label->setPos(scene()->sceneRect().width() + 10, m.y1() + tickSize); // position it outside of the scene);
-				label->animateMoveTo(childPos, m.y1() + tickSize);
+				label->setPos(scene()->sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene);
+				label->animateMoveTo(childPos, m.y1() + tick_size);
 			}
 		} else {
 			if(showText){
 				label->setAlignment(Qt::AlignVCenter| Qt::AlignLeft);
-				label->setPos(m.x1() - tickSize, scene()->sceneRect().height() + 10);
-				label->animateMoveTo(m.x1() - tickSize, childPos);
+				label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
+				label->animateMoveTo(m.x1() - tick_size, childPos);
 			}
 		}
 	}
@@ -186,7 +196,7 @@ QString DiveCartesianAxis::textForValue(double value)
 
 void DiveCartesianAxis::setTickSize(qreal size)
 {
-	tickSize = size;
+	tick_size = size;
 }
 
 void DiveCartesianAxis::setTickInterval(double i)
