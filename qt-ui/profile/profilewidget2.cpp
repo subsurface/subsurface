@@ -146,7 +146,7 @@ void ProfileWidget2::setupItemOnScene()
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
 
-	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
@@ -345,7 +345,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	}
 
 	diveComputerText->setText(currentdc->model);
-	diveComputerText->animateMoveTo(1 , sceneRect().height());
 }
 
 void ProfileWidget2::settingsChanged()
@@ -411,8 +410,8 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);
 	} else {
-		toolTipItem->setPos(mapToScene(toolTipPos));
 		scrollViewTo(event->pos());
+		toolTipItem->setPos(mapToScene(toolTipPos));
 	}
 }
 

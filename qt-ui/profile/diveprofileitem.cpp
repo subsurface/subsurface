@@ -262,7 +262,7 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 	deg = get_temp_units(mkelvin, &unit);
 
 	DiveTextItem *text = new DiveTextItem(this);
-	text->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)));
 	text->setText(QString("%1%2").arg(deg, 0, 'f', 1).arg(unit));
