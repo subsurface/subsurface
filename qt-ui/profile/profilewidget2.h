@@ -44,12 +44,6 @@ struct AbstractProfilePolygonItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
-	void fixBackgroundPos();
-	void scrollViewTo(const QPoint& pos);
-    void setupSceneAndFlags();
-    void setupItemSizes();
-    void addItemsToScene();
-    void setupItemOnScene();
 public:
 	enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
 	enum Items{BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
@@ -69,6 +63,13 @@ protected:
 signals:
 	void startProfileState();
 	void startEmptyState();
+private: /*methods*/
+	void fixBackgroundPos();
+	void scrollViewTo(const QPoint& pos);
+	void setupSceneAndFlags();
+	void setupItemSizes();
+	void addItemsToScene();
+	void setupItemOnScene();
 private:
 	DivePlotDataModel *dataModel;
 	State currentState;
@@ -83,8 +84,6 @@ private:
 	PartialGasPressureAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
-	DiveRectItem *depthController;
-	DiveRectItem *timeController;
 	DiveProfileItem *diveProfileItem;
 	DiveCartesianPlane *cartesianPlane;
 	DiveTemperatureItem *temperatureItem;

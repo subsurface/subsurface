@@ -22,23 +22,31 @@
 #endif
 #include "mainwindow.h"
 
-namespace ItemPos{
-	int backgroundOnCanvas;
-	int backgroundOffCanvas;
-	int profileYAxisOnCanvas;
-	int profileYAxisOffCanvas;
-	// unused so far:
-	int gasYAxisOnCanvas;
-	int depthControllerOnCanvas;
-	int timeControllerOnCanvas;
-	int gasYAxisOffCanvas;
-	int timeAxisOnCanvas;
-	int timeAxisOffCanvas;
-	int timeAxisEditMode;
-	int depthControllerOffCanvas;
-	int timeControllerOffCanvas;
-	QLineF profileYAxisExpanded;
-}
+/* This is the global 'Item position' variable.
+ * it should tell you where to position things up
+ * on the canvas.
+ *
+ * please, please, please, use this instead of
+ * hard coding the item on the scene with a random
+ * value.
+ */
+static struct _ItemPos{
+	struct _Pos{
+		QPointF on;
+		QPointF off;
+	};
+	struct _Axis{
+			_Pos pos;
+			QLineF shrinked;
+			QLineF expanded;
+	};
+	_Pos background;
+	_Axis depth;
+	_Axis partialgas;
+	_Axis time;
+	_Axis cylinder;
+	_Axis temperature;
+} itemPos;
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
@@ -51,8 +59,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
 	timeAxis(new TimeAxis()),
-	depthController(new DiveRectItem()),
-	timeController(new DiveRectItem()),
 	diveProfileItem(new DiveProfileItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	temperatureItem(new DiveTemperatureItem()),
@@ -87,8 +93,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(gasYAxis);
 	scene()->addItem(temperatureAxis);
 	scene()->addItem(timeAxis);
-	scene()->addItem(depthController);
-	scene()->addItem(timeController);
 	scene()->addItem(diveProfileItem);
 	scene()->addItem(cylinderPressureAxis);
 	scene()->addItem(temperatureItem);
@@ -131,9 +135,6 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
-	depthController->setRect(0, 0, 10, 5);
-	timeController->setRect(0, 0, 10, 5);
-	timeController->setX(sceneRect().width() - timeController->boundingRect().width()); // Position it on the right spot.
 	meanDepth->setLine(0,0,96,0);
 	meanDepth->setX(3);
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
@@ -173,7 +174,11 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::setupItemSizes()
 {
-
+	// Scene is *always* 100 / 100.
+	itemPos.background.on.setX(0);
+	itemPos.background.on.setY(0);
+	itemPos.background.off.setX(0);
+	itemPos.background.off.setY(110);
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
@@ -290,7 +295,9 @@ void ProfileWidget2::settingsChanged()
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
 {
-	QGraphicsView::resizeEvent(event);
+	QGraphicsView::resizeEvent(event);	DiveRectItem *depthController;
+	DiveRectItem *timeController;
+
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
@@ -301,9 +308,8 @@ void ProfileWidget2::fixBackgroundPos()
 		return;
 	QPixmap p = toBeScaled.scaledToHeight(viewport()->height());
 	int x = viewport()->width() / 2 - p.width() / 2;
-	DivePixmapItem *bg = background;
-	bg->setPixmap(p);
-	bg->setX(mapToScene(x, 0).x());
+	background->setPixmap(p);
+	background->setX(mapToScene(x, 0).x());
 }
 
 void ProfileWidget2::wheelEvent(QWheelEvent* event)
