@@ -43,6 +43,7 @@ static struct _ItemPos{
 			QLineF expanded;
 	};
 	_Pos background;
+	_Pos dcLabel;
 	_Axis depth;
 	_Axis partialgas;
 	_Axis time;
@@ -221,6 +222,19 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.cylinder.pos.off.setY(20);
 	itemPos.cylinder.expanded.setP1(QPointF(0,0));
 	itemPos.cylinder.expanded.setP2(QPointF(0,20));
+
+		// Temperature axis config
+	itemPos.temperature.pos.on.setX(3);
+	itemPos.temperature.pos.on.setY(40);
+	itemPos.temperature.pos.off.setX(-10);
+	itemPos.temperature.pos.off.setY(40);
+	itemPos.temperature.expanded.setP1(QPointF(0,0));
+	itemPos.temperature.expanded.setP2(QPointF(0,20));
+
+	itemPos.dcLabel.on.setX(3);
+	itemPos.dcLabel.on.setY(97);
+	itemPos.dcLabel.off.setX(-10);
+	itemPos.dcLabel.off.setY(97);
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
@@ -311,6 +325,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
+	cartesianPlane->setup();
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
 	// while all other items are up there on the constructor.
@@ -425,9 +440,8 @@ void ProfileWidget2::setEmptyState()
 	timeAxis->setPos(itemPos.time.pos.off);
 	background->setY( itemPos.background.on.y());
 	toolTipItem->setVisible(false);
-	temperatureAxis->setVisible(false);
+	temperatureAxis->setPos(itemPos.temperature.pos.off);
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.off);
-	temperatureItem->setVisible(false);
 	cartesianPlane->setVisible(false);
 	meanDepth->setVisible(false);
 	diveComputerText->setVisible(false);
@@ -471,10 +485,14 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
 
-// 	temperatureItem->setVisible(true);
-// 	cartesianPlane->setVisible(true);
-// 	meanDepth->setVisible(true);
-// 	diveComputerText->setVisible(true);
+	temperatureAxis->setPos(itemPos.temperature.pos.on);
+	temperatureAxis->setLine(itemPos.temperature.expanded);
+
+	cartesianPlane->setVisible(true);
+	meanDepth->setVisible(true);
+	diveComputerText->setVisible(true);
+	cartesianPlane->setHorizontalLine( timeAxis->line() );
+	cartesianPlane->setVerticalLine( profileYAxis->line() );
 // 	diveCeiling->setVisible(true);
 // 	reportedCeiling->setVisible(true);
 // 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){

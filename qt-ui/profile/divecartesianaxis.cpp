@@ -365,7 +365,8 @@ void DiveCartesianPlane::setup()
 	if (!leftAxis || !bottomAxis || !scene())
 		return;
 
-	// This creates a Grid around the axis, creating the cartesian plane.
+	setPen(gridPen());
+// This creates a Grid around the axis, creating the cartesian plane.
 	const int top = leftAxis->posAtValue(leftAxis->minimum());
 	// unused for now:
 	// const int bottom = leftAxis->posAtValue(leftAxis->maximum());
