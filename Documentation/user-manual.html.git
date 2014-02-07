@@ -426,7 +426,7 @@ Please discuss issues with this program by sending an email to
 software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.</p></div>
 <div class="paragraph"><p><strong>Audience</strong>: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
-Di vers</p></div>
+Divers</p></div>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -584,11 +584,12 @@ using that device.
 <li>
 <p>
 One can enter the coordinates by hand if they are known, using one of
-three formats with latitude followed by longitude:
+four formats with latitude followed by longitude:
 </p>
 <div class="literalblock">
 <div class="content">
-<pre><code>Degrees and decimal minutes, e.g: N30° 13.49760' , E30° 49.30788'
+<pre><code>ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
+Degrees and decimal minutes, e.g. N30° 13.49760' , E30° 49.30788'
 Degrees minutes seconds, e.g. N30° 13' 29.8" , E30° 49' 1.5"
 Decimal degrees, e.g. 30.22496 , 30.821798</code></pre>
 </div></div>
@@ -648,19 +649,17 @@ like this:</p></div>
 <div class="paragraph"><p>The + button at the top right allows you to add more cylinders for this dive.
 The dark dustbin icon on the left allows you to delete information for a
 cylinder.</p></div>
-<div class="paragraph"><p>Start by selecting a cylinder type. The AL80 cylinder is shown as the default
-cylinder type (you can change this default in the preferences if you usually
-dive with a different type of tank). If you wish to change the tank used on this
-dive, click on the AL80. This will bring up a dropdown list, accessible through
-a down-arrow:</p></div>
+<div class="paragraph"><p>Start by selecting a cylinder type on the left-hand side of the table.  To select
+a cylinder click in the <strong>cylinder type</strong> box. This brings up a list button that can be
+used to display a dropdown list of cylinders:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CylinderDataEntry2.jpg" alt="FIGURE:The cylinder drop-down list button" />
 </div>
 </div>
 <div class="paragraph"><p>Use the drop-down list to select the cylinder type you used for this dive. The
-<strong>Size</strong> of the cylinder as well as its working pressure (<strong>WorkPress</strong>) will auto
-matically be shown in the dialogue.</p></div>
+<strong>Size</strong> of the cylinder as well as its working pressure (<strong>WorkPress</strong>) will
+automatically be shown in the dialogue.</p></div>
 <div class="paragraph"><p>Now you need to indicate the starting pressure and the ending pressure of the
 gas used during your dive. The unit of pressure (metric/imperial) corresponds
 to the setting you chose in the preferences.</p></div>
@@ -671,7 +670,7 @@ fields empty. After typing the information for the cylinder then
 either press <em>ENTER</em> on the keyboard or click outside the cell that contains
 the cursor. Add information for any additional cylinders by using the + button
 at the top right hand. Here is an example of a complete description for a
-dive using two cylinders (air and EAN40):</p></div>
+dive using two cylinders (air and EAN50):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CylinderDataEntry3.jpg" alt="FIGURE: a completed cylinder dive information table" />
@@ -823,7 +822,7 @@ your brand and type)
 <li>
 <p>
 In <em>Subsurface</em>, from the Main Menu, select <em>Import &#8594; Import From Dive Computer</em>.
-The following dialogue appears:
+Dialogue <strong>A</strong> inthe figure below appears:
 </p>
 </li>
 </ul></div>
@@ -861,7 +860,23 @@ of your <em>Subsurface</em> computer.
 </li>
 <li>
 <p>
-Click the <em>OK</em> button.
+Click the <em>OK</em> button. Dialogue <strong>B</strong> in the figure above appears.
+</p>
+</li>
+<li>
+<p>
+With communication established, watch how your data is retrieved from your
+dive computer!
+Depending on your make of computer and/or number of dives, this
+could take some time. Please be patient. The <em>Download</em> dialogue shows a
+progress bar at the bottom of the dialogue (but for some dive computers the
+progress information could be inaccurate as we cannot determine how much downloadable
+data there is until all data have been downloaded). When download of the dive information
+is complete, all the imported dives appear
+in the Dive List, sorted by date and time. Disconnect and switch off the dive
+computer to conserve its battery power.
+If you select a particular dive, the Dive Profile panel shows an informative
+graph of dive depth against time for that particular dive.
 </p>
 </li>
 <li>
@@ -879,21 +894,22 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Check the following:
-1) Is the dive computer still in PC-communication or Upload mode?
+<td class="content">Check the following: 1) Is the dive computer still in PC-communication or Upload mode?
 2) Is the battery of the dive computer fully charged? If not then charge or
 replace the battery.
 3) Is the cable faulty? Does the cable work perfectly using other software? Has
 it worked before, or is this the first time you are using the cable?
 4) Consult <strong>Appendix A</strong> and make sure you specified the correct Mount Point
-(see above). If your <em>Subsurface</em> computer does not recognise the USB adaptor by
+(see above).
+5) On Unix-like operating systems, do you have write permission to the USB port? If not, consult appendix <strong>A</strong>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>If your <em>Subsurface</em> computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility that the cable or USB adaptor is faulty. A faulty cable is the most
 common cause of communication failure between dive computer and <em>Subsurface</em>
 computer. It is also possible that your <em>Subsurface</em> computer is missing required
-drivers to interact with the download cable and connected dive computer.</td>
-</tr></table>
-</div>
+drivers to interact with the download cable and connected dive computer.</p></div>
 <div class="paragraph"><p>If all the above points are in order and there is a failure to download the dive data,
 then perform a download with the following
 two check boxes checked in the download dialogue discussed above:</p></div>
@@ -916,29 +932,6 @@ request that the files be analysed, providing your dive computer make and model
 as well as contextual information about the dives recorded on the dive
 computer.</p></div>
 </div></div>
-<div class="ulist"><ul>
-<li>
-<p>
-With communication established, watch how your data is retrieved from your
-dive computer!
-Depending on your make of computer and/or number of dives, this
-could take some time. Please be patient. The <em>Download</em> dialogue shows a
-progress bar at the bottom of the dialogue (but for some dive computers the
-progress information could be inaccurate as we cannot determine until after all
-data was downloaded how much downloadable data there is):
-</p>
-</li>
-</ul></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/ImportFromDC2.jpg" alt="FIGURE: Download dialogue 2" />
-</div>
-</div>
-<div class="paragraph"><p>When download of the dive information is complete, all the imported dives appear
-in the Dive List, sorted by date and time. Disconnect and switch off the dive
-computer to conserve its battery power.
-If you select a particular dive, the Dive Profile panel shows an informative
-graph of dive depth against time for that particular dive.</p></div>
 </div>
 <div class="sect3">
 <h4 id="S_EditDiveInfo">3.2.2. Updating the dive information imported from your dive computer.</h4>
@@ -1064,11 +1057,9 @@ like this:</p></div>
 automatically inserts the gas composition(% oxygen) in the table. The + button at
 the top right allows you to add more cylinders for this dive. The dark dustbin
 icon on the left allows you to delete information for a cylinder.</p></div>
-<div class="paragraph"><p>Start by selecting a cylinder type. The AL80 cylinder is shown as the default
-cylinder type (you can change this default in the preferences if you usually
-dive with a different type of tank). If you wish to change the tank used on this
-dive, click on the AL80. This will bring up a drop-down list, accessible through
-a down-arrow:</p></div>
+<div class="paragraph"><p>Start by selecting a cylinder type on the left-hand side of the table.  To select a
+cylinder click in the <strong>cylinder type</strong> box. This brings up a list button that can be used
+to display a dropdown list of cylinders:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CylinderDataEntry2.jpg" alt="FIGURE: The cylinder drop-down list button" />
@@ -1139,12 +1130,16 @@ the new data should be saved.</p></div>
 <div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Maybe you have a lot of dives logged using other dive log software. You don&#8217;t
 have to type all information by hand into <em>Subsurface</em>, because you can probably
 import your divelog. <em>Subsurface</em> will import divelogs from a range of other
-dive log software. Some software is supported natively (e.g. divelogs.de,
-JDiveLog, MacDive, and Suunto DM4), for others you have to export your logbook
-to XML and then <em>Subsurface</em> can import that XML file (Suunto DM3, DivingLog).
+dive log software. Some software is supported natively, for others you have to
+export your logbook to XML and then <em>Subsurface</em> can import that XML file.
+We do support importing CSV log files, with APD LogViewer, XP5 and Sensus being
+preconfigured, but the import being flexible, users can configure their own
+imports as well. Manually kept log files (e.g. in spreadsheet) can also be
+imported by configuring the CSV import.
 <em>Subsurface</em> can also import UDDF and UDCF files that are used by some divelog
 software and even some divecomputers like the Heinrichs &amp; Weikamp DR5. Finally,
-for some divelog software we currently suggest to import your logbook first
+for some divelog software like Mares Dive Organiser we currently suggest to
+import your logbook first
 into a webservice like <em>divelogs.de</em> and then import them from there with
 <em>Subsurface</em>, as divelogs.de supports a few additional logbook formats that
 <em>Subsurface</em> currently cannot parse.</p></div>
@@ -1154,237 +1149,107 @@ there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) <em>Subsurface</em>
 will not create duplicate entries.</p></div>
 <div class="sect3">
-<h4 id="S_ImportingDivesSuunto">3.3.1. Importing dives from <strong>Suunto Divemanager 3 (DM3)</strong></h4>
-<div class="paragraph"><p>Before you can start importing dives from <em>Suunto Divemanager</em>, you first
-have to export the dives you want to import. <em>Subsurface</em> does not import
-directly from the <em>Suunto Divemanager</em> log files. The following procedures
-can be used for Linux and Windows.</p></div>
-<div class="sect4">
-<h5 id="_export_from_strong_suunto_divemanager_strong">Export from <strong>Suunto Divemanager</strong></h5>
-<div class="ulist"><ul>
-<li>
-<p>
-Start <em>Suunto Divemanager</em> and log in with the name containing the logs
-</p>
-</li>
-<li>
-<p>
-Do not start the import wizard to import dives from your computer.
-</p>
-</li>
-<li>
-<p>
-In the navigation tree on the left side of the program-window, select your
-dives.
-</p>
-</li>
-<li>
-<p>
-Within the list of dives, select the dives you would like to import later:
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-To select certain dives: hold <em>ctrl</em> and click the dive
-</p>
-</li>
-<li>
-<p>
-To select all dives:  Select the first dive, hold down shift and select the
-last dive
-</p>
-</li>
-</ul></div>
-</li>
-<li>
-<p>
-With the dives marked, use the program menu <em>File &#8594; Export</em>
-</p>
-</li>
-<li>
-<p>
-The export pop-up will show
-</p>
-</li>
-<li>
-<p>
-Within this pop-up, there is one field called Export Path.
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-Click the browse button next to the field Export Path
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-A file-manager like window pops up
-</p>
-</li>
-<li>
-<p>
-Navigate to the directory where you want to store the Divelog.SDE file
-</p>
-</li>
-<li>
-<p>
-Optionally change the name of the file you want to save
-</p>
-</li>
-<li>
-<p>
-Click <em>Save</em>
-</p>
-</li>
-</ul></div>
-</li>
-<li>
-<p>
-You are back in the Export pop-up. Press the button <em>Export</em>
-</p>
-</li>
-</ul></div>
-</li>
-<li>
-<p>
-Your dives are now exported to the file Divelogs.SDE.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect4">
-<h5 id="_reading_suunto_divemanager_export_in_subsurface">Reading Suunto Divemanager Export in Subsurface</h5>
-<div class="paragraph"><p>The file Divelogs.SDE can now be opened (or imported) in <em>Subsurface</em>.</p></div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="S_ImportingDivesSuuntoDM4">3.3.2. Importing dives from <strong>Suunto Divemanager 4 (DM4)</strong></h4>
-<div class="paragraph"><p>To import divelog from <em>Suunto DM4</em>, you need to locate the DM4 database
-where the dives are stored. You can either look for the original
-database or take a backup of the dives. Both methods are described here.</p></div>
-<div class="sect4">
-<h5 id="_locating_the_suunto_dm4_database">Locating the Suunto DM4 database</h5>
-<div class="ulist"><ul>
-<li>
-<p>
-Start Suunto DM4
-</p>
-</li>
-<li>
-<p>
-Select <em>Help &#8594; About</em>
-</p>
-</li>
-<li>
-<p>
-Click <em>Copy</em> after text <em>Copy log folder path to clipboard</em>
-</p>
-</li>
-<li>
-<p>
-Now open Windows Explorer
-</p>
-</li>
-<li>
-<p>
-Paste the address to the path box at the top of the File Explorer
-</p>
-</li>
-<li>
-<p>
-The database is called DM4.db
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect4">
-<h5 id="_backing_up_suunto_dm4">Backing up Suunto DM4</h5>
-<div class="ulist"><ul>
-<li>
-<p>
-Start Suunto DM4
-</p>
-</li>
-<li>
-<p>
-Select <em>File - Create backup</em>
-</p>
-</li>
-<li>
-<p>
-From the file menu select the location and name for the backup, we&#8217;ll
-   use DM4 in here with the default extension .bak
-</p>
-</li>
-<li>
-<p>
-Click <em>Save</em>
-</p>
-</li>
-<li>
-<p>
-Your dives are now exported to the file DM4.bak
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect4">
-<h5 id="_reading_suunto_dm4_backup_in_em_subsurface_em">Reading Suunto DM4 backup in <em>Subsurface</em></h5>
-<div class="paragraph"><p>Importing the logs from DM4 does not require any special steps. You just
-do the following:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Open the following menu <em>File &#8594; Import File(s)</em>
-</p>
-</li>
-<li>
-<p>
-Browse your directories to the location where your DM4 backup is
-   stored
-</p>
-</li>
-<li>
-<p>
-Select the backup file you want to import and click <em>Open</em>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>It is also possible to do the importing from command line:</p></div>
-<div class="literalblock">
+<h4 id="_using_the_universal_import_dialogue">3.3.1. Using the universal import dialogue</h4>
+<div class="paragraph" id="Unified_import"><p>Importing dives from other software is performed through a unified interface that
+is activated by selecting <em>Import</em> from the Main Menu, then clicking on
+<em>Import Log Files</em>. This brings up the dialogue <strong>A</strong> below.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<pre><code>subsurface MyDives.xml --import DM4.bak</code></pre>
-</div></div>
+<img src="images/Import1.jpg" alt="FIGURE: Import dialogue: step 1" />
 </div>
+</div>
+<div class="paragraph"><p>Towards the bottom right is a dropdown selector with a default lable
+of <em>Dive Log Files</em> which gives access to the different types of direct imports
+available, as in dialogue <strong>B</strong>, above. Currently these are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+XML-formatted dive logs
+</p>
+</li>
+<li>
+<p>
+UDDF-formatted dive logs
+</p>
+</li>
+<li>
+<p>
+UDCF-formatted dive logs
+</p>
+</li>
+<li>
+<p>
+JDiveLog
+</p>
+</li>
+<li>
+<p>
+Suunto Dive Manager (DM3 and DM4)
+</p>
+</li>
+<li>
+<p>
+MacDive (XML)
+</p>
+</li>
+<li>
+<p>
+DivingLog 5.0 (XML)
+</p>
+</li>
+<li>
+<p>
+Kenozooid (UDDF)
+</p>
+</li>
+<li>
+<p>
+CSV (text-based and spreadsheet-based) dive logs.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Selecting the appropriate file in the file list of the dialogue opens
+the imported dive log in the <em>Subsurface</em> <strong>Dive List</strong>. A few other formats, not
+accessible through the Import dialogue are also supported, as explained below.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_mares_dive_organiser_v2_1">3.3.3. Importing from Mares Dive Organiser V2.1</h4>
-<div class="paragraph"><p>Mares Dive Organiser is a Windows application. The dive log is kept as a
-Microsoft SQL Compact Edition data base with a .SDF filename extension. The
-data base includes all Dive Organiser-registered divers on the particular
-computer and all Mares dive computers used. The safest way to obtain a copy
-of this data base is, within Dive Organiser, to select Database &#8594; Backup
-from the main menu and to back up the data base to your desk top. This
-creates a zipped file DiveOrganiserxxxxx.dbf. Rename the file to
-DiveOrganiserxxxxx.zip. Inside the zipped directory is a file <em>DiveOrganiser.sdf</em>.
-Extract it from the zipped folder to your Desktop.</p></div>
-<div class="paragraph"><p>Then use <em>www.divelogs.de</em> as a mechanism to extract the dive information from
-the file. Create a user account in divelogs.de , log into that web site, then
-select Import Logbook &#8594; Dive Organiser from the menu on the left hand side.
+<h4 id="_importing_from_mares_dive_organiser_v2_1">3.3.2. Importing from Mares Dive Organiser V2.1</h4>
+<div class="paragraph"><p>Mares dive logs need to be imported using a three-step process,
+using <em>www.divelogs.de</em> as a mechanism to extract the dive information from
+the file.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Export dive log data from Mares Dive Organiser to your desktop. See
+<a href="#Mares_Export">Appendix C</a> for more information.
+</p>
+</li>
+<li>
+<p>
+Import the data into <em>www.divelogs.de</em>. Create a user account in
+<em>www.divelogs.de</em>, log into that web site, then
+select <em>Import Logbook &#8594; Dive Organiser</em> from the menu on the left hand side.
 Follow the instructions carefully to transfer the dive information from the
-Dive Organiser data base to divelogs.de.</p></div>
-<div class="paragraph"><p>Then follow the instructions below to import dives from divelogs.de to
-<em>Subsurface</em>.</p></div>
+Dive Organiser data base to <em>www.divelogs.de</em>.
+</p>
+</li>
+<li>
+<p>
+Then follow the instructions below to import dives from <em>divelogs.de</em> to
+<em>Subsurface</em>.
+</p>
+</li>
+</ul></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">3.3.4. Importing dives from <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">3.3.3. Importing dives from <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. Select <em>Import&#8594;Import form Divelogs.de</em> from the Main Menu. This
-brings up a dialogue box (see figure on left [A] below). You need to enter a
+brings up a dialogue box (see figure on left [<strong>A</strong>] below). You need to enter a
 user-ID and password for <em>divelogs.de</em> into the appropriate fields. Then select
 the <em>Download</em> button. Download from <em>divelogs.de</em> starts immediately, evident
 on a progress bar in the dialogue box. At the and of the download, the
-successful status is indicated (see figure on the right [B], below). Select the
+successful status is indicated (see figure on the right [<strong>B</strong>], below). Select the
 <em>Apply</em> button. The imported dives appear in the <strong>Dive List</strong> panel.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -1393,165 +1258,9 @@ successful status is indicated (see figure on the right [B], below). Select the
 </div>
 </div>
 <div class="sect3">
-<h4 id="_importing_dives_from_strong_macdive_strong">3.3.5. Importing dives from <strong>MacDive</strong></h4>
-<div class="paragraph"><p>Importing logs from MacDive is as easy as it gets. Do the following
-steps in Subsurface:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Open the following menu <em>File - Import File(s)</em>
-</p>
-</li>
-<li>
-<p>
-Browse your directories to the location where your MacDive logs are
-   stored
-</p>
-</li>
-<li>
-<p>
-Select the log file(s) you want to import and click <em>open</em>
-</p>
-</li>
-<li>
-<p>
-Click the OK button in the pop-up
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>After a few moments, you see your existing logs in <em>Subsurface</em>. Now you can
-edit your dives like explained in the section <a href="#S_EditDiveInfo">Updating the Dive Information</a>.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> imports all the relevant dive information
-excluding the used equipment and diver name.</p></div>
-<div class="paragraph"><p>It is also possible to do the import from command line:</p></div>
-<div class="literalblock">
-<div class="content">
-<pre><code>subsurface MyDives.xml --import MacDiveDives.xml</code></pre>
-</div></div>
-</div>
-<div class="sect3">
-<h4 id="S_ImportingDivinglog">3.3.6. Importing dives from <strong>DivingLog 5.0</strong></h4>
-<div class="paragraph"><p>Before you can start importing dives from <em>DivingLog</em> you first have to
-export those dives. Unfortunately DivingLog XML files give us no
-indication on the preferences set on your system. So in order for
-<em>Subsurface</em> to be able to successfully import XML files from DivingLog
-you first need to make sure that your copy of DivingLog is configured
-to use the Metric system (you can easily change this in <em>File &#8594;
-Preferences &#8594; Units and Language</em> by clicking the <em>Metric</em>
-button). Then do the following:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-In Divinglog open the <em>File &#8594; Export &#8594; XML</em> menu
-</p>
-</li>
-<li>
-<p>
-Select the dives that you want to export
-</p>
-</li>
-<li>
-<p>
-Click on the export button and select the filename
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>This file can now be opened in <em>Subsurface</em> (as described in the previous
-sections).</p></div>
-</div>
-<div class="sect3">
-<h4 id="S_ImportingDivesJDiveLog">3.3.7. Importing dives from <strong>JDiveLog</strong></h4>
-<div class="paragraph"><p>JDiveLog stores its information in files with the extension of .jlb that contain
-all the information  except images  in XML format.</p></div>
-<div class="paragraph"><p>By using  <em>File &#8594; Import File(s)</em> from the Main Menu you get a pop-up asking
-for the file name.  To import your JDiveLog file(s) do the following:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Open <em>File &#8594; Import File(s)</em> on the menu
-</p>
-</li>
-<li>
-<p>
-Browse your directories to the location where your *.jlb file is
-</p>
-</li>
-<li>
-<p>
-Select your existing *.jlb file and click <em>open</em>
-</p>
-</li>
-<li>
-<p>
-Click the OK button in the pop-up
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>After a few moments, you see your existing logs in <em>Subsurface</em>. Now you can
-edit your dives like explained in the section <a href="#S_EditDiveInfo">Updating the Dive Information</a>.</p></div>
-<div class="paragraph"><p>Information that is imported from JDiveLog into the <strong>location</strong> field:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Extended dive location information
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Information that is merged into the <strong>notes</strong> field:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Used amount of weight
-</p>
-</li>
-<li>
-<p>
-Used type of suit
-</p>
-</li>
-<li>
-<p>
-Used type of gloves
-</p>
-</li>
-<li>
-<p>
-Type of dive
-</p>
-</li>
-<li>
-<p>
-Dive activity
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Alternatively, you can start <em>Subsurface</em> with the --import command line
-which will have the same effect:</p></div>
-<div class="literalblock">
-<div class="content">
-<pre><code>subsurface MyDives.xml --import JDiveLogDives.jlb</code></pre>
-</div></div>
-<div class="paragraph"><p>will open your divelog (assuming that&#8217;s called MyDives.xml) and then
-import the dives from JdivelogDives.jlb. You can now save the combined
-divelog back as MyDives.xml.</p></div>
-</div>
-<div class="sect3">
-<h4 id="S_Importingkenozooid">3.3.8. Importing dives from <strong>Kenozooid</strong></h4>
-<div class="paragraph"><p><em>Kenozooid</em> uses UDDF to store dives and is tested to work with <em>Subsurface</em>.
-Make sure you are not using compressed files when importing to <em>Subsurface</em>
-or uncompress them manually beforehand.</p></div>
-</div>
-<div class="sect3">
-<h4 id="S_ImportingUDDF">3.3.9. Importing UDDF Dives</h4>
-<div class="paragraph"><p><em>Subsurface</em> supports UDDF as a generic import format.
-Some attributes in your file may not get processed properly. Select
-<em>Import&#8594;Import Files</em> from the Main Menu. Then select the UDDF file to
-be imported.</p></div>
-</div>
-<div class="sect3">
-<h4 id="S_ImportingCSV">3.3.10. Importing dives in CSV format</h4>
+<h4 id="S_ImportingCSV">3.3.4. Importing dives in CSV format</h4>
 <div class="paragraph"><p>Sometimes dive computers export dive information as files with
-<em>comma-separated variables</em> (.CSV). For example, the APD Inspiration and Evolution
+<em>comma-separated values</em> (.CSV). For example, the APD Inspiration and Evolution
 closed circuit rebreather (CCR) systems export dive information in CSV format that
 normally contains information about a single dive only. These
 files can easily be imported into <em>Subsurface</em>. CSV files are normally organised into
@@ -1582,9 +1291,9 @@ needs to know:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
-Which character separates the different colums within a single line of data? This
+Which character separates the different columns within a single line of data? This
 field separator should be either a comma (,) or a TAB character. This could be determined
-by opening the file with a text editor. If it is commma-delimited, then the comma
+by opening the file with a text editor. If it is comma-delimited, then the comma
 characters between the values are clearly visible. If no commas are evident, the file
 is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
 </p>
@@ -1592,7 +1301,7 @@ is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the ab
 <li>
 <p>
 Which data columns need to be imported into <em>Subsurface</em>?. The Dive Time and
-Depth colums are always required. Open the file using a text editor and note the
+Depth columns are always required. Open the file using a text editor and note the
 titles of the columns to be imported and their column positions. For instance
 for the above example:
 </p>
@@ -1606,10 +1315,13 @@ ppO2:           column 4</code></pre>
 </li>
 </ol></div>
 <div class="paragraph"><p>Armed with this information, the import into <em>Subsurface</em> is straightforward. Select
-<em>Import&#8594;Import CSV</em> from the main menu. The following dialogue appears:</p></div>
+<em>Import&#8594;Import Log Files</em> from the main menu. In the appearing file
+selection menu, select one or more CSV files. Format is detected by the file
+extension, and a common configuration dialog is presented for all the
+files with CSV extension. The configuration dialog is following:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CSVDownload.jpg" alt="FIGURE: CSV download dialogue" />
+<img src="images/Import_CSV1.jpg" alt="FIGURE: CSV download dialogue" />
 </div>
 </div>
 <div class="paragraph"><p>Specify the name of the CSV file or select it from the browser button on the right.
@@ -1626,6 +1338,65 @@ corresponds to the dialogue that would apply to the CSV data set described above
 the image. Having performed
 the column specification, select the <em>OK</em> button and the dive will be imported and
 listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingManualCSV">3.3.5. Importing dives from manually kept CSV file</h4>
+<div class="paragraph"><p>If one keeps dive logs in a spreadsheet, there is an option to import
+those dives as well. Spreadsheet data, exported as a CSV file, can
+be imported to <em>Subsurface</em>. When importing manually
+kept log files, the information needed is quite different as we are
+importing only metadata, not profile samples.</p></div>
+<div class="paragraph"><p>Similarly to importing dives in CSV format (see above), one needs to
+know the internal format
+of the CSV data to import.</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+Which character separates the different columns within a single line of data? This
+should be either a comma (,), semicolon (;) or a TAB
+character, and could be determined by opening the file with a text
+editor. If it is comma-delimited, then the comma
+characters between the values are clearly visible. If no commas are evident and the data
+are in clear columns, the file
+is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the above example).
+A recommended field separator for the export is tab, as comma might be used in the
+fields themselves.
+</p>
+</li>
+<li>
+<p>
+Which columns need to be imported into <em>Subsurface</em>?. We do not
+currently have any mandatory input fields, but some, e.g. dive duration
+are crucial for the log file to make any sense. Possible options
+can be seen in the image below and one should include all the
+fields that are available in both your log file and in the Subsurface
+import.
+</p>
+</li>
+<li>
+<p>
+Units used for depth, weight and temperature. We consider depth to be
+either feet or meters, weight kilograms or pounds and temperature either
+Celsius or Fahrenheit. However, you can only select <em>Metric</em> or
+<em>Imperial</em>. No mixture of unit systems is allowed for the different fields.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>Importing manually kept CSV log files is quite straight forward, but
+there might be many fields and counting the field numbers is error
+prone. Therefore validation of the data to be imported is critical.</p></div>
+<div class="paragraph"><p>To import your dives, select <em>Import&#8594;Import Log Files</em> from the menu
+bar. If the CSV option in the dropdown list is selected and the file list
+includes file names ending with .CSV, one can select the
+<em>Manual dives</em> tab that will bring up the following configuration dialog:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Import_CSV2.jpg" alt="FIGURE: Download dialog for Manual CSV logs" />
+</div>
+</div>
+<div class="paragraph"><p>Configure your input fields as appropriate, and when everything is done
+select the <em>OK</em> button to perform the import. New dives should appear in
+the <strong>Dive List</strong> area of <em>Subsurface</em>.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -1644,7 +1415,8 @@ a long number that gives access to the companion app capabilities.
 <li>
 <p>
 Download the app from
-<a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play Store</a> or from <a href="http://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
+<a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play Store</a> or
+from <a href="http://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
 </p>
 </li>
 </ul></div>
@@ -1822,9 +1594,9 @@ your Android device.</p></div>
 <em>Subsurface</em> before obtaining the GPS coordinates from the server. The download
 dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main Menu <em>Import
 &#8594; Import GPS data from Subsurface Service</em>, resulting in the image on the
-left (A), below. On first use the DIVERID text box will be blank. Provide the
+left (<strong>A</strong>), below. On first use the DIVERID text box will be blank. Provide the
 DIVERID. Then select the <em>Download</em> button and the download begins. When this
-is completed you see the screen on the right (B), below:</p></div>
+is completed you see the screen on the right (<strong>B</strong>), below:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DownloadGPS.jpg" alt="FIGURE: Downloading Companion app GPS data" />
@@ -2018,7 +1790,7 @@ open a further selection of which gas is being switched to, the list based on
 the available gases defined in the Equipment Tab. By right-clicking while over
 an existing marker, the menu extends adding options to allow deletion of the
 marker or to allow all markers of that type to be hidden. Hidden events can be
-restored to view by selecteing Unhide all events from the context menu.</p></div>
+restored to view by selecting Unhide all events from the context menu.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_the_strong_information_box_strong">4.5. The <strong>Information Box</strong></h3>
@@ -2063,7 +1835,7 @@ mostly to manipulate  groups of dives. The context menu is found by selecting
 a dive or a group of dives and then right-clicking.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/ContextMenu.png" alt="Figure: Context Menu" />
+<img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
 </div>
 </div>
 <div class="paragraph"><p>The context menu is used in many manipulations described below.</p></div>
@@ -2184,7 +1956,7 @@ computer and appearing as different dives in the <strong>Dive List</strong> pane
 merge these dives onto a single dive by selecting the appropriate dives and
 right-clicking them to bring up the context menu. Then select <strong>Merge selected
 dives</strong>. It may be necessary to edit the dive information in the <strong>Dive Notes</strong>
-panelto reflect events or conditions that apply to the merged dive. The figure
+panel to reflect events or conditions that apply to the merged dive. The figure
 below shows the depth profile two such dives that were merged:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2245,12 +2017,7 @@ the appropriate information from the Main Menu: <em>File&#8594;Preferences&#8594
 </ul></div>
 <div class="paragraph"><p>Now you need to select the print options. To do this, select <em>File&#8594;Print</em> from
 the Main menu. The following dialogue appears (see the image on the left [A],
-below):</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/PrintDivelog.jpg" alt="FIGURE: Print dialogue" />
-</div>
-</div>
+below).</p></div>
 <div class="paragraph"><p>Under <em>Print type</em> you need to select one of three options:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2295,12 +2062,22 @@ text above the dive profile.</p></div>
 <div class="paragraph"><p>You can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on the
 dialogue. After preview, changes to the options in the print dialogue can be made
 to give a layout that fits personal taste.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PrintDiveLog.jpg" alt="FIGURE: Print dialogue" />
+</div>
+</div>
 <div class="paragraph"><p>Now, select the <em>Print</em> button in the dialogue. This activates the regular print
-dialogue used by your operating system, allowing you to choose a printer and
-to set its properties. Remember to set the print resolution of the printer to
-an appropriate value by changing the printer properties. Finally, print the
-dives. Above on the right (B) is an example of the output for one particular
-dive.</p></div>
+dialogue used by your operating system (image [B] in the middle, above), allowing
+you to choose a printer and to set its properties (image [C] on the right, above).
+Remember to set the print resolution of the printer to an appropriate value by changing
+the printer properties. Finally, print the dives. Below is a (rather small) example of
+the output for one particular page.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Printpreview.jpg" alt="FIGURE: Print preview page" />
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2315,6 +2092,11 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <div class="sect2">
 <h3 id="_defaults">8.1. Defaults</h3>
 <div class="paragraph"><p>There are four settings in the <strong>Defaults</strong> panel:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Preferences1.jpg" alt="FIGURE: Preferences defaults page" />
+</div>
+</div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2348,6 +2130,11 @@ the <strong>Equipment</strong> tab of the <strong>Dive Notes</strong> panel.
 </div>
 <div class="sect2">
 <h3 id="_units">8.2. Units</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Preferences2.jpg" alt="FIGURE: Preferences Units page" />
+</div>
+</div>
 <div class="paragraph"><p>Here you can choose between metric and imperial measures of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
 at the top, you can specify that all units are in the chosen measurement system
@@ -2357,6 +2144,11 @@ measures.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_graph">8.3. Graph</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Preferences3.jpg" alt="FIGURE: Preferences Graph page" />
+</div>
+</div>
 <div class="paragraph"><p>This panel allows two type of selections:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2644,6 +2436,11 @@ year.
 <em>Next DC</em> - Switch to previous dive computer.
 </p>
 </li>
+<li>
+<p>
+<em>Full Screen</em> - Toggles Full Screen mode.
+</p>
+</li>
 </ul></div>
 </div>
 <div class="sect2">
@@ -2720,7 +2517,7 @@ On a Mac you at times have to manually hunt for the correct
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">10.2. How to Find the Device Name for USB devices</h3>
+<h3 id="S_HowFindDeviceName">10.2. How to Find the Device Name for USB devices and set its write permission</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2786,8 +2583,28 @@ ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver</code></pre>
 </div></div>
 <div class="paragraph"><p>You see that in the third line from the bottom, the USB adapter is
 detected and is connected to <code>ttyUSB3</code>. Now you use this information in
-the import settings as <code>/dev/ttyUSB3</code>. Your dive computer interface is
-connected and you should be able to import your dives.</p></div>
+the import settings as <code>/dev/ttyUSB3</code>. This directs Subsurface to the correct USB port.</p></div>
+<div class="paragraph"><p>Ensuring you have write permission to the USB serial port:</p></div>
+<div class="paragraph"><p>On Unix-like operating systems the USB ports can only be accessed by users who are members
+of the <code>dialout</code> group. If you are not root, the user may not be a member of that group and
+will not be able to use the USB port. Let us assume your username is <em>johnB</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+As root, type: <code>usermod -a -G dialout johnB</code>  (Ubuntu users: <code>sudo -a -G dialout johnB</code>)
+This makes johnB a member of the <code>dialout</code> group.
+</p>
+</li>
+<li>
+<p>
+Type: <code>id johnB</code>     This lists all the groups that johnB belongs to and verifies that
+the appropriate group membership has been created. The <code>dialout</code> group should be listed
+among the different IDs.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>With the appropriate device name (e.g. <code>dev/ttyUSB3</code>) and with write permission to the USB
+port, your dive computer interface can connect and you should be able to import your dives.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_HowFindBluetoothDeviceName">10.3. Setting up bluetooth enabled devices</h3>
@@ -2986,11 +2803,254 @@ switch off WiFi while using Bluetooth
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">12. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The import of dive log data from external dive log software is mostly performed using
+the dialogue found by selecting <em>Import</em> from the Main Menu, then clicking on
+<em>Import Log Files</em>. This is a single-step process, more information about which can be found
+<a href="#Unified_import">here.</a>
+However, in some cases, a two-step process may be required:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Export the forieign dive log data to format that is accessible from <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Import the accessible dive log data into <em>Subsurface</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This appendix provides some information about approaches to export dive log data from foreign
+dive log software. The procedures below mostly apply to Linux and/or Windows.</p></div>
+<div class="sect2">
+<h3 id="S_ImportingDivesSuunto">12.1. Exporting dives from <strong>Suunto Divemanager 3 (DM3)</strong></h3>
+<div class="ulist"><ul>
+<li>
+<p>
+Start <em>Suunto Divemanager</em> and log in with the name containing the logs
+</p>
+</li>
+<li>
+<p>
+Do not start the import wizard to import dives from your computer.
+</p>
+</li>
+<li>
+<p>
+In the navigation tree on the left side of the program-window, select your
+dives.
+</p>
+</li>
+<li>
+<p>
+Within the list of dives, select the dives you would like to import later:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+To select certain dives: hold <em>ctrl</em> and click the dive
+</p>
+</li>
+<li>
+<p>
+To select all dives:  Select the first dive, hold down shift and select the
+last dive
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+With the dives marked, use the program menu <em>File &#8594; Export</em>
+</p>
+</li>
+<li>
+<p>
+The export pop-up will show
+</p>
+</li>
+<li>
+<p>
+Within this pop-up, there is one field called Export Path.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Click the browse button next to the field Export Path
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+A file-manager like window pops up
+</p>
+</li>
+<li>
+<p>
+Navigate to the directory where you want to store the Divelog.SDE file
+</p>
+</li>
+<li>
+<p>
+Optionally change the name of the file you want to save
+</p>
+</li>
+<li>
+<p>
+Click <em>Save</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+You are back in the Export pop-up. Press the button <em>Export</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Your dives are now exported to the file Divelogs.SDE.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDivesSuuntoDM4">12.2. Exporting dives from <strong>Suunto Divemanager 4 (DM4)</strong></h3>
+<div class="paragraph"><p>To import divelog from <em>Suunto DM4</em>, you need to locate the DM4 database
+where the dives are stored. You can either look for the original
+database or take a backup of the dives. Both methods are described here.</p></div>
+<div class="paragraph"><p>Locating the Suunto DM4 database:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Start Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Select <em>Help &#8594; About</em>
+</p>
+</li>
+<li>
+<p>
+Click <em>Copy</em> after text <em>Copy log folder path to clipboard</em>
+</p>
+</li>
+<li>
+<p>
+Now open Windows Explorer
+</p>
+</li>
+<li>
+<p>
+Paste the address to the path box at the top of the File Explorer
+</p>
+</li>
+<li>
+<p>
+The database is called DM4.db
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Backing up Suunto DM4:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Start Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Select <em>File - Create backup</em>
+</p>
+</li>
+<li>
+<p>
+From the file menu select the location and name for the backup, we&#8217;ll
+   use DM4 in here with the default extension .bak
+</p>
+</li>
+<li>
+<p>
+Click <em>Save</em>
+</p>
+</li>
+<li>
+<p>
+Your dives are now exported to the file DM4.bak
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_exporting_from_mares_dive_organiser_v2_1">12.3. Exporting from Mares Dive Organiser V2.1</h3>
+<div class="paragraph" id="Mares_Export"><p>Mares Dive Organiser is a Windows application. The dive log is kept as a
+Microsoft SQL Compact Edition data base with a .SDF filename extension. The
+data base includes all Dive Organiser-registered divers on the particular
+computer and all Mares dive computers used. Since
+Mares utilise proprietory Windows software not compatible with multi-platform software,
+these dive logs cannot be directly imported into <em>Subsurface</em>. The safest way to obtain a copy
+these dive data base is to export the information to another compatibale format
+which can be imported into <em>Subsurface</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Within Dive Organiser, select
+<em>Database &#8594; Backup</em> from the main menu and back up the data base to the desk top.
+This creates a zipped file DiveOrganiserxxxxx.dbf.
+</p>
+</li>
+<li>
+<p>
+Rename the file to
+DiveOrganiserxxxxx.zip. Inside the zipped directory is a file <em>DiveOrganiser.sdf</em>.
+</p>
+</li>
+<li>
+<p>
+Extract it from the zipped folder to your Desktop.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDivinglog">12.4. Exporting dives from <strong>DivingLog 5.0</strong></h3>
+<div class="paragraph"><p>Unfortunately DivingLog XML files give us no
+indication on the preferences set on your system. So in order for
+<em>Subsurface</em> to be able to successfully import XML files from DivingLog
+you first need to make sure that your copy of DivingLog is configured
+to use the Metric system (you can easily change this in <em>File &#8594;
+Preferences &#8594; Units and Language</em> by clicking the <em>Metric</em>
+button). Then do the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+In Divinglog open the <em>File &#8594; Export &#8594; XML</em> menu
+</p>
+</li>
+<li>
+<p>
+Select the dives that you want to export
+</p>
+</li>
+<li>
+<p>
+Click on the export button and select the filename
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-01-03 03:13:57 PST
+Last updated 2014-02-07 06:46:24 PST
 </div>
 </div>
 </body>
