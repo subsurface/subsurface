@@ -141,7 +141,6 @@ void ProfileWidget2::setupItemOnScene()
 
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
-	scene()->addItem(cartesianPlane);
 
 	diveComputerText->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
@@ -358,4 +357,3 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 	}
 	return QGraphicsView::eventFilter(object, event);
 }
-
