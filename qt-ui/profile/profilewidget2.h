@@ -46,6 +46,10 @@ class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint& pos);
+    void setupSceneAndFlags();
+    void setupItemSizes();
+    void addItemsToScene();
+    void setupItemOnScene();
 public:
 	enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
 	enum Items{BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
@@ -58,7 +62,6 @@ public:
 public slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 protected:
-	virtual void contextMenuEvent(QContextMenuEvent* event);
 	virtual void resizeEvent(QResizeEvent* event);
 	virtual void wheelEvent(QWheelEvent* event);
 	virtual void mouseMoveEvent(QMouseEvent* event);
@@ -69,7 +72,6 @@ signals:
 private:
 	DivePlotDataModel *dataModel;
 	State currentState;
-	QStateMachine *stateMachine;
 	int zoomLevel;
 	DivePixmapItem *background ;
 	ToolTipItem *toolTipItem;

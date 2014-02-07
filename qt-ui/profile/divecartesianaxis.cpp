@@ -19,6 +19,17 @@ static QPen gridPen(){
 	pen.setCosmetic(true);
 	return pen;
 }
+
+void DiveCartesianAxis::setup(double minimum, double maximum, double interval, DiveCartesianAxis::Orientation o, qreal tickSize, const QPointF& pos)
+{
+	setMinimum(minimum);
+	setMaximum(maximum);
+	setTickInterval(interval);
+	setOrientation(o);
+	setTickSize(tickSize);
+	setPos(pos);
+}
+
 void DiveCartesianAxis::setMaximum(double maximum)
 {
 	if (max == maximum)

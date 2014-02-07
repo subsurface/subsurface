@@ -22,12 +22,29 @@
 #endif
 #include "mainwindow.h"
 
+namespace ItemPos{
+	int backgroundOnCanvas;
+	int backgroundOffCanvas;
+	int profileYAxisOnCanvas;
+	int profileYAxisOffCanvas;
+	// unused so far:
+	int gasYAxisOnCanvas;
+	int depthControllerOnCanvas;
+	int timeControllerOnCanvas;
+	int gasYAxisOffCanvas;
+	int timeAxisOnCanvas;
+	int timeAxisOffCanvas;
+	int timeAxisEditMode;
+	int depthControllerOffCanvas;
+	int timeControllerOffCanvas;
+	QLineF profileYAxisExpanded;
+}
+
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
 	currentState(INVALID),
 	zoomLevel(0),
-	stateMachine(new QStateMachine(this)),
 	background (new DivePixmapItem()),
 	toolTipItem(new ToolTipItem()),
 	profileYAxis(new DepthAxis()),
@@ -44,35 +61,54 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	meanDepth(new MeanDepthLine()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
-	reportedCeiling(new DiveReportedCeiling())
+	reportedCeiling(new DiveReportedCeiling()),
+	pn2GasItem( new PartialPressureGasItem()),
+	pheGasItem( new PartialPressureGasItem()),
+	po2GasItem( new PartialPressureGasItem())
 {
-	setScene(new QGraphicsScene());
-	scene()->setSceneRect(0, 0, 100, 100);
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scene()->setItemIndexMethod(QGraphicsScene::NoIndex);
-	setOptimizationFlags(QGraphicsView::DontSavePainterState);
-	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-	setMouseTracking(true);
+	setupSceneAndFlags();
+	setupItemSizes();
+	setupItemOnScene();
+	addItemsToScene();
 
-	toolTipItem->setTimeAxis(timeAxis);
+	scene()->installEventFilter(this);
+#ifndef QT_NO_DEBUG
+	QTableView *diveDepthTableView = new QTableView();
+	diveDepthTableView->setModel(dataModel);
+	mainWindow()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
+#endif
+}
+
+void ProfileWidget2::addItemsToScene()
+{
+	scene()->addItem(background);
 	scene()->addItem(toolTipItem);
+	scene()->addItem(profileYAxis);
+	scene()->addItem(gasYAxis);
+	scene()->addItem(temperatureAxis);
+	scene()->addItem(timeAxis);
+	scene()->addItem(depthController);
+	scene()->addItem(timeController);
+	scene()->addItem(diveProfileItem);
+	scene()->addItem(cylinderPressureAxis);
+	scene()->addItem(temperatureItem);
+	scene()->addItem(gasPressureItem);
+	scene()->addItem(cartesianPlane);
+	scene()->addItem(meanDepth);
+	scene()->addItem(diveComputerText);
+	scene()->addItem(diveCeiling);
+	scene()->addItem(reportedCeiling);
+	scene()->addItem(pn2GasItem);
+	scene()->addItem(pheGasItem);
+	scene()->addItem(po2GasItem);
+	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+		scene()->addItem(tissue);
+	}
+}
 
-	// Creating the needed items.
-	// ORDER: {BACKGROUND, PROFILE_Y_AXIS, GAS_Y_AXIS, TIME_AXIS, DEPTH_CONTROLLER, TIME_CONTROLLER, COLUMNS};
-	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-	timeAxis->setOrientation(DiveCartesianAxis::LeftToRight);
-
-	// Defaults of the Axis Coordinates:
-	profileYAxis->setMinimum(0);
-	profileYAxis->setTickInterval(M_OR_FT(10,30)); //TODO: This one should be also hooked up on the Settings change.
-	timeAxis->setMinimum(0);
-	timeAxis->setTickInterval(600); // 10 to 10 minutes?
-
-	// Default Sizes of the Items.
-	profileYAxis->setX(2);
-	profileYAxis->setTickSize(1);
+void ProfileWidget2::setupItemOnScene()
+{
+	toolTipItem->setTimeAxis(timeAxis);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setX(3);
@@ -82,7 +118,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	gasYAxis->setY(70);
 	gasYAxis->setMinimum(0);
 	gasYAxis->setModel(dataModel);
-	scene()->addItem(gasYAxis);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setLine(0, 60, 0, 90);
@@ -95,10 +130,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	cylinderPressureAxis->setX(3);
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
-
-	timeAxis->setLine(0,0,96,0);
-	timeAxis->setX(3);
-	timeAxis->setTickSize(1);
 
 	depthController->setRect(0, 0, 10, 5);
 	timeController->setRect(0, 0, 10, 5);
@@ -115,24 +146,13 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveComputerText->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
-	// insert in the same way it's declared on the Enum. This is needed so we don't use an map.
-	QList<QGraphicsItem*> stateItems; stateItems << background << profileYAxis <<
-							timeAxis << depthController << timeController <<
-							temperatureAxis << cylinderPressureAxis << diveComputerText <<
-							meanDepth;
-	Q_FOREACH(QGraphicsItem *item, stateItems) {
-		scene()->addItem(item);
-	}
-
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
-
 	for(int i = 0; i < 16; i++){
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
 		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1+i);
 		allTissues.append(tissueItem);
 	}
-
 	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
@@ -150,117 +170,36 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	CREATE_PP_GAS( po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
 #undef CREATE_PP_GAS
 
-	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-
-	//enum State{ EMPTY, PROFILE, EDIT, ADD, PLAN, INVALID };
-	stateMachine = new QStateMachine(this);
-
-	// TopLevel States
-	QState *emptyState = new QState();
-	QState *profileState = new QState();
-
-	// Conections:
-	stateMachine->addState(emptyState);
-	stateMachine->addState(profileState);
-	stateMachine->setInitialState(emptyState);
-
-	// All Empty State Connections.
-	QSignalTransition *tEmptyToProfile = emptyState->addTransition(this, SIGNAL(startProfileState()), profileState);
-
-	// All Profile State Connections
-	QSignalTransition *tProfileToEmpty = profileState->addTransition(this, SIGNAL(startEmptyState()), emptyState);
-
-	// Constants:
-	const int backgroundOnCanvas = 0;
-	const int backgroundOffCanvas = 110;
-	const int profileYAxisOnCanvas = 3;
-	const int profileYAxisOffCanvas = profileYAxis->boundingRect().width() - 10;
-	// unused so far:
-	const int gasYAxisOnCanvas = gasYAxis->boundingRect().width();
-	const int depthControllerOnCanvas = sceneRect().height() - depthController->boundingRect().height();
-	const int timeControllerOnCanvas = sceneRect().height() - timeController->boundingRect().height();
-	const int gasYAxisOffCanvas = gasYAxis->boundingRect().width() - 10;
-	const int timeAxisOnCanvas = sceneRect().height() - timeAxis->boundingRect().height() - 4;
-	const int timeAxisOffCanvas = sceneRect().height() + timeAxis->boundingRect().height();
-	const int timeAxisEditMode = sceneRect().height() - timeAxis->boundingRect().height() - depthController->boundingRect().height();
-	const int depthControllerOffCanvas = sceneRect().height() + depthController->boundingRect().height();
-	const int timeControllerOffCanvas = sceneRect().height() + timeController->boundingRect().height();
-	const QLineF profileYAxisExpanded = QLineF(0,0,0,timeAxisOnCanvas);
-	// unused so far:
-	// const QLineF timeAxisLine = QLineF(0, 0, 96, 0);
-
-	// State Defaults:
-	// Empty State, everything but the background is hidden.
-	emptyState->assignProperty(this, "backgroundBrush", QBrush(Qt::white));
-	emptyState->assignProperty(background, "y",  backgroundOnCanvas);
-	emptyState->assignProperty(profileYAxis, "x", profileYAxisOffCanvas);
-	emptyState->assignProperty(gasYAxis, "x", gasYAxisOffCanvas);
-	emptyState->assignProperty(timeAxis, "y", timeAxisOffCanvas);
-	emptyState->assignProperty(depthController, "y", depthControllerOffCanvas);
-	emptyState->assignProperty(timeController, "y", timeControllerOffCanvas);
-
-	// Profile, everything but the background, depthController and timeController are shown.
-	profileState->assignProperty(this, "backgroundBrush", getColor(::BACKGROUND));
-	profileState->assignProperty(background, "y",  backgroundOffCanvas);
-	profileState->assignProperty(profileYAxis, "x", profileYAxisOnCanvas);
-	profileState->assignProperty(profileYAxis, "line", profileYAxisExpanded);
-	profileState->assignProperty(gasYAxis, "x", profileYAxisOnCanvas);
-	profileState->assignProperty(timeAxis, "y", timeAxisOnCanvas);
-	profileState->assignProperty(depthController, "y", depthControllerOffCanvas);
-	profileState->assignProperty(timeController, "y", timeControllerOffCanvas);
-	profileState->assignProperty(cartesianPlane, "verticalLine", profileYAxisExpanded);
-	profileState->assignProperty(cartesianPlane, "horizontalLine", timeAxis->line());
-
-	// All animations for the State Transitions.
-	QPropertyAnimation *backgroundYAnim = new QPropertyAnimation(background, "y");
-	QPropertyAnimation *depthAxisAnim = new QPropertyAnimation(profileYAxis, "x");
-	QPropertyAnimation *gasAxisanim = new QPropertyAnimation(gasYAxis, "x");
-	QPropertyAnimation *timeAxisAnim = new QPropertyAnimation(timeAxis, "y");
-	QPropertyAnimation *depthControlAnim = new QPropertyAnimation(depthController, "y");
-	QPropertyAnimation *timeControlAnim = new QPropertyAnimation(timeController, "y");
-	QPropertyAnimation *profileAxisAnim = new QPropertyAnimation(profileYAxis, "line");
-
-// Animations
-	QList<QSignalTransition*> transitions;
-	transitions
-		<< tEmptyToProfile
-		<< tProfileToEmpty;
-
-	Q_FOREACH(QSignalTransition *s, transitions) {
-		s->addAnimation(backgroundYAnim);
-		s->addAnimation(depthAxisAnim);
-		s->addAnimation(gasAxisanim);
-		s->addAnimation(timeAxisAnim);
-		s->addAnimation(depthControlAnim);
-		s->addAnimation(timeControlAnim);
-		s->addAnimation(profileAxisAnim);
-	}
-
-		// Configuration so we can search for the States later, and it helps debugging.
-	emptyState->setObjectName("Empty State");
-	profileState->setObjectName("Profile State");
-
-	// Starting the transitions:
-	stateMachine->start();
-	qApp->processEvents();
-	scene()->installEventFilter(this);
-#ifndef QT_NO_DEBUG
-	QTableView *diveDepthTableView = new QTableView();
-	diveDepthTableView->setModel(dataModel);
-	mainWindow()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
-#endif
 }
+
+void ProfileWidget2::setupItemSizes()
+{
+
+}
+
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
 {
-		item->setHorizontalAxis(hAxis);
-		item->setVerticalAxis(vAxis);
-		item->setModel(model);
-		item->setVerticalDataColumn(vData);
-		item->setHorizontalDataColumn(hData);
-		item->setZValue(zValue);
-		scene()->addItem(item);
+	item->setHorizontalAxis(hAxis);
+	item->setVerticalAxis(vAxis);
+	item->setModel(model);
+	item->setVerticalDataColumn(vData);
+	item->setHorizontalDataColumn(hData);
+	item->setZValue(zValue);
 }
 
+void ProfileWidget2::setupSceneAndFlags()
+{
+	setScene(new QGraphicsScene());
+	scene()->setSceneRect(0, 0, 100, 100);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scene()->setItemIndexMethod(QGraphicsScene::NoIndex);
+	setOptimizationFlags(QGraphicsView::DontSavePainterState);
+	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+	setMouseTracking(true);
+	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+}
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDives(QList<dive*> dives)
@@ -270,10 +209,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	struct dive *d = dives.first();
 	if (!d)
 		return;
-
-	if ((*stateMachine->configuration().begin())->objectName() != "Profile State") {
-		emit startProfileState();
-	}
 
 	// Here we need to probe for the limits of the dive.
 	// There's already a function that does exactly that,
@@ -352,29 +287,12 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 void ProfileWidget2::settingsChanged()
 {
-
-}
-
-void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
-{
-	// this menu should be completely replaced when things are working.
-	QMenu m;
-	m.addAction("Set Empty", this, SIGNAL(startEmptyState()));
-	m.addAction("Set Profile", this, SIGNAL(startProfileState()));
-	m.exec(event->globalPos());
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
 {
 	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
-
-	if (!stateMachine->configuration().count())
-		return;
-
-	if ((*stateMachine->configuration().begin())->objectName() == "Empty State") {
-		fixBackgroundPos();
-	}
 }
 
 void ProfileWidget2::fixBackgroundPos()
@@ -383,7 +301,6 @@ void ProfileWidget2::fixBackgroundPos()
 	if (toBeScaled.isNull())
 		return;
 	QPixmap p = toBeScaled.scaledToHeight(viewport()->height());
-
 	int x = viewport()->width() / 2 - p.width() / 2;
 	DivePixmapItem *bg = background;
 	bg->setPixmap(p);
@@ -392,12 +309,7 @@ void ProfileWidget2::fixBackgroundPos()
 
 void ProfileWidget2::wheelEvent(QWheelEvent* event)
 {
-	// doesn't seem to work for Qt 4.8.1
-	// setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-	// Scale the view / do the zoom
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
-
 	double scaleFactor = 1.15;
 	if (event->delta() > 0 && zoomLevel < 20) {
 		scale(scaleFactor, scaleFactor);
@@ -407,7 +319,6 @@ void ProfileWidget2::wheelEvent(QWheelEvent* event)
 		scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 		zoomLevel--;
 	}
-
 	scrollViewTo(event->pos());
 	toolTipItem->setPos(mapToScene(toolTipPos));
 }
