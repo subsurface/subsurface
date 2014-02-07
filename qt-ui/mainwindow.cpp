@@ -73,6 +73,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
 	ui.divePlanner->settingsChanged();
 	ui.divePlannerWidget->settingsChanged();
+
+#ifndef ENABLE_PLANNER
+	ui.menuLog->removeAction(ui.actionDivePlanner);
+#endif
 }
 
 // this gets called after we download dives from a divecomputer
