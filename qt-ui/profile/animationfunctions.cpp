@@ -21,9 +21,10 @@ void animDelete(QObject* obj)
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void moveTo(QObject* obj, qreal x, qreal y)
+void moveTo(QObject* obj, qreal x, qreal y, int msecs)
 {
 	QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
+	animation->setDuration(msecs);
 	animation->setStartValue(obj->property("pos").toPointF());
 	animation->setEndValue(QPointF(x, y));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);

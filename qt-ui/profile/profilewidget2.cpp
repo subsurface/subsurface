@@ -217,6 +217,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	if (!d)
 		return;
 
+	setProfileState();
 	// Here we need to probe for the limits of the dive.
 	// There's already a function that does exactly that,
 	// but it's using the graphics context, and I need to
@@ -377,8 +378,7 @@ void ProfileWidget2::setEmptyState()
 	backgroundFile = QString(":poster%1").arg( rand()%3 +1);
 	currentState = EMPTY;
 	fixBackgroundPos();
-	background->setVisible(true);
-	Animations::moveTo(background, background->x(), 0);
+	Animations::moveTo(background, background->x(), itemPos.background.on.y());
 
 	toolTipItem->setVisible(false);
 	profileYAxis->setVisible(false);
@@ -407,5 +407,33 @@ void ProfileWidget2::setEmptyState()
 
 void ProfileWidget2::setProfileState()
 {
+	// Then starting Empty State, move the background up.
+	if (currentState == PROFILE)
+		return;
 
+	currentState = PROFILE;
+	Animations::moveTo(background, background->x(), itemPos.background.off.y(), 1500);
+	toolTipItem->setVisible(true);
+	profileYAxis->setVisible(true);
+	gasYAxis->setVisible(true);
+	temperatureAxis->setVisible(true);
+	timeAxis->setVisible(true);
+	diveProfileItem->setVisible(true);
+	cylinderPressureAxis->setVisible(true);
+	temperatureItem->setVisible(true);
+	gasPressureItem->setVisible(true);
+	cartesianPlane->setVisible(true);
+	meanDepth->setVisible(true);
+	diveComputerText->setVisible(true);
+	diveCeiling->setVisible(true);
+	reportedCeiling->setVisible(true);
+	pn2GasItem->setVisible(true);
+	pheGasItem->setVisible(true);
+	po2GasItem->setVisible(true);
+	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+		tissue->setVisible(true);
+	}
+	Q_FOREACH(DiveEventItem *event, eventItems){
+		event->setVisible(true);
+	}
 }
