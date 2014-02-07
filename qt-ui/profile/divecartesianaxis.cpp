@@ -289,17 +289,17 @@ DepthAxis::DepthAxis() : showWithPPGraph(false)
 
 void DepthAxis::settingsChanged()
 {
-	bool ppGraph = isPPGraphEnabled();
-	if ( ppGraph == showWithPPGraph){
-		return;
-	}
-
-	if (ppGraph) {
-		animateChangeLine(QLineF(0,2,0,60));
-	} else {
-		animateChangeLine(QLineF(0,2,0,98));
-	}
-	showWithPPGraph = ppGraph;
+// 	bool ppGraph = isPPGraphEnabled();
+// 	if ( ppGraph == showWithPPGraph){
+// 		return;
+// 	}
+//
+// 	if (ppGraph) {
+// 		animateChangeLine(shrinkedLine);
+// 	} else {
+// 		animateChangeLine(expandedLine);
+// 	}
+// 	showWithPPGraph = ppGraph;
 }
 
 QColor TimeAxis::colorForValue(double value)

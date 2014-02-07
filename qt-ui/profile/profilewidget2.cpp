@@ -119,7 +119,6 @@ void ProfileWidget2::setupItemOnScene()
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setX(3);
-	gasYAxis->setLine(0, 0, 0, 20);
 	gasYAxis->setTickInterval(1);
 	gasYAxis->setTickSize(2);
 	gasYAxis->setY(70);
@@ -127,13 +126,11 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setModel(dataModel);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	temperatureAxis->setLine(0, 60, 0, 90);
 	temperatureAxis->setX(3);
 	temperatureAxis->setTickSize(2);
 	temperatureAxis->setTickInterval(300);
 
 	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	cylinderPressureAxis->setLine(0,20,0,60);
 	cylinderPressureAxis->setX(3);
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
@@ -177,11 +174,35 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::setupItemSizes()
 {
-	// Scene is *always* 100 / 100.
+	// Scene is *always* (double) 100 / 100.
+	// Background Config
+	/* Much probably a better math is needed here.
+	 * good thing is that we only need to change the
+	 * Axis and everything else is auto-adjusted.*
+	 */
+
 	itemPos.background.on.setX(0);
 	itemPos.background.on.setY(0);
 	itemPos.background.off.setX(0);
 	itemPos.background.off.setY(110);
+
+	//Depth Axis Config
+	itemPos.depth.pos.on.setX(3);
+	itemPos.depth.pos.on.setY(3);
+	itemPos.depth.pos.off.setX(-2);
+	itemPos.depth.pos.off.setY(3);
+	itemPos.depth.expanded.setP1(QPointF(0,0));
+	itemPos.depth.expanded.setP2(QPointF(0,94));
+	itemPos.depth.shrinked.setP1(QPointF(0,0));
+	itemPos.depth.shrinked.setP2(QPointF(0,60));
+
+	// Time Axis Config
+	itemPos.time.pos.on.setX(3);
+	itemPos.time.pos.on.setY(97);
+	itemPos.time.pos.off.setX(3);
+	itemPos.time.pos.off.setY(110);
+	itemPos.time.expanded.setP1(QPointF(0,0));
+	itemPos.time.expanded.setP2(QPointF(94,0));
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
@@ -379,12 +400,11 @@ void ProfileWidget2::setEmptyState()
 	currentState = EMPTY;
 	fixBackgroundPos();
 	Animations::moveTo(background, background->x(), itemPos.background.on.y());
-
+	profileYAxis->setPos(itemPos.depth.pos.off);
 	toolTipItem->setVisible(false);
-	profileYAxis->setVisible(false);
 	gasYAxis->setVisible(false);
 	temperatureAxis->setVisible(false);
-	timeAxis->setVisible(false);
+	timeAxis->setPos(itemPos.time.pos.off);
 	diveProfileItem->setVisible(false);
 	cylinderPressureAxis->setVisible(false);
 	temperatureItem->setVisible(false);
@@ -412,28 +432,36 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	currentState = PROFILE;
+	setBackgroundBrush(getColor(::BACKGROUND));
+
 	Animations::moveTo(background, background->x(), itemPos.background.off.y(), 1500);
 	toolTipItem->setVisible(true);
-	profileYAxis->setVisible(true);
-	gasYAxis->setVisible(true);
-	temperatureAxis->setVisible(true);
-	timeAxis->setVisible(true);
-	diveProfileItem->setVisible(true);
-	cylinderPressureAxis->setVisible(true);
-	temperatureItem->setVisible(true);
-	gasPressureItem->setVisible(true);
-	cartesianPlane->setVisible(true);
-	meanDepth->setVisible(true);
-	diveComputerText->setVisible(true);
-	diveCeiling->setVisible(true);
-	reportedCeiling->setVisible(true);
-	pn2GasItem->setVisible(true);
-	pheGasItem->setVisible(true);
-	po2GasItem->setVisible(true);
-	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
-		tissue->setVisible(true);
-	}
-	Q_FOREACH(DiveEventItem *event, eventItems){
-		event->setVisible(true);
-	}
+
+	profileYAxis->setPos(itemPos.depth.pos.on);
+	profileYAxis->setLine(itemPos.depth.expanded);
+
+	qDebug() << "ProfileAxisPos" << profileYAxis->pos() << "Line" << profileYAxis->line() << scene()->items().indexOf(profileYAxis);
+// 	gasYAxis->setVisible(true);
+// 	temperatureAxis->setVisible(true);
+	timeAxis->setPos(itemPos.time.pos.on);
+	timeAxis->setLine(itemPos.time.expanded);
+	qDebug() << "timeAxisPos" << timeAxis->pos() << "Line" << timeAxis->line() << scene()->items().indexOf(timeAxis);
+// 	diveProfileItem->setVisible(true);
+// 	cylinderPressureAxis->setVisible(true);
+// 	temperatureItem->setVisible(true);
+// 	gasPressureItem->setVisible(true);
+// 	cartesianPlane->setVisible(true);
+// 	meanDepth->setVisible(true);
+// 	diveComputerText->setVisible(true);
+// 	diveCeiling->setVisible(true);
+// 	reportedCeiling->setVisible(true);
+// 	pn2GasItem->setVisible(true);
+// 	pheGasItem->setVisible(true);
+// 	po2GasItem->setVisible(true);
+// 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+// 		tissue->setVisible(true);
+// 	}
+// 	Q_FOREACH(DiveEventItem *event, eventItems){
+// 		event->setVisible(true);
+// 	}
 }
