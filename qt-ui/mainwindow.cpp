@@ -503,7 +503,9 @@ void MainWindow::on_actionInputPlan_triggered()
 
 void MainWindow::on_actionAboutSubsurface_triggered()
 {
-	SubsurfaceAbout::instance()->show();
+	SubsurfaceAbout dlg(this);
+
+	dlg.exec();
 }
 
 void MainWindow::on_actionUserManual_triggered()
