@@ -46,29 +46,11 @@ void PreferencesDialog::showEvent(QShowEvent *event)
 void PreferencesDialog::setUiFromPrefs()
 {
 	// graphs
-	ui.phe->setChecked(prefs.pp_graphs.phe);
-	ui.pheThreshold->setEnabled(ui.phe->isChecked());
-	ui.po2->setChecked(prefs.pp_graphs.po2);
-	ui.po2Threshold->setEnabled(ui.po2->isChecked());
-	ui.pn2->setChecked(prefs.pp_graphs.pn2);
-	ui.pn2Threshold->setEnabled(ui.pn2->isChecked());
 	ui.pheThreshold->setValue(prefs.pp_graphs.phe_threshold);
 	ui.po2Threshold->setValue(prefs.pp_graphs.po2_threshold);
 	ui.pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
-	ui.ead_end_eadd->setChecked(prefs.ead);
-	ui.mod->setChecked(prefs.mod);
-	ui.maxppo2->setEnabled(ui.mod->isChecked());
 	ui.maxppo2->setValue(prefs.mod_ppO2);
-	ui.dc_reported_ceiling->setChecked(prefs.profile_dc_ceiling);
-	ui.red_ceiling->setEnabled(ui.dc_reported_ceiling->isChecked());
 	ui.red_ceiling->setChecked(prefs.profile_red_ceiling);
-	ui.calculated_ceiling->setChecked(prefs.profile_calc_ceiling);
-	ui.increment_3m->setEnabled(ui.calculated_ceiling->isChecked());
-	ui.increment_3m->setChecked(prefs.calc_ceiling_3m_incr);
-	ui.all_tissues->setEnabled(ui.calculated_ceiling->isChecked());
-	ui.all_tissues->setChecked(prefs.calc_all_tissues);
-	ui.calc_ndl_tts->setEnabled(ui.calculated_ceiling->isChecked());
-	ui.calc_ndl_tts->setChecked(prefs.calc_ndl_tts);
 	ui.units_group->setEnabled(ui.personalize->isChecked());
 
 	ui.gflow->setValue(prefs.gflow);
@@ -105,7 +87,6 @@ void PreferencesDialog::setUiFromPrefs()
 	}
 	ui.displayinvalid->setChecked(prefs.display_invalid_dives);
 	ui.display_unused_tanks->setChecked(prefs.display_unused_tanks);
-	ui.show_sac->setChecked(prefs.show_sac);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 
@@ -188,26 +169,14 @@ void PreferencesDialog::syncSettings()
 	// Graph
 	s.beginGroup("TecDetails");
 
-	SB("phegraph", ui.phe);
-	SB("po2graph", ui.po2);
-	SB("pn2graph", ui.pn2);
 	s.setValue("phethreshold", ui.pheThreshold->value());
 	s.setValue("po2threshold", ui.po2Threshold->value());
 	s.setValue("pn2threshold", ui.pn2Threshold->value());
-	SB("ead", ui.ead_end_eadd);
-	SB("mod", ui.mod);
 	s.setValue("modppO2", ui.maxppo2->value());
-	SB("dcceiling", ui.dc_reported_ceiling);
 	SB("redceiling", ui.red_ceiling);
-	SB("calcceiling", ui.calculated_ceiling);
-	SB("calcceiling3m", ui.increment_3m);
-	prefs.calc_ceiling_3m_incr = ui.increment_3m->isChecked() ? 1 : 0;
-	SB("calcndltts", ui.calc_ndl_tts);
-	SB("calcalltissues", ui.all_tissues);
 	s.setValue("gflow", ui.gflow->value());
 	s.setValue("gfhigh", ui.gfhigh->value());
 	SB("gf_low_at_maxdepth", ui.gf_low_at_maxdepth);
-	SB("show_sac", ui.show_sac);
 	SB("display_unused_tanks", ui.display_unused_tanks);
 	s.endGroup();
 
