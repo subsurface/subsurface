@@ -1902,19 +1902,21 @@ void parse_xml_exit(void)
 static struct xslt_files {
 	const char *root;
 	const char *file;
+	const char *attribute;
 } xslt_files[] = {
-	{ "SUUNTO", "SuuntoSDM.xslt" },
-	{ "Dive", "SuuntoDM4.xslt" },
-	{ "JDiveLog", "jdivelog2subsurface.xslt" },
-	{ "dives", "MacDive.xslt" },
-	{ "DIVELOGSDATA", "divelogs.xslt" },
-	{ "uddf", "uddf.xslt" },
-	{ "UDDF", "uddf.xslt" },
-	{ "profile", "udcf.xslt" },
-	{ "Divinglog", "DivingLog.xslt" },
-	{ "csv", "csv2xml.xslt" },
-	{ "sensuscsv", "sensuscsv.xslt" },
-	{ "manualcsv", "manualcsv2xml.xslt" },
+	{ "SUUNTO", "SuuntoSDM.xslt", NULL },
+	{ "Dive", "SuuntoDM4.xslt", "xmlns" },
+	{ "Dive", "shearwater.xslt", "version" },
+	{ "JDiveLog", "jdivelog2subsurface.xslt", NULL },
+	{ "dives", "MacDive.xslt", NULL },
+	{ "DIVELOGSDATA", "divelogs.xslt", NULL },
+	{ "uddf", "uddf.xslt", NULL },
+	{ "UDDF", "uddf.xslt", NULL },
+	{ "profile", "udcf.xslt", NULL },
+	{ "Divinglog", "DivingLog.xslt", NULL },
+	{ "csv", "csv2xml.xslt", NULL },
+	{ "sensuscsv", "sensuscsv.xslt", NULL },
+	{ "manualcsv", "manualcsv2xml.xslt", NULL },
 	{ NULL, }
 };
 
@@ -1926,7 +1928,12 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **err
 	xmlNode *root_element = xmlDocGetRootElement(doc);
 	char *attribute;
 
-	while ((info->root) && (strcasecmp(root_element->name, info->root) != 0)) {
+	while (info->root) {
+		if ((strcasecmp(root_element->name, info->root) == 0))
+			if (info->attribute == NULL)
+				break;
+			else if (xmlGetProp(root_element, info->attribute) != NULL)
+				break;
 		info++;
 	}
 
