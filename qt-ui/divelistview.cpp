@@ -813,8 +813,8 @@ void DiveListView::loadImages()
 
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
 
-	ShiftImageTimesDialog* shiftDialog = ShiftImageTimesDialog::instance();
-	shiftDialog->exec();
+	ShiftImageTimesDialog shiftDialog(this);
+	shiftDialog.exec();
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		struct tm tm;
@@ -829,7 +829,7 @@ void DiveListView::loadImages()
 		tm.tm_hour = hour;
 		tm.tm_min = min;
 		tm.tm_sec = sec;
-		imagetime = utc_mktime(&tm) + shiftDialog->amount;
+		imagetime = utc_mktime(&tm) + shiftDialog.amount();
 		int j = 0;
 		struct dive *dive;
 		for_each_dive(j, dive){

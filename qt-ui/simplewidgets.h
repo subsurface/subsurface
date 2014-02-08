@@ -58,13 +58,13 @@ private:
 class ShiftImageTimesDialog : public QDialog {
 	Q_OBJECT
 public:
-	static ShiftImageTimesDialog *instance();
-	int amount;
+	explicit ShiftImageTimesDialog(QWidget *parent);
+	int amount() const;
 private slots:
 	void buttonClicked(QAbstractButton *button);
 private:
-	explicit ShiftImageTimesDialog(QWidget *parent);
 	Ui::ShiftImageTimesDialog ui;
+	int m_amount;
 };
 
 bool isGnome3Session();
