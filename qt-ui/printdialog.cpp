@@ -38,7 +38,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	hLayout->addWidget(printButton);
 
 	QPushButton *closeButton = new QPushButton(tr("&Close"));
-	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(closeClicked()));
+	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 	hLayout->addWidget(closeButton);
 
 	progressBar = new QProgressBar();
@@ -59,7 +59,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 void PrintDialog::previewClicked(void)
 {
 	QPrintPreviewDialog previewDialog(&printer, this);
-	QObject::connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
+	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
 }
 
@@ -68,11 +68,6 @@ void PrintDialog::printClicked(void)
 	QPrintDialog printDialog(&printer, this);
 	if (printDialog.exec() == QDialog::Accepted)
 		printLayout->print();
-}
-
-void PrintDialog::closeClicked(void)
-{
-	close();
 }
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
