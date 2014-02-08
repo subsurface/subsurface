@@ -20,6 +20,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
+	loadSettings();
 	setUiFromPrefs();
 	rememberPrefs();
 }
@@ -245,10 +246,18 @@ void PreferencesDialog::syncSettings()
 	s.setValue("UseSystemLanguage", ui.languageSystemDefault->isChecked());
 	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
 	s.endGroup();
+
+	loadSettings();
+	emit settingsChanged();
+}
+
+void PreferencesDialog::loadSettings()
+{
 	// This code was on the mainwindow, it should belong nowhere, but since we dind't
 	// correctly fixed this code yet ( too much stuff on the code calling preferences )
 	// force this here.
 
+	QSettings s;
 	QVariant v;
 	s.beginGroup("Units");
 	if (s.value("unit_system").toString() == "metric") {
@@ -304,7 +313,6 @@ void PreferencesDialog::syncSettings()
 	GET_INT("font_size", font_size);
 	GET_INT("displayinvalid", display_invalid_dives);
 	s.endGroup();
-	emit settingsChanged();
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton* button)
