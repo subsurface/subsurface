@@ -43,5 +43,6 @@
         <file>xslt/uddf.xslt</file>
         <file>xslt/sensuscsv.xslt</file>
         <file>xslt/manualcsv2xml.xslt</file>
+        <file>xslt/shearwater.xslt</file>
  </qresource>
  </RCC>

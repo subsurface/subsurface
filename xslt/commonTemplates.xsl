@@ -165,4 +165,44 @@
     <xsl:value-of select="concat(floor($depth div 1000), '.', format-number($depth mod 1000, '00'))"/>
   </xsl:template>
 
+  <!-- Convert date format "Sun Jan 19 11:02:56 2014 UTC" => 2014-1-19
+       11:02 -->
+  <xsl:template name="convertDate">
+    <xsl:param name="dateTime"/>
+
+    <xsl:variable name="mnth">
+      <xsl:value-of select="substring-before(substring-after($dateTime, ' '), ' ')"/>
+    </xsl:variable>
+
+    <xsl:variable name="month">
+      <xsl:choose>
+        <xsl:when test="$mnth = 'Jan'">1</xsl:when>
+        <xsl:when test="$mnth = 'Feb'">2</xsl:when>
+        <xsl:when test="$mnth = 'Mar'">3</xsl:when>
+        <xsl:when test="$mnth = 'Apr'">4</xsl:when>
+        <xsl:when test="$mnth = 'May'">5</xsl:when>
+        <xsl:when test="$mnth = 'Jun'">6</xsl:when>
+        <xsl:when test="$mnth = 'Jul'">7</xsl:when>
+        <xsl:when test="$mnth = 'Aug'">8</xsl:when>
+        <xsl:when test="$mnth = 'Sept'">9</xsl:when>
+        <xsl:when test="$mnth = 'Oct'">10</xsl:when>
+        <xsl:when test="$mnth = 'Nov'">11</xsl:when>
+        <xsl:when test="$mnth = 'Dec'">12</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="year">
+      <xsl:value-of select="substring-before(substring-after(substring-after($dateTime, ':'), ' '), ' ')"/>
+    </xsl:variable>
+
+    <xsl:variable name="day">
+      <xsl:value-of select="substring-before(substring-after(substring-after($dateTime, ' '), ' '), ' ')"/>
+    </xsl:variable>
+
+    <xsl:variable name="time">
+      <xsl:value-of select="substring-before(substring-after(substring-after(substring-after($dateTime, ' '), ' '), ' '), ' ')"/>
+    </xsl:variable>
+
+    <xsl:value-of select="concat($year, '-', $month, '-', $day, ' ', $time)"/>
+  </xsl:template>
 </xsl:stylesheet>
