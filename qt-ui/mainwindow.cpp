@@ -270,8 +270,9 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	DownloadFromDCWidget* downloadWidget = DownloadFromDCWidget::instance();
-	downloadWidget->runDialog();
+	DownloadFromDCWidget dlg(this);
+
+	dlg.exec();
 }
 
 void MainWindow::on_actionDownloadWeb_triggered()

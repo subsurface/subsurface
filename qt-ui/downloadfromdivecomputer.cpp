@@ -36,13 +36,6 @@ namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
-DownloadFromDCWidget *DownloadFromDCWidget::instance()
-{
-	static DownloadFromDCWidget *dialog = new DownloadFromDCWidget(mainWindow());
-	dialog->setAttribute(Qt::WA_QuitOnClose, false);
-	return dialog;
-}
-
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	QDialog(parent, f), thread(0), timer(new QTimer(this)),
 	dumpWarningShown(false), currentState(INITIAL)
@@ -77,12 +70,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	updateState(INITIAL);
-}
-
-void DownloadFromDCWidget::runDialog()
-{
-	updateState(INITIAL);
-	exec();
 }
 
 void DownloadFromDCWidget::updateProgressBar()
