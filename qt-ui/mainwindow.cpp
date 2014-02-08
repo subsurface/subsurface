@@ -211,7 +211,9 @@ void MainWindow::on_actionExportUDDF_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
-	PrintDialog::instance()->runDialog();
+	PrintDialog dlg(this);
+
+	dlg.exec();
 }
 
 void MainWindow::disableDcShortcuts()

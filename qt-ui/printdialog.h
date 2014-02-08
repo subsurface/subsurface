@@ -14,12 +14,10 @@ class PrintDialog : public QDialog {
 Q_OBJECT
 
 public:
-	static PrintDialog *instance();
-	void runDialog();
 	struct options printOptions;
+	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private:
-	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	PrintOptions *optionsWidget;
 	PrintLayout *printLayout;
 	QProgressBar *progressBar;

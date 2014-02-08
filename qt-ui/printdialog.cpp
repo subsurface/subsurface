@@ -11,13 +11,6 @@
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 
-PrintDialog *PrintDialog::instance()
-{
-	static PrintDialog *self = new PrintDialog(mainWindow());
-	self->setAttribute(Qt::WA_QuitOnClose, false);
-	return self;
-}
-
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 {
 	// options template (are we storing these in the settings?)
@@ -52,6 +45,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	connect(printLayout, SIGNAL(signalProgress(int)), progressBar, SLOT(setValue(int)));
 	progressBar->setMinimum(0);
 	progressBar->setMaximum(100);
+	progressBar->setValue(0);
 	progressBar->setTextVisible(false);
 	layout->addWidget(progressBar);
 
@@ -60,12 +54,6 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
 	setFixedSize(520, 350);
 	setWindowTitle(tr("Print"));
 	setWindowIcon(QIcon(":subsurface-icon"));
-}
-
-void PrintDialog::runDialog()
-{
-	progressBar->setValue(0);
-	exec();
 }
 
 void PrintDialog::previewClicked(void)
