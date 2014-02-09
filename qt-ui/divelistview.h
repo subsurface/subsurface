@@ -12,6 +12,7 @@
 */
 
 #include <QTreeView>
+#include <QLineEdit>
 #include "models.h"
 
 class DiveListView : public QTreeView
@@ -61,7 +62,7 @@ private:
 	int sortColumn;
 	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
-	QLineEdit *searchBox;
+	QLineEdit searchBox;
 	QModelIndex contextMenuIndex;
 
 	/* if dive_trip_t is null, there's no problem. */

@@ -28,7 +28,7 @@
 
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
-	sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(new QLineEdit(this))
+	sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(this)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -51,10 +51,10 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	showSearchBox->setShortcutContext(Qt::WindowShortcut);
 	addAction(showSearchBox);
 
-	searchBox->installEventFilter(this);
-	searchBox->hide();
+	searchBox.installEventFilter(this);
+	searchBox.hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
-	connect(searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
+	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 	setupUi();
 }
 
@@ -275,8 +275,8 @@ void DiveListView::selectDives(const QList< int >& newDiveSelection)
 
 void DiveListView::showSearchEdit()
 {
-	searchBox->show();
-	searchBox->setFocus();
+	searchBox.show();
+	searchBox.setFocus();
 }
 
 bool DiveListView::eventFilter(QObject* , QEvent* event)
@@ -287,8 +287,8 @@ bool DiveListView::eventFilter(QObject* , QEvent* event)
 	if (keyEv->key() != Qt::Key_Escape)
 		return false;
 
-	searchBox->clear();
-	searchBox->hide();
+	searchBox.clear();
+	searchBox.hide();
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(model());
 	m->setFilterFixedString(QString());
 	return true;
