@@ -610,7 +610,7 @@ void export_dives_uddf(const char *filename, const bool selected)
 	 * transform it to UDDF format, finally dumping
 	 * the XML into a character buffer.
 	 */
-	doc = xmlReadMemory(buf.buffer, buf.used, "divelog", NULL, 0);
+	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, 0);
 	free_buffer(&buf);
 	if (!doc) {
 		fprintf(stderr, "Failed to read XML memory\n");

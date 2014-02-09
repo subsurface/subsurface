@@ -10,16 +10,22 @@ void free_buffer(struct membuffer *b)
 {
 	free(b->buffer);
 	b->buffer = NULL;
-	b->used = 0;
-	b->size = 0;
+	b->len = 0;
+	b->alloc = 0;
 }
 
 void flush_buffer(struct membuffer *b, FILE *f)
 {
-	if (b->used) {
-		fwrite(b->buffer, 1, b->used, f);
+	if (b->len) {
+		fwrite(b->buffer, 1, b->len, f);
 		free_buffer(b);
 	}
+}
+
+void strip_mb(struct membuffer *b)
+{
+	while (b->len && isspace(b->buffer[b->len-1]))
+		b->len--;
 }
 
 /*
@@ -36,8 +42,8 @@ static void oom(void)
 
 static void make_room(struct membuffer *b, unsigned int size)
 {
-	unsigned int needed = b->used + size;
-	if (needed > b->size) {
+	unsigned int needed = b->len + size;
+	if (needed > b->alloc) {
 		char *n;
 		/* round it up to not reallocate all the time.. */
 		needed = needed * 9 / 8 + 1024;
@@ -45,15 +51,15 @@ static void make_room(struct membuffer *b, unsigned int size)
 		if (!n)
 			oom();
 		b->buffer = n;
-		b->size = needed;
+		b->alloc = needed;
 	}
 }
 
 void put_bytes(struct membuffer *b, const char *str, int len)
 {
 	make_room(b, len);
-	memcpy(b->buffer + b->used, str, len);
-	b->used += len;
+	memcpy(b->buffer + b->len, str, len);
+	b->len += len;
 }
 
 void put_string(struct membuffer *b, const char *str)

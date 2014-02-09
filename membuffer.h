@@ -1,8 +1,14 @@
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <ctype.h>
+
 struct membuffer {
-	unsigned int size, used;
+	unsigned int len, alloc;
 	char *buffer;
 };
 
@@ -16,6 +22,7 @@ extern void free_buffer(struct membuffer *);
 extern void flush_buffer(struct membuffer *, FILE *);
 extern void put_bytes(struct membuffer *, const char *, int);
 extern void put_string(struct membuffer *, const char *);
+extern void strip_mb(struct membuffer *);
 extern __printf(2,0) void put_vformat(struct membuffer *, const char *, va_list);
 extern __printf(2,3) void put_format(struct membuffer *, const char *fmt, ...);
 
@@ -48,5 +55,9 @@ extern int put_depth(struct membuffer *, depth_t, const char *, const char *);
 extern int put_duration(struct membuffer *, duration_t, const char *, const char *);
 extern int put_pressure(struct membuffer *, pressure_t, const char *, const char *);
 extern int put_salinity(struct membuffer *, int, const char *, const char *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
