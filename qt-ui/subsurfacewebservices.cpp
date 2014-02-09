@@ -617,9 +617,8 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 	}
 }
 
-DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f): WebServices(parent, f)
+DivelogsDeWebServices::DivelogsDeWebServices(QWidget* parent, Qt::WindowFlags f) : WebServices(parent, f), uploadMode(false)
 {
-	uploadMode = false;
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
 	ui.password->setText(s.value("divelogde_pass").toString());
