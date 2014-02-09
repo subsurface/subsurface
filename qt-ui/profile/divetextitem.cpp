@@ -10,9 +10,10 @@
 #include <QDebug>
 
 DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
+	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(NULL),
 	textItem(NULL),
-	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter)
+	colorIndex(SAC_DEFAULT)
 {
 	setFlag(ItemIgnoresTransformations);
 }
