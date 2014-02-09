@@ -179,7 +179,7 @@ private slots:
 	void increaseTime();
 	void increaseDepth();
 	void decreaseTime();
-	void decreaseDepth();;
+	void decreaseDepth();
 	void drawProfile();
 	void pointInserted(const QModelIndex&, int start, int end);
 	void pointsRemoved(const QModelIndex&, int start, int end);

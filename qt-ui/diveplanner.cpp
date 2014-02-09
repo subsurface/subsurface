@@ -52,7 +52,19 @@ QColor getColor(const color_indice_t i)
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
-DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent), activeDraggedHandler(0)
+DivePlannerGraphics::DivePlannerGraphics(QWidget* parent) : QGraphicsView(parent),
+	verticalLine(new QGraphicsLineItem(fromPercent(0, Qt::Horizontal), fromPercent(0, Qt::Vertical), fromPercent(0, Qt::Horizontal), fromPercent(100, Qt::Vertical))),
+	horizontalLine(new QGraphicsLineItem(fromPercent(0, Qt::Horizontal), fromPercent(0, Qt::Vertical), fromPercent(100, Qt::Horizontal), fromPercent(0, Qt::Vertical))),
+	activeDraggedHandler(0),
+	diveBg(new QGraphicsPolygonItem()),
+	timeLine(new Ruler()),
+	timeString(new QGraphicsSimpleTextItem()),
+	depthString(new QGraphicsSimpleTextItem()),
+	depthHandler(new ExpanderGraphics()),
+	timeHandler(new ExpanderGraphics()),
+	minMinutes(TIME_INITIAL_MAX),
+	minDepth(M_OR_FT(40,120)),
+	dpMaxTime(0)
 {
 	fill_profile_color();
 	setBackgroundBrush(profile_color[BACKGROUND].at(0));
@@ -60,27 +72,12 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	setScene(new QGraphicsScene());
 	scene()->setSceneRect(0,0,1920,1080);
 
-	verticalLine = new QGraphicsLineItem(
-		fromPercent(0, Qt::Horizontal),
-		fromPercent(0, Qt::Vertical),
-		fromPercent(0, Qt::Horizontal),
-		fromPercent(100, Qt::Vertical)
-	);
-
 	verticalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(verticalLine);
-
-	horizontalLine = new QGraphicsLineItem(
-		fromPercent(0, Qt::Horizontal),
-		fromPercent(0, Qt::Vertical),
-		fromPercent(100, Qt::Horizontal),
-		fromPercent(0, Qt::Vertical)
-	);
 
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
 
-	timeLine = new Ruler();
 	timeLine->setMinimum(0);
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
@@ -115,17 +112,14 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthLine->unitSystem = prefs.units.length;
 	scene()->addItem(depthLine);
 
-	timeString = new QGraphicsSimpleTextItem();
 	timeString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	timeString->setBrush(profile_color[TIME_TEXT].at(0));
 	scene()->addItem(timeString);
 
-	depthString = new QGraphicsSimpleTextItem();
 	depthString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	depthString->setBrush(profile_color[SAMPLE_DEEP].at(0));
 	scene()->addItem(depthString);
 
-	diveBg = new QGraphicsPolygonItem();
 	diveBg->setPen(QPen(QBrush(),0));
 	scene()->addItem(diveBg);
 
@@ -135,7 +129,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	else
 		incrText = tr("30ft");
 
-	timeHandler = new ExpanderGraphics();
 	timeHandler->increaseBtn->setPixmap(QString(":plan_plus"));
 	timeHandler->decreaseBtn->setPixmap(QString(":plan_minus"));
 	timeHandler->icon->setPixmap(QString(":icon_time"));
@@ -145,7 +138,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	timeHandler->setZValue(-2);
 	scene()->addItem(timeHandler);
 
-	depthHandler = new ExpanderGraphics();
 	depthHandler->increaseBtn->setPixmap(QString(":arrow_up"));
 	depthHandler->decreaseBtn->setPixmap(QString(":arrow_down"));
 	depthHandler->icon->setPixmap(QString(":icon_depth"));
@@ -157,8 +149,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget* parent): QGraphicsView(parent)
 	depthHandler->setZValue(-2);
 	scene()->addItem(depthHandler);
 
-	minMinutes = TIME_INITIAL_MAX;
-	minDepth = M_OR_FT(40,120);
 	QAction *action = NULL;
 
 #define ADD_ACTION( SHORTCUT, Slot ) \
@@ -790,7 +780,12 @@ void Ruler::eraseAll()
 	labels.clear();
 }
 
-Ruler::Ruler() : orientation(Qt::Horizontal)
+Ruler::Ruler() : unitSystem(0),
+	orientation(Qt::Horizontal),
+	min(0),
+	max(0),
+	interval(0),
+	tickSize(0)
 {
 }
 
@@ -1119,7 +1114,8 @@ int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent), mode(NOTHING), tempDive(NULL), stagingDive(NULL)
 {
-	diveplan.dp = NULL;
+	memset(&diveplan, 0, sizeof(diveplan));
+	memset(&backupDive, 0, sizeof(backupDive));
 }
 
 DivePlannerPointsModel* DivePlannerPointsModel::instance()
