@@ -1117,7 +1117,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex& parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent), mode(NOTHING), stagingDive(NULL)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject* parent): QAbstractTableModel(parent), mode(NOTHING), tempDive(NULL), stagingDive(NULL)
 {
 	diveplan.dp = NULL;
 }
@@ -1508,13 +1508,14 @@ void DivePlannerPointsModel::createPlan()
 	CylindersModel::instance()->update();
 }
 
-ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(parent)
+ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent) : QGraphicsRectItem(parent),
+	icon(new QGraphicsPixmapItem(this)),
+	increaseBtn(new Button(0, this)),
+	decreaseBtn(new Button(0, this)),
+	bg(new QGraphicsPixmapItem(this)),
+	leftWing(new QGraphicsPixmapItem(this)),
+	rightWing(new QGraphicsPixmapItem(this))
 {
-	icon = new QGraphicsPixmapItem(this);
-	bg = new QGraphicsPixmapItem(this);
-	leftWing = new QGraphicsPixmapItem(this);
-	rightWing = new QGraphicsPixmapItem(this);
-
 	QPixmap p;
 	#define CREATE(item, pixmap) \
 	p = QPixmap(QString( pixmap ));\
@@ -1526,8 +1527,6 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem* parent): QGraphicsRectItem(par
 	CREATE(rightWing, ":right_wing");
 	#undef CREATE
 
-	decreaseBtn = new Button(0, this);
-	increaseBtn = new Button(0, this);
 	decreaseBtn->setPixmap(QPixmap(":arrow_down"));
 	increaseBtn->setPixmap(QPixmap(":arrow_up"));
 
