@@ -31,6 +31,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 				    editMode(NONE)
 {
 	ui.setupUi(this);
+
+	memset(&multiEditEquipmentPlaceholder, 0, sizeof(multiEditEquipmentPlaceholder));
+
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
 	closeMessage();
