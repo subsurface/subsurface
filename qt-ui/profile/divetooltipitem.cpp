@@ -135,12 +135,16 @@ void ToolTipItem::expand()
 	status = EXPANDED;
 }
 
-ToolTipItem::ToolTipItem(QGraphicsItem* parent): QGraphicsPathItem(parent), background(0)
+ToolTipItem::ToolTipItem(QGraphicsItem* parent) : QGraphicsPathItem(parent),
+	background(0),
+	separator(new QGraphicsLineItem(this)),
+	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
+	status(COLLAPSED),
+	timeAxis(0)
 {
-	title = new QGraphicsSimpleTextItem(tr("Information"), this);
-	separator = new QGraphicsLineItem(this);
+	memset(&pInfo, 0, sizeof(pInfo));
+
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
-	status = COLLAPSED;
 	updateTitlePosition();
 	setZValue(99);
 }
