@@ -24,7 +24,12 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 
-GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0), editingDiveLocation(false)
+GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent),
+	loadedDives(0),
+	messageWidget(new KMessageWidget(this)),
+	fixZoomTimer(new QTimer(this)),
+	currentZoomLevel(0),
+	editingDiveLocation(false)
 {
 	// check if Google Sat Maps are installed
 	// if not, check if they are in a known location
@@ -42,7 +47,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0), edit
 				MarbleDirs::setMarbleDataPath(subsurfaceDataPath);
 		}
 	}
-	messageWidget = new KMessageWidget(this);
 	messageWidget->setCloseButtonVisible(false);
 	messageWidget->setHidden(true);
 
@@ -68,7 +72,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent), loadedDives(0), edit
 
 	setMinimumHeight(0);
 	setMinimumWidth(0);
-	fixZoomTimer = new QTimer(this);
 	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
 	fixZoomTimer->setSingleShot(true);
 	installEventFilter(this);
