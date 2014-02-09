@@ -81,7 +81,7 @@ private:
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.
 	struct plot_info *plotInfo;
-	DepthAxis *profileYAxis ;
+	DepthAxis *profileYAxis;
 	PartialGasPressureAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;

@@ -63,10 +63,10 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureAxis(new TemperatureAxis()),
 	timeAxis(new TimeAxis()),
 	diveProfileItem(new DiveProfileItem()),
-	cylinderPressureAxis(new DiveCartesianAxis()),
-	temperatureItem(new DiveTemperatureItem()),
-	gasPressureItem(new DiveGasPressureItem()),
 	cartesianPlane(new DiveCartesianPlane()),
+	temperatureItem(new DiveTemperatureItem()),
+	cylinderPressureAxis(new DiveCartesianAxis()),
+	gasPressureItem(new DiveGasPressureItem()),
 	meanDepth(new MeanDepthLine()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
@@ -75,6 +75,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	pheGasItem( new PartialPressureGasItem()),
 	po2GasItem( new PartialPressureGasItem())
 {
+	memset(&plotInfo, 0, sizeof(plotInfo));
+
 	setupSceneAndFlags();
 	setupItemSizes();
 	setupItemOnScene();
