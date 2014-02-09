@@ -905,10 +905,11 @@ void Ruler::setColor(const QColor& color)
 	setPen(defaultPen);
 }
 
-Button::Button(QObject* parent, QGraphicsItem *itemParent): QObject(parent), QGraphicsRectItem(itemParent)
+Button::Button(QObject* parent, QGraphicsItem *itemParent) : QObject(parent),
+	QGraphicsRectItem(itemParent),
+	icon(new QGraphicsPixmapItem(this)),
+	text(new QGraphicsSimpleTextItem(this))
 {
-	icon = new QGraphicsPixmapItem(this);
-	text = new QGraphicsSimpleTextItem(this);
 	icon->setPos(0,0);
 	text->setPos(0,0);
 	setFlag(ItemIgnoresTransformations);
