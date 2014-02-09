@@ -1929,11 +1929,12 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **err
 	char *attribute;
 
 	while (info->root) {
-		if ((strcasecmp(root_element->name, info->root) == 0))
+		if ((strcasecmp(root_element->name, info->root) == 0)) {
 			if (info->attribute == NULL)
 				break;
 			else if (xmlGetProp(root_element, info->attribute) != NULL)
 				break;
+		}
 		info++;
 	}
 
