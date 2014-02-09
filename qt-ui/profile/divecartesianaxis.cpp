@@ -60,7 +60,14 @@ void DiveCartesianAxis::setTextColor(const QColor& color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis() : orientation(LeftToRight)
+DiveCartesianAxis::DiveCartesianAxis() : QObject(),
+	QGraphicsLineItem(),
+	unitSystem(0),
+	orientation(LeftToRight),
+	min(0),
+	max(0),
+	interval(1),
+	tick_size(0)
 {
 	setPen(gridPen());
 }
