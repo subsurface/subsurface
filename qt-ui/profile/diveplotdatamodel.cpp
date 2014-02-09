@@ -8,9 +8,9 @@
 #include "divelist.h"
 #include <QDebug>
 
-DivePlotDataModel::DivePlotDataModel(QObject* parent): QAbstractTableModel(parent)
+DivePlotDataModel::DivePlotDataModel(QObject* parent) : QAbstractTableModel(parent) , diveId(0)
 {
-	pInfo.nr = 0;
+	memset(&pInfo, 0, sizeof(pInfo));
 }
 
 int DivePlotDataModel::columnCount(const QModelIndex& parent) const
