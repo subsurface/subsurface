@@ -100,6 +100,11 @@ void AbstractProfilePolygonItem::modelDataChanged(const QModelIndex& topLeft, co
 	texts.clear();
 }
 
+DiveProfileItem::DiveProfileItem() : show_reported_ceiling(0), reported_ceiling_in_red(0)
+{
+
+}
+
 void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
 	Q_UNUSED(widget);
 
@@ -383,9 +388,8 @@ void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 	}
 }
 
-DiveCalculatedCeiling::DiveCalculatedCeiling()
+DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientFactor(new DiveTextItem(this))
 {
-	gradientFactor = new DiveTextItem(this);
 	gradientFactor->setY(0);
 	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
 	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
@@ -489,12 +493,10 @@ void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-MeanDepthLine::MeanDepthLine()
+MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)), rightText(new DiveTextItem(this))
 {
-	leftText = new DiveTextItem(this);
 	leftText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	leftText->setBrush(getColor(MEAN_DEPTH));
-	rightText = new DiveTextItem(this);
 	rightText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	rightText->setBrush(getColor(MEAN_DEPTH));
 	leftText->setPos(0, 0);

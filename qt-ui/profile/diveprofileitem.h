@@ -66,6 +66,7 @@ class DiveProfileItem : public AbstractProfilePolygonItem{
 	Q_OBJECT
 
 public:
+	DiveProfileItem();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void modelDataChanged(const QModelIndex& topLeft = QModelIndex(), const QModelIndex& bottomRight = QModelIndex());
 	virtual void preferencesChanged();
