@@ -36,9 +36,15 @@ namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
-DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
-	QDialog(parent, f), thread(0), timer(new QTimer(this)),
-	dumpWarningShown(false), currentState(INITIAL)
+DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
+	thread(0),
+	downloading(false),
+	previousLast(0),
+	vendorModel(0),
+	productModel(0),
+	timer(new QTimer(this)),
+	dumpWarningShown(false),
+	currentState(INITIAL)
 {
 	ui.setupUi(this);
 	ui.progressBar->hide();
