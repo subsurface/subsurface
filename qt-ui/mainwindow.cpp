@@ -43,7 +43,11 @@ MainWindow* mainWindow()
 	return instance;
 }
 
-MainWindow::MainWindow() : helpView(0)
+MainWindow::MainWindow() : QMainWindow(),
+	actionNextDive(0),
+	actionPreviousDive(0),
+	helpView(0),
+	state(VIEWALL)
 {
 	instance = this;
 	ui.setupUi(this);
