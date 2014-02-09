@@ -277,7 +277,9 @@ void MainWindow::on_actionDownloadDC_triggered()
 
 void MainWindow::on_actionDownloadWeb_triggered()
 {
-	SubsurfaceWebServices::instance()->exec();
+	SubsurfaceWebServices dlg(this);
+
+	dlg.exec();
 }
 
 void MainWindow::on_actionDivelogs_de_triggered()

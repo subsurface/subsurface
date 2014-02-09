@@ -47,7 +47,7 @@ protected:
 class SubsurfaceWebServices : public WebServices {
 	Q_OBJECT
 public:
-	static SubsurfaceWebServices* instance();
+	explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 private slots:
 	void startDownload();
@@ -56,7 +56,6 @@ private slots:
 	void downloadError(QNetworkReply::NetworkError error);
 	void startUpload(){} /*no op*/
 private:
-	explicit SubsurfaceWebServices(QWidget* parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray& length);

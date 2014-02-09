@@ -310,13 +310,6 @@ void WebServices::resetState()
 // #
 // #
 
-SubsurfaceWebServices* SubsurfaceWebServices::instance()
-{
-	static SubsurfaceWebServices *self = new SubsurfaceWebServices(mainWindow());
-	self->setAttribute(Qt::WA_QuitOnClose, false);
-	return self;
-}
-
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
 {
 	QSettings s;
