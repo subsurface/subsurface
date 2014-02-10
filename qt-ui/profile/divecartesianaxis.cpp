@@ -391,9 +391,9 @@ void DiveCartesianPlane::setup()
 
 	// DEPTH is M_OR_FEET(10,30), Minutes are 600, per line.
 	for (int i = leftAxis->minimum(), max = leftAxis->maximum(); i < max; i += M_OR_FT(10,30)) {
-		DiveLineItem *line = new DiveLineItem();
+		DiveLineItem *line = new DiveLineItem(this);
 		line->setLine(0, 0, horizontalSize, 0);
-		line->setPos(left,leftAxis->posAtValue(i));
+		line->setPos(0,leftAxis->posAtValue(i)-top);
 		line->setZValue(-1);
 		line->setPen(gridPen());
 		horizontalLines.push_back(line);
@@ -401,9 +401,9 @@ void DiveCartesianPlane::setup()
 	}
 
 	for (int i = bottomAxis->minimum(), max = bottomAxis->maximum(); i < max; i += 600) { // increments by 10 minutes.
-		DiveLineItem *line = new DiveLineItem();
+		DiveLineItem *line = new DiveLineItem(this);
 		line->setLine(0, 0, 0, verticalSize);
-		line->setPos(bottomAxis->posAtValue(i), top);
+		line->setPos(bottomAxis->posAtValue(i)-left, 0);
 		line->setZValue(-1);
 		line->setPen(gridPen());
 		verticalLines.push_back(line);

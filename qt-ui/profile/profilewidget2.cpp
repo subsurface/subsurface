@@ -147,6 +147,7 @@ void ProfileWidget2::setupItemOnScene()
 
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);
+	cartesianPlane->setZValue(-1);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
@@ -440,14 +441,15 @@ void ProfileWidget2::setEmptyState()
 	gasYAxis->setPos(itemPos.partialgas.pos.off);
 	timeAxis->setPos(itemPos.time.pos.off);
 	background->setY( itemPos.background.on.y());
+	background->setVisible(true);
 	toolTipItem->setVisible(false);
 	temperatureAxis->setPos(itemPos.temperature.pos.off);
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.off);
-	cartesianPlane->setVisible(false);
 	meanDepth->setVisible(false);
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
+	cartesianPlane->setVisible(false);
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		tissue->setVisible(false);
 	}
