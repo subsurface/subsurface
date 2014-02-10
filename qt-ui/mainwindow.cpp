@@ -171,6 +171,7 @@ void MainWindow::on_actionClose_triggered()
 	if (unsaved_changes() && (askSaveChanges() == false))
 		return;
 
+	ui.graphicsView->setEmptyState();
 	/* free the dives and trips */
 	while (dive_table.nr)
 		delete_single_dive(0);

@@ -432,6 +432,7 @@ void ProfileWidget2::setEmptyState()
 	if (currentState == EMPTY)
 		return;
 
+	dataModel->clear();
 	backgroundFile = QString(":poster%1").arg( rand()%3 +1);
 	currentState = EMPTY;
 	fixBackgroundPos();

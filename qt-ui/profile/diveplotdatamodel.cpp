@@ -99,6 +99,7 @@ void DivePlotDataModel::clear()
 {
 	if (rowCount() != 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+		pInfo.nr = 0;
 		endRemoveRows();
 	}
 }

@@ -44,7 +44,15 @@ void AbstractProfilePolygonItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
 	connect(dataModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)));
+	connect(dataModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(modelDataRemoved(QModelIndex, int, int)));
 	modelDataChanged();
+}
+
+void AbstractProfilePolygonItem::modelDataRemoved(const QModelIndex& parent, int from, int to)
+{
+	setPolygon(QPolygonF());
+	qDeleteAll(texts);
+	texts.clear();
 }
 
 void AbstractProfilePolygonItem::setVerticalAxis(DiveCartesianAxis* vertical)
@@ -107,6 +115,8 @@ DiveProfileItem::DiveProfileItem() : show_reported_ceiling(0), reported_ceiling_
 
 void DiveProfileItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
 	Q_UNUSED(widget);
+	if(polygon().isEmpty())
+		return;
 
 	// This paints the Polygon + Background. I'm setting the pen to QPen() so we don't get a black line here,
 	// after all we need to plot the correct velocities colors later.
@@ -277,6 +287,8 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 
 void DiveTemperatureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	if(polygon().isEmpty())
+		return;
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 }
@@ -374,6 +386,8 @@ void DiveGasPressureItem::plot_gas_value(int mbar, int sec, QFlags<Qt::Alignment
 
 void DiveGasPressureItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	if(polygon().isEmpty())
+		return;
 	QPen pen;
 	pen.setCosmetic(true);
 	pen.setWidth(2);
@@ -427,6 +441,8 @@ void DiveCalculatedCeiling::modelDataChanged(const QModelIndex& topLeft, const Q
 
 void DiveCalculatedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	if(polygon().isEmpty())
+		return;
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
@@ -492,6 +508,8 @@ void DiveReportedCeiling::preferencesChanged()
 
 void DiveReportedCeiling::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	if(polygon().isEmpty())
+		return;
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
