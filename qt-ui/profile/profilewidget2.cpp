@@ -292,7 +292,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	int maxtime = get_maxtime(&pInfo);
 	int maxdepth = get_maxdepth(&pInfo);
 
-	dataModel->setDive(current_dive, pInfo);
+	dataModel->setDive(d, pInfo);
 	toolTipItem->setPlotInfo(pInfo);
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
