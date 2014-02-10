@@ -64,12 +64,9 @@ double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 		}
 		if (c >= '0' && c <= '9') {
 			numbers++;
-			if (dot) {
-				decimal /= 10;
-				val += (c - '0') * decimal;
-			} else {
-				val = (val * 10) + (c - '0');
-			}
+			val = (val * 10) + (c - '0');
+			if (dot)
+				decimal *= 10;
 			continue;
 		}
 		if (c != 'e' && c != 'E')
@@ -111,9 +108,9 @@ double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 
 		while (exponent-- > 0) {
 			if (esign)
-				val /= 10;
+				decimal *= 10;
 			else
-				val *= 10;
+				decimal /= 10;
 		}
 	}
 
@@ -122,7 +119,7 @@ done:
 		goto no_conversion;
 	if (ptr)
 		*ptr = p-1;
-	return sign ? -val : val;
+	return (sign ? -val : val) / decimal;
 
 no_conversion:
 	if (ptr)
