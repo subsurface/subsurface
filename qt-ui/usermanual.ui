@@ -142,5 +142,22 @@
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>findClose</sender>
+   <signal>clicked()</signal>
+   <receiver>searchPanel</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>37</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>11</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
