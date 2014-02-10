@@ -20,7 +20,7 @@ int DivePlotDataModel::columnCount(const QModelIndex& parent) const
 
 QVariant DivePlotDataModel::data(const QModelIndex& index, int role) const
 {
-	if (!index.isValid())
+	if ((!index.isValid())||(index.row() >= pInfo.nr))
 		return QVariant();
 
 	plot_data item = pInfo.entry[index.row()];
