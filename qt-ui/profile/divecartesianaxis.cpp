@@ -397,7 +397,6 @@ void DiveCartesianPlane::setup()
 		line->setZValue(-1);
 		line->setPen(gridPen());
 		horizontalLines.push_back(line);
-		scene()->addItem(line);
 	}
 
 	for (int i = bottomAxis->minimum(), max = bottomAxis->maximum(); i < max; i += 600) { // increments by 10 minutes.
@@ -407,7 +406,6 @@ void DiveCartesianPlane::setup()
 		line->setZValue(-1);
 		line->setPen(gridPen());
 		verticalLines.push_back(line);
-		scene()->addItem(line);
 	}
 }
 
