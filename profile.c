@@ -770,6 +770,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	if (minpressure > maxpressure)
 		minpressure = 0;
 
+	memset(&pi, 0, sizeof(pi));
 	pi.maxdepth = maxdepth;
 	pi.maxtime = maxtime;
 	pi.maxpressure = maxpressure;
