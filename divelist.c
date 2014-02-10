@@ -665,7 +665,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 
 dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 {
-	dive_trip_t *dive_trip = calloc(sizeof(dive_trip_t),1);
+	dive_trip_t *dive_trip = calloc(1, sizeof(dive_trip_t));
 	dive_trip->when = dive->when;
 	if (dive->location)
 		dive_trip->location = strdup(dive->location);

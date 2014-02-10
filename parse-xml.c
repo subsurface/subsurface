@@ -1277,7 +1277,7 @@ static void trip_start(void)
 	if (cur_trip)
 		return;
 	dive_end();
-	cur_trip = calloc(sizeof(dive_trip_t),1);
+	cur_trip = calloc(1, sizeof(dive_trip_t));
 	memset(&cur_tm, 0, sizeof(cur_tm));
 }
 
