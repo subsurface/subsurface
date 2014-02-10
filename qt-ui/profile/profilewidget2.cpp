@@ -163,7 +163,6 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS( ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS ) \
-	ITEM = new PartialPressureGasItem(); \
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS); \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS); \
