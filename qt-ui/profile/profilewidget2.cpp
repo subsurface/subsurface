@@ -271,12 +271,13 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	if (!d)
 		return;
 
-	// No need to do this again if we are already showing that dive,
-	// so we check the unique id of the dive against the one we are
+	// No need to do this again if we are already showing the same dive
+	// computer of the same dive, so we check the unique id of the dive
+	// and the selected dive computer number against the ones we are
 	// showing (can't compare the dive pointers as those might change).
 	// I'm unclear what the semantics are supposed to be if we actually
 	// use more than one 'dives' as argument - so ignoring that right now :-)
-	if (d->id == dataModel->id())
+	if (d->id == dataModel->id() && dc_number == dataModel->dcShown())
 		return;
 
 	setProfileState();

@@ -486,6 +486,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	dc_number--;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.graphicsView->plotDives(QList<struct dive*>() << (current_dive));
 	redrawProfile();
 }
 
@@ -493,6 +494,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	dc_number++;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.graphicsView->plotDives(QList<struct dive*>() << (current_dive));
 	redrawProfile();
 }
 

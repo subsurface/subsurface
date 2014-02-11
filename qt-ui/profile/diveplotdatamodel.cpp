@@ -109,6 +109,7 @@ void DivePlotDataModel::setDive(dive* d, const plot_info& info)
 	clear();
 	Q_ASSERT(d != NULL);
 	diveId = d->id;
+	dcNr = dc_number;
 	pInfo = info;
 	beginInsertRows(QModelIndex(), 0, pInfo.nr-1);
 	endInsertRows();
@@ -117,6 +118,11 @@ void DivePlotDataModel::setDive(dive* d, const plot_info& info)
 int DivePlotDataModel::id() const
 {
 	return diveId;
+}
+
+int DivePlotDataModel::dcShown() const
+{
+	return dcNr;
 }
 
 #define MAX_PPGAS_FUNC( GAS, GASFUNC ) \
