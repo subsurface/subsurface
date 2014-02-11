@@ -44,7 +44,7 @@ static struct _ItemPos{
 	_Pos background;
 	_Pos dcLabel;
 	_Axis depth;
-	_Axis partialgas;
+	_Axis partialPressure;
 	_Axis time;
 	_Axis cylinder;
 	_Axis temperature;
@@ -209,12 +209,12 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.time.expanded.setP2(QPointF(94,0));
 
 	// Partial Gas Axis Config
-	itemPos.partialgas.pos.on.setX(97);
-	itemPos.partialgas.pos.on.setY(60);
-	itemPos.partialgas.pos.off.setX(110);
-	itemPos.partialgas.pos.off.setY(60);
-	itemPos.partialgas.expanded.setP1(QPointF(0,0));
-	itemPos.partialgas.expanded.setP2(QPointF(0,30));
+	itemPos.partialPressure.pos.on.setX(97);
+	itemPos.partialPressure.pos.on.setY(60);
+	itemPos.partialPressure.pos.off.setX(110);
+	itemPos.partialPressure.pos.off.setY(60);
+	itemPos.partialPressure.expanded.setP1(QPointF(0,0));
+	itemPos.partialPressure.expanded.setP2(QPointF(0,30));
 
 	// cylinder axis config
 	itemPos.cylinder.pos.on.setX(3);
@@ -446,7 +446,7 @@ void ProfileWidget2::setEmptyState()
 	currentState = EMPTY;
 	fixBackgroundPos();
 	profileYAxis->setPos(itemPos.depth.pos.off);
-	gasYAxis->setPos(itemPos.partialgas.pos.off);
+	gasYAxis->setPos(itemPos.partialPressure.pos.off);
 	timeAxis->setPos(itemPos.time.pos.off);
 	background->setY( itemPos.background.on.y());
 	background->setVisible(true);
@@ -487,8 +487,8 @@ void ProfileWidget2::setProfileState()
 		profileYAxis->setLine(itemPos.depth.expanded);
 	}
 
-	gasYAxis->setPos(itemPos.partialgas.pos.on);
-	gasYAxis->setLine(itemPos.partialgas.expanded);
+	gasYAxis->setPos(itemPos.partialPressure.pos.on);
+	gasYAxis->setLine(itemPos.partialPressure.expanded);
 
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
