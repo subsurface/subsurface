@@ -16,7 +16,6 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
-#include <QStringListModel>
 #include <QListView>
 #include <QModelIndex>
 #include <QSettings>

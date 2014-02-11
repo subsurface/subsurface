@@ -23,6 +23,7 @@
 #include <QFont>
 #include <QIcon>
 #include <QMessageBox>
+#include <QStringListModel>
 
 QFont defaultModelFont()
 {

@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QHash>
 #include <QMap>
+#include <QStringListModel>
 #include "../libdivecomputer.h"
 #include "ui_downloadfromdivecomputer.h"
 
@@ -19,7 +20,6 @@ private:
 	device_data_t *data;
 };
 
-class QStringListModel;
 class DownloadFromDCWidget : public QDialog{
 	Q_OBJECT
 public:

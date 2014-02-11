@@ -10,7 +10,6 @@
 #include "dive.h"
 
 class QListView;
-class QStringListModel;
 class QModelIndex;
 
 class DivePlannerPointsModel : public QAbstractTableModel{

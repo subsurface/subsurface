@@ -16,7 +16,6 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QAbstractItemView>
-#include <QStringListModel>
 #include <QApplication>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
