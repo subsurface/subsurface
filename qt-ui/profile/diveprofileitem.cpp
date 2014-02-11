@@ -227,6 +227,7 @@ DiveTemperatureItem::DiveTemperatureItem()
 
 void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
+	int last = -300, last_printed_temp = 0, sec = 0;
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
@@ -235,12 +236,11 @@ void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 	texts.clear();
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
-	int last = -300, last_printed_temp = 0, sec = 0;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int mkelvin = dataModel->index(i, vDataColumn).data().toInt();
 		if (!mkelvin)
 			continue;
-		int sec = dataModel->index(i, hDataColumn).data().toInt();
+		sec = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin));
 		poly.append(point);
 
