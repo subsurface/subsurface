@@ -190,7 +190,7 @@ void DiveCartesianAxis::setTickInterval(double i)
 qreal DiveCartesianAxis::valueAt(const QPointF& p)
 {
 	QLineF m = line();
-	double retValue =  orientation == LeftToRight || RightToLeft?
+	double retValue =  (orientation == LeftToRight || orientation == RightToLeft) ?
 				max * (p.x() - m.x1()) / (m.x2() - m.x1()) :
 				max * (p.y() - m.y1()) / (m.y2() - m.y1());
 	return retValue;
