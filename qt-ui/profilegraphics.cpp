@@ -571,7 +571,7 @@ void ProfileGraphicsView::plot_pp_text()
 		QGraphicsLineItem *item = new QGraphicsLineItem(SCALEGC(0, m), SCALEGC(hpos, m));
 		QPen pen(defaultPen);
 		pen.setColor(c);
-		if ( QString::number(m).toDouble() != QString::number(m).toInt()) {
+		if ( IS_FP_SAME(QString::number(m).toDouble(), QString::number(m).toInt())) {
 			pen.setStyle(Qt::DashLine);
 			pen.setWidthF(1.2);
 		}

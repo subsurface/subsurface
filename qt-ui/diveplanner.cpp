@@ -246,7 +246,7 @@ void DivePlannerGraphics::keyLeftAction()
 			double xpos = timeLine->posAtValue((dp.time - 60) / 60);
 			bool nextStep = false;
 			Q_FOREACH(DiveHandler *h, handles) {
-				if (h->pos().x() == xpos) {
+				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
 				}
@@ -274,7 +274,7 @@ void DivePlannerGraphics::keyRightAction()
 			double xpos = timeLine->posAtValue((dp.time + 60) / 60);
 			bool nextStep = false;
 			Q_FOREACH(DiveHandler *h, handles) {
-				if (h->pos().x() == xpos) {
+				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
 				}

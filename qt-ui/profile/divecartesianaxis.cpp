@@ -42,7 +42,7 @@ double DiveCartesianAxis::tickSize() const
 
 void DiveCartesianAxis::setMaximum(double maximum)
 {
-	if (max == maximum)
+	if (IS_FP_SAME(max, maximum))
 		return;
 	max = maximum;
 	emit maxChanged();
@@ -50,7 +50,7 @@ void DiveCartesianAxis::setMaximum(double maximum)
 
 void DiveCartesianAxis::setMinimum(double minimum)
 {
-	if (min == minimum)
+	if (IS_FP_SAME(min, minimum))
 		return;
 	min = minimum;
 }
@@ -348,7 +348,7 @@ QLineF DiveCartesianPlane::horizontalLine() const
 
 void DiveCartesianPlane::setHorizontalLine(QLineF line)
 {
-	if ( horizontalSize == line.length())
+	if (IS_FP_SAME(horizontalSize, line.length()))
 		return;
 	horizontalSize = line.length();
 	setup();
@@ -356,7 +356,7 @@ void DiveCartesianPlane::setHorizontalLine(QLineF line)
 
 void DiveCartesianPlane::setVerticalLine(QLineF line)
 {
-	if (verticalSize == line.length())
+	if (IS_FP_SAME(verticalSize, line.length()))
 		return;
 	verticalSize = line.length();
 	setup();
@@ -439,7 +439,7 @@ void PartialGasPressureAxis::preferencesChanged()
 		max = model->po2Max();
 
 	qreal pp = floor(max * 10.0) / 10.0 + 0.2;
-	if (maximum() == pp)
+	if (IS_FP_SAME(maximum(), pp))
 		return;
 
 	setMaximum(pp);
