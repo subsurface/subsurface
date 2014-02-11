@@ -2,21 +2,6 @@
 #include "dive.h"
 #include "mainwindow.h"
 
-#define CREATE_SINGLETON(X) \
-X* X::instance() \
-{ \
-	static QScopedPointer<X> self(new X()); \
-	return self.data(); \
-}
-
-CREATE_SINGLETON(BuddyCompletionModel);
-CREATE_SINGLETON(DiveMasterCompletionModel);
-CREATE_SINGLETON(LocationCompletionModel);
-CREATE_SINGLETON(SuitCompletionModel);
-CREATE_SINGLETON(TagCompletionModel);
-
-#undef CREATE_SINGLETON
-
 #define CREATE_UPDATE_METHOD(Class, diveStructMember) \
 void Class::updateModel() \
 { \

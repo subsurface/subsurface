@@ -89,11 +89,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
 	// disabled as this column is pointless outside the disabled planner
 	// ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
-	completers.buddy = new QCompleter(BuddyCompletionModel::instance(), ui.buddy);
-	completers.divemaster = new QCompleter(DiveMasterCompletionModel::instance(), ui.divemaster);
-	completers.location = new QCompleter(LocationCompletionModel::instance(), ui.location);
-	completers.suit = new QCompleter(SuitCompletionModel::instance(), ui.suit);
-	completers.tags = new QCompleter(TagCompletionModel::instance(), ui.tagWidget);
+	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
+	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
+	completers.location = new QCompleter(&locationModel, ui.location);
+	completers.suit = new QCompleter(&suitModel, ui.suit);
+	completers.tags = new QCompleter(&tagModel, ui.tagWidget);
 	completers.buddy->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.divemaster->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.location->setCaseSensitivity(Qt::CaseInsensitive);
@@ -563,11 +563,11 @@ void MainTab::addWeight_clicked()
 
 void MainTab::reload()
 {
-	SuitCompletionModel::instance()->updateModel();
-	BuddyCompletionModel::instance()->updateModel();
-	LocationCompletionModel::instance()->updateModel();
-	DiveMasterCompletionModel::instance()->updateModel();
-	TagCompletionModel::instance()->updateModel();
+	suitModel.updateModel();
+	buddyModel.updateModel();
+	locationModel.updateModel();
+	diveMasterModel.updateModel();
+	tagModel.updateModel();
 }
 
 void MainTab::acceptChanges()

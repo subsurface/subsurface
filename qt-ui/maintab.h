@@ -13,6 +13,7 @@
 
 #include "models.h"
 #include "ui_maintab.h"
+#include "completionmodels.h"
 
 class QCompleter;
 struct dive;
@@ -93,6 +94,12 @@ private:
 	CylindersModel *cylindersModel;
 	QMap<dive*, NotesBackup> notesBackup;
 	EditMode editMode;
+
+	BuddyCompletionModel buddyModel;
+	DiveMasterCompletionModel diveMasterModel;
+	LocationCompletionModel locationModel;
+	SuitCompletionModel suitModel;
+	TagCompletionModel tagModel;
 
 	/* since the multi-edition of the equipment is fairly more
 	 * complex than a single item, because it involves a Qt
