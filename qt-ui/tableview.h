@@ -41,4 +41,4 @@ private:
 	QPushButton *plusBtn;
 };
 
-#endif
+#endif // TABLEVIEW_H

@@ -241,4 +241,4 @@ private:
 	Ui::DivePlanner ui;
 };
 
-#endif
+#endif // DIVEPLANNER_H

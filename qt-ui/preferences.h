@@ -1,5 +1,5 @@
-#ifndef PREFERENCES_DIALOG_H
-#define PREFERENCES_DIALOG_H
+#ifndef PREFERENCES_H
+#define PREFERENCES_H
 
 #include <QDialog>
 #include "../dive.h"
@@ -34,4 +34,4 @@ private:
 	struct preferences oldPrefs;
 };
 
-#endif
+#endif // PREFERENCES_H

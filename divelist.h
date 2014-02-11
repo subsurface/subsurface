@@ -41,4 +41,4 @@ extern void dump_trip_list(void);
 }
 #endif
 
-#endif
+#endif // DIVELIST_H

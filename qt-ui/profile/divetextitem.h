@@ -29,4 +29,4 @@ private:
 	QBrush brush;
 };
 
-#endif
+#endif // DIVETEXTITEM_H

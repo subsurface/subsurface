@@ -126,4 +126,4 @@ void setup_pp_limits(struct graphics_context *gc);
 #ifdef __cplusplus
 }
 #endif
-#endif
+#endif // PROFILE_H

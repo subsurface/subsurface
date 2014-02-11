@@ -25,4 +25,4 @@ private:
 	DiveComputerModel *model;
 };
 
-#endif
+#endif // DIVECOMPUTERMANAGEMENTDIALOG_H

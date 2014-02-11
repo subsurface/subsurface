@@ -823,4 +823,4 @@ extern fraction_t string_to_fraction(const char *str);
 
 #include "pref.h"
 
-#endif /* DIVE_H */
+#endif // DIVE_H

@@ -1,3 +1,6 @@
+#ifndef WEBSERVICE_H
+#define WEBSERVICE_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,3 +21,4 @@ enum {
 #ifdef __cplusplus
 }
 #endif
+#endif // WEBSERVICE_H

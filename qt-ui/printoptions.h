@@ -36,4 +36,4 @@ private slots:
 	void profileOnTopClicked(bool check);
 };
 
-#endif
+#endif // PRINTOPTIONS_H

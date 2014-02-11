@@ -69,4 +69,4 @@ private:
 
 bool isGnome3Session();
 
-#endif
+#endif // SIMPLEWIDGETS_H

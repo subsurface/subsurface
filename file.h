@@ -19,4 +19,4 @@ extern timestamp_t parse_date(const char *date);
 }
 #endif
 
-#endif
+#endif // FILE_H

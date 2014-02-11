@@ -325,4 +325,4 @@ private:
 
 	QStringList languages;
 };
-#endif
+#endif // MODELS_H

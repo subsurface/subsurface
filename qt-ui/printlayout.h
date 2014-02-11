@@ -46,4 +46,4 @@ signals:
     void signalProgress(int);
 };
 
-#endif
+#endif // PRINTLAYOUT_H

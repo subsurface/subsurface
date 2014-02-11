@@ -33,4 +33,4 @@ public:
 	void updateModel();
 };
 
-#endif
+#endif // COMPLETIONMODELS_H

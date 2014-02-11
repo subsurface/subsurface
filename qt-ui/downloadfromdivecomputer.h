@@ -78,4 +78,4 @@ public:
 
 };
 
-#endif
+#endif // DOWNLOADFROMDIVECOMPUTER_H

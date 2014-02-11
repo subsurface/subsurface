@@ -13,4 +13,4 @@ namespace Animations{
 	void animDelete(QObject *obj);
 }
 
-#endif
+#endif // ANIMATIONFUNCTIONS_H

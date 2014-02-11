@@ -1,5 +1,5 @@
-#ifndef __TAGWIDGET_H
-#define __TAGWIDGET_H
+#ifndef TAGWIDGET_H
+#define TAGWIDGET_H
 
 #include "groupedlineedit.h"
 #include <QCompleter>
@@ -26,4 +26,4 @@ private:
 	QCompleter *m_completer;
 };
 
-#endif /* __TAGWIDGET_H */
+#endif // TAGWIDGET_H

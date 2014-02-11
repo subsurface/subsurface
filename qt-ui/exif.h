@@ -49,8 +49,8 @@
    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef __EXIF_H
-#define __EXIF_H
+#ifndef EXIF_H
+#define EXIF_H
 
 #include <string>
 
@@ -140,4 +140,4 @@ class EXIFInfo {
 // EXIF header was found, but data was corrupted.
 #define PARSE_EXIF_ERROR_CORRUPT              1985
 
-#endif
+#endif // EXIF_H

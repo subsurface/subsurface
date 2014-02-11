@@ -49,4 +49,4 @@ typedef struct {
 }
 #endif
 
-#endif /* UEMIS_H */
+#endif // UEMIS_H

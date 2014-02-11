@@ -29,4 +29,4 @@ private slots:
 	void onPaintRequested(QPrinter *);
 };
 
-#endif
+#endif // PRINTDIALOG_H

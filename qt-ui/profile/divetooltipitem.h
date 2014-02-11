@@ -58,4 +58,4 @@ private:
 	plot_info pInfo;
 };
 
-#endif
+#endif // DIVETOOLTIPITEM_H

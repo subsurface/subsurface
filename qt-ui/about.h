@@ -17,4 +17,4 @@ private:
 	Ui::SubsurfaceAbout ui;
 };
 
-#endif
+#endif // ABOUT_H

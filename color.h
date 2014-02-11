@@ -1,5 +1,5 @@
-#ifndef COLORS_H
-#define COLORS_H
+#ifndef COLOR_H
+#define COLOR_H
 
 /* The colors are named by picking the closest match
    from http://chir.ag/projects/name-that-color */
@@ -57,4 +57,4 @@
 // Magentas
 #define MEDIUMREDVIOLET1_HIGHER_TRANS QColor::fromRgbF( 0.7, 0.2, 0.7, 0.1 )
 
-#endif
+#endif // COLOR_H

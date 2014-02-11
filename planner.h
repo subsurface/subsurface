@@ -24,4 +24,4 @@ extern double plangflow, plangfhigh;
 #ifdef __cplusplus
 }
 #endif
-#endif /* PLANNER_H */
+#endif // PLANNER_H

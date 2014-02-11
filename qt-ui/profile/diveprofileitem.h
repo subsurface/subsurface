@@ -158,4 +158,4 @@ private:
 	QColor normalColor;
 	QColor alertColor;
 };
-#endif
+#endif // DIVEPROFILEITEM_H

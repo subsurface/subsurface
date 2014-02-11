@@ -1,5 +1,5 @@
-#ifndef DEVICE_INFO_H
-#define DEVICE_INFO_H
+#ifndef DEVICE_H
+#define DEVICE_H
 
 #ifdef __cplusplus
 #include "dive.h"
@@ -15,4 +15,4 @@ extern void call_for_each_dc(void *f, void (*callback)(void *, const char *, uin
 }
 #endif
 
-#endif
+#endif // DEVICE_H

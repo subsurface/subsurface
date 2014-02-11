@@ -91,4 +91,4 @@ private:
 	bool uploadMode;
 };
 
-#endif
+#endif // SUBSURFACEWEBSERVICES_H

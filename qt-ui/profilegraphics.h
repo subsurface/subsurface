@@ -172,4 +172,4 @@ private:
 	enum Mode mode;
 };
 
-#endif
+#endif // PROFILEGRAPHICS_H

@@ -51,4 +51,4 @@ extern void process_selected_dives(void);
 }
 #endif
 
-#endif
+#endif // STATISTICS_H

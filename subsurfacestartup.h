@@ -20,4 +20,4 @@ void parse_argument(const char *arg);
 }
 #endif
 
-#endif
+#endif // SUBSURFACESTARTUP_H

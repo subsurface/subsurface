@@ -1,4 +1,6 @@
 /* GdkPixbuf RGBA C-Source image dump 1-byte-run-length-encoded */
+#ifndef SUBSURFACE_ICON_H
+#define SUBSURFACE_ICON_H
 
 static const GdkPixdata subsurface_icon_pixbuf = {
   0x47646b50, /* Pixbuf magic: 'GdkP' */
@@ -5239,4 +5241,4 @@ static const GdkPixdata subsurface_icon_pixbuf = {
   "\316\377\323\332\317\377\233!H\211\0",
 };
 
-
+#endif // SUBSURFACE_ICON_H

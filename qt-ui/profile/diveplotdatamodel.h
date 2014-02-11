@@ -36,4 +36,4 @@ private:
 	int dcNr;
 };
 
-#endif
+#endif // DIVEPLOTDATAMODEL_H

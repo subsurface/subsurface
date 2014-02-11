@@ -114,4 +114,4 @@ private:
 	void updateGpsCoordinates(const struct dive *dive);
 };
 
-#endif
+#endif // MAINTAB_H

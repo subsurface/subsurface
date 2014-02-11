@@ -115,4 +115,4 @@ private:
 	qreal verticalSize;
 	qreal horizontalSize;
 };
-#endif
+#endif // DIVECARTESIANAXIS_H

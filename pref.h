@@ -66,4 +66,4 @@ extern void save_preferences(void);
 }
 #endif
 
-#endif /* PREF_H */
+#endif // PREF_H

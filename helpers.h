@@ -4,8 +4,8 @@
  * header file for random helper functions of Subsurface
  *
  */
-#ifndef HELPER_H
-#define HELPER_H
+#ifndef HELPERS_H
+#define HELPERS_H
 
 #include <QString>
 #include "dive.h"
@@ -42,4 +42,4 @@ extern DiveComputerList dcList;
 #else
 #define TITLE_OR_TEXT(_t,_m) _t, _m
 #endif
-#endif /* HELPER_H */
+#endif // HELPERS_H

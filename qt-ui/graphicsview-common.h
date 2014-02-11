@@ -43,4 +43,4 @@ struct text_render_options {
 };
 
 typedef text_render_options text_render_options_t;
-#endif
+#endif // GRAPHICSVIEW_COMMON_H

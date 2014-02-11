@@ -5,6 +5,8 @@
  * This was initially based on the Mozilla SHA1 implementation, although
  * none of the original Mozilla code remains.
  */
+#ifndef SHA1_H
+#define SHA1_H
 
 typedef struct {
 	unsigned long long size;
@@ -31,3 +33,5 @@ static inline void SHA1(const void *dataIn, unsigned long len, unsigned char has
 	SHA1_Update(&ctx, dataIn, len);
 	SHA1_Final(hashout, &ctx);
 }
+
+#endif // SHA1_H

@@ -12,4 +12,4 @@ extern double buehlmann_N2_t_halflife[];
 }
 #endif
 
-#endif
+#endif // DECO_H

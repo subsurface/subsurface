@@ -26,4 +26,4 @@ private:
 	struct event* internalEvent;
 };
 
-#endif
+#endif // DIVEEVENTITEM_H

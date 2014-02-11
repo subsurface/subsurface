@@ -148,4 +148,4 @@ private:
 
 MainWindow *mainWindow();
 
-#endif
+#endif // MAINWINDOW_H

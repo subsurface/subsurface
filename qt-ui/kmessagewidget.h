@@ -236,4 +236,4 @@ public:
 	int bestContentHeight() const;
 };
 
-#endif /* KMESSAGEWIDGET_H */
+#endif // KMESSAGEWIDGET_H

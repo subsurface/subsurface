@@ -1,4 +1,6 @@
 /* GdkPixbuf RGBA C-Source image dump 1-byte-run-length-encoded */
+#ifndef FLAG_H
+#define FLAG_H
 
 static const GdkPixdata flag_pixbuf = {
   0x47646b50, /* Pixbuf magic: 'GdkP' */
@@ -73,4 +75,4 @@ static const GdkPixdata flag_pixbuf = {
   "53>t44;'\226\377\377\377\0",
 };
 
-
+#endif // FLAG_H

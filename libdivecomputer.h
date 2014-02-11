@@ -42,4 +42,4 @@ extern char *dumpfile_name;
 }
 #endif
 
-#endif
+#endif // LIBDIVECOMPUTER_H

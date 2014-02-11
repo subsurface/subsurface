@@ -14,4 +14,4 @@ public:
 	DivePixmapItem(QObject* parent = 0);
 };
 
-#endif
+#endif // DIVEPIXMAPITEM_H

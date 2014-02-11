@@ -27,8 +27,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GROUPEDLINEEDIT_H__
-#define __GROUPEDLINEEDIT_H__
+#ifndef GROUPEDLINEEDIT_H
+#define GROUPEDLINEEDIT_H
 
 #include <QPlainTextEdit>
 #include <QStringList>
@@ -69,4 +69,4 @@ private:
 	struct Private;
 	Private *d;
 };
-#endif
+#endif // GROUPEDLINEEDIT_H

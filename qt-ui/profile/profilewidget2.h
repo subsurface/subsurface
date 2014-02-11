@@ -99,4 +99,4 @@ private:
 	PartialPressureGasItem *po2GasItem;
 };
 
-#endif
+#endif // PROFILEWIDGET2_H

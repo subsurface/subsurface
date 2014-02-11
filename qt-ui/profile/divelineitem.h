@@ -14,4 +14,4 @@ public:
 	void animateMoveTo(qreal x, qreal y);
 };
 
-#endif
+#endif // DIVELINEITEM_H

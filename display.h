@@ -69,4 +69,4 @@ extern const char *default_dive_computer_device;
 }
 #endif
 
-#endif
+#endif // DISPLAY_H

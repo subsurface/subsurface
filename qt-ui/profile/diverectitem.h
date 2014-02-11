@@ -14,4 +14,4 @@ public:
 	DiveRectItem(QObject *parent = 0, QGraphicsItem *parentItem = 0);
 };
 
-#endif
+#endif // DIVERECTITEM_H

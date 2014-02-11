@@ -39,4 +39,4 @@ public slots:
 
 };
 
-#endif
+#endif // GLOBE_H
