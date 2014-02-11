@@ -272,6 +272,14 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	if (!d)
 		return;
 
+	// No need to do this again if we are already showing that dive,
+	// so we check the unique id of the dive against the one we are
+	// showing (can't compare the dive pointers as those might change).
+	// I'm unclear what the semantics are supposed to be if we actually
+	// use more than one 'dives' as argument - so ignoring that right now :-)
+	if (d->id == dataModel->id())
+		return;
+
 	setProfileState();
 	// Here we need to probe for the limits of the dive.
 	// There's already a function that does exactly that,
