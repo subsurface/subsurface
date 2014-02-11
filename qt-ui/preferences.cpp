@@ -307,7 +307,10 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
 void PreferencesDialog::on_chooseFile_clicked()
 {
 	QFileInfo fi(system_default_filename());
-	ui.defaultfilename->setText(QFileDialog::getOpenFileName(this, tr("Open Default Log File"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)")));
+	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open Default Log File"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+
+	if(!choosenFileName.isEmpty())
+		ui.defaultfilename->setText(choosenFileName);
 }
 
 void PreferencesDialog::emitSettingsChanged()
