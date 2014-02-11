@@ -41,7 +41,7 @@ public:
 	void setHorizontalDataColumn(int column);
 	void setVerticalDataColumn(int column);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
-	virtual void clear(){};
+	virtual void clear(){}
 public slots:
 	virtual void preferencesChanged();
 	virtual void modelDataChanged(const QModelIndex& topLeft = QModelIndex(), const QModelIndex& bottomRight = QModelIndex());

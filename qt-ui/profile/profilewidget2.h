@@ -16,31 +16,29 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 
+struct dive;
+struct plot_info;
 class ToolTipItem;
 class MeanDepthLine;
 class DiveReportedCeiling;
 class DiveTextItem;
 class TemperatureAxis;
 class DiveEventItem;
-struct DivePlotDataModel;
-struct DivePixmapItem;
-struct DiveRectItem;
-struct DepthAxis;
-struct DiveCartesianAxis;
-struct DiveProfileItem;
-struct TimeAxis;
-struct dive;
-struct QStateMachine;
-struct DiveCartesianPlane;
-struct DiveTemperatureItem;
-struct plot_info;
-struct DiveGasPressureItem;
-struct DiveCalculatedCeiling;
-struct DiveReportedCeiling;
-struct DiveCalculatedTissue;
-struct PartialPressureGasItem;
-struct PartialGasPressureAxis;
-struct AbstractProfilePolygonItem;
+class DivePlotDataModel;
+class DivePixmapItem;
+class DiveRectItem;
+class DepthAxis;
+class DiveCartesianAxis;
+class DiveProfileItem;
+class TimeAxis;
+class DiveCartesianPlane;
+class DiveTemperatureItem;
+class DiveGasPressureItem;
+class DiveCalculatedCeiling;
+class DiveCalculatedTissue;
+class PartialPressureGasItem;
+class PartialGasPressureAxis;
+class AbstractProfilePolygonItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
