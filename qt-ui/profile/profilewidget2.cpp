@@ -10,7 +10,6 @@
 #include "divetextitem.h"
 #include "divetooltipitem.h"
 #include "animationfunctions.h"
-#include <QStateMachine>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -363,7 +362,7 @@ void ProfileWidget2::settingsChanged()
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
 {
-	QGraphicsView::resizeEvent(event);	DiveRectItem *depthController;
+	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 	fixBackgroundPos();
 }
