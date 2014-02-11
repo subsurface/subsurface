@@ -720,16 +720,18 @@ accessible through the Import dialogue are also supported, as explained below.
 
 ==== Importing from Mares Dive Organiser V2.1
 
-Mares dive logs need to be imported using a three-step process,
+Since Mares utilise proprietory Microsoft software not compatible with multi-platform
+software, these dive logs cannot be directly imported into _Subsurface_. Mares dive
+logs need to be imported using a three-step process,
 using _www.divelogs.de_ as a mechanism to extract the dive information from
 the file.
 
- - Export dive log data from Mares Dive Organiser to your desktop. See
-xref:Mares_Export[Appendix C] for more information.
+ - Export dive log data from Mares Dive Organiser to your desktop, using
+ a _.sdf_ file name extension. See xref:Mares_Export[Appendix C] for more information.
  - Import the data into _www.divelogs.de_. Create a user account in
 _www.divelogs.de_, log into that web site, then
 select _Import Logbook -> Dive Organiser_ from the menu on the left hand side.
-Follow the instructions carefully to transfer the dive information from the
+Follow the instructions carefully to transfer the dive information (in _.sdf_ format) from the
 Dive Organiser data base to _www.divelogs.de_.
  - Then follow the instructions below to import dives from _divelogs.de_ to
 _Subsurface_.
@@ -745,7 +747,7 @@ user-ID and password for _divelogs.de_ into the appropriate fields. Then select
 the _Download_ button. Download from _divelogs.de_ starts immediately, evident
 on a progress bar in the dialogue box. At the and of the download, the
 successful status is indicated (see figure on the right [*B*], below). Select the
-_Apply_ button. The imported dives appear in the *Dive List* panel.
+_Apply_ button. The imported dives appear in the _Subsurface_ *Dive List* panel.
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 
@@ -1220,8 +1222,8 @@ If you dive regularly, the dive list can rapidly become very long. _Subsurface_
 can group dives into _trips_. It performs this by grouping dives that have
 date/times that are not separated in time by more than two days, thus creating
 a single heading for each diving trip represented in the dive log. Below is an
-ungrouped dive list (A, on the left) as well as a grouped dive list with
-several trips (B, on the right):
+ungrouped dive list (*A*, on the left) as well as the corresponding grouped dive
+list comprising five dive trips (*B*, on the right):
 
 image::images/Group2.jpg["Figure: Grouping dives",align="center"]
 
@@ -1531,9 +1533,8 @@ the selected dives in the logbook) in UDDF format.
 === Import
 - <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information
 from a dive computer.
-- <<S_ImportingUDDF,_Import Files_>> - Import dive information from a file in
-UDDF or in another _Subsurface_-compatible format.
-- _Import CSV_ - Import dive information from a data file in CSV format.
+- <<Unified_import,_Import Files_>> - Import dive information from a file in
+in a _Subsurface_-compatible format.
 - <<S_Companion,_Import GPS data from Subsurface Service_>> - Load GPS
 coordinates from the _Subsurface_ mobile phone app.
 - <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive information
@@ -1833,9 +1834,17 @@ This appendix provides some information about approaches to export dive log data
 dive log software. The procedures below mostly apply to Linux and/or Windows.
 
 [[S_ImportingDivesSuunto]]
-=== Exporting dives from *Suunto Divemanager 3 (DM3)*
+=== Exporting dives from *Suunto Divemanager (DM3 and DM4)*
+[icon="images/icons/suuntologo.jpg"]
+[NOTE]
+Divemanager 3 (DM3) is an older version of the Suunto software. More recent
+Suunto dive computers use Divemanager 4 (DM4). The
+two versions of Divemanager use different methods and different file naming
+conventions to export dive log data.
 
- - Start 'Suunto Divemanager' and log in with the name containing the logs
+*Divemanager 3 (DM3):*
+
+ - Start 'Suunto Divemanager 3' and log in with the name containing the logs
  - Do not start the import wizard to import dives from your computer.
  - In the navigation tree on the left side of the program-window, select your
 dives.
@@ -1854,9 +1863,7 @@ last dive
 	* You are back in the Export pop-up. Press the button 'Export'
  - Your dives are now exported to the file Divelogs.SDE.
 
-
-[[S_ImportingDivesSuuntoDM4]]
-=== Exporting dives from *Suunto Divemanager 4 (DM4)*
+*Divemanager 4 (DM4):*
 
 To import divelog from 'Suunto DM4', you need to locate the DM4 database
 where the dives are stored. You can either look for the original
@@ -1884,13 +1891,13 @@ Backing up Suunto DM4:
 === Exporting from Mares Dive Organiser V2.1
 [[Mares_Export]]
 
-Mares Dive Organiser is a Windows application. The dive log is kept as a
+[icon="images/icons/mareslogo.jpg"]
+[NOTE]
+Mares Dive Organiser is a Microsoft application. The dive log is kept as a
 Microsoft SQL Compact Edition data base with a .SDF filename extension. The
 data base includes all Dive Organiser-registered divers on the particular
-computer and all Mares dive computers used. Since
-Mares utilise proprietory Windows software not compatible with multi-platform software,
-these dive logs cannot be directly imported into _Subsurface_. The safest way to obtain a copy
-these dive data base is to export the information to another compatibale format
+computer and all Mares dive computers used. The safest way to obtain a copy
+of the dive data base is to export the information to another compatibale format
 which can be imported into _Subsurface_.
 
  - Within Dive Organiser, select
@@ -1898,11 +1905,13 @@ _Database -> Backup_ from the main menu and back up the data base to the desk to
 This creates a zipped file DiveOrganiserxxxxx.dbf.
  - Rename the file to
 DiveOrganiserxxxxx.zip. Inside the zipped directory is a file _DiveOrganiser.sdf_.
- - Extract it from the zipped folder to your Desktop.
+ - Extract the _.sdf_ file from the zipped folder to your Desktop.
 
 [[S_ImportingDivinglog]]
 === Exporting dives from *DivingLog 5.0*
 
+[icon="images/icons/divingloglogo.jpg"]
+[NOTE]
 Unfortunately DivingLog XML files give us no
 indication on the preferences set on your system. So in order for
 _Subsurface_ to be able to successfully import XML files from DivingLog
