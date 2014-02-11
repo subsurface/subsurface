@@ -187,12 +187,15 @@ void DiveCartesianAxis::setTickInterval(double i)
 	interval = i;
 }
 
-qreal DiveCartesianAxis::valueAt(const QPointF& p)
+qreal DiveCartesianAxis::valueAt(const QPointF& p) const
 {
 	QLineF m = line();
+	QPointF relativePosition = p;
+	relativePosition -= pos(); // normalize p based on the axis' offset on screen
+
 	double retValue =  (orientation == LeftToRight || orientation == RightToLeft) ?
-				max * (p.x() - m.x1()) / (m.x2() - m.x1()) :
-				max * (p.y() - m.y1()) / (m.y2() - m.y1());
+				max * (relativePosition.x() - m.x1()) / (m.x2() - m.x1()) :
+				max * (relativePosition.y() - m.y1()) / (m.y2() - m.y1());
 	return retValue;
 }
 

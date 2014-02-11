@@ -29,7 +29,7 @@ public:
 	double maximum() const;
 	double tickInterval() const;
 	double tickSize() const;
-	qreal valueAt(const QPointF& p);
+	qreal valueAt(const QPointF& p) const;
 	qreal percentAt(const QPointF& p);
 	qreal posAtValue(qreal value);
 	void setColor(const QColor& color);
