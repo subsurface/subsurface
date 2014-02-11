@@ -106,13 +106,8 @@ void DivePlotDataModel::clear()
 
 void DivePlotDataModel::setDive(dive* d, const plot_info& info)
 {
-	// We need a way to find out if the dive setted is the same old dive, but pointers change,
-	// and there's no UUID, for now, just repopulate everything.
 	clear();
-	struct divecomputer *dc = NULL;
-
-	if (d)
-		dc = select_dc(&d->dc);
+	Q_ASSERT(d != NULL);
 	diveId = d->id;
 	pInfo = info;
 	beginInsertRows(QModelIndex(), 0, pInfo.nr-1);
