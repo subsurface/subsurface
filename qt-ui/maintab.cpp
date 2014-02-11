@@ -475,7 +475,7 @@ void MainTab::updateDiveInfo(int dive)
 		volume_t sac;
 		QString SACs;
 		if (mean[0] && duration[0]) {
-			sac.mliter = gases[0].mliter * 1000.0 / (depth_to_mbar(mean[0], d) * duration[0] / 60.0);
+			sac.mliter = gases[0].mliter / (depth_to_atm(mean[0], d) * duration[0] / 60.0);
 			SACs = get_volume_string(sac, true).append(tr("/min"));
 		} else {
 			SACs = QString(tr("unknown"));
@@ -483,7 +483,7 @@ void MainTab::updateDiveInfo(int dive)
 		for(int i=1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++) {
 			volumes.append("\n" + get_volume_string(gases[i], true));
 			if (duration[i]) {
-				sac.mliter = gases[i].mliter * 1000.0 / (depth_to_mbar(mean[i], d) * duration[i] / 60);
+				sac.mliter = gases[i].mliter / (depth_to_atm(mean[i], d) * duration[i] / 60);
 				SACs.append("\n" + get_volume_string(sac, true).append(tr("/min")));
 			} else {
 				SACs.append("\n");

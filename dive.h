@@ -223,6 +223,11 @@ static inline double bar_to_atm(double bar)
 	return bar / SURFACE_PRESSURE * 1000;
 }
 
+static inline double mbar_to_atm(int mbar)
+{
+	return (double) mbar / SURFACE_PRESSURE;
+}
+
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
 extern int wet_volume(double cuft, pressure_t p);
@@ -448,6 +453,11 @@ static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure
 static inline int depth_to_mbar(int depth, struct dive *dive)
 {
 	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
+}
+
+static inline double depth_to_atm(int depth, struct dive *dive)
+{
+	return mbar_to_atm(depth_to_mbar(depth, dive));
 }
 
 /* for the inverse calculation we use just the relative pressure

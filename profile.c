@@ -226,7 +226,7 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 
 	/* Mean pressure in ATM */
 	depth = (entry1->depth + entry2->depth) / 2;
-	atm = (double) depth_to_mbar(depth, dive) / SURFACE_PRESSURE;
+	atm = depth_to_atm(depth, dive);
 
 	cyl = dive->cylinder + index;
 
