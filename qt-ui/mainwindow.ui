@@ -514,7 +514,7 @@
                </widget>
               </item>
               <item>
-               <widget class="ProfileWidget2" name="graphicsView"/>
+               <widget class="ProfileWidget2" name="newProfile"/>
               </item>
              </layout>
             </widget>

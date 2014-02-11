@@ -105,7 +105,7 @@ void MainWindow::current_dive_changed(int divenr)
 	 * a single profile plot on the canvas. I know that we are using only one right now,
 	 * but let's keep like this so it's easy to change when we need? :)
 	 */
-	ui.graphicsView->plotDives( QList<dive*>() << (current_dive) );
+	ui.newProfile->plotDives( QList<dive*>() << (current_dive) );
 	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
@@ -171,7 +171,7 @@ void MainWindow::on_actionClose_triggered()
 	if (unsaved_changes() && (askSaveChanges() == false))
 		return;
 
-	ui.graphicsView->setEmptyState();
+	ui.newProfile->setEmptyState();
 	/* free the dives and trips */
 	while (dive_table.nr)
 		delete_single_dive(0);
@@ -486,7 +486,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	dc_number--;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.graphicsView->plotDives(QList<struct dive*>() << (current_dive));
+	ui.newProfile->plotDives(QList<struct dive*>() << (current_dive));
 	redrawProfile();
 }
 
@@ -494,7 +494,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	dc_number++;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.graphicsView->plotDives(QList<struct dive*>() << (current_dive));
+	ui.newProfile->plotDives(QList<struct dive*>() << (current_dive));
 	redrawProfile();
 }
 
