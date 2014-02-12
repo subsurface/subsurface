@@ -147,7 +147,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
 			  continue;
 		bool checked = s.value(QString("column%1_hidden").arg(i)).toBool();
-		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
+		action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
 		action->setCheckable(true);
 		action->setData(i);
 		action->setChecked(!checked);
@@ -281,11 +281,11 @@ void MainTab::enableEdition(EditMode newEditMode)
 			notesBackup[mydive].tags = QString(buf);
 
 			// maybe this is a place for memset?
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				notesBackup[mydive].cylinders[i] = mydive->cylinder[i];
+			for (int j = 0; j < MAX_CYLINDERS; j++) {
+				notesBackup[mydive].cylinders[j] = mydive->cylinder[j];
 			}
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				notesBackup[mydive].weightsystem[i] = mydive->weightsystem[i];
+			for (int j = 0; j < MAX_WEIGHTSYSTEMS; j++) {
+				notesBackup[mydive].weightsystem[j] = mydive->weightsystem[j];
 			}
 		}
 
@@ -767,11 +767,11 @@ void MainTab::rejectChanges()
 			mydive->visibility = notesBackup[mydive].visibility;
 
 			// maybe this is a place for memset?
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				mydive->cylinder[i] = notesBackup[mydive].cylinders[i];
+			for (int j = 0; j < MAX_CYLINDERS; j++) {
+				mydive->cylinder[j] = notesBackup[mydive].cylinders[j];
 			}
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-				mydive->weightsystem[i] = notesBackup[mydive].weightsystem[i];
+			for (int j = 0; j < MAX_WEIGHTSYSTEMS; j++) {
+				mydive->weightsystem[j] = notesBackup[mydive].weightsystem[j];
 			}
 		}
 		updateGpsCoordinates(curr);
@@ -813,8 +813,8 @@ void MainTab::rejectChanges()
 	if (editMode == NONE) \
 		return; \
 \
-	for (int i = 0; i < dive_table.nr; i++) { \
-		struct dive *mydive = get_dive(i); \
+	for (int _i = 0; _i < dive_table.nr; _i++) { \
+		struct dive *mydive = get_dive(_i); \
 		if (!mydive) \
 			continue; \
 		if (!mydive->selected) \
