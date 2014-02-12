@@ -500,11 +500,11 @@ void DivePlannerGraphics::drawProfile()
 	// Re-position the user generated dive handlers
 	int last = 0;
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
-		divedatapoint dp = plannerModel->at(i);
-		if (dp.time == 0) // those are the magic entries for tanks
+		struct divedatapoint datapoint = plannerModel->at(i);
+		if (datapoint.time == 0) // those are the magic entries for tanks
 			continue;
 		DiveHandler *h = handles.at(i);
-		h->setPos(timeLine->posAtValue(dp.time / 60), depthLine->posAtValue(dp.depth));
+		h->setPos(timeLine->posAtValue(datapoint.time / 60), depthLine->posAtValue(datapoint.depth));
 		QPointF p1 = (last == i) ?  QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[last]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
