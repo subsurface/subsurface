@@ -22,6 +22,7 @@
 #include <QTableView>
 #endif
 #include "mainwindow.h"
+#include <preferences.h>
 
 /* This is the global 'Item position' variable.
  * it should tell you where to position things up
@@ -82,6 +83,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	addItemsToScene();
 	scene()->installEventFilter(this);
 	setEmptyState();
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
@@ -359,6 +361,13 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 void ProfileWidget2::settingsChanged()
 {
+	QSettings s;
+	s.beginGroup("TecDetails");
+	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
+		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
+	}else{
+		profileYAxis->animateChangeLine(itemPos.depth.expanded);
+	}
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
