@@ -67,7 +67,8 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	min(0),
 	max(0),
 	interval(1),
-	tick_size(0)
+	tick_size(0),
+	textVisibility(true)
 {
 	setPen(gridPen());
 }
@@ -85,6 +86,17 @@ void DiveCartesianAxis::setOrientation(Orientation o)
 QColor DiveCartesianAxis::colorForValue(double value)
 {
 	return QColor(Qt::black);
+}
+
+void DiveCartesianAxis::setTextVisible(bool arg1)
+{
+	if(textVisibility == arg1){
+		return;
+	}
+	textVisibility = arg1;
+	Q_FOREACH(DiveTextItem *item, labels){
+		item->setVisible(textVisibility);
+	}
 }
 
 void DiveCartesianAxis::updateTicks()
@@ -162,6 +174,10 @@ void DiveCartesianAxis::updateTicks()
 			label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
 			label->animateMoveTo(m.x1() - tick_size, childPos);
 		}
+	}
+
+	Q_FOREACH(DiveTextItem *item, labels){
+		item->setVisible(textVisibility);
 	}
 }
 

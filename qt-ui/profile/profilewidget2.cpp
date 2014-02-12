@@ -176,6 +176,14 @@ void ProfileWidget2::setupItemOnScene()
 	CREATE_PP_GAS( po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
 #undef CREATE_PP_GAS
 
+#ifdef QT_NO_DEBUG // Some debug helpers.
+	temperatureAxis->setTextVisible(false);
+	cylinderPressureAxis->setTextVisible(false);
+#else
+	temperatureAxis->setTextVisible(true);
+	cylinderPressureAxis->setTextVisible(true);
+#endif
+
 }
 
 void ProfileWidget2::setupItemSizes()

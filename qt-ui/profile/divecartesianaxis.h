@@ -35,9 +35,11 @@ public:
 	void setColor(const QColor& color);
 	void setTextColor(const QColor& color);
 	void animateChangeLine(const QLineF& newLine);
+	void setTextVisible(bool arg1);
 	int unitSystem;
 public slots:
 	virtual void updateTicks();
+
 signals:
 	void sizeChanged();
 	void maxChanged();
@@ -51,6 +53,7 @@ protected:
 	double interval;
 	double tick_size;
 	QColor textColor;
+	bool textVisibility;
 };
 
 class DepthAxis : public DiveCartesianAxis {
