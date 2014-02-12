@@ -1862,14 +1862,12 @@ QVariant LanguageModel::data(const QModelIndex& index, int role) const
 	if (!index.isValid())
 		return QVariant();
 	switch (role) {
-		case Qt::DisplayRole: {
-			QLocale l( currentString.remove("subsurface_"));
-			return currentString == "English" ? currentString : QString("%1 (%2)").arg(l.languageToString(l.language())).arg(l.countryToString(l.country()));
-		}break;
-	case Qt::UserRole: {
-			QString currentString = languages.at(index.row());
-			return currentString == "English" ? "en_US" : currentString.remove("subsurface_");
-		}break;
+	case Qt::DisplayRole: {
+		QLocale l( currentString.remove("subsurface_"));
+		return currentString == "English" ? currentString : QString("%1 (%2)").arg(l.languageToString(l.language())).arg(l.countryToString(l.country()));
+	}
+	case Qt::UserRole:
+		return currentString == "English" ? "en_US" : currentString.remove("subsurface_");
 	}
 	return QVariant();
 }
