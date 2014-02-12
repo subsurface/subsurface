@@ -145,7 +145,7 @@ void ProfileGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		EventItem *item = dynamic_cast<EventItem*>(i);
 		if (!item)
 			continue;
-		QAction *action = new QAction(&m);
+		action = new QAction(&m);
 		action->setText(tr("Remove Event"));
 		action->setData(QVariant::fromValue<void*>(item)); // so we know what to remove.
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
@@ -1192,11 +1192,11 @@ void ProfileGraphicsView::plot_depth_profile()
 		item->setPen(pen);
 		scene()->addItem(item);
 
-		struct text_render_options tro = {DEPTH_TEXT_SIZE, MEAN_DEPTH, LEFT, TOP};
+		struct text_render_options depth_tro = {DEPTH_TEXT_SIZE, MEAN_DEPTH, LEFT, TOP};
 		QString depthLabel = get_depth_string(gc.pi.meandepth, true, true);
-		plot_text(&tro, QPointF(gc.leftx, gc.pi.meandepth), depthLabel, item);
+		plot_text(&depth_tro, QPointF(gc.leftx, gc.pi.meandepth), depthLabel, item);
 		tro.hpos = RIGHT;
-		plot_text(&tro, QPointF(gc.pi.entry[gc.pi.nr - 1].sec, gc.pi.meandepth), depthLabel, item);
+		plot_text(&depth_tro, QPointF(gc.pi.entry[gc.pi.nr - 1].sec, gc.pi.meandepth), depthLabel, item);
 	}
 
 #if 0

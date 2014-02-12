@@ -326,7 +326,7 @@ void PrintLayout::printTable()
 	int accW = 0;
 	int cols = model.columns;
 	int tableW = table.width();
-	for (int i = 0; i < model.columns; i++) {
+	for (i = 0; i < model.columns; i++) {
 		int pw = qCeil((qreal)(tablePrintColumnWidths.at(i) * table.width()) / 100.0);
 		accW += pw;
 		if (i == cols - 1 && accW > tableW) /* adjust last column */
@@ -354,7 +354,7 @@ void PrintLayout::printTable()
 	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
 		progress = headings = accH = 0;
 		total = model.rows - lastAccIndex;
-		for (int i = lastAccIndex; i < model.rows; i++) {
+		for (i = lastAccIndex; i < model.rows; i++) {
 			rowH = table.rowHeight(i);
 			accH += rowH;
 			if (isHeading) {
@@ -386,7 +386,7 @@ void PrintLayout::printTable()
 	painter.scale(scaleX, scaleY);
 	total = pageIndexes.size() - 1;
 	progress = 0;
-	for (int i = 0; i < total; i++) {
+	for (i = 0; i < total; i++) {
 		if (i > 0)
 			printer->newPage();
 		QRegion region(0, pageIndexes.at(i) - 1,
