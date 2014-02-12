@@ -226,7 +226,7 @@ static int calculate_otu(struct dive *dive)
 		if (po2 >= 500)
 			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
 	}
-	return otu + 0.5;
+	return rint(otu);
 }
 /* calculate CNS for a dive - this only takes the first divecomputer into account */
 int const cns_table[][3] = {

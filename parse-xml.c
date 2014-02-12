@@ -326,7 +326,7 @@ static void pressure(char *buffer, void *_press)
 			break;
 		}
 		if (mbar > 5 && mbar < 500000) {
-			pressure->mbar = mbar + 0.5;
+			pressure->mbar = rint(mbar);
 			break;
 		}
 	/* fallthrough */
@@ -341,7 +341,7 @@ static void salinity(char *buffer, void *_salinity)
 	union int_or_float val;
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		*salinity = val.fp * 10.0 + 0.5;
+		*salinity = rint(val.fp * 10.0);
 		break;
 	default:
 		printf("Strange salinity reading %s\n", buffer);
@@ -357,7 +357,7 @@ static void depth(char *buffer, void *_depth)
 	case FLOAT:
 		switch (xml_parsing_units.length) {
 		case METERS:
-			depth->mm = val.fp * 1000 + 0.5;
+			depth->mm = rint(val.fp * 1000);
 			break;
 		case FEET:
 			depth->mm = feet_to_mm(val.fp);
@@ -378,7 +378,7 @@ static void weight(char *buffer, void *_weight)
 	case FLOAT:
 		switch (xml_parsing_units.weight) {
 		case KG:
-			weight->grams = val.fp * 1000 + 0.5;
+			weight->grams = rint(val.fp * 1000);
 			break;
 		case LBS:
 			weight->grams = lbs_to_grams(val.fp);
@@ -472,7 +472,7 @@ static void percent(char *buffer, void *_fraction)
 
 		/* Then turn percent into our integer permille format */
 		if (val >= 0 && val <= 100.0) {
-			fraction->permille = val * 10 + 0.5;
+			fraction->permille = rint(val * 10);
 			break;
 		}
 	default:
@@ -502,7 +502,7 @@ static void cylindersize(char *buffer, void *_volume)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		volume->mliter = val.fp * 1000 + 0.5;
+		volume->mliter = rint(val.fp * 1000);
 		break;
 
 	default:
@@ -549,7 +549,7 @@ static void get_rating(char *buffer, void *_i)
 static void double_to_permil(char *buffer, void *_i)
 {
 	int *i = _i;
-	*i = ascii_strtod(buffer, NULL) * 1000.0 + 0.5;
+	*i = rint(ascii_strtod(buffer, NULL) * 1000.0);
 }
 
 static void hex_value(char *buffer, void *_i)
@@ -636,7 +636,7 @@ static void psi_or_bar(char *buffer, void *_pressure)
 		if (val.fp > 400)
 			pressure->mbar = psi_to_mbar(val.fp);
 		else
-			pressure->mbar = val.fp * 1000 + 0.5;
+			pressure->mbar = rint(val.fp * 1000);
 		break;
 	default:
 		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);

@@ -549,7 +549,7 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 		volume_of_air = cuft_to_l(type->size.mliter);
 		/* milliliters at 1 atm: "true size" */
 		volume = volume_of_air / surface_volume_multiplier(type->workingpressure);
-		type->size.mliter = volume + 0.5;
+		type->size.mliter = rint(volume);
 	}
 
 	/* Ok, we have both size and pressure: try to match a description */

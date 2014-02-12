@@ -155,7 +155,7 @@ static inline double grams_to_lbs(int grams)
 
 static inline int lbs_to_grams(double lbs)
 {
-	return lbs * 453.6 + 0.5;
+	return rint(lbs * 453.6);
 }
 
 static inline double ml_to_cuft(int ml)
@@ -175,12 +175,12 @@ static inline double mm_to_feet(int mm)
 
 static inline unsigned long feet_to_mm(double feet)
 {
-	return feet * 304.8 + 0.5;
+	return rint(feet * 304.8);
 }
 
 static inline int to_feet(depth_t depth)
 {
-	return mm_to_feet(depth.mm) + 0.5;
+	return rint(mm_to_feet(depth.mm));
 }
 
 static inline double mkelvin_to_C(int mkelvin)
@@ -195,12 +195,12 @@ static inline double mkelvin_to_F(int mkelvin)
 
 static inline unsigned long F_to_mkelvin(double f)
 {
-	return (f-32) * 1000 / 1.8 + ZERO_C_IN_MKELVIN + 0.5;
+	return rint((f-32) * 1000 / 1.8 + ZERO_C_IN_MKELVIN);
 }
 
 static inline unsigned long C_to_mkelvin(double c)
 {
-	return c * 1000 + ZERO_C_IN_MKELVIN + 0.5;
+	return rint(c * 1000 + ZERO_C_IN_MKELVIN);
 }
 
 static inline double psi_to_bar(double psi)
@@ -210,12 +210,12 @@ static inline double psi_to_bar(double psi)
 
 static inline long psi_to_mbar(double psi)
 {
-	return psi_to_bar(psi)*1000 + 0.5;
+	return rint(psi_to_bar(psi)*1000);
 }
 
 static inline int to_PSI(pressure_t pressure)
 {
-	return pressure.mbar * 0.0145037738 + 0.5;
+	return rint(pressure.mbar * 0.0145037738);
 }
 
 static inline double bar_to_atm(double bar)
@@ -446,7 +446,7 @@ static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
 	specific_weight = salinity / 10000.0 * 0.981;
-	mbar += depth / 10.0 * specific_weight + 0.5;
+	mbar += rint(depth / 10.0 * specific_weight);
 	return mbar;
 }
 
@@ -471,7 +471,7 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
 	if (dive->dc.salinity)
 		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
 	/* whole mbar gives us cm precision */
-	cm = mbar / specific_weight + 0.5;
+	cm = rint(mbar / specific_weight);
 	return cm * 10;
 }
 

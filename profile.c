@@ -627,7 +627,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
 
 			/* Use that overall pressure change to update the current pressure */
-			cur_pr[cyl] = interpolate.start + magic * interpolate.acc_pressure_time + 0.5;
+			cur_pr[cyl] = rint(interpolate.start + magic * interpolate.acc_pressure_time);
 		}
 		INTERPOLATED_PRESSURE(entry) = cur_pr[cyl];
 	}

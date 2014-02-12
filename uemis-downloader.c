@@ -65,7 +65,7 @@ static void uemis_ts(char *buffer, void *_when)
 /* float minutes */
 static void uemis_duration(char *buffer, duration_t *duration)
 {
-	duration->seconds = ascii_strtod(buffer, NULL) * 60 + 0.5;
+	duration->seconds = rint(ascii_strtod(buffer, NULL) * 60);
 }
 
 /* int cm */
