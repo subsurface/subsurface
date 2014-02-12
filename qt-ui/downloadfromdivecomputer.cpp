@@ -421,12 +421,12 @@ static QString str_error(const char *fmt, ...)
 
 void DownloadThread::run()
 {
-	const char *error;
+	const char *errorText;
 	import_thread_cancelled = false;
 	if (!strcmp(data->vendor, "Uemis"))
-		error = do_uemis_import(data->devname, data->force_download);
+		errorText = do_uemis_import(data->devname, data->force_download);
 	else
-		error = do_libdivecomputer_import(data);
-	if (error)
-		this->error =  str_error(error, data->devname, data->vendor, data->product);
+		errorText = do_libdivecomputer_import(data);
+	if (errorText)
+		error =  str_error(errorText, data->devname, data->vendor, data->product);
 }
