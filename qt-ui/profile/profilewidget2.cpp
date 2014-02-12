@@ -233,6 +233,8 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.pos.off.setY(40);
 	itemPos.temperature.expanded.setP1(QPointF(0,0));
 	itemPos.temperature.expanded.setP2(QPointF(0,20));
+	itemPos.temperature.shrinked.setP1(QPointF(0,0));
+	itemPos.temperature.shrinked.setP2(QPointF(0,10));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(97);
@@ -365,8 +367,10 @@ void ProfileWidget2::settingsChanged()
 	s.beginGroup("TecDetails");
 	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
+		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
 	}else{
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
+		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 	}
 }
 
@@ -492,8 +496,10 @@ void ProfileWidget2::setProfileState()
 	s.beginGroup("TecDetails");
 	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
 		profileYAxis->setLine(itemPos.depth.shrinked);
+		temperatureAxis->setLine(itemPos.temperature.shrinked);
 	}else{
 		profileYAxis->setLine(itemPos.depth.expanded);
+		temperatureAxis->setLine(itemPos.temperature.expanded);
 	}
 
 	gasYAxis->setPos(itemPos.partialPressure.pos.on);
@@ -506,7 +512,6 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
 
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
-	temperatureAxis->setLine(itemPos.temperature.expanded);
 
 	cartesianPlane->setVisible(true);
 	meanDepth->setVisible(true);
