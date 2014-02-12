@@ -145,6 +145,7 @@ void ProfileWidget2::setupItemOnScene()
 	meanDepth->setX(3);
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
 	meanDepth->setZValue(1);
+	meanDepth->setAxis(profileYAxis);
 
 	cartesianPlane->setBottomAxis(timeAxis);
 	cartesianPlane->setLeftAxis(profileYAxis);

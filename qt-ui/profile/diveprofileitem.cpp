@@ -534,6 +534,18 @@ void MeanDepthLine::setMeanDepth(int value)
 {
 	leftText->setText(get_depth_string(value, false, false));
 	rightText->setText(get_depth_string(value, false, false));
+	meanDepth = value;
+}
+
+void MeanDepthLine::setAxis(DiveCartesianAxis* a)
+{
+	connect(a, SIGNAL(sizeChanged()), this, SLOT(axisLineChanged()));
+}
+
+void MeanDepthLine::axisLineChanged()
+{
+	DiveCartesianAxis *axis = qobject_cast<DiveCartesianAxis*>(sender());
+	animateMoveTo(x(),axis->posAtValue(meanDepth));
 }
 
 void PartialPressureGasItem::modelDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)

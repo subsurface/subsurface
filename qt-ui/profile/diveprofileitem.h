@@ -135,10 +135,14 @@ public:
 	MeanDepthLine();
 	void setMeanDepth(int value);
 	void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
+	void setAxis(DiveCartesianAxis *a);
+public slots:
+	void axisLineChanged();
 private:
 	int meanDepth;
 	DiveTextItem *leftText;
 	DiveTextItem *rightText;
+	DiveCartesianAxis *axis;
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem{
