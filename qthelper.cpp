@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <QDebug>
 
-#define tr(_arg) mainWindow()->information()->tr(_arg)
+#define tr(_arg) MainWindow::instance()->information()->tr(_arg)
 DiveComputerList::DiveComputerList()
 {
 

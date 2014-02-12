@@ -68,7 +68,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			               specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 			               &error);
 			if (error != NULL) {
-				mainWindow()->showError(error);
+				MainWindow::instance()->showError(error);
 				free(error);
 				error = NULL;
 			}
@@ -87,7 +87,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			               VALUE_IF_CHECKED(Tags),
 			               &error);
 			if (error != NULL) {
-				mainWindow()->showError(error);
+				MainWindow::instance()->showError(error);
 				free(error);
 				error = NULL;
 			}
@@ -95,7 +95,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 	process_dives(true, false);
 
-	mainWindow()->refreshDisplay();
+	MainWindow::instance()->refreshDisplay();
 }
 
 #define SET_VALUE_AND_CHECKBOX(CSV, BOX, VAL) ({\

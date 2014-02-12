@@ -269,7 +269,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	connect(thread, SIGNAL(finished()),
 			this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
 
-	MainWindow *w = mainWindow();
+	MainWindow *w = MainWindow::instance();
 	connect(thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
 	// before we start, remember where the dive_table ended

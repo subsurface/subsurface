@@ -88,7 +88,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
-	mainWindow()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
+	MainWindow::instance()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
 #endif
 }
 

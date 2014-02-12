@@ -36,12 +36,7 @@
 #include "printdialog.h"
 #include "divelogimportdialog.h"
 
-static MainWindow* instance = 0;
-
-MainWindow* mainWindow()
-{
-	return instance;
-}
+MainWindow *MainWindow::m_Instance = NULL;
 
 MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),
@@ -49,7 +44,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 	state(VIEWALL)
 {
-	instance = this;
+	m_Instance = this;
 	ui.setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
 	connect(ui.ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
@@ -77,6 +72,16 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef ENABLE_PLANNER
 	ui.menuLog->removeAction(ui.actionDivePlanner);
 #endif
+}
+
+MainWindow::~MainWindow()
+{
+	m_Instance = NULL;
+}
+
+MainWindow *MainWindow::instance()
+{
+	return m_Instance;
 }
 
 // this gets called after we download dives from a divecomputer

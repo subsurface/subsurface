@@ -196,7 +196,7 @@ void ProfileGraphicsView::changeGas()
 	add_gas_switch_event(current_dive, current_dc, seconds, get_gasidx(current_dive, o2, he));
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(current_dive);
-	mainWindow()->information()->updateDiveInfo(selected_dive);
+	MainWindow::instance()->information()->updateDiveInfo(selected_dive);
 	mark_divelist_changed(true);
 	plot(current_dive, true);
 }
@@ -207,7 +207,7 @@ void ProfileGraphicsView::hideEvents()
 	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
 	struct event *event = item->ev;
 
-	if (QMessageBox::question(mainWindow(), TITLE_OR_TEXT(
+	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
 				  tr("Hide events"),
 				  tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
@@ -237,7 +237,7 @@ void ProfileGraphicsView::removeEvent()
 	EventItem *item = static_cast<EventItem*>(action->data().value<void*>());
 	struct event *event = item->ev;
 
-	if (QMessageBox::question(mainWindow(), TITLE_OR_TEXT(
+	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
 				  tr("Remove the selected event?"),
 				  tr("%1 @ %2:%3").arg(event->name)
 				  .arg(event->time.seconds / 60)
@@ -375,13 +375,13 @@ void ProfileGraphicsView::plot(struct dive *d, bool forceRedraw)
 	diveId = d ? d->id : 0;
 	diveDC = d ? dc : NULL;
 
-	if (!isVisible() || !d || !mainWindow()) {
+	if (!isVisible() || !d || !MainWindow::instance()) {
 		return;
 	}
 	setBackgroundBrush(getColor(BACKGROUND));
 
 	// best place to put the focus stealer code.
-	setFocusProxy(mainWindow()->dive_list());
+	setFocusProxy(MainWindow::instance()->dive_list());
 	scene()->setSceneRect(0,0, viewport()->width()-50, viewport()->height()-50);
 
 	toolTip = new ToolTipItem();
@@ -546,7 +546,7 @@ void ProfileGraphicsView::addControlItems(struct dive *d)
 	if (defaultDC == "manually added dive" || defaultDC == "planned dive") {
 		QAction *editAction = new QAction(QIcon(":edit"), tr("Edit"), this);
 		toolBar->addAction(editAction);
-		connect(editAction, SIGNAL(triggered()), mainWindow(), SLOT(editCurrentDive()));
+		connect(editAction, SIGNAL(triggered()), MainWindow::instance(), SLOT(editCurrentDive()));
 	}
 	toolBarProxy = scene()->addWidget(toolBar);
 	toolBarProxy->setPos(mapToScene(TOOLBAR_POS));
@@ -1628,7 +1628,7 @@ GraphicsTextEditor::GraphicsTextEditor(QGraphicsItem* parent): QGraphicsTextItem
 void GraphicsTextEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
 	// Remove the proxy filter so we can focus here.
-	mainWindow()->graphics()->setFocusProxy(0);
+	MainWindow::instance()->graphics()->setFocusProxy(0);
 	setTextInteractionFlags(Qt::TextEditorInteraction | Qt::TextEditable);
 }
 
@@ -1637,7 +1637,7 @@ void GraphicsTextEditor::keyReleaseEvent(QKeyEvent* event)
 	if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
 		setTextInteractionFlags(Qt::NoTextInteraction);
 		emit editingFinished( toPlainText() );
-		mainWindow()->graphics()->setFocusProxy(mainWindow()->dive_list());
+		MainWindow::instance()->graphics()->setFocusProxy(MainWindow::instance()->dive_list());
 		return;
 	}
 	emit textChanged( toPlainText() );

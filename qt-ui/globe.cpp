@@ -108,7 +108,7 @@ void GlobeGPS::contextMenuEvent(QContextMenuEvent* ev)
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
 	// don't mess with the selection while the user is editing a dive
-	if (mainWindow()->information()->isEditing())
+	if (MainWindow::instance()->information()->isEditing())
 		return;
 
 	GeoDataCoordinates here(lon, lat, unit);
@@ -151,10 +151,10 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	if (selectedDiveIds.empty())
 		return;
 	if (clear) {
-		mainWindow()->dive_list()->unselectDives();
+		MainWindow::instance()->dive_list()->unselectDives();
 		clear = false;
 	}
-	mainWindow()->dive_list()->selectDives(selectedDiveIds);
+	MainWindow::instance()->dive_list()->selectDives(selectedDiveIds);
 }
 
 void GlobeGPS::repopulateLabels()
@@ -210,7 +210,7 @@ void GlobeGPS::centerOn(dive* dive)
 	qreal longitude = dive->longitude.udeg / 1000000.0;
 	qreal latitude = dive->latitude.udeg / 1000000.0;
 
-	if (!longitude || !latitude || mainWindow()->information()->isEditing()) {
+	if (!longitude || !latitude || MainWindow::instance()->information()->isEditing()) {
 		prepareForGetDiveCoordinates();
 		return;
 	}
@@ -249,7 +249,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 {
 	messageWidget->hide();
 
-	if (mainWindow()->dive_list()->selectionModel()->selection().isEmpty())
+	if (MainWindow::instance()->dive_list()->selectionModel()->selection().isEmpty())
 		return;
 
 	// convert to degrees if in radian.
@@ -270,7 +270,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	centerOn(lon, lat, true);
 	editingDiveLocation = false;
 	mark_divelist_changed(true);
-	mainWindow()->refreshDisplay();
+	MainWindow::instance()->refreshDisplay();
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent* event)
@@ -279,8 +279,8 @@ void GlobeGPS::mousePressEvent(QMouseEvent* event)
 	bool clickOnGlobe = geoCoordinates(event->pos().x(), event->pos().y(), lon, lat, GeoDataCoordinates::Degree);
 
 	// there could be two scenarios that got us here; let's check if we are editing a dive
-	if (mainWindow()->information()->isEditing() && clickOnGlobe) {
-		mainWindow()->information()->updateCoordinatesText(lat, lon);
+	if (MainWindow::instance()->information()->isEditing() && clickOnGlobe) {
+		MainWindow::instance()->information()->updateCoordinatesText(lat, lon);
 		repopulateLabels();
 	} else if (clickOnGlobe) {
 		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Degree);

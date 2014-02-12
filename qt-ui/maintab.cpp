@@ -234,14 +234,14 @@ void MainTab::enableEdition(EditMode newEditMode)
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
 		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
 		// so exit this function here after editCurrentDive() returns
-		mainWindow()->editCurrentDive();
+		MainWindow::instance()->editCurrentDive();
 		return;
 	}
-	mainWindow()->dive_list()->setEnabled(false);
-	mainWindow()->globe()->prepareForGetDiveCoordinates();
+	MainWindow::instance()->dive_list()->setEnabled(false);
+	MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
 	// We may be editing one or more dives here. backup everything.
 	notesBackup.clear();
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
 		notesBackup[NULL].notes = ui.notes->toPlainText();
@@ -399,7 +399,7 @@ void MainTab::updateDiveInfo(int dive)
 	if (d) {
 		updateGpsCoordinates(d);
 		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when).toUTC());
-		if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
@@ -421,7 +421,7 @@ void MainTab::updateDiveInfo(int dive)
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
-			dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
+			dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			ui.LocationLabel->setText(tr("Trip Location"));
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip Notes"));
@@ -572,13 +572,13 @@ void MainTab::reload()
 
 void MainTab::acceptChanges()
 {
-	mainWindow()->dive_list()->setEnabled(true);
+	MainWindow::instance()->dive_list()->setEnabled(true);
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	/* now figure out if things have changed */
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
 			notesBackup[NULL].location != ui.location->text())
 			mark_divelist_changed(true);
@@ -602,7 +602,7 @@ void MainTab::acceptChanges()
 		}
 		if (notesBackup[curr].location != ui.location->text() ||
 			notesBackup[curr].coordinates != ui.coordinates->text()) {
-			mainWindow()->globe()->reload();
+			MainWindow::instance()->globe()->reload();
 		}
 
 		if (notesBackup[curr].tags != ui.tagWidget->text())
@@ -644,7 +644,7 @@ void MainTab::acceptChanges()
 		else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 		DivePlannerPointsModel::instance()->cancelPlan();
-		mainWindow()->showProfile();
+		MainWindow::instance()->showProfile();
 		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
@@ -654,10 +654,10 @@ void MainTab::acceptChanges()
 		if (d)
 			fixup_dive(d);
 	}
-	int scrolledBy = mainWindow()->dive_list()->verticalScrollBar()->sliderPosition();
+	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		mainWindow()->dive_list()->unselectDives();
+		MainWindow::instance()->dive_list()->unselectDives();
 		struct dive *d = get_dive(dive_table.nr -1 );
 		// mark the dive as remembered (abusing the selected flag)
 		// and then clear that flag out on the other side of the sort_table()
@@ -671,17 +671,17 @@ void MainTab::acceptChanges()
 			}
 		}
 		editMode = NONE;
-		mainWindow()->refreshDisplay();
-		mainWindow()->dive_list()->selectDive( i, true );
+		MainWindow::instance()->refreshDisplay();
+		MainWindow::instance()->dive_list()->selectDive( i, true );
 	} else {
 		editMode = NONE;
-		mainWindow()->dive_list()->rememberSelection();
+		MainWindow::instance()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
-		mainWindow()->refreshDisplay();
-		mainWindow()->dive_list()->restoreSelection();
+		MainWindow::instance()->refreshDisplay();
+		MainWindow::instance()->dive_list()->restoreSelection();
 	}
-	mainWindow()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
-	mainWindow()->dive_list()->setFocus();
+	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
+	MainWindow::instance()->dive_list()->setFocus();
 }
 
 void MainTab::resetPallete()
@@ -715,8 +715,8 @@ void MainTab::rejectChanges()
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 
-	mainWindow()->dive_list()->setEnabled(true);
-	if (mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+	MainWindow::instance()->dive_list()->setEnabled(true);
+	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		ui.notes->setText(notesBackup[NULL].notes );
 		ui.location->setText(notesBackup[NULL].location);
 	} else {
@@ -777,8 +777,8 @@ void MainTab::rejectChanges()
 		updateGpsCoordinates(curr);
 		if (lastMode == ADD) {
 			delete_single_dive(selected_dive);
-			mainWindow()->dive_list()->reload(DiveTripModel::CURRENT);
-			mainWindow()->dive_list()->restoreSelection();
+			MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT);
+			MainWindow::instance()->dive_list()->restoreSelection();
 		}
 		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
@@ -792,20 +792,20 @@ void MainTab::rejectChanges()
 	}
 
 	hideMessage();
-	mainWindow()->dive_list()->setEnabled(true);
+	MainWindow::instance()->dive_list()->setEnabled(true);
 	notesBackup.clear();
 	resetPallete();
 	editMode = NONE;
-	mainWindow()->globe()->reload();
+	MainWindow::instance()->globe()->reload();
 	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);
-		mainWindow()->showProfile();
+		MainWindow::instance()->showProfile();
 		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
-		mainWindow()->refreshDisplay(false);
+		MainWindow::instance()->refreshDisplay(false);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
-	mainWindow()->dive_list()->setFocus();
+	MainWindow::instance()->dive_list()->setFocus();
 }
 #undef EDIT_TEXT2
 
@@ -888,9 +888,9 @@ void MainTab::on_location_textChanged(const QString& text)
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
-		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
+		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		if (!ui.coordinates->isModified() ||
@@ -911,7 +911,7 @@ void MainTab::on_location_textChanged(const QString& text)
 			}
 		}
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->location, text) );
-		mainWindow()->globe()->repopulateLabels();
+		MainWindow::instance()->globe()->repopulateLabels();
 	}
 	markChangedWidget(ui.location);
 }
@@ -926,9 +926,9 @@ void MainTab::on_notes_textChanged()
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && mainWindow() && mainWindow()->dive_list()->selectedTrips().count() == 1) {
+	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
-		dive_trip_t *currentTrip = *mainWindow()->dive_list()->selectedTrips().begin();
+		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->notes, ui.notes->toPlainText());
 	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		EDIT_SELECTED_DIVES( EDIT_TEXT(mydive->notes, ui.notes->toPlainText()) );

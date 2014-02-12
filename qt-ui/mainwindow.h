@@ -41,6 +41,8 @@ public:
 	enum CurrentState{ VIEWALL, GLOBE_MAXIMIZED, INFO_MAXIMIZED, PROFILE_MAXIMIZED, LIST_MAXIMIZED};
 
 	MainWindow();
+	virtual ~MainWindow();
+	static MainWindow *instance();
 	ProfileGraphicsView *graphics();
 	MainTab *information();
 	DiveListView *dive_list();
@@ -135,6 +137,7 @@ private:
 	UserManual *helpView;
 	CurrentState state;
 	QString filter();
+	static MainWindow *m_Instance;
 	bool askSaveChanges();
 	void writeSettings();
 	void redrawProfile();

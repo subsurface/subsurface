@@ -107,7 +107,7 @@ void MinMaxAvgWidget::setMinimum(const QString& minimum)
 
 RenumberDialog* RenumberDialog::instance()
 {
-	static RenumberDialog* self = new RenumberDialog(mainWindow());
+	static RenumberDialog* self = new RenumberDialog(MainWindow::instance());
 	return self;
 }
 
@@ -127,7 +127,7 @@ RenumberDialog::RenumberDialog(QWidget *parent): QDialog(parent)
 
 ShiftTimesDialog* ShiftTimesDialog::instance()
 {
-	static ShiftTimesDialog* self = new ShiftTimesDialog(mainWindow());
+	static ShiftTimesDialog* self = new ShiftTimesDialog(MainWindow::instance());
 	return self;
 }
 
@@ -144,9 +144,9 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 			shift_times(amount);
 			sort_table(&dive_table);
 			mark_divelist_changed(true);
-			mainWindow()->dive_list()->rememberSelection();
-			mainWindow()->refreshDisplay();
-			mainWindow()->dive_list()->restoreSelection();
+			MainWindow::instance()->dive_list()->rememberSelection();
+			MainWindow::instance()->refreshDisplay();
+			MainWindow::instance()->dive_list()->restoreSelection();
 		}
 	}
 }

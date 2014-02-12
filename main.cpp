@@ -48,8 +48,8 @@ int main(int argc, char **argv)
 			files.push_back( QString(prefs.default_filename) );
 	}
 	parse_xml_exit();
-	mainWindow()->loadFiles(files);
-	mainWindow()->importFiles(importedFiles);
+	MainWindow::instance()->loadFiles(files);
+	MainWindow::instance()->importFiles(importedFiles);
 	if (!quit)
 		run_ui();
 	exit_ui();

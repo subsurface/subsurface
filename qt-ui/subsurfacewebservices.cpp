@@ -333,9 +333,9 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton* button)
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(true);
-			mainWindow()->globe()->repopulateLabels();
-			mainWindow()->globe()->centerOn(current_dive);
-			mainWindow()->information()->updateDiveInfo(selected_dive);
+			MainWindow::instance()->globe()->repopulateLabels();
+			MainWindow::instance()->globe()->centerOn(current_dive);
+			MainWindow::instance()->information()->updateDiveInfo(selected_dive);
 		}
 
 		/* store last entered uid in config */
@@ -558,7 +558,7 @@ out:
 
 DivelogsDeWebServices* DivelogsDeWebServices::instance()
 {
-	static DivelogsDeWebServices *self = new DivelogsDeWebServices(mainWindow());
+	static DivelogsDeWebServices *self = new DivelogsDeWebServices(MainWindow::instance());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
@@ -586,7 +586,7 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 			return;
 		}
 	}
-	mainWindow()->showError(errorText);
+	MainWindow::instance()->showError(errorText);
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
@@ -855,11 +855,11 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton* button)
 		char *error = NULL;
 		parse_file(QFile::encodeName(zipFile.fileName()), &error);
 		if (error != NULL) {
-			mainWindow()->showError(error);
+			MainWindow::instance()->showError(error);
 			free(error);
 		}
 		process_dives(true, false);
-		mainWindow()->refreshDisplay();
+		MainWindow::instance()->refreshDisplay();
 
 		/* store last entered user/pass in config */
 		QSettings s;

@@ -131,7 +131,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.scale(scaleX, scaleY);
 
 	// setup the profile widget
-	ProfileGraphicsView *profile = mainWindow()->graphics();
+	ProfileGraphicsView *profile = MainWindow::instance()->graphics();
 	const int profileFrameStyle = profile->frameStyle();
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->clear();

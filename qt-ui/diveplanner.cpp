@@ -371,7 +371,7 @@ void DivePlannerGraphics::decreaseDepth()
 
 	Q_FOREACH(DiveHandler *d, handles) {
 		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - M_OR_FT(10,30)) {
-			QMessageBox::warning(mainWindow(),
+			QMessageBox::warning(MainWindow::instance(),
 				tr("Handler Position Error"),
 				tr("One or more of your stops will be lost with this operations, \n"
 					"Please, remove them first."));
@@ -979,9 +979,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget* parent, Qt::WindowFlags f): QWidge
 	// Creating the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
-	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(showProfile()));
-	connect(plannerModel, SIGNAL(planCreated()), mainWindow(), SLOT(refreshDisplay()));
-	connect(plannerModel, SIGNAL(planCanceled()), mainWindow(), SLOT(showProfile()));
+	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(showProfile()));
+	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(refreshDisplay()));
+	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(showProfile()));
 
 	/* set defaults. */
 	ui.startTime->setTime( QTime(1, 0) );
@@ -1298,7 +1298,7 @@ struct diveplan DivePlannerPointsModel::getDiveplan()
 void DivePlannerPointsModel::cancelPlan()
 {
 	if (mode == PLAN && rowCount()) {
-		if (QMessageBox::warning(mainWindow(), TITLE_OR_TEXT(tr("Discard the Plan?"),
+		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the Plan?"),
 			tr("You are about to discard your plan.")),
 			QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
 			return;

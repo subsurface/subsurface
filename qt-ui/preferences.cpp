@@ -8,7 +8,7 @@
 
 PreferencesDialog* PreferencesDialog::instance()
 {
-	static PreferencesDialog *dialog = new PreferencesDialog(mainWindow());
+	static PreferencesDialog *dialog = new PreferencesDialog(MainWindow::instance());
 	dialog->setAttribute(Qt::WA_QuitOnClose, false);
 	LanguageModel::instance();
 	return dialog;
@@ -209,7 +209,7 @@ void PreferencesDialog::syncSettings()
 	bool useSystemLang = s.value("UseSystemLanguage", true).toBool();
 	if (useSystemLang != ui.languageSystemDefault->isChecked() ||
 	    (!useSystemLang && s.value("UiLanguage").toString() != ui.languageView->currentIndex().data(Qt::UserRole))) {
-		QMessageBox::warning(mainWindow(), tr("Restart required"),
+		QMessageBox::warning(MainWindow::instance(), tr("Restart required"),
 				     tr("To correctly load a new language you must restart Subsurface."));
 	}
 	s.setValue("UseSystemLanguage", ui.languageSystemDefault->isChecked());

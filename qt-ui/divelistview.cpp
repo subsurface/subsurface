@@ -518,7 +518,7 @@ void DiveListView::mergeDives()
 			}
 		}
 	}
-	mainWindow()->refreshDisplay();
+	MainWindow::instance()->refreshDisplay();
 }
 
 void DiveListView::merge_trip(const QModelIndex &a, int offset)
@@ -648,10 +648,10 @@ void DiveListView::markDiveInvalid()
 		// d->invalid = true;
 	}
 	if (amount_selected == 0) {
-		mainWindow()->cleanUpEmpty();
+		MainWindow::instance()->cleanUpEmpty();
 	}
 	mark_divelist_changed(true);
-	mainWindow()->refreshDisplay();
+	MainWindow::instance()->refreshDisplay();
 	if (prefs.display_invalid_dives == false) {
 		clearSelection();
 		// select top dive that isn't marked invalid
@@ -679,10 +679,10 @@ void DiveListView::deleteDive()
 		lastDiveNr = i;
 	}
 	if (amount_selected == 0) {
-		mainWindow()->cleanUpEmpty();
+		MainWindow::instance()->cleanUpEmpty();
 	}
 	mark_divelist_changed(true);
-	mainWindow()->refreshDisplay();
+	MainWindow::instance()->refreshDisplay();
 	if (lastDiveNr != -1) {
 		clearSelection();
 		selectDive(lastDiveNr);
@@ -769,7 +769,7 @@ void DiveListView::saveSelectedDivesAs()
 	}
 	settings.endGroup();
 
-	QString fileName = QFileDialog::getSaveFileName(mainWindow(), tr("Save Dives As..."), QDir::homePath());
+	QString fileName = QFileDialog::getSaveFileName(MainWindow::instance(), tr("Save Dives As..."), QDir::homePath());
 	if (fileName.isEmpty())
 		return;
 
@@ -842,25 +842,25 @@ void DiveListView::loadImages()
 				if (dive->when > imagetime) {
 					;  // Before dive
 					add_event(&(dive->dc), 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					mainWindow()->refreshDisplay();
+					MainWindow::instance()->refreshDisplay();
 					mark_divelist_changed(true);
 				}
 				else if (dive->when + dive->duration.seconds < imagetime){
 					;  // After dive
 					add_event(&(dive->dc), dive->duration.seconds, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					mainWindow()->refreshDisplay();
+					MainWindow::instance()->refreshDisplay();
 					mark_divelist_changed(true);
 				}
 				else {
 					add_event(&(dive->dc), imagetime - dive->when, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					mainWindow()->refreshDisplay();
+					MainWindow::instance()->refreshDisplay();
 					mark_divelist_changed(true);
 				}
 				if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)){
 					dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
 					dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
 					mark_divelist_changed(true);
-					mainWindow()->refreshDisplay();
+					MainWindow::instance()->refreshDisplay();
 				}
 			}
 		}
