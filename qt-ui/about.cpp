@@ -3,7 +3,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-SubsurfaceAbout::SubsurfaceAbout(QWidget* parent, Qt::WindowFlags f)
+SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 
