@@ -417,14 +417,12 @@ void DivePlannerPointsModel::createSimpleDive()
 
 void DivePlannerPointsModel::loadFromDive(dive* d)
 {
-	/* We need to make a copy, because
-	 * as soon as the model is modified, it will
-	 * remove all samples from the current dive.
-	 * */
-	memcpy(&backupDive, current_dive, sizeof(struct dive));
-	copy_samples(current_dive, &backupDive);
-	copy_events(current_dive, &backupDive);
-	copy_cylinders(current_dive, stagingDive); // this way the correct cylinder data is shown
+	// We need to make a copy, because as soon as the model is modified, it will
+	// remove all samples from the dive.
+	memcpy(&backupDive, d, sizeof(struct dive));
+	copy_samples(d, &backupDive);
+	copy_events(d, &backupDive);
+	copy_cylinders(d, stagingDive); // this way the correct cylinder data is shown
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
