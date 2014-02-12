@@ -11,7 +11,7 @@
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 
-PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f)
+PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	// options template (are we storing these in the settings?)
 	struct options tempOptions = {options::PRETTY, 0, 2, false, 65, 15, 12};
