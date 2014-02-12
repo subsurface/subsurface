@@ -14,7 +14,6 @@ extern void set_last_stop(bool last_stop_6m);
 extern void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he);
 extern int get_gasidx(struct dive *dive, int o2, int he);
 
-extern struct diveplan diveplan;
 extern struct dive *planned_dive;
 extern char *cache_data;
 extern char *disclaimer;
