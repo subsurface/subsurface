@@ -310,7 +310,7 @@ void WebServices::resetState()
 // #
 // #
 
-SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f)
+SubsurfaceWebServices::SubsurfaceWebServices(QWidget* parent, Qt::WindowFlags f) : WebServices(parent, f)
 {
 	QSettings s;
 	ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
