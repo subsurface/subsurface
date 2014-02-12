@@ -476,7 +476,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 	dive->dc.salinity = salinity.density * 10.0 + 0.5;
 
-	double surface_pressure = 1.0;
+	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC","Error obtaining surface pressure"));
