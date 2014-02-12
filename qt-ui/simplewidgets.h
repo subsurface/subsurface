@@ -60,6 +60,7 @@ class ShiftImageTimesDialog : public QDialog {
 public:
 	explicit ShiftImageTimesDialog(QWidget *parent);
 	int amount() const;
+	void setOffset(int offset);
 private slots:
 	void buttonClicked(QAbstractButton *button);
 private:

@@ -75,6 +75,8 @@ private:
 	void selectTrip ( dive_trip_t* trip );
 	QString lastUsedImageDir();
 	void updateLastUsedImageDir(const QString& s);
+	void updateLastImageTimeOffset(int offset);
+	int lastImageTimeOffset();
 };
 
 #endif // DIVELISTVIEW_H

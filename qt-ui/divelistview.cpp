@@ -813,7 +813,9 @@ void DiveListView::loadImages()
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
 
 	ShiftImageTimesDialog shiftDialog(this);
+	shiftDialog.setOffset(lastImageTimeOffset());
 	shiftDialog.exec();
+	updateLastImageTimeOffset(shiftDialog.amount());
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		struct tm tm;
@@ -889,4 +891,22 @@ void DiveListView::updateLastUsedImageDir(const QString& dir)
 	QSettings s;
 	s.beginGroup("FileDialog");
 	s.setValue("LastImageDir", dir);
+}
+
+int DiveListView::lastImageTimeOffset()
+{
+	QSettings settings;
+	int offset = 0;
+
+	settings.beginGroup("MainWindow");
+	if (settings.contains("LastImageTimeOffset"))
+		offset = settings.value("LastImageTimeOffset").toInt();
+	return offset;
+}
+
+void DiveListView::updateLastImageTimeOffset(const int offset)
+{
+	QSettings s;
+	s.beginGroup("MainWindow");
+	s.setValue("LastImageTimeOffset", offset);
 }

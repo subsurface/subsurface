@@ -11,6 +11,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QDebug>
+#include <QTime>
 
 #include "../dive.h"
 #include "mainwindow.h"
@@ -163,6 +164,7 @@ void ShiftImageTimesDialog::buttonClicked(QAbstractButton* button)
 		m_amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
 		if (ui.backwards->isChecked())
 			m_amount *= -1;
+
 	}
 }
 
@@ -175,6 +177,17 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent): QDialog(parent), 
 int ShiftImageTimesDialog::amount() const
 {
 	return m_amount;
+}
+
+void ShiftImageTimesDialog::setOffset(int offset)
+{
+	if (offset >= 0) {
+		ui.forward->setDown(TRUE);
+	} else {
+		ui.backwards->setDown(TRUE);
+		offset *= -1;
+	}
+	ui.timeEdit->setTime(QTime::QTime(offset / 3600, (offset % 3600) / 60, offset % 60));
 }
 
 bool isGnome3Session()
