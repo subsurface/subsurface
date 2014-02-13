@@ -45,6 +45,8 @@ public:
 	static MainWindow *instance();
 	ProfileGraphicsView *graphics();
 	MainTab *information();
+	void loadRecentFiles(QSettings *s);
+	void addRecentFile(const QStringList &newFiles);
 	DiveListView *dive_list();
 	GlobeGPS *globe();
 	void showError(QString message);
@@ -60,6 +62,7 @@ public:
 	QTabWidget *tabWidget();
 private slots:
 	/* file menu action */
+	void recentFileTriggered(bool checked);
 	void on_actionNew_triggered();
 	void on_actionOpen_triggered();
 	void on_actionSave_triggered();

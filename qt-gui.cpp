@@ -151,6 +151,7 @@ void init_ui(int *argcp, char ***argvp)
 	s.endGroup();
 
 	window = new MainWindow();
+	window->loadRecentFiles(&s);
 	window->show();
 	if (existing_filename && existing_filename[0] != '\0')
 		window->setTitle(MWTF_FILENAME);

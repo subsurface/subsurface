@@ -17,6 +17,8 @@
 #include <QTableView>
 #include <QDesktopWidget>
 #include <QDesktopServices>
+#include <QStringList>
+#include <QSettings>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -56,6 +58,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlanner, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
+	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 
 	ui.mainErrorMessage->hide();
 	initialUiSetup();
@@ -688,6 +694,160 @@ MainTab* MainWindow::information()
 	return ui.InfoWidget;
 }
 
+void MainWindow::loadRecentFiles(QSettings *s)
+{
+	QStringList files;
+	bool modified = false;
+
+	s->beginGroup("Recent_Files");
+	for (int c = 1; c <= 4; c++)
+	{
+		QString key = QString("File_%1").arg(c);
+		if (s->contains(key))
+		{
+			QString file = s->value(key).toString();
+
+			if (QFile::exists(file))
+			{
+				files.append(file);
+			}
+			else
+			{
+				modified = true;
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if (modified)
+	{
+		for (int c = 0; c < 4; c++)
+		{
+			QString key = QString("File_%1").arg(c + 1);
+
+			if (files.count() > c)
+			{
+				s->setValue(key, files.at(c));
+			}
+			else
+			{
+				if (s->contains(key))
+				{
+					s->remove(key);
+				}
+			}
+		}
+
+		s->sync();
+	}
+	s->endGroup();
+
+	for (int c = 0; c < 4; c++)
+	{
+		QAction *action = this->findChild<QAction *>(QString("actionRecent%1").arg(c + 1));
+
+		if (files.count() > c)
+		{
+			QFileInfo fi(files.at(c));
+			action->setText(fi.fileName());
+			action->setToolTip(fi.absoluteFilePath());
+			action->setVisible(true);
+		}
+		else
+		{
+			action->setVisible(false);
+		}
+	}
+}
+
+void MainWindow::addRecentFile(const QStringList &newFiles)
+{
+	QStringList files;
+	QSettings s;
+
+	if (newFiles.isEmpty())
+	{
+		return;
+	}
+
+	s.beginGroup("Recent_Files");
+
+	for (int c = 1; c <= 4; c++)
+	{
+		QString key = QString("File_%1").arg(c);
+		if (s.contains(key))
+		{
+			QString file = s.value(key).toString();
+
+			files.append(file);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	foreach(const QString &file, newFiles)
+	{
+		int index = files.indexOf(file);
+
+		if (index >= 0)
+		{
+			files.removeAt(index);
+		}
+	}
+
+	foreach(const QString &file, newFiles)
+	{
+		if (QFile::exists(file))
+		{
+			files.prepend(file);
+		}
+	}
+
+	while(files.count() > 4)
+	{
+		files.removeLast();
+	}
+
+	for (int c = 0; c < 4; c++)
+	{
+		QString key = QString("File_%1").arg(c + 1);
+
+		if (files.count() > c)
+		{
+			s.setValue(key, files.at(c));
+		}
+		else
+		{
+			if (s.contains(key))
+			{
+				s.remove(key);
+			}
+		}
+	}
+	s.endGroup();
+	s.sync();
+
+	loadRecentFiles(&s);
+}
+
+void MainWindow::recentFileTriggered(bool checked)
+{
+	Q_UNUSED(checked);
+
+	QAction *actionRecent = (QAction *)sender();
+
+	const QString &filename = actionRecent->toolTip();
+
+	updateLastUsedDir(QFileInfo(filename).dir().path());
+	on_actionClose_triggered();
+	loadFiles(QStringList() << filename);
+}
+
 void MainWindow::file_save_as(void)
 {
 	QString filename;
@@ -708,6 +868,7 @@ void MainWindow::file_save_as(void)
 		set_filename(filename.toUtf8().data(), true);
 		setTitle(MWTF_FILENAME);
 		mark_divelist_changed(false);
+		addRecentFile(QStringList() << filename);
 	}
 }
 
@@ -731,6 +892,7 @@ void MainWindow::file_save(void)
 	}
 	save_dives(existing_filename);
 	mark_divelist_changed(false);
+	addRecentFile(QStringList() << QString(existing_filename));
 }
 
 void MainWindow::showError(QString message)
@@ -803,6 +965,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	}
 
 	process_dives(false, false);
+	addRecentFile(fileNames);
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
