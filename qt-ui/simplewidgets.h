@@ -10,6 +10,7 @@ class QAbstractButton;
 #include "ui_renumber.h"
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
+#include "exif.h"
 
 class MinMaxAvgWidget : public QWidget{
 	Q_OBJECT
@@ -59,13 +60,17 @@ class ShiftImageTimesDialog : public QDialog {
 	Q_OBJECT
 public:
 	explicit ShiftImageTimesDialog(QWidget *parent);
-	int amount() const;
-	void setOffset(int offset);
+	time_t amount() const;
+	void setOffset(time_t offset);
+	time_t epochFromExiv(EXIFInfo *exif);
 private slots:
 	void buttonClicked(QAbstractButton *button);
+	void syncCameraClicked();
+	void dcDateTimeChanged(const QDateTime &);
 private:
 	Ui::ShiftImageTimesDialog ui;
-	int m_amount;
+	time_t m_amount;
+	time_t dcImageEpoch;
 };
 
 bool isGnome3Session();

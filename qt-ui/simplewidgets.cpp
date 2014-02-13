@@ -12,8 +12,11 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTime>
-
+#include <QFileDialog>
+#include <QDateTime>
+#include "exif.h"
 #include "../dive.h"
+#include "../file.h"
 #include "mainwindow.h"
 
 class MinMaxAvgWidgetPrivate {
@@ -168,23 +171,80 @@ void ShiftImageTimesDialog::buttonClicked(QAbstractButton* button)
 	}
 }
 
+void ShiftImageTimesDialog::syncCameraClicked()
+{
+	struct memblock mem;
+	EXIFInfo exiv;
+	int retval;
+	QPixmap picture;
+	QDateTime dcDateTime = QDateTime::QDateTime();
+	QStringList fileNames = QFileDialog::getOpenFileNames(this,
+							      tr("Open Image File"),
+							      MainWindow().dive_list()->lastUsedImageDir(),
+							      tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
+
+	if (fileNames.isEmpty())
+		return;
+
+	picture.load(fileNames.at(0));
+	ui.displayDC->setEnabled(TRUE);
+	QGraphicsScene *scene = new QGraphicsScene (this);
+
+	scene->addPixmap(picture.scaled(ui.DCImage->size()));
+	ui.DCImage->setScene(scene);
+	if (readfile(fileNames.at(0).toUtf8().data(), &mem) <= 0)
+		return;
+	retval = exiv.parseFrom((const unsigned char *) mem.buffer, (unsigned) mem.size);
+	free(mem.buffer);
+	if (retval != PARSE_EXIF_SUCCESS)
+		return;
+	dcImageEpoch = epochFromExiv(&exiv);
+	dcDateTime.setTime_t(dcImageEpoch);
+	ui.dcTime->setDateTime(dcDateTime);
+	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
+}
+
+time_t ShiftImageTimesDialog::epochFromExiv(EXIFInfo *exif)
+{
+	struct tm tm;
+	int year, month, day, hour, min, sec;
+
+	sscanf(exif->DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
+	tm.tm_year = year;
+	tm.tm_mon = month - 1;
+	tm.tm_mday = day;
+	tm.tm_hour = hour;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	return (utc_mktime(&tm));
+}
+
+void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
+{
+	if (!dcImageEpoch)
+		return;
+	setOffset(newDateTime.toTime_t() - dcImageEpoch);
+}
+
 ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent): QDialog(parent), m_amount(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
+	dcImageEpoch = (time_t) 0;
 }
 
-int ShiftImageTimesDialog::amount() const
+time_t ShiftImageTimesDialog::amount() const
 {
 	return m_amount;
 }
 
-void ShiftImageTimesDialog::setOffset(int offset)
+void ShiftImageTimesDialog::setOffset(time_t offset)
 {
 	if (offset >= 0) {
-		ui.forward->setDown(TRUE);
+		ui.forward->setChecked(TRUE);
 	} else {
-		ui.backwards->setDown(TRUE);
+		ui.backwards->setChecked(TRUE);
 		offset *= -1;
 	}
 	ui.timeEdit->setTime(QTime::QTime(offset / 3600, (offset % 3600) / 60, offset % 60));

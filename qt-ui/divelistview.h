@@ -52,6 +52,7 @@ public slots:
 	void shiftTimes();
 	void loadImages();
 	void uploadToDivelogsDE();
+	QString lastUsedImageDir();
 
 signals:
 	void currentDiveChanged(int divenr);
@@ -73,7 +74,6 @@ private:
 	void restoreExpandedRows();
 	int lastVisibleColumn();
 	void selectTrip ( dive_trip_t* trip );
-	QString lastUsedImageDir();
 	void updateLastUsedImageDir(const QString& s);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();

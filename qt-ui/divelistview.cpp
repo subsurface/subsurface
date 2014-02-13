@@ -804,6 +804,7 @@ void DiveListView::loadImages()
 {
 	struct memblock mem;
 	EXIFInfo exif;
+	int retval;
 	time_t imagetime;
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image Files"), lastUsedImageDir(), tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
 
@@ -818,23 +819,16 @@ void DiveListView::loadImages()
 	updateLastImageTimeOffset(shiftDialog.amount());
 
 	for (int i = 0; i < fileNames.size(); ++i) {
-		struct tm tm;
-		int year, month, day, hour, min, sec;
-		int retval;
 		if (readfile(fileNames.at(i).toUtf8().data(), &mem) <= 0)
 			continue;
 		retval = exif.parseFrom((const unsigned char *) mem.buffer, (unsigned) mem.size);
 		free(mem.buffer);
 		if (retval != PARSE_EXIF_SUCCESS)
 			continue;
-		sscanf(exif.DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
-		tm.tm_year = year;
-		tm.tm_mon = month - 1;
-		tm.tm_mday = day;
-		tm.tm_hour = hour;
-		tm.tm_min = min;
-		tm.tm_sec = sec;
-		imagetime = utc_mktime(&tm) + shiftDialog.amount();
+		imagetime = shiftDialog.epochFromExiv(&exif);
+		if (!imagetime)
+			continue;
+		imagetime += shiftDialog.amount();
 		int j = 0;
 		struct dive *dive;
 		for_each_dive(j, dive){
