@@ -1,0 +1,20 @@
+AlignEscapedNewlinesLeft: true
+AccessModifierOffset: -8 # so public: and private: stays at the left site
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackParameters: true
+BreakBeforeBinaryOperators: false
+BreakBeforeBraces: Linux
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializersBeforeComma: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ColumnLimit: 0
+IndentFunctionDeclarationAfterType: false #personal taste, good for long methods
+IndentWidth: 8
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+SpaceBeforeAssignmentOperators: true
+# doesn't work --> SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesBeforeTrailingComments: 1
+UseTab: Always
+PointerBindsToType: false
