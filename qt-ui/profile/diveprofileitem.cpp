@@ -227,7 +227,7 @@ DiveTemperatureItem::DiveTemperatureItem()
 
 void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
-	int last = -300, last_printed_temp = 0, sec = 0;
+	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
@@ -240,6 +240,7 @@ void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 		int mkelvin = dataModel->index(i, vDataColumn).data().toInt();
 		if (!mkelvin)
 			continue;
+		last_valid_temp = mkelvin;
 		sec = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin));
 		poly.append(point);
@@ -262,10 +263,9 @@ void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 	/* it would be nice to print the end temperature, if it's
 	* different or if the last temperature print has been more
 	* than a quarter of the dive back */
-	int last_temperature = dataModel->data(dataModel->index(dataModel->rowCount()-1, DivePlotDataModel::TEMPERATURE)).toInt();
-	if (last_temperature > 200000 &&
-	    ((abs(last_temperature - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
-		createTextItem(sec, last_temperature);
+	if (last_valid_temp > 200000 &&
+	    ((abs(last_valid_temp - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
+		createTextItem(sec, last_valid_temp);
 	}
 }
 
