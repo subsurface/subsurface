@@ -267,6 +267,7 @@ void DiveTemperatureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 	    ((abs(last_valid_temp - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
 		createTextItem(sec, last_valid_temp);
 	}
+	texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 
 void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
