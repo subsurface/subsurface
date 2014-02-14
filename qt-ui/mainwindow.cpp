@@ -70,8 +70,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->reloadHeaderActions();
 	ui.ListWidget->setFocus();
 	ui.globe->reload();
-	ui.ListWidget->expand(ui.ListWidget->model()->index(0,0));
-	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0,0), QAbstractItemView::PositionAtCenter);
+	ui.ListWidget->expand(ui.ListWidget->model()->index(0, 0));
+	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlanner->settingsChanged();
 	ui.divePlannerWidget->settingsChanged();
 
@@ -116,7 +116,7 @@ void MainWindow::current_dive_changed(int divenr)
 	 * a single profile plot on the canvas. I know that we are using only one right now,
 	 * but let's keep like this so it's easy to change when we need? :)
 	 */
-	ui.newProfile->plotDives( QList<dive*>() << (current_dive) );
+	ui.newProfile->plotDives(QList<dive *>() << (current_dive));
 	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
@@ -142,7 +142,7 @@ void MainWindow::on_actionOpen_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(filename).dir().path());
 	on_actionClose_triggered();
-	loadFiles( QStringList() << filename );
+	loadFiles(QStringList() << filename);
 }
 
 QTabWidget *MainWindow::tabWidget()
@@ -213,7 +213,7 @@ QString MainWindow::lastUsedDir()
 	return lastDir;
 }
 
-void MainWindow::updateLastUsedDir(const QString& dir)
+void MainWindow::updateLastUsedDir(const QString &dir)
 {
 	QSettings s;
 	s.beginGroup("FileDialog");
@@ -478,14 +478,16 @@ void MainWindow::on_actionViewAll_triggered()
 	redrawProfile();
 }
 
-void MainWindow::beginChangeState(CurrentState s) {
+void MainWindow::beginChangeState(CurrentState s)
+{
 	if (state == VIEWALL && state != s) {
 		saveSplitterSizes();
 	}
 	state = s;
 }
 
-void MainWindow::saveSplitterSizes() {
+void MainWindow::saveSplitterSizes()
+{
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
@@ -497,7 +499,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	dc_number--;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.newProfile->plotDives(QList<struct dive*>() << (current_dive));
+	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 	redrawProfile();
 }
 
@@ -505,7 +507,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	dc_number++;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.newProfile->plotDives(QList<struct dive*>() << (current_dive));
+	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 	redrawProfile();
 }
 
@@ -602,13 +604,23 @@ void MainWindow::initialUiSetup()
 	else
 		resize(sz);
 
-	state = (CurrentState) settings.value("lastState", 0).toInt();
+	state = (CurrentState)settings.value("lastState", 0).toInt();
 	switch (state) {
-		case VIEWALL: on_actionViewAll_triggered(); break;
-		case GLOBE_MAXIMIZED : on_actionViewGlobe_triggered(); break;
-		case INFO_MAXIMIZED : on_actionViewInfo_triggered(); break;
-		case LIST_MAXIMIZED : on_actionViewList_triggered(); break;
-		case PROFILE_MAXIMIZED : on_actionViewProfile_triggered(); break;
+	case VIEWALL:
+		on_actionViewAll_triggered();
+		break;
+	case GLOBE_MAXIMIZED:
+		on_actionViewGlobe_triggered();
+		break;
+	case INFO_MAXIMIZED:
+		on_actionViewInfo_triggered();
+		break;
+	case LIST_MAXIMIZED:
+		on_actionViewList_triggered();
+		break;
+	case PROFILE_MAXIMIZED:
+		on_actionViewProfile_triggered();
+		break;
 	}
 	settings.endGroup();
 }
@@ -635,7 +647,6 @@ void MainWindow::readSettings()
 	ui.profPO2->setChecked(s.value("po2graph").toBool());
 	ui.profRuler->setChecked(s.value("rulergraph").toBool());
 	ui.profSAC->setChecked(s.value("show_sac").toBool());
-
 }
 
 void MainWindow::writeSettings()
@@ -643,7 +654,7 @@ void MainWindow::writeSettings()
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");
-	settings.setValue("lastState", (int) state);
+	settings.setValue("lastState", (int)state);
 	settings.setValue("maximized", isMaximized());
 	if (!isMaximized())
 		settings.setValue("size", size());
@@ -674,22 +685,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	writeSettings();
 }
 
-DiveListView* MainWindow::dive_list()
+DiveListView *MainWindow::dive_list()
 {
 	return ui.ListWidget;
 }
 
-GlobeGPS* MainWindow::globe()
+GlobeGPS *MainWindow::globe()
 {
 	return ui.globe;
 }
 
-ProfileGraphicsView* MainWindow::graphics()
+ProfileGraphicsView *MainWindow::graphics()
 {
 	return ui.ProfileWidget;
 }
 
-MainTab* MainWindow::information()
+MainTab *MainWindow::information()
 {
 	return ui.InfoWidget;
 }
@@ -700,42 +711,29 @@ void MainWindow::loadRecentFiles(QSettings *s)
 	bool modified = false;
 
 	s->beginGroup("Recent_Files");
-	for (int c = 1; c <= 4; c++)
-	{
+	for (int c = 1; c <= 4; c++) {
 		QString key = QString("File_%1").arg(c);
-		if (s->contains(key))
-		{
+		if (s->contains(key)) {
 			QString file = s->value(key).toString();
 
-			if (QFile::exists(file))
-			{
+			if (QFile::exists(file)) {
 				files.append(file);
-			}
-			else
-			{
+			} else {
 				modified = true;
 			}
-		}
-		else
-		{
+		} else {
 			break;
 		}
 	}
 
-	if (modified)
-	{
-		for (int c = 0; c < 4; c++)
-		{
+	if (modified) {
+		for (int c = 0; c < 4; c++) {
 			QString key = QString("File_%1").arg(c + 1);
 
-			if (files.count() > c)
-			{
+			if (files.count() > c) {
 				s->setValue(key, files.at(c));
-			}
-			else
-			{
-				if (s->contains(key))
-				{
+			} else {
+				if (s->contains(key)) {
 					s->remove(key);
 				}
 			}
@@ -745,19 +743,15 @@ void MainWindow::loadRecentFiles(QSettings *s)
 	}
 	s->endGroup();
 
-	for (int c = 0; c < 4; c++)
-	{
+	for (int c = 0; c < 4; c++) {
 		QAction *action = this->findChild<QAction *>(QString("actionRecent%1").arg(c + 1));
 
-		if (files.count() > c)
-		{
+		if (files.count() > c) {
 			QFileInfo fi(files.at(c));
 			action->setText(fi.fileName());
 			action->setToolTip(fi.absoluteFilePath());
 			action->setVisible(true);
-		}
-		else
-		{
+		} else {
 			action->setVisible(false);
 		}
 	}
@@ -768,63 +762,48 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 	QStringList files;
 	QSettings s;
 
-	if (newFiles.isEmpty())
-	{
+	if (newFiles.isEmpty()) {
 		return;
 	}
 
 	s.beginGroup("Recent_Files");
 
-	for (int c = 1; c <= 4; c++)
-	{
+	for (int c = 1; c <= 4; c++) {
 		QString key = QString("File_%1").arg(c);
-		if (s.contains(key))
-		{
+		if (s.contains(key)) {
 			QString file = s.value(key).toString();
 
 			files.append(file);
-		}
-		else
-		{
+		} else {
 			break;
 		}
 	}
 
-	foreach(const QString &file, newFiles)
-	{
+	foreach(const QString & file, newFiles) {
 		int index = files.indexOf(file);
 
-		if (index >= 0)
-		{
+		if (index >= 0) {
 			files.removeAt(index);
 		}
 	}
 
-	foreach(const QString &file, newFiles)
-	{
-		if (QFile::exists(file))
-		{
+	foreach(const QString & file, newFiles) {
+		if (QFile::exists(file)) {
 			files.prepend(file);
 		}
 	}
 
-	while(files.count() > 4)
-	{
+	while (files.count() > 4) {
 		files.removeLast();
 	}
 
-	for (int c = 0; c < 4; c++)
-	{
+	for (int c = 0; c < 4; c++) {
 		QString key = QString("File_%1").arg(c + 1);
 
-		if (files.count() > c)
-		{
+		if (files.count() > c) {
 			s.setValue(key, files.at(c));
-		}
-		else
-		{
-			if (s.contains(key))
-			{
+		} else {
+			if (s.contains(key)) {
 				s.remove(key);
 			}
 		}
@@ -883,7 +862,7 @@ void MainWindow::file_save(void)
 		ui.InfoWidget->acceptChanges();
 
 	current_default = prefs.default_filename;
-	if (strcmp(existing_filename, current_default) ==  0) {
+	if (strcmp(existing_filename, current_default) == 0) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
 		QDir current_def_dir = QFileInfo(current_default).absoluteDir();
@@ -979,7 +958,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles = fileNames.filter( QRegExp("^.*\\.(?!csv)", Qt::CaseInsensitive) ) ;
+	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!csv)", Qt::CaseInsensitive));
 	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
 	if (logFiles.size()) {
 		importFiles(logFiles);
@@ -1020,9 +999,9 @@ void MainWindow::editCurrentDive()
 	}
 }
 
-#define TOOLBOX_PREF_PROFILE(PREFS)\
-	QSettings s; \
-	s.beginGroup("TecDetails"); \
+#define TOOLBOX_PREF_PROFILE(PREFS)    \
+	QSettings s;                   \
+	s.beginGroup("TecDetails");    \
 	s.setValue(#PREFS, triggered); \
 	PreferencesDialog::instance()->emitSettingsChanged();
 
