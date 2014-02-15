@@ -76,6 +76,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	updateState(INITIAL);
+	memset(&data, 0, sizeof(data));
 }
 
 void DownloadFromDCWidget::updateProgressBar()
