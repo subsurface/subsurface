@@ -14,8 +14,6 @@
 
 #include "gettext.h"
 
-#include<sqlite3.h>
-
 #include "dive.h"
 #include "device.h"
 
@@ -1863,24 +1861,16 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	return SQLITE_OK;
 }
 
-int parse_dm4_buffer(const char *url, const char *buffer, int size,
+int parse_dm4_buffer(const sqlite3 *handle, const char *url, const char *buffer, int size,
 			struct dive_table *table, char **error)
 {
 	int retval;
 	char *err = NULL;
-	sqlite3 *handle;
 	target_table = table;
 
 	/* StartTime is converted from Suunto's nano seconds to standard
 	 * time. We also need epoch, not seconds since year 1. */
 	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
-
-	retval = sqlite3_open(url, &handle);
-
-	if (retval) {
-		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), url);
-		return 1;
-	}
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
@@ -1889,7 +1879,6 @@ int parse_dm4_buffer(const char *url, const char *buffer, int size,
 		return 1;
 	}
 
-	sqlite3_close(handle);
 	return 0;
 }
 

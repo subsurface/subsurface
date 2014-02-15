@@ -153,7 +153,20 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 
 static int try_to_open_db(const char *filename, struct memblock *mem, char **error)
 {
-	return parse_dm4_buffer(filename, mem->buffer, mem->size, &dive_table, error);
+	sqlite3 *handle;
+	int retval;
+
+	retval = sqlite3_open(filename, &handle);
+
+	if (retval) {
+		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), filename);
+		return 1;
+	}
+
+	retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, &dive_table, error);
+	sqlite3_close(handle);
+
+	return retval;
 }
 
 timestamp_t parse_date(const char *date)
