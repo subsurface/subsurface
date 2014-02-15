@@ -275,6 +275,8 @@ void DiveCartesianAxis::setColor(const QColor& color)
 
 QString DepthAxis::textForValue(double value)
 {
+	if (value == 0)
+		return QString();
 	return get_depth_string(value, false, false);
 }
 
