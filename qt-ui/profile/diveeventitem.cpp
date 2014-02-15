@@ -1,6 +1,7 @@
 #include "diveeventitem.h"
 #include "diveplotdatamodel.h"
 #include "divecartesianaxis.h"
+#include "animationfunctions.h"
 #include "dive.h"
 #include <QDebug>
 
@@ -14,19 +15,20 @@ DiveEventItem::DiveEventItem(QObject* parent): DivePixmapItem(parent),
 void DiveEventItem::setHorizontalAxis(DiveCartesianAxis* axis)
 {
 	hAxis = axis;
-	recalculatePos();
+	recalculatePos(true);
 }
 
 void DiveEventItem::setModel(DivePlotDataModel* model)
 {
 	dataModel = model;
-	recalculatePos();
+	recalculatePos(true);
 }
 
 void DiveEventItem::setVerticalAxis(DiveCartesianAxis* axis)
 {
 	vAxis = axis;
-	recalculatePos();
+	recalculatePos(true);
+	connect(vAxis, SIGNAL(sizeChanged()), this, SLOT(recalculatePos()));
 }
 
 void DiveEventItem::setEvent(struct event* ev)
@@ -34,7 +36,7 @@ void DiveEventItem::setEvent(struct event* ev)
 	internalEvent = ev;
 	setupPixmap();
 	setupToolTipString();
-	recalculatePos();
+	recalculatePos(true);
 }
 
 void DiveEventItem::setupPixmap()
@@ -101,7 +103,7 @@ void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visibl
 {
 }
 
-void DiveEventItem::recalculatePos()
+void DiveEventItem::recalculatePos(bool instant)
 {
 	if (!vAxis || !hAxis || !internalEvent || !dataModel) {
 		return;
@@ -117,5 +119,9 @@ void DiveEventItem::recalculatePos()
 	int depth = dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
-	setPos(x, y);
+	if (!instant){
+		Animations::moveTo(this, x, y, 500);
+	}else{
+		setPos(x,y);
+	}
 }

@@ -16,9 +16,10 @@ public:
 	void setVerticalAxis(DiveCartesianAxis *axis);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	void setModel(DivePlotDataModel *model);
+public slots:
+	void recalculatePos(bool instant = false);
 private:
 	void setupToolTipString();
-	void recalculatePos();
 	void setupPixmap();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
