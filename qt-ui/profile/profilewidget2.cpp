@@ -132,6 +132,7 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setTickSize(1);
 	gasYAxis->setMinimum(0);
 	gasYAxis->setModel(dataModel);
+	gasYAxis->setFontLabelScale(0.7);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setTickSize(2);

@@ -19,16 +19,18 @@ public:
 	enum Orientation{TopToBottom, BottomToTop, LeftToRight, RightToLeft};
 	DiveCartesianAxis();
 	virtual ~DiveCartesianAxis();
-	void setup(double minimum, double maximum, double interval, Orientation o, qreal tickSize, const QPointF& pos);
+	void setup(double minimum, double maximum, double interval, double labelFontScale, Orientation o, qreal tickSize, const QPointF& pos);
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
 	void setTickSize(qreal size);
+	void setFontLabelScale(qreal scale);
 	double minimum() const;
 	double maximum() const;
 	double tickInterval() const;
 	double tickSize() const;
+	double fontLabelScale() const;
 	qreal valueAt(const QPointF& p) const;
 	qreal percentAt(const QPointF& p);
 	qreal posAtValue(qreal value);
@@ -54,6 +56,7 @@ protected:
 	double tick_size;
 	QColor textColor;
 	bool textVisibility;
+	double labelScale;
 };
 
 class DepthAxis : public DiveCartesianAxis {
