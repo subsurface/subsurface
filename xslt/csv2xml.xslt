@@ -11,6 +11,7 @@
   <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
+  <xsl:param name="units" select="units"/>
   <xsl:param name="separatorIndex" select="separatorIndex"/>
   <xsl:output method="xml" indent="yes"/>
 
@@ -113,19 +114,39 @@
           </xsl:choose>
         </xsl:attribute>
 
-        <xsl:attribute name="depth">
+        <xsl:variable name="depth">
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="$depthField"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
+        </xsl:variable>
+        <xsl:attribute name="depth">
+          <xsl:choose>
+            <xsl:when test="$units = 0">
+              <xsl:value-of select="$depth"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$depth * 0.3048"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:attribute>
 
         <xsl:if test="$tempField >= 0">
-          <xsl:attribute name="temp">
+          <xsl:variable name="temp">
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$tempField"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
+          </xsl:variable>
+          <xsl:attribute name="temp">
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$temp"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number(($temp - 32) * 5 div 9, '0.0'), ' C')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
 
@@ -164,7 +185,14 @@
             </xsl:call-template>
           </xsl:variable>
           <xsl:attribute name="stopdepth">
-            <xsl:copy-of select="$stopdepth"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:copy-of select="$stopdepth"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:copy-of select="format-number($stopdepth * 0.3048, '0.00')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
 
           <xsl:attribute name="in_deco">

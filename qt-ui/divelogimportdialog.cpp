@@ -66,6 +66,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			               VALUE_IF_CHECKED(CSVstopdepth),
 			               ui->CSVSeparator->currentIndex(),
 			               specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+			               ui->CSVUnits->currentIndex(),
 			               &error);
 			if (error != NULL) {
 				MainWindow::instance()->showError(error);

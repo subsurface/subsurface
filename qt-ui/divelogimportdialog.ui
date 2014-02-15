@@ -239,6 +239,39 @@
        <zorder>stopdepthCheckBox</zorder>
        <zorder>CSVstopdepth</zorder>
       </widget>
+      <widget class="QGroupBox" name="groupBox_7">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>150</y>
+         <width>271</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Units</string>
+       </property>
+       <widget class="QComboBox" name="CSVUnits">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>251</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Metric</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Imperial</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
