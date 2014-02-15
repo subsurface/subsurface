@@ -151,9 +151,17 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 	return 0;
 }
 
+int db_test_func(void *param, int columns, char **data, char **column)
+{
+	return *data[0] == '0';
+}
+
+
 static int try_to_open_db(const char *filename, struct memblock *mem, char **error)
 {
 	sqlite3 *handle;
+	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
+	char shearwater_test[] = "select count(*) from sqlite_master where type='table' and name='system' and sql like '%dbVersion%'";
 	int retval;
 
 	retval = sqlite3_open(filename, &handle);
@@ -163,7 +171,22 @@ static int try_to_open_db(const char *filename, struct memblock *mem, char **err
 		return 1;
 	}
 
-	retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, &dive_table, error);
+	/* Testing if DB schema resembles Suunto DM4 database format */
+	retval = sqlite3_exec(handle, dm4_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, &dive_table, error);
+		sqlite3_close(handle);
+		return retval;
+	}
+
+	/* Testing if DB schema resembles Shearwater database format */
+	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, &dive_table, error);
+		sqlite3_close(handle);
+		return retval;
+	}
+
 	sqlite3_close(handle);
 
 	return retval;
