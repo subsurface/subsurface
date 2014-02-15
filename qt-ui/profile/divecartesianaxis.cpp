@@ -64,7 +64,8 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	interval(1),
 	labelScale(1.0),
 	tick_size(0),
-	textVisibility(true)
+	textVisibility(true),
+	line_size(-1)
 {
 	setPen(gridPen());
 }
@@ -72,6 +73,11 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 DiveCartesianAxis::~DiveCartesianAxis()
 {
 
+}
+
+void DiveCartesianAxis::setLineSize(qreal lineSize)
+{
+	line_size = lineSize;
 }
 
 void DiveCartesianAxis::setOrientation(Orientation o)
@@ -95,6 +101,15 @@ void DiveCartesianAxis::setTextVisible(bool arg1)
 	}
 }
 
+template<typename T> void emptyList( QList<T*>& list, double steps){
+	if (!list.isEmpty() && list.size() > steps) {
+		while (list.size() > steps) {
+				T *removedItem = list.takeLast();
+				Animations::animDelete(removedItem);
+		}
+	}
+}
+
 void DiveCartesianAxis::updateTicks()
 {
 	if (!scene())
@@ -108,12 +123,9 @@ void DiveCartesianAxis::updateTicks()
 	if (steps < 1)
 		return;
 
-	if (!labels.isEmpty() && labels.size() > steps) {
-		while (labels.size() > steps) {
-				DiveTextItem *removedText = labels.takeLast();
-				Animations::animDelete(removedText);
-		}
-	}
+	emptyList(labels, steps);
+	emptyList(lines, steps);
+
 	// Move the remaining Ticks / Text to it's corerct position
 	// Regartind the possibly new values for the Axis
 	qreal begin, stepSize;

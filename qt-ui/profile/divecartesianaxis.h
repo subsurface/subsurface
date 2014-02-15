@@ -37,6 +37,7 @@ public:
 	void setTextColor(const QColor& color);
 	void animateChangeLine(const QLineF& newLine);
 	void setTextVisible(bool arg1);
+	void setLineSize(qreal lineSize);
 	int unitSystem;
 public slots:
 	virtual void updateTicks();
@@ -49,6 +50,7 @@ protected:
 	virtual QColor colorForValue(double value);
 	Orientation orientation;
 	QList<DiveTextItem*> labels;
+	QList<DiveLineItem*> lines;
 	double min;
 	double max;
 	double interval;
@@ -56,6 +58,7 @@ protected:
 	QColor textColor;
 	bool textVisibility;
 	double labelScale;
+	qreal line_size;
 };
 
 class DepthAxis : public DiveCartesianAxis {
