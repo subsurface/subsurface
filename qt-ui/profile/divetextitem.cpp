@@ -13,7 +13,8 @@ DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(NULL),
 	textItem(NULL),
-	colorIndex(SAC_DEFAULT)
+	colorIndex(SAC_DEFAULT),
+	scale(1.0)
 {
 	setFlag(ItemIgnoresTransformations);
 }
@@ -30,6 +31,11 @@ void DiveTextItem::setBrush(const QBrush& b)
 	updateText();
 }
 
+void DiveTextItem::setScale(double newscale)
+{
+	scale = newscale;
+}
+
 void DiveTextItem::setText(const QString& t)
 {
 	internalText = t;
@@ -43,6 +49,7 @@ const QString& DiveTextItem::text()
 
 void DiveTextItem::updateText()
 {
+	double size;
 	delete textItem;
 	textItem = NULL;
 	delete textBackgroundItem;
@@ -52,6 +59,15 @@ void DiveTextItem::updateText()
 	}
 
 	QFont fnt(qApp->font());
+	if ((size = fnt.pixelSize()) > 0) {
+		// set in pixels - so the scale factor may not make a difference if it's too close to 1
+		size *= scale;
+		fnt.setPixelSize(size);
+	} else {
+		size = fnt.pointSizeF();
+		size *= scale;
+		fnt.setPointSizeF(size);
+	}
 	QFontMetrics fm(fnt);
 
 	QPainterPath textPath;

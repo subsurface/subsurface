@@ -164,6 +164,7 @@ void DiveCartesianAxis::updateTicks()
 		label->setText(textForValue(currValue));
 		label->setBrush(QBrush(textColor));
 		label->setBrush(colorForValue(currValue));
+		label->setScale(0.8);
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
