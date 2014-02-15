@@ -20,18 +20,6 @@ static QPen gridPen(){
 	return pen;
 }
 
-void DiveCartesianAxis::setup(double minimum, double maximum, double interval, double labelFontScale,
-			      DiveCartesianAxis::Orientation o, qreal tick_size, const QPointF& pos)
-{
-	setMinimum(minimum);
-	setMaximum(maximum);
-	setTickInterval(interval);
-	setOrientation(o);
-	setTickSize(tick_size);
-	setPos(pos);
-	setFontLabelScale(labelFontScale);
-}
-
 double DiveCartesianAxis::tickInterval() const
 {
 	return interval;

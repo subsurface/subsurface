@@ -19,7 +19,6 @@ public:
 	enum Orientation{TopToBottom, BottomToTop, LeftToRight, RightToLeft};
 	DiveCartesianAxis();
 	virtual ~DiveCartesianAxis();
-	void setup(double minimum, double maximum, double interval, double labelFontScale, Orientation o, qreal tickSize, const QPointF& pos);
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
