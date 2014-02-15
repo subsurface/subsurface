@@ -31,7 +31,6 @@ class DepthAxis;
 class DiveCartesianAxis;
 class DiveProfileItem;
 class TimeAxis;
-class DiveCartesianPlane;
 class DiveTemperatureItem;
 class DiveGasPressureItem;
 class DiveCalculatedCeiling;
@@ -84,7 +83,6 @@ private:
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
 	DiveProfileItem *diveProfileItem;
-	DiveCartesianPlane *cartesianPlane;
 	DiveTemperatureItem *temperatureItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;

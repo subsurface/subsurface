@@ -63,7 +63,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	temperatureAxis(new TemperatureAxis()),
 	timeAxis(new TimeAxis()),
 	diveProfileItem(new DiveProfileItem()),
-	cartesianPlane(new DiveCartesianPlane()),
 	temperatureItem(new DiveTemperatureItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	gasPressureItem(new DiveGasPressureItem()),
@@ -104,7 +103,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(cylinderPressureAxis);
 	scene()->addItem(temperatureItem);
 	scene()->addItem(gasPressureItem);
-	scene()->addItem(cartesianPlane);
 	scene()->addItem(meanDepth);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(diveCeiling);
@@ -147,10 +145,6 @@ void ProfileWidget2::setupItemOnScene()
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
 	meanDepth->setZValue(1);
 	meanDepth->setAxis(profileYAxis);
-
-	cartesianPlane->setBottomAxis(timeAxis);
-	cartesianPlane->setLeftAxis(profileYAxis);
-	cartesianPlane->setZValue(-1);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
@@ -351,7 +345,6 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
-	cartesianPlane->setup();
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
 	// while all other items are up there on the constructor.
@@ -484,7 +477,6 @@ void ProfileWidget2::setEmptyState()
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
-	cartesianPlane->setVisible(false);
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		tissue->setVisible(false);
 	}
@@ -525,18 +517,12 @@ void ProfileWidget2::setProfileState()
 	timeAxis->setLine(itemPos.time.expanded);
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
-
-
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
 
-	cartesianPlane->setVisible(true);
 	meanDepth->setVisible(true);
 
 	diveComputerText->setVisible(true);
 	diveComputerText->setPos(itemPos.dcLabel.on);
-
-	cartesianPlane->setHorizontalLine( itemPos.time.expanded );
-	cartesianPlane->setVerticalLine( itemPos.depth.expanded );
 
 	diveCeiling->setVisible(s.value("calcceiling").toBool());
 	reportedCeiling->setVisible(s.value("dcceiling").toBool());
