@@ -355,7 +355,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignRight | Qt::AlignTop);
+			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignLeft | Qt::AlignTop);
 		}
 	}
 }
