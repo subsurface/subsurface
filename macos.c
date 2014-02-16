@@ -82,6 +82,11 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 }
 
 /* NOP wrappers to comform with windows.c */
+int subsurface_rename(const char *path, const char *newpath)
+{
+	return rename(path, newpath);
+}
+
 int subsurface_open(const char *path, int oflags, mode_t mode)
 {
 	return open(path, oflags, mode);

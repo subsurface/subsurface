@@ -577,12 +577,46 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 	put_format(b, "</dives>\n</divelog>\n");
 }
 
+static void save_backup(const char *name, const char *ext, const char *new_ext)
+{
+	int len = strlen(name);
+	int a = strlen(ext), b = strlen(new_ext);
+	char *newname;
+
+	/* len up to and including the final '.' */
+	len -= a;
+	if (len <= 1)
+		return;
+	if (name[len-1] != '.')
+		return;
+	/* msvc doesn't have strncasecmp, has _strnicmp instead - crazy */
+	if (strncasecmp(name+len, ext, a))
+		return;
+
+	newname = malloc(len + b + 1);
+	if (!newname)
+		return;
+
+	memcpy(newname, name, len);
+	memcpy(newname+len, new_ext, b+1);
+
+	/*
+	 * Ignore errors. Maybe we can't create the backup file,
+	 * maybe no old file existed.  Regardless, we'll write the
+	 * new file.
+	 */
+	subsurface_rename(name, newname);
+	free(newname);
+}
+
 void save_dives_logic(const char *filename, const bool select_only)
 {
 	struct membuffer buf = {0};
 	FILE *f;
 
 	save_dives_buffer(&buf, select_only);
+	/* Maybe we might want to make this configurable? */
+	save_backup(filename, "xml", "bak");
 	f = subsurface_fopen(filename, "w");
 	if (f) {
 		flush_buffer(&buf, f);

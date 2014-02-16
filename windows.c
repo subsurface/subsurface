@@ -111,6 +111,22 @@ static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
 /* bellow we provide a set of wrappers for some I/O functions to use wchar_t.
  * on win32 this solves the issue that we need paths to be utf-16 encoded.
  */
+int subsurface_rename(const char *path, const char *newpath)
+{
+	int ret = -1;
+	if (!path || !newpath)
+		return -1;
+
+	wchar_t *wpath = utf8_to_utf16(path);
+	wchar_t *wnewpath = utf8_to_utf16(newpath);
+
+	if (wpath && wnewpath)
+		ret = _wrename(wpath, wnewpath);
+	free((void *)wpath);
+	free((void *)wnewpath);
+	return ret;
+}
+
 int subsurface_open(const char *path, int oflags, mode_t mode)
 {
 	int ret = -1;
