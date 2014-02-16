@@ -169,7 +169,8 @@ void ProfileWidget2::setupItemOnScene()
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS); \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS); \
 	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT)); \
-	ITEM->preferencesChanged();
+	ITEM->preferencesChanged(); \
+	ITEM->setZValue(99);
 
 	CREATE_PP_GAS( pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
 	CREATE_PP_GAS( pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
@@ -182,6 +183,8 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setLinesVisible(false);
 	timeAxis->setLinesVisible(true);
 	profileYAxis->setLinesVisible(true);
+	gasYAxis->setZValue(timeAxis->zValue()+1);
+
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -218,9 +221,9 @@ void ProfileWidget2::setupItemSizes()
 
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
-	itemPos.partialPressure.pos.on.setY(60);
+	itemPos.partialPressure.pos.on.setY(67);
 	itemPos.partialPressure.pos.off.setX(110);
-	itemPos.partialPressure.pos.off.setY(60);
+	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0,0));
 	itemPos.partialPressure.expanded.setP2(QPointF(0,30));
 
