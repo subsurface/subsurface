@@ -1939,10 +1939,8 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 
 extern int shearwater_dive(void *param, int columns, char **data, char **column)
 {
-	int i, interval, retval = 0;
+	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
-	float *profileBlob;
-	unsigned char *tempBlob;
 	char *err = NULL;
 	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records where diveLogId = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
