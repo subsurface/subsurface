@@ -34,7 +34,8 @@ static void quote(struct membuffer *b, const char *text, int is_attribute)
 			escape = NULL;
 			break;
 		case 1 ... 8:
-		case 11: case 12:
+		case 11:
+		case 12:
 		case 14 ... 31:
 			escape = "?";
 			break;
@@ -77,7 +78,7 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 	len = strlen(text);
 	if (!len)
 		return;
-	while (len && isspace(text[len-1]))
+	while (len && isspace(text[len - 1]))
 		len--;
 	/* FIXME! Quoting! */
 	put_string(b, pre);
@@ -156,16 +157,16 @@ static int format_degrees(char *buffer, degrees_t value)
 		udeg = -udeg;
 	}
 	return sprintf(buffer, "%s%u.%06u",
-		sign, udeg / 1000000, udeg % 1000000);
+		       sign, udeg / 1000000, udeg % 1000000);
 }
 
 static int format_location(char *buffer, degrees_t latitude, degrees_t longitude)
 {
 	int len = sprintf(buffer, "gps='");
 
-	len += format_degrees(buffer+len, latitude);
+	len += format_degrees(buffer + len, latitude);
 	buffer[len++] = ' ';
-	len += format_degrees(buffer+len, longitude);
+	len += format_degrees(buffer + len, longitude);
 	buffer[len++] = '\'';
 
 	return len;
@@ -187,9 +188,9 @@ static void show_location(struct membuffer *b, struct dive *dive)
 	if (latitude.udeg || longitude.udeg) {
 		int len = sprintf(buffer, "  <location ");
 
-		len += format_location(buffer+len, latitude, longitude);
+		len += format_location(buffer + len, latitude, longitude);
 		if (!dive->location) {
-			memcpy(buffer+len, "/>\n", 4);
+			memcpy(buffer + len, "/>\n", 4);
 			put_string(b, buffer);
 			return;
 		}
@@ -197,16 +198,16 @@ static void show_location(struct membuffer *b, struct dive *dive)
 		buffer[len] = 0;
 		prefix = buffer;
 	}
-	show_utf8(b, dive->location, prefix,"</location>\n", 0);
+	show_utf8(b, dive->location, prefix, "</location>\n", 0);
 }
 
 static void save_overview(struct membuffer *b, struct dive *dive)
 {
 	show_location(b, dive);
-	show_utf8(b, dive->divemaster, "  <divemaster>","</divemaster>\n", 0);
-	show_utf8(b, dive->buddy, "  <buddy>","</buddy>\n", 0);
-	show_utf8(b, dive->notes, "  <notes>","</notes>\n", 0);
-	show_utf8(b, dive->suit, "  <suit>","</suit>\n", 0);
+	show_utf8(b, dive->divemaster, "  <divemaster>", "</divemaster>\n", 0);
+	show_utf8(b, dive->buddy, "  <buddy>", "</buddy>\n", 0);
+	show_utf8(b, dive->notes, "  <notes>", "</notes>\n", 0);
+	show_utf8(b, dive->suit, "  <suit>", "</suit>\n", 0);
 }
 
 static int nr_cylinders(struct dive *dive)
@@ -214,7 +215,7 @@ static int nr_cylinders(struct dive *dive)
 	int nr;
 
 	for (nr = MAX_CYLINDERS; nr; --nr) {
-		cylinder_t *cylinder = dive->cylinder+nr-1;
+		cylinder_t *cylinder = dive->cylinder + nr - 1;
 		if (!cylinder_nodata(cylinder))
 			break;
 	}
@@ -228,7 +229,7 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 	nr = nr_cylinders(dive);
 
 	for (i = 0; i < nr; i++) {
-		cylinder_t *cylinder = dive->cylinder+i;
+		cylinder_t *cylinder = dive->cylinder + i;
 		int volume = cylinder->type.size.mliter;
 		const char *description = cylinder->type.description;
 		int o2 = cylinder->gasmix.o2.permille;
@@ -255,7 +256,7 @@ static int nr_weightsystems(struct dive *dive)
 	int nr;
 
 	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
-		weightsystem_t *ws = dive->weightsystem+nr-1;
+		weightsystem_t *ws = dive->weightsystem + nr - 1;
 		if (!weightsystem_none(ws))
 			break;
 	}
@@ -269,7 +270,7 @@ static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
 	nr = nr_weightsystems(dive);
 
 	for (i = 0; i < nr; i++) {
-		weightsystem_t *ws = dive->weightsystem+i;
+		weightsystem_t *ws = dive->weightsystem + i;
 		int grams = ws->weight.grams;
 		const char *description = ws->description;
 
@@ -288,7 +289,7 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
 
 static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old)
 {
-	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds,60));
+	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	put_temperature(b, sample->temperature, " temp='", " C'");
 	put_pressure(b, sample->cylinderpressure, " pressure='", " bar'");
@@ -337,7 +338,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 
 static void save_one_event(struct membuffer *b, struct event *ev)
 {
-	put_format(b, "  <event time='%d:%02d min'", FRACTION(ev->time.seconds,60));
+	put_format(b, "  <event time='%d:%02d min'", FRACTION(ev->time.seconds, 60));
 	show_index(b, ev->type, "type='", "'");
 	show_index(b, ev->flags, "flags='", "'");
 	show_index(b, ev->value, "value='", "'");
@@ -385,14 +386,14 @@ static void show_date(struct membuffer *b, timestamp_t when)
 	utc_mkdate(when, &tm);
 
 	put_format(b, " date='%04u-%02u-%02u'",
-		tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday);
+		   tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
 	put_format(b, " time='%02u:%02u:%02u'",
-		tm.tm_hour, tm.tm_min, tm.tm_sec);
+		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 static void save_samples(struct membuffer *b, int nr, struct sample *s)
 {
-	struct sample dummy = { };
+	struct sample dummy = {};
 
 	while (--nr >= 0) {
 		save_sample(b, s, &dummy);
@@ -443,7 +444,7 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 
 	show_date(b, dive->when);
 	put_format(b, " duration='%u:%02u min'>\n",
-		FRACTION(dive->dc.duration.seconds, 60));
+		   FRACTION(dive->dc.duration.seconds, 60));
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
@@ -460,7 +461,7 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 
 void save_dive(FILE *f, struct dive *dive)
 {
-	struct membuffer buf = {0};
+	struct membuffer buf = { 0 };
 
 	save_one_dive(&buf, dive);
 	flush_buffer(&buf, f);
@@ -473,9 +474,9 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip)
 
 	put_format(b, "<trip");
 	show_date(b, trip->when);
-	show_utf8(b, trip->location, " location=\'","\'", 1);
+	show_utf8(b, trip->location, " location=\'", "\'", 1);
 	put_format(b, ">\n");
-	show_utf8(b, trip->notes, "<notes>","</notes>\n", 0);
+	show_utf8(b, trip->notes, "<notes>", "</notes>\n", 0);
 
 	/*
 	 * Incredibly cheesy: we want to save the dives sorted, and they
@@ -491,7 +492,7 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip)
 	put_format(b, "</trip>\n");
 }
 
-static void save_one_device(void *_f, const char * model, uint32_t deviceid,
+static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 			    const char *nickname, const char *serial_nr, const char *firmware)
 {
 	struct membuffer *b = _f;
@@ -549,10 +550,9 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 	/* save the dives */
 	for_each_dive(i, dive) {
-
 		if (select_only) {
 
-			if(!dive->selected)
+			if (!dive->selected)
 				continue;
 			save_one_dive(b, dive);
 
@@ -587,10 +587,10 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 	len -= a;
 	if (len <= 1)
 		return;
-	if (name[len-1] != '.')
+	if (name[len - 1] != '.')
 		return;
 	/* msvc doesn't have strncasecmp, has _strnicmp instead - crazy */
-	if (strncasecmp(name+len, ext, a))
+	if (strncasecmp(name + len, ext, a))
 		return;
 
 	newname = malloc(len + b + 1);
@@ -598,7 +598,7 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 		return;
 
 	memcpy(newname, name, len);
-	memcpy(newname+len, new_ext, b+1);
+	memcpy(newname + len, new_ext, b + 1);
 
 	/*
 	 * Ignore errors. Maybe we can't create the backup file,
@@ -611,9 +611,9 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 
 void save_dives_logic(const char *filename, const bool select_only)
 {
-	struct membuffer buf = {0};
+	struct membuffer buf = { 0 };
 	FILE *f;
-	char extension[][5] = {"xml", "ssrf", ""};
+	char extension[][5] = { "xml", "ssrf", "" };
 	int i = 0;
 	int flen = strlen(filename);
 
@@ -638,7 +638,7 @@ void save_dives_logic(const char *filename, const bool select_only)
 void export_dives_uddf(const char *filename, const bool selected)
 {
 	FILE *f;
-	struct membuffer buf = {0};
+	struct membuffer buf = { 0 };
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;

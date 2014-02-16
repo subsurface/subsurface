@@ -68,7 +68,7 @@ static void record_dive_to_table(struct dive *dive, struct dive_table *table)
 		table->allocated = allocated;
 	}
 	dives[nr] = fixup_dive(dive);
-	table->nr = nr+1;
+	table->nr = nr + 1;
 }
 
 void record_dive(struct dive *dive)
@@ -80,14 +80,14 @@ static void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
 		printf("Matching %s '%s' (%s)\n",
-			type, name, buffer);
+		       type, name, buffer);
 }
 
 static void nonmatch(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 1)
 		printf("Unable to match %s '%s' (%s)\n",
-			type, name, buffer);
+		       type, name, buffer);
 }
 
 typedef void (*matchfn_t)(char *buffer, void *);
@@ -97,7 +97,8 @@ static int match(const char *pattern, int plen,
 		 matchfn_t fn, char *buf, void *data)
 {
 	switch (name[plen]) {
-	case '\0': case '.':
+	case '\0':
+	case '.':
 		break;
 	default:
 		return 0;
@@ -127,11 +128,11 @@ static struct {
 	const char *name;
 } cur_event;
 static struct {
-struct {
-	const char *model;
-	uint32_t deviceid;
-	const char *nickname, *serial_nr, *firmware;
-} dc;
+	struct {
+		const char *model;
+		uint32_t deviceid;
+		const char *nickname, *serial_nr, *firmware;
+	} dc;
 } cur_settings;
 static bool in_settings = false;
 static struct tm cur_tm;
@@ -145,7 +146,7 @@ static int lastcylinderindex, lastsensor;
  */
 static struct divecomputer *get_dc(void)
 {
-	return cur_dc ? : &cur_dive->dc;
+	return cur_dc ?: &cur_dive->dc;
 }
 
 static enum import_source {
@@ -157,11 +158,13 @@ static enum import_source {
 
 static void divedate(char *buffer, void *_when)
 {
-	int d,m,y;
-	int hh,mm,ss;
+	int d, m, y;
+	int hh, mm, ss;
 	timestamp_t *when = _when;
 
-	hh = 0; mm = 0; ss = 0;
+	hh = 0;
+	mm = 0;
+	ss = 0;
 	if (sscanf(buffer, "%d.%d.%d %d:%d:%d", &d, &m, &y, &hh, &mm, &ss) >= 3) {
 		/* This is ok, and we got at least the date */
 	} else if (sscanf(buffer, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) >= 3) {
@@ -171,7 +174,7 @@ static void divedate(char *buffer, void *_when)
 		return;
 	}
 	cur_tm.tm_year = y;
-	cur_tm.tm_mon = m-1;
+	cur_tm.tm_mon = m - 1;
 	cur_tm.tm_mday = d;
 	cur_tm.tm_hour = hh;
 	cur_tm.tm_min = mm;
@@ -182,7 +185,7 @@ static void divedate(char *buffer, void *_when)
 
 static void divetime(char *buffer, void *_when)
 {
-	int h,m,s = 0;
+	int h, m, s = 0;
 	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
@@ -196,14 +199,14 @@ static void divetime(char *buffer, void *_when)
 /* Libdivecomputer: "2011-03-20 10:22:38" */
 static void divedatetime(char *buffer, void *_when)
 {
-	int y,m,d;
-	int hr,min,sec;
+	int y, m, d;
+	int hr, min, sec;
 	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
-		&y, &m, &d, &hr, &min, &sec) == 6) {
+		   &y, &m, &d, &hr, &min, &sec) == 6) {
 		cur_tm.tm_year = y;
-		cur_tm.tm_mon = m-1;
+		cur_tm.tm_mon = m - 1;
 		cur_tm.tm_mday = d;
 		cur_tm.tm_hour = hr;
 		cur_tm.tm_min = min;
@@ -212,7 +215,10 @@ static void divedatetime(char *buffer, void *_when)
 	}
 }
 
-enum ParseState {FINDSTART, FINDEND};
+enum ParseState {
+	FINDSTART,
+	FINDEND
+};
 static void divetags(char *buffer, void *_tags)
 {
 	struct tag_entry *tags = _tags;
@@ -220,18 +226,18 @@ static void divetags(char *buffer, void *_tags)
 	enum ParseState state = FINDEND;
 	int len = buffer ? strlen(buffer) : 0;
 
-	while(i < len) {
+	while (i < len) {
 		if (buffer[i] == ',') {
 			if (state == FINDSTART) {
 				/* Detect empty tags */
 			} else if (state == FINDEND) {
 				/* Found end of tag */
 				if (i > 0 && buffer[i - 1] != '\\') {
-						buffer[i] = '\0';
-						state=FINDSTART;
-						taglist_add_tag(tags, buffer+start);
+					buffer[i] = '\0';
+					state = FINDSTART;
+					taglist_add_tag(tags, buffer + start);
 				} else {
-					state=FINDSTART;
+					state = FINDSTART;
 				}
 			}
 		} else if (buffer[i] == ' ') {
@@ -413,7 +419,7 @@ static void temperature(char *buffer, void *_temperature)
 	}
 	/* temperatures outside -40C .. +70C should be ignored */
 	if (temperature->mkelvin < ZERO_C_IN_MKELVIN - 40000 ||
-		temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
+	    temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
 		temperature->mkelvin = 0;
 }
 
@@ -430,7 +436,7 @@ static void sampletime(char *buffer, void *_time)
 		min = 0;
 	/* fallthrough */
 	case 2:
-		time->seconds = sec + min*60;
+		time->seconds = sec + min * 60;
 		break;
 	default:
 		printf("Strange sample time reading %s\n", buffer);
@@ -442,9 +448,9 @@ static void duration(char *buffer, void *_time)
 	/* DivingLog 5.08 (and maybe other versions) appear to sometimes
 	 * store the dive time as 44.00 instead of 44:00;
 	 * This attempts to parse this in a fairly robust way */
-	if (!strchr(buffer,':') && strchr(buffer,'.')) {
+	if (!strchr(buffer, ':') && strchr(buffer, '.')) {
 		char *mybuffer = strdup(buffer);
-		char *dot = strchr(mybuffer,'.');
+		char *dot = strchr(mybuffer, '.');
 		*dot = ':';
 		sampletime(mybuffer, _time);
 		free(mybuffer);
@@ -475,7 +481,7 @@ static void percent(char *buffer, void *_fraction)
 			break;
 		}
 	default:
-		printf(translate("gettextFromC","Strange percentage reading %s\n"), buffer);
+		printf(translate("gettextFromC", "Strange percentage reading %s\n"), buffer);
 		break;
 	}
 }
@@ -517,7 +523,7 @@ static void utf8_string(char *buffer, void *_res)
 	while (isspace(*buffer))
 		buffer++;
 	size = strlen(buffer);
-	while (size && isspace(buffer[size-1]))
+	while (size && isspace(buffer[size - 1]))
 		size--;
 	if (!size)
 		return;
@@ -528,7 +534,7 @@ static void utf8_string(char *buffer, void *_res)
 }
 
 #define MATCH(pattern, fn, dest) \
-	match(pattern, strlen(pattern), name, fn, buf, dest)
+    match(pattern, strlen(pattern), name, fn, buf, dest)
 
 static void get_index(char *buffer, void *_i)
 {
@@ -644,11 +650,11 @@ static void psi_or_bar(char *buffer, void *_pressure)
 
 static int divinglog_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	return	MATCH("time.p", sampletime, &sample->time) ||
-		MATCH("depth.p", depth, &sample->depth) ||
-		MATCH("temp.p", fahrenheit, &sample->temperature) ||
-		MATCH("press1.p", psi_or_bar, &sample->cylinderpressure) ||
-		0;
+	return MATCH("time.p", sampletime, &sample->time) ||
+	       MATCH("depth.p", depth, &sample->depth) ||
+	       MATCH("temp.p", fahrenheit, &sample->temperature) ||
+	       MATCH("press1.p", psi_or_bar, &sample->cylinderpressure) ||
+	       0;
 }
 
 static void uddf_gasswitch(char *buffer, void *_sample)
@@ -664,12 +670,12 @@ static void uddf_gasswitch(char *buffer, void *_sample)
 
 static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
 {
-	return	MATCH("divetime", sampletime, &sample->time) ||
-		MATCH("depth", depth, &sample->depth) ||
-		MATCH("temperature", temperature, &sample->temperature) ||
-		MATCH("tankpressure", pressure, &sample->cylinderpressure) ||
-		MATCH("ref.switchmix", uddf_gasswitch, sample) ||
-		0;
+	return MATCH("divetime", sampletime, &sample->time) ||
+	       MATCH("depth", depth, &sample->depth) ||
+	       MATCH("temperature", temperature, &sample->temperature) ||
+	       MATCH("tankpressure", pressure, &sample->cylinderpressure) ||
+	       MATCH("ref.switchmix", uddf_gasswitch, sample) ||
+	       0;
 }
 
 static void eventtime(char *buffer, void *_duration)
@@ -790,11 +796,11 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	int he = get_he(&dive->cylinder[idx].gasmix);
 	int value;
 
-	o2 = (o2+5) / 10;
-	he = (he+5) / 10;
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
 	value = o2 + (he << 16);
 
-	add_event(dc, seconds, 25, 0, value, "gaschange");  /* SAMPLE_EVENT_GASCHANGE2 */
+	add_event(dc, seconds, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
 }
 
 static void get_cylinderindex(char *buffer, void *_i)
@@ -884,15 +890,15 @@ static void divinglog_place(char *place, void *_location)
 	int len;
 
 	len = snprintf(buffer, sizeof(buffer),
-		"%s%s%s%s%s",
-		place,
-		city ? ", " : "",
-		city ? city : "",
-		country ? ", " : "",
-		country ? country : "");
+		       "%s%s%s%s%s",
+		       place,
+		       city ? ", " : "",
+		       city ? city : "",
+		       country ? ", " : "",
+		       country ? country : "");
 
-	p = malloc(len+1);
-	memcpy(p, buffer, len+1);
+	p = malloc(len + 1);
+	memcpy(p, buffer, len + 1);
 	*location = p;
 
 	city = NULL;
@@ -901,22 +907,22 @@ static void divinglog_place(char *place, void *_location)
 
 static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
 {
-	return	MATCH("divedate", divedate, &dive->when) ||
-		MATCH("entrytime", divetime, &dive->when) ||
-		MATCH("divetime", duration, &dive->dc.duration) ||
-		MATCH("depth", depth, &dive->dc.maxdepth) ||
-		MATCH("depthavg", depth, &dive->dc.meandepth) ||
-		MATCH("tanktype", utf8_string, &dive->cylinder[0].type.description) ||
-		MATCH("tanksize", cylindersize, &dive->cylinder[0].type.size) ||
-		MATCH("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
-		MATCH("press", pressure, &dive->cylinder[0].start) ||
-		MATCH("prese", pressure, &dive->cylinder[0].end) ||
-		MATCH("comments", utf8_string, &dive->notes) ||
-		MATCH("names.buddy", utf8_string, &dive->buddy) ||
-		MATCH("name.country", utf8_string, &country) ||
-		MATCH("name.city", utf8_string, &city) ||
-		MATCH("name.place", divinglog_place, &dive->location) ||
-		0;
+	return MATCH("divedate", divedate, &dive->when) ||
+	       MATCH("entrytime", divetime, &dive->when) ||
+	       MATCH("divetime", duration, &dive->dc.duration) ||
+	       MATCH("depth", depth, &dive->dc.maxdepth) ||
+	       MATCH("depthavg", depth, &dive->dc.meandepth) ||
+	       MATCH("tanktype", utf8_string, &dive->cylinder[0].type.description) ||
+	       MATCH("tanksize", cylindersize, &dive->cylinder[0].type.size) ||
+	       MATCH("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
+	       MATCH("press", pressure, &dive->cylinder[0].start) ||
+	       MATCH("prese", pressure, &dive->cylinder[0].end) ||
+	       MATCH("comments", utf8_string, &dive->notes) ||
+	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
+	       MATCH("name.country", utf8_string, &country) ||
+	       MATCH("name.city", utf8_string, &city) ||
+	       MATCH("name.place", divinglog_place, &dive->location) ||
+	       0;
 }
 
 /*
@@ -927,7 +933,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
 static void uddf_datetime(char *buffer, void *_when)
 {
 	char c;
-	int y,m,d,hh,mm,ss;
+	int y, m, d, hh, mm, ss;
 	timestamp_t *when = _when;
 	struct tm tm = { 0 };
 	int i;
@@ -961,11 +967,13 @@ success:
 	*when = utc_mktime(&tm);
 }
 
-#define uddf_datedata(name, offset)				\
-static void uddf_##name(char *buffer, void *_when)		\
-{	timestamp_t *when = _when;				\
-	cur_tm.tm_##name = atoi(buffer) + offset;		\
-	*when = utc_mktime(&cur_tm); }
+#define uddf_datedata(name, offset)                        \
+	static void uddf_##name(char *buffer, void *_when) \
+	{                                                  \
+		timestamp_t *when = _when;                 \
+		cur_tm.tm_##name = atoi(buffer) + offset;  \
+		*when = utc_mktime(&cur_tm);               \
+	}
 
 uddf_datedata(year, 0)
 uddf_datedata(mon, -1)
@@ -975,15 +983,15 @@ uddf_datedata(min, 0)
 
 static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
 {
-	return	MATCH("datetime", uddf_datetime, &dive->when) ||
-		MATCH("diveduration", duration, &dive->dc.duration) ||
-		MATCH("greatestdepth", depth, &dive->dc.maxdepth) ||
-		MATCH("year.date", uddf_year, &dive->when) ||
-		MATCH("month.date", uddf_mon, &dive->when) ||
-		MATCH("day.date", uddf_mday, &dive->when) ||
-		MATCH("hour.time", uddf_hour, &dive->when) ||
-		MATCH("minute.time", uddf_min, &dive->when) ||
-		0;
+	return MATCH("datetime", uddf_datetime, &dive->when) ||
+	       MATCH("diveduration", duration, &dive->dc.duration) ||
+	       MATCH("greatestdepth", depth, &dive->dc.maxdepth) ||
+	       MATCH("year.date", uddf_year, &dive->when) ||
+	       MATCH("month.date", uddf_mon, &dive->when) ||
+	       MATCH("day.date", uddf_mday, &dive->when) ||
+	       MATCH("hour.time", uddf_hour, &dive->when) ||
+	       MATCH("minute.time", uddf_min, &dive->when) ||
+	       0;
 }
 
 /*
@@ -1001,12 +1009,12 @@ static degrees_t parse_degrees(char *buf, char **end)
 	switch (*buf) {
 	case '-':
 		sign = -1;
-		/* fallthrough */
+	/* fallthrough */
 	case '+':
 		buf++;
 	}
 	while (isdigit(*buf)) {
-		value = 10*value + *buf - '0';
+		value = 10 * value + *buf - '0';
 		buf++;
 	}
 
@@ -1300,8 +1308,8 @@ static void event_end(void)
 	if (cur_event.name) {
 		if (strcmp(cur_event.name, "surface") != 0)
 			add_event(dc, cur_event.time.seconds,
-				cur_event.type, cur_event.flags,
-				cur_event.value, cur_event.name);
+				  cur_event.type, cur_event.flags,
+				  cur_event.value, cur_event.name);
 		free((void *)cur_event.name);
 	}
 	cur_event.active = 0;
@@ -1425,7 +1433,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 	/* Make sure it's always NUL-terminated */
 	p[--len] = 0;
 
-	for(;;) {
+	for (;;) {
 		const char *name = node->name;
 		char c;
 		while ((c = *name++) != 0) {
@@ -1514,29 +1522,28 @@ static struct nesting {
 	const char *name;
 	void (*start)(void), (*end)(void);
 } nesting[] = {
-	{ "divecomputerid", dc_settings_start, dc_settings_end },
-	{ "settings", settings_start, settings_end },
-	{ "dive", dive_start, dive_end },
-	{ "Dive", dive_start, dive_end },
-	{ "trip", trip_start, trip_end },
-	{ "sample", sample_start, sample_end },
-	{ "waypoint", sample_start, sample_end },
-	{ "SAMPLE", sample_start, sample_end },
-	{ "reading", sample_start, sample_end },
-	{ "event", event_start, event_end },
-	{ "mix", cylinder_start, cylinder_end },
-	{ "gasmix", cylinder_start, cylinder_end },
-	{ "cylinder", cylinder_start, cylinder_end },
-	{ "weightsystem", ws_start, ws_end },
-	{ "divecomputer", divecomputer_start, divecomputer_end },
-	{ "P", sample_start, sample_end },
+	  { "divecomputerid", dc_settings_start, dc_settings_end },
+	  { "settings", settings_start, settings_end },
+	  { "dive", dive_start, dive_end },
+	  { "Dive", dive_start, dive_end },
+	  { "trip", trip_start, trip_end },
+	  { "sample", sample_start, sample_end },
+	  { "waypoint", sample_start, sample_end },
+	  { "SAMPLE", sample_start, sample_end },
+	  { "reading", sample_start, sample_end },
+	  { "event", event_start, event_end },
+	  { "mix", cylinder_start, cylinder_end },
+	  { "gasmix", cylinder_start, cylinder_end },
+	  { "cylinder", cylinder_start, cylinder_end },
+	  { "weightsystem", ws_start, ws_end },
+	  { "divecomputer", divecomputer_start, divecomputer_end },
+	  { "P", sample_start, sample_end },
 
-	/* Import type recognition */
-	{ "Divinglog", DivingLog_importer },
-	{ "uddf", uddf_importer },
-
-	{ NULL, }
-};
+	  /* Import type recognition */
+	  { "Divinglog", DivingLog_importer },
+	  { "uddf", uddf_importer },
+	  { NULL, }
+  };
 
 static void traverse(xmlNode *root)
 {
@@ -1596,7 +1603,7 @@ const char *preprocess_divelog_de(const char *buffer)
 				return buffer;
 
 		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
-		ret = xmlStringLenDecodeEntities(ctx, ret, strlen(ret),  XML_SUBSTITUTE_REF, 0, 0, 0);
+		ret = xmlStringLenDecodeEntities(ctx, ret, strlen(ret), XML_SUBSTITUTE_REF, 0, 0, 0);
 
 		return ret;
 	}
@@ -1604,7 +1611,7 @@ const char *preprocess_divelog_de(const char *buffer)
 }
 
 void parse_xml_buffer(const char *url, const char *buffer, int size,
-			struct dive_table *table, const char **params, char **error)
+		      struct dive_table *table, const char **params, char **error)
 {
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
@@ -1615,8 +1622,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 		free((char *)res);
 
 	if (!doc) {
-		fprintf(stderr, translate("gettextFromC","Failed to parse '%s'.\n"), url);
-		parser_error(error, translate("gettextFromC","Failed to parse '%s'"), url);
+		fprintf(stderr, translate("gettextFromC", "Failed to parse '%s'.\n"), url);
+		parser_error(error, translate("gettextFromC", "Failed to parse '%s'"), url);
 		return;
 	}
 	reset_all();
@@ -1635,92 +1642,92 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 
 	if (data[2]) {
 		switch (atoi(data[2])) {
-			case 1:
-				/* 1 Mandatory Safety Stop */
-				cur_event.name = strdup("safety stop (mandatory)");
-				break;
-			case 3:
-				/* 3 Deco */
-				/* What is Subsurface's term for going to
+		case 1:
+			/* 1 Mandatory Safety Stop */
+			cur_event.name = strdup("safety stop (mandatory)");
+			break;
+		case 3:
+			/* 3 Deco */
+			/* What is Subsurface's term for going to
 				 * deco? */
-				cur_event.name = strdup("deco");
-				break;
-			case 4:
-				/* 4 Ascent warning */
-				cur_event.name = strdup("ascent");
-				break;
-			case 5:
-				/* 5 Ceiling broken */
-				cur_event.name = strdup("violation");
-				break;
-			case 6:
-				/* 6 Mandatory safety stop ceiling error */
-				cur_event.name = strdup("violation");
-				break;
-			case 7:
-				/* 7 Below deco floor */
-				cur_event.name = strdup("below floor");
-				break;
-			case 8:
-				/* 8 Dive time alarm */
-				cur_event.name = strdup("divetime");
-				break;
-			case 9:
-				/* 9 Depth alarm */
-				cur_event.name = strdup("maxdepth");
-				break;
-			case 10:
-				/* 10 OLF 80% */
-			case 11:
-				/* 11 OLF 100% */
-				cur_event.name = strdup("OLF");
-				break;
-			case 12:
-				/* 12 High ppO2 */
-				cur_event.name = strdup("PO2");
-				break;
-			case 13:
-				/* 13 Air time */
-				cur_event.name = strdup("airtime");
-				break;
-			case 17:
-				/* 17 Ascent warning */
-				cur_event.name = strdup("ascent");
-				break;
-			case 18:
-				/* 18 Ceiling error */
-				cur_event.name = strdup("ceiling");
-				break;
-			case 19:
-				/* 19 Surfaced */
-				cur_event.name = strdup("surface");
-				break;
-			case 20:
-				/* 20 Deco */
-				cur_event.name = strdup("deco");
-				break;
-			case 22:
-				/* 22 Mandatory safety stop violation */
-				cur_event.name = strdup("violation");
-				break;
-			case 257:
-				/* 257 Dive active */
-				/* This seems to be given after surface
+			cur_event.name = strdup("deco");
+			break;
+		case 4:
+			/* 4 Ascent warning */
+			cur_event.name = strdup("ascent");
+			break;
+		case 5:
+			/* 5 Ceiling broken */
+			cur_event.name = strdup("violation");
+			break;
+		case 6:
+			/* 6 Mandatory safety stop ceiling error */
+			cur_event.name = strdup("violation");
+			break;
+		case 7:
+			/* 7 Below deco floor */
+			cur_event.name = strdup("below floor");
+			break;
+		case 8:
+			/* 8 Dive time alarm */
+			cur_event.name = strdup("divetime");
+			break;
+		case 9:
+			/* 9 Depth alarm */
+			cur_event.name = strdup("maxdepth");
+			break;
+		case 10:
+		/* 10 OLF 80% */
+		case 11:
+			/* 11 OLF 100% */
+			cur_event.name = strdup("OLF");
+			break;
+		case 12:
+			/* 12 High ppO2 */
+			cur_event.name = strdup("PO2");
+			break;
+		case 13:
+			/* 13 Air time */
+			cur_event.name = strdup("airtime");
+			break;
+		case 17:
+			/* 17 Ascent warning */
+			cur_event.name = strdup("ascent");
+			break;
+		case 18:
+			/* 18 Ceiling error */
+			cur_event.name = strdup("ceiling");
+			break;
+		case 19:
+			/* 19 Surfaced */
+			cur_event.name = strdup("surface");
+			break;
+		case 20:
+			/* 20 Deco */
+			cur_event.name = strdup("deco");
+			break;
+		case 22:
+			/* 22 Mandatory safety stop violation */
+			cur_event.name = strdup("violation");
+			break;
+		case 257:
+			/* 257 Dive active */
+			/* This seems to be given after surface
 				 * when descending again. Ignoring it. */
-				break;
-			case 258:
-				/* 258 Bookmark */
-				if (data[3]) {
-					cur_event.name = strdup("heading");
-					cur_event.value = atoi(data[3]);
-				} else {
-					cur_event.name = strdup("bookmark");
-				}
-				break;
-			default:
-				cur_event.name = strdup("unknown");
-				cur_event.value = atoi(data[2]);
-				break;
+			break;
+		case 258:
+			/* 258 Bookmark */
+			if (data[3]) {
+				cur_event.name = strdup("heading");
+				cur_event.value = atoi(data[3]);
+			} else {
+				cur_event.name = strdup("bookmark");
+			}
+			break;
+		default:
+			cur_event.name = strdup("unknown");
+			cur_event.value = atoi(data[2]);
+			break;
 		}
 	}
 	event_end();
@@ -1786,7 +1793,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	if (data[8])
 		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		cur_dive->dc.watertemp.mkelvin  = C_to_mkelvin(atoi(data[9]));
+		cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
 	/*
 	 * TODO: handle multiple cylinders
@@ -1817,7 +1824,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	profileBlob = (float *)data[17];
 	tempBlob = (unsigned char *)data[18];
 	pressureBlob = (int *)data[19];
-	for (i=0; interval && i * interval < cur_dive->duration.seconds; i++) {
+	for (i = 0; interval && i * interval < cur_dive->duration.seconds; i++) {
 		sample_start();
 		cur_sample->time.seconds = i * interval;
 		if (profileBlob)
@@ -1828,21 +1835,21 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 		if (data[18] && data[18][0])
 			cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 		if (data[19] && data[19][0])
-			cur_sample->cylinderpressure.mbar = pressureBlob[i] ;
+			cur_sample->cylinderpressure.mbar = pressureBlob[i];
 		sample_end();
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC","Database query get_events failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_events failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC","Database query get_tags failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_tags failed.\n"));
 		return 1;
 	}
 
@@ -1863,7 +1870,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 }
 
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			struct dive_table *table, char **error)
+		     struct dive_table *table, char **error)
 {
 	int retval;
 	char *err = NULL;
@@ -1876,7 +1883,7 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC","Database query failed '%s'.\n"), url);
+		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
 		return 1;
 	}
 
@@ -1925,7 +1932,7 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	if (data[5])
 		cur_sample->cns = atoi(data[5]);
 	if (data[6])
-		cur_sample->stopdepth.mm = metric ?  atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
 
 	/* We don't actually have data[3], but it should appear in the
 	 * SQL query at some point.
@@ -1987,21 +1994,21 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC","Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC","Database query get_changes failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_changes failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC","Database query get_profile_sample failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_profile_sample failed.\n"));
 		return 1;
 	}
 
@@ -2012,7 +2019,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 
 
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			struct dive_table *table, char **error)
+			    struct dive_table *table, char **error)
 {
 	int retval;
 	char *err = NULL;
@@ -2023,7 +2030,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC","Database query failed '%s'.\n"), url);
+		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
 		return 1;
 	}
 
@@ -2045,21 +2052,21 @@ static struct xslt_files {
 	const char *file;
 	const char *attribute;
 } xslt_files[] = {
-	{ "SUUNTO", "SuuntoSDM.xslt", NULL },
-	{ "Dive", "SuuntoDM4.xslt", "xmlns" },
-	{ "Dive", "shearwater.xslt", "version" },
-	{ "JDiveLog", "jdivelog2subsurface.xslt", NULL },
-	{ "dives", "MacDive.xslt", NULL },
-	{ "DIVELOGSDATA", "divelogs.xslt", NULL },
-	{ "uddf", "uddf.xslt", NULL },
-	{ "UDDF", "uddf.xslt", NULL },
-	{ "profile", "udcf.xslt", NULL },
-	{ "Divinglog", "DivingLog.xslt", NULL },
-	{ "csv", "csv2xml.xslt", NULL },
-	{ "sensuscsv", "sensuscsv.xslt", NULL },
-	{ "manualcsv", "manualcsv2xml.xslt", NULL },
-	{ NULL, }
-};
+	  { "SUUNTO", "SuuntoSDM.xslt", NULL },
+	  { "Dive", "SuuntoDM4.xslt", "xmlns" },
+	  { "Dive", "shearwater.xslt", "version" },
+	  { "JDiveLog", "jdivelog2subsurface.xslt", NULL },
+	  { "dives", "MacDive.xslt", NULL },
+	  { "DIVELOGSDATA", "divelogs.xslt", NULL },
+	  { "uddf", "uddf.xslt", NULL },
+	  { "UDDF", "uddf.xslt", NULL },
+	  { "profile", "udcf.xslt", NULL },
+	  { "Divinglog", "DivingLog.xslt", NULL },
+	  { "csv", "csv2xml.xslt", NULL },
+	  { "sensuscsv", "sensuscsv.xslt", NULL },
+	  { "manualcsv", "manualcsv2xml.xslt", NULL },
+	  { NULL, }
+  };
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **error)
 {
@@ -2092,7 +2099,7 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params, char **err
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
-			parser_error(error, translate("gettextFromC","Can't open stylesheet %s"), info->file);
+			parser_error(error, translate("gettextFromC", "Can't open stylesheet %s"), info->file);
 			return doc;
 		}
 		transformed = xsltApplyStylesheet(xslt, doc, params);
