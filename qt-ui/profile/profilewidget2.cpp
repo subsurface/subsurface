@@ -126,7 +126,7 @@ void ProfileWidget2::setupItemOnScene()
 	profileYAxis->setTickSize(1);
 	profileYAxis->setLineSize(96);
 
-	timeAxis->setLineSize(94);
+	timeAxis->setLineSize(92);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
@@ -150,7 +150,7 @@ void ProfileWidget2::setupItemOnScene()
 	meanDepth->setZValue(1);
 	meanDepth->setAxis(profileYAxis);
 
-	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
@@ -207,13 +207,13 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.depth.pos.off.setX(-2);
 	itemPos.depth.pos.off.setY(3);
 	itemPos.depth.expanded.setP1(QPointF(0,0));
-	itemPos.depth.expanded.setP2(QPointF(0,94));
+	itemPos.depth.expanded.setP2(QPointF(0,86));
 	itemPos.depth.shrinked.setP1(QPointF(0,0));
 	itemPos.depth.shrinked.setP2(QPointF(0,60));
 
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
-	itemPos.time.pos.on.setY(97);
+	itemPos.time.pos.on.setY(95);
 	itemPos.time.pos.off.setX(3);
 	itemPos.time.pos.off.setY(110);
 	itemPos.time.expanded.setP1(QPointF(0,0));
@@ -221,7 +221,7 @@ void ProfileWidget2::setupItemSizes()
 
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
-	itemPos.partialPressure.pos.on.setY(67);
+	itemPos.partialPressure.pos.on.setY(65);
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0,0));
@@ -237,7 +237,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.cylinder.shrinked.setP1(QPointF(0,0));
 	itemPos.cylinder.shrinked.setP2(QPointF(0,20));
 
-		// Temperature axis config
+	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
 	itemPos.temperature.pos.on.setY(40);
 	itemPos.temperature.pos.off.setX(-10);
@@ -248,9 +248,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.shrinked.setP2(QPointF(0,15));
 
 	itemPos.dcLabel.on.setX(3);
-	itemPos.dcLabel.on.setY(97);
+	itemPos.dcLabel.on.setY(100);
 	itemPos.dcLabel.off.setX(-10);
-	itemPos.dcLabel.off.setY(97);
+	itemPos.dcLabel.off.setY(100);
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
