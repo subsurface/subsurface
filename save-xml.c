@@ -613,10 +613,20 @@ void save_dives_logic(const char *filename, const bool select_only)
 {
 	struct membuffer buf = {0};
 	FILE *f;
+	char extension[][5] = {"xml", "ssrf", ""};
+	int i = 0;
+	int flen = strlen(filename);
 
 	save_dives_buffer(&buf, select_only);
 	/* Maybe we might want to make this configurable? */
-	save_backup(filename, "xml", "bak");
+	while (extension[i][0] != '\0') {
+		int elen = strlen(extension[i]);
+		if (strcasecmp(filename + flen - elen, extension[i]) == 0) {
+			save_backup(filename, extension[i], "bak");
+			break;
+		}
+		i++;
+	}
 	f = subsurface_fopen(filename, "w");
 	if (f) {
 		flush_buffer(&buf, f);
