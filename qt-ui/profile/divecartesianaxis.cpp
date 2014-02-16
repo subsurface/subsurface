@@ -118,7 +118,8 @@ void DiveCartesianAxis::updateTicks()
 	// unused so far:
 	// QGraphicsView *view = scene()->views().first();
 	double steps = (max - min) / interval;
-	double currValue = min;
+	double currValueText = min;
+	double currValueLine = min;
 
 	if (steps < 1)
 		return;
@@ -144,15 +145,12 @@ void DiveCartesianAxis::updateTicks()
 	}
 	stepSize = stepSize / steps;
 
-	for (int i = 0, count = labels.size(); i < count; i++, currValue += interval) {
-		qreal childPos;
-		if (orientation == TopToBottom || orientation == LeftToRight) {
-			childPos = begin + i * stepSize;
-		} else {
-			childPos = begin - i * stepSize;
-		}
+	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
+		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+			begin + i * stepSize :
+			begin - i * stepSize;
 
-		labels[i]->setText(textForValue(currValue));
+		labels[i]->setText(textForValue(currValueText));
 		if ( orientation == LeftToRight || orientation == RightToLeft) {
 			labels[i]->animateMoveTo(childPos, m.y1() + tick_size);
 		} else {
@@ -160,8 +158,20 @@ void DiveCartesianAxis::updateTicks()
 		}
 	}
 
+	for (int i = 0, count = lines.size(); i < count; i++, currValueLine += interval) {
+		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+			begin + i * stepSize :
+			begin - i * stepSize;
+
+		if ( orientation == LeftToRight || orientation == RightToLeft) {
+			lines[i]->animateMoveTo(childPos, m.y1());
+		} else {
+			lines[i]->animateMoveTo(m.x1(), childPos);
+		}
+	}
+
 	// Add's the rest of the needed Ticks / Text.
-	for (int i = labels.size(); i < steps; i++,  currValue += interval) {
+	for (int i = labels.size(); i < steps; i++,  currValueText += interval) {
 		qreal childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 		childPos = begin + i * stepSize;
@@ -169,9 +179,9 @@ void DiveCartesianAxis::updateTicks()
 			childPos = begin - i * stepSize;
 		}
 		DiveTextItem *label = new DiveTextItem(this);
-		label->setText(textForValue(currValue));
+		label->setText(textForValue(currValueText));
 		label->setBrush(QBrush(textColor));
-		label->setBrush(colorForValue(currValue));
+		label->setBrush(colorForValue(currValueText));
 		label->setScale(fontLabelScale());
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
