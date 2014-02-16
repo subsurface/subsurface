@@ -37,6 +37,7 @@ public:
 	void setTextColor(const QColor& color);
 	void animateChangeLine(const QLineF& newLine);
 	void setTextVisible(bool arg1);
+	void setLinesVisible(bool arg1);
 	void setLineSize(qreal lineSize);
 	int unitSystem;
 public slots:
@@ -57,6 +58,7 @@ protected:
 	double tick_size;
 	QColor textColor;
 	bool textVisibility;
+	bool lineVisibility;
 	double labelScale;
 	qreal line_size;
 };

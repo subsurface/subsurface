@@ -101,6 +101,17 @@ void DiveCartesianAxis::setTextVisible(bool arg1)
 	}
 }
 
+void DiveCartesianAxis::setLinesVisible(bool arg1)
+{
+	if(lineVisibility == arg1){
+		return;
+	}
+	lineVisibility  = arg1;
+	Q_FOREACH(DiveLineItem *item, lines){
+		item->setVisible(lineVisibility );
+	}
+}
+
 template<typename T> void emptyList( QList<T*>& list, double steps){
 	if (!list.isEmpty() && list.size() > steps) {
 		while (list.size() > steps) {
@@ -223,9 +234,10 @@ void DiveCartesianAxis::updateTicks()
 		}
 	}
 
-	Q_FOREACH(DiveTextItem *item, labels){
+	Q_FOREACH(DiveTextItem *item, labels)
 		item->setVisible(textVisibility);
-	}
+	Q_FOREACH(DiveLineItem  *item, lines)
+		item->setVisible(lineVisibility);
 }
 
 void DiveCartesianAxis::animateChangeLine(const QLineF& newLine)
