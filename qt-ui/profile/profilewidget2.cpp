@@ -124,6 +124,9 @@ void ProfileWidget2::setupItemOnScene()
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10,30));
 	profileYAxis->setTickSize(1);
+	profileYAxis->setLineSize(96);
+
+	timeAxis->setLineSize(96);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
@@ -131,6 +134,7 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setMinimum(0);
 	gasYAxis->setModel(dataModel);
 	gasYAxis->setFontLabelScale(0.7);
+	gasYAxis->setLineSize(96);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setTickSize(2);

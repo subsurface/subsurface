@@ -65,7 +65,7 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	labelScale(1.0),
 	tick_size(0),
 	textVisibility(true),
-	line_size(-1)
+	line_size(1)
 {
 	setPen(gridPen());
 }
@@ -192,6 +192,32 @@ void DiveCartesianAxis::updateTicks()
 			label->setAlignment(Qt::AlignVCenter| Qt::AlignLeft);
 			label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
 			label->animateMoveTo(m.x1() - tick_size, childPos);
+		}
+	}
+
+	// Add's the rest of the needed Ticks / Text.
+	for (int i = lines.size(); i < steps; i++,  currValueText += interval) {
+		qreal childPos;
+		if (orientation == TopToBottom || orientation == LeftToRight) {
+		childPos = begin + i * stepSize;
+		} else {
+			childPos = begin - i * stepSize;
+		}
+		DiveLineItem *line = new DiveLineItem(this);
+		QPen pen;
+		pen.setBrush(getColor(TIME_GRID));
+		pen.setCosmetic(true);
+		pen.setWidthF(2);
+		line->setPen(pen);
+		lines.push_back(line);
+		if (orientation == RightToLeft || orientation == LeftToRight) {
+			line->setLine(0,-line_size,0, 0);
+			line->animateMoveTo(childPos, m.y1());
+		} else {
+			QPointF p1 = mapFromScene(3, 0);
+			QPointF p2 = mapFromScene(line_size, 0);
+			line->setLine(p1.x(), 0, p2.x(), 0);
+			line->animateMoveTo(m.x1(), childPos);
 		}
 	}
 
