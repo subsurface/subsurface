@@ -183,6 +183,7 @@ void DiveCartesianAxis::updateTicks()
 		label->setBrush(QBrush(textColor));
 		label->setBrush(colorForValue(currValueText));
 		label->setScale(fontLabelScale());
+		label->setZValue(1);
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
@@ -209,6 +210,7 @@ void DiveCartesianAxis::updateTicks()
 		pen.setCosmetic(true);
 		pen.setWidthF(2);
 		line->setPen(pen);
+		line->setZValue(0);
 		lines.push_back(line);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0,-line_size,0, 0);
