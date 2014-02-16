@@ -347,6 +347,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
 	meanDepth->setMeanDepth(pInfo.meandepth);
+	meanDepth->setLine(0,0,timeAxis->posAtValue(d->duration.seconds),0);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
