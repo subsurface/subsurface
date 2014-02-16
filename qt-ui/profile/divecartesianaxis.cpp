@@ -62,8 +62,8 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	min(0),
 	max(0),
 	interval(1),
-	labelScale(1.0),
 	tick_size(0),
+	labelScale(1.0),
 	textVisibility(true),
 	line_size(1)
 {

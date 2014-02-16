@@ -275,7 +275,6 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 {
 	double deg;
 	const char *unit;
-	static text_render_options_t tro = {TEMP_TEXT_SIZE, TEMP_TEXT};
 	deg = get_temp_units(mkelvin, &unit);
 
 	DiveTextItem *text = new DiveTextItem(this);
@@ -301,8 +300,6 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex& topLeft, const QMo
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 	int last_index = -1;
-	int lift_pen = false;
-	int first_plot = true;
 	QPolygonF boundingPoly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
 	polygons.clear();
 
