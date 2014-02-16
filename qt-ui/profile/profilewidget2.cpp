@@ -232,20 +232,20 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.cylinder.pos.on.setY(20);
 	itemPos.cylinder.pos.off.setX(-10);
 	itemPos.cylinder.pos.off.setY(20);
-	itemPos.cylinder.expanded.setP1(QPointF(0,0));
-	itemPos.cylinder.expanded.setP2(QPointF(0,20));
+	itemPos.cylinder.expanded.setP1(QPointF(0,15));
+	itemPos.cylinder.expanded.setP2(QPointF(0,50));
 	itemPos.cylinder.shrinked.setP1(QPointF(0,0));
-	itemPos.cylinder.shrinked.setP2(QPointF(0,10));
+	itemPos.cylinder.shrinked.setP2(QPointF(0,20));
 
 		// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
 	itemPos.temperature.pos.on.setY(40);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
-	itemPos.temperature.expanded.setP1(QPointF(0,0));
-	itemPos.temperature.expanded.setP2(QPointF(0,20));
-	itemPos.temperature.shrinked.setP1(QPointF(0,0));
-	itemPos.temperature.shrinked.setP2(QPointF(0,10));
+	itemPos.temperature.expanded.setP1(QPointF(0,30));
+	itemPos.temperature.expanded.setP2(QPointF(0,50));
+	itemPos.temperature.shrinked.setP1(QPointF(0,5));
+	itemPos.temperature.shrinked.setP2(QPointF(0,15));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(97);
