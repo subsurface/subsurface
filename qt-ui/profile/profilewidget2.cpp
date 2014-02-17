@@ -10,6 +10,7 @@
 #include "divetextitem.h"
 #include "divetooltipitem.h"
 #include "animationfunctions.h"
+#include "planner.h"
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -542,4 +543,81 @@ void ProfileWidget2::setProfileState()
 	Q_FOREACH(DiveEventItem *event, eventItems){
 		event->setVisible(true);
 	}
+}
+
+extern struct ev_select *ev_namelist;
+extern int evn_allocated;
+extern int evn_used;
+
+void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (selected_dive == -1)
+		return;
+	QMenu m;
+	QMenu *gasChange = m.addMenu(tr("Add Gas Change"));
+	GasSelectionModel *model = GasSelectionModel::instance();
+	model->repopulate();
+	int rowCount = model->rowCount();
+	for (int i = 0; i < rowCount; i++) {
+		QAction *action = new QAction(&m);
+		action->setText( model->data(model->index(i, 0),Qt::DisplayRole).toString());
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+		action->setData(event->globalPos());
+		gasChange->addAction(action);
+	}
+	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
+	action->setData(event->globalPos());
+	QList<QGraphicsItem*> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
+	Q_FOREACH(QGraphicsItem *i, itemsAtPos) {
+		EventItem *item = dynamic_cast<EventItem*>(i);
+		if (!item)
+			continue;
+		action = new QAction(&m);
+		action->setText(tr("Remove Event"));
+		action->setData(QVariant::fromValue<void*>(item)); // so we know what to remove.
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
+		m.addAction(action);
+		action = new QAction(&m);
+		action->setText(tr("Hide similar events"));
+		action->setData(QVariant::fromValue<void*>(item));
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
+		m.addAction(action);
+		break;
+	}
+	bool some_hidden = false;
+	for (int i = 0; i < evn_used; i++) {
+		if (ev_namelist[i].plot_ev == false) {
+			some_hidden = true;
+			break;
+		}
+	}
+	if (some_hidden) {
+		action = m.addAction(tr("Unhide all events"), this, SLOT(unhideEvents()));
+		action->setData(event->globalPos());
+	}
+	m.exec(event->globalPos());
+}
+
+void ProfileWidget2::changeGas()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	QString gas = action->text();
+	// backup the things on the dataModel, since we will clear that out.
+	int diveComputer = dataModel->dcShown();
+	int diveId = dataModel->id();
+	int o2, he;
+	int seconds = timeAxis->valueAt(scenePos);
+	struct dive *d = getDiveById(diveId);
+
+	validate_gas(gas.toUtf8().constData(), &o2, &he);
+	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, o2, he));
+	// this means we potentially have a new tank that is being used and needs to be shown
+	fixup_dive(d);
+	MainWindow::instance()->information()->updateDiveInfo(selected_dive);
+	mark_divelist_changed(true);
+	// force the redraw of the dive.
+	//TODO: find a way to make this do not need a full redraw
+	dataModel->clear();
+	plotDives(QList<dive*>() << getDiveById(diveId));
 }

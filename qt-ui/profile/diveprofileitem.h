@@ -142,7 +142,6 @@ private:
 	int meanDepth;
 	DiveTextItem *leftText;
 	DiveTextItem *rightText;
-	DiveCartesianAxis *axis;
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem{

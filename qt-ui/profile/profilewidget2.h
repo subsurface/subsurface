@@ -54,11 +54,13 @@ public slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 	void setEmptyState();
 	void setProfileState();
-
+	void changeGas();
 protected:
 	virtual void resizeEvent(QResizeEvent* event);
 	virtual void wheelEvent(QWheelEvent* event);
 	virtual void mouseMoveEvent(QMouseEvent* event);
+	virtual void contextMenuEvent(QContextMenuEvent* event);
+
 private: /*methods*/
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint& pos);
