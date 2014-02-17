@@ -88,7 +88,7 @@
       <xsl:value-of select="substring-before(node()/depth/@mean, ' ')"/>
     </MEANDEPTH>
     <AIRTEMP>
-      <xsl:value-of select="substring-before(divetemperature/@air, ' ')"/>
+      <xsl:value-of select="substring-before(node()/temperature/@air, ' ')"/>
     </AIRTEMP>
     <WATERTEMPMAXDEPTH>
       <xsl:value-of select="substring-before(node()/temperature/@water, ' ')"/>
