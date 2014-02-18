@@ -20,7 +20,7 @@ char zoomed_plot = 0;
 char dc_number = 0;
 
 
-static struct plot_data *last_pi_entry = NULL;
+static struct plot_data *last_pi_entry = NULL, *last_pi_entry_new = NULL;
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
@@ -1360,9 +1360,9 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	init_decompression(dive);
-	if (last_pi_entry)                          /* Create the new plot data */
-		free((void *)last_pi_entry);
-	last_pi_entry = populate_plot_entries(dive, dc, pi);
+	if (last_pi_entry_new)                          /* Create the new plot data */
+		free((void *)last_pi_entry_new);
+	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 	check_gas_change_events(dive, dc, pi);      /* Populate the gas index from the gas change events */
 	setup_gas_sensor_pressure(dive, dc, pi);    /* Try to populate our gas pressure knowledge */
 	populate_pressure_information(dive, dc, pi);/* .. calculate missing pressure entries */
