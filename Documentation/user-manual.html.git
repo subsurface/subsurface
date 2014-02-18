@@ -902,15 +902,43 @@ system of the computer on which <em>Subsurface</em> is running.
 </li>
 <li>
 <p>
+If all the dives on the dive computer need to be downloaded, check the
+   checkbox <em>Force download of all dives</em>. Normally, <em>Subsurface</em> only downloads
+   dives after the date-time of the last dive in the <strong>Dive List</strong> panel. If one
+   or more of your dives in <em>Subsurface</em> have been accidentally deleted or if there
+   are older dives that still need to be downloaded from the dive computer, this
+   checkbox needs to be activated. Some dive computers (e.g. Mares Puck) do not provide
+   a contents list to <em>Subsurface</em> before the download in order to select only new dives.
+   Consequently, for these dive computers, all dives are downloaded
+   irrespective of the status of this check box.
+</p>
+</li>
+<li>
+<p>
+If the checkbox <em>Always prefer downloaded dives</em>
+   has been checked and, during download, dives with identical date-times exist on
+   the dive computer and on the <em>Subsurface</em>
+   <strong>Dive List</strong> panel, the record in the <em>Subsurface</em> divelog will be overwritten
+   by the record from the dive computer
+</p>
+</li>
+<li>
+<p>
+Do <strong>not</strong> check the checkboxes labeled <em>Save libdivecomputer logfile</em> and
+    <em>Save libdivecomputer dumpfile</em>. These are only used as diagnostic tools
+    when problems with downloads are experienced (see below).
+</p>
+</li>
+<li>
+<p>
 The <em>OK</em> button must then be clicked. Dialogue <strong>B</strong> in the figure above
 appears.
 </p>
 </li>
 <li>
 <p>
-With communication established, one can see how the data is
-retrieved from the
-dive computer.
+With communication established, one can see how the data are
+retrieved from the dive computer.
 Depending on the make of the dive computer and/or number of recorded dives, this
 could take some time. The user should be patient. The <em>Download</em> dialogue
 shows a
@@ -918,7 +946,7 @@ progress bar at the bottom of the dialogue (for some dive computers the
 progress information could be inaccurate as we cannot determine how much
 downloadable data there is until all data have been downloaded). When the
 download of the dive information is complete, all the imported dives appear
-in the Dive List, sorted by date and time. One can then disconnect and
+in the Dive List, sorted by date and time. Disconnect and
 switch off the dive
 computer to conserve its battery power.
 If a particular dive is selected, the Dive Profile panel shows an informative
@@ -935,6 +963,7 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 </ul></div>
 <div class="sidebarblock">
 <div class="content">
+<div class="paragraph"><p><strong>PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?</strong></p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -949,24 +978,27 @@ software? Has it worked before, or is this the first time the cable is being use
 4) Consult <strong>Appendix A</strong> and make sure that the correct Mount Point
 was specified (see above).
 5) On Unix-like operating systems, does the user have write permission to the
-USB port? If not, users should consult appendix <strong>A</strong>.</td>
+USB port? If not, users should consult <strong>Appendix A</strong>.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>If the <em>Subsurface</em> computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility that the cable or USB adaptor is faulty. A faulty cable is the most
 common cause of communication failure between dive computer and <em>Subsurface</em>
-computer. It is also possible that the <em>Subsurface</em> computer is missing
- data, one should perform a download with the following
+computer. It is also possible that the <em>Subsurface</em> computer cannot interpret
+the data. Perform a download for diagnostic purposes with the following
 two check boxes checked in the download dialogue discussed above:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>Save libdivecomputer logfile
 Save libdivecomputer dumpfile</code></pre>
 </div></div>
-<div class="paragraph"><p>When checking each of these boxes, the user is prompted to select a folder to
-save the file into. The default folder is the one in which the <em>Subsurface</em>
-dive log is kept. <strong>Important:</strong> After downloading, no dives are shown in the
+<div class="paragraph"><p><strong>Important</strong>: These check boxes are only used when problems are ancountered
+during the download process: under normal circumstances they should not be checked.
+When checking these boxes, the user is prompted to select a folder to
+save the information to. The default folder is the one in which the <em>Subsurface</em>
+dive log is kept. <strong>Important:</strong> After downloading with the above checkboxes
+checked, no dives are shown in the
 <strong>Dive List</strong> but two files are created in the folder selected above:</p></div>
 <div class="literalblock">
 <div class="content">
@@ -1047,7 +1079,7 @@ were stored using that device.
 <li>
 <p>
 The coordinates can be entered by hand if they are known, using one of
-three formats with latitude followed by longitude:
+four formats with latitude followed by longitude:
 </p>
 <div class="literalblock">
 <div class="content">
@@ -1145,7 +1177,7 @@ either press <em>ENTER</em> on the keyboard or click outside the cell
 that contains
 the cursor. Information for any additional cylinders can be added by using the<br />
 button at the top right hand. Following is an example of a complete description
-for a dive using two cylinders (air and EAN40):</p></div>
+for a dive using two cylinders (air and EAN50):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CylinderDataEntry3.jpg" alt="FIGURE: a completed cylinder dive information table" />
@@ -1200,8 +1232,7 @@ that the new data should be saved.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data">3.3. Importing dive information from other digital data sources or other data</h3>
-<div class="paragraph"><p>formats</p></div>
+<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data_formats">3.3. Importing dive information from other digital data sources or other data formats</h3>
 <div class="paragraph" id="S_ImportingAlienDiveLogs"><p>If a user has been diving for some time, it&#8217;s possible that several dives were
 logged using other dive log software. All this information needs not
 be typed by hand into <em>Subsurface</em>, because these divelogs can probably be
@@ -1296,16 +1327,17 @@ accessible through the Import dialogue are also supported, as explained below.</
 <div class="sect3">
 <h4 id="_importing_from_mares_dive_organiser_v2_1">3.3.2. Importing from Mares Dive Organiser V2.1</h4>
 <div class="paragraph"><p>Since Mares utilise proprietory Microsoft software not compatible with
-multi-platform software, these dive logs cannot be directly imported into
+multi-platform applications, these dive logs cannot be
+directly imported into
 <em>Subsurface</em>. Mares dive logs need to be imported using a three-step process,
 using <em>www.divelogs.de</em> as a mechanism to extract the dive information from
 the file.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-The dive log data from Mares Dive Organiser need to be exported to the users
+The dive log data from Mares Dive Organiser need to be exported to the user&#8217;s
 desktop, using
- a <em>.sdf</em> file name extension. Users should refer to <a href="#Mares_Export">Appendix
+ a <em>.sdf</em> file name extension. Refer to <a href="#Mares_Export">Appendix
 C</a> for more information.
 </p>
 </li>
@@ -1321,8 +1353,8 @@ The instructions must be carefully followed to transfer the dive information
 </li>
 <li>
 <p>
-Finally, the instructions below should be followed in order to import dives
-from <em>divelogs.de</em> to <em>Subsurface</em>.
+Finally,  import the dives
+from <em>divelogs.de</em> to <em>Subsurface</em>, using the instructions below.
 </p>
 </li>
 </ul></div>
@@ -1332,13 +1364,13 @@ from <em>divelogs.de</em> to <em>Subsurface</em>.
 <div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. The <em>Import&#8594;Import form Divelogs.de</em> option should be selected
 from the Main Menu. This
-brings up a dialogue box (see figure on left [<strong>A</strong>] below). one then needs to enter a
+brings up a dialogue box (see figure on left [<strong>A</strong>] below). Enter a
 user-ID and password for <em>divelogs.de</em> into the appropriate fields and then
 select
 the <em>Download</em> button. Download from <em>divelogs.de</em> starts immediately,
 displaying a progress bar in the dialogue box. At the and of the download, the
-succes status is indicated (see figure on the right [<strong>B</strong>], below). The
-<em>Apply</em> button should then be selected. The imported dives appear in the
+success status is indicated (see figure on the right [<strong>B</strong>], below). The
+<em>Apply</em> button should then be selected, after which the imported dives appear in the
 <em>Subsurface</em> <strong>Dive List</strong> panel.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -1409,21 +1441,18 @@ ppO2:           column 4</code></pre>
 </div></div>
 </li>
 </ol></div>
-<div class="paragraph"><p>Armed with this information, importing it into <em>Subsurface</em> is a
-straightforward process. User should select
-<em>Import&#8594;Import Log Files</em> from the main menu. In the appearing file
-selection menu, users need to select one or more CSV files. Its format is
-detected by the file
-extension, and a common configuration dialog is presented for all the
-files with a CSV extension. The configuration dialog is like the following:</p></div>
+<div class="paragraph"><p>Armed with this information, importing the data into <em>Subsurface</em> is
+straightforward. Select
+<em>Import&#8594;Import Log Files</em> from the main menu. In the resulting file
+selection menu, select oa CSV files, after which a common configuration dialog
+appears for all the
+files with a CSV extension:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Import_CSV1.jpg" alt="FIGURE: CSV download dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>Then the user must specify the name of the CSV file or select it from the
-browser button on the right.
-There are pre-configured definitions for some dive computers, e.g. the APD
+<div class="paragraph"><p>There are pre-configured definitions for some dive computers, e.g. the APD
 rebreathers. If the user&#8217;s dive computer is on this list, it should be selected
 using the dropdown
 box labeled <em>Pre-configured imports</em>. Finally the <em>OK</em> should be clicked and
@@ -3269,7 +3298,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-02-13 22:37:50 PST
+Last updated 2014-02-18 08:46:30 PST
 </div>
 </div>
 </body>
