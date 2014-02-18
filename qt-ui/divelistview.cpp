@@ -834,33 +834,26 @@ void DiveListView::loadImages()
 		for_each_dive(j, dive){
 			if (!dive->selected)
 				continue;
+			// FIXME: this adds the events only to the first DC
 			if (dive->when - 3600 < imagetime && dive->when + dive->duration.seconds + 3600 > imagetime){
 				if (dive->when > imagetime) {
-					;  // Before dive
+					// Before dive
 					add_event(&(dive->dc), 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					MainWindow::instance()->refreshDisplay();
-					mark_divelist_changed(true);
-				}
-				else if (dive->when + dive->duration.seconds < imagetime){
-					;  // After dive
+				} else if (dive->when + dive->duration.seconds < imagetime){
+					// After dive
 					add_event(&(dive->dc), dive->duration.seconds, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					MainWindow::instance()->refreshDisplay();
-					mark_divelist_changed(true);
-				}
-				else {
+				} else {
 					add_event(&(dive->dc), imagetime - dive->when, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					MainWindow::instance()->refreshDisplay();
-					mark_divelist_changed(true);
 				}
 				if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)){
 					dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
 					dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
-					mark_divelist_changed(true);
-					MainWindow::instance()->refreshDisplay();
 				}
+				mark_divelist_changed(true);
 			}
 		}
 	}
+	MainWindow::instance()->refreshDisplay();
 }
 
 void DiveListView::uploadToDivelogsDE()
