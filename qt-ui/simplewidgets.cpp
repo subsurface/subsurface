@@ -177,7 +177,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	EXIFInfo exiv;
 	int retval;
 	QPixmap picture;
-	QDateTime dcDateTime = QDateTime::QDateTime();
+	QDateTime dcDateTime = QDateTime();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
 							      tr("Open Image File"),
 							      MainWindow().dive_list()->lastUsedImageDir(),
@@ -247,7 +247,7 @@ void ShiftImageTimesDialog::setOffset(time_t offset)
 		ui.backwards->setChecked(TRUE);
 		offset *= -1;
 	}
-	ui.timeEdit->setTime(QTime::QTime(offset / 3600, (offset % 3600) / 60, offset % 60));
+	ui.timeEdit->setTime(QTime(offset / 3600, (offset % 3600) / 60, offset % 60));
 }
 
 bool isGnome3Session()
