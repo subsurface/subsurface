@@ -52,7 +52,7 @@ public slots:
 	void shiftTimes();
 	void loadImages();
 	void uploadToDivelogsDE();
-	QString lastUsedImageDir();
+	static QString lastUsedImageDir();
 
 signals:
 	void currentDiveChanged(int divenr);
