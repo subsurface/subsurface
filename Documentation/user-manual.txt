@@ -469,12 +469,31 @@ particular dive
 computer and, in some cases, how to do the correct settings to the operating
 system of the computer on which _Subsurface_ is running.
 
+ - If all the dives on the dive computer need to be downloaded, check the
+   checkbox _Force download of all dives_. Normally, _Subsurface_ only downloads
+   dives after the date-time of the last dive in the *Dive List* panel. If one
+   or more of your dives in _Subsurface_ have been accidentally deleted or if there
+   are older dives that still need to be downloaded from the dive computer, this
+   checkbox needs to be activated. Some dive computers (e.g. Mares Puck) do not provide
+   a contents list to _Subsurface_ before the download in order to select only new dives.
+   Consequently, for these dive computers, all dives are downloaded
+   irrespective of the status of this check box.
+
+ - If the checkbox _Always prefer downloaded dives_
+   has been checked and, during download, dives with identical date-times exist on
+   the dive computer and on the _Subsurface_
+   *Dive List* panel, the record in the _Subsurface_ divelog will be overwritten
+   by the record from the dive computer
+
+ -  Do *not* check the checkboxes labeled _Save libdivecomputer logfile_ and
+    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
+    when problems with downloads are experienced (see below).
+
  -  The _OK_ button must then be clicked. Dialogue *B* in the figure above
 appears.
 
- - With communication established, one can see how the data is
-retrieved from the
-dive computer.
+ - With communication established, one can see how the data are
+retrieved from the dive computer.
 Depending on the make of the dive computer and/or number of recorded dives, this
 could take some time. The user should be patient. The _Download_ dialogue
 shows a
@@ -482,7 +501,7 @@ progress bar at the bottom of the dialogue (for some dive computers the
 progress information could be inaccurate as we cannot determine how much
 downloadable data there is until all data have been downloaded). When the
 download of the dive information is complete, all the imported dives appear
-in the Dive List, sorted by date and time. One can then disconnect and
+in the Dive List, sorted by date and time. Disconnect and
 switch off the dive
 computer to conserve its battery power.
 If a particular dive is selected, the Dive Profile panel shows an informative
@@ -495,6 +514,7 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 
 
 ****
+*PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?*
 [icon="images/icons/important.png"]
 [IMPORTANT]
 Check the following: 1) Is the dive computer still in PC-communication or
@@ -506,22 +526,25 @@ software? Has it worked before, or is this the first time the cable is being use
 4) Consult *Appendix A* and make sure that the correct Mount Point
 was specified (see above).
 5) On Unix-like operating systems, does the user have write permission to the
-USB port? If not, users should consult appendix *A*.
+USB port? If not, users should consult *Appendix A*.
 
 If the _Subsurface_ computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility that the cable or USB adaptor is faulty. A faulty cable is the most
 common cause of communication failure between dive computer and _Subsurface_
-computer. It is also possible that the _Subsurface_ computer is missing
- data, one should perform a download with the following
+computer. It is also possible that the _Subsurface_ computer cannot interpret
+the data. Perform a download for diagnostic purposes with the following
 two check boxes checked in the download dialogue discussed above:
 
 	Save libdivecomputer logfile
 	Save libdivecomputer dumpfile
 
-When checking each of these boxes, the user is prompted to select a folder to
-save the file into. The default folder is the one in which the _Subsurface_
-dive log is kept. *Important:* After downloading, no dives are shown in the
+*Important*: These check boxes are only used when problems are ancountered
+during the download process: under normal circumstances they should not be checked.
+When checking these boxes, the user is prompted to select a folder to
+save the information to. The default folder is the one in which the _Subsurface_
+dive log is kept. *Important:* After downloading with the above checkboxes
+checked, no dives are shown in the
 *Dive List* but two files are created in the folder selected above:
 
 	subsurface.log
@@ -597,7 +620,7 @@ were stored using that device.
 xref:S_Companion[Click here for more information]
 
 c. The coordinates can be entered by hand if they are known, using one of
-three formats with latitude followed by longitude:
+four formats with latitude followed by longitude:
 
 	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
 	Degrees and decimal minutes, e.g. N30° 13.49760' , E30° 49.30788'
@@ -694,7 +717,7 @@ either press _ENTER_ on the keyboard or click outside the cell
 that contains
 the cursor. Information for any additional cylinders can be added by using the +
 button at the top right hand. Following is an example of a complete description
-for a dive using two cylinders (air and EAN40):
+for a dive using two cylinders (air and EAN50):
 
 image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
@@ -738,8 +761,7 @@ deleted, although the dive profile obtained from the dive computer will be
 retained. When the user exits _Subsurface_ there is a final prompt to confirm
 that the new data should be saved.
 
-=== Importing dive information from other digital data sources or other data
-formats
+=== Importing dive information from other digital data sources or other data formats
 
 [[S_ImportingAlienDiveLogs]]
 
@@ -802,14 +824,15 @@ accessible through the Import dialogue are also supported, as explained below.
 ==== Importing from Mares Dive Organiser V2.1
 
 Since Mares utilise proprietory Microsoft software not compatible with
-multi-platform software, these dive logs cannot be directly imported into
+multi-platform applications, these dive logs cannot be
+directly imported into
 _Subsurface_. Mares dive logs need to be imported using a three-step process,
 using _www.divelogs.de_ as a mechanism to extract the dive information from
 the file.
 
- - The dive log data from Mares Dive Organiser need to be exported to the users
+ - The dive log data from Mares Dive Organiser need to be exported to the user's
 desktop, using
- a _.sdf_ file name extension. Users should refer to xref:Mares_Export[Appendix
+ a _.sdf_ file name extension. Refer to xref:Mares_Export[Appendix
 C] for more information.
  - Data should then be imported into _www.divelogs.de_. One needs to create a user
 account in
@@ -817,8 +840,8 @@ _www.divelogs.de_, log into that web site, then
 select _Import Logbook -> Dive Organiser_ from the menu on the left hand side.
 The instructions must be carefully followed to transfer the dive information
 (in _.sdf_ format) from the Dive Organiser data base to _www.divelogs.de_.
- - Finally, the instructions below should be followed in order to import dives
-from _divelogs.de_ to _Subsurface_.
+ - Finally,  import the dives
+from _divelogs.de_ to _Subsurface_, using the instructions below.
 
 
 [[S_ImportingDivelogsDe]]
@@ -827,13 +850,13 @@ from _divelogs.de_ to _Subsurface_.
 The import of dive information from _divelogs.de_ is simple, using a single
 dialogue box. The _Import->Import form Divelogs.de_ option should be selected
 from the Main Menu. This
-brings up a dialogue box (see figure on left [*A*] below). one then needs to enter a
+brings up a dialogue box (see figure on left [*A*] below). Enter a
 user-ID and password for _divelogs.de_ into the appropriate fields and then
 select
 the _Download_ button. Download from _divelogs.de_ starts immediately,
 displaying a progress bar in the dialogue box. At the and of the download, the
-succes status is indicated (see figure on the right [*B*], below). The
-_Apply_ button should then be selected. The imported dives appear in the
+success status is indicated (see figure on the right [*B*], below). The
+_Apply_ button should then be selected, after which the imported dives appear in the
 _Subsurface_ *Dive List* panel.
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
@@ -893,18 +916,16 @@ instance for the above example:
 	Temperature:	column 5
 	ppO2:		column 4
 
-Armed with this information, importing it into _Subsurface_ is a
-straightforward process. User should select
-_Import->Import Log Files_ from the main menu. In the appearing file
-selection menu, users need to select one or more CSV files. Its format is
-detected by the file
-extension, and a common configuration dialog is presented for all the
-files with a CSV extension. The configuration dialog is like the following:
+Armed with this information, importing the data into _Subsurface_ is
+straightforward. Select
+_Import->Import Log Files_ from the main menu. In the resulting file
+selection menu, select oa CSV files, after which a common configuration dialog
+appears for all the
+files with a CSV extension:
 
 image::images/Import_CSV1.jpg["FIGURE: CSV download dialogue",align="center"]
 
-Then the user must specify the name of the CSV file or select it from the
-browser button on the right.
+
 There are pre-configured definitions for some dive computers, e.g. the APD
 rebreathers. If the user's dive computer is on this list, it should be selected
 using the dropdown
