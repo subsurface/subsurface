@@ -721,7 +721,7 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 
 struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *dc)
 {
-	struct plot_info pi;
+	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
