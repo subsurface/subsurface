@@ -46,6 +46,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 	state(VIEWALL)
 {
+	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
 	ui.setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
