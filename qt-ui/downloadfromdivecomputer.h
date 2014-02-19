@@ -38,6 +38,7 @@ public:
 public slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
+	void on_search_clicked();
 	void on_vendor_currentIndexChanged(const QString& vendor);
 	void on_product_currentIndexChanged();
 

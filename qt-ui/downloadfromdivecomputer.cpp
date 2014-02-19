@@ -240,6 +240,20 @@ void DownloadFromDCWidget::fill_computer_list()
 	qSort(vendorList);
 }
 
+void DownloadFromDCWidget::on_search_clicked()
+{
+	if (ui.vendor->currentText() == "Uemis") {
+		QString dirName = QFileDialog::getExistingDirectory(this,
+								     tr("Find Uemis dive computer"),
+								     QDir::homePath(),
+								     QFileDialog::ShowDirsOnly);
+		qDebug() << dirName;
+		if (ui.device->findText(dirName) == -1)
+			ui.device->addItem(dirName);
+		ui.device->setEditText(dirName);
+	}
+}
+
 void DownloadFromDCWidget::on_cancel_clicked()
 {
 	updateState(CANCELLING);
