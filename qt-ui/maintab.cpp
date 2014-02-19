@@ -680,6 +680,7 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->dive_list()->setFocus();
 }
@@ -803,8 +804,8 @@ void MainTab::rejectChanges()
 		MainWindow::instance()->showProfile();
 		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
 		MainWindow::instance()->refreshDisplay(false);
-		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->setFocus();
 }
 #undef EDIT_TEXT2
