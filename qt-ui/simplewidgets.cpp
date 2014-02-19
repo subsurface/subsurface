@@ -186,7 +186,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 		return;
 
 	picture.load(fileNames.at(0));
-	ui.displayDC->setEnabled(TRUE);
+	ui.displayDC->setEnabled(true);
 	QGraphicsScene *scene = new QGraphicsScene (this);
 
 	scene->addPixmap(picture.scaled(ui.DCImage->size()));
@@ -244,9 +244,9 @@ time_t ShiftImageTimesDialog::amount() const
 void ShiftImageTimesDialog::setOffset(time_t offset)
 {
 	if (offset >= 0) {
-		ui.forward->setChecked(TRUE);
+		ui.forward->setChecked(true);
 	} else {
-		ui.backwards->setChecked(TRUE);
+		ui.backwards->setChecked(true);
 		offset *= -1;
 	}
 	ui.timeEdit->setTime(QTime(offset / 3600, (offset % 3600) / 60, offset % 60));

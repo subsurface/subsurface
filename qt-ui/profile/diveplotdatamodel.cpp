@@ -154,6 +154,6 @@ void DivePlotDataModel::calculateDecompression()
 		return;
 	struct divecomputer *dc = select_dc(&d->dc);
 	init_decompression(d);
-	calculate_deco_information(d, dc, &pInfo, FALSE);
+	calculate_deco_information(d, dc, &pInfo, false);
 	dataChanged(index(0, CEILING), index(pInfo.nr-1, TISSUE_16));
 }
