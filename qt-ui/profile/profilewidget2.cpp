@@ -263,6 +263,8 @@ void ProfileWidget2::setupItemSizes()
 
 	itemPos.heartBeat.pos.on.setX(3);
 	itemPos.heartBeat.pos.on.setY(60);
+	itemPos.heartBeat.expanded.setP1(QPointF(0,0));
+	itemPos.heartBeat.expanded.setP2(QPointF(0,20));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
@@ -547,6 +549,7 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
 	heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
+	heartBeatAxis->setLine(itemPos.heartBeat.expanded);
 	meanDepth->setVisible(true);
 
 	diveComputerText->setVisible(true);
