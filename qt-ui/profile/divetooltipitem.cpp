@@ -144,7 +144,8 @@ ToolTipItem::ToolTipItem(QGraphicsItem* parent) : QGraphicsPathItem(parent),
 	separator(new QGraphicsLineItem(this)),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
 	status(COLLAPSED),
-	timeAxis(0)
+	timeAxis(0),
+	lastTime(-1)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
 
@@ -231,8 +232,12 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis* axis)
 
 void ToolTipItem::refresh(const QPointF& pos)
 {
-	clear();
 	int time = timeAxis->valueAt( pos );
+	if (time == lastTime)
+		return;
+
+	lastTime = time;
+	clear();
 	struct membuffer mb = { 0 };
 
 	get_plot_details_new(&pInfo, time, &mb);

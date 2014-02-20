@@ -56,6 +56,7 @@ private:
 	QRectF nextRectangle;
 	DiveCartesianAxis *timeAxis;
 	plot_info pInfo;
+	int lastTime;
 };
 
 #endif // DIVETOOLTIPITEM_H
