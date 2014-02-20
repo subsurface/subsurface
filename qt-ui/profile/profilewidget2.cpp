@@ -50,6 +50,7 @@ static struct _ItemPos{
 	_Axis time;
 	_Axis cylinder;
 	_Axis temperature;
+	_Axis heartBeat;
 } itemPos;
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) :
@@ -73,7 +74,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	reportedCeiling(new DiveReportedCeiling()),
 	pn2GasItem( new PartialPressureGasItem()),
 	pheGasItem( new PartialPressureGasItem()),
-	po2GasItem( new PartialPressureGasItem())
+	po2GasItem( new PartialPressureGasItem()),
+	heartBeatAxis(new DiveCartesianAxis()),
+	heartBeatItem(new DiveTemperatureItem()) // FIXME: making this a DiveTemperatureItem is a hack
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -111,6 +114,8 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
+	scene()->addItem(heartBeatAxis);
+	scene()->addItem(heartBeatItem);
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		scene()->addItem(tissue);
 	}
@@ -136,6 +141,12 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setModel(dataModel);
 	gasYAxis->setFontLabelScale(0.7);
 	gasYAxis->setLineSize(96);
+
+	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
+	heartBeatAxis->setTickSize(2);
+	heartBeatAxis->setTickInterval(10);
+	heartBeatAxis->setFontLabelScale(0.7);
+	heartBeatAxis->setLineSize(96);
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setTickSize(2);
@@ -163,6 +174,7 @@ void ProfileWidget2::setupItemOnScene()
 	}
 	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS( ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS ) \
@@ -185,7 +197,8 @@ void ProfileWidget2::setupItemOnScene()
 	timeAxis->setLinesVisible(true);
 	profileYAxis->setLinesVisible(true);
 	gasYAxis->setZValue(timeAxis->zValue()+1);
-
+	heartBeatAxis->setTextVisible(true);
+	heartBeatAxis->setLinesVisible(true);
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -247,6 +260,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.expanded.setP2(QPointF(0,50));
 	itemPos.temperature.shrinked.setP1(QPointF(0,5));
 	itemPos.temperature.shrinked.setP2(QPointF(0,15));
+
+	itemPos.heartBeat.pos.on.setX(3);
+	itemPos.heartBeat.pos.on.setY(60);
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
@@ -326,6 +342,11 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
+
+	heartBeatAxis->setMinimum(20); // FIXME: find minimum
+	heartBeatAxis->setMaximum(200); // FIXME: find maximum
+	heartBeatAxis->updateTicks(); // this shows the ticks
+
 	timeAxis->setMaximum(maxtime);
 
 	int i, incr;
@@ -525,7 +546,7 @@ void ProfileWidget2::setProfileState()
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
-
+	heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
 	meanDepth->setVisible(true);
 
 	diveComputerText->setVisible(true);

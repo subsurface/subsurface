@@ -97,6 +97,8 @@ private:
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
+	DiveCartesianAxis *heartBeatAxis;
+	DiveTemperatureItem *heartBeatItem;
 };
 
 #endif // PROFILEWIDGET2_H
