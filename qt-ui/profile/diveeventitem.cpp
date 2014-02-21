@@ -46,8 +46,12 @@ void DiveEventItem::setupPixmap()
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if ((strcmp(internalEvent->name, "bookmark") == 0)) {
 		setPixmap(EVENT_PIXMAP(":flag"));
-	} else if(strcmp(internalEvent->name, "heading") == 0) {
+	} else if (strcmp(internalEvent->name, "heading") == 0) {
 		setPixmap(EVENT_PIXMAP(":flag"));
+	} else if (internalEvent->type == 123) {
+		QPixmap picture;
+		picture.load(internalEvent->name);
+		setPixmap(picture.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	} else {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	}
