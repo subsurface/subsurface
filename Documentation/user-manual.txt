@@ -209,6 +209,11 @@ Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 *W*, e.g. W07°, or with a negative value, e.g. -7.34323.
 
+Please note that GPS coordinates of a dive site a linked to the Location
+name - so adding coordinates to dives that don't have a location set will
+caused unexpected behavior (as Subsurface will think that all of these
+dives have the same location and try to keep their GPS coordinates the
+same.
 
 *Divemaster*: The name of the dive master or dive guide for this dive can be
 entered here.
