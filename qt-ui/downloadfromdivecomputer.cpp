@@ -390,6 +390,10 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 	ui.preferDownloaded->setDisabled(true);
 	ui.ok->setDisabled(true);
 	ui.search->setDisabled(true);
+	ui.logToFile->setDisabled(true);
+	ui.dumpToFile->setDisabled(true);
+	ui.chooseLogFile->setDisabled(true);
+	ui.chooseDumpFile->setDisabled(true);
 }
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
@@ -402,6 +406,10 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.ok->setDisabled(false);
 	ui.cancel->setDisabled(false);
 	ui.search->setDisabled(false);
+	ui.logToFile->setDisabled(false);
+	ui.dumpToFile->setDisabled(false);
+	ui.chooseLogFile->setDisabled(false);
+	ui.chooseDumpFile->setDisabled(false);
 }
 
 static void fillDeviceList(const char *name, void *data)
