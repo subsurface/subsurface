@@ -408,9 +408,8 @@ asciidoc.install(3);
 </div>
 </div>
 <div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
-<div class="paragraph"><p><strong>Manual authors</strong>: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg, Linus
-Torvalds,
-Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem Ferguson, Salvador Cuñat</p></div>
+<div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat</p></div>
 <div class="paragraph"><p><span class="blue"><em>Version 4.0.1,  January 2014</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
 extensive infrastructure to describe, organise, interpret and print scuba
@@ -608,6 +607,11 @@ Decimal degrees, e.g. 30.22496 , 30.821798</code></pre>
 <div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323.</p></div>
+<div class="paragraph"><p>Please note that GPS coordinates of a dive site a linked to the Location
+name - so adding coordinates to dives that don&#8217;t have a location set will
+caused unexpected behavior (as Subsurface will think that all of these
+dives have the same location and try to keep their GPS coordinates the
+same.</p></div>
 <div class="paragraph"><p><strong>Divemaster</strong>: The name of the dive master or dive guide for this dive can be
 entered here.
 Again, this field offers auto completion based on the list of dive masters in
@@ -3298,7 +3302,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-02-18 08:46:30 PST
+Last updated 2014-02-22 08:52:15 PST
 </div>
 </div>
 </body>
