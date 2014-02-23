@@ -33,6 +33,8 @@ void DiveEventItem::setVerticalAxis(DiveCartesianAxis* axis)
 
 void DiveEventItem::setEvent(struct event* ev)
 {
+	if (!ev)
+		return;
 	internalEvent = ev;
 	setupPixmap();
 	setupToolTipString();
@@ -109,23 +111,23 @@ void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visibl
 
 void DiveEventItem::recalculatePos(bool instant)
 {
-	if (!vAxis || !hAxis || !internalEvent || !dataModel) {
+	if (!vAxis || !hAxis || !internalEvent || !dataModel)
 		return;
-	}
+
 	QModelIndexList result = dataModel->match(dataModel->index(0,DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds );
 	if (result.isEmpty()) {
+		Q_ASSERT("can't find a spot in the dataModel");
 		hide();
 		return;
 	}
-	if (!isVisible()) {
+	if (!isVisible())
 		show();
-	}
+
 	int depth = dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
-	if (!instant){
+	if (!instant)
 		Animations::moveTo(this, x, y, 500);
-	}else{
+	else
 		setPos(x,y);
-	}
 }
