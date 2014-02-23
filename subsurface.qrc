@@ -15,6 +15,7 @@
 <!--	<file alias="average">icons/average.svg</file> -->
 	<file alias="average">icons/average.png</file>
 	<file alias="warning">icons/warning.png</file>
+	<file alias="flag">icons/flag.png</file>
 <!--	<file alias="scale">icons/scale.svg</file> -->
 	<file alias="scale">icons/scale.png</file>
 <!--	<file alias="ruler">icons/ruler.svg</file> -->
