@@ -143,7 +143,7 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setLineSize(96);
 
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	heartBeatAxis->setTickSize(2);
+	heartBeatAxis->setTickSize(1);
 	heartBeatAxis->setTickInterval(10);
 	heartBeatAxis->setFontLabelScale(0.7);
 	heartBeatAxis->setLineSize(96);
