@@ -392,7 +392,10 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		eventItems.push_back(item);
 		event = event->next;
 	}
-
+	// Only set visible the ones that should be visible, but how?
+	Q_FOREACH(DiveEventItem *event, eventItems){
+		event->setVisible(true);
+	}
 	diveComputerText->setText(currentdc->model);
 }
 
@@ -562,10 +565,6 @@ void ProfileWidget2::setProfileState()
 		Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 			tissue->setVisible(true);
 		}
-	}
-	// Only set visible the ones that should be visible, but how?
-	Q_FOREACH(DiveEventItem *event, eventItems){
-		event->setVisible(true);
 	}
 }
 
