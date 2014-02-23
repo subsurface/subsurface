@@ -687,6 +687,17 @@ struct event *get_next_event(struct event *event, char *name)
 	return event;
 }
 
+static int count_events(struct divecomputer *dc)
+{
+	int result = 0;
+	struct event *ev = dc->events;
+	while (ev != NULL) {
+		result++;
+		ev = ev->next;
+	}
+	return result;
+}
+
 static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
 {
 	while (i < pi->nr) {
@@ -846,21 +857,34 @@ void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct gra
 	pi->maxtemp = maxtemp;
 }
 
+/* copy the previous entry (we know this exists), update time and depth
+ * and zero out the sensor pressure (since this is a synthetic entry)
+ * increment the entry pointer and the count of synthetic entries. */
+#define INSERT_ENTRY(_time,_depth)	\
+	*entry = entry[-1];		\
+	entry->sec = _time;		\
+	entry->depth = _depth;		\
+	SENSOR_PRESSURE(entry) = 0;	\
+	entry++;			\
+	idx++
+
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int idx, maxtime, nr, i;
 	int lastdepth, lasttime, lasttemp = 0;
 	struct plot_data *plot_data;
+	struct event *ev = dc->events;
 
 	maxtime = pi->maxtime;
 
 	/*
 	 * We want to have a plot_info event at least every 10s (so "maxtime/10+1"),
-	 * but samples could be more dense than that (so add in dc->samples), and
+	 * but samples could be more dense than that (so add in dc->samples). We also
+	 * need to have one for every event (so count events and add that) and
 	 * additionally we want two surface events around the whole thing (thus the
 	 * additional 4).
 	 */
-	nr = dc->samples + 5 + maxtime / 10;
+	nr = dc->samples + 5 + maxtime / 10 + count_events(dc);
 	plot_data = calloc(nr, sizeof(struct plot_data));
 	pi->entry = plot_data;
 	if (!plot_data)
@@ -870,6 +894,9 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 	lastdepth = 0;
 	lasttime = 0;
+	/* skip events at time = 0 */
+	while (ev && ev->time.seconds == 0)
+		ev = ev->next;
 	for (i = 0; i < dc->samples; i++) {
 		struct plot_data *entry = plot_data + idx;
 		struct sample *sample = dc->sample+i;
@@ -887,17 +914,24 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			if (lasttime + offset > maxtime)
 				break;
 
-			/* Use the data from the previous plot entry */
-			*entry = entry[-1];
+			/* Add events if they are between plot entries */
+			while (ev && ev->time.seconds < lasttime + offset) {
+				INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta));
+				ev = ev->next;
+			}
 
-			/* .. but update depth and time, obviously */
-			entry->sec = lasttime + offset;
-			entry->depth = interpolate(lastdepth, depth, offset, delta);
+			/* now insert the time interpolated entry */
+			INSERT_ENTRY(lasttime + offset, interpolate(lastdepth, depth, offset, delta));
 
-			/* And clear out the sensor pressure, since we'll interpolate */
-			SENSOR_PRESSURE(entry) = 0;
+			/* skip events that happened at this time */
+			while (ev && ev->time.seconds == lasttime + offset)
+				ev = ev->next;
+		}
 
-			idx++; entry++;
+		/* Add events if they are between plot entries */
+		while (ev && ev->time.seconds < time) {
+			INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta));
+			ev = ev->next;
 		}
 
 		if (time > maxtime)
@@ -923,6 +957,9 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->heartbeat = sample->heartbeat;
 		entry->bearing = sample->bearing;
 
+		/* skip events that happened at this time */
+		while (ev && ev->time.seconds == time)
+			ev = ev->next;
 		lasttime = time;
 		lastdepth = depth;
 		idx++;
@@ -935,6 +972,8 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 	return plot_data;
 }
+
+#undef INSERT_ENTRY
 
 static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi)
 {
