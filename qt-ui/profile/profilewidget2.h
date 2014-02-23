@@ -32,6 +32,7 @@ class DiveCartesianAxis;
 class DiveProfileItem;
 class TimeAxis;
 class DiveTemperatureItem;
+class DiveHeartrateItem;
 class DiveGasPressureItem;
 class DiveCalculatedCeiling;
 class DiveCalculatedTissue;
@@ -98,7 +99,7 @@ private:
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
 	DiveCartesianAxis *heartBeatAxis;
-	DiveTemperatureItem *heartBeatItem;
+	DiveHeartrateItem *heartBeatItem;
 };
 
 #endif // PROFILEWIDGET2_H

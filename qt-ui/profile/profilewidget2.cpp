@@ -76,7 +76,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	pheGasItem( new PartialPressureGasItem()),
 	po2GasItem( new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
-	heartBeatItem(new DiveTemperatureItem()) // FIXME: making this a DiveTemperatureItem is a hack
+	heartBeatItem(new DiveHeartrateItem())
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 

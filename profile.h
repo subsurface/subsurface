@@ -98,6 +98,8 @@ void setup_pp_limits(struct graphics_context *gc);
 #define PP_TEXT_SIZE (12 * TEXT_SCALE)
 #define TEMP_TEXT_SIZE (12 * TEXT_SCALE)
 
+#define TEMP_TEXT_SCALE 0.8
+#define HR_TEXT_CALE 0.7
 #define RIGHT (-1.0)
 #define CENTER (-0.5)
 #define LEFT (0.0)

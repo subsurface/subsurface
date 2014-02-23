@@ -88,6 +88,16 @@ private:
 	void createTextItem(int seconds, int mkelvin);
 };
 
+class DiveHeartrateItem : public AbstractProfilePolygonItem {
+	Q_OBJECT
+public:
+	DiveHeartrateItem();
+	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+private:
+	void createTextItem(int seconds, int hr);
+};
+
 class DiveGasPressureItem : public AbstractProfilePolygonItem{
 	Q_OBJECT
 
