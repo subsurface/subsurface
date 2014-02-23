@@ -736,6 +736,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
+	int maxhr = 0, minhr = INT_MAX;
 	int mintemp = dive->mintemp.mkelvin;
 	int maxtemp = dive->maxtemp.mkelvin;
 	int cyl;
@@ -757,6 +758,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 			int depth = s->depth.mm;
 			int pressure = s->cylinderpressure.mbar;
 			int temperature = s->temperature.mkelvin;
+			int heartbeat = s->heartbeat;
 
 			if (!mintemp && temperature < mintemp)
 				mintemp = temperature;
@@ -767,6 +769,10 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 				minpressure = pressure;
 			if (pressure > maxpressure)
 				maxpressure = pressure;
+			if (heartbeat > maxhr)
+				maxhr = heartbeat;
+			if (heartbeat < minhr)
+				minhr = heartbeat;
 
 			if (depth > maxdepth)
 				maxdepth = s->depth.mm;
@@ -780,12 +786,16 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 
 	if (minpressure > maxpressure)
 		minpressure = 0;
+	if (minhr > maxhr)
+		minhr = 0;
 
 	memset(&pi, 0, sizeof(pi));
 	pi.maxdepth = maxdepth;
 	pi.maxtime = maxtime;
 	pi.maxpressure = maxpressure;
 	pi.minpressure = minpressure;
+	pi.minhr = minhr;
+	pi.maxhr = maxhr;
 	pi.mintemp = mintemp;
 	pi.maxtemp = maxtemp;
 	return pi;

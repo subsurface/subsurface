@@ -19,6 +19,7 @@ struct plot_info {
 	int maxtime;
 	int meandepth, maxdepth;
 	int minpressure, maxpressure;
+	int minhr, maxhr;
 	int mintemp, maxtemp;
 	double endtempcoord;
 	double maxpp;

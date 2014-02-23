@@ -345,10 +345,14 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 
-	heartBeatAxis->setMinimum(20); // FIXME: find minimum
-	heartBeatAxis->setMaximum(200); // FIXME: find maximum
-	heartBeatAxis->updateTicks(); // this shows the ticks
-
+	if (pInfo.maxhr) {
+		heartBeatAxis->setMinimum(pInfo.minhr);
+		heartBeatAxis->setMaximum(pInfo.maxhr);
+		heartBeatAxis->updateTicks(); // this shows the ticks
+		heartBeatAxis->setVisible(true);
+	} else {
+		heartBeatAxis->setVisible(false);
+	}
 	timeAxis->setMaximum(maxtime);
 
 	int i, incr;
