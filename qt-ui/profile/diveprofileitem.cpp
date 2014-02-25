@@ -227,20 +227,19 @@ DiveHeartrateItem::DiveHeartrateItem()
 
 void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	int last = -300, last_printed_hr = 0, sec = 0, last_valid_hr = 0;
+	int last = -300, last_printed_hr = 0, sec = 0;
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
 	qDeleteAll(texts);
 	texts.clear();
-	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
+	// Ignore empty values. a heartrate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int hr = dataModel->index(i, vDataColumn).data().toInt();
 		if (!hr)
 			continue;
-		last_valid_hr = hr;
 		sec = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(hr));
 		poly.append(point);
