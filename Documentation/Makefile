@@ -29,7 +29,7 @@ $(OUT)$(DOCNAME).pdf: $(DOCSOURCE)
 $(OUT)$(HTMLDOC): $(DOCSOURCE)
 	@echo "if asciidoc isn't found the html file included in the sources is copied"
 	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) \
-		-o $(HTMLDOC) $< || cp $(HTMLDOC).git $(HTMLDOC)
+		-o $(OUT)$(HTMLDOC) $< || cp $(HTMLDOC).git $(OUT)$(HTMLDOC)
 
 # Alternatively::
 $(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
