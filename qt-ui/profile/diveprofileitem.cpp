@@ -228,6 +228,11 @@ DiveHeartrateItem::DiveHeartrateItem()
 void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	int last = -300, last_printed_hr = 0, sec = 0;
+	struct {
+		int sec;
+		int hr;
+	} hist[3] = {0};
+
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
@@ -243,18 +248,30 @@ void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 		sec = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point( hAxis->posAtValue(sec), vAxis->posAtValue(hr));
 		poly.append(point);
-
-		/* don't print a HR
-		 * if it's been less than 5min and less than a 20 beats change OR
-		 * if it's been less than 2min OR if the change from the
-		 * last print is less than 10 beats */
-		if (((sec < last + 300) && (abs(hr - last_printed_hr) < 20)) ||
+		if (hr == hist[2].hr)
+			// same as last one, no point in looking at printing
+			continue;
+		hist[0] = hist[1];
+		hist[1] = hist[2];
+		hist[2].sec = sec;
+		hist[2].hr = hr;
+		// don't print a HR
+		// if it's not a local min / max
+		// if it's been less than 5min and less than a 20 beats change OR
+		// if it's been less than 2min OR if the change from the
+		// last print is less than 10 beats
+		// to test min / max requires three points, so we now look at the
+		// previous one
+		sec = hist[1].sec;
+		hr = hist[1].hr;
+		if ((hist[0].hr < hr && hr < hist[2].hr) ||
+		    (hist[0].hr > hr && hr > hist[2].hr) ||
+		    ((sec < last + 300) && (abs(hr - last_printed_hr) < 20)) ||
 		    (sec < last + 120) ||
 		    (abs(hr - last_printed_hr) < 10))
 			continue;
 		last = sec;
-		if (hr > 0)
-			createTextItem(sec, hr);
+		createTextItem(sec, hr);
 		last_printed_hr = hr;
 	}
 	setPolygon(poly);
