@@ -12,6 +12,7 @@ class DiveEventItem : public DivePixmapItem {
 public:
 	DiveEventItem(QObject* parent = 0);
 	void setEvent(struct event *ev);
+	struct event *getEvent();
 	void eventVisibilityChanged(const QString& eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis);
 	void setHorizontalAxis(DiveCartesianAxis *axis);

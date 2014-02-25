@@ -399,6 +399,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	// Only set visible the ones that should be visible, but how?
 	Q_FOREACH(DiveEventItem *event, eventItems){
 		event->setVisible(true);
+		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds;
 	}
 	diveComputerText->setText(currentdc->model);
 }
