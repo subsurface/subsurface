@@ -710,8 +710,10 @@ static const char *do_device_import(device_data_t *data)
 		rc = dc_device_foreach(device, dive_cb, data);
 	}
 
-	if (rc != DC_STATUS_SUCCESS)
+	if (rc != DC_STATUS_SUCCESS) {
+		progress_bar_fraction = 0.0;
 		return translate("gettextFromC","Dive data import error");
+	}
 
 	/* All good */
 	return NULL;
