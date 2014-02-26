@@ -80,8 +80,8 @@ $ sudo make install     [optionally, add: prefix=/usr/local]
 
 Note: on Fedora qmake will appear as qmake-qt4
 
-Building the Qt version under MacOSX
-------------------------------------
+Building the Qt version under MacOSX (using Homebrew)
+-----------------------------------------------------
 
 1)  Install Homebrew
 
@@ -147,6 +147,38 @@ plugins are not in /usr/local/plugins.
 The easiest workaround is to create a symbolic link from
 /usr/local/plugins to /usr/local/Cellar/qt/4.8.5/plugins (or whatever
 version of Qt you have built earlier).
+
+Building the Qt version under MacOSX (using MacPorts)
+-----------------------------------------------------
+
+1)  Install MacPorts
+
+Please refer to http://www.macports.org/install.php
+
+2)  Install needed dependencies
+
+$ sudo port -vp install asciidoc libzip libusb sqlite cmake qt4-mac marble libdivecomputer
+
+3)  Check dependencies' versions
+
+$ port installed qt4-mac libdivecomputer marble libzip asciidoc libusb sqlite cmake
+The following ports are currently installed:
+  asciidoc @8.6.9_1 (active)
+  cmake @2.8.12_3 (active)
+  libdivecomputer @0.4.1_0 (active)
+  libusb @1.0.18_0 (active)
+  libzip @0.11.1_0 (active)
+  marble @4.12.2_0 (active)
+  qt4-mac @4.8.5_1 (active)
+
+4) Compile Subsurface
+
+$ cd ~/src
+$ git clone git://subsurface.hohndel.org/subsurface.git
+$ cd subsurface
+$ qmake
+$ make
+$ make install_mac_bundle
 
 Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
