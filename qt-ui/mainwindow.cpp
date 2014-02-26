@@ -976,7 +976,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 void MainWindow::editCurrentDive()
 {
 	if (information()->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
-		QMessageBox::warning(this, tr("Warning"), tr("First finish the current edition before trying to do another."));
+		QMessageBox::warning(this, tr("Warning"), tr("Please, first finish the current edition before trying to do another."));
 		return;
 	}
 
