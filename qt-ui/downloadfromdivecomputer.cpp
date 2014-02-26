@@ -51,6 +51,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget* parent, Qt::WindowFlags f) :
 	ui.progressBar->setMinimum(0);
 	ui.progressBar->setMaximum(100);
 
+	progress_bar_text = "";
+
 	fill_device_list();
 	fill_computer_list();
 
