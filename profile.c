@@ -1457,68 +1457,68 @@ static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_n
 	double depthvalue, tempvalue, speedvalue;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	put_format(b, translate("gettextFromC","@:%d:%02d\nD:%.1f %s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
+	put_format(b, translate("gettextFromC","@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
 	if (GET_PRESSURE(entry)) {
 		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
-		put_format(b, translate("gettextFromC","P:%d %s\n"), pressurevalue, pressure_unit);
+		put_format(b, translate("gettextFromC","P: %d%s\n"), pressurevalue, pressure_unit);
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
-		put_format(b, translate("gettextFromC","T:%.1f %s\n"), tempvalue, temp_unit);
+		put_format(b, translate("gettextFromC","T: %.1f%s\n"), tempvalue, temp_unit);
 	}
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	put_format(b, translate("gettextFromC","V:%.2f %s\n"), speedvalue, vertical_speed_unit);
+	put_format(b, translate("gettextFromC","V: %.1f%s\n"), speedvalue, vertical_speed_unit);
 
 	if (entry->sac && prefs.show_sac)
-		put_format(b, translate("gettextFromC","SAC:%2.1fl/min\n"), entry->sac / 1000.0);
+		put_format(b, translate("gettextFromC","SAC: %2.1fl/min\n"), entry->sac / 1000.0);
 	if (entry->cns)
-		put_format(b, translate("gettextFromC","CNS:%u%%\n"), entry->cns);
+		put_format(b, translate("gettextFromC","CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2)
-		put_format(b, translate("gettextFromC","pO%s:%.2fbar\n"), UTF8_SUBSCRIPT_2, entry->po2);
+		put_format(b, translate("gettextFromC","pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->po2);
 	if (prefs.pp_graphs.pn2)
-		put_format(b, translate("gettextFromC","pN%s:%.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pn2);
+		put_format(b, translate("gettextFromC","pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pn2);
 	if (prefs.pp_graphs.phe)
-		put_format(b, translate("gettextFromC","pHe:%.2fbar\n"), entry->phe);
+		put_format(b, translate("gettextFromC","pHe: %.2fbar\n"), entry->phe);
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","MOD:%d%s\n"), mod, depth_unit);
+		put_format(b, translate("gettextFromC","MOD: %d%s\n"), mod, depth_unit);
 	}
 	if (prefs.ead) {
 		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
 		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
 		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","EAD:%d%s\nEND:%d%s\nEADD:%d%s\n"), ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		put_format(b, translate("gettextFromC","EAD: %d%s\nEND: %d%s\nEADD: %d%s\n"), ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC","Safetystop:%umin @ %.0f %s\n"), DIV_UP(entry->stoptime, 60),
+				put_format(b, translate("gettextFromC","Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC","Safetystop:unkn time @ %.0f %s\n"),
+				put_format(b, translate("gettextFromC","Safetystop: unkn time @ %.0f%s\n"),
 					depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC","Deco:%umin @ %.0f %s\n"), DIV_UP(entry->stoptime, 60),
+				put_format(b, translate("gettextFromC","Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC","Deco:unkn time @ %.0f %s\n"),
+				put_format(b, translate("gettextFromC","Deco: unkn time @ %.0f%s\n"),
 					depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
 		put_string(b, translate("gettextFromC","In deco\n"));
 	} else if (has_ndl) {
-		put_format(b, translate("gettextFromC","NDL:%umin\n"), DIV_UP(entry->ndl, 60));
+		put_format(b, translate("gettextFromC","NDL: %umin\n"), DIV_UP(entry->ndl, 60));
 	}
 	if (entry->stopdepth_calc && entry->stoptime_calc) {
 		depthvalue = get_depth_units(entry->stopdepth_calc, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","Deco:%umin @ %.0f %s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
+		put_format(b, translate("gettextFromC","Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
 				depthvalue, depth_unit);
 	} else if (entry->in_deco_calc) {
 		/* This means that we have no NDL left,
@@ -1528,27 +1528,27 @@ static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_n
 		 * everything will be ok. */
 		put_string(b, translate("gettextFromC","In deco (calc)\n"));
 	} else if (prefs.calc_ndl_tts && entry->ndl_calc != 0) {
-		put_format(b, translate("gettextFromC","NDL:%umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
+		put_format(b, translate("gettextFromC","NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
 	}
 	if (entry->tts_calc)
-		put_format(b, translate("gettextFromC","TTS:%umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+		put_format(b, translate("gettextFromC","TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","Calculated ceiling %.0f %s\n"), depthvalue, depth_unit);
+		put_format(b, translate("gettextFromC","Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
 		if (prefs.calc_all_tissues) {
 			int k;
 			for (k=0; k<16; k++) {
 				if (entry->ceilings[k]) {
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					put_format(b, translate("gettextFromC","Tissue %.0fmin: %.0f %s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					put_format(b, translate("gettextFromC","Tissue %.0fmin: %.0f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
 				}
 			}
 		}
 	}
 	if (entry->heartbeat)
-		put_format(b, translate("gettextFromC","heartbeat:%d\n"), entry->heartbeat);
+		put_format(b, translate("gettextFromC","heartbeat: %d\n"), entry->heartbeat);
 	if (entry->bearing)
-		put_format(b, translate("gettextFromC","bearing:%d\n"), entry->bearing);
+		put_format(b, translate("gettextFromC","bearing: %d\n"), entry->bearing);
 	strip_mb(b);
 }
 
