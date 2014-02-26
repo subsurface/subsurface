@@ -11,6 +11,7 @@
 #include "divetooltipitem.h"
 #include "animationfunctions.h"
 #include "planner.h"
+#include "device.h"
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -315,12 +316,15 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		return;
 
 	setProfileState();
-	// Here we need to probe for the limits of the dive.
-	// There's already a function that does exactly that,
-	// but it's using the graphics context, and I need to
-	// replace that.
+
+	// next get the dive computer structure - if there are no samples
+	// let's create a fake profile that's somewhat reasonable for the
+	// data that we have
 	struct divecomputer *currentdc = select_dc(&d->dc);
 	Q_ASSERT(currentdc);
+	if (!currentdc || !currentdc->samples) {
+		currentdc = fake_dc(currentdc);
+	}
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
