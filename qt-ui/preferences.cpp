@@ -278,8 +278,11 @@ void PreferencesDialog::loadSettings()
 	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
 	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
 	qApp->setFont(defaultFont);
+
 	GET_TXT("divelist_font", divelist_font);
 	GET_INT("font_size", font_size);
+	if (prefs.font_size < 0)
+		prefs.font_size = defaultFont.pointSizeF();
 	GET_INT("displayinvalid", display_invalid_dives);
 	s.endGroup();
 }
