@@ -10,14 +10,12 @@
 	<string>Subsurface</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>SBSF</string>
 	<key>CFBundleExecutable</key>
 	<string>subsurface</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.hohndel.subsurface</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>1.0</string>
+	<string>6.0</string>
 	<key>CFBundleVersion</key>
 	<string>@SHORT_VERSION@</string>
 </dict>
