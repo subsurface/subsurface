@@ -77,6 +77,7 @@ private:
 	DivePixmapItem *background;
 	QString backgroundFile;
 	ToolTipItem *toolTipItem;
+	bool isPlotZoomed;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.

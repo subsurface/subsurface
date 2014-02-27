@@ -77,7 +77,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	pheGasItem( new PartialPressureGasItem()),
 	po2GasItem( new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
-	heartBeatItem(new DiveHeartrateItem())
+	heartBeatItem(new DiveHeartrateItem()),
+	isPlotZoomed(prefs.zoomed_plot)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -420,6 +421,12 @@ void ProfileWidget2::settingsChanged()
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
+	}
+	if(s.value("zoomed_plot").toBool() != isPlotZoomed){
+		isPlotZoomed = s.value("zoomed_plot").toBool();
+		int diveId = dataModel->id();
+		dataModel->clear();
+		plotDives(QList<dive*>() << getDiveById(diveId));
 	}
 }
 
