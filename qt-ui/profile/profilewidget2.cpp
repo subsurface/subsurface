@@ -433,6 +433,11 @@ void ProfileWidget2::settingsChanged()
 		dataModel->clear();
 		plotDives(QList<dive*>() << getDiveById(diveId));
 	}
+
+	bool rulerVisible = s.value("rulergraph", false).toBool();
+	rulerItem->setVisible(rulerVisible);
+	rulerItem->destNode()->setVisible(rulerVisible );
+	rulerItem->sourceNode()->setVisible(rulerVisible );
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
@@ -591,7 +596,7 @@ void ProfileWidget2::setProfileState()
 		}
 	}
 
-	bool rulerVisible = s.value("rulervisible", false).toBool();
+	bool rulerVisible = s.value("rulergraph", false).toBool();
 	rulerItem->setVisible(rulerVisible);
 	rulerItem->destNode()->setVisible(rulerVisible );
 	rulerItem->sourceNode()->setVisible(rulerVisible );
