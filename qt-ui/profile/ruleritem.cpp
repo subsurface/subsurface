@@ -4,10 +4,12 @@
 #include <QPainter>
 #include <QGraphicsScene>
 
+#include <stdint.h>
+
 #include "profile.h"
 #include "display.h"
 
-RulerNodeItem2::RulerNodeItem2(QGraphicsItem *parent) : QGraphicsEllipseItem(parent),  entry(NULL) , ruler(NULL)
+RulerNodeItem2::RulerNodeItem2() : entry(NULL) , ruler(NULL)
 {
 	setRect(QRect(QPoint(-8,8),QPoint(8,-8)));
 	setBrush(QColor(0xff, 0, 0, 127));
@@ -24,23 +26,22 @@ void RulerNodeItem2::setRuler(RulerItem2 *r)
 
 void RulerNodeItem2::recalculate()
 {
-	// Port that away from the SCALEGC
-	//struct plot_info *pi = &gc.pi;
-	//struct plot_data *data = pi->entry+(pi->nr-1);
-	//uint16_t count = 0;
-// 	if (x() < 0) {
-// 		setPos(0, y());
-// 	} else if (x() > SCALEXGC(data->sec)) {
-// 		setPos(SCALEXGC(data->sec), y());
-// 	} else {
-// 		data = pi->entry;
-// 		count=0;
-// 		while (SCALEXGC(data->sec) < x() && count < pi->nr) {
-// 			data = pi->entry+count;
-// 			count++;
-// 		}
-// 		setPos(SCALEGC(data->sec, data->depth));
-//		entry=data;
+	struct plot_data *data = pInfo->entry+(pInfo->nr-1);
+	uint16_t count = 0;
+	if (x() < 0) {
+		setPos(0, y());
+	} else if (x() > timeAxis->posAtValue(data->sec)) {
+		setPos(timeAxis->posAtValue(data->sec), y());
+	} else {
+		data = pInfo->entry;
+		count=0;
+		while (timeAxis->posAtValue(data->sec) < x() && count < pInfo->nr) {
+			data = pInfo->entry+count;
+			count++;
+		}
+		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
+		entry=data;
+	}
 }
 
 QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -56,9 +57,16 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 	return QGraphicsEllipseItem::itemChange(change, value);
 }
 
-RulerItem2::RulerItem2(QGraphicsItem *parent, RulerNodeItem2 *sourceNode, RulerNodeItem2 *destNode) : QGraphicsObject(parent), source(sourceNode), dest(destNode)
+RulerItem2::RulerItem2():
+	pInfo(NULL),
+	timeAxis(NULL),
+	depthAxis(NULL),
+	source(new RulerNodeItem2()),
+	dest(new RulerNodeItem2())
 {
-	recalculate();
+
+	source->setRuler(this);
+	dest->setRuler(this);
 }
 
 void RulerItem2::recalculate()
@@ -68,7 +76,7 @@ void RulerItem2::recalculate()
 	QFont font;
 	QFontMetrics fm(font);
 
-	if (source == NULL || dest == NULL)
+	if (timeAxis == NULL || depthAxis == NULL || pInfo == NULL)
 		return;
 
 	prepareGeometryChange();
@@ -158,4 +166,12 @@ QPainterPath RulerItem2::shape() const
 	path.lineTo(endPoint);
 	path.lineTo(startPoint);
 	return path;
+}
+
+void RulerItem2::setPlotInfo(plot_info* info)
+{
+	pInfo = info;
+	dest->pInfo = info;
+	source->pInfo = info;
+	recalculate();
 }
