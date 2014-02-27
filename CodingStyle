@@ -1,3 +1,23 @@
+Coding Style
+============
+
+Here are some of the basics that we are trying to enforce for our coding
+style. The existing code (as of the commit that adds these lines) is not
+yet fully consistent to these rules, but following these rules will make
+sure that no one yells at you about your patches.
+
+We have a script that can be used to reformat code to be reasonably close
+to these rules; it's in scripts/whitespace.pl - this script requires
+clang-format to be installed (which sadly isn't installed by default on
+any of our platforms; even on Mac where clang is the default compiler).
+
+At the end of this file are some ideas for your .emacs file (if that's
+your editor of choice) as well as for QtCreator. If you have settings for
+other editors that implement this coding style, please add them here.
+
+Basic rules
+===========
+
 - all indentation is tabs (set to 8 char) with the exception of
   continuation lines that are alligned with tabs and then spaces
 
@@ -83,3 +103,97 @@
 			do_something(i);
 	}
 	}
+
+Sample Settings
+===============
+
+Emacs
+-----
+
+These lines in your .emacs file should get you fairly close when it comes
+to indentation - many of the other rules you have to follow manually
+
+;; indentation
+(defun c-lineup-arglist-tabs-only (ignored)
+  "Line up argument lists by tabs, not spaces"
+  (let* ((anchor (c-langelem-pos c-syntactic-element))
+         (column (c-langelem-2nd-pos c-syntactic-element))
+         (offset (- (1+ column) anchor))
+         (steps (floor offset c-basic-offset)))
+    (* (max steps 1)
+       c-basic-offset)))
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            ;; Add kernel style
+            (c-add-style
+             "linux-tabs-only"
+             '("linux" (c-offsets-alist
+                        (arglist-cont-nonempty
+                         c-lineup-gcc-asm-reg
+                         c-lineup-arglist-tabs-only))))))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (let ((filename (buffer-file-name)))
+              ;; Enable kernel mode for the appropriate files
+                (setq indent-tabs-mode t)
+                (c-set-style "linux-tabs-only"))))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (let ((filename (buffer-file-name)))
+              ;; Enable kernel mode for the appropriate files
+                (setq indent-tabs-mode t)
+                (c-set-style "linux-tabs-only"))))
+
+
+QtCreator
+---------
+
+These settings seem to get indentation right in QtCreator. Making TAB
+always adjust indent makes it hard to add hard tabs before '\' when
+creating continuing lines. Copying a tab with your mouse / ctrl-C and
+inserting it with ctrl-V seems to work around that problem (use Command
+instead of ctrl on your Mac)
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QtCreatorCodeStyle>
+<!-- Written by QtCreator 3.0.0, 2014-02-27T07:52:57. -->
+<qtcreator>
+ <data>
+  <variable>CodeStyleData</variable>
+  <valuemap type="QVariantMap">
+   <value type="bool" key="AlignAssignments">false</value>
+   <value type="bool" key="AutoSpacesForTabs">false</value>
+   <value type="bool" key="BindStarToIdentifier">true</value>
+   <value type="bool" key="BindStarToLeftSpecifier">false</value>
+   <value type="bool" key="BindStarToRightSpecifier">false</value>
+   <value type="bool" key="BindStarToTypeName">false</value>
+   <value type="bool" key="ExtraPaddingForConditionsIfConfusingAlign">false</value>
+   <value type="bool" key="IndentAccessSpecifiers">false</value>
+   <value type="bool" key="IndentBlockBody">true</value>
+   <value type="bool" key="IndentBlockBraces">false</value>
+   <value type="bool" key="IndentBlocksRelativeToSwitchLabels">false</value>
+   <value type="bool" key="IndentClassBraces">false</value>
+   <value type="bool" key="IndentControlFlowRelativeToSwitchLabels">true</value>
+   <value type="bool" key="IndentDeclarationsRelativeToAccessSpecifiers">true</value>
+   <value type="bool" key="IndentEnumBraces">false</value>
+   <value type="bool" key="IndentFunctionBody">true</value>
+   <value type="bool" key="IndentFunctionBraces">false</value>
+   <value type="bool" key="IndentNamespaceBody">false</value>
+   <value type="bool" key="IndentNamespaceBraces">false</value>
+   <value type="int" key="IndentSize">8</value>
+   <value type="bool" key="IndentStatementsRelativeToSwitchLabels">true</value>
+   <value type="bool" key="IndentSwitchLabels">false</value>
+   <value type="int" key="PaddingMode">2</value>
+   <value type="bool" key="SpacesForTabs">false</value>
+   <value type="int" key="TabSize">8</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>DisplayName</variable>
+  <value type="QString">Subsurface</value>
+ </data>
+</qtcreator>
