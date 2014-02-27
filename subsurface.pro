@@ -22,7 +22,6 @@ HEADERS = \
 	dive.h \
 	divelist.h \
 	file.h \
-	flag.h \
 	gettextfromc.h \
 	gettext.h \
 	helpers.h \
@@ -57,7 +56,6 @@ HEADERS = \
 	qt-ui/exif.h \
 	sha1.h \
 	statistics.h \
-	subsurface-icon.h \
 	subsurfacestartup.h \
 	uemis.h \
 	webservice.h \
