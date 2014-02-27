@@ -364,12 +364,6 @@ void MainWindow::on_actionAutoGroup_triggered()
 	mark_divelist_changed(true);
 }
 
-void MainWindow::on_actionToggleZoom_triggered()
-{
-	zoomed_plot = !zoomed_plot;
-	ui.ProfileWidget->refresh();
-}
-
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
 	QTreeView *view = new QTreeView();
@@ -1064,6 +1058,12 @@ void MainWindow::on_profSAC_clicked(bool triggered)
 {
 	prefs.show_sac = triggered;
 	TOOLBOX_PREF_PROFILE(show_sac);
+}
+
+void MainWindow::on_profScaled_clicked(bool triggered)
+{
+	prefs.zoomed_plot = triggered;
+	TOOLBOX_PREF_PROFILE(zoomed_plot);
 }
 
 #undef TOOLBOX_PREF_PROFILE

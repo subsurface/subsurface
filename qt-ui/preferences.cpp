@@ -264,6 +264,7 @@ void PreferencesDialog::loadSettings()
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	GET_BOOL("zoomed_plot", zoomed_plot);
 	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 	GET_BOOL("show_sac", show_sac);
 	GET_BOOL("display_unused_tanks", display_unused_tanks);

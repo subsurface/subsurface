@@ -81,7 +81,6 @@ private slots:
 	void on_actionAddDive_triggered();
 	void on_actionRenumber_triggered();
 	void on_actionAutoGroup_triggered();
-	void on_actionToggleZoom_triggered();
 	void on_actionYearlyStatistics_triggered();
 
 	/* view menu actions */
@@ -123,6 +122,7 @@ private slots:
 	void on_profPn2_clicked(bool triggered);
 	void on_profRuler_clicked(bool triggered);
 	void on_profSAC_clicked(bool triggered);
+	void on_profScaled_clicked(bool triggered);
 
 protected:
 	void closeEvent(QCloseEvent *);

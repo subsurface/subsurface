@@ -16,7 +16,6 @@
 #include "membuffer.h"
 
 int selected_dive = -1; /* careful: 0 is a valid value */
-char zoomed_plot = 0;
 char dc_number = 0;
 
 
@@ -61,7 +60,7 @@ static void dump_pi (struct plot_info *pi)
 int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
-	if (zoomed_plot) {
+	if (prefs.zoomed_plot) {
 		/* Rounded up to one minute, with at least 2.5 minutes to
 		 * spare.
 		 * For dive times shorter than 10 minutes, we use seconds/4 to
@@ -86,7 +85,7 @@ int get_maxdepth(struct plot_info *pi)
 	unsigned mm = pi->maxdepth;
 	int md;
 
-	if (zoomed_plot) {
+	if (prefs.zoomed_plot) {
 		/* Rounded up to 10m, with at least 3m to spare */
 		md = ROUND_UP(mm+3000, 10000);
 	} else {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>763</width>
-    <height>667</height>
+    <width>1418</width>
+    <height>1084</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -454,8 +454,31 @@
                     <string>...</string>
                    </property>
                    <property name="icon">
-                    <iconset>
+                    <iconset resource="../subsurface.qrc">
                      <normaloff>:/flag</normaloff>:/flag</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoRaise">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="profScaled">
+                   <property name="text">
+                    <string>...</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../subsurface.qrc">
+                     <normaloff>:/scale</normaloff>:/scale</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -564,7 +587,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>763</width>
+     <width>1418</width>
      <height>25</height>
     </rect>
    </property>

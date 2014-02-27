@@ -38,6 +38,7 @@ struct preferences {
 	struct units units;
 	short show_sac;
 	bool display_unused_tanks;
+	bool zoomed_plot;
 };
 enum unit_system_values { METRIC, IMPERIAL, PERSONALIZE };
 

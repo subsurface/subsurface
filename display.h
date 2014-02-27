@@ -52,7 +52,7 @@ struct options {
 	int profile_height, notes_height, tanks_height;
 };
 
-extern char zoomed_plot, dc_number;
+extern char dc_number;
 
 extern unsigned int amount_selected;
 

@@ -1453,9 +1453,10 @@ void ProfileGraphicsView::on_rulerAction()
 
 void ProfileGraphicsView::on_scaleAction()
 {
-	zoomed_plot = !zoomed_plot;
+	prefs.zoomed_plot = !prefs.zoomed_plot;
 	refresh();
 }
+
 QColor EventItem::getColor(const color_indice_t i)
 {
 	return profile_color[i].at((isGrayscale) ? 1 : 0);
