@@ -12,6 +12,7 @@
 #include "animationfunctions.h"
 #include "planner.h"
 #include "device.h"
+#include "ruleritem.h"
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -78,7 +79,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	po2GasItem( new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
-	isPlotZoomed(prefs.zoomed_plot)
+	isPlotZoomed(prefs.zoomed_plot),
+	rulerItem(new RulerItem2())
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -118,6 +120,9 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(po2GasItem);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(heartBeatItem);
+	scene()->addItem(rulerItem);
+	scene()->addItem(rulerItem->sourceNode());
+	scene()->addItem(rulerItem->destNode());
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		scene()->addItem(tissue);
 	}
@@ -526,6 +531,9 @@ void ProfileWidget2::setEmptyState()
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
+	rulerItem->setVisible(false);
+	rulerItem->destNode()->setVisible(false);
+	rulerItem->sourceNode()->setVisible(false);
 	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
 		tissue->setVisible(false);
 	}
@@ -582,6 +590,11 @@ void ProfileWidget2::setProfileState()
 			tissue->setVisible(true);
 		}
 	}
+
+	bool rulerVisible = s.value("rulervisible", false).toBool();
+	rulerItem->setVisible(rulerVisible);
+	rulerItem->destNode()->setVisible(rulerVisible );
+	rulerItem->sourceNode()->setVisible(rulerVisible );
 }
 
 extern struct ev_select *ev_namelist;

@@ -16,6 +16,7 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 
+class RulerItem2;
 struct dive;
 struct plot_info;
 class ToolTipItem;
@@ -101,6 +102,7 @@ private:
 	PartialPressureGasItem *po2GasItem;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
+	RulerItem2 *rulerItem;
 };
 
 #endif // PROFILEWIDGET2_H
