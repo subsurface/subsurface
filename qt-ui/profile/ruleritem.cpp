@@ -9,7 +9,7 @@
 #include "profile.h"
 #include "display.h"
 
-RulerNodeItem2::RulerNodeItem2() : entry(NULL) , ruler(NULL)
+RulerNodeItem2::RulerNodeItem2(struct plot_info& info) : pInfo(info), entry(NULL) , ruler(NULL)
 {
 	setRect(QRect(QPoint(-8,8),QPoint(8,-8)));
 	setBrush(QColor(0xff, 0, 0, 127));
@@ -26,17 +26,17 @@ void RulerNodeItem2::setRuler(RulerItem2 *r)
 
 void RulerNodeItem2::recalculate()
 {
-	struct plot_data *data = pInfo->entry+(pInfo->nr-1);
+	struct plot_data *data = pInfo.entry+(pInfo.nr-1);
 	uint16_t count = 0;
 	if (x() < 0) {
 		setPos(0, y());
 	} else if (x() > timeAxis->posAtValue(data->sec)) {
 		setPos(timeAxis->posAtValue(data->sec), y());
 	} else {
-		data = pInfo->entry;
+		data = pInfo.entry;
 		count=0;
-		while (timeAxis->posAtValue(data->sec) < x() && count < pInfo->nr) {
-			data = pInfo->entry+count;
+		while (timeAxis->posAtValue(data->sec) < x() && count < pInfo.nr) {
+			data = pInfo.entry+count;
 			count++;
 		}
 		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
@@ -58,13 +58,12 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 }
 
 RulerItem2::RulerItem2():
-	pInfo(NULL),
 	timeAxis(NULL),
 	depthAxis(NULL),
-	source(new RulerNodeItem2()),
-	dest(new RulerNodeItem2())
+	source(new RulerNodeItem2(pInfo)),
+	dest(new RulerNodeItem2(pInfo))
 {
-
+	memset(&pInfo, 0, sizeof(pInfo));
 	source->setRuler(this);
 	dest->setRuler(this);
 }
@@ -76,7 +75,7 @@ void RulerItem2::recalculate()
 	QFont font;
 	QFontMetrics fm(font);
 
-	if (timeAxis == NULL || depthAxis == NULL || pInfo == NULL)
+	if (timeAxis == NULL || depthAxis == NULL || pInfo.nr == 0)
 		return;
 
 	prepareGeometryChange();
@@ -168,10 +167,19 @@ QPainterPath RulerItem2::shape() const
 	return path;
 }
 
-void RulerItem2::setPlotInfo(plot_info* info)
+void RulerItem2::setPlotInfo(plot_info info)
 {
 	pInfo = info;
-	dest->pInfo = info;
-	source->pInfo = info;
+	recalculate();
+}
+
+void RulerItem2::setAxis(DiveCartesianAxis* time, DiveCartesianAxis* depth)
+{
+	timeAxis = time;
+	depthAxis = depth;
+	dest->depthAxis = depth;
+	dest->timeAxis = time;
+	source->depthAxis = depth;
+	source->timeAxis = time;
 	recalculate();
 }
