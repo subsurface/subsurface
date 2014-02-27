@@ -807,11 +807,6 @@
     <string>Auto Group</string>
    </property>
   </action>
-  <action name="actionToggleZoom">
-   <property name="text">
-    <string>Toggle &amp;Zoom</string>
-   </property>
-  </action>
   <action name="actionYearlyStatistics">
    <property name="text">
     <string>&amp;Yearly Statistics</string>
