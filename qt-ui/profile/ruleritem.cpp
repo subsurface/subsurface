@@ -3,6 +3,7 @@
 #include <QFontMetrics>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QDebug>
 
 #include <stdint.h>
 
@@ -171,6 +172,8 @@ void RulerItem2::setPlotInfo(plot_info info)
 {
 	pInfo = info;
 	recalculate();
+	dest->recalculate();
+	source->recalculate();
 }
 
 void RulerItem2::setAxis(DiveCartesianAxis* time, DiveCartesianAxis* depth)

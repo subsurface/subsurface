@@ -172,6 +172,8 @@ void ProfileWidget2::setupItemOnScene()
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT));
 
+	rulerItem->setAxis(timeAxis, profileYAxis);
+
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	for(int i = 0; i < 16; i++){
@@ -364,7 +366,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		heartBeatAxis->setVisible(false);
 	}
 	timeAxis->setMaximum(maxtime);
-
+	rulerItem->setPlotInfo(pInfo);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
@@ -434,10 +436,16 @@ void ProfileWidget2::settingsChanged()
 		plotDives(QList<dive*>() << getDiveById(diveId));
 	}
 
-	bool rulerVisible = s.value("rulergraph", false).toBool();
-	rulerItem->setVisible(rulerVisible);
-	rulerItem->destNode()->setVisible(rulerVisible );
-	rulerItem->sourceNode()->setVisible(rulerVisible );
+	if(currentState == PROFILE){
+		bool rulerVisible = s.value("rulergraph", false).toBool();
+		rulerItem->setVisible(rulerVisible);
+		rulerItem->destNode()->setVisible(rulerVisible );
+		rulerItem->sourceNode()->setVisible(rulerVisible );
+	}else{
+		rulerItem->setVisible(false);
+		rulerItem->destNode()->setVisible(false);
+		rulerItem->sourceNode()->setVisible(false);
+	}
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent* event)
