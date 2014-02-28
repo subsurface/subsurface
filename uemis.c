@@ -26,30 +26,32 @@
 /*
  * Translation Table to decode (created by Bob Trower)
  */
-static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
+static const char cd64[] = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
 
 /*
  * decodeblock -- decode 4 '6-bit' characters into 3 8-bit binary bytes
  */
-static void decodeblock (unsigned char in[4], unsigned char out[3]) {
-	out[0] = (unsigned char) (in[0] << 2 | in[1] >> 4);
-	out[1] = (unsigned char) (in[1] << 4 | in[2] >> 2);
-	out[2] = (unsigned char) (((in[2] << 6) & 0xc0) | in[3]);
+static void decodeblock(unsigned char in[4], unsigned char out[3])
+{
+	out[0] = (unsigned char)(in[0] << 2 | in[1] >> 4);
+	out[1] = (unsigned char)(in[1] << 4 | in[2] >> 2);
+	out[2] = (unsigned char)(((in[2] << 6) & 0xc0) | in[3]);
 }
 
 /*
  * decode a base64 encoded stream discarding padding, line breaks and noise
  */
-static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len) {
+static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len)
+{
 	uint8_t in[4], out[3], v;
-	int i,len,indx_in=0,indx_out=0;
+	int i, len, indx_in = 0, indx_out = 0;
 
 	while (indx_in < inbuf_len) {
 		for (len = 0, i = 0; i < 4 && (indx_in < inbuf_len); i++) {
 			v = 0;
 			while ((indx_in < inbuf_len) && v == 0) {
 				v = inbuf[indx_in++];
-				v = ((v < 43 || v > 122) ? 0 : cd64[ v - 43 ]);
+				v = ((v < 43 || v > 122) ? 0 : cd64[v - 43]);
 				if (v)
 					v = ((v == '$') ? 0 : v - 61);
 			}
@@ -57,13 +59,12 @@ static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len) {
 				len++;
 				if (v)
 					in[i] = (v - 1);
-			}
-			else
+			} else
 				in[i] = 0;
 		}
 		if (len) {
 			decodeblock(in, out);
-			for(i = 0; i < len - 1; i++)
+			for (i = 0; i < len - 1; i++)
 				outbuf[indx_out++] = out[i];
 		}
 	}
@@ -73,25 +74,26 @@ static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len) {
 /*
  * convert the base64 data blog
  */
-static int uemis_convert_base64(char *base64, uint8_t **data) {
-	int len,datalen;
+static int uemis_convert_base64(char *base64, uint8_t **data)
+{
+	int len, datalen;
 
 	len = strlen(base64);
-	datalen = (len/4 + 1)*3;
-	if (datalen < 0x123+0x25) {
+	datalen = (len / 4 + 1) * 3;
+	if (datalen < 0x123 + 0x25) {
 		/* less than header + 1 sample??? */
-		fprintf(stderr,"suspiciously short data block\n");
+		fprintf(stderr, "suspiciously short data block\n");
 	}
 	*data = malloc(datalen);
-	if (! *data) {
+	if (!*data) {
 		datalen = 0;
-		fprintf(stderr,"Out of memory\n");
+		fprintf(stderr, "Out of memory\n");
 		goto bail;
 	}
 	decode(base64, *data, len);
 
-	if (memcmp(*data,"Dive\01\00\00",7))
-		fprintf(stderr,"Missing Dive100 header\n");
+	if (memcmp(*data, "Dive\01\00\00", 7))
+		fprintf(stderr, "Missing Dive100 header\n");
 
 bail:
 	return datalen;
@@ -160,7 +162,7 @@ void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
-#if 0	/* seems overkill */
+#if 0 /* seems overkill */
 	if (!g_utf8_validate(text, -1, NULL))
 		return;
 #endif
@@ -191,46 +193,46 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	static int lastndl;
 
 	if (flags[1] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Safety Stop Violation"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Safety Stop Violation"));
 	if (flags[1] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Speed Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed Alarm"));
 #if WANT_CRAZY_WARNINGS
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Speed Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed Warning"));
 	if (flags[1] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","PO2 Green Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Green Warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","PO2 Ascend Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Ascend Warning"));
 	if (flags[1] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","PO2 Ascend Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Ascend Alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Tank Pressure Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank Pressure Info"));
 	if (flags[4] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","RGT Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT Warning"));
 	if (flags[4] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","RGT Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT Alert"));
 	if (flags[4] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Tank Change Suggested"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank Change Suggested"));
 	if (flags[4] & 0x80)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Depth Limit Exceeded"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Depth Limit Exceeded"));
 	if (flags[5] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Max Deco Time Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Max Deco Time Warning"));
 	if (flags[5] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Dive Time Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive Time Info"));
 	if (flags[5] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Dive Time Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive Time Alert"));
 	if (flags[5] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Marker"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Marker"));
 	if (flags[6] & 0x02)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","No Tank Data"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "No Tank Data"));
 	if (flags[6] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Low Battery Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low Battery Warning"));
 	if (flags[6] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC","Low Battery Alert"));
-	/* flags[7] reflects the little on screen icons that remind of previous
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low Battery Alert"));
+/* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 
 #if UEMIS_DEBUG & 32
@@ -238,7 +240,7 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	for (i = 0; i < 8; i++) {
 		printf(" %d: ", 29 + i);
 		for (j = 7; j >= 0; j--)
-			printf ("%c", flags[i] &  1 << j ? '1' : '0');
+			printf("%c", flags[i] & 1 << j ? '1' : '0');
 	}
 	printf("\n");
 #endif
@@ -254,33 +256,34 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 		/* deco */
 		sample->in_deco = true;
 		sample->stopdepth.mm = stopdepth;
-		sample->stoptime.seconds = u_sample->hold_time *60;
+		sample->stoptime.seconds = u_sample->hold_time * 60;
 		sample->ndl.seconds = 0;
 	} else if (flags[0] & 128) {
 		/* safety stop - distinguished from deco stop by having
 		 * both ndl and stop information */
 		sample->in_deco = false;
 		sample->stopdepth.mm = stopdepth;
-		sample->stoptime.seconds = u_sample->hold_time *60;
+		sample->stoptime.seconds = u_sample->hold_time * 60;
 		sample->ndl.seconds = lastndl;
 	} else {
 		/* NDL */
 		sample->in_deco = false;
-		lastndl = sample->ndl.seconds = u_sample->hold_time *60;
+		lastndl = sample->ndl.seconds = u_sample->hold_time * 60;
 		sample->stopdepth.mm = 0;
 		sample->stoptime.seconds = 0;
 	}
 #if UEMIS_DEBUG & 32
 	printf("%dm:%ds: p_amb_tol:%d surface:%d holdtime:%d holddepth:%d/%d ---> stopdepth:%d stoptime:%d ndl:%d\n",
-		sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->dc.surface_pressure.mbar,
-		u_sample->hold_time, u_sample->hold_depth, stopdepth, sample->stopdepth.mm, sample->stoptime.seconds, sample->ndl.seconds);
+	       sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->dc.surface_pressure.mbar,
+	       u_sample->hold_time, u_sample->hold_depth, stopdepth, sample->stopdepth.mm, sample->stoptime.seconds, sample->ndl.seconds);
 #endif
 }
 
 /*
  * parse uemis base64 data blob into struct dive
  */
-void uemis_parse_divelog_binary(char *base64, void *datap) {
+void uemis_parse_divelog_binary(char *base64, void *datap)
+{
 	int datalen;
 	int i;
 	uint8_t *data;
@@ -315,13 +318,13 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 	   uemis cylinder data is insane - it stores seven tank settings in a block
 	   and the template tells us which of the four groups of tanks we need to look at
 	 */
-	gasoffset = template = *(uint8_t *)(data+115);
+	gasoffset = template = *(uint8_t *)(data + 115);
 	if (template == 3)
 		gasoffset = 4;
 	if (template == 0)
 		template = 1;
 	for (i = 0; i < template; i++) {
-		float volume = *(float *)(data+116+25*(gasoffset + i)) * 1000.0;
+		float volume = *(float *)(data + 116 + 25 * (gasoffset + i)) * 1000.0;
 		/* uemis always assumes a working pressure of 202.6bar (!?!?) - I first thought
 		 * it was 3000psi, but testing against all my dives gets me that strange number.
 		 * Still, that's of course completely bogus and shows they don't get how
@@ -331,7 +334,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		 */
 		dive->cylinder[i].type.size.mliter = rint(volume);
 		dive->cylinder[i].type.workingpressure.mbar = 202600;
-		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data+120+25*(gasoffset + i)) * 10;
+		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data + 120 + 25 * (gasoffset + i)) * 10;
 		dive->cylinder[i].gasmix.he.permille = 0;
 	}
 	/* first byte of divelog data is at offset 0x123 */
@@ -354,7 +357,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap) {
 		sample->temperature.mkelvin = C_to_mkelvin(u_sample->dive_temperature / 10.0);
 		sample->sensor = active;
 		sample->cylinderpressure.mbar =
-			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
+		    (u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
 		sample->cns = u_sample->cns;
 		uemis_event(dive, dc, sample, u_sample);
 		finish_sample(dc);

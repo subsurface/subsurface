@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	if (no_filenames) {
 		QString defaultFile(prefs.default_filename);
 		if (!defaultFile.isEmpty())
-			files.push_back( QString(prefs.default_filename) );
+			files.push_back(QString(prefs.default_filename));
 	}
 	parse_xml_exit();
 	MainWindow::instance()->loadFiles(files);

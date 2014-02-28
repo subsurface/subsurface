@@ -9,7 +9,7 @@
 #include <QPen>
 #include <QDebug>
 
-DiveTextItem::DiveTextItem(QGraphicsItem* parent): QGraphicsItemGroup(parent),
+DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(NULL),
 	textItem(NULL),
@@ -25,7 +25,7 @@ void DiveTextItem::setAlignment(int alignFlags)
 	updateText();
 }
 
-void DiveTextItem::setBrush(const QBrush& b)
+void DiveTextItem::setBrush(const QBrush &b)
 {
 	brush = b;
 	updateText();
@@ -36,13 +36,13 @@ void DiveTextItem::setScale(double newscale)
 	scale = newscale;
 }
 
-void DiveTextItem::setText(const QString& t)
+void DiveTextItem::setText(const QString &t)
 {
 	internalText = t;
 	updateText();
 }
 
-const QString& DiveTextItem::text()
+const QString &DiveTextItem::text()
 {
 	return internalText;
 }
@@ -54,7 +54,7 @@ void DiveTextItem::updateText()
 	textItem = NULL;
 	delete textBackgroundItem;
 	textBackgroundItem = NULL;
-	if(internalText.isEmpty()){
+	if (internalText.isEmpty()) {
 		return;
 	}
 
@@ -75,14 +75,14 @@ void DiveTextItem::updateText()
 
 	QRectF rect = fm.boundingRect(internalText);
 	yPos = (internalAlignFlags & Qt::AlignTop) ? 0 :
-			(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
-	/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
+						     (internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
+											      /*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
 
-	xPos = (internalAlignFlags & Qt::AlignLeft ) ? -rect.width() :
-		(internalAlignFlags & Qt::AlignHCenter) ?  -rect.width()/2 :
-	 /* (internalAlignFlags & Qt::AlignRight) */ 0;
+	xPos = (internalAlignFlags & Qt::AlignLeft) ? -rect.width() :
+						      (internalAlignFlags & Qt::AlignHCenter) ? -rect.width() / 2 :
+												/* (internalAlignFlags & Qt::AlignRight) */ 0;
 
-	textPath.addText( xPos, yPos, fnt, internalText);
+	textPath.addText(xPos, yPos, fnt, internalText);
 	QPainterPathStroker stroker;
 	stroker.setWidth(3);
 	textBackgroundItem = new QGraphicsPathItem(stroker.createStroke(textPath), this);

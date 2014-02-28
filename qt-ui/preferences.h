@@ -9,16 +9,17 @@
 
 class QAbstractButton;
 
-class PreferencesDialog :public QDialog{
-Q_OBJECT
+class PreferencesDialog : public QDialog {
+	Q_OBJECT
 public:
-	static PreferencesDialog* instance();
-	void showEvent(QShowEvent* );
+	static PreferencesDialog *instance();
+	void showEvent(QShowEvent *);
 	void emitSettingsChanged();
 signals:
 	void settingsChanged();
-public slots:
-	void buttonClicked(QAbstractButton* button);
+public
+slots:
+	void buttonClicked(QAbstractButton *button);
 	void on_chooseFile_clicked();
 	void syncSettings();
 	void loadSettings();
@@ -28,7 +29,7 @@ public slots:
 	void gfhighChanged(int gf);
 
 private:
-	explicit PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();
 	Ui::PreferencesDialog ui;
 	struct preferences oldPrefs;

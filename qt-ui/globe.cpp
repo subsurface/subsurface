@@ -24,7 +24,7 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 
-GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent),
+GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	loadedDives(0),
 	messageWidget(new KMessageWidget(this)),
 	fixZoomTimer(new QTimer(this)),
@@ -35,7 +35,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent),
 	// if not, check if they are in a known location
 	MapThemeManager mtm;
 	QStringList list = mtm.mapThemeIds();
-	QString  subsurfaceDataPath;
+	QString subsurfaceDataPath;
 	QDir marble;
 	if (!list.contains("earth/googlesat/googlesat.dgml")) {
 		subsurfaceDataPath = getSubsurfaceDataPath("marbledata");
@@ -55,7 +55,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent),
 	setProjection(Marble::Spherical);
 
 	setAnimationsEnabled(true);
-	Q_FOREACH(AbstractFloatItem *i, floatItems()) {
+	Q_FOREACH(AbstractFloatItem * i, floatItems()) {
 		i->setVisible(false);
 	}
 
@@ -68,7 +68,7 @@ GlobeGPS::GlobeGPS(QWidget* parent) : MarbleWidget(parent),
 	setShowScaleBar(true);
 	setShowCompass(false);
 	connect(this, SIGNAL(mouseClickGeoPosition(qreal, qreal, GeoDataCoordinates::Unit)),
-			this, SLOT(mouseClicked(qreal, qreal, GeoDataCoordinates::Unit)));
+		this, SLOT(mouseClicked(qreal, qreal, GeoDataCoordinates::Unit)));
 
 	setMinimumHeight(0);
 	setMinimumWidth(0);
@@ -86,22 +86,22 @@ bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 	// we need to move this to our 'contextMenuEvent'
 	// if we plan to do a different one in the future.
 	if (ev->type() == QEvent::ContextMenu) {
-		contextMenuEvent(static_cast<QContextMenuEvent*>(ev));
+		contextMenuEvent(static_cast<QContextMenuEvent *>(ev));
 		return true;
 	}
 	if (ev->type() == QEvent::MouseButtonPress) {
-		QMouseEvent *e = static_cast<QMouseEvent*>(ev);
-		 if (e->button() == Qt::RightButton)
+		QMouseEvent *e = static_cast<QMouseEvent *>(ev);
+		if (e->button() == Qt::RightButton)
 			return true;
 	}
-	return QObject::eventFilter(obj,ev );
+	return QObject::eventFilter(obj, ev);
 }
 
-void GlobeGPS::contextMenuEvent(QContextMenuEvent* ev)
+void GlobeGPS::contextMenuEvent(QContextMenuEvent *ev)
 {
 	QMenu m;
 	QAction *a = m.addAction(tr("Edit Selected Dive Locations"), this, SLOT(prepareForGetDiveCoordinates()));
-	a->setData(QVariant::fromValue<void*>(&m));
+	a->setData(QVariant::fromValue<void *>(&m));
 	m.exec(ev->globalPos());
 }
 
@@ -171,7 +171,7 @@ void GlobeGPS::repopulateLabels()
 	for_each_dive(idx, dive) {
 		if (dive_has_gps_location(dive)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
-			place->setCoordinate(dive->longitude.udeg / 1000000.0,dive->latitude.udeg / 1000000.0 , 0, GeoDataCoordinates::Degree);
+			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
 			// don't add dive locations twice, unless they are at least 50m apart
 			if (locationMap[QString(dive->location)]) {
 				GeoDataCoordinates existingLocation = locationMap[QString(dive->location)]->coordinate();
@@ -200,7 +200,7 @@ void GlobeGPS::reload()
 	repopulateLabels();
 }
 
-void GlobeGPS::centerOn(dive* dive)
+void GlobeGPS::centerOn(dive *dive)
 {
 	// dive has changed, if we had the 'editingDive', hide it.
 	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive)))
@@ -221,12 +221,12 @@ void GlobeGPS::centerOn(dive* dive)
 		zoomView(zoomFromDistance(3));
 
 	if (!fixZoomTimer->isActive())
-	    currentZoomLevel = zoom();
+		currentZoomLevel = zoom();
 	// From the marble source code, the maximum time of
 	// 'spin and fit' is 2 seconds, so wait a bit them zoom again.
 	fixZoomTimer->start(2100);
 
-	centerOn(longitude,latitude, true);
+	centerOn(longitude, latitude, true);
 }
 
 void GlobeGPS::fixZoom()
@@ -260,7 +260,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 
 	/* change everything on the selection. */
 	int i;
-	struct dive* dive;
+	struct dive *dive;
 	for_each_dive(i, dive) {
 		if (!dive->selected)
 			continue;
@@ -273,7 +273,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	MainWindow::instance()->refreshDisplay();
 }
 
-void GlobeGPS::mousePressEvent(QMouseEvent* event)
+void GlobeGPS::mousePressEvent(QMouseEvent *event)
 {
 	qreal lat, lon;
 	bool clickOnGlobe = geoCoordinates(event->pos().x(), event->pos().y(), lon, lat, GeoDataCoordinates::Degree);
@@ -287,9 +287,9 @@ void GlobeGPS::mousePressEvent(QMouseEvent* event)
 	}
 }
 
-void GlobeGPS::resizeEvent(QResizeEvent* event)
+void GlobeGPS::resizeEvent(QResizeEvent *event)
 {
-	int size  = event->size().width();
+	int size = event->size().width();
 	MarbleWidget::resizeEvent(event);
 	if (size > 600)
 		messageWidget->setGeometry((size - 600) / 2, 5, 600, 0);

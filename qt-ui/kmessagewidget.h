@@ -87,118 +87,118 @@ class KMessageWidgetPrivate;
  * @author Aurélien Gâteau <agateau@kde.org>
  * @since 4.7
  */
-class KMessageWidget : public QFrame
-{
-    Q_OBJECT
-    Q_ENUMS(MessageType)
+class KMessageWidget : public QFrame {
+	Q_OBJECT
+	Q_ENUMS(MessageType)
 
-    Q_PROPERTY(QString text READ text WRITE setText)
-    Q_PROPERTY(bool wordWrap READ wordWrap WRITE setWordWrap)
-    Q_PROPERTY(bool closeButtonVisible READ isCloseButtonVisible WRITE setCloseButtonVisible)
-    Q_PROPERTY(MessageType messageType READ messageType WRITE setMessageType)
-    Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
+	Q_PROPERTY(QString text READ text WRITE setText)
+	Q_PROPERTY(bool wordWrap READ wordWrap WRITE setWordWrap)
+	Q_PROPERTY(bool closeButtonVisible READ isCloseButtonVisible WRITE setCloseButtonVisible)
+	Q_PROPERTY(MessageType messageType READ messageType WRITE setMessageType)
+	Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
 public:
-    enum MessageType {
-	Positive,
-	Information,
-	Warning,
-	Error
-    };
+	enum MessageType {
+		Positive,
+		Information,
+		Warning,
+		Error
+	};
 
-    /**
+	/**
      * Constructs a KMessageWidget with the specified parent.
      */
-    explicit KMessageWidget(QWidget *parent = 0);
+	explicit KMessageWidget(QWidget *parent = 0);
 
-    explicit KMessageWidget(const QString &text, QWidget *parent = 0);
+	explicit KMessageWidget(const QString &text, QWidget *parent = 0);
 
-    ~KMessageWidget();
+	~KMessageWidget();
 
-    QString text() const;
+	QString text() const;
 
-    bool wordWrap() const;
+	bool wordWrap() const;
 
-    bool isCloseButtonVisible() const;
+	bool isCloseButtonVisible() const;
 
-    MessageType messageType() const;
+	MessageType messageType() const;
 
-    void addAction(QAction *action);
+	void addAction(QAction *action);
 
-    void removeAction(QAction *action);
+	void removeAction(QAction *action);
 
-    QSize sizeHint() const;
+	QSize sizeHint() const;
 
-    QSize minimumSizeHint() const;
+	QSize minimumSizeHint() const;
 
-    int heightForWidth(int width) const;
+	int heightForWidth(int width) const;
 
-    /**
+	/**
      * The icon shown on the left of the text. By default, no icon is shown.
      * @since 4.11
      */
-    QIcon icon() const;
+	QIcon icon() const;
 
-public Q_SLOTS:
-    void setText(const QString &text);
+public
+Q_SLOTS:
+	void setText(const QString &text);
 
-    void setWordWrap(bool wordWrap);
+	void setWordWrap(bool wordWrap);
 
-    void setCloseButtonVisible(bool visible);
+	void setCloseButtonVisible(bool visible);
 
-    void setMessageType(KMessageWidget::MessageType type);
+	void setMessageType(KMessageWidget::MessageType type);
 
-    /**
+	/**
      * Show the widget using an animation, unless
      * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
      */
-    void animatedShow();
+	void animatedShow();
 
-    /**
+	/**
      * Hide the widget using an animation, unless
      * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
      */
-    void animatedHide();
+	void animatedHide();
 
-    /**
+	/**
      * Define an icon to be shown on the left of the text
      * @since 4.11
      */
-    void setIcon(const QIcon &icon);
+	void setIcon(const QIcon &icon);
 
 Q_SIGNALS:
-    /**
+	/**
      * This signal is emitted when the user clicks a link in the text label.
      * The URL referred to by the href anchor is passed in contents.
      * @param contents text of the href anchor
      * @see QLabel::linkActivated()
      * @since 4.10
      */
-    void linkActivated(const QString& contents);
+	void linkActivated(const QString &contents);
 
-    /**
+	/**
      * This signal is emitted when the user hovers over a link in the text label.
      * The URL referred to by the href anchor is passed in contents.
      * @param contents text of the href anchor
      * @see QLabel::linkHovered()
      * @since 4.11
      */
-    void linkHovered(const QString& contents);
+	void linkHovered(const QString &contents);
 
 protected:
-    void paintEvent(QPaintEvent *event);
+	void paintEvent(QPaintEvent *event);
 
-    bool event(QEvent *event);
+	bool event(QEvent *event);
 
-    void resizeEvent(QResizeEvent *event);
+	void resizeEvent(QResizeEvent *event);
 
-    void showEvent(QShowEvent *event);
+	void showEvent(QShowEvent *event);
 
 private:
-    KMessageWidgetPrivate *const d;
-    friend class KMessageWidgetPrivate;
+	KMessageWidgetPrivate *const d;
+	friend class KMessageWidgetPrivate;
 
-    Q_PRIVATE_SLOT(d, void slotTimeLineChanged(qreal))
-    Q_PRIVATE_SLOT(d, void slotTimeLineFinished())
+	Q_PRIVATE_SLOT(d, void slotTimeLineChanged(qreal))
+	Q_PRIVATE_SLOT(d, void slotTimeLineFinished())
 };
 
 //---------------------------------------------------------------------
@@ -209,22 +209,21 @@ class QToolButton;
 class QTimeLine;
 #include <QIcon>
 
-class KMessageWidgetPrivate
-{
+class KMessageWidgetPrivate {
 public:
-	void init(KMessageWidget*);
+	void init(KMessageWidget *);
 
-	KMessageWidget* q;
-	QFrame* content;
-	QLabel* iconLabel;
-	QLabel* textLabel;
-	QToolButton* closeButton;
-	QTimeLine* timeLine;
+	KMessageWidget *q;
+	QFrame *content;
+	QLabel *iconLabel;
+	QLabel *textLabel;
+	QToolButton *closeButton;
+	QTimeLine *timeLine;
 	QIcon icon;
 
 	KMessageWidget::MessageType messageType;
 	bool wordWrap;
-	QList<QToolButton*> buttons;
+	QList<QToolButton *> buttons;
 	QPixmap contentSnapShot;
 
 	void createLayout();

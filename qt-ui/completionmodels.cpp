@@ -2,35 +2,38 @@
 #include "dive.h"
 #include "mainwindow.h"
 
-#define CREATE_UPDATE_METHOD(Class, diveStructMember) \
-void Class::updateModel() \
-{ \
-	QStringList list; \
-	struct dive* dive; \
-	int i = 0; \
-	for_each_dive(i, dive) { \
-		QString buddy(dive->diveStructMember); \
-		if (!list.contains(buddy)) { \
-			list.append(buddy); \
-		} \
-	} \
-	setStringList(list); \
-}
+#define CREATE_UPDATE_METHOD(Class, diveStructMember)          \
+	void Class::updateModel()                              \
+	{                                                      \
+		QStringList list;                              \
+		struct dive *dive;                             \
+		int i = 0;                                     \
+		for_each_dive(i, dive)                         \
+		{                                              \
+			QString buddy(dive->diveStructMember); \
+			if (!list.contains(buddy)) {           \
+				list.append(buddy);            \
+			}                                      \
+		}                                              \
+		setStringList(list);                           \
+	}
 
-#define CREATE_CSV_UPDATE_METHOD(Class, diveStructMember) \
-void Class::updateModel() \
-{ \
-	QSet<QString> set; \
-	struct dive* dive; \
-	int i = 0; \
-	for_each_dive(i, dive) { \
-		QString buddy(dive->diveStructMember); \
-		foreach (const QString &value, buddy.split(",", QString::SkipEmptyParts)) { \
-			set.insert(value.trimmed()); \
-		} \
-	} \
-	setStringList(set.toList()); \
-}
+#define CREATE_CSV_UPDATE_METHOD(Class, diveStructMember)                                        \
+	void Class::updateModel()                                                                \
+	{                                                                                        \
+		QSet<QString> set;                                                               \
+		struct dive *dive;                                                               \
+		int i = 0;                                                                       \
+		for_each_dive(i, dive)                                                           \
+		{                                                                                \
+			QString buddy(dive->diveStructMember);                                   \
+			foreach(const QString &value, buddy.split(",", QString::SkipEmptyParts)) \
+			{                                                                        \
+				set.insert(value.trimmed());                                     \
+			}                                                                        \
+		}                                                                                \
+		setStringList(set.toList());                                                     \
+	}
 
 CREATE_CSV_UPDATE_METHOD(BuddyCompletionModel, buddy);
 CREATE_CSV_UPDATE_METHOD(DiveMasterCompletionModel, divemaster);

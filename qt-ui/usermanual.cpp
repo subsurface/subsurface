@@ -5,8 +5,7 @@
 
 #include "../helpers.h"
 
-UserManual::UserManual(QWidget *parent) :
-	QMainWindow(parent),
+UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 	ui(new Ui::UserManual)
 {
 	ui->setupUi(this);
@@ -56,14 +55,15 @@ void UserManual::hideSearchPanel()
 
 void UserManual::search(QString text, QWebPage::FindFlags flags = 0)
 {
-	if (ui->webView->findText(text, QWebPage::FindWrapsAroundDocument|flags) || text.length() == 0) {
+	if (ui->webView->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
 		ui->searchEdit->setStyleSheet("");
 	} else {
 		ui->searchEdit->setStyleSheet("QLineEdit{background: red;}");
 	}
 }
 
-void UserManual::searchTextChanged(QString text) {
+void UserManual::searchTextChanged(QString text)
+{
 	bool hasText = text.length() > 0;
 
 	ui->findPrev->setEnabled(hasText);

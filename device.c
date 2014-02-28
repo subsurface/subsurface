@@ -63,19 +63,23 @@
  */
 static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, double slope, double d_frac)
 {
-	double t_frac = max_t*(1-avg_d/(double)max_d);
+	double t_frac = max_t * (1 - avg_d / (double)max_d);
 	int t1 = max_d / slope;
-	int t4 = max_t - t1*d_frac;
-	int t3 = t4-(t_frac-t1)/(1-d_frac);
-	int t2 = t3-t1*(1-d_frac);
+	int t4 = max_t - t1 * d_frac;
+	int t3 = t4 - (t_frac - t1) / (1 - d_frac);
+	int t2 = t3 - t1 * (1 - d_frac);
 
 	if (t1 < 0 || t1 > t2 || t2 > t3 || t3 > t4 || t4 > max_t)
 		return 0;
 
-	s[1].time.seconds = t1; s[1].depth.mm = max_d;
-	s[2].time.seconds = t2; s[2].depth.mm = max_d;
-	s[3].time.seconds = t3; s[3].depth.mm = max_d * d_frac;
-	s[4].time.seconds = t4; s[4].depth.mm = max_d * d_frac;
+	s[1].time.seconds = t1;
+	s[1].depth.mm = max_d;
+	s[2].time.seconds = t2;
+	s[2].depth.mm = max_d;
+	s[3].time.seconds = t3;
+	s[3].depth.mm = max_d * d_frac;
+	s[4].time.seconds = t4;
+	s[4].depth.mm = max_d * d_frac;
 
 	return 1;
 }
@@ -88,8 +92,10 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 {
 	// shallow or short dives are just trapecoids based on the given slope
 	if (max_d < 10000 || max_t < 600) {
-		s[1].time.seconds = max_d / slope; s[1].depth.mm = max_d;
-		s[2].time.seconds = max_t - max_d / slope; s[2].depth.mm = max_d;
+		s[1].time.seconds = max_d / slope;
+		s[1].depth.mm = max_d;
+		s[2].time.seconds = max_t - max_d / slope;
+		s[2].depth.mm = max_d;
 	} else {
 		s[1].time.seconds = max_d / slope;
 		s[1].depth.mm = max_d;
@@ -102,7 +108,7 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 	}
 }
 
-struct divecomputer* fake_dc(struct divecomputer* dc)
+struct divecomputer *fake_dc(struct divecomputer *dc)
 {
 	static struct sample fake[6];
 	static struct divecomputer fakedc;
@@ -139,7 +145,7 @@ struct divecomputer* fake_dc(struct divecomputer* dc)
 		return &fakedc;
 	}
 	if (avg_d < max_d / 10 || avg_d >= max_d) {
-		avg_d = (max_d+10000)/3;
+		avg_d = (max_d + 10000) / 3;
 		if (avg_d > max_d)
 			avg_d = max_d * 2 / 3;
 	}

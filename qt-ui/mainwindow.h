@@ -29,16 +29,33 @@ class MainTab;
 class ProfileGraphicsView;
 class QWebView;
 
-enum MainWindowTitleFormat { MWTF_DEFAULT, MWTF_FILENAME };
+enum MainWindowTitleFormat {
+	MWTF_DEFAULT,
+	MWTF_FILENAME
+};
 
-class MainWindow : public QMainWindow
-{
-Q_OBJECT
+class MainWindow : public QMainWindow {
+	Q_OBJECT
 public:
-	enum {COLLAPSED, EXPANDED};
-	enum StackWidgetIndexes{ PROFILE, PLANNERPROFILE};
-	enum InfoWidgetIndexes{ MAINTAB, PLANNERWIDGET};
-	enum CurrentState{ VIEWALL, GLOBE_MAXIMIZED, INFO_MAXIMIZED, PROFILE_MAXIMIZED, LIST_MAXIMIZED};
+	enum {
+		COLLAPSED,
+		EXPANDED
+	};
+	enum StackWidgetIndexes {
+		PROFILE,
+		PLANNERPROFILE
+	};
+	enum InfoWidgetIndexes {
+		MAINTAB,
+		PLANNERWIDGET
+	};
+	enum CurrentState {
+		VIEWALL,
+		GLOBE_MAXIMIZED,
+		INFO_MAXIMIZED,
+		PROFILE_MAXIMIZED,
+		LIST_MAXIMIZED
+	};
 
 	MainWindow();
 	virtual ~MainWindow();
@@ -60,7 +77,8 @@ public:
 	void importFiles(const QStringList importFiles);
 	void cleanUpEmpty();
 	QTabWidget *tabWidget();
-private slots:
+private
+slots:
 	/* file menu action */
 	void recentFileTriggered(bool checked);
 	void on_actionNew_triggered();
@@ -127,7 +145,8 @@ private slots:
 protected:
 	void closeEvent(QCloseEvent *);
 
-public slots:
+public
+slots:
 	void readSettings();
 	void refreshDisplay(bool recreateDiveList = true);
 	void showProfile();
@@ -149,7 +168,7 @@ private:
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
 	QString lastUsedDir();
-	void updateLastUsedDir(const QString& s);
+	void updateLastUsedDir(const QString &s);
 };
 
 MainWindow *mainWindow();

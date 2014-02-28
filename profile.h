@@ -5,14 +5,20 @@
 extern "C" {
 #endif
 
-typedef enum { STABLE, SLOW, MODERATE, FAST, CRAZY } velocity_t;
+typedef enum {
+	STABLE,
+	SLOW,
+	MODERATE,
+	FAST,
+	CRAZY
+} velocity_t;
 
 struct membuffer;
 struct divecomputer;
 struct graphics_context;
 struct plot_info;
 struct plot_data {
-	unsigned int in_deco:1;
+	unsigned int in_deco : 1;
 	int cylinderindex;
 	int sec;
 	/* pressure[0] is sensor pressure
@@ -37,7 +43,7 @@ struct plot_data {
 	struct plot_data *max[3];
 	int avg[3];
 	/* values calculated by us */
-	unsigned int in_deco_calc:1;
+	unsigned int in_deco_calc : 1;
 	int ndl_calc;
 	int tts_calc;
 	int stoptime_calc;
@@ -109,13 +115,13 @@ void setup_pp_limits(struct graphics_context *gc);
 #define MIDDLE (-0.5)
 #define BOTTOM (-1)
 
-#define SCALEXGC(x)  (((x) - gc.leftx) / (gc.rightx - gc.leftx) * gc.maxx)
-#define SCALEYGC(y)  (((y) - gc.topy) / (gc.bottomy - gc.topy) * gc.maxy)
-#define SCALEGC(x,y) SCALEXGC(x),SCALEYGC(y)
+#define SCALEXGC(x) (((x) - gc.leftx) / (gc.rightx - gc.leftx) * gc.maxx)
+#define SCALEYGC(y) (((y) - gc.topy) / (gc.bottomy - gc.topy) * gc.maxy)
+#define SCALEGC(x, y) SCALEXGC(x), SCALEYGC(y)
 
-#define SCALEX(gc,x)  (((x)-gc->leftx)/(gc->rightx-gc->leftx)*gc->maxx)
-#define SCALEY(gc,y)  (((y)-gc->topy)/(gc->bottomy-gc->topy)*gc->maxy)
-#define SCALE(gc,x,y) SCALEX(gc,x),SCALEY(gc,y)
+#define SCALEX(gc, x) (((x) - gc->leftx) / (gc->rightx - gc->leftx) * gc->maxx)
+#define SCALEY(gc, y) (((y) - gc->topy) / (gc->bottomy - gc->topy) * gc->maxy)
+#define SCALE(gc, x, y) SCALEX(gc, x), SCALEY(gc, y)
 
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
@@ -123,7 +129,7 @@ void setup_pp_limits(struct graphics_context *gc);
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
 
-#define SAC_WINDOW 45	/* sliding window in seconds for current SAC calculation */
+#define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */
 
 #ifdef __cplusplus
 }

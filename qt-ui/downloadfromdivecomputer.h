@@ -9,21 +9,22 @@
 #include "../libdivecomputer.h"
 #include "ui_downloadfromdivecomputer.h"
 
-class DownloadThread : public QThread{
+class DownloadThread : public QThread {
 	Q_OBJECT
 public:
-	DownloadThread(QObject* parent, device_data_t* data);
+	DownloadThread(QObject *parent, device_data_t *data);
 	virtual void run();
 
 	QString error;
+
 private:
 	device_data_t *data;
 };
 
-class DownloadFromDCWidget : public QDialog{
+class DownloadFromDCWidget : public QDialog {
 	Q_OBJECT
 public:
-	explicit DownloadFromDCWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit DownloadFromDCWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void reject();
 
 	enum states {
@@ -35,11 +36,12 @@ public:
 		DONE,
 	};
 
-public slots:
+public
+slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void on_search_clicked();
-	void on_vendor_currentIndexChanged(const QString& vendor);
+	void on_vendor_currentIndexChanged(const QString &vendor);
 	void on_product_currentIndexChanged();
 
 	void onDownloadThreadFinished();
@@ -76,7 +78,6 @@ public:
 	bool preferDownloaded();
 	void updateState(states state);
 	states currentState;
-
 };
 
 #endif // DOWNLOADFROMDIVECOMPUTER_H

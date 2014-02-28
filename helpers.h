@@ -28,18 +28,18 @@ void set_default_dive_computer_device(const char *name);
 QString getSubsurfaceDataPath(QString folderToFind);
 extern const QString get_dc_nickname(const char *model, uint32_t deviceid);
 int gettimezoneoffset();
-int parseTemperatureToMkelvin(const QString& text);
+int parseTemperatureToMkelvin(const QString &text);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
 QString get_trip_date_string(timestamp_t when, int nr);
 
 extern DiveComputerList dcList;
 
-#define M_OR_FT(_m,_f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
+#define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
 
 #if defined __APPLE__
-#define TITLE_OR_TEXT(_t,_m) "", _t + "\n" + _m
+#define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
 #else
-#define TITLE_OR_TEXT(_t,_m) _t, _m
+#define TITLE_OR_TEXT(_t, _m) _t, _m
 #endif
 #endif // HELPERS_H

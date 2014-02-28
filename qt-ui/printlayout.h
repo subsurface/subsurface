@@ -43,7 +43,7 @@ private:
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;
 
 signals:
-    void signalProgress(int);
+	void signalProgress(int);
 };
 
 #endif // PRINTLAYOUT_H

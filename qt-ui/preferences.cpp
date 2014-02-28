@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
 
-PreferencesDialog* PreferencesDialog::instance()
+PreferencesDialog *PreferencesDialog::instance()
 {
 	static PreferencesDialog *dialog = new PreferencesDialog(MainWindow::instance());
 	dialog->setAttribute(Qt::WA_QuitOnClose, false);
@@ -14,10 +14,10 @@ PreferencesDialog* PreferencesDialog::instance()
 	return dialog;
 }
 
-PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
+PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
 	loadSettings();
@@ -25,7 +25,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 	rememberPrefs();
 }
 
-#define DANGER_GF ( gf > 100 ) ? "* { color: red; }" : ""
+#define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
 void PreferencesDialog::gflowChanged(int gf)
 {
 	ui.gflow->setStyleSheet(DANGER_GF);
@@ -80,7 +80,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.fontsize->setValue(prefs.font_size);
 	ui.defaultfilename->setText(prefs.default_filename);
 	ui.default_cylinder->clear();
-	for(int i=0; tank_info[i].name != NULL; i++) {
+	for (int i = 0; tank_info[i].name != NULL; i++) {
 		ui.default_cylinder->addItem(tank_info[i].name);
 		if (prefs.default_cylinder && strcmp(tank_info[i].name, prefs.default_cylinder) == 0)
 			ui.default_cylinder->setCurrentIndex(i);
@@ -101,7 +101,7 @@ void PreferencesDialog::setUiFromPrefs()
 	s.beginGroup("Language");
 	ui.languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
 	QAbstractItemModel *m = ui.languageView->model();
-	QModelIndexList languages = m->match( m->index(0,0), Qt::UserRole, s.value("UiLanguage").toString());
+	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
 	if (languages.count())
 		ui.languageView->setCurrentIndex(languages.first());
 }
@@ -120,47 +120,47 @@ void PreferencesDialog::rememberPrefs()
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
 
 
-#define GET_UNIT(name, field, f, t)				\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
+#define GET_UNIT(name, field, f, t)                                 \
+	v = s.value(QString(name));                                 \
+	if (v.isValid())                                            \
 		prefs.units.field = (v.toInt() == (t)) ? (t) : (f); \
-	else							\
-		prefs.units.field = default_prefs.units.field
+	else                                                        \
+	prefs.units.field = default_prefs.units.field
 
-#define GET_BOOL(name, field)					\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
-		prefs.field = v.toInt() ? true : false;		\
-	else							\
-		prefs.field = default_prefs.field
+#define GET_BOOL(name, field)                           \
+	v = s.value(QString(name));                     \
+	if (v.isValid())                                \
+		prefs.field = v.toInt() ? true : false; \
+	else                                            \
+	prefs.field = default_prefs.field
 
-#define GET_DOUBLE(name, field)					\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
-		prefs.field = v.toDouble();			\
-	else							\
-		prefs.field = default_prefs.field
+#define GET_DOUBLE(name, field)             \
+	v = s.value(QString(name));         \
+	if (v.isValid())                    \
+		prefs.field = v.toDouble(); \
+	else                                \
+	prefs.field = default_prefs.field
 
-#define GET_INT(name, field)					\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
-		prefs.field = v.toInt();			\
-	else							\
-		prefs.field = default_prefs.field
+#define GET_INT(name, field)             \
+	v = s.value(QString(name));      \
+	if (v.isValid())                 \
+		prefs.field = v.toInt(); \
+	else                             \
+	prefs.field = default_prefs.field
 
-#define GET_TXT(name, field)					\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
-		prefs.field = strdup(v.toString().toUtf8().constData());			\
-	else							\
-		prefs.field = default_prefs.field
+#define GET_TXT(name, field)                                             \
+	v = s.value(QString(name));                                      \
+	if (v.isValid())                                                 \
+		prefs.field = strdup(v.toString().toUtf8().constData()); \
+	else                                                             \
+	prefs.field = default_prefs.field
 
-#define GET_TXT(name, field)					\
-	v = s.value(QString(name));				\
-	if (v.isValid())					\
-		prefs.field = strdup(v.toString().toUtf8().constData());			\
-	else							\
-		prefs.field = default_prefs.field
+#define GET_TXT(name, field)                                             \
+	v = s.value(QString(name));                                      \
+	if (v.isValid())                                                 \
+		prefs.field = strdup(v.toString().toUtf8().constData()); \
+	else                                                             \
+	prefs.field = default_prefs.field
 
 void PreferencesDialog::syncSettings()
 {
@@ -288,7 +288,7 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 }
 
-void PreferencesDialog::buttonClicked(QAbstractButton* button)
+void PreferencesDialog::buttonClicked(QAbstractButton *button)
 {
 	switch (ui.buttonBox->standardButton(button)) {
 	case QDialogButtonBox::Discard:
@@ -313,7 +313,7 @@ void PreferencesDialog::on_chooseFile_clicked()
 	QFileInfo fi(system_default_filename());
 	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open Default Log File"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 
-	if(!choosenFileName.isEmpty())
+	if (!choosenFileName.isEmpty())
 		ui.defaultfilename->setText(choosenFileName);
 }
 

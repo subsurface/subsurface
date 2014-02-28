@@ -11,7 +11,7 @@ class PrintLayout;
 
 // should be based on a custom QPrintDialog class
 class PrintDialog : public QDialog {
-Q_OBJECT
+	Q_OBJECT
 
 public:
 	struct options printOptions;
@@ -23,7 +23,8 @@ private:
 	QProgressBar *progressBar;
 	QPrinter printer;
 
-private slots:
+private
+slots:
 	void previewClicked();
 	void printClicked();
 	void onPaintRequested(QPrinter *);

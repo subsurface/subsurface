@@ -1,6 +1,5 @@
 #include "divepixmapitem.h"
 
-DivePixmapItem::DivePixmapItem(QObject* parent): QObject(parent), QGraphicsPixmapItem()
+DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {
-
 }

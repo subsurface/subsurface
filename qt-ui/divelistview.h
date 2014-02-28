@@ -15,24 +15,24 @@
 #include <QLineEdit>
 #include "models.h"
 
-class DiveListView : public QTreeView
-{
+class DiveListView : public QTreeView {
 	Q_OBJECT
 public:
 	DiveListView(QWidget *parent = 0);
 	~DiveListView();
-	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
-	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
+	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+	void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void reload(DiveTripModel::Layout layout, bool forceSort = true);
-	bool eventFilter(QObject* , QEvent* );
+	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
-	void selectDives(const QList<int>& newDiveSelection);
+	void selectDives(const QList<int> &newDiveSelection);
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
-	QList<dive_trip_t*> selectedTrips();
-public slots:
+	QList<dive_trip_t *> selectedTrips();
+public
+slots:
 	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
 	void headerClicked(int);
@@ -73,8 +73,8 @@ private:
 	void backupExpandedRows();
 	void restoreExpandedRows();
 	int lastVisibleColumn();
-	void selectTrip ( dive_trip_t* trip );
-	void updateLastUsedImageDir(const QString& s);
+	void selectTrip(dive_trip_t *trip);
+	void updateLastUsedImageDir(const QString &s);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
 };

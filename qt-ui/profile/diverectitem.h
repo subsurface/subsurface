@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QGraphicsRectItem>
 
-class DiveRectItem : public QObject, public QGraphicsRectItem{
+class DiveRectItem : public QObject, public QGraphicsRectItem {
 	Q_OBJECT
 	Q_PROPERTY(QRectF rect WRITE setRect READ rect)
 	Q_PROPERTY(QPointF pos WRITE setPos READ pos)

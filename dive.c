@@ -9,9 +9,9 @@
 
 struct tag_entry *g_tag_list = NULL;
 
-static const char* default_tags[] = {
+static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "boat"), QT_TRANSLATE_NOOP("gettextFromC", "shore"), QT_TRANSLATE_NOOP("gettextFromC", "drift"),
-	QT_TRANSLATE_NOOP("gettextFromC", "deep"), QT_TRANSLATE_NOOP("gettextFromC", "cavern") , QT_TRANSLATE_NOOP("gettextFromC", "ice"),
+	QT_TRANSLATE_NOOP("gettextFromC", "deep"), QT_TRANSLATE_NOOP("gettextFromC", "cavern"), QT_TRANSLATE_NOOP("gettextFromC", "ice"),
 	QT_TRANSLATE_NOOP("gettextFromC", "wreck"), QT_TRANSLATE_NOOP("gettextFromC", "cave"), QT_TRANSLATE_NOOP("gettextFromC", "altitude"),
 	QT_TRANSLATE_NOOP("gettextFromC", "pool"), QT_TRANSLATE_NOOP("gettextFromC", "lake"), QT_TRANSLATE_NOOP("gettextFromC", "river"),
 	QT_TRANSLATE_NOOP("gettextFromC", "night"), QT_TRANSLATE_NOOP("gettextFromC", "fresh"), QT_TRANSLATE_NOOP("gettextFromC", "student"),
@@ -48,22 +48,22 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 int get_pressure_units(unsigned int mb, const char **units)
 {
 	int pressure;
-	const char* unit;
+	const char *unit;
 	struct units *units_p = get_units();
 
 	switch (units_p->pressure) {
 	case PASCAL:
 		pressure = mb * 100;
-		unit = translate("gettextFromC","pascal");
+		unit = translate("gettextFromC", "pascal");
 		break;
 	case BAR:
 	default:
 		pressure = (mb + 500) / 1000;
-		unit = translate("gettextFromC","bar");
+		unit = translate("gettextFromC", "bar");
 		break;
 	case PSI:
 		pressure = mbar_to_PSI(mb);
-		unit = translate("gettextFromC","psi");
+		unit = translate("gettextFromC", "psi");
 		break;
 	}
 	if (units)
@@ -100,12 +100,12 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	case LITER:
 	default:
 		vol = ml / 1000.0;
-		unit = translate("gettextFromC","l");
+		unit = translate("gettextFromC", "l");
 		decimals = 1;
 		break;
 	case CUFT:
 		vol = ml_to_cuft(ml);
-		unit = translate("gettextFromC","cuft");
+		unit = translate("gettextFromC", "cuft");
 		decimals = 2;
 		break;
 	}
@@ -134,12 +134,12 @@ double get_depth_units(unsigned int mm, int *frac, const char **units)
 	case METERS:
 	default:
 		d = mm / 1000.0;
-		unit = translate("gettextFromC","m");
+		unit = translate("gettextFromC", "m");
 		decimals = d < 20;
 		break;
 	case FEET:
 		d = mm_to_feet(mm);
-		unit = translate("gettextFromC","ft");
+		unit = translate("gettextFromC", "ft");
 		decimals = 0;
 		break;
 	}
@@ -161,11 +161,11 @@ double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 	case METERS:
 	default:
 		d = mms / 1000.0 * time_factor;
-		unit = translate("gettextFromC",(units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
+		unit = translate("gettextFromC", (units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
 		break;
 	case FEET:
 		d = mm_to_feet(mms) * time_factor;
-		unit = translate("gettextFromC",(units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
+		unit = translate("gettextFromC", (units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
 		break;
 	}
 	if (frac)
@@ -179,16 +179,16 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 {
 	int decimals;
 	double value;
-	const char* unit;
+	const char *unit;
 	struct units *units_p = get_units();
 
 	if (units_p->weight == LBS) {
 		value = grams_to_lbs(grams);
-		unit = translate("gettextFromC","lbs");
+		unit = translate("gettextFromC", "lbs");
 		decimals = 0;
 	} else {
 		value = grams / 1000.0;
-		unit = translate("gettextFromC","kg");
+		unit = translate("gettextFromC", "kg");
 		decimals = 1;
 	}
 	if (frac)
@@ -255,7 +255,7 @@ struct sample *prepare_sample(struct divecomputer *dc)
 		if (nr >= alloc_samples) {
 			struct sample *newsamples;
 
-			alloc_samples = (alloc_samples * 3)/2 + 10;
+			alloc_samples = (alloc_samples * 3) / 2 + 10;
 			newsamples = realloc(dc->sample, alloc_samples * sizeof(struct sample));
 			if (!newsamples)
 				return NULL;
@@ -333,21 +333,21 @@ static void fixup_dc_duration(struct divecomputer *dc)
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
 			duration += time - lasttime;
-			depthtime += (time - lasttime)*(depth+lastdepth)/2;
+			depthtime += (time - lasttime) * (depth + lastdepth) / 2;
 		}
 		lastdepth = depth;
 		lasttime = time;
 	}
 	if (duration) {
 		dc->duration.seconds = duration;
-		dc->meandepth.mm = (depthtime + duration/2) / duration;
+		dc->meandepth.mm = (depthtime + duration / 2) / duration;
 	}
 }
 
 void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
 	int i;
-	int depthtime[MAX_CYLINDERS] = {0,};
+	int depthtime[MAX_CYLINDERS] = { 0, };
 	int lasttime = 0, lastdepth = 0;
 	int idx = 0;
 
@@ -426,7 +426,7 @@ double surface_volume_multiplier(pressure_t pressure)
 	double bar = pressure.mbar / 1000.0;
 
 	if (bar > 200)
-		bar = 0.00038*bar*bar + 0.51629*bar + 81.542;
+		bar = 0.00038 * bar * bar + 0.51629 * bar + 81.542;
 	return bar_to_atm(bar);
 }
 
@@ -469,7 +469,7 @@ static void sanitize_gasmix(struct gasmix *mix)
 	}
 
 	/* Sane mix? */
-	if (o2 <= 1000 && he <= 1000 && o2+he <= 1000)
+	if (o2 <= 1000 && he <= 1000 && o2 + he <= 1000)
 		return;
 	fprintf(stderr, "Odd gasmix: %u O2 %u He\n", o2, he);
 	memset(mix, 0, sizeof(*mix));
@@ -495,29 +495,29 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	psi = to_PSI(type->workingpressure);
 
 	switch (psi) {
-	case 2300 ... 2500:	/* 2400 psi: LP tank */
+	case 2300 ... 2500: /* 2400 psi: LP tank */
 		fmt = "LP%d";
 		break;
-	case 2600 ... 2700:	/* 2640 psi: LP+10% */
+	case 2600 ... 2700: /* 2640 psi: LP+10% */
 		fmt = "LP%d";
 		break;
-	case 2900 ... 3100:	/* 3000 psi: ALx tank */
+	case 2900 ... 3100: /* 3000 psi: ALx tank */
 		fmt = "AL%d";
 		break;
-	case 3400 ... 3500:	/* 3442 psi: HP tank */
+	case 3400 ... 3500: /* 3442 psi: HP tank */
 		fmt = "HP%d";
 		break;
-	case 3700 ... 3850:	/* HP+10% */
+	case 3700 ... 3850: /* HP+10% */
 		fmt = "HP%d+";
 		break;
 	default:
 		return;
 	}
 	len = snprintf(buffer, sizeof(buffer), fmt, rint(cuft));
-	p = malloc(len+1);
+	p = malloc(len + 1);
 	if (!p)
 		return;
-	memcpy(p, buffer, len+1);
+	memcpy(p, buffer, len + 1);
 	type->description = p;
 }
 
@@ -631,7 +631,7 @@ static void fixup_surface_pressure(struct dive *dive)
 		}
 	}
 	if (nr)
-		dive->surface_pressure.mbar = (sum + nr/2)/nr;
+		dive->surface_pressure.mbar = (sum + nr / 2) / nr;
 }
 
 static void fixup_water_salinity(struct dive *dive)
@@ -646,7 +646,7 @@ static void fixup_water_salinity(struct dive *dive)
 		}
 	}
 	if (nr)
-		dive->salinity = (sum + nr/2)/nr;
+		dive->salinity = (sum + nr / 2) / nr;
 }
 
 static void fixup_meandepth(struct dive *dive)
@@ -670,7 +670,7 @@ static void fixup_duration(struct dive *dive)
 	int duration = 0;
 
 	for_each_dc(dive, dc)
-		duration = MAX(duration, dc->duration.seconds);
+	duration = MAX(duration, dc->duration.seconds);
 
 	dive->duration.seconds = duration;
 }
@@ -786,7 +786,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int mintemp = 0;
 	int lastdepth = 0;
 	int lasttemp = 0, lastpressure = 0;
-	int pressure_delta[MAX_CYLINDERS] = {INT_MAX, };
+	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
@@ -871,9 +871,9 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			for (i = 0; i < dc->samples; i++)
 				if (dc->sample[i].sensor == j)
 					dc->sample[i].cylinderpressure.mbar = 0;
-			if (! cyl->start.mbar)
+			if (!cyl->start.mbar)
 				cyl->start.mbar = cyl->sample_start.mbar;
-			if (! cyl->end.mbar)
+			if (!cyl->end.mbar)
 				cyl->end.mbar = cyl->sample_end.mbar;
 			cyl->sample_start.mbar = 0;
 			cyl->sample_end.mbar = 0;
@@ -896,7 +896,7 @@ struct dive *fixup_dive(struct dive *dive)
 	dive->maxcns = dive->cns;
 
 	for_each_dc(dive, dc)
-		fixup_dive_dc(dive, dc);
+	fixup_dive_dc(dive, dc);
 
 	fixup_water_salinity(dive);
 	fixup_surface_pressure(dive);
@@ -924,7 +924,7 @@ struct dive *fixup_dive(struct dive *dive)
 
 /* Don't pick a zero for MERGE_MIN() */
 #define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
-#define MERGE_MIN(res, a, b, n) res->n = (a->n)?(b->n)?MIN(a->n, b->n):(a->n):(b->n)
+#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
 #define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
@@ -950,7 +950,7 @@ static struct sample *add_sample(struct sample *sample, int time, struct divecom
  */
 static void merge_one_sample(struct sample *sample, int time, struct divecomputer *dc)
 {
-	int last = dc->samples-1;
+	int last = dc->samples - 1;
 	if (last >= 0) {
 		static struct sample surface;
 		struct sample *prev = dc->sample + last;
@@ -962,7 +962,7 @@ static void merge_one_sample(struct sample *sample, int time, struct divecompute
 		 * a minute apart, and shallower than 5m
 		 */
 		if (time > last_time + 60 && last_depth < 5000) {
-			add_sample(&surface, last_time+20, dc);
+			add_sample(&surface, last_time + 20, dc);
 			add_sample(&surface, time - 20, dc);
 		}
 	}
@@ -1011,7 +1011,7 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 
 		/* Only samples from a? */
 		if (bt < 0) {
-add_sample_a:
+		add_sample_a:
 			merge_one_sample(as, at, res);
 			as++;
 			asamples--;
@@ -1020,7 +1020,7 @@ add_sample_a:
 
 		/* Only samples from b? */
 		if (at < 0) {
-add_sample_b:
+		add_sample_b:
 			merge_one_sample(bs, bt, res);
 			bs++;
 			bsamples--;
@@ -1073,24 +1073,25 @@ static char *merge_text(const char *a, const char *b)
 		return b ? strdup(b) : NULL;
 	if (!b || !*b)
 		return strdup(a);
-	if (!strcmp(a,b))
+	if (!strcmp(a, b))
 		return a ? strdup(a) : NULL;
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
-	sprintf(res, translate("gettextFromC","(%s) or (%s)"), a, b);
+	sprintf(res, translate("gettextFromC", "(%s) or (%s)"), a, b);
 	return res;
 }
 
-#define SORT(a,b,field) \
-	if (a->field != b->field) return a->field < b->field ? -1 : 1
+#define SORT(a, b, field)         \
+	if (a->field != b->field) \
+	return a->field < b->field ? -1 : 1
 
 static int sort_event(struct event *a, struct event *b)
 {
-	SORT(a,b,time.seconds);
-	SORT(a,b,type);
-	SORT(a,b,flags);
-	SORT(a,b,value);
+	SORT(a, b, time.seconds);
+	SORT(a, b, type);
+	SORT(a, b, flags);
+	SORT(a, b, value);
 	return strcmp(a->name, b->name);
 }
 
@@ -1185,8 +1186,8 @@ static int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 	int a_he = get_he(a), b_he = get_he(b);
 	int delta_o2 = a_o2 - b_o2, delta_he = a_he - b_he;
 
-	delta_he = delta_he*delta_he;
-	delta_o2 = delta_o2*delta_o2;
+	delta_he = delta_he * delta_he;
+	delta_o2 = delta_o2 * delta_o2;
 	return delta_he + delta_o2;
 }
 
@@ -1201,9 +1202,9 @@ static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int
 		const cylinder_t *match;
 		int distance;
 
-		if (used & (1<<i))
+		if (used & (1 << i))
 			continue;
-		match = array+i;
+		match = array + i;
 		distance = gasmix_distance(&cyl->gasmix, &match->gasmix);
 		if (distance >= score)
 			continue;
@@ -1235,7 +1236,7 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 
 	/* Remap the sensor indexes */
 	for (i = 0; i < dc->samples; i++) {
-		struct sample *s = dc->sample+i;
+		struct sample *s = dc->sample + i;
 		int sensor;
 
 		if (!s->cylinderpressure.mbar)
@@ -1291,7 +1292,7 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 		if (j < 0)
 			continue;
 		used |= 1 << j;
-		merge_cylinder_info(cyl, res->cylinder+j);
+		merge_cylinder_info(cyl, res->cylinder + j);
 
 		/* If that renumbered the cylinders, fix it up! */
 		if (i != j)
@@ -1307,7 +1308,7 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
 
 	merge_cylinders(res, a, b);
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		merge_weightsystem_info(res->weightsystem+i, a->weightsystem + i, b->weightsystem + i);
+		merge_weightsystem_info(res->weightsystem + i, a->weightsystem + i, b->weightsystem + i);
 }
 
 static void merge_airtemps(struct dive *res, struct dive *a, struct dive *b)
@@ -1410,7 +1411,7 @@ static int compare_sample(struct sample *s, struct sample *a, struct sample *b, 
 	/* cut off at one meter difference */
 	if (diff > 1000)
 		diff = 1000;
-	return diff*diff;
+	return diff * diff;
 }
 
 /*
@@ -1434,7 +1435,8 @@ static unsigned long sample_difference(struct divecomputer *a, struct divecomput
 	 * skip the first sample - this way we know can always look at
 	 * as/bs[-1] to look at the samples around it in the loop.
 	 */
-	as++; bs++;
+	as++;
+	bs++;
 	asamples--;
 	bsamples--;
 
@@ -1459,17 +1461,19 @@ static unsigned long sample_difference(struct divecomputer *a, struct divecomput
 		}
 
 		if (at < bt) {
-			diff = compare_sample(as, bs-1, bs, bt - at);
+			diff = compare_sample(as, bs - 1, bs, bt - at);
 			as++;
 			asamples--;
 		} else if (at > bt) {
-			diff = compare_sample(bs, as-1, as, at - bt);
+			diff = compare_sample(bs, as - 1, as, at - bt);
 			bs++;
 			bsamples--;
 		} else {
 			diff = compare_sample(as, bs, NULL, 0);
-			as++; bs++;
-			asamples--; bsamples--;
+			as++;
+			bs++;
+			asamples--;
+			bsamples--;
 		}
 
 		/* Invalid comparison point? */
@@ -1559,7 +1563,8 @@ static int similar(unsigned long a, unsigned long b, unsigned long expected)
 	if (a && b) {
 		unsigned long min, max, diff;
 
-		min = a; max = b;
+		min = a;
+		max = b;
 		if (a > b) {
 			min = b;
 			max = a;
@@ -1570,7 +1575,7 @@ static int similar(unsigned long a, unsigned long b, unsigned long expected)
 		if (diff < expected)
 			return 1;
 		/* Error less than 10% or the maximum */
-		if (diff*10 < max)
+		if (diff * 10 < max)
 			return 1;
 	}
 	return 0;
@@ -1672,7 +1677,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 */
 	if (!similar(a->maxdepth.mm, b->maxdepth.mm, 1000) ||
 	    (a->meandepth.mm && b->meandepth.mm && !similar(a->meandepth.mm, b->meandepth.mm, 1000)) ||
-	    !similar(a->duration.seconds, b->duration.seconds, 5*60))
+	    !similar(a->duration.seconds, b->duration.seconds, 5 * 60))
 		return 0;
 
 	/* See if we can get an exact match on the dive computer */
@@ -1761,7 +1766,7 @@ static int same_dc(struct divecomputer *a, struct divecomputer *b)
 	if (a->samples != b->samples)
 		return 0;
 	for (i = 0; i < a->samples; i++)
-		if (!same_sample(a->sample+i, b->sample+i))
+		if (!same_sample(a->sample + i, b->sample + i))
 			return 0;
 	eva = a->events;
 	evb = b->events;
@@ -1852,7 +1857,7 @@ static void copy_dive_computer(struct divecomputer *res, struct divecomputer *a)
  * merge them. If not, we just take the data from 'a'.
  */
 static void interleave_dive_computers(struct divecomputer *res,
-	struct divecomputer *a, struct divecomputer *b, int offset)
+				      struct divecomputer *a, struct divecomputer *b, int offset)
 {
 	do {
 		struct divecomputer *match;
@@ -1921,19 +1926,20 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	remove_redundant_dc(res, prefer_downloaded);
 }
 
-int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len) {
+int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len)
+{
 	int i = 0;
 	struct tag_entry *tmp;
 	tmp = tag_list->next;
 	memset(buffer, 0, len);
-	while(tmp != NULL) {
+	while (tmp != NULL) {
 		int newlength = strlen(tmp->tag->name);
 		if (i > 0)
 			newlength += 2;
-		if ((i+newlength) < len) {
+		if ((i + newlength) < len) {
 			if (i > 0) {
-				strcpy(buffer+i, ", ");
-				strcpy(buffer+i+2, tmp->tag->name);
+				strcpy(buffer + i, ", ");
+				strcpy(buffer + i + 2, tmp->tag->name);
 			} else {
 				strcpy(buffer, tmp->tag->name);
 			}
@@ -1950,7 +1956,7 @@ struct divetag *taglist_get_tag(struct tag_entry *tag_list, const char *tag)
 {
 	struct tag_entry *tmp;
 	tmp = tag_list->next;
-	while(tmp != NULL) {
+	while (tmp != NULL) {
 		if (tmp->tag != NULL) {
 			if (strcmp(tmp->tag->name, tag) == 0)
 				return tmp->tag;
@@ -1961,7 +1967,8 @@ struct divetag *taglist_get_tag(struct tag_entry *tag_list, const char *tag)
 	return NULL;
 }
 
-static inline void taglist_free_divetag(struct divetag *tag) {
+static inline void taglist_free_divetag(struct divetag *tag)
+{
 	if (tag->name != NULL)
 		free(tag->name);
 	if (tag->source != NULL)
@@ -1975,7 +1982,7 @@ static struct divetag *taglist_add_divetag(struct tag_entry *tag_list, struct di
 	struct tag_entry *tmp, *last;
 	last = tag_list;
 	tmp = tag_list->next;
-	while(1) {
+	while (1) {
 		if (tmp == NULL || strcmp(tmp->tag->name, tag->name) > 0) {
 			/* Insert in front of it */
 			last->next = malloc(sizeof(struct tag_entry));
@@ -1999,7 +2006,7 @@ struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag)
 	const char *translation;
 	new_tag = malloc(sizeof(struct divetag));
 
-	for (i=0; i<sizeof(default_tags)/sizeof(char*); i++) {
+	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++) {
 		if (strcmp(default_tags[i], tag) == 0) {
 			is_default_tag = 1;
 			break;
@@ -2008,14 +2015,14 @@ struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag)
 	/* Only translate default tags */
 	if (is_default_tag) {
 		translation = translate("gettextFromC", tag);
-		new_tag->name = malloc(strlen(translation)+1);
-		memcpy(new_tag->name, translation, strlen(translation)+1);
-		new_tag->source = malloc(strlen(tag)+1);
-		memcpy(new_tag->source, tag, strlen(tag)+1);
+		new_tag->name = malloc(strlen(translation) + 1);
+		memcpy(new_tag->name, translation, strlen(translation) + 1);
+		new_tag->source = malloc(strlen(tag) + 1);
+		memcpy(new_tag->source, tag, strlen(tag) + 1);
 	} else {
 		new_tag->source = NULL;
-		new_tag->name = malloc(strlen(tag)+1);
-		memcpy(new_tag->name, tag, strlen(tag)+1);
+		new_tag->name = malloc(strlen(tag) + 1);
+		memcpy(new_tag->name, tag, strlen(tag) + 1);
 	}
 	/* Try to insert new_tag into g_tag_list if we are not operating on it */
 	if (tag_list != g_tag_list) {
@@ -2032,14 +2039,16 @@ struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag)
 	return ret_tag;
 }
 
-void taglist_init(struct tag_entry **tag_list) {
+void taglist_init(struct tag_entry **tag_list)
+{
 	*tag_list = malloc(sizeof(struct tag_entry));
 	(*tag_list)->next = NULL;
 	(*tag_list)->tag = NULL;
 }
 
 /* Clear everything but the first element */
-void taglist_clear(struct tag_entry *tag_list) {
+void taglist_clear(struct tag_entry *tag_list)
+{
 	struct tag_entry *current_tag_entry, *next;
 	current_tag_entry = tag_list->next;
 	while (current_tag_entry != NULL) {
@@ -2071,7 +2080,7 @@ void taglist_init_global()
 	int i;
 	taglist_init(&g_tag_list);
 
-	for(i=0; i<sizeof(default_tags)/sizeof(char*); i++)
+	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++)
 		taglist_add_tag(g_tag_list, default_tags[i]);
 }
 
@@ -2166,7 +2175,7 @@ void shift_times(const timestamp_t amount)
 	int i;
 	struct dive *dive;
 
-	for_each_dive (i, dive) {
+	for_each_dive(i, dive) {
 		if (!dive->selected)
 			continue;
 		dive->when += amount;

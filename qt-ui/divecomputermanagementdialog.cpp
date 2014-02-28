@@ -5,7 +5,7 @@
 #include "../qthelper.h"
 #include "../helpers.h"
 
-DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f),
+DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	model(0)
 {
 	ui.setupUi(this);
@@ -20,7 +20,7 @@ void DiveComputerManagementDialog::init()
 	ui.tableView->setModel(model);
 }
 
-DiveComputerManagementDialog* DiveComputerManagementDialog::instance()
+DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
 {
 	static DiveComputerManagementDialog *self = new DiveComputerManagementDialog(MainWindow::instance());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
@@ -35,17 +35,16 @@ void DiveComputerManagementDialog::update()
 	layout()->activate();
 }
 
-void DiveComputerManagementDialog::tryRemove(const QModelIndex& index)
+void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
 {
 	if (index.column() != DiveComputerModel::REMOVE)
 		return;
 
 	QMessageBox::StandardButton response = QMessageBox::question(
-		this, TITLE_OR_TEXT(
-		tr("Remove the selected Dive Computer?"),
-		tr("Are you sure that you want to \n remove the selected dive computer?")),
-		QMessageBox::Ok | QMessageBox::Cancel
-	);
+	    this, TITLE_OR_TEXT(
+		      tr("Remove the selected Dive Computer?"),
+		      tr("Are you sure that you want to \n remove the selected dive computer?")),
+	    QMessageBox::Ok | QMessageBox::Cancel);
 
 	if (response == QMessageBox::Ok)
 		model->remove(index);

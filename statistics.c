@@ -66,11 +66,13 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	if (!duration)
 		return;
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
-			duration * dp->meandepth.mm) / stats->total_time.seconds;
+			       duration * dp->meandepth.mm) /
+			      stats->total_time.seconds;
 	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
 		sac_time = stats->total_sac_time + duration;
 		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
-				duration * dp->sac) / sac_time ;
+					 duration * dp->sac) /
+					sac_time;
 		if (dp->sac > stats->max_sac.mliter)
 			stats->max_sac.mliter = dp->sac;
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
@@ -135,7 +137,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		if (dive && dp->when == dive->when) {
 			/* that's the one we are showing */
 			if (idx > 0)
-				*prev_dive = dive_table.dives[idx-1];
+				*prev_dive = dive_table.dives[idx - 1];
 		}
 		process_dive(dp, &stats);
 
@@ -211,15 +213,15 @@ char *get_time_string(int seconds, int maxdays)
 {
 	static char buf[80];
 	if (maxdays && seconds > 3600 * 24 * maxdays) {
-		snprintf(buf, sizeof(buf), translate("gettextFromC","more than %d days"), maxdays);
+		snprintf(buf, sizeof(buf), translate("gettextFromC", "more than %d days"), maxdays);
 	} else {
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
 		if (days > 0)
-			snprintf(buf, sizeof(buf), translate("gettextFromC","%dd %dh %dmin"), days, hours, minutes);
+			snprintf(buf, sizeof(buf), translate("gettextFromC", "%dd %dh %dmin"), days, hours, minutes);
 		else
-			snprintf(buf, sizeof(buf), translate("gettextFromC","%dh %dmin"), hours, minutes);
+			snprintf(buf, sizeof(buf), translate("gettextFromC", "%dh %dmin"), hours, minutes);
 	}
 	return buf;
 }
@@ -230,14 +232,14 @@ static void get_ranges(char *buffer, int size)
 	int i, len;
 	int first = -1, last = -1;
 
-	snprintf(buffer, size, "%s", translate("gettextFromC","for dives #"));
+	snprintf(buffer, size, "%s", translate("gettextFromC", "for dives #"));
 	for (i = 0; i < dive_table.nr; i++) {
 		struct dive *dive = get_dive(i);
-		if (! dive->selected)
+		if (!dive->selected)
 			continue;
 		if (dive->number < 1) {
 			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, "%s", translate("gettextFromC","for selected dives"));
+			snprintf(buffer, size, "%s", translate("gettextFromC", "for selected dives"));
 			return;
 		}
 		len = strlen(buffer);
@@ -272,16 +274,16 @@ void get_selected_dives_text(char *buffer, int size)
 {
 	if (amount_selected == 1) {
 		if (current_dive)
-			snprintf(buffer, size, translate("gettextFromC","for dive #%d"), current_dive->number);
+			snprintf(buffer, size, translate("gettextFromC", "for dive #%d"), current_dive->number);
 		else
-			snprintf(buffer, size, "%s", translate("gettextFromC","for selected dive"));
+			snprintf(buffer, size, "%s", translate("gettextFromC", "for selected dive"));
 	} else if (amount_selected == dive_table.nr) {
-		snprintf(buffer, size, "%s", translate("gettextFromC","for all dives"));
+		snprintf(buffer, size, "%s", translate("gettextFromC", "for all dives"));
 	} else if (amount_selected == 0) {
-		snprintf(buffer, size, "%s", translate("gettextFromC","(no dives)"));
+		snprintf(buffer, size, "%s", translate("gettextFromC", "(no dives)"));
 	} else {
 		get_ranges(buffer, size);
-		if (strlen(buffer) == size -1) {
+		if (strlen(buffer) == size - 1) {
 			/* add our own ellipse... the way Pango does this is ugly
 			 * as it will leave partial numbers there which I don't like */
 			int offset = 4;
@@ -353,18 +355,17 @@ char *get_gaslist(struct dive *dive)
 			offset = strlen(buf);
 		}
 		if (is_air(o2, he))
-			strncpy(buf + offset, translate("gettextFromC","air"), MAXBUF - offset);
+			strncpy(buf + offset, translate("gettextFromC", "air"), MAXBUF - offset);
+		else if (he == 0)
+			snprintf(buf + offset, MAXBUF - offset,
+				 translate("gettextFromC", "EAN%d"), (o2 + 5) / 10);
 		else
-			if (he == 0)
-				snprintf(buf + offset, MAXBUF - offset,
-					translate("gettextFromC","EAN%d"), (o2 + 5) / 10);
-			else
-				snprintf(buf + offset, MAXBUF - offset,
-					"%d/%d", (o2 + 5) / 10, (he + 5) / 10);
+			snprintf(buf + offset, MAXBUF - offset,
+				 "%d/%d", (o2 + 5) / 10, (he + 5) / 10);
 		offset = strlen(buf);
 	}
 	if (*buf == '\0')
-		strncpy(buf, translate("gettextFromC","air"), MAXBUF);
+		strncpy(buf, translate("gettextFromC", "air"), MAXBUF);
 
 	buf[MAXBUF - 1] = '\0';
 	return buf;

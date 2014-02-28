@@ -11,15 +11,15 @@ struct preferences default_prefs = {
 		.po2 = false,
 		.pn2 = false,
 		.phe = false,
-		.po2_threshold =  1.6,
-		.pn2_threshold =  4.0,
+		.po2_threshold = 1.6,
+		.pn2_threshold = 4.0,
 		.phe_threshold = 13.0,
 	},
-	.mod  = false,
-	.mod_ppO2  = 1.6,
-	.ead  = false,
+	.mod = false,
+	.mod_ppO2 = 1.6,
+	.ead = false,
 	.profile_dc_ceiling = true,
-	.profile_red_ceiling  = false,
+	.profile_red_ceiling = false,
 	.profile_calc_ceiling = false,
 	.calc_ceiling_3m_incr = false,
 	.calc_ndl_tts = false,
@@ -40,8 +40,8 @@ struct units *get_units()
 /* random helper functions, used here or elsewhere */
 static int sortfn(const void *_a, const void *_b)
 {
-	const struct dive *a = (const struct dive*) *(void **)_a;
-	const struct dive *b = (const struct dive*) *(void **)_b;
+	const struct dive *a = (const struct dive *)*(void **)_a;
+	const struct dive *b = (const struct dive *)*(void **)_b;
 
 	if (a->when < b->when)
 		return -1;
@@ -59,19 +59,19 @@ const char *weekday(int wday)
 {
 	static const char wday_array[7][7] = {
 		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
-		QT_TRANSLATE_NOOP("gettextFromC","Sun"), QT_TRANSLATE_NOOP("gettextFromC","Mon"), QT_TRANSLATE_NOOP("gettextFromC","Tue"), QT_TRANSLATE_NOOP("gettextFromC","Wed"), QT_TRANSLATE_NOOP("gettextFromC","Thu"), QT_TRANSLATE_NOOP("gettextFromC","Fri"), QT_TRANSLATE_NOOP("gettextFromC","Sat")
+		QT_TRANSLATE_NOOP("gettextFromC", "Sun"), QT_TRANSLATE_NOOP("gettextFromC", "Mon"), QT_TRANSLATE_NOOP("gettextFromC", "Tue"), QT_TRANSLATE_NOOP("gettextFromC", "Wed"), QT_TRANSLATE_NOOP("gettextFromC", "Thu"), QT_TRANSLATE_NOOP("gettextFromC", "Fri"), QT_TRANSLATE_NOOP("gettextFromC", "Sat")
 	};
-	return translate("gettextFromC",wday_array[wday]);
+	return translate("gettextFromC", wday_array[wday]);
 }
 
 const char *monthname(int mon)
 {
 	static const char month_array[12][7] = {
 		/*++GETTEXT: these are three letter months - we allow up to six code bytes*/
-		QT_TRANSLATE_NOOP("gettextFromC","Jan"), QT_TRANSLATE_NOOP("gettextFromC","Feb"), QT_TRANSLATE_NOOP("gettextFromC","Mar"), QT_TRANSLATE_NOOP("gettextFromC","Apr"), QT_TRANSLATE_NOOP("gettextFromC","May"), QT_TRANSLATE_NOOP("gettextFromC","Jun"),
-		QT_TRANSLATE_NOOP("gettextFromC","Jul"), QT_TRANSLATE_NOOP("gettextFromC","Aug"), QT_TRANSLATE_NOOP("gettextFromC","Sep"), QT_TRANSLATE_NOOP("gettextFromC","Oct"), QT_TRANSLATE_NOOP("gettextFromC","Nov"), QT_TRANSLATE_NOOP("gettextFromC","Dec"),
+		QT_TRANSLATE_NOOP("gettextFromC", "Jan"), QT_TRANSLATE_NOOP("gettextFromC", "Feb"), QT_TRANSLATE_NOOP("gettextFromC", "Mar"), QT_TRANSLATE_NOOP("gettextFromC", "Apr"), QT_TRANSLATE_NOOP("gettextFromC", "May"), QT_TRANSLATE_NOOP("gettextFromC", "Jun"),
+		QT_TRANSLATE_NOOP("gettextFromC", "Jul"), QT_TRANSLATE_NOOP("gettextFromC", "Aug"), QT_TRANSLATE_NOOP("gettextFromC", "Sep"), QT_TRANSLATE_NOOP("gettextFromC", "Oct"), QT_TRANSLATE_NOOP("gettextFromC", "Nov"), QT_TRANSLATE_NOOP("gettextFromC", "Dec"),
 	};
-	return translate("gettextFromC",month_array[mon]);
+	return translate("gettextFromC", month_array[mon]);
 }
 
 /*
@@ -79,12 +79,14 @@ const char *monthname(int mon)
  */
 bool imported = false;
 
-static void print_version() {
+static void print_version()
+{
 	printf("Subsurface v%s, ", VERSION_STRING);
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 }
 
-static void print_help() {
+static void print_help()
+{
 	print_version();
 	printf("\nUsage: subsurface [options] [logfile ...] [--import logfile ...]");
 	printf("\n\noptions include:");
@@ -96,7 +98,7 @@ static void print_help() {
 
 void parse_argument(const char *arg)
 {
-	const char *p = arg+1;
+	const char *p = arg + 1;
 
 	do {
 		switch (*p) {
@@ -127,13 +129,13 @@ void parse_argument(const char *arg)
 				print_version();
 				exit(0);
 			}
-			/* fallthrough */
+		/* fallthrough */
 		case 'p':
 			/* ignore process serial number argument when run as native macosx app */
 			if (strncmp(arg, "-psQT_TR_NOOP(", 5) == 0) {
 				return;
 			}
-			/* fallthrough */
+		/* fallthrough */
 		default:
 			fprintf(stderr, "Bad argument '%s'\n", arg);
 			exit(1);

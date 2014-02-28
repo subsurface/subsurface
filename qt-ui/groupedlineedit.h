@@ -33,8 +33,7 @@
 #include <QPlainTextEdit>
 #include <QStringList>
 
-class GroupedLineEdit : public QPlainTextEdit
-{
+class GroupedLineEdit : public QPlainTextEdit {
 	Q_OBJECT
 
 public:
@@ -65,6 +64,7 @@ signals:
 protected:
 	virtual void paintEvent(QPaintEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
+
 private:
 	struct Private;
 	Private *d;

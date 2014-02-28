@@ -35,15 +35,15 @@
  * hard coding the item on the scene with a random
  * value.
  */
-static struct _ItemPos{
-	struct _Pos{
+static struct _ItemPos {
+	struct _Pos {
 		QPointF on;
 		QPointF off;
 	};
-	struct _Axis{
-			_Pos pos;
-			QLineF shrinked;
-			QLineF expanded;
+	struct _Axis {
+		_Pos pos;
+		QLineF shrinked;
+		QLineF expanded;
 	};
 	_Pos background;
 	_Pos dcLabel;
@@ -55,12 +55,11 @@ static struct _ItemPos{
 	_Axis heartBeat;
 } itemPos;
 
-ProfileWidget2::ProfileWidget2(QWidget *parent) :
-	QGraphicsView(parent),
+ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
 	currentState(INVALID),
 	zoomLevel(0),
-	background (new DivePixmapItem()),
+	background(new DivePixmapItem()),
 	toolTipItem(new ToolTipItem()),
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
@@ -74,9 +73,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) :
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
 	reportedCeiling(new DiveReportedCeiling()),
-	pn2GasItem( new PartialPressureGasItem()),
-	pheGasItem( new PartialPressureGasItem()),
-	po2GasItem( new PartialPressureGasItem()),
+	pn2GasItem(new PartialPressureGasItem()),
+	pheGasItem(new PartialPressureGasItem()),
+	po2GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
 	isPlotZoomed(prefs.zoomed_plot),
@@ -123,7 +122,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
-	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+	Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
 }
@@ -135,7 +134,7 @@ void ProfileWidget2::setupItemOnScene()
 
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
-	profileYAxis->setTickInterval(M_OR_FT(10,30));
+	profileYAxis->setTickInterval(M_OR_FT(10, 30));
 	profileYAxis->setTickSize(1);
 	profileYAxis->setLineSize(96);
 
@@ -163,7 +162,7 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
-	meanDepth->setLine(0,0,96,0);
+	meanDepth->setLine(0, 0, 96, 0);
 	meanDepth->setX(3);
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
 	meanDepth->setZValue(1);
@@ -176,9 +175,9 @@ void ProfileWidget2::setupItemOnScene()
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
-	for(int i = 0; i < 16; i++){
+	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
-		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1+i);
+		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allTissues.append(tissueItem);
 	}
 	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
@@ -186,17 +185,17 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
-#define CREATE_PP_GAS( ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS ) \
+#define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
-	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS); \
-	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS); \
-	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT)); \
-	ITEM->preferencesChanged(); \
+	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
+	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS);                                                            \
+	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT));                                                        \
+	ITEM->preferencesChanged();                                                                                     \
 	ITEM->setZValue(99);
 
-	CREATE_PP_GAS( pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
-	CREATE_PP_GAS( pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
-	CREATE_PP_GAS( po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
+	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
+	CREATE_PP_GAS(pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
+	CREATE_PP_GAS(po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
 #undef CREATE_PP_GAS
 
 	temperatureAxis->setTextVisible(false);
@@ -205,7 +204,7 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setLinesVisible(false);
 	timeAxis->setLinesVisible(true);
 	profileYAxis->setLinesVisible(true);
-	gasYAxis->setZValue(timeAxis->zValue()+1);
+	gasYAxis->setZValue(timeAxis->zValue() + 1);
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
 }
@@ -229,51 +228,51 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.depth.pos.on.setY(3);
 	itemPos.depth.pos.off.setX(-2);
 	itemPos.depth.pos.off.setY(3);
-	itemPos.depth.expanded.setP1(QPointF(0,0));
-	itemPos.depth.expanded.setP2(QPointF(0,86));
-	itemPos.depth.shrinked.setP1(QPointF(0,0));
-	itemPos.depth.shrinked.setP2(QPointF(0,60));
+	itemPos.depth.expanded.setP1(QPointF(0, 0));
+	itemPos.depth.expanded.setP2(QPointF(0, 86));
+	itemPos.depth.shrinked.setP1(QPointF(0, 0));
+	itemPos.depth.shrinked.setP2(QPointF(0, 60));
 
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
 	itemPos.time.pos.on.setY(95);
 	itemPos.time.pos.off.setX(3);
 	itemPos.time.pos.off.setY(110);
-	itemPos.time.expanded.setP1(QPointF(0,0));
-	itemPos.time.expanded.setP2(QPointF(94,0));
+	itemPos.time.expanded.setP1(QPointF(0, 0));
+	itemPos.time.expanded.setP2(QPointF(94, 0));
 
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
 	itemPos.partialPressure.pos.on.setY(65);
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
-	itemPos.partialPressure.expanded.setP1(QPointF(0,0));
-	itemPos.partialPressure.expanded.setP2(QPointF(0,30));
+	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
+	itemPos.partialPressure.expanded.setP2(QPointF(0, 30));
 
 	// cylinder axis config
 	itemPos.cylinder.pos.on.setX(3);
 	itemPos.cylinder.pos.on.setY(20);
 	itemPos.cylinder.pos.off.setX(-10);
 	itemPos.cylinder.pos.off.setY(20);
-	itemPos.cylinder.expanded.setP1(QPointF(0,15));
-	itemPos.cylinder.expanded.setP2(QPointF(0,50));
-	itemPos.cylinder.shrinked.setP1(QPointF(0,0));
-	itemPos.cylinder.shrinked.setP2(QPointF(0,20));
+	itemPos.cylinder.expanded.setP1(QPointF(0, 15));
+	itemPos.cylinder.expanded.setP2(QPointF(0, 50));
+	itemPos.cylinder.shrinked.setP1(QPointF(0, 0));
+	itemPos.cylinder.shrinked.setP2(QPointF(0, 20));
 
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
 	itemPos.temperature.pos.on.setY(40);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
-	itemPos.temperature.expanded.setP1(QPointF(0,30));
-	itemPos.temperature.expanded.setP2(QPointF(0,50));
-	itemPos.temperature.shrinked.setP1(QPointF(0,5));
-	itemPos.temperature.shrinked.setP2(QPointF(0,15));
+	itemPos.temperature.expanded.setP1(QPointF(0, 30));
+	itemPos.temperature.expanded.setP2(QPointF(0, 50));
+	itemPos.temperature.shrinked.setP1(QPointF(0, 5));
+	itemPos.temperature.shrinked.setP2(QPointF(0, 15));
 
 	itemPos.heartBeat.pos.on.setX(3);
 	itemPos.heartBeat.pos.on.setY(60);
-	itemPos.heartBeat.expanded.setP1(QPointF(0,0));
-	itemPos.heartBeat.expanded.setP2(QPointF(0,20));
+	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
+	itemPos.heartBeat.expanded.setP2(QPointF(0, 20));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
@@ -281,7 +280,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.dcLabel.off.setY(100);
 }
 
-void ProfileWidget2::setupItem(AbstractProfilePolygonItem* item, DiveCartesianAxis* hAxis, DiveCartesianAxis* vAxis, DivePlotDataModel* model, int vData, int hData, int zValue)
+void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue)
 {
 	item->setHorizontalAxis(hAxis);
 	item->setVerticalAxis(vAxis);
@@ -306,7 +305,7 @@ void ProfileWidget2::setupSceneAndFlags()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDives(QList<dive*> dives)
+void ProfileWidget2::plotDives(QList<dive *> dives)
 {
 	// I Know that it's a list, but currently we are
 	// using just the first.
@@ -368,7 +367,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	timeAxis->setMaximum(maxtime);
 	rulerItem->setPlotInfo(pInfo);
 	int i, incr;
-	static int increments[8] = { 10, 20, 30, 60, 5*60, 10*60, 15*60, 30*60 };
+	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
 	 * We start out with 10 seconds and increment up to 30 minutes,
 	 * depending on the dive time.
@@ -387,7 +386,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
 	meanDepth->setMeanDepth(pInfo.meandepth);
-	meanDepth->setLine(0,0,timeAxis->posAtValue(d->duration.seconds),0);
+	meanDepth->setLine(0, 0, timeAxis->posAtValue(d->duration.seconds), 0);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
@@ -409,7 +408,7 @@ void ProfileWidget2::plotDives(QList<dive*> dives)
 		event = event->next;
 	}
 	// Only set visible the ones that should be visible, but how?
-	Q_FOREACH(DiveEventItem *event, eventItems){
+	Q_FOREACH(DiveEventItem * event, eventItems) {
 		event->setVisible(true);
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds;
 	}
@@ -420,35 +419,35 @@ void ProfileWidget2::settingsChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");
-	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
+	if (s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool()) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
-	}else{
+	} else {
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
-	if(s.value("zoomed_plot").toBool() != isPlotZoomed){
+	if (s.value("zoomed_plot").toBool() != isPlotZoomed) {
 		isPlotZoomed = s.value("zoomed_plot").toBool();
 		int diveId = dataModel->id();
 		dataModel->clear();
-		plotDives(QList<dive*>() << getDiveById(diveId));
+		plotDives(QList<dive *>() << getDiveById(diveId));
 	}
 
-	if(currentState == PROFILE){
+	if (currentState == PROFILE) {
 		bool rulerVisible = s.value("rulergraph", false).toBool();
 		rulerItem->setVisible(rulerVisible);
-		rulerItem->destNode()->setVisible(rulerVisible );
-		rulerItem->sourceNode()->setVisible(rulerVisible );
-	}else{
+		rulerItem->destNode()->setVisible(rulerVisible);
+		rulerItem->sourceNode()->setVisible(rulerVisible);
+	} else {
 		rulerItem->setVisible(false);
 		rulerItem->destNode()->setVisible(false);
 		rulerItem->sourceNode()->setVisible(false);
 	}
 }
 
-void ProfileWidget2::resizeEvent(QResizeEvent* event)
+void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
@@ -457,10 +456,10 @@ void ProfileWidget2::resizeEvent(QResizeEvent* event)
 
 void ProfileWidget2::fixBackgroundPos()
 {
-	if(currentState != EMPTY)
+	if (currentState != EMPTY)
 		return;
 	QPixmap toBeScaled;
-	if (!backgrounds.keys().contains(backgroundFile)){
+	if (!backgrounds.keys().contains(backgroundFile)) {
 		backgrounds[backgroundFile] = QPixmap(backgroundFile);
 	}
 	toBeScaled = backgrounds[backgroundFile];
@@ -470,7 +469,7 @@ void ProfileWidget2::fixBackgroundPos()
 	background->setX(mapToScene(x, 0).x());
 }
 
-void ProfileWidget2::wheelEvent(QWheelEvent* event)
+void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	double scaleFactor = 1.15;
@@ -486,9 +485,9 @@ void ProfileWidget2::wheelEvent(QWheelEvent* event)
 	toolTipItem->setPos(mapToScene(toolTipPos));
 }
 
-void ProfileWidget2::scrollViewTo(const QPoint& pos)
+void ProfileWidget2::scrollViewTo(const QPoint &pos)
 {
-/* since we cannot use translate() directly on the scene we hack on
+	/* since we cannot use translate() directly on the scene we hack on
  * the scroll bars (hidden) functionality */
 	if (!zoomLevel)
 		return;
@@ -500,7 +499,7 @@ void ProfileWidget2::scrollViewTo(const QPoint& pos)
 	hs->setValue(xRat * hs->maximum());
 }
 
-void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
+void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
 	toolTipItem->refresh(mapToScene(event->pos()));
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
@@ -514,8 +513,8 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent* event)
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 {
-	QGraphicsScene *s = qobject_cast<QGraphicsScene*>(object);
-	if (s && event->type() == QEvent::GraphicsSceneHelp){
+	QGraphicsScene *s = qobject_cast<QGraphicsScene *>(object);
+	if (s && event->type() == QEvent::GraphicsSceneHelp) {
 		event->ignore();
 		return true;
 	}
@@ -529,13 +528,13 @@ void ProfileWidget2::setEmptyState()
 		return;
 
 	dataModel->clear();
-	backgroundFile = QString(":poster%1").arg( rand()%3 +1);
+	backgroundFile = QString(":poster%1").arg(rand() % 3 + 1);
 	currentState = EMPTY;
 	fixBackgroundPos();
 	profileYAxis->setPos(itemPos.depth.pos.off);
 	gasYAxis->setPos(itemPos.partialPressure.pos.off);
 	timeAxis->setPos(itemPos.time.pos.off);
-	background->setY( itemPos.background.on.y());
+	background->setY(itemPos.background.on.y());
 	background->setVisible(true);
 	toolTipItem->setVisible(false);
 	temperatureAxis->setPos(itemPos.temperature.pos.off);
@@ -547,10 +546,10 @@ void ProfileWidget2::setEmptyState()
 	rulerItem->setVisible(false);
 	rulerItem->destNode()->setVisible(false);
 	rulerItem->sourceNode()->setVisible(false);
-	Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+	Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
 		tissue->setVisible(false);
 	}
-	Q_FOREACH(DiveEventItem *event, eventItems){
+	Q_FOREACH(DiveEventItem * event, eventItems) {
 		event->setVisible(false);
 	}
 }
@@ -570,11 +569,11 @@ void ProfileWidget2::setProfileState()
 	profileYAxis->setPos(itemPos.depth.pos.on);
 	QSettings s;
 	s.beginGroup("TecDetails");
-	if(s.value("phegraph").toBool()|| s.value("po2graph").toBool()|| s.value("pn2graph").toBool()){
+	if (s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool()) {
 		profileYAxis->setLine(itemPos.depth.shrinked);
 		temperatureAxis->setLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->setLine(itemPos.cylinder.shrinked);
-	}else{
+	} else {
 		profileYAxis->setLine(itemPos.depth.expanded);
 		temperatureAxis->setLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
@@ -598,23 +597,23 @@ void ProfileWidget2::setProfileState()
 	diveCeiling->setVisible(s.value("calcceiling").toBool());
 	reportedCeiling->setVisible(s.value("dcceiling").toBool());
 
-	if(s.value("calcalltissues").toBool()){
-		Q_FOREACH(DiveCalculatedTissue *tissue, allTissues){
+	if (s.value("calcalltissues").toBool()) {
+		Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
 			tissue->setVisible(true);
 		}
 	}
 
 	bool rulerVisible = s.value("rulergraph", false).toBool();
 	rulerItem->setVisible(rulerVisible);
-	rulerItem->destNode()->setVisible(rulerVisible );
-	rulerItem->sourceNode()->setVisible(rulerVisible );
+	rulerItem->destNode()->setVisible(rulerVisible);
+	rulerItem->sourceNode()->setVisible(rulerVisible);
 }
 
 extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
-void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
+void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (selected_dive == -1)
 		return;
@@ -625,26 +624,26 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
 	int rowCount = model->rowCount();
 	for (int i = 0; i < rowCount; i++) {
 		QAction *action = new QAction(&m);
-		action->setText( model->data(model->index(i, 0),Qt::DisplayRole).toString());
+		action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 		action->setData(event->globalPos());
 		gasChange->addAction(action);
 	}
 	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
-	QList<QGraphicsItem*> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
-	Q_FOREACH(QGraphicsItem *i, itemsAtPos) {
-		EventItem *item = dynamic_cast<EventItem*>(i);
+	QList<QGraphicsItem *> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
+	Q_FOREACH(QGraphicsItem * i, itemsAtPos) {
+		EventItem *item = dynamic_cast<EventItem *>(i);
 		if (!item)
 			continue;
 		action = new QAction(&m);
 		action->setText(tr("Remove Event"));
-		action->setData(QVariant::fromValue<void*>(item)); // so we know what to remove.
+		action->setData(QVariant::fromValue<void *>(item)); // so we know what to remove.
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
 		m.addAction(action);
 		action = new QAction(&m);
 		action->setText(tr("Hide similar events"));
-		action->setData(QVariant::fromValue<void*>(item));
+		action->setData(QVariant::fromValue<void *>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
 		break;
@@ -665,7 +664,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent* event)
 
 void ProfileWidget2::changeGas()
 {
-	QAction *action = qobject_cast<QAction*>(sender());
+	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	QString gas = action->text();
 	// backup the things on the dataModel, since we will clear that out.
@@ -684,5 +683,5 @@ void ProfileWidget2::changeGas()
 	// force the redraw of the dive.
 	//TODO: find a way to make this do not need a full redraw
 	dataModel->clear();
-	plotDives(QList<dive*>() << getDiveById(diveId));
+	plotDives(QList<dive *>() << getDiveById(diveId));
 }

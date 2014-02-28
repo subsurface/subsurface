@@ -13,9 +13,9 @@ struct membuffer {
 };
 
 #ifdef __GNUC__
-#define __printf(x,y) __attribute__ ((__format__ (__printf__, x, y)))
+#define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
 #else
-#define __printf(x,y)
+#define __printf(x, y)
 #endif
 
 extern void free_buffer(struct membuffer *);
@@ -23,8 +23,8 @@ extern void flush_buffer(struct membuffer *, FILE *);
 extern void put_bytes(struct membuffer *, const char *, int);
 extern void put_string(struct membuffer *, const char *);
 extern void strip_mb(struct membuffer *);
-extern __printf(2,0) void put_vformat(struct membuffer *, const char *, va_list);
-extern __printf(2,3) void put_format(struct membuffer *, const char *fmt, ...);
+extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
+extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
 
 /* Output one of our "milli" values with type and pre/post data */
 extern void put_milli(struct membuffer *, const char *, int, const char *);

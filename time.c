@@ -29,21 +29,23 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 	val = timestamp /= 60;
 
 	/* Do the simple stuff */
-	tm->tm_min = val % 60; val /= 60;
-	tm->tm_hour = val % 24; val /= 24;
+	tm->tm_min = val % 60;
+	val /= 60;
+	tm->tm_hour = val % 24;
+	val /= 24;
 
 	/* Jan 1, 1970 was a Thursday (tm_wday=4) */
-	tm->tm_wday = (val+4) % 7;
+	tm->tm_wday = (val + 4) % 7;
 
 	/*
 	 * Now we're in "days since Jan 1, 1970". To make things easier,
 	 * let's make it "days since Jan 1, 1968", since that's a leap-year
 	 */
-	val += 365+366;
+	val += 365 + 366;
 
 	/* This only works up until 2099 (2100 isn't a leap-year) */
-	leapyears = val / (365*4+1);
-	val %= (365*4+1);
+	leapyears = val / (365 * 4 + 1);
+	val %= (365 * 4 + 1);
 	tm->tm_year = 68 + leapyears * 4;
 
 	/* Handle the leap-year itself */
@@ -61,14 +63,14 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 			break;
 		val -= *mp++;
 	}
-	tm->tm_mday = val+1;
+	tm->tm_mday = val + 1;
 	tm->tm_mon = m;
 }
 
 timestamp_t utc_mktime(struct tm *tm)
 {
 	static const int mdays[] = {
-	    0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+		0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
 	};
 	int year = tm->tm_year;
 	int month = tm->tm_mon;
@@ -91,8 +93,6 @@ timestamp_t utc_mktime(struct tm *tm)
 		day--;
 	if (tm->tm_hour < 0 || tm->tm_min < 0 || tm->tm_sec < 0)
 		return -1;
-	return (year * 365 + (year + 1) / 4 + mdays[month] + day) * 24*60*60UL +
-		tm->tm_hour * 60*60 + tm->tm_min * 60 + tm->tm_sec;
+	return (year * 365 + (year + 1) / 4 + mdays[month] + day) * 24 * 60 * 60UL +
+	       tm->tm_hour * 60 * 60 + tm->tm_min * 60 + tm->tm_sec;
 }
-
-

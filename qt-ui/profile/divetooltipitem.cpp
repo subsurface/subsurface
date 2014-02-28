@@ -17,7 +17,7 @@
 #include "display.h"
 #endif
 
-void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
+void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon)
 {
 	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + SPACING;
@@ -25,7 +25,7 @@ void ToolTipItem::addToolTip(const QString& toolTip, const QIcon& icon)
 		yValue += t.second->boundingRect().height();
 	}
 	if (!icon.isNull()) {
-		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL,ICON_SMALL), this);
+		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL, ICON_SMALL), this);
 		iconItem->setPos(SPACING, yValue);
 	}
 
@@ -47,8 +47,8 @@ void ToolTipItem::refresh(struct graphics_context *gc, QPointF pos)
 	addToolTip(QString::fromUtf8(mb.buffer, mb.len));
 	free_buffer(&mb);
 
-	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
-	Q_FOREACH(QGraphicsItem *item, items) {
+	QList<QGraphicsItem *> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, transform());
+	Q_FOREACH(QGraphicsItem * item, items) {
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}
@@ -63,7 +63,7 @@ void ToolTipItem::clear()
 	toolTips.clear();
 }
 
-void ToolTipItem::setRect(const QRectF& r)
+void ToolTipItem::setRect(const QRectF &r)
 {
 	// qDeleteAll(childItems());
 	delete background;
@@ -74,8 +74,8 @@ void ToolTipItem::setRect(const QRectF& r)
 
 	// Creates a 2pixels border
 	QPainterPath border;
-	border.addRoundedRect(-4, -4,  rectangle.width() + 8, rectangle.height() + 10, 3, 3);
-	border.addRoundedRect(-1, -1,  rectangle.width() + 3, rectangle.height() + 4, 3, 3);
+	border.addRoundedRect(-4, -4, rectangle.width() + 8, rectangle.height() + 10, 3, 3);
+	border.addRoundedRect(-1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
 	setPath(border);
 
 	QPainterPath bg;
@@ -119,10 +119,10 @@ void ToolTipItem::expand()
 		height += t.second->boundingRect().height();
 	}
 	/*       Left padding, Icon Size,   space, right padding */
-	width += SPACING       + ICON_SMALL + SPACING + SPACING;
+	width += SPACING + ICON_SMALL + SPACING + SPACING;
 
-	if (width < title->boundingRect().width() + SPACING*2)
-		width = title->boundingRect().width() + SPACING*2;
+	if (width < title->boundingRect().width() + SPACING * 2)
+		width = title->boundingRect().width() + SPACING * 2;
 
 	if (height < ICON_SMALL)
 		height = ICON_SMALL;
@@ -139,7 +139,7 @@ void ToolTipItem::expand()
 	status = EXPANDED;
 }
 
-ToolTipItem::ToolTipItem(QGraphicsItem* parent) : QGraphicsPathItem(parent),
+ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	background(0),
 	separator(new QGraphicsLineItem(this)),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
@@ -161,21 +161,21 @@ ToolTipItem::~ToolTipItem()
 
 void ToolTipItem::updateTitlePosition()
 {
-	if (rectangle.width() < title->boundingRect().width() + SPACING*4) {
+	if (rectangle.width() < title->boundingRect().width() + SPACING * 4) {
 		QRectF newRect = rectangle;
-		newRect.setWidth(title->boundingRect().width() + SPACING*4);
+		newRect.setWidth(title->boundingRect().width() + SPACING * 4);
 		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : ICON_SMALL);
 		setRect(newRect);
 	}
 
-	title->setPos(boundingRect().width()/2  - title->boundingRect().width()/2 -1, 0);
+	title->setPos(boundingRect().width() / 2 - title->boundingRect().width() / 2 - 1, 0);
 	title->setFlag(ItemIgnoresTransformations);
 	title->setPen(QPen(Qt::white, 1));
 	title->setBrush(Qt::white);
 
 	if (toolTips.size() > 0) {
 		double x1 = 3;
-		double y1 = title->pos().y() + SPACING/2 + title->boundingRect().height();
+		double y1 = title->pos().y() + SPACING / 2 + title->boundingRect().height();
 		double x2 = boundingRect().width() - 10;
 		double y2 = y1;
 
@@ -188,11 +188,12 @@ void ToolTipItem::updateTitlePosition()
 	}
 }
 
-bool ToolTipItem::isExpanded() const {
+bool ToolTipItem::isExpanded() const
+{
 	return status == EXPANDED;
 }
 
-void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	persistPos();
 	QGraphicsPathItem::mouseReleaseEvent(event);
@@ -212,27 +213,26 @@ void ToolTipItem::readPos()
 	QSettings s;
 	s.beginGroup("ProfileMap");
 	QPointF value = scene()->views().at(0)->mapToScene(
-		s.value("tooltip_position").toPoint()
-	);
+	    s.value("tooltip_position").toPoint());
 	if (!scene()->sceneRect().contains(value)) {
-		value = QPointF(0,0);
+		value = QPointF(0, 0);
 	}
 	setPos(value);
 }
 
-void ToolTipItem::setPlotInfo(const plot_info& plot)
+void ToolTipItem::setPlotInfo(const plot_info &plot)
 {
 	pInfo = plot;
 }
 
-void ToolTipItem::setTimeAxis(DiveCartesianAxis* axis)
+void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 {
 	timeAxis = axis;
 }
 
-void ToolTipItem::refresh(const QPointF& pos)
+void ToolTipItem::refresh(const QPointF &pos)
 {
-	int time = timeAxis->valueAt( pos );
+	int time = timeAxis->valueAt(pos);
 	if (time == lastTime)
 		return;
 
@@ -244,8 +244,8 @@ void ToolTipItem::refresh(const QPointF& pos)
 	addToolTip(QString::fromUtf8(mb.buffer, mb.len));
 	free_buffer(&mb);
 
-	QList<QGraphicsItem*> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, scene()->views().first()->transform());
-	Q_FOREACH(QGraphicsItem *item, items) {
+	QList<QGraphicsItem *> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, scene()->views().first()->transform());
+	Q_FOREACH(QGraphicsItem * item, items) {
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}

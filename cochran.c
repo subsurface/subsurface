@@ -30,12 +30,12 @@
  * 230 bytes and 234 bytes respectively.
  */
 static unsigned int partial_decode(unsigned int start, unsigned int end,
-		const unsigned char *decode, unsigned offset, unsigned mod,
-		const unsigned char *buf, unsigned int size, unsigned char *dst)
+				   const unsigned char *decode, unsigned offset, unsigned mod,
+				   const unsigned char *buf, unsigned int size, unsigned char *dst)
 {
 	unsigned i, sum = 0;
 
-	for (i = start ; i < end; i++) {
+	for (i = start; i < end; i++) {
 		unsigned char d = decode[offset++];
 		if (i >= size)
 			break;
@@ -79,7 +79,7 @@ static int figure_out_modulus(const unsigned char *decode, const unsigned char *
 	return best;
 }
 
-#define hexchar(n) ("0123456789abcdef"[(n)&15])
+#define hexchar(n) ("0123456789abcdef"[(n) & 15])
 
 static int show_line(unsigned offset, const unsigned char *data, unsigned size, int show_empty)
 {
@@ -94,11 +94,11 @@ static int show_line(unsigned offset, const unsigned char *data, unsigned size, 
 	memset(buffer, ' ', sizeof(buffer));
 	off = sprintf(buffer, "%06x ", offset);
 	for (i = 0; i < size; i++) {
-		char *hex = buffer + off + 3*i;
+		char *hex = buffer + off + 3 * i;
 		char *asc = buffer + off + 50 + i;
 		unsigned char byte = data[i];
 
-		hex[0] = hexchar(byte>>4);
+		hex[0] = hexchar(byte >> 4);
 		hex[1] = hexchar(byte);
 		bits |= byte;
 		if (byte < 32 || byte > 126)
@@ -125,13 +125,13 @@ static void cochran_debug_write(const char *filename, const unsigned char *data,
 }
 
 static void parse_cochran_header(const char *filename,
-		const unsigned char *decode, unsigned mod,
-		const unsigned char *in, unsigned size)
+				 const unsigned char *decode, unsigned mod,
+				 const unsigned char *in, unsigned size)
 {
 	char *buf = malloc(size);
 
 	/* Do the "null decode" using a one-byte decode array of '\0' */
-	partial_decode(0    , 0x0b14, "", 0, 1, in, size, buf);
+	partial_decode(0, 0x0b14, "", 0, 1, in, size, buf);
 
 	/*
 	 * The header scrambling is different form the dive
@@ -142,7 +142,7 @@ static void parse_cochran_header(const char *filename,
 	partial_decode(0x1b14, 0x2b14, decode, 0, mod, in, size, buf);
 	partial_decode(0x2b14, 0x3b14, decode, 0, mod, in, size, buf);
 	partial_decode(0x3b14, 0x5414, decode, 0, mod, in, size, buf);
-	partial_decode(0x5414,   size, decode, 0, mod, in, size, buf);
+	partial_decode(0x5414, size, decode, 0, mod, in, size, buf);
 
 	printf("\n%s, header\n\n", filename);
 	cochran_debug_write(filename, buf, size);
@@ -204,13 +204,13 @@ static void cochran_profile_write(const unsigned char *buf, int size)
 	for (i = 0; i < size; i++) {
 		unsigned char c = buf[i];
 		printf("%d %d\n",
-			c >> 6, c & 0x3f);
+		       c >> 6, c & 0x3f);
 	}
 }
 
 static void parse_cochran_dive(const char *filename, int dive,
-		const unsigned char *decode, unsigned mod,
-		const unsigned char *in, unsigned size)
+			       const unsigned char *decode, unsigned mod,
+			       const unsigned char *in, unsigned size)
 {
 	char *buf = malloc(size);
 #ifdef DON
@@ -229,7 +229,7 @@ static void parse_cochran_dive(const char *filename, int dive,
 	 * the same way the file size is off by one. It's as if the
 	 * cochran software forgot to write one byte at the beginning.
 	 */
-	partial_decode(0     , 0x0fff, decode, 1, mod, in, size, buf);
+	partial_decode(0, 0x0fff, decode, 1, mod, in, size, buf);
 	partial_decode(0x0fff, 0x1fff, decode, 0, mod, in, size, buf);
 	partial_decode(0x1fff, 0x2fff, decode, 0, mod, in, size, buf);
 	partial_decode(0x2fff, 0x48ff, decode, 0, mod, in, size, buf);
@@ -241,7 +241,7 @@ static void parse_cochran_dive(const char *filename, int dive,
 	 * so this just descrambles part of it:
 	 */
 	partial_decode(0x48ff, offset, decode, 0, mod, in, size, buf);
-	partial_decode(offset,   size, decode, 0, mod, in, size, buf);
+	partial_decode(offset, size, decode, 0, mod, in, size, buf);
 
 	printf("\n%s, dive %d\n\n", filename, dive);
 	cochran_debug_write(filename, buf, size);
@@ -271,12 +271,12 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, GError **err
 
 	for (i = 0; i < 65534; i++) {
 		dive1 = offsets[i];
-		dive2 = offsets[i+1];
+		dive2 = offsets[i + 1];
 		if (dive2 < dive1)
 			break;
 		if (dive2 > mem->size)
 			break;
-		parse_cochran_dive(filename, i+1, decode, mod, mem->buffer + dive1, dive2 - dive1);
+		parse_cochran_dive(filename, i + 1, decode, mod, mem->buffer + dive1, dive2 - dive1);
 	}
 
 	exit(0);

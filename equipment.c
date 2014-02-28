@@ -50,19 +50,19 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 
 bool cylinder_nodata(cylinder_t *cyl)
 {
-	return	!cyl->type.size.mliter &&
-		!cyl->type.workingpressure.mbar &&
-		!cyl->type.description &&
-		!cyl->gasmix.o2.permille &&
-		!cyl->gasmix.he.permille &&
-		!cyl->start.mbar &&
-		!cyl->end.mbar;
+	return !cyl->type.size.mliter &&
+	       !cyl->type.workingpressure.mbar &&
+	       !cyl->type.description &&
+	       !cyl->gasmix.o2.permille &&
+	       !cyl->gasmix.he.permille &&
+	       !cyl->start.mbar &&
+	       !cyl->end.mbar;
 }
 
 static bool cylinder_nosamples(cylinder_t *cyl)
 {
-	return	!cyl->sample_start.mbar &&
-		!cyl->sample_end.mbar;
+	return !cyl->sample_start.mbar &&
+	       !cyl->sample_end.mbar;
 }
 
 bool cylinder_none(void *_data)
@@ -75,8 +75,8 @@ bool cylinder_none(void *_data)
    and the same text */
 static bool description_equal(const char *desc1, const char *desc2)
 {
-		return ((! desc1 && ! desc2) ||
-			(desc1 && desc2 && strcmp(desc1, desc2) == 0));
+	return ((!desc1 && !desc2) ||
+		(desc1 && desc2 && strcmp(desc1, desc2) == 0));
 }
 
 bool weightsystem_none(void *_data)
@@ -98,7 +98,7 @@ bool no_weightsystems(weightsystem_t *ws)
 static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 {
 	return ws1->weight.grams == ws2->weight.grams &&
-		description_equal(ws1->description, ws2->description);
+	       description_equal(ws1->description, ws2->description);
 }
 
 bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
@@ -125,38 +125,38 @@ struct tank_info_t tank_info[100] = {
 	{ "11.1 l", .ml = 11100 },
 
 	/* Most common AL cylinders */
-	{ "AL40",  .cuft =  40, .psi = 3000 },
-	{ "AL50",  .cuft =  50, .psi = 3000 },
-	{ "AL63",  .cuft =  63, .psi = 3000 },
-	{ "AL72",  .cuft =  72, .psi = 3000 },
-	{ "AL80",  .cuft =  80, .psi = 3000 },
+	{ "AL40", .cuft = 40, .psi = 3000 },
+	{ "AL50", .cuft = 50, .psi = 3000 },
+	{ "AL63", .cuft = 63, .psi = 3000 },
+	{ "AL72", .cuft = 72, .psi = 3000 },
+	{ "AL80", .cuft = 80, .psi = 3000 },
 	{ "AL100", .cuft = 100, .psi = 3300 },
 
 	/* Somewhat common LP steel cylinders */
-	{ "LP85",  .cuft =  85, .psi = 2640 },
-	{ "LP95",  .cuft =  95, .psi = 2640 },
+	{ "LP85", .cuft = 85, .psi = 2640 },
+	{ "LP95", .cuft = 95, .psi = 2640 },
 	{ "LP108", .cuft = 108, .psi = 2640 },
 	{ "LP121", .cuft = 121, .psi = 2640 },
 
 	/* Somewhat common HP steel cylinders */
-	{ "HP65",  .cuft =  65, .psi = 3442 },
-	{ "HP80",  .cuft =  80, .psi = 3442 },
+	{ "HP65", .cuft = 65, .psi = 3442 },
+	{ "HP80", .cuft = 80, .psi = 3442 },
 	{ "HP100", .cuft = 100, .psi = 3442 },
 	{ "HP119", .cuft = 119, .psi = 3442 },
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
 	/* Common European steel cylinders */
-	{ "3L 232 bar",   .ml = 3000,  .bar = 232 },
-	{ "3L 300 bar",   .ml = 3000,  .bar = 300 },
-	{ "10L 300 bar",  .ml = 10000, .bar = 300 },
-	{ "12L 200 bar",  .ml = 12000, .bar = 200 },
-	{ "12L 232 bar",  .ml = 12000, .bar = 232 },
-	{ "12L 300 bar",  .ml = 12000, .bar = 300 },
-	{ "15L 200 bar",  .ml = 15000, .bar = 200 },
-	{ "15L 232 bar",  .ml = 15000, .bar = 232 },
-	{ "D7 300 bar",   .ml = 14000, .bar = 300 },
+	{ "3L 232 bar", .ml = 3000, .bar = 232 },
+	{ "3L 300 bar", .ml = 3000, .bar = 300 },
+	{ "10L 300 bar", .ml = 10000, .bar = 300 },
+	{ "12L 200 bar", .ml = 12000, .bar = 200 },
+	{ "12L 232 bar", .ml = 12000, .bar = 232 },
+	{ "12L 300 bar", .ml = 12000, .bar = 300 },
+	{ "15L 200 bar", .ml = 15000, .bar = 200 },
+	{ "15L 232 bar", .ml = 15000, .bar = 232 },
+	{ "D7 300 bar", .ml = 14000, .bar = 300 },
 	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
-	{ "D12 232 bar",  .ml = 24000, .bar = 232 },
+	{ "D12 232 bar", .ml = 24000, .bar = 232 },
 
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
@@ -167,11 +167,11 @@ struct tank_info_t tank_info[100] = {
  * This is a bit odd as the weight system types don't usually encode weight
  */
 struct ws_info_t ws_info[100] = {
-	{ QT_TRANSLATE_NOOP("gettextFromC","integrated"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC","belt"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC","ankle"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC","backplate weight"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC","clip-on"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate weight"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
 };
 
 void remove_cylinder(struct dive *dive, int idx)

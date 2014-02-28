@@ -43,7 +43,7 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	profilePrintColumnWidths.append(dw - 3);
 	profilePrintColumnWidths.append(dw - 3);
 	profilePrintColumnWidths.append(dw + 6); // fit to 100%
-	const int sr = 12; // smallest row height in pixels
+	const int sr = 12;			 // smallest row height in pixels
 	profilePrintRowHeights.append(sr);
 	profilePrintRowHeights.append(sr + 4);
 	profilePrintRowHeights.append(sr);
@@ -84,8 +84,8 @@ void PrintLayout::setup()
 	printerDpi = printer->resolution();
 	pageRect = printer->pageRect();
 
-	scaleX = (qreal)printerDpi/(qreal)screenDpiX;
-	scaleY = (qreal)printerDpi/(qreal)screenDpiY;
+	scaleX = (qreal)printerDpi / (qreal)screenDpiX;
+	scaleY = (qreal)printerDpi / (qreal)screenDpiY;
 
 	// a printer page scalled to screen DPI
 	scaledPageW = pageRect.width() / scaleX;
@@ -114,7 +114,7 @@ int PrintLayout::estimateTotalDives() const
  * p is the padding between elements
  */
 #define ESTIMATE_DIVE_DIM(S, n, p) \
-	 ((S) - ((n) - 1) * (p)) / (n);
+    ((S) - ((n) - 1) * (p)) / (n);
 
 void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
@@ -220,7 +220,7 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	hHeader->setVisible(false);
 	vHeader->setVisible(false);
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	hHeader->setResizeMode(QHeaderView::Fixed);
 	vHeader->setResizeMode(QHeaderView::Fixed);
 #else
@@ -269,8 +269,7 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->setShowGrid(false);
 	table->setStyleSheet(
 		"QTableView { border: none }"
-		"QTableView::item { border: 0px; padding-left: 2px; padding-right: 2px; }"
-	);
+		"QTableView::item { border: 0px; padding-left: 2px; padding-right: 2px; }");
 	// return
 	return table;
 }
@@ -290,7 +289,7 @@ void PrintLayout::printTable()
 	table.setFocusPolicy(Qt::NoFocus);
 	table.horizontalHeader()->setVisible(false);
 	table.verticalHeader()->setVisible(false);
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	table.horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	table.verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 #else
@@ -300,12 +299,11 @@ void PrintLayout::printTable()
 	table.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	table.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	// fit table to one page initially
-	table.resize(scaledPageW,  scaledPageH);
+	table.resize(scaledPageW, scaledPageH);
 
 	// don't show border
 	table.setStyleSheet(
-		"QTableView { border: none }"
-	);
+		"QTableView { border: none }");
 
 	// create and fill a table model
 	TablePrintModel model;

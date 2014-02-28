@@ -13,9 +13,9 @@
 #include "profile.h"
 #include "display.h"
 
-RulerNodeItem2::RulerNodeItem2(struct plot_info& info) : pInfo(info), entry(NULL) , ruler(NULL)
+RulerNodeItem2::RulerNodeItem2(struct plot_info &info) : pInfo(info), entry(NULL), ruler(NULL)
 {
-	setRect(QRect(QPoint(-8,8),QPoint(8,-8)));
+	setRect(QRect(QPoint(-8, 8), QPoint(8, -8)));
 	setBrush(QColor(0xff, 0, 0, 127));
 	setPen(QColor("#FF0000"));
 	setFlag(QGraphicsItem::ItemIsMovable);
@@ -30,7 +30,7 @@ void RulerNodeItem2::setRuler(RulerItem2 *r)
 
 void RulerNodeItem2::recalculate()
 {
-	struct plot_data *data = pInfo.entry+(pInfo.nr-1);
+	struct plot_data *data = pInfo.entry + (pInfo.nr - 1);
 	uint16_t count = 0;
 	if (x() < 0) {
 		setPos(0, y());
@@ -38,13 +38,13 @@ void RulerNodeItem2::recalculate()
 		setPos(timeAxis->posAtValue(data->sec), y());
 	} else {
 		data = pInfo.entry;
-		count=0;
+		count = 0;
 		while (timeAxis->posAtValue(data->sec) < x() && count < pInfo.nr) {
-			data = pInfo.entry+count;
+			data = pInfo.entry + count;
 			count++;
 		}
 		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
-		entry=data;
+		entry = data;
 	}
 }
 
@@ -61,8 +61,7 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 	return QGraphicsEllipseItem::itemChange(change, value);
 }
 
-RulerItem2::RulerItem2():
-	timeAxis(NULL),
+RulerItem2::RulerItem2() : timeAxis(NULL),
 	depthAxis(NULL),
 	source(new RulerNodeItem2(pInfo)),
 	dest(new RulerNodeItem2(pInfo)),
@@ -112,7 +111,6 @@ void RulerItem2::recalculate()
 	textItem->resetTransform();
 	textItem->setPos(startPoint);
 	textItem->rotate(globalLine.angle() * -1);
-
 }
 
 RulerNodeItem2 *RulerItem2::sourceNode() const
@@ -147,7 +145,7 @@ QPainterPath RulerItem2::shape() const
 	QLineF line_n = line.normalVector();
 	line_n.setLength(height);
 	if (paint_direction == 1)
-		line_n.setAngle(line_n.angle()+180);
+		line_n.setAngle(line_n.angle() + 180);
 	path.moveTo(startPoint);
 	path.lineTo(line_n.p2());
 	path.lineTo(line_n.p2() + QPointF(line.dx(), line.dy()));
@@ -164,7 +162,7 @@ void RulerItem2::setPlotInfo(plot_info info)
 	source->recalculate();
 }
 
-void RulerItem2::setAxis(DiveCartesianAxis* time, DiveCartesianAxis* depth)
+void RulerItem2::setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth)
 {
 	timeAxis = time;
 	depthAxis = depth;

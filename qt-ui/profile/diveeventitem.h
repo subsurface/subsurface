@@ -10,22 +10,24 @@ struct event;
 class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
-	DiveEventItem(QObject* parent = 0);
+	DiveEventItem(QObject *parent = 0);
 	void setEvent(struct event *ev);
 	struct event *getEvent();
-	void eventVisibilityChanged(const QString& eventName, bool visible);
+	void eventVisibilityChanged(const QString &eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	void setModel(DivePlotDataModel *model);
-public slots:
+public
+slots:
 	void recalculatePos(bool instant = false);
+
 private:
 	void setupToolTipString();
 	void setupPixmap();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
-	struct event* internalEvent;
+	struct event *internalEvent;
 };
 
 #endif // DIVEEVENTITEM_H

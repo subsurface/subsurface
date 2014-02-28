@@ -25,15 +25,16 @@ public:
 	QLabel *minIco, *minValue;
 	QLabel *maxIco, *maxValue;
 
-	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner) {
+	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner)
+	{
 		avgIco = new QLabel(owner);
-		avgIco->setPixmap(QIcon(":/average").pixmap(16,16));
+		avgIco->setPixmap(QIcon(":/average").pixmap(16, 16));
 		avgIco->setToolTip(QObject::tr("Average"));
 		minIco = new QLabel(owner);
-		minIco->setPixmap(QIcon(":/minimum").pixmap(16,16));
+		minIco->setPixmap(QIcon(":/minimum").pixmap(16, 16));
 		minIco->setToolTip(QObject::tr("Minimum"));
 		maxIco = new QLabel(owner);
-		maxIco->setPixmap(QIcon(":/maximum").pixmap(16,16));
+		maxIco->setPixmap(QIcon(":/maximum").pixmap(16, 16));
 		maxIco->setToolTip(QObject::tr("Maximum"));
 		avgValue = new QLabel(owner);
 		minValue = new QLabel(owner);
@@ -64,9 +65,8 @@ double MinMaxAvgWidget::minimum() const
 	return d->minValue->text().toDouble();
 }
 
-MinMaxAvgWidget::MinMaxAvgWidget(QWidget* parent) : d(new MinMaxAvgWidgetPrivate(this))
+MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : d(new MinMaxAvgWidgetPrivate(this))
 {
-
 }
 
 MinMaxAvgWidget::~MinMaxAvgWidget()
@@ -94,28 +94,28 @@ void MinMaxAvgWidget::setMinimum(double minimum)
 	d->minValue->setText(QString::number(minimum));
 }
 
-void MinMaxAvgWidget::setAverage(const QString& average)
+void MinMaxAvgWidget::setAverage(const QString &average)
 {
 	d->avgValue->setText(average);
 }
 
-void MinMaxAvgWidget::setMaximum(const QString& maximum)
+void MinMaxAvgWidget::setMaximum(const QString &maximum)
 {
 	d->maxValue->setText(maximum);
 }
 
-void MinMaxAvgWidget::setMinimum(const QString& minimum)
+void MinMaxAvgWidget::setMinimum(const QString &minimum)
 {
 	d->minValue->setText(minimum);
 }
 
-RenumberDialog* RenumberDialog::instance()
+RenumberDialog *RenumberDialog::instance()
 {
-	static RenumberDialog* self = new RenumberDialog(MainWindow::instance());
+	static RenumberDialog *self = new RenumberDialog(MainWindow::instance());
 	return self;
 }
 
-void RenumberDialog::buttonClicked(QAbstractButton* button)
+void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		qDebug() << "Renumbering.";
@@ -123,19 +123,19 @@ void RenumberDialog::buttonClicked(QAbstractButton* button)
 	}
 }
 
-RenumberDialog::RenumberDialog(QWidget *parent): QDialog(parent)
+RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
-ShiftTimesDialog* ShiftTimesDialog::instance()
+ShiftTimesDialog *ShiftTimesDialog::instance()
 {
-	static ShiftTimesDialog* self = new ShiftTimesDialog(MainWindow::instance());
+	static ShiftTimesDialog *self = new ShiftTimesDialog(MainWindow::instance());
 	return self;
 }
 
-void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
+void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 {
 	int amount;
 
@@ -155,19 +155,18 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton* button)
 	}
 }
 
-ShiftTimesDialog::ShiftTimesDialog(QWidget *parent): QDialog(parent)
+ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
-void ShiftImageTimesDialog::buttonClicked(QAbstractButton* button)
+void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		m_amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
 		if (ui.backwards->isChecked())
 			m_amount *= -1;
-
 	}
 }
 
@@ -187,13 +186,13 @@ void ShiftImageTimesDialog::syncCameraClicked()
 
 	picture.load(fileNames.at(0));
 	ui.displayDC->setEnabled(true);
-	QGraphicsScene *scene = new QGraphicsScene (this);
+	QGraphicsScene *scene = new QGraphicsScene(this);
 
 	scene->addPixmap(picture.scaled(ui.DCImage->size()));
 	ui.DCImage->setScene(scene);
 	if (readfile(fileNames.at(0).toUtf8().data(), &mem) <= 0)
 		return;
-	retval = exiv.parseFrom((const unsigned char *) mem.buffer, (unsigned) mem.size);
+	retval = exiv.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
 	free(mem.buffer);
 	if (retval != PARSE_EXIF_SUCCESS)
 		return;
@@ -228,12 +227,12 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	setOffset(newDateTime.toTime_t() - dcImageEpoch);
 }
 
-ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent): QDialog(parent), m_amount(0)
+ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent) : QDialog(parent), m_amount(0)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClicked(QAbstractButton*)));
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
-	dcImageEpoch = (time_t) 0;
+	dcImageEpoch = (time_t)0;
 }
 
 time_t ShiftImageTimesDialog::amount() const
@@ -260,7 +259,7 @@ bool isGnome3Session()
 	if (qApp->style()->objectName() != "gtk+")
 		return false;
 	QProcess p;
-	p.start("pidof", QStringList() << "gnome-shell" );
+	p.start("pidof", QStringList() << "gnome-shell");
 	p.waitForFinished(-1);
 	QString p_stdout = p.readAllStandardOutput();
 	return !p_stdout.isEmpty();

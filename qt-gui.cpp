@@ -53,7 +53,7 @@ DiveComputerList dcList;
 static QApplication *application = NULL;
 static MainWindow *window = NULL;
 
-int        error_count;
+int error_count;
 const char *existing_filename;
 
 const char *getSetting(QSettings &s, QString name)
@@ -94,10 +94,10 @@ void init_ui(int *argcp, char ***argvp)
 	// 106 is "UTF-8", this is faster than lookup by name
 	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
-#  ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
 	QFile::setDecodingFunction(decodeUtf8);
 	QFile::setEncodingFunction(encodeUtf8);
-#  endif
+#endif
 #endif
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
@@ -109,7 +109,7 @@ void init_ui(int *argcp, char ***argvp)
 	s.beginGroup("Language");
 	QLocale loc;
 
-	if (!s.value("UseSystemLanguage", true).toBool()){
+	if (!s.value("UseSystemLanguage", true).toBool()) {
 		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
 	}
 
@@ -128,16 +128,15 @@ void init_ui(int *argcp, char ***argvp)
 	// on Linux this tends to be en-US, but on the Mac it's just en
 	if (!uiLang.startsWith("en")) {
 		qtTranslator = new QTranslator;
-		if (qtTranslator->load(loc,"qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+		if (qtTranslator->load(loc, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 			application->installTranslator(qtTranslator);
 		} else {
-			qDebug() << "can't find Qt localization for locale" << uiLang <<
-				    "searching in" << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 		}
 		ssrfTranslator = new QTranslator;
-		if (ssrfTranslator->load(loc,"subsurface", "_") ||
-				ssrfTranslator->load(loc,"subsurface", "_", getSubsurfaceDataPath("translations")) ||
-				ssrfTranslator->load(loc,"subsurface", "_", getSubsurfaceDataPath("../translations"))) {
+		if (ssrfTranslator->load(loc, "subsurface", "_") ||
+		    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
+		    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
 			application->installTranslator(ssrfTranslator);
 		} else {
 			qDebug() << "can't find Subsurface localization for locale" << uiLang;
@@ -146,7 +145,7 @@ void init_ui(int *argcp, char ***argvp)
 
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
-	default_dive_computer_product = getSetting(s,"dive_computer_product");
+	default_dive_computer_product = getSetting(s, "dive_computer_product");
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
 
@@ -230,10 +229,10 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
 		double meters = mm / 1000.0;
-		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0 ).arg(showunit ? translate("gettextFromC","m") : "");
+		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? translate("gettextFromC", "m") : "");
 	} else {
 		double feet = mm_to_feet(mm);
-		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0). arg(showunit ? translate("gettextFromC","ft") : "");
+		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0).arg(showunit ? translate("gettextFromC", "ft") : "");
 	}
 }
 
@@ -245,18 +244,18 @@ QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
 QString get_depth_unit()
 {
 	if (prefs.units.length == units::METERS)
-		return QString("%1").arg(translate("gettextFromC","m"));
+		return QString("%1").arg(translate("gettextFromC", "m"));
 	else
-		return QString("%1").arg(translate("gettextFromC","ft"));
+		return QString("%1").arg(translate("gettextFromC", "ft"));
 }
 
 QString get_weight_string(weight_t weight, bool showunit)
 {
-	QString str = weight_string (weight.grams);
+	QString str = weight_string(weight.grams);
 	if (get_units()->weight == units::KG) {
-		str = QString ("%1%2").arg(str).arg(showunit ? translate("gettextFromC","kg") : "");
+		str = QString("%1%2").arg(str).arg(showunit ? translate("gettextFromC", "kg") : "");
 	} else {
-		str = QString ("%1%2").arg(str).arg(showunit ? translate("gettextFromC","lbs") : "");
+		str = QString("%1%2").arg(str).arg(showunit ? translate("gettextFromC", "lbs") : "");
 	}
 	return (str);
 }
@@ -264,20 +263,20 @@ QString get_weight_string(weight_t weight, bool showunit)
 QString get_weight_unit()
 {
 	if (prefs.units.weight == units::KG)
-		return QString("%1").arg(translate("gettextFromC","kg"));
+		return QString("%1").arg(translate("gettextFromC", "kg"));
 	else
-		return QString("%1").arg(translate("gettextFromC","lbs"));
+		return QString("%1").arg(translate("gettextFromC", "lbs"));
 }
 
 /* these methods retrieve used gas per cylinder */
 static unsigned start_pressure(cylinder_t *cyl)
 {
-	return cyl->start.mbar ? : cyl->sample_start.mbar;
+	return cyl->start.mbar ?: cyl->sample_start.mbar;
 }
 
 static unsigned end_pressure(cylinder_t *cyl)
 {
-	return cyl->end.mbar ? : cyl->sample_end.mbar;
+	return cyl->end.mbar ?: cyl->sample_end.mbar;
 }
 
 QString get_cylinder_used_gas_string(cylinder_t *cyl, bool showunit)
@@ -303,15 +302,13 @@ QString get_cylinder_used_gas_string(cylinder_t *cyl, bool showunit)
 QString get_temperature_string(temperature_t temp, bool showunit)
 {
 	if (temp.mkelvin == 0) {
-		return "";  //temperature not defined
+		return ""; //temperature not defined
 	} else if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
-		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
-								.arg(showunit ? translate("gettextFromC","C") : "");
+		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "C") : "");
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
-		return QString("%1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE): "")
-								.arg(showunit ? translate("gettextFromC","F") : "");
+		return QString("%1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "F") : "");
 	}
 }
 
@@ -327,12 +324,12 @@ QString get_volume_string(volume_t volume, bool showunit, unsigned int mbar)
 {
 	if (prefs.units.volume == units::LITER) {
 		double liter = volume.mliter / 1000.0;
-		return QString("%1%2").arg(liter, 0, 'f', liter >= 40.0 ? 0 : 1 ).arg(showunit ? translate("gettextFromC","l") : "");
+		return QString("%1%2").arg(liter, 0, 'f', liter >= 40.0 ? 0 : 1).arg(showunit ? translate("gettextFromC", "l") : "");
 	} else {
 		double cuft = ml_to_cuft(volume.mliter);
 		if (mbar)
 			cuft *= bar_to_atm(mbar / 1000.0);
-		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? translate("gettextFromC","cuft") : "");
+		return QString("%1%2").arg(cuft, 0, 'f', cuft >= 20.0 ? 0 : (cuft >= 2.0 ? 1 : 2)).arg(showunit ? translate("gettextFromC", "cuft") : "");
 	}
 }
 
@@ -348,10 +345,10 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 {
 	if (prefs.units.pressure == units::BAR) {
 		double bar = pressure.mbar / 1000.0;
-		return QString("%1%2").arg(bar, 0, 'f', 1).arg(showunit ? translate("gettextFromC","bar") : "");
+		return QString("%1%2").arg(bar, 0, 'f', 1).arg(showunit ? translate("gettextFromC", "bar") : "");
 	} else {
 		double psi = mbar_to_PSI(pressure.mbar);
-		return QString("%1%2").arg(psi, 0, 'f', 0).arg(showunit ? translate("gettextFromC","psi") : "");
+		return QString("%1%2").arg(psi, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "psi") : "");
 	}
 }
 
@@ -364,7 +361,7 @@ double get_screen_dpi()
 int is_default_dive_computer(const char *vendor, const char *product)
 {
 	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
-		default_dive_computer_product && !strcmp(product, default_dive_computer_product);
+	       default_dive_computer_product && !strcmp(product, default_dive_computer_product);
 }
 
 int is_default_dive_computer_device(const char *name)
@@ -473,11 +470,11 @@ int gettimezoneoffset()
 	return dt2.secsTo(dt1);
 }
 
-int parseTemperatureToMkelvin(const QString& text)
+int parseTemperatureToMkelvin(const QString &text)
 {
 	int mkelvin;
 	QString numOnly = text;
-	numOnly.replace(",",".").remove(QRegExp("[^-0-9.]"));
+	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.]"));
 	if (numOnly == "")
 		return 0;
 	double number = numOnly.toDouble();
@@ -492,7 +489,6 @@ int parseTemperatureToMkelvin(const QString& text)
 		mkelvin = 0;
 	}
 	return mkelvin;
-
 }
 
 QString get_dive_date_string(timestamp_t when)
@@ -500,12 +496,12 @@ QString get_dive_date_string(timestamp_t when)
 	struct tm tm;
 	utc_mkdate(when, &tm);
 	return translate("gettextFromC", "%1, %2 %3, %4 %5:%6")
-		.arg(weekday(tm.tm_wday))
-		.arg(monthname(tm.tm_mon))
-		.arg(tm.tm_mday)
-		.arg(tm.tm_year + 1900)
-		.arg(tm.tm_hour, 2, 10, QChar('0'))
-		.arg(tm.tm_min, 2, 10, QChar('0'));
+	    .arg(weekday(tm.tm_wday))
+	    .arg(monthname(tm.tm_mon))
+	    .arg(tm.tm_mday)
+	    .arg(tm.tm_year + 1900)
+	    .arg(tm.tm_hour, 2, 10, QChar('0'))
+	    .arg(tm.tm_min, 2, 10, QChar('0'));
 }
 
 QString get_short_dive_date_string(timestamp_t when)
@@ -513,11 +509,11 @@ QString get_short_dive_date_string(timestamp_t when)
 	struct tm tm;
 	utc_mkdate(when, &tm);
 	return translate("gettextFromC", "%1 %2, %3\n%4:%5")
-		.arg(monthname(tm.tm_mon))
-		.arg(tm.tm_mday)
-		.arg(tm.tm_year + 1900)
-		.arg(tm.tm_hour, 2, 10, QChar('0'))
-		.arg(tm.tm_min, 2, 10, QChar('0'));
+	    .arg(monthname(tm.tm_mon))
+	    .arg(tm.tm_mday)
+	    .arg(tm.tm_year + 1900)
+	    .arg(tm.tm_hour, 2, 10, QChar('0'))
+	    .arg(tm.tm_min, 2, 10, QChar('0'));
 }
 
 QString get_trip_date_string(timestamp_t when, int nr)
@@ -526,13 +522,13 @@ QString get_trip_date_string(timestamp_t when, int nr)
 	utc_mkdate(when, &tm);
 	if (nr != 1)
 		return translate("gettextFromC", "%1 %2 (%3 dives)")
-			.arg(monthname(tm.tm_mon))
-			.arg(tm.tm_year + 1900)
-			.arg(nr);
+		    .arg(monthname(tm.tm_mon))
+		    .arg(tm.tm_year + 1900)
+		    .arg(nr);
 	else
 		return translate("gettextFromC", "%1 %2 (1 dive)")
-			.arg(monthname(tm.tm_mon))
-			.arg(tm.tm_year + 1900);
+		    .arg(monthname(tm.tm_mon))
+		    .arg(tm.tm_year + 1900);
 }
 
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
@@ -558,7 +554,7 @@ xsltStylesheetPtr get_stylesheet(const char *name)
 	if (!doc)
 		return NULL;
 
-//	xsltSetGenericErrorFunc(stderr, NULL);
+	//	xsltSetGenericErrorFunc(stderr, NULL);
 	xsltStylesheetPtr xslt = xsltParseStylesheetDoc(doc);
 	if (!xslt) {
 		xmlFreeDoc(doc);

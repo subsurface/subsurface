@@ -9,7 +9,7 @@
 
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {
-Q_OBJECT
+	Q_OBJECT
 
 public:
 	explicit PrintOptions(QWidget *parent = 0, struct options *printOpt = 0);
@@ -23,7 +23,8 @@ private:
 	struct options *printOptions;
 	bool hasSetupSlots;
 
-private slots:
+private
+slots:
 	void sliderPHeightMoved(int value);
 	void sliderOHeightMoved(int value);
 	void sliderNHeightMoved(int value);

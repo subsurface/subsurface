@@ -23,31 +23,31 @@ static struct plot_data *last_pi_entry = NULL, *last_pi_entry_new = NULL;
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
-static void dump_pi (struct plot_info *pi)
+static void dump_pi(struct plot_info *pi)
 {
 	int i;
 
 	printf("pi:{nr:%d maxtime:%d meandepth:%d maxdepth:%d \n"
-		"    maxpressure:%d mintemp:%d maxtemp:%d\n",
-		pi->nr, pi->maxtime, pi->meandepth, pi->maxdepth,
-		pi->maxpressure, pi->mintemp, pi->maxtemp);
+	       "    maxpressure:%d mintemp:%d maxtemp:%d\n",
+	       pi->nr, pi->maxtime, pi->meandepth, pi->maxdepth,
+	       pi->maxpressure, pi->mintemp, pi->maxtemp);
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = &pi->entry[i];
 		printf("    entry[%d]:{cylinderindex:%d sec:%d pressure:{%d,%d}\n"
-			"                time:%d:%02d temperature:%d depth:%d stopdepth:%d stoptime:%d ndl:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
-			i, entry->cylinderindex, entry->sec,
-			entry->pressure[0], entry->pressure[1],
-			entry->sec / 60, entry->sec % 60,
-			entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
-			entry->po2, entry->phe, entry->pn2,
-			entry->po2 + entry->phe + entry->pn2);
+		       "                time:%d:%02d temperature:%d depth:%d stopdepth:%d stoptime:%d ndl:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
+		       i, entry->cylinderindex, entry->sec,
+		       entry->pressure[0], entry->pressure[1],
+		       entry->sec / 60, entry->sec % 60,
+		       entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
+		       entry->po2, entry->phe, entry->pn2,
+		       entry->po2 + entry->phe + entry->pn2);
 	}
 	printf("   }\n");
 }
 #endif
 
-#define ROUND_UP(x,y) ((((x)+(y)-1)/(y))*(y))
-#define DIV_UP(x,y) (((x)+(y)-1)/(y))
+#define ROUND_UP(x, y) ((((x) + (y) - 1) / (y)) * (y))
+#define DIV_UP(x, y) (((x) + (y) - 1) / (y))
 
 /*
  * When showing dive profiles, we scale things to the
@@ -68,12 +68,12 @@ int get_maxtime(struct plot_info *pi)
 		 * This is seamless since 600/4 = 150.
 		 */
 		if (seconds < 600)
-			return ROUND_UP(seconds+seconds/4, 60);
+			return ROUND_UP(seconds + seconds / 4, 60);
 		else
-			return ROUND_UP(seconds+150, 60);
+			return ROUND_UP(seconds + 150, 60);
 	} else {
 		/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
-		return MAX(30*60, ROUND_UP(seconds+150, 60*5));
+		return MAX(30 * 60, ROUND_UP(seconds + 150, 60 * 5));
 	}
 }
 
@@ -87,10 +87,10 @@ int get_maxdepth(struct plot_info *pi)
 
 	if (prefs.zoomed_plot) {
 		/* Rounded up to 10m, with at least 3m to spare */
-		md = ROUND_UP(mm+3000, 10000);
+		md = ROUND_UP(mm + 3000, 10000);
 	} else {
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
-		md = MAX((unsigned)30000, ROUND_UP(mm+3000, 10000));
+		md = MAX((unsigned)30000, ROUND_UP(mm + 3000, 10000));
 	}
 	md += pi->maxpp * 9000;
 	return md;
@@ -102,13 +102,12 @@ int evn_allocated;
 int evn_used;
 
 #if WE_DONT_USE_THIS /* we need to implement event filters in Qt */
-int evn_foreach(void (*callback)(const char *, bool *, void *), void *data)
-{
+int evn_foreach(void (*callback)(const char *, bool *, void *), void *data) {
 	int i;
 
 	for (i = 0; i < evn_used; i++) {
 		/* here we display an event name on screen - so translate */
-		callback(translate("gettextFromC",ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
+		callback(translate("gettextFromC", ev_namelist[i].ev_name), &ev_namelist[i].plot_ev, data);
 	}
 	return i;
 }
@@ -133,7 +132,7 @@ void remember_event(const char *eventname)
 	if (evn_used == evn_allocated) {
 		evn_allocated += 10;
 		ev_namelist = realloc(ev_namelist, evn_allocated * sizeof(struct ev_select));
-		if (! ev_namelist)
+		if (!ev_namelist)
 			/* we are screwed, but let's just bail out */
 			return;
 	}
@@ -152,13 +151,14 @@ int setup_temperature_limits(struct graphics_context *gc)
 	mintemp = pi->mintemp;
 	maxtemp = pi->maxtemp;
 
-	gc->leftx = 0; gc->rightx = maxtime;
+	gc->leftx = 0;
+	gc->rightx = maxtime;
 	/* Show temperatures in roughly the lower third, but make sure the scale
 	   is at least somewhat reasonable */
 	delta = maxtemp - mintemp;
 	if (delta < 3000) /* less than 3K in fluctuation */
 		delta = 3000;
-	gc->topy = maxtemp + delta*2;
+	gc->topy = maxtemp + delta * 2;
 
 	if (PP_GRAPHS_ENABLED)
 		gc->bottomy = mintemp - delta * 2;
@@ -198,7 +198,7 @@ int get_cylinder_pressure_range(struct graphics_context *gc)
 		return false;
 
 	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
-		gc->bottomy -=  gc->topy * 0.1 * gc->maxy/abs(gc->maxy);
+		gc->bottomy -= gc->topy * 0.1 * gc->maxy / abs(gc->maxy);
 
 	return true;
 }
@@ -239,7 +239,7 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 {
 	struct plot_data *p = entry;
 	int time = entry->sec;
-	int seconds = 90*(index+1);
+	int seconds = 90 * (index + 1);
 	struct plot_data *min, *max;
 	int avg, nr;
 
@@ -259,7 +259,7 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 		if (p->sec > time + seconds)
 			break;
 		avg += depth;
-		nr ++;
+		nr++;
 		if (depth < min->depth)
 			min = p;
 		if (depth > max->depth)
@@ -267,7 +267,7 @@ static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot
 	}
 	entry->min[index] = min;
 	entry->max[index] = max;
-	entry->avg[index] = (avg + nr/2) / nr;
+	entry->avg[index] = (avg + nr / 2) / nr;
 }
 
 static void analyze_plot_info_minmax(struct plot_data *entry, struct plot_data *first, struct plot_data *last)
@@ -312,12 +312,12 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 
 	/* Smoothing function: 5-point triangular smooth */
 	for (i = 2; i < nr; i++) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		int depth;
 
-		if (i < nr-2) {
-			depth = entry[-2].depth + 2*entry[-1].depth + 3*entry[0].depth + 2*entry[1].depth + entry[2].depth;
-			entry->smoothed = (depth+4) / 9;
+		if (i < nr - 2) {
+			depth = entry[-2].depth + 2 * entry[-1].depth + 3 * entry[0].depth + 2 * entry[1].depth + entry[2].depth;
+			entry->smoothed = (depth + 4) / 9;
 		}
 		/* vertical velocity in mm/sec */
 		/* Linus wants to smooth this - let's at least look at the samples that aren't FAST or CRAZY */
@@ -327,10 +327,10 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 			/* if our samples are short and we aren't too FAST*/
 			if (entry[0].sec - entry[-1].sec < 15 && entry->velocity < FAST) {
 				int past = -2;
-				while (i+past > 0 && entry[0].sec - entry[past].sec < 15)
+				while (i + past > 0 && entry[0].sec - entry[past].sec < 15)
 					past--;
 				entry->velocity = velocity((entry[0].depth - entry[past].depth) /
-							(entry[0].sec - entry[past].sec));
+							   (entry[0].sec - entry[past].sec));
 			}
 		} else {
 			entry->velocity = STABLE;
@@ -340,8 +340,8 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 
 	/* One-, two- and three-minute minmax data */
 	for (i = 0; i < nr; i++) {
-		struct plot_data *entry = pi->entry +i;
-		analyze_plot_info_minmax(entry, pi->entry, pi->entry+nr);
+		struct plot_data *entry = pi->entry + i;
+		analyze_plot_info_minmax(entry, pi->entry, pi->entry + nr);
 	}
 
 	return pi;
@@ -361,7 +361,8 @@ struct pr_track_struct {
 	pr_track_t *next;
 };
 
-static pr_track_t *pr_track_alloc(int start, int t_start) {
+static pr_track_t *pr_track_alloc(int start, int t_start)
+{
 	pr_track_t *pt = malloc(sizeof(pr_track_t));
 	pt->start = start;
 	pt->end = 0;
@@ -410,7 +411,7 @@ static void dump_pr_track(pr_track_t **track_pr)
 		list = track_pr[cyl];
 		while (list) {
 			printf("cyl%d: start %d end %d t_start %d t_end %d pt %d\n", cyl,
-				list->start, list->end, list->t_start, list->t_end, list->pressure_time);
+			       list->start, list->end, list->t_start, list->t_end, list->pressure_time);
 			list = list->next;
 		}
 	}
@@ -487,7 +488,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 			pt += list->pressure_time;
 			pressure = start;
 			if (pt_sum)
-				pressure -= (start-end)*(double)pt/pt_sum;
+				pressure -= (start - end) * (double)pt / pt_sum;
 			list->end = pressure;
 			if (list == tmp)
 				break;
@@ -514,7 +515,7 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 static inline int pressure_time(struct dive *dive, struct divecomputer *dc, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
-	int depth = (a->depth + b->depth)/2;
+	int depth = (a->depth + b->depth) / 2;
 
 	if (depth <= SURFACE_THRESHOLD)
 		return 0;
@@ -623,7 +624,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		/* if this segment has pressure time, calculate a new interpolated pressure */
 		if (interpolate.pressure_time) {
 			/* Overall pressure change over total pressure-time for this segment*/
-			magic = (interpolate.end - interpolate.start) / (double) interpolate.pressure_time;
+			magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
 
 			/* Use that overall pressure change to update the current pressure */
 			cur_pr[cyl] = rint(interpolate.start + magic * interpolate.acc_pressure_time);
@@ -650,7 +651,7 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	 * mix.
 	 */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder+i;
+		cylinder_t *cyl = dive->cylinder + i;
 		int delta_o2, delta_he, distance;
 
 		if (cylinder_nodata(cyl))
@@ -700,7 +701,7 @@ static int count_events(struct divecomputer *dc)
 static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
 {
 	while (i < pi->nr) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		if (entry->sec > end)
 			break;
 		if (entry->cylinderindex != cylinderindex) {
@@ -869,12 +870,12 @@ void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct gra
 /* copy the previous entry (we know this exists), update time and depth
  * and zero out the sensor pressure (since this is a synthetic entry)
  * increment the entry pointer and the count of synthetic entries. */
-#define INSERT_ENTRY(_time,_depth)	\
-	*entry = entry[-1];		\
-	entry->sec = _time;		\
-	entry->depth = _depth;		\
-	SENSOR_PRESSURE(entry) = 0;	\
-	entry++;			\
+#define INSERT_ENTRY(_time, _depth) \
+	*entry = entry[-1];         \
+	entry->sec = _time;         \
+	entry->depth = _depth;      \
+	SENSOR_PRESSURE(entry) = 0; \
+	entry++;                    \
 	idx++
 
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
@@ -908,7 +909,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		ev = ev->next;
 	for (i = 0; i < dc->samples; i++) {
 		struct plot_data *entry = plot_data + idx;
-		struct sample *sample = dc->sample+i;
+		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
 		int offset, delta;
@@ -975,8 +976,8 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 	}
 
 	/* Add two final surface events */
-	plot_data[idx++].sec = lasttime+1;
-	plot_data[idx++].sec = lasttime+2;
+	plot_data[idx++].sec = lasttime + 1;
+	plot_data[idx++].sec = lasttime + 2;
 	pi->nr = idx;
 
 	return plot_data;
@@ -990,7 +991,7 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 
 	/* First: check that none of the entries has sensor pressure for this cylinder index */
 	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		if (entry->cylinderindex != idx)
 			continue;
 		if (SENSOR_PRESSURE(entry))
@@ -999,7 +1000,7 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 
 	/* Then: populate the first entry with the beginning cylinder pressure */
 	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		if (entry->cylinderindex != idx)
 			continue;
 		SENSOR_PRESSURE(entry) = start;
@@ -1008,7 +1009,7 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 
 	/* .. and the last entry with the ending cylinder pressure */
 	for (i = pi->nr; --i >= 0; /* nothing */) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		if (entry->cylinderindex != idx)
 			continue;
 		SENSOR_PRESSURE(entry) = end;
@@ -1022,7 +1023,7 @@ static void calculate_sac(struct dive *dive, struct plot_info *pi)
 	struct plot_data *last_entry = NULL;
 
 	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry+i;
+		struct plot_data *entry = pi->entry + i;
 		if (!last_entry || last_entry->cylinderindex != entry->cylinderindex) {
 			last = i;
 			last_entry = entry;
@@ -1053,9 +1054,9 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 	/* First, populate the pressures with the manual cylinder data.. */
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder+i;
-		int start = cyl->start.mbar ? : cyl->sample_start.mbar;
-		int end = cyl->end.mbar ? : cyl->sample_end.mbar;
+		cylinder_t *cyl = dive->cylinder + i;
+		int start = cyl->start.mbar ?: cyl->sample_start.mbar;
+		int end = cyl->end.mbar ?: cyl->sample_end.mbar;
 
 		if (!start || !end)
 			continue;
@@ -1079,7 +1080,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 static void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i, cylinderindex;
-	pr_track_t *track_pr[MAX_CYLINDERS] = {NULL, };
+	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
 	pr_track_t *current;
 	bool missing_pr = false;
 
@@ -1091,7 +1092,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {
-			entry->pressure_time = pressure_time(dive, dc, entry-1, entry);
+			entry->pressure_time = pressure_time(dive, dc, entry - 1, entry);
 			current->pressure_time += entry->pressure_time;
 			current->t_end = entry->sec;
 		}
@@ -1112,7 +1113,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 		current->end = pressure;
 
 		/* Was it continuous? */
-		if (SENSOR_PRESSURE(entry-1))
+		if (SENSOR_PRESSURE(entry - 1))
 			continue;
 
 		/* transmitter changed its working status */
@@ -1128,7 +1129,8 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 }
 
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, struct dive *dive, double surface_pressure) {
+static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, struct dive *dive, double surface_pressure)
+{
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
 	const int ascent_s_per_step = 1;
@@ -1157,7 +1159,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
 			tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
-					&dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
 		}
 		/* we don't need to calculate anything else */
 		return;
@@ -1169,7 +1171,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
 		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-				&dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->po2 * 1000, dive);
+					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->po2 * 1000, dive);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
 	}
 	ascent_depth = next_stop;
@@ -1180,20 +1182,20 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	next_stop -= deco_stepsize;
 
 	/* And how long is the total TTS */
-	while(next_stop >= 0) {
+	while (next_stop >= 0) {
 		/* save the time for the first stop to show in the graph */
 		if (ascent_depth == entry->stopdepth_calc)
 			entry->stoptime_calc += time_stepsize;
 
 		entry->tts_calc += time_stepsize;
 		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-				&dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+					       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
 
 		if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
-			for (; ascent_depth > next_stop ; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
+			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-						&dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
+							       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
 			ascent_depth = next_stop;
 			next_stop -= deco_stepsize;
 		}
@@ -1211,17 +1213,17 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
-		for (j = t0+1; j <= t1; j++) {
+		for (j = t0 + 1; j <= t1; j++) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					&dive->cylinder[entry->cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
+							  &dive->cylinder[entry->cylinderindex].gasmix, 1, entry->po2 * 1000, dive);
 			tissue_tolerance = min_pressure;
 		}
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
 		else
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
-		for (j=0; j<16; j++)
+		for (j = 0; j < 16; j++)
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
 
 		/* should we do more calculations?
@@ -1241,7 +1243,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 #endif
 }
 
-static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
+static void calculate_gas_information(struct dive *dive, struct plot_info *pi)
 {
 	int i;
 	double amb_pressure;
@@ -1276,13 +1278,17 @@ static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
 		 * END just uses N2 */
 		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
 		entry->ead = (entry->depth + 10000) *
-			(entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
+				 (entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure -
+			     10000;
 		entry->end = (entry->depth + 10000) *
-			(amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
+				 (amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 -
+			     10000;
 		entry->eadd = (entry->depth + 10000) *
-			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
-				N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
-				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
+				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
+										N2_DENSITY +
+				   entry->phe / amb_pressure * HE_DENSITY) /
+				  (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -
+			      10000;
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
@@ -1302,7 +1308,7 @@ static void calculate_gas_information(struct dive *dive,  struct plot_info *pi)
 }
 
 
-static void calculate_gas_information_new(struct dive *dive,  struct plot_info *pi)
+static void calculate_gas_information_new(struct dive *dive, struct plot_info *pi)
 {
 	int i;
 	double amb_pressure;
@@ -1337,13 +1343,17 @@ static void calculate_gas_information_new(struct dive *dive,  struct plot_info *
 		 * END just uses N2 */
 		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
 		entry->ead = (entry->depth + 10000) *
-			(entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
+				 (entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure -
+			     10000;
 		entry->end = (entry->depth + 10000) *
-			(amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
+				 (amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 -
+			     10000;
 		entry->eadd = (entry->depth + 10000) *
-			(entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
-				N2_DENSITY + entry->phe / amb_pressure * HE_DENSITY) /
-				(O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -10000;
+				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
+										N2_DENSITY +
+				   entry->phe / amb_pressure * HE_DENSITY) /
+				  (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 -
+			      10000;
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
@@ -1408,15 +1418,15 @@ struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, s
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	init_decompression(dive);
-	if (last_pi_entry_new)                          /* Create the new plot data */
+	if (last_pi_entry_new) /* Create the new plot data */
 		free((void *)last_pi_entry_new);
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
-	check_gas_change_events(dive, dc, pi);      /* Populate the gas index from the gas change events */
-	setup_gas_sensor_pressure(dive, dc, pi);    /* Try to populate our gas pressure knowledge */
-	populate_pressure_information(dive, dc, pi);/* .. calculate missing pressure entries */
-	calculate_sac(dive, pi);                    /* Calculate sac */
+	check_gas_change_events(dive, dc, pi);       /* Populate the gas index from the gas change events */
+	setup_gas_sensor_pressure(dive, dc, pi);     /* Try to populate our gas pressure knowledge */
+	populate_pressure_information(dive, dc, pi); /* .. calculate missing pressure entries */
+	calculate_sac(dive, pi);		     /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false);
-	calculate_gas_information_new(dive, pi);       /* And finaly calculate gas partial pressures */
+	calculate_gas_information_new(dive, pi); /* And finaly calculate gas partial pressures */
 	pi->meandepth = dive->dc.meandepth.mm;
 	analyze_plot_info(pi);
 }
@@ -1456,98 +1466,98 @@ static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_n
 	double depthvalue, tempvalue, speedvalue;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	put_format(b, translate("gettextFromC","@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
+	put_format(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
 	if (GET_PRESSURE(entry)) {
 		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
-		put_format(b, translate("gettextFromC","P: %d%s\n"), pressurevalue, pressure_unit);
+		put_format(b, translate("gettextFromC", "P: %d%s\n"), pressurevalue, pressure_unit);
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
-		put_format(b, translate("gettextFromC","T: %.1f%s\n"), tempvalue, temp_unit);
+		put_format(b, translate("gettextFromC", "T: %.1f%s\n"), tempvalue, temp_unit);
 	}
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	put_format(b, translate("gettextFromC","V: %.1f%s\n"), speedvalue, vertical_speed_unit);
+	put_format(b, translate("gettextFromC", "V: %.1f%s\n"), speedvalue, vertical_speed_unit);
 
 	if (entry->sac && prefs.show_sac)
-		put_format(b, translate("gettextFromC","SAC: %2.1fl/min\n"), entry->sac / 1000.0);
+		put_format(b, translate("gettextFromC", "SAC: %2.1fl/min\n"), entry->sac / 1000.0);
 	if (entry->cns)
-		put_format(b, translate("gettextFromC","CNS: %u%%\n"), entry->cns);
+		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2)
-		put_format(b, translate("gettextFromC","pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->po2);
+		put_format(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->po2);
 	if (prefs.pp_graphs.pn2)
-		put_format(b, translate("gettextFromC","pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pn2);
+		put_format(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pn2);
 	if (prefs.pp_graphs.phe)
-		put_format(b, translate("gettextFromC","pHe: %.2fbar\n"), entry->phe);
+		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->phe);
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","MOD: %d%s\n"), mod, depth_unit);
+		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
 	if (prefs.ead) {
 		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
 		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
 		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","EAD: %d%s\nEND: %d%s\nEADD: %d%s\n"), ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		put_format(b, translate("gettextFromC", "EAD: %d%s\nEND: %d%s\nEADD: %d%s\n"), ead, depth_unit, end, depth_unit, eadd, depth_unit);
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC","Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
-					depthvalue, depth_unit);
+				put_format(b, translate("gettextFromC", "Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
+					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC","Safetystop: unkn time @ %.0f%s\n"),
-					depthvalue, depth_unit);
+				put_format(b, translate("gettextFromC", "Safetystop: unkn time @ %.0f%s\n"),
+					   depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC","Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
-					depthvalue, depth_unit);
+				put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
+					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC","Deco: unkn time @ %.0f%s\n"),
-					depthvalue, depth_unit);
+				put_format(b, translate("gettextFromC", "Deco: unkn time @ %.0f%s\n"),
+					   depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
-		put_string(b, translate("gettextFromC","In deco\n"));
+		put_string(b, translate("gettextFromC", "In deco\n"));
 	} else if (has_ndl) {
-		put_format(b, translate("gettextFromC","NDL: %umin\n"), DIV_UP(entry->ndl, 60));
+		put_format(b, translate("gettextFromC", "NDL: %umin\n"), DIV_UP(entry->ndl, 60));
 	}
 	if (entry->stopdepth_calc && entry->stoptime_calc) {
 		depthvalue = get_depth_units(entry->stopdepth_calc, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
-				depthvalue, depth_unit);
+		put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
+			   depthvalue, depth_unit);
 	} else if (entry->in_deco_calc) {
 		/* This means that we have no NDL left,
 		 * and we have no deco stop,
 		 * so if we just accend to the surface slowly
 		 * (ascent_mm_per_step / ascent_s_per_step)
 		 * everything will be ok. */
-		put_string(b, translate("gettextFromC","In deco (calc)\n"));
+		put_string(b, translate("gettextFromC", "In deco (calc)\n"));
 	} else if (prefs.calc_ndl_tts && entry->ndl_calc != 0) {
-		put_format(b, translate("gettextFromC","NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
+		put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
 	}
 	if (entry->tts_calc)
-		put_format(b, translate("gettextFromC","TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+		put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC","Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
+		put_format(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
 		if (prefs.calc_all_tissues) {
 			int k;
-			for (k=0; k<16; k++) {
+			for (k = 0; k < 16; k++) {
 				if (entry->ceilings[k]) {
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					put_format(b, translate("gettextFromC","Tissue %.0fmin: %.0f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					put_format(b, translate("gettextFromC", "Tissue %.0fmin: %.0f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
 				}
 			}
 		}
 	}
 	if (entry->heartbeat)
-		put_format(b, translate("gettextFromC","heartbeat: %d\n"), entry->heartbeat);
+		put_format(b, translate("gettextFromC", "heartbeat: %d\n"), entry->heartbeat);
 	if (entry->bearing)
-		put_format(b, translate("gettextFromC","bearing: %d\n"), entry->bearing);
+		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
 	strip_mb(b);
 }
 
@@ -1615,8 +1625,8 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	max_asc_speed = 0;
 	max_desc_speed = 0;
 
-	delta_depth = abs(start->depth-stop->depth);
-	delta_time = abs(start->sec-stop->sec);
+	delta_depth = abs(start->depth - stop->depth);
+	delta_time = abs(start->sec - stop->sec);
 	avg_depth = 0;
 	max_depth = 0;
 	min_depth = INT_MAX;
@@ -1627,12 +1637,12 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 
 	data = start;
 	while (data != stop) {
-		data = start+count;
+		data = start + count;
 		if (sum)
-			avg_speed += abs(data->speed)*(data->sec-last_sec);
+			avg_speed += abs(data->speed) * (data->sec - last_sec);
 		else
-			avg_speed += data->speed*(data->sec-last_sec);
-		avg_depth += data->depth*(data->sec-last_sec);
+			avg_speed += data->speed * (data->sec - last_sec);
+		avg_depth += data->depth * (data->sec - last_sec);
 
 		if (data->speed > max_desc_speed)
 			max_desc_speed = data->speed;
@@ -1644,52 +1654,52 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		if (data->depth > max_depth)
 			max_depth = data->depth;
 		/* Try to detect gas changes */
-		if (GET_PRESSURE(data) < last_pressure+2000)
-			bar_used += last_pressure-GET_PRESSURE(data);
+		if (GET_PRESSURE(data) < last_pressure + 2000)
+			bar_used += last_pressure - GET_PRESSURE(data);
 
-		count+=1;
+		count += 1;
 		last_sec = data->sec;
 		last_pressure = GET_PRESSURE(data);
 	}
-	avg_depth /= stop->sec-start->sec;
-	avg_speed /= stop->sec-start->sec;
+	avg_depth /= stop->sec - start->sec;
+	avg_speed /= stop->sec - start->sec;
 
-	snprintf(buf, bufsize, translate("gettextFromC","%sT: %d:%02d min"), UTF8_DELTA, delta_time/60, delta_time%60);
+	snprintf(buf, bufsize, translate("gettextFromC", "%sT: %d:%02d min"), UTF8_DELTA, delta_time / 60, delta_time % 60);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_desc_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_asc_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(avg_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC","%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
+	snprintf(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
 	if (bar_used) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC","%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		snprintf(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
 	}
 
 	free(buf2);

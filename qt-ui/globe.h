@@ -11,32 +11,34 @@ class KMessageWidget;
 using namespace Marble;
 struct dive;
 
-class GlobeGPS : public MarbleWidget{
+class GlobeGPS : public MarbleWidget {
 	Q_OBJECT
 public:
 	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void repopulateLabels();
-	void centerOn(struct dive* dive);
-	bool eventFilter(QObject*, QEvent*);
+	void centerOn(struct dive *dive);
+	bool eventFilter(QObject *, QEvent *);
+
 protected:
 	/* reimp */ void resizeEvent(QResizeEvent *event);
-	/* reimp */ void mousePressEvent(QMouseEvent* event);
-	/* reimp */ void contextMenuEvent(QContextMenuEvent*);
+	/* reimp */ void mousePressEvent(QMouseEvent *event);
+	/* reimp */ void contextMenuEvent(QContextMenuEvent *);
+
 private:
 	GeoDataDocument *loadedDives;
-	KMessageWidget* messageWidget;
+	KMessageWidget *messageWidget;
 	QTimer *fixZoomTimer;
 	int currentZoomLevel;
 	bool editingDiveLocation;
 
-public slots:
-	void changeDiveGeoPosition(qreal lon,qreal lat,GeoDataCoordinates::Unit);
+public
+slots:
+	void changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void fixZoom();
 	void prepareForGetDiveCoordinates();
-
 };
 
 #endif // GLOBE_H

@@ -24,7 +24,7 @@ void flush_buffer(struct membuffer *b, FILE *f)
 
 void strip_mb(struct membuffer *b)
 {
-	while (b->len && isspace(b->buffer[b->len-1]))
+	while (b->len && isspace(b->buffer[b->len - 1]))
 		b->len--;
 }
 

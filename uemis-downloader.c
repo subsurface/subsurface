@@ -21,20 +21,20 @@
 #include "uemis.h"
 #include "divelist.h"
 
-#define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC","Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
-#define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC","Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
-#define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC","Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
+#define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: File System is almost full\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
+#define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: File System is full\nDisconnect/reconnect the dive computer\nand try again")
+#define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC", "Short write to req.txt file\nIs the Uemis Zurich plugged in correctly?")
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
 
-#if UEMIS_DEBUG & 64  /* we are reading from a copy of the filesystem, not the device - no need to wait */
-#define UEMIS_TIMEOUT 50		/* 50ns */
-#define UEMIS_LONG_TIMEOUT 500		/* 500ns */
-#define UEMIS_MAX_TIMEOUT 2000		/* 2ms */
+#if UEMIS_DEBUG & 64	   /* we are reading from a copy of the filesystem, not the device - no need to wait */
+#define UEMIS_TIMEOUT 50       /* 50ns */
+#define UEMIS_LONG_TIMEOUT 500 /* 500ns */
+#define UEMIS_MAX_TIMEOUT 2000 /* 2ms */
 #else
-#define UEMIS_TIMEOUT 50000		/* 50ms */
-#define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
-#define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
+#define UEMIS_TIMEOUT 50000       /* 50ms */
+#define UEMIS_LONG_TIMEOUT 500000 /* 500ms */
+#define UEMIS_MAX_TIMEOUT 2000000 /* 2s */
 #endif
 
 static char *param_buff[NUM_PARAM_BUFS];
@@ -54,10 +54,10 @@ static void uemis_ts(char *buffer, void *_when)
 	timestamp_t *when = _when;
 
 	memset(&tm, 0, sizeof(tm));
-	sscanf(buffer,"%d-%d-%dT%d:%d:%d",
-		&tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-		&tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-	tm.tm_mon  -= 1;
+	sscanf(buffer, "%d-%d-%dT%d:%d:%d",
+	       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+	       &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	tm.tm_mon -= 1;
 	tm.tm_year -= 1900;
 	*when = utc_mktime(&tm);
 }
@@ -102,8 +102,9 @@ static void uemis_add_string(const char *buffer, char **text)
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
-		lbs_to_grams(ascii_strtod(buffer, NULL)) : ascii_strtod(buffer, NULL) * 1000;
-	weight->description = strdup(translate("gettextFromC","unknown"));
+				   lbs_to_grams(ascii_strtod(buffer, NULL)) :
+				   ascii_strtod(buffer, NULL) * 1000;
+	weight->description = strdup(translate("gettextFromC", "unknown"));
 }
 
 static struct dive *uemis_start_dive(uint32_t deviceid)
@@ -158,8 +159,7 @@ static int number_of_file(char *path)
 			break;
 		if (entry->d_type == DT_REG) /* If the entry is a regular file */
 #endif
-			count++;
-
+		count++;
 	}
 #ifdef WIN32
 	_wclosedir(dirp);
@@ -193,7 +193,7 @@ static bool uemis_init(const char *path)
 	if (!path)
 		return false;
 	/* let's check if this is indeed a Uemis DC */
-	reqtxt_path = build_filename(path,"req.txt");
+	reqtxt_path = build_filename(path, "req.txt");
 	reqtxt_file = subsurface_open(reqtxt_path, O_RDONLY, 0666);
 	if (!reqtxt_file) {
 #if UEMIS_DEBUG & 1
@@ -216,7 +216,7 @@ static bool uemis_init(const char *path)
 		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");
 #endif
 	}
-	close (reqtxt_file);
+	close(reqtxt_file);
 
 	/* It would be nice if we could simply go back to the first set of
 	 * ANS files. But with a FAT filesystem that isn't possible */
@@ -247,7 +247,7 @@ static void trigger_response(int file, char *command, int nr, long tailpos)
 
 	snprintf(fl, 8, "%s%04d", command, nr);
 #if UEMIS_DEBUG & 4
-	fprintf(debugfile,":tr %s (after seeks)\n", fl);
+	fprintf(debugfile, ":tr %s (after seeks)\n", fl);
 #endif
 	lseek(file, 0, SEEK_SET);
 	write(file, fl, strlen(fl));
@@ -282,7 +282,7 @@ static char *next_segment(char *buf, int *offset, int size)
 	while (!done) {
 		if (i < size) {
 			if (i < size - 1 && buf[i] == '\\' &&
-				(buf[i+1] == '\\' || buf[i+1] == '{'))
+			    (buf[i + 1] == '\\' || buf[i + 1] == '{'))
 				memcpy(buf + i, buf + i + 1, size - i - 1);
 			else if (buf[i] == '{')
 				done = true;
@@ -307,7 +307,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 {
 	if (!buf)
 		return;
-	if (! *buffer) {
+	if (!*buffer) {
 		*buffer = strdup(buf);
 		*buffer_size = strlen(*buffer) + 1;
 	} else {
@@ -316,7 +316,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 		strcat(*buffer, buf);
 	}
 #if UEMIS_DEBUG & 16
-	fprintf(debugfile,"added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
+	fprintf(debugfile, "added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
 #endif
 }
 
@@ -329,7 +329,7 @@ static bool next_file(int max)
 	return true;
 }
 
-static char *first_object_id_val(char* buf)
+static char *first_object_id_val(char *buf)
 {
 	char *object, *bufend;
 	if (!buf)
@@ -365,11 +365,11 @@ static void show_progress(char *buf, const char *what)
 {
 	char *val = first_object_id_val(buf);
 	if (val) {
-		/* let the user know what we are working on */
+/* let the user know what we are working on */
 #if UEMIS_DEBUG & 2
-		fprintf(debugfile,"reading %s %s\n", what, val);
+		fprintf(debugfile, "reading %s %s\n", what, val);
 #endif
-		uemis_info(translate("gettextFromC","Reading %s %s"), what, val);
+		uemis_info(translate("gettextFromC", "Reading %s %s"), what, val);
 		free(val);
 	}
 }
@@ -383,13 +383,13 @@ static void uemis_increased_timeout(int *timeout)
 
 /* send a request to the dive computer and collect the answer */
 static bool uemis_get_answer(const char *path, char *request, int n_param_in,
-			int n_param_out, const char **error_text)
+			     int n_param_out, const char **error_text)
 {
 	int i = 0, file_length;
 	char sb[BUFLEN];
 	char fl[13];
 	char tmp[101];
-	const char *what = translate("gettextFromC","data");
+	const char *what = translate("gettextFromC", "data");
 	bool searching = true;
 	bool assembling_mbuf = false;
 	bool ismulti = false;
@@ -405,30 +405,30 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
 		str_append_with_delim(sb, param_buff[i]);
-	if (! strcmp(request, "getDivelogs") || ! strcmp(request, "getDeviceData") || ! strcmp(request, "getDirectory") ||
-		! strcmp(request, "getDivespot") || ! strcmp(request, "getDive")) {
+	if (!strcmp(request, "getDivelogs") || !strcmp(request, "getDeviceData") || !strcmp(request, "getDirectory") ||
+	    !strcmp(request, "getDivespot") || !strcmp(request, "getDive")) {
 		answer_in_mbuf = true;
 		str_append_with_delim(sb, "");
-		if (! strcmp(request, "getDivelogs"))
-			what = translate("gettextFromC","divelog entry id");
+		if (!strcmp(request, "getDivelogs"))
+			what = translate("gettextFromC", "divelog entry id");
 		else if (!strcmp(request, "getDivespot"))
-			what = translate("gettextFromC","divespot data id");
+			what = translate("gettextFromC", "divespot data id");
 		else if (!strcmp(request, "getDive"))
-			what = translate("gettextFromC","more data dive id");
+			what = translate("gettextFromC", "more data dive id");
 	}
 	str_append_with_delim(sb, "");
 	file_length = strlen(sb);
 	snprintf(fl, 10, "%08d", file_length - 13);
 	memcpy(sb + 5, fl, strlen(fl));
 #if UEMIS_DEBUG & 1
-	fprintf(debugfile,"::w req.txt \"%s\"\n", sb);
+	fprintf(debugfile, "::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
-		*error_text = translate("gettextFromC",ERR_FS_SHORT_WRITE);
+		*error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
 		return false;
 	}
-	if (! next_file(number_of_files)) {
-		*error_text = translate("gettextFromC",ERR_FS_FULL);
+	if (!next_file(number_of_files)) {
+		*error_text = translate("gettextFromC", ERR_FS_FULL);
 		more_files = false;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -445,7 +445,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		read(ans_file, tmp, 100);
 		close(ans_file);
 #if UEMIS_DEBUG & 8
-		tmp[100]='\0';
+		tmp[100] = '\0';
 		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
 #elif UEMIS_DEBUG & 4
 		char pbuf[4];
@@ -465,8 +465,8 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			if (tmp[2] == 'e')
 				assembling_mbuf = false;
 			if (assembling_mbuf) {
-				if (! next_file(number_of_files)) {
-					*error_text = translate("gettextFromC",ERR_FS_FULL);
+				if (!next_file(number_of_files)) {
+					*error_text = translate("gettextFromC", ERR_FS_FULL);
 					more_files = false;
 					assembling_mbuf = false;
 				}
@@ -474,8 +474,8 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				trigger_response(reqtxt_file, "n", filenr, file_length);
 			}
 		} else {
-			if (! next_file(number_of_files - 1)) {
-				*error_text = translate("gettextFromC",ERR_FS_FULL);
+			if (!next_file(number_of_files - 1)) {
+				*error_text = translate("gettextFromC", ERR_FS_FULL);
 				more_files = false;
 				assembling_mbuf = false;
 				searching = false;
@@ -532,7 +532,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			ismulti = false;
 		}
 #if UEMIS_DEBUG & 8
-		fprintf(debugfile,":r: %s\n", buf);
+		fprintf(debugfile, ":r: %s\n", buf);
 #endif
 		if (!answer_in_mbuf)
 			for (i = 0; i < n_param_out && j < size; i++)
@@ -542,7 +542,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	}
 #if UEMIS_DEBUG & 1
 	for (i = 0; i < n_param_out; i++)
-		fprintf(debugfile,"::: %d: %s\n", i, param_buff[i]);
+		fprintf(debugfile, "::: %d: %s\n", i, param_buff[i]);
 #endif
 	return found_answer;
 }
@@ -562,7 +562,7 @@ static void parse_divespot(char *buf)
 	do
 		tag = next_token(&bp);
 	while (*tag && strcmp(tag, "object_id"));
-	if (! *tag)
+	if (!*tag)
 		return;
 	type = next_token(&bp);
 	val = next_token(&bp);
@@ -574,7 +574,7 @@ static void parse_divespot(char *buf)
 		if (!strcmp(type, "string") && *val && strcmp(val, " ")) {
 			len = strlen(locationstring);
 			snprintf(locationstring + len, sizeof(locationstring) - len,
-					"%s%s", len ? ", " : "", val);
+				 "%s%s", len ? ", " : "", val);
 		} else if (!strcmp(type, "float")) {
 			if (!strcmp(tag, "longitude"))
 				longitude = ascii_strtod(val, NULL);
@@ -594,15 +594,15 @@ static void track_divespot(char *val, int diveid, char **location, degrees_t *la
 	return;
 }
 
-static char *suit[] = { "", QT_TRANSLATE_NOOP("gettextFromC","wetsuit"), QT_TRANSLATE_NOOP("gettextFromC","semidry"), QT_TRANSLATE_NOOP("gettextFromC","drysuit") };
-static char *suit_type[] = { "", QT_TRANSLATE_NOOP("gettextFromC","shorty"), QT_TRANSLATE_NOOP("gettextFromC","vest"), QT_TRANSLATE_NOOP("gettextFromC","long john"), QT_TRANSLATE_NOOP("gettextFromC","jacket"), QT_TRANSLATE_NOOP("gettextFromC","full suit"), QT_TRANSLATE_NOOP("gettextFromC","2 pcs full suit") };
-static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC","membrane") };
+static char *suit[] = { "", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit") };
+static char *suit_type[] = { "", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit") };
+static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane") };
 
 static void parse_tag(struct dive *dive, char *tag, char *val)
 {
 	/* we can ignore computer_id, water and gas as those are redundant
 	 * with the binary data and would just get overwritten */
-	if (! strcmp(tag, "date")) {
+	if (!strcmp(tag, "date")) {
 		uemis_ts(val, &dive->when);
 	} else if (!strcmp(tag, "duration")) {
 		uemis_duration(val, &dive->dc.duration);
@@ -618,13 +618,13 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 		uemis_add_string(val, &dive->notes);
 	} else if (!strcmp(tag, "u8DiveSuit")) {
 		if (*suit[atoi(val)])
-			uemis_add_string(translate("gettextFromC",suit[atoi(val)]), &dive->suit);
+			uemis_add_string(translate("gettextFromC", suit[atoi(val)]), &dive->suit);
 	} else if (!strcmp(tag, "u8DiveSuitType")) {
 		if (*suit_type[atoi(val)])
-			uemis_add_string(translate("gettextFromC",suit_type[atoi(val)]), &dive->suit);
+			uemis_add_string(translate("gettextFromC", suit_type[atoi(val)]), &dive->suit);
 	} else if (!strcmp(tag, "u8SuitThickness")) {
 		if (*suit_thickness[atoi(val)])
-			uemis_add_string(translate("gettextFromC",suit_thickness[atoi(val)]), &dive->suit);
+			uemis_add_string(translate("gettextFromC", suit_thickness[atoi(val)]), &dive->suit);
 	}
 }
 
@@ -659,14 +659,14 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 		/* this is a divelog */
 		log = true;
 		tp = next_token(&bp);
-		if (strcmp(tp,"1.0") != 0) {
+		if (strcmp(tp, "1.0") != 0) {
 			free(buf);
 			return;
 		}
 	} else if (strcmp(tp, "dive") == 0) {
 		/* this is dive detail */
 		tp = next_token(&bp);
-		if (strcmp(tp,"1.0") != 0) {
+		if (strcmp(tp, "1.0") != 0) {
 			free(buf);
 			return;
 		}
@@ -703,23 +703,23 @@ static void process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 			continue;
 		}
 		val = next_token(&bp);
-		if (log && ! strcmp(tag, "object_id")) {
+		if (log && !strcmp(tag, "object_id")) {
 			free(*max_divenr);
 			*max_divenr = strdup(val);
 			dive->dc.diveid = atoi(val);
 			if (keep_number)
 				dive->number = atoi(val);
-		} else if (!log && ! strcmp(tag, "logfilenr")) {
+		} else if (!log && !strcmp(tag, "logfilenr")) {
 			/* this one tells us which dive we are adding data to */
 			dive = get_dive_by_diveid(atoi(val), deviceid);
 			if (for_dive)
 				*for_dive = atoi(val);
-		} else if (!log && dive && ! strcmp(tag, "divespot_id")) {
+		} else if (!log && dive && !strcmp(tag, "divespot_id")) {
 			track_divespot(val, dive->dc.diveid, &dive->location, &dive->latitude, &dive->longitude);
 		} else if (dive) {
 			parse_tag(dive, tag, val);
 		}
-		if (log && ! strcmp(tag, "file_content"))
+		if (log && !strcmp(tag, "file_content"))
 			done = true;
 		/* done with one dive (got the file_content tag), but there could be more:
 		 * a '{' indicates the end of the record - but we need to see another "{{"
@@ -778,21 +778,21 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 
 	if (dive_table.nr == 0)
 		keep_number = true;
-	uemis_info(translate("gettextFromC","Init Communication"));
-	if (! uemis_init(mountpath))
-		return translate("gettextFromC","Uemis init failed");
-	if (! uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
+	uemis_info(translate("gettextFromC", "Init Communication"));
+	if (!uemis_init(mountpath))
+		return translate("gettextFromC", "Uemis init failed");
+	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 		goto bail;
 	deviceid = strdup(param_buff[0]);
 	deviceidnr = atoi(deviceid);
 	/* the answer from the DeviceId call becomes the input parameter for getDeviceData */
-	if (! uemis_get_answer(mountpath, "getDeviceData", 1, 0, &result))
+	if (!uemis_get_answer(mountpath, "getDeviceData", 1, 0, &result))
 		goto bail;
 	/* param_buff[0] is still valid */
-	if (! uemis_get_answer(mountpath, "initSession", 1, 6, &result))
+	if (!uemis_get_answer(mountpath, "initSession", 1, 6, &result))
 		goto bail;
-	uemis_info(translate("gettextFromC","Start download"));
-	if (! uemis_get_answer(mountpath, "processSync", 0, 2, &result))
+	uemis_info(translate("gettextFromC", "Start download"));
+	if (!uemis_get_answer(mountpath, "processSync", 0, 2, &result))
 		goto bail;
 	/* before starting the long download, check if user pressed cancel */
 	if (import_thread_cancelled)
@@ -827,7 +827,7 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 			break;
 		/* finally, if the memory is getting too full, maybe we better stop, too */
 		if (progress_bar_fraction > 0.85) {
-			result = translate("gettextFromC",ERR_FS_ALMOST_FULL);
+			result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 			break;
 		}
 		/* clean up mbuf */
@@ -882,14 +882,13 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 			parse_divespot(mbuf);
 	}
 bail:
-	(void) uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
-	if (! strcmp(param_buff[0], "error")) {
-		if (! strcmp(param_buff[2],"Out of Memory"))
-			result = translate("gettextFromC",ERR_FS_FULL);
+	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
+	if (!strcmp(param_buff[0], "error")) {
+		if (!strcmp(param_buff[2], "Out of Memory"))
+			result = translate("gettextFromC", ERR_FS_FULL);
 		else
 			result = param_buff[2];
 	}
 	free(deviceid);
 	return result;
 }
-

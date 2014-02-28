@@ -4,7 +4,6 @@
 
 DiveLineItem::DiveLineItem(QGraphicsItem *parent) : QGraphicsLineItem(parent)
 {
-
 }
 
 void DiveLineItem::animatedHide()

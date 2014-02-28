@@ -54,9 +54,8 @@ struct GroupedLineEdit::Private {
 	QVector<QColor> colors;
 };
 
-GroupedLineEdit::GroupedLineEdit(QWidget* parent)
-	: QPlainTextEdit(parent),
-	  d(new Private)
+GroupedLineEdit::GroupedLineEdit(QWidget *parent) : QPlainTextEdit(parent),
+	d(new Private)
 {
 	setWordWrapMode(QTextOption::NoWrap);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -90,7 +89,7 @@ void GroupedLineEdit::addBlock(int start, int end)
 
 	block.start = start;
 	block.end = end;
-	block.text = text().mid(start, end-start+1).trimmed();
+	block.text = text().mid(start, end - start + 1).trimmed();
 	d->blocks.append(block);
 	viewport()->update();
 }
@@ -110,7 +109,7 @@ QStringList GroupedLineEdit::getBlockStringList()
 	QStringList retList;
 	Private::Block block;
 	foreach(block, d->blocks)
-		retList.append(block.text);
+	retList.append(block.text);
 	return retList;
 }
 
@@ -150,11 +149,10 @@ void GroupedLineEdit::removeAllBlocks()
 QSize GroupedLineEdit::sizeHint() const
 {
 	QSize rs(
-				40,
-				document()->findBlock(0).layout()->lineAt(0).height() +
-				document()->documentMargin() * 2 +
-				frameWidth() * 2
-				);
+	    40,
+	    document()->findBlock(0).layout()->lineAt(0).height() +
+		document()->documentMargin() * 2 +
+		frameWidth() * 2);
 
 	return rs;
 }
@@ -191,23 +189,22 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 
 	QVectorIterator<QColor> i(d->colors);
 	i.toFront();
-	foreach (const Private::Block &block, d->blocks) {
+	foreach(const Private::Block & block, d->blocks) {
 		qreal start_x = line.cursorToX(block.start, QTextLine::Trailing);
 		qreal end_x = line.cursorToX(block.end + 1, QTextLine::Leading);
 		QPainterPath path;
 		QRectF rectangle(
-					start_x - 1.0 - double(horizontalScrollBar()->value()),
-					1.0,
-					end_x - start_x + 2.0,
-					double(viewport()->height() - 2)
-					);
-		if (! i.hasNext())
+		    start_x - 1.0 - double(horizontalScrollBar()->value()),
+		    1.0,
+		    end_x - start_x + 2.0,
+		    double(viewport()->height() - 2));
+		if (!i.hasNext())
 			i.toFront();
 		path.addRoundedRect(rectangle, 5.0, 5.0);
 		painter.setPen(i.peekNext());
-		if (palette().color(QPalette::Text).lightnessF() <= 0.3 )
+		if (palette().color(QPalette::Text).lightnessF() <= 0.3)
 			painter.setBrush(i.next().lighter());
-		else if (palette().color(QPalette::Text).lightnessF() <= 0.6 )
+		else if (palette().color(QPalette::Text).lightnessF() <= 0.6)
 			painter.setBrush(i.next());
 		else
 			painter.setBrush(i.next().darker());

@@ -12,7 +12,8 @@
 extern "C" {
 #endif
 
-typedef struct {
+typedef struct
+{
 	int period;
 	duration_t total_time;
 	/* avg_time is simply total_time / nr -- let's not keep this */

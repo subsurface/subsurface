@@ -4,19 +4,20 @@
 #include <QMainWindow>
 #include <QWebPage>
 
-namespace Ui {
-class UserManual;
+namespace Ui
+{
+	class UserManual;
 }
 
-class UserManual : public QMainWindow
-{
+class UserManual : public QMainWindow {
 	Q_OBJECT
 
 public:
 	explicit UserManual(QWidget *parent = 0);
 	~UserManual();
 
-private slots:
+private
+slots:
 	void showSearchPanel();
 	void hideSearchPanel();
 	void searchTextChanged(QString);

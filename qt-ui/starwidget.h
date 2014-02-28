@@ -3,13 +3,16 @@
 
 #include <QWidget>
 
-enum StarConfig {SPACING = 2, IMG_SIZE = 16, TOTALSTARS = 5};
+enum StarConfig {
+	SPACING = 2,
+	IMG_SIZE = 16,
+	TOTALSTARS = 5
+};
 
-class StarWidget : public QWidget
-{
+class StarWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit StarWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit StarWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	int currentStars() const;
 
 	/*reimp*/ QSize sizeHint() const;
@@ -20,22 +23,24 @@ public:
 signals:
 	void valueChanged(int stars);
 
-public slots:
+public
+slots:
 	void setCurrentStars(int value);
-	void setReadOnly( bool readOnly);
+	void setReadOnly(bool readOnly);
 
 protected:
-	/*reimp*/ void mouseReleaseEvent(QMouseEvent* );
-	/*reimp*/ void paintEvent(QPaintEvent* );
-	/*reimp*/ void focusInEvent(QFocusEvent*);
-	/*reimp*/ void focusOutEvent(QFocusEvent*);
-	/*reimp*/ void keyPressEvent(QKeyEvent*);
+	/*reimp*/ void mouseReleaseEvent(QMouseEvent *);
+	/*reimp*/ void paintEvent(QPaintEvent *);
+	/*reimp*/ void focusInEvent(QFocusEvent *);
+	/*reimp*/ void focusOutEvent(QFocusEvent *);
+	/*reimp*/ void keyPressEvent(QKeyEvent *);
+
 private:
 	int current;
 	bool readOnly;
 
-	static QPixmap* activeStar;
-	static QPixmap* inactiveStar;
+	static QPixmap *activeStar;
+	static QPixmap *inactiveStar;
 	QPixmap grayImage(QPixmap *coloredImg);
 };
 

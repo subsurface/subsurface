@@ -25,7 +25,7 @@ const char *system_default_filename(void)
 	return buffer;
 }
 
-int enumerate_devices (device_callback_t callback, void *userdata)
+int enumerate_devices(device_callback_t callback, void *userdata)
 {
 	int index = -1;
 	DIR *dp = NULL;
@@ -44,28 +44,28 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 	char *fname;
 	size_t len;
 
-	dp = opendir (dirname);
+	dp = opendir(dirname);
 	if (dp == NULL) {
 		return -1;
 	}
 
-	while ((ep = readdir (dp)) != NULL) {
+	while ((ep = readdir(dp)) != NULL) {
 		for (i = 0; patterns[i] != NULL; ++i) {
-			if (fnmatch (patterns[i], ep->d_name, 0) == 0) {
+			if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
 				char filename[1024];
-				int n = snprintf (filename, sizeof (filename), "%s/%s", dirname, ep->d_name);
-				if (n >= sizeof (filename)) {
-					closedir (dp);
+				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
+				if (n >= sizeof(filename)) {
+					closedir(dp);
 					return -1;
 				}
-				callback (filename, userdata);
+				callback(filename, userdata);
 				if (is_default_dive_computer_device(filename))
 					index = i;
 				break;
 			}
 		}
 	}
-	closedir (dp);
+	closedir(dp);
 
 	file = fopen("/proc/mounts", "r");
 	if (file == NULL)
@@ -91,7 +91,7 @@ int enumerate_devices (device_callback_t callback, void *userdata)
 				index = i;
 			i++;
 			free((void *)fname);
-	   }
+		}
 	}
 
 	free(line);

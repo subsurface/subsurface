@@ -15,7 +15,7 @@ void gettextFromC::reset(void)
 	translationCache.clear();
 }
 
-gettextFromC* gettextFromC::instance()
+gettextFromC *gettextFromC::instance()
 {
 	static QScopedPointer<gettextFromC> self(new gettextFromC());
 	return self.data();

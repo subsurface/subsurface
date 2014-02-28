@@ -21,57 +21,59 @@
 
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
-  double  satmult;		//! safety at inert gas accumulation as percentage of effect (more than 100).
-  double  desatmult;		//! safety at inert gas depletion as percentage of effect (less than 100).
-  unsigned int  last_deco_stop_in_mtr;	//! depth of last_deco_stop.
-  double  gf_high;		//! gradient factor high (at surface).
-  double  gf_low;		//! gradient factor low (at bottom/start of deco calculation).
-  double  gf_low_position_min;	//! gf_low_position below surface_min_shallow.
-  bool    gf_low_at_maxdepth;	//! if true, gf_low applies at max depth instead of at deepest ceiling.
+	double satmult;			    //! safety at inert gas accumulation as percentage of effect (more than 100).
+	double desatmult;		    //! safety at inert gas depletion as percentage of effect (less than 100).
+	unsigned int last_deco_stop_in_mtr; //! depth of last_deco_stop.
+	double gf_high;			    //! gradient factor high (at surface).
+	double gf_low;			    //! gradient factor low (at bottom/start of deco calculation).
+	double gf_low_position_min;	 //! gf_low_position below surface_min_shallow.
+	bool gf_low_at_maxdepth;	    //! if true, gf_low applies at max depth instead of at deepest ceiling.
 };
 struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 2.0, false };
 
-const double buehlmann_N2_a[] = {1.1696, 1.0, 0.8618, 0.7562,
-				 0.62, 0.5043, 0.441, 0.4,
-				 0.375, 0.35, 0.3295, 0.3065,
-				 0.2835, 0.261, 0.248, 0.2327};
+const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
+				  0.62, 0.5043, 0.441, 0.4,
+				  0.375, 0.35, 0.3295, 0.3065,
+				  0.2835, 0.261, 0.248, 0.2327 };
 
-const double buehlmann_N2_b[] = {0.5578, 0.6514, 0.7222, 0.7825,
-				 0.8126, 0.8434, 0.8693, 0.8910,
-				 0.9092, 0.9222, 0.9319, 0.9403,
-				 0.9477, 0.9544, 0.9602, 0.9653};
+const double buehlmann_N2_b[] = { 0.5578, 0.6514, 0.7222, 0.7825,
+				  0.8126, 0.8434, 0.8693, 0.8910,
+				  0.9092, 0.9222, 0.9319, 0.9403,
+				  0.9477, 0.9544, 0.9602, 0.9653 };
 
-const double buehlmann_N2_t_halflife[] = {5.0, 8.0, 12.5, 18.5,
-					 27.0, 38.3, 54.3, 77.0,
-					 109.0, 146.0, 187.0, 239.0,
-					 305.0, 390.0, 498.0, 635.0};
+const double buehlmann_N2_t_halflife[] = { 5.0, 8.0, 12.5, 18.5,
+					   27.0, 38.3, 54.3, 77.0,
+					   109.0, 146.0, 187.0, 239.0,
+					   305.0, 390.0, 498.0, 635.0 };
 
 const double buehlmann_N2_factor_expositon_one_second[] = {
 	2.30782347297664E-003, 1.44301447809736E-003, 9.23769302935806E-004, 6.24261986779007E-004,
 	4.27777107246730E-004, 3.01585140931371E-004, 2.12729727268379E-004, 1.50020603047807E-004,
 	1.05980191127841E-004, 7.91232600646508E-005, 6.17759153688224E-005, 4.83354552742732E-005,
-	3.78761777920511E-005, 2.96212356654113E-005, 2.31974277413727E-005, 1.81926738960225E-005};
+	3.78761777920511E-005, 2.96212356654113E-005, 2.31974277413727E-005, 1.81926738960225E-005
+};
 
-const double buehlmann_He_a[] = { 1.6189, 1.383 , 1.1919, 1.0458,
-				  0.922 , 0.8205, 0.7305, 0.6502,
-				  0.595 , 0.5545, 0.5333, 0.5189,
-				  0.5181, 0.5176, 0.5172, 0.5119};
+const double buehlmann_He_a[] = { 1.6189, 1.383, 1.1919, 1.0458,
+				  0.922, 0.8205, 0.7305, 0.6502,
+				  0.595, 0.5545, 0.5333, 0.5189,
+				  0.5181, 0.5176, 0.5172, 0.5119 };
 
-const double buehlmann_He_b[] = {0.4770, 0.5747, 0.6527, 0.7223,
-				 0.7582, 0.7957, 0.8279, 0.8553,
-				 0.8757, 0.8903, 0.8997, 0.9073,
-				 0.9122, 0.9171, 0.9217, 0.9267};
+const double buehlmann_He_b[] = { 0.4770, 0.5747, 0.6527, 0.7223,
+				  0.7582, 0.7957, 0.8279, 0.8553,
+				  0.8757, 0.8903, 0.8997, 0.9073,
+				  0.9122, 0.9171, 0.9217, 0.9267 };
 
-const double buehlmann_He_t_halflife[] = {1.88, 3.02, 4.72, 6.99,
-					  10.21, 14.48, 20.53, 29.11,
-					  41.20, 55.19, 70.69, 90.34,
-					  115.29, 147.42, 188.24, 240.03};
+const double buehlmann_He_t_halflife[] = { 1.88, 3.02, 4.72, 6.99,
+					   10.21, 14.48, 20.53, 29.11,
+					   41.20, 55.19, 70.69, 90.34,
+					   115.29, 147.42, 188.24, 240.03 };
 
 const double buehlmann_He_factor_expositon_one_second[] = {
 	6.12608039419837E-003, 3.81800836683133E-003, 2.44456078654209E-003, 1.65134647076792E-003,
 	1.13084424730725E-003, 7.97503165599123E-004, 5.62552521860549E-004, 3.96776399429366E-004,
 	2.80360036664540E-004, 2.09299583354805E-004, 1.63410794820518E-004, 1.27869320250551E-004,
-	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005};
+	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005
+};
 
 #define WV_PRESSURE 0.0627 // water vapor pressure in bar
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
@@ -94,8 +96,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double gf_low = buehlmann_config.gf_low;
 	double surface = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 
-	for (ci = 0; ci < 16; ci++)
-	{
+	for (ci = 0; ci < 16; ci++) {
 		double tolerated;
 
 		tissue_inertgas_saturation = tissue_n2_sat[ci] + tissue_he_sat[ci];
@@ -106,22 +107,21 @@ static double tissue_tolerance_calc(const struct dive *dive)
 
 		if (!buehlmann_config.gf_low_at_maxdepth) {
 			double lowest_ceiling = (buehlmann_inertgas_b * tissue_inertgas_saturation - gf_low * buehlmann_inertgas_a * buehlmann_inertgas_b) /
-				((1.0 - buehlmann_inertgas_b) * gf_low + buehlmann_inertgas_b);
+						((1.0 - buehlmann_inertgas_b) * gf_low + buehlmann_inertgas_b);
 			if (lowest_ceiling > gf_low_pressure_this_dive)
 				gf_low_pressure_this_dive = lowest_ceiling;
 		}
 
 		tolerated = (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
-				(1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
-				buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation) /
+			     (1.0 - buehlmann_inertgas_b) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
+			     buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation) /
 			    (-buehlmann_inertgas_a * buehlmann_inertgas_b * (gf_high - gf_low) +
-				(1.0 - buehlmann_inertgas_b)*(gf_low * gf_low_pressure_this_dive - gf_high * surface) +
-				buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
+			     (1.0 - buehlmann_inertgas_b) * (gf_low * gf_low_pressure_this_dive - gf_high * surface) +
+			     buehlmann_inertgas_b * (gf_low_pressure_this_dive - surface));
 
 		tolerated_by_tissue[ci] = tolerated;
 
-		if (tolerated > ret_tolerance_limit_ambient_pressure)
-		{
+		if (tolerated > ret_tolerance_limit_ambient_pressure) {
 			ci_pointing_to_guiding_tissue = ci;
 			ret_tolerance_limit_ambient_pressure = tolerated;
 		}
@@ -151,7 +151,7 @@ double n2_factor(int period_in_seconds, int ci)
 
 	if (period_in_seconds != cache[ci].last_period) {
 		cache[ci].last_period = period_in_seconds;
-		cache[ci].last_factor = 1 - pow(2.0, - period_in_seconds / (buehlmann_N2_t_halflife[ci] * 60));
+		cache[ci].last_factor = 1 - pow(2.0, -period_in_seconds / (buehlmann_N2_t_halflife[ci] * 60));
 	}
 
 	return cache[ci].last_factor;
@@ -166,7 +166,7 @@ double he_factor(int period_in_seconds, int ci)
 
 	if (period_in_seconds != cache[ci].last_period) {
 		cache[ci].last_period = period_in_seconds;
-		cache[ci].last_factor = 1 - pow(2.0, - period_in_seconds / (buehlmann_He_t_halflife[ci] * 60));
+		cache[ci].last_factor = 1 - pow(2.0, -period_in_seconds / (buehlmann_He_t_halflife[ci] * 60));
 	}
 
 	return cache[ci].last_factor;

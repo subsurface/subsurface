@@ -37,7 +37,7 @@ int readfile(const char *filename, struct memblock *mem)
 	ret = 0;
 	if (!st.st_size)
 		goto out;
-	buf = malloc(st.st_size+1);
+	buf = malloc(st.st_size + 1);
 	ret = -1;
 	errno = ENOMEM;
 	if (!buf)
@@ -67,7 +67,7 @@ static void zip_read(struct zip_file *file, char **error, const char *filename)
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
 
-	while ((n = zip_fread(file, mem+read, size-read)) > 0) {
+	while ((n = zip_fread(file, mem + read, size - read)) > 0) {
 		read += n;
 		size = read * 3 / 2;
 		mem = realloc(mem, size);
@@ -85,7 +85,7 @@ static int try_to_open_zip(const char *filename, struct memblock *mem, char **er
 
 	if (zip) {
 		int index;
-		for (index = 0; ;index++) {
+		for (index = 0;; index++) {
 			struct zip_file *file = zip_fopen_index(zip, index, 0);
 			if (!file)
 				break;
@@ -104,9 +104,9 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 
 	if (readfile(filename, mem) < 0) {
 		if (error) {
-			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
+			int len = strlen(translate("gettextFromC", "Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
+			snprintf(*error, len, translate("gettextFromC", "Failed to read '%s'"), filename);
 		}
 
 		return 1;
@@ -167,7 +167,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, char **err
 	retval = sqlite3_open(filename, &handle);
 
 	if (retval) {
-		fprintf(stderr, translate("gettextFromC","Database connection failed '%s'.\n"), filename);
+		fprintf(stderr, translate("gettextFromC", "Database connection failed '%s'.\n"), filename);
 		return 1;
 	}
 
@@ -208,7 +208,7 @@ timestamp_t parse_date(const char *date)
 	}
 	if (tm.tm_mon > 11)
 		return 0;
-	date = p+3;
+	date = p + 3;
 	tm.tm_year = strtol(date, &p, 10);
 	if (date == p)
 		return 0;
@@ -225,7 +225,9 @@ timestamp_t parse_date(const char *date)
 }
 
 enum csv_format {
-	CSV_DEPTH, CSV_TEMP, CSV_PRESSURE
+	CSV_DEPTH,
+	CSV_TEMP,
+	CSV_PRESSURE
 };
 
 static void add_sample_data(struct sample *sample, enum csv_format type, double val)
@@ -238,7 +240,7 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		sample->temperature.mkelvin = F_to_mkelvin(val);
 		break;
 	case CSV_PRESSURE:
-		sample->cylinderpressure.mbar = psi_to_mbar(val*4);
+		sample->cylinderpressure.mbar = psi_to_mbar(val * 4);
 		break;
 	}
 }
@@ -292,7 +294,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		struct sample *sample;
 
 		errno = 0;
-		val = strtod(p,&end); // FIXME == localization issue
+		val = strtod(p, &end); // FIXME == localization issue
 		if (end == p)
 			break;
 		if (errno)
@@ -307,7 +309,7 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 		dc->duration.seconds = time;
 		if (*end != ',')
 			break;
-		p = end+1;
+		p = end + 1;
 	}
 	record_dive(dive);
 	return 1;
@@ -343,7 +345,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 static void parse_file_buffer(const char *filename, struct memblock *mem, char **error)
 {
 	char *fmt = strrchr(filename, '.');
-	if (fmt && open_by_filename(filename, fmt+1, mem, error))
+	if (fmt && open_by_filename(filename, fmt + 1, mem, error))
 		return;
 
 	if (!mem->size || !mem->buffer)
@@ -359,13 +361,13 @@ void parse_file(const char *filename, char **error)
 
 	if (readfile(filename, &mem) < 0) {
 		/* we don't want to display an error if this was the default file */
-		if (prefs.default_filename && ! strcmp(filename, prefs.default_filename))
+		if (prefs.default_filename && !strcmp(filename, prefs.default_filename))
 			return;
 
 		if (error) {
-			int len = strlen(translate("gettextFromC","Failed to read '%s'")) + strlen(filename);
+			int len = strlen(translate("gettextFromC", "Failed to read '%s'")) + strlen(filename);
 			*error = malloc(len);
-			snprintf(*error, len, translate("gettextFromC","Failed to read '%s'"), filename);
+			snprintf(*error, len, translate("gettextFromC", "Failed to read '%s'"), filename);
 		}
 
 		return;
@@ -388,7 +390,7 @@ void parse_file(const char *filename, char **error)
 void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx, char **error)
 {
 	struct memblock mem;
-	int pnr=0;
+	int pnr = 0;
 	char *params[21];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
@@ -403,7 +405,7 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 	char curdate[9];
 	char curtime[6];
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS ) {
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS) {
 		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
 		*error = malloc(len);
 		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
@@ -461,7 +463,7 @@ void parse_csv_file(const char *filename, int timef, int depthf, int tempf, int 
 void parse_manual_file(const char *filename, int sepidx, int units, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, char **error)
 {
 	struct memblock mem;
-	int pnr=0;
+	int pnr = 0;
 	char *params[33];
 	char numberbuf[MAXCOLDIGITS];
 	char datebuf[MAXCOLDIGITS];
@@ -482,7 +484,7 @@ void parse_manual_file(const char *filename, int sepidx, int units, int numberf,
 	char curdate[9];
 	char curtime[6];
 
-	if ( numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS ) {
+	if (numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS) {
 		int len = strlen(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d")) + MAXCOLDIGITS;
 		*error = malloc(len);
 		snprintf(*error, len, translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);

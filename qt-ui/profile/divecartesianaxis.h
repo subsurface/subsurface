@@ -9,14 +9,19 @@ class DiveTextItem;
 class DiveLineItem;
 class DivePlotDataModel;
 
-class DiveCartesianAxis : public QObject, public QGraphicsLineItem{
+class DiveCartesianAxis : public QObject, public QGraphicsLineItem {
 	Q_OBJECT
 	Q_PROPERTY(QLineF line WRITE setLine READ line)
 	Q_PROPERTY(QPointF pos WRITE setPos READ pos)
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	enum Orientation{TopToBottom, BottomToTop, LeftToRight, RightToLeft};
+	enum Orientation {
+		TopToBottom,
+		BottomToTop,
+		LeftToRight,
+		RightToLeft
+	};
 	DiveCartesianAxis();
 	virtual ~DiveCartesianAxis();
 	void setMinimum(double minimum);
@@ -30,28 +35,30 @@ public:
 	double tickInterval() const;
 	double tickSize() const;
 	double fontLabelScale() const;
-	qreal valueAt(const QPointF& p) const;
-	qreal percentAt(const QPointF& p);
+	qreal valueAt(const QPointF &p) const;
+	qreal percentAt(const QPointF &p);
 	qreal posAtValue(qreal value);
-	void setColor(const QColor& color);
-	void setTextColor(const QColor& color);
-	void animateChangeLine(const QLineF& newLine);
+	void setColor(const QColor &color);
+	void setTextColor(const QColor &color);
+	void animateChangeLine(const QLineF &newLine);
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
 	void setLineSize(qreal lineSize);
 	int unitSystem;
-public slots:
+public
+slots:
 	virtual void updateTicks();
 
 signals:
 	void sizeChanged();
 	void maxChanged();
+
 protected:
 	virtual QString textForValue(double value);
 	virtual QColor colorForValue(double value);
 	Orientation orientation;
-	QList<DiveTextItem*> labels;
-	QList<DiveLineItem*> lines;
+	QList<DiveTextItem *> labels;
+	QList<DiveLineItem *> lines;
 	double min;
 	double max;
 	double interval;
@@ -67,11 +74,14 @@ class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	DepthAxis();
+
 protected:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
-private slots:
+private
+slots:
 	void settingsChanged();
+
 private:
 	bool showWithPPGraph;
 };
@@ -80,24 +90,27 @@ class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	virtual void updateTicks();
+
 protected:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
 };
 
-class TemperatureAxis : public DiveCartesianAxis{
+class TemperatureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 protected:
 	QString textForValue(double value);
 };
 
-class PartialGasPressureAxis : public DiveCartesianAxis{
+class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	PartialGasPressureAxis();
 	void setModel(DivePlotDataModel *model);
-public slots:
+public
+slots:
 	void preferencesChanged();
+
 private:
 	DivePlotDataModel *model;
 };

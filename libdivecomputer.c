@@ -12,10 +12,10 @@
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
-  #define NOT_FROG , 0
-  #define LIBDIVECOMPUTER_SUPPORTS_FROG
+#define NOT_FROG , 0
+#define LIBDIVECOMPUTER_SUPPORTS_FROG
 #else
-  #define NOT_FROG
+#define NOT_FROG
 #endif
 
 char *dumpfile_name;
@@ -40,16 +40,16 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 struct atomics_gas_info {
 	uint8_t gas_nr;
 	uint8_t po2imit;
-	uint8_t tankspecmethod;	/* 1: CF@psi 2: CF@bar 3: wet vol in deciliter */
+	uint8_t tankspecmethod; /* 1: CF@psi 2: CF@bar 3: wet vol in deciliter */
 	uint8_t gasmixtype;
 	uint8_t fo2;
 	uint8_t fhe;
-	uint16_t startpressure;	/* in psi */
-	uint16_t tanksize;	/* CF or dl */
+	uint16_t startpressure; /* in psi */
+	uint16_t tanksize;      /* CF or dl */
 	uint16_t workingpressure;
 	uint16_t sensorid;
-	uint16_t endpressure;	/* in psi */
-	uint16_t totalconsumption;	/* in liters */
+	uint16_t endpressure;      /* in psi */
+	uint16_t totalconsumption; /* in liters */
 };
 #define COBALT_CFATPSI 1
 #define COBALT_CFATBAR 2
@@ -72,7 +72,7 @@ static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 			printf("incorrect header for Atomics dive\n");
 			return false;
 		}
-		atomics_gas_info = (void*)(data + COBALT_HEADER);
+		atomics_gas_info = (void *)(data + COBALT_HEADER);
 		switch (atomics_gas_info[idx].tankspecmethod) {
 		case COBALT_CFATPSI:
 			airvolume = cuft_to_l(atomics_gas_info[idx].tanksize) * 1000.0;
@@ -96,13 +96,13 @@ static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 }
 
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
-	const unsigned char *data)
+			  const unsigned char *data)
 {
 	int i;
 
 	for (i = 0; i < ngases; i++) {
 		int rc;
-		dc_gasmix_t gasmix = {0};
+		dc_gasmix_t gasmix = { 0 };
 		int o2, he;
 
 		rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
@@ -118,7 +118,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		/* Ignore bogus data - libdivecomputer does some crazy stuff */
 		if (o2 + he <= O2_IN_AIR || o2 >= 1000)
 			o2 = 0;
-		if (he < 0 || he >= 800 || o2+he >= 1000)
+		if (he < 0 || he >= 800 || o2 + he >= 1000)
 			he = 0;
 
 		dive->cylinder[i].gasmix.o2.permille = o2;
@@ -136,12 +136,12 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	/* we mark these for translation here, but we store the untranslated strings
 	 * and only translate them when they are displayed on screen */
 	static const char *events[] = {
-		QT_TRANSLATE_NOOP("gettextFromC","none"), QT_TRANSLATE_NOOP("gettextFromC","deco stop"), QT_TRANSLATE_NOOP("gettextFromC","rbt"), QT_TRANSLATE_NOOP("gettextFromC","ascent"), QT_TRANSLATE_NOOP("gettextFromC","ceiling"), QT_TRANSLATE_NOOP("gettextFromC","workload"),
-		QT_TRANSLATE_NOOP("gettextFromC","transmitter"), QT_TRANSLATE_NOOP("gettextFromC","violation"), QT_TRANSLATE_NOOP("gettextFromC","bookmark"), QT_TRANSLATE_NOOP("gettextFromC","surface"), QT_TRANSLATE_NOOP("gettextFromC","safety stop"),
-		QT_TRANSLATE_NOOP("gettextFromC","gaschange"), QT_TRANSLATE_NOOP("gettextFromC","safety stop (voluntary)"), QT_TRANSLATE_NOOP("gettextFromC","safety stop (mandatory)"),
-		QT_TRANSLATE_NOOP("gettextFromC","deepstop"), QT_TRANSLATE_NOOP("gettextFromC","ceiling (safety stop)"), QT_TRANSLATE_NOOP3("gettextFromC","below floor","event showing dive is below deco floor and adding deco time"), QT_TRANSLATE_NOOP("gettextFromC","divetime"),
-		QT_TRANSLATE_NOOP("gettextFromC","maxdepth"), QT_TRANSLATE_NOOP("gettextFromC","OLF"), QT_TRANSLATE_NOOP("gettextFromC","PO2"), QT_TRANSLATE_NOOP("gettextFromC","airtime"), QT_TRANSLATE_NOOP("gettextFromC","rgbm"), QT_TRANSLATE_NOOP("gettextFromC","heading"),
-		QT_TRANSLATE_NOOP("gettextFromC","tissue level warning"), QT_TRANSLATE_NOOP("gettextFromC","gaschange"), QT_TRANSLATE_NOOP("gettextFromC","non stop time")
+		QT_TRANSLATE_NOOP("gettextFromC", "none"), QT_TRANSLATE_NOOP("gettextFromC", "deco stop"), QT_TRANSLATE_NOOP("gettextFromC", "rbt"), QT_TRANSLATE_NOOP("gettextFromC", "ascent"), QT_TRANSLATE_NOOP("gettextFromC", "ceiling"), QT_TRANSLATE_NOOP("gettextFromC", "workload"),
+		QT_TRANSLATE_NOOP("gettextFromC", "transmitter"), QT_TRANSLATE_NOOP("gettextFromC", "violation"), QT_TRANSLATE_NOOP("gettextFromC", "bookmark"), QT_TRANSLATE_NOOP("gettextFromC", "surface"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
+		QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
+		QT_TRANSLATE_NOOP("gettextFromC", "deepstop"), QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"), QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time"), QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
+		QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"), QT_TRANSLATE_NOOP("gettextFromC", "OLF"), QT_TRANSLATE_NOOP("gettextFromC", "PO2"), QT_TRANSLATE_NOOP("gettextFromC", "airtime"), QT_TRANSLATE_NOOP("gettextFromC", "rgbm"), QT_TRANSLATE_NOOP("gettextFromC", "heading"),
+		QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"), QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "non stop time")
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
@@ -158,7 +158,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
 	type = value.event.type;
-	name = QT_TRANSLATE_NOOP("gettextFromC","invalid event number");
+	name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
 	if (type < nr_events)
 		name = events[type];
 
@@ -180,7 +180,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	 * We fill in the "previous" sample - except for DC_SAMPLE_TIME,
 	 * which creates a new one.
 	 */
-	sample = dc->samples ? dc->sample+dc->samples-1 : NULL;
+	sample = dc->samples ? dc->sample + dc->samples - 1 : NULL;
 
 	/*
 	* Ok, sanity check.
@@ -227,9 +227,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		break;
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
-			value.vendor.type, value.vendor.size);
+		       value.vendor.type, value.vendor.size);
 		for (i = 0; i < value.vendor.size; ++i)
-			printf("%02X", ((unsigned char *) value.vendor.data)[i]);
+			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
 		printf("</vendor>\n");
 		break;
 #if DC_VERSION_CHECK(0, 3, 0)
@@ -358,9 +358,9 @@ static char *str_printf(const char *fmt, ...)
 	char buf[1024];
 
 	va_start(args, fmt);
-	vsnprintf(buf, sizeof(buf)-1, fmt, args);
+	vsnprintf(buf, sizeof(buf) - 1, fmt, args);
 	va_end(args);
-	buf[sizeof(buf)-1] = 0;
+	buf[sizeof(buf) - 1] = 0;
 	return strdup(buf);
 }
 
@@ -384,13 +384,13 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 /* returns true if we want libdivecomputer's dc_device_foreach() to continue,
  *  false otherwise */
 static int dive_cb(const unsigned char *data, unsigned int size,
-	const unsigned char *fingerprint, unsigned int fsize,
-	void *userdata)
+		   const unsigned char *fingerprint, unsigned int fsize,
+		   void *userdata)
 {
 	int rc;
 	dc_parser_t *parser = NULL;
 	device_data_t *devdata = userdata;
-	dc_datetime_t dt = {0};
+	dc_datetime_t dt = { 0 };
 	struct tm tm;
 	struct dive *dive;
 
@@ -400,13 +400,13 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC","Unable to create parser for %s %s"), devdata->vendor, devdata->product);
+		dev_info(devdata, translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
 		return false;
 	}
 
 	rc = dc_parser_set_data(parser, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC","Error registering the data"));
+		dev_info(devdata, translate("gettextFromC", "Error registering the data"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -415,7 +415,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive = alloc_dive();
 	rc = dc_parser_get_datetime(parser, &dt);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the datetime"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the datetime"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -424,7 +424,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	tm.tm_year = dt.year;
-	tm.tm_mon = dt.month-1;
+	tm.tm_mon = dt.month - 1;
 	tm.tm_mday = dt.day;
 	tm.tm_hour = dt.hour;
 	tm.tm_min = dt.minute;
@@ -432,12 +432,12 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->when = dive->dc.when = utc_mktime(&tm);
 
 	// Parse the divetime.
-	dev_info(devdata, translate("gettextFromC","Dive %d: %s %d %04d"), import_dive_number,
-		monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s %d %04d"), import_dive_number,
+		 monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
 	unsigned int divetime = 0;
-	rc = dc_parser_get_field (parser, DC_FIELD_DIVETIME, 0, &divetime);
+	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the divetime"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -447,7 +447,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	double maxdepth = 0.0;
 	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the maxdepth"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -457,7 +457,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	unsigned int ngases = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the gas mix count"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix count"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -466,11 +466,11 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Check if the libdivecomputer version already supports salinity & atmospheric
 	dc_salinity_t salinity = {
 		.type = DC_WATER_SALT,
-		.density = SEAWATER_SALINITY/10.0
+		.density = SEAWATER_SALINITY / 10.0
 	};
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error obtaining water salinity"));
+		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -479,7 +479,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC","Error obtaining surface pressure"));
+		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -488,7 +488,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the gas mix"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -496,7 +496,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC","Error parsing the samples"));
+		dev_info(devdata, translate("gettextFromC", "Error parsing the samples"));
 		dc_parser_destroy(parser);
 		return false;
 	}
@@ -570,10 +570,14 @@ static unsigned int undo_libdivecomputer_suunto_nr_changes(unsigned int serial)
 		return serial;
 
 	/* Nope, it was converted. */
-	b0 = serial % 100; serial /= 100;
-	b1 = serial % 100; serial /= 100;
-	b2 = serial % 100; serial /= 100;
-	b3 = serial % 100; serial /= 100;
+	b0 = serial % 100;
+	serial /= 100;
+	b1 = serial % 100;
+	serial /= 100;
+	b2 = serial % 100;
+	serial /= 100;
+	b3 = serial % 100;
+	serial /= 100;
 
 	serial = b0 + (b1 << 8) + (b2 << 16) + (b3 << 24);
 	return serial;
@@ -591,16 +595,16 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 
 	if (serial) {
 		snprintf(serial_nr, sizeof(serial_nr), "%02d%02d%02d%02d",
-			(devinfo->serial >> 24) & 0xff,
-			(devinfo->serial >> 16) & 0xff,
-			(devinfo->serial >> 8)  & 0xff,
-			(devinfo->serial >> 0)  & 0xff);
+			 (devinfo->serial >> 24) & 0xff,
+			 (devinfo->serial >> 16) & 0xff,
+			 (devinfo->serial >> 8) & 0xff,
+			 (devinfo->serial >> 0) & 0xff);
 	}
 	if (devinfo->firmware) {
 		snprintf(firmware, sizeof(firmware), "%d.%d.%d",
-			(devinfo->firmware >> 16) & 0xff,
-			(devinfo->firmware >> 8)  & 0xff,
-			(devinfo->firmware >> 0)  & 0xff);
+			 (devinfo->firmware >> 16) & 0xff,
+			 (devinfo->firmware >> 8) & 0xff,
+			 (devinfo->firmware >> 0) & 0xff);
 	}
 	create_device_node(devdata->model, devdata->deviceid, serial_nr, firmware, "");
 
@@ -618,18 +622,18 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 	switch (event) {
 	case DC_EVENT_WAITING:
-		dev_info(devdata, translate("gettextFromC","Event: waiting for user action"));
+		dev_info(devdata, translate("gettextFromC", "Event: waiting for user action"));
 		break;
 	case DC_EVENT_PROGRESS:
 		if (!progress->maximum)
 			break;
-		progress_bar_fraction = (double) progress->current / (double) progress->maximum;
+		progress_bar_fraction = (double)progress->current / (double)progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
-		dev_info(devdata, translate("gettextFromC","model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
-			devinfo->model, devinfo->model,
-			devinfo->firmware, devinfo->firmware,
-			devinfo->serial, devinfo->serial);
+		dev_info(devdata, translate("gettextFromC", "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
+			 devinfo->model, devinfo->model,
+			 devinfo->firmware, devinfo->firmware,
+			 devinfo->serial, devinfo->serial);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
 				devinfo->model, devinfo->model,
@@ -647,10 +651,10 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 		break;
 	case DC_EVENT_CLOCK:
-			dev_info(devdata, translate("gettextFromC","Event: systime=%"PRId64", devtime=%u\n"),
-			(uint64_t)clock->systime, clock->devtime);
+		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
+			 (uint64_t)clock->systime, clock->devtime);
 		if (devdata->libdc_logfile) {
-			fprintf(devdata->libdc_logfile, "Event: systime=%"PRId64", devtime=%u\n",
+			fprintf(devdata->libdc_logfile, "Event: systime=%" PRId64 ", devtime=%u\n",
 				(uint64_t)clock->systime, clock->devtime);
 		}
 		break;
@@ -659,7 +663,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			fprintf(devdata->libdc_logfile, "Event: vendor=");
 			for (unsigned int i = 0; i < vendor->size; ++i)
 				fprintf(devdata->libdc_logfile, "%02X", vendor->data[i]);
-			fprintf(devdata->libdc_logfile,"\n");
+			fprintf(devdata->libdc_logfile, "\n");
 		}
 		break;
 	default:
@@ -667,7 +671,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	}
 }
 
-int  import_thread_cancelled;
+int import_thread_cancelled;
 
 static int
 cancel_cb(void *userdata)
@@ -686,33 +690,33 @@ static const char *do_device_import(device_data_t *data)
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
 	rc = dc_device_set_events(device, events, event_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
-		return translate("gettextFromC","Error registering the event handler.");
+		return translate("gettextFromC", "Error registering the event handler.");
 
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
 	if (rc != DC_STATUS_SUCCESS)
-		return translate("gettextFromC","Error registering the cancellation handler.");
+		return translate("gettextFromC", "Error registering the cancellation handler.");
 
 	if (data->libdc_dump) {
-		dc_buffer_t *buffer = dc_buffer_new (0);
+		dc_buffer_t *buffer = dc_buffer_new(0);
 
-		rc = dc_device_dump (device, buffer);
+		rc = dc_device_dump(device, buffer);
 		if (rc == DC_STATUS_SUCCESS && dumpfile_name) {
-			FILE* fp = subsurface_fopen(dumpfile_name, "wb");
+			FILE *fp = subsurface_fopen(dumpfile_name, "wb");
 			if (fp != NULL) {
-				fwrite (dc_buffer_get_data (buffer), 1, dc_buffer_get_size (buffer), fp);
-				fclose (fp);
+				fwrite(dc_buffer_get_data(buffer), 1, dc_buffer_get_size(buffer), fp);
+				fclose(fp);
 			}
 		}
 
-		dc_buffer_free (buffer);
+		dc_buffer_free(buffer);
 	} else {
 		rc = dc_device_foreach(device, dive_cb, data);
 	}
 
 	if (rc != DC_STATUS_SUCCESS) {
 		progress_bar_fraction = 0.0;
-		return translate("gettextFromC","Dive data import error");
+		return translate("gettextFromC", "Dive data import error");
 	}
 
 	/* All good */
@@ -722,9 +726,9 @@ static const char *do_device_import(device_data_t *data)
 static void
 logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
-	const char *loglevels[] = {"NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL"};
+	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
-	FILE *fp = (FILE *) userdata;
+	FILE *fp = (FILE *)userdata;
 
 	if (loglevel == DC_LOGLEVEL_ERROR || loglevel == DC_LOGLEVEL_WARNING) {
 		fprintf(fp, "%s: %s [in %s:%d (%s)]\n", loglevels[loglevel], msg, file, line, function);
@@ -751,14 +755,14 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 	rc = dc_context_new(&data->context);
 	if (rc != DC_STATUS_SUCCESS)
-		return translate("gettextFromC","Unable to create libdivecomputer context");
+		return translate("gettextFromC", "Unable to create libdivecomputer context");
 
 	if (fp) {
 		dc_context_set_loglevel(data->context, DC_LOGLEVEL_ALL);
 		dc_context_set_logfunc(data->context, logfunc, fp);
 	}
 
-	err = translate("gettextFromC","Unable to open %s %s (%s)");
+	err = translate("gettextFromC", "Unable to open %s %s (%s)");
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		err = do_device_import(data);

@@ -6,26 +6,29 @@
 #include "dive.h"
 #include <QDebug>
 
-DiveEventItem::DiveEventItem(QObject* parent): DivePixmapItem(parent),
-	vAxis(NULL), hAxis(NULL), dataModel(NULL), internalEvent(NULL)
+DiveEventItem::DiveEventItem(QObject *parent) : DivePixmapItem(parent),
+	vAxis(NULL),
+	hAxis(NULL),
+	dataModel(NULL),
+	internalEvent(NULL)
 {
 	setFlag(ItemIgnoresTransformations);
 }
 
 
-void DiveEventItem::setHorizontalAxis(DiveCartesianAxis* axis)
+void DiveEventItem::setHorizontalAxis(DiveCartesianAxis *axis)
 {
 	hAxis = axis;
 	recalculatePos(true);
 }
 
-void DiveEventItem::setModel(DivePlotDataModel* model)
+void DiveEventItem::setModel(DivePlotDataModel *model)
 {
 	dataModel = model;
 	recalculatePos(true);
 }
 
-void DiveEventItem::setVerticalAxis(DiveCartesianAxis* axis)
+void DiveEventItem::setVerticalAxis(DiveCartesianAxis *axis)
 {
 	vAxis = axis;
 	recalculatePos(true);
@@ -37,7 +40,7 @@ struct event *DiveEventItem::getEvent()
 	return internalEvent;
 }
 
-void DiveEventItem::setEvent(struct event* ev)
+void DiveEventItem::setEvent(struct event *ev)
 {
 	if (!ev)
 		return;
@@ -49,7 +52,7 @@ void DiveEventItem::setEvent(struct event* ev)
 
 void DiveEventItem::setupPixmap()
 {
-#define EVENT_PIXMAP( PIX ) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+#define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (!internalEvent->name) {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if ((strcmp(internalEvent->name, "bookmark") == 0)) {
@@ -84,7 +87,7 @@ void DiveEventItem::setupToolTipString()
 			else
 				name += QString(tr("EAN%1")).arg(o2);
 		} else if (name == "SP change") {
-			name += QString(":%1").arg((double) value / 1000);
+			name += QString(":%1").arg((double)value / 1000);
 		} else {
 			name += QString(":%1").arg(value);
 		}
@@ -98,7 +101,7 @@ void DiveEventItem::setupToolTipString()
 	setToolTip(name);
 }
 
-void DiveEventItem::eventVisibilityChanged(const QString& eventName, bool visible)
+void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visible)
 {
 }
 
@@ -107,7 +110,7 @@ void DiveEventItem::recalculatePos(bool instant)
 	if (!vAxis || !hAxis || !internalEvent || !dataModel)
 		return;
 
-	QModelIndexList result = dataModel->match(dataModel->index(0,DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds );
+	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds);
 	if (result.isEmpty()) {
 		Q_ASSERT("can't find a spot in the dataModel");
 		hide();
@@ -122,5 +125,5 @@ void DiveEventItem::recalculatePos(bool instant)
 	if (!instant)
 		Animations::moveTo(this, x, y, 500);
 	else
-		setPos(x,y);
+		setPos(x, y);
 }

@@ -8,8 +8,8 @@
 #include <QStyle>
 #include <QStyleOption>
 
-QPixmap* StarWidget::activeStar = 0;
-QPixmap* StarWidget::inactiveStar = 0;
+QPixmap *StarWidget::activeStar = 0;
+QPixmap *StarWidget::inactiveStar = 0;
 
 QPixmap StarWidget::starActive()
 {
@@ -26,7 +26,7 @@ int StarWidget::currentStars() const
 	return current;
 }
 
-void StarWidget::mouseReleaseEvent(QMouseEvent* event)
+void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (readOnly) {
 		return;
@@ -45,14 +45,14 @@ void StarWidget::mouseReleaseEvent(QMouseEvent* event)
 	update();
 }
 
-void StarWidget::paintEvent(QPaintEvent* event)
+void StarWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter p(this);
 
-	for(int i = 0; i < current; i++)
+	for (int i = 0; i < current; i++)
 		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starActive());
 
-	for(int i = current; i < TOTALSTARS; i++)
+	for (int i = current; i < TOTALSTARS; i++)
 		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starInactive());
 
 	if (hasFocus()) {
@@ -70,8 +70,7 @@ void StarWidget::setCurrentStars(int value)
 	Q_EMIT valueChanged(current);
 }
 
-StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
-	QWidget(parent, f),
+StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	current(0),
 	readOnly(false)
 {
@@ -93,7 +92,7 @@ StarWidget::StarWidget(QWidget* parent, Qt::WindowFlags f):
 	setFocusPolicy(Qt::StrongFocus);
 }
 
-QPixmap StarWidget::grayImage(QPixmap* coloredImg)
+QPixmap StarWidget::grayImage(QPixmap *coloredImg)
 {
 	QImage img = coloredImg->toImage();
 	for (int i = 0; i < img.width(); ++i) {
@@ -113,7 +112,7 @@ QPixmap StarWidget::grayImage(QPixmap* coloredImg)
 
 QSize StarWidget::sizeHint() const
 {
-	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS-1), IMG_SIZE);
+	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS - 1), IMG_SIZE);
 }
 
 void StarWidget::setReadOnly(bool r)
@@ -121,27 +120,27 @@ void StarWidget::setReadOnly(bool r)
 	readOnly = r;
 }
 
-void StarWidget::focusInEvent(QFocusEvent* event)
+void StarWidget::focusInEvent(QFocusEvent *event)
 {
 	setFocus();
 	QWidget::focusInEvent(event);
 }
 
-void StarWidget::focusOutEvent(QFocusEvent* event)
+void StarWidget::focusOutEvent(QFocusEvent *event)
 {
 	QWidget::focusOutEvent(event);
 }
 
 
-void StarWidget::keyPressEvent(QKeyEvent* event)
+void StarWidget::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Right) {
 		if (currentStars() < TOTALSTARS) {
-			setCurrentStars( currentStars()+1);
+			setCurrentStars(currentStars() + 1);
 		}
 	} else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Left) {
 		if (currentStars() > 0) {
-			setCurrentStars( currentStars()-1);
+			setCurrentStars(currentStars() - 1);
 		}
 	}
 }

@@ -15,36 +15,35 @@ struct plot_info;
 class RulerItem;
 class ToolTipItem;
 
-class RulerNodeItem : public QObject, public QGraphicsEllipseItem
-{
+class RulerNodeItem : public QObject, public QGraphicsEllipseItem {
 	Q_OBJECT
 	friend class RulerItem;
+
 public:
-	explicit RulerNodeItem(QGraphicsItem* parent, graphics_context gc);
+	explicit RulerNodeItem(QGraphicsItem *parent, graphics_context gc);
 	void setRuler(RulerItem *r);
 	void recalculate();
 
 protected:
-	QVariant itemChange(GraphicsItemChange change, const QVariant & value );
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
 	graphics_context gc;
 	struct plot_data *entry;
-	RulerItem* ruler;
+	RulerItem *ruler;
 };
 
-class RulerItem : public QGraphicsObject
-{
+class RulerItem : public QGraphicsObject {
 	Q_OBJECT
 public:
-	explicit RulerItem(QGraphicsItem* parent,
+	explicit RulerItem(QGraphicsItem *parent,
 			   RulerNodeItem *sourceMarker,
 			   RulerNodeItem *destMarker);
 	void recalculate();
 
-	RulerNodeItem* sourceNode() const;
-	RulerNodeItem* destNode() const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * widget = 0);
+	RulerNodeItem *sourceNode() const;
+	RulerNodeItem *destNode() const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	QRectF boundingRect() const;
 	QPainterPath shape() const;
 
@@ -56,11 +55,10 @@ private:
 	int paint_direction;
 };
 
-class EventItem : public QGraphicsPixmapItem
-{
+class EventItem : public QGraphicsPixmapItem {
 public:
-	explicit EventItem(struct event *ev, QGraphicsItem* parent = 0, bool grayscale = false);
-	struct event* ev;
+	explicit EventItem(struct event *ev, QGraphicsItem *parent = 0, bool grayscale = false);
+	struct event *ev;
 
 private:
 	QString text;
@@ -69,42 +67,45 @@ private:
 	QColor getColor(const color_indice_t i);
 };
 
-class GraphicsTextEditor : public QGraphicsTextItem{
+class GraphicsTextEditor : public QGraphicsTextItem {
 	Q_OBJECT
 public:
-	GraphicsTextEditor(QGraphicsItem* parent = 0);
+	GraphicsTextEditor(QGraphicsItem *parent = 0);
 
 protected:
-	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
-	virtual void keyReleaseEvent(QKeyEvent* event);
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+	virtual void keyReleaseEvent(QKeyEvent *event);
 
 signals:
-	void textChanged(const QString& text);
-	void editingFinished(const QString& text);
+	void textChanged(const QString &text);
+	void editingFinished(const QString &text);
 };
 
-class ProfileGraphicsView : public QGraphicsView
-{
-Q_OBJECT
+class ProfileGraphicsView : public QGraphicsView {
+	Q_OBJECT
 public:
-	enum Mode{DIVE, PLAN};
+	enum Mode {
+		DIVE,
+		PLAN
+	};
 
-	ProfileGraphicsView(QWidget* parent = 0);
+	ProfileGraphicsView(QWidget *parent = 0);
 	void plot(struct dive *d, bool forceRedraw = false);
-	bool eventFilter(QObject* obj, QEvent* event);
+	bool eventFilter(QObject *obj, QEvent *event);
 	void clear();
 	void setPrintMode(bool mode, bool grayscale = false);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
-	void mouseMoveEvent(QMouseEvent* event);
-	void wheelEvent(QWheelEvent* event);
-	void showEvent(QShowEvent* event);
-	void contextMenuEvent(QContextMenuEvent* event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
+	void showEvent(QShowEvent *event);
+	void contextMenuEvent(QContextMenuEvent *event);
 
-public slots:
+public
+slots:
 	void refresh();
-	void edit_dive_time(const QString& time);
+	void edit_dive_time(const QString &time);
 	void on_rulerAction();
 	void on_scaleAction();
 	void changeGas();
@@ -112,9 +113,10 @@ public slots:
 	void unhideEvents();
 	void removeEvent();
 	void addBookmark();
+
 private:
 	void plot_depth_profile();
-	QGraphicsItemGroup *plot_text(text_render_options_t *tro, const QPointF& pos, const QString &text, QGraphicsItem *parent = 0);
+	QGraphicsItemGroup *plot_text(text_render_options_t *tro, const QPointF &pos, const QString &text, QGraphicsItem *parent = 0);
 	void plot_events(struct divecomputer *dc);
 	void plot_one_event(struct event *event);
 	void plot_temperature_profile();
@@ -123,7 +125,7 @@ private:
 	void plot_single_temp_text(int sec, int mkelvin);
 	void plot_depth_text();
 	void plot_text_samples();
-	void plot_depth_sample(plot_data* entry, text_render_options_t* tro);
+	void plot_depth_sample(plot_data *entry, text_render_options_t *tro);
 	void plot_cylinder_pressure_text();
 	void plot_pressure_value(int mbar, int sec, double xalign, double yalign);
 	void plot_gas_value(int mbar, int sec, double xalign, double yalign, int o2, int he);
@@ -143,7 +145,7 @@ private:
 	QColor getColor(const color_indice_t i);
 	QColor get_sac_color(int sac, int avg_sac);
 	void scrollViewTo(const QPoint pos);
-	void createPPLegend(QString tr, const QColor& c, QPointF& legendPos);
+	void createPPLegend(QString tr, const QColor &c, QPointF &legendPos);
 
 	QPen defaultPen;
 	QBrush defaultBrush;
@@ -158,10 +160,10 @@ private:
 	bool isGrayscale;
 
 	// Top Level Items.
-	QGraphicsItem* profileGrid;
-	QGraphicsItem* timeMarkers;
-	QGraphicsItem* depthMarkers;
-	QGraphicsItem* diveComputer;
+	QGraphicsItem *profileGrid;
+	QGraphicsItem *timeMarkers;
+	QGraphicsItem *depthMarkers;
+	QGraphicsItem *diveComputer;
 	RulerItem *rulerItem;
 	QGraphicsProxyWidget *toolBarProxy;
 

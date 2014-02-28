@@ -9,12 +9,12 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 
 	setWindowModality(Qt::ApplicationModal);
 
-	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>" \
-		"Subsurface %1 </span><br><br>" \
-		"Multi-platform divelog software<br>" \
-		"<span style='font-size: 8pt'>" \
-		"Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014" \
-		"</span>").arg(VERSION_STRING));
+	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>"
+				  "Subsurface %1 </span><br><br>"
+				  "Multi-platform divelog software<br>"
+				  "<span style='font-size: 8pt'>"
+				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014"
+				  "</span>").arg(VERSION_STRING));
 }
 
 void SubsurfaceAbout::on_licenseButton_clicked()

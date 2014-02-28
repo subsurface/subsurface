@@ -13,9 +13,10 @@ extern QTranslator *qtTranslator, *ssrfTranslator;
 
 class DiveComputerNode {
 public:
-	DiveComputerNode(QString m, uint32_t d, QString s, QString f, QString n) : model(m), deviceId(d), serialNumber(s), firmware(f), nickName(n) {};
-	bool operator ==(const DiveComputerNode &a) const;
-	bool operator !=(const DiveComputerNode &a) const;
+	DiveComputerNode(QString m, uint32_t d, QString s, QString f, QString n)
+	    : model(m), deviceId(d), serialNumber(s), firmware(f), nickName(n) {};
+	bool operator==(const DiveComputerNode &a) const;
+	bool operator!=(const DiveComputerNode &a) const;
 	bool changesValues(const DiveComputerNode &b) const;
 	QString model;
 	uint32_t deviceId;
@@ -39,7 +40,7 @@ public:
 };
 
 QString weight_string(int weight_in_grams);
-bool gpsHasChanged(struct dive* dive, struct dive *master, const QString &gps_text, bool *parsed);
+bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed);
 
 QList<int> getDivesInTrip(dive_trip_t *trip);
 #endif // QTHELPER_H

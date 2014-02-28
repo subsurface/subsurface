@@ -47,14 +47,14 @@ double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 		switch (c) {
 		case '-':
 			sign = 1;
-			/* fallthrough */
+		/* fallthrough */
 		case '+':
 			c = *p++;
 		}
 	}
 
 	/* Mantissa */
-	for (;;c = *p++) {
+	for (;; c = *p++) {
 		if ((c == '.' && !(flags & STRTOD_NO_DOT)) ||
 		    (c == ',' && !(flags & STRTOD_NO_COMMA))) {
 			if (dot)
@@ -85,7 +85,7 @@ double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 	switch (c) {
 	case '-':
 		esign = 1;
-		/* fallthrough */
+	/* fallthrough */
 	case '+':
 		c = *ep++;
 	}
@@ -118,7 +118,7 @@ done:
 	if (!numbers)
 		goto no_conversion;
 	if (ptr)
-		*ptr = p-1;
+		*ptr = p - 1;
 	return (sign ? -val : val) / decimal;
 
 no_conversion:

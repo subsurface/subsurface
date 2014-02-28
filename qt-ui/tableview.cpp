@@ -21,7 +21,7 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 	plusBtn = new QPushButton(plusIcon, QString(), ui.groupBox);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add Cylinder"));
-	plusBtn->setIconSize(QSize(16,16));
+	plusBtn->setIconSize(QSize(16, 16));
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
@@ -35,12 +35,12 @@ TableView::~TableView()
 	s.endGroup();
 }
 
-void TableView::setBtnToolTip(const QString& tooltip)
+void TableView::setBtnToolTip(const QString &tooltip)
 {
 	plusBtn->setToolTip(tooltip);
 }
 
-void TableView::setTitle(const QString& title)
+void TableView::setTitle(const QString &title)
 {
 	ui.groupBox->setTitle(title);
 }
@@ -54,7 +54,7 @@ void TableView::setModel(QAbstractItemModel *model)
 	s.beginGroup(objectName());
 	const int columnCount = ui.tableView->model()->columnCount();
 	for (int i = 0; i < columnCount; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 80 );
+		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 80);
 		ui.tableView->setColumnWidth(i, width.toInt());
 	}
 	s.endGroup();
@@ -65,23 +65,23 @@ void TableView::setModel(QAbstractItemModel *model)
 
 void TableView::fixPlusPosition()
 {
-	plusBtn->setGeometry(ui.groupBox->contentsRect().width() - 30, 2, 24,24);
+	plusBtn->setGeometry(ui.groupBox->contentsRect().width() - 30, 2, 24, 24);
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
-void TableView::resizeEvent(QResizeEvent* event)
+void TableView::resizeEvent(QResizeEvent *event)
 {
 	fixPlusPosition();
 	QWidget::resizeEvent(event);
 }
 
-void TableView::showEvent(QShowEvent* event)
+void TableView::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
 	fixPlusPosition();
 }
 
-void TableView::edit(const QModelIndex& index)
+void TableView::edit(const QModelIndex &index)
 {
 	ui.tableView->edit(index);
 }
