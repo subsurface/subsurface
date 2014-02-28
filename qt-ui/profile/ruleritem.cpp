@@ -1,8 +1,11 @@
 #include "ruleritem.h"
+#include "divetextitem.h"
+
 #include <QFont>
 #include <QFontMetrics>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QDebug>
 
 #include <stdint.h>
@@ -62,11 +65,13 @@ RulerItem2::RulerItem2():
 	timeAxis(NULL),
 	depthAxis(NULL),
 	source(new RulerNodeItem2(pInfo)),
-	dest(new RulerNodeItem2(pInfo))
+	dest(new RulerNodeItem2(pInfo)),
+	textItem(new QGraphicsSimpleTextItem(this))
 {
 	memset(&pInfo, 0, sizeof(pInfo));
 	source->setRuler(this);
 	dest->setRuler(this);
+	textItem->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
 void RulerItem2::recalculate()
@@ -82,6 +87,7 @@ void RulerItem2::recalculate()
 	prepareGeometryChange();
 	startPoint = mapFromItem(source, 0, 0);
 	endPoint = mapFromItem(dest, 0, 0);
+
 	if (startPoint.x() > endPoint.x()) {
 		tmp = endPoint;
 		endPoint = startPoint;
@@ -92,22 +98,21 @@ void RulerItem2::recalculate()
 	compare_samples(source->entry, dest->entry, buffer, 500, 1);
 	text = QString(buffer);
 
-	QRect r = fm.boundingRect(QRect(QPoint(10,-1*INT_MAX), QPoint(line.length()-10, 0)), Qt::TextWordWrap, text);
-	if (r.height() < 10)
-		height = 10;
-	else
-		height = r.height();
+	//Draw Text
+	// This text item ignores transformations, so we cant use
+	// the line.angle(), we need to calculate the angle based
+	// on the view.
 
-	QLineF line_n = line.normalVector();
-	line_n.setLength(height);
-	if (scene()) {
-		/* Determine whether we draw down or upwards */
-		if (scene()->sceneRect().contains(line_n.p2()) &&
-		    scene()->sceneRect().contains(endPoint+QPointF(line_n.dx(),line_n.dy())))
-			paint_direction = -1;
-		else
-			paint_direction = 1;
-	}
+	QGraphicsView *view = scene()->views().first();
+	QPoint begin = view->mapFromScene(mapToScene(startPoint));
+	QPoint end = view->mapFromScene(mapToScene(endPoint));
+	QLineF globalLine(begin, end);
+	textItem->setText(text);
+	textItem->resetMatrix();
+	textItem->resetTransform();
+	textItem->setPos(startPoint);
+	textItem->rotate(globalLine.angle() * -1);
+
 }
 
 RulerNodeItem2 *RulerItem2::sourceNode() const
@@ -125,26 +130,9 @@ void RulerItem2::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	QLineF line(startPoint, endPoint);
-	QLineF line_n = line.normalVector();
 	painter->setPen(QColor(Qt::black));
 	painter->setBrush(Qt::NoBrush);
-	line_n.setLength(height);
-
-	if (paint_direction == 1)
-		line_n.setAngle(line_n.angle()+180);
 	painter->drawLine(line);
-	painter->drawLine(line_n);
-	painter->drawLine(line_n.p1() + QPointF(line.dx(), line.dy()), line_n.p2() + QPointF(line.dx(), line.dy()));
-
-	//Draw Text
-	painter->save();
-	painter->translate(startPoint.x(), startPoint.y());
-	painter->rotate(line.angle()*-1);
-	if (paint_direction == 1)
-		painter->translate(0, height);
-	painter->setPen(Qt::black);
-	painter->drawText(QRectF(QPointF(10,-1*height), QPointF(line.length()-10, 0)), Qt::TextWordWrap, text);
-	painter->restore();
 }
 
 QRectF RulerItem2::boundingRect() const
