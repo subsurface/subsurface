@@ -123,7 +123,7 @@ unsigned int units_to_depth(double depth)
 	return feet_to_mm(depth);
 }
 
-double get_depth_units(unsigned int mm, int *frac, const char **units)
+double get_depth_units(int mm, int *frac, const char **units)
 {
 	int decimals;
 	double d;
