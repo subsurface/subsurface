@@ -757,9 +757,8 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 	QStringList files;
 	QSettings s;
 
-	if (newFiles.isEmpty()) {
+	if (newFiles.isEmpty())
 		return;
-	}
 
 	s.beginGroup("Recent_Files");
 
@@ -792,17 +791,58 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 		files.removeLast();
 	}
 
-	for (int c = 0; c < 4; c++) {
-		QString key = QString("File_%1").arg(c + 1);
+	for (int c = 1; c <= 4; c++) {
+		QString key = QString("File_%1").arg(c);
 
-		if (files.count() > c) {
-			s.setValue(key, files.at(c));
+		if (files.count() >= c) {
+			s.setValue(key, files.at(c - 1));
 		} else {
 			if (s.contains(key)) {
 				s.remove(key);
 			}
 		}
 	}
+	s.endGroup();
+	s.sync();
+
+	loadRecentFiles(&s);
+}
+
+void MainWindow::removeRecentFile(QStringList failedFiles)
+{
+	QStringList files;
+	QSettings s;
+
+	if (failedFiles.isEmpty())
+		return;
+
+	s.beginGroup("Recent_Files");
+
+	for (int c = 1; c <= 4; c++) {
+		QString key = QString("File_%1").arg(c);
+
+		if (s.contains(key)) {
+			QString file = s.value(key).toString();
+			files.append(file);
+		} else {
+			break;
+		}
+	}
+
+	foreach (QString file, failedFiles)
+		files.removeAll(file);
+
+	for (int c = 1; c <= 4; c++) {
+		QString key = QString("File_%1").arg(c);
+
+		if (files.count() >= c) {
+			s.setValue(key, files.at(c - 1));
+		} else {
+			if (s.contains(key))
+				s.remove(key);
+		}
+	}
+
 	s.endGroup();
 	s.sync();
 
@@ -925,6 +965,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 	char *error = NULL;
 	QByteArray fileNamePtr;
+	QStringList failedParses;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
@@ -933,6 +974,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		setTitle(MWTF_FILENAME);
 
 		if (error != NULL) {
+			failedParses.append(fileNames.at(i));
 			showError(error);
 			free(error);
 		}
@@ -940,6 +982,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 	process_dives(false, false);
 	addRecentFile(fileNames);
+	removeRecentFile(failedParses);
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);

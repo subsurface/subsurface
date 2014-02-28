@@ -64,6 +64,7 @@ public:
 	MainTab *information();
 	void loadRecentFiles(QSettings *s);
 	void addRecentFile(const QStringList &newFiles);
+	void removeRecentFile(QStringList failedFiles);
 	DiveListView *dive_list();
 	GlobeGPS *globe();
 	void showError(QString message);
