@@ -202,7 +202,7 @@ instead of ctrl on your Mac)
 Vim
 ---------
 
-As everybody knows vim is a way better editor than emacs and tus needs to be
+As everybody knows vim is a way better editor than emacs and thus needs to be
 in this file to. Put this into your .vimrc and this should produce something
 close to our coding standards.
 
