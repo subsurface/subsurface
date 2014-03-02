@@ -129,19 +129,19 @@ slots:
 	void on_actionImportDiveLog_triggered();
 
 	/* TODO: Move those slots below to it's own class */
-	void on_profCalcAllTissues_toggled(bool triggered);
-	void on_profCalcCeiling_toggled(bool triggered);
-	void on_profDcCeiling_toggled(bool triggered);
-	void on_profEad_toggled(bool triggered);
-	void on_profIncrement3m_toggled(bool triggered);
-	void on_profMod_toggled(bool triggered);
-	void on_profNtl_tts_toggled(bool triggered);
-	void on_profPO2_toggled(bool triggered);
-	void on_profPhe_toggled(bool triggered);
-	void on_profPn2_toggled(bool triggered);
-	void on_profRuler_toggled(bool triggered);
-	void on_profSAC_toggled(bool triggered);
-	void on_profScaled_toggled(bool triggered);
+	void on_profCalcAllTissues_clicked(bool triggered);
+	void on_profCalcCeiling_clicked(bool triggered);
+	void on_profDcCeiling_clicked(bool triggered);
+	void on_profEad_clicked(bool triggered);
+	void on_profIncrement3m_clicked(bool triggered);
+	void on_profMod_clicked(bool triggered);
+	void on_profNtl_tts_clicked(bool triggered);
+	void on_profPO2_clicked(bool triggered);
+	void on_profPhe_clicked(bool triggered);
+	void on_profPn2_clicked(bool triggered);
+	void on_profRuler_clicked(bool triggered);
+	void on_profSAC_clicked(bool triggered);
+	void on_profScaled_clicked(bool triggered);
 
 protected:
 	void closeEvent(QCloseEvent *);
