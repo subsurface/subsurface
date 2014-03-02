@@ -620,6 +620,10 @@ void MainWindow::initialUiSetup()
 	settings.endGroup();
 }
 
+#define TOOLBOX_PREF_BUTTON(pref, setting, button) \
+	prefs.pref = s.value(#setting).toBool(); \
+	ui.button->setChecked(prefs.pref);
+
 void MainWindow::readSettings()
 {
 	QSettings s;
@@ -630,19 +634,21 @@ void MainWindow::readSettings()
 	s.endGroup();
 
 	s.beginGroup("TecDetails");
-	ui.profCalcAllTissues->setChecked(s.value("calcalltissues").toBool());
-	ui.profCalcCeiling->setChecked(s.value("calcceiling").toBool());
-	ui.profDcCeiling->setChecked(s.value("dcceiling").toBool());
-	ui.profEad->setChecked(s.value("ead").toBool());
-	ui.profIncrement3m->setChecked(s.value("calcceiling3m").toBool());
-	ui.profMod->setChecked(s.value("mod").toBool());
-	ui.profNdl_tts->setChecked(s.value("calcndltts").toBool());
-	ui.profPhe->setChecked(s.value("phegraph").toBool());
-	ui.profPn2->setChecked(s.value("pn2graph").toBool());
-	ui.profPO2->setChecked(s.value("po2graph").toBool());
+	TOOLBOX_PREF_BUTTON(calc_all_tissues, calcalltissues, profCalcAllTissues);
+	TOOLBOX_PREF_BUTTON(profile_calc_ceiling, calcceiling, profCalcCeiling);
+	TOOLBOX_PREF_BUTTON(profile_dc_ceiling, dcceiling, profDcCeiling);
+	TOOLBOX_PREF_BUTTON(ead, ead, profEad);
+	TOOLBOX_PREF_BUTTON(calc_ceiling_3m_incr, calcceiling3m, profIncrement3m);
+	TOOLBOX_PREF_BUTTON(mod, mod, profMod);
+	TOOLBOX_PREF_BUTTON(calc_ndl_tts, calcndltts, profNdl_tts);
+	TOOLBOX_PREF_BUTTON(pp_graphs.phe, phegraph, profPhe);
+	TOOLBOX_PREF_BUTTON(pp_graphs.pn2, pn2graph, profPn2);
+	TOOLBOX_PREF_BUTTON(pp_graphs.po2, po2graph, profPO2);
 	ui.profRuler->setChecked(s.value("rulergraph").toBool());
-	ui.profSAC->setChecked(s.value("show_sac").toBool());
+	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 }
+
+#undef TOOLBOX_PREF_BUTTON
 
 void MainWindow::writeSettings()
 {
