@@ -1,37 +1,32 @@
- <!DOCTYPE RCC><RCC version="1.0">
- <qresource>
-	<file alias="star">icons/star.svg</file>
-	<file alias="subsurface-icon">icons/subsurface-icon.png</file>
-	<file alias="plus">icons/plus.png</file>
-	<file alias="trash">icons/trash.png</file>
-	<file alias="units">icons/units.png</file>
-	<file alias="advanced">icons/advanced.png</file>
-	<file alias="edit">icons/advanced.png</file>
-	<file alias="graph">icons/graph.png</file>
-<!--	<file alias="minimum">icons/minimum.svg</file> -->
-	<file alias="minimum">icons/minimum.png</file>
-<!--	<file alias="maximum">icons/maximum.svg</file> -->
-	<file alias="maximum">icons/maximum.png</file>
-<!--	<file alias="average">icons/average.svg</file> -->
-	<file alias="average">icons/average.png</file>
-	<file alias="warning">icons/warning.png</file>
-	<file alias="flag">icons/flag.png</file>
-<!--	<file alias="scale">icons/scale.svg</file> -->
-	<file alias="scale">icons/scale.png</file>
-<!--	<file alias="ruler">icons/ruler.svg</file> -->
-	<file alias="ruler">icons/ruler.png</file>
-	<file alias="poster1">icons/poster1.jpg</file>
-	<file alias="poster2">icons/poster2.jpg</file>
-	<file alias="poster3">icons/poster3.jpg</file>
-	<file alias="arrow_up">icons/planner/arrow_up.png</file>
-	<file alias="arrow_down">icons/planner/arrow_down.png</file>
-	<file alias="icon_time">icons/planner/icon_time.png</file>
-	<file alias="icon_depth">icons/planner/icon_depth.png</file>
-	<file alias="round_base">icons/planner/round_base.png</file>
-	<file alias="right_wing">icons/planner/right_wing.png</file>
-	<file alias="left_wing">icons/planner/left_wing.png</file>
-	<file alias="plan_minus">icons/planner/minus.png</file>
-	<file alias="plan_plus">icons/planner/plus.png</file>
+<RCC>
+    <qresource prefix="/">
+        <file alias="star">icons/star.svg</file>
+        <file alias="subsurface-icon">icons/subsurface-icon.png</file>
+        <file alias="plus">icons/plus.png</file>
+        <file alias="trash">icons/trash.png</file>
+        <file alias="units">icons/units.png</file>
+        <file alias="advanced">icons/advanced.png</file>
+        <file alias="edit">icons/advanced.png</file>
+        <file alias="graph">icons/graph.png</file>
+        <file alias="minimum">icons/minimum.png</file>
+        <file alias="maximum">icons/maximum.png</file>
+        <file alias="average">icons/average.png</file>
+        <file alias="warning">icons/warning.png</file>
+        <file alias="flag">icons/flag.png</file>
+        <file alias="scale">icons/scale.png</file>
+        <file alias="ruler">icons/ruler.png</file>
+        <file alias="poster1">icons/poster1.jpg</file>
+        <file alias="poster2">icons/poster2.jpg</file>
+        <file alias="poster3">icons/poster3.jpg</file>
+        <file alias="arrow_up">icons/planner/arrow_up.png</file>
+        <file alias="arrow_down">icons/planner/arrow_down.png</file>
+        <file alias="icon_time">icons/planner/icon_time.png</file>
+        <file alias="icon_depth">icons/planner/icon_depth.png</file>
+        <file alias="round_base">icons/planner/round_base.png</file>
+        <file alias="right_wing">icons/planner/right_wing.png</file>
+        <file alias="left_wing">icons/planner/left_wing.png</file>
+        <file alias="plan_minus">icons/planner/minus.png</file>
+        <file alias="plan_plus">icons/planner/plus.png</file>
         <file>xslt/commonTemplates.xsl</file>
         <file>xslt/csv2xml.xslt</file>
         <file>xslt/divelogs-export.xslt</file>
@@ -47,5 +42,14 @@
         <file>xslt/sensuscsv.xslt</file>
         <file>xslt/manualcsv2xml.xslt</file>
         <file>xslt/shearwater.xslt</file>
- </qresource>
- </RCC>
+        <file alias="icon_lung">icons/icon-lung.png</file>
+        <file alias="icon_mod">icons/icon-mod.png</file>
+        <file alias="icon_he">icons/icon-phegraph.png</file>
+        <file alias="icon_n2">icons/icon-pn2graph.png</file>
+        <file alias="icon_o2">icons/icon-po2graph.png</file>
+        <file alias="icon_ceiling_calculated">icons/icon-ceiling-calculated.png</file>
+        <file alias="icon_ceiling_3m">icons/icon-ceiling-3m.png</file>
+        <file alias="icon_ceiling_dc">icons/icon-ceiling-dc.png</file>
+        <file alias="icon_ead">icons/icon-ead.png</file>
+    </qresource>
+</RCC>

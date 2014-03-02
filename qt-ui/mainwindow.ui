@@ -169,7 +169,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/icon_depth</normaloff>:/icon_depth</iconset>
+                     <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -195,7 +195,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/average</normaloff>:/average</iconset>
+                     <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -221,7 +221,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/plus</normaloff>:/plus</iconset>
+                     <normaloff>:/icon_he</normaloff>:/icon_he</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -247,7 +247,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/maximum</normaloff>:/maximum</iconset>
+                     <normaloff>:/icon_mod</normaloff>:/icon_mod</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -273,7 +273,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/minimum</normaloff>:/minimum</iconset>
+                     <normaloff>:/icon_ead</normaloff>:/icon_ead</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -291,6 +291,9 @@
                  </item>
                  <item>
                   <widget class="QToolButton" name="profDcCeiling">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
                    <property name="toolTip">
                     <string>Show the DC Reported Ceiling</string>
                    </property>
@@ -299,7 +302,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/ruler</normaloff>:/ruler</iconset>
+                     <normaloff>:/icon_ceiling_dc</normaloff>:/icon_ceiling_dc</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -317,6 +320,9 @@
                  </item>
                  <item>
                   <widget class="QToolButton" name="profCalcCeiling">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
                    <property name="toolTip">
                     <string>Show the Calculated Ceiling</string>
                    </property>
@@ -325,7 +331,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/subsurface-icon</normaloff>:/subsurface-icon</iconset>
+                     <normaloff>:/icon_ceiling_calculated</normaloff>:/icon_ceiling_calculated</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -351,7 +357,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/star</normaloff>:/star</iconset>
+                     <normaloff>:/icon_ceiling_3m</normaloff>:/icon_ceiling_3m</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -429,7 +435,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/warning</normaloff>:/warning</iconset>
+                     <normaloff>:/icon_lung</normaloff>:/icon_lung</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -455,7 +461,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/flag</normaloff>:/flag</iconset>
+                     <normaloff>:/units</normaloff>:/units</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -588,7 +594,7 @@
      <x>0</x>
      <y>0</y>
      <width>1418</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
