@@ -613,8 +613,8 @@ void MeanDepthLine::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
 
 void MeanDepthLine::setMeanDepth(int value)
 {
-	leftText->setText(get_depth_string(value, false, true));
-	rightText->setText(get_depth_string(value, false, true));
+	leftText->setText(get_depth_string(value, true, true));
+	rightText->setText(get_depth_string(value, true, true));
 	meanDepth = value;
 }
 
