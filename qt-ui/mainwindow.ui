@@ -374,7 +374,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="profNtl_tts">
+                  <widget class="QToolButton" name="profNdl_tts">
                    <property name="toolTip">
                     <string>Show NTL / TTS</string>
                    </property>

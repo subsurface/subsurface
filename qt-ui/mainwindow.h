@@ -135,7 +135,7 @@ slots:
 	void on_profEad_clicked(bool triggered);
 	void on_profIncrement3m_clicked(bool triggered);
 	void on_profMod_clicked(bool triggered);
-	void on_profNtl_tts_clicked(bool triggered);
+	void on_profNdl_tts_clicked(bool triggered);
 	void on_profPO2_clicked(bool triggered);
 	void on_profPhe_clicked(bool triggered);
 	void on_profPn2_clicked(bool triggered);

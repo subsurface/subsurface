@@ -636,7 +636,7 @@ void MainWindow::readSettings()
 	ui.profEad->setChecked(s.value("ead").toBool());
 	ui.profIncrement3m->setChecked(s.value("calcceiling3m").toBool());
 	ui.profMod->setChecked(s.value("mod").toBool());
-	ui.profNtl_tts->setChecked(s.value("calcndltts").toBool());
+	ui.profNdl_tts->setChecked(s.value("calcndltts").toBool());
 	ui.profPhe->setChecked(s.value("phegraph").toBool());
 	ui.profPn2->setChecked(s.value("pn2graph").toBool());
 	ui.profPO2->setChecked(s.value("po2graph").toBool());
@@ -1073,7 +1073,7 @@ void MainWindow::on_profMod_clicked(bool triggered)
 	prefs.mod = triggered;
 	TOOLBOX_PREF_PROFILE(mod);
 }
-void MainWindow::on_profNtl_tts_clicked(bool triggered)
+void MainWindow::on_profNdl_tts_clicked(bool triggered)
 {
 	prefs.calc_ndl_tts = triggered;
 	TOOLBOX_PREF_PROFILE(calcndltts);
