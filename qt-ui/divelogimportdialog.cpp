@@ -103,8 +103,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		ui->CSV->setValue(VAL);\
 		ui->CSV->setEnabled(VAL >= 0);\
 		ui->BOX->setChecked(VAL >= 0);\
-		ui->CSV->blockSignals(false); \
-})
+		ui->CSV->blockSignals(false); })
 void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 {
 	if (specialCSV.contains(index)) {

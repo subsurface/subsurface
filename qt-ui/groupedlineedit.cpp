@@ -109,7 +109,7 @@ QStringList GroupedLineEdit::getBlockStringList()
 	QStringList retList;
 	Private::Block block;
 	foreach(block, d->blocks)
-	retList.append(block.text);
+		retList.append(block.text);
 	return retList;
 }
 

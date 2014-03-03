@@ -238,9 +238,9 @@ void DiveCartesianAxis::updateTicks()
 	}
 
 	Q_FOREACH(DiveTextItem * item, labels)
-	item->setVisible(textVisibility);
+		item->setVisible(textVisibility);
 	Q_FOREACH(DiveLineItem * item, lines)
-	item->setVisible(lineVisibility);
+		item->setVisible(lineVisibility);
 }
 
 void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)

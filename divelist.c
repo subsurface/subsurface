@@ -371,9 +371,10 @@ int get_divenr(struct dive *dive)
 {
 	int i;
 	struct dive *d;
-	for_each_dive(i, d)
-	if (d == dive)
-		return i;
+	for_each_dive(i, d) {
+		if (d == dive)
+			return i;
+	}
 	return -1;
 }
 

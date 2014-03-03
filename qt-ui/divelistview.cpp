@@ -120,7 +120,7 @@ void DiveListView::restoreExpandedRows()
 {
 	setAnimated(false);
 	Q_FOREACH(const int & i, expandedRows)
-	setExpanded(model()->index(i, 0), true);
+		setExpanded(model()->index(i, 0), true);
 	setAnimated(true);
 }
 void DiveListView::fixMessyQtModelBehaviour()

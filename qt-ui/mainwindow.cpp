@@ -621,7 +621,7 @@ void MainWindow::initialUiSetup()
 }
 
 #define TOOLBOX_PREF_BUTTON(pref, setting, button) \
-	prefs.pref = s.value(#setting).toBool(); \
+	prefs.pref = s.value(#setting).toBool();   \
 	ui.button->setChecked(prefs.pref);
 
 void MainWindow::readSettings()
@@ -835,7 +835,7 @@ void MainWindow::removeRecentFile(QStringList failedFiles)
 		}
 	}
 
-	foreach (QString file, failedFiles)
+	foreach(QString file, failedFiles)
 		files.removeAll(file);
 
 	for (int c = 1; c <= 4; c++) {
