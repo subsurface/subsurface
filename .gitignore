@@ -28,3 +28,4 @@ callgrind.out.*
 Makefile
 subsurface.pro.user*
 Subsurface.app
+.DS_Store
