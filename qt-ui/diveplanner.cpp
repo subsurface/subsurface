@@ -134,13 +134,11 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	timeHandler->setZValue(-2);
 	scene()->addItem(timeHandler);
 
-	depthHandler->increaseBtn->setPixmap(QString(":arrow_up"));
-	depthHandler->decreaseBtn->setPixmap(QString(":arrow_down"));
+	depthHandler->increaseBtn->setPixmap(QString(":arrow_down"));
+	depthHandler->decreaseBtn->setPixmap(QString(":arrow_up"));
 	depthHandler->icon->setPixmap(QString(":icon_depth"));
-	// Inverted here in the slots because the 'up' graphi should increase the depness,
-	// and the down should decrease.
-	connect(depthHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
-	connect(depthHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(increaseDepth()));
+	connect(depthHandler->decreaseBtn, SIGNAL(clicked()), this, SLOT(decreaseDepth()));
+	connect(depthHandler->increaseBtn, SIGNAL(clicked()), this, SLOT(increaseDepth()));
 	depthHandler->setPos(fromPercent(0, Qt::Horizontal), fromPercent(100, Qt::Vertical));
 	depthHandler->setZValue(-2);
 	scene()->addItem(depthHandler);
