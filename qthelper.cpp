@@ -136,7 +136,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	} else if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
-				 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
+				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
 			     .arg(tr("N"))
 			     .arg(tr("S"))
 			     .arg(tr("E"))
@@ -146,7 +146,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	} else if (gps_text.count(QChar('\'')) == 2) {
 		gpsStyle = MINUTES;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
-				 "([EW%6%7])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
+				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
 			     .arg(tr("N"))
 			     .arg(tr("S"))
 			     .arg(tr("E"))
