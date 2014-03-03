@@ -266,7 +266,7 @@
                  <item>
                   <widget class="QToolButton" name="profEad">
                    <property name="toolTip">
-                    <string>Enable EAD, EED, END</string>
+                    <string>Enable EAD, END, and EADD</string>
                    </property>
                    <property name="text">
                     <string>...</string>

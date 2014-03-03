@@ -1303,6 +1303,11 @@ Please, remove them first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.ui" line="269"/>
+        <source>Enable EAD, END, and EADD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.ui" line="738"/>
         <source>Ctrl+U</source>
         <translation type="unfinished"></translation>
@@ -1462,11 +1467,6 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="243"/>
         <source>Enable MOD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/mainwindow.ui" line="269"/>
-        <source>Enable EAD, EED, END</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
