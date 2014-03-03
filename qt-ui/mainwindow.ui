@@ -188,7 +188,7 @@
                  <item>
                   <widget class="QToolButton" name="profPn2">
                    <property name="toolTip">
-                    <string>Enable the pn2 Graph</string>
+                    <string>Enable the pN2 Graph</string>
                    </property>
                    <property name="text">
                     <string>...</string>
@@ -214,7 +214,7 @@
                  <item>
                   <widget class="QToolButton" name="profPhe">
                    <property name="toolTip">
-                    <string>Enable the phe graph</string>
+                    <string>Enable the pHe graph</string>
                    </property>
                    <property name="text">
                     <string>...</string>
