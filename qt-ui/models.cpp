@@ -906,6 +906,7 @@ QVariant TreeItem::data(int column, int role) const
 
 TreeModel::TreeModel(QObject *parent) : QAbstractItemModel(parent)
 {
+	columns = 0; // I'm not sure about this one - I can't see where it gets initialized
 	rootItem = new TreeItem();
 }
 
