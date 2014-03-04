@@ -238,58 +238,6 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="profMod">
-                   <property name="toolTip">
-                    <string>Enable MOD</string>
-                   </property>
-                   <property name="text">
-                    <string>...</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../subsurface.qrc">
-                     <normaloff>:/icon_mod</normaloff>:/icon_mod</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>24</width>
-                     <height>24</height>
-                    </size>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="autoRaise">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="profEad">
-                   <property name="toolTip">
-                    <string>Enable EAD, END, and EADD</string>
-                   </property>
-                   <property name="text">
-                    <string>...</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../subsurface.qrc">
-                     <normaloff>:/icon_ead</normaloff>:/icon_ead</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>24</width>
-                     <height>24</height>
-                    </size>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="autoRaise">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QToolButton" name="profDcCeiling">
                    <property name="enabled">
                     <bool>true</bool>
@@ -348,6 +296,32 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="QToolButton" name="profCalcAllTissues">
+                   <property name="toolTip">
+                    <string>Calculate All Tissues</string>
+                   </property>
+                   <property name="text">
+                    <string>...</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../subsurface.qrc">
+                     <normaloff>:/icon_ceiling_alltissues</normaloff>:/icon_ceiling_alltissues</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoRaise">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QToolButton" name="profIncrement3m">
                    <property name="toolTip">
                     <string>Show Calculated Ceiling with 3m Increments</string>
@@ -374,16 +348,16 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="profNdl_tts">
+                  <widget class="QToolButton" name="profMod">
                    <property name="toolTip">
-                    <string>Show NDL / TTS</string>
+                    <string>Enable MOD</string>
                    </property>
                    <property name="text">
                     <string>...</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/trash</normaloff>:/trash</iconset>
+                     <normaloff>:/icon_mod</normaloff>:/icon_mod</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -400,16 +374,42 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="profCalcAllTissues">
+                  <widget class="QToolButton" name="profEad">
                    <property name="toolTip">
-                    <string>Calculate All Tissues</string>
+                    <string>Enable EAD, END, and EADD</string>
                    </property>
                    <property name="text">
                     <string>...</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/subsurface-icon</normaloff>:/subsurface-icon</iconset>
+                     <normaloff>:/icon_ead</normaloff>:/icon_ead</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoRaise">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="profNdl_tts">
+                   <property name="toolTip">
+                    <string>Show NTL / TTS</string>
+                   </property>
+                   <property name="text">
+                    <string>...</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../subsurface.qrc">
+                     <normaloff>:/trash</normaloff>:/trash</iconset>
                    </property>
                    <property name="iconSize">
                     <size>

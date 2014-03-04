@@ -48,6 +48,7 @@
         <file alias="icon_n2">icons/icon-pn2graph.png</file>
         <file alias="icon_o2">icons/icon-po2graph.png</file>
         <file alias="icon_ceiling_calculated">icons/icon-ceiling-calculated.png</file>
+        <file alias="icon_ceiling_alltissues">icons/icon-ceiling-alltissues.png</file>
         <file alias="icon_ceiling_3m">icons/icon-ceiling-3m.png</file>
         <file alias="icon_ceiling_dc">icons/icon-ceiling-dc.png</file>
         <file alias="icon_ead">icons/icon-ead.png</file>
