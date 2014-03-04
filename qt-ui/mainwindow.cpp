@@ -983,6 +983,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 			failedParses.append(fileNames.at(i));
 			showError(error);
 			free(error);
+			error = NULL;
 		}
 	}
 
