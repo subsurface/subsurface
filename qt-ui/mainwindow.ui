@@ -402,14 +402,14 @@
                  <item>
                   <widget class="QToolButton" name="profNdl_tts">
                    <property name="toolTip">
-                    <string>Show NTL / TTS</string>
+                    <string>Show NDL / TTS</string>
                    </property>
                    <property name="text">
                     <string>...</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../subsurface.qrc">
-                     <normaloff>:/trash</normaloff>:/trash</iconset>
+                     <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -479,6 +479,9 @@
                  </item>
                  <item>
                   <widget class="QToolButton" name="profScaled">
+                   <property name="toolTip">
+                    <string>Rescale depth axis</string>
+                   </property>
                    <property name="text">
                     <string>...</string>
                    </property>
