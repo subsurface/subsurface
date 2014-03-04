@@ -161,6 +161,10 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
 	gasidx = get_gasidx(dive, o2, he);
+	if (gasidx == -1) {
+		fprintf(stderr, "cannot find gas (%d/%d), using first gas\n", o2, he);
+		gasidx = 0;
+	}
 	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
 		wait++;
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
