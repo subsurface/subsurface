@@ -564,7 +564,7 @@ static void parse_divespot(char *buf)
 	while (*tag && strcmp(tag, "object_id"));
 	if (!*tag)
 		return;
-	type = next_token(&bp);
+	next_token(&bp);
 	val = next_token(&bp);
 	divespot = atoi(val);
 	do {

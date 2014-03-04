@@ -1194,8 +1194,8 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 		if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
-				tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-							       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
+				add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+					    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
 			ascent_depth = next_stop;
 			next_stop -= deco_stepsize;
 		}

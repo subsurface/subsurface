@@ -150,10 +150,8 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	}
 	if (selectedDiveIds.empty())
 		return;
-	if (clear) {
+	if (clear)
 		MainWindow::instance()->dive_list()->unselectDives();
-		clear = false;
-	}
 	MainWindow::instance()->dive_list()->selectDives(selectedDiveIds);
 }
 

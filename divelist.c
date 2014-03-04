@@ -188,7 +188,7 @@ int total_weight(struct dive *dive)
 static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
 	int o2permille = dive->cylinder[0].gasmix.o2.permille;
-	struct event *event = dc->events;
+	struct event *event;
 
 	if (!o2permille)
 		o2permille = O2_IN_AIR;
