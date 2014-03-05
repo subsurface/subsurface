@@ -191,7 +191,7 @@ void CylindersModel::passInData(const QModelIndex &index, const QVariant &value)
 
 /* Has the string value changed */
 #define CHANGED() \
-    (vString = value.toString()) != data(index, role).toString()
+	(vString = value.toString()) != data(index, role).toString()
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
@@ -934,8 +934,7 @@ bool TreeItem::setData(const QModelIndex &index, const QVariant &value, int role
 	return false;
 }
 
-QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent)
-    const
+QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
 {
 	if (!hasIndex(row, column, parent))
 		return QModelIndex();

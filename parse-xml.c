@@ -534,7 +534,7 @@ static void utf8_string(char *buffer, void *_res)
 }
 
 #define MATCH(pattern, fn, dest) \
-    match(pattern, strlen(pattern), name, fn, buf, dest)
+	match(pattern, strlen(pattern), name, fn, buf, dest)
 
 static void get_index(char *buffer, void *_i)
 {

@@ -79,10 +79,10 @@
  */
 
 #if defined(__i386__) || defined(__x86_64__) ||       \
-    defined(_M_IX86) || defined(_M_X64) ||            \
-    defined(__ppc__) || defined(__ppc64__) ||         \
-    defined(__powerpc__) || defined(__powerpc64__) || \
-    defined(__s390__) || defined(__s390x__)
+	defined(_M_IX86) || defined(_M_X64) ||            \
+	defined(__ppc__) || defined(__ppc64__) ||         \
+	defined(__powerpc__) || defined(__powerpc64__) || \
+	defined(__s390__) || defined(__s390x__)
 
 #define get_be32(p) ntohl(*(unsigned int *)(p))
 #define put_be32(p, v)                           \
@@ -93,10 +93,10 @@
 #else
 
 #define get_be32(p) (                     \
-    (*((unsigned char *)(p) + 0) << 24) | \
-    (*((unsigned char *)(p) + 1) << 16) | \
-    (*((unsigned char *)(p) + 2) << 8) |  \
-    (*((unsigned char *)(p) + 3) << 0))
+	(*((unsigned char *)(p) + 0) << 24) | \
+	(*((unsigned char *)(p) + 1) << 16) | \
+	(*((unsigned char *)(p) + 2) << 8) |  \
+	(*((unsigned char *)(p) + 3) << 0))
 #define put_be32(p, v)                                   \
 	do {                                             \
 		unsigned int __v = (v);                  \

@@ -10,16 +10,16 @@
 
 /* Windows has no MIN/MAX macros - so let's just roll our own */
 #define MIN(x, y) ({                \
-    typeof(x) _min1 = (x);          \
-    typeof(y) _min2 = (y);          \
-    (void) (&_min1 == &_min2);      \
-    _min1 < _min2 ? _min1 : _min2; })
+	typeof(x) _min1 = (x);          \
+	typeof(y) _min2 = (y);          \
+	(void) (&_min1 == &_min2);      \
+	_min1 < _min2 ? _min1 : _min2; })
 
 #define MAX(x, y) ({                \
-    typeof(x) _max1 = (x);          \
-    typeof(y) _max2 = (y);          \
-    (void) (&_max1 == &_max2);      \
-    _max1 > _max2 ? _max1 : _max2; })
+	typeof(x) _max1 = (x);          \
+	typeof(y) _max2 = (y);          \
+	(void) (&_max1 == &_max2);      \
+	_max1 > _max2 ? _max1 : _max2; })
 
 #define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) < 0.000001 * MAX(fabs(_a), fabs(_b)))
 
@@ -620,13 +620,13 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
  * it local to the for-loop, but that would make us requires C99.
  */
 #define for_each_dive(_i, _x) \
-    for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
+	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
 
 #define for_each_dc(_dive, _dc) \
-    for (_dc = &_dive->dc; _dc; _dc = _dc->next)
+	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
 
 #define for_each_gps_location(_i, _x) \
-    for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
+	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
 static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid)
 {

@@ -105,8 +105,8 @@ public:
 	};
 
 	/**
-     * Constructs a KMessageWidget with the specified parent.
-     */
+	 * Constructs a KMessageWidget with the specified parent.
+	 */
 	explicit KMessageWidget(QWidget *parent = 0);
 
 	explicit KMessageWidget(const QString &text, QWidget *parent = 0);
@@ -132,9 +132,9 @@ public:
 	int heightForWidth(int width) const;
 
 	/**
-     * The icon shown on the left of the text. By default, no icon is shown.
-     * @since 4.11
-     */
+	 * The icon shown on the left of the text. By default, no icon is shown.
+	 * @since 4.11
+	 */
 	QIcon icon() const;
 
 public
@@ -148,40 +148,40 @@ Q_SLOTS:
 	void setMessageType(KMessageWidget::MessageType type);
 
 	/**
-     * Show the widget using an animation, unless
-     * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
-     */
+	 * Show the widget using an animation, unless
+	 * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
+	 */
 	void animatedShow();
 
 	/**
-     * Hide the widget using an animation, unless
-     * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
-     */
+	 * Hide the widget using an animation, unless
+	 * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
+	 */
 	void animatedHide();
 
 	/**
-     * Define an icon to be shown on the left of the text
-     * @since 4.11
-     */
+	 * Define an icon to be shown on the left of the text
+	 * @since 4.11
+	 */
 	void setIcon(const QIcon &icon);
 
 Q_SIGNALS:
 	/**
-     * This signal is emitted when the user clicks a link in the text label.
-     * The URL referred to by the href anchor is passed in contents.
-     * @param contents text of the href anchor
-     * @see QLabel::linkActivated()
-     * @since 4.10
-     */
+	 * This signal is emitted when the user clicks a link in the text label.
+	 * The URL referred to by the href anchor is passed in contents.
+	 * @param contents text of the href anchor
+	 * @see QLabel::linkActivated()
+	 * @since 4.10
+	 */
 	void linkActivated(const QString &contents);
 
 	/**
-     * This signal is emitted when the user hovers over a link in the text label.
-     * The URL referred to by the href anchor is passed in contents.
-     * @param contents text of the href anchor
-     * @see QLabel::linkHovered()
-     * @since 4.11
-     */
+	 * This signal is emitted when the user hovers over a link in the text label.
+	 * The URL referred to by the href anchor is passed in contents.
+	 * @param contents text of the href anchor
+	 * @see QLabel::linkHovered()
+	 * @since 4.11
+	 */
 	void linkHovered(const QString &contents);
 
 protected:

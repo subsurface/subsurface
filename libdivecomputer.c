@@ -183,9 +183,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	sample = dc->samples ? dc->sample + dc->samples - 1 : NULL;
 
 	/*
-	* Ok, sanity check.
-	* If first sample is not a DC_SAMPLE_TIME, Allocate a sample for us
-	*/
+	 * Ok, sanity check.
+	 * If first sample is not a DC_SAMPLE_TIME, Allocate a sample for us
+	 */
 	if (sample == NULL && type != DC_SAMPLE_TIME)
 		sample = prepare_sample(dc);
 

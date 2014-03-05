@@ -1084,7 +1084,7 @@ static char *merge_text(const char *a, const char *b)
 
 #define SORT(a, b, field)         \
 	if (a->field != b->field) \
-	return a->field < b->field ? -1 : 1
+		return a->field < b->field ? -1 : 1
 
 static int sort_event(struct event *a, struct event *b)
 {

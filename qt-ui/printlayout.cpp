@@ -114,7 +114,7 @@ int PrintLayout::estimateTotalDives() const
  * p is the padding between elements
  */
 #define ESTIMATE_DIVE_DIM(S, n, p) \
-    ((S) - ((n) - 1) * (p)) / (n);
+	((S) - ((n) - 1) * (p)) / (n);
 
 void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
