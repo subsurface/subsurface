@@ -30,6 +30,16 @@ O₂%, He%	 The fraction of Oxygen and Helium in a gas.
 		 pressure is 4atm) therefore has a PO₂ of
 		 4 * 0.30 = 1.2
 
+Trimix		 Gas Mixture containing Helium, Oxygen and Nitrogen.
+
+Heliox		 Gas Mixture containing Helium and Oxygen.
+
+Nitrox		 Gas Mixture containing Nitrogen and Oxygen.
+
+TC		 Tissue Compartment, is a logical tissue interface to various
+		 tissues in the human body. Since each tissue has its own gas
+		 dissolving time, they have been categorized into compartments.
+
 CSV		 Comma separated values - a common file format
 
 TSV		 Tab separated values - a common file format
