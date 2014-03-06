@@ -564,6 +564,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #endif
 	return found_answer;
 fs_error:
+	close (ans_file);
 	return false;
 }
 
