@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/perl
 
 my $input = $ARGV[0];
 my $source = `clang-format $input`;
