@@ -134,6 +134,8 @@ static long bytes_available(int file)
 	long now = lseek(file, 0, SEEK_CUR);
 	result = lseek(file, 0, SEEK_END);
 	lseek(file, now, SEEK_SET);
+	if (now == -1 || result == -1)
+		return 0;
 	return result;
 }
 
@@ -249,13 +251,18 @@ static void trigger_response(int file, char *command, int nr, long tailpos)
 #if UEMIS_DEBUG & 4
 	fprintf(debugfile, ":tr %s (after seeks)\n", fl);
 #endif
-	lseek(file, 0, SEEK_SET);
-	write(file, fl, strlen(fl));
-	lseek(file, tailpos, SEEK_SET);
-	write(file, fl + 1, strlen(fl + 1));
+	if (lseek(file, 0, SEEK_SET) == -1)
+		goto fs_error;
+	if (write(file, fl, strlen(fl)) == -1)
+		goto fs_error;
+	if (lseek(file, tailpos, SEEK_SET) == -1)
+		goto fs_error;
+	if (write(file, fl + 1, strlen(fl + 1)) == -1)
+		goto fs_error;
 #ifndef WIN32
 	fsync(file);
 #endif
+fs_error:
 	close(file);
 }
 
@@ -491,10 +498,16 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
-				char *buf = malloc(size - 2);
-				lseek(ans_file, 3, SEEK_CUR);
-				read(ans_file, buf, size - 3);
-				buf[size - 3] = '\0';
+				char *buf;
+				int r;
+				if (lseek(ans_file, 3, SEEK_CUR) == -1)
+					goto fs_error;
+				buf = malloc(size - 2);
+				if ((r = read(ans_file, buf, size - 3) != size - 3)) {
+					free(buf);
+					goto fs_error;
+				}
+				buf[r] = '\0';
 				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf, what);
 				free(buf);
@@ -515,10 +528,15 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			size = bytes_available(ans_file);
 			if (size > 3) {
+				int r;
+				if (lseek(ans_file, 3, SEEK_CUR) == -1)
+					goto fs_error;
 				buf = malloc(size - 2);
-				lseek(ans_file, 3, SEEK_CUR);
-				read(ans_file, buf, size - 3);
-				buf[size - 3] = '\0';
+				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
+					free(buf);
+					goto fs_error;
+				}
+				buf[r] = '\0';
 				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf, what);
 #if UEMIS_DEBUG & 8
@@ -545,6 +563,8 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		fprintf(debugfile, "::: %d: %s\n", i, param_buff[i]);
 #endif
 	return found_answer;
+fs_error:
+	return false;
 }
 
 static void parse_divespot(char *buf)
