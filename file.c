@@ -126,6 +126,12 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, char
 		endtag = malloc(4 + strlen(tag));
 
 		if (starttag == NULL || endtag == NULL) {
+			/* this is fairly silly - so the malloc fails, but we strdup the error?
+			 * let's complete the silliness by freeing the two pointers in case one malloc succeeded
+			 *  and the other one failed - this will make static analysis tools happy */
+			free(starttag);
+			free(endtag);
+			free(buf);
 			*error = strdup("Memory allocation failed in __func__\n");
 			return 1;
 		}
