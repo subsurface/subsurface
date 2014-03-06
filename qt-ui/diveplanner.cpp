@@ -1445,6 +1445,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		copy_samples(tempDive, current_dive);
 		copy_events(tempDive, current_dive);
 	}
+	// throw away the cache
+	free(cache);
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
