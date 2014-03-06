@@ -159,7 +159,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		rewind(f);
 
 		membuf = (char *)malloc(streamsize + 1);
-		if (!membuf || !fread(membuf, streamsize, 1, f)) {
+		if (!membuf || (streamsize = fread(membuf, streamsize, 1, f)) == 0) {
 			*errorMsg = tr("internal error: %1").arg(qt_error_string());
 			fclose(f);
 			free((void *)membuf);
