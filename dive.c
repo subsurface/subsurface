@@ -224,6 +224,30 @@ void copy_events(struct dive *s, struct dive *d)
 	}
 }
 
+int nr_cylinders(struct dive *dive)
+{
+	int nr;
+
+	for (nr = MAX_CYLINDERS; nr; --nr) {
+		cylinder_t *cylinder = dive->cylinder + nr - 1;
+		if (!cylinder_nodata(cylinder))
+			break;
+	}
+	return nr;
+}
+
+int nr_weightsystems(struct dive *dive)
+{
+	int nr;
+
+	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
+		weightsystem_t *ws = dive->weightsystem + nr - 1;
+		if (!weightsystem_none(ws))
+			break;
+	}
+	return nr;
+}
+
 void copy_cylinders(struct dive *s, struct dive *d)
 {
 	int i;

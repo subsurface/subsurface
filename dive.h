@@ -685,6 +685,7 @@ extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
 extern void export_dives_uddf(const char *filename, const bool selected);
+extern int git_save_dives(int fd, bool select_only);
 
 extern int subsurface_rename(const char *path, const char *newpath);
 extern int subsurface_open(const char *path, int oflags, mode_t mode);
@@ -723,6 +724,8 @@ extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
+extern int nr_cylinders(struct dive *dive);
+extern int nr_weightsystems(struct dive *dive);
 
 /* UI related protopypes */
 

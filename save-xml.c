@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <time.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "dive.h"
 #include "device.h"
@@ -210,18 +211,6 @@ static void save_overview(struct membuffer *b, struct dive *dive)
 	show_utf8(b, dive->suit, "  <suit>", "</suit>\n", 0);
 }
 
-static int nr_cylinders(struct dive *dive)
-{
-	int nr;
-
-	for (nr = MAX_CYLINDERS; nr; --nr) {
-		cylinder_t *cylinder = dive->cylinder + nr - 1;
-		if (!cylinder_nodata(cylinder))
-			break;
-	}
-	return nr;
-}
-
 static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
@@ -249,18 +238,6 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_pressure(b, cylinder->end, " end='", " bar'");
 		put_format(b, " />\n");
 	}
-}
-
-static int nr_weightsystems(struct dive *dive)
-{
-	int nr;
-
-	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
-		weightsystem_t *ws = dive->weightsystem + nr - 1;
-		if (!weightsystem_none(ws))
-			break;
-	}
-	return nr;
 }
 
 static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
@@ -609,15 +586,12 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 	free(newname);
 }
 
-void save_dives_logic(const char *filename, const bool select_only)
+static void try_to_backup(const char *filename)
 {
-	struct membuffer buf = { 0 };
-	FILE *f;
 	char extension[][5] = { "xml", "ssrf", "" };
 	int i = 0;
 	int flen = strlen(filename);
 
-	save_dives_buffer(&buf, select_only);
 	/* Maybe we might want to make this configurable? */
 	while (extension[i][0] != '\0') {
 		int elen = strlen(extension[i]);
@@ -627,6 +601,30 @@ void save_dives_logic(const char *filename, const bool select_only)
 		}
 		i++;
 	}
+}
+
+void save_dives_logic(const char *filename, const bool select_only)
+{
+	struct membuffer buf = { 0 };
+	FILE *f;
+	int fd;
+
+	/*
+	 * See if the file already exists, and if so,
+	 * perhaps it's a git save-file pointer?
+	 *
+	 * Otherwise, try to back it up.
+	 */
+	fd = subsurface_open(filename, O_RDONLY, 0);
+	if (fd >= 0) {
+		if (git_save_dives(fd, select_only))
+			return;
+		close(fd);
+		try_to_backup(filename);
+	}
+
+	save_dives_buffer(&buf, select_only);
+
 	f = subsurface_fopen(filename, "w");
 	if (f) {
 		flush_buffer(&buf, f);

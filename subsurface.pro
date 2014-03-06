@@ -115,6 +115,7 @@ SOURCES =  \
 	qt-ui/subsurfacewebservices.cpp \
 	qt-ui/tableview.cpp \
 	qt-ui/exif.cpp \
+	save-git.c \
 	save-xml.c \
 	sha1.c \
 	statistics.c \

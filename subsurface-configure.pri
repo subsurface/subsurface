@@ -126,7 +126,7 @@ LIBS *= $$XSLT_LIBS $$XML2_LIBS
 # We're searching for:
 #  libzip
 #  sqlite3
-link_pkgconfig: PKGCONFIG += libzip sqlite3
+link_pkgconfig: PKGCONFIG += libzip sqlite3 libgit2
 
 # Add libiconv if needed
 link_pkgconfig: packagesExist(libiconv): PKGCONFIG += libiconv
