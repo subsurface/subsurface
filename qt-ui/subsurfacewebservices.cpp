@@ -787,6 +787,9 @@ void DivelogsDeWebServices::downloadFinished()
 
 	zip_close(zip);
 	zipFile.close();
+#if defined(Q_OS_UNIX) && defined(LIBZIP_VERSION_MAJOR)
+	::close(duppedfd);
+#endif
 }
 
 void DivelogsDeWebServices::uploadFinished()
