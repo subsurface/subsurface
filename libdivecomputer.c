@@ -407,8 +407,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_set_data(parser, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("gettextFromC", "Error registering the data"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 
 	import_dive_number++;
@@ -416,8 +415,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_datetime(parser, &dt);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the datetime"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 	dive->dc.model = strdup(devdata->model);
 	dive->dc.deviceid = devdata->deviceid;
@@ -438,8 +436,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 	dive->dc.duration.seconds = divetime;
 
@@ -448,8 +445,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 	dive->dc.maxdepth.mm = rint(maxdepth * 1000);
 
@@ -458,8 +454,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix count"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 
 #if DC_VERSION_CHECK(0, 3, 0)
@@ -471,8 +466,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 	dive->dc.salinity = rint(salinity.density * 10.0);
 
@@ -480,8 +474,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 	dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
 #endif
@@ -489,23 +482,21 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the samples"));
-		dc_parser_destroy(parser);
-		return false;
+		goto error_exit;
 	}
-
-	dc_parser_destroy(parser);
 
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(&dive->dc))
-		return false;
+		goto error_exit;
+
+	dc_parser_destroy(parser);
 
 	/* Various libdivecomputer interface fixups */
 	if (first_temp_is_air && dive->dc.samples) {
@@ -517,6 +508,12 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	record_dive(dive);
 	mark_divelist_changed(true);
 	return true;
+
+error_exit:
+	dc_parser_destroy(parser);
+	free(dive);
+	return false;
+
 }
 
 /*
