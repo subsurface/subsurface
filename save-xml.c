@@ -605,7 +605,7 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 	 * maybe no old file existed.  Regardless, we'll write the
 	 * new file.
 	 */
-	subsurface_rename(name, newname);
+	(void) subsurface_rename(name, newname);
 	free(newname);
 }
 
