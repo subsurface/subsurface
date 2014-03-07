@@ -585,8 +585,11 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	dump_pr_track(track_pr);
 #endif
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		if (!track_pr[cyl])
+		if (!track_pr[cyl]) {
+			/* no segment where this cylinder is used */
+			cur_pr[cyl] = -1;
 			continue;
+		}
 		fill_missing_segment_pressures(track_pr[cyl]);
 		cur_pr[cyl] = track_pr[cyl]->start;
 	}
