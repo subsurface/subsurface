@@ -55,6 +55,13 @@ static void make_room(struct membuffer *b, unsigned int size)
 	}
 }
 
+const char *mb_cstring(struct membuffer *b)
+{
+	make_room(b, 1);
+	b->buffer[b->len] = 0;
+	return b->buffer;
+}
+
 void put_bytes(struct membuffer *b, const char *str, int len)
 {
 	make_room(b, len);
