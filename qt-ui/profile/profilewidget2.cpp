@@ -365,7 +365,6 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		heartBeatAxis->setVisible(false);
 	}
 	timeAxis->setMaximum(maxtime);
-	rulerItem->setPlotInfo(pInfo);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
@@ -385,6 +384,8 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	timeAxis->updateTicks();
 	cylinderPressureAxis->setMinimum(pInfo.minpressure);
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
+
+	rulerItem->setPlotInfo(pInfo);
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(d->duration.seconds), 0);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));

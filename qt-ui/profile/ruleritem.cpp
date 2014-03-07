@@ -13,14 +13,21 @@
 #include "profile.h"
 #include "display.h"
 
-RulerNodeItem2::RulerNodeItem2(struct plot_info &info) : pInfo(info), entry(NULL), ruler(NULL)
+RulerNodeItem2::RulerNodeItem2() : entry(NULL), ruler(NULL)
 {
+	memset(&pInfo, 0, sizeof(pInfo));
 	setRect(QRect(QPoint(-8, 8), QPoint(8, -8)));
 	setBrush(QColor(0xff, 0, 0, 127));
 	setPen(QColor("#FF0000"));
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
 	setFlag(ItemIgnoresTransformations);
+}
+
+void RulerNodeItem2::setPlotInfo(plot_info& info)
+{
+	pInfo = info;
+	entry = pInfo.entry;
 }
 
 void RulerNodeItem2::setRuler(RulerItem2 *r)
@@ -54,17 +61,14 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 		recalculate();
 		if (ruler != NULL)
 			ruler->recalculate();
-		if (scene()) {
-			scene()->update();
-		}
 	}
 	return QGraphicsEllipseItem::itemChange(change, value);
 }
 
 RulerItem2::RulerItem2() : timeAxis(NULL),
 	depthAxis(NULL),
-	source(new RulerNodeItem2(pInfo)),
-	dest(new RulerNodeItem2(pInfo)),
+	source(new RulerNodeItem2()),
+	dest(new RulerNodeItem2()),
 	textItem(new QGraphicsSimpleTextItem(this))
 {
 	memset(&pInfo, 0, sizeof(pInfo));
@@ -157,9 +161,11 @@ QPainterPath RulerItem2::shape() const
 void RulerItem2::setPlotInfo(plot_info info)
 {
 	pInfo = info;
-	recalculate();
+	dest->setPlotInfo(info);
+	source->setPlotInfo(info);
 	dest->recalculate();
 	source->recalculate();
+	recalculate();
 }
 
 void RulerItem2::setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth)

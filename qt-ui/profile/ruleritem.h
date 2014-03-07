@@ -15,15 +15,16 @@ class RulerNodeItem2 : public QObject, public QGraphicsEllipseItem {
 	friend class RulerItem2;
 
 public:
-	explicit RulerNodeItem2(struct plot_info &info);
+	explicit RulerNodeItem2();
 	void setRuler(RulerItem2 *r);
+	void setPlotInfo(struct plot_info& info);
 	void recalculate();
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-	struct plot_info &pInfo;
+	struct plot_info pInfo;
 	struct plot_data *entry;
 	RulerItem2 *ruler;
 	DiveCartesianAxis *timeAxis;
