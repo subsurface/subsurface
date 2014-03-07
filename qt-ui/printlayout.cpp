@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QTableView>
 #include <QHeaderView>
+#include <QPointer>
 #include "mainwindow.h"
 #include "../dive.h"
 #include "../display.h"
