@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
+#include "ssrf-version.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
@@ -64,6 +65,9 @@ static void quote(struct membuffer *b, const char *text)
 		case 12:
 		case 14 ... 31:
 			escape = "?";
+			break;
+		case '\\':
+			escape = "\\\\";
 			break;
 		case '"':
 			escape = "\\\"";
@@ -168,48 +172,27 @@ static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
 
 static void save_dive_temperature(struct membuffer *b, struct dive *dive)
 {
-	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
-		return;
-	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc) && dive->watertemp.mkelvin == dc_watertemp(&dive->dc))
-		return;
-
-	put_string(b, "divetemperature");
 	if (dive->airtemp.mkelvin != dc_airtemp(&dive->dc))
-		put_temperature(b, dive->airtemp, " air=", "°C");
+		put_temperature(b, dive->airtemp, "airtemp ", "°C\n");
 	if (dive->watertemp.mkelvin != dc_watertemp(&dive->dc))
-		put_temperature(b, dive->watertemp, " water=", "°C'");
-	put_string(b, "\n");
+		put_temperature(b, dive->watertemp, "watertemp ", "°C\n");
 }
 
 static void save_depths(struct membuffer *b, struct divecomputer *dc)
 {
-	/* What's the point of this dive entry again? */
-	if (!dc->maxdepth.mm && !dc->meandepth.mm)
-		return;
-
-	put_string(b, "  depth");
-	put_depth(b, dc->maxdepth, " max=", "m");
-	put_depth(b, dc->meandepth, " mean=", "m");
-	put_string(b, "\n");
+	put_depth(b, dc->maxdepth, "maxdepth ", "m\n");
+	put_depth(b, dc->meandepth, "meandepth ", "m\n");
 }
 
 static void save_temperatures(struct membuffer *b, struct divecomputer *dc)
 {
-	if (!dc->airtemp.mkelvin && !dc->watertemp.mkelvin)
-		return;
-	put_string(b, "  temperature");
-	put_temperature(b, dc->airtemp, " air=", "°C");
-	put_temperature(b, dc->watertemp, " water=", "°C");
-	put_string(b, "\n");
+	put_temperature(b, dc->airtemp, "airtemp ", "°C\n");
+	put_temperature(b, dc->watertemp, "watertemp ", "°C\n");
 }
 
 static void save_airpressure(struct membuffer *b, struct divecomputer *dc)
 {
-	if (!dc->surface_pressure.mbar)
-		return;
-	put_string(b, "  surface");
-	put_pressure(b, dc->surface_pressure, " pressure=", "bar");
-	put_string(b, "\n");
+	put_pressure(b, dc->surface_pressure, "surfacepressure ", "bar\n");
 }
 
 static void save_salinity(struct membuffer *b, struct divecomputer *dc)
@@ -217,9 +200,7 @@ static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 	/* only save if we have a value that isn't the default of sea water */
 	if (!dc->salinity || dc->salinity == SEAWATER_SALINITY)
 		return;
-	put_string(b, "  water");
-	put_salinity(b, dc->salinity, " salinity=", "g/l");
-	put_string(b, "\n");
+	put_salinity(b, dc->salinity, "salinity ", "g/l\n");
 }
 
 static void show_date(struct membuffer *b, timestamp_t when)
@@ -228,9 +209,9 @@ static void show_date(struct membuffer *b, timestamp_t when)
 
 	utc_mkdate(when, &tm);
 
-	put_format(b, " date=%04u-%02u-%02u",
+	put_format(b, "date %04u-%02u-%02u\n",
 		   tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-	put_format(b, " time=%02u:%02u:%02u",
+	put_format(b, "time %02u:%02u:%02u\n",
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
@@ -248,7 +229,7 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
  */
 static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old)
 {
-	put_format(b, "  %3u:%02umin", FRACTION(sample->time.seconds, 60));
+	put_format(b, "%3u:%02u", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " ", sample->depth.mm, "m");
 	put_temperature(b, sample->temperature, " ", "°C");
 	put_pressure(b, sample->cylinderpressure, " ", "bar");
@@ -264,7 +245,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 
 	/* the deco/ndl values are stored whenever they change */
 	if (sample->ndl.seconds != old->ndl.seconds) {
-		put_format(b, " ndl=%u:%02umin", FRACTION(sample->ndl.seconds, 60));
+		put_format(b, " ndl=%u:%02u", FRACTION(sample->ndl.seconds, 60));
 		old->ndl = sample->ndl;
 	}
 	if (sample->in_deco != old->in_deco) {
@@ -272,7 +253,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->in_deco = sample->in_deco;
 	}
 	if (sample->stoptime.seconds != old->stoptime.seconds) {
-		put_format(b, " stoptime=%u:%02umin", FRACTION(sample->stoptime.seconds, 60));
+		put_format(b, " stoptime=%u:%02u", FRACTION(sample->stoptime.seconds, 60));
 		old->stoptime = sample->stoptime;
 	}
 
@@ -307,7 +288,7 @@ static void save_samples(struct membuffer *b, int nr, struct sample *s)
 
 static void save_one_event(struct membuffer *b, struct event *ev)
 {
-	put_format(b, "  event %d:%02dmin", FRACTION(ev->time.seconds, 60));
+	put_format(b, "event %d:%02d", FRACTION(ev->time.seconds, 60));
 	show_index(b, ev->type, "type=", "");
 	show_index(b, ev->flags, "flags=", "");
 	show_index(b, ev->value, "value=", "");
@@ -325,23 +306,21 @@ static void save_events(struct membuffer *b, struct event *ev)
 
 static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
-	put_format(b, "divecomputer");
-	show_utf8(b, " model=", dc->model, "");
+	show_utf8(b, "model ", dc->model, "\n");
 	if (dc->deviceid)
-		put_format(b, " deviceid=%08x", dc->deviceid);
+		put_format(b, "deviceid %08x\n", dc->deviceid);
 	if (dc->diveid)
-		put_format(b, " diveid=%08x", dc->diveid);
+		put_format(b, "diveid %08x\n", dc->diveid);
 	if (dc->when && dc->when != dive->when)
 		show_date(b, dc->when);
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
-		put_duration(b, dc->duration, " duration=", "min");
-	put_string(b, "\n");
+		put_duration(b, dc->duration, "duration ", "min\n");
 
 	save_depths(b, dc);
 	save_temperatures(b, dc);
 	save_airpressure(b, dc);
 	save_salinity(b, dc);
-	put_duration(b, dc->surfacetime, "  surfacetime", "min\n");
+	put_duration(b, dc->surfacetime, "surfacetime ", "min\n");
 
 	save_events(b, dc->events);
 	save_samples(b, dc->samples, dc->sample);
@@ -353,8 +332,6 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
  */
 static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 {
-	struct divecomputer *dc;
-
 	put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
@@ -365,16 +342,9 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
-
-	/* Save the dive computer data */
-	dc = &dive->dc;
-	do {
-		save_dc(b, dive, dc);
-		dc = dc->next;
-	} while (dc);
 }
 
-static int git_save_error(const char *fmt, ...)
+static int report_error(const char *fmt, ...)
 {
 	struct membuffer b = { 0 };
 	VA_BUF(&b, fmt);
@@ -403,58 +373,41 @@ static int git_save_error(const char *fmt, ...)
 struct dir {
 	git_treebuilder *files;
 	struct dir *subdirs, *sibling;
-	char name[1];
+	char unique, name[1];
 };
 
-/*
- * The name of a dive is the date plus a hash of the contents.
- */
-static void generate_name(struct dive *dive, git_oid *id, struct membuffer *name)
+static int tree_insert(git_repository *repo, git_treebuilder *dir,
+	const char *name, int mkunique, git_oid *id, unsigned mode)
 {
-	struct tm tm;
-
-	utc_mkdate(dive->when, &tm);
-	put_format(name, "%04u-%02u-%02u-%02u:%02u:%02u",
-		tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-		tm.tm_hour, tm.tm_min, tm.tm_sec);
-	cond_put_format(dive->number, name, "-%d", dive->number);
-	put_format(name, "-%02x%02x%02x%02x%c",
-		id->id[0], id->id[1], id->id[2], id->id[3], 0);
-}
-
-static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive)
-{
-	struct membuffer buf = { 0 }, name = { 0 };
-	git_oid blob_id;
 	int ret;
+	struct membuffer uniquename = { 0 };
 
-	create_dive_buffer(dive, &buf);
-	ret = git_blob_create_frombuffer(&blob_id, repo, buf.buffer, buf.len);
-	free_buffer(&buf);
-	if (ret)
-		return git_save_error("git blob creation failed");
-
-	generate_name(dive, &blob_id, &name);
-	ret = git_treebuilder_insert(NULL, tree->files, name.buffer, &blob_id, 0100644);
-	free_buffer(&name);
-	if (ret)
-		return git_save_error("git tree insert failed");
-
-	return 0;
+	if (mkunique && git_treebuilder_get(dir, name)) {
+		char hex[8];
+		git_oid_nfmt(hex, 7, id);
+		hex[7] = 0;
+		put_format(&uniquename, "%s~%s", name, hex);
+		name = mb_cstring(&uniquename);
+	}
+	ret = git_treebuilder_insert(NULL, dir, name, id, mode);
+	free_buffer(&uniquename);
+	return ret;
 }
 
 /*
  * This does *not* make sure the new subdirectory doesn't
- * alias some existing name. Currently we always create
- * unique subdirectory names ("tripXYZ"), but ..
+ * alias some existing name. That is actually useful: you
+ * can create multiple directories with the same name, and
+ * set the "unique" flag, which will then append the SHA1
+ * of the directory to the name when it is written.
  */
-static struct dir *new_directory(struct dir *parent, const char *fmt, ...)
+static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
 {
-	struct membuffer name = { 0 };
 	struct dir *subdir;
+	const char *name = mb_cstring(namebuf);
+	int len = namebuf->len;
 
-	VA_BUF(&name, fmt);
-	subdir = malloc(sizeof(*subdir)+name.len);
+	subdir = malloc(sizeof(*subdir)+len);
 
 	/*
 	 * It starts out empty: no subdirectories of its own,
@@ -462,8 +415,9 @@ static struct dir *new_directory(struct dir *parent, const char *fmt, ...)
 	 */
 	subdir->subdirs = NULL;
 	git_treebuilder_create(&subdir->files, NULL);
-	memcpy(subdir->name, name.buffer, name.len);
-	subdir->name[name.len] = 0;
+	memcpy(subdir->name, name, len);
+	subdir->unique = 0;
+	subdir->name[len] = 0;
 
 	/* Add it to the list of subdirs of the parent */
 	subdir->sibling = parent->subdirs;
@@ -472,35 +426,254 @@ static struct dir *new_directory(struct dir *parent, const char *fmt, ...)
 	return subdir;
 }
 
-static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *trip, int idx)
+/*
+ * The name of a dive is the date and the dive number (and possibly
+ * the uniqueness suffix).
+ *
+ * Note that the time of the dive may not be the same as the
+ * time of the directory structure it is created in: the dive
+ * might be part of a trip that straddles a month (or even a
+ * year).
+ */
+static void create_dive_name(struct dive *dive, struct membuffer *name, struct tm *dirtm)
+{
+	struct tm tm;
+
+	utc_mkdate(dive->when, &tm);
+	if (tm.tm_year != dirtm->tm_year)
+		put_format(name, "%04u-", tm.tm_year + 1900);
+	if (tm.tm_mon != dirtm->tm_mon)
+		put_format(name, "%02u-", tm.tm_mon+1);
+
+	put_format(name, "%02u-%s-%02u:%02u:%02u",
+		tm.tm_mday, weekday(tm.tm_wday),
+		tm.tm_hour, tm.tm_min, tm.tm_sec);
+}
+
+/*
+ * Write a membuffer to the git repo, and free it
+ */
+static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer *b, const char *fmt, ...)
+{
+	int ret;
+	git_oid blob_id;
+	struct membuffer name = { 0 };
+
+	ret = git_blob_create_frombuffer(&blob_id, repo, b->buffer, b->len);
+	free_buffer(b);
+	if (ret)
+		return ret;
+
+	VA_BUF(&name, fmt);
+	ret = tree_insert(repo, tree->files, mb_cstring(&name), 1, &blob_id, 0100644);
+	free_buffer(&name);
+	return ret;
+}
+
+static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc)
+{
+	int ret;
+	struct membuffer buf = { 0 };
+
+	save_dc(&buf, dive, dc);
+	ret = blob_insert(repo, tree, &buf, "Divecomputer");
+	if (ret)
+		report_error("divecomputer tree insert failed");
+	return ret;
+}
+
+static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm)
+{
+	struct divecomputer *dc;
+	struct membuffer buf = { 0 }, name = { 0 };
+	struct dir *subdir;
+	int ret, nr;
+
+	/* Create dive directory */
+	create_dive_name(dive, &name, tm);
+	subdir = new_directory(tree, &name);
+	subdir->unique = 1;
+	free_buffer(&name);
+
+	create_dive_buffer(dive, &buf);
+	nr = dive->number;
+	ret = blob_insert(repo, subdir, &buf,
+		"Dive%c%d", nr ? '-' : 0, nr);
+	if (ret)
+		return report_error("dive save-file tree insert failed");
+
+	/* Save the dive computer data */
+	dc = &dive->dc;
+	do {
+		save_one_divecomputer(repo, subdir, dive, dc);
+		dc = dc->next;
+	} while (dc);
+
+	return 0;
+}
+
+/*
+ * We'll mark the trip directories unique, so this does not
+ * need to be unique per se. It could be just "trip". But
+ * to make things a bit more user-friendly, we try to take
+ * the trip location into account.
+ *
+ * But no special characters, and no numbers (numbers in the
+ * name could be construed as a date).
+ *
+ * So we might end up with "02-Maui", and then the unique
+ * flag will make us write it out as "02-Maui~54b4" or
+ * similar.
+ */
+#define MAXTRIPNAME 15
+static void create_trip_name(dive_trip_t *trip, struct membuffer *name, struct tm *tm)
+{
+	put_format(name, "%02u-", tm->tm_mday);
+	if (trip->location) {
+		char ascii_loc[MAXTRIPNAME+1], *p = trip->location;
+		int i;
+
+		for (i = 0; i < MAXTRIPNAME; ) {
+			char c = *p++;
+			switch (c) {
+			case 0:
+			case ',':
+			case '.':
+				break;
+
+			case 'a' ... 'z':
+			case 'A' ... 'Z':
+				ascii_loc[i++] = c;
+				continue;
+			default:
+				continue;
+			}
+			break;
+		}
+		if (i > 1) {
+			put_bytes(name, ascii_loc, i);
+			return;
+		}
+	}
+
+	/* No useful name? */
+	put_string(name, "trip");
+}
+
+static int save_trip_description(git_repository *repo, struct dir *dir, dive_trip_t *trip, struct tm *tm)
+{
+	int ret;
+	git_oid blob_id;
+	struct membuffer desc = { 0 };
+
+	put_format(&desc, "date %04u-%02u-%02u\n",
+		   tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
+	put_format(&desc, "time %02u:%02u:%02u\n",
+		   tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	show_utf8(&desc, "location ", trip->location, "\n");
+	show_utf8(&desc, "notes ", trip->notes, "\n");
+
+	ret = git_blob_create_frombuffer(&blob_id, repo, desc.buffer, desc.len);
+	free_buffer(&desc);
+	if (ret)
+		return report_error("trip blob creation failed");
+	ret = tree_insert(repo, dir->files, "00-Trip", 0, &blob_id, 0100644);
+	if (ret)
+		return report_error("trip description tree insert failed");
+	return 0;
+}
+
+static void verify_shared_date(timestamp_t when, struct tm *tm)
+{
+	struct tm tmp_tm;
+
+	utc_mkdate(when, &tmp_tm);
+	if (tmp_tm.tm_year != tm->tm_year) {
+		tm->tm_year = -1;
+		tm->tm_mon = -1;
+	}
+	if (tmp_tm.tm_mon != tm->tm_mon)
+		tm->tm_mon = -1;
+}
+
+#define MIN_TIMESTAMP (0)
+#define MAX_TIMESTAMP (0x7fffffffffffffff)
+
+static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *trip, struct tm *tm)
 {
 	int i;
 	struct dive *dive;
 	struct dir *subdir;
+	struct membuffer name = { 0 };
+	timestamp_t first, last;
 
-	subdir = new_directory(tree, "trip%03d", idx);
+	/* Create trip directory */
+	create_trip_name(trip, &name, tm);
+	subdir = new_directory(tree, &name);
+	subdir->unique = 1;
+	free_buffer(&name);
+
+	/* Trip description file */
+	save_trip_description(repo, subdir, trip, tm);
+
+	/* Make sure we write out the dates to the dives consistently */
+	first = MAX_TIMESTAMP;
+	last = MIN_TIMESTAMP;
+	for_each_dive(i, dive) {
+		if (dive->divetrip != trip)
+			continue;
+		if (dive->when < first)
+			first = dive->when;
+		if (dive->when > last)
+			last = dive->when;
+	}
+	verify_shared_date(first, tm);
+	verify_shared_date(last, tm);
+
+	/* Save each dive in the directory */
 	for_each_dive(i, dive) {
 		if (dive->divetrip == trip)
-			save_one_dive(repo, subdir, dive);
+			save_one_dive(repo, subdir, dive, tm);
 	}
 
 	return 0;
 }
 
-#define TRIPNAME_SIZE (10)
-
-static int create_git_tree(git_repository *repo, struct dir *tree, bool select_only)
+static struct dir *mktree(struct dir *dir, const char *fmt, ...)
 {
-	int i, tripidx;
+	struct membuffer buf = { 0 };
+	struct dir *subdir;
+
+	VA_BUF(&buf, fmt);
+	for (subdir = dir->subdirs; subdir; subdir = subdir->sibling) {
+		if (subdir->unique)
+			continue;
+		if (strncmp(subdir->name, buf.buffer, buf.len))
+			continue;
+		if (!subdir->name[buf.len])
+			break;
+	}
+	if (!subdir)
+		subdir = new_directory(dir, &buf);
+	free_buffer(&buf);
+	return subdir;
+}
+
+static int create_git_tree(git_repository *repo, struct dir *root, bool select_only)
+{
+	int i;
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	tripidx = 0;
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
 
 	/* save the dives */
 	for_each_dive(i, dive) {
+		struct tm tm;
+		struct dir *tree;
+
 		trip = dive->divetrip;
 
 		if (select_only) {
@@ -510,18 +683,23 @@ static int create_git_tree(git_repository *repo, struct dir *tree, bool select_o
 			trip = NULL;
 		}
 
+		/* Create the date-based hierarchy */
+		utc_mkdate(trip ? trip->when : dive->when, &tm);
+		tree = mktree(root, "%04d", tm.tm_year + 1900);
+		tree = mktree(tree, "%02d", tm.tm_mon + 1);
+
 		if (trip) {
 			/* Did we already save this trip? */
 			if (trip->index)
 				continue;
-			trip->index = ++tripidx;
+			trip->index = 1;
 
 			/* Pass that new subdirectory in for save-trip */
-			save_one_trip(repo, tree, trip, tripidx);
+			save_one_trip(repo, tree, trip, &tm);
 			continue;
 		}
 
-		save_one_dive(repo, tree, dive);
+		save_one_dive(repo, tree, dive, &tm);
 	}
 	return 0;
 }
@@ -546,42 +724,44 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 	git_signature *author;
 	git_commit *commit;
 	git_tree *tree;
+	struct membuffer commit_msg = { 0 };
 
 	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
 	switch (ret) {
 	default:
-		return git_save_error("Bad branch '%s' (%s)", branch, strerror(errno));
+		return report_error("Bad branch '%s' (%s)", branch, strerror(errno));
 	case GIT_EINVALIDSPEC:
-		return git_save_error("Invalid branch name '%s'", branch);
+		return report_error("Invalid branch name '%s'", branch);
 	case GIT_ENOTFOUND: /* We'll happily create it */
 		ref = NULL; parent = NULL;
 		break;
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
-			return git_save_error("Unable to look up parent in branch '%s'", branch);
+			return report_error("Unable to look up parent in branch '%s'", branch);
 		/* all good */
 		break;
 	}
 
 	if (git_tree_lookup(&tree, repo, tree_id))
-		return git_save_error("Could not look up newly created tree");
+		return report_error("Could not look up newly created tree");
 
 	/* git_signature_default() is too recent */
 	if (git_signature_now(&author, "Subsurface", "subsurface@hohndel.org"))
-		return git_save_error("No user name configuration in git repo");
+		return report_error("No user name configuration in git repo");
 
-	if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, "subsurface commit", tree, parent != NULL, parent))
-		return git_save_error("Git commit create failed (%s)", strerror(errno));
+	put_format(&commit_msg, "Created by subsurface %s\n", VERSION_STRING);
+	if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent))
+		return report_error("Git commit create failed (%s)", strerror(errno));
 
 	if (git_commit_lookup(&commit, repo, &commit_id))
-		return git_save_error("Could not look up newly created commit");
+		return report_error("Could not look up newly created commit");
 
 	if (!ref) {
 		if (git_branch_create(&ref, repo, branch, commit, 0, author, "Create branch"))
-			return git_save_error("Failed to create branch '%s'", branch);
+			return report_error("Failed to create branch '%s'", branch);
 	}
 	if (git_reference_set_target(&ref, ref, &commit_id, author, "Subsurface save event"))
-		return git_save_error("Failed to update branch '%s'", branch);
+		return report_error("Failed to update branch '%s'", branch);
 
 	return 0;
 }
@@ -596,7 +776,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 		git_oid id;
 
 		if (!write_git_tree(repo, subdir, &id))
-			git_treebuilder_insert(NULL, tree->files, subdir->name, &id, 0040000);
+			tree_insert(repo, tree->files, subdir->name, subdir->unique, &id, 040000);
 		tree->subdirs = subdir->sibling;
 		free(subdir);
 	};
@@ -619,14 +799,14 @@ static int do_git_save(git_repository *repo, const char *branch, bool select_onl
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
 	if (git_treebuilder_create(&tree.files, NULL))
-		return git_save_error("git treebuilder failed");
+		return report_error("git treebuilder failed");
 
 	/* Populate our tree data structure */
 	if (create_git_tree(repo, &tree, select_only))
 		return -1;
 
 	if (write_git_tree(repo, &tree, &id))
-		return git_save_error("git tree write failed");
+		return report_error("git tree write failed");
 
 	/* And save the tree! */
 	create_new_commit(repo, branch, &id);
@@ -670,7 +850,7 @@ int git_save_dives(int fd, bool select_only)
 	}
 
 	if (!len)
-		return git_save_error("Invalid git pointer");
+		return report_error("Invalid git pointer");
 
 	/*
 	 * The result should be a git directory and branch name, like
@@ -681,7 +861,7 @@ int git_save_dives(int fd, bool select_only)
 		*branch++ = 0;
 
 	if (git_repository_open(&repo, loc))
-		return git_save_error("Unable to open git repository at '%s' (branch '%s')", loc, branch);
+		return report_error("Unable to open git repository at '%s' (branch '%s')", loc, branch);
 
 	ret = do_git_save(repo, branch, select_only);
 	git_repository_free(repo);
