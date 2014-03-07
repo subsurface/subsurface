@@ -157,7 +157,7 @@ Please refer to http://www.macports.org/install.php
 
 2)  Install needed dependencies
 
-$ sudo port -vp install asciidoc libzip libusb sqlite cmake qt4-mac marble libdivecomputer
+$ sudo port -vp install asciidoc libzip libusb sqlite cmake qt4-mac marble libdivecomputer libgit2
 
 3)  Check dependencies' versions
 
@@ -166,6 +166,7 @@ The following ports are currently installed:
   asciidoc @8.6.9_1 (active)
   cmake @2.8.12_3 (active)
   libdivecomputer @0.4.1_0 (active)
+  libgit2 @0.20.0_0 (active)
   libusb @1.0.18_0 (active)
   libzip @0.11.1_0 (active)
   marble @4.12.2_0 (active)
