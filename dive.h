@@ -662,6 +662,8 @@ static inline struct dive *getDiveById(int id)
 extern "C" {
 #endif
 
+extern int report_error(const char *fmt, ...);
+
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
@@ -686,6 +688,7 @@ extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
 extern void export_dives_uddf(const char *filename, const bool selected);
 extern int git_save_dives(int fd, bool select_only);
+extern int git_load_dives(char *where);
 
 extern int subsurface_rename(const char *path, const char *newpath);
 extern int subsurface_open(const char *path, int oflags, mode_t mode);

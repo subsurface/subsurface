@@ -344,7 +344,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	save_dive_temperature(b, dive);
 }
 
-static int report_error(const char *fmt, ...)
+int report_error(const char *fmt, ...)
 {
 	struct membuffer b = { 0 };
 	VA_BUF(&b, fmt);

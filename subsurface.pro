@@ -84,6 +84,7 @@ SOURCES =  \
 	file.c \
 	gettextfromc.cpp \
 	libdivecomputer.c \
+	load-git.c \
 	main.cpp \
 	membuffer.c \
 	parse-xml.c \

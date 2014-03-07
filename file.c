@@ -356,6 +356,10 @@ static void parse_file_buffer(const char *filename, struct memblock *mem, char *
 
 	if (!mem->size || !mem->buffer)
 		return;
+	if (mem->size > 3 && !memcmp(mem->buffer, "git", 3)) {
+		git_load_dives(mem->buffer);
+		return;
+	}
 
 	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL, error);
 }
