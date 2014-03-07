@@ -15,6 +15,7 @@
 #include "diveplanner.h"
 #include "divelist.h"
 #include "qthelper.h"
+#include "display.h"
 
 #include <QLabel>
 #include <QCompleter>

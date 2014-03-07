@@ -60,7 +60,6 @@ public:
 	MainWindow();
 	virtual ~MainWindow();
 	static MainWindow *instance();
-	ProfileGraphicsView *graphics();
 	MainTab *information();
 	void loadRecentFiles(QSettings *s);
 	void addRecentFile(const QStringList &newFiles);
@@ -77,7 +76,7 @@ public:
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
 	void cleanUpEmpty();
-	QTabWidget *tabWidget();
+	ProfileWidget2 *graphics() const;
 private
 slots:
 	/* file menu action */
@@ -119,10 +118,6 @@ slots:
 	void on_actionUserManual_triggered();
 	void on_actionDivePlanner_triggered();
 
-	/* monitor resize of the info-profile splitter */
-	void on_mainSplitter_splitterMoved(int pos, int idx);
-	void on_infoProfileSplitter_splitterMoved(int pos, int idx);
-
 	void current_dive_changed(int divenr);
 	void initialUiSetup();
 
@@ -163,7 +158,6 @@ private:
 	static MainWindow *m_Instance;
 	bool askSaveChanges();
 	void writeSettings();
-	void redrawProfile();
 	void file_save();
 	void file_save_as();
 	void beginChangeState(CurrentState s);

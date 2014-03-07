@@ -94,7 +94,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
-	MainWindow::instance()->tabWidget()->addTab(diveDepthTableView, "Depth Model");
+	diveDepthTableView->show();
 #endif
 }
 
@@ -634,7 +634,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	action->setData(event->globalPos());
 	QList<QGraphicsItem *> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
 	Q_FOREACH(QGraphicsItem * i, itemsAtPos) {
-		EventItem *item = dynamic_cast<EventItem *>(i);
+		DiveEventItem *item = dynamic_cast<DiveEventItem *>(i);
 		if (!item)
 			continue;
 		action = new QAction(&m);

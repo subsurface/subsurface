@@ -10,6 +10,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 #include "../planner.h"
+#include "display.h"
 #include "helpers.h"
 
 #include <QMouseEvent>

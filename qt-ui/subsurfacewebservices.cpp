@@ -17,6 +17,7 @@
 
 #include "../dive.h"
 #include "../divelist.h"
+#include "../display.h"
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)

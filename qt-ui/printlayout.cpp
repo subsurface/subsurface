@@ -131,18 +131,16 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.scale(scaleX, scaleY);
 
 	// setup the profile widget
-	ProfileGraphicsView *profile = MainWindow::instance()->graphics();
-	const int profileFrameStyle = profile->frameStyle();
-	profile->setFrameStyle(QFrame::NoFrame);
-	profile->clear();
-	profile->setPrintMode(true, !printOptions->color_selected);
-	QSize originalSize = profile->size();
+	ProfileWidget2 profile;
+	profile.setFrameStyle(QFrame::NoFrame);
+// 	profile->setPrintMode(true, !printOptions->color_selected);
 	// swap rows/col for landscape
 	if (printer->orientation() == QPrinter::Landscape) {
 		int swap = divesPerColumn;
 		divesPerColumn = divesPerRow;
 		divesPerRow = swap;
 	}
+
 	// padding in pixels between two dives. no padding if only one dive per page.
 	const int padDef = 20;
 	const int padW = (divesPerColumn < 2) ? 0 : padDef;
@@ -154,11 +152,11 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int padPT = 5;
 	// create a model and table
 	ProfilePrintModel model;
-	QTableView *table = createProfileTable(&model, scaledW);
+	QPointer<QTableView> table(createProfileTable(&model, scaledW));
 	// profilePrintTableMaxH updates after the table is created
 	const int tableH = profilePrintTableMaxH;
 	// resize the profile widget
-	profile->resize(scaledW, scaledH - tableH - padPT);
+	profile.resize(scaledW, scaledH - tableH - padPT);
 	// offset table or profile on top
 	int yOffsetProfile = 0, yOffsetTable = 0;
 	if (printOptions->notes_up)
@@ -182,8 +180,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
-		profile->plot(dive, true);
-		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+		profile.plotDives( QList<struct dive*>() << dive);
+		profile.render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		painter.setTransform(origTransform);
 
 		// draw a table
@@ -195,15 +193,6 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		printed++;
 		emit signalProgress((printed * 100) / total);
 	}
-
-	// cleanup
-	painter.end();
-	delete table;
-	profile->setFrameStyle(profileFrameStyle);
-	profile->setPrintMode(false);
-	profile->resize(originalSize);
-	profile->clear();
-	profile->plot(current_dive, true);
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */

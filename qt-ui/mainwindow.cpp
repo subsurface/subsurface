@@ -54,7 +54,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(reloadHeaderActions()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ProfileWidget, SLOT(refresh()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlanner, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
@@ -96,7 +95,6 @@ void MainWindow::refreshDisplay(bool recreateDiveList)
 {
 	ui.InfoWidget->reload();
 	TankInfoModel::instance()->update();
-	ui.ProfileWidget->refresh();
 	ui.globe->reload();
 	if (recreateDiveList)
 		ui.ListWidget->reload(DiveTripModel::CURRENT);
@@ -110,7 +108,6 @@ void MainWindow::current_dive_changed(int divenr)
 		select_dive(divenr);
 		ui.globe->centerOn(get_dive(selected_dive));
 	}
-	redrawProfile();
 
 	/* It looks like it's a bit too cumberstone to send *one* dive using a QList,
 	 * but this is just futureproofness, it's the best way in the future to show more than
@@ -119,11 +116,6 @@ void MainWindow::current_dive_changed(int divenr)
 	 */
 	ui.newProfile->plotDives(QList<dive *>() << (current_dive));
 	ui.InfoWidget->updateDiveInfo(divenr);
-}
-
-void MainWindow::redrawProfile()
-{
-	ui.ProfileWidget->refresh();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -146,10 +138,6 @@ void MainWindow::on_actionOpen_triggered()
 	loadFiles(QStringList() << filename);
 }
 
-QTabWidget *MainWindow::tabWidget()
-{
-	return ui.tabWidget;
-}
 void MainWindow::on_actionSave_triggered()
 {
 	file_save();
@@ -160,13 +148,18 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
+ProfileWidget2* MainWindow::graphics() const
+{
+	return ui.newProfile;
+}
+
 void MainWindow::cleanUpEmpty()
 {
 	ui.InfoWidget->clearStats();
 	ui.InfoWidget->clearInfo();
 	ui.InfoWidget->clearEquipment();
 	ui.InfoWidget->updateDiveInfo(-1);
-	ui.ProfileWidget->clear();
+	ui.newProfile->setEmptyState();
 	ui.ListWidget->reload(DiveTripModel::TREE);
 	ui.globe->reload();
 	if (!existing_filename)
@@ -377,28 +370,6 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->show();
 }
 
-void MainWindow::on_mainSplitter_splitterMoved(int pos, int idx)
-{
-	redrawProfile();
-}
-
-void MainWindow::on_infoProfileSplitter_splitterMoved(int pos, int idx)
-{
-	redrawProfile();
-}
-
-/**
- * So, here's the deal.
- * We have a few QSplitters that takes care of helping us with the
- * size of a few widgets, they are ok, and we should continue using them
- * to manage the visibility of them too. But the way that we did before was to
- * widget->hide(); something, and if you hided something using the splitter,
- * by holding it's handle and collapsing the widget, then you used the 'ctrl+number'
- * shortcut to show it, it whould only show a gray panel.
- *
- * This patch makes everything behave using the splitters.
- */
-
 #define BEHAVIOR QList<int>()
 void MainWindow::on_actionViewList_triggered()
 {
@@ -412,7 +383,6 @@ void MainWindow::on_actionViewProfile_triggered()
 	beginChangeState(PROFILE_MAXIMIZED);
 	ui.infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
-	redrawProfile();
 }
 
 void MainWindow::on_actionViewInfo_triggered()
@@ -470,7 +440,6 @@ void MainWindow::on_actionViewAll_triggered()
 		ui.infoProfileSplitter->setSizes(infoProfileSizes);
 		ui.listGlobeSplitter->setSizes(listGlobeSizes);
 	}
-	redrawProfile();
 }
 
 void MainWindow::beginChangeState(CurrentState s)
@@ -495,7 +464,6 @@ void MainWindow::on_actionPreviousDC_triggered()
 	dc_number--;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
-	redrawProfile();
 }
 
 void MainWindow::on_actionNextDC_triggered()
@@ -503,7 +471,6 @@ void MainWindow::on_actionNextDC_triggered()
 	dc_number++;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
-	redrawProfile();
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)
@@ -694,11 +661,6 @@ DiveListView *MainWindow::dive_list()
 GlobeGPS *MainWindow::globe()
 {
 	return ui.globe;
-}
-
-ProfileGraphicsView *MainWindow::graphics()
-{
-	return ui.ProfileWidget;
 }
 
 MainTab *MainWindow::information()
