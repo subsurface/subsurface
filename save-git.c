@@ -530,7 +530,7 @@ static int create_git_tree(git_repository *repo, struct dir *tree, bool select_o
  * libgit2 revision 0.19 and earlier do not have the signature and
  * message log arguments.
  */
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 19
+#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 20
   #define git_branch_create(out,repo,branch_name,target,force,sig,msg) \
 	git_branch_create(out,repo,branch_name,target,force)
   #define git_reference_set_target(out,ref,target,signature,log_message) \
