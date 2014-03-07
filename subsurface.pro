@@ -48,7 +48,6 @@ HEADERS = \
 	qt-ui/printdialog.h \
 	qt-ui/printlayout.h \
 	qt-ui/printoptions.h \
-	qt-ui/profilegraphics.h \
 	qt-ui/simplewidgets.h \
 	qt-ui/starwidget.h \
 	qt-ui/subsurfacewebservices.h \
@@ -109,7 +108,6 @@ SOURCES =  \
 	qt-ui/printdialog.cpp \
 	qt-ui/printlayout.cpp \
 	qt-ui/printoptions.cpp \
-	qt-ui/profilegraphics.cpp \
 	qt-ui/simplewidgets.cpp \
 	qt-ui/starwidget.cpp \
 	qt-ui/subsurfacewebservices.cpp \
