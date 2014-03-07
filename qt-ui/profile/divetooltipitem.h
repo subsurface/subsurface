@@ -41,7 +41,6 @@ public:
 	void expand();
 	void clear();
 	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon());
-	void refresh(struct graphics_context *gc, QPointF pos);
 	void refresh(const QPointF &pos);
 	bool isExpanded() const;
 	void persistPos();

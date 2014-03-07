@@ -27,25 +27,12 @@ struct plot_info {
 	struct plot_data *entry;
 };
 
-/*
- * handy datastructure to keep all of our scaling data in one place
- */
-struct graphics_context {
-	int printer;
-	double maxx, maxy;
-	double leftx, rightx;
-	double topy, bottomy;
-	unsigned int maxtime;
-	struct plot_info pi;
-};
-
 typedef enum {
 	SC_SCREEN,
 	SC_PRINT
 } scale_mode_t;
 
 extern struct divecomputer *select_dc(struct divecomputer *main);
-extern void get_plot_details(struct graphics_context *gc, int time, struct membuffer *mb);
 
 struct options {
 	enum {

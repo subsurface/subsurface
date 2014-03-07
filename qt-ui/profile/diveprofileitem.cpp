@@ -5,7 +5,6 @@
 #include "divetextitem.h"
 #include "profile.h"
 #include "dive.h"
-#include "profilegraphics.h"
 #include "preferences.h"
 #include "helpers.h"
 

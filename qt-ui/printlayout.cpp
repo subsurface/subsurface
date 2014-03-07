@@ -6,7 +6,6 @@
 #include <QTableView>
 #include <QHeaderView>
 #include "mainwindow.h"
-#include "profilegraphics.h"
 #include "../dive.h"
 #include "../display.h"
 #include "printdialog.h"

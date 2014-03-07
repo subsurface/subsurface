@@ -19,7 +19,7 @@ int selected_dive = -1; /* careful: 0 is a valid value */
 char dc_number = 0;
 
 
-static struct plot_data *last_pi_entry = NULL, *last_pi_entry_new = NULL;
+static struct plot_data *last_pi_entry_new = NULL;
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
@@ -140,69 +140,6 @@ void remember_event(const char *eventname)
 	ev_namelist[evn_used].plot_ev = true;
 	evn_used++;
 }
-
-int setup_temperature_limits(struct graphics_context *gc)
-{
-	int maxtime, mintemp, maxtemp, delta;
-
-	struct plot_info *pi = &gc->pi;
-	/* Get plot scaling limits */
-	maxtime = get_maxtime(pi);
-	mintemp = pi->mintemp;
-	maxtemp = pi->maxtemp;
-
-	gc->leftx = 0;
-	gc->rightx = maxtime;
-	/* Show temperatures in roughly the lower third, but make sure the scale
-	   is at least somewhat reasonable */
-	delta = maxtemp - mintemp;
-	if (delta < 3000) /* less than 3K in fluctuation */
-		delta = 3000;
-	gc->topy = maxtemp + delta * 2;
-
-	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = mintemp - delta * 2;
-	else
-		gc->bottomy = mintemp - delta / 3;
-
-	pi->endtempcoord = SCALEY(gc, pi->mintemp);
-	return maxtemp && maxtemp >= mintemp;
-}
-
-void setup_pp_limits(struct graphics_context *gc)
-{
-	int maxdepth;
-
-	gc->leftx = 0;
-	gc->rightx = get_maxtime(&gc->pi);
-
-	/* the maxdepth already includes extra vertical space - and if
-	 * we use 1.5 times the corresponding pressure as maximum partial
-	 * pressure the graph seems to look fine*/
-	maxdepth = get_maxdepth(&gc->pi);
-	gc->topy = 1.5 * (maxdepth + 10000) / 10000.0 * SURFACE_PRESSURE / 1000;
-	gc->bottomy = -gc->topy / 20;
-}
-
-int get_cylinder_pressure_range(struct graphics_context *gc)
-{
-	gc->leftx = 0;
-	gc->rightx = get_maxtime(&gc->pi);
-
-	if (PP_GRAPHS_ENABLED)
-		gc->bottomy = -gc->pi.maxpressure * 0.75;
-	else
-		gc->bottomy = 0;
-	gc->topy = gc->pi.maxpressure * 1.5;
-	if (!gc->pi.maxpressure)
-		return false;
-
-	while (gc->pi.endtempcoord <= SCALEY(gc, gc->pi.minpressure - (gc->topy) * 0.1))
-		gc->bottomy -= gc->topy * 0.1 * gc->maxy / abs(gc->maxy);
-
-	return true;
-}
-
 
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
@@ -804,72 +741,6 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	return pi;
 }
 
-void calculate_max_limits(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc)
-{
-	struct plot_info *pi;
-	int maxdepth;
-	int maxtime = 0;
-	int maxpressure = 0, minpressure = INT_MAX;
-	int mintemp, maxtemp;
-	int cyl;
-
-	/* The plot-info is embedded in the graphics context */
-	pi = &gc->pi;
-	memset(pi, 0, sizeof(*pi));
-
-	maxdepth = dive->maxdepth.mm;
-	mintemp = dive->mintemp.mkelvin;
-	maxtemp = dive->maxtemp.mkelvin;
-
-	/* Get the per-cylinder maximum pressure if they are manual */
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		unsigned int mbar = dive->cylinder[cyl].start.mbar;
-		if (mbar > maxpressure)
-			maxpressure = mbar;
-	}
-
-	/* Then do all the samples from all the dive computers */
-	do {
-		int i = dc->samples;
-		int lastdepth = 0;
-		struct sample *s = dc->sample;
-
-		while (--i >= 0) {
-			int depth = s->depth.mm;
-			int pressure = s->cylinderpressure.mbar;
-			int temperature = s->temperature.mkelvin;
-
-			if (!mintemp && temperature < mintemp)
-				mintemp = temperature;
-			if (temperature > maxtemp)
-				maxtemp = temperature;
-
-			if (pressure && pressure < minpressure)
-				minpressure = pressure;
-			if (pressure > maxpressure)
-				maxpressure = pressure;
-
-			if (depth > maxdepth)
-				maxdepth = s->depth.mm;
-			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) &&
-			    s->time.seconds > maxtime)
-				maxtime = s->time.seconds;
-			lastdepth = depth;
-			s++;
-		}
-	} while ((dc = dc->next) != NULL);
-
-	if (minpressure > maxpressure)
-		minpressure = 0;
-
-	pi->maxdepth = maxdepth;
-	pi->maxtime = maxtime;
-	pi->maxpressure = maxpressure;
-	pi->minpressure = minpressure;
-	pi->mintemp = mintemp;
-	pi->maxtemp = maxtemp;
-}
-
 /* copy the previous entry (we know this exists), update time and depth
  * and zero out the sensor pressure (since this is a synthetic entry)
  * increment the entry pointer and the count of synthetic entries. */
@@ -1246,68 +1117,6 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 #endif
 }
 
-static void calculate_gas_information(struct dive *dive, struct plot_info *pi)
-{
-	int i;
-	double amb_pressure;
-
-	for (i = 1; i < pi->nr; i++) {
-		int fo2, fhe;
-		struct plot_data *entry = pi->entry + i;
-		int cylinderindex = entry->cylinderindex;
-
-		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
-		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
-		double ratio = (double)fhe / (1000.0 - fo2);
-
-		if (entry->po2) {
-			/* we have an O2 partial pressure in the sample - so this
-			 * is likely a CC dive... use that instead of the value
-			 * from the cylinder info */
-			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
-			entry->po2 = po2;
-			entry->phe = (amb_pressure - po2) * ratio;
-			entry->pn2 = amb_pressure - po2 - entry->phe;
-		} else {
-			entry->po2 = fo2 / 1000.0 * amb_pressure;
-			entry->phe = fhe / 1000.0 * amb_pressure;
-			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
-		}
-
-		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
-		 * so there is no difference in calculating between OC and CC
-		 * EAD takes O2 + N2 (air) into account
-		 * END just uses N2 */
-		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
-		entry->ead = (entry->depth + 10000) *
-				 (entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
-		entry->end = (entry->depth + 10000) *
-				 (amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
-		entry->eadd = (entry->depth + 10000) *
-				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
-										N2_DENSITY +
-				   entry->phe / amb_pressure * HE_DENSITY) /
-				  (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
-		if (entry->mod < 0)
-			entry->mod = 0;
-		if (entry->ead < 0)
-			entry->ead = 0;
-		if (entry->end < 0)
-			entry->end = 0;
-		if (entry->eadd < 0)
-			entry->eadd = 0;
-
-		if (entry->po2 > pi->maxpp && prefs.pp_graphs.po2)
-			pi->maxpp = entry->po2;
-		if (entry->phe > pi->maxpp && prefs.pp_graphs.phe)
-			pi->maxpp = entry->phe;
-		if (entry->pn2 > pi->maxpp && prefs.pp_graphs.pn2)
-			pi->maxpp = entry->pn2;
-	}
-}
-
-
 static void calculate_gas_information_new(struct dive *dive, struct plot_info *pi)
 {
 	int i;
@@ -1368,50 +1177,6 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-struct plot_info *create_plot_info(struct dive *dive, struct divecomputer *dc, struct graphics_context *gc, bool print_mode)
-{
-	struct plot_info *pi;
-
-	/* The plot-info is embedded in the graphics context */
-	pi = &gc->pi;
-
-	/* reset deco information to start the calculation */
-	if (prefs.profile_calc_ceiling)
-		init_decompression(dive);
-
-	/* Create the new plot data */
-	if (last_pi_entry)
-		free((void *)last_pi_entry);
-	last_pi_entry = populate_plot_entries(dive, dc, pi);
-
-	/* Populate the gas index from the gas change events */
-	check_gas_change_events(dive, dc, pi);
-
-	/* Try to populate our gas pressure knowledge */
-	setup_gas_sensor_pressure(dive, dc, pi);
-
-	/* .. calculate missing pressure entries */
-	populate_pressure_information(dive, dc, pi);
-
-	/* Calculate sac */
-	calculate_sac(dive, pi);
-
-	/* Then, calculate deco information */
-	if (prefs.profile_calc_ceiling)
-		calculate_deco_information(dive, dc, pi, print_mode);
-
-	/* And finaly calculate gas partial pressures */
-	calculate_gas_information(dive, pi);
-
-	pi->meandepth = dive->dc.meandepth.mm;
-
-#ifdef DEBUG_PI
-	/* awesome for debugging - not useful otherwise */
-	dump_pi(pi);
-#endif
-	return analyze_plot_info(pi);
-}
-
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	init_decompression(dive);
@@ -1556,21 +1321,6 @@ static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_n
 	if (entry->bearing)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
 	strip_mb(b);
-}
-
-void get_plot_details(struct graphics_context *gc, int time, struct membuffer *mb)
-{
-	struct plot_info *pi = &gc->pi;
-	struct plot_data *entry = NULL;
-	int i;
-
-	for (i = 0; i < pi->nr; i++) {
-		entry = pi->entry + i;
-		if (entry->sec >= time)
-			break;
-	}
-	if (entry)
-		plot_string(entry, mb, pi->has_ndl);
 }
 
 void get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
