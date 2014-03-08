@@ -14,6 +14,144 @@
 #include "device.h"
 #include "membuffer.h"
 
+static void divecomputer_parser(const char *line, struct membuffer *str, void *_dc)
+{
+//	struct divecomputer *dc = _dc;
+}
+
+static void dive_parser(const char *line, struct membuffer *str, void *_dive)
+{
+//	struct dive *dive = _dive;
+}
+
+static void trip_parser(const char *line, struct membuffer *str, void *_trip)
+{
+//	dive_trip_t *trip = _trip;
+}
+
+/*
+ * We have a very simple line-based interface, with the small
+ * complication that lines can have strings in the middle, and
+ * a string can be multiple lines.
+ *
+ * The UTF-8 string escaping is *very* simple, though:
+ *
+ *  - a string starts and ends with double quotes (")
+ *
+ *  - inside the string we escape:
+ *     (a) double quotes with '\"'
+ *     (b) backslash (\) with '\\'
+ *
+ *  - additionally, for human readability, we escape
+ *    newlines with '\n\t', with the exception that
+ *    consecutive newlines are left unescaped (so an
+ *    empty line doesn't become a line with just a tab
+ *    on it).
+ *
+ * Also, while the UTF-8 string can have arbitrarily
+ * long lines, the non-string parts of the lines are
+ * never long, so we can use a small temporary buffer
+ * on stack for that part.
+ *
+ * Also, note that if a line has one or more strings
+ * in it:
+ *
+ *  - each string will be represented as a single '"'
+ *    character in the output.
+ *
+ *  - all string will exist in the same 'membuffer',
+ *    separated by NUL characters (that cannot exist
+ *    in a string, not even quoted).
+ */
+static const char *parse_one_string(const char *buf, const char *end, struct membuffer *b)
+{
+	const char *p = buf;
+
+	/*
+	 * We turn multiple strings one one line (think dive tags) into one
+	 * membuffer that has NUL characters in between strings.
+	 */
+	if (b->len)
+		put_bytes(b, "", 1);
+
+	while (p < end) {
+		char replace;
+
+		switch (*p++) {
+		default:
+			continue;
+		case '\n':
+			if (p < end && *p == '\t') {
+				replace = '\n';
+				break;
+			}
+			continue;
+		case '\\':
+			if (p < end) {
+				replace = *p;
+				break;
+			}
+			continue;
+		case '"':
+			replace = 0;
+			break;
+		}
+		put_bytes(b, buf, p - buf - 1);
+		if (!replace)
+			break;
+		put_bytes(b, &replace, 1);
+		buf = ++p;
+	}
+	return p;
+}
+
+typedef void (line_fn_t)(const char *, struct membuffer *, void *);
+#define MAXLINE 100
+static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, void *fndata, struct membuffer *b)
+{
+	const char *end = buf + size;
+	const char *p = buf;
+	char line[MAXLINE+1];
+	int off = 0;
+
+	while (p < end) {
+		char c = *p++;
+		if (c == '\n')
+			break;
+		line[off] = c;
+		off++;
+		if (off > MAXLINE)
+			off = MAXLINE;
+		if (c == '"')
+			p = parse_one_string(p, end, b);
+	}
+	line[off] = 0;
+	fn(line, b, fndata);
+	return p - buf;
+}
+
+/*
+ * We keep on re-using the membuffer that we use for
+ * strings, but the callback function can "steal" it by
+ * saving its value and just clear the original.
+ */
+static void for_each_line(git_blob *blob, line_fn_t *fn, void *fndata)
+{
+	const char *content = git_blob_rawcontent(blob);
+	unsigned int size = git_blob_rawsize(blob);
+	struct membuffer str = { 0 };
+
+	while (size) {
+		unsigned int n = parse_one_line(content, size, fn, fndata, &str);
+		content += n;
+		size -= n;
+
+		/* Re-use the allocation, but forget the data */
+		str.len = 0;
+	}
+	free_buffer(&str);
+}
+
 #define GIT_WALK_OK   0
 #define GIT_WALK_SKIP 1
 
@@ -265,6 +403,7 @@ static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read divecomputer file");
+	for_each_line(blob, divecomputer_parser, active_dive);
 	git_blob_free(blob);
 	return 0;
 }
@@ -277,6 +416,7 @@ static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, c
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		dive->number = atoi(suffix+1);
+	for_each_line(blob, dive_parser, active_dive);
 	git_blob_free(blob);
 	return 0;
 }
@@ -286,6 +426,7 @@ static int parse_trip_entry(git_repository *repo, const git_tree_entry *entry)
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read trip file");
+	for_each_line(blob, trip_parser, active_trip);
 	git_blob_free(blob);
 	return 0;
 }
