@@ -76,20 +76,28 @@ void put_string(struct membuffer *b, const char *str)
 
 void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 {
-	/* Handle the common case on the stack */
-	char buffer[128], *p;
-	int len;
+	int room = 128;
 
-	len = vsnprintf(buffer, sizeof(buffer), fmt, args);
-	if (len <= sizeof(buffer)) {
-		put_bytes(b, buffer, len);
-		return;
+	for (;;) {
+		int len;
+		va_list copy;
+		char *target;
+
+		make_room(b, room);
+		room = b->alloc - b->len;
+		target = b->buffer + b->len;
+
+		va_copy(copy, args);
+		len = vsnprintf(target, room, fmt, copy);
+		va_end(copy);
+
+		if (len < room) {
+			b->len += len;
+			return;
+		}
+
+		room = len+1;
 	}
-
-	p = malloc(len);
-	len = vsnprintf(p, len, fmt, args);
-	put_bytes(b, p, len);
-	free(p);
 }
 
 void put_format(struct membuffer *b, const char *fmt, ...)
