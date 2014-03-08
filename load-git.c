@@ -22,16 +22,14 @@ static dive_trip_t *active_trip;
 
 static struct dive *create_new_dive(timestamp_t when)
 {
-	struct tm tm;
 	struct dive *dive = alloc_dive();
 
 	/* We'll fill in more data from the dive file */
 	dive->when = when;
 
-	utc_mkdate(when, &tm);
-	report_error("New dive: %04u-%02u-%02u %02u:%02u:%02u",
-		tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-		tm.tm_hour, tm.tm_min, tm.tm_sec);
+	if (active_trip)
+		add_dive_to_trip(dive, active_trip);
+	record_dive(dive);
 
 	return dive;
 }
@@ -46,9 +44,6 @@ static dive_trip_t *create_new_trip(int yyyy, int mm, int dd)
 	tm.tm_mon = mm-1;
 	tm.tm_mday = dd;
 	trip->when = utc_mktime(&tm);
-
-	report_error("New trip: %04u-%02u-%02u",
-		tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
 
 	return trip;
 }
@@ -110,6 +105,29 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 		return GIT_WALK_SKIP;
 	if (!validate_time(h, m, s))
 		return GIT_WALK_SKIP;
+
+	/*
+	 * Using the "git_tree_walk()" interface is simple, but
+	 * it kind of sucks as an interface because there is
+	 * no sane way to pass the hierarchy to the callbacks.
+	 * The "payload" is a fixed one-time thing: we'd like
+	 * the "current trip" to be passed down to the dives
+	 * that get parsed under that trip, but we can't.
+	 *
+	 * So "active_trip" is not the trip that is in the hierarchy
+	 * _above_ us, it's just the trip that was _before_ us. But
+	 * if a dive is not in a trip at all, we can't tell.
+	 *
+	 * We could just do a better walker that passes the
+	 * return value around, but we hack around this by
+	 * instead looking at the one hierarchical piece of
+	 * data we have: the pathname to the current entry.
+	 *
+	 * This is pretty hacky. The magic '8' is the length
+	 * of a pathname of the form 'yyyy/mm/'.
+	 */
+	if (strlen(root) == 8)
+		active_trip = NULL;
 
 	/*
 	 * Get the date. The day of the month is in the dive directory
