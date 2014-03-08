@@ -120,6 +120,8 @@ Section
     File libssl-10.dll
     File libeay32.dll
     File ssleay32.dll
+    File libgit2.dll
+    File libcrypto-10.dll
     File Qt*4.dll
     File subsurface.ico
     File qt.conf

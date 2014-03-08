@@ -11,5 +11,5 @@
 rm packaging/windows/subsurface.nsi > /dev/null 2>&1
 
 export PATH=/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
-mingw32-qmake-qt4 CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw
+mingw32-qmake-qt4 CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api
 mingw32-make $@

@@ -210,6 +210,14 @@ $ mingw32-cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE ../sources
 $ mingw32-make -j4
 $ mingw32-make install
 
+To compile libgit2, use:
+
+$ mkdir -p ~/src/libgit2/build
+$ git clone git://github.com/libgit2/libgit2 ~/src/libgit2
+$ cd ~/src/libgit2/build
+$ mingw32-cmake ..
+$ mingw32-cmake --build .
+
 To compile Subsurface, use:
 
 $ mkdir -p ~/src/subsurface

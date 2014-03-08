@@ -126,7 +126,14 @@ LIBS *= $$XSLT_LIBS $$XML2_LIBS
 # We're searching for:
 #  libzip
 #  sqlite3
-link_pkgconfig: PKGCONFIG += libzip sqlite3 libgit2
+link_pkgconfig: PKGCONFIG += libzip sqlite3
+
+isEmpty(LIBGIT2DEVEL) {
+	PKGCONFIG += libgit2
+} else {
+	INCLUDEPATH += $$LIBGIT2DEVEL/include
+	LIBS += -L$$LIBGIT2DEVEL/build -lgit2 -lz -lcrypto
+}
 
 # Add libiconv if needed
 link_pkgconfig: packagesExist(libiconv): PKGCONFIG += libiconv
