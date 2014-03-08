@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 
 	setup_system_prefs();
 	prefs = default_prefs;
-
+	fill_profile_color();
 	init_ui(&argc, &argv);
 	parse_xml_init();
 	taglist_init_global();

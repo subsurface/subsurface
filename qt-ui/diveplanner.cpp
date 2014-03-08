@@ -42,13 +42,6 @@ QString dpGasToStr(const divedatapoint &p)
 	return gasToStr(p.o2, p.he);
 }
 
-QColor getColor(const color_indice_t i)
-{
-	if (profile_color.count() > i && i >= 0)
-		return profile_color[i].at(0);
-	return QColor(Qt::black);
-}
-
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
 DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent),
@@ -65,7 +58,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	minDepth(M_OR_FT(40, 120)),
 	dpMaxTime(0)
 {
-	fill_profile_color();
 	setBackgroundBrush(profile_color[BACKGROUND].at(0));
 	setMouseTracking(true);
 	setScene(new QGraphicsScene());
