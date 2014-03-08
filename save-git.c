@@ -376,8 +376,7 @@ struct dir {
 	char unique, name[1];
 };
 
-static int tree_insert(git_repository *repo, git_treebuilder *dir,
-	const char *name, int mkunique, git_oid *id, unsigned mode)
+static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, unsigned mode)
 {
 	int ret;
 	struct membuffer uniquename = { 0 };
@@ -465,7 +464,7 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 		return ret;
 
 	VA_BUF(&name, fmt);
-	ret = tree_insert(repo, tree->files, mb_cstring(&name), 1, &blob_id, 0100644);
+	ret = tree_insert(tree->files, mb_cstring(&name), 1, &blob_id, 0100644);
 	free_buffer(&name);
 	return ret;
 }
@@ -578,7 +577,7 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 	free_buffer(&desc);
 	if (ret)
 		return report_error("trip blob creation failed");
-	ret = tree_insert(repo, dir->files, "00-Trip", 0, &blob_id, 0100644);
+	ret = tree_insert(dir->files, "00-Trip", 0, &blob_id, 0100644);
 	if (ret)
 		return report_error("trip description tree insert failed");
 	return 0;
@@ -776,7 +775,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 		git_oid id;
 
 		if (!write_git_tree(repo, subdir, &id))
-			tree_insert(repo, tree->files, subdir->name, subdir->unique, &id, 040000);
+			tree_insert(tree->files, subdir->name, subdir->unique, &id, 040000);
 		tree->subdirs = subdir->sibling;
 		free(subdir);
 	};
