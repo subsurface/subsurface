@@ -244,25 +244,84 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	return dive_trip_directory(root, name);
 }
 
-static int walk_tree_file(const char *root, const git_tree_entry *entry)
+git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
 {
-	/* Parse actual dive/trip data here */
-	return GIT_WALK_OK;
+	const git_oid *id = git_tree_entry_id(entry);
+	git_blob *blob;
+
+	if (git_blob_lookup(&blob, repo, id))
+		return NULL;
+	return blob;
+}
+
+/*
+ * We should *really* try to delay the dive computer data parsing
+ * until necessary, in order to reduce load-time. The parsing is
+ * cheap, but the loading of the git blob into memory can be pretty
+ * costly.
+ */
+static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+{
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read divecomputer file");
+	git_blob_free(blob);
+	return 0;
+}
+
+static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+{
+	struct dive *dive = active_dive;
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read dive file");
+	if (*suffix)
+		dive->number = atoi(suffix+1);
+	git_blob_free(blob);
+	return 0;
+}
+
+static int parse_trip_entry(git_repository *repo, const git_tree_entry *entry)
+{
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read trip file");
+	git_blob_free(blob);
+	return 0;
+}
+
+static int walk_tree_file(const char *root, const git_tree_entry *entry, git_repository *repo)
+{
+	struct dive *dive = active_dive;
+	dive_trip_t *trip = active_trip;
+	const char *name = git_tree_entry_name(entry);
+
+	if (dive && !strncmp(name, "Divecomputer", 12))
+		return parse_divecomputer_entry(repo, entry, name+12);
+	if (dive && !strncmp(name, "Dive", 4))
+		return parse_dive_entry(repo, entry, name+4);
+	if (trip && !strcmp(name, "00-Trip"))
+		return parse_trip_entry(repo, entry);
+	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
+	return GIT_WALK_SKIP;
 }
 
 static int walk_tree_cb(const char *root, const git_tree_entry *entry, void *payload)
 {
+	git_repository *repo = payload;
 	git_filemode_t mode = git_tree_entry_filemode(entry);
 
 	if (mode == GIT_FILEMODE_TREE)
 		return walk_tree_directory(root, entry);
 
-	return walk_tree_file(root, entry);
+	walk_tree_file(root, entry, repo);
+	/* Ignore failed blob loads */
+	return GIT_WALK_OK;
 }
 
 static int load_dives_from_tree(git_repository *repo, git_tree *tree)
 {
-	git_tree_walk(tree, GIT_TREEWALK_PRE, walk_tree_cb, NULL);
+	git_tree_walk(tree, GIT_TREEWALK_PRE, walk_tree_cb, repo);
 	return 0;
 }
 
