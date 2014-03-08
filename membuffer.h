@@ -51,11 +51,11 @@ extern void put_milli(struct membuffer *, const char *, int, const char *);
  * to the memory buffer (typically the post/pre will be some XML
  * pattern and unit string or whatever).
  */
-extern int put_temperature(struct membuffer *, temperature_t, const char *, const char *);
-extern int put_depth(struct membuffer *, depth_t, const char *, const char *);
-extern int put_duration(struct membuffer *, duration_t, const char *, const char *);
-extern int put_pressure(struct membuffer *, pressure_t, const char *, const char *);
-extern int put_salinity(struct membuffer *, int, const char *, const char *);
+extern void put_temperature(struct membuffer *, temperature_t, const char *, const char *);
+extern void put_depth(struct membuffer *, depth_t, const char *, const char *);
+extern void put_duration(struct membuffer *, duration_t, const char *, const char *);
+extern void put_pressure(struct membuffer *, pressure_t, const char *, const char *);
+extern void put_salinity(struct membuffer *, int, const char *, const char *);
 
 #ifdef __cplusplus
 }
