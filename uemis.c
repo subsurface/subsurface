@@ -150,7 +150,7 @@ int uemis_get_weight_unit(int diveid)
 	return 0;
 }
 
-void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *longitude, degrees_t *latitude)
+void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *latitude, degrees_t *longitude)
 {
 	struct uemis_helper *hp = uemis_get_helper(diveid);
 	hp->divespot = divespot;
