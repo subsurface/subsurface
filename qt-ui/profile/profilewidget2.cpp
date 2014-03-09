@@ -567,6 +567,7 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	currentState = PROFILE;
+	toolTipItem->readPos();
 	setBackgroundBrush(getColor(::BACKGROUND));
 
 	background->setVisible(false);
