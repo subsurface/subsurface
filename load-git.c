@@ -44,28 +44,28 @@ static char *get_utf8(struct membuffer *b)
 	return res;
 }
 
-static temperature_t get_temperature(char *line)
+static temperature_t get_temperature(const char *line)
 {
 	temperature_t t;
 	t.mkelvin = C_to_mkelvin(ascii_strtod(line, NULL));
 	return t;
 }
 
-static depth_t get_depth(char *line)
+static depth_t get_depth(const char *line)
 {
 	depth_t d;
 	d.mm = rint(1000*ascii_strtod(line, NULL));
 	return d;
 }
 
-static pressure_t get_pressure(char *line)
+static pressure_t get_pressure(const char *line)
 {
 	pressure_t p;
 	p.mbar = rint(1000*ascii_strtod(line, NULL));
 	return p;
 }
 
-static void update_date(timestamp_t *when, char *line)
+static void update_date(timestamp_t *when, const char *line)
 {
 	unsigned yyyy, mm, dd;
 	struct tm tm;
@@ -79,7 +79,7 @@ static void update_date(timestamp_t *when, char *line)
 	*when = utc_mktime(&tm);
 }
 
-static void update_time(timestamp_t *when, char *line)
+static void update_time(timestamp_t *when, const char *line)
 {
 	unsigned h, m, s = 0;
 	struct tm tm;
@@ -93,7 +93,7 @@ static void update_time(timestamp_t *when, char *line)
 	*when = utc_mktime(&tm);
 }
 
-static duration_t get_duration(char *line)
+static duration_t get_duration(const char *line)
 {
 	int m = 0, s = 0;
 	duration_t d;
@@ -102,9 +102,9 @@ static duration_t get_duration(char *line)
 	return d;
 }
 
-static int get_index(char *line)
+static int get_index(const char *line)
 { return atoi(line); }
-static int get_hex(char *line)
+static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
 static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
@@ -211,9 +211,48 @@ report_error("Unmatched action '%s'", line);
 	return -1;
 }
 
+/* FIXME! We should do the array thing here too. */
 static void parse_sample_keyvalue(struct sample *sample, const char *key, const char *value)
 {
-	/* FIXME! Sample key-value pairs not parsed */
+	if (!strcmp(key, "sensor")) {
+		sample->sensor = atoi(value);
+		return;
+	}
+	if (!strcmp(key, "ndl")) {
+		sample->ndl = get_duration(value);
+		return;
+	}
+	if (!strcmp(key, "in_deco")) {
+		sample->in_deco = atoi(value);
+		return;
+	}
+	if (!strcmp(key, "stoptime")) {
+		sample->stoptime = get_duration(value);
+		return;
+	}
+	if (!strcmp(key, "stopdepth")) {
+		sample->stopdepth = get_depth(value);
+		return;
+	}
+	if (!strcmp(key, "cns")) {
+		sample->cns = atoi(value);
+		return;
+	}
+	if (!strcmp(key, "po2")) {
+		pressure_t p = get_pressure(value);
+		// Ugh, typeless.
+		sample->po2 = p.mbar;
+		return;
+	}
+	if (!strcmp(key, "heartbeat")) {
+		sample->heartbeat = atoi(value);
+		return;
+	}
+	if (!strcmp(key, "bearing")) {
+		sample->bearing = atoi(value);
+		return;
+	}
+	report_error("Unexpected sample key/value pair: '%s'='%s'\n", key, value);
 }
 
 /* Parse key=val parts of the samples */
@@ -272,10 +311,31 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 	return end;
 }
 
+/*
+ * By default the sample data does not change unless the
+ * save-file gives an explicit new value. So we copy the
+ * data from the previous sample if one exists, and then
+ * the parsing will update it as necessary.
+ *
+ * There are a few exceptions, like the sample pressure:
+ * missing sample pressure doesn't mean "same as last
+ * time", but "interpolate". We clear those ones
+ * explicitly.
+ */
+static struct sample *new_sample(struct divecomputer *dc)
+{
+	struct sample *sample = prepare_sample(dc);
+	if (sample != dc->sample) {
+		memcpy(sample, sample-1, sizeof(struct sample));
+		sample->cylinderpressure.mbar = 0;
+	}
+	return sample;
+}
+
 static void sample_parser(char *line, struct divecomputer *dc)
 {
 	int m,s;
-	struct sample *sample = prepare_sample(dc);
+	struct sample *sample = new_sample(dc);
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
