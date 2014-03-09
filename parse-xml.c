@@ -999,7 +999,7 @@ static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
  * We don't do exponentials etc, if somebody does
  * gps locations in that format, they are insane.
  */
-static degrees_t parse_degrees(char *buf, char **end)
+degrees_t parse_degrees(char *buf, char **end)
 {
 	int sign = 1, decimals = 6, value = 0;
 	degrees_t ret;

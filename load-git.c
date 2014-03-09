@@ -14,19 +14,302 @@
 #include "device.h"
 #include "membuffer.h"
 
-static void divecomputer_parser(const char *line, struct membuffer *str, void *_dc)
+struct keyword_action {
+	const char *keyword;
+	void (*fn)(char *, struct membuffer *, void *);
+};
+#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
+
+extern degrees_t parse_degrees(char *buf, char **end);
+static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
-//	struct divecomputer *dc = _dc;
+	struct dive *dive = _dive;
+
+	dive->latitude = parse_degrees(line, &line);
+	dive->longitude = parse_degrees(line, &line);
 }
 
-static void dive_parser(const char *line, struct membuffer *str, void *_dive)
+static char *get_utf8(struct membuffer *b)
 {
-//	struct dive *dive = _dive;
+	int len = b->len;
+	char *res;
+
+	if (!len)
+		return NULL;
+	res = malloc(len+1);
+	if (res) {
+		memcpy(res, b->buffer, len);
+		res[len] = 0;
+	}
+	return res;
 }
 
-static void trip_parser(const char *line, struct membuffer *str, void *_trip)
+static temperature_t get_temperature(char *line)
 {
-//	dive_trip_t *trip = _trip;
+	temperature_t t;
+	t.mkelvin = C_to_mkelvin(ascii_strtod(line, NULL));
+	return t;
+}
+
+static depth_t get_depth(char *line)
+{
+	depth_t d;
+	d.mm = rint(1000*ascii_strtod(line, NULL));
+	return d;
+}
+
+static pressure_t get_pressure(char *line)
+{
+	pressure_t p;
+	p.mbar = rint(1000*ascii_strtod(line, NULL));
+	return p;
+}
+
+static void update_date(timestamp_t *when, char *line)
+{
+	unsigned yyyy, mm, dd;
+	struct tm tm;
+
+	if (sscanf(line, "%04u-%02u-%02u", &yyyy, &mm, &dd) != 3)
+		return;
+	utc_mkdate(*when, &tm);
+	tm.tm_year = yyyy - 1900;
+	tm.tm_mon = mm - 1;
+	tm.tm_mday = dd;
+	*when = utc_mktime(&tm);
+}
+
+static void update_time(timestamp_t *when, char *line)
+{
+	unsigned h, m, s = 0;
+	struct tm tm;
+
+	if (sscanf(line, "%02u:%02u:%02u", &h, &m, &s) < 2)
+		return;
+	utc_mkdate(*when, &tm);
+	tm.tm_hour = h;
+	tm.tm_min = m;
+	tm.tm_sec = s;
+	*when = utc_mktime(&tm);
+}
+
+static duration_t get_duration(char *line)
+{
+	int m = 0, s = 0;
+	duration_t d;
+	sscanf(line, "%d:%d", &m, &s);
+	d.seconds = m*60+s;
+	return d;
+}
+
+static int get_index(char *line)
+{ return atoi(line); }
+static int get_hex(char *line)
+{ return strtoul(line, NULL, 16); }
+
+static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->location = get_utf8(str); }
+
+static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->divemaster = get_utf8(str); }
+
+static void parse_dive_buddy(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->buddy = get_utf8(str); }
+
+static void parse_dive_suit(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->suit = get_utf8(str); }
+
+static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->notes = get_utf8(str); }
+
+/*
+ * We can have multiple tags in the membuffer. They are separated by
+ * NUL bytes.
+ */
+static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
+{
+	struct dive *dive = _dive;
+	const char *tag;
+	int len = str->len;
+
+	if (!len)
+		return;
+
+	/* Make sure there is a NUL at the end too */
+	tag = mb_cstring(str);
+	for (;;) {
+		int taglen = strlen(tag);
+		if (taglen)
+			taglist_add_tag(dive->tag_list, tag);
+		len -= taglen;
+		if (!len)
+			return;
+		tag += taglen+1;
+		len--;
+	}
+}
+
+static void parse_dive_airtemp(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->airtemp = get_temperature(line); }
+
+static void parse_dive_watertemp(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->watertemp = get_temperature(line); }
+
+static void parse_dive_duration(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->duration = get_duration(line); }
+
+static void parse_dive_rating(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->rating = get_index(line); }
+
+static void parse_dive_visibility(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->visibility = get_index(line); }
+
+static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->tripflag = NO_TRIP; }
+
+/* FIXME! Cylinders and weigthsystems not parsed */
+static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive) { }
+static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_dive) { }
+
+static int match_action(char *line, struct membuffer *str, void *data,
+	struct keyword_action *action, unsigned nr_action)
+{
+	char *p = line, c;
+	unsigned low, high;
+
+	while ((c = *p) >= 'a' && c <= 'z')
+		p++;
+	if (p == line)
+		return -1;
+	switch (c) {
+	case 0:
+		break;
+	case ' ':
+		*p++ = 0;
+		break;
+	default:
+		return -1;
+	}
+
+	/* Standard binary search in a table */
+	low = 0;
+	high = nr_action;
+	while (low < high) {
+		unsigned mid = (low+high)/2;
+		struct keyword_action *a = action + mid;
+		int cmp = strcmp(line, a->keyword);
+		if (!cmp) {
+			a->fn(p, str, data);
+			return 0;
+		}
+		if (cmp < 0)
+			high = mid;
+		else
+			low = mid+1;
+	}
+report_error("Unmatched action '%s'", line);
+	return -1;
+}
+
+/* FIXME! Samples not parsed */
+static void sample_parser(char *line, struct divecomputer *dc)
+{
+}
+
+static void parse_dc_airtemp(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->airtemp = get_temperature(line); }
+
+static void parse_dc_date(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; update_date(&dc->when, line); }
+
+static void parse_dc_deviceid(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->deviceid = get_hex(line); }
+
+static void parse_dc_diveid(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->diveid = get_hex(line); }
+
+static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
+
+static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
+
+static void parse_dc_meandepth(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->meandepth = get_depth(line); }
+
+static void parse_dc_model(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->model = get_utf8(str); }
+
+static void parse_dc_surfacepressure(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
+
+static void parse_dc_surfacetime(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->surfacetime = get_duration(line); }
+
+static void parse_dc_time(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; update_time(&dc->when, line); }
+
+static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
+
+/* FIXME! Events not parsed */
+static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
+{ }
+
+static void parse_trip_date(char *line, struct membuffer *str, void *_trip)
+{ dive_trip_t *trip = _trip; update_date(&trip->when, line); }
+
+static void parse_trip_time(char *line, struct membuffer *str, void *_trip)
+{ dive_trip_t *trip = _trip; update_time(&trip->when, line); }
+
+static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
+{ dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
+
+static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
+{ dive_trip_t *trip = _trip; trip->notes = get_utf8(str); }
+
+/* These need to be sorted! */
+struct keyword_action dc_action[] = {
+#undef D
+#define D(x) { #x, parse_dc_ ## x }
+	D(airtemp), D(date), D(deviceid), D(diveid), D(duration),
+	D(event), D(maxdepth), D(meandepth), D(model),
+	D(surfacepressure), D(surfacetime), D(time), D(watertemp),
+};
+
+/* Sample lines start with a space or a number */
+static void divecomputer_parser(char *line, struct membuffer *str, void *_dc)
+{
+	char c = *line;
+	if (c < 'a' || c > 'z')
+		sample_parser(line, _dc);
+	match_action(line, str, _dc, dc_action, ARRAY_SIZE(dc_action));
+}
+
+/* These need to be sorted! */
+struct keyword_action dive_action[] = {
+#undef D
+#define D(x) { #x, parse_dive_ ## x }
+	D(airtemp), D(buddy), D(cylinder), D(divemaster), D(duration),
+	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
+	D(tags), D(visibility), D(watertemp), D(weightsystem)
+};
+
+static void dive_parser(char *line, struct membuffer *str, void *_dive)
+{
+	match_action(line, str, _dive, dive_action, ARRAY_SIZE(dive_action));
+}
+
+/* These need to be sorted! */
+struct keyword_action trip_action[] = {
+#undef D
+#define D(x) { #x, parse_trip_ ## x }
+	D(date), D(location), D(notes), D(time),
+};
+
+static void trip_parser(char *line, struct membuffer *str, void *_trip)
+{
+	match_action(line, str, _trip, trip_action, ARRAY_SIZE(trip_action));
 }
 
 /*
@@ -105,7 +388,7 @@ static const char *parse_one_string(const char *buf, const char *end, struct mem
 	return p;
 }
 
-typedef void (line_fn_t)(const char *, struct membuffer *, void *);
+typedef void (line_fn_t)(char *, struct membuffer *, void *);
 #define MAXLINE 100
 static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, void *fndata, struct membuffer *b)
 {
@@ -155,6 +438,7 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, void *fndata)
 #define GIT_WALK_OK   0
 #define GIT_WALK_SKIP 1
 
+static struct divecomputer *active_dc;
 static struct dive *active_dive;
 static dive_trip_t *active_trip;
 
@@ -167,8 +451,6 @@ static struct dive *create_new_dive(timestamp_t when)
 
 	if (active_trip)
 		add_dive_to_trip(dive, active_trip);
-	record_dive(dive);
-
 	return dive;
 }
 
@@ -293,6 +575,8 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 	tm.tm_mon = mm-1;
 	tm.tm_mday = dd;
 
+	if (active_dive)
+		record_dive(active_dive);
 	active_dive = create_new_dive(utc_mktime(&tm));
 	return GIT_WALK_OK;
 }
@@ -392,6 +676,23 @@ git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
 	return blob;
 }
 
+static struct divecomputer *create_new_dc(struct dive *dive)
+{
+	struct divecomputer *dc = &dive->dc;
+
+	while (dc->next)
+		dc = dc->next;
+	/* Did we already fill that in? */
+	if (dc->samples || dc->model || dc->when) {
+		struct divecomputer *newdc = calloc(1, sizeof(*newdc));
+		if (newdc) {
+			dc->next = newdc;
+			dc = newdc;
+		}
+	}
+	return dc;
+}
+
 /*
  * We should *really* try to delay the dive computer data parsing
  * until necessary, in order to reduce load-time. The parsing is
@@ -401,10 +702,14 @@ git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry)
 static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
 {
 	git_blob *blob = git_tree_entry_blob(repo, entry);
+
 	if (!blob)
 		return report_error("Unable to read divecomputer file");
-	for_each_line(blob, divecomputer_parser, active_dive);
+
+	active_dc = create_new_dc(active_dive);
+	for_each_line(blob, divecomputer_parser, active_dc);
 	git_blob_free(blob);
+	active_dc = NULL;
 	return 0;
 }
 
@@ -508,5 +813,8 @@ int git_load_dives(char *where)
 
 	ret = do_git_load(repo, branch);
 	git_repository_free(repo);
+	if (active_dive)
+		record_dive(active_dive);
+	active_dive = NULL;
 	return ret;
 }
