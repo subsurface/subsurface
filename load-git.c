@@ -503,9 +503,49 @@ static void parse_dc_time(char *line, struct membuffer *str, void *_dc)
 static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
 
-/* FIXME! Events not parsed */
+static void parse_event_keyvalue(void *_event, const char *key, const char *value)
+{
+	struct event *event = _event;
+	int val = atoi(value);
+
+	if (!strcmp(key, "type")) {
+		event->type = val;
+	} else if (!strcmp(key, "flags")) {
+		event->flags = val;
+	} else if (!strcmp(key, "value")) {
+		event->value = val;
+	} else if (!strcmp(key, "name")) {
+		/* We get the name from the string handling */
+	} else
+		report_error("Unexpected event key/value pair (%s/%s)", key, value);
+}
+
 static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
-{ }
+{
+	int m, s;
+	const char *name;
+	struct divecomputer *dc = _dc;
+	struct event event = { 0 };
+
+	m = strtol(line, &line, 10);
+	if (*line == ':')
+		s = strtol(line+1, &line, 10);
+	event.time.seconds = m*60+s;
+
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_event_keyvalue, &event, line);
+	}
+
+	name = "";
+	if (str->len)
+		name = mb_cstring(str);
+	add_event(dc, event.time.seconds, event.type, event.flags, event.value, name);
+}
 
 static void parse_trip_date(char *line, struct membuffer *str, void *_trip)
 { dive_trip_t *trip = _trip; update_date(&trip->when, line); }
