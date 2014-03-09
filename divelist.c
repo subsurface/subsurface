@@ -793,10 +793,12 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
 	struct dive *res;
 	int i, j;
-	int id = a->id;
+	int id;
 
 	if (!a || !b)
 		return NULL;
+
+	id = a->id;
 	i = get_divenr(a);
 	j = get_divenr(b);
 	res = merge_dives(a, b, b->when - a->when, false);
