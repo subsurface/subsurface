@@ -211,9 +211,99 @@ report_error("Unmatched action '%s'", line);
 	return -1;
 }
 
-/* FIXME! Samples not parsed */
+static void parse_sample_keyvalue(struct sample *sample, const char *key, const char *value)
+{
+	/* FIXME! Sample key-value pairs not parsed */
+}
+
+/* Parse key=val parts of the samples */
+static char *parse_sample_entry(struct sample *sample, char *line)
+{
+	char *key = line, *val, c;
+
+	while ((c = *line) != 0) {
+		if (isspace(c) || c == '=')
+			break;
+		line++;
+	}
+
+	if (c == '=')
+		*line++ = 0;
+	val = line;
+
+	while ((c = *line) != 0) {
+		if (isspace(c))
+			break;
+		line++;
+	}
+	if (c)
+		*line++ = 0;
+
+	parse_sample_keyvalue(sample, key, val);
+	return line;
+}
+
+static char *parse_sample_unit(struct sample *sample, double val, char *unit)
+{
+	char *end = unit, c;
+
+	/* Skip over the unit */
+	while ((c = *end) != 0) {
+		if (isspace(c)) {
+			*end++ = 0;
+			break;
+		}
+		end++;
+	}
+
+	/* The units are "°C", "m" or "bar", so let's just look at the first character */
+	switch (*unit) {
+	case 'm':
+		sample->depth.mm = rint(1000*val);
+		break;
+	case 'b':
+		sample->cylinderpressure.mbar = rint(1000*val);
+		break;
+	default:
+		sample->temperature.mkelvin = C_to_mkelvin(val);
+		break;
+	}
+
+	return end;
+}
+
 static void sample_parser(char *line, struct divecomputer *dc)
 {
+	int m,s;
+	struct sample *sample = prepare_sample(dc);
+
+	m = strtol(line, &line, 10);
+	if (*line == ':')
+		s = strtol(line+1, &line, 10);
+	sample->time.seconds = m*60+s;
+
+	for (;;) {
+		char c;
+
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		/* Less common sample entries have a name */
+		if (c >= 'a' && c <= 'z') {
+			line = parse_sample_entry(sample, line);
+		} else {
+			const char *end;
+			double val = ascii_strtod(line, &end);
+			if (end == line) {
+				report_error("Odd sample data: %s", line);
+				break;
+			}
+			line = (char *)end;
+			line = parse_sample_unit(sample, val, line);
+		}
+	}
+	finish_sample(dc);
 }
 
 static void parse_dc_airtemp(char *line, struct membuffer *str, void *_dc)
