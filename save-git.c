@@ -469,13 +469,13 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 	return ret;
 }
 
-static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc)
+static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc, int idx)
 {
 	int ret;
 	struct membuffer buf = { 0 };
 
 	save_dc(&buf, dive, dc);
-	ret = blob_insert(repo, tree, &buf, "Divecomputer");
+	ret = blob_insert(repo, tree, &buf, "Divecomputer%c%03u", idx ? '-' : 0, idx);
 	if (ret)
 		report_error("divecomputer tree insert failed");
 	return ret;
@@ -501,10 +501,15 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 	if (ret)
 		return report_error("dive save-file tree insert failed");
 
-	/* Save the dive computer data */
+	/*
+	 * Save the dive computer data. If there is only one dive
+	 * computer, use index 0 for that (which disables the index
+	 * generation when naming it).
+	 */
 	dc = &dive->dc;
+	nr = dc->next ? 1 : 0;
 	do {
-		save_one_divecomputer(repo, subdir, dive, dc);
+		save_one_divecomputer(repo, subdir, dive, dc, nr++);
 		dc = dc->next;
 	} while (dc);
 
