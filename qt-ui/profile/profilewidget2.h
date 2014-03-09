@@ -64,6 +64,7 @@ public:
 
 	ProfileWidget2(QWidget *parent = 0);
 	void plotDives(QList<dive *> dives);
+	void replot();
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 

@@ -16,10 +16,10 @@
 RulerNodeItem2::RulerNodeItem2() : entry(NULL), ruler(NULL)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
-	setRect(QRect(QPoint(-8, 8), QPoint(8, -8)));
+	setRect(-8, -8, 16, 16);
 	setBrush(QColor(0xff, 0, 0, 127));
-	setPen(QColor("#FF0000"));
-	setFlag(QGraphicsItem::ItemIsMovable);
+	setPen(QColor(Qt::red));
+	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
 	setFlag(ItemIgnoresTransformations);
 }
@@ -59,8 +59,7 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 {
 	if (change == ItemPositionHasChanged) {
 		recalculate();
-		if (ruler != NULL)
-			ruler->recalculate();
+		ruler->recalculate();
 	}
 	return QGraphicsEllipseItem::itemChange(change, value);
 }
@@ -97,7 +96,7 @@ void RulerItem2::recalculate()
 		startPoint = tmp;
 	}
 	QLineF line(startPoint, endPoint);
-
+	setLine(line);
 	compare_samples(source->entry, dest->entry, buffer, 500, 1);
 	text = QString(buffer);
 
@@ -125,37 +124,6 @@ RulerNodeItem2 *RulerItem2::sourceNode() const
 RulerNodeItem2 *RulerItem2::destNode() const
 {
 	return dest;
-}
-
-void RulerItem2::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-	Q_UNUSED(option);
-	Q_UNUSED(widget);
-	QLineF line(startPoint, endPoint);
-	painter->setPen(QColor(Qt::black));
-	painter->setBrush(Qt::NoBrush);
-	painter->drawLine(line);
-}
-
-QRectF RulerItem2::boundingRect() const
-{
-	return shape().controlPointRect();
-}
-
-QPainterPath RulerItem2::shape() const
-{
-	QPainterPath path;
-	QLineF line(startPoint, endPoint);
-	QLineF line_n = line.normalVector();
-	line_n.setLength(height);
-	if (paint_direction == 1)
-		line_n.setAngle(line_n.angle() + 180);
-	path.moveTo(startPoint);
-	path.lineTo(line_n.p2());
-	path.lineTo(line_n.p2() + QPointF(line.dx(), line.dy()));
-	path.lineTo(endPoint);
-	path.lineTo(startPoint);
-	return path;
 }
 
 void RulerItem2::setPlotInfo(plot_info info)

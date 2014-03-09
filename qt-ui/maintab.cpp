@@ -671,6 +671,8 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->dive_list()->selectDive(i, true);
+		MainWindow::instance()->graphics()->replot();
+
 	} else {
 		editMode = NONE;
 		MainWindow::instance()->dive_list()->rememberSelection();

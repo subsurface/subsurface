@@ -31,8 +31,7 @@ private:
 	DiveCartesianAxis *depthAxis;
 };
 
-class RulerItem2 : public QGraphicsObject {
-	Q_OBJECT
+class RulerItem2 : public QGraphicsLineItem {
 public:
 	explicit RulerItem2();
 	void recalculate();
@@ -40,9 +39,6 @@ public:
 	void setPlotInfo(struct plot_info pInfo);
 	RulerNodeItem2 *sourceNode() const;
 	RulerNodeItem2 *destNode() const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	QRectF boundingRect() const;
-	QPainterPath shape() const;
 	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);
 
 private:

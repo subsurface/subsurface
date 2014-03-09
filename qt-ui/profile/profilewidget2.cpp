@@ -209,6 +209,13 @@ void ProfileWidget2::setupItemOnScene()
 	heartBeatAxis->setLinesVisible(true);
 }
 
+void ProfileWidget2::replot()
+{
+		int diveId = dataModel->id();
+		dataModel->clear();
+		plotDives(QList<dive *>() << getDiveById(diveId));
+}
+
 void ProfileWidget2::setupItemSizes()
 {
 	// Scene is *always* (double) 100 / 100.
@@ -431,9 +438,7 @@ void ProfileWidget2::settingsChanged()
 	}
 	if (s.value("zoomed_plot").toBool() != isPlotZoomed) {
 		isPlotZoomed = s.value("zoomed_plot").toBool();
-		int diveId = dataModel->id();
-		dataModel->clear();
-		plotDives(QList<dive *>() << getDiveById(diveId));
+		replot();
 	}
 
 	if (currentState == PROFILE) {
@@ -681,8 +686,5 @@ void ProfileWidget2::changeGas()
 	fixup_dive(d);
 	MainWindow::instance()->information()->updateDiveInfo(selected_dive);
 	mark_divelist_changed(true);
-	// force the redraw of the dive.
-	//TODO: find a way to make this do not need a full redraw
-	dataModel->clear();
-	plotDives(QList<dive *>() << getDiveById(diveId));
+	replot();
 }
