@@ -292,7 +292,7 @@ static void save_one_event(struct membuffer *b, struct event *ev)
 	show_index(b, ev->type, "type=", "");
 	show_index(b, ev->flags, "flags=", "");
 	show_index(b, ev->value, "value=", "");
-	show_utf8(b, ev->name, " name=", "");
+	show_utf8(b, " name=", ev->name, "");
 	put_string(b, "\n");
 }
 
