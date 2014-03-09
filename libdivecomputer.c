@@ -392,7 +392,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	device_data_t *devdata = userdata;
 	dc_datetime_t dt = { 0 };
 	struct tm tm;
-	struct dive *dive;
+	struct dive *dive = NULL;
 
 	/* reset the deco / ndl data */
 	ndl = stoptime = stopdepth = 0;
