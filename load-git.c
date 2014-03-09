@@ -58,11 +58,32 @@ static depth_t get_depth(const char *line)
 	return d;
 }
 
+static volume_t get_volume(const char *line)
+{
+	volume_t v;
+	v.mliter = rint(1000*ascii_strtod(line, NULL));
+	return v;
+}
+
+static weight_t get_weight(const char *line)
+{
+	weight_t w;
+	w.grams = rint(1000*ascii_strtod(line, NULL));
+	return w;
+}
+
 static pressure_t get_pressure(const char *line)
 {
 	pressure_t p;
 	p.mbar = rint(1000*ascii_strtod(line, NULL));
 	return p;
+}
+
+static fraction_t get_fraction(const char *line)
+{
+	fraction_t f;
+	f.permille = rint(10*ascii_strtod(line, NULL));
+	return f;
 }
 
 static void update_date(timestamp_t *when, const char *line)
@@ -167,9 +188,114 @@ static void parse_dive_visibility(char *line, struct membuffer *str, void *_dive
 static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
 { struct dive *dive = _dive; dive->tripflag = NO_TRIP; }
 
-/* FIXME! Cylinders and weigthsystems not parsed */
-static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive) { }
-static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_dive) { }
+/* Parse key=val parts of samples and cylinders etc */
+static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line)
+{
+	char *key = line, *val, c;
+
+	while ((c = *line) != 0) {
+		if (isspace(c) || c == '=')
+			break;
+		line++;
+	}
+
+	if (c == '=')
+		*line++ = 0;
+	val = line;
+
+	while ((c = *line) != 0) {
+		if (isspace(c))
+			break;
+		line++;
+	}
+	if (c)
+		*line++ = 0;
+
+	fn(fndata, key, val);
+	return line;
+}
+
+static int cylinder_index, weightsystem_index;
+
+static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
+{
+	cylinder_t *cylinder = _cylinder;
+	if (!strcmp(key, "vol")) {
+		cylinder->type.size = get_volume(value);
+		return;
+	}
+	if (!strcmp(key, "workpressure")) {
+		cylinder->type.workingpressure = get_pressure(value);
+		return;
+	}
+	/* This is handled by the "get_utf8()" */
+	if (!strcmp(key, "description"))
+		return;
+	if (!strcmp(key, "o2")) {
+		cylinder->gasmix.o2 = get_fraction(value);
+		return;
+	}
+	if (!strcmp(key, "he")) {
+		cylinder->gasmix.he = get_fraction(value);
+		return;
+	}
+	if (!strcmp(key, "start")) {
+		cylinder->start = get_pressure(value);
+		return;
+	}
+	if (!strcmp(key, "end")) {
+		cylinder->end = get_pressure(value);
+		return;
+	}
+	report_error("Unknown cylinder key/value pair (%s/%s)", key, value);
+}
+
+static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
+{
+	struct dive *dive = _dive;
+	cylinder_t *cylinder = dive->cylinder + cylinder_index;
+
+	cylinder_index++;
+	cylinder->type.description = get_utf8(str);
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_cylinder_keyvalue, cylinder, line);
+	}
+}
+
+static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
+{
+	weightsystem_t *ws = _ws;
+	if (!strcmp(key, "weight")) {
+		ws->weight = get_weight(value);
+		return;
+	}
+	/* This is handled by the "get_utf8()" */
+	if (!strcmp(key, "description"))
+		return;
+	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value);
+}
+
+static void parse_dive_weightsystem(char *line, struct membuffer *str, void *_dive)
+{
+	struct dive *dive = _dive;
+	weightsystem_t *ws = dive->weightsystem + weightsystem_index;
+
+	weightsystem_index++;
+	ws->description = get_utf8(str);
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, ws, line);
+	}
+}
 
 static int match_action(char *line, struct membuffer *str, void *data,
 	struct keyword_action *action, unsigned nr_action)
@@ -212,8 +338,10 @@ report_error("Unmatched action '%s'", line);
 }
 
 /* FIXME! We should do the array thing here too. */
-static void parse_sample_keyvalue(struct sample *sample, const char *key, const char *value)
+static void parse_sample_keyvalue(void *_sample, const char *key, const char *value)
 {
+	struct sample *sample = _sample;
+
 	if (!strcmp(key, "sensor")) {
 		sample->sensor = atoi(value);
 		return;
@@ -252,34 +380,7 @@ static void parse_sample_keyvalue(struct sample *sample, const char *key, const 
 		sample->bearing = atoi(value);
 		return;
 	}
-	report_error("Unexpected sample key/value pair: '%s'='%s'\n", key, value);
-}
-
-/* Parse key=val parts of the samples */
-static char *parse_sample_entry(struct sample *sample, char *line)
-{
-	char *key = line, *val, c;
-
-	while ((c = *line) != 0) {
-		if (isspace(c) || c == '=')
-			break;
-		line++;
-	}
-
-	if (c == '=')
-		*line++ = 0;
-	val = line;
-
-	while ((c = *line) != 0) {
-		if (isspace(c))
-			break;
-		line++;
-	}
-	if (c)
-		*line++ = 0;
-
-	parse_sample_keyvalue(sample, key, val);
-	return line;
+	report_error("Unexpected sample key/value pair (%s/%s)", key, value);
 }
 
 static char *parse_sample_unit(struct sample *sample, double val, char *unit)
@@ -351,7 +452,7 @@ static void sample_parser(char *line, struct divecomputer *dc)
 			break;
 		/* Less common sample entries have a name */
 		if (c >= 'a' && c <= 'z') {
-			line = parse_sample_entry(sample, line);
+			line = parse_keyvalue_entry(parse_sample_keyvalue, sample, line);
 		} else {
 			const char *end;
 			double val = ascii_strtod(line, &end);
@@ -871,6 +972,7 @@ static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, c
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		dive->number = atoi(suffix+1);
+	cylinder_index = weightsystem_index = 0;
 	for_each_line(blob, dive_parser, active_dive);
 	git_blob_free(blob);
 	return 0;
