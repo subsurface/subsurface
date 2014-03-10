@@ -664,11 +664,48 @@ static struct dir *mktree(struct dir *dir, const char *fmt, ...)
 	return subdir;
 }
 
+static void save_one_device(void *_b, const char *model, uint32_t deviceid,
+	const char *nickname, const char *serial, const char *firmware)
+{
+	struct membuffer *b = _b;
+
+	if (nickname && !strcmp(model, nickname))
+		nickname = NULL;
+	if (serial && !*serial) serial = NULL;
+	if (firmware && !*firmware) firmware = NULL;
+	if (nickname && !*nickname) nickname = NULL;
+	if (!nickname && !serial && !firmware)
+		return;
+
+	show_utf8(b, "divecomputerid ", model, "");
+	put_format(b, " deviceid=%08x", deviceid);
+	show_utf8(b, " serial=", serial, "");
+	show_utf8(b, " firmware=", firmware, "");
+	show_utf8(b, " nickname=", nickname, "");
+	put_string(b, "\n");
+}
+
+#define VERSION 2
+
+static void save_settings(git_repository *repo, struct dir *tree)
+{
+	struct membuffer b = { 0 };
+
+	show_utf8(&b, "subsurface ", VERSION_STRING, "\n");
+	put_format(&b, "version %d\n", VERSION);
+	call_for_each_dc(&b, save_one_device);
+	cond_put_format(autogroup, &b, "autogroup\n");
+
+	blob_insert(repo, tree, &b, "00-Subsurface");
+}
+
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only)
 {
 	int i;
 	struct dive *dive;
 	dive_trip_t *trip;
+
+	save_settings(repo, root);
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
