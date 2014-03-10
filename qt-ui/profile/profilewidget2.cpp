@@ -464,19 +464,19 @@ void ProfileWidget2::fixBackgroundPos()
 {
 	if (currentState != EMPTY)
 		return;
-	QPixmap toBeScaled;
-	if (!backgrounds.keys().contains(backgroundFile)) {
-		backgrounds[backgroundFile] = QPixmap(backgroundFile);
-	}
-	toBeScaled = backgrounds[backgroundFile];
-	QPixmap p = toBeScaled.scaledToHeight(viewport()->height());
+	QPixmap toBeScaled = QPixmap(backgroundFile);
+	QPixmap p = toBeScaled.scaledToHeight(viewport()->height() - 40, Qt::SmoothTransformation);
 	int x = viewport()->width() / 2 - p.width() / 2;
+	int y = viewport()->height() / 2 - p.height() / 2;
 	background->setPixmap(p);
 	background->setX(mapToScene(x, 0).x());
+	background->setY(mapToScene(y, 20).y());
 }
 
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
+	if (currentState == EMPTY)
+		return;
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	double scaleFactor = 1.15;
 	if (event->delta() > 0 && zoomLevel < 20) {
@@ -495,7 +495,7 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 {
 	/* since we cannot use translate() directly on the scene we hack on
  * the scroll bars (hidden) functionality */
-	if (!zoomLevel)
+	if (!zoomLevel || currentState == EMPTY)
 		return;
 	QScrollBar *vs = verticalScrollBar();
 	QScrollBar *hs = horizontalScrollBar();
@@ -534,17 +534,18 @@ void ProfileWidget2::setEmptyState()
 		return;
 
 	dataModel->clear();
-	backgroundFile = QString(":poster%1").arg(rand() % 3 + 1);
 	currentState = EMPTY;
+
+	backgroundFile = QString(":poster");
 	fixBackgroundPos();
-	profileYAxis->setPos(itemPos.depth.pos.off);
-	gasYAxis->setPos(itemPos.partialPressure.pos.off);
-	timeAxis->setPos(itemPos.time.pos.off);
-	background->setY(itemPos.background.on.y());
 	background->setVisible(true);
+
+	profileYAxis->setVisible(false);
+	gasYAxis->setVisible(false);
+	timeAxis->setVisible(false);
+	temperatureAxis->setVisible(false);
+	cylinderPressureAxis->setVisible(false);
 	toolTipItem->setVisible(false);
-	temperatureAxis->setPos(itemPos.temperature.pos.off);
-	cylinderPressureAxis->setPos(itemPos.cylinder.pos.off);
 	meanDepth->setVisible(false);
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
@@ -572,6 +573,11 @@ void ProfileWidget2::setProfileState()
 
 	background->setVisible(false);
 	toolTipItem->setVisible(true);
+	profileYAxis->setVisible(true);
+	gasYAxis->setVisible(true);
+	timeAxis->setVisible(true);
+	temperatureAxis->setVisible(true);
+	cylinderPressureAxis->setVisible(true);
 
 	profileYAxis->setPos(itemPos.depth.pos.on);
 	QSettings s;

@@ -93,7 +93,6 @@ private:
 	DivePlotDataModel *dataModel;
 	State currentState;
 	int zoomLevel;
-	QHash<QString, QPixmap> backgrounds;
 	DivePixmapItem *background;
 	QString backgroundFile;
 	ToolTipItem *toolTipItem;
