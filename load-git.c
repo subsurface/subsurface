@@ -79,6 +79,11 @@ static pressure_t get_pressure(const char *line)
 	return p;
 }
 
+static int get_salinity(const char *line)
+{
+	return rint(10*ascii_strtod(line, NULL));
+}
+
 static fraction_t get_fraction(const char *line)
 {
 	fraction_t f;
@@ -494,6 +499,9 @@ static void parse_dc_model(char *line, struct membuffer *str, void *_dc)
 static void parse_dc_surfacepressure(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
 
+static void parse_dc_salinity(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->salinity = get_salinity(line); }
+
 static void parse_dc_surfacetime(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->surfacetime = get_duration(line); }
 
@@ -647,7 +655,7 @@ struct keyword_action dc_action[] = {
 #undef D
 #define D(x) { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(deviceid), D(diveid), D(duration),
-	D(event), D(maxdepth), D(meandepth), D(model),
+	D(event), D(maxdepth), D(meandepth), D(model), D(salinity),
 	D(surfacepressure), D(surfacetime), D(time), D(watertemp),
 };
 
