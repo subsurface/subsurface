@@ -783,7 +783,7 @@ static const char *parse_one_string(const char *buf, const char *end, struct mem
 }
 
 typedef void (line_fn_t)(char *, struct membuffer *, void *);
-#define MAXLINE 100
+#define MAXLINE 500
 static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, void *fndata, struct membuffer *b)
 {
 	const char *end = buf + size;
