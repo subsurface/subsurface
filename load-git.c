@@ -401,7 +401,7 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 		end++;
 	}
 
-	/* The units are "°C", "m" or "bar", so let's just look at the first character */
+	/* The units are "Â°C", "m" or "bar", so let's just look at the first character */
 	switch (*unit) {
 	case 'm':
 		sample->depth.mm = rint(1000*val);
@@ -440,7 +440,7 @@ static struct sample *new_sample(struct divecomputer *dc)
 
 static void sample_parser(char *line, struct divecomputer *dc)
 {
-	int m,s;
+	int m, s = 0;
 	struct sample *sample = new_sample(dc);
 
 	m = strtol(line, &line, 10);
@@ -530,7 +530,7 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 
 static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 {
-	int m, s;
+	int m, s = 0;
 	const char *name;
 	struct divecomputer *dc = _dc;
 	struct event event = { 0 };
