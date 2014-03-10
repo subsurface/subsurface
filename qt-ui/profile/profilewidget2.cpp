@@ -61,6 +61,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	zoomLevel(0),
 	background(new DivePixmapItem()),
 	toolTipItem(new ToolTipItem()),
+	isPlotZoomed(prefs.zoomed_plot),
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
@@ -78,7 +79,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	po2GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
-	isPlotZoomed(prefs.zoomed_plot),
 	rulerItem(new RulerItem2())
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));

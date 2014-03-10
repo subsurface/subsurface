@@ -64,10 +64,10 @@ QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &v
 	return QGraphicsEllipseItem::itemChange(change, value);
 }
 
-RulerItem2::RulerItem2() : timeAxis(NULL),
-	depthAxis(NULL),
-	source(new RulerNodeItem2()),
+RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	dest(new RulerNodeItem2()),
+	timeAxis(NULL),
+	depthAxis(NULL),
 	textItem(new QGraphicsSimpleTextItem(this))
 {
 	memset(&pInfo, 0, sizeof(pInfo));

@@ -64,9 +64,9 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	max(0),
 	interval(1),
 	tick_size(0),
-	labelScale(1.0),
 	textVisibility(true),
 	lineVisibility(true),
+	labelScale(1.0),
 	line_size(1)
 {
 	setPen(gridPen());
