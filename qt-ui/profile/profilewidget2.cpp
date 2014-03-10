@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QScrollBar>
+#include <QtCore/qmath.h>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -59,6 +60,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	dataModel(new DivePlotDataModel(this)),
 	currentState(INVALID),
 	zoomLevel(0),
+	zoomFactor(1.15),
 	background(new DivePixmapItem()),
 	toolTipItem(new ToolTipItem()),
 	isPlotZoomed(prefs.zoomed_plot),
@@ -320,6 +322,14 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	if (!d)
 		return;
 
+	// restore default zoom level and tooltip position
+	if (zoomLevel) {
+		const qreal defScale = 1.0 / qPow(zoomFactor, (qreal)zoomLevel);
+		scale(defScale, defScale);
+		zoomLevel = 0;
+	}
+	toolTipItem->setPos(0, 0);
+
 	// No need to do this again if we are already showing the same dive
 	// computer of the same dive, so we check the unique id of the dive
 	// and the selected dive computer number against the ones we are
@@ -478,13 +488,12 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 	if (currentState == EMPTY)
 		return;
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
-	double scaleFactor = 1.15;
 	if (event->delta() > 0 && zoomLevel < 20) {
-		scale(scaleFactor, scaleFactor);
+		scale(zoomFactor, zoomFactor);
 		zoomLevel++;
 	} else if (event->delta() < 0 && zoomLevel > 0) {
 		// Zooming out
-		scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+		scale(1.0 / zoomFactor, 1.0 / zoomFactor);
 		zoomLevel--;
 	}
 	scrollViewTo(event->pos());
