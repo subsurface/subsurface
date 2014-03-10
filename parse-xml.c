@@ -221,7 +221,7 @@ enum ParseState {
 };
 static void divetags(char *buffer, void *_tags)
 {
-	struct tag_entry *tags = _tags;
+	struct tag_entry **tags = _tags;
 	int i = 0, start = 0, end = 0;
 	enum ParseState state = FINDEND;
 	int len = buffer ? strlen(buffer) : 0;
@@ -1089,7 +1089,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH("number", get_index, &dive->number))
 		return;
-	if (MATCH("tags", divetags, dive->tag_list))
+	if (MATCH("tags", divetags, &dive->tag_list))
 		return;
 	if (MATCH("tripflag", get_tripflag, &dive->tripflag))
 		return;
@@ -1738,7 +1738,7 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
 	if (data[0])
-		taglist_add_tag(cur_dive->tag_list, data[0]);
+		taglist_add_tag(&cur_dive->tag_list, data[0]);
 
 	return 0;
 }

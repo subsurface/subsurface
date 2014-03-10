@@ -873,9 +873,10 @@ void MainTab::saveTags()
 {
 	EDIT_SELECTED_DIVES(
 	    QString tag;
-	    taglist_clear(mydive->tag_list);
+	    taglist_free(mydive->tag_list);
+	    mydive->tag_list = NULL;
 	    foreach(tag, ui.tagWidget->getBlockStringList())
-		    taglist_add_tag(mydive->tag_list, tag.toUtf8().data()););
+		    taglist_add_tag(&mydive->tag_list, tag.toUtf8().data()););
 }
 
 void MainTab::on_tagWidget_textChanged()

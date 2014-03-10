@@ -166,7 +166,7 @@ static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
 	for (;;) {
 		int taglen = strlen(tag);
 		if (taglen)
-			taglist_add_tag(dive->tag_list, tag);
+			taglist_add_tag(&dive->tag_list, tag);
 		len -= taglen;
 		if (!len)
 			return;

@@ -744,11 +744,8 @@ void delete_single_dive(int idx)
 		free((void *)dive->buddy);
 	if (dive->suit)
 		free((void *)dive->suit);
-	if (dive->tag_list) {
-		taglist_clear(dive->tag_list);
-		/* Remove head of list */
-		free((void *)dive->tag_list);
-	}
+	if (dive->tag_list)
+		taglist_free(dive->tag_list);
 	free(dive);
 }
 

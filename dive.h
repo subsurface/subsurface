@@ -315,7 +315,7 @@ struct tag_entry {
 
 extern struct tag_entry *g_tag_list;
 
-struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag);
+struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag);
 
 /*
  * Writes all divetags in tag_list to buffer, limited by the buffer's (len)gth.
@@ -323,10 +323,8 @@ struct divetag *taglist_add_tag(struct tag_entry *tag_list, const char *tag);
  */
 int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len);
 
-void taglist_init(struct tag_entry **tag_list);
-void taglist_clear(struct tag_entry *tag_list);
 void taglist_init_global();
-
+void taglist_free(struct tag_entry *tag_list);
 
 /*
  * Events are currently pretty meaningless. This is

@@ -111,10 +111,6 @@ static void save_tags(struct membuffer *b, struct tag_entry *tags)
 
 	if (!tags)
 		return;
-	/* The first entry is a dummy, because people don't understand pointers to pointers */
-	tags = tags->next;
-	if (!tags)
-		return;
 	put_string(b, "tags");
 	while (tags) {
 		show_utf8(b, sep, tags->tag->source ? : tags->tag->name, "");

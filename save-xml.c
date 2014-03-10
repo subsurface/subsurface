@@ -332,27 +332,18 @@ static void save_events(struct membuffer *b, struct event *ev)
 	}
 }
 
-static void save_tags(struct membuffer *b, struct tag_entry *tag_list)
+static void save_tags(struct membuffer *b, struct tag_entry *entry)
 {
-	int more = 0;
-	struct tag_entry *tmp = tag_list->next;
-
-	/* Only write tag attribute if the list contains at least one item  */
-	if (tmp != NULL) {
-		put_format(b, " tags='");
-
-		while (tmp != NULL) {
-			if (more)
-				put_format(b, ", ");
+	if (entry) {
+		const char *sep = " tags='";
+		do {
+			struct divetag *tag = entry->tag;
+			put_string(b, sep);
 			/* If the tag has been translated, write the source to the xml file */
-			if (tmp->tag->source != NULL)
-				quote(b, tmp->tag->source, 0);
-			else
-				quote(b, tmp->tag->name, 0);
-			tmp = tmp->next;
-			more = 1;
-		}
-		put_format(b, "'");
+			quote(b, tag->source ?: tag->name, 0);
+			sep = ", ";
+		} while ((entry = entry->next) != NULL);
+		put_string(b, "'");
 	}
 }
 
@@ -416,8 +407,7 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 		put_format(b, " rating='%d'", dive->rating);
 	if (dive->visibility)
 		put_format(b, " visibility='%d'", dive->visibility);
-	if (dive->tag_list != NULL)
-		save_tags(b, dive->tag_list);
+	save_tags(b, dive->tag_list);
 
 	show_date(b, dive->when);
 	put_format(b, " duration='%u:%02u min'>\n",
