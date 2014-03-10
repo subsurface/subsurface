@@ -229,7 +229,7 @@ void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 	struct {
 		int sec;
 		int hr;
-	} hist[3] = { 0 };
+	} hist[3] = {};
 
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
