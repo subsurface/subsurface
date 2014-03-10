@@ -559,6 +559,89 @@ static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
 static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
 { dive_trip_t *trip = _trip; trip->notes = get_utf8(str); }
 
+static void parse_settings_autogroup(char *line, struct membuffer *str, void *_unused)
+{ set_autogroup(1); }
+
+/*
+ * Our versioning is a joke right now, but this is more of an example of what we
+ * *can* do some day. And if we do change the version, this warning will show if
+ * you read with a version of subsurface that doesn't know about it.
+ */
+#define VERSION 2
+static void parse_settings_version(char *line, struct membuffer *str, void *_unused)
+{
+	int version = atoi(line);
+	if (version > VERSION)
+		report_error("Git save file version %d is newer than version %d I know about", version, VERSION);
+}
+
+/* The string in the membuffer is the version string of subsurface that saved things, just FYI */
+static void parse_settings_subsurface(char *line, struct membuffer *str, void *_unused)
+{ }
+
+struct divecomputerid {
+	const char *model;
+	const char *nickname;
+	const char *firmware;
+	const char *serial;
+	const char *cstr;
+	unsigned int deviceid;
+};
+
+static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const char *value)
+{
+	struct divecomputerid *cid = _cid;
+
+	if (*value == '"') {
+		value = cid->cstr;
+		cid->cstr += strlen(cid->cstr)+1;
+	}
+	if (!strcmp(key, "deviceid")) {
+		cid->deviceid = get_hex(value);
+		return;
+	}
+	if (!strcmp(key, "serial")) {
+		cid->serial = value;
+		return;
+	}
+	if (!strcmp(key, "firmware")) {
+		cid->firmware = value;
+		return;
+	}
+	if (!strcmp(key, "nickname")) {
+		cid->nickname = value;
+		return;
+	}
+	report_error("Unknow divecomputerid key/value pair (%s/%s)", key, value);
+}
+
+/*
+ * The 'divecomputerid' is a bit harder to parse than some other things, because
+ * it can have multiple strings (but see the tag parsing for another example of
+ * that) in addition to the non-string entries.
+ *
+ * We keep the "next" string in "id.cstr" and update it as we use it.
+ */
+static void parse_settings_divecomputerid(char *line, struct membuffer *str, void *_unused)
+{
+	struct divecomputerid id = { mb_cstring(str) };
+
+	id.cstr = id.model + strlen(id.model) + 1;
+
+	/* Skip the '"' that stood for the model string */
+	line++;
+
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line);
+	}
+	create_device_node(id.model, id.deviceid, id.serial, id.firmware, id.nickname);
+}
+
 /* These need to be sorted! */
 struct keyword_action dc_action[] = {
 #undef D
@@ -601,6 +684,18 @@ struct keyword_action trip_action[] = {
 static void trip_parser(char *line, struct membuffer *str, void *_trip)
 {
 	match_action(line, str, _trip, trip_action, ARRAY_SIZE(trip_action));
+}
+
+/* These need to be sorted! */
+static struct keyword_action settings_action[] = {
+#undef D
+#define D(x) { #x, parse_settings_ ## x }
+	D(autogroup), D(divecomputerid), D(subsurface), D(version),
+};
+
+static void settings_parser(char *line, struct membuffer *str, void *_unused)
+{
+	match_action(line, str, NULL, settings_action, ARRAY_SIZE(settings_action));
 }
 
 /*
@@ -1028,6 +1123,16 @@ static int parse_trip_entry(git_repository *repo, const git_tree_entry *entry)
 	return 0;
 }
 
+static int parse_settings_entry(git_repository *repo, const git_tree_entry *entry)
+{
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read settings file");
+	for_each_line(blob, settings_parser, NULL);
+	git_blob_free(blob);
+	return 0;
+}
+
 static int walk_tree_file(const char *root, const git_tree_entry *entry, git_repository *repo)
 {
 	struct dive *dive = active_dive;
@@ -1040,6 +1145,8 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 		return parse_dive_entry(repo, entry, name+4);
 	if (trip && !strcmp(name, "00-Trip"))
 		return parse_trip_entry(repo, entry);
+	if (!strcmp(name, "00-Subsurface"))
+		return parse_settings_entry(repo, entry);
 	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
 	return GIT_WALK_SKIP;
 }
