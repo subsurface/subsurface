@@ -132,7 +132,9 @@ void ProfileWidget2::addItemsToScene()
 void ProfileWidget2::setupItemOnScene()
 {
 	background->setZValue(9999);
+	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(timeAxis);
+	rulerItem->setZValue(9997);
 
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
