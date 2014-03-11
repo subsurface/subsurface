@@ -44,6 +44,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),
 	actionPreviousDive(0),
 	helpView(0),
+	yearlyStats(0),
+	yearlyStatsModel(0),
 	state(VIEWALL)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -110,6 +112,13 @@ void MainWindow::refreshDisplay(bool recreateDiveList)
 		ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setFocus();
 	WSInfoModel::instance()->updateInfo();
+	// refresh the yearly stats if the window has an instance
+	if (yearlyStats) {
+		if (yearlyStatsModel)
+			delete yearlyStatsModel;
+		yearlyStatsModel = new YearlyStatisticsModel();
+		yearlyStats->setModel(yearlyStatsModel);
+	}
 }
 
 void MainWindow::current_dive_changed(int divenr)
@@ -386,15 +395,23 @@ void MainWindow::on_actionAutoGroup_triggered()
 
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
-	QTreeView *view = new QTreeView();
-	QAbstractItemModel *model = new YearlyStatisticsModel();
-	view->setModel(model);
-	view->setWindowModality(Qt::NonModal);
-	view->setMinimumWidth(600);
-	view->setAttribute(Qt::WA_QuitOnClose, false);
-	view->setWindowTitle(tr("Yearly Statistics"));
-	view->setWindowIcon(QIcon(":subsurface-icon"));
-	view->show();
+	// create the widget only once
+	if (!yearlyStats) {
+		yearlyStats = new QTreeView();
+		yearlyStats->setWindowModality(Qt::NonModal);
+		yearlyStats->setMinimumWidth(600);
+		yearlyStats->setWindowTitle(tr("Yearly Statistics"));
+		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
+	}
+	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
+	 * class the user needs to close the window/widget and re-open it for it to update.
+	 */
+	if (yearlyStatsModel)
+		delete yearlyStatsModel;
+	yearlyStatsModel = new YearlyStatisticsModel();
+	yearlyStats->setModel(yearlyStatsModel);
+	yearlyStats->raise();
+	yearlyStats->show();
 }
 
 #define BEHAVIOR QList<int>()
@@ -670,6 +687,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	if (helpView && helpView->isVisible()) {
 		helpView->close();
 		helpView->deleteLater();
+	}
+
+	if (yearlyStats && yearlyStats->isVisible()) {
+		yearlyStats->close();
+		yearlyStats->deleteLater();
+		yearlyStatsModel->deleteLater();
 	}
 
 	if (unsaved_changes() && (askSaveChanges() == false)) {
