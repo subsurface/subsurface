@@ -105,6 +105,11 @@ void PreferencesDialog::setUiFromPrefs()
 	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
 	if (languages.count())
 		ui.languageView->setCurrentIndex(languages.first());
+
+	s.endGroup();
+	s.beginGroup("Animations");
+	int animVelocity = s.value("animation_speed",500).toInt();
+	ui.velocitySlider->setValue(animVelocity);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -218,6 +223,8 @@ void PreferencesDialog::syncSettings()
 	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
 	s.endGroup();
 
+	s.beginGroup("Animations");
+	s.setValue("animation_speed",ui.velocitySlider->value());
 	loadSettings();
 	emit settingsChanged();
 }
@@ -289,6 +296,10 @@ void PreferencesDialog::loadSettings()
 		prefs.font_size = defaultFont.pointSizeF();
 	GET_INT("displayinvalid", display_invalid_dives);
 	s.endGroup();
+
+	s.beginGroup("Animations");
+	int animVelocity = s.value("animation_speed",500).toInt();
+	ui.velocitySlider->setValue(animVelocity);
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)

@@ -26,6 +26,7 @@ namespace Animations
 	void moveTo(QObject *obj, qreal x, qreal y)
 	{
 		QSettings s;
+		s.beginGroup("Animations");
 		int msecs = s.value("animation_speed", 500).toInt();
 		if (msecs != 0){
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
