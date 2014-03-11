@@ -687,7 +687,6 @@ static void save_settings(git_repository *repo, struct dir *tree)
 {
 	struct membuffer b = { 0 };
 
-	show_utf8(&b, "subsurface ", VERSION_STRING, "\n");
 	put_format(&b, "version %d\n", VERSION);
 	call_for_each_dc(&b, save_one_device);
 	cond_put_format(autogroup, &b, "autogroup\n");
