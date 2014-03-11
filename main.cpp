@@ -48,8 +48,10 @@ int main(int argc, char **argv)
 			files.push_back(QString(prefs.default_filename));
 	}
 	parse_xml_exit();
-	MainWindow::instance()->loadFiles(files);
-	MainWindow::instance()->importFiles(importedFiles);
+	MainWindow *m = MainWindow::instance();
+	m->setLoadedWithFiles( !files.isEmpty() || !importedFiles.isEmpty());
+	m->loadFiles(files);
+	m->importFiles(importedFiles);
 	if (!quit)
 		run_ui();
 	exit_ui();

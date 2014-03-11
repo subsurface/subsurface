@@ -316,11 +316,22 @@ void ProfileWidget2::setupSceneAndFlags()
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDives(QList<dive *> dives)
 {
+	static bool firstCall = true;
+
 	// I Know that it's a list, but currently we are
 	// using just the first.
 	struct dive *d = dives.first();
 	if (!d)
 		return;
+
+	int animSpeedBackup = -1;
+	if(firstCall && MainWindow::instance()->filesFromCommandLine()){
+		QSettings s;
+		s.beginGroup("Animations");
+		animSpeedBackup = s.value("animation_speed",500).toInt();
+		s.setValue("animation_speed",0);
+		firstCall = false;
+	}
 
 	// restore default zoom level and tooltip position
 	if (zoomLevel) {
@@ -431,6 +442,11 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds;
 	}
 	diveComputerText->setText(currentdc->model);
+	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1){
+		QSettings s;
+		s.beginGroup("Animations");
+		s.setValue("animation_speed",animSpeedBackup);
+	}
 }
 
 void ProfileWidget2::settingsChanged()

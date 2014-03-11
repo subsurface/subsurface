@@ -78,6 +78,8 @@ public:
 	void cleanUpEmpty();
 	void setToolButtonsEnabled(bool enabled);
 	ProfileWidget2 *graphics() const;
+	void setLoadedWithFiles(bool filesFromCommandLine);
+	bool filesFromCommandLine() const;
 private
 slots:
 	/* file menu action */
@@ -165,6 +167,7 @@ private:
 	void saveSplitterSizes();
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
+	bool filesAsArguments;
 };
 
 MainWindow *mainWindow();
