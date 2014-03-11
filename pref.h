@@ -40,6 +40,7 @@ struct preferences {
 	short show_sac;
 	bool display_unused_tanks;
 	bool zoomed_plot;
+	bool text_label_with_units;
 };
 enum unit_system_values {
 	METRIC,

@@ -29,7 +29,8 @@ struct preferences default_prefs = {
 	.font_size = -1,
 	.display_invalid_dives = false,
 	.show_sac = false,
-	.display_unused_tanks = false
+	.display_unused_tanks = false,
+	.text_label_with_units = false
 };
 
 struct units *get_units()

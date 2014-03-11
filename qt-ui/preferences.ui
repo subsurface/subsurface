@@ -478,7 +478,21 @@
             </widget>
            </item>
           </layout>
-         </item>
+	 </item>
+	 <item>
+	  <layout class="QHBoxLayout" name="text_label_with_units_hbox">
+	   <item>
+	    <widget class="QCheckBox" name="text_label_with_units">
+	     <property name="enabled">
+	      <bool>true</bool>
+	     </property>
+	     <property name="text">
+	      <string>Show units in text labels</string>
+	     </property>
+	    </widget>
+	   </item>
+	  </layout>
+	 </item>
          <item>
           <spacer name="verticalSpacer">
            <property name="orientation">

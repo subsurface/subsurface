@@ -201,6 +201,7 @@ void MainTab::hideMessage()
 	ui.diveEquipmentMessage->animatedHide();
 	ui.diveInfoMessage->animatedHide();
 	ui.diveStatisticsMessage->animatedHide();
+	updateTextLabels();
 }
 
 void MainTab::closeMessage()
@@ -222,6 +223,18 @@ void MainTab::displayMessage(QString str)
 	ui.diveInfoMessage->animatedShow();
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
+	updateTextLabels(true);
+}
+
+void MainTab::updateTextLabels(bool showUnits)
+{
+	if (showUnits && prefs.text_label_with_units) {
+		ui.airTempLabel->setText(QApplication::translate("MainTab", "Air temp [%1]").arg(get_temp_unit()));
+		ui.waterTempLabel->setText(QApplication::translate("MainTab", "Water temp [%1]").arg(get_temp_unit()));
+	} else {
+		ui.airTempLabel->setText(QApplication::translate("MainTab", "Air temp", 0, QApplication::UnicodeUTF8));
+		ui.waterTempLabel->setText(QApplication::translate("MainTab", "Water temp", 0, QApplication::UnicodeUTF8));
+	}
 }
 
 void MainTab::enableEdition(EditMode newEditMode)
