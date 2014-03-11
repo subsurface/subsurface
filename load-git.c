@@ -836,6 +836,26 @@ static struct divecomputer *active_dc;
 static struct dive *active_dive;
 static dive_trip_t *active_trip;
 
+static void finish_active_trip(void)
+{
+	dive_trip_t *trip = active_trip;
+
+	if (trip) {
+		active_trip = NULL;
+		insert_trip(&trip);
+	}
+}
+
+static void finish_active_dive(void)
+{
+	struct dive *dive = active_dive;
+
+	if (dive) {
+		active_dive = NULL;
+		record_dive(dive);
+	}
+}
+
 static struct dive *create_new_dive(timestamp_t when)
 {
 	struct dive *dive = alloc_dive();
@@ -888,6 +908,7 @@ static int dive_trip_directory(const char *root, const char *name)
 	dd = atoi(name);
 	if (!validate_date(yyyy, mm, dd))
 		return GIT_WALK_SKIP;
+	finish_active_trip();
 	active_trip = create_new_trip(yyyy, mm, dd);
 	return GIT_WALK_OK;
 }
@@ -941,7 +962,7 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 	 * of a pathname of the form 'yyyy/mm/'.
 	 */
 	if (strlen(root) == 8)
-		active_trip = NULL;
+		finish_active_trip();
 
 	/*
 	 * Get the date. The day of the month is in the dive directory
@@ -969,8 +990,7 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 	tm.tm_mon = mm-1;
 	tm.tm_mday = dd;
 
-	if (active_dive)
-		record_dive(active_dive);
+	finish_active_dive();
 	active_dive = create_new_dive(utc_mktime(&tm));
 	return GIT_WALK_OK;
 }
@@ -1220,8 +1240,7 @@ int git_load_dives(char *where)
 
 	ret = do_git_load(repo, branch);
 	git_repository_free(repo);
-	if (active_dive)
-		record_dive(active_dive);
-	active_dive = NULL;
+	finish_active_dive();
+	finish_active_trip();
 	return ret;
 }
