@@ -651,6 +651,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 	event->accept();
 	writeSettings();
+	QApplication::closeAllWindows();
 }
 
 DiveListView *MainWindow::dive_list()
