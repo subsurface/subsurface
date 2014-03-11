@@ -774,6 +774,11 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
 			return report_error("Unable to look up parent in branch '%s'", branch);
+
+		/* If the parent commit has the same tree ID, do nothing */
+		if (git_oid_equal(tree_id, git_commit_tree_id((const git_commit *) parent)))
+			return 0;
+
 		/* all good */
 		break;
 	}
