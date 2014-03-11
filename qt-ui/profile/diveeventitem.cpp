@@ -123,7 +123,7 @@ void DiveEventItem::recalculatePos(bool instant)
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
 	if (!instant)
-		Animations::moveTo(this, x, y, 500);
+		Animations::moveTo(this, x, y);
 	else
 		setPos(x, y);
 }
