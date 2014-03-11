@@ -166,6 +166,23 @@ void MainWindow::cleanUpEmpty()
 		setTitle(MWTF_DEFAULT);
 }
 
+void MainWindow::setToolButtonsEnabled(bool enabled)
+{
+	ui.profPO2->setEnabled(enabled);
+	ui.profPn2->setEnabled(enabled);
+	ui.profPhe->setEnabled(enabled);
+	ui.profDcCeiling->setEnabled(enabled);
+	ui.profCalcCeiling->setEnabled(enabled);
+	ui.profCalcAllTissues->setEnabled(enabled);
+	ui.profIncrement3m->setEnabled(enabled);
+	ui.profMod->setEnabled(enabled);
+	ui.profEad->setEnabled(enabled);
+	ui.profNdl_tts->setEnabled(enabled);
+	ui.profSAC->setEnabled(enabled);
+	ui.profRuler->setEnabled(enabled);
+	ui.profScaled->setEnabled(enabled);
+}
+
 void MainWindow::on_actionClose_triggered()
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||

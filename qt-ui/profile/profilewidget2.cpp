@@ -544,6 +544,7 @@ void ProfileWidget2::setEmptyState()
 
 	dataModel->clear();
 	currentState = EMPTY;
+	MainWindow::instance()->setToolButtonsEnabled(false);
 
 	backgroundFile = QString(":poster");
 	fixBackgroundPos();
@@ -577,6 +578,7 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	currentState = PROFILE;
+	MainWindow::instance()->setToolButtonsEnabled(true);
 	toolTipItem->readPos();
 	setBackgroundBrush(getColor(::BACKGROUND));
 
