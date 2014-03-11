@@ -50,6 +50,7 @@ private:
 	int paint_direction;
 	DiveCartesianAxis *timeAxis;
 	DiveCartesianAxis *depthAxis;
+	QGraphicsRectItem *textItemBack;
 	QGraphicsSimpleTextItem *textItem;
 };
 #endif
