@@ -151,7 +151,6 @@ void init_ui(int *argcp, char ***argvp)
 
 	window = new MainWindow();
 	window->loadRecentFiles(&s);
-	window->show();
 	if (existing_filename && existing_filename[0] != '\0')
 		window->setTitle(MWTF_FILENAME);
 	else
@@ -162,6 +161,7 @@ void init_ui(int *argcp, char ***argvp)
 
 void run_ui(void)
 {
+	window->show();
 	application->exec();
 }
 
