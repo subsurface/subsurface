@@ -78,7 +78,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.divePlannerWidget->settingsChanged();
 
 #ifndef ENABLE_PLANNER
-	ui.menuLog->removeAction(ui.actionDivePlanner);
+//	ui.menuLog->removeAction(ui.actionDivePlanner);
 #endif
 }
 

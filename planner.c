@@ -382,9 +382,10 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2)
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2, bool entered)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, o2, he, po2);
+	dp->entered = entered;
 	add_to_end_of_diveplan(diveplan, dp);
 	return (dp);
 }
@@ -620,7 +621,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!add_deco) {
 		transitiontime = depth / 75; /* this still needs to be made configurable */
-		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2);
+		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2, false);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
@@ -662,7 +663,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx] / 1000.0);
 #endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he, po2);
+		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he, po2, false);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
@@ -697,13 +698,13 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		       stoplevels[stopidx] / 1000.0, ceiling / 1000.0);
 #endif
 		if (wait_time)
-			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2);
+			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2, false);
 		/* right now all the transitions are at 30ft/min - this needs to be configurable */
 		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
 #if DEBUG_PLAN & 2
 		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx - 1] / 1000.0);
 #endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he, po2);
+		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he, po2, false);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan, error_string_p);

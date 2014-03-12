@@ -392,16 +392,16 @@ void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent *event)
 
 	int minutes = rint(timeLine->valueAt(mappedPos));
 	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	plannerModel->addStop(milimeters, minutes * 60, -1, 0, 0);
+	plannerModel->addStop(milimeters, minutes * 60, -1, 0, 0, true);
 }
 
 void DivePlannerPointsModel::createSimpleDive()
 {
 	//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, O2_IN_AIR, 0, 0);
+	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, O2_IN_AIR, 0, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, O2_IN_AIR, 0, 0, true);
+	plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, O2_IN_AIR, 0, 0, true);
+	plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, O2_IN_AIR, 0, 0, true);
 }
 
 void DivePlannerPointsModel::loadFromDive(dive *d)
@@ -422,7 +422,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (s.time.seconds == 0)
 			continue;
 		get_gas_from_events(&backupDive.dc, lasttime, &o2, &he);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0);
+		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0, true);
 		lasttime = s.time.seconds;
 	}
 }
@@ -521,11 +521,15 @@ void DivePlannerGraphics::drawProfile()
 			item->setPen(QPen(QBrush(Qt::red), 0));
 			scene()->addItem(item);
 			lines << item;
+			if (dp->depth)
+				qDebug() << "Time: " << dp->time / 60 << " depth: " << dp->depth / 1000;
 		}
 		lastx = xpos;
 		lasty = ypos;
 		poly.append(QPointF(lastx, lasty));
 	}
+
+	qDebug() << " ";
 
 	diveBg->setPolygon(poly);
 	QRectF b = poly.boundingRect();
@@ -1186,7 +1190,7 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 	return false;
 }
 
-int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint)
+int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint, bool entered)
 {
 	int row = divepoints.count();
 	if (seconds == 0 && milimeters == 0 && row != 0) {
@@ -1253,6 +1257,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 	point.o2 = o2;
 	point.he = he;
 	point.po2 = ccpoint;
+	point.entered = entered;
 	divepoints.append(point);
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	endInsertRows();
@@ -1410,7 +1415,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2);
+		p.entered = true;
+		plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2, true);
 	}
 	char *cache = NULL;
 	tempDive = NULL;

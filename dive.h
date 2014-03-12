@@ -811,7 +811,7 @@ struct diveplan {
 	struct divedatapoint *dp;
 };
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2);
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2, bool entered);
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);
