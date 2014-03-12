@@ -204,7 +204,7 @@ QTTRANSLATIONS = \
 	qt_sv.qm \
 	qt_zh_TW.qm
 
-doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation$$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
+doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
