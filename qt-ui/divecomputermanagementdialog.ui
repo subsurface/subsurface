@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>DiveComputerManagementDialog</class>
  <widget class="QDialog" name="DiveComputerManagementDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
