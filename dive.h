@@ -685,8 +685,11 @@ extern void save_dives(const char *filename);
 extern void save_dives_logic(const char *filename, bool select_only);
 extern void save_dive(FILE *f, struct dive *dive);
 extern void export_dives_uddf(const char *filename, const bool selected);
-extern int git_save_dives(int fd, bool select_only);
-extern int git_load_dives(char *where);
+
+struct git_repository;
+extern struct git_repository *is_git_repository(const char *filename, const char **branchp);
+extern int git_save_dives(struct git_repository *, const char *, bool select_only);
+extern int git_load_dives(struct git_repository *, const char *);
 
 extern int subsurface_rename(const char *path, const char *newpath);
 extern int subsurface_open(const char *path, int oflags, mode_t mode);

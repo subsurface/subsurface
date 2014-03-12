@@ -854,57 +854,61 @@ static int do_git_save(git_repository *repo, const char *branch, bool select_onl
 	return 0;
 }
 
-int git_save_dives(int fd, bool select_only)
+/*
+ * If it's not a git repo, return NULL. Be very conservative.
+ */
+struct git_repository *is_git_repository(const char *filename, const char **branchp)
 {
-	int len, ret;
+	int flen, blen, ret;
 	struct stat st;
-	static char buffer[2048];
 	git_repository *repo;
 	char *loc, *branch;
 
-	if (fstat(fd, &st) < 0)
-		return 0;
-	if (st.st_size >= sizeof(buffer))
-		return 0;
-	len = st.st_size;
-	if (read(fd, buffer, len) != len)
-		return 0;
-	buffer[len] = 0;
-	if (len < 4)
-		return 0;
-	if (memcmp(buffer, "git ", 4))
-		return 0;
+	flen = strlen(filename);
+	if (!flen || filename[--flen] != ']')
+		return NULL;
 
-	/* Ok, it's a git pointer, we're going to follow it */
-	close(fd);
+	/* Find the matching '[' */
+	blen = 0;
+	while (flen && filename[--flen] != '[')
+		blen++;
 
-	/* Trim any whitespace at the end */
-	while (isspace(buffer[len-1]))
-		buffer[--len] = 0;
+	if (!flen)
+		return NULL;
 
-	/* skip the "git" part and any whitespace from the beginning */
-	loc = buffer+3;
-	len -= 3;
-	while (isspace(*loc)) {
-		loc++;
-		len--;
+	loc = malloc(flen+1);
+	if (!loc)
+		return NULL;
+	memcpy(loc, filename, flen);
+	loc[flen] = 0;
+
+	branch = malloc(blen+1);
+	if (!branch) {
+		free(loc);
+		return NULL;
+	}
+	memcpy(branch, filename+flen+1, blen);
+	branch[blen] = 0;
+
+	if (stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
+		free(loc);
+		return NULL;
 	}
 
-	if (!len)
-		return report_error("Invalid git pointer");
+	ret = git_repository_open(&repo, loc);
+	free(loc);
+	if (ret < 0) {
+		free(branch);
+		return NULL;
+	}
+	*branchp = branch;
+	return repo;
+}
 
-	/*
-	 * The result should be a git directory and branch name, like
-	 *  "/home/torvalds/scuba:linus"
-	 */
-	branch = strrchr(loc, ':');
-	if (branch)
-		*branch++ = 0;
-
-	if (git_repository_open(&repo, loc))
-		return report_error("Unable to open git repository at '%s' (branch '%s')", loc, branch);
-
-	ret = do_git_save(repo, branch, select_only);
+int git_save_dives(struct git_repository *repo, const char *branch, bool select_only)
+{
+	int ret = do_git_save(repo, branch, select_only);
 	git_repository_free(repo);
-	return ret < 0 ? ret : 1;
+	free((void *)branch);
+	return ret;
 }

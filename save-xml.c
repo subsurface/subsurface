@@ -597,21 +597,14 @@ void save_dives_logic(const char *filename, const bool select_only)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;
-	int fd;
+	void *git;
+	const char *branch;
 
-	/*
-	 * See if the file already exists, and if so,
-	 * perhaps it's a git save-file pointer?
-	 *
-	 * Otherwise, try to back it up.
-	 */
-	fd = subsurface_open(filename, O_RDONLY, 0);
-	if (fd >= 0) {
-		if (git_save_dives(fd, select_only))
-			return;
-		close(fd);
-		try_to_backup(filename);
-	}
+	git = is_git_repository(filename, &branch);
+	if (git && !git_save_dives(git, branch, select_only))
+		return;
+
+	try_to_backup(filename);
 
 	save_dives_buffer(&buf, select_only);
 

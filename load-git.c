@@ -1214,32 +1214,19 @@ static int do_git_load(git_repository *repo, const char *branch)
 	return ret;
 }
 
-int git_load_dives(char *where)
+/*
+ * Like git_save_dives(), this silently returns a negative
+ * value if it's not a git repository at all (so that you
+ * can try to load it some other way.
+ *
+ * If it is a git repository, we return zero for success,
+ * or report an error and return 1 if the load failed.
+ */
+int git_load_dives(struct git_repository *repo, const char *branch)
 {
-	int ret, len;
-	git_repository *repo;
-	char *loc, *branch;
-
-	/* Jump over the "git" marker */
-	loc = where + 3;
-	while (isspace(*loc))
-		loc++;
-
-	/* Trim whitespace from the end */
-	len = strlen(loc);
-	while (len && isspace(loc[len-1]))
-		loc[--len] = 0;
-
-	/* Find a branch name if there is any */
-	branch = strrchr(loc, ':');
-	if (branch)
-		*branch++ = 0;
-
-	if (git_repository_open(&repo, loc))
-		return report_error("Unable to open git repository at '%s' (branch '%s')", loc, branch);
-
-	ret = do_git_load(repo, branch);
+	int ret = do_git_load(repo, branch);
 	git_repository_free(repo);
+	free((void *)branch);
 	finish_active_dive();
 	finish_active_trip();
 	return ret;
