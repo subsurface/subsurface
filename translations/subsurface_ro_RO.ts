@@ -1,30 +1,30 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" version="2.0">
 <context>
     <name>CylindersModel</name>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Size</source>
-        <translation>Tamaño</translation>
+        <translation>Mărime</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>WorkPress</source>
-        <translation>Pres. trabajo</translation>
+        <translation>Pres. Nom.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>StartPress</source>
-        <translation>Pres. inicial</translation>
+        <translation>Pres. Start</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>EndPress</source>
-        <translation>Pres. final</translation>
+        <translation>Pres. Sfârșit</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
@@ -39,22 +39,22 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="158"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation>Pulsar aquí borrará esta botella</translation>
+        <translation>Făcând click aici veți înlătura acest tub.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="341"/>
         <source>Cylinder cannot be removed</source>
-        <translation>La botella no puede borrarse</translation>
+        <translation>Tubul nu poate fi înlăturat</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="342"/>
         <source>This gas in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation>Gas en uso. Solo  pueden borrarse botellas que no se usan en la inmersión.</translation>
+        <translation>Acest gaz este in uz. Doar tuburile care nu sunt folosite în timpul scufundării pot fi înlăturate.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="488"/>
         <source>psi</source>
-        <translation>psi</translation>
+        <translation>livre pe inch pătrat</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="489"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="513"/>
         <source>cuft</source>
-        <translation>pie³</translation>
+        <translation>picioare cubice</translation>
     </message>
 </context>
 <context>
@@ -77,19 +77,19 @@
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.ui" line="14"/>
         <source>Edit Dive Computer Nicknames</source>
-        <translation>Editar nombres de ordenador de buceo</translation>
+        <translation>Editează Aliasul Computerului de Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="45"/>
         <source>Remove the selected Dive Computer?</source>
-        <translation>¿Quiere eliminar el ordenador seleccionado?</translation>
+        <translation>Înlăturați Computerul de Scufundări selectat?</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="46"/>
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
-        <translation>¿Está seguro de que quiere eliminar 
-el ordenador de buceo seleccionado?</translation>
+        <translation>Sunteți sigur că vreți să înlăturați 
+computerul de scufundări selectat?</translation>
     </message>
 </context>
 <context>
@@ -97,22 +97,22 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1413"/>
         <source>Model</source>
-        <translation>Modelo</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1413"/>
         <source>Device ID</source>
-        <translation>ID del dispositivo</translation>
+        <translation>ID-ul dispozitivului</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1413"/>
         <source>Nickname</source>
-        <translation>Nombre</translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1444"/>
         <source>Clicking here will remove this divecomputer.</source>
-        <translation>Pulsar aquí borrará este ordenador de buceo.</translation>
+        <translation>Făcând click aici veți înlătura acest computer de scufundări.</translation>
     </message>
 </context>
 <context>
@@ -120,7 +120,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="86"/>
         <source>air</source>
-        <translation>aire</translation>
+        <translation>aer</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="88"/>
@@ -130,19 +130,19 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="95"/>
         <source>Bailing out to OC</source>
-        <translation>Cambio de emergencia a OC</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="97"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
-        <translation>comienzo</translation>
+        <translation>început</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="98"/>
         <source> end</source>
         <comment>Starts with space!</comment>
-        <translation>fin</translation>
+        <translation>sfârșit</translation>
     </message>
 </context>
 <context>
@@ -150,7 +150,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveprofileitem.cpp" line="456"/>
         <source>air</source>
-        <translation>aire</translation>
+        <translation>aer</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveprofileitem.cpp" line="457"/>
@@ -168,7 +168,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1243"/>
         <source> cuft/min</source>
-        <translation>Pie³/min</translation>
+        <translation>picioare cubice/min</translation>
     </message>
 </context>
 <context>
@@ -176,112 +176,112 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="48"/>
         <source>Show Search Box</source>
-        <translation>Mostrar ventana de busqueda</translation>
+        <translation>Arată Căsuța de Căutare</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="710"/>
         <source>expand all</source>
-        <translation>Expandir todo</translation>
+        <translation>extinde tot</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="711"/>
         <source>collapse all</source>
-        <translation>Encoger todo</translation>
+        <translation>restrânge tot</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="712"/>
         <source>collapse others</source>
-        <translation>Encoger otros</translation>
+        <translation>restrânge-le pe celelalte</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="714"/>
         <source>remove dive(s) from trip</source>
-        <translation>Borrar inmersión(es) del viaje</translation>
+        <translation>șterge scufundarea (ările) din excursie</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="715"/>
         <source>create new trip above</source>
-        <translation>Crear nuevo viaje arriba</translation>
+        <translation>creează o nouă excursie deasupra</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="716"/>
         <source>add dive(s) to trip immediately above</source>
-        <translation>Añadir inmersión(es) al viaje de arriba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="719"/>
         <source>merge trip with trip above</source>
-        <translation>mezclar viaje con el viaje de arriba</translation>
+        <translation>îmbină excursia cu excursia de deasupra</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="720"/>
         <source>merge trip with trip below</source>
-        <translation>mezclar viaje con el viaje de abajo</translation>
+        <translation>îmbină excursia cu excursia de dedesupt</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="724"/>
         <source>delete dive(s)</source>
-        <translation>Borrar inmersión(es)</translation>
+        <translation>șterge scufundarea (ările)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="726"/>
         <source>mark dive(s) invalid</source>
-        <translation>Marcar inmersión(es) como inválida</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="732"/>
         <source>save As</source>
-        <translation>Guardar como</translation>
+        <translation>salvează ca</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="733"/>
         <source>export As UDDF</source>
-        <translation>Exportar como UDDF</translation>
+        <translation>exportă ca UDDF</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="734"/>
         <source>shift times</source>
-        <translation>Desplazar horas</translation>
+        <translation>mută timpurile</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="735"/>
         <source>load images</source>
-        <translation>Carga imágenes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="738"/>
         <source>upload dive(s) to divelogs.de</source>
-        <translation>Subir inmersión(es) a divelogs.de</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="764"/>
         <source>Save Dives As...</source>
-        <translation>Guardar las inmersiones como…</translation>
+        <translation>Salvează Scufundările ca...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="783"/>
         <source>Save File as</source>
-        <translation>Guardar archivo como</translation>
+        <translation>Salvează Fișierul ca</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="784"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
-        <translation>Archivos UDDF (*.uddf *.UDDF)</translation>
+        <translation>Fișiere UDDF (*.uddf *.UDDF)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="801"/>
         <source>Open Image Files</source>
-        <translation>Abrir archivo de imagen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="801"/>
         <source>Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation>Archivos de imagen (</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="730"/>
         <source>merge selected dives</source>
-        <translation>Mezclar las inmersiones seleccionadas</translation>
+        <translation>îmbină scufundările selectate</translation>
     </message>
 </context>
 <context>
@@ -289,44 +289,44 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="14"/>
         <source>Import dive log file</source>
-        <translation>Importar archivo de registro</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="36"/>
         <source>Import CSV Dive Log Files</source>
-        <translation>Importar archivo de registro CSV</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="50"/>
         <source>CSV options</source>
-        <translation>Opciones de CSV</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="62"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="651"/>
         <source>Field Separator</source>
-        <translation>Separador de campos</translation>
+        <translation>Separator de Câmpuri</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="86"/>
         <source>Pre-configured imports</source>
-        <translation>Importaciones pre-configuradas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="114"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="290"/>
         <source>Field Configuration</source>
-        <translation>Configuración de campos</translation>
+        <translation>Configurația Câmpurilor</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="153"/>
         <source>Depth</source>
-        <translation>Profundidad</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="173"/>
         <source>Stopdepth</source>
-        <translation>Profundidad de parada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="180"/>
@@ -337,7 +337,7 @@ el ordenador de buceo seleccionado?</translation>
         <location filename="../qt-ui/divelogimportdialog.ui" line="187"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="328"/>
         <source>Time</source>
-        <translation>Hora de entrada</translation>
+        <translation>Timp</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="194"/>
@@ -347,19 +347,19 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="224"/>
         <source>Cns</source>
-        <translation>Cns</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="252"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="674"/>
         <source>Units</source>
-        <translation>Unidades</translation>
+        <translation>Unități</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="265"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="687"/>
         <source>Metric</source>
-        <translation>Métrico</translation>
+        <translation>Metric</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="270"/>
@@ -370,62 +370,62 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="278"/>
         <source>Manual dives</source>
-        <translation>Inmersiones manuales</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="302"/>
         <source>Dive #</source>
-        <translation>Inmersión #</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="315"/>
         <source>Date</source>
-        <translation>Fecha</translation>
+        <translation>Dată</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="341"/>
         <source>Duration</source>
-        <translation>Duración</translation>
+        <translation>Durată</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="354"/>
         <source>Tags</source>
-        <translation>Etiquetas</translation>
+        <translation>Etichete</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="367"/>
         <source>Location</source>
-        <translation>Ubicación</translation>
+        <translation>Locație</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="380"/>
         <source>Gps</source>
-        <translation>Gps</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="393"/>
         <source>Max depth</source>
-        <translation>Profundidad máxima</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="406"/>
         <source>Mean depth</source>
-        <translation>Profundidad media</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="419"/>
         <source>Buddy</source>
-        <translation>Compañero</translation>
+        <translation>Companion</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="432"/>
         <source>Notes</source>
-        <translation>Notas</translation>
+        <translation>Notițe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="445"/>
         <source>Weight</source>
-        <translation>Peso</translation>
+        <translation>Greutate</translation>
     </message>
 </context>
 <context>
@@ -433,37 +433,37 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="71"/>
         <source>Bottom SAC</source>
-        <translation>CAS en fondo</translation>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="85"/>
         <source>SAC on DECO Stop</source>
-        <translation>CAS en parada DECO</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="78"/>
         <source>GFHigh</source>
-        <translation>GF alto</translation>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="98"/>
         <source>GFLow</source>
-        <translation>GF bajo</translation>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="125"/>
         <source>Last Stop at 6m</source>
-        <translation>Última parada a 6m</translation>
+        <translation>Ultima oprire la 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="174"/>
         <source>Start Time</source>
-        <translation>Hora de inicio</translation>
+        <translation>Timp Începere</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="181"/>
         <source>ATM Pressure</source>
-        <translation>Presión atmosférica</translation>
+        <translation>Presiune ATM</translation>
     </message>
 </context>
 <context>
@@ -476,19 +476,19 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="119"/>
         <source>30ft</source>
-        <translation>30ft</translation>
+        <translation>30 de picioare</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="364"/>
         <source>Handler Position Error</source>
-        <translation>Error en la posición del punto</translation>
+        <translation>Eroare cauzată de Handlerul Poziției</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="365"/>
         <source>One or more of your stops will be lost with this operations, 
 Please, remove them first.</source>
-        <translation>Una o más de tus paradas se perderán con estas operaciones.
-Por favor, bórralas antes.</translation>
+        <translation>Una sau mai multe din opririle dumneavoastră vor fi pierdute după această operație,
+Vă rugăm, înlăturați-le mai întâi.</translation>
     </message>
 </context>
 <context>
@@ -496,37 +496,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="446"/>
         <source>AIR</source>
-        <translation>AIRE</translation>
+        <translation>AER</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1085"/>
         <source>Final Depth</source>
-        <translation>Profundidad final</translation>
+        <translation>Adâncime Finală</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1087"/>
         <source>Duration</source>
-        <translation>Duración</translation>
+        <translation>Durată</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1089"/>
         <source>Used Gas</source>
-        <translation>Gas usado</translation>
+        <translation>Gaz Folosit</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1091"/>
         <source>CC Set Point</source>
-        <translation>CC Set Point</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1297"/>
         <source>Discard the Plan?</source>
-        <translation>¿Quiere descartar el plan?</translation>
+        <translation>Înlăturați Planul?</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1298"/>
         <source>You are about to discard your plan.</source>
-        <translation>Está a punto de descartar su plan.</translation>
+        <translation>Sunteți pe cale de a șterge planul.</translation>
     </message>
 </context>
 <context>
@@ -534,17 +534,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="933"/>
         <source>Dive Planner Points</source>
-        <translation>Puntos del planificador de inmersiones</translation>
+        <translation>Puncte Planificator Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="936"/>
         <source>Available Gases</source>
-        <translation>Gases disponibles</translation>
+        <translation>Gaze Disponibile</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="954"/>
         <source>add dive data point</source>
-        <translation>Añadir punto de datos de inmersión.</translation>
+        <translation>adaugă punct de date pentru scufundare</translation>
     </message>
 </context>
 <context>
@@ -552,67 +552,67 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="95"/>
         <source>Depth</source>
-        <translation>Profundidad</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="97"/>
         <source>Time</source>
-        <translation>Hora de entrada</translation>
+        <translation>Timp</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="99"/>
         <source>Pressure</source>
-        <translation>Presión</translation>
+        <translation>Presiune</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="101"/>
         <source>Temperature</source>
-        <translation>Temperatura</translation>
+        <translation>Temperatură</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="103"/>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
         <source>User Entered</source>
-        <translation>Usuario introducido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="107"/>
         <source>Cylinder Index</source>
-        <translation>Lista de botellas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="109"/>
         <source>Pressure  S</source>
-        <translation>Presión S</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
         <source>Pressure I</source>
-        <translation>Presión I</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="113"/>
         <source>Ceiling</source>
-        <translation>Techo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="115"/>
         <source>SAC</source>
-        <translation>CAS</translation>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="117"/>
         <source>PN2</source>
-        <translation>PN2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="119"/>
         <source>PHE</source>
-        <translation>PHE</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="121"/>
@@ -625,12 +625,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1288"/>
         <source>#</source>
-        <translation>N.º</translation>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1291"/>
         <source>date</source>
-        <translation>Fecha</translation>
+        <translation>data</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1297"/>
@@ -640,7 +640,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1297"/>
         <source>ft</source>
-        <translation>ft</translation>
+        <translation>picioare</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1300"/>
@@ -655,22 +655,22 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1306"/>
         <source>lbs</source>
-        <translation>lbs</translation>
+        <translation>livre</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1309"/>
         <source>suit</source>
-        <translation>traje</translation>
+        <translation>costum</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1312"/>
         <source>cyl</source>
-        <translation>bot</translation>
+        <translation>tub</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1327"/>
         <source>location</source>
-        <translation>Ubicación</translation>
+        <translation>locația</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1318"/>
@@ -693,115 +693,115 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="498"/>
         <source>Invalid response from server</source>
-        <translation>Respuesta del servidor no válida.</translation>
+        <translation>Răspuns invalid de la server</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="506"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>No se encontró la etiqueta XML esperada «DiveDateReader», se obtuvo en su lugar «%1»</translation>
+        <translation>Tag XML așteptat „DiveDateReader”, dar s-a întâmpinat „%1”</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="552"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation>No se encontró la etiqueta XML esperada «DiveDates»</translation>
+        <translation>Tag-ul XML așteptat „DiveDates” nu a fost găsit</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="559"/>
         <source>Malformed XML response. Line %1: %2</source>
-        <translation>Respuesta XML mal formada. Línea </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="110"/>
         <source>no dives were selected</source>
-        <translation>No se seleccionó ninguna inmersión</translation>
+        <translation>nu a fost selectată nicio scufundare</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="129"/>
         <source>failed to create zip file for upload: %1</source>
-        <translation>Fallo al crear archivo zip para subir: %1</translation>
+        <translation>crearea fișierului zip pentru upload a eșuat: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %1</source>
-        <translation>No se puede crear archivo temporal: %1</translation>
+        <translation>nu s-a putut crea fișierul temporar: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %1</source>
-        <translation>Error interno: %1</translation>
+        <translation>eroare internă: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
         <source>internal error</source>
-        <translation>Error interno</translation>
+        <translation>eroare internă</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="616"/>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Done</source>
-        <translation>Hecho</translation>
+        <translation>Finalizat</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="642"/>
         <source>Uploading dive list...</source>
-        <translation>Subiendo lista de inmersiones…</translation>
+        <translation>Se uploadează lista de scufundări...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="673"/>
         <source>Downloading dive list...</source>
-        <translation>Descargando lista de inmersiones…</translation>
+        <translation>Se descarcă lista de scufundări...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="721"/>
         <source>Downloading %1 dives...</source>
-        <translation>Descargando %1 inmersiones…</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="764"/>
         <source>Download finished - %1</source>
-        <translation>Descarga finalizada - </translation>
+        <translation>Descărcarea s-a terminat - %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="781"/>
         <source>Corrupted download</source>
-        <translation>Descarga corrompida</translation>
+        <translation>Descărcarea a fost coruptă.</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="782"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation>El archivo no pudo abrirse
+        <translation>Arhiva nu a putut fi deschisăȘ
 %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="821"/>
         <source>Upload failed</source>
-        <translation>La subida ha fallado</translation>
+        <translation>Upload-ul a eșuat</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="824"/>
         <source>Upload successful</source>
-        <translation>Subida correcta</translation>
+        <translation>Upload-ul a avut succes</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="827"/>
         <source>Login failed</source>
-        <translation>El acceso ha fallado</translation>
+        <translation>Logarea a eșuat</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="830"/>
         <source>Cannot parse response</source>
-        <translation>No se puede leer la respuesta</translation>
+        <translation>Nu s-a putut parsa răspunsul</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="841"/>
         <source>Error: %1</source>
-        <translation>Error: %1</translation>
+        <translation>Eroare: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="808"/>
         <source>Upload finished</source>
-        <translation>Subida finalizada</translation>
+        <translation>Upload-ul a fost finalizat</translation>
     </message>
 </context>
 <context>
@@ -815,48 +815,48 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="160"/>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation>Eroare</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="140"/>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="164"/>
         <source>Retry</source>
-        <translation>Intentar de nuevo</translation>
+        <translation>Reîncearcă</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="249"/>
         <source>Find Uemis dive computer</source>
-        <translation>Encontrar ordenador de buceo Uemis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="317"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation>Selecciona archivo para registro de descarga de libdivecomputer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="318"/>
         <source>Log files (*.log)</source>
-        <translation>Archivos Log (*.log)</translation>
+        <translation>Fișiere de log (*.log)</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="334"/>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation>Avertizare</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="335"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation>Guardar el volcado de libdivecomputer NO descargará buceos a la lista de inmersiones.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="346"/>
         <source>Choose file for divecomputer binary dump file</source>
-        <translation>Selecciona archivo para el volcado binario del ordenador de buceo</translation>
+        <translation>Selectați fișierul pentru a salva dump-ul binar al computerului de scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="347"/>
         <source>Dump files (*.bin)</source>
-        <translation>Archivos de volcado (*.bin)</translation>
+        <translation>Fișiere dump (*.bin)</translation>
     </message>
 </context>
 <context>
@@ -864,59 +864,59 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download From Dive Computer</source>
-        <translation>Descargar desde el ordenador de Buceo</translation>
+        <translation>Descarcă din Computerul de Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="39"/>
         <source>Vendor</source>
-        <translation>Proveedor</translation>
+        <translation>Furnizor</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="46"/>
         <source>Dive Computer</source>
-        <translation>Ordenador de buceo</translation>
+        <translation>Computer de Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
         <source>Device or Mount Point</source>
-        <translation>Dispositivo o Punto de montaje</translation>
+        <translation>Dispozitiv sau Punct de Montare</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="59"/>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="132"/>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="139"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Force download of all dives</source>
-        <translation>Forzar descarga de todas las inmersiones</translation>
+        <translation>Forțeaza descărcarea tuturor scufundărilor</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
         <source>Always prefer downloaded dives</source>
-        <translation>Preferir siempre las inmersiones descargadas</translation>
+        <translation>Preferă întotdeauna scufundările descărcate</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="95"/>
         <source>OK</source>
-        <translation>Aceptar</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="102"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="118"/>
         <source>Save libdivecomputer logfile</source>
-        <translation>Guardar registro de libdivecomputer</translation>
+        <translation>Salvați fișierul de log al libdivecomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="125"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation>Guardar volcado de libdivecomputer</translation>
+        <translation>Salvați fișierul de dump al libdivecomputer</translation>
     </message>
 </context>
 <context>
@@ -924,7 +924,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="103"/>
         <source>Edit Selected Dive Locations</source>
-        <translation>Editar los puntos de buceo seleccionados.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -933,117 +933,117 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/maintab.ui" line="18"/>
         <location filename="../qt-ui/maintab.cpp" line="444"/>
         <source>Dive Notes</source>
-        <translation>Notas de la inmersión</translation>
+        <translation>Notițele Scufundării</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="120"/>
         <location filename="../qt-ui/maintab.cpp" line="468"/>
         <source>Location</source>
-        <translation>Ubicación</translation>
+        <translation>Locație</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="148"/>
         <source>Coordinates</source>
-        <translation>Coordenadas</translation>
+        <translation>Coordonate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="169"/>
         <source>Divemaster</source>
-        <translation>Divemaster</translation>
+        <translation>Maestru scufundare</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="155"/>
         <source>Buddy</source>
-        <translation>Compañero</translation>
+        <translation>Companion</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Start time</source>
-        <translation>Hora de inicio</translation>
+        <translation>Timp început</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <location filename="../qt-ui/maintab.cpp" line="235"/>
         <source>Air temp</source>
-        <translation>Temperatura del aire</translation>
+        <translation>Temperatura aerului</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <location filename="../qt-ui/maintab.cpp" line="236"/>
         <source>Water temp</source>
-        <translation>Temperatura del agua</translation>
+        <translation>Temperatura apei</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="127"/>
         <source>Tags</source>
-        <translation>Etiquetas</translation>
+        <translation>Etichete</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="192"/>
         <source>Rating</source>
-        <translation>Valoración</translation>
+        <translation>Rating</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="199"/>
         <source>Visibility</source>
-        <translation>Visibilidad</translation>
+        <translation>Vizibilitate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="215"/>
         <source>Suit</source>
-        <translation>Traje</translation>
+        <translation>Costum</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="208"/>
         <location filename="../qt-ui/maintab.cpp" line="469"/>
         <source>Notes</source>
-        <translation>Notas</translation>
+        <translation>Notițe</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="270"/>
         <source>Equipment</source>
-        <translation>Equipo</translation>
+        <translation>Echipament</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="350"/>
         <source>Dive Info</source>
-        <translation>Información de la inmersión</translation>
+        <translation>Informații despre scufundare</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="395"/>
         <source>Date</source>
-        <translation>Fecha</translation>
+        <translation>Dată</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="414"/>
         <source>Interval</source>
-        <translation>Intervalo</translation>
+        <translation>Interval</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="433"/>
         <source>Gases Used</source>
-        <translation>Gases usados</translation>
+        <translation>Gaze Utilizate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="452"/>
         <source>Gas Consumed</source>
-        <translation>Gas consumido</translation>
+        <translation>Gaz Consumat</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="471"/>
         <location filename="../qt-ui/maintab.ui" line="729"/>
         <source>SAC</source>
-        <translation>CAS</translation>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="490"/>
         <source>Max. Depth</source>
-        <translation>Profundidad máxima</translation>
+        <translation>Adâncime Maximă</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="509"/>
         <source>Ave. Depth</source>
-        <translation>Profundidad media</translation>
+        <translation>Adâncime Medie</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="528"/>
@@ -1053,98 +1053,98 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="547"/>
         <source>Air Pressure</source>
-        <translation>Presión atmosférica</translation>
+        <translation>Presiunea Aerului</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="566"/>
         <source>Air Temperature</source>
-        <translation>Temperatura del aire</translation>
+        <translation>Temperatura Aerului</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="585"/>
         <source>Water Temperature</source>
-        <translation>Temperatura del agua</translation>
+        <translation>Temperatura Apei</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="604"/>
         <source>Dive Time</source>
-        <translation>Duración de la inmersión</translation>
+        <translation>Timpul Scufundării</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="623"/>
         <source>Salinity</source>
-        <translation>Salinidad</translation>
+        <translation>Salinitate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="660"/>
         <source>Stats</source>
-        <translation>Estadísticas</translation>
+        <translation>Statistici</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="705"/>
         <source>Depth</source>
-        <translation>Profundidad</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="717"/>
         <source>Temperature</source>
-        <translation>Temperatura</translation>
+        <translation>Temperatură</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="741"/>
         <source>Duration</source>
-        <translation>Duración</translation>
+        <translation>Durată</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="753"/>
         <source>Total Time</source>
-        <translation>Tiempo total</translation>
+        <translation>Timp Total</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="772"/>
         <source>Dives</source>
-        <translation>Inmersiones</translation>
+        <translation>Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="78"/>
         <source>Cylinders</source>
-        <translation>Botellas</translation>
+        <translation>Tub</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="79"/>
         <source>Add Cylinder</source>
-        <translation>Añadir botella</translation>
+        <translation>Adaugă Tub</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="82"/>
         <source>Weights</source>
-        <translation>Lastre</translation>
+        <translation>Greutăți</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="83"/>
         <source>Add Weight System</source>
-        <translation>Añadir sistema de lastre</translation>
+        <translation>Adaugă Sistem de Greutăți</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="437"/>
         <source>Trip Location</source>
-        <translation>Ubicación del viaje</translation>
+        <translation>Locația Excursiei</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="415"/>
         <location filename="../qt-ui/maintab.cpp" line="439"/>
         <source>Trip Notes</source>
-        <translation>Notas del viaje</translation>
+        <translation>Notițele Excursiei</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="42"/>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation>Înregistrare</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="46"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="232"/>
@@ -1159,17 +1159,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="258"/>
         <source>This trip is being edited.</source>
-        <translation>Este viaje está siendo editado.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="264"/>
         <source>Multiple dives are being edited.</source>
-        <translation>Se están editando varias inmersiones.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="266"/>
         <source>This dive is being edited.</source>
-        <translation>Esta inmersión esta siendo editada.</translation>
+        <translation>Această scufundare este editată</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="491"/>
@@ -1183,7 +1183,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="493"/>
         <source>unknown</source>
-        <translation>desconocido</translation>
+        <translation>necunoscut</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="1006"/>
@@ -1203,7 +1203,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="1007"/>
         <source>W</source>
-        <translation>O</translation>
+        <translation>V</translation>
     </message>
 </context>
 <context>
@@ -1211,42 +1211,42 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="594"/>
         <source>Filter</source>
-        <translation>Filtros</translation>
+        <translation>Filtrează</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="545"/>
         <source>&amp;File</source>
-        <translation>Archivo</translation>
+        <translation>&amp;Fișier</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="566"/>
         <source>&amp;Log</source>
-        <translation>Registro</translation>
+        <translation>&amp;Log</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="578"/>
         <source>&amp;View</source>
-        <translation>&amp;Vista</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="600"/>
         <source>&amp;Help</source>
-        <translation>Ayuda</translation>
+        <translation>&amp;Ajutor</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="607"/>
         <source>&amp;Import</source>
-        <translation>&amp;Importar</translation>
+        <translation>&amp;Importați</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="623"/>
         <source>&amp;New logbook</source>
-        <translation>&amp;Nuevo registro</translation>
+        <translation>&amp;Jurnal nou</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="626"/>
         <source>New</source>
-        <translation>Nuevo</translation>
+        <translation>Nou</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="629"/>
@@ -1256,12 +1256,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="634"/>
         <source>&amp;Open logbook</source>
-        <translation>Abrir registr&amp;o</translation>
+        <translation>&amp;Deschide jurnal</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="637"/>
         <source>Open</source>
-        <translation>Abrir</translation>
+        <translation>Deschide</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="640"/>
@@ -1271,12 +1271,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="645"/>
         <source>&amp;Save</source>
-        <translation>Guardar</translation>
+        <translation>&amp;Salvează</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="648"/>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation>Salvează</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="651"/>
@@ -1287,7 +1287,7 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/mainwindow.ui" line="656"/>
         <location filename="../qt-ui/mainwindow.ui" line="659"/>
         <source>Save as</source>
-        <translation>Guardar como</translation>
+        <translation>Salvează ca</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="662"/>
@@ -1298,7 +1298,7 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/mainwindow.ui" line="667"/>
         <location filename="../qt-ui/mainwindow.ui" line="670"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation>Închide</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="673"/>
@@ -1313,7 +1313,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="678"/>
         <source>Export &amp;UDDF</source>
-        <translation>Exportar &amp;UDDF</translation>
+        <translation>Exportă &amp;UDDF</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="138"/>
@@ -1328,7 +1328,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="326"/>
         <source>Enable EAD, END, and EADD</source>
-        <translation>Activar PEA, PNE y EADD</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
@@ -1348,7 +1348,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="686"/>
         <source>&amp;Print</source>
-        <translation>Im&amp;primir</translation>
+        <translation>&amp;Printează</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="697"/>
@@ -1358,17 +1358,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="705"/>
         <source>&amp;Quit</source>
-        <translation>Salir</translation>
+        <translation>&amp;</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="716"/>
         <source>Import from &amp;dive computer</source>
-        <translation>Importar del or&amp;denador de buceo</translation>
+        <translation>Importă din computerul de &amp;scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="724"/>
         <source>Import &amp;GPS data from Subsurface Service</source>
-        <translation>Importar datos &amp;GPS del Servicio Subsurface</translation>
+        <translation>Importă date &amp;GPS de la Serviciul Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="727"/>
@@ -1378,17 +1378,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="732"/>
         <source>&amp;Edit Device Names</source>
-        <translation>&amp;Editar nombres de dispositivos</translation>
+        <translation>&amp;Editează Numele Dispozitivului</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="740"/>
         <source>Ctrl++</source>
-        <translation>Ctrl++</translation>
+        <translation>Ctr++</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="745"/>
         <source>&amp;Renumber</source>
-        <translation>&amp;Renumerar</translation>
+        <translation>&amp;Renumerotează</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="748"/>
@@ -1398,7 +1398,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="761"/>
         <source>&amp;Yearly Statistics</source>
-        <translation>Estadísticas anuales</translation>
+        <translation>&amp;Statistici Anuale</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="764"/>
@@ -1408,37 +1408,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="769"/>
         <source>Dive List</source>
-        <translation>Lista de inmersiones</translation>
+        <translation>Listă de scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="777"/>
         <source>Profile</source>
-        <translation>Perfil</translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="785"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>Informații</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="793"/>
         <source>All</source>
-        <translation>Todo</translation>
+        <translation>Toate</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="835"/>
         <source>User &amp;Manual</source>
-        <translation>&amp;Manual de usuario</translation>
+        <translation>&amp;Manual Utilizator</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
         <source>Globe</source>
-        <translation>Globo </translation>
+        <translation>Harta</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="851"/>
         <source>P&amp;lan Dive</source>
-        <translation>P&amp;lanificar Inmersión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="854"/>
@@ -1448,7 +1448,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="870"/>
         <source>Import from Divelogs.de</source>
-        <translation>Importar desde Divelogs.de</translation>
+        <translation>Importă de la Divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="689"/>
@@ -1458,7 +1458,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="112"/>
         <source>Enable the pO2 Graph</source>
-        <translation>Activar el gráfico de pO2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="115"/>
@@ -1475,47 +1475,47 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/mainwindow.ui" line="407"/>
         <location filename="../qt-ui/mainwindow.ui" line="433"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
         <source>Enable MOD</source>
-        <translation>Activar la PMO</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="193"/>
         <source>Show the DC Reported Ceiling</source>
-        <translation>Mostrar techo informado por el ordenador</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="222"/>
         <source>Show the Calculated Ceiling</source>
-        <translation>Mostrar techo calculado por Subsurface</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="274"/>
         <source>Show Calculated Ceiling with 3m Increments</source>
-        <translation>Mostrar el techo calculado con incrementos de 3m</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="248"/>
         <source>Calculate All Tissues</source>
-        <translation>Calcular todos los tejidos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="378"/>
         <source>Show SAC Rate</source>
-        <translation>Mostrar tasa de CAS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="404"/>
         <source>Enable / Disable the Ruler</source>
-        <translation>Activar / Desactivar la regla</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="694"/>
         <source>Preferences</source>
-        <translation>Preferencias</translation>
+        <translation>Preferințe</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="708"/>
@@ -1530,12 +1530,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="737"/>
         <source>Add Dive</source>
-        <translation>Añadir inmersión</translation>
+        <translation>Adaugă Scufundare</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="756"/>
         <source>Auto Group</source>
-        <translation>Auto agrupar</translation>
+        <translation>Grupează Automat</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="772"/>
@@ -1560,37 +1560,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="801"/>
         <source>Prev DC</source>
-        <translation>Anterior ordenador</translation>
+        <translation>CS Anterior</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="804"/>
         <source>Left</source>
-        <translation>Izquierda</translation>
+        <translation>Stânga</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="809"/>
         <source>Next DC</source>
-        <translation>Siguiente ordenador</translation>
+        <translation>Următorul CS</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="812"/>
         <source>Right</source>
-        <translation>Derecha</translation>
+        <translation>Dreapta</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="817"/>
         <source>Select Events</source>
-        <translation>Seleccionar eventos</translation>
+        <translation>Selectează Evenimente</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="822"/>
         <source>Input Plan</source>
-        <translation>Introducir Plan</translation>
+        <translation>Introduceți Plan</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="827"/>
         <source>About Subsurface</source>
-        <translation>Acerca de Subsurface</translation>
+        <translation>Despre Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="838"/>
@@ -1605,75 +1605,75 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="859"/>
         <source>Import Log Files</source>
-        <translation>Importar archivos de registro</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="862"/>
         <source>Import divelog files from other applications</source>
-        <translation>Importar archivos de registro de otras aplicaciones</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="878"/>
         <source>&amp;Full Screen</source>
-        <translation>Pantalla completa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="881"/>
         <source>Toggle Full Screen</source>
-        <translation>Activar pantalla completa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="884"/>
         <source>F11</source>
-        <translation>F11</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="143"/>
         <source>Open File</source>
-        <translation>Abrir archivo</translation>
+        <translation>Deschide Fișier</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="200"/>
         <location filename="../qt-ui/mainwindow.cpp" line="303"/>
         <location filename="../qt-ui/mainwindow.cpp" line="665"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
-        <translation>Por favor, guarda o cancela la edición de la inmersión actual antes de cerrar el archivo</translation>
+        <translation>Vă rugăm salvați sau anulați editarea scufundării curente înainte de a închide fișierul.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="276"/>
         <source>Please save or cancel the current dive edit before trying to plan a dive.</source>
-        <translation>Por favor, guarda o cancela la edición de la inmersión actual antes de intentar planificar otra.</translation>
+        <translation>Vă rugăm salvați sau anulați editarea scufundării curente înainte de a încerca să planificați o scufundare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="342"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation>Por favor, guarda o cancela la edición de la inmersión actual antes de intentar añadir otra.</translation>
+        <translation>Vă rugăm salvați sau anulați editarea scufundării curente înainte de a încerca să adăugați o scufundare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="564"/>
         <source>Do you want to save the changes you made in the file %1?</source>
-        <translation>¿Quiere guardar los cambios realizados en el archivo %1?</translation>
+        <translation>Doriți să salvați modificările făcute în fișierul %1?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="566"/>
         <source>Do you want to save the changes you made in the datafile?</source>
-        <translation>¿Quiere guardar los cambios realizados en el archivo de datos?</translation>
+        <translation>Doriți să salvați modificările făcute în fișierul de date?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="571"/>
         <source>Save Changes?</source>
-        <translation>¿Guardar los cambios?</translation>
+        <translation>Salvați Modificările?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="572"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
-        <translation>Se perderán los cambios si no los guarda.</translation>
+        <translation>Modificările vor fi pierdute dacă nu le salvați.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="247"/>
         <location filename="../qt-ui/mainwindow.cpp" line="870"/>
         <source>Save File as</source>
-        <translation>Guardar archivo como</translation>
+        <translation>Salvează Fișierul ca</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="140"/>
@@ -1684,42 +1684,42 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/mainwindow.cpp" line="665"/>
         <location filename="../qt-ui/mainwindow.cpp" line="1013"/>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation>Avertizare</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="140"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation>Por favor, guarda o cancela la edición de la inmersión actual antes de abrir otro archivo.</translation>
+        <translation>Vă rugăm salvați sau anulați editarea scufundării curente înainte de a deschide un nou fișier.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="248"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
-        <translation>Archivos UDDF (*.uddf *.UDDF)</translation>
+        <translation>Fișiere UDDF (*.uddf *.UDDF)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="395"/>
         <source>Yearly Statistics</source>
-        <translation>Estadísticas anuales</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="871"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
-        <translation>Archivos XML de Subsurface (*.ssrf *.xml *.XML)</translation>
+        <translation>Fișiere XML Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="990"/>
         <source>Open Dive Log File</source>
-        <translation>Abrir archivo de registro de inmersiones</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="990"/>
         <source>Dive Log Files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;JDiveLog Files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)</source>
-        <translation>Archivos de registro  (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;Archivos XML (*.xml);;Archivos UDDF/UDCF (*.uddf *.udcf);;Archivos Jdivelog (*.jlb);;Archivos Suunto (*.sde *.db);;Archivos CSV (*.csv);;Todos los archivos (*)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1013"/>
         <source>Please, first finish the current edition before trying to do another.</source>
-        <translation>Por favor, termina la edición actual antes de intentar hacer otra.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1727,67 +1727,67 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation>Predeterminadas</translation>
+        <translation>Implicite</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
         <source>Units</source>
-        <translation>Unidades</translation>
+        <translation>Unități</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="105"/>
         <source>Graph</source>
-        <translation>Gráfico</translation>
+        <translation>Grafic</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="115"/>
         <source>Language</source>
-        <translation>Lenguaje</translation>
+        <translation>Limba</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="141"/>
         <source>Lists and Tables</source>
-        <translation>Listas y tablas</translation>
+        <translation>Liste și Tabele</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="147"/>
         <source>Font</source>
-        <translation>Tipo de letra</translation>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="157"/>
         <source>Font size</source>
-        <translation>Tamaño de letra</translation>
+        <translation>Mărimea fontului</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="170"/>
         <source>Dives</source>
-        <translation>Inmersiones</translation>
+        <translation>Scufundări</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="176"/>
         <source>Default Dive file</source>
-        <translation>Archivo de inmersiones por defecto</translation>
+        <translation>Fișier de Scufundări Implicit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="188"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="197"/>
         <source>Display Invalid</source>
-        <translation>Mostrar no validas</translation>
+        <translation>Afișaj</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="214"/>
         <source>Default Cylinder</source>
-        <translation>Botella por defecto</translation>
+        <translation>Tub implicit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="220"/>
         <source>Use Default Cylinder</source>
-        <translation>Usar botella por defecto</translation>
+        <translation>Folosește Tubul Implicit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="237"/>
@@ -1802,12 +1802,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="289"/>
         <source>System</source>
-        <translation>Sistema</translation>
+        <translation>Sistem</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="296"/>
         <source>Metric</source>
-        <translation>Métrico</translation>
+        <translation>Metric</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="306"/>
@@ -1817,22 +1817,22 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
         <source>Personalize</source>
-        <translation>Personalizar</translation>
+        <translation>Personalizați</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="340"/>
         <source>Depth</source>
-        <translation>Profundidad</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="347"/>
         <source>meter</source>
-        <translation>metro</translation>
+        <translation>metru</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="357"/>
         <source>feet</source>
-        <translation>pie</translation>
+        <translation>picioare</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="374"/>
@@ -1842,27 +1842,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="384"/>
         <source>psi</source>
-        <translation>psi</translation>
+        <translation>livre pe inch pătrat</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="401"/>
         <source>liter</source>
-        <translation>litro</translation>
+        <translation>litru</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="411"/>
         <source>cu ft</source>
-        <translation>pie³</translation>
+        <translation>picioare cubice</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="428"/>
         <source>celsius</source>
-        <translation>celsius</translation>
+        <translation>Celsius</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="438"/>
         <source>fahrenheit</source>
-        <translation>fahrenheit</translation>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="455"/>
@@ -1877,137 +1877,137 @@ Por favor, bórralas antes.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="560"/>
         <source>threshold when showing pO₂</source>
-        <translation>Umbral al mostrar la pO2</translation>
+        <translation type="unfinished"/>
     </message>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="581"/>
         <source>threshold when showing pN₂</source>
-        <translation>Umbral al mostrar la pN2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="602"/>
         <source>threshold when showing pHe</source>
-        <translation>Umbral al mostrar la pHe</translation>
+        <translation type="unfinished"/>
     </message>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="623"/>
         <source>max ppO₂ when showing MOD</source>
-        <translation>ppO2 máxima al mostrar la PMO</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="644"/>
         <source>draw dive computer reported ceiling red</source>
-        <translation>Trazar en rojo el techo informado por el ordenador de buceo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="655"/>
         <source>unused tanks</source>
-        <translation>Botellas sin usar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="723"/>
         <source>System Default</source>
-        <translation>Predeterminado del sistema</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="743"/>
         <source>Filter</source>
-        <translation>Filtros</translation>
+        <translation>Filtrează</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="367"/>
         <source>Pressure</source>
-        <translation>Presión</translation>
+        <translation>Presiune</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="394"/>
         <source>Volume</source>
-        <translation>Volumen</translation>
+        <translation>Volum</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="421"/>
         <source>Temperature</source>
-        <translation>Temperatura</translation>
+        <translation>Temperatură</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="448"/>
         <source>Weight</source>
-        <translation>Peso</translation>
+        <translation>Greutate</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="465"/>
         <source>lbs</source>
-        <translation>lbs</translation>
+        <translation>livre</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="480"/>
         <source>Time units</source>
-        <translation>Unidades de tiempo</translation>
+        <translation>Unități de timp</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="486"/>
         <source>Ascent/Descent speed denominator</source>
-        <translation>Denominador de la velocidad de ascenso/descenso</translation>
+        <translation>Numitorul vitezei de ascensiune/coborâre</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="493"/>
         <source>Minutes</source>
-        <translation>Minutos</translation>
+        <translation>Minute</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="503"/>
         <source>Seconds</source>
-        <translation>Segundos</translation>
+        <translation>Secunde</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="549"/>
         <source>Show</source>
-        <translation>Mostrar</translation>
+        <translation>Arată</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="707"/>
         <source>GFLow at max depth</source>
-        <translation>GF bajo a la máxima profundidad</translation>
+        <translation>GFLow la adâncimea maximă</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="667"/>
         <source>Misc</source>
-        <translation>Varios</translation>
+        <translation>Diverse</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="14"/>
         <source>Preferences</source>
-        <translation>Preferencias</translation>
+        <translation>Preferințe</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="673"/>
         <source>GFLow</source>
-        <translation>GF bajo</translation>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="690"/>
         <source>GFHigh</source>
-        <translation>GF alto</translation>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="219"/>
         <source>Restart required</source>
-        <translation>Reinicio requerido</translation>
+        <translation>Este necesară o repornire</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="220"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation>Para cargar correctamente un nuevo lenguaje debes reiniciar Subsurface.</translation>
+        <translation>Pentru a încărca corect o nouă limbă trebuie să restartați Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="328"/>
         <source>Open Default Log File</source>
-        <translation>Abrir archivo de registro por defecto</translation>
+        <translation>Deschide Fișierul de Log Implicit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="328"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
-        <translation>Archivos XML de Subsurface (*.ssrf *.xml *.XML)</translation>
+        <translation>Fișiere XML Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
 </context>
 <context>
@@ -2015,22 +2015,22 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="32"/>
         <source>&amp;Preview</source>
-        <translation>&amp;Previsualizar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="36"/>
         <source>P&amp;rint</source>
-        <translation>Imp&amp;rimir</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="40"/>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation>&amp;Închide</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="55"/>
         <source>Print</source>
-        <translation>Imprimir</translation>
+        <translation>Printează</translation>
     </message>
 </context>
 <context>
@@ -2038,37 +2038,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="25"/>
         <source>Dive#</source>
-        <translation>Inmersión n.º</translation>
+        <translation>Scufundarea nr.</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="26"/>
         <source>Date</source>
-        <translation>Fecha</translation>
+        <translation>Dată</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="27"/>
         <source>Depth</source>
-        <translation>Profundidad</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="28"/>
         <source>Duration</source>
-        <translation>Duración</translation>
+        <translation>Durată</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="29"/>
         <source>Master</source>
-        <translation>Guía</translation>
+        <translation>Maestru</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="30"/>
         <source>Buddy</source>
-        <translation>Compañero</translation>
+        <translation>Companion</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="31"/>
         <source>Location</source>
-        <translation>Ubicación</translation>
+        <translation>Locația</translation>
     </message>
 </context>
 <context>
@@ -2076,72 +2076,72 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="23"/>
         <source>Print options</source>
-        <translation>Opciones de impresión</translation>
+        <translation>Opțiuni de printare</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>Print only selected dives</source>
-        <translation>Imprimir sólo inmersiones seleccionadas</translation>
+        <translation>Printează doar scufundările selectate</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="60"/>
         <source>Print in color</source>
-        <translation>Impresión en color</translation>
+        <translation>Printează în culori</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="86"/>
         <source>Print type</source>
-        <translation>Tipo de impresión</translation>
+        <translation>Tipul printării</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="116"/>
         <source>6 dives per page</source>
-        <translation>6 inmersiones por página</translation>
+        <translation>6 scufundări pe pagină</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="132"/>
         <source>2 dives per page</source>
-        <translation>2 inmersiones por página</translation>
+        <translation>2 scufundări pe pagină</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="145"/>
         <source>Table print</source>
-        <translation>Impresión de tabla</translation>
+        <translation>Printează ca tabel</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="162"/>
         <source>Ordering</source>
-        <translation>Ordenar</translation>
+        <translation>Ordine</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="180"/>
         <source>Profile on top</source>
-        <translation>Perfil arriba</translation>
+        <translation>Profilul la început</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="202"/>
         <source>Notes on top</source>
-        <translation>Notas arriba</translation>
+        <translation>Notițele la început</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="219"/>
         <source>Sizing heights (% of layout)</source>
-        <translation>Ajustar alturas (% de la distribución)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="256"/>
         <source>Profile height (43% - 85%)</source>
-        <translation>Altura del perfil (43 % - 85 %)</translation>
+        <translation>Înălțimea profilului(43%-85%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="278"/>
         <source>Other data height (8% - 17%)</source>
-        <translation>Altura de otros datos (8 % - 17 %)</translation>
+        <translation>Inălțimea celorlalte informații (8% - 17%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="338"/>
         <source>Notes height (0% - 52%)</source>
-        <translation>Altura de las notas (0 % - 52 %)</translation>
+        <translation>Înălțimea notițelor (0% - 52%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="354"/>
@@ -2156,72 +2156,72 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1881"/>
         <source>unknown</source>
-        <translation>desconocido</translation>
+        <translation>necunoscut</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1886"/>
         <source>Dive #%1 - %2</source>
-        <translation>Inmersión n.º %1 - %2</translation>
+        <translation>Scufundarea  #%1 - %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1889"/>
         <source>Max depth: %1 %2</source>
-        <translation>Profundidad máxima: %1 %2</translation>
+        <translation>Adâncimea maximă: %1 %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1896"/>
         <source>Duration: %1 min</source>
-        <translation>Duración: %1 min</translation>
+        <translation>Durata: %1 min</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1901"/>
         <source>Gas Used:</source>
-        <translation>Gas usado:</translation>
+        <translation>Gaz Folosit:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1903"/>
         <source>SAC:</source>
-        <translation>CAS:</translation>
+        <translation>SAC:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1905"/>
         <source>Max. CNS:</source>
-        <translation>Max. CNS:</translation>
+        <translation>CNS Max. :</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1907"/>
         <source>Weights:</source>
-        <translation>Lastre:</translation>
+        <translation>GreutățiȘ</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1912"/>
         <source>Notes:</source>
-        <translation>Notas:</translation>
+        <translation>Notițe</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1919"/>
         <source>Divemaster:</source>
-        <translation>Divemaster:</translation>
+        <translation>Maestru scufundare:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1921"/>
         <source>Buddy:</source>
-        <translation>Compañero:</translation>
+        <translation>Companion:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Suit:</source>
-        <translation>Traje:</translation>
+        <translation>Costum:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
         <source>Viz:</source>
-        <translation>Visibilidad:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1927"/>
         <source>Rating:</source>
-        <translation>Calificación:</translation>
+        <translation>Rating:</translation>
     </message>
 </context>
 <context>
@@ -2229,27 +2229,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="661"/>
         <source>Add Gas Change</source>
-        <translation>Añadir cambio de gas</translation>
+        <translation>Adaugă Schimbare Gaz</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="672"/>
         <source>Add Bookmark</source>
-        <translation>Añadir marcador</translation>
+        <translation>Adaugă Semn de Carte</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="680"/>
         <source>Remove Event</source>
-        <translation>Borrar evento</translation>
+        <translation>Șterge Eveniment</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="685"/>
         <source>Hide similar events</source>
-        <translation>Ocultar eventos similares</translation>
+        <translation>Șterge evenimente similare</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="699"/>
         <source>Unhide all events</source>
-        <translation>Revelar todos los eventos</translation>
+        <translation>Arată toate evenimentele</translation>
     </message>
 </context>
 <context>
@@ -2257,37 +2257,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="36"/>
         <source>AIR</source>
-        <translation>AIRE</translation>
+        <translation>AER</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="706"/>
         <source>Remove this Point</source>
-        <translation>Borrar este punto</translation>
+        <translation>Șterge acest Punct</translation>
     </message>
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="58"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation>Închide</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="32"/>
         <source>Average</source>
-        <translation>Promedio</translation>
+        <translation>Medie</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="35"/>
         <source>Minimum</source>
-        <translation>Mínima</translation>
+        <translation>Minim</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="38"/>
         <source>Maximum</source>
-        <translation>Máxima</translation>
+        <translation>Maxim</translation>
     </message>
     <message>
         <location filename="../qt-ui/globe.cpp" line="239"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation>Mueve el mapa y haz doble click para fijar la posición del buceo</translation>
+        <translation>Mutați harta si faceți dublu click pentru a seta locația scufundării</translation>
     </message>
 </context>
 <context>
@@ -2295,12 +2295,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/renumber.ui" line="14"/>
         <source>Renumber</source>
-        <translation>Renumerar</translation>
+        <translation>Renumerotează</translation>
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="31"/>
         <source>New starting number</source>
-        <translation>Número de partida nuevo</translation>
+        <translation>Nou număr de început</translation>
     </message>
 </context>
 <context>
@@ -2308,52 +2308,52 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="20"/>
         <source>Shift selected times</source>
-        <translation>Desplazar las horas seleccionadas</translation>
+        <translation>Mută timpurile selectate</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="31"/>
         <source>Shift times of image(s) by</source>
-        <translation>Desplazar la hora de la(s) imagen(es) en</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="99"/>
         <source>earlier</source>
-        <translation>más pronto</translation>
+        <translation>mai devreme</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="106"/>
         <source>later</source>
-        <translation>más tarde</translation>
+        <translation>mai târziu</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="142"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Para calcular la desviación entre los relojes de tu ordenador de buceo y tu cámara utiliza esta última para sacar una foto de tu ordenador de buceo mientras muestra la hora actual. Descarga esa imagen a tu ordenador y pulsa este botón.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="152"/>
         <source>Determine camera time offset</source>
-        <translation>Determinar la desviación de la hora de la cámara</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="155"/>
         <source>Select image of divecomputer showing time</source>
-        <translation>Selecciona la imagen del ordenador de buceo mostrando la hora</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="193"/>
         <source>Which date and time are displayed on the image?</source>
-        <translation>¿ Que fecha y hora se muestran en la imagen ?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="181"/>
         <source>Open Image File</source>
-        <translation>Abrir archivo de imagen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="183"/>
         <source>Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation>Archivos de imagen (</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2361,27 +2361,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="20"/>
         <source>Shift selected times</source>
-        <translation>Desplazar las horas seleccionadas</translation>
+        <translation>Mută timpurile selectate</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="37"/>
         <source>Shift times of selected dives by</source>
-        <translation>Desplazar las horas de las inmersiones seleccionadas en</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="73"/>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation>o:mm</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="83"/>
         <source>earlier</source>
-        <translation>más pronto</translation>
+        <translation>mai devreme</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="90"/>
         <source>later</source>
-        <translation>más tarde</translation>
+        <translation>mai târziu</translation>
     </message>
 </context>
 <context>
@@ -2389,27 +2389,27 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/about.ui" line="23"/>
         <source>About Subsurface</source>
-        <translation>Acerca de Subsurface</translation>
+        <translation>Despre Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.ui" line="80"/>
         <source>&amp;License</source>
-        <translation>&amp;Licencia</translation>
+        <translation>&amp;Licență</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.ui" line="87"/>
         <source>&amp;Website</source>
-        <translation>Sitio &amp;web</translation>
+        <translation>&amp;Website</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.ui" line="94"/>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation>&amp;Închide</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.cpp" line="12"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software de registro de inmersiones multiplataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014&lt;/span&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2417,42 +2417,42 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="330"/>
         <source>Webservice</source>
-        <translation>Servicio web</translation>
+        <translation>Serviciu Web</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="380"/>
         <source>Connecting...</source>
-        <translation>Conectando…</translation>
+        <translation>Se conectează...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="399"/>
         <source>Download finished</source>
-        <translation>Descarga finalizada</translation>
+        <translation>S-a terminat descărcarea</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="413"/>
         <source>Download error: %1</source>
-        <translation>Error de descarga: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="423"/>
         <source>Connection Error: </source>
-        <translation>Error de conexión:</translation>
+        <translation>Eroare de conexiune</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="426"/>
         <source>Invalid user identifier!</source>
-        <translation>El identificador de usuario no es válido.</translation>
+        <translation>Identificator de utilizator invalid!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="429"/>
         <source>Cannot parse response!</source>
-        <translation>No se puede analizar la respuesta.</translation>
+        <translation>Nu se poate parsa răspunsul!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="432"/>
         <source>Download Success!</source>
-        <translation>Se ha completado la descarga correctamente.</translation>
+        <translation>Descărcarea s-a încheiat cu succes!</translation>
     </message>
 </context>
 <context>
@@ -2460,7 +2460,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/tableview.cpp" line="23"/>
         <source>Add Cylinder</source>
-        <translation>Añadir botella</translation>
+        <translation>Adaugă Tub</translation>
     </message>
 </context>
 <context>
@@ -2468,7 +2468,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="835"/>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Descriere</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="835"/>
@@ -2486,7 +2486,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/profile/divetooltipitem.cpp" line="128"/>
         <source>Information</source>
-        <translation>Información</translation>
+        <translation>Informații</translation>
     </message>
 </context>
 <context>
@@ -2494,12 +2494,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="23"/>
         <source>User Manual</source>
-        <translation>Manual de usuario</translation>
+        <translation>Manual Utilizator</translation>
     </message>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="31"/>
         <source>Cannot find the Subsurface manual</source>
-        <translation>No puedo encontrar el manual de Subsurface</translation>
+        <translation>Nu s-a putut găsi manualul pentru Subsurface</translation>
     </message>
 </context>
 <context>
@@ -2507,7 +2507,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="706"/>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Descriere</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="706"/>
@@ -2520,7 +2520,7 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Webservice Connection</source>
-        <translation>Conexión al servicio web</translation>
+        <translation>Conexiune Serviciu Web</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -2530,37 +2530,37 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="32"/>
         <source>Enter your ID here</source>
-        <translation>Introduce aquí tu ID</translation>
+        <translation>Introduceți-vă ID-ul aici</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="44"/>
         <source>Download</source>
-        <translation>Descargar</translation>
+        <translation>Descarcă</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="68"/>
         <source>User ID</source>
-        <translation>ID del usuario</translation>
+        <translation>ID-ul utilizatorului</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Password</source>
-        <translation>Contraseña</translation>
+        <translation>Parola</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="99"/>
         <source>Upload</source>
-        <translation>Subir</translation>
+        <translation>Uploadează</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="257"/>
         <source>Operation timed out</source>
-        <translation>Tiempo de espera sobrepasado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="278"/>
         <source>Transfering data...</source>
-        <translation>Transfiriendo datos…</translation>
+        <translation>Se transferă datele...</translation>
     </message>
 </context>
 <context>
@@ -2568,17 +2568,17 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="356"/>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="356"/>
         <source>Weight</source>
-        <translation>Peso</translation>
+        <translation>Greutate</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="416"/>
         <source>Clicking here will remove this weigthsystem.</source>
-        <translation>Pulsar aquí borrará este sistema de lastre.</translation>
+        <translation>Făcând click aici veți înlătura sistemul de greutăți.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="441"/>
@@ -2588,12 +2588,12 @@ Por favor, bórralas antes.</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="442"/>
         <source>lbs</source>
-        <translation>lbs</translation>
+        <translation>livre</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="465"/>
         <source>ft</source>
-        <translation>ft</translation>
+        <translation>picioare</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="466"/>
@@ -2607,48 +2607,48 @@ Por favor, bórralas antes.</translation>
         <location filename="../qt-ui/models.cpp" line="1639"/>
         <source>Year 
  &gt; Month / Trip</source>
-        <translation>Año
-&gt; Mes / Viaje</translation>
+        <translation>An
+&gt; Luna / Excursie</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1642"/>
         <source>#</source>
-        <translation>N.º</translation>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1645"/>
         <source>Duration 
  Total</source>
-        <translation>Duración
-Total</translation>
+        <translation>Durată
+Totală</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1648"/>
         <source>
 Average</source>
         <translation>
-Media</translation>
+Medie</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1651"/>
         <source>
 Shortest</source>
         <translation>
-Más corta</translation>
+Cel mai scurt</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1654"/>
         <source>
 Longest</source>
         <translation>
-Más larga</translation>
+Cel mai lung</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1657"/>
         <source>Depth (%1)
  Average</source>
-        <translation>Profundidad (%1)
-Media</translation>
+        <translation>Adâncime (%1)
+Medie</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1660"/>
@@ -2657,7 +2657,7 @@ Media</translation>
         <source>
 Minimum</source>
         <translation>
-Mínimo</translation>
+Minim</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1663"/>
@@ -2666,21 +2666,21 @@ Mínimo</translation>
         <source>
 Maximum</source>
         <translation>
-Máximo</translation>
+Maxim</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1666"/>
         <source>SAC (%1)
  Average</source>
-        <translation>CAS (%1)
-Medio</translation>
+        <translation>SAC (%1)
+Mediu</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1675"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Temp. (%1)
-Media</translation>
+Medie</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2688,7 @@ Media</translation>
     <message>
         <location filename="../dive.c" line="57"/>
         <source>pascal</source>
-        <translation>pascal</translation>
+        <translation>Pascal</translation>
     </message>
     <message>
         <location filename="../dive.c" line="62"/>
@@ -2700,7 +2700,7 @@ Media</translation>
         <location filename="../dive.c" line="66"/>
         <location filename="../qt-gui.cpp" line="351"/>
         <source>psi</source>
-        <translation>psi</translation>
+        <translation>livre pe inch pătrat</translation>
     </message>
     <message>
         <location filename="../dive.c" line="103"/>
@@ -2712,7 +2712,7 @@ Media</translation>
         <location filename="../dive.c" line="108"/>
         <location filename="../qt-gui.cpp" line="332"/>
         <source>cuft</source>
-        <translation>pie³</translation>
+        <translation>picioare cubice</translation>
     </message>
     <message>
         <location filename="../dive.c" line="137"/>
@@ -2726,14 +2726,14 @@ Media</translation>
         <location filename="../qt-gui.cpp" line="235"/>
         <location filename="../qt-gui.cpp" line="249"/>
         <source>ft</source>
-        <translation>ft</translation>
+        <translation>picioare</translation>
     </message>
     <message>
         <location filename="../dive.c" line="187"/>
         <location filename="../qt-gui.cpp" line="258"/>
         <location filename="../qt-gui.cpp" line="268"/>
         <source>lbs</source>
-        <translation>lbs</translation>
+        <translation>livre</translation>
     </message>
     <message>
         <location filename="../dive.c" line="191"/>
@@ -2745,7 +2745,7 @@ Media</translation>
     <message>
         <location filename="../dive.c" line="1104"/>
         <source>(%s) or (%s)</source>
-        <translation>(%s) o (%s)</translation>
+        <translation>(%s) sau (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="492"/>
@@ -2755,27 +2755,27 @@ Media</translation>
         <location filename="../statistics.c" line="358"/>
         <location filename="../statistics.c" line="368"/>
         <source>air</source>
-        <translation>aire</translation>
+        <translation>aer</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="170"/>
         <source>integrated</source>
-        <translation>integrado</translation>
+        <translation>integrat</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="171"/>
         <source>belt</source>
-        <translation>cinturón</translation>
+        <translation>curea</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="172"/>
         <source>ankle</source>
-        <translation>tobillo</translation>
+        <translation>gleznă</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="173"/>
         <source>backplate weight</source>
-        <translation>lastre en el arnes</translation>
+        <translation>greutate placă spate</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="174"/>
@@ -2788,7 +2788,7 @@ Media</translation>
         <location filename="../file.c" line="378"/>
         <location filename="../file.c" line="380"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation>No se pudo leer «%s»</translation>
+        <translation>Nu s-a putut citi &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="419"/>
@@ -2796,17 +2796,17 @@ Media</translation>
         <location filename="../file.c" line="498"/>
         <location filename="../file.c" line="500"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
-        <translation>El máximo número de columnas que soporta importar CSV es %d</translation>
+        <translation>Numărul maxim de coloane suportate la importarea CSV-ului este %d</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>none</source>
-        <translation>ninguno</translation>
+        <translation>niciunul</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>deco stop</source>
-        <translation>parada deco</translation>
+        <translation>oprire de decompresie</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
@@ -2816,84 +2816,84 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>ascent</source>
-        <translation>ascenso</translation>
+        <translation>ascensiune</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>ceiling</source>
-        <translation>techo</translation>
+        <translation>plafon</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="139"/>
         <source>workload</source>
-        <translation>carga</translation>
+        <translation>volum de muncă</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>transmitter</source>
-        <translation>transmisor</translation>
+        <translation>transmițător</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>violation</source>
-        <translation>violación</translation>
+        <translation>încălcare</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>bookmark</source>
-        <translation>marcador</translation>
+        <translation>semn de carte</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>surface</source>
-        <translation>superficie</translation>
+        <translation>suprafață</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="140"/>
         <source>safety stop</source>
-        <translation>parada de seguridad</translation>
+        <translation>oprire pentru siguranță</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>gaschange</source>
-        <translation>cambio de mezcla</translation>
+        <translation>schimbarea gazului</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>safety stop (voluntary)</source>
-        <translation>parada de seguridad (voluntaria)</translation>
+        <translation>oprire pentru siguranță (voluntară)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="141"/>
         <source>safety stop (mandatory)</source>
-        <translation>parada de seguridad (obligatoria)</translation>
+        <translation>oprire pentru siguranță (obligatorie)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>deepstop</source>
-        <translation>parada de profundidad</translation>
+        <translation>deepstop</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>ceiling (safety stop)</source>
-        <translation>techo (parada de seguridad)</translation>
+        <translation>plafon (oprire pentru siguranță)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>divetime</source>
-        <translation>duración de inmersión</translation>
+        <translation>timp scufundare</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="142"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
-        <translation>por debajo del techo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>maxdepth</source>
-        <translation>Profundidad Max</translation>
+        <translation>adâncime maximă</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
@@ -2908,7 +2908,7 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>airtime</source>
-        <translation>tiempo de aire</translation>
+        <translation>timp aer rămas</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
@@ -2918,151 +2918,150 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="143"/>
         <source>heading</source>
-        <translation>encabezado</translation>
+        <translation>direcție</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>tissue level warning</source>
-        <translation>Alarma de nivel de tejidos</translation>
+        <translation>avertizare nivel țesut</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>non stop time</source>
-        <translation>tiempo sin parada</translation>
+        <translation>timp fără oprire</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="161"/>
         <source>invalid event number</source>
-        <translation>el número de evento no es válido</translation>
+        <translation>numărul evenimentul este invalid</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="403"/>
         <source>Unable to create parser for %s %s</source>
-        <translation>No es posible crear el analizador para %s %s</translation>
+        <translation>Nu s-a putut crea parser pentru %s %s</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="409"/>
         <source>Error registering the data</source>
-        <translation>Error al registrar los datos</translation>
+        <translation>Eroare înregistrând datele</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="417"/>
         <source>Error parsing the datetime</source>
-        <translation>Error al analizar la fecha</translation>
+        <translation>Eroare parsând data</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="433"/>
         <source>Dive %d: %s %d %04d</source>
-        <translation>Inmersión n.º %d: %s %d %04d</translation>
+        <translation>Scufundarea %d: %s %d %04d</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="438"/>
         <source>Error parsing the divetime</source>
-        <translation>Error al analizar el tiempo de buceo</translation>
+        <translation>Eroare parsând data</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="447"/>
         <source>Error parsing the maxdepth</source>
-        <translation>Error al analizar la máxima profundidad</translation>
+        <translation>Eroare parsând adâncimea maximă</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="456"/>
         <source>Error parsing the gas mix count</source>
-        <translation>Error al analizar el conteo de mezcla de gas</translation>
+        <translation>Eroare parsând valoarea amestecului de gaz</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="468"/>
         <source>Error obtaining water salinity</source>
-        <translation>Error al obtener salinidad del agua</translation>
+        <translation>Eroare obținând salinitatea apei</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="476"/>
         <source>Error obtaining surface pressure</source>
-        <translation>Error al obtener la presión en superficie</translation>
+        <translation>Eroare obținând presiunea la suprafață</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="484"/>
         <source>Error parsing the gas mix</source>
-        <translation>Error al analizar la mezcla de gas</translation>
+        <translation>Eroare parsând amestecul de gaz</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="491"/>
         <source>Error parsing the samples</source>
-        <translation>Error al analizar las muestras</translation>
+        <translation>Eroare parsând eșantioanele</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="621"/>
         <source>Event: waiting for user action</source>
-        <translation>Evento: esperando acción del usuario</translation>
+        <translation>Eveniment: aștept acțiunea utilizatorului</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="629"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation>modelo=%u (0x%08x), firmware=%u (0x%08x), n.º de serie=%u (0x%08x)</translation>
+        <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="689"/>
         <source>Error registering the event handler.</source>
-        <translation>Error al registrar el manejador de eventos</translation>
+        <translation>Eroare la înregistrarea handlerului de evenimente.</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="694"/>
         <source>Error registering the cancellation handler.</source>
-        <translation>Error al registrar el manejador de cancelación</translation>
+        <translation>Eroare la înregistrarea handlerului de anulare.</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="715"/>
         <source>Dive data import error</source>
-        <translation>Error al importar datos de inmersiones</translation>
+        <translation>Eroare la importarea datelor despre scufundare</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="754"/>
         <source>Unable to create libdivecomputer context</source>
-        <translation>No es posible crear el contexto de libdivecomputer</translation>
+        <translation>Nu s-a putut crea contextul libdivecomputer</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="761"/>
         <source>Unable to open %s %s (%s)</source>
-        <translation>No se pudo abrir  %s %s (%s)</translation>
+        <translation>Nu s-a putut deschide %s %s (%s)</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="484"/>
         <source>Strange percentage reading %s
 </source>
-        <translation>Porcentaje extraño al leer %s
+        <translation>Valoare procentuală neobișnuită %s
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1625"/>
         <source>Failed to parse '%s'.
 </source>
-        <translation>No se pudo analizar «%s».
+        <translation>Nu s-a putut parsa ”%s”.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1626"/>
         <source>Failed to parse &apos;%s&apos;</source>
-        <translation>No se pudo analizar «%s»</translation>
+        <translation>Nu s-a putut parsa „%s”</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1845"/>
         <source>Database query get_events failed.
 </source>
-        <translation>Falló la petición get_events a la base de datos.
+        <translation>Query-ul get_events nu a reușit.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1852"/>
         <source>Database query get_tags failed.
 </source>
-        <translation>Consulta de la base de datos get_tags falló.
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../file.c" line="176"/>
         <source>Database connection failed '%s'.
 </source>
-        <translation>Falló la conexión a la base de datos «%s».
+        <translation>Conectarea la baza de date a eșuat „%s”.
 </translation>
     </message>
     <message>
@@ -3070,34 +3069,31 @@ Media</translation>
         <location filename="../parse-xml.c" line="2033"/>
         <source>Database query failed '%s'.
 </source>
-        <translation>Falló la petición a la base de datos «%s».
+        <translation>Query-ul bazei de date a eșuat „%s”.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1997"/>
         <source>Database query get_cylinders failed.
 </source>
-        <translation>Consulta de la base de datos get_cylinders falló.
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2004"/>
         <source>Database query get_changes failed.
 </source>
-        <translation>Consulta de la base de datos get_changes falló.
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2011"/>
         <source>Database query get_profile_sample failed.
 </source>
-        <translation>Consulta de la base de datos get_profile_sample falló.
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2102"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation>No se puede abrir la hoja de estilo %s</translation>
+        <translation>Nu s-a putut deschide stylesheet-ul %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="97"/>
@@ -3108,12 +3104,12 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="132"/>
         <source>Can&apos;t find gas %d/%d</source>
-        <translation>No encuentro el gas %d/%d</translation>
+        <translation>Nu s-a putut găsi gazul %d/%d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="324"/>
         <source>Too many gas mixes</source>
-        <translation>Demasiadas mezclas de gas</translation>
+        <translation>Prea multe amestecuri de gaz</translation>
     </message>
     <message>
         <location filename="../planner.c" line="504"/>
@@ -3123,8 +3119,8 @@ based on GFlow = %.0f and GFhigh = %.0f
 
 </source>
         <translation>%s
-Plan de buceo de Subsurface
-basado en GFbajo = %.0f  y  GFalto = %.0f
+Planul de scufundare Subsurface
+bazat pe GFlow = %.0f si GFhigh = %.0f
 
 </translation>
     </message>
@@ -3132,28 +3128,28 @@ basado en GFbajo = %.0f  y  GFalto = %.0f
         <location filename="../planner.c" line="545"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s
 </source>
-        <translation>Cambio de cota a %.*f %s en %d:%02d min - runtime %d:%02u con %s
+        <translation>Tranziția la %.*f %s în %d:%02d min - timp rulare %d:%02u pe %s
 </translation>
     </message>
     <message>
         <location filename="../planner.c" line="554"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s
 </source>
-        <translation>Permanecer a  %.*f %s durante %d:%02d min - runtime %d:%02u en %s
+        <translation>Stați la  %.*f %s pentru  %d:%02d min - timp rulare %d:%02u pe %s
 </translation>
     </message>
     <message>
         <location filename="../planner.c" line="565"/>
         <source>Switch gas to %s
 </source>
-        <translation>Cambio de gas a %s
+        <translation>Schimbați gazul la %s
 </translation>
     </message>
     <message>
         <location filename="../planner.c" line="573"/>
         <source>Gas consumption:
 </source>
-        <translation>Consumo de gas:
+        <translation>Consum de gaz:
 </translation>
     </message>
     <message>
@@ -3173,72 +3169,61 @@ basado en GFbajo = %.0f  y  GFalto = %.0f
         <source>@: %d:%02d
 D: %.1f%s
 </source>
-        <translation>@: %d:%02d
-Prof: %.1f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1234"/>
         <source>P: %d%s
 </source>
-        <translation>Pres: %d%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1238"/>
         <source>T: %.1f%s
 </source>
-        <translation>T: %.1f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1244"/>
         <source>V: %.1f%s
 </source>
-        <translation>V: %.1f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1247"/>
         <source>SAC: %2.1fl/min
 </source>
-        <translation>CAS: %2.1fl/min
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1249"/>
         <source>CNS: %u%%
 </source>
-        <translation>CNS: %u%%
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1251"/>
         <source>pO%s: %.2fbar
 </source>
-        <translation>pO%s: %.2fbar
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1253"/>
         <source>pN%s: %.2fbar
 </source>
-        <translation>pN%s: %.2fbar
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1255"/>
         <source>pHe: %.2fbar
 </source>
-        <translation>pHe: %.2fbar
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1258"/>
         <source>MOD: %d%s
 </source>
-        <translation>PMO: %d%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1264"/>
@@ -3246,107 +3231,91 @@ Prof: %.1f%s
 END: %d%s
 EADD: %d%s
 </source>
-        <translation>PEA: %d%s
-PNE: %d%s
-EADD: %d%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1271"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
-        <translation>Parada de seguridad: %umin @ %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1274"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
-        <translation>Parada de seguridad: tiempo desc @ %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1279"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation>Parada deco: %umin @ %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1282"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
-        <translation>Parada deco: tiempo desc @ %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1286"/>
         <source>In deco
 </source>
-        <translation>En deco</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1288"/>
         <source>NDL: %umin
 </source>
-        <translation>NDL: %umin
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1292"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
-        <translation>Parada deco: %umin @ %.0f%s (calc)
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1300"/>
         <source>In deco (calc)
 </source>
-        <translation>En deco (calc)
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1302"/>
         <source>NDL: %umin (calc)
 </source>
-        <translation>NDL: %umin (calc)
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1305"/>
         <source>TTS: %umin (calc)
 </source>
-        <translation>TTS: %umin (calc)
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1308"/>
         <source>Calculated ceiling %.0f%s
 </source>
-        <translation>Techo calculado %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1314"/>
         <source>Tissue %.0fmin: %.0f%s
 </source>
-        <translation>Tejido %.0fmin: %.0f%s
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1320"/>
         <source>heartbeat: %d
 </source>
-        <translation>Ritmo cardiaco: %d
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1322"/>
         <source>bearing: %d
 </source>
-        <translation>Soporte: %d
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../profile.c" line="1414"/>
@@ -3381,7 +3350,7 @@ EADD: %d%s
     <message>
         <location filename="../profile.c" line="1449"/>
         <source>%s %sP:%d %s</source>
-        <translation>%s %sPres:%d %s</translation>
+        <translation>%s %sP:%d %s</translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="308"/>
@@ -3408,97 +3377,97 @@ EADD: %d%s
     <message>
         <location filename="../qt-gui.cpp" line="524"/>
         <source>%1 %2 (%3 dives)</source>
-        <translation>%1 %2 (%3 inmersiones)</translation>
+        <translation>%1 %2 (%3 scufundări)</translation>
     </message>
     <message>
         <location filename="../qt-gui.cpp" line="529"/>
         <source>%1 %2 (1 dive)</source>
-        <translation>%1 %2 (1 inmersión)</translation>
+        <translation>%1 %2 (1 scufundare)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="13"/>
         <source>boat</source>
-        <translation>barco</translation>
+        <translation>ambarcațiune</translation>
     </message>
     <message>
         <location filename="../dive.c" line="13"/>
         <source>shore</source>
-        <translation>orilla</translation>
+        <translation>țărm</translation>
     </message>
     <message>
         <location filename="../dive.c" line="13"/>
         <source>drift</source>
-        <translation>a la deriva</translation>
+        <translation>derivă</translation>
     </message>
     <message>
         <location filename="../dive.c" line="14"/>
         <source>deep</source>
-        <translation>profunda</translation>
+        <translation>adânc</translation>
     </message>
     <message>
         <location filename="../dive.c" line="14"/>
         <source>cavern</source>
-        <translation>caverna</translation>
+        <translation>cavernă</translation>
     </message>
     <message>
         <location filename="../dive.c" line="14"/>
         <source>ice</source>
-        <translation>hielo</translation>
+        <translation>gheață</translation>
     </message>
     <message>
         <location filename="../dive.c" line="15"/>
         <source>wreck</source>
-        <translation>pecio</translation>
+        <translation>epavă</translation>
     </message>
     <message>
         <location filename="../dive.c" line="15"/>
         <source>cave</source>
-        <translation>cueva</translation>
+        <translation>peșteră</translation>
     </message>
     <message>
         <location filename="../dive.c" line="15"/>
         <source>altitude</source>
-        <translation>altura</translation>
+        <translation>altitudine</translation>
     </message>
     <message>
         <location filename="../dive.c" line="16"/>
         <source>pool</source>
-        <translation>piscina</translation>
+        <translation>piscină</translation>
     </message>
     <message>
         <location filename="../dive.c" line="16"/>
         <source>lake</source>
-        <translation>lago</translation>
+        <translation>lac</translation>
     </message>
     <message>
         <location filename="../dive.c" line="16"/>
         <source>river</source>
-        <translation>río</translation>
+        <translation>râu</translation>
     </message>
     <message>
         <location filename="../dive.c" line="17"/>
         <source>night</source>
-        <translation>noche</translation>
+        <translation>noapte</translation>
     </message>
     <message>
         <location filename="../dive.c" line="17"/>
         <source>fresh</source>
-        <translation>agua dulce</translation>
+        <translation>proaspăt</translation>
     </message>
     <message>
         <location filename="../dive.c" line="17"/>
         <source>student</source>
-        <translation>estudiante</translation>
+        <translation>student</translation>
     </message>
     <message>
         <location filename="../dive.c" line="18"/>
         <source>photo</source>
-        <translation>foto</translation>
+        <translation>fotografie</translation>
     </message>
     <message>
         <location filename="../dive.c" line="18"/>
         <source>video</source>
-        <translation>vídeo</translation>
+        <translation>videoclip</translation>
     </message>
     <message>
         <location filename="../dive.c" line="18"/>
@@ -3508,92 +3477,92 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="19"/>
         <source>deco</source>
-        <translation>deco</translation>
+        <translation>decompresie</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="216"/>
         <source>more than %d days</source>
-        <translation>más de %d días</translation>
+        <translation>mai mult de %d zile</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="222"/>
         <source>%dd %dh %dmin</source>
-        <translation>%dd, %dh %dmin</translation>
+        <translation>%dz %do %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="224"/>
         <source>%dh %dmin</source>
-        <translation>%dh %dmin</translation>
+        <translation>%do %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="235"/>
         <source>for dives #</source>
-        <translation>para las inmersiones n.º</translation>
+        <translation>pentru scufundările nr.</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="242"/>
         <source>for selected dives</source>
-        <translation>para las inmersiones seleccionadas</translation>
+        <translation>pentru scufundările selectate</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="277"/>
         <source>for dive #%d</source>
-        <translation>para la inmersión n.º %d</translation>
+        <translation>pentru scufundarea nr. %d</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="279"/>
         <source>for selected dive</source>
-        <translation>para la inmersión seleccionada</translation>
+        <translation>pentru scufundarea selectată</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="281"/>
         <source>for all dives</source>
-        <translation>Todas las inmersiones</translation>
+        <translation>pentru toate scufundările</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="283"/>
         <source>(no dives)</source>
-        <translation>(ninguna inmersión)</translation>
+        <translation>(nicio scufundare)</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Sun</source>
-        <translation>Do</translation>
+        <translation>Duminică</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Mon</source>
-        <translation>Lu</translation>
+        <translation>Luni</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Tue</source>
-        <translation>Ma</translation>
+        <translation>Marți</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Wed</source>
-        <translation>Mi</translation>
+        <translation>Miercuri</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Thu</source>
-        <translation>Ju</translation>
+        <translation>Joi</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Fri</source>
-        <translation>Vi</translation>
+        <translation>Vineri</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="63"/>
         <source>Sat</source>
-        <translation>Sa</translation>
+        <translation>Sâmbătă</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="72"/>
         <source>Jan</source>
-        <translation>Ene</translation>
+        <translation>Jan</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="72"/>
@@ -3608,27 +3577,27 @@ EADD: %d%s
     <message>
         <location filename="../subsurfacestartup.c" line="72"/>
         <source>Apr</source>
-        <translation>Abr</translation>
+        <translation>Apr</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="72"/>
         <source>May</source>
-        <translation>Mayo</translation>
+        <translation>Mai</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="72"/>
         <source>Jun</source>
-        <translation>Jun</translation>
+        <translation>Iun</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="73"/>
         <source>Jul</source>
-        <translation>Jul</translation>
+        <translation>Iul</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="73"/>
         <source>Aug</source>
-        <translation>Ago</translation>
+        <translation>Aug</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="73"/>
@@ -3643,82 +3612,82 @@ EADD: %d%s
     <message>
         <location filename="../subsurfacestartup.c" line="73"/>
         <source>Nov</source>
-        <translation>Nov</translation>
+        <translation>Noi</translation>
     </message>
     <message>
         <location filename="../subsurfacestartup.c" line="73"/>
         <source>Dec</source>
-        <translation>Dic</translation>
+        <translation>Dec</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="24"/>
         <source>Uemis Zurich: File System is almost full
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
-        <translation>Uemis Zurich: El sistema de archivos esta casi lleno 
-Desconecte / conecte el ordenador de buceo 
-e inténtelo de nuevo</translation>
+        <translation>Uemis Zurich: Sistemul de Fișiere este aproape plin
+Deconectați/reconectați computerul de scufundări
+si faceți click pe „Reîncercați”</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="25"/>
         <source>Uemis Zurich: File System is full
 Disconnect/reconnect the dive computer
 and try again</source>
-        <translation>Uemis Zurich: sistema de archivos está lleno
-Desconectar / conectar el ordenador de buceo
-e inténtelo de nuevo</translation>
+        <translation>Uemis Zurich: Sistemul de Fișiere este plin
+Deconectați/reconectați computerul de scufundări
+si reîncercați</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="26"/>
         <source>Short write to req.txt file
 Is the Uemis Zurich plugged in correctly?</source>
-        <translation>Escritura al archivo req.txt muy corta.
-¿Está el Uemis Zúrich correctamente conectado?</translation>
+        <translation>Scriere scurtă în fișierul req.txt
+Este Uemis Zurich conectat corect?</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="107"/>
         <source>unknown</source>
-        <translation>desconocido</translation>
+        <translation>necunoscut</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="379"/>
         <source>Reading %s %s</source>
-        <translation>Leyendo %s %s</translation>
+        <translation>Citind %s %s</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="399"/>
         <source>data</source>
-        <translation>datos</translation>
+        <translation>data</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="420"/>
         <source>divelog entry id</source>
-        <translation>identificador de entrada del diario</translation>
+        <translation>id-ul înregistrării în divelog</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="422"/>
         <source>divespot data id</source>
-        <translation>identificador del punto de buceo</translation>
+        <translation>id-ul înregistrării în divespot</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="424"/>
         <source>more data dive id</source>
-        <translation>más datos para el identificador de  inmersión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="618"/>
         <source>wetsuit</source>
-        <translation>traje húmedo</translation>
+        <translation>wetsuit</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="618"/>
         <source>semidry</source>
-        <translation>semiseco</translation>
+        <translation>semidry</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="618"/>
         <source>drysuit</source>
-        <translation>traje seco</translation>
+        <translation>drysuit</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
@@ -3728,7 +3697,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
         <source>vest</source>
-        <translation>chaleco</translation>
+        <translation>vest</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
@@ -3738,127 +3707,127 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
         <source>jacket</source>
-        <translation>chaleco</translation>
+        <translation>jacket</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
         <source>full suit</source>
-        <translation>traje completo</translation>
+        <translation>full suit</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="619"/>
         <source>2 pcs full suit</source>
-        <translation>traje completo 2 piezas</translation>
+        <translation>full suit 2 părți</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="620"/>
         <source>membrane</source>
-        <translation>membrana</translation>
+        <translation>membrană</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="802"/>
         <source>Init Communication</source>
-        <translation>Iniciar comunicación</translation>
+        <translation>Inițializează Comunicarea</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="804"/>
         <source>Uemis init failed</source>
-        <translation>Fallo al intentar iniciar Uemis</translation>
+        <translation>Inițializarea Uemis a eșuat</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="815"/>
         <source>Start download</source>
-        <translation>Iniciar la descarga</translation>
+        <translation>Începe descărcarea</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="196"/>
         <source>Safety Stop Violation</source>
-        <translation>Violación de parada de seguridad</translation>
+        <translation>Încălcare a Opririi pentru Siguranță</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="198"/>
         <source>Speed Alarm</source>
-        <translation>Alarma de velocidad</translation>
+        <translation>Alarmă de viteză</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>
         <source>Speed Warning</source>
-        <translation>Aviso de velocidad</translation>
+        <translation>Avertizare de viteză</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>PO2 Green Warning</source>
-        <translation>Aviso verde de PO2</translation>
+        <translation>Avertizare Verde PO2</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>PO2 Ascend Warning</source>
-        <translation>Aviso de ascenso de PO2</translation>
+        <translation>Avertizare de Ascensiune PO2</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>PO2 Ascend Alarm</source>
-        <translation>Alarma de ascenso de PO2</translation>
+        <translation>Alarmă de Ascensiune PO2</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
         <source>Tank Pressure Info</source>
-        <translation>Información sobre presión de botella</translation>
+        <translation>Informații Presiune Tub</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="214"/>
         <source>RGT Warning</source>
-        <translation>Aviso tiempo de gas restante</translation>
+        <translation>Avertizare RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="216"/>
         <source>RGT Alert</source>
-        <translation>Alerta tiempo de gas restante</translation>
+        <translation>Alertă RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="218"/>
         <source>Tank Change Suggested</source>
-        <translation>Sugerencia de cambio de botella</translation>
+        <translation>Schimbarea tubului este sugerată</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="220"/>
         <source>Depth Limit Exceeded</source>
-        <translation>Se superó el límite de profundidad</translation>
+        <translation>Adâncimea maximă a fost depășită</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Max Deco Time Warning</source>
-        <translation>Advertencia de tiempo max deco</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive Time Info</source>
-        <translation>Información sobre la ruración de lainmersión</translation>
+        <translation>Informații despre timpul scufundării</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>
         <source>Dive Time Alert</source>
-        <translation>Alerta de duración de inmersión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../uemis.c" line="228"/>
         <source>Marker</source>
-        <translation>Marcador</translation>
+        <translation>Marker</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="230"/>
         <source>No Tank Data</source>
-        <translation>No se degistran datos de botella</translation>
+        <translation>Nu există date despre tub</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="232"/>
         <source>Low Battery Warning</source>
-        <translation>Aviso de batería baja</translation>
+        <translation>Avertizare de Baterie Scăzută</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="234"/>
         <source>Low Battery Alert</source>
-        <translation>Alerta de batería baja</translation>
+        <translation>Alertă de Baterie Scăzută</translation>
     </message>
 </context>
 </TS>
