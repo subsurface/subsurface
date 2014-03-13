@@ -1205,8 +1205,11 @@ static int do_git_load(git_repository *repo, const char *branch)
 	git_object *tree;
 
 	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
-	if (ret)
-		return report_error("Unable to look up branch '%s'", branch);
+	if (ret) {
+		ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_REMOTE);
+		if (ret)
+			return report_error("Unable to look up branch '%s'", branch);
+	}
 	if (git_reference_peel(&tree, ref, GIT_OBJ_TREE))
 		return report_error("Could not look up tree of branch '%s'", branch);
 	ret = load_dives_from_tree(repo, (git_tree *) tree);
