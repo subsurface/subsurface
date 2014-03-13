@@ -335,13 +335,12 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		firstCall = false;
 	}
 
-	// restore default zoom level and tooltip position
+	// restore default zoom level
 	if (zoomLevel) {
 		const qreal defScale = 1.0 / qPow(zoomFactor, (qreal)zoomLevel);
 		scale(defScale, defScale);
 		zoomLevel = 0;
 	}
-	toolTipItem->setPos(0, 0);
 
 	// No need to do this again if we are already showing the same dive
 	// computer of the same dive, so we check the unique id of the dive

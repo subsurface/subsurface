@@ -184,10 +184,9 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void ToolTipItem::persistPos()
 {
-	QPoint currentPos = scene()->views().at(0)->mapFromScene(pos());
 	QSettings s;
 	s.beginGroup("ProfileMap");
-	s.setValue("tooltip_position", currentPos);
+	s.setValue("tooltip_position", pos());
 	s.endGroup();
 }
 
@@ -195,8 +194,7 @@ void ToolTipItem::readPos()
 {
 	QSettings s;
 	s.beginGroup("ProfileMap");
-	QPointF value = scene()->views().at(0)->mapToScene(
-	    s.value("tooltip_position").toPoint());
+	QPointF value = s.value("tooltip_position").toPoint();
 	if (!scene()->sceneRect().contains(value)) {
 		value = QPointF(0, 0);
 	}
