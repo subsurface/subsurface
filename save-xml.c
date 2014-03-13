@@ -601,8 +601,11 @@ void save_dives_logic(const char *filename, const bool select_only)
 	const char *branch;
 
 	git = is_git_repository(filename, &branch);
-	if (git && !git_save_dives(git, branch, select_only))
+	if (git) {
+		/* error returns, anybody? */
+		git_save_dives(git, branch, select_only);
 		return;
+	}
 
 	try_to_backup(filename);
 

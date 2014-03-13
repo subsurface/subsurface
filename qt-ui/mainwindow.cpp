@@ -214,6 +214,7 @@ void MainWindow::on_actionClose_triggered()
 
 	ui.newProfile->setEmptyState();
 	/* free the dives and trips */
+	clear_git_id();
 	while (dive_table.nr)
 		delete_single_dive(0);
 

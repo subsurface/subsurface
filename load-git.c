@@ -14,6 +14,8 @@
 #include "device.h"
 #include "membuffer.h"
 
+const char *saved_git_id = NULL;
+
 struct keyword_action {
 	const char *keyword;
 	void (*fn)(char *, struct membuffer *, void *);
@@ -1198,11 +1200,25 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree)
 	return 0;
 }
 
+void clear_git_id(void)
+{
+	saved_git_id = NULL;
+}
+
+void set_git_id(const struct git_oid * id)
+{
+	static char git_id_buffer[GIT_OID_HEXSZ+1];
+
+	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
+	saved_git_id = git_id_buffer;
+}
+
 static int do_git_load(git_repository *repo, const char *branch)
 {
 	int ret;
 	git_reference *ref;
-	git_object *tree;
+	git_commit *commit;
+	git_tree *tree;
 
 	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
 	if (ret) {
@@ -1210,10 +1226,14 @@ static int do_git_load(git_repository *repo, const char *branch)
 		if (ret)
 			return report_error("Unable to look up branch '%s'", branch);
 	}
-	if (git_reference_peel(&tree, ref, GIT_OBJ_TREE))
-		return report_error("Could not look up tree of branch '%s'", branch);
-	ret = load_dives_from_tree(repo, (git_tree *) tree);
-	git_object_free(tree);
+	if (git_reference_peel((git_object **)&commit, ref, GIT_OBJ_COMMIT))
+		return report_error("Could not look up commit of branch '%s'", branch);
+	if (git_commit_tree(&tree, commit))
+		return report_error("Could not look up tree of commit in branch '%s'", branch);
+	ret = load_dives_from_tree(repo, tree);
+	if (!ret)
+		set_git_id(git_commit_id(commit));
+	git_object_free((git_object *)tree);
 	return ret;
 }
 
