@@ -40,16 +40,16 @@
         <file>xslt/sensuscsv.xslt</file>
         <file>xslt/manualcsv2xml.xslt</file>
         <file>xslt/shearwater.xslt</file>
-        <file alias="icon_lung">icons/icon-lung.png</file>
-        <file alias="icon_mod">icons/icon-mod.png</file>
-        <file alias="icon_he">icons/icon-phegraph.png</file>
-        <file alias="icon_n2">icons/icon-pn2graph.png</file>
-        <file alias="icon_o2">icons/icon-po2graph.png</file>
-        <file alias="icon_ceiling_calculated">icons/icon-ceiling-calculated.png</file>
+        <file alias="icon_lung">icons/gas.png</file>
+        <file alias="icon_mod">icons/mod.png</file>
+        <file alias="icon_he">icons/he.png</file>
+        <file alias="icon_n2">icons/n2.png</file>
+        <file alias="icon_o2">icons/o2.png</file>
+        <file alias="icon_ceiling_calculated">icons/ss.png</file>
         <file alias="icon_ceiling_alltissues">icons/icon-ceiling-alltissues.png</file>
-        <file alias="icon_NDLTTS">icons/icon-NDLTTS.png</file>
-        <file alias="icon_ceiling_3m">icons/icon-ceiling-3m.png</file>
-        <file alias="icon_ceiling_dc">icons/icon-ceiling-dc.png</file>
-        <file alias="icon_ead">icons/icon-ead.png</file>
+        <file alias="icon_NDLTTS">icons/limit.png</file>
+        <file alias="icon_ceiling_3m">icons/3x3.png</file>
+        <file alias="icon_ceiling_dc">icons/pc.png</file>
+        <file alias="icon_ead">icons/ead.png</file>
     </qresource>
 </RCC>
