@@ -426,12 +426,14 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 	put_format(b, "</dive>\n");
 }
 
-void save_dive(FILE *f, struct dive *dive)
+int save_dive(FILE *f, struct dive *dive)
 {
 	struct membuffer buf = { 0 };
 
 	save_one_dive(&buf, dive);
 	flush_buffer(&buf, f);
+	/* Error handling? */
+	return 0;
 }
 
 static void save_trip(struct membuffer *b, dive_trip_t *trip)
@@ -493,9 +495,9 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 
 #define VERSION 2
 
-void save_dives(const char *filename)
+int save_dives(const char *filename)
 {
-	save_dives_logic(filename, false);
+	return save_dives_logic(filename, false);
 }
 
 void save_dives_buffer(struct membuffer *b, const bool select_only)
@@ -593,33 +595,36 @@ static void try_to_backup(const char *filename)
 	}
 }
 
-void save_dives_logic(const char *filename, const bool select_only)
+int save_dives_logic(const char *filename, const bool select_only)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;
 	void *git;
 	const char *branch;
+	int error;
 
 	git = is_git_repository(filename, &branch);
-	if (git) {
-		/* error returns, anybody? */
-		git_save_dives(git, branch, select_only);
-		return;
-	}
+	if (git)
+		return git_save_dives(git, branch, select_only);
 
 	try_to_backup(filename);
 
 	save_dives_buffer(&buf, select_only);
 
+	error = -1;
 	f = subsurface_fopen(filename, "w");
 	if (f) {
 		flush_buffer(&buf, f);
-		fclose(f);
+		error = fclose(f);
 	}
+	if (error)
+		report_error("Save failed (%s)", strerror(errno));
+
 	free_buffer(&buf);
+	return error;
 }
 
-void export_dives_uddf(const char *filename, const bool selected)
+int export_dives_uddf(const char *filename, const bool selected)
 {
 	FILE *f;
 	struct membuffer buf = { 0 };
@@ -628,7 +633,7 @@ void export_dives_uddf(const char *filename, const bool selected)
 	xmlDoc *transformed;
 
 	if (!filename)
-		return;
+		return report_error("No filename for UDDF export");
 
 	/* Save XML to file and convert it into a memory buffer */
 	save_dives_buffer(&buf, selected);
@@ -640,26 +645,27 @@ void export_dives_uddf(const char *filename, const bool selected)
 	 */
 	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, 0);
 	free_buffer(&buf);
-	if (!doc) {
-		fprintf(stderr, "Failed to read XML memory\n");
-		return;
-	}
+	if (!doc)
+		return report_error("Failed to read XML memory");
 
 	/* Convert to UDDF format */
 	xslt = get_stylesheet("uddf-export.xslt");
+	if (!xslt)
+		return report_error("Failed to open UDDF conversion stylesheet");
 
-	if (!xslt) {
-		fprintf(stderr, "Failed to open UDDF conversion stylesheet\n");
-		return;
-	}
 	transformed = xsltApplyStylesheet(xslt, doc, NULL);
 	xsltFreeStylesheet(xslt);
 	xmlFreeDoc(doc);
 
 	/* Write the transformed XML to file */
 	f = subsurface_fopen(filename, "w");
+	if (!f)
+		return report_error("Failed to open %s for writing (%s)", filename, strerror(errno));
+
 	xmlDocFormatDump(f, transformed, 1);
 	xmlFreeDoc(transformed);
 
 	fclose(f);
+	/* Check write errors? */
+	return 0;
 }

@@ -681,10 +681,10 @@ extern void parse_file(const char *filename, char **error);
 extern void parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, int units, char **error);
 extern void parse_manual_file(const char *filename, int separator_index, int units, int number, int date, int time, int duration, int location, int gps, int maxdepth, int meandepth, int buddy, int notes, int weight, int tags, char **error);
 
-extern void save_dives(const char *filename);
-extern void save_dives_logic(const char *filename, bool select_only);
-extern void save_dive(FILE *f, struct dive *dive);
-extern void export_dives_uddf(const char *filename, const bool selected);
+extern int save_dives(const char *filename);
+extern int save_dives_logic(const char *filename, bool select_only);
+extern int save_dive(FILE *f, struct dive *dive);
+extern int export_dives_uddf(const char *filename, const bool selected);
 
 struct git_oid;
 struct git_repository;
