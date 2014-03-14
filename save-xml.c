@@ -606,7 +606,12 @@ int save_dives_logic(const char *filename, const bool select_only)
 	git = is_git_repository(filename, &branch);
 	if (git)
 		return git_save_dives(git, branch, select_only);
-
+	/* if the syntax is for a git save but saving we didn't find a
+	 * repository, throw error */
+	if (strchr(filename, '[')) {
+		report_error("Save failed, invalid git repository %s", filename);
+		return -1;
+	}
 	try_to_backup(filename);
 
 	save_dives_buffer(&buf, select_only);
