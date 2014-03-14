@@ -661,6 +661,7 @@ extern "C" {
 #endif
 
 extern int report_error(const char *fmt, ...);
+extern const char *get_error_string(void);
 
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);

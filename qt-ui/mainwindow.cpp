@@ -899,8 +899,10 @@ int MainWindow::file_save_as(void)
 	if (ui.InfoWidget->isEditing())
 		ui.InfoWidget->acceptChanges();
 
-	if (save_dives(filename.toUtf8().data()))
+	if (save_dives(filename.toUtf8().data())) {
+		showError(get_error_string());
 		return -1;
+	}
 
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
@@ -927,8 +929,10 @@ int MainWindow::file_save(void)
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
-	if (save_dives(existing_filename))
+	if (save_dives(existing_filename)) {
+		showError(get_error_string());
 		return -1;
+	}
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
 	return 0;
