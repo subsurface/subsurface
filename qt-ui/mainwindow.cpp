@@ -105,6 +105,7 @@ MainWindow *MainWindow::instance()
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay(bool recreateDiveList)
 {
+	showError(get_error_string());
 	ui.InfoWidget->reload();
 	TankInfoModel::instance()->update();
 	ui.globe->reload();
@@ -973,15 +974,10 @@ void MainWindow::importFiles(const QStringList fileNames)
 		return;
 
 	QByteArray fileNamePtr;
-	char *error = NULL;
+
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &error);
-		if (error != NULL) {
-			showError(error);
-			free(error);
-			error = NULL;
-		}
+		parse_file(fileNamePtr.data());
 	}
 	process_dives(true, false);
 	refreshDisplay();
@@ -992,21 +988,19 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	if (fileNames.isEmpty())
 		return;
 
-	char *error = NULL;
 	QByteArray fileNamePtr;
 	QStringList failedParses;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &error);
-		set_filename(fileNamePtr.data(), true);
-		setTitle(MWTF_FILENAME);
+		int error;
 
-		if (error != NULL) {
+		fileNamePtr = QFile::encodeName(fileNames.at(i));
+		error = parse_file(fileNamePtr.data());
+		if (!error) {
+			set_filename(fileNamePtr.data(), true);
+			setTitle(MWTF_FILENAME);
+		} else {
 			failedParses.append(fileNames.at(i));
-			showError(error);
-			free(error);
-			error = NULL;
 		}
 	}
 

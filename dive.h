@@ -671,16 +671,16 @@ struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 
 extern void parse_xml_init(void);
-extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, const char **params, char **error);
+extern void parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, const char **params);
 extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, bool force);
 
-extern int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, char **error);
-extern int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table, char **error);
+extern int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
+extern int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
 
-extern void parse_file(const char *filename, char **error);
-extern void parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, int units, char **error);
-extern void parse_manual_file(const char *filename, int separator_index, int units, int number, int date, int time, int duration, int location, int gps, int maxdepth, int meandepth, int buddy, int notes, int weight, int tags, char **error);
+extern int parse_file(const char *filename);
+extern int parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, int units);
+extern int parse_manual_file(const char *filename, int separator_index, int units, int number, int date, int time, int duration, int location, int gps, int maxdepth, int meandepth, int buddy, int notes, int weight, int tags);
 
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only);
@@ -820,7 +820,7 @@ struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, 
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
 void dump_plan(struct diveplan *diveplan);
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, const char **error_string_p);
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco);
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, char *name);

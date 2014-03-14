@@ -103,11 +103,11 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected, QString *errorMsg)
+bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 	if (!amount_selected) {
-		*errorMsg = tr("no dives were selected");
+		report_error(tr("no dives were selected").toUtf8());
 		return false;
 	}
 
@@ -126,8 +126,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	if (!zip) {
 		char buffer[1024];
 		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
-		*errorMsg = tr("failed to create zip file for upload: %1")
-				.arg(QString::fromLocal8Bit(buffer));
+		report_error(tr("failed to create zip file for upload: %s").toUtf8(), buffer);
 		return false;
 	}
 
@@ -151,7 +150,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			continue;
 		f = tmpfile();
 		if (!f) {
-			*errorMsg = tr("cannot create temporary file: %1").arg(qt_error_string());
+			report_error(tr("cannot create temporary file: %s").toUtf8(), qt_error_string().toUtf8().data());
 			goto error_close_zip;
 		}
 		save_dive(f, dive);
@@ -161,7 +160,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 
 		membuf = (char *)malloc(streamsize + 1);
 		if (!membuf || (streamsize = fread(membuf, streamsize, 1, f)) == 0) {
-			*errorMsg = tr("internal error: %1").arg(qt_error_string());
+			report_error(tr("internal error: %s").toUtf8(), qt_error_string().toUtf8().data());
 			fclose(f);
 			free((void *)membuf);
 			goto error_close_zip;
@@ -177,7 +176,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		xmlDoc *doc = xmlReadMemory(membuf, streamsize, "divelog", NULL, 0);
 		if (!doc) {
 			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
-			*errorMsg = tr("internal error");
+			report_error(tr("internal error").toUtf8());
 			free((void *)membuf);
 			goto error_close_zip;
 		}
@@ -328,7 +327,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 	case QDialogButtonBox::ApplyRole: {
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toLocal8Bit();
-		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL, NULL);
+		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
 
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
@@ -580,11 +579,9 @@ void DivelogsDeWebServices::downloadDives()
 
 void DivelogsDeWebServices::prepareDivesForUpload()
 {
-	QString errorText;
-
 	/* generate a random filename and create/open that file with zip_open */
 	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	if (prepare_dives_for_divelogs(filename, true, &errorText)) {
+	if (prepare_dives_for_divelogs(filename, true)) {
 		QFile f(filename);
 		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);
@@ -593,7 +590,7 @@ void DivelogsDeWebServices::prepareDivesForUpload()
 			return;
 		}
 	}
-	MainWindow::instance()->showError(errorText);
+	MainWindow::instance()->showError(get_error_string());
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
@@ -861,12 +858,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 			break;
 		}
 		/* parse file and import dives */
-		char *error = NULL;
-		parse_file(QFile::encodeName(zipFile.fileName()), &error);
-		if (error != NULL) {
-			MainWindow::instance()->showError(error);
-			free(error);
-		}
+		parse_file(QFile::encodeName(zipFile.fileName()));
 		process_dives(true, false);
 		MainWindow::instance()->refreshDisplay();
 

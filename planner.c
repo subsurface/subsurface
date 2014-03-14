@@ -100,14 +100,13 @@ void get_gas_string(int o2, int he, char *text, int len)
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-double tissue_at_end(struct dive *dive, char **cached_datap, const char **error_string_p)
+double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
 	int i, j, t0, t1, gasidx, lastdepth;
 	int o2, he;
 	double tissue_tolerance;
-	static char buf[200];
 
 	if (!dive)
 		return 0.0;
@@ -129,8 +128,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap, const char **error_
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
 		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
-			snprintf(buf, sizeof(buf), translate("gettextFromC", "Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
-			*error_string_p = buf;
+			report_error(translate("gettextFromC", "Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
 			gasidx = 0;
 		}
 		if (i > 0)
@@ -147,7 +145,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap, const char **error_
 }
 
 /* how many seconds until we can ascend to the next stop? */
-static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int next_stop, char **cached_data_p, const char **error_string_p)
+static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int next_stop, char **cached_data_p)
 {
 	int depth, gasidx;
 	double surface_pressure, tissue_tolerance;
@@ -157,7 +155,7 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 	if (!dive)
 		return 0;
 	surface_pressure = dive->dc.surface_pressure.mbar / 1000.0;
-	tissue_tolerance = tissue_at_end(dive, cached_data_p, error_string_p);
+	tissue_tolerance = tissue_at_end(dive, cached_data_p);
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	depth = sample->depth.mm;
 	gasidx = get_gasidx(dive, o2, he);
@@ -223,7 +221,7 @@ static int add_gas(struct dive *dive, int o2, int he)
 	return i;
 }
 
-struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error_string)
+struct dive *create_dive_from_plan(struct diveplan *diveplan)
 {
 	struct dive *dive;
 	struct divedatapoint *dp;
@@ -233,7 +231,6 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 	int oldpo2 = 0;
 	int lasttime = 0;
 
-	*error_string = NULL;
 	if (!diveplan || !diveplan->dp)
 		return NULL;
 #if DEBUG_PLAN & 4
@@ -321,7 +318,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan, const char **error
 
 gas_error_exit:
 	free(dive);
-	*error_string = translate("gettextFromC", "Too many gas mixes");
+	report_error(translate("gettextFromC", "Too many gas mixes"));
 	return NULL;
 }
 
@@ -587,7 +584,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 }
 #endif
 
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco, const char **error_string_p)
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco)
 {
 	struct dive *dive;
 	struct sample *sample;
@@ -604,7 +601,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	if (*divep)
 		delete_single_dive(dive_table.nr - 1);
-	*divep = dive = create_dive_from_plan(diveplan, error_string_p);
+	*divep = dive = create_dive_from_plan(diveplan);
 	if (!dive)
 		return;
 	record_dive(dive);
@@ -623,13 +620,13 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
-		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
+		*divep = dive = create_dive_from_plan(diveplan);
 		if (dive)
 			record_dive(dive);
 		return;
 	}
 
-	tissue_tolerance = tissue_at_end(dive, cached_datap, error_string_p);
+	tissue_tolerance = tissue_at_end(dive, cached_datap);
 	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 #if DEBUG_PLAN & 4
 	printf("gas %d/%d\n", o2, he);
@@ -665,7 +662,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
-		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
+		*divep = dive = create_dive_from_plan(diveplan);
 		if (!dive)
 			goto error_exit;
 		record_dive(dive);
@@ -686,12 +683,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 #endif
 			gi--;
 		}
-		wait_time = time_at_last_depth(dive, o2, he, stoplevels[stopidx - 1], cached_datap, error_string_p);
+		wait_time = time_at_last_depth(dive, o2, he, stoplevels[stopidx - 1], cached_datap);
 		/* typically deco plans are done in one minute increments; we may want to
 		 * make this configurable at some point */
 		wait_time = ((wait_time + 59) / 60) * 60;
 #if DEBUG_PLAN & 2
-		tissue_tolerance = tissue_at_end(dive, cached_datap, error_string_p);
+		tissue_tolerance = tissue_at_end(dive, cached_datap);
 		ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
 		printf("waittime %d:%02d at depth %5.2lfm; ceiling %5.2lfm\n", FRACTION(wait_time, 60),
 		       stoplevels[stopidx] / 1000.0, ceiling / 1000.0);
@@ -706,7 +703,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he, po2);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
-		*divep = dive = create_dive_from_plan(diveplan, error_string_p);
+		*divep = dive = create_dive_from_plan(diveplan);
 		if (!dive)
 			goto error_exit;
 		record_dive(dive);

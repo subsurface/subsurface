@@ -54,8 +54,6 @@ DiveLogImportDialog::~DiveLogImportDialog()
 #define VALUE_IF_CHECKED(x) (ui->x->isEnabled() ? ui->x->value() - 1 : -1)
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
-	char *error = NULL;
-
 	if (ui->tabWidget->currentIndex() == 0) {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
@@ -65,13 +63,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				       VALUE_IF_CHECKED(CSVstopdepth),
 				       ui->CSVSeparator->currentIndex(),
 				       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-				       ui->CSVUnits->currentIndex(),
-				       &error);
-			if (error != NULL) {
-				MainWindow::instance()->showError(error);
-				free(error);
-				error = NULL;
-			}
+				       ui->CSVUnits->currentIndex());
 		}
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
@@ -84,13 +76,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					  VALUE_IF_CHECKED(Gps), VALUE_IF_CHECKED(MaxDepth),
 					  VALUE_IF_CHECKED(MeanDepth), VALUE_IF_CHECKED(Buddy),
 					  VALUE_IF_CHECKED(Notes), VALUE_IF_CHECKED(Weight),
-					  VALUE_IF_CHECKED(Tags),
-					  &error);
-			if (error != NULL) {
-				MainWindow::instance()->showError(error);
-				free(error);
-				error = NULL;
-			}
+					  VALUE_IF_CHECKED(Tags));
 		}
 	}
 	process_dives(true, false);

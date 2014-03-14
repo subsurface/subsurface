@@ -1414,7 +1414,6 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	}
 	char *cache = NULL;
 	tempDive = NULL;
-	const char *errorString = NULL;
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &stagingDive->cylinder[i];
@@ -1432,7 +1431,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner());
 	if (mode == ADD) {
 		// copy the samples and events, but don't overwrite the cylinders
 		copy_samples(tempDive, current_dive);
@@ -1468,10 +1467,9 @@ void DivePlannerPointsModel::createPlan()
 	// to not delete it later. mumble. ;p
 	char *cache = NULL;
 	tempDive = NULL;
-	const char *errorString = NULL;
 
 	createTemporaryPlan();
-	plan(&diveplan, &cache, &tempDive, isPlanner(), &errorString);
+	plan(&diveplan, &cache, &tempDive, isPlanner());
 	copy_cylinders(stagingDive, tempDive);
 	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 	per_cylinder_mean_depth(tempDive, select_dc(&tempDive->dc), mean, duration);

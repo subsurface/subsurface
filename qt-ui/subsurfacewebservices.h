@@ -89,7 +89,7 @@ private:
 	void uploadDives(QIODevice *dldContent);
 	explicit DivelogsDeWebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setStatusText(int status);
-	bool prepare_dives_for_divelogs(const QString &filename, bool selected, QString *errorMsg);
+	bool prepare_dives_for_divelogs(const QString &filename, bool selected);
 	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
 	unsigned int download_dialog_parse_response(const QByteArray &length);
 
