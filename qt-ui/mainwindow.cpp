@@ -882,7 +882,7 @@ void MainWindow::recentFileTriggered(bool checked)
 	loadFiles(QStringList() << filename);
 }
 
-void MainWindow::file_save_as(void)
+int MainWindow::file_save_as(void)
 {
 	QString filename;
 	const char *default_filename;
@@ -893,20 +893,23 @@ void MainWindow::file_save_as(void)
 		default_filename = prefs.default_filename;
 	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), default_filename,
 						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
-	if (!filename.isNull() && !filename.isEmpty()) {
+	if (filename.isNull() || filename.isEmpty())
+		return report_error("No filename to save into");
 
-		if (ui.InfoWidget->isEditing())
-			ui.InfoWidget->acceptChanges();
+	if (ui.InfoWidget->isEditing())
+		ui.InfoWidget->acceptChanges();
 
-		save_dives(filename.toUtf8().data());
-		set_filename(filename.toUtf8().data(), true);
-		setTitle(MWTF_FILENAME);
-		mark_divelist_changed(false);
-		addRecentFile(QStringList() << filename);
-	}
+	if (save_dives(filename.toUtf8().data()))
+		return -1;
+
+	set_filename(filename.toUtf8().data(), true);
+	setTitle(MWTF_FILENAME);
+	mark_divelist_changed(false);
+	addRecentFile(QStringList() << filename);
+	return 0;
 }
 
-void MainWindow::file_save(void)
+int MainWindow::file_save(void)
 {
 	const char *current_default;
 
@@ -924,9 +927,11 @@ void MainWindow::file_save(void)
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
-	save_dives(existing_filename);
+	if (save_dives(existing_filename))
+		return -1;
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
+	return 0;
 }
 
 void MainWindow::showError(QString message)
