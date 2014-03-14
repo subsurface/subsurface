@@ -1216,18 +1216,14 @@ void set_git_id(const struct git_oid * id)
 static int do_git_load(git_repository *repo, const char *branch)
 {
 	int ret;
-	git_reference *ref;
+	git_object *object;
 	git_commit *commit;
 	git_tree *tree;
 
-	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
-	if (ret) {
-		ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_REMOTE);
-		if (ret)
-			return report_error("Unable to look up branch '%s'", branch);
-	}
-	if (git_reference_peel((git_object **)&commit, ref, GIT_OBJ_COMMIT))
-		return report_error("Could not look up commit of branch '%s'", branch);
+	if (git_revparse_single(&object, repo, branch))
+		return report_error("Unable to look up revision '%s'", branch);
+	if (git_object_peel((git_object **)&commit, object, GIT_OBJ_COMMIT))
+		return report_error("Revision '%s' is not a valid commit", branch);
 	if (git_commit_tree(&tree, commit))
 		return report_error("Could not look up tree of commit in branch '%s'", branch);
 	ret = load_dives_from_tree(repo, tree);
