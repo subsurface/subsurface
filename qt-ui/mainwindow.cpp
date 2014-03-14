@@ -577,7 +577,7 @@ QString MainWindow::filter()
 bool MainWindow::askSaveChanges()
 {
 	QString message;
-	QMessageBox response;
+	QMessageBox response(MainWindow::instance());
 
 	if (existing_filename)
 		message = tr("Do you want to save the changes you made in the file %1?").arg(existing_filename);
@@ -590,6 +590,7 @@ bool MainWindow::askSaveChanges()
 	response.setWindowTitle(tr("Save Changes?")); // Not displayed on MacOSX as described in Qt API
 	response.setInformativeText(tr("Changes will be lost if you don't save them."));
 	response.setIcon(QMessageBox::Warning);
+	response.setWindowModality(Qt::WindowModal);
 	int ret = response.exec();
 
 	switch (ret) {
