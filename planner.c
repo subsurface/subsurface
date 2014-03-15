@@ -171,21 +171,22 @@ static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int ne
 	return wait;
 }
 
+/* if a default cylinder is set, use that */
 void fill_default_cylinder(cylinder_t *cyl)
 {
-	const char *cyl_name = prefs.default_cylinder != NULL ? prefs.default_cylinder : "AL80";
+	const char *cyl_name = prefs.default_cylinder;
 	struct tank_info_t *ti = tank_info;
-	struct tank_info_t *al80 = NULL;
 
+	if (!cyl_name)
+		return;
 	while (ti->name != NULL) {
 		if (strcmp(ti->name, cyl_name) == 0)
 			break;
-		if (strcmp(ti->name, "AL80") == 0)
-			al80 = ti;
 		ti++;
 	}
 	if (ti->name == NULL)
-		ti = al80;
+		/* didn't find it */
+		return;
 	cyl->type.description = strdup(ti->name);
 	if (ti->ml) {
 		cyl->type.size.mliter = ti->ml;
