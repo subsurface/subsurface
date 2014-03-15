@@ -124,7 +124,9 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 
-		if (!get_tanksize(devdata, data, dive->cylinder, i))
+		/* for the first tank, if there is no tanksize available from the
+		 * dive computer, fill in the default tank information (if set) */
+		if (i == 0 && !get_tanksize(devdata, data, dive->cylinder, i))
 			fill_default_cylinder(&dive->cylinder[i]);
 	}
 	return DC_STATUS_SUCCESS;
