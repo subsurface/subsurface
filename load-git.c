@@ -1243,7 +1243,11 @@ static int do_git_load(git_repository *repo, const char *branch)
  */
 int git_load_dives(struct git_repository *repo, const char *branch)
 {
-	int ret = do_git_load(repo, branch);
+	int ret;
+
+	if (repo == dummy_git_repository)
+		return report_error("Unable to open git repository at '%s'", branch);
+	ret = do_git_load(repo, branch);
 	git_repository_free(repo);
 	free((void *)branch);
 	finish_active_dive();

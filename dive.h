@@ -689,6 +689,7 @@ extern int export_dives_uddf(const char *filename, const bool selected);
 
 struct git_oid;
 struct git_repository;
+#define dummy_git_repository ((git_repository *) 3ul) /* Random bogus pointer, not NULL */
 extern struct git_repository *is_git_repository(const char *filename, const char **branchp);
 extern int git_save_dives(struct git_repository *, const char *, bool select_only);
 extern int git_load_dives(struct git_repository *, const char *);

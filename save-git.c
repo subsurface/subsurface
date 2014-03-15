@@ -924,30 +924,45 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	if (!flen)
 		return NULL;
 
+	/*
+	 * This is the "point of no return": the name matches
+	 * the git repository name rules, and we will no longer
+	 * return NULL.
+	 *
+	 * We will either return "dummy_git_repository" and the
+	 * branch pointer will have the _whole_ filename in it,
+	 * or we will return a real git repository with the
+	 * branch pointer being filled in with just the branch
+	 * name.
+	 *
+	 * The actual git reading/writing routines can use this
+	 * to generate proper error messages.
+	 */
+	*branchp = filename;
 	loc = malloc(flen+1);
 	if (!loc)
-		return NULL;
+		return dummy_git_repository;
 	memcpy(loc, filename, flen);
 	loc[flen] = 0;
 
 	branch = malloc(blen+1);
 	if (!branch) {
 		free(loc);
-		return NULL;
+		return dummy_git_repository;
 	}
 	memcpy(branch, filename+flen+1, blen);
 	branch[blen] = 0;
 
 	if (stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		free(loc);
-		return NULL;
+		return dummy_git_repository;
 	}
 
 	ret = git_repository_open(&repo, loc);
 	free(loc);
 	if (ret < 0) {
 		free(branch);
-		return NULL;
+		return dummy_git_repository;
 	}
 	*branchp = branch;
 	return repo;
@@ -955,7 +970,11 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 
 int git_save_dives(struct git_repository *repo, const char *branch, bool select_only)
 {
-	int ret = do_git_save(repo, branch, select_only);
+	int ret;
+
+	if (repo == dummy_git_repository)
+		return report_error("Unable to open git repository '%s'", branch);
+	ret = do_git_save(repo, branch, select_only);
 	git_repository_free(repo);
 	free((void *)branch);
 	return ret;
