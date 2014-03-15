@@ -336,7 +336,10 @@ void CylindersModel::remove(const QModelIndex &index)
 		return;
 	}
 	cylinder_t *cyl = &current->cylinder[index.row()];
-	if (DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) {
+	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
+	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) ||
+	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING && cyl->used))
+	{
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
 								 tr("Cylinder cannot be removed"),
 								 tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
