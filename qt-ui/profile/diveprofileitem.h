@@ -177,7 +177,7 @@ public:
 	void setColors(const QColor &normalColor, const QColor &alertColor);
 
 private:
-	QPolygonF alertPoly;
+	QVector<QPolygonF> alertPolygons;
 	QString threshouldKey;
 	QString visibilityKey;
 	QColor normalColor;
