@@ -1201,7 +1201,7 @@ water temperature and surface air consumption (SAC).
 image::images/Profile2.png["Typical dive profile",align="center"]
 
 Of all the panels in _Subsurface_, the Dive Profile contains the most detailed
-information about each dive. The Dive Profile has a *button bar* on the laft hand side
+information about each dive. The Dive Profile has a *button bar* on the left hand side
 that allows control over several display options. The functions of these
 buttons are described below. The main item in the Dive
 Profile is the graph of
@@ -1343,7 +1343,6 @@ during the dive. For more information external to this manual see:
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 
-
 === The Dive Profile context menu
 
 The context menu for the Dive Profile is accessed by right-clicking while the
@@ -1445,8 +1444,8 @@ Dives are normally numbered incrementally from non-recent dives (low sequence
 numbers) to recent dives (having the highest sequence numbers). The numbering
 of the dives is not always consistent. For instance, when non-recent dives are
 added to the dive list the numbering does not automatically follow on because
-of the dives that are more recent in date/time than the newly-added dive that
-has an older date/time. Therefore, one may sometimes need to renumber the dives.
+of the dives that are more recent in date/time than the newly-added dive with
+an older date/time. Therefore, one may sometimes need to renumber the dives.
 This is performed by selecting (from the Main Menu) _Log -> Renumber_. Users are
 given a choice with respect to the lowest sequence number to be used.
 Completing this operation results in new sequence numbers (based on date/time)
@@ -1465,26 +1464,29 @@ list comprising five dive trips (*B*, on the right):
 image::images/Group2.jpg["Figure: Grouping dives",align="center"]
 
 Grouping into trips allows a rapid way of accessing individual dives without
-having to scan long lists of dives. In order to group the dives in a dive list,
-(from the Main Menu) users must select _Log -> Autogroup_. The *Dive List* panel now shows
-only the titles for the trips.
-
-==== Viewing the dives during a particular trip
-Once when the dives have been grouped into trips, users can expand one or more
-trips by clicking the arrow-head on the left of each trip title. This expands
-the selected trip, revealing the individual dives performed during the trip.
+having to scan a long lists of dives. In order to group the dives in a dive list,
+(from the Main Menu) users must select _Log -> Autogroup_. The *Dive List* panel
+now shows only the titles for the trips.
 
 ==== Editing the title and associated information for a particular trip
 
 Normally, in the dive list, minimal information is included in the trip title.
 More information about a trip can be added by selecting its trip title from
-the dive list. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here
+the *Dive list*. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here
 users can add or edit information about the date/time, the trip location and any
 other general comments about the trip as a whole (e.g. the dive company that was
-dived with, the general weather during the trip, etc.). After entering this
-information, users should select *Save* from the buttons at the top right of the *Trip Notes*
+dived with, the general weather and surface conditions during the trip, etc.).
+After entering this
+information, users should select *Save* from the buttons at the top right
+of the *Trip Notes*
 tab. The trip title in the *Dive List* panel should now reflect some of the
 edited information.
+
+==== Viewing the dives during a particular trip
+
+Once when the dives have been grouped into trips, users can expand one or more
+trips by clicking the arrow-head on the left of each trip title. This expands
+the selected trip, revealing the individual dives performed during the trip.
 
 ==== Collapsing or expanding dive information for different trips
 
@@ -1506,7 +1508,8 @@ top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
 three dives. The resulting context menu allows the user to create a new trip by
 choosing the option *Create new trip above*. The top three dives are then
 grouped
-into a separate trip. The figures bellow show the selection and context menu on the left (A) and
+into a separate trip. The figures bellow shows the selection and context menu
+on the left (A) and
 the completed action on the right (B):
 
 image::images/SplitDive3a.jpg["FIGURE: Split a trip into 2 trips",align="center"]
@@ -1524,18 +1527,17 @@ calibration dives of the dive computer or dives of extremely short duration.
 ==== Unlink a dive from a trip
 
 Users can unlink dives from the trip to which they belong. In order to do this,
-users should select and right-click
-the relevant dives to bring up the context menu. Then the option *Remove dive(s)
-from trip* should be selected.
-The dives that have been unlinked now appear immediately above the trip to
+select and right-click
+the relevant dives to bring up the context menu. Then select the option *Remove dive(s)
+from trip*. The dive(s) now appear immediately above the trip to
 which they belonged.
 
 ==== Add a dive to the trip immediately above
 
 Selected dives can be moved from the trip to which they belong and placed within
-the trip immediately above the currently active trip. To do this, users must select
+the trip immediately above the currently active trip. To do this, select
 and right-click
-the dives to bring up the context menu, and then select *Add dive(s) to trip
+the dive(s) to bring up the context menu, and then select *Add dive(s) to trip
 immediately above*.
 
 ==== Shift the start time of dive(s)
@@ -1570,7 +1572,7 @@ A dive log can be saved in two formats:
 
 * _Subsurface_ XML format. This is the native format used by _Subsurface_.
 
-* Universal Dive Data format (UDDF). User should refer to http://uddf.org for more information.
+* Universal Dive Data format (UDDF). Refer to http://uddf.org for more information.
 UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 

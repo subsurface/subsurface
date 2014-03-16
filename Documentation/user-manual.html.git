@@ -1813,7 +1813,10 @@ water temperature and surface air consumption (SAC).</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Of all the panels in <em>Subsurface</em>, the Dive Profile contains the most detailed
-information about each dive. The main item in the Dive profile is the graph of
+information about each dive. The Dive Profile has a <strong>button bar</strong> on the left hand side
+that allows control over several display options. The functions of these
+buttons are described below. The main item in the Dive
+Profile is the graph of
 dive depth as a function of time. In addition to the obvious information of
 the depth it also shows the ascent and descent rates compared to the recommended
 speed of going up or down in the water column. This information is given using
@@ -1863,6 +1866,48 @@ cellspacing="0" cellpadding="4">
 <div class="paragraph"><p>The profile also includes depth readings for the peaks and troughs in the graph.
 Thus, users should see the depth of the deepest point and other peaks. Mean depth
 is marked with a horizontal red line.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/scale.jpg" alt="Note" />
+</td>
+<td class="content">In some cases the dive profile does not fill the whole area of the <strong>Dive Profile</strong>
+panel. Clicking the <strong>Scale</strong> button in the toolbar on the left of the dive profile
+frequently increases the size of the dive profile to fill the area of the panel efficiently.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p><strong>Water temperature</strong> is displayed with its own blue line with temperature values
+placed adjacent to significant changes.</p></div>
+<div class="paragraph"><p>The dive profile can include graphs of the <strong>partial pressures</strong>
+of O2, N2, and He during the dive (see figure above) as well as a calculated and dive computer
+reported deco ceilings (only visible for deep, long, or repetitive dives). Partial pressures of oxygen are indicated in green, those of nitrogen in black, and those of helium in dark red. These
+partial pressure graphs are shown below the profile data.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/O2.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button allows display of the partial pressure of <strong>oxygen</strong> during the
+dive. This is depicted below the dive depth and water temperature graphs.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/N2.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button allows display of the partial pressure of <strong>nitrogen</strong> during the dive.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/He.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button allows display of the partial pressure of <strong>helium</strong> during the dive.
+This is only of importance to divers using Trimix, Helitrox or similar breathing gasses.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>The <strong>air consumption</strong> graph displays the tank pressure and its change during the
 dive. The air consumption takes depth into account so that even when manually
 entering the start and end pressures the graph is not a straight line.
@@ -1877,8 +1922,6 @@ times of increased normalized air consumption while dark green reflects times
 when the diver was using less gas than average. The colour coding is obviously
 only possible when a tank sensor is connected and tank pressure readings during
 the dive are available.</p></div>
-<div class="paragraph"><p><strong>Water temperature</strong> is displayed with its own blue line with temperature values
-placed adjacent to significant changes.</p></div>
 <div class="paragraph"><p>It is possible to <strong>zoom</strong> into the profile graph. This is done either by using
 the scroll wheel / scroll gesture of your mouse or trackpad. By default
 <em>Subsurface</em> always shows a profile area large enough for at least 30 minutes
@@ -1891,50 +1934,94 @@ that free divers clearly won’t care about.</p></div>
 <img src="images/MeasuringBar.png" alt="FIGURE: Measuring Bar" />
 </div>
 </div>
-<div class="paragraph"><p>Measurements of <strong>depth differences</strong> can be achieved by using the button with
-two vertical bars at the right of the dive profile panel (users should refer to
-the above figure,
-bottom right). The measurement is done by dragging the red dots to the two points
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ruler.jpg" alt="Note" />
+</td>
+<td class="content">Measurements of <strong>depth or time differences</strong> can be achieved by using the
+<strong>ruler button</strong> on the left of the dive profile panel.
+The measurement is done by dragging the red dots to the two points
 on the dive profile that the user wishes to measure. Information is then given
-along the line connecting the
-two red dots.</p></div>
-<div class="paragraph"><p>The dive profile can include further information that is typically more
-interesting for tec divers. Enabling these is described in the section entitled
-<em>Setting up Preferences</em>. Basically, users can include graphs of the <strong>partial
-pressures</strong>
-of O2, N2, and He during the dive as well as a calculated and dive computer
-reported deco ceilings (only visible for deep, long, or repetitive dives). The
-partial pressure graphs are added below the profile data, the calculated ceiling
-is shown as a green overlay on top of the dive profile. Above the profile the
-currently used gradient factors are shown (e.g. GF 35/75). Please note that
-these are NOT the gradient factors in use by the dive computer in question,
-but the gradient factors used by <em>Subsurface</em> to calculate deco obligations
-during the dive.</p></div>
-<div class="paragraph"><p>The graph can also include the dive computer reported <strong>ceiling</strong> (or more
-precisely, the first deco stop that the dive computer recorded – users are reminded that not
+in the horizontal white area underneath the
+two red dots.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The profile can also include the dive computer reported <strong>ceiling</strong> (more
+precisely, the deepest deco stop that the dive computer calculated for each particular moment in time) as a red overlay on  the dive profile. Ascent ceilings arise when a direct ascent to the surface increases
+the risk of a diver suffering from decompression sickness (DCS) and it is necessary to either ascend
+slower or to perform decompression stop(s) before ascending to the surface. Not
 all dive computers record this information and make it available for download;
 for example all of the Suunto dive computers fail to make this very useful data
-available to divelog software). Because of the differences in used algorithms
-and amount of data available (and factors taken into consideration) at the time
-of the calculation it is unlikely that both of these are the same; this can be
-true even if the same algorithm and <em>gradient factors</em> (see below) are used.
+available to divelog software. <em>Subsurface</em> also calculates ceilings independently,
+shown as a green overlay on the dive profile.
+Because of the differences in algorithms used
+and amount of data available (and other factors taken into consideration at the time
+of the calculation) it is unlikely that ceilings from dive computers and from <em>Subsurface</em> are the same, even if the same algorithm and <em>gradient factors</em> (see below) are used.
 It is also quite common that <em>Subsurface</em> calculates a ceiling for
 non-decompression dives when the dive computer stayed in non-deco mode during
 the whole dive (represented by the <span class="green">dark green</span> section in the profile
 at the beginning of this section). This is caused by the fact that
 <em>Subsurface’s</em>
-calculations describe the deco obligation at that point in time during a dive,
+calculations describe the deco obligation at each moment during a dive,
 while dive computers usually take the upcoming ascent into account. During the
-ascent some excess Nitrogen (and possibly Helium) are already breathed off so
+ascent some excess nitrogen (and possibly helium) are already breathed off so
 even
 though the diver technically encountered a ceiling at depth, the dive still does
 not require an explicit deco stop. This feature allows dive computers to offer
-longer non-stop bottom time.</p></div>
-<div class="paragraph"><p>For a more detailed explanation of <em>gradient factors</em>, use the following links:</p></div>
+longer non-stop bottom times.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/cceiling.jpg" alt="Note" />
+</td>
+<td class="content">If the dive computer itself calculates a ceiling and makes it available to
+<em>Subsurface</em> during upload of dives, this can be
+shown as a red area by checking <strong>Dive computer reported ceiling</strong> button on the Profile Panel.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling1.jpg" alt="Note" />
+</td>
+<td class="content">If the <strong>Calculated ceiling</strong> button on the Profile Panel is clicked, then a ceiling, calculated by <em>Subsurface</em>, is shown in green if it exists for
+a particular dive (<strong>A</strong> in figure below). This setting can be modified in two ways:</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling2.jpg" alt="Note" />
+</td>
+<td class="content">If, in addition, the <strong>show all tissues</strong> button on the Profile Panel is clicked, the ceiling is shown for the tissue
+compartments following the Bühlmann model (<strong>B</strong> in figure below).</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling3.jpg" alt="Note" />
+</td>
+<td class="content">If, in addition, the <strong>3m increments</strong> button on the Profile Panel is clicked, then the ceiling is indicated in 3 m increments
+(<strong>C</strong> in figure below).</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Ceilings2.jpg" alt="Figure: Ceiling with 3m resolution" />
+</div>
+</div>
+<div class="paragraph"><p>Gradient Factor settings strongly affect the calculated ceilings and their depths.
+For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>. The
+currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated.
+<strong>N.B.:</strong> The indicated gradient factors are NOT the gradient factors in use by the dive computer,
+but those used by <em>Subsurface</em> to calculate deco obligations
+during the dive. For more information external to this manual see:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values, by Erik Baker, 1988, <em>Immersed</em> Vol. 3, No. 3.</a>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
 </p>
 </li>
 <li>
@@ -1964,7 +2051,7 @@ restored to view by selecting Unhide all events from the context menu.</p></div>
 profile. Normally the Information Box is located to the top left of the <strong>Dive
 Profile</strong> panel. If the mouse points outside of the <strong>Dive Profile</strong> panel, then
 only the top line of the Information Box is visible (see left-hand part of
-figure (A) below). The Information Box can be moved around in the <strong>Dive Profile</strong>
+figure (<strong>A</strong>) below). The Information Box can be moved around in the <strong>Dive Profile</strong>
 panel by click-dragging it with the mouse so that it is not obstructing
 important detail. The position of the Information Box is saved and used again
 during subsequent dive analyses.</p></div>
@@ -1973,9 +2060,9 @@ during subsequent dive analyses.</p></div>
 <img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
 </div>
 </div>
-<div class="paragraph"><p>The moment the mouse points inside the <strong>Dive Profile</strong> panel, it expands and
+<div class="paragraph"><p>The moment the mouse points inside the <strong>Dive Profile</strong> panel, the information box  expands and
 shows many data items. In this situation, the data reflect the time point along
-the dive profile indicated by the mouse (see right-hand part of figure (B) above
+the dive profile indicated by the mouse cursor (see right-hand part of figure (<strong>B</strong>) above
 where the Information Box reflects the situation at the position of the cursor
 [arrow] in that image). Therefore, moving the cursor in the horizontal
 direction allows the Information Box to show information for any point along the
@@ -1988,6 +2075,59 @@ maximum operating depth, effective air depth (EAD), effective narcotic depth
 (END), equivalent air density depth (EADD), decompression requirements at that
 instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
 as the calculated ceiling for several Bühlmann tissue compartments.</p></div>
+<div class="paragraph"><p>The user has control over the display of several statstics, represented as four
+buttons on the left of the profile panel. These are:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MOD.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button causes the Information Box to display the <strong>Maximum Operating Depth
+(MOD)</strong> of the dive, given the
+gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
+For air (21% oxygen) it is around 57 m. Below the MOD there is a markedly increased
+risk of exposure to the dangers associated with oxygen toxicity.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/NDL.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button causes the Information Box to display the <strong>No-deco Limit (NDL)</strong> or the
+<strong>Total Time to Surface (TTS)</strong>. NDL is the time duration that a diver can continue with a
+dive, given the present depth, that does not require decompression (that is, before an
+ascent ceiling appears). Once one has exceeded the NDL and decompression is required (that
+is, there is an ascent ceiling above the diver, then TTS gives the number of minutes
+required before the diver can surface. TTS includes ascent time as well as decompression
+time.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/SAC.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button causes the Information Box to display the <strong>Surface Air Consumption (SAC)</strong>.
+SAC is an indication of the surface-normalised respiration rate of a diver. The value of SAC
+is less than the real
+respiration rate because a diver at 10m uses breathing gas at a rate roughly double that of
+the equivalent rate at the surface. SAC gives an indication of breathing gas consumption rate
+independent of the depth of the dive so that the respiratory rates of different dives
+can be compared. The units for SAC is litres/min or cub ft/min.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/EAD.jpg" alt="Note" />
+</td>
+<td class="content">Clicking this button displays the <strong>Effective Air Depth (EAD)</strong> as well as the <strong>Effective
+Narcotic Depth (END)</strong> for the dive. These are numbers of importance to divers who use Nitrox or
+Trimix as breathing gases. Their values are dependent on the composition of the breathing gas.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of data.</p></div>
 </div>
 </div>
 </div>
@@ -2012,8 +2152,8 @@ a dive or a group of dives and then right-clicking.</p></div>
 numbers) to recent dives (having the highest sequence numbers). The numbering
 of the dives is not always consistent. For instance, when non-recent dives are
 added to the dive list the numbering does not automatically follow on because
-of the dives that are more recent in date/time than the newly-added dive that
-has an older date/time. Therefore, one may sometimes need to renumber the dives.
+of the dives that are more recent in date/time than the newly-added dive with
+an older date/time. Therefore, one may sometimes need to renumber the dives.
 This is performed by selecting (from the Main Menu) <em>Log &#8594; Renumber</em>. Users are
 given a choice with respect to the lowest sequence number to be used.
 Completing this operation results in new sequence numbers (based on date/time)
@@ -2033,26 +2173,28 @@ list comprising five dive trips (<strong>B</strong>, on the right):</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Grouping into trips allows a rapid way of accessing individual dives without
-having to scan long lists of dives. In order to group the dives in a dive list,
-(from the Main Menu) users must select <em>Log &#8594; Autogroup</em>. The <strong>Dive List</strong> panel now shows
-only the titles for the trips.</p></div>
+having to scan a long lists of dives. In order to group the dives in a dive list,
+(from the Main Menu) users must select <em>Log &#8594; Autogroup</em>. The <strong>Dive List</strong> panel
+now shows only the titles for the trips.</p></div>
 <div class="sect3">
-<h4 id="_viewing_the_dives_during_a_particular_trip">5.3.1. Viewing the dives during a particular trip</h4>
+<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">5.3.1. Editing the title and associated information for a particular trip</h4>
+<div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip title.
+More information about a trip can be added by selecting its trip title from
+the <strong>Dive list</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Dive Notes</strong> panel. Here
+users can add or edit information about the date/time, the trip location and any
+other general comments about the trip as a whole (e.g. the dive company that was
+dived with, the general weather and surface conditions during the trip, etc.).
+After entering this
+information, users should select <strong>Save</strong> from the buttons at the top right
+of the <strong>Trip Notes</strong>
+tab. The trip title in the <strong>Dive List</strong> panel should now reflect some of the
+edited information.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_viewing_the_dives_during_a_particular_trip">5.3.2. Viewing the dives during a particular trip</h4>
 <div class="paragraph"><p>Once when the dives have been grouped into trips, users can expand one or more
 trips by clicking the arrow-head on the left of each trip title. This expands
 the selected trip, revealing the individual dives performed during the trip.</p></div>
-</div>
-<div class="sect3">
-<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">5.3.2. Editing the title and associated information for a particular trip</h4>
-<div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip title.
-More information about a trip can be added by selecting its trip title from
-the dive list. This shows a <strong>Trip Notes</strong> tab in the <strong>Dive Notes</strong> panel. Here
-users can add or edit information about the date/time, the trip location and any
-other general comments about the trip as a whole (e.g. the dive company that was
-dived with, the general weather during the trip, etc.). After entering this
-information, users should select <strong>Save</strong> from the buttons at the top right of the <strong>Trip Notes</strong>
-tab. The trip title in the <strong>Dive List</strong> panel should now reflect some of the
-edited information.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_collapsing_or_expanding_dive_information_for_different_trips">5.3.3. Collapsing or expanding dive information for different trips</h4>
@@ -2074,7 +2216,8 @@ top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
 three dives. The resulting context menu allows the user to create a new trip by
 choosing the option <strong>Create new trip above</strong>. The top three dives are then
 grouped
-into a separate trip. The figures bellow show the selection and context menu on the left (A) and
+into a separate trip. The figures bellow shows the selection and context menu
+on the left (A) and
 the completed action on the right (B):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2096,18 +2239,17 @@ calibration dives of the dive computer or dives of extremely short duration.</p>
 <div class="sect3">
 <h4 id="_unlink_a_dive_from_a_trip">5.4.2. Unlink a dive from a trip</h4>
 <div class="paragraph"><p>Users can unlink dives from the trip to which they belong. In order to do this,
-users should select and right-click
-the relevant dives to bring up the context menu. Then the option <strong>Remove dive(s)
-from trip</strong> should be selected.
-The dives that have been unlinked now appear immediately above the trip to
+select and right-click
+the relevant dives to bring up the context menu. Then select the option <strong>Remove dive(s)
+from trip</strong>. The dive(s) now appear immediately above the trip to
 which they belonged.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_add_a_dive_to_the_trip_immediately_above">5.4.3. Add a dive to the trip immediately above</h4>
 <div class="paragraph"><p>Selected dives can be moved from the trip to which they belong and placed within
-the trip immediately above the currently active trip. To do this, users must select
+the trip immediately above the currently active trip. To do this, select
 and right-click
-the dives to bring up the context menu, and then select <strong>Add dive(s) to trip
+the dive(s) to bring up the context menu, and then select <strong>Add dive(s) to trip
 immediately above</strong>.</p></div>
 </div>
 <div class="sect3">
@@ -2153,7 +2295,7 @@ below shows the depth profile two such dives that were merged:</p></div>
 </li>
 <li>
 <p>
-Universal Dive Data format (UDDF). User should refer to <a href="http://uddf.org">http://uddf.org</a> for more information.
+Universal Dive Data format (UDDF). Refer to <a href="http://uddf.org">http://uddf.org</a> for more information.
 UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 </p>
@@ -2324,7 +2466,7 @@ independently, with some units in the metric system and other in the imperial.</
 <img src="images/Preferences3.jpg" alt="FIGURE: Preferences Graph page" />
 </div>
 </div>
-<div class="paragraph"><p>This panel allows two type of selections:</p></div>
+<div class="paragraph" id="S_GradientFactors"><p>This panel allows two type of selections:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2343,44 +2485,6 @@ figure below).
 </li>
 <li>
 <p>
-Ceiling: Ascent ceilings arise when a direct ascent to the surface increases
-the risk of a diver suffering from decompression sickness (DCS) and it is necessary to either ascend
-slower or to perform decompression stop(s) before ascending to the surface.
-<em>Subsurface</em> can indicate these ceilings above which the diver should not ascend
-at a particular point in time (see the green-shaded areas in the figure in the
-section on <a href="#S_DiveProfile">Dive Profiles</a>) and in the figure below:
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-If the <strong>Calculated ceiling</strong> option is checked, then a ceiling is shown if it exists for
-a particular dive (<strong>A</strong> in figure below)
-</p>
-</li>
-<li>
-<p>
-If the <strong>show all tissues</strong> option is checked, the ceiling is shown for the tissue
-compartments following the Bühlmann model (<strong>B</strong> in figure below).
-</p>
-</li>
-<li>
-<p>
-If the <strong>3m increments</strong> option is checked, then the ceiling is indicated in 3 m increments
-(<strong>C</strong> in figure below).
-</p>
-</li>
-<li>
-<p>
-If the dive computer itself calculates a ceiling and makes it available to
-<em>Subsurface</em> during upload of dives, this can be
-shown by checking <strong>Dive computer reported ceiling</strong> and it can be drawn in red by
-checking <strong>Draw ceiling red</strong>.
-</p>
-</li>
-</ul></div>
-</li>
-<li>
-<p>
 If a <em>Maximum operating depth (MOD)</em> or an <em>Equivalent air depth (EAD)</em>
 applies to a dive profile, these can be shown by checking the appropriate boxes.
 </p>
@@ -2395,16 +2499,9 @@ appropriate box.
 </li>
 </ul></div>
 </li>
-</ul></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Ceilings.png" alt="Figure: Ceiling with 3m resolution" />
-</div>
-</div>
-<div class="ulist"><ul>
 <li>
 <p>
-<strong>Misc</strong>: Here users can set the <em>gradient factors</em> used while diving. GF_Low is
+<strong>Misc</strong>: <strong>Gradient Factors:</strong> Here users can set the <em>gradient factors</em> used while diving. GF_Low is
 the gradient factor at deep and GF_High is used just below the surface.
 At intermediate depths gradient factors between GF_Low and GF_High are used.
 Gradient factors add conservatism to the nitrogen exposure during a dive, in a
@@ -3302,7 +3399,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-02-22 08:52:15 PST
+Last updated 2014-03-15 22:16:26 PDT
 </div>
 </div>
 </body>
