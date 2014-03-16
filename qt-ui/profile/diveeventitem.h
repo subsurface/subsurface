@@ -17,6 +17,7 @@ public:
 	void setVerticalAxis(DiveCartesianAxis *axis);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	void setModel(DivePlotDataModel *model);
+	bool shouldBeHidden();
 public
 slots:
 	void recalculatePos(bool instant = false);
