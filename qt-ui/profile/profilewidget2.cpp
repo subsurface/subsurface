@@ -13,6 +13,7 @@
 #include "planner.h"
 #include "device.h"
 #include "ruleritem.h"
+#include <libdivecomputer/parser.h>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -21,6 +22,7 @@
 #include <QSettings>
 #include <QScrollBar>
 #include <QtCore/qmath.h>
+#include <QMessageBox>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -672,11 +674,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	}
 	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
-	QList<QGraphicsItem *> itemsAtPos = scene()->items(mapToScene(mapFromGlobal(event->globalPos())));
-	Q_FOREACH(QGraphicsItem * i, itemsAtPos) {
-		DiveEventItem *item = dynamic_cast<DiveEventItem *>(i);
-		if (!item)
-			continue;
+	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
+	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
 		action->setText(tr("Remove Event"));
 		action->setData(QVariant::fromValue<void *>(item)); // so we know what to remove.
@@ -687,7 +686,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(QVariant::fromValue<void *>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
-		break;
 	}
 	bool some_hidden = false;
 	for (int i = 0; i < evn_used; i++) {
@@ -701,6 +699,66 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(event->globalPos());
 	}
 	m.exec(event->globalPos());
+}
+
+void ProfileWidget2::hideEvents()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
+	struct event *event = item->getEvent();
+
+	if (QMessageBox::question(MainWindow::instance(),
+				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
+		if (event->name) {
+			for (int i = 0; i < evn_used; i++) {
+				if (!strcmp(event->name, ev_namelist[i].ev_name)) {
+					ev_namelist[i].plot_ev = false;
+					break;
+				}
+			}
+		}
+		item->hide();
+		replot();
+	}
+}
+
+void ProfileWidget2::unhideEvents()
+{
+	for (int i = 0; i < evn_used; i++) {
+		ev_namelist[i].plot_ev = true;
+	}
+	replot();
+}
+
+void ProfileWidget2::removeEvent()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
+	struct event *event = item->getEvent();
+
+	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
+					  tr("Remove the selected event?"),
+					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
+		struct event **ep = &current_dc->events;
+		while (ep && *ep != event)
+			ep = &(*ep)->next;
+		if (ep) {
+			*ep = event->next;
+			free(event);
+		}
+		mark_divelist_changed(true);
+		replot();
+	}
+}
+
+void ProfileWidget2::addBookmark()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	add_event(current_dc, timeAxis->valueAt(scenePos), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	replot();
 }
 
 void ProfileWidget2::changeGas()

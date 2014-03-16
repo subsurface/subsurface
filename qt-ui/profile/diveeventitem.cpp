@@ -4,7 +4,11 @@
 #include "animationfunctions.h"
 #include "libdivecomputer.h"
 #include "dive.h"
+#include "profile.h"
 #include <QDebug>
+
+extern struct ev_select *ev_namelist;
+extern int evn_used;
 
 DiveEventItem::DiveEventItem(QObject *parent) : DivePixmapItem(parent),
 	vAxis(NULL),
@@ -107,6 +111,7 @@ void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visibl
 
 void DiveEventItem::recalculatePos(bool instant)
 {
+	bool hidden = false;
 	if (!vAxis || !hAxis || !internalEvent || !dataModel)
 		return;
 
@@ -116,9 +121,12 @@ void DiveEventItem::recalculatePos(bool instant)
 		hide();
 		return;
 	}
-	if (!isVisible())
+	for (int i = 0; i < evn_used; i++) {
+		if (!strcmp(internalEvent->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
+			hidden = true;
+	}
+	if (!isVisible() && !hidden)
 		show();
-
 	int depth = dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
@@ -126,4 +134,6 @@ void DiveEventItem::recalculatePos(bool instant)
 		Animations::moveTo(this, x, y);
 	else
 		setPos(x, y);
+	if (isVisible() && hidden)
+		hide();
 }

@@ -74,6 +74,10 @@ slots: // Necessary to call from QAction's signals.
 	void setEmptyState();
 	void setProfileState();
 	void changeGas();
+	void addBookmark();
+	void hideEvents();
+	void unhideEvents();
+	void removeEvent();
 
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
