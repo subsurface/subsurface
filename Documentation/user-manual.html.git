@@ -410,11 +410,38 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.0.1,  January 2014</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.1,  April 2014</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
 extensive infrastructure to describe, organise, interpret and print scuba
-and free dives.
-<em>Subsurface</em> binaries are available for Windows PCs (Win XP or later), Intel
+and free dives. <em>Subsurface</em> offers many advantages above other similar
+software solutions:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Do you use two different dive computer brands, each with its own proprietary
+   software for downloading dive logs? Do you dive with rebreathers as well
+   as open circuit? Do you use a Reefnet Sensus time-depth recorder
+   in conjunction with a dive computer? <em>Subsurface</em> offers a standard
+   interface for downloading dive logs from all these different pieces of
+   equipment and to store and analyse the dive logs within a unified system.
+</p>
+</li>
+<li>
+<p>
+Do you use more than one operating system? <em>Subsurface</em> is fully compatible
+   with Mac, Linux and Microsoft, allowing you to access your dive log on each
+   of your operating systems in a unified way.
+</p>
+</li>
+<li>
+<p>
+Do you use Linux or Mac and your dive computer has only Microsoft-based software
+   for downloading dive information (e.g. Mares)? <em>Subsurface</em> provides a way of
+   storing and anaysing your dive logs on other operating systems.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><em>Subsurface</em> binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. <em>Subsurface</em> can be built for
 many more hardware platforms and software environments where Qt and
 libdivecomputer are available.</p></div>
@@ -435,30 +462,31 @@ Divers</p></div>
 <div class="sect1">
 <h2 id="S_StartUsing">1. Start Using the Program</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels and has a <strong>Main
+<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
 Menu</strong> (File Import Log View Filter Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:</p></div>
 <div class="paragraph"><p>1) The <strong>Dive List</strong> to the bottom left containing a list of all the dives in the
 user&#8217;s
 dive log. A dive can be selected and highlighted on the dive list by clicking on
-it. In most situations the cursor up/down keys can be used to switch
-between dives.</p></div>
+it. In most situations the up/down keys can be used to switch
+between dives. The Dive List is an important tool for manipulating a dive log.</p></div>
 <div class="paragraph"><p>2) The <strong>Dive Map</strong> to the bottom right, showing the user&#8217;s dive sites on a world
 map
-and centred on the site of the last selected dive.</p></div>
+and centred on the site of the last dive selected in the <strong>Dive List</strong>.</p></div>
 <div class="paragraph"><p>3) The <strong>Dive Info</strong> to the top left, giving more detailed information on the
-selected dive, including some statistics for the selected dive or for all
+dive selected in the <strong>Dive List</strong>, including some statistics for the selected dive or for all
 highlighted dive(s).</p></div>
 <div class="paragraph"><p>4) The <strong>Dive Profile</strong> to the top right, showing a graphical dive profile of the
-highlighted dive in the dive list.</p></div>
+selected dive in the <strong>Dive List</strong>.</p></div>
 <div class="paragraph"><p>The dividers can be dragged between panels in order to change the size of any of
 the panels. <em>Subsurface</em> remembers the position of the dividers, so the next
 time <em>Subsurface</em> starts it uses the positions of the dividers when the program
 was executed previously.</p></div>
-<div class="paragraph"><p>If one dive is selected, the dive location, detailed information and profile of
+<div class="paragraph"><p>If a dive is selected in the <strong>Dive List</strong>, the dive location, detailed information
+and profile of
 the <em>selected dive</em> are shown in the respective panels. On the other hand, if
 one highlights more than one dive the last highlighted dive is the <em>selected
-dive</em>, but summary data of all <em>highlighted dives</em> is shown in the <strong>Stats</strong> tab
+dive</em>, but summary data of all <em>highlighted dives</em> are shown in the <strong>Stats</strong> tab
 of the <strong>Dive Info</strong> panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
@@ -467,7 +495,7 @@ temperatures and SAC; total time and number of dives selected).</p></div>
 </div>
 </div>
 <div class="paragraph"><p>The user can determine which of the four panels are displayed by selecting the
-<strong>View</strong> option on the main menu. This option gives the user several choices of
+<strong>View</strong> option on the main menu. This feature gives the user several choices of
 display:</p></div>
 <div class="paragraph"><p><strong>All</strong>: show all four of the panels as in the screenshot above.</p></div>
 <div class="paragraph"><p><strong>Divelist</strong>: Show only the Dive List.</p></div>
@@ -476,11 +504,11 @@ display:</p></div>
 all highlighted dives.</p></div>
 <div class="paragraph"><p><strong>Globe</strong>: Show only the world map, centred on the last selected dive.</p></div>
 <div class="paragraph"><p>Like many other functions that can be accessed via the Main Menu, these options
-can be triggered using keyboard shortcuts as well. The shortcuts for a
+can be triggered using keyboard shortcuts. The shortcuts for a
 particular system
-are shown with an underline in the menu entries. Since different Operating
+are shown with an underline in the main menu entries. Since different Operating
 Systems and the user chosen language may cause <em>Subsurface</em> to use different
-shortcut keys they will not be listed here in the user manual.</p></div>
+shortcut keys they are not listed here in the user manual.</p></div>
 <div class="paragraph"><p>When the program is started for the first time, it shows no information at all.
 This is because the program doesn&#8217;t have any dive information available. In the
 following sections, the procedures to create a new logbook will be described.</p></div>
@@ -490,8 +518,8 @@ following sections, the procedures to create a new logbook will be described.</p
 <h2 id="S_NewLogbook">2. Creating a new logbook</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Select <em>File &#8594; New Logbook</em> from the main menu. All existing dive data are
-cleared so that new information can be added. If there is unsaved data in an
-open logbook, <em>Subsurface</em> the user will be asked if the open logbook will be
+cleared so that new information can be added. If there are unsaved data in an
+open logbook, the user is asked whether the open logbook should be
 saved before a new logbook is created.</p></div>
 </div>
 </div>
@@ -3399,7 +3427,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-03-15 22:16:26 PDT
+Last updated 2014-03-17 10:49:05 PDT
 </div>
 </div>
 </body>

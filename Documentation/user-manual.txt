@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat
-// :revnumber: 4.0.1
-// :revdate: December 2013
+// :revnumber: 4.1
+// :revdate: April 2014
 :icons:
 :toc:
 :toc-placement: manual
@@ -18,12 +18,27 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat
 
-[blue]#_Version 4.0.1,  January 2014_#
+[blue]#_Version 4.1,  April 2014_#
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging programme with
 extensive infrastructure to describe, organise, interpret and print scuba
-and free dives.
+and free dives. _Subsurface_ offers many advantages above other similar
+software solutions:
+
+ - Do you use two different dive computer brands, each with its own proprietary
+   software for downloading dive logs? Do you dive with rebreathers as well
+   as open circuit? Do you use a Reefnet Sensus time-depth recorder
+   in conjunction with a dive computer? _Subsurface_ offers a standard
+   interface for downloading dive logs from all these different pieces of
+   equipment and to store and analyse the dive logs within a unified system.
+ - Do you use more than one operating system? _Subsurface_ is fully compatible
+   with Mac, Linux and Microsoft, allowing you to access your dive log on each
+   of your operating systems in a unified way.
+ - Do you use Linux or Mac and your dive computer has only Microsoft-based software
+   for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
+   storing and anaysing your dive logs on other operating systems.
+
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
 many more hardware platforms and software environments where Qt and
@@ -47,36 +62,37 @@ toc::[]
 Start Using the Program
 -----------------------
 
-The _Subsurface_ window is usually divided into four panels and has a *Main
+The _Subsurface_ window is usually divided into four panels with a *Main
 Menu* (File Import Log View Filter Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
 1) The *Dive List* to the bottom left containing a list of all the dives in the
 user's
 dive log. A dive can be selected and highlighted on the dive list by clicking on
-it. In most situations the cursor up/down keys can be used to switch
-between dives.
+it. In most situations the up/down keys can be used to switch
+between dives. The Dive List is an important tool for manipulating a dive log.
 
 2) The *Dive Map* to the bottom right, showing the user's dive sites on a world
 map
-and centred on the site of the last selected dive.
+and centred on the site of the last dive selected in the *Dive List*.
 
 3) The *Dive Info* to the top left, giving more detailed information on the
-selected dive, including some statistics for the selected dive or for all
+dive selected in the *Dive List*, including some statistics for the selected dive or for all
 highlighted dive(s).
 
 4) The *Dive Profile* to the top right, showing a graphical dive profile of the
-highlighted dive in the dive list.
+selected dive in the *Dive List*.
 
 The dividers can be dragged between panels in order to change the size of any of
 the panels. _Subsurface_ remembers the position of the dividers, so the next
 time _Subsurface_ starts it uses the positions of the dividers when the program
 was executed previously.
 
-If one dive is selected, the dive location, detailed information and profile of
+If a dive is selected in the *Dive List*, the dive location, detailed information
+and profile of
 the _selected dive_ are shown in the respective panels. On the other hand, if
 one highlights more than one dive the last highlighted dive is the _selected
-dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab
+dive_, but summary data of all _highlighted dives_ are shown in the *Stats* tab
 of the *Dive Info* panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).
 
@@ -85,7 +101,7 @@ temperatures and SAC; total time and number of dives selected).
 image::images/main_window.jpg["The Main Window",align="center"]
 
 The user can determine which of the four panels are displayed by selecting the
-*View* option on the main menu. This option gives the user several choices of
+*View* option on the main menu. This feature gives the user several choices of
 display:
 
 *All*: show all four of the panels as in the screenshot above.
@@ -100,11 +116,11 @@ all highlighted dives.
 *Globe*: Show only the world map, centred on the last selected dive.
 
 Like many other functions that can be accessed via the Main Menu, these options
-can be triggered using keyboard shortcuts as well. The shortcuts for a
+can be triggered using keyboard shortcuts. The shortcuts for a
 particular system
-are shown with an underline in the menu entries. Since different Operating
+are shown with an underline in the main menu entries. Since different Operating
 Systems and the user chosen language may cause _Subsurface_ to use different
-shortcut keys they will not be listed here in the user manual.
+shortcut keys they are not listed here in the user manual.
 
 When the program is started for the first time, it shows no information at all.
 This is because the program doesn't have any dive information available. In the
@@ -114,8 +130,8 @@ following sections, the procedures to create a new logbook will be described.
 Creating a new logbook
 ----------------------
 Select _File -> New Logbook_ from the main menu. All existing dive data are
-cleared so that new information can be added. If there is unsaved data in an
-open logbook, _Subsurface_ the user will be asked if the open logbook will be
+cleared so that new information can be added. If there are unsaved data in an
+open logbook, the user is asked whether the open logbook should be
 saved before a new logbook is created.
 
 [[S_GetInformation]]
