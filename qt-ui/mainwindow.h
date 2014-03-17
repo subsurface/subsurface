@@ -28,6 +28,7 @@ class GlobeGPS;
 class MainTab;
 class ProfileGraphicsView;
 class QWebView;
+class QSettings;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
