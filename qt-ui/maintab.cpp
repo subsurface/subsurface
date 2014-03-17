@@ -229,11 +229,11 @@ void MainTab::displayMessage(QString str)
 void MainTab::updateTextLabels(bool showUnits)
 {
 	if (showUnits && prefs.text_label_with_units) {
-		ui.airTempLabel->setText(QApplication::translate("MainTab", "Air temp [%1]").arg(get_temp_unit()));
-		ui.waterTempLabel->setText(QApplication::translate("MainTab", "Water temp [%1]").arg(get_temp_unit()));
+		ui.airTempLabel->setText(tr("Air temp [%1]").arg(get_temp_unit()));
+		ui.waterTempLabel->setText(tr("Water temp [%1]").arg(get_temp_unit()));
 	} else {
-		ui.airTempLabel->setText(QApplication::translate("MainTab", "Air temp", 0, QApplication::UnicodeUTF8));
-		ui.waterTempLabel->setText(QApplication::translate("MainTab", "Water temp", 0, QApplication::UnicodeUTF8));
+		ui.airTempLabel->setText(tr("Air temp"));
+		ui.waterTempLabel->setText(tr("Water temp"));
 	}
 }
 
