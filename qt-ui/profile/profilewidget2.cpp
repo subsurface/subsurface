@@ -439,7 +439,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		eventItems.push_back(item);
 		event = event->next;
 	}
-	// Only set visible the ones that should be visible, but how?
+	// Only set visible the events that should be visible
 	Q_FOREACH(DiveEventItem * event, eventItems) {
 		event->setVisible(!event->shouldBeHidden());
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds << "is hidden:" << event->isHidden();
