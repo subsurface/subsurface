@@ -32,7 +32,7 @@ typedef enum {
 	SC_PRINT
 } scale_mode_t;
 
-extern struct divecomputer *select_dc(struct divecomputer *main);
+extern struct divecomputer *select_dc(struct dive *);
 
 struct options {
 	enum {
@@ -46,7 +46,7 @@ struct options {
 	int profile_height, notes_height, tanks_height;
 };
 
-extern char dc_number;
+extern unsigned int dc_number;
 
 extern unsigned int amount_selected;
 

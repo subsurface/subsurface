@@ -600,13 +600,30 @@ static inline struct dive *get_dive(int nr)
 	return dive_table.dives[nr];
 }
 
+static inline unsigned int number_of_computers(struct dive *dive)
+{
+	unsigned int total_number = 0;
+	struct divecomputer *dc = &dive->dc;
+
+	if (!dive)
+		return 1;
+
+	do {
+		total_number++;
+		dc = dc->next;
+	} while (dc);
+	return total_number;
+}
+
 static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 {
-	struct divecomputer *dc = NULL;
-	if (nr >= 0)
-		dc = &dive->dc;
-	while (nr-- > 0)
+	struct divecomputer *dc = &dive->dc;
+
+	while (nr-- > 0) {
 		dc = dc->next;
+		if (!dc)
+			return &dive->dc;
+	}
 	return dc;
 }
 

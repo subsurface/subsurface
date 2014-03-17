@@ -507,14 +507,16 @@ void MainWindow::saveSplitterSizes()
 
 void MainWindow::on_actionPreviousDC_triggered()
 {
-	dc_number--;
+	unsigned nrdc = number_of_computers(current_dive);
+	dc_number = (dc_number + nrdc - 1) % nrdc;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 }
 
 void MainWindow::on_actionNextDC_triggered()
 {
-	dc_number++;
+	unsigned nrdc = number_of_computers(current_dive);
+	dc_number = (dc_number + 1) % nrdc;
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 }

@@ -1472,7 +1472,7 @@ void DivePlannerPointsModel::createPlan()
 	plan(&diveplan, &cache, &tempDive, isPlanner());
 	copy_cylinders(stagingDive, tempDive);
 	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
-	per_cylinder_mean_depth(tempDive, select_dc(&tempDive->dc), mean, duration);
+	per_cylinder_mean_depth(tempDive, select_dc(tempDive), mean, duration);
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = tempDive->cylinder + i;
 		if (cylinder_none(cyl))

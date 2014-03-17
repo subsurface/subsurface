@@ -16,7 +16,7 @@
 #include "membuffer.h"
 
 int selected_dive = -1; /* careful: 0 is a valid value */
-char dc_number = 0;
+unsigned int dc_number = 0;
 
 
 static struct plot_data *last_pi_entry_new = NULL;
@@ -1193,32 +1193,16 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	analyze_plot_info(pi);
 }
 
-/* make sure you pass this the FIRST dc - it just walks the list */
-static int nr_dcs(struct divecomputer *main)
+struct divecomputer *select_dc(struct dive *dive)
 {
-	int i = 1;
-	struct divecomputer *dc = main;
+	unsigned int max = number_of_computers(dive);
+	unsigned int i = dc_number;
 
-	while ((dc = dc->next) != NULL)
-		i++;
-	return i;
-}
+	/* Reset 'dc_number' if we've switched dives and it is now out of range */
+	if (i >= max)
+		dc_number = i = 0;
 
-struct divecomputer *select_dc(struct divecomputer *main)
-{
-	int i = dc_number;
-	struct divecomputer *dc = main;
-
-	while (i < 0)
-		i += nr_dcs(main);
-	do {
-		if (--i < 0)
-			return dc;
-	} while ((dc = dc->next) != NULL);
-
-	/* If we switched dives to one with fewer DC's, reset the dive computer counter */
-	dc_number = 0;
-	return main;
+	return get_dive_dc(dive, i);
 }
 
 static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_ndl)

@@ -358,7 +358,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	// next get the dive computer structure - if there are no samples
 	// let's create a fake profile that's somewhat reasonable for the
 	// data that we have
-	struct divecomputer *currentdc = select_dc(&d->dc);
+	struct divecomputer *currentdc = select_dc(d);
 	Q_ASSERT(currentdc);
 	if (!currentdc || !currentdc->samples) {
 		currentdc = fake_dc(currentdc);

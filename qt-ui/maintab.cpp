@@ -483,7 +483,7 @@ void MainTab::updateDiveInfo(int dive)
 		get_gas_used(d, gases);
 		QString volumes = get_volume_string(gases[0], true);
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
-		per_cylinder_mean_depth(d, select_dc(&d->dc), mean, duration);
+		per_cylinder_mean_depth(d, select_dc(d), mean, duration);
 		volume_t sac;
 		QString SACs;
 		if (mean[0] && duration[0]) {
@@ -864,13 +864,13 @@ void MainTab::on_divemaster_textChanged()
 
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(select_dc(&mydive->dc)->airtemp.mkelvin = parseTemperatureToMkelvin(text));
+	EDIT_SELECTED_DIVES(select_dc(mydive)->airtemp.mkelvin = parseTemperatureToMkelvin(text));
 	markChangedWidget(ui.airtemp);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(select_dc(&mydive->dc)->watertemp.mkelvin = parseTemperatureToMkelvin(text));
+	EDIT_SELECTED_DIVES(select_dc(mydive)->watertemp.mkelvin = parseTemperatureToMkelvin(text));
 	markChangedWidget(ui.watertemp);
 }
 
