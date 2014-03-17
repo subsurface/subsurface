@@ -23,6 +23,7 @@
 #include "starwidget.h"
 
 #include "../dive.h"
+#include "../display.h"
 #include "../divelist.h"
 #include "../pref.h"
 #include "../helpers.h"
