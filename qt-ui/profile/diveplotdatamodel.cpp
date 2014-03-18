@@ -153,7 +153,7 @@ int DivePlotDataModel::id() const
 	return diveId;
 }
 
-int DivePlotDataModel::dcShown() const
+unsigned int DivePlotDataModel::dcShown() const
 {
 	return dcNr;
 }

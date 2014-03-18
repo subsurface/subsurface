@@ -55,7 +55,7 @@ public:
 	void setDive(struct dive *d, const plot_info &pInfo);
 	const plot_info &data() const;
 	int id() const;
-	int dcShown() const;
+	unsigned int dcShown() const;
 	double pheMax();
 	double pn2Max();
 	double po2Max();
@@ -65,7 +65,7 @@ public:
 private:
 	plot_info pInfo;
 	int diveId;
-	int dcNr;
+	unsigned int dcNr;
 };
 
 #endif // DIVEPLOTDATAMODEL_H

@@ -770,7 +770,7 @@ void ProfileWidget2::changeGas()
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	QString gas = action->text();
 	// backup the things on the dataModel, since we will clear that out.
-	int diveComputer = dataModel->dcShown();
+	unsigned int diveComputer = dataModel->dcShown();
 	int diveId = dataModel->id();
 	int o2, he;
 	int seconds = timeAxis->valueAt(scenePos);
