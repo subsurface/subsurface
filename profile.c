@@ -1130,7 +1130,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
-		double ratio = (double)fhe / (1000.0 - fo2);
+		double ratio = (fo2 == 1000) ? 0 : (double)fhe / (1000.0 - fo2);
 
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
