@@ -582,6 +582,9 @@ void ProfileWidget2::setEmptyState()
 	rulerItem->setVisible(false);
 	rulerItem->destNode()->setVisible(false);
 	rulerItem->sourceNode()->setVisible(false);
+	pn2GasItem->setVisible(false);
+	po2GasItem->setVisible(false);
+	pheGasItem->setVisible(false);
 	Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
 		tissue->setVisible(false);
 	}
