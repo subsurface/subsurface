@@ -1130,16 +1130,19 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
-		double ratio = (fo2 == 1000) ? 0 : (double)fhe / (1000.0 - fo2);
 
 		if (entry->po2) {
 			/* we have an O2 partial pressure in the sample - so this
 			 * is likely a CC dive... use that instead of the value
 			 * from the cylinder info */
-			double po2 = entry->po2 > amb_pressure ? amb_pressure : entry->po2;
-			entry->po2 = po2;
-			entry->phe = (amb_pressure - po2) * ratio;
-			entry->pn2 = amb_pressure - po2 - entry->phe;
+			if (entry->po2 >= amb_pressure || fo2 == 1000) {
+				entry->po2 = amb_pressure;
+				entry->phe = 0;
+				entry->pn2 = 0;
+			} else {
+				entry->phe = (amb_pressure - entry->po2) * (double)fhe / (1000 - fo2);
+				entry->pn2 = amb_pressure - entry->po2 - entry->phe;
+			}
 		} else {
 			entry->po2 = fo2 / 1000.0 * amb_pressure;
 			entry->phe = fhe / 1000.0 * amb_pressure;
@@ -1151,10 +1154,8 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		 * EAD takes O2 + N2 (air) into account
 		 * END just uses N2 */
 		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
-		entry->ead = (entry->depth + 10000) *
-				 (entry->po2 + (amb_pressure - entry->po2) * (1 - ratio)) / amb_pressure - 10000;
-		entry->end = (entry->depth + 10000) *
-				 (amb_pressure - entry->po2) * (1 - ratio) / amb_pressure / N2_IN_AIR * 1000 - 10000;
+		entry->ead = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
+		entry->end = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
 				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
 										N2_DENSITY +
