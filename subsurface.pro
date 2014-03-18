@@ -208,6 +208,10 @@ doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
+marbledata.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/marbledata || $(COPY_DIR) $$PWD/marbledata $$OUT_PWD
+all.depends += marbledata
+QMAKE_EXTRA_TARGETS += marbledata
+
 DESKTOP_FILE = subsurface.desktop
 mac: ICON = packaging/macosx/Subsurface.icns
 else: ICON = subsurface-icon.svg
