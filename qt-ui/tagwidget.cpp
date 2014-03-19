@@ -120,8 +120,7 @@ void TagWidget::reparse()
 	QString currentText;
 	if (pos.first >= 0 && pos.second > 0)
 		currentText = text().mid(pos.first, pos.second - pos.first).trimmed();
-	else
-		currentText = "";
+
 	if (m_completer) {
 		m_completer->setCompletionPrefix(currentText);
 		if (m_completer->completionCount() == 1) {
