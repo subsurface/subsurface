@@ -141,10 +141,11 @@ void ProfileWidget2::setupItemOnScene()
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10, 30));
-	profileYAxis->setTickSize(1);
+	profileYAxis->setTickSize(0.5);
 	profileYAxis->setLineSize(96);
 
 	timeAxis->setLineSize(92);
+	timeAxis->setTickSize(-0.5);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
