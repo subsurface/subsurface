@@ -162,7 +162,10 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 			QKeyEvent *ev = static_cast<QKeyEvent *>(event);
 			if (ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down) {
 				currCombo.ignoreSelection = true;
-				currCombo.comboEditor->showPopup();
+				if (!currCombo.comboEditor->completer()->popup()->isVisible()){
+					currCombo.comboEditor->showPopup();
+					return true;
+				}
 			}
 			if (ev->key() == Qt::Key_Tab || ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return) {
 				currCombo.activeText = currCombo.comboEditor->currentText();
