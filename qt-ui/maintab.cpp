@@ -585,6 +585,7 @@ void MainTab::reload()
 void MainTab::acceptChanges()
 {
 	MainWindow::instance()->dive_list()->setEnabled(true);
+	MainWindow::instance()->setFocus();
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
