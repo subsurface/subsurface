@@ -145,8 +145,7 @@ void TagWidget::completionSelected(const QString& completion)
 
 void TagWidget::completionHighlighted(const QString& completion)
 {
-	QPair<int, int> pos;
-	pos = getCursorTagPosition();
+	QPair<int, int> pos = getCursorTagPosition();
 	if (pos.first >= 0 && pos.second > 0) {
 		setText(text().remove(pos.first, pos.second - pos.first).insert(pos.first, completion));
 		setCursorPosition(pos.first + completion.length());
