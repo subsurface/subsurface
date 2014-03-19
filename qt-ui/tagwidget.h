@@ -20,6 +20,7 @@ public
 slots:
 	void reparse();
 	void completionSelected(QString);
+	void completionHighlighted(QString);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);

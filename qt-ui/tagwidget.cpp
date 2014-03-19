@@ -35,7 +35,7 @@ void TagWidget::setCompleter(QCompleter *completer)
 	m_completer = completer;
 	m_completer->setWidget(this);
 	connect(m_completer, SIGNAL(activated(QString)), this, SLOT(completionSelected(QString)));
-	connect(m_completer, SIGNAL(highlighted(QString)), this, SLOT(completionSelected(QString)));
+	connect(m_completer, SIGNAL(highlighted(QString)), this, SLOT(completionHighlighted(QString)));
 }
 
 QPair<int, int> TagWidget::getCursorTagPosition()
@@ -150,6 +150,20 @@ void TagWidget::completionSelected(QString completion)
 		setCursorPosition(text().length());
 	}
 	emit(textChanged());
+}
+
+void TagWidget::completionHighlighted(QString completion)
+{
+	QPair<int, int> pos;
+	pos = getCursorTagPosition();
+	if (pos.first >= 0 && pos.second > 0) {
+		setText(text().remove(pos.first, pos.second - pos.first).insert(pos.first, completion));
+		setCursorPosition(pos.first + completion.length());
+	} else {
+		setText(completion.append(", "));
+		setCursorPosition(text().length());
+	}
+
 }
 
 void TagWidget::setCursorPosition(int position)
