@@ -668,11 +668,12 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 
 void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	painter->setPen(normalColor);
+	const qreal pWidth = 0.0;
+	painter->setPen(QPen(normalColor, pWidth));
 	painter->drawPolyline(polygon());
 
 	QPolygonF poly;
-	painter->setPen(alertColor);
+	painter->setPen(QPen(alertColor, pWidth));
 	Q_FOREACH(const QPolygonF & poly, alertPolygons)
 		painter->drawPolyline(poly);
 

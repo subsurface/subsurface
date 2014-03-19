@@ -77,6 +77,7 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItem->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	textItemBack->setBrush(QColor(0xff, 0xff, 0xff, 190));
 	textItemBack->setPen(QColor(Qt::white));
+	setPen(QPen(QColor(Qt::black), 0.0));
 }
 
 void RulerItem2::recalculate()
