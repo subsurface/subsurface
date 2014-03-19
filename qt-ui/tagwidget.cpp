@@ -138,13 +138,13 @@ void TagWidget::reparse()
 	}
 }
 
-void TagWidget::completionSelected(QString completion)
+void TagWidget::completionSelected(const QString& completion)
 {
 	completionHighlighted(completion);
 	emit textChanged();
 }
 
-void TagWidget::completionHighlighted(QString completion)
+void TagWidget::completionHighlighted(const QString& completion)
 {
 	QPair<int, int> pos;
 	pos = getCursorTagPosition();
@@ -152,7 +152,7 @@ void TagWidget::completionHighlighted(QString completion)
 		setText(text().remove(pos.first, pos.second - pos.first).insert(pos.first, completion));
 		setCursorPosition(pos.first + completion.length());
 	} else {
-		setText(completion.append(", "));
+		setText(completion + QString(", "));
 		setCursorPosition(text().length());
 	}
 }
@@ -164,7 +164,7 @@ void TagWidget::setCursorPosition(int position)
 	blockSignals(false);
 }
 
-void TagWidget::setText(QString text)
+void TagWidget::setText(const QString& text)
 {
 	blockSignals(true);
 	GroupedLineEdit::setText(text);

@@ -12,15 +12,15 @@ public:
 	void setCompleter(QCompleter *completer);
 	QPair<int, int> getCursorTagPosition();
 	void highlight();
-	void setText(QString text);
+	void setText(const QString& text);
 	void clear();
 	void setCursorPosition(int position);
 	void wheelEvent(QWheelEvent *event);
 public
 slots:
 	void reparse();
-	void completionSelected(QString);
-	void completionHighlighted(QString);
+	void completionSelected(const QString& text);
+	void completionHighlighted(const QString& text);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);
