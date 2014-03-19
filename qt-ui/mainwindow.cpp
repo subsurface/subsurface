@@ -909,6 +909,7 @@ int MainWindow::file_save_as(void)
 		return -1;
 	}
 
+	showError(get_error_string());
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
@@ -938,6 +939,7 @@ int MainWindow::file_save(void)
 		showError(get_error_string());
 		return -1;
 	}
+	showError(get_error_string());
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
 	return 0;
