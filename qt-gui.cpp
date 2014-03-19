@@ -78,12 +78,14 @@ static QString decodeUtf8(const QByteArray &fname)
 }
 #endif
 
-void init_ui(int *argcp, char ***argvp)
+void init_qt(int *argcp, char ***argvp)
+{
+	application = new QApplication(*argcp, *argvp);
+}
+
+void init_ui(void)
 {
 	QVariant v;
-
-	application = new QApplication(*argcp, *argvp);
-
 	// tell Qt to use system proxies
 	// note: on Linux, "system" == "environment variables"
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -155,8 +157,6 @@ void init_ui(int *argcp, char ***argvp)
 		window->setTitle(MWTF_FILENAME);
 	else
 		window->setTitle(MWTF_DEFAULT);
-
-	return;
 }
 
 void run_ui(void)
