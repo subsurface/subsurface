@@ -140,16 +140,8 @@ void TagWidget::reparse()
 
 void TagWidget::completionSelected(QString completion)
 {
-	QPair<int, int> pos;
-	pos = getCursorTagPosition();
-	if (pos.first >= 0 && pos.second > 0) {
-		setText(text().remove(pos.first, pos.second - pos.first).insert(pos.first, completion));
-		setCursorPosition(pos.first + completion.length());
-	} else {
-		setText(completion.append(", "));
-		setCursorPosition(text().length());
-	}
-	emit(textChanged());
+	completionHighlighted(completion);
+	emit textChanged();
 }
 
 void TagWidget::completionHighlighted(QString completion)
@@ -163,7 +155,6 @@ void TagWidget::completionHighlighted(QString completion)
 		setText(completion.append(", "));
 		setCursorPosition(text().length());
 	}
-
 }
 
 void TagWidget::setCursorPosition(int position)
