@@ -42,7 +42,7 @@ void RulerNodeItem2::recalculate()
 	if (x() < 0) {
 		setPos(0, y());
 	} else if (x() > timeAxis->posAtValue(data->sec)) {
-		setPos(timeAxis->posAtValue(data->sec), y());
+		setPos(timeAxis->posAtValue(data->sec), depthAxis->posAtValue(data->depth));
 	} else {
 		data = pInfo.entry;
 		count = 0;
