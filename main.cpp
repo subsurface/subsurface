@@ -36,17 +36,17 @@ int main(int argc, char **argv)
 			files.push_back(a);
 		}
 	}
-	if (no_filenames) {
-		QString defaultFile(prefs.default_filename);
-		if (!defaultFile.isEmpty())
-			files.push_back(QString(prefs.default_filename));
-	}
 	setup_system_prefs();
 	prefs = default_prefs;
 	fill_profile_color();
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
+	if (no_filenames) {
+		QString defaultFile(prefs.default_filename);
+		if (!defaultFile.isEmpty())
+			files.push_back(QString(prefs.default_filename));
+	}
 
 	MainWindow *m = MainWindow::instance();
 	m->setLoadedWithFiles(!files.isEmpty() || !importedFiles.isEmpty());
