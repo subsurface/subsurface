@@ -5,7 +5,6 @@
 #include "mainwindow.h"
 #include "maintab.h"
 #include "tableview.h"
-#include "graphicsview-common.h"
 
 #include "../dive.h"
 #include "../divelist.h"

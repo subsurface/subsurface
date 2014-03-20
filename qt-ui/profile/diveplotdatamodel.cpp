@@ -3,8 +3,6 @@
 #include "display.h"
 #include "profile.h"
 #include "graphicsview-common.h"
-#include "dive.h"
-#include "display.h"
 #include "divelist.h"
 #include <QDebug>
 
