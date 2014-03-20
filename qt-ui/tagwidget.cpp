@@ -179,7 +179,19 @@ void TagWidget::clear()
 
 void TagWidget::keyPressEvent(QKeyEvent *e)
 {
+	QPair<int, int> pos;
+	QAbstractItemView *popup;
 	switch (e->key()) {
+	case Qt::Key_Escape:
+		pos = getCursorTagPosition();
+		if (pos.first >= 0 && pos.second > 0) {
+			setText(text().remove(pos.first, pos.second - pos.first));
+			setCursorPosition(pos.first);
+		}
+		popup= m_completer->popup();
+		if (popup)
+			popup->hide();
+		return;
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
 	case Qt::Key_Tab:
@@ -188,7 +200,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 		 * closing the QAbstractViewitem
 		 */
 		if (m_completer) {
-			QAbstractItemView *popup = m_completer->popup();
+			popup = m_completer->popup();
 			if (popup)
 				popup->hide();
 		}
