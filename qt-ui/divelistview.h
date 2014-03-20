@@ -46,6 +46,7 @@ slots:
 	void mergeTripBelow();
 	void newTripAbove();
 	void addToTripAbove();
+	void addToTripBelow();
 	void mergeDives();
 	void saveSelectedDivesAs();
 	void exportSelectedDivesAsUDDF();
@@ -77,6 +78,7 @@ private:
 	void updateLastUsedImageDir(const QString &s);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
+	void addToTrip(bool);
 };
 
 #endif // DIVELISTVIEW_H

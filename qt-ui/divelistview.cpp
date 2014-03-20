@@ -582,7 +582,17 @@ void DiveListView::newTripAbove()
 	restoreSelection();
 }
 
+void DiveListView::addToTripBelow()
+{
+	addToTrip(true);
+}
+
 void DiveListView::addToTripAbove()
+{
+	addToTrip(false);
+}
+
+void DiveListView::addToTrip(bool below)
 {
 	int idx, delta = (currentOrder == Qt::AscendingOrder) ? -1 : +1;
 	dive_trip_t *trip = NULL;
@@ -590,6 +600,8 @@ void DiveListView::addToTripAbove()
 	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
+	if (below) // Should we add to the trip below instead?
+		delta *= -1;
 	rememberSelection();
 	if (d->selected) { // we are right-clicking on one of possibly many selected dive(s)
 		// find the top selected dive, depending on the list order
@@ -714,6 +726,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
 			popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
+			popup.addAction(tr("add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
 		}
 		if (trip) {
 			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));
