@@ -18,6 +18,7 @@
 #include "../dive.h"
 #include "../file.h"
 #include "mainwindow.h"
+#include "helpers.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -155,10 +156,31 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 	}
 }
 
+void ShiftTimesDialog::showEvent(QShowEvent * event)
+{
+	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
+	when = get_times();//get time of first selected dive
+	ui.currentTime->setText(get_dive_date_string(when));
+	ui.shiftedTime->setText(get_dive_date_string(when));
+}
+
+void ShiftTimesDialog::changeTime()
+{
+	int amount;
+
+	amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
+	if (ui.backwards->isChecked())
+		amount *= -1;
+
+	ui.shiftedTime->setText (get_dive_date_string(amount+when));
+}
+
 ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(changeTime()));
+	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(changeTime()));
 }
 
 void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)

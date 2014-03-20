@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>343</width>
-    <height>177</height>
+    <height>224</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -64,6 +64,38 @@
       <property name="bottomMargin">
        <number>9</number>
       </property>
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="2" column="0">
+         <widget class="QLabel" name="shiftedTimeLabel">
+          <property name="text">
+           <string>Shifted time:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="currentTimeLabel">
+          <property name="text">
+           <string>Current time:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="currentTime">
+          <property name="text">
+           <string>0:0</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="shiftedTime">
+          <property name="text">
+           <string>0:0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <widget class="QTimeEdit" name="timeEdit">
         <property name="date">
@@ -165,6 +197,18 @@
      <y>274</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+   <sender>timeEdit</sender>
+   <signal>timeChanged(const QTime)</signal>
+   <receiver>ShiftTimesDialog</receiver>
+   <slot>changeTime()</slot>
+  </connection>
+  <connection>
+   <sender>backwards</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ShiftTimesDialog</receiver>
+   <slot>changeTime()</slot>
   </connection>
  </connections>
 </ui>

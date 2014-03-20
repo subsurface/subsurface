@@ -722,6 +722,7 @@ extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int
 extern int subsurface_zip_close(struct zip *zip);
 
 extern void shift_times(const timestamp_t amount);
+extern timestamp_t get_times();
 
 extern xsltStylesheetPtr get_stylesheet(const char *name);
 

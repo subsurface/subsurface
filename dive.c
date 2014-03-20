@@ -2176,3 +2176,15 @@ void shift_times(const timestamp_t amount)
 		dive->when += amount;
 	}
 }
+
+timestamp_t get_times()
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive(i, dive) {
+		if (dive->selected)
+			break;
+	}
+	return dive->when;
+}
