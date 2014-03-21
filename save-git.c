@@ -15,6 +15,18 @@
 #include "membuffer.h"
 #include "ssrf-version.h"
 
+/*
+ * handle libgit2 revision 0.20 and earlier
+ */
+#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 20 && !defined(USE_LIBGIT21_API)
+  #define GIT_CHECKOUT_OPTIONS_INIT GIT_CHECKOUT_OPTS_INIT
+  #define git_checkout_options git_checkout_opts
+  #define git_branch_create(out,repo,branch_name,target,force,sig,msg) \
+	git_branch_create(out,repo,branch_name,target,force)
+  #define git_reference_set_target(out,ref,target,signature,log_message) \
+	git_reference_set_target(out,ref,target)
+#endif
+
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
 static void cond_put_format(int cond, struct membuffer *b, const char *fmt, ...)
@@ -799,7 +811,7 @@ static git_tree *get_git_tree(git_repository *repo, git_object *parent)
 
 static int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
 {
-	git_checkout_opts opts = GIT_CHECKOUT_OPTS_INIT;
+	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
 	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
 	opts.notify_flags = GIT_CHECKOUT_NOTIFY_CONFLICT | GIT_CHECKOUT_NOTIFY_DIRTY;
@@ -807,17 +819,6 @@ static int update_git_checkout(git_repository *repo, git_object *parent, git_tre
 	opts.baseline = get_git_tree(repo, parent);
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
-
-/*
- * libgit2 revision 0.20 and earlier do not have the signature and
- * message log arguments.
- */
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 20 && !defined(USE_LIBGIT21_API)
-  #define git_branch_create(out,repo,branch_name,target,force,sig,msg) \
-	git_branch_create(out,repo,branch_name,target,force)
-  #define git_reference_set_target(out,ref,target,signature,log_message) \
-	git_reference_set_target(out,ref,target)
-#endif
 
 static int create_new_commit(git_repository *repo, const char *branch, git_oid *tree_id)
 {
