@@ -645,8 +645,9 @@ void MainWindow::readSettings()
 {
 	QSettings s;
 	s.beginGroup("Display");
-	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
-	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
+	QFont defaultFont = QFont(default_prefs.divelist_font);
+	defaultFont = s.value("divelist_font", defaultFont).value<QFont>();
+	defaultFont.setPointSizeF(s.value("font_size", default_prefs.font_size).toFloat());
 	qApp->setFont(defaultFont);
 	s.endGroup();
 

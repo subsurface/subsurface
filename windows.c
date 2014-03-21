@@ -10,7 +10,8 @@
 #include <dirent.h>
 #include <zip.h>
 
-const char system_divelist_default_font[] = "Sans 8";
+const char system_divelist_default_font[] = "Sans";
+const int system_divelist_default_font_size = 8;
 
 const char *system_default_filename(void)
 {

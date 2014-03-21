@@ -25,7 +25,8 @@
 #define ICON_NAME "Subsurface.icns"
 #define UI_FONT "Arial 12"
 
-const char system_divelist_default_font[] = "Arial 10";
+const char system_divelist_default_font[] = "Arial";
+const int system_divelist_default_font_size = 10;
 
 const char *system_default_filename(void)
 {

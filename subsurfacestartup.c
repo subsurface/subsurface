@@ -170,6 +170,7 @@ void setup_system_prefs(void)
 	const char *env;
 
 	default_prefs.divelist_font = strdup(system_divelist_default_font);
+	default_prefs.font_size = system_divelist_default_font_size;
 	default_prefs.default_filename = system_default_filename();
 
 	env = getenv("LC_MEASUREMENT");

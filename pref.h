@@ -64,6 +64,7 @@ extern void subsurface_flush_conf(void);
 extern void subsurface_close_conf(void);
 
 extern const char system_divelist_default_font[];
+extern const int system_divelist_default_font_size;
 extern const char *system_default_filename();
 
 extern void load_preferences(void);
