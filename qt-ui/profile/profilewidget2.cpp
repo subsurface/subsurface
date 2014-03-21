@@ -625,6 +625,9 @@ void ProfileWidget2::setProfileState()
 		temperatureAxis->setLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
 	}
+	pn2GasItem->setVisible(s.value("pn2graph").toBool());
+	po2GasItem->setVisible(s.value("po2graph").toBool());
+	pheGasItem->setVisible(s.value("phegraph").toBool());
 
 	gasYAxis->setPos(itemPos.partialPressure.pos.on);
 	gasYAxis->setLine(itemPos.partialPressure.expanded);
