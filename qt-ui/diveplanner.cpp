@@ -1468,6 +1468,9 @@ void DivePlannerPointsModel::createPlan()
 	char *cache = NULL;
 	tempDive = NULL;
 
+	if (!diveplan.dp)
+		return cancelPlan();
+
 	createTemporaryPlan();
 	plan(&diveplan, &cache, &tempDive, isPlanner());
 	copy_cylinders(stagingDive, tempDive);
