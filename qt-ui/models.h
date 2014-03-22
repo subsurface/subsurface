@@ -102,7 +102,10 @@ public:
 		END,
 		O2,
 		HE,
-		/* DEPTH, */ COLUMNS
+#ifdef ENABLE_PLANNER
+		DEPTH,
+#endif
+		COLUMNS
 	};
 
 	explicit CylindersModel(QObject *parent = 0);

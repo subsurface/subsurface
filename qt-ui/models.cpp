@@ -67,7 +67,9 @@ CylindersModel::CylindersModel(QObject *parent) : current(0), rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
-			     // while the planner is disabled, we don't need this column: << tr("Switch at")
+#ifdef ENABLE_PLANNER
+			<< tr("Switch at")
+#endif
 			     );
 }
 
@@ -143,9 +145,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case HE:
 			ret = percent_string(cyl->gasmix.he);
 			break;
-			// case DEPTH:
-			//	ret = get_depth_string(cyl->depth, true);
-			//	break;
+#ifdef ENABLE_PLANNER
+		case DEPTH:
+			ret = get_depth_string(cyl->depth, true);
+			break;
+#endif
 		}
 		break;
 	case Qt::DecorationRole:
@@ -258,9 +262,13 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			changed = true;
 		}
 		break;
-		// case DEPTH:
-		//	if (CHANGED())
-		//		cyl->depth = string_to_depth(vString.toUtf8().data());
+#ifdef ENABLE_PLANNER
+	case DEPTH:
+		if (CHANGED()) {
+			cyl->depth = string_to_depth(vString.toUtf8().data());
+			changed = true;
+		}
+#endif
 	}
 	dataChanged(index, index);
 	if (addDiveMode)
