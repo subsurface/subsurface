@@ -205,7 +205,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 				popup->hide();
 		}
 	}
-	if (e->key() == Qt::Key_Tab) { // let's pretend this is a comma instead
+	if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // let's pretend this is a comma instead
 		QKeyEvent fakeEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
 		GroupedLineEdit::keyPressEvent(&fakeEvent);
 	} else {
