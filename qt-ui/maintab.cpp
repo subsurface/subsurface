@@ -634,6 +634,7 @@ void MainTab::acceptChanges()
 						d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
 				}
 			}
+			MainWindow::instance()->graphics()->replot();
 		}
 
 		if (weightModel->changed) {
