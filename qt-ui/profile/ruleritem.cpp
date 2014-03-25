@@ -77,6 +77,7 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItem->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	textItemBack->setBrush(QColor(0xff, 0xff, 0xff, 190));
 	textItemBack->setPen(QColor(Qt::white));
+	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
 }
 
@@ -117,13 +118,13 @@ void RulerItem2::recalculate()
 	}
 	// always show the text bellow the lowest of the start and end points
 	qreal tgtY = (startPoint.y() >= endPoint.y()) ? startPoint.y() : endPoint.y();
-	textItem->setPos(tgtX - 1, tgtY + 4);
+	// this isn't exactly optimal, since we want to scale the 1.0, 4.0 distances as well
+	textItem->setPos(tgtX - 1.0, tgtY + 4.0);
 
 	// setup the text background
 	textItemBack->setVisible(startPoint.x() != endPoint.x());
-	QPointF wh = mapFromScene(view->mapToScene(QPoint(textItem->boundingRect().width(),
-		textItem->boundingRect().height())));
-	textItemBack->setRect(tgtX - 2, tgtY + 3, wh.x() + 2, wh.y() + 3);
+	textItemBack->setPos(textItem->x(), textItem->y());
+	textItemBack->setRect(0, 0, textItem->boundingRect().width(), textItem->boundingRect().height());
 }
 
 RulerNodeItem2 *RulerItem2::sourceNode() const
