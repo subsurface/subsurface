@@ -112,3 +112,14 @@ int subsurface_zip_close(struct zip *zip)
 {
 	return zip_close(zip);
 }
+
+/* win32 console */
+void subsurface_console_init(bool dedicated)
+{
+	/* NOP */
+}
+
+void subsurface_console_exit(void)
+{
+	/* NOP */
+}

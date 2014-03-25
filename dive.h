@@ -720,6 +720,8 @@ extern FILE *subsurface_fopen(const char *path, const char *mode);
 extern void *subsurface_opendir(const char *path);
 extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp);
 extern int subsurface_zip_close(struct zip *zip);
+extern void subsurface_console_init(bool dedicated);
+extern void subsurface_console_exit(void);
 
 extern void shift_times(const timestamp_t amount);
 extern timestamp_t get_times();

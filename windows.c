@@ -2,6 +2,7 @@
 /* implements Windows specific functions */
 #include "dive.h"
 #include "display.h"
+#define _WIN32_WINNT 0x500
 #include <windows.h>
 #include <shlobj.h>
 #include <stdio.h>
@@ -198,4 +199,80 @@ struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *error
 int subsurface_zip_close(struct zip *zip)
 {
 	return zip_close(zip);
+}
+
+/* win32 console */
+static struct {
+	bool allocated;
+	UINT cp;
+	FILE *out, *err;
+} console_desc;
+
+void subsurface_console_init(bool dedicated)
+{
+	/* if this is a console app already, do nothing */
+#ifndef WIN32_CONSOLE_APP
+	/* just in case of multiple calls */
+	memset((void *)&console_desc, 0, sizeof(console_desc));
+	/* the AttachConsole(..) call can be used to determine if the parent process
+	 * is a terminal. if it succeeds, there is no need for a dedicated console
+	 * window and we don't need to call the AllocConsole() function. on the other
+	 * hand if the user has set the 'dedicated' flag to 'true' and if AttachConsole()
+	 * has failed, we create a dedicated console window.
+	 */
+	console_desc.allocated = AttachConsole(ATTACH_PARENT_PROCESS);
+	if (console_desc.allocated)
+		dedicated = false;
+	if (!console_desc.allocated && dedicated)
+		console_desc.allocated = AllocConsole();
+	if (!console_desc.allocated)
+		return;
+
+	console_desc.cp = GetConsoleCP();
+	SetConsoleOutputCP(CP_UTF8); /* make the ouput utf8 */
+
+	/* set some console modes; we don't need to reset these back.
+	 * ENABLE_EXTENDED_FLAGS = 0x0080, ENABLE_QUICK_EDIT_MODE = 0x0040 */
+	HANDLE h_in = GetStdHandle(STD_INPUT_HANDLE);
+	if (h_in) {
+		SetConsoleMode(h_in, 0x0080 | 0x0040);
+		CloseHandle(h_in);
+	}
+
+	/* dedicated only; disable the 'x' button as it will close the main process as well */
+	HWND h_cw = GetConsoleWindow();
+	if (h_cw && dedicated) {
+		SetWindowTextA(h_cw, "Subsurface Console");
+		HMENU h_menu = GetSystemMenu(h_cw, 0);
+		if (h_menu) {
+			EnableMenuItem(h_menu, SC_CLOSE, MF_BYCOMMAND | MF_DISABLED);
+			DrawMenuBar(h_cw);
+		}
+		SetConsoleCtrlHandler(NULL, TRUE); /* disable the CTRL handler */
+	}
+
+	/* redirect; on win32, CON is a reserved pipe target, like NUL */
+	console_desc.out = freopen("CON", "w", stdout);
+	console_desc.err = freopen("CON", "w", stderr);
+	if (!dedicated)
+		puts(""); /* add an empty line */
+#endif
+}
+
+void subsurface_console_exit(void)
+{
+#ifndef WIN32_CONSOLE_APP
+	if (!console_desc.allocated)
+		return;
+
+	/* close handles */
+	if (console_desc.out)
+		fclose(console_desc.out);
+	if (console_desc.err)
+		fclose(console_desc.err);
+
+	/* reset code page and free */
+	SetConsoleOutputCP(console_desc.cp);
+	FreeConsole();
+#endif
 }

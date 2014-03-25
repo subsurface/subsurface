@@ -23,6 +23,11 @@ int main(int argc, char **argv)
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
+
+	bool dedicated_console = arguments.length() > 1 &&
+		(arguments.at(1) == QString("--win32console"));
+	subsurface_console_init(dedicated_console);
+
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
 		if (a.at(0) == '-') {
@@ -56,5 +61,6 @@ int main(int argc, char **argv)
 		run_ui();
 	exit_ui();
 	parse_xml_exit();
+	subsurface_console_exit();
 	return 0;
 }
