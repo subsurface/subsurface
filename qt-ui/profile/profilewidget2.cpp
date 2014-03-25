@@ -83,7 +83,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	po2GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
-	rulerItem(new RulerItem2())
+	rulerItem(new RulerItem2()),
+	isGrayscale(false),
+	printMode(false)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -788,4 +790,10 @@ void ProfileWidget2::changeGas()
 	MainWindow::instance()->information()->updateDiveInfo(selected_dive);
 	mark_divelist_changed(true);
 	replot();
+}
+
+void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
+{
+	printMode = mode;
+	isGrayscale = mode ? grayscale : false;
 }

@@ -67,6 +67,7 @@ public:
 	void replot();
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
+	void setPrintMode(bool mode, bool grayscale = false);
 
 public
 slots: // Necessary to call from QAction's signals.
@@ -126,6 +127,8 @@ private:
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
 	RulerItem2 *rulerItem;
+	bool isGrayscale;
+	bool printMode;
 };
 
 #endif // PROFILEWIDGET2_H
