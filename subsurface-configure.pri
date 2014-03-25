@@ -150,6 +150,10 @@ else: LIBS += -lmarblewidget
 libgit21-api {
 	DEFINES += USE_LIBGIT21_API
 }
+
+win32: console {
+	DEFINES += WIN32_CONSOLE_APP
+}
 #
 # Platform-specific changes
 #
