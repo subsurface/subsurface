@@ -178,7 +178,7 @@ void ProfileWidget2::setupItemOnScene()
 	meanDepth->setAxis(profileYAxis);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	diveComputerText->setBrush(getColor(TIME_TEXT));
+	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 
 	rulerItem->setAxis(timeAxis, profileYAxis);
 
@@ -198,7 +198,7 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS);                                                            \
-	ITEM->setColors(getColor(COLOR), getColor(COLOR_ALERT));                                                        \
+	ITEM->setColors(getColor(COLOR, isGrayscale), getColor(COLOR_ALERT, isGrayscale));                              \
 	ITEM->preferencesChanged();                                                                                     \
 	ITEM->setZValue(99);
 
@@ -606,7 +606,7 @@ void ProfileWidget2::setProfileState()
 	currentState = PROFILE;
 	MainWindow::instance()->setToolButtonsEnabled(true);
 	toolTipItem->readPos();
-	setBackgroundBrush(getColor(::BACKGROUND));
+	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 
 	background->setVisible(false);
 	toolTipItem->setVisible(true);
