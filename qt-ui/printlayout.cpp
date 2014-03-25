@@ -131,9 +131,11 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.scale(scaleX, scaleY);
 
 	// setup the profile widget
-	ProfileWidget2 profile;
-	profile.setFrameStyle(QFrame::NoFrame);
-// 	profile->setPrintMode(true, !printOptions->color_selected);
+	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
+	const int profileFrameStyle = profile->frameStyle();
+	profile->setFrameStyle(QFrame::NoFrame);
+	profile->setPrintMode(true, !printOptions->color_selected);
+	QSize originalSize = profile->size();
 	// swap rows/col for landscape
 	if (printer->orientation() == QPrinter::Landscape) {
 		int swap = divesPerColumn;
@@ -156,7 +158,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	// profilePrintTableMaxH updates after the table is created
 	const int tableH = profilePrintTableMaxH;
 	// resize the profile widget
-	profile.resize(scaledW, scaledH - tableH - padPT);
+	profile->resize(scaledW, scaledH - tableH - padPT);
 	// offset table or profile on top
 	int yOffsetProfile = 0, yOffsetTable = 0;
 	if (printOptions->notes_up)
@@ -180,8 +182,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
-		profile.plotDives( QList<struct dive*>() << dive);
-		profile.render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+		profile->plotDives(QList<struct dive*>() << dive);
+		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		painter.setTransform(origTransform);
 
 		// draw a table
@@ -193,6 +195,13 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		printed++;
 		emit signalProgress((printed * 100) / total);
 	}
+	// cleanup
+	painter.end();
+	delete table;
+	profile->setFrameStyle(profileFrameStyle);
+	profile->setPrintMode(false);
+	profile->resize(originalSize);
+	profile->plotDives(QList<struct dive*>() << current_dive);
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
