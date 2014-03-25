@@ -187,7 +187,7 @@ edited directly by clicking on each of them in the text box and by overtyping th
 information displayed.
 
 *Air and water temperatures*: the air and water temperatures during the
-dive can be typed directly on the fields to the right of the Starttime.
+dive can be typed directly on the fields to the right of the Start time.
 Temperature units are not needed, as they will be automatically supplied by
 _Subsurface_. Only the numerical value must be
 typed by the user (The units selected in the 'Preferences'
@@ -296,7 +296,8 @@ cylinders:
 image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
 The drop-down list can be used to select the cylinder type used
-for the dive. The
+for the dive or the user may start typing in the box which shows the
+available options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (*WorkPress*) will
 automatically be shown in the dialogue. If a cylinder is not shown in the dropdown list, type the name and description of that cylinder into the *Type* field.
 
@@ -330,7 +331,8 @@ through a down-arrow:
 
 image::images/WeightsDataEntry2.jpg["FIGURE: Weights type drop-down list button",align="center"]
 
-The drop-down list can then be used to select the type of weight system. In
+The drop-down list can then be used to select the type of weight system or the user may start
+typing in the box which shows the available options for the entered characters. In
 the *Weight*
 field, the weight used during the dive must be typed. After typing the
 information
@@ -358,7 +360,8 @@ dive being described:
 image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 
 _Modifying the dive profile_: When the cursor is moved around the dive profile,
-its position is indicated by two red lines as shown below. The depth and time
+its position is indicated by two colored lines (red and green) as shown below.
+The depth and time
 that the cursor represents are indicated, respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
 *Preference* settings. The dive profile itself comprises several
@@ -384,7 +387,7 @@ waypoint and selecting the appropriate gas from the context menu. Changing
 the gas for a waypoint affects the gas shown in the segment _to the left_ of
 that
 waypoint. Note that only the gases defined in the *Equipment* tab appear in the
-context menu:
+context menu.
 
 image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
 
@@ -520,10 +523,10 @@ progress bar at the bottom of the dialogue (for some dive computers the
 progress information could be inaccurate as we cannot determine how much
 downloadable data there is until all data have been downloaded). When the
 download of the dive information is complete, all the imported dives appear
-in the Dive List, sorted by date and time. Disconnect and
+in the *Dive List*, sorted by date and time. Disconnect and
 switch off the dive
 computer to conserve its battery power.
-If a particular dive is selected, the Dive Profile panel shows an informative
+If a particular dive is selected, the *Dive Profile* panel shows an informative
 graph of dive depth against time for that particular dive.
 
 
@@ -558,11 +561,11 @@ two check boxes checked in the download dialogue discussed above:
 	Save libdivecomputer logfile
 	Save libdivecomputer dumpfile
 
-*Important*: These check boxes are only used when problems are ancountered
+*Important*: These check boxes are only used when problems are encountered
 during the download process: under normal circumstances they should not be checked.
 When checking these boxes, the user is prompted to select a folder to
 save the information to. The default folder is the one in which the _Subsurface_
-dive log is kept. 
+dive log is kept.
 
 *Important:* _After downloading with the above checkboxes
 checked, no dives are added to the
@@ -600,7 +603,7 @@ visible:
 
 image::images/AddDive3.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Starttime* field reflects the date and the time of the dive, as supplied by
+The *Start time* field reflects the date and the time of the dive, as supplied by
 the dive computer. It should therefore not be necessary to edit this, but one
 could make changes by clicking the down-arrow on the right of that field to
 display a calendar from which the correct date can be chosen. The hour and
@@ -608,7 +611,7 @@ minutes values can also be edited by clicking on each of them in the text box
 and by overtyping the information displayed.
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown
-in these fields to the right of the Starttime. Many dive computers supply water
+in these fields to the right of the Start time. Many dive computers supply water
 temperature information and this field may therefore not require further
 editing. If
 editing is required, only a value is required. The units of temperature will be
@@ -617,7 +620,7 @@ _Subsurface_ (according to the _Preferences_, metric or imperial units will
 be used).
 
 *Location*: In this field one should type in text that describes the site
-where the dive was performed, e.g. "Tihany, Lake Balaton, Hungary". 
+where the dive was performed, e.g. "Tihany, Lake Balaton, Hungary".
 Auto completion of location names will
 make this easier when a user frequently dives at the same sites.
 
@@ -626,7 +629,7 @@ here. These can come from three sources:
 
 a. The user can find the coordinates on the world map in the bottom right hand
 part
-of the Subsurface window. The map displays a green bar indicating "Move the map 
+of the Subsurface window. The map displays a green bar indicating "Move the map
 and double-click to set the dive location". Double-click
 at the appropriate place, the green bar disappears and the coordinates are
 stored.
@@ -717,7 +720,8 @@ cylinders:
 image::images/CylinderDataEntry2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
 The drop-down list can then be used to select the cylinder type that was used
-for this dive. The
+for this dive or the user may start typing in the box which shows the available
+options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (*WorkPress*) will
 automatically be shown in the dialogue.
 
@@ -752,7 +756,9 @@ down-arrow:
 image::images/WeightsDataEntry2.jpg["FIGURE:Weights type drop-down list button",align="center"]
 
 The drop-down list can then be used to select the type of weight system
-used during the dive. In the *Weight*
+used during the dive or the user may start typing in the box
+which shows the available options for the entered characters.
+In the *Weight*
 field, type in the amount of weight used during the dive. After
 specifying the weight
 system, the user can either press _ENTER_ on the keyboard or click outside the
@@ -784,7 +790,7 @@ that the new data should be saved.
 
 If a user has been diving for some time, it is possible that several dives were
 logged using other dive log software. This information does not need retyping
-becuse these divelogs can probably be
+because these divelogs can probably be
 imported onto _Subsurface_. _Subsurface_ will import divelogs from a range of
 other
 dive log software. While some software is supported natively, for others the
@@ -867,7 +873,7 @@ brings up a dialogue box (see figure on left [*A*] below). Enter a
 user-ID and password for _divelogs.de_ into the appropriate fields and then
 select
 the _Download_ button. Download from _divelogs.de_ starts immediately,
-displaying a progress bar in the dialogue box. At the and of the download, the
+displaying a progress bar in the dialogue box. At the end of the download, the
 success status is indicated (see figure on the right [*B*], below). The
 _Apply_ button should then be selected, after which the imported dives appear in the
 _Subsurface_ *Dive List* panel.
@@ -919,7 +925,7 @@ the numbers are aligned in columns,
 the file is probably TAB-delimited (i.e. it uses a TAB as a field separator, as
 in the above example).
 
-b. Which data columns need to be imported into _Subsurface_?. The Dive Time and
+b. Which data columns need to be imported into _Subsurface_? The Dive Time and
 Depth columns are always required. Open the file using a text editor and note
 the titles of the columns to be imported and their column positions. For
 instance for the above example:
@@ -986,11 +992,11 @@ the
 field values themselves. Therefore the use of an appropriate field separator
 in very important.
 
-b. Which columns need to be imported into _Subsurface_?. We do not
+b. Which columns need to be imported into _Subsurface_? We do not
 currently have any mandatory input fields, but some, e.g. dive duration
 are crucial for the log file to make any sense. Possible options
 can be seen in the image below and one should include all the
-fields available in both your log file and in the Subsurface
+fields available in both your log file and in the _Subsurface_
 import.
 
 c. Units used for depth, weight and temperature. We consider depth to be
@@ -1074,7 +1080,7 @@ it deletes the dive location(s).
 The new dive points are now stored on the server and can be downloaded to the
 _Subsurface_ dive log whenever users upload or add dives to _Subsurface_.
 After a dive trip using the Companion app, all dive locations are ready to be
-saved on a Subsurface dive log (see below).
+saved on a _Subsurface_ dive log (see below).
 
 ===== Settings on the Companion app
 
@@ -1170,7 +1176,7 @@ date-times of the uploaded GPS localities.
 
 [icon="images/icons/info.jpg"]
 [NOTE]
-Features, issues and tips._  Since _Subsurface_ matches GPS locations from the
+_Features, issues and tips._  Since _Subsurface_ matches GPS locations from the
 Android device and dive information from the dive computer based on date-time
 data, automatic assignment of GPS data to dives is dependent on agreement of
 date and time between these two devices. If there is a large difference between
