@@ -6,6 +6,7 @@ class QAbstractButton;
 
 #include <QWidget>
 #include <QDialog>
+#include <stdint.h>
 
 #include "ui_renumber.h"
 #include "ui_shifttimes.h"
