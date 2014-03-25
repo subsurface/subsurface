@@ -347,6 +347,15 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		zoomLevel = 0;
 	}
 
+	// reset some item visibility on printMode changes
+	toolTipItem->setVisible(!printMode);
+	QSettings s;
+	s.beginGroup("TecDetails");
+	const bool rulerVisible = s.value("rulergraph", false).toBool() && !printMode;
+	rulerItem->setVisible(rulerVisible);
+	rulerItem->sourceNode()->setVisible(rulerVisible);
+	rulerItem->destNode()->setVisible(rulerVisible);
+
 	// No need to do this again if we are already showing the same dive
 	// computer of the same dive, so we check the unique id of the dive
 	// and the selected dive computer number against the ones we are
