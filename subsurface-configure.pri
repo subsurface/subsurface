@@ -138,6 +138,9 @@ isEmpty(LIBGIT2DEVEL) {
 # Add libiconv if needed
 link_pkgconfig: packagesExist(libiconv): PKGCONFIG += libiconv
 
+# disable things when were on android
+contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE
+
 #
 # Find libmarble
 #
