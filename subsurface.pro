@@ -76,7 +76,11 @@ HEADERS = \
 	qt-ui/profile/divetooltipitem.h \
 	qt-ui/profile/ruleritem.h
 
-android: HEADERS -= qt-ui/usermanual.h
+android: HEADERS -= \
+	qt-ui/usermanual.h \
+	qt-ui/printdialog.h \
+	qt-ui/printlayout.h \
+	qt-ui/printoptions.h
 
 SOURCES =  \
 	deco.c \
@@ -148,7 +152,11 @@ else: linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
 win32: SOURCES += windows.c
 
-android: SOURCES -= qt-ui/usermanual.cpp
+android: SOURCES -= \
+	qt-ui/usermanual.cpp \
+	qt-ui/printdialog.cpp \
+	qt-ui/printlayout.cpp \
+	qt-ui/printoptions.cpp
 
 FORMS = \
 	qt-ui/about.ui \
@@ -167,8 +175,8 @@ FORMS = \
 	qt-ui/divelogimportdialog.ui \
 	qt-ui/usermanual.ui
 
-# Usermanual isn't supported on android right now
-android: FORMS -= qt-ui/usermanual.ui
+# Nether usermanual or printing is supported on android right now
+android: FORMS -= qt-ui/usermanual.ui qt-ui/printoptions.ui
 
 RESOURCES = subsurface.qrc
 

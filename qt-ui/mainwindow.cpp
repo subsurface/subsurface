@@ -36,7 +36,9 @@
 #include "simplewidgets.h"
 #include "diveplanner.h"
 #include "about.h"
+#ifndef NO_PRINTING
 #include "printdialog.h"
+#endif
 #include "divelogimportdialog.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -90,6 +92,9 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
+#endif
+#ifdef NO_PRINTING
+	ui.menuFile->removeAction(ui.actionPrint);
 #endif
 }
 
@@ -274,9 +279,11 @@ void MainWindow::on_actionExportUDDF_triggered()
 
 void MainWindow::on_actionPrint_triggered()
 {
+#ifndef NO_PRINTING
 	PrintDialog dlg(this);
 
 	dlg.exec();
+#endif
 }
 
 void MainWindow::disableDcShortcuts()

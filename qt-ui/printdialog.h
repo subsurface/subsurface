@@ -29,5 +29,4 @@ slots:
 	void printClicked();
 	void onPaintRequested(QPrinter *);
 };
-
 #endif // PRINTDIALOG_H
