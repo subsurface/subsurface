@@ -1596,16 +1596,18 @@ A dive log can be saved in two formats:
 UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 
-In order to save the WHOLE dive log (i.e. all trips and dives), *File* should be selected
-from the Main menu. To save in _Subsurface_ XML format, users should select _File -> Save
-as_. To save in UDDF format, the _File -> Export UDDF_ option should be selected.
+In order to save the WHOLE dive log (i.e. all trips and dives), select *File*
+from the Main menu. To save in _Subsurface_ XML format, select _File -> Save as_.
+To save in UDDF format, select _File -> Export UDDF_.
 
-In order to save only one or more dives or one or two trips, users can select the
+In order to save only one or more dives or one or two trips, select the
 appropriate dives or trips in the *Dive List* panel and then right-click the
 selected dives to bring up the context menu. To save in _Subsurface_ XML
-format, users should select _Save as_ from the context menu. To save in UDDF format, users should select
+format, select _Save as_ from the context menu. To save in UDDF format, select
 _Export as UDDF_ from the context menu.
 
+Export to other formats can be achieved through third party facilities, for
+instance _www.divelogs.de_.
 
 [[S_PrintDivelog]]
 == Printing a dive log
@@ -1820,17 +1822,20 @@ The operating system of the desktop computer needs the appropriate drivers in
 order to communicate with the dive computer in whichever way the dive
 computer prefers (e.g. bluetooth, USB, infrared).
 
-	* On Linux this means users need to have the correct kernel
-	  module loaded. Most distributions will do this automatically.
+	* On Linux users need to have the correct kernel
+	  module loaded. Most distributions will do this automatically, so the
+	  user does not need to load drivers.
 
 	* On Windows, the OS should offer to download the correct
-	  driver once the user connects the dive computer to the USB port.
+	  driver once the user connects the dive computer to the USB port and
+	  operating system sees the equipment for the first time.
 
 	* On a Mac users sometimes have to manually hunt for the correct
 	  driver. For example the correct driver for the Mares Puck
-	  devices can be found as Mac_OSX_VCP_Driver.zip at
-
-http://www.silabs.com/support/pages/support.aspx?ProductFamily=USB+Bridges
+	  devices or any other dive computer using a USB-to-serial interface
+	  based on the Silicon Labs CP2101 or similar chip can be found as
+	  _Mac_OSX_VCP_Driver.zip_ at the
+http://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[Silicon Labs document and software repository].
 
 [[S_HowFindDeviceName]]
 === How to Find the Device Name for USB devices and set its write permission
@@ -1854,7 +1859,7 @@ The drop down box should find all connected dive computers.
 
 .On Linux:
 
-Try the following:
+There is a definitive way to find the port:
 
  - Disconnect the USB cable from the dive computer
  - Open a terminal
@@ -1862,7 +1867,7 @@ Try the following:
  - Plug in the USB cable of the dive computer
  - Type the command: 'dmesg' and press enter
 
-Within the terminal, users should see a message similar to this one:
+A message similar to this one should appear:
 
 	usb 2-1.1: new full speed USB device number 14 using ehci_hcd
 	usbcore: registered new interface driver usbserial
@@ -1880,12 +1885,12 @@ Within the terminal, users should see a message similar to this one:
 	usbcore: registered new interface driver ftdi_sio
 	ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver
 
-Users can see that in the third line from the bottom, the USB adapter is
-detected and is connected to +ttyUSB3+. This information can now be used in
-the import settings as +/dev/ttyUSB3+. This directs Subsurface to the correct
+The third line from the bottom shows that the FTDI USB adapter is
+detected and connected to +ttyUSB3+. This information can now be used in
+the import settings as +/dev/ttyUSB3+ which directs Subsurface to the correct
 USB port.
 
-Ensuring you have write permission to the USB serial port:
+Ensuring that the user has write permission to the USB serial port:
 
 On Unix-like operating systems the USB ports can only be accessed by users who
 are members
@@ -1893,8 +1898,8 @@ of the +dialout+ group. If one is not root, one may not be a member of
 that group and
 will not be able to use the USB port. Let us assume one's username is 'johnB'.
 
- - As root, type: +usermod -a -G dialout johnB+  (Ubuntu users: +sudo -a -G
-dialout johnB+)
+ - As root, type: +usermod -a -G dialout johnB+  (Ubuntu users: +sudo usermod
+-a -G dialout johnB+)
 This makes johnB a member of the +dialout+ group.
  - Type: +id johnB+     This lists all the groups that johnB belongs to and
 verifies that
@@ -1914,116 +1919,114 @@ dives.
 For dive computers communicating through bluetooth like the Heinrichs
 Weikamp Frog or the Shearwater Predator and Petrel there is a
 different procedure to get the devices name to communicate with
-_Subsurface_. In general it consists of these steps:
+_Subsurface_. Follow these steps:
 
- * enable bluetooth on your computer
- * pairing the device
+ * *For the dive computer, after enabling Bluetooth, ensure it is in Upload mode.*
 
-Do not forget to set your divecomputer in Bluetooth or upload mode before
-Paring and Downloading logs. If you use a Shearwater Predator/Petrel just select
-_Dive Log -> Upload Log_ and wait until you see the _Wait PC_ message.
+For Bluetooth pairing of the dive computer, refer to the
+manufacturer's user guide. When using a Shearwater Predator/Petrel, select
+_Dive Log -> Upload Log_ and wait for the _Wait PC_ message.
+
+ * *Pair the _Subsurface_ computer with the dive computer.*
 
 .On Windows:
 
-Bluetooth is most likely already enabled. For pairing the device choose
-Control Panel->Bluetooth Devices->Add Wireless Device
+Bluetooth is most likely already enabled. For pairing with the dive computer choose
+_Control Panel->Bluetooth Devices->Add Wireless Device_.
 This should bring up a dialog showing your dive computer (in Bluetooth mode) and
-allowing to pair it. For bluetooth pairing of your dive computer refer to the
-manufacturer's user guide. The dive computer should then show up in the list of
-Bluetooth devices and you may then right click on it and choose Properties->COM
-Ports to identify the port used for your dive computer. If there are several
+allowing pairing. Right click on it and choose _Properties->COM
+Ports_ to identify the port used for your dive computer. If there are several
 ports listed, use the one saying "Outgoing" instead of "Incoming".
 
-For downloading to _Subsurface_, the drop down list should contain this COM
-port already. If not, enter it manually.
+For downloading to _Subsurface_, the _Subsurface_ drop-down list should contain
+this COM port already. If not, enter it manually.
 
-Note: If you have issues downloading from your dive computer in other software
-afterwards try to remove the pairing with your dive computer.
+Note: If there are issues afterwards downloading from the dive computer using
+other software, remove the existing pairing with the dive computer.
 
 .On MacOS:
 
-Click on the Bluetooth symbol in the menu bar and select 'Set up
-Bluetooth Device...'. Make sure that your dive computer is in upload
-mode; it should then show up in the list of devices. Select it and go
+Click on the Bluetooth symbol in the menu bar and select _Set up
+Bluetooth Device..._. The dive computer should then show up in the list of devices. Select it and go
 through the pairing process. This step should only be needed once for
 initial setup.
 
-Once the pairing is completed the correct device will be shown in the
-'Device or Mount Point' drop down in the _Subsurface_ *Import* dialog.
+Once the pairing is completed the correct device is shown in the
+'Device or Mount Point' drop-down in the _Subsurface_ *Import* dialog.
 
 .On Linux
-Ensure bluetooth is enabled on the _Subsurface_ computer.
-On most common distributions this should be true out of the box. If not then
-depending on your system, running +initd+ or +systemd+. This might be different
-and also involve loading modules specific to your hardware. In case your system
-is
-running +systemd+, manually run +sudo systemctl start bluetooth.service+ to
-enable
-it, in case of +initd+, run something like +sudo rc.config start bluetoothd+ or
-+sudo /etc/init.d/bluetooth start+.
-
-Pairing should be straight forward. Using Gnome3 for instance will show a
-bluetooth icon in the upper right corner of the desktop where one selects 'Set
+Ensure Bluetooth is enabled on the _Subsurface_ computer.
+On most common distributions this should be true out of the box and
+pairing should be straight forward. For instance, Gnome3 shows a
+Bluetooth icon in the upper right corner of the desktop where one selects 'Set
 up New Device'. This should show a dialog where one can select the
-dive computer (in bluetooth mode) and pair it. For issues with PIN
-setting try manually setting '0000'.
+dive computer (which already should be in Bluetooth mode) and pair it.
+If a PIN is required, try manually setting '0000'.
+
+In the rare cases where the above is not true, then
+depending on your system, try +initd+ or +systemd+. This might be different
+and also involve loading modules specific to your hardware. In case your system
+is running +systemd+, manually run +systemctl start bluetooth.service+ to
+enable it, in case of +initd+, run something like +rc.config start bluetoothd+ or
++/etc/init.d/bluetooth start+.
 
 One may also use a manual approach by using such commands:
 
- * +sudo hciconfig+ - shows the bluetooth devices available on your
+ * +hciconfig+ shows the Bluetooth devices available on your
 computer (not dive computer), most likely one will see a hci0, if not
-try 'sudo hcitool -a' to see inactive devices and try to run 'sudo
-hciconfig hci0 up' to bring them up
+try +hcitool -a+ to see inactive devices and  run +sudo
+hciconfig hci0 up+ to bring them up.
 
- * +sudo hcitool scanning+- use this to get a list of bluetooth enabled
+ * +hcitool scanning+ gets a list of bluetooth enabled
 client devices, look for the dive computer and remember the MAC
-address shown there
+address are shown there
 
- * +sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4+ - this will pair
+ * +bluez-simple-agent hci0 10:00:E8:C4:BE:C4+  pairs
 the dive computer with the bluetooth stack of the _Subsurface_ computer, copy/paste
 the MAC address from the output of 'hcitool scanning'
 
 Unfortunately on Linux binding to a communication device has to be done
 manually by running:
 
- * +sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ - bind the dive
+ * +rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ binds the dive
 computer to a communication device in the desktop computer, in case rfcomm is
-already taken just use rfcomm1 or up, please copy/paste the MAC address
-from the output of 'hcitool scanning', the MAC shown in here will not
+already taken use rfcomm1 or up. IMPORTANT: Copy/paste the MAC address
+from the output of +hcitool scanning+, the MAC address shown above will not
 work.
 
-For downloading dives in Subsurface one then has to specify +/dev/rfcomm0+
-as device name to use.
+For downloading dives in _Subsurface_ specify the device name connected to the MAC
+address in the last step above, e.g. _/dev/rfcomm0_.
 
 
-== APPENDIX B: Dive Computer specific information for importing dive
-information.
-
+== APPENDIX B: Dive Computer specific information for importing dive information.
 
 [[S_ImportUemis]]
 === Import from a Uemis Zurich
 
 [icon="images/icons/iumis.jpg"]
 [NOTE]
-Things are very similar to a normal USB-connected dive computer when
-downloading dives from a Uemis Zurich
-dive computer (one of the ones that recharge when
-connected to the USB port). The main difference is that one does not enter a
+_Subsurface_ downloads the information
+stored on the SDA (the built-in file system of the Uemis) including
+information about dive spots and
+equipment. Buddy information is not yet downloadable.
+Things are very similar to a normal USB-connected dive computer
+(the Uemis is one of those that recharge when connected to the USB port).
+The main difference is that one does not enter a
 device name, but instead the location where the UEMISSDA file system is
-mounted once you connect the dive computer. On Windows this is a drive letter (
+mounted once connected to the dive computer. On Windows this is a drive letter (
 often 'E:' or 'F:'), on a Mac this is
 '/Volumes/UEMISSDA' and on Linux systems this differs depending on the
 distribution. On Fedora it usually is
 '/var/run/media/<your_username>/UEMISSDA'. In all cases _Subsurface_
 should suggest the correct location in the drop down list.
 
-Once onehas selected this as device name one can download the
+After selecting the above device name, download the
 dives from the Uemis Zurich. One technical issue with the Uemis Zurich
-download implementation (this is a firmware limitation, not a
+download implementation (this is a Uemis firmware limitation, not a
 _Subsurface_ issue) is that one cannot download more than about 40-50
 dives without running out of memory on the SDA. This will usually only
-happen the very first time one downloads dives from the Uemis Zurich -
-normally when downloading at the end of a day or even after a dive
+happen the very first time one downloads dives from the Uemis Zurich.
+Normally when downloading at the end of a day or even after a dive
 trip, the capacity is sufficient. If _Subsurface_ displays an error
 that the dive computer ran out of space the solution is straight
 forward.  Disconnect the SDA, turn it off and on again, and reconnect
@@ -2031,10 +2034,6 @@ it. You can now retry (or start a new download session) and the
 download will continue where it stopped previously. One
 may have to do this more than once, depending on how many dives are
 stored on the dive computer.
-
-At this point _Subsurface_ downloads most of the information
-stored on the SDA, including information about dive spots and
-equipment. Buddy information is not yet downloadable.
 
 
 [[S_ImportingDR5]]
@@ -2047,25 +2046,24 @@ for every dive.
 Mark all the dives you'd like to import or open.
 Note: The DR5 does not seem to store gradient factors nor deco information, so
 for _Subsurface_ it is not possible to display them. Adjust the gradient
-factors in the Tec Settings in _Subsurface_ to generate a deco overlay in the _
-Subsurface_ *Dive Profile* panel
-to get deco displayed but please note that the deco calculated by _Subsurface_
-will most likely differ from the one displayed on the DR5.
+factors in the _Tec Settings_ in _Subsurface_ to generate a deco overlay in the
+_Subsurface_ *Dive Profile* panel but please note that the deco calculated by
+_Subsurface_ will most likely differ from the one displayed on the DR5.
 
-=== Import from Shearwater Predator using bluetooth
+=== Import from Shearwater Predator using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]
-Using a Shearwater Predator you may be able to pair Bluetooth but then encounter
+Using a Shearwater Predator one may be able to pair Bluetooth but then encounter
 issues when downloading, showing errors like _Slip RX: unexp. SLIP END_ on the
 Predator.
-This might also be seen, when using other dive log software and operating
-systems than Linux. We have no detailed idea about the source and how to fix
+This might also arise when using other dive log software and operating
+systems other than Linux. We have no detailed idea about the source and how to fix
 this, but it is reported to be solved sometimes by one of these steps:
 
- * use the bluetooth dongle which came with the Shearwater Predator instead of
-   the built-in one of your computer
- * switch to different bluetooth drivers for your hardware
+ * use the Bluetooth dongle which came with the Shearwater Predator instead of
+   the built-in one of the _Subsurface_ computer
+ * switch to different Bluetooth drivers for the same hardware
  * switch off WiFi while using Bluetooth
 
 
@@ -2107,9 +2105,9 @@ dives.
 	* To select all dives:  Select the first dive, hold down shift and
 select the
 last dive
- - With the dives marked, use the program menu 'File -> Export'
+ - With the dives marked, use the program menu _File -> Export_
  - The export pop-up will show
- - Within this pop-up, there is one field called Export Path.
+ - Within this pop-up, there is one field called 'Export Path'.
 	* Click the browse button next to the field Export Path
 		** A file-manager like window pops up
 		** Navigate to the directory or storing the
@@ -2121,9 +2119,9 @@ Divelog.SDE file
 
 *Divemanager 4 (DM4):*
 
-To import divelog from 'Suunto DM4', one needs to locate the DM4 database
+To export divelog from 'Suunto DM4', one needs to locate the DM4 database
 where the dives are stored. the user can either look for the original
-database or take a backup of the dives. Both methods are described here.
+database or make a backup of the dives. Both methods are described here.
 
 Locating the Suunto DM4 database:
 
@@ -2150,7 +2148,7 @@ Backing up Suunto DM4:
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
 Mares Dive Organiser is a Microsoft application. The dive log is kept as a
-Microsoft SQL Compact Edition data base with a .SDF filename extension. The
+Microsoft SQL Compact Edition data base with a '.sdf' filename extension. The
 data base includes all Dive Organiser-registered divers on the particular
 computer and all Mares dive computers used. The safest way to obtain a copy
 of the dive data base is to export the information to another compatible format
@@ -2174,8 +2172,8 @@ Unfortunately DivingLog XML files give us no
 indication on the preferences set on one's system. So in order for
 _Subsurface_ to be able to successfully import XML files from DivingLog
 one first needs to ensure that DivingLog is configured
-to use the Metric system (one can easily change this in 'File ->
-Preferences -> Units and Language' by clicking the 'Metric'
+to use the Metric system (one can easily change this within Diving Log by
+selecting 'File -> Preferences -> Units and Language' by clicking the 'Metric'
 button). Then do the following:
 
  - In Divinglog open the 'File -> Export -> XML' menu
@@ -2187,7 +2185,10 @@ button). Then do the following:
 
 === Subsurface appears to miscalculate gas consumption and SAC
 [[SAC_CALCULATION]]
-Not really. What happens is that subsurface actually calculates gas
+'Question': I dived with a 12.2 l tank, starting with 220 bar and ending with 100 bar, and I calculate a different SAC compared what _Subsurface_ calculates. Is _Subsurface_
+miscalculating?
+
+'Answer': Not really. What happens is that _Subsurface_ actually calculates gas
 consumption differently - and better - than you expect.
 In particular, it takes the incompressibility of the gas into account.
 Traditionally, Gas consumption and SAC should be:
@@ -2213,17 +2214,7 @@ which is about 1445, not 1464. So there was 19 l too much in your simple
 calculation that ignored the difference between 1 bar and one ATM.
 The compressibility does show up above 200 bar, and takes that 1445 down
 about eight liters more, so you really did use only about 1437 l of air at surface pressure.
-The math details can be seen in dive.c:
 
-+surface_volume_multiplier().+
-
-The "if (bar > 200) bar = .." part is the compressibility - it's an approximation,
-but it's a reasonably good one, and closer to reality than not doing it.
-You can get the numbers you expect if you remove that, and turn the function into just:
-
-+return pressure.mbar / 1000.0;+
-
-but that would actually be wrong.
 So be happy: your SAC really is better than your calculations indicated.
 Or be sad: your cylinder contains less air than you thought it did.
 And as mentioned, the "contains less air than you thought it did" really
