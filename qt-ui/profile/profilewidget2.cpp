@@ -476,6 +476,7 @@ void ProfileWidget2::settingsChanged()
 		rulerItem->setVisible(rulerVisible);
 		rulerItem->destNode()->setVisible(rulerVisible);
 		rulerItem->sourceNode()->setVisible(rulerVisible);
+		replot();
 	} else {
 		rulerItem->setVisible(false);
 		rulerItem->destNode()->setVisible(false);
