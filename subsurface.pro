@@ -76,6 +76,8 @@ HEADERS = \
 	qt-ui/profile/divetooltipitem.h \
 	qt-ui/profile/ruleritem.h
 
+android: HEADERS -= qt-ui/usermanual.h
+
 SOURCES =  \
 	deco.c \
 	device.c \
@@ -146,6 +148,8 @@ else: linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
 win32: SOURCES += windows.c
 
+android: SOURCES -= qt-ui/usermanual.cpp
+
 FORMS = \
 	qt-ui/about.ui \
 	qt-ui/divecomputermanagementdialog.ui \
@@ -162,6 +166,9 @@ FORMS = \
 	qt-ui/tableview.ui \
 	qt-ui/divelogimportdialog.ui \
 	qt-ui/usermanual.ui
+
+# Usermanual isn't supported on android right now
+android: FORMS -= qt-ui/usermanual.ui
 
 RESOURCES = subsurface.qrc
 

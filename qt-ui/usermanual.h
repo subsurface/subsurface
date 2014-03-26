@@ -29,5 +29,4 @@ private:
 	Ui::UserManual *ui;
 	void search(QString, QWebPage::FindFlags);
 };
-
 #endif // USERMANUAL_H

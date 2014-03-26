@@ -12,7 +12,6 @@
 #include <QUrl>
 
 #include "ui_mainwindow.h"
-#include "usermanual.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -156,7 +155,7 @@ private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
-	UserManual *helpView;
+	QMainWindow *helpView;
 	QTreeView *yearlyStats;
 	QAbstractItemModel *yearlyStatsModel;
 	CurrentState state;

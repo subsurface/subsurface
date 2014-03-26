@@ -38,6 +38,9 @@
 #include "about.h"
 #include "printdialog.h"
 #include "divelogimportdialog.h"
+#ifndef NO_USERMANUAL
+#include "usermanual.h"
+#endif
 
 MainWindow *MainWindow::m_Instance = NULL;
 
@@ -84,6 +87,9 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_MARBLE
 	ui.layoutWidget->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
+#endif
+#ifdef NO_USERMANUAL
+	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
 }
 
@@ -554,10 +560,12 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 
 void MainWindow::on_actionUserManual_triggered()
 {
+#ifndef NO_USERMANUAL
 	if (!helpView) {
 		helpView = new UserManual();
 	}
 	helpView->show();
+#endif
 }
 
 QString MainWindow::filter()
