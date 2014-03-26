@@ -4,7 +4,8 @@ QT = core gui network svg
 lessThan(QT_MAJOR_VERSION, 5) {
 	QT += webkit
 } else {
-	QT += webkitwidgets
+	!android: QT += webkitwidgets
+	android: QT += androidextras
 }
 INCLUDEPATH += qt-ui $$PWD
 DEPENDPATH += qt-ui
@@ -140,7 +141,8 @@ SOURCES =  \
 	qt-ui/profile/divetooltipitem.cpp \
 	qt-ui/profile/ruleritem.cpp
 
-linux*: SOURCES += linux.c
+android: SOURCES += android.cpp
+else: linux*: SOURCES += linux.c
 mac: SOURCES += macos.c
 win32: SOURCES += windows.c
 

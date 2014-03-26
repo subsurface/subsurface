@@ -120,6 +120,9 @@ mac {
 		QMAKE_EXTRA_TARGETS = installer nsis
 		install.depends += dlls
 	}
+} else: android {
+	# Android install rules
+	QMAKE_BUNDLE_DATA += translation qttranslation
 } else {
 	# Linux install rules
 	# On Linux, we can count on packagers doing the right thing
