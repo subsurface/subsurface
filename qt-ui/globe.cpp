@@ -1,4 +1,5 @@
 #include "globe.h"
+#ifndef NO_MARBLE
 #include "kmessagewidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -295,3 +296,12 @@ void GlobeGPS::resizeEvent(QResizeEvent *event)
 		messageWidget->setGeometry(5, 5, size - 10, 0);
 	messageWidget->setMaximumHeight(500);
 }
+#else
+
+GlobeGPS::GlobeGPS(QWidget* parent) { setText("MARBLE DISABLED AT BUILD TIME"); }
+void GlobeGPS::repopulateLabels() {}
+void GlobeGPS::centerOn(dive* dive) {}
+bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev) {}
+void GlobeGPS::prepareForGetDiveCoordinates() {}
+void GlobeGPS::reload() {}
+#endif

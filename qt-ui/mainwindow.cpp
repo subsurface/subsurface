@@ -81,6 +81,10 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef ENABLE_PLANNER
 	ui.menuLog->removeAction(ui.actionDivePlanner);
 #endif
+#ifdef NO_MARBLE
+	ui.layoutWidget->hide();
+	ui.menuView->removeAction(ui.actionViewGlobe);
+#endif
 }
 
 MainWindow::~MainWindow()

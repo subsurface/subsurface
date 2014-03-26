@@ -144,8 +144,10 @@ link_pkgconfig: packagesExist(libiconv): PKGCONFIG += libiconv
 # Before Marble 4.9, the GeoDataTreeModel.h header wasn't installed
 # Check if it's present by trying to compile
 # ### FIXME: implement that
-win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
-else: LIBS += -lmarblewidget
+!contains(DEFINES, NO_MARBLE) {
+	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
+	else: LIBS += -lmarblewidget
+}
 
 libgit21-api {
 	DEFINES += USE_LIBGIT21_API

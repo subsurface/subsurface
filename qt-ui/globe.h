@@ -1,5 +1,6 @@
 #ifndef GLOBE_H
 #define GLOBE_H
+#ifndef NO_MARBLE
 
 #include <marble/MarbleWidget.h>
 #include <marble/GeoDataCoordinates.h>
@@ -41,4 +42,21 @@ slots:
 	void prepareForGetDiveCoordinates();
 };
 
+#else // NO_MARBLE
+/* Dummy widget for when we don't have MarbleWidget */
+#include <QLabel>
+
+class GlobeGPS : public QLabel {
+	Q_OBJECT
+public:
+	GlobeGPS(QWidget *parent);
+	void reload();
+	void repopulateLabels();
+	void centerOn(struct dive* dive);
+	bool eventFilter(QObject*, QEvent*);
+public slots:
+	void prepareForGetDiveCoordinates();
+};
+
+#endif // NO_MARBLE
 #endif // GLOBE_H
