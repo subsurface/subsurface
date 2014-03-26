@@ -853,14 +853,20 @@ void markChangedWidget(QWidget *w)
 
 void MainTab::on_buddy_textChanged()
 {
-	QString text = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts).join(", ");
+	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
+	for (int i = 0; i < text_list.size(); i++)
+		text_list[i] = text_list[i].trimmed();
+	QString text = text_list.join(", ");
 	EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->buddy, text));
 	markChangedWidget(ui.buddy);
 }
 
 void MainTab::on_divemaster_textChanged()
 {
-	QString text = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts).join(", ");
+	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
+	for (int i = 0; i < text_list.size(); i++)
+		text_list[i] = text_list[i].trimmed();
+	QString text = text_list.join(", ");
 	EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->divemaster, text));
 	markChangedWidget(ui.divemaster);
 }
