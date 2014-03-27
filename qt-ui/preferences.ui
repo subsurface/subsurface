@@ -657,7 +657,18 @@
                </widget>
               </item>
              </layout>
-            </item>
+	    </item>
+	    <item>
+	     <layout class="QHBoxLayout" name="horizontalLayout_11d">
+	      <item>
+	       <widget class="QCheckBox" name="show_average_depth">
+		<property name="text">
+		 <string>show average depth</string>
+		</property>
+	       </widget>
+	      </item>
+	     </layout>
+	    </item>
            </layout>
           </widget>
          </item>

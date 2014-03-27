@@ -39,6 +39,7 @@ struct preferences {
 	struct units units;
 	short show_sac;
 	bool display_unused_tanks;
+	bool show_average_depth;
 	bool zoomed_plot;
 	bool text_label_with_units;
 };
