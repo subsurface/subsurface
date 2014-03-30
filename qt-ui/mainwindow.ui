@@ -551,6 +551,7 @@
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionExportUDDF"/>
+    <addaction name="actionExportHTMLworldmap"/>
     <addaction name="actionPrint"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
@@ -679,6 +680,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+U</string>
+   </property>
+  </action>
+   <action name="actionExportHTMLworldmap">
+   <property name="text">
+    <string>Export HTML World Map</string>
    </property>
   </action>
   <action name="actionPrint">

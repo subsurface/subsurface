@@ -28,6 +28,8 @@ HEADERS = \
 	helpers.h \
 	libdivecomputer.h \
 	planner.h \
+	worldmap-save.h \
+	worldmap-options.h \
 	pref.h \
 	profile.h \
 	qt-gui.h \
@@ -97,6 +99,7 @@ SOURCES =  \
 	parse-xml.c \
 	planner.c \
 	profile.c \
+	worldmap-save.c \
 	qt-gui.cpp \
 	qthelper.cpp \
 	qt-ui/about.cpp \

@@ -36,6 +36,7 @@
 #include "simplewidgets.h"
 #include "diveplanner.h"
 #include "about.h"
+#include "worldmap-save.h"
 #ifndef NO_PRINTING
 #include "printdialog.h"
 #endif
@@ -275,6 +276,15 @@ void MainWindow::on_actionExportUDDF_triggered()
 							tr("UDDF files (*.uddf *.UDDF)"));
 	if (!filename.isNull() && !filename.isEmpty())
 		export_dives_uddf(filename.toUtf8(), false);
+}
+
+void MainWindow::on_actionExportHTMLworldmap_triggered()
+{
+	QFileInfo fi(system_default_filename());
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), fi.absolutePath(),
+							tr("HTML files (*.html)"));
+	if (!filename.isNull() && !filename.isEmpty())
+		export_worldmap_HTML(filename.toUtf8().data());
 }
 
 void MainWindow::on_actionPrint_triggered()

@@ -90,6 +90,7 @@ slots:
 	void on_actionSaveAs_triggered();
 	void on_actionClose_triggered();
 	void on_actionExportUDDF_triggered();
+	void on_actionExportHTMLworldmap_triggered();
 	void on_actionPrint_triggered();
 	void on_actionPreferences_triggered();
 	void on_actionQuit_triggered();
