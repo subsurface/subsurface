@@ -11,6 +11,7 @@
 #include "qt-ui/diveplanner.h"
 
 #include <QStringList>
+#include <git2.h>
 
 QTranslator *qtTranslator, *ssrfTranslator;
 
@@ -41,6 +42,7 @@ int main(int argc, char **argv)
 			files.push_back(a);
 		}
 	}
+	git_threads_init();
 	setup_system_prefs();
 	prefs = default_prefs;
 	fill_profile_color();
