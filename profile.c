@@ -1151,11 +1151,11 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
-		 * EAD takes O2 + N2 (air) into account
-		 * END just uses N2 */
+		 * END takes O2 + N2 (air) into account ("Narcotic" for trimix dives)
+		 * EAD just uses N2 ("Air" for nitrox dives) */
 		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
-		entry->ead = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
-		entry->end = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
+		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
+		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
 				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
 										N2_DENSITY +
@@ -1256,12 +1256,15 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (prefs.ead) {
 		switch (pi->dive_type) {
 		case NITROX:
+			ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
+			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
+			break;
+		case TRIMIX:
 			end = (int)get_depth_units(entry->end, NULL, &depth_unit);
 			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
 			break;
-		case TRIMIX:
-			ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
-			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
+		case AIR:
+			/* nothing */
 			break;
 		}
 	}
