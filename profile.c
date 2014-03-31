@@ -1180,9 +1180,19 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
  */
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
+	int o2, he, o2low;
 	init_decompression(dive);
 	if (last_pi_entry_new) /* Create the new plot data */
 		free((void *)last_pi_entry_new);
+	get_dive_gas(dive, &o2, &he, &o2low);
+	if (he > 0) {
+		pi->dive_type = TRIMIX;
+	} else {
+		if (o2)
+			pi->dive_type = NITROX;
+		else
+			pi->dive_type = AIR;
+	}
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 	check_gas_change_events(dive, dc, pi);       /* Populate the gas index from the gas change events */
 	setup_gas_sensor_pressure(dive, dc, pi);     /* Try to populate our gas pressure knowledge */
@@ -1206,7 +1216,7 @@ struct divecomputer *select_dc(struct dive *dive)
 	return get_dive_dc(dive, i);
 }
 
-static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_ndl)
+static void plot_string(struct plot_info *pi, struct plot_data *entry, struct membuffer *b, bool has_ndl)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
@@ -1242,11 +1252,18 @@ static void plot_string(struct plot_data *entry, struct membuffer *b, bool has_n
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
 		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
+	eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
 	if (prefs.ead) {
-		ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
-		end = (int)get_depth_units(entry->end, NULL, &depth_unit);
-		eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC", "EAD: %d%s\nEND: %d%s\nEADD: %d%s\n"), ead, depth_unit, end, depth_unit, eadd, depth_unit);
+		switch (pi->dive_type) {
+		case NITROX:
+			end = (int)get_depth_units(entry->end, NULL, &depth_unit);
+			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
+			break;
+		case TRIMIX:
+			ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
+			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
+			break;
+		}
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
@@ -1319,7 +1336,7 @@ void get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
 			break;
 	}
 	if (entry)
-		plot_string(entry, mb, pi->has_ndl);
+		plot_string(pi, entry, mb, pi->has_ndl);
 }
 
 /* Compare two plot_data entries and writes the results into a string */
