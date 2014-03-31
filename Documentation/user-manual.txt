@@ -1401,7 +1401,7 @@ In this mode, the Information Box gives extensive statistics about depth, gas
 and ceiling characteristics of the particular dive. These include: Time period
 into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
 ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
-maximum operating depth, effective air depth (EAD), effective narcotic depth
+maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
 (END), equivalent air density depth (EADD), decompression requirements at that
 instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
 as the calculated ceiling for several Bühlmann tissue compartments.
@@ -1439,9 +1439,19 @@ can be compared. The units for SAC is litres/min or cub ft/min.
 
 [icon="images/icons/EAD.jpg"]
 [NOTE]
-Clicking this button displays the *Effective Air Depth (EAD)* as well as the *Effective
-Narcotic Depth (END)* for the dive. These are numbers of importance to divers who use Nitrox or
-Trimix as breathing gases. Their values are dependent on the composition of the breathing gas.
+Clicking this button displays the *Equivalent Air Depth (EAD)* for
+nitrox dives as well as the *Equivalent
+Narcotic Depth (END)* for trimix dives. These are numbers of
+importance to divers who use breathing gases other than air. Their
+values are dependent on the composition of the breathing gas.  The EAD
+is the depth of a hypothetical air dive that has the same partial
+pressure of nitrogen as the current depth of the nitrox dive at
+hand. A nitrox dive leads to the same decompression obligation as an
+air dive to the depth equalling the EAD. The END is the depth of a
+hypothetical air dive that has the same sum of partial pressures of
+the narcotic gases nitrogen and oxygen as the current trimix dive. A
+trimix diver can expect the same narcotic effect as a diver breathing
+air diving at a depth equalling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of data.
 

@@ -2089,7 +2089,7 @@ In this mode, the Information Box gives extensive statistics about depth, gas
 and ceiling characteristics of the particular dive. These include: Time period
 into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
 ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
-maximum operating depth, effective air depth (EAD), effective narcotic depth
+maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
 (END), equivalent air density depth (EADD), decompression requirements at that
 instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
 as the calculated ceiling for several Bühlmann tissue compartments.</p></div>
@@ -2140,9 +2140,19 @@ can be compared. The units for SAC is litres/min or cub ft/min.</td>
 <td class="icon">
 <img src="images/icons/EAD.jpg" alt="Note" />
 </td>
-<td class="content">Clicking this button displays the <strong>Effective Air Depth (EAD)</strong> as well as the <strong>Effective
-Narcotic Depth (END)</strong> for the dive. These are numbers of importance to divers who use Nitrox or
-Trimix as breathing gases. Their values are dependent on the composition of the breathing gas.</td>
+<td class="content">Clicking this button displays the <strong>Equivalent Air Depth (EAD)</strong> for
+nitrox dives as well as the <strong>Equivalent
+Narcotic Depth (END)</strong> for trimix dives. These are numbers of
+importance to divers who use breathing gases other than air. Their
+values are dependent on the composition of the breathing gas.  The EAD
+is the depth of a hypothetical air dive that has the same partial
+pressure of nitrogen as the current depth of the nitrox dive at
+hand. A nitrox dive leads to the same decompression obligation as an
+air dive to the depth equalling the EAD. The END is the depth of a
+hypothetical air dive that has the same sum of partial pressures of
+the narcotic gases nitrogen and oxygen as the current trimix dive. A
+trimix diver can expect the same narcotic effect as a diver breathing
+air diving at a depth equalling the END.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of data.</p></div>
@@ -3414,7 +3424,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-03-27 10:47:46 PDT
+Last updated 2014-03-31 11:51:15 PDT
 </div>
 </div>
 </body>
