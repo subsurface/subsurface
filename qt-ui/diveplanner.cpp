@@ -115,7 +115,7 @@ QVariant DivePlannerDisplay::headerData(int section, Qt::Orientation orientation
 
 Qt::ItemFlags DivePlannerDisplay::flags(const QModelIndex &index) const
 {
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	return QAbstractItemModel::flags(index);
 }
 
 int DivePlannerDisplay::rowCount(const QModelIndex &parent) const
