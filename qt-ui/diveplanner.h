@@ -12,6 +12,43 @@
 class QListView;
 class QModelIndex;
 
+struct computedPoint {
+	int computedTime;
+	unsigned int computedDepth;
+	computedPoint(int computedTime_, unsigned int computedDepth_) {
+		computedTime = computedTime_;
+		computedDepth = computedDepth_;
+	};
+	computedPoint() {};
+};
+
+class DivePlannerDisplay : public QAbstractTableModel {
+	Q_OBJECT
+private:
+	explicit DivePlannerDisplay(QObject *parent = 0);
+	QVector<computedPoint> computedPoints;
+
+public:
+	static DivePlannerDisplay *instance();
+	enum Sections {
+		COMPUTED_DEPTH,
+		COMPUTED_DURATION,
+		COLUMNS
+	};
+	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+	void clear();
+	computedPoint at(int row);
+	int size();
+	void removeStops();
+	void addStops();
+	void insertPoint(const struct computedPoint &p);
+};
+
 class DivePlannerPointsModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
@@ -57,7 +94,7 @@ public:
 
 public
 slots:
-	int addStop(int millimeters = 0, int seconds = 0, int o2 = 0, int he = 0, int ccpoint = 0);
+	int addStop(int millimeters = 0, int seconds = 0, int o2 = 0, int he = 0, int ccpoint = 0, bool entered = true);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int ghflow);
