@@ -652,7 +652,7 @@
               <item>
                <widget class="QCheckBox" name="display_unused_tanks">
                 <property name="text">
-                 <string>unused tanks</string>
+                 <string>unused cylinders</string>
                 </property>
                </widget>
               </item>
