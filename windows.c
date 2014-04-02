@@ -210,6 +210,7 @@ static struct {
 
 void subsurface_console_init(bool dedicated)
 {
+	(void)console_desc;
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
 	/* just in case of multiple calls */
