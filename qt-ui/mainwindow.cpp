@@ -54,7 +54,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 	yearlyStats(0),
 	yearlyStatsModel(0),
-	state(VIEWALL)
+	state(VIEWALL),
+	updateManager(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -85,7 +86,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.divePlanner->settingsChanged();
 	ui.divePlannerWidget->settingsChanged();
 
-	updateManager = new UpdateManager(this);
 
 #ifndef ENABLE_PLANNER
 //	ui.menuLog->removeAction(ui.actionDivePlanner);
@@ -580,6 +580,9 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 
 void MainWindow::on_action_Check_for_Updates_triggered()
 {
+	if (!updateManager)
+		updateManager = new UpdateManager(this);
+
 	updateManager->checkForUpdates();
 }
 
