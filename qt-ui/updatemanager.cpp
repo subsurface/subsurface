@@ -19,6 +19,8 @@ void UpdateManager::checkForUpdates()
 	os = "win";
 #elif defined(Q_OS_MAC)
 	os = "osx";
+#elif defined(Q_OS_LINUX)
+	os = "linux";
 #else
 	os = "unknown";
 #endif
