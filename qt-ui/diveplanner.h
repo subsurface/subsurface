@@ -31,6 +31,7 @@ private:
 public:
 	static DivePlannerDisplay *instance();
 	enum Sections {
+		REMOVE,
 		COMPUTED_DEPTH,
 		COMPUTED_DURATION,
 		COLUMNS
@@ -47,6 +48,10 @@ public:
 	void removeStops();
 	void addStops();
 	void insertPoint(const struct computedPoint &p);
+
+public
+slots:
+	void remove(const QModelIndex &index);
 };
 
 class DivePlannerPointsModel : public QAbstractTableModel {

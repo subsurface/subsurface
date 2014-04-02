@@ -75,6 +75,8 @@ QVariant DivePlannerDisplay::data(const QModelIndex &index, int role) const
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
+		case REMOVE:
+			return QIcon(":trash");
 		}
 	} else if (role == Qt::FontRole) {
 		return defaultModelFont();
@@ -157,6 +159,15 @@ void DivePlannerDisplay::addStops()
 void DivePlannerDisplay::insertPoint(const struct computedPoint &p)
 {
 	computedPoints.append(p);
+}
+
+void DivePlannerDisplay::remove(const QModelIndex &index)
+{
+	if (index.column() != REMOVE)
+		return;
+
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
+	endRemoveRows();
 }
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
