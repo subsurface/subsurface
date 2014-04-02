@@ -601,6 +601,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionAboutSubsurface"/>
+    <addaction name="action_Check_for_Updates"/>
     <addaction name="actionUserManual"/>
    </widget>
    <widget class="QMenu" name="menuImport">
@@ -908,6 +909,11 @@
   <action name="actionRecent4">
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="action_Check_for_Updates">
+   <property name="text">
+    <string>&amp;Check for Updates</string>
    </property>
   </action>
  </widget>

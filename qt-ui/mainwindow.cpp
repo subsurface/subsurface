@@ -37,6 +37,7 @@
 #include "diveplanner.h"
 #include "about.h"
 #include "worldmap-save.h"
+#include "updatemanager.h"
 #ifndef NO_PRINTING
 #include "printdialog.h"
 #endif
@@ -83,6 +84,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlanner->settingsChanged();
 	ui.divePlannerWidget->settingsChanged();
+
+	updateManager = new UpdateManager(this);
 
 #ifndef ENABLE_PLANNER
 //	ui.menuLog->removeAction(ui.actionDivePlanner);
@@ -573,6 +576,11 @@ void MainWindow::on_actionAboutSubsurface_triggered()
 	SubsurfaceAbout dlg(this);
 
 	dlg.exec();
+}
+
+void MainWindow::on_action_Check_for_Updates_triggered()
+{
+	updateManager->checkForUpdates();
 }
 
 void MainWindow::on_actionUserManual_triggered()
