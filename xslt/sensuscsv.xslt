@@ -142,7 +142,7 @@
           </xsl:call-template>
         </xsl:variable>
         <xsl:attribute name="depth">
-          <xsl:value-of select="$depth div 1000"/>
+          <xsl:value-of select="($depth - 1000) div 100"/>
         </xsl:attribute>
 
           <xsl:variable name="temp">
