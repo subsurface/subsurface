@@ -79,6 +79,7 @@ slots: // Necessary to call from QAction's signals.
 	void hideEvents();
 	void unhideEvents();
 	void removeEvent();
+	void editName();
 
 protected:
 	virtual void resizeEvent(QResizeEvent *event);

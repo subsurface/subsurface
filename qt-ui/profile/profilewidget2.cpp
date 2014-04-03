@@ -23,6 +23,7 @@
 #include <QScrollBar>
 #include <QtCore/qmath.h>
 #include <QMessageBox>
+#include <QInputDialog>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -709,6 +710,13 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(QVariant::fromValue<void *>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
+		if(item->getEvent()->type == SAMPLE_EVENT_BOOKMARK){
+			action = new QAction(&m);
+			action->setText(tr("Edit name"));
+			action->setData(QVariant::fromValue<void *>(item));
+			connect(action, SIGNAL(triggered(bool)), this, SLOT(editName()));
+			m.addAction(action);
+		}
 	}
 	bool some_hidden = false;
 	for (int i = 0; i < evn_used; i++) {
@@ -809,4 +817,28 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
 	isGrayscale = mode ? grayscale : false;
+}
+
+void ProfileWidget2::editName()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
+	struct event *event = item->getEvent();
+	bool ok;
+	QString newName = QInputDialog::getText(MainWindow::instance(), tr("Edit name of bookmark"),
+						tr("Custom name:"), QLineEdit::Normal,
+						event->name, &ok);
+	if(ok && !newName.isEmpty()){
+		if(newName.length() > 22){//longer names will display as garbage.
+			QMessageBox lengthWarning;
+			lengthWarning.setText("Name is too long!");
+			lengthWarning.exec();
+			return;
+		}
+		const char* temp;
+		temp = newName.toStdString().c_str();
+		strcpy(event->name, temp);
+		remember_event(temp);
+	}
+	replot();
 }
