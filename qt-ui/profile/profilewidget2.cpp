@@ -221,9 +221,9 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::replot()
 {
-		int diveId = dataModel->id();
-		dataModel->clear();
-		plotDives(QList<dive *>() << getDiveById(diveId));
+	int diveId = dataModel->id();
+	dataModel->clear();
+	plotDives(QList<dive *>() << getDiveById(diveId));
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -333,11 +333,11 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		return;
 
 	int animSpeedBackup = -1;
-	if(firstCall && MainWindow::instance()->filesFromCommandLine()){
+	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
 		QSettings s;
 		s.beginGroup("Animations");
-		animSpeedBackup = s.value("animation_speed",500).toInt();
-		s.setValue("animation_speed",0);
+		animSpeedBackup = s.value("animation_speed", 500).toInt();
+		s.setValue("animation_speed", 0);
 		firstCall = false;
 	}
 
@@ -462,10 +462,10 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds << "is hidden:" << event->isHidden();
 	}
 	diveComputerText->setText(currentdc->model);
-	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1){
+	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
 		QSettings s;
 		s.beginGroup("Animations");
-		s.setValue("animation_speed",animSpeedBackup);
+		s.setValue("animation_speed", animSpeedBackup);
 	}
 }
 
@@ -710,7 +710,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(QVariant::fromValue<void *>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
-		if(item->getEvent()->type == SAMPLE_EVENT_BOOKMARK){
+		if (item->getEvent()->type == SAMPLE_EVENT_BOOKMARK) {
 			action = new QAction(&m);
 			action->setText(tr("Edit name"));
 			action->setData(QVariant::fromValue<void *>(item));
@@ -769,8 +769,8 @@ void ProfileWidget2::removeEvent()
 	struct event *event = item->getEvent();
 
 	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
-					  tr("Remove the selected event?"),
-					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+							      tr("Remove the selected event?"),
+							      tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		struct event **ep = &current_dc->events;
 		while (ep && *ep != event)
@@ -828,14 +828,14 @@ void ProfileWidget2::editName()
 	QString newName = QInputDialog::getText(MainWindow::instance(), tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
 						event->name, &ok);
-	if(ok && !newName.isEmpty()){
-		if(newName.length() > 22){//longer names will display as garbage.
+	if (ok && !newName.isEmpty()) {
+		if (newName.length() > 22) { //longer names will display as garbage.
 			QMessageBox lengthWarning;
 			lengthWarning.setText("Name is too long!");
 			lengthWarning.exec();
 			return;
 		}
-		const char* temp;
+		const char *temp;
 		temp = newName.toStdString().c_str();
 		strcpy(event->name, temp);
 		remember_event(temp);

@@ -17,8 +17,8 @@ void put_HTML_date(struct membuffer *b, struct dive *dive)
 {
 	struct tm tm;
 	utc_mkdate(dive->when, &tm);
-	put_format(b, "<p>date=%04u-%02u-%02u</p>",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-	put_format(b, "<p>time=%02u:%02u:%02u</p>",tm.tm_hour, tm.tm_min, tm.tm_sec);
+	put_format(b, "<p>date=%04u-%02u-%02u</p>", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+	put_format(b, "<p>time=%02u:%02u:%02u</p>", tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 void put_HTML_temp(struct membuffer *b, struct dive *dive)
@@ -78,7 +78,7 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive)
 {
 	if (dive->notes) {
 		char *notes = quote(dive->notes);
-		put_format(b,"<p>Notes : %s </p>", notes);
+		put_format(b, "<p>Notes : %s </p>", notes);
 		free(notes);
 	}
 }
@@ -95,7 +95,7 @@ void writeMarkers(struct membuffer *b)
 			continue;
 
 		put_format(b, "temp = new google.maps.Marker({position: new google.maps.LatLng(%f,%f)});\n",
-		dive->latitude.udeg/1000000.0, dive->longitude.udeg/1000000.0);
+			   dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
 		put_HTML_date(b, dive);
 		put_duration(b, dive->duration, "<p>duration=", " min</p>");
@@ -109,8 +109,8 @@ void writeMarkers(struct membuffer *b)
 
 void insert_html_header(struct membuffer *b)
 {
-	put_string(b,"<!DOCTYPE html>\n<html>\n<head>\n");
-	put_string(b,"<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n<title>World Map</title>\n");
+	put_string(b, "<!DOCTYPE html>\n<html>\n<head>\n");
+	put_string(b, "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n<title>World Map</title>\n");
 }
 
 void insert_css(struct membuffer *b)
