@@ -85,7 +85,7 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive)
 
 void writeMarkers(struct membuffer *b)
 {
-	int i;
+	int i, dive_no = 0;
 	struct dive *dive;
 
 	for_each_dive(i, dive) {
@@ -102,8 +102,9 @@ void writeMarkers(struct membuffer *b)
 		put_HTML_temp(b, dive);
 		put_HTML_notes(b, dive);
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
-		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", i, i, i);
-		put_format(b, ");google.maps.event.addListener(markers[%d], 'mouseout', function() {\ninfowindows[%d].close();});\n", i, i);
+		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", dive_no, dive_no, dive_no);
+		put_format(b, ");google.maps.event.addListener(markers[%d], 'mouseout', function() {\ninfowindows[%d].close();});\n", dive_no, dive_no);
+		dive_no++;
 	}
 }
 
