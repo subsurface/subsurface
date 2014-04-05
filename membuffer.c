@@ -164,3 +164,15 @@ void put_salinity(struct membuffer *b, int salinity, const char *pre, const char
 	if (salinity)
 		put_format(b, "%s%d%s", pre, salinity / 10, post);
 }
+
+void put_degrees(struct membuffer *b, degrees_t value, const char *pre, const char *post)
+{
+	int udeg = value.udeg;
+	const char *sign = "";
+
+	if (udeg < 0) {
+		udeg = -udeg;
+		sign = "-";
+	}
+	put_format(b,"%s%s%u.%06u%s", pre, sign, FRACTION(udeg, 1000000), post);
+}

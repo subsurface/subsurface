@@ -38,24 +38,11 @@ static void cond_put_format(int cond, struct membuffer *b, const char *fmt, ...)
 
 #define SAVE(str, x) cond_put_format(dive->x, b, str " %d\n", dive->x)
 
-static void put_degrees(struct membuffer *b, degrees_t value, const char sep)
-{
-	int udeg = value.udeg;
-	const char *sign = "";
-
-	if (udeg < 0) {
-		udeg = -udeg;
-		sign = "-";
-	}
-	put_format(b,"%s%u.%06u%c", sign, FRACTION(udeg, 1000000), sep);
-}
-
 static void show_gps(struct membuffer *b, degrees_t latitude, degrees_t longitude)
 {
 	if (latitude.udeg || longitude.udeg) {
-		put_string(b, "gps ");
-		put_degrees(b, latitude, ' ');
-		put_degrees(b, longitude, '\n');
+		put_degrees(b, latitude, "gps ", " ");
+		put_degrees(b, longitude, "", "\n");
 	}
 }
 

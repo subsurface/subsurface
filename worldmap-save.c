@@ -94,8 +94,8 @@ void writeMarkers(struct membuffer *b)
 		if (dive->latitude.udeg == 0 && dive->longitude.udeg == 0)
 			continue;
 
-		put_format(b, "temp = new google.maps.Marker({position: new google.maps.LatLng(%f,%f)});\n",
-			   dive->latitude.udeg / 1000000.0, dive->longitude.udeg / 1000000.0);
+		put_degrees(b, dive->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
+		put_degrees(b, dive->longitude, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
 		put_HTML_date(b, dive);
 		put_duration(b, dive->duration, "<p>duration=", " min</p>");
