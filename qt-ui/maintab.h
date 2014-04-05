@@ -94,7 +94,7 @@ slots:
 	void displayMessage(QString str);
 	void enableEdition(EditMode newEditMode = NONE);
 	void toggleTriggeredColumn();
-	void updateTextLabels(bool showUnits = false);
+	void updateTextLabels(bool showUnits = true);
 
 private:
 	Ui::MainTab ui;

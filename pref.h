@@ -41,7 +41,6 @@ struct preferences {
 	bool display_unused_tanks;
 	bool show_average_depth;
 	bool zoomed_plot;
-	bool text_label_with_units;
 };
 enum unit_system_values {
 	METRIC,

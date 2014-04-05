@@ -30,8 +30,7 @@ struct preferences default_prefs = {
 	.display_invalid_dives = false,
 	.show_sac = false,
 	.display_unused_tanks = false,
-	.show_average_depth = true,
-	.text_label_with_units = false
+	.show_average_depth = true
 };
 
 struct units *get_units()

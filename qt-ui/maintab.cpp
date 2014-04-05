@@ -202,7 +202,7 @@ void MainTab::hideMessage()
 	ui.diveEquipmentMessage->animatedHide();
 	ui.diveInfoMessage->animatedHide();
 	ui.diveStatisticsMessage->animatedHide();
-	updateTextLabels();
+	updateTextLabels(false);
 }
 
 void MainTab::closeMessage()
@@ -224,12 +224,12 @@ void MainTab::displayMessage(QString str)
 	ui.diveInfoMessage->animatedShow();
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
-	updateTextLabels(true);
+	updateTextLabels();
 }
 
 void MainTab::updateTextLabels(bool showUnits)
 {
-	if (showUnits && prefs.text_label_with_units) {
+	if (showUnits) {
 		ui.airTempLabel->setText(tr("Air temp [%1]").arg(get_temp_unit()));
 		ui.waterTempLabel->setText(tr("Water temp [%1]").arg(get_temp_unit()));
 	} else {
