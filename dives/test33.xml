@@ -1,0 +1,32 @@
+<divelog program='subsurface' version='2'>
+<settings>
+<divecomputerid model='Reefnet Sensus Ultra' deviceid='fbad0400' nickname='Sensus'/>
+</settings>
+<dives>
+<dive number='36' date='2014-03-15' time='23:44:06' duration='52:20 min'>
+  <location>At Home</location>
+  <notes>this dive has an unused cylinder</notes>
+  <cylinder size='24.0 l' workpressure='232.0 bar' description='D12 232 bar' o2='32.0%' />
+  <cylinder size='5.547 l' workpressure='206.843 bar' description='AL40' o2='100.0%' />
+  <divecomputer model='manually added dive'>
+  <depth max='15.0 m' mean='9.908 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:00 min' depth='15.0 m' />
+  <sample time='4:00 min' depth='15.0 m' />
+  <sample time='9:00 min' depth='7.0 m' />
+  <sample time='12:00 min' depth='7.0 m' />
+  <sample time='19:00 min' depth='15.0 m' />
+  <sample time='24:00 min' depth='15.0 m' />
+  <sample time='29:00 min' depth='15.0 m' />
+  <sample time='34:00 min' depth='7.0 m' />
+  <sample time='38:00 min' depth='5.0 m' />
+  <sample time='41:00 min' depth='7.0 m' />
+  <sample time='44:00 min' depth='9.0 m' />
+  <sample time='46:00 min' depth='5.0 m' />
+  <sample time='48:00 min' depth='4.0 m' />
+  <sample time='51:00 min' depth='6.0 m' />
+  <sample time='52:20 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
