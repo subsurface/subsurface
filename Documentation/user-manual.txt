@@ -278,6 +278,7 @@ _Subsurface_ and the information on
 cylinders and gases (entered here) affects the behaviour of the dive profile
 (top right-hand panel).
 
+[[S_CylinderData]]
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
@@ -349,6 +350,7 @@ image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information tab
 There's NO need to click the _Save_ button before the dive
 profile has been completed.
 
+[[S_CreateProfile]]
 ==== Creating a Dive Profile
 
 The *Dive Profile* (a graphical representation of the depth of the dive as a
@@ -1696,8 +1698,9 @@ image::images/Preferences1.jpg["FIGURE: Preferences defaults page",align="center
   ** *Lists and tables*: Here one can specify the font type and font size of the
 Dive Table panel. By decreasing the font size of the Dive table, users can see more dives on a screen.
 
-  ** *Dives*: Here one need to specify the directory and file name of one's
-electronic dive log book(s). This is a file with filename extension .xml. When
+  ** *Dives*: For the _Default Dive File_ one need to specify the directory and
+file name of one's
+electronic dive log book. This is a file with filename extension .xml. When
 launched, _Subsurface_ will then automatically load the specified dive log book.
 
   ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
@@ -1707,6 +1710,14 @@ the dive list.
 
   ** *Use Default cylinder*: Here users can specify the default cylinder listed in
 the *Equipment* tab of the *Dive Notes* panel.
+
+  ** *Animations*: Some actions in showing the dive profile are performed using
+animations. For instance, the axis values for depth and time change from dive to
+dive. When viewing a different dive, these changes in axis characteristics do not
+happen instantaneously, but are animated. The _Speed_ of animations can be controlled
+by setting this slider
+with faster animation speed to the left, with a 0 value representing no animation
+at all.
 
 === Units
 image::images/Preferences2.jpg["FIGURE: Preferences Units page",align="center"]
@@ -1726,32 +1737,34 @@ This panel allows two type of selections:
 * *Show*: Here users can specify the amount of information shown as part of
 the dive profile:
 ** Gas pressure graphs: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
-the dive. For each of these graphs users can specify a threshold value on the right-hand side of the
-panel. If any of the graphs go above this threshold level, the graph is
-highlighted in red, indication that the threshold value has been exceeded (see
-figure below).
+the dive. These are enabled using the toolbar on the left hand side of the *Dive Profile*
+panel. For each of these graphs users can specify a threshold value on the right-hand side of the
+Preferences panel. If any of the graphs go above this threshold level, the graph is
+highlighted in red, indicating that the threshold has been exceeded.
 
-** If a _Maximum operating depth (MOD)_ or an _Equivalent air depth (EAD)_
-applies to a dive profile, these can be shown by checking the appropriate boxes.
+** _draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
+Not all dive computers report ceiling values. If the dive computer does report it, it may differ
+from the ceilings calculated by Subsurface. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+dive computer can calculate ceilings during a dive.
 
-** If a _Maximum partial pressure of oxygen (maxPPO2)_ applies to dives, then
-this can be specified in the appropriate text box. In addition, if a
-_no-decompression limit (NDL)_ is to be shown in the *info* box, then users must check the
-appropriate box.
+** _unused cylinders_: This checkbox allows display of information about unused cylinders when activating the *Dive Info* panel.
+
+** _show average depth_: Activating this checkbox causes Subsurface to draw a red line across
+the dive profile, indicating the mean depth of the dive.
 
 
 * *Misc*: *Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
-the gradient factor at deep and GF_High is used just below the surface.
+the gradient factor at depth and GF_High is used just below the surface.
 At intermediate depths gradient factors between GF_Low and GF_High are used.
 Gradient factors add conservatism to the nitrogen exposure during a dive, in a
 similar way that many dive computers have a conservatism setting. The lower
 the value of a gradient factor, the more conservative the calculations are with
 respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
-factors of 25/60 are considered conservative and values of 60/90 are considered
+factors of 20/60 are considered conservative and values of 60/90 are considered
 harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the
 deepest depth of a dive. For more information see:
 
- ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, , _Immersed_ Vol. 3, No. 3.]
+ ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
@@ -1761,6 +1774,100 @@ will be the correct setting; with this _Subsurface_ simply runs in the same
 language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
 combination from the list of included localizations.
+
+[[S_DivePlanner]]
+== The Subsurface dive planner
+The dive planner is accessed by selecting _Log -> Plan Dive_ from the main menu. This
+feature IS EXPERIMENTAL and assumes the user is already familiar with the _Subsurface_
+user interface. It is explicitly used under the following conditions:
+
+- The user is conversant with dive planning and has the necessary training to perform
+dive planning.
+- The user plans dives within his/her certification limits.
+- Dive planning makes large assumptions about the characteristics of the _average person_
+and cannot compensate for individual physiology or health or personal history or
+life style characteristics.
+- The safety of a dive plan depends heavily on the way in which the planner is used.
+- A user who is not absolutely sure about any of the above requirements should not use
+this feature.
+
+The dive planner currently comprises two parts: constructing a dive plan and evaluating
+that dive plan. Currently the only evaluation available is with respect to dive
+ceilings and maximal partial gas pressures. To perform dive planning, perform these steps:
+
+- Clear the existing dive log by creating a new planning log. This achieved by selecting
+_File -> New logbook_ from the main menu. This way, dive plans are kept totally separate
+from the existing dive log of completed dives.
+
+- In the top right-hand area of the screen, ensure that the constant dive parameters are
+appropriate. These are: ATM Pressure, Bottom SAC, SAC on Deco, GFHigh, GFLow and whether
+the last deco stop should be at 6m instead of the default 3m.
+
+- In the table labeled _Available Gases_, add the information of the cylinders to be used
+as well as the gas composition within that cylinder. This is done in a similar way as for
+<<S_CylinderData,providing cylinder data for dive logs>>.
+
+- Construct a dive profile, using similar procedures as for <<S_CreateProfile,hand-creating a dive profile>>
+in the sections above. The unique feature of _Subsurface_ is the graphical interface
+for constructing dive plans. Drag the profile around using the waypoints on the
+design screen on the right, create more waypoints by double-clicking on the profile
+line and ensuring that the profile reflects the intended dive.
+
+- Indicate any changes in gas cylinder used by indicating gas changes as explained
+in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
+reflect the cylinders and gas compositions defined in the table with _Available Gases_.
+
+- Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
+bottom left of the dive planner panel. Ensure that the _Used Gas_ value in each row
+of that table corresponds to one of the gas mixtures specified in the table with
+_Available Gases_ immediately above the Dive Planner Points.
+
+- Add new waypoints until the main features of the dive have been completed, e.g. the
+bottom time segment and deep stops (if these are implemented). Leave the remaining
+waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
+computes additional way points in order to fulfill decompression requirements for that
+dive. These appear in the table with _Computed Waypoints_ to the right of the Dive Planner
+Points.
+
+Below is an example of a dive plan to 40m using EAN28:
+
+image::images/Planner1.jpg["FIGURE: Planning a dive: setup",align="center"]
+
+Once the above has been completed, one can save it by clicking the _Save_ button
+towards the middle bottom of the dive planner panel. The saved dive plan will appear
+in the *Dive List* panel.
+
+The dive plan can be evaluated by doing the following:
+
+- Ensure that the appropriate gradient factors have been selected in the _Preferences_
+panel of _Subsurface_.
+
+- Ensure that the appropriate maximal partial pressures of the gases used have been
+specified in the _Preferences_ panel of _Subsurface_.
+
+- Select the appropriate dive plan from the *Dive List* panel.
+
+- Ensure that the appropriate button(s) for the display of the calculated ceiling have
+been activated on the left part of the *Dive Profile* panel.
+
+- Ensure that the appropriate button(s) for the display of the partial pressures of gases
+(PO2, PN2, PHe) have been activated on the left part of the *Dive Profile* panel.
+
+The dive profile is shown in conjunction with the relevant dive ceiling. The dive profile
+should not closely approach the calculated ceiling. The partial gas pressures selected for
+display are indicates as graphs below the dive profile. The partial pressures of any of the
+gasses should not exceed the limits defined in the _Preferences_ panel of _Subsurface_. If
+any of the gases exceed the specified partial pressures, the appropriate segments of the
+dive prifile is highlighted in red.
+
+Below is an the dive plan completed in the previous figure and which can now be evaluated
+against the ceiling (determined by the gradient factors) as well as against the
+maximum gas partial pressures. Notice the plan is deficient in terms of gas planning:
+there is no provision for any reserve gas.
+
+image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
+
+This part of the software is in active development.
 
 == Description of the Subsurface Main Menu items
 
@@ -1779,6 +1886,8 @@ the present logbook under a different filename.
 - _Close_ -  Close the dive logbook that is currently open.
 - <<S_ExportLog,_Export UDDF_>> -  Export the currently open dive logbook (or
 the selected dives in the logbook) in UDDF format.
+- _Export HTML World Map_ - Export the currently open dive logbook locations
+in HTML format and draw these on a world map.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - _Quit_ - Quit _Subsurface_.
@@ -1786,7 +1895,7 @@ the selected dives in the logbook) in UDDF format.
 === Import
 - <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information
 from a dive computer.
-- <<Unified_import,_Import Files_>> - Import dive information from a file in
+- <<Unified_import,_Import Log Files_>> - Import dive information from a file in
 in a _Subsurface_-compatible format.
 - <<S_Companion,_Import GPS data from Subsurface Service_>> - Load GPS
 coordinates from the _Subsurface_ mobile phone app.
@@ -1797,6 +1906,7 @@ from _www.Divelogs.de_.
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
 - <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List*
 panel.
+-_Plan Dive_ - This experimental feature allows planning of simple dives.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
 - _Edit Device Names_ - Edit the names of dive computers.
@@ -1820,6 +1930,8 @@ year.
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
 well as licensing information.
+- _Check for updates_ - Find out whether a newer version of Subsurface is available
+on the http://subsurface.hohndel.org/[_Subsurface_ web site].
 - _User Manual_ - Open a window showing this user manual.
 
 
@@ -1834,7 +1946,9 @@ computer prefers (e.g. bluetooth, USB, infrared).
 
 	* On Linux users need to have the correct kernel
 	  module loaded. Most distributions will do this automatically, so the
-	  user does not need to load drivers.
+	  user does not need to load kernel modules. However, some communication
+	  protocols require an additional driver, especially for rarely used
+	  technology such as infrared.
 
 	* On Windows, the OS should offer to download the correct
 	  driver once the user connects the dive computer to the USB port and
@@ -2045,6 +2159,34 @@ download will continue where it stopped previously. One
 may have to do this more than once, depending on how many dives are
 stored on the dive computer.
 
+[[S_ImportingGalileo]]
+=== Importing dives from the Uwatec Galileo
+
+[icon="images/icons/Galileo.jpg"]
+[NOTE]
+The Uwatec Galileo dive computers use infra red (IrDA) communication
+between the dive computer and Subsurface. The Uwatec hardware uses
+a USB dongle based on the serial infra-red (SIR) protocol and the
+MSC7780 IrDA controller manufactured by MosChip
+and marketed by Scubapro and some electronics companies.
+Under Linux, the kernel
+already provides for communication using the IrDA protocol. However,
+the user additionally needs to load a driver for the IrDA interface
+with the dive computer. The easiest way is to load the *irda-tools*
+package from the http://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
+After the installation of the irda-tools, the root user can specify a device name
+from the console as follows:
++irattach irda0+
+
+After executing this command, Subsurface will recognise the Galileo
+dive computer and download dive information.
+
+Under Windows, a similar situation exists. Drivers for the MCS7780 are
+available from some Internet web sites e.g.
+http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com].
+
+For the Apple Mac, IrDA communication via the MCS7780 link is not
+available for OSX 10.6 or higher.
 
 [[S_ImportingDR5]]
 === Importing dives from Heinrichs Weikamp DR5
