@@ -112,6 +112,7 @@ void insert_html_header(struct membuffer *b)
 {
 	put_string(b, "<!DOCTYPE html>\n<html>\n<head>\n");
 	put_string(b, "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n<title>World Map</title>\n");
+	put_string(b, "<meta charset=\"UTF-8\">");
 }
 
 void insert_css(struct membuffer *b)
