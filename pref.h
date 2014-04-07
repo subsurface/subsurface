@@ -33,6 +33,7 @@ struct preferences {
 	short calc_ndl_tts;
 	short gflow;
 	short gfhigh;
+	short animation;
 	bool gf_low_at_maxdepth;
 	short display_invalid_dives;
 	short unit_system;

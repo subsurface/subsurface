@@ -90,6 +90,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.show_average_depth->setChecked(prefs.show_average_depth);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
+	ui.velocitySlider->setValue(prefs.animation);
 
 	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
 	filterModel->setSourceModel(LanguageModel::instance());
@@ -107,9 +108,6 @@ void PreferencesDialog::setUiFromPrefs()
 		ui.languageView->setCurrentIndex(languages.first());
 
 	s.endGroup();
-	s.beginGroup("Animations");
-	int animVelocity = s.value("animation_speed",500).toInt();
-	ui.velocitySlider->setValue(animVelocity);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -298,8 +296,7 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 
 	s.beginGroup("Animations");
-	int animVelocity = s.value("animation_speed",500).toInt();
-	ui.velocitySlider->setValue(animVelocity);
+	GET_INT("animation_speed", animation);
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)
@@ -307,6 +304,7 @@ void PreferencesDialog::buttonClicked(QAbstractButton *button)
 	switch (ui.buttonBox->standardButton(button)) {
 	case QDialogButtonBox::Discard:
 		restorePrefs();
+		syncSettings();
 		close();
 		break;
 	case QDialogButtonBox::Apply:
