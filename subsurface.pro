@@ -15,6 +15,11 @@ else: TARGET = subsurface
 
 VERSION = 4.0.2
 
+# enable or disable the dive planner
+planner {
+	DEFINES += ENABLE_PLANNER
+}
+
 HEADERS = \
 	color.h \
 	deco.h \
@@ -226,7 +231,10 @@ QTTRANSLATIONS = \
 	qt_sv.qm \
 	qt_zh_TW.qm
 
-doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
+# Should we enable the planner sections in the manual?
+planner: ENABLE_PLANNER=1
+else: ENABLE_PLANNER=0
+doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ ENABLE_PLANNER=$$ENABLE_PLANNER doc
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
 
@@ -266,11 +274,6 @@ QMAKE_INFO_PLIST = packaging/macosx/Info.plist.in
 
 OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLEDIR \
         $$QMAKE_INFO_PLIST
-
-# enable or disable the dive planner
-planner {
-	DEFINES += ENABLE_PLANNER
-}
 
 include(subsurface-gen-version.pri)
 include(subsurface-install.pri)

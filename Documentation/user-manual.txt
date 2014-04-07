@@ -1775,6 +1775,7 @@ language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
 combination from the list of included localizations.
 
+ifdef::ENABLE_PLANNER[]
 [[S_DivePlanner]]
 == The Subsurface dive planner
 The dive planner is accessed by selecting _Log -> Plan Dive_ from the main menu. This
@@ -1868,6 +1869,7 @@ there is no provision for any reserve gas.
 image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
 
 This part of the software is in active development.
+endif::ENABLE_PLANNER[]
 
 == Description of the Subsurface Main Menu items
 
@@ -1906,7 +1908,9 @@ from _www.Divelogs.de_.
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
 - <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List*
 panel.
+ifdef::ENABLE_PLANNER[]
 -_Plan Dive_ - This experimental feature allows planning of simple dives.
+endif::ENABLE_PLANNER[]
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
 - _Edit Device Names_ - Edit the names of dive computers.
