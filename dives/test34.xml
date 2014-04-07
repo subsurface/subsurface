@@ -1,0 +1,151 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='34' date='2014-04-01' time='06:00:00' duration='8:28 min'>
+  <notes>Shortened version of a dive submitted from a real dive computer.</notes>
+  <divecomputer model='Uwatec Galileo Sol' deviceid='00001111' diveid='00001111'>
+  <depth max='2.9 m' mean='2.251 m' />
+  <temperature water='1.6 C' />
+  <sample time='0:00 min' depth='0.0 m' temp='3.6 C' heartbeat='130' bearing='340' />
+  <sample time='0:04 min' depth='1.26 m' heartbeat='131' />
+  <sample time='0:08 min' depth='1.6 m' temp='2.0 C' heartbeat='129' />
+  <sample time='0:12 min' depth='1.74 m' temp='1.6 C' heartbeat='127' />
+  <sample time='0:16 min' depth='1.8 m' temp='2.4 C' heartbeat='123' />
+  <sample time='0:20 min' depth='1.64 m' heartbeat='122' />
+  <sample time='0:24 min' depth='1.52 m' heartbeat='120' />
+  <sample time='0:28 min' depth='1.44 m' heartbeat='117' />
+  <sample time='0:32 min' depth='1.6 m' heartbeat='117' />
+  <sample time='0:36 min' depth='1.56 m' temp='2.8 C' heartbeat='116' />
+  <sample time='0:40 min' depth='1.72 m' temp='2.4 C' heartbeat='115' />
+  <sample time='0:44 min' depth='1.62 m' temp='2.8 C' heartbeat='117' />
+  <sample time='0:48 min' depth='1.78 m' heartbeat='117' />
+  <sample time='0:52 min' depth='1.8 m' temp='3.2 C' heartbeat='113' />
+  <sample time='0:56 min' depth='2.22 m' temp='2.8 C' heartbeat='108' />
+  <sample time='1:00 min' depth='2.08 m' heartbeat='104' />
+  <sample time='1:04 min' depth='2.26 m' temp='2.4 C' heartbeat='102' />
+  <sample time='1:08 min' depth='2.3 m' temp='2.8 C' heartbeat='104' />
+  <sample time='1:12 min' depth='2.12 m' heartbeat='105' />
+  <sample time='1:16 min' depth='1.98 m' temp='2.4 C' heartbeat='107' />
+  <sample time='1:20 min' depth='2.08 m' temp='2.8 C' heartbeat='104' />
+  <sample time='1:24 min' depth='2.26 m' heartbeat='100' />
+  <sample time='1:28 min' depth='2.26 m' temp='2.0 C' heartbeat='100' />
+  <sample time='1:32 min' depth='2.44 m' temp='2.4 C' heartbeat='101' />
+  <sample time='1:36 min' depth='2.6 m' temp='2.8 C' heartbeat='105' />
+  <sample time='1:40 min' depth='2.28 m' heartbeat='105' />
+  <sample time='1:44 min' depth='2.28 m' heartbeat='105' />
+  <sample time='1:48 min' depth='2.32 m' temp='3.2 C' heartbeat='110' />
+  <sample time='1:52 min' depth='2.2 m' temp='2.8 C' heartbeat='110' />
+  <sample time='1:56 min' depth='2.22 m' heartbeat='108' />
+  <sample time='2:00 min' depth='2.16 m' temp='3.2 C' heartbeat='106' />
+  <sample time='2:04 min' depth='2.18 m' temp='2.4 C' heartbeat='105' />
+  <sample time='2:08 min' depth='2.08 m' temp='2.8 C' heartbeat='102' />
+  <sample time='2:12 min' depth='2.24 m' heartbeat='98' />
+  <sample time='2:16 min' depth='2.1 m' temp='3.2 C' heartbeat='99' />
+  <sample time='2:20 min' depth='2.14 m' temp='2.8 C' heartbeat='97' />
+  <sample time='2:24 min' depth='2.32 m' temp='3.2 C' heartbeat='98' />
+  <sample time='2:28 min' depth='2.48 m' temp='2.8 C' heartbeat='102' />
+  <sample time='2:32 min' depth='2.52 m' heartbeat='102' />
+  <sample time='2:36 min' depth='2.64 m' temp='2.4 C' heartbeat='101' />
+  <sample time='2:40 min' depth='2.8 m' temp='2.8 C' heartbeat='98' />
+  <sample time='2:44 min' depth='2.62 m' heartbeat='97' />
+  <sample time='2:48 min' depth='2.68 m' heartbeat='102' />
+  <sample time='2:52 min' depth='2.78 m' heartbeat='103' />
+  <sample time='2:56 min' depth='2.76 m' heartbeat='103' />
+  <sample time='3:00 min' depth='2.6 m' temp='3.2 C' heartbeat='103' />
+  <sample time='3:04 min' depth='2.34 m' temp='2.8 C' heartbeat='103' />
+  <sample time='3:08 min' depth='2.58 m' temp='3.6 C' heartbeat='102' />
+  <sample time='3:12 min' depth='2.42 m' temp='3.2 C' heartbeat='104' />
+  <sample time='3:16 min' depth='2.34 m' heartbeat='102' />
+  <sample time='3:20 min' depth='2.18 m' temp='2.8 C' heartbeat='97' />
+  <sample time='3:24 min' depth='2.42 m' heartbeat='95' />
+  <sample time='3:28 min' depth='2.6 m' temp='2.4 C' heartbeat='99' />
+  <sample time='3:32 min' depth='2.9 m' temp='2.0 C' heartbeat='103' />
+  <sample time='3:36 min' depth='2.44 m' temp='3.2 C' heartbeat='106' />
+  <sample time='3:40 min' depth='2.72 m' temp='2.4 C' heartbeat='106' />
+  <sample time='3:44 min' depth='2.74 m' temp='2.8 C' heartbeat='104' />
+  <sample time='3:48 min' depth='2.68 m' temp='3.2 C' heartbeat='102' />
+  <sample time='3:52 min' depth='2.66 m' heartbeat='99' />
+  <sample time='3:56 min' depth='2.52 m' temp='2.8 C' heartbeat='100' />
+  <sample time='4:00 min' depth='2.48 m' temp='3.2 C' heartbeat='102' />
+  <sample time='4:04 min' depth='2.44 m' heartbeat='104' />
+  <sample time='4:08 min' depth='2.52 m' temp='2.4 C' heartbeat='105' />
+  <sample time='4:12 min' depth='2.58 m' temp='2.8 C' heartbeat='106' />
+  <sample time='4:16 min' depth='2.44 m' heartbeat='108' />
+  <sample time='4:20 min' depth='2.42 m' heartbeat='107' />
+  <sample time='4:24 min' depth='2.52 m' heartbeat='105' />
+  <sample time='4:28 min' depth='2.44 m' temp='3.2 C' heartbeat='106' />
+  <sample time='4:32 min' depth='2.38 m' heartbeat='108' />
+  <sample time='4:36 min' depth='2.22 m' heartbeat='109' />
+  <sample time='4:40 min' depth='2.3 m' heartbeat='110' />
+  <sample time='4:44 min' depth='2.28 m' temp='2.8 C' heartbeat='112' />
+  <sample time='4:48 min' depth='2.28 m' heartbeat='112' />
+  <sample time='4:52 min' depth='2.24 m' heartbeat='111' />
+  <sample time='4:56 min' depth='2.24 m' temp='2.4 C' heartbeat='111' />
+  <sample time='5:00 min' depth='2.34 m' temp='2.8 C' heartbeat='111' />
+  <sample time='5:04 min' depth='2.22 m' temp='3.2 C' heartbeat='110' />
+  <sample time='5:08 min' depth='2.34 m' heartbeat='109' />
+  <sample time='5:12 min' depth='2.4 m' temp='2.8 C' heartbeat='110' />
+  <sample time='5:16 min' depth='2.3 m' heartbeat='110' />
+  <sample time='5:20 min' depth='2.3 m' heartbeat='105' />
+  <sample time='5:24 min' depth='2.08 m' temp='2.0 C' heartbeat='102' />
+  <sample time='5:28 min' depth='2.18 m' temp='2.4 C' heartbeat='103' />
+  <sample time='5:32 min' depth='2.22 m' temp='2.8 C' heartbeat='104' />
+  <sample time='5:36 min' depth='2.28 m' temp='3.2 C' heartbeat='105' />
+  <sample time='5:40 min' depth='2.18 m' temp='2.8 C' heartbeat='106' />
+  <sample time='5:44 min' depth='2.24 m' temp='3.2 C' heartbeat='105' />
+  <sample time='5:48 min' depth='2.4 m' temp='2.4 C' heartbeat='102' />
+  <sample time='5:52 min' depth='2.54 m' heartbeat='102' />
+  <sample time='5:56 min' depth='2.64 m' heartbeat='105' />
+  <sample time='6:00 min' depth='2.3 m' temp='2.8 C' heartbeat='104' />
+  <sample time='6:04 min' depth='2.34 m' heartbeat='102' />
+  <sample time='6:08 min' depth='2.3 m' heartbeat='103' />
+  <sample time='6:12 min' depth='2.36 m' heartbeat='101' />
+  <sample time='6:16 min' depth='2.34 m' temp='2.4 C' heartbeat='101' />
+  <sample time='6:20 min' depth='2.1 m' temp='2.8 C' heartbeat='103' />
+  <sample time='6:24 min' depth='2.28 m' heartbeat='103' />
+  <sample time='6:28 min' depth='2.26 m' heartbeat='107' />
+  <sample time='6:32 min' depth='2.06 m' heartbeat='106' />
+  <sample time='6:36 min' depth='1.92 m' heartbeat='103' />
+  <sample time='6:40 min' depth='2.06 m' temp='2.4 C' heartbeat='102' />
+  <sample time='6:44 min' depth='2.44 m' heartbeat='105' />
+  <sample time='6:48 min' depth='2.66 m' temp='2.8 C' heartbeat='108' />
+  <sample time='6:52 min' depth='2.8 m' temp='2.4 C' heartbeat='106' />
+  <sample time='6:56 min' depth='2.56 m' temp='3.2 C' heartbeat='106' />
+  <sample time='7:00 min' depth='2.46 m' temp='2.8 C' heartbeat='105' />
+  <sample time='7:04 min' depth='2.52 m' temp='3.2 C' heartbeat='103' />
+  <sample time='7:08 min' depth='2.52 m' temp='2.8 C' heartbeat='105' />
+  <sample time='7:12 min' depth='2.36 m' heartbeat='106' />
+  <sample time='7:16 min' depth='2.36 m' temp='2.4 C' heartbeat='104' />
+  <sample time='7:20 min' depth='2.24 m' temp='2.8 C' heartbeat='102' />
+  <sample time='7:24 min' depth='2.32 m' heartbeat='105' />
+  <sample time='7:28 min' depth='2.62 m' temp='2.4 C' heartbeat='108' />
+  <sample time='7:32 min' depth='2.78 m' temp='2.8 C' heartbeat='107' />
+  <sample time='7:36 min' depth='2.74 m' heartbeat='105' />
+  <sample time='7:40 min' depth='2.56 m' temp='3.2 C' heartbeat='105' />
+  <sample time='7:44 min' depth='2.4 m' heartbeat='105' />
+  <sample time='7:48 min' depth='2.22 m' heartbeat='105' />
+  <sample time='7:52 min' depth='2.18 m' heartbeat='106' />
+  <sample time='7:56 min' depth='2.06 m' temp='2.8 C' heartbeat='108' />
+  <sample time='8:00 min' depth='2.02 m' heartbeat='111' />
+  <sample time='8:04 min' depth='2.02 m' temp='2.4 C' heartbeat='111' />
+  <sample time='8:08 min' depth='1.92 m' temp='2.8 C' heartbeat='111' />
+  <sample time='8:12 min' depth='1.9 m' heartbeat='111' />
+  <sample time='8:16 min' depth='1.88 m' temp='2.4 C' heartbeat='111' />
+  <sample time='8:20 min' depth='1.6 m' temp='2.8 C' heartbeat='111' />
+  <sample time='8:24 min' depth='1.02 m' temp='3.2 C' heartbeat='110' />
+  <sample time='8:28 min' depth='0.56 m' temp='2.4 C' heartbeat='109' />
+  <sample time='8:32 min' depth='0.3 m' heartbeat='111' />
+  <sample time='8:36 min' depth='0.3 m' temp='3.6 C' heartbeat='116' />
+  <sample time='8:40 min' depth='0.18 m' temp='2.8 C' heartbeat='120' />
+  <sample time='8:44 min' depth='0.34 m' temp='2.4 C' heartbeat='119' />
+  <sample time='8:48 min' depth='0.04 m' temp='2.8 C' heartbeat='117' />
+  <sample time='8:52 min' depth='0.1 m' temp='3.2 C' heartbeat='114' />
+  <sample time='8:56 min' depth='0.06 m' temp='2.0 C' heartbeat='112' />
+  <sample time='9:00 min' depth='0.08 m' temp='2.4 C' heartbeat='110' />
+  <sample time='9:04 min' depth='0.14 m' temp='2.8 C' heartbeat='108' />
+  <sample time='9:08 min' depth='0.0 m' temp='2.4 C' heartbeat='108' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
