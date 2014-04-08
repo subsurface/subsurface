@@ -214,11 +214,13 @@
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-        <SAMPLE>
-          <DEPTH>
-            <xsl:value-of select="$curdepth div 1000"/>
-          </DEPTH>
-        </SAMPLE>
+        <xsl:if test="$curdepth &gt; 0">
+          <SAMPLE>
+            <DEPTH>
+              <xsl:value-of select="$curdepth div 1000"/>
+            </DEPTH>
+          </SAMPLE>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
 
