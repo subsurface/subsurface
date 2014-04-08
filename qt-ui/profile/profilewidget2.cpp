@@ -13,6 +13,8 @@
 #include "planner.h"
 #include "device.h"
 #include "ruleritem.h"
+#include "../../dive.h"
+#include "../../pref.h"
 #include <libdivecomputer/parser.h>
 #include <QSignalTransition>
 #include <QPropertyAnimation>
@@ -336,10 +338,8 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 
 	int animSpeedBackup = -1;
 	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
-		QSettings s;
-		s.beginGroup("Animations");
-		animSpeedBackup = s.value("animation_speed", 500).toInt();
-		s.setValue("animation_speed", 0);
+		animSpeedBackup = prefs.animation;
+		prefs.animation = 0;
 		firstCall = false;
 	}
 
@@ -469,9 +469,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	}
 	diveComputerText->setText(currentdc->model);
 	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
-		QSettings s;
-		s.beginGroup("Animations");
-		s.setValue("animation_speed", animSpeedBackup);
+		prefs.animation = animSpeedBackup;
 	}
 }
 

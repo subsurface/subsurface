@@ -1,7 +1,8 @@
 #include "animationfunctions.h"
+#include "dive.h"
+#include "pref.h"
 #include <QPropertyAnimation>
 #include <QPointF>
-#include <QSettings>
 
 namespace Animations
 {
@@ -25,12 +26,9 @@ namespace Animations
 
 	void moveTo(QObject *obj, qreal x, qreal y)
 	{
-		QSettings s;
-		s.beginGroup("Animations");
-		int msecs = s.value("animation_speed", 500).toInt();
-		if (msecs != 0){
+		if (prefs.animation != 0){
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
-			animation->setDuration(msecs);
+			animation->setDuration(prefs.animation);
 			animation->setStartValue(obj->property("pos").toPointF());
 			animation->setEndValue(QPointF(x, y));
 			animation->start(QAbstractAnimation::DeleteWhenStopped);
