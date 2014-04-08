@@ -100,9 +100,14 @@ public:
 	DiveHeartrateItem();
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	virtual void preferencesChanged();
+	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
+	bool isVisible();
 
 private:
 	void createTextItem(int seconds, int hr);
+	QString visibilityKey;
+	bool visible;
 };
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem {

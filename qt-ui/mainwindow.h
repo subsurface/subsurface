@@ -140,6 +140,7 @@ slots:
 	void on_profPO2_clicked(bool triggered);
 	void on_profPhe_clicked(bool triggered);
 	void on_profPn2_clicked(bool triggered);
+	void on_profHR_clicked(bool triggered);
 	void on_profRuler_clicked(bool triggered);
 	void on_profSAC_clicked(bool triggered);
 	void on_profScaled_clicked(bool triggered);

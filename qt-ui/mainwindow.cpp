@@ -221,6 +221,7 @@ void MainWindow::setToolButtonsEnabled(bool enabled)
 	ui.profSAC->setEnabled(enabled);
 	ui.profRuler->setEnabled(enabled);
 	ui.profScaled->setEnabled(enabled);
+	ui.profHR->setEnabled(enabled);
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -702,6 +703,7 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(pp_graphs.phe, phegraph, profPhe);
 	TOOLBOX_PREF_BUTTON(pp_graphs.pn2, pn2graph, profPn2);
 	TOOLBOX_PREF_BUTTON(pp_graphs.po2, po2graph, profPO2);
+	TOOLBOX_PREF_BUTTON(heart_rate, hrgraph, profHR);
 	ui.profRuler->setChecked(s.value("rulergraph").toBool());
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 }
@@ -1163,6 +1165,11 @@ void MainWindow::on_profPO2_clicked(bool triggered)
 {
 	prefs.pp_graphs.po2 = triggered;
 	TOOLBOX_PREF_PROFILE(po2graph);
+}
+void MainWindow::on_profHR_clicked(bool triggered)
+{
+	prefs.heart_rate = triggered;
+	TOOLBOX_PREF_PROFILE(hrgraph);
 }
 void MainWindow::on_profRuler_clicked(bool triggered)
 {

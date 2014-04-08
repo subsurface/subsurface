@@ -268,6 +268,7 @@ void PreferencesDialog::loadSettings()
 	GET_BOOL("calcceiling3m", calc_ceiling_3m_incr);
 	GET_BOOL("calcndltts", calc_ndl_tts);
 	GET_BOOL("calcalltissues", calc_all_tissues);
+	GET_BOOL("hrgraph", heart_rate);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);

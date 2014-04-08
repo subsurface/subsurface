@@ -18,6 +18,7 @@ struct preferences default_prefs = {
 	.mod = false,
 	.mod_ppO2 = 1.6,
 	.ead = false,
+	.heart_rate = true,
 	.profile_dc_ceiling = true,
 	.profile_red_ceiling = false,
 	.profile_calc_ceiling = false,

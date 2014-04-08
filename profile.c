@@ -1321,7 +1321,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			}
 		}
 	}
-	if (entry->heartbeat)
+	if (entry->heartbeat && prefs.heart_rate)
 		put_format(b, translate("gettextFromC", "heartbeat: %d\n"), entry->heartbeat);
 	if (entry->bearing)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);

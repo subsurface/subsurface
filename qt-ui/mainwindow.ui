@@ -449,11 +449,27 @@
              <bool>true</bool>
             </property>
            </widget>
-          </item>
-          <item row="0" column="1" rowspan="14">
+	  </item>
+	  <item row="13" column="0">
+	   <widget class="QToolButton" name="profHR">
+	    <property name="toolTip">
+	     <string>Show/hide heart rate</string>
+	    </property>
+	    <property name="text">
+	     <string>HR</string>
+	    </property>
+	    <property name="checkable">
+	     <bool>true</bool>
+	    </property>
+	    <property name="autoRaise">
+	     <bool>true</bool>
+	    </property>
+	   </widget>
+	  </item>
+          <item row="0" column="1" rowspan="15">
            <widget class="ProfileWidget2" name="newProfile"/>
           </item>
-          <item row="13" column="0">
+          <item row="14" column="0">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>

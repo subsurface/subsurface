@@ -193,6 +193,8 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
+	heartBeatItem->setVisibilitySettingsKey("hrgraph");
+	heartBeatItem->preferencesChanged();
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
@@ -400,11 +402,15 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 
-	if (pInfo.maxhr) {
-		heartBeatAxis->setMinimum(pInfo.minhr);
-		heartBeatAxis->setMaximum(pInfo.maxhr);
-		heartBeatAxis->updateTicks(); // this shows the ticks
-		heartBeatAxis->setVisible(true);
+	if (heartBeatItem->isVisible()) {
+		if (pInfo.maxhr) {
+			heartBeatAxis->setMinimum(pInfo.minhr);
+			heartBeatAxis->setMaximum(pInfo.maxhr);
+			heartBeatAxis->updateTicks(); // this shows the ticks
+			heartBeatAxis->setVisible(true);
+		} else {
+			heartBeatAxis->setVisible(false);
+		}
 	} else {
 		heartBeatAxis->setVisible(false);
 	}
@@ -656,6 +662,7 @@ void ProfileWidget2::setProfileState()
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
 	heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
 	heartBeatAxis->setLine(itemPos.heartBeat.expanded);
+	heartBeatItem->setVisible(s.value("hrgraph").toBool());
 	meanDepth->setVisible(true);
 
 	diveComputerText->setVisible(true);
