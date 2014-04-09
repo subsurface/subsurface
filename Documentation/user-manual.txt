@@ -1747,11 +1747,10 @@ Not all dive computers report ceiling values. If the dive computer does report i
 from the ceilings calculated by Subsurface. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
 dive computer can calculate ceilings during a dive.
 
-** _unused cylinders_: This checkbox allows display of information about unused cylinders when activating the *Dive Info* panel.
+** _Show non-used cylinders in Equipment Tab_: This checkbox allows display of information about non-used cylinders when viewing the *Equipment Tab*. Conversely, if this box is un-checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 
 ** _show average depth_: Activating this checkbox causes Subsurface to draw a red line across
 the dive profile, indicating the mean depth of the dive.
-
 
 * *Misc*: *Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
 the gradient factor at depth and GF_High is used just below the surface.
@@ -1889,7 +1888,8 @@ the present logbook under a different filename.
 - <<S_ExportLog,_Export UDDF_>> -  Export the currently open dive logbook (or
 the selected dives in the logbook) in UDDF format.
 - _Export HTML World Map_ - Export the currently open dive logbook locations
-in HTML format and draw these on a world map.
+in HTML format and draw these on a world map. The dive notes and some other information
+about each dive can be viewed by hovering over each dive location.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - _Quit_ - Quit _Subsurface_.

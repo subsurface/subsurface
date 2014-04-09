@@ -684,7 +684,7 @@ box at the top of the panel:</p></div>
 <em>Subsurface</em> and the information on
 cylinders and gases (entered here) affects the behaviour of the dive profile
 (top right-hand panel).</p></div>
-<div class="paragraph"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
+<div class="paragraph" id="S_CylinderData"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
 like this:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -765,7 +765,7 @@ with two types of weights: integrated and a weight belt:</p></div>
 profile has been completed.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_creating_a_dive_profile">3.1.3. Creating a Dive Profile</h4>
+<h4 id="S_CreateProfile">3.1.3. Creating a Dive Profile</h4>
 <div class="paragraph"><p>The <strong>Dive Profile</strong> (a graphical representation of the depth of the dive as a
 function of time) is indicated in the panel on the top right hand of the
 <em>Subsurface</em> window. When a dive is manually added to a logbook, <em>Subsurface</em>
@@ -2455,8 +2455,9 @@ Dive Table panel. By decreasing the font size of the Dive table, users can see m
 </li>
 <li>
 <p>
-<strong>Dives</strong>: Here one need to specify the directory and file name of one&#8217;s
-electronic dive log book(s). This is a file with filename extension .xml. When
+<strong>Dives</strong>: For the <em>Default Dive File</em> one need to specify the directory and
+file name of one&#8217;s
+electronic dive log book. This is a file with filename extension .xml. When
 launched, <em>Subsurface</em> will then automatically load the specified dive log book.
 </p>
 </li>
@@ -2472,6 +2473,17 @@ the dive list.
 <p>
 <strong>Use Default cylinder</strong>: Here users can specify the default cylinder listed in
 the <strong>Equipment</strong> tab of the <strong>Dive Notes</strong> panel.
+</p>
+</li>
+<li>
+<p>
+<strong>Animations</strong>: Some actions in showing the dive profile are performed using
+animations. For instance, the axis values for depth and time change from dive to
+dive. When viewing a different dive, these changes in axis characteristics do not
+happen instantaneously, but are animated. The <em>Speed</em> of animations can be controlled
+by setting this slider
+with faster animation speed to the left, with a 0 value representing no animation
+at all.
 </p>
 </li>
 </ul></div>
@@ -2507,24 +2519,29 @@ the dive profile:
 <li>
 <p>
 Gas pressure graphs: <em>Subsurface</em> can display the nitrogen, oxygen and the helium partial pressures during
-the dive. For each of these graphs users can specify a threshold value on the right-hand side of the
-panel. If any of the graphs go above this threshold level, the graph is
-highlighted in red, indication that the threshold value has been exceeded (see
-figure below).
+the dive. These are enabled using the toolbar on the left hand side of the <strong>Dive Profile</strong>
+panel. For each of these graphs users can specify a threshold value on the right-hand side of the
+Preferences panel. If any of the graphs go above this threshold level, the graph is
+highlighted in red, indicating that the threshold has been exceeded.
 </p>
 </li>
 <li>
 <p>
-If a <em>Maximum operating depth (MOD)</em> or an <em>Equivalent air depth (EAD)</em>
-applies to a dive profile, these can be shown by checking the appropriate boxes.
+<em>draw dive computer reported ceiling red</em>: This checkbox allows exactly what it says.
+Not all dive computers report ceiling values. If the dive computer does report it, it may differ
+from the ceilings calculated by Subsurface. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+dive computer can calculate ceilings during a dive.
 </p>
 </li>
 <li>
 <p>
-If a <em>Maximum partial pressure of oxygen (maxPPO2)</em> applies to dives, then
-this can be specified in the appropriate text box. In addition, if a
-<em>no-decompression limit (NDL)</em> is to be shown in the <strong>info</strong> box, then users must check the
-appropriate box.
+<em>Show non-used cylinders in Equipment Tab</em>: This checkbox allows display of information about non-used cylinders when viewing the <strong>Equipment Tab</strong>. Conversely, if this box is un-checked, and any cylinders entered using the <strong>Equipment Tab</strong> are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+</p>
+</li>
+<li>
+<p>
+<em>show average depth</em>: Activating this checkbox causes Subsurface to draw a red line across
+the dive profile, indicating the mean depth of the dive.
 </p>
 </li>
 </ul></div>
@@ -2532,20 +2549,20 @@ appropriate box.
 <li>
 <p>
 <strong>Misc</strong>: <strong>Gradient Factors:</strong> Here users can set the <em>gradient factors</em> used while diving. GF_Low is
-the gradient factor at deep and GF_High is used just below the surface.
+the gradient factor at depth and GF_High is used just below the surface.
 At intermediate depths gradient factors between GF_Low and GF_High are used.
 Gradient factors add conservatism to the nitrogen exposure during a dive, in a
 similar way that many dive computers have a conservatism setting. The lower
 the value of a gradient factor, the more conservative the calculations are with
 respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
-factors of 25/60 are considered conservative and values of 60/90 are considered
+factors of 20/60 are considered conservative and values of 60/90 are considered
 harsh. Checking <strong>GFLow at max depth</strong> box causes GF_Low to be used at the
 deepest depth of a dive. For more information see:
 </p>
 <div class="ulist"><ul>
 <li>
 <p>
-<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, , <em>Immersed</em> Vol. 3, No. 3.</a>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
 </p>
 </li>
 <li>
@@ -2612,6 +2629,13 @@ the selected dives in the logbook) in UDDF format.
 </li>
 <li>
 <p>
+<em>Export HTML World Map</em> - Export the currently open dive logbook locations
+in HTML format and draw these on a world map. The dive notes and some other information
+about each dive can be viewed by hovering over each dive location.
+</p>
+</li>
+<li>
+<p>
 <a href="#S_PrintDivelog"><em>Print</em></a> -  Print the currently open logbook.
 </p>
 </li>
@@ -2638,7 +2662,7 @@ from a dive computer.
 </li>
 <li>
 <p>
-<a href="#Unified_import"><em>Import Files</em></a> - Import dive information from a file in
+<a href="#Unified_import"><em>Import Log Files</em></a> - Import dive information from a file in
 in a <em>Subsurface</em>-compatible format.
 </p>
 </li>
@@ -2756,6 +2780,12 @@ well as licensing information.
 </li>
 <li>
 <p>
+<em>Check for updates</em> - Find out whether a newer version of Subsurface is available
+on the <a href="http://subsurface.hohndel.org/"><em>Subsurface</em> web site</a>.
+</p>
+</li>
+<li>
+<p>
 <em>User Manual</em> - Open a window showing this user manual.
 </p>
 </li>
@@ -2783,7 +2813,9 @@ computer prefers (e.g. bluetooth, USB, infrared).</td>
 <p>
 On Linux users need to have the correct kernel
           module loaded. Most distributions will do this automatically, so the
-          user does not need to load drivers.
+          user does not need to load kernel modules. However, some communication
+          protocols require an additional driver, especially for rarely used
+          technology such as infrared.
 </p>
 </li>
 <li>
@@ -3047,7 +3079,37 @@ may have to do this more than once, depending on how many dives are
 stored on the dive computer.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">11.2. Importing dives from Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingGalileo">11.2. Importing dives from the Uwatec Galileo</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/Galileo.jpg" alt="Note" />
+</td>
+<td class="content">The Uwatec Galileo dive computers use infra red (IrDA) communication
+between the dive computer and Subsurface. The Uwatec hardware uses
+a USB dongle based on the serial infra-red (SIR) protocol and the
+MSC7780 IrDA controller manufactured by MosChip
+and marketed by Scubapro and some electronics companies.
+Under Linux, the kernel
+already provides for communication using the IrDA protocol. However,
+the user additionally needs to load a driver for the IrDA interface
+with the dive computer. The easiest way is to load the <strong>irda-tools</strong>
+package from the <a href="http://irda.sourceforge.net/docs/startirda.html">Linux IrDA Project</a>.
+After the installation of the irda-tools, the root user can specify a device name
+from the console as follows:
+<code>irattach irda0</code></td>
+</tr></table>
+</div>
+<div class="paragraph"><p>After executing this command, Subsurface will recognise the Galileo
+dive computer and download dive information.</p></div>
+<div class="paragraph"><p>Under Windows, a similar situation exists. Drivers for the MCS7780 are
+available from some Internet web sites e.g.
+<a href="http://www.drivers-download.com/Drv/MosChip/MCS7780/">www.drivers-download.com</a>.</p></div>
+<div class="paragraph"><p>For the Apple Mac, IrDA communication via the MCS7780 link is not
+available for OSX 10.6 or higher.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDR5">11.3. Importing dives from Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3065,7 +3127,7 @@ factors in the <em>Tec Settings</em> in <em>Subsurface</em> to generate a deco o
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import_from_shearwater_predator_using_bluetooth">11.3. Import from Shearwater Predator using Bluetooth</h3>
+<h3 id="_import_from_shearwater_predator_using_bluetooth">11.4. Import from Shearwater Predator using Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3424,7 +3486,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-03-31 11:51:15 PDT
+Last updated 2014-04-10 09:12:33 PDT
 </div>
 </div>
 </body>
