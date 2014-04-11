@@ -265,6 +265,33 @@
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="title">
+            <string>Subsurface Webservice</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Default User ID</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="default_uid">
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="save_uid_local">
+              <property name="text">
+               <string>Save User ID locally?</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>

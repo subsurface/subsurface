@@ -100,6 +100,10 @@ void PreferencesDialog::setUiFromPrefs()
 	connect(ui.languageFilter, SIGNAL(textChanged(QString)), filterModel, SLOT(setFilterFixedString(QString)));
 
 	QSettings s;
+
+	ui.save_uid_local->setChecked(s.value("save_uid_local").toBool());
+	ui.default_uid->setText(s.value("subsurface_webservice_uid").toString().toUpper());
+
 	s.beginGroup("Language");
 	ui.languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
 	QAbstractItemModel *m = ui.languageView->model();
@@ -170,6 +174,9 @@ void PreferencesDialog::syncSettings()
 {
 	QSettings s;
 
+	s.setValue("subsurface_webservice_uid", ui.default_uid->text().toUpper());
+	set_save_userid_local(ui.save_uid_local->checkState());
+
 	// Graph
 	s.beginGroup("TecDetails");
 
@@ -235,6 +242,10 @@ void PreferencesDialog::loadSettings()
 
 	QSettings s;
 	QVariant v;
+
+	ui.save_uid_local->setChecked(s.value("save_uid_local").toBool());
+	ui.default_uid->setText(s.value("subsurface_webservice_uid").toString().toUpper());
+
 	s.beginGroup("Units");
 	if (s.value("unit_system").toString() == "metric") {
 		prefs.unit_system = METRIC;

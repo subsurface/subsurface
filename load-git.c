@@ -572,6 +572,14 @@ static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
 static void parse_settings_autogroup(char *line, struct membuffer *str, void *_unused)
 { set_autogroup(1); }
 
+static void parse_settings_userid(char *line, struct membuffer *str, void *_unused)
+{
+	if (line) {
+		set_save_userid_local(true);
+		set_userid(line);
+	}
+}
+
 /*
  * Our versioning is a joke right now, but this is more of an example of what we
  * *can* do some day. And if we do change the version, this warning will show if
@@ -700,7 +708,7 @@ static void trip_parser(char *line, struct membuffer *str, void *_trip)
 static struct keyword_action settings_action[] = {
 #undef D
 #define D(x) { #x, parse_settings_ ## x }
-	D(autogroup), D(divecomputerid), D(subsurface), D(version),
+	D(autogroup), D(divecomputerid), D(subsurface), D(userid), D(version),
 };
 
 static void settings_parser(char *line, struct membuffer *str, void *_unused)
@@ -1158,6 +1166,8 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");
+	set_save_userid_local(false);
+	set_userid("");
 	for_each_line(blob, settings_parser, NULL);
 	git_blob_free(blob);
 	return 0;

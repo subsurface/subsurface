@@ -312,12 +312,16 @@ void WebServices::resetState()
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f)
 {
 	QSettings s;
-	ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
+	if (!save_userid_local || !*userid)
+		ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
+	else
+		ui.userID->setText(userid);
 	hidePassword();
 	hideUpload();
 	ui.progressBar->setFormat("Enter User ID and click Download");
 	ui.progressBar->setRange(0, 1);
 	ui.progressBar->setValue(-1);
+	ui.saveUidLocal->setChecked(save_userid_local);
 }
 
 void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
@@ -339,7 +343,20 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 
 		/* store last entered uid in config */
 		QSettings s;
-		s.setValue("subsurface_webservice_uid", ui.userID->text().toUpper());
+		QString qDialogUid = ui.userID->text().toUpper();
+		bool qSaveUid = ui.saveUidLocal->checkState();
+		set_save_userid_local(qSaveUid);
+		if (qSaveUid) {
+			QString qSettingUid = s.value("subsurface_webservice_uid").toString();
+			QString qFileUid = QString::fromStdString(userid);
+			bool s_eq_d = (qSettingUid == qDialogUid);
+			bool d_eq_f = (qDialogUid == qFileUid);
+			if (!d_eq_f || s_eq_d)
+				s.setValue("subsurface_webservice_uid", qDialogUid);
+			set_userid(qDialogUid.toLocal8Bit().data());
+		} else {
+			s.setValue("subsurface_webservice_uid", qDialogUid);
+		}
 		s.sync();
 		hide();
 		close();
@@ -626,6 +643,7 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
 	ui.password->setText(s.value("divelogde_pass").toString());
+	ui.saveUidLocal->hide();
 	hideUpload();
 }
 
@@ -882,4 +900,21 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 	default:
 		break;
 	}
+}
+
+#define MAX_USERID_SIZE 32
+short save_userid_local = false;
+char *userid = NULL;
+void set_save_userid_local(short value)
+{
+	QSettings s;
+	s.setValue("save_uid_local", value);
+	save_userid_local = value;
+}
+
+void set_userid(char *rUserId)
+{
+	userid = (char *) malloc(MAX_USERID_SIZE);
+	if (userid && rUserId)
+		strcpy(userid, rUserId);
 }

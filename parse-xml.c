@@ -112,6 +112,7 @@ static struct {
 	} dc;
 } cur_settings;
 static bool in_settings = false;
+static bool in_userid = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
@@ -858,6 +859,12 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
+void try_to_fill_userid(const char *name, char *buf)
+{
+	if (save_userid_local)
+		set_userid(buf);
+}
+
 static const char *country, *city;
 
 static void divinglog_place(char *place, void *_location)
@@ -1367,8 +1374,23 @@ static void divecomputer_end(void)
 	cur_dc = NULL;
 }
 
+static void userid_start(void)
+{
+	in_userid = true;
+	set_save_userid_local(true); //if the xml contains userid, keep saving it.
+}
+
+static void userid_stop(void)
+{
+	in_userid = false;
+}
+
 static void entry(const char *name, char *buf)
 {
+	if (in_userid) {
+		try_to_fill_userid(name, buf);
+		return;
+	}
 	if (in_settings) {
 		try_to_fill_dc_settings(name, buf);
 		try_to_match_autogroup(name, buf);
@@ -1515,6 +1537,7 @@ static struct nesting {
 	  { "weightsystem", ws_start, ws_end },
 	  { "divecomputer", divecomputer_start, divecomputer_end },
 	  { "P", sample_start, sample_end },
+	  { "userid", userid_start, userid_stop},
 
 	  /* Import type recognition */
 	  { "Divinglog", DivingLog_importer },
@@ -1602,6 +1625,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 		report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
 		return;
 	}
+	set_save_userid_local(false);
+	set_userid("");
 	reset_all();
 	dive_start();
 	doc = test_xslt_transforms(doc, params);

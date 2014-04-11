@@ -508,10 +508,13 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
 
+	if (save_userid_local)
+		put_format(b, "  <userid>%s</userid>\n", userid);
+
 	/* save the dive computer nicknames, if any */
 	call_for_each_dc(b, save_one_device);
 	if (autogroup)
-		put_format(b, "<autogroup state='1' />\n");
+		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n<dives>\n");
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)

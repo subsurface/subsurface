@@ -678,6 +678,13 @@ static struct dir *mktree(struct dir *dir, const char *fmt, ...)
 	return subdir;
 }
 
+static void save_userid(void *_b)
+{
+	struct membuffer *b = _b;
+	if (save_userid_local)
+		put_format(b, "userid %30s", userid);
+}
+
 static void save_one_device(void *_b, const char *model, uint32_t deviceid,
 	const char *nickname, const char *serial, const char *firmware)
 {
@@ -706,6 +713,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	struct membuffer b = { 0 };
 
 	put_format(&b, "version %d\n", VERSION);
+	save_userid(&b);
 	call_for_each_dc(&b, save_one_device);
 	cond_put_format(autogroup, &b, "autogroup\n");
 
