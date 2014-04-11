@@ -2,8 +2,8 @@
 #define PREFERENCES_H
 
 #include <QDialog>
-#include "../dive.h"
-#include "../pref.h"
+#include "dive.h"
+#include "pref.h"
 
 #include "ui_preferences.h"
 

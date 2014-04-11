@@ -1,5 +1,5 @@
 #include "subsurfacewebservices.h"
-#include "../webservice.h"
+#include "webservice.h"
 #include "mainwindow.h"
 #include <libxml/parser.h>
 #include <zip.h>
@@ -15,9 +15,9 @@
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
 
-#include "../dive.h"
-#include "../divelist.h"
-#include "../display.h"
+#include "dive.h"
+#include "divelist.h"
+#include "display.h"
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)
