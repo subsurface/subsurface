@@ -81,6 +81,7 @@ slots:
 	void on_notes_textChanged();
 	void on_airtemp_textChanged(const QString &text);
 	void on_watertemp_textChanged(const QString &text);
+	void validate_temp_field(QLineEdit *tempField,const QString &text);
 	void on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime);
 	void on_rating_valueChanged(int value);
 	void on_visibility_valueChanged(int value);

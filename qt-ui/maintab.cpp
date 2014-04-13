@@ -881,14 +881,43 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 {
 	EDIT_SELECTED_DIVES(select_dc(mydive)->airtemp.mkelvin = parseTemperatureToMkelvin(text));
 	markChangedWidget(ui.airtemp);
+	validate_temp_field(ui.airtemp, text);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
 	EDIT_SELECTED_DIVES(select_dc(mydive)->watertemp.mkelvin = parseTemperatureToMkelvin(text));
 	markChangedWidget(ui.watertemp);
+	validate_temp_field(ui.watertemp, text);
 }
 
+void MainTab::validate_temp_field(QLineEdit *tempField,const QString &text)
+{
+	static bool missing_unit = false;
+	static bool missing_precision = false;
+	if (!text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.][0-9]+){0,1}(°[CF]){0,1}$")) &&
+	    !text.isEmpty() &&
+	    !text.contains(QRegExp("^[-+]$"))) {
+		if (text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.][0-9]+){0,1}(°)$")) && !missing_unit) {
+			if (!missing_unit) {
+				missing_unit = true;
+				return;
+			}
+		}
+		if (text.contains(QRegExp("^[-+]{0,1}[0-9]+([,.]){0,1}(°[CF]){0,1}$")) && !missing_precision) {
+			if (!missing_precision) {
+				missing_precision = true;
+				return;
+			}
+		}
+		QPalette p;
+		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
+		tempField->setPalette(p);
+	} else {
+		missing_unit = false;
+		missing_precision = false;
+	}
+}
 void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime)
 {
 	QDateTime dateTimeUtc(datetime);
