@@ -714,6 +714,12 @@ extern const char *saved_git_id;
 extern void clear_git_id(void);
 extern void set_git_id(const struct git_oid *);
 
+struct user_info {
+	const char *name;
+	const char *email;
+};
+
+extern void subsurface_user_info(struct user_info *);
 extern int subsurface_rename(const char *path, const char *newpath);
 extern int subsurface_open(const char *path, int oflags, mode_t mode);
 extern FILE *subsurface_fopen(const char *path, const char *mode);

@@ -14,6 +14,9 @@
 const char system_divelist_default_font[] = "Sans";
 const int system_divelist_default_font_size = 8;
 
+void subsurface_user(struct user_info *user)
+{ /* Encourage use of at least libgit2-0.20 */ }
+
 const char *system_default_filename(void)
 {
 	char datapath[MAX_PATH];

@@ -815,6 +815,24 @@ static int update_git_checkout(git_repository *repo, git_object *parent, git_tre
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
+static int get_authorship(git_repository *repo, git_signature **authorp)
+{
+#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+	return git_signature_default(authorp, repo);
+#else
+	/* Default name information, with potential OS overrides */
+	struct user_info user = {
+		.name = "Subsurface",
+		.email = "subsurace@hohndel.org"
+	};
+
+	subsurface_user_info(&user);
+
+	/* git_signature_default() is too recent */
+	return git_signature_now(authorp, user.name, user.email);
+#endif
+}
+
 static int create_new_commit(git_repository *repo, const char *branch, git_oid *tree_id)
 {
 	int ret;
@@ -853,8 +871,7 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 	if (git_tree_lookup(&tree, repo, tree_id))
 		return report_error("Could not look up newly created tree");
 
-	/* git_signature_default() is too recent */
-	if (git_signature_now(&author, "Subsurface", "subsurface@hohndel.org"))
+	if (get_authorship(repo, &author))
 		return report_error("No user name configuration in git repo");
 
 	/* If the parent commit has the same tree ID, do not create a new commit */
@@ -896,6 +913,8 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 	if (git_reference_set_target(&ref, ref, &commit_id, author, "Subsurface save event"))
 		return report_error("Failed to update branch '%s'", branch);
 	set_git_id(&commit_id);
+
+	git_signature_free(author);
 
 	return 0;
 }

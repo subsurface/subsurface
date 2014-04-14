@@ -2,15 +2,38 @@
 /* implements Linux specific functions */
 #include "dive.h"
 #include "display.h"
+#include "membuffer.h"
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <fnmatch.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <pwd.h>
 
 const char system_divelist_default_font[] = "Sans";
 const int system_divelist_default_font_size = 8;
+
+void subsurface_user_info(struct user_info *user)
+{
+	struct passwd *pwd = getpwuid(getuid());
+	const char *username = getenv("USER");
+
+	if (pwd) {
+		if (pwd->pw_gecos && *pwd->pw_gecos)
+			user->name = pwd->pw_gecos;
+		if (!username)
+			username = pwd->pw_name;
+	}
+	if (username && *username) {
+		char hostname[64];
+		struct membuffer mb = { 0 };
+		gethostname(hostname, sizeof(hostname));
+		put_format(&mb, "%s@%s", username, hostname);
+		user->email = mb_cstring(&mb);
+	}
+}
 
 const char *system_default_filename(void)
 {
