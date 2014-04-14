@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 #options
 SET(SUBSURFACE_QT_VERSION "4")
+
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/marbledata)
@@ -68,21 +69,88 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
 )
 
 # compile the core library, in C.
-FILE(GLOB SUBSURFACE_CORE_LIB_SRCS *.c)
-LIST(REMOVE_ITEM SUBSURFACE_CORE_LIB_SRCS
-	${CMAKE_CURRENT_SOURCE_DIR}/windows.c
-	${CMAKE_CURRENT_SOURCE_DIR}/macos.c
-	${CMAKE_CURRENT_SOURCE_DIR}/cochran.c
+SET(SUBSURFACE_CORE_LIB_SRCS
+	deco.c
+	device.c
+	dive.c
+	divelist.c
+	equipment.c
+	file.c
+	libdivecomputer.c
+	load-git.c
+	membuffer.c
+	parse-xml.c
+	planner.c
+	profile.c
+	worldmap-save.c
+	save-git.c
+	save-xml.c
+	sha1.c
+	statistics.c
+	strtod.c
+	subsurfacestartup.c
+	time.c
+	uemis.c
+	uemis-downloader.c
+	linux.c
 )
 
-FILE(GLOB SUBSURFACE_PROFILE_LIB_SRCS qt-ui/profile/*.cpp)
-FILE(GLOB SUBSURFACE_UI qt-ui/*.ui)
-FILE(GLOB SUBSURFACE_INTERFACE qt-ui/*.cpp)
-FILE(GLOB SUBSURFACE_APP *.cpp )
-IF(NOT (CMAKE_SYSTEM_NAME MATCHES Android))
-	LIST(REMOVE_ITEM SUBSURFACE_APP ${CMAKE_CURRENT_SOURCE_DIR}/android.cpp)
-ENDIF()
+#the interface, in C++
+SET(SUBSURFACE_INTERFACE
+	qt-ui/updatemanager.cpp
+	qt-ui/about.cpp
+	qt-ui/completionmodels.cpp
+	qt-ui/divecomputermanagementdialog.cpp
+	qt-ui/divelistview.cpp
+	qt-ui/diveplanner.cpp
+	qt-ui/downloadfromdivecomputer.cpp
+	qt-ui/globe.cpp
+	qt-ui/graphicsview-common.cpp
+	qt-ui/kmessagewidget.cpp
+	qt-ui/maintab.cpp
+	qt-ui/mainwindow.cpp
+	qt-ui/modeldelegates.cpp
+	qt-ui/models.cpp
+	qt-ui/preferences.cpp
+	qt-ui/printdialog.cpp
+	qt-ui/printlayout.cpp
+	qt-ui/printoptions.cpp
+	qt-ui/simplewidgets.cpp
+	qt-ui/starwidget.cpp
+	qt-ui/subsurfacewebservices.cpp
+	qt-ui/tableview.cpp
+	qt-ui/exif.cpp
+	qt-ui/divelogimportdialog.cpp
+	qt-ui/tagwidget.cpp
+	qt-ui/groupedlineedit.cpp
+	qt-ui/usermanual.cpp
+)
 
+#the profile widget
+SET(SUBSURFACE_PROFILE_LIB_SRCS
+	qt-ui/profile/profilewidget2.cpp
+	qt-ui/profile/diverectitem.cpp
+	qt-ui/profile/divepixmapitem.cpp
+	qt-ui/profile/divelineitem.cpp
+	qt-ui/profile/divetextitem.cpp
+	qt-ui/profile/animationfunctions.cpp
+	qt-ui/profile/divecartesianaxis.cpp
+	qt-ui/profile/diveplotdatamodel.cpp
+	qt-ui/profile/diveprofileitem.cpp
+	qt-ui/profile/diveeventitem.cpp
+	qt-ui/profile/divetooltipitem.cpp
+	qt-ui/profile/ruleritem.cpp
+)
+
+#the main app.
+SET(SUBSURFACE_APP
+	main.cpp
+	gettextfromc.cpp
+	qt-gui.cpp
+	qthelper.cpp
+)
+
+FILE(GLOB SUBSURFACE_UI qt-ui/*.ui)
 # to be replaced by QT_WRAP_UI on CMake 3.
 IF(${SUBSURFACE_QT_VERSION} MATCHES "4")
     QT4_WRAP_UI( SUBSURFACE_UI_HDRS ${SUBSURFACE_UI} )
@@ -112,6 +180,7 @@ target_link_libraries( subsurface
 ADD_DEPENDENCIES(subsurface_profile subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_interface subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_generated_ui version)
+ADD_DEPENDENCIES(subsurface_corelib version)
 
 ENABLE_TESTING()
 ADD_EXECUTABLE( TestUnitConversion tests/testunitconversion.cpp )
