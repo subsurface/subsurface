@@ -1,0 +1,16 @@
+Testing subsurface:
+
+Right now to test subsurface you need to have the 'cmake' executable
+to compile the source code of the tests and run them.
+
+1 - create a folder 'build-tests' on the project root directory
+2 - run cmake ( cmake .. )
+3 - compile the software by invocking make
+4 - run the tests by invocking make test
+(optional 5) if the tests are failing, a better way to see what's
+happening is to run ctest -V , this way the tests will still fail,
+but more verbosically - easyer to track them down.
+
+to create a new test, just implement copy the one provided by
+example in the tests folder and add the last three lines of the CMakeLists.txt file
+adapted to your test.
