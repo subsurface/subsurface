@@ -28,6 +28,13 @@ pkg_config_library(LIBSQLITE3 sqlite3)
 pkg_config_library(LIBGIT2 libgit2)
 pkg_config_library(LIBXSLT libxslt)
 
+SET(LIBDCDEVEL "" CACHE STRING "libraries")
+IF(NOT (LIBDCDEVEL STREQUAL ""))
+	cmake_policy(SET CMP0015 OLD)
+	include_directories(${LIBDCDEVEL}/include )
+	link_directories(${LIBDCDEVEL}/src/.libs)
+ENDIF()
+
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_DIR}" insource)
 GET_FILENAME_COMPONENT(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
