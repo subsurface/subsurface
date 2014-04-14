@@ -114,3 +114,6 @@ ADD_DEPENDENCIES(subsurface_interface subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_generated_ui version)
 
 ENABLE_TESTING()
+ADD_EXECUTABLE( TestUnitConversion tests/testunitconversion.cpp )
+TARGET_LINK_LIBRARIES( TestUnitConversion ${QT_LIBRARIES})
+ADD_TEST( NAME TestUnitConversion COMMAND TestUnitConversion)
