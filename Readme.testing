@@ -14,3 +14,66 @@ but more verbosically - easyer to track them down.
 to create a new test, just implement copy the one provided by
 example in the tests folder and add the last three lines of the CMakeLists.txt file
 adapted to your test.
+
+
+
+To create a new test you can do one of the following (information
+provided by Tomaz on IRC):
+
+1) Create a new private slot on an already created test class
+2) Implement the test there, and compare the expected result with the
+correct result with QCOMPARE:
+
+void testRedCeiling();
+testRedCeiling()
+{
+	load_dive("../dive/testDive.xml");
+	calculated_ceiling();
+	QCOMPARE( dive->ceiling->color(), QColor("red"));
+}
+
+3) Run the test case and see result
+
+$ make test
+
+If the color is not QColor("red"), when you run the test you will get a
+failure. Then you run a command to get a more verbose output and see in
+which part the test fails.
+
+$ ctest -V
+
+4) Fix the test case
+
+5) Look at the existing test cases if you run into trouble or need more
+ideas. E.g. running following command will show the first test cases
+written for unit conversions:
+
+$ git show 019edd065fd1eefd5f705c42bce23255bb5e20ac
+
+Also the Qt documentation is good source for more information:
+
+http://qt-project.org/doc/qt-4.8/qtest.html
+http://qt-project.org/doc/qt-5/qtest.html
+
+6) To create a new test class, copy the last three lines of the CMake,
+and duplicate it with the new class / file.
+
+Each "test" can have N test cases on it (each private slot counts as one
+test) and is executable. When one runs make, these test cases are
+compiled and when running "make test" they will be executed. Of course,
+the test cases can be run manually as well.
+
+There are three main test macros that we use, but of course many more
+are available (check the Qt documentation):
+
+QCOMPARE(value, expected)
+QVERIFY(boolean)
+QVERIFY2(boolean, "error message on fail")
+
+If expecting a test case to fail, use
+
+QEXPECT_FAIL("", "This test case fails, as it is not yet fully implemented", Continue);
+
+To link libraries, use the following macro:
+
+TARGET_LINK_LIBRARIES(TestCaseName ${QT_LIBRARIES} subsurface_corelib)
