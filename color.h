@@ -51,6 +51,7 @@
 
 // Yellows / BROWNS
 #define SPRINGWOOD1 QColor::fromRgbF(0.95, 0.95, 0.9, 1)
+#define SPRINGWOOD1_MED_TRANS QColor::fromRgbF(0.95, 0.95, 0.9, 0.5)
 #define BROOM1_LOWER_TRANS QColor::fromRgbF(1.0, 1.0, 0.1, 0.9)
 #define PEANUT QColor::fromRgbF(0.5, 0.2, 0.1, 1.0)
 #define PEANUT_MED_TRANS QColor::fromRgbF(0.5, 0.2, 0.1, 0.5)

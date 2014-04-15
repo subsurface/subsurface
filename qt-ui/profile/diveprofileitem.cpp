@@ -581,8 +581,14 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	}
 	setPolygon(p);
 	QLinearGradient pat(0, p.boundingRect().top(), 0, p.boundingRect().bottom());
-	pat.setColorAt(0, getColor(CEILING_SHALLOW));
-	pat.setColorAt(1, getColor(CEILING_DEEP));
+	// does the user want the ceiling in "surface color" or in red?
+	if (prefs.profile_red_ceiling) {
+		pat.setColorAt(0, getColor(CEILING_SHALLOW));
+		pat.setColorAt(1, getColor(CEILING_DEEP));
+	} else {
+		pat.setColorAt(0, getColor(BACKGROUND_TRANS));
+		pat.setColorAt(1, getColor(BACKGROUND_TRANS));
+	}
 	setPen(QPen(QBrush(Qt::NoBrush), 0));
 	setBrush(pat);
 }
@@ -605,7 +611,7 @@ void DiveReportedCeiling::preferencesChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");
-	setVisible(s.value("redceiling").toBool());
+	setVisible(s.value("dcceiling").toBool());
 }
 
 void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
