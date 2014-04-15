@@ -302,11 +302,8 @@ void DiveHeartrateItem::preferencesChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");
-	setVisible(s.value(visibilityKey).toBool());
-	if (s.value(visibilityKey).toBool())
-		visible = true;
-	else
-		visible = false;
+	visible = s.value(visibilityKey).toBool();
+	setVisible(visible);
 }
 
 void DiveHeartrateItem::setVisibilitySettingsKey(const QString &key)
