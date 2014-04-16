@@ -294,7 +294,33 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+	  <item row="7" column="0">
+	   <widget class="QToolButton" name="profHR">
+	    <property name="toolTip">
+	     <string>Show/hide heart rate</string>
+	    </property>
+	    <property name="text">
+	     <string>...</string>
+	    </property>
+            <property name="icon">
+             <iconset resource="../subsurface.qrc">
+              <normaloff>:/icon_HR</normaloff>:/icon_HR</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+	    <property name="checkable">
+	     <bool>true</bool>
+	    </property>
+	    <property name="autoRaise">
+	     <bool>true</bool>
+	    </property>
+	   </widget>
+	  </item>
+          <item row="8" column="0">
            <widget class="QToolButton" name="profMod">
             <property name="toolTip">
              <string>Enable MOD</string>
@@ -320,7 +346,7 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="9" column="0">
            <widget class="QToolButton" name="profEad">
             <property name="toolTip">
              <string>Enable EAD, END, and EADD</string>
@@ -346,7 +372,7 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="10" column="0">
            <widget class="QToolButton" name="profNdl_tts">
             <property name="toolTip">
              <string>Show NDL / TTS</string>
@@ -372,7 +398,7 @@
             </property>
            </widget>
           </item>
-          <item row="10" column="0">
+          <item row="11" column="0">
            <widget class="QToolButton" name="profSAC">
             <property name="toolTip">
              <string>Show SAC Rate</string>
@@ -398,7 +424,7 @@
             </property>
            </widget>
           </item>
-          <item row="11" column="0">
+          <item row="12" column="0">
            <widget class="QToolButton" name="profRuler">
             <property name="toolTip">
              <string>Enable / Disable the Ruler</string>
@@ -424,7 +450,7 @@
             </property>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="13" column="0">
            <widget class="QToolButton" name="profScaled">
             <property name="toolTip">
              <string>Rescale depth axis</string>
@@ -449,22 +475,6 @@
              <bool>true</bool>
             </property>
            </widget>
-	  </item>
-	  <item row="13" column="0">
-	   <widget class="QToolButton" name="profHR">
-	    <property name="toolTip">
-	     <string>Show/hide heart rate</string>
-	    </property>
-	    <property name="text">
-	     <string>HR</string>
-	    </property>
-	    <property name="checkable">
-	     <bool>true</bool>
-	    </property>
-	    <property name="autoRaise">
-	     <bool>true</bool>
-	    </property>
-	   </widget>
 	  </item>
           <item row="0" column="1" rowspan="15">
            <widget class="ProfileWidget2" name="newProfile"/>
