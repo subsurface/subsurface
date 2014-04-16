@@ -26,20 +26,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
 
-	QHBoxLayout *hLayout = new QHBoxLayout();
-	layout->addLayout(hLayout);
-
-	QPushButton *previewButton = new QPushButton(tr("&Preview"));
-	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
-	hLayout->addWidget(previewButton);
-
-	QPushButton *printButton = new QPushButton(tr("P&rint"));
-	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
-	hLayout->addWidget(printButton);
-
-	QPushButton *closeButton = new QPushButton(tr("&Close"));
-	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-	hLayout->addWidget(closeButton);
+	layout->addWidget(optionsWidget);
 
 	progressBar = new QProgressBar();
 	connect(printLayout, SIGNAL(signalProgress(int)), progressBar, SLOT(setValue(int)));
@@ -49,9 +36,25 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	progressBar->setTextVisible(false);
 	layout->addWidget(progressBar);
 
-	layout->addWidget(optionsWidget);
+	QHBoxLayout *hLayout = new QHBoxLayout();
+	layout->addLayout(hLayout);
 
-	setFixedSize(520, 350);
+	QPushButton *printButton = new QPushButton(tr("P&rint"));
+	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
+
+	QPushButton *previewButton = new QPushButton(tr("&Preview"));
+	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
+
+	QDialogButtonBox *buttonBox = new QDialogButtonBox;
+	buttonBox->addButton(QDialogButtonBox::Cancel);
+	buttonBox->addButton(printButton, QDialogButtonBox::AcceptRole);
+	buttonBox->addButton(previewButton, QDialogButtonBox::ActionRole);
+
+	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+	hLayout->addWidget(buttonBox);
+
+	setFixedSize(550, 400);
 	setWindowTitle(tr("Print"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 }

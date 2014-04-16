@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>511</width>
-    <height>453</height>
+    <height>448</height>
    </rect>
   </property>
   <widget class="QGroupBox" name="printOptions">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>80</y>
+     <y>70</y>
      <width>489</width>
      <height>81</height>
     </rect>
@@ -67,7 +67,7 @@
      <x>10</x>
      <y>10</y>
      <width>489</width>
-     <height>61</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -153,9 +153,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>170</y>
+     <y>160</y>
      <width>489</width>
-     <height>91</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="title">
@@ -210,9 +210,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>270</y>
+     <y>250</y>
      <width>489</width>
-     <height>151</height>
+     <height>141</height>
     </rect>
    </property>
    <property name="title">
