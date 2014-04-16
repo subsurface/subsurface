@@ -145,11 +145,11 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	if (polygon().isEmpty())
 		return;
 
-	show_reported_ceiling = prefs.profile_dc_ceiling;
-	reported_ceiling_in_red = prefs.profile_red_ceiling;
+	show_reported_ceiling = prefs.dcceiling;
+	reported_ceiling_in_red = prefs.redceiling;
 
 	/* Show any ceiling we may have encountered */
-	if (prefs.profile_dc_ceiling && !prefs.profile_red_ceiling) {
+	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
 		plot_data *entry = dataModel->data().entry + dataModel->rowCount() - 1;
 		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
@@ -197,7 +197,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 void DiveProfileItem::preferencesChanged()
 {
 	//TODO: Only modelDataChanged() here if we need to rebuild the graph ( for instance,
-	// if the prefs.profile_dc_ceiling are enabled, but prefs.profile_red_ceiling is disabled
+	// if the prefs.dcceiling are enabled, but prefs.redceiling is disabled
 	// and only if it changed something. let's not waste cpu cycles repoloting something we don't need to.
 	modelDataChanged();
 }
@@ -552,9 +552,7 @@ DiveCalculatedTissue::DiveCalculatedTissue()
 
 void DiveCalculatedTissue::preferencesChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-	setVisible(s.value("calcalltissues").toBool() && s.value("calcceiling").toBool());
+	setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
 
 void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -579,7 +577,7 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	setPolygon(p);
 	QLinearGradient pat(0, p.boundingRect().top(), 0, p.boundingRect().bottom());
 	// does the user want the ceiling in "surface color" or in red?
-	if (prefs.profile_red_ceiling) {
+	if (prefs.redceiling) {
 		pat.setColorAt(0, getColor(CEILING_SHALLOW));
 		pat.setColorAt(1, getColor(CEILING_DEEP));
 	} else {
@@ -592,23 +590,17 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 void DiveCalculatedCeiling::preferencesChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-
-	bool shouldShow3mIncrement = s.value("calcceiling3m").toBool();
-	if (dataModel && is3mIncrement != shouldShow3mIncrement) {
+	if (dataModel && is3mIncrement != prefs.calcceiling3m) {
 		// recalculate that part.
 		dataModel->calculateDecompression();
 	}
-	is3mIncrement = shouldShow3mIncrement;
-	setVisible(s.value("calcceiling").toBool());
+	is3mIncrement = prefs.calcceiling3m;
+	setVisible(prefs.calcceiling);
 }
 
 void DiveReportedCeiling::preferencesChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-	setVisible(s.value("dcceiling").toBool());
+	setVisible(prefs.dcceiling);
 }
 
 void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

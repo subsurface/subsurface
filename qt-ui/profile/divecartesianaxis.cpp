@@ -353,10 +353,7 @@ QColor DepthAxis::colorForValue(double value)
 
 static bool isPPGraphEnabled()
 {
-	QSettings s;
-
-	s.beginGroup("TecDetails");
-	return s.value("phegraph").toBool() || s.value("po2graph").toBool() || s.value("pn2graph").toBool();
+	return prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe;
 }
 
 DepthAxis::DepthAxis() : showWithPPGraph(false)
@@ -426,11 +423,9 @@ void PartialGasPressureAxis::setModel(DivePlotDataModel *m)
 
 void PartialGasPressureAxis::preferencesChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-	bool showPhe = s.value("phegraph").toBool();
-	bool showPn2 = s.value("pn2graph").toBool();
-	bool showPo2 = s.value("po2graph").toBool();
+	bool showPhe = prefs.pp_graphs.phe;
+	bool showPn2 = prefs.pp_graphs.pn2;
+	bool showPo2 = prefs.pp_graphs.po2;
 	setVisible(showPhe || showPn2 || showPo2);
 	if (!model->rowCount())
 		return;

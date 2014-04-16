@@ -693,17 +693,17 @@ void MainWindow::readSettings()
 	s.endGroup();
 
 	s.beginGroup("TecDetails");
-	TOOLBOX_PREF_BUTTON(calc_all_tissues, calcalltissues, profCalcAllTissues);
-	TOOLBOX_PREF_BUTTON(profile_calc_ceiling, calcceiling, profCalcCeiling);
-	TOOLBOX_PREF_BUTTON(profile_dc_ceiling, dcceiling, profDcCeiling);
+	TOOLBOX_PREF_BUTTON(calcalltissues, calcalltissues, profCalcAllTissues);
+	TOOLBOX_PREF_BUTTON(calcceiling, calcceiling, profCalcCeiling);
+	TOOLBOX_PREF_BUTTON(dcceiling, dcceiling, profDcCeiling);
 	TOOLBOX_PREF_BUTTON(ead, ead, profEad);
-	TOOLBOX_PREF_BUTTON(calc_ceiling_3m_incr, calcceiling3m, profIncrement3m);
+	TOOLBOX_PREF_BUTTON(calcceiling3m, calcceiling3m, profIncrement3m);
 	TOOLBOX_PREF_BUTTON(mod, mod, profMod);
-	TOOLBOX_PREF_BUTTON(calc_ndl_tts, calcndltts, profNdl_tts);
+	TOOLBOX_PREF_BUTTON(calcndltts, calcndltts, profNdl_tts);
 	TOOLBOX_PREF_BUTTON(pp_graphs.phe, phegraph, profPhe);
 	TOOLBOX_PREF_BUTTON(pp_graphs.pn2, pn2graph, profPn2);
 	TOOLBOX_PREF_BUTTON(pp_graphs.po2, po2graph, profPO2);
-	TOOLBOX_PREF_BUTTON(heart_rate, hrgraph, profHR);
+	TOOLBOX_PREF_BUTTON(hrgraph, hrgraph, profHR);
 	ui.profRuler->setChecked(s.value("rulergraph").toBool());
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 }
@@ -1118,17 +1118,17 @@ void MainWindow::editCurrentDive()
 
 void MainWindow::on_profCalcAllTissues_clicked(bool triggered)
 {
-	prefs.calc_all_tissues = triggered;
+	prefs.calcalltissues = triggered;
 	TOOLBOX_PREF_PROFILE(calcalltissues);
 }
 void MainWindow::on_profCalcCeiling_clicked(bool triggered)
 {
-	prefs.profile_calc_ceiling = triggered;
+	prefs.calcceiling = triggered;
 	TOOLBOX_PREF_PROFILE(calcceiling);
 }
 void MainWindow::on_profDcCeiling_clicked(bool triggered)
 {
-	prefs.profile_dc_ceiling = triggered;
+	prefs.dcceiling = triggered;
 	TOOLBOX_PREF_PROFILE(dcceiling);
 }
 void MainWindow::on_profEad_clicked(bool triggered)
@@ -1138,7 +1138,7 @@ void MainWindow::on_profEad_clicked(bool triggered)
 }
 void MainWindow::on_profIncrement3m_clicked(bool triggered)
 {
-	prefs.calc_ceiling_3m_incr = triggered;
+	prefs.calcceiling3m = triggered;
 	TOOLBOX_PREF_PROFILE(calcceiling3m);
 }
 void MainWindow::on_profMod_clicked(bool triggered)
@@ -1148,7 +1148,7 @@ void MainWindow::on_profMod_clicked(bool triggered)
 }
 void MainWindow::on_profNdl_tts_clicked(bool triggered)
 {
-	prefs.calc_ndl_tts = triggered;
+	prefs.calcndltts = triggered;
 	TOOLBOX_PREF_PROFILE(calcndltts);
 }
 void MainWindow::on_profPhe_clicked(bool triggered)
@@ -1168,7 +1168,7 @@ void MainWindow::on_profPO2_clicked(bool triggered)
 }
 void MainWindow::on_profHR_clicked(bool triggered)
 {
-	prefs.heart_rate = triggered;
+	prefs.hrgraph = triggered;
 	TOOLBOX_PREF_PROFILE(hrgraph);
 }
 void MainWindow::on_profRuler_clicked(bool triggered)

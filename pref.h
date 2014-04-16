@@ -23,14 +23,14 @@ struct preferences {
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;
-	double mod_ppO2;
+	double modppO2;
 	short ead;
-	short profile_dc_ceiling;
-	short profile_red_ceiling;
-	short profile_calc_ceiling;
-	short calc_ceiling_3m_incr;
-	short calc_all_tissues;
-	short calc_ndl_tts;
+	short dcceiling;
+	short redceiling;
+	short calcceiling;
+	short calcceiling3m;
+	short calcalltissues;
+	short calcndltts;
 	short gflow;
 	short gfhigh;
 	short animation;
@@ -39,10 +39,10 @@ struct preferences {
 	short unit_system;
 	struct units units;
 	short show_sac;
-	bool display_unused_tanks;
-	bool show_average_depth;
-	bool zoomed_plot;
-	short heart_rate;
+	short display_unused_tanks;
+	short show_average_depth;
+	short zoomed_plot;
+	short hrgraph;
 };
 enum unit_system_values {
 	METRIC,
@@ -54,16 +54,9 @@ extern struct preferences prefs, default_prefs;
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
-extern void subsurface_open_conf(void);
 extern void subsurface_set_conf(const char *name, const char *value);
 extern void subsurface_set_conf_bool(const char *name, bool value);
 extern void subsurface_set_conf_int(const char *name, int value);
-extern void subsurface_unset_conf(const char *name);
-extern const char *subsurface_get_conf(const char *name);
-extern int subsurface_get_conf_bool(const char *name);
-extern int subsurface_get_conf_int(const char *name);
-extern void subsurface_flush_conf(void);
-extern void subsurface_close_conf(void);
 
 extern const char system_divelist_default_font[];
 extern const int system_divelist_default_font_size;

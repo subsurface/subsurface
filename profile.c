@@ -1096,13 +1096,13 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
 		else
-			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calc_ceiling_3m_incr);
+			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calcceiling3m);
 		for (j = 0; j < 16; j++)
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
 
 		/* should we do more calculations?
 		 * We don't for print-mode because this info doesn't show up there */
-		if (prefs.calc_ndl_tts && !print_mode) {
+		if (prefs.calcndltts && !print_mode) {
 			/* We are going to mess up deco state, so store it for later restore */
 			char *cache_data = NULL;
 			cache_deco_state(tissue_tolerance, &cache_data);
@@ -1153,7 +1153,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		 * so there is no difference in calculating between OC and CC
 		 * END takes O2 + N2 (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N2 ("Air" for nitrox dives) */
-		entry->mod = (prefs.mod_ppO2 / fo2 * 1000 - 1) * 10000;
+		entry->mod = (prefs.modppO2 / fo2 * 1000 - 1) * 10000;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
@@ -1303,7 +1303,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		 * (ascent_mm_per_step / ascent_s_per_step)
 		 * everything will be ok. */
 		put_string(b, translate("gettextFromC", "In deco (calc)\n"));
-	} else if (prefs.calc_ndl_tts && entry->ndl_calc != 0) {
+	} else if (prefs.calcndltts && entry->ndl_calc != 0) {
 		put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
 	}
 	if (entry->tts_calc)
@@ -1311,7 +1311,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		put_format(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
-		if (prefs.calc_all_tissues) {
+		if (prefs.calcalltissues) {
 			int k;
 			for (k = 0; k < 16; k++) {
 				if (entry->ceilings[k]) {
@@ -1321,7 +1321,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			}
 		}
 	}
-	if (entry->heartbeat && prefs.heart_rate)
+	if (entry->heartbeat && prefs.hrgraph)
 		put_format(b, translate("gettextFromC", "heartbeat: %d\n"), entry->heartbeat);
 	if (entry->bearing)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
