@@ -846,7 +846,9 @@ struct diveplan {
 struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2, bool entered);
 void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
+#if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
+#endif
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco);
 void delete_single_dive(int idx);
 

@@ -224,6 +224,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
 }
 
+//TODO: This should be moved to C-Code.
 time_t ShiftImageTimesDialog::epochFromExiv(EXIFInfo *exif)
 {
 	struct tm tm;

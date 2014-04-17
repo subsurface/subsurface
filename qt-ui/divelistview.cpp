@@ -242,6 +242,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	QItemSelection newDeselected = selectionModel()->selection();
 	QModelIndexList diveList;
 
+	//TODO: This should be called find_first_selected_dive and be ported to C code.
 	int firstSelectedDive = -1;
 	/* context for temp. variables. */ {
 		int i = 0;
@@ -250,6 +251,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 			dive->selected = newDiveSelection.contains(i) == true;
 			if (firstSelectedDive == -1 && dive->selected) {
 				firstSelectedDive = i;
+				break;
 			}
 		}
 	}
@@ -444,6 +446,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
 		if (!dive) { // it's a trip!
+			//TODO: deselect_trip_dives on c-code?
 			if (model->rowCount(index)) {
 				struct dive *child = (struct dive *)model->data(index.child(0, 0), DiveTripModel::DIVE_ROLE).value<void *>();
 				while (child) {
@@ -462,6 +465,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
 		if (!dive) { // it's a trip!
+			//TODO: select_trip_dives on C code?
 			if (model->rowCount(index)) {
 				QItemSelection selection;
 				struct dive *child = (struct dive *)model->data(index.child(0, 0), DiveTripModel::DIVE_ROLE).value<void *>();
@@ -523,7 +527,8 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 
 	dive_trip_t *trip_a = (dive_trip_t *)a.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	dive_trip_t *trip_b = (dive_trip_t *)b.data(DiveTripModel::TRIP_ROLE).value<void *>();
-
+	// TODO: merge_trip on the C code? some part of this needs to stay ( getting the trips from the model,
+	// but not the algorithm.
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 
@@ -538,6 +543,7 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	fixMessyQtModelBehaviour();
 	restoreSelection();
 	mark_divelist_changed(true);
+	//TODO: emit a signal to signalize that the divelist changed?
 }
 
 void DiveListView::mergeTripAbove()
@@ -552,6 +558,7 @@ void DiveListView::mergeTripBelow()
 
 void DiveListView::removeFromTrip()
 {
+	//TODO: move this to C-code.
 	int i;
 	struct dive *d;
 	for_each_dive(i, d) {
@@ -567,11 +574,12 @@ void DiveListView::removeFromTrip()
 
 void DiveListView::newTripAbove()
 {
-	dive_trip_t *trip;
-	int idx;
 	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
+	//TODO: port to c-code.
+	dive_trip_t *trip;
+	int idx;
 	rememberSelection();
 	trip = create_and_hookup_trip_from_dive(d);
 	for_each_dive(idx, d) {
@@ -597,15 +605,17 @@ void DiveListView::addToTripAbove()
 
 void DiveListView::addToTrip(bool below)
 {
-	int idx, delta = (currentOrder == Qt::AscendingOrder) ? -1 : +1;
+	int delta  = (currentOrder == Qt::AscendingOrder) ? -1 : +1;
+	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	rememberSelection();
+
+	//TODO: This part should be moved to C-code.
+	int idx;
 	dive_trip_t *trip = NULL;
 	struct dive *pd = NULL;
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
-	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
-		return;
 	if (below) // Should we add to the trip below instead?
 		delta *= -1;
-	rememberSelection();
+
 	if (d->selected) { // we are right-clicking on one of possibly many selected dive(s)
 		// find the top selected dive, depending on the list order
 		if (delta == 1) {
@@ -637,6 +647,7 @@ void DiveListView::addToTrip(bool below)
 	}
 	trip->expanded = 1;
 	mark_divelist_changed(true);
+	//This part stays at C++ code.
 	reload(currentLayout, false);
 	restoreSelection();
 	fixMessyQtModelBehaviour();
@@ -651,6 +662,7 @@ void DiveListView::markDiveInvalid()
 	for_each_dive(i, d) {
 		if (!d->selected)
 			continue;
+		//TODO: this should be done in the future
 		// now mark the dive invalid... how do we do THAT?
 		// d->invalid = true;
 	}
@@ -669,10 +681,12 @@ void DiveListView::markDiveInvalid()
 
 void DiveListView::deleteDive()
 {
-	int i;
 	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
 	if (!d)
 		return;
+
+	//TODO: port this to C-code.
+	int i;
 	// after a dive is deleted the ones following it move forward in the dive_table
 	// so instead of using the for_each_dive macro I'm using an explicit for loop
 	// to make this easier to understand
@@ -829,6 +843,7 @@ void DiveListView::loadImages()
 	for (int i = 0; i < fileNames.size(); ++i) {
 		if (readfile(fileNames.at(i).toUtf8().data(), &mem) <= 0)
 			continue;
+		//TODO: This inner code should be ported to C-Code.
 		retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
 		free(mem.buffer);
 		if (retval != PARSE_EXIF_SUCCESS)
@@ -836,7 +851,7 @@ void DiveListView::loadImages()
 		imagetime = shiftDialog.epochFromExiv(&exif);
 		if (!imagetime)
 			continue;
-		imagetime += shiftDialog.amount();
+		imagetime += shiftDialog.amount(); // TODO: this should be cached and passed to the C-function
 		int j = 0;
 		struct dive *dive;
 		for_each_dive(j, dive) {

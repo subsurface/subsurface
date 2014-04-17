@@ -469,6 +469,7 @@ void DivePlannerGraphics::drawProfile()
 		plannerModel->deleteTemporaryPlan();
 		return;
 	}
+	//TODO: divedatapoint_list_get_max_depth on C - code?
 	while (dp->next) {
 		if (dp->time && dp->depth > max_depth)
 			max_depth = dp->depth;
@@ -1489,7 +1490,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// We just start with a surface node at time = 0
 	if (!stagingDive)
 		return;
-
+	//TODO: this thingy looks like it could be a good C-based function
 	diveplan.dp = NULL;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
@@ -1559,6 +1560,7 @@ void DivePlannerPointsModel::createPlan()
 		return cancelPlan();
 
 	createTemporaryPlan();
+	//TODO: C-based function here?
 	plan(&diveplan, &cache, &tempDive, isPlanner());
 	copy_cylinders(stagingDive, tempDive);
 	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];

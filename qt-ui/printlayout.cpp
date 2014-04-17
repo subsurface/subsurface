@@ -93,6 +93,7 @@ void PrintLayout::setup()
 }
 
 // go trought the dive table and find how many dives we are a going to print
+// TODO: C function: 'count_selected_dives' or something
 int PrintLayout::estimateTotalDives() const
 {
 	int total = 0, i = 0;

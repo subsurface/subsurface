@@ -40,7 +40,7 @@ static bool is_automatic_fix(struct dive *gpsfix)
 }
 
 #define SAME_GROUP 6 * 3600 // six hours
-
+//TODO: C Code. static functions are not good if we plan to have a test for them.
 static bool merge_locations_into_dives(void)
 {
 	int i, nr = 0, changed = 0;
@@ -94,7 +94,7 @@ static bool merge_locations_into_dives(void)
 	}
 	return changed > 0;
 }
-
+//TODO: C-code.
 static void clear_table(struct dive_table *table)
 {
 	int i;
@@ -103,6 +103,7 @@ static void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
+// TODO: This looks like should be ported to C code. or a big part of it.
 bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
@@ -451,6 +452,7 @@ void SubsurfaceWebServices::setStatusText(int status)
 	ui.status->setText(text);
 }
 
+//TODO: C-Code.
 /* requires that there is a <download> or <error> tag under the <root> tag */
 void SubsurfaceWebServices::download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status)
 {
@@ -467,6 +469,7 @@ void SubsurfaceWebServices::download_dialog_traverse_xml(xmlNodePtr node, unsign
 	}
 }
 
+// TODO: C-Code
 unsigned int SubsurfaceWebServices::download_dialog_parse_response(const QByteArray &xml)
 {
 	xmlNodePtr root;

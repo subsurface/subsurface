@@ -444,7 +444,7 @@ void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
 		}
 	}
 }
-
+//TODO: Move to C
 weight_t string_to_weight(const char *str)
 {
 	const char *end;
@@ -469,6 +469,7 @@ lbs:
 	return weight;
 }
 
+//TODO: Move to C.
 depth_t string_to_depth(const char *str)
 {
 	const char *end;
@@ -492,6 +493,7 @@ ft:
 	return depth;
 }
 
+//TODO: Move to C.
 pressure_t string_to_pressure(const char *str)
 {
 	const char *end;
@@ -515,6 +517,7 @@ psi:
 	return pressure;
 }
 
+//TODO: Move to C.
 /* Imperial cylinder volumes need working pressure to be meaningful */
 volume_t string_to_volume(const char *str, pressure_t workp)
 {
@@ -547,6 +550,7 @@ l:
 	return volume;
 }
 
+//TODO: Move to C.
 fraction_t string_to_fraction(const char *str)
 {
 	const char *end;
@@ -564,6 +568,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
+			//TODO: C-function weigth_system_set_description ?
 			if (!ws->description || gettextFromC::instance()->tr(ws->description) != vString) {
 				// loop over translations to see if one matches
 				int i = -1;

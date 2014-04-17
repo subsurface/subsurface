@@ -391,6 +391,7 @@ void MainWindow::on_actionAddDive_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	// now cheat - create one dive that we use to store the info tab data in
+	//TODO: C-function create_temporary_dive ?
 	struct dive *dive = alloc_dive();
 	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
 	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
