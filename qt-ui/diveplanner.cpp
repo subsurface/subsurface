@@ -72,11 +72,10 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	timeLine->setMaximum(TIME_INITIAL_MAX);
 	timeLine->setTickInterval(10);
 	timeLine->setColor(getColor(TIME_GRID));
-	timeLine->setLine(
-	    fromPercent(10, Qt::Horizontal),
-	    fromPercent(85, Qt::Vertical),
-	    fromPercent(90, Qt::Horizontal),
-	    fromPercent(85, Qt::Vertical));
+	timeLine->setLine(fromPercent(10, Qt::Horizontal),
+			  fromPercent(85, Qt::Vertical),
+			  fromPercent(90, Qt::Horizontal),
+			  fromPercent(85, Qt::Vertical));
 	timeLine->setOrientation(Qt::Horizontal);
 	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
 	timeLine->setTextColor(getColor(TIME_TEXT));
@@ -87,11 +86,10 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	depthLine->setMinimum(0);
 	depthLine->setMaximum(M_OR_FT(40, 120));
 	depthLine->setTickInterval(M_OR_FT(10, 30));
-	depthLine->setLine(
-	    fromPercent(10, Qt::Horizontal),
-	    fromPercent(10, Qt::Vertical),
-	    fromPercent(10, Qt::Horizontal),
-	    fromPercent(85, Qt::Vertical));
+	depthLine->setLine(fromPercent(10, Qt::Horizontal),
+			   fromPercent(10, Qt::Vertical),
+			   fromPercent(10, Qt::Horizontal),
+			   fromPercent(85, Qt::Vertical));
 	depthLine->setOrientation(Qt::Vertical);
 	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
 	depthLine->setColor(getColor(DEPTH_GRID));
@@ -182,7 +180,7 @@ void DivePlannerGraphics::pointInserted(const QModelIndex &parent, int start, in
 	gasChooseBtn->setZValue(10);
 	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	gases << gasChooseBtn;
-	if(plannerModel->recalcQ())
+	if (plannerModel->recalcQ())
 		drawProfile();
 }
 
@@ -457,7 +455,7 @@ QStringList &DivePlannerPointsModel::getGasList()
 
 void DivePlannerGraphics::drawProfile()
 {
-	if(!plannerModel->recalcQ())
+	if (!plannerModel->recalcQ())
 		return;
 	qDeleteAll(lines);
 	lines.clear();
@@ -1074,7 +1072,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			return p.time / 60;
 		case DURATION:
 			if (index.row())
-				return (p.time - divepoints.at(index.row() -1).time) / 60;
+				return (p.time - divepoints.at(index.row() - 1).time) / 60;
 			else
 				return p.time / 60;
 		case GAS:
@@ -1159,7 +1157,7 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 {
-	if(index.column() !=  DURATION)
+	if (index.column() != DURATION)
 		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 	else
 		return QAbstractItemModel::flags(index);
@@ -1240,7 +1238,7 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
 			cyl->gasmix.he.permille = he;
-			if(!o2)
+			if (!o2)
 				cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000;
 			else
 				cyl->depth.mm = 1600 * 1000 / o2 * 10 - 10000;
@@ -1256,7 +1254,7 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 
 int DivePlannerPointsModel::lastEnteredPoint()
 {
-	for (int i = divepoints.count()-1; i >= 0; i--)
+	for (int i = divepoints.count() - 1; i >= 0; i--)
 		if (divepoints.at(i).entered)
 			return i;
 	return -1;
@@ -1322,7 +1320,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		}
 	}
 	bool oldRecalc = setRecalc(false);
-	if (oldRecalc){
+	if (oldRecalc) {
 		QVector<int> computedPoints;
 		for (int i = 0; i < plannerModel->rowCount(); i++)
 			if (!plannerModel->at(i).entered)
@@ -1572,7 +1570,7 @@ void DivePlannerPointsModel::createPlan()
 		// FIXME: The epic assumption that all the cylinders after the first is deco
 		int sac = i ? diveplan.decosac : diveplan.bottomsac;
 		cyl->start.mbar = cyl->type.workingpressure.mbar;
-		if(cyl->type.size.mliter) {
+		if (cyl->type.size.mliter) {
 			int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / (cyl->type.size.mliter / 1000);
 			cyl->end.mbar = cyl->start.mbar - consumption;
 		} else {
