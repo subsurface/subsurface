@@ -102,6 +102,8 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	linux.c
 	#gettextfrommoc should be added because we are using it on the c-code.
 	gettextfromc.cpp
+	#dirk ported some core functionality to c++.
+	qthelper.cpp
 )
 
 #the interface, in C++
@@ -192,7 +194,7 @@ ADD_DEPENDENCIES(subsurface_corelib version)
 
 ENABLE_TESTING()
 ADD_EXECUTABLE( TestUnitConversion tests/testunitconversion.cpp )
-TARGET_LINK_LIBRARIES( TestUnitConversion ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES( TestUnitConversion ${QT_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer subsurface_corelib)
 ADD_TEST( NAME TestUnitConversion COMMAND TestUnitConversion)
 
 ADD_EXECUTABLE( TestProfile tests/testprofile.cpp )

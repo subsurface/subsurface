@@ -9,8 +9,6 @@
 #include <sys/time.h>
 #include <ctype.h>
 
-#include <libxslt/documents.h>
-
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
@@ -44,11 +42,6 @@
 
 // this will create a warning when executing lupdate
 #define translate(_context, arg) gettextFromC::instance()->tr(arg)
-
-const char *default_dive_computer_vendor;
-const char *default_dive_computer_product;
-const char *default_dive_computer_device;
-DiveComputerList dcList;
 
 static QApplication *application = NULL;
 static MainWindow *window = NULL;
@@ -197,34 +190,6 @@ const QString get_dc_nickname(const char *model, uint32_t deviceid)
 		return model;
 }
 
-void set_dc_nickname(struct dive *dive)
-{
-	if (!dive)
-		return;
-
-	struct divecomputer *dc = &dive->dc;
-
-	while (dc) {
-		if (dc->model && *dc->model && dc->deviceid &&
-		    !dcList.getExact(dc->model, dc->deviceid)) {
-			// we don't have this one, yet
-			const DiveComputerNode *existNode = dcList.get(dc->model);
-			if (existNode) {
-				// we already have this model but a different deviceid
-				QString simpleNick(dc->model);
-				if (dc->deviceid == 0)
-					simpleNick.append(" (unknown deviceid)");
-				else
-					simpleNick.append(" (").append(QString::number(dc->deviceid, 16)).append(")");
-				dcList.addDC(dc->model, dc->deviceid, simpleNick);
-			} else {
-				dcList.addDC(dc->model, dc->deviceid);
-			}
-		}
-		dc = dc->next;
-	}
-}
-
 QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
@@ -358,55 +323,6 @@ double get_screen_dpi()
 	return mydesk->physicalDpiX();
 }
 
-int is_default_dive_computer(const char *vendor, const char *product)
-{
-	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
-	       default_dive_computer_product && !strcmp(product, default_dive_computer_product);
-}
-
-int is_default_dive_computer_device(const char *name)
-{
-	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
-}
-
-void set_default_dive_computer(const char *vendor, const char *product)
-{
-	QSettings s;
-
-	if (!vendor || !*vendor)
-		return;
-	if (!product || !*product)
-		return;
-	if (is_default_dive_computer(vendor, product))
-		return;
-	if (default_dive_computer_vendor)
-		free((void *)default_dive_computer_vendor);
-	if (default_dive_computer_product)
-		free((void *)default_dive_computer_product);
-	default_dive_computer_vendor = strdup(vendor);
-	default_dive_computer_product = strdup(product);
-	s.beginGroup("DiveComputer");
-	s.setValue("dive_computer_vendor", vendor);
-	s.setValue("dive_computer_product", product);
-	s.endGroup();
-}
-
-void set_default_dive_computer_device(const char *name)
-{
-	QSettings s;
-
-	if (!name || !*name)
-		return;
-	if (is_default_dive_computer_device(name))
-		return;
-	if (default_dive_computer_device)
-		free((void *)default_dive_computer_device);
-	default_dive_computer_device = strdup(name);
-	s.beginGroup("DiveComputer");
-	s.setValue("dive_computer_device", name);
-	s.endGroup();
-}
-
 QString getSubsurfaceDataPath(QString folderToFind)
 {
 	QString execdir;
@@ -438,28 +354,6 @@ QString getSubsurfaceDataPath(QString folderToFind)
 	if (folder.exists())
 		return folder.absolutePath();
 	return QString("");
-}
-
-void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
-{
-	dcList.addDC(model, deviceid, nickname, serial, firmware);
-}
-
-bool compareDC(const DiveComputerNode &a, const DiveComputerNode &b)
-{
-	return a.deviceId < b.deviceId;
-}
-
-void call_for_each_dc(void *f, void (*callback)(void *, const char *, uint32_t,
-						const char *, const char *, const char *))
-{
-	QList<DiveComputerNode> values = dcList.dcMap.values();
-	qSort(values.begin(), values.end(), compareDC);
-	for (int i = 0; i < values.size(); i++) {
-		const DiveComputerNode *node = &values.at(i);
-		callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
-			 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
-	}
 }
 
 int gettimezoneoffset()
@@ -529,37 +423,4 @@ QString get_trip_date_string(timestamp_t when, int nr)
 		return translate("gettextFromC", "%1 %2 (1 dive)")
 		    .arg(monthname(tm.tm_mon))
 		    .arg(tm.tm_year + 1900);
-}
-
-static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
-{
-	QFile f(QLatin1String(":/xslt/") + (const char *)uri);
-	if (!f.open(QIODevice::ReadOnly))
-		return NULL;
-
-	/* Load and parse the data */
-	QByteArray source = f.readAll();
-
-	xmlDocPtr doc = xmlParseMemory(source, source.size());
-	return doc;
-}
-
-xsltStylesheetPtr get_stylesheet(const char *name)
-{
-	// this needs to be done only once, but doesn't hurt to run every time
-	xsltSetLoaderFunc(get_stylesheet_doc);
-
-	// get main document:
-	xmlDocPtr doc = get_stylesheet_doc((const xmlChar *)name, NULL, 0, NULL, XSLT_LOAD_START);
-	if (!doc)
-		return NULL;
-
-	//	xsltSetGenericErrorFunc(stderr, NULL);
-	xsltStylesheetPtr xslt = xsltParseStylesheetDoc(doc);
-	if (!xslt) {
-		xmlFreeDoc(doc);
-		return NULL;
-	}
-
-	return xslt;
 }

@@ -20,6 +20,7 @@ void TestUnitConversion::testUnitConversions()
 	QCOMPARE(IS_FP_SAME(bar_to_atm(1.013), 1), true);
 	QCOMPARE(IS_FP_SAME(mbar_to_atm(1013), 1), true);
 	QCOMPARE(mbar_to_PSI(1013), (int)15);
+	get_units();
 }
 
 QTEST_MAIN(TestUnitConversion)
