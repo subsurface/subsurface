@@ -41,135 +41,6 @@ QString dpGasToStr(const divedatapoint &p)
 	return gasToStr(p.o2, p.he);
 }
 
-static DivePlannerDisplay *plannerDisplay = DivePlannerDisplay::instance();
-
-DivePlannerDisplay::DivePlannerDisplay(QObject *parent) : QAbstractTableModel(parent)
-{
-}
-
-DivePlannerDisplay *DivePlannerDisplay::instance()
-{
-	static QScopedPointer<DivePlannerDisplay> self(new DivePlannerDisplay());
-	return self.data();
-}
-
-int DivePlannerDisplay::size()
-{
-	return computedPoints.size();
-}
-
-int DivePlannerDisplay::columnCount(const QModelIndex &parent) const
-{
-	return COLUMNS;
-}
-
-QVariant DivePlannerDisplay::data(const QModelIndex &index, int role) const
-{
-	if (role == Qt::DisplayRole) {
-		computedPoint p = computedPoints.at(index.row());
-		switch (index.column()) {
-		case COMPUTED_DEPTH:
-			return rint(get_depth_units(p.computedDepth, NULL, NULL));
-		case COMPUTED_DURATION:
-			return p.computedTime / 60;
-		}
-	} else if (role == Qt::DecorationRole) {
-		switch (index.column()) {
-		case REMOVE:
-			return QIcon(":trash");
-		}
-	} else if (role == Qt::FontRole) {
-		return defaultModelFont();
-	}
-	return QVariant();
-}
-
-bool DivePlannerDisplay::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (role == Qt::EditRole) {
-		computedPoint &p = computedPoints[index.row()];
-		switch (index.column()) {
-		case COMPUTED_DEPTH:
-			p.computedDepth = units_to_depth(value.toInt());
-			break;
-		case COMPUTED_DURATION:
-			p.computedTime = value.toInt() * 60;
-			break;
-		}
-	}
-	return QAbstractItemModel::setData(index, value, role);
-}
-
-QVariant DivePlannerDisplay::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-		switch (section) {
-		case COMPUTED_DEPTH:
-			return tr("Comp. Depth");
-		case COMPUTED_DURATION:
-			return tr("Comp. Duration");
-		}
-	} else if (role == Qt::FontRole) {
-		return defaultModelFont();
-	}
-	return QVariant();
-}
-
-Qt::ItemFlags DivePlannerDisplay::flags(const QModelIndex &index) const
-{
-	return QAbstractItemModel::flags(index);
-}
-
-int DivePlannerDisplay::rowCount(const QModelIndex &parent) const
-{
-	return computedPoints.size();
-}
-
-struct computedPoint DivePlannerDisplay::at(int row)
-{
-	return computedPoints.at(row);
-}
-
-void DivePlannerDisplay::clear()
-{
-	if (rowCount() > 0) {
-		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-		computedPoints.clear();
-		endRemoveRows();
-	}
-}
-
-void DivePlannerDisplay::removeStops()
-{
-	if (rowCount() > 0) {
-		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-		endRemoveRows();
-	}
-}
-
-void DivePlannerDisplay::addStops()
-{
-	int rows = computedPoints.size();
-	if (rows > 0) {
-		beginInsertRows(QModelIndex(), 0, rows - 1);
-		endInsertRows();
-	}
-}
-
-void DivePlannerDisplay::insertPoint(const struct computedPoint &p)
-{
-	computedPoints.append(p);
-}
-
-void DivePlannerDisplay::remove(const QModelIndex &index)
-{
-	if (index.column() != REMOVE)
-		return;
-
-	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	endRemoveRows();
-}
-
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
 DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent),
@@ -311,7 +182,8 @@ void DivePlannerGraphics::pointInserted(const QModelIndex &parent, int start, in
 	gasChooseBtn->setZValue(10);
 	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	gases << gasChooseBtn;
-	drawProfile();
+	if(plannerModel->recalcQ())
+		drawProfile();
 }
 
 void DivePlannerGraphics::keyDownAction()
@@ -585,6 +457,8 @@ QStringList &DivePlannerPointsModel::getGasList()
 
 void DivePlannerGraphics::drawProfile()
 {
+	if(!plannerModel->recalcQ())
+		return;
 	qDeleteAll(lines);
 	lines.clear();
 
@@ -598,7 +472,7 @@ void DivePlannerGraphics::drawProfile()
 		return;
 	}
 	while (dp->next) {
-		if (dp->depth > max_depth)
+		if (dp->time && dp->depth > max_depth)
 			max_depth = dp->depth;
 		dp = dp->next;
 	}
@@ -639,7 +513,16 @@ void DivePlannerGraphics::drawProfile()
 	QPolygonF poly;
 	poly.append(QPointF(lastx, lasty));
 
-	plannerDisplay->clear();
+	bool oldRecalc = plannerModel->setRecalc(false);
+	QVector<int> computedPoints;
+	for (int i = 0; i < plannerModel->rowCount(); i++)
+		if (!plannerModel->at(i).entered)
+			computedPoints.push_back(i);
+	plannerModel->removeSelectedPoints(computedPoints);
+
+	int lastdepth = 0;
+	int lasto2 = 0;
+	int lasthe = 0;
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		if (dp->time == 0) // magic entry for available tank
 			continue;
@@ -648,21 +531,22 @@ void DivePlannerGraphics::drawProfile()
 		if (!dp->entered) {
 			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
 			item->setPen(QPen(QBrush(Qt::red), 0));
+
 			scene()->addItem(item);
 			lines << item;
 			if (dp->depth) {
-				qDebug() << "Time: " << dp->time / 60 << " depth: " << dp->depth / 1000;
-				computedPoint p(dp->time, dp->depth);
-				plannerDisplay->insertPoint(p);
+				if (dp->depth == lastdepth || dp->o2 != dp->next->o2 || dp->he != dp->next->he)
+					plannerModel->addStop(dp->depth, dp->time, dp->o2, dp->he, 0, false);
+				lastdepth = dp->depth;
+				lasto2 = dp->o2;
+				lasthe = dp->he;
 			}
 		}
 		lastx = xpos;
 		lasty = ypos;
 		poly.append(QPointF(lastx, lasty));
 	}
-
-	qDebug() << " ";
-	plannerDisplay->addStops();
+	plannerModel->setRecalc(oldRecalc);
 
 	diveBg->setPolygon(poly);
 	QRectF b = poly.boundingRect();
@@ -1069,9 +953,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.setupUi(this);
 	ui.tableWidget->setTitle(tr("Dive Planner Points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
+	DivePlannerPointsModel::instance()->setRecalc(true);
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-	ui.tableWidgetComp->setTitle(tr("Computed Waypoints"));
-	ui.tableWidgetComp->setModel(DivePlannerDisplay::instance());
 	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
 	QTableView *view = ui.cylinderTableWidget->view();
@@ -1090,9 +973,14 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 		GasSelectionModel::instance(), SLOT(repopulate()));
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
 		GasSelectionModel::instance(), SLOT(repopulate()));
+	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, int, int)),
+		plannerModel, SLOT(drawProfile()));
+	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex, int, int)),
+		plannerModel, SLOT(drawProfile()));
+	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
+		plannerModel, SLOT(drawProfile()));
 
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
-	ui.tableWidgetComp->setBtnToolTip(tr("This does nothing, and should be removed"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
 	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
@@ -1156,6 +1044,18 @@ bool DivePlannerPointsModel::isPlanner()
 	return mode == PLAN;
 }
 
+bool DivePlannerPointsModel::setRecalc(bool rec)
+{
+	bool old = recalc;
+	recalc = rec;
+	return old;
+}
+
+bool DivePlannerPointsModel::recalcQ()
+{
+	return recalc;
+}
+
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 {
 	return COLUMNS;
@@ -1170,9 +1070,15 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			return (double)p.po2 / 1000;
 		case DEPTH:
 			return rint(get_depth_units(p.depth, NULL, NULL));
-		case DURATION:
+		case RUNTIME:
 			return p.time / 60;
+		case DURATION:
+			if (index.row())
+				return (p.time - divepoints.at(index.row() -1).time) / 60;
+			else
+				return p.time / 60;
 		case GAS:
+
 			return dpGasToStr(p);
 		}
 	} else if (role == Qt::DecorationRole) {
@@ -1181,7 +1087,13 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			return QIcon(":trash");
 		}
 	} else if (role == Qt::FontRole) {
-		return defaultModelFont();
+		if (divepoints.at(index.row()).entered) {
+			return defaultModelFont();
+		} else {
+			QFont font = defaultModelFont();
+			font.setBold(true);
+			return font;
+		}
 	}
 	return QVariant();
 }
@@ -1196,8 +1108,14 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		case DEPTH:
 			p.depth = units_to_depth(value.toInt());
 			break;
-		case DURATION:
+		case RUNTIME:
 			p.time = value.toInt() * 60;
+			break;
+		case DURATION:
+			if (index.row())
+				p.time = value.toInt() * 60 + divepoints[index.row() - 1].time;
+			else
+				p.time = value.toInt() * 60;
 			break;
 		case CCSETPOINT: {
 			int po2 = 0;
@@ -1224,6 +1142,8 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 		switch (section) {
 		case DEPTH:
 			return tr("Final Depth");
+		case RUNTIME:
+			return tr("Run time");
 		case DURATION:
 			return tr("Duration");
 		case GAS:
@@ -1239,7 +1159,10 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 {
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	if(index.column() !=  DURATION)
+		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	else
+		return QAbstractItemModel::flags(index);
 }
 
 int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
@@ -1317,6 +1240,10 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
 			cyl->gasmix.he.permille = he;
+			if(!o2)
+				cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000;
+			else
+				cyl->depth.mm = 1600 * 1000 / o2 * 10 - 10000;
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}
@@ -1327,12 +1254,20 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 	return false;
 }
 
+int DivePlannerPointsModel::lastEnteredPoint()
+{
+	for (int i = divepoints.count()-1; i >= 0; i--)
+		if (divepoints.at(i).entered)
+			return i;
+	return -1;
+}
+
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint, bool entered)
 {
 	int row = divepoints.count();
 	if (seconds == 0 && milimeters == 0 && row != 0) {
 		/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
-		struct divedatapoint &t = divepoints.last();
+		const divedatapoint t = divepoints.at(lastEnteredPoint());
 		milimeters = t.depth;
 		seconds = t.time + 600; // 10 minutes.
 		o2 = t.o2;
@@ -1386,6 +1321,15 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 			}
 		}
 	}
+	bool oldRecalc = setRecalc(false);
+	if (oldRecalc){
+		QVector<int> computedPoints;
+		for (int i = 0; i < plannerModel->rowCount(); i++)
+			if (!plannerModel->at(i).entered)
+				computedPoints.push_back(i);
+		plannerModel->removeSelectedPoints(computedPoints);
+	}
+	setRecalc(oldRecalc);
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
@@ -1478,6 +1422,8 @@ bool DivePlannerPointsModel::tankInUse(int o2, int he)
 		divedatapoint &p = divepoints[j];
 		if (p.time == 0) // special entries that hold the available gases
 			continue;
+		if (!p.entered) // removing deco gases is ok
+			continue;
 		if ((p.o2 == o2 && p.he == he) ||
 		    (is_air(p.o2, p.he) && is_air(o2, he)))
 			return true;
@@ -1552,8 +1498,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		p.entered = true;
-		plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2, true);
+		if (p.entered)
+			plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2, true);
 	}
 	char *cache = NULL;
 	tempDive = NULL;
@@ -1626,10 +1572,14 @@ void DivePlannerPointsModel::createPlan()
 		// FIXME: The epic assumption that all the cylinders after the first is deco
 		int sac = i ? diveplan.decosac : diveplan.bottomsac;
 		cyl->start.mbar = cyl->type.workingpressure.mbar;
-		int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / (cyl->type.size.mliter / 1000);
-		cyl->end.mbar = cyl->start.mbar - consumption;
+		if(cyl->type.size.mliter) {
+			int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / (cyl->type.size.mliter / 1000);
+			cyl->end.mbar = cyl->start.mbar - consumption;
+		} else {
+			/* Cylider without a proper size are easily emptied */
+			cyl->end.mbar = 0;
+		}
 	}
-
 	mark_divelist_changed(true);
 
 	// Remove and clean the diveplan, so we don't delete

@@ -12,48 +12,6 @@
 class QListView;
 class QModelIndex;
 
-struct computedPoint {
-	int computedTime;
-	unsigned int computedDepth;
-	computedPoint(int computedTime_, unsigned int computedDepth_) {
-		computedTime = computedTime_;
-		computedDepth = computedDepth_;
-	};
-	computedPoint() {};
-};
-
-class DivePlannerDisplay : public QAbstractTableModel {
-	Q_OBJECT
-private:
-	explicit DivePlannerDisplay(QObject *parent = 0);
-	QVector<computedPoint> computedPoints;
-
-public:
-	static DivePlannerDisplay *instance();
-	enum Sections {
-		REMOVE,
-		COMPUTED_DEPTH,
-		COMPUTED_DURATION,
-		COLUMNS
-	};
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-	void clear();
-	computedPoint at(int row);
-	int size();
-	void removeStops();
-	void addStops();
-	void insertPoint(const struct computedPoint &p);
-
-public
-slots:
-	void remove(const QModelIndex &index);
-};
-
 class DivePlannerPointsModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
@@ -62,6 +20,7 @@ public:
 		REMOVE,
 		DEPTH,
 		DURATION,
+		RUNTIME,
 		GAS,
 		CCSETPOINT,
 		COLUMNS
@@ -83,6 +42,8 @@ public:
 	void createSimpleDive();
 	void clear();
 	Mode currentMode() const;
+	bool setRecalc(bool recalc);
+	bool recalcQ();
 	void tanksUpdated();
 	void rememberTanks();
 	bool tankInUse(int o2, int he);
@@ -96,6 +57,8 @@ public:
 	struct diveplan getDiveplan();
 	QStringList &getGasList();
 	QVector<QPair<int, int> > collectGases(dive *d);
+	int lastEnteredPoint();
+	static bool addingDeco;
 
 public
 slots:
@@ -115,6 +78,7 @@ slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
 	void restoreBackupDive();
+
 signals:
 	void planCreated();
 	void planCanceled();
@@ -124,6 +88,7 @@ private:
 	bool addGas(int o2, int he);
 	struct diveplan diveplan;
 	Mode mode;
+	bool recalc;
 	QVector<divedatapoint> divepoints;
 	struct dive *tempDive;
 	struct dive backupDive;

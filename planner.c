@@ -13,7 +13,7 @@
 #include "planner.h"
 #include "gettext.h"
 
-unsigned int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
+int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
 				  90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
@@ -99,6 +99,18 @@ void get_gas_string(int o2, int he, char *text, int len)
 		snprintf(text, len, "(%d/%d)", (o2 + 5) / 10, (he + 5) / 10);
 }
 
+double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
+{
+	int j;
+	double tissue_tolerance;
+
+	for (j = t0; j < t1; j++) {
+		int depth = interpolate(d0, d1, j - t0, t1 - t0);
+		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, ppo2, dive);
+	}
+	return tissue_tolerance;
+}
+
 /* returns the tissue tolerance at the end of this (partial) dive */
 double tissue_at_end(struct dive *dive, char **cached_datap)
 {
@@ -133,43 +145,13 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		}
 		if (i > 0)
 			lastdepth = psample->depth.mm;
-		for (j = t0; j < t1; j++) {
-			int depth = interpolate(lastdepth, sample->depth.mm, j - t0, t1 - t0);
-			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-						       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
-		}
+		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth.mm, &dive->cylinder[gasidx].gasmix, sample->po2);
 		psample = sample;
 		t0 = t1;
 	}
 	return tissue_tolerance;
 }
 
-/* how many seconds until we can ascend to the next stop? */
-static int time_at_last_depth(struct dive *dive, int o2, int he, unsigned int next_stop, char **cached_data_p)
-{
-	int depth, gasidx;
-	double surface_pressure, tissue_tolerance;
-	int wait = 0;
-	struct sample *sample;
-
-	if (!dive)
-		return 0;
-	surface_pressure = dive->dc.surface_pressure.mbar / 1000.0;
-	tissue_tolerance = tissue_at_end(dive, cached_data_p);
-	sample = &dive->dc.sample[dive->dc.samples - 1];
-	depth = sample->depth.mm;
-	gasidx = get_gasidx(dive, o2, he);
-	if (gasidx == -1) {
-		fprintf(stderr, "cannot find gas (%d/%d), using first gas\n", o2, he);
-		gasidx = 0;
-	}
-	while (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) > next_stop) {
-		wait++;
-		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					       &dive->cylinder[gasidx].gasmix, 1, sample->po2, dive);
-	}
-	return wait;
-}
 
 /* if a default cylinder is set, use that */
 void fill_default_cylinder(cylinder_t *cyl)
@@ -196,6 +178,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 		if (ti->psi)
 			cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
 	}
+	cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000; // MOD of air
 }
 
 static int add_gas(struct dive *dive, int o2, int he)
@@ -389,18 +372,18 @@ struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, 
 }
 
 struct gaschanges {
-	unsigned int depth;
+	int depth;
 	int gasidx;
 };
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr)
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth)
 {
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
 
 	while (dp) {
-		if (dp->time == 0) {
+		if (dp->time == 0 && dp->depth <= depth) {
 			int i = 0, j = 0;
 			nr++;
 			gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
@@ -436,15 +419,15 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 }
 
 /* sort all the stops into one ordered list */
-static unsigned int *sort_stops(unsigned int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	unsigned int *stoplevels = malloc(total * sizeof(unsigned int));
+	int *stoplevels = malloc(total * sizeof(int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
-		memcpy(stoplevels, dstops, dnr * sizeof(unsigned int));
+		memcpy(stoplevels, dstops, dnr * sizeof(int));
 		return stoplevels;
 	}
 	i = total - 1;
@@ -586,17 +569,29 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 }
 #endif
 
+int ascend_velocity(int depth)
+{
+	/* We need to make this configurable */
+	return 10000/60;
+}
+
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, bool add_deco)
 {
 	struct dive *dive;
 	struct sample *sample;
 	int wait_time, o2, he, po2;
 	int transitiontime, gi;
-	unsigned int stopidx, depth, ceiling;
+	int current_cylinder;
+	unsigned int stopidx;
+	int depth, ceiling;
 	double tissue_tolerance;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
-	unsigned int *stoplevels = NULL;
+	int *stoplevels = NULL;
+	char *trial_cache = NULL;
+	bool stopping = false;
+	bool clear_to_ascend;
+	int clock, previous_point_time;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -614,6 +609,10 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	he = dive->cylinder[0].gasmix.he.permille;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
+	if ((current_cylinder = get_gasidx(dive, o2, he)) == -1) {
+		report_error(translate("gettextFromC", "Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
+		current_cylinder = 0;
+	}
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 
 	/* if all we wanted was the dive just get us back to the surface */
@@ -629,90 +628,102 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	}
 
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
-	ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
+
 #if DEBUG_PLAN & 4
 	printf("gas %d/%d\n", o2, he);
 	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
 #endif
-	if (depth < ceiling) /* that's not good... */
-		depth = ceiling;
-	if (depth == 0 && ceiling == 0) /* we are done here */
-		goto done;
+
+	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth);
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
-		if (decostoplevels[stopidx] >= ceiling)
+		if (decostoplevels[stopidx] >= depth)
 			break;
 	if (stopidx > 0)
 		stopidx--;
-
-	/* so now we know the first decostop level above us
-	 * NOTE, this could be the surface or a long list of potential stops
-	 * we do NOT start only at the ceiling, as the ceiling may come down
-	 * further during the ascent.
-	 * Next we need to figure out if there are better gases available
-	 * and at which depths we are supposed to switch to them */
-	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr);
 	stoplevels = sort_stops(decostoplevels, stopidx + 1, gaschanges, gaschangenr);
-
-	gi = gaschangenr - 1;
 	stopidx += gaschangenr;
-	if (depth > stoplevels[stopidx]) {
-		/* right now all the transitions are at 30ft/min - this needs to be configurable */
-		transitiontime = (depth - stoplevels[stopidx]) / 150;
-#if DEBUG_PLAN & 2
-		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx] / 1000.0);
-#endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx], o2, he, po2, false);
-		/* re-create the dive */
-		delete_single_dive(dive_table.nr - 1);
-		*divep = dive = create_dive_from_plan(diveplan);
-		if (!dive)
-			goto error_exit;
-		record_dive(dive);
-	}
-	while (stopidx > 0) { /* this indicates that we aren't surfacing directly */
-		/* if we are in a double-step, eg, when 3m/10ft stop is disabled,
-		 * just skip the first stop at that depth */
-		if (stoplevels[stopidx] == stoplevels[stopidx - 1]) {
-			stopidx--;
-			continue;
-		}
+
+	clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
+	gi = gaschangenr - 1;
+
+	while (1) {
+		/* We will break out when we hit the surface */
+		do {
+			/* Ascend in one second steps to next stop depth */
+			int deltad = ascend_velocity(depth);
+			if (depth - deltad < stoplevels[stopidx])
+				deltad = depth - stoplevels[stopidx];
+
+			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[current_cylinder].gasmix, 1, po2, dive);
+			++clock;
+			depth -= deltad;
+		} while (depth > stoplevels[stopidx]);
+
+		if (depth <= 0)
+			break;	/* We are at the surface */
+
+
 		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
-			o2 = dive->cylinder[gaschanges[gi].gasidx].gasmix.o2.permille;
-			he = dive->cylinder[gaschanges[gi].gasidx].gasmix.he.permille;
+			plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+			previous_point_time = clock;
+			stopping = true;
+
+			current_cylinder = gaschanges[gi].gasidx;
+			o2 = dive->cylinder[current_cylinder].gasmix.o2.permille;
+			he = dive->cylinder[current_cylinder].gasmix.he.permille;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-			       (o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);
+				       (o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 			gi--;
 		}
-		wait_time = time_at_last_depth(dive, o2, he, stoplevels[stopidx - 1], cached_datap);
-		/* typically deco plans are done in one minute increments; we may want to
-		 * make this configurable at some point */
-		wait_time = ((wait_time + 59) / 60) * 60;
-#if DEBUG_PLAN & 2
-		tissue_tolerance = tissue_at_end(dive, cached_datap);
-		ceiling = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1);
-		printf("waittime %d:%02d at depth %5.2lfm; ceiling %5.2lfm\n", FRACTION(wait_time, 60),
-		       stoplevels[stopidx] / 1000.0, ceiling / 1000.0);
-#endif
-		if (wait_time)
-			plan_add_segment(diveplan, wait_time, stoplevels[stopidx], o2, he, po2, false);
-		/* right now all the transitions are at 30ft/min - this needs to be configurable */
-		transitiontime = (stoplevels[stopidx] - stoplevels[stopidx - 1]) / 150;
-#if DEBUG_PLAN & 2
-		printf("transitiontime %d:%02d to depth %5.2lfm\n", FRACTION(transitiontime, 60), stoplevels[stopidx - 1] / 1000.0);
-#endif
-		plan_add_segment(diveplan, transitiontime, stoplevels[stopidx - 1], o2, he, po2, false);
-		/* re-create the dive */
-		delete_single_dive(dive_table.nr - 1);
-		*divep = dive = create_dive_from_plan(diveplan);
-		if (!dive)
-			goto error_exit;
-		record_dive(dive);
-		stopidx--;
-	}
 
-done:
+		/* trial ascend */
+		--stopidx;
+		int trial_depth = depth;
+		cache_deco_state(tissue_tolerance, &trial_cache);
+		while(1) {
+			/* Try to ascend to next stop, go back and wait if we hit the ceiling on the way */
+			clear_to_ascend = true;
+			while (trial_depth > stoplevels[stopidx]) {
+				int deltad = ascend_velocity(trial_depth);
+				tissue_tolerance = add_segment(depth_to_mbar(trial_depth, dive) / 1000.0, &dive->cylinder[current_cylinder].gasmix, 1, po2, dive);
+				if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) > trial_depth - deltad){
+					/* We should have stopped */
+					clear_to_ascend = false;
+					break;
+				}
+				trial_depth -= deltad;
+			}
+			restore_deco_state(trial_cache);
+			/* The next stop is clear */
+			if(clear_to_ascend)
+				break;
+
+			/* Wait a minute */
+			if (!stopping) {
+				plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+				previous_point_time = clock;
+				stopping = true;
+			}
+			tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, &dive->cylinder[current_cylinder].gasmix, 60, po2, dive);
+			cache_deco_state(tissue_tolerance, &trial_cache);
+			clock += 60;
+			trial_depth = depth;
+		}
+		if (stopping) {
+			plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+			previous_point_time = clock;
+			stopping = false;
+		}
+
+	}
+	plan_add_segment(diveplan, clock - previous_point_time, 0, o2, he, po2, false);
+	delete_single_dive(dive_table.nr - 1);
+	*divep = dive = create_dive_from_plan(diveplan);
+	if (!dive)
+		goto error_exit;
+	record_dive(dive);
 
 #if DO_WE_WANT_THIS_IN_QT
 	add_plan_to_notes(diveplan, dive);
