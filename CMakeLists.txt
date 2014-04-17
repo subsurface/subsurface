@@ -100,6 +100,8 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	uemis.c
 	uemis-downloader.c
 	linux.c
+	#gettextfrommoc should be added because we are using it on the c-code.
+	gettextfromc.cpp
 )
 
 #the interface, in C++
@@ -152,7 +154,6 @@ SET(SUBSURFACE_PROFILE_LIB_SRCS
 #the main app.
 SET(SUBSURFACE_APP
 	main.cpp
-	gettextfromc.cpp
 	qt-gui.cpp
 	qthelper.cpp
 )
@@ -193,3 +194,7 @@ ENABLE_TESTING()
 ADD_EXECUTABLE( TestUnitConversion tests/testunitconversion.cpp )
 TARGET_LINK_LIBRARIES( TestUnitConversion ${QT_LIBRARIES})
 ADD_TEST( NAME TestUnitConversion COMMAND TestUnitConversion)
+
+ADD_EXECUTABLE( TestProfile tests/testprofile.cpp )
+TARGET_LINK_LIBRARIES( TestProfile ${QT_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer subsurface_corelib)
+ADD_TEST( NAME TestProfile COMMAND TestProfile)

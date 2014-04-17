@@ -895,9 +895,6 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 
 #define ascii_strtod(str, ptr) strtod_flags(str, ptr, STRTOD_ASCII)
 
-extern short save_userid_local;
-extern char* userid;
-
 extern void set_save_userid_local(short value);
 extern void set_userid(char* user_id);
 

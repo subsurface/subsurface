@@ -2,6 +2,7 @@
 /* maintains the internal dive list structure */
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <limits.h>
 #include "gettext.h"
 #include "dive.h"
@@ -2188,3 +2189,17 @@ timestamp_t get_times()
 	}
 	return dive->when;
 }
+
+#define MAX_USERID_SIZE 32
+void set_save_userid_local(short value)
+{
+	prefs.save_userid_local = value;
+}
+
+void set_userid(char *rUserId)
+{
+	prefs.userid = (char *) malloc(MAX_USERID_SIZE);
+	if (prefs.userid && rUserId)
+		strcpy(prefs.userid, rUserId);
+}
+#undef MAX_USERID_SIZE

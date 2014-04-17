@@ -861,7 +861,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 
 void try_to_fill_userid(const char *name, char *buf)
 {
-	if (save_userid_local)
+	if (prefs.save_userid_local)
 		set_userid(buf);
 }
 

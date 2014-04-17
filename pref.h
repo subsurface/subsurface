@@ -43,6 +43,8 @@ struct preferences {
 	short show_average_depth;
 	short zoomed_plot;
 	short hrgraph;
+	short save_userid_local;
+	char *userid;
 };
 enum unit_system_values {
 	METRIC,

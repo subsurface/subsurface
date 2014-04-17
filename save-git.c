@@ -681,8 +681,8 @@ static struct dir *mktree(struct dir *dir, const char *fmt, ...)
 static void save_userid(void *_b)
 {
 	struct membuffer *b = _b;
-	if (save_userid_local)
-		put_format(b, "userid %30s", userid);
+	if (prefs.save_userid_local)
+		put_format(b, "userid %30s", prefs.userid);
 }
 
 static void save_one_device(void *_b, const char *model, uint32_t deviceid,
