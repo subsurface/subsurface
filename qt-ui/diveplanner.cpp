@@ -1404,6 +1404,7 @@ void DivePlannerPointsModel::cancelPlan()
 		free(stagingDive);
 	setPlanMode(NOTHING);
 	stagingDive = NULL;
+	diveplan.dp = NULL;
 	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
 }
