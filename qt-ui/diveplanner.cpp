@@ -1044,6 +1044,9 @@ bool DivePlannerPointsModel::isPlanner()
 	return mode == PLAN;
 }
 
+/* When the planner adds deco stops to the model, adding those should not trigger a new deco calculation.
+ * We thus start the planner only when recalc is true. */
+
 bool DivePlannerPointsModel::setRecalc(bool rec)
 {
 	bool old = recalc;
@@ -1245,6 +1248,8 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
 			cyl->gasmix.he.permille = he;
+			/* The depth to change to that gas is given by the depth where its pO2 is 1.6 bar.
+			 * The user should be able to change this depth manually. */
 			if (!o2)
 				cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000;
 			else
@@ -1326,6 +1331,8 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 			}
 		}
 	}
+
+	// Get rid of deco stops before adding waypoints
 	bool oldRecalc = setRecalc(false);
 	if (oldRecalc) {
 		QVector<int> computedPoints;
@@ -1582,7 +1589,8 @@ void DivePlannerPointsModel::createPlan()
 			int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / (cyl->type.size.mliter / 1000);
 			cyl->end.mbar = cyl->start.mbar - consumption;
 		} else {
-			/* Cylider without a proper size are easily emptied */
+			// Cylinders without a proper size are easily emptied.
+			// Don't attempt to to calculate the infinite pressure drop.
 			cyl->end.mbar = 0;
 		}
 	}
