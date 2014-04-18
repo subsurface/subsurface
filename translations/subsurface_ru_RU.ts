@@ -39,7 +39,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="71"/>
         <source>Switch at</source>
-        <translation type="unfinished"/>
+        <translation>Переключить на</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="162"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>назамедлительно добавить погружение(-я) к поездке внизу</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="749"/>
@@ -516,7 +516,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1154"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Время исполнения</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1156"/>
@@ -733,17 +733,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>не удалось создать ZIP файл для загрузки: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %s</source>
-        <translation type="unfinished"/>
+        <translation>невозможно создать временный файл: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %s</source>
-        <translation type="unfinished"/>
+        <translation>внутренняя ошибка: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
@@ -1343,7 +1343,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
         <source>Show/hide heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Показать/скрыть пульс</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
@@ -1368,12 +1368,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="714"/>
         <source>Export HTML World Map</source>
-        <translation type="unfinished"/>
+        <translation>Экспортировать HTML карту мира</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="717"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="722"/>
@@ -1483,7 +1483,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="945"/>
         <source>&amp;Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Проверить обновления</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="725"/>
@@ -1735,12 +1735,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="288"/>
         <source>Export World Map</source>
-        <translation type="unfinished"/>
+        <translation>Экспортировать карту мира</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>HTML files (*.html)</source>
-        <translation type="unfinished"/>
+        <translation>HTML файлы (*.html)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="438"/>
@@ -1848,17 +1848,17 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="270"/>
         <source>Subsurface Webservice</source>
-        <translation type="unfinished"/>
+        <translation>Веб-сервис Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="276"/>
         <source>Default User ID</source>
-        <translation type="unfinished"/>
+        <translation>ID пользователя по умолчанию</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="287"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить ID пользователя локально?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
@@ -2018,12 +2018,12 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/preferences.ui" line="668"/>
         <source>Show non-used cylinders in Equipment Tab</source>
-        <translation type="unfinished"/>
+        <translation>Показать неиспользованные балоны в табе оборудования</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="679"/>
         <source>show average depth</source>
-        <translation type="unfinished"/>
+        <translation>показать среднюю глубину</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="731"/>
@@ -2305,7 +2305,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="719"/>
         <source>Edit name</source>
-        <translation type="unfinished"/>
+        <translation>Редактировать имя</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="733"/>
@@ -2315,32 +2315,32 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide events</source>
-        <translation type="unfinished"/>
+        <translation>Скрыть событие</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide all %1 events?</source>
-        <translation type="unfinished"/>
+        <translation>Спрятать все %1 события?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="776"/>
         <source>Remove the selected event?</source>
-        <translation type="unfinished"/>
+        <translation>Удалить выбранное событие?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="777"/>
         <source>%1 @ %2:%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 @ %2:%3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="832"/>
         <source>Edit name of bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Редактировать имя закладки</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="833"/>
         <source>Custom name:</source>
-        <translation type="unfinished"/>
+        <translation>Имя:</translation>
     </message>
 </context>
 <context>
@@ -2462,18 +2462,18 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="72"/>
         <source>Shifted time:</source>
-        <translation type="unfinished"/>
+        <translation>Сдвинутое время:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="79"/>
         <source>Current time:</source>
-        <translation type="unfinished"/>
+        <translation>Текущее время:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="86"/>
         <location filename="../qt-ui/shifttimes.ui" line="93"/>
         <source>0:0</source>
-        <translation type="unfinished"/>
+        <translation>0:0</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="126"/>
@@ -2601,42 +2601,42 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Проверить обновления.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="37"/>
         <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Subsurface не смог проверить обновления.&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
         <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;b&gt;Возникла следующая ошибка:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="43"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Пожалуйста, проверьте соединение с интернетом.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="52"/>
         <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Вы используете самую актуальную версию Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая верся Subsurface.&lt;br/&gt;Кликинте по:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt;, чтобы скачать.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Доступна новая версия Subsurface.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>Возникла ошибка во время проверки обновения.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2695,7 @@ Please, remove them first.</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить ID пользователя локально?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3390,14 +3390,18 @@ D: %.1f%s
         <source>EAD: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1264"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1276"/>
