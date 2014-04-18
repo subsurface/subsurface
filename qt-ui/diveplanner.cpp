@@ -520,9 +520,7 @@ void DivePlannerGraphics::drawProfile()
 			computedPoints.push_back(i);
 	plannerModel->removeSelectedPoints(computedPoints);
 
-	int lastdepth = 0;
-	int lasto2 = 0;
-	int lasthe = 0;
+	unsigned int lastdepth = 0;
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
 		if (dp->time == 0) // magic entry for available tank
 			continue;
@@ -538,8 +536,6 @@ void DivePlannerGraphics::drawProfile()
 				if (dp->depth == lastdepth || dp->o2 != dp->next->o2 || dp->he != dp->next->he)
 					plannerModel->addStop(dp->depth, dp->time, dp->o2, dp->he, 0, false);
 				lastdepth = dp->depth;
-				lasto2 = dp->o2;
-				lasthe = dp->he;
 			}
 		}
 		lastx = xpos;

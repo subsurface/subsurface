@@ -119,7 +119,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
-	int i, j, t0, t1, gasidx, lastdepth;
+	int i, t0, t1, gasidx, lastdepth;
 	int o2, he;
 	double tissue_tolerance;
 
@@ -582,11 +582,11 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 {
 	struct dive *dive;
 	struct sample *sample;
-	int wait_time, o2, he, po2;
+	int o2, he, po2;
 	int transitiontime, gi;
 	int current_cylinder;
 	unsigned int stopidx;
-	int depth, ceiling;
+	int depth;
 	double tissue_tolerance;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
