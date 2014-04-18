@@ -78,10 +78,12 @@ slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
 	void restoreBackupDive();
+	void emitCylinderModelEdited();
 
 signals:
 	void planCreated();
 	void planCanceled();
+	void cylinderModelEdited();
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);

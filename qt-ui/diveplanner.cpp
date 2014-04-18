@@ -151,6 +151,7 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 #undef ADD_ACTION
 
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(drawProfile()));
+	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(drawProfile()));
 
 	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 		this, SLOT(pointInserted(const QModelIndex &, int, int)));
@@ -972,12 +973,12 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 		GasSelectionModel::instance(), SLOT(repopulate()));
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
 		GasSelectionModel::instance(), SLOT(repopulate()));
-	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, int, int)),
-		plannerModel, SLOT(drawProfile()));
+	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+		plannerModel, SLOT(emitCylinderModelEdited()));
 	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex, int, int)),
-		plannerModel, SLOT(drawProfile()));
+		plannerModel, SLOT(emitCylinderModelEdited()));
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
-		plannerModel, SLOT(drawProfile()));
+		plannerModel, SLOT(emitCylinderModelEdited()));
 
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
@@ -1053,6 +1054,11 @@ bool DivePlannerPointsModel::setRecalc(bool rec)
 bool DivePlannerPointsModel::recalcQ()
 {
 	return recalc;
+}
+
+void DivePlannerPointsModel::emitCylinderModelEdited()
+{
+	cylinderModelEdited();
 }
 
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
