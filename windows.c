@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <zip.h>
 
-const char system_divelist_default_font[] = "Sans";
+const char system_divelist_default_font[] = "Calibri";
 const int system_divelist_default_font_size = 8;
 
 void subsurface_user(struct user_info *user)
