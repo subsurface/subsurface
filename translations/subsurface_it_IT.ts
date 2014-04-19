@@ -39,7 +39,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="71"/>
         <source>Switch at</source>
-        <translation type="unfinished"/>
+        <translation>Cambia a</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="162"/>
@@ -216,7 +216,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi immersione(i) al viaggio immediatamente successivo</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="749"/>
@@ -516,7 +516,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1154"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Run Time</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1156"/>
@@ -733,17 +733,17 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>Creazione del file zip per il caricamento fallita: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %s</source>
-        <translation type="unfinished"/>
+        <translation>Non è stato possibile creare il file temporaneo: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %s</source>
-        <translation type="unfinished"/>
+        <translation>Errore dell&apos;applicazione: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
@@ -1343,7 +1343,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
         <source>Show/hide heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Mostra/Nascondi il battito cardiaco</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
@@ -1368,12 +1368,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="714"/>
         <source>Export HTML World Map</source>
-        <translation type="unfinished"/>
+        <translation>Esporta la mappa in HTML</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="717"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Control+H</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="722"/>
@@ -1483,7 +1483,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="945"/>
         <source>&amp;Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Controlla gli aggiornamenti</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="725"/>
@@ -1735,12 +1735,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="288"/>
         <source>Export World Map</source>
-        <translation type="unfinished"/>
+        <translation>Esporta la mappa</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>HTML files (*.html)</source>
-        <translation type="unfinished"/>
+        <translation>File HTML (*.html)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="438"/>
@@ -1848,17 +1848,17 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="270"/>
         <source>Subsurface Webservice</source>
-        <translation type="unfinished"/>
+        <translation>Servizio WEB di Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="276"/>
         <source>Default User ID</source>
-        <translation type="unfinished"/>
+        <translation>ID Utente di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="287"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Salva l&apos;ID dell&apos;utente localmente?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
@@ -2018,12 +2018,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="668"/>
         <source>Show non-used cylinders in Equipment Tab</source>
-        <translation type="unfinished"/>
+        <translation>Mostra le bombole non usate nella finestra attrezzatura</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="679"/>
         <source>show average depth</source>
-        <translation type="unfinished"/>
+        <translation>Mostra la profondità media</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="731"/>
@@ -2305,7 +2305,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="719"/>
         <source>Edit name</source>
-        <translation type="unfinished"/>
+        <translation>Modifica il nome</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="733"/>
@@ -2315,32 +2315,32 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide events</source>
-        <translation type="unfinished"/>
+        <translation>Nascondi gli eventi</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide all %1 events?</source>
-        <translation type="unfinished"/>
+        <translation>Nascondi tutti gli eventi %1?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="776"/>
         <source>Remove the selected event?</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovere l&apos;evento selezionato?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="777"/>
         <source>%1 @ %2:%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 @ %2:%3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="832"/>
         <source>Edit name of bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Modifica il nome del bookmark</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="833"/>
         <source>Custom name:</source>
-        <translation type="unfinished"/>
+        <translation>Nome personalizzato:</translation>
     </message>
 </context>
 <context>
@@ -2462,18 +2462,18 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="72"/>
         <source>Shifted time:</source>
-        <translation type="unfinished"/>
+        <translation>Orario modificato:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="79"/>
         <source>Current time:</source>
-        <translation type="unfinished"/>
+        <translation>Orario corrente:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="86"/>
         <location filename="../qt-ui/shifttimes.ui" line="93"/>
         <source>0:0</source>
-        <translation type="unfinished"/>
+        <translation>0:0</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="126"/>
@@ -2601,42 +2601,42 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Controlla gli aggiornamenti.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="37"/>
         <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Subsurface non è riuscito a controllare gli aggiornamenti.&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
         <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;b&gt;S&apos;è verificato il seguente errore:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="43"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Per favore controlla la tua connessione Internet.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="52"/>
         <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Stai usando l&apos;ultima versione di Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>È disponibile una nuova version di Subsurface.&lt;br/&gt;Puoi scaricarla qui: &lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt;.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;È disponibile una nuova versione di Subsurface.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;è verificato un errore nella ricerca degli aggiornamenti.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2695,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Salva l&apos;ID dell&apos;utente localmente?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3392,14 +3392,18 @@ D:%.1f%s
         <source>EAD: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1264"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1276"/>

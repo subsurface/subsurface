@@ -39,7 +39,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="71"/>
         <source>Switch at</source>
-        <translation type="unfinished"/>
+        <translation>Zmiana na</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="162"/>
@@ -216,7 +216,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>dodaj nurkowanie(a) do grupy poniżej</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="749"/>
@@ -516,7 +516,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1154"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Czas</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1156"/>
@@ -592,7 +592,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="103"/>
         <source>User Entered</source>
-        <translation type="unfinished"/>
+        <translation>Podane przez użytkownika</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
@@ -602,12 +602,12 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="107"/>
         <source>Pressure  S</source>
-        <translation type="unfinished"/>
+        <translation>Ciśnienie S</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="109"/>
         <source>Pressure I</source>
-        <translation type="unfinished"/>
+        <translation>Ciśnienie I</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
@@ -733,17 +733,17 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>nie udało się utworzyć pliku zip do wysłania: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %s</source>
-        <translation type="unfinished"/>
+        <translation>nie można utworzyć pliku tymczasowego: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %s</source>
-        <translation type="unfinished"/>
+        <translation>błąd wewnętrzny: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
@@ -1343,7 +1343,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
         <source>Show/hide heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj tętno</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
@@ -1368,12 +1368,12 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="714"/>
         <source>Export HTML World Map</source>
-        <translation type="unfinished"/>
+        <translation>Eksport mapy świata w HTML</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="717"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="722"/>
@@ -1483,7 +1483,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="945"/>
         <source>&amp;Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Sprawdź aktualizacje</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="725"/>
@@ -1735,12 +1735,12 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="288"/>
         <source>Export World Map</source>
-        <translation type="unfinished"/>
+        <translation>Eksport mapy świata</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>HTML files (*.html)</source>
-        <translation type="unfinished"/>
+        <translation>Pliki HTML (*.html)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="438"/>
@@ -1848,17 +1848,17 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="270"/>
         <source>Subsurface Webservice</source>
-        <translation type="unfinished"/>
+        <translation>Usługa Internetowa Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="276"/>
         <source>Default User ID</source>
-        <translation type="unfinished"/>
+        <translation>Domyślne ID Użytkownika</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="287"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Zapisywać ID użytkownika do pliku?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
@@ -2018,12 +2018,12 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="668"/>
         <source>Show non-used cylinders in Equipment Tab</source>
-        <translation type="unfinished"/>
+        <translation>Pokazju nieużywane butle w zakładce Wyposażenie</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="679"/>
         <source>show average depth</source>
-        <translation type="unfinished"/>
+        <translation>pokazuj głębokość średnią</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="731"/>
@@ -2305,7 +2305,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="719"/>
         <source>Edit name</source>
-        <translation type="unfinished"/>
+        <translation>Zmień nazwę</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="733"/>
@@ -2315,32 +2315,32 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide events</source>
-        <translation type="unfinished"/>
+        <translation>Ukrywanie wydarzeń</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide all %1 events?</source>
-        <translation type="unfinished"/>
+        <translation>Ukyć wszystkie wydarzenia typu %1?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="776"/>
         <source>Remove the selected event?</source>
-        <translation type="unfinished"/>
+        <translation>Usunąć wybrane wydarzenie?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="777"/>
         <source>%1 @ %2:%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 @ %2:%3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="832"/>
         <source>Edit name of bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Zmień nazwę wydarzenia</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="833"/>
         <source>Custom name:</source>
-        <translation type="unfinished"/>
+        <translation>Własna nazwa:</translation>
     </message>
 </context>
 <context>
@@ -2419,27 +2419,27 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="145"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation type="unfinished"/>
+        <translation>Aby uwzględnić różnicę w ustawieniach zegarów komputera nurkowego i aparatu fotograficznego użyj aparatu do zrobienia zdjęcia komputera nurkowego, gdy ten wyświetla aktualny czas. Zgraj to zdjęcie na swój komputer i wciśnij ten przycisk.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="155"/>
         <source>Determine camera time offset</source>
-        <translation type="unfinished"/>
+        <translation>Uwzględnij przesunięcie zegara aparatu fotograficznego</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="158"/>
         <source>Select image of divecomputer showing time</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz zdjęcie komputera nurkowego (pokazujące aktualny czas)</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="196"/>
         <source>Which date and time are displayed on the image?</source>
-        <translation type="unfinished"/>
+        <translation>Jaka data i godzina jest na zdjęciu?</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="203"/>
         <source>Open Image File</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz zdjęcie</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="205"/>
@@ -2462,18 +2462,18 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="72"/>
         <source>Shifted time:</source>
-        <translation type="unfinished"/>
+        <translation>Przesunięty czas:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="79"/>
         <source>Current time:</source>
-        <translation type="unfinished"/>
+        <translation>Aktualny czas:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="86"/>
         <location filename="../qt-ui/shifttimes.ui" line="93"/>
         <source>0:0</source>
-        <translation type="unfinished"/>
+        <translation>0:0</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="126"/>
@@ -2516,7 +2516,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/about.cpp" line="12"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Wieloplatformowy log nurkowy&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava i inni, 2011-2014&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -2524,7 +2524,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="334"/>
         <source>Webservice</source>
-        <translation>Webservice</translation>
+        <translation>Usługa Internetowa</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="397"/>
@@ -2601,42 +2601,42 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Sprawdź aktualizacje.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="37"/>
         <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Nie udało się sprawdzić dostepności aktualizacji&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
         <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;b&gt;Natrafiono na nastepujący błąd:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="43"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Sprawdź prosżę swoje połączenie z Internetem&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="52"/>
         <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Używasz najnowszej wersji Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Nowa wersja Subsurface jest dostępna.&lt;br/&gt;Kliknij na:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; aby ją pobrać.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Nowsza wersja Subsurface jest dostępna.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>Wystapił błąd podczas sprawdzania aktualizaji</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2695,7 @@ poza zakresem. Proszę je najpierw usunąć.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Zapisywać ID użytkownika?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3194,7 +3194,8 @@ Maximum</source>
         <location filename="../parse-xml.c" line="1853"/>
         <source>Database query get_tags failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Zapytanie bazy danych get_tags nie powiodło się.
+</translation>
     </message>
     <message>
         <location filename="../file.c" line="166"/>
@@ -3215,19 +3216,22 @@ Maximum</source>
         <location filename="../parse-xml.c" line="1998"/>
         <source>Database query get_cylinders failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Zapytanie bazy danych get_cylinders nie powiodło się.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2005"/>
         <source>Database query get_changes failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Zapytanie bazy danych get_changes nie powiodło się.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2012"/>
         <source>Database query get_profile_sample failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Zapytanie bazy danych get_profile_sample nie powiodło się.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2103"/>
@@ -3381,14 +3385,18 @@ D: %.1f%s
         <source>EAD: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1264"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1276"/>
@@ -3465,14 +3473,14 @@ EADD: %d%s
         <location filename="../profile.c" line="1313"/>
         <source>Calculated ceiling %.0f%s
 </source>
-        <translation>%.0f%s
+        <translation>Obliczony sufit:  %.0f%s
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1319"/>
         <source>Tissue %.0fmin: %.0f%s
 </source>
-        <translation>Tkanaka %.0fmin: %.0f%s
+        <translation>Tkanka %.0fmin: %.0f%s
 </translation>
     </message>
     <message>

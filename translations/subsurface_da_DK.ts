@@ -39,7 +39,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="71"/>
         <source>Switch at</source>
-        <translation type="unfinished"/>
+        <translation>Skift ved</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="162"/>
@@ -216,7 +216,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj dyk til turen umiddelbart under</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="749"/>
@@ -516,7 +516,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1154"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Run time</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1156"/>
@@ -733,17 +733,17 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke danne zip fil til upload: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %s</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke danne midlertidig fil: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %s</source>
-        <translation type="unfinished"/>
+        <translation>Intern fejl: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
@@ -1343,7 +1343,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="300"/>
         <source>Show/hide heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Vis/skjul puls</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="352"/>
@@ -1368,12 +1368,12 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="714"/>
         <source>Export HTML World Map</source>
-        <translation type="unfinished"/>
+        <translation>Eksporter HTML verdenskort</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="717"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="722"/>
@@ -1483,7 +1483,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="945"/>
         <source>&amp;Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>%Tjek for opdateringer</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="725"/>
@@ -1735,12 +1735,12 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="288"/>
         <source>Export World Map</source>
-        <translation type="unfinished"/>
+        <translation>Eksporter verdenskort</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>HTML files (*.html)</source>
-        <translation type="unfinished"/>
+        <translation>HTML filer (*.html)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="438"/>
@@ -1848,17 +1848,17 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="270"/>
         <source>Subsurface Webservice</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface Webservice</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="276"/>
         <source>Default User ID</source>
-        <translation type="unfinished"/>
+        <translation>Standard Bruger ID</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="287"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Gem bruger ID lokalt?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
@@ -2018,12 +2018,12 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="668"/>
         <source>Show non-used cylinders in Equipment Tab</source>
-        <translation type="unfinished"/>
+        <translation>Vis ubrugte flasker i udstyrs tab&apos;en</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="679"/>
         <source>show average depth</source>
-        <translation type="unfinished"/>
+        <translation>Vis gennemsnits dybde</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="731"/>
@@ -2305,7 +2305,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="719"/>
         <source>Edit name</source>
-        <translation type="unfinished"/>
+        <translation>Rediger navn</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="733"/>
@@ -2315,32 +2315,32 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide events</source>
-        <translation type="unfinished"/>
+        <translation>Skjul hændelser</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
         <source>Hide all %1 events?</source>
-        <translation type="unfinished"/>
+        <translation>Skjul alle %1 hændelser?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="776"/>
         <source>Remove the selected event?</source>
-        <translation type="unfinished"/>
+        <translation>Fjern de valgte hændelser?</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="777"/>
         <source>%1 @ %2:%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 @ %2:%3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="832"/>
         <source>Edit name of bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Rediger bogmærke navn</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="833"/>
         <source>Custom name:</source>
-        <translation type="unfinished"/>
+        <translation>Brugerdefineret navn:</translation>
     </message>
 </context>
 <context>
@@ -2462,18 +2462,18 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="72"/>
         <source>Shifted time:</source>
-        <translation type="unfinished"/>
+        <translation>Skiftet tid:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="79"/>
         <source>Current time:</source>
-        <translation type="unfinished"/>
+        <translation>Aktuel tid:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="86"/>
         <location filename="../qt-ui/shifttimes.ui" line="93"/>
         <source>0:0</source>
-        <translation type="unfinished"/>
+        <translation>0:0</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="126"/>
@@ -2601,42 +2601,42 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Tjek for opdateringer</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="37"/>
         <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Subsurface kunne ikke tjekke for opdateringer.&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
         <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;b&gt;Følgende fejl opstod:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="43"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Tjek venligst din internet forbindelse.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="52"/>
         <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Du har den nyeste version af Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>En ny version af Subsurface er tilgængelig.&lt;br/&gt;Klik på:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; For at downloade den.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;En nye version af Subsurface er tilgængelig.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl da der blev tjekket for opdateringer.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2695,7 @@ slet dem venligst først.</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save User ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Gem bruger ID lokalt?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3393,14 +3393,18 @@ D: %.1f%s
         <source>EAD: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1264"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1276"/>
