@@ -26,7 +26,7 @@
     # Installer name and filename
     Name "Subsurface"
     Caption "Subsurface ${SUBSURFACE_VERSION} Setup"
-    OutFile "subsurface-${SUBSURFACE_VERSION}.exe"
+    OutFile "..\subsurface-${SUBSURFACE_VERSION}.exe"
 
     # Icon to use for the installer
     !define MUI_ICON "subsurface.ico"
@@ -70,7 +70,7 @@
 # Pages
 
     # Installer pages
-    !insertmacro MUI_PAGE_LICENSE "..\..\gpl-2.0.txt"
+    !insertmacro MUI_PAGE_LICENSE "gpl-2.0.txt"
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
     !insertmacro MUI_PAGE_INSTFILES
@@ -105,7 +105,6 @@ Section
     File /r Documentation
     File /r translations
     File iconv.dll
-    File libdivecomputer-0.dll
     File libpng16-16.dll
     File libjpeg-*.dll
     File libusb-1.0.dll

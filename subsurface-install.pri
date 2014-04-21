@@ -48,9 +48,10 @@ mac {
 	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
 	# which libs we need.
 	# The only target is "make install", which copies everything into packaging/windows
-	WINDOWSSTAGING = packaging/windows
-	NSIFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi
-	NSIINPUTFILE = $$PWD/$$WINDOWSSTAGING/subsurface.nsi.in
+	WINDOWSSTAGING = $$OUT_PWD/staging
+	WINDOWSPACKAGING = $$PWD/packaging/windows
+	NSIFILE = $$WINDOWSSTAGING/subsurface.nsi
+	NSIINPUTFILE = $$WINDOWSPACKAGING/subsurface.nsi.in
 	MAKENSIS = /usr/bin/makensis
 
 	doc.path = $$WINDOWSSTAGING/Documentation
@@ -63,11 +64,13 @@ mac {
 
 	translation.path = $$WINDOWSSTAGING/translations
 	qttranslation.path = $$WINDOWSSTAGING/translations
-	INSTALLS += translation qttranslation
+	package.files = $$PWD/gpl-2.0.txt $$WINDOWSPACKAGING/subsurface.ico
+	package.path = $$WINDOWSSTAGING
+	INSTALLS += translation qttranslation package
 
 	qt_conf.commands = echo \'[Paths]\' > $@
 	qt_conf.commands += $${nltab}echo \'Prefix=.\' >> $@
-	qt_conf.target = $$PWD/packaging/windows/qt.conf
+	qt_conf.target = $$WINDOWSSTAGING/qt.conf
 	install.depends += qt_conf
 
 	# Plugin code
@@ -108,9 +111,10 @@ mac {
 		else: dlls.commands += $$OUT_PWD/release/$$TARGET$$EXE_SUFFIX
 
 		dlls.commands += $$ABS_DEPLOYMENT_PLUGIN $$LIBS
-		dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$PWD/$$WINDOWSSTAGING; done
+		dlls.commands += | while read name; do $(INSTALL_FILE) \$\$name $$WINDOWSSTAGING; done
 		dlls.depends += $(DESTDIR_TARGET)
 
+		nsis.commands += $(CHK_DIR_EXISTS) $$WINDOWSSTAGING;
 		nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/\' > $$NSIFILE
 		nsis.depends += $$NSIINPUTFILE
 		nsis.target = $$NSISFILE
@@ -142,8 +146,6 @@ mac {
 	MANDIR = $(EXPORT_DATADIR)/man/man1
 
 	QMAKE_EXTRA_TARGETS += dummy
-
-	WINDOWSSTAGING = ./packaging/windows
 
 	target.path = /$(EXPORT_BINDIR)
 	target.files = $$TARGET
