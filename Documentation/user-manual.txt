@@ -1220,7 +1220,7 @@ water temperature and surface air consumption (SAC).
 [[S_DiveProfile]]
 === The *Dive Profile*
 
-image::images/Profile2.png["Typical dive profile",align="center"]
+image::images/Profile2.jpg["Typical dive profile",align="center"]
 
 Of all the panels in _Subsurface_, the Dive Profile contains the most detailed
 information about each dive. The Dive Profile has a *button bar* on the left hand side
@@ -1283,9 +1283,12 @@ coding is not relative to some absolute values but relative to the average
 normalised air consumption during the dive. So areas that are red or orange
 indicate
 times of increased normalized air consumption while dark green reflects times
-when the diver was using less gas than average. The colour coding is obviously
-only possible when a tank sensor is connected and tank pressure readings during
-the dive are available.
+when the diver was using less gas than average.
+
+[icon="images/icons/Heartbutton.png"]
+[NOTE]
+Clicking on the heartrate button will allow the display of heart rate information
+during the dive if the dive computer was attached to a heart rate sensor.
 
 It is possible to *zoom* into the profile graph. This is done either by using
 the scroll wheel / scroll gesture of your mouse or trackpad. By default
@@ -1307,8 +1310,11 @@ in the horizontal white area underneath the
 two red dots.
 
 The profile can also include the dive computer reported *ceiling* (more
-precisely, the deepest deco stop that the dive computer calculated for each particular moment in time) as a red overlay on  the dive profile. Ascent ceilings arise when a direct ascent to the surface increases
-the risk of a diver suffering from decompression sickness (DCS) and it is necessary to either ascend
+precisely, the deepest deco stop that the dive computer calculated for each
+particular moment in time) as a red overlay on  the dive profile. Ascent ceilings
+arise when a direct ascent to the surface increases
+the risk of a diver suffering from decompression sickness (DCS) and it is necessary
+to either ascend
 slower or to perform decompression stop(s) before ascending to the surface. Not
 all dive computers record this information and make it available for download;
 for example all of the Suunto dive computers fail to make this very useful data
@@ -1316,7 +1322,8 @@ available to divelog software. _Subsurface_ also calculates ceilings independent
 shown as a green overlay on the dive profile.
 Because of the differences in algorithms used
 and amount of data available (and other factors taken into consideration at the time
-of the calculation) it is unlikely that ceilings from dive computers and from _Subsurface_ are the same, even if the same algorithm and _gradient factors_ (see below) are used.
+of the calculation) it is unlikely that ceilings from dive computers and from _Subsurface_
+are the same, even if the same algorithm and _gradient factors_ (see below) are used.
 It is also quite common that _Subsurface_ calculates a ceiling for
 non-decompression dives when the dive computer stayed in non-deco mode during
 the whole dive (represented by the [green]#dark green# section in the profile
@@ -1338,7 +1345,8 @@ shown as a red area by checking *Dive computer reported ceiling* button on the P
 
 [icon="images/icons/ceiling1.jpg"]
 [NOTE]
-If the *Calculated ceiling* button on the Profile Panel is clicked, then a ceiling, calculated by _Subsurface_, is shown in green if it exists for
+If the *Calculated ceiling* button on the Profile Panel is clicked, then a ceiling,
+calculated by _Subsurface_, is shown in green if it exists for
 a particular dive (*A* in figure below). This setting can be modified in two ways:
 
 [icon="images/icons/ceiling2.jpg"]
@@ -2178,7 +2186,7 @@ already provides for communication using the IrDA protocol. However,
 the user additionally needs to load a driver for the IrDA interface
 with the dive computer. The easiest way is to load the *irda-tools*
 package from the http://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
-After the installation of the irda-tools, the root user can specify a device name
+After the installation of the irda-tools, the *root user* can specify a device name
 from the console as follows:
 +irattach irda0+
 
