@@ -144,9 +144,16 @@ contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE NO_USERMANUAL NO_PRINTIN
 #
 # Find libmarble
 #
-# Before Marble 4.9, the GeoDataTreeModel.h header wasn't installed
-# Check if it's present by trying to compile
-# ### FIXME: implement that
+!isEmpty(LIBMARBLEDEVEL) {
+	# find it next to our sources
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/graphicsview
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata/parser
+	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata/data
+	LIBS += -L$$LIBMARBLEDEVEL/build/src/lib/marble
+}
 !contains(DEFINES, NO_MARBLE) {
 	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
 	else: LIBS += -lmarblewidget
