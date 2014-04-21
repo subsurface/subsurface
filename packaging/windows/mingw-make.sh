@@ -15,6 +15,7 @@ rm $BASEDIR/subsurface.nsi > /dev/null 2>&1
 rm $BASEDIR/../../ssrf-version.h > /dev/null 2>&1
 
 export PATH=/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
+export objdump=mingw-objdump
 mingw32-qmake-qt4 \
 	CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw \
 	LIBDCDEVEL=../libdivecomputer \
