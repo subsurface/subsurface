@@ -1084,6 +1084,18 @@ _Subsurface_ dive log whenever users upload or add dives to _Subsurface_.
 After a dive trip using the Companion app, all dive locations are ready to be
 saved on a _Subsurface_ dive log (see below).
 
+When you click on a dive (*not* selecting the check button as shown in the images above), the
+name given to it, date/time and GPS coordinates will be shown, and you'll have two options:
+
+- Edit:  Lets you change the name given to the dive point.
+
+- Maps:  Will display a map showing the dive location (you'll be prompted to
+choose which helper app use from your installed apps). At this date this feature is
+a bit of a proof of concept, is expected to be fully functional soon.
+
+If you edit the dive, after saving it, you'll need to upload it to the web
+service, as explained above.
+
 ===== Settings on the Companion app
 
 Selecting the _Settings_ menu option results in the right hand image above (*C*).
@@ -1121,12 +1133,13 @@ until it's stopped by the user.
 [icon="images/icons/info.jpg"]
 [TIP]
 _How does the background service work?_ Assuming that the user set 5 minutes and 50
-meters in the settings above, the app will start by taking a fix at the current location,
-followed by another one
-at every 5 minutes. If this 2nd (3rd, 4th ...) location is within a radius of 50
-meters from the previous one, then this new fix is not saved. If the user is not moving,
-only one fix is saved, but if the user is moving, then a trace of the journey is obtained,
-by saving each new position at every 5 minutes.
+meters in the settings above, the app will start by taking a fix at the current
+location, followed by another one at every 5 minutes *or* every time you move 50m
+from previous fix.
+If subsequent locations are within a radius of 50 meters from the previous one,
+then this new fix is not saved. If the user is not moving, only one fix is saved,
+but if the user is moving, then a trace of the journey is obtained, by saving a
+position every 50 meters.
 
 ===== Other
 
@@ -1174,20 +1187,42 @@ image::images/DownloadGPS.jpg["FIGURE: Downloading Companion app GPS data",align
 Note that the _Apply_ button is now active. By clicking on it, users can update the locations
 of the newly entered or uploaded dives in _Subsurface_ which applies the
 coordinates and names entered on the app for all the new dives that match the
-date-times of the uploaded GPS localities.
+date-times of the uploaded GPS localities. If you had entered the name of the dive
+location in _Subsurface_ before downloading the GPS coordinates, this one will take
+precedence over downloaded one.
+
+Since _Subsurface_ matches GPS locations from the Android device and dive information from the
+dive computer based on date-time data, automatic assignment of GPS data to dives is dependent
+on agreement of date and time between these two devices. If there is a large difference between
+the time in the dive computer and the time in the Android device, although _Subsurface_ has a
+wide range tolerance, it may be unable to identify the dive matching a location and nothing
+happens.
+
+Similar date-times may not always be possible, and there may be many different reasons for this, or
+_Subsurface_ may be unable to decide which is the correct position for a dive (e.g. on repetitive
+dives while running _background service_ you may end with a lot of position fixes that would be
+included in the time range that fit not only for first dive, but for second too).
+
+A workaround for this situation is manually editing the date-time of a dive in Subsurface's
+Dive List _before_ downloading the GPS data and then to edit the date-time back again _after_
+downloading GPS data.
 
 [icon="images/icons/info.jpg"]
 [NOTE]
-_Features, issues and tips._  Since _Subsurface_ matches GPS locations from the
-Android device and dive information from the dive computer based on date-time
-data, automatic assignment of GPS data to dives is dependent on agreement of
-date and time between these two devices. If there is a large difference between
-the time in the dive computer and the time in the Android device,
-_Subsurface_ is unable to identify the dive matching a location and nothing
-happens. Similar date-times may be not always be possible.  A dirty hack is
-manually editing the date-time of a dive in Subsurface's Dive List _before_
-downloading the GPS data and then to edit the date-time back again _after_
-downloading GPS data.
+TIPS:
+
+- _Background service_, being a very powerful tool, may fill your register in web service with
+lots of useless coordinates (those not corresponding to the exact dive point, but positions on the
+boat's course). Right now these positions are somewhat dificult to delete from the server. Although
+not mandatory, as Subsurface's logic will choose the correct dive position, in some situations it
+may make sense to clean up the list on your android device before sending the dive points to the web
+server, by simply deleting the "fake" positions in the device. This cleaning would be necesary, for
+instace, if you want to keep your register clear to see your dives in the web service page's map.
+
+- Also it may make sense to give significant names to the dives sent to the web server, or at least
+to use a significant name in the _Name Template_ setting while running _background service_,
+especially if you are on a dive trip and you are piling up lots of dives and dive points waiting to
+come back home to download them to _Subsurface_.
 
 == Obtaining more information about dives entered into the logbook
 
