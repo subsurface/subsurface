@@ -95,8 +95,12 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
+	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
+	comboPopup->setMouseTracking(true);
 	connect(comboDelegate, SIGNAL(highlighted(QString)), this, SLOT(testActivation(QString)));
 	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
+	connect(comboPopup, SIGNAL(entered(QModelIndex)), this, SLOT(testActivation(QModelIndex)));
+	connect(comboPopup, SIGNAL(activated(QModelIndex)), this, SLOT(fakeActivation()));
 	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)), this, SLOT(fixTabBehavior()));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
@@ -124,6 +128,11 @@ void ComboBoxDelegate::testActivation(const QString &currText)
 {
 	currCombo.activeText = currText.isEmpty() ? currCombo.comboEditor->currentText() : currText;
 	setModelData(currCombo.comboEditor, currCombo.model, QModelIndex());
+}
+
+void ComboBoxDelegate::testActivation(const QModelIndex &currIndex)
+{
+	testActivation(currIndex.data().toString());
 }
 
 // HACK, send a fake event so Qt thinks we hit 'enter' on the line edit.
