@@ -71,19 +71,16 @@ static void quote(struct membuffer *b, const char *text, int is_attribute)
 static void show_utf8(struct membuffer *b, const char *text, const char *pre, const char *post, int is_attribute)
 {
 	int len;
-
-	if (!text)
-		return;
-	while (isspace(*text))
-		text++;
-	len = strlen(text);
-	if (!len)
-		return;
-	while (len && isspace(text[len - 1]))
-		len--;
-	/* FIXME! Quoting! */
 	put_string(b, pre);
-	quote(b, text, is_attribute);
+	if (text){
+		while (isspace(*text))
+			text++;
+		len = strlen(text);
+		while (len && isspace(text[len - 1]))
+			len--;
+		/* FIXME! Quoting! */
+		quote(b, text, is_attribute);
+	}
 	put_string(b, post);
 }
 
@@ -188,13 +185,7 @@ static void show_location(struct membuffer *b, struct dive *dive)
 	 */
 	if (latitude.udeg || longitude.udeg) {
 		int len = sprintf(buffer, "  <location ");
-
 		len += format_location(buffer + len, latitude, longitude);
-		if (!dive->location) {
-			memcpy(buffer + len, "/>\n", 4);
-			put_string(b, buffer);
-			return;
-		}
 		buffer[len++] = '>';
 		buffer[len] = 0;
 		prefix = buffer;
