@@ -58,6 +58,7 @@ public:
 	QStringList &getGasList();
 	QVector<QPair<int, int> > collectGases(dive *d);
 	int lastEnteredPoint();
+	void removeDeco();
 	static bool addingDeco;
 
 public

@@ -454,6 +454,15 @@ QStringList &DivePlannerPointsModel::getGasList()
 	return list;
 }
 
+void DivePlannerPointsModel::removeDeco()
+{
+	QVector<int> computedPoints;
+	for (int i = 0; i < plannerModel->rowCount(); i++)
+		if (!plannerModel->at(i).entered)
+			computedPoints.push_back(i);
+	removeSelectedPoints(computedPoints);
+}
+
 void DivePlannerGraphics::drawProfile()
 {
 	if (!plannerModel->recalcQ())
@@ -514,11 +523,7 @@ void DivePlannerGraphics::drawProfile()
 	poly.append(QPointF(lastx, lasty));
 
 	bool oldRecalc = plannerModel->setRecalc(false);
-	QVector<int> computedPoints;
-	for (int i = 0; i < plannerModel->rowCount(); i++)
-		if (!plannerModel->at(i).entered)
-			computedPoints.push_back(i);
-	plannerModel->removeSelectedPoints(computedPoints);
+	plannerModel->removeDeco();
 
 	unsigned int lastdepth = 0;
 	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
@@ -1529,7 +1534,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-	plan(&diveplan, &cache, &tempDive, isPlanner());
+	if (plannerModel->recalcQ())
+		plan(&diveplan, &cache, &tempDive, isPlanner());
 	if (mode == ADD) {
 		// copy the samples and events, but don't overwrite the cylinders
 		copy_samples(tempDive, current_dive);
@@ -1569,7 +1575,11 @@ void DivePlannerPointsModel::createPlan()
 	if (!diveplan.dp)
 		return cancelPlan();
 
+	bool oldRecalc = plannerModel->setRecalc(false);
+	removeDeco();
 	createTemporaryPlan();
+	plannerModel->setRecalc(oldRecalc);
+
 	//TODO: C-based function here?
 	plan(&diveplan, &cache, &tempDive, isPlanner());
 	copy_cylinders(stagingDive, tempDive);
@@ -1601,8 +1611,10 @@ void DivePlannerPointsModel::createPlan()
 	setPlanMode(NOTHING);
 	free(stagingDive);
 	stagingDive = NULL;
+	oldRecalc = plannerModel->setRecalc(false);
 	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
+	plannerModel->setRecalc(oldRecalc);
 }
 
 ExpanderGraphics::ExpanderGraphics(QGraphicsItem *parent) : QGraphicsRectItem(parent),
