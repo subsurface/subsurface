@@ -1,4 +1,5 @@
 #include <QDesktopServices>
+#include <QShortcut>
 
 #include "usermanual.h"
 #include "ui_usermanual.h"
@@ -9,6 +10,9 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 	ui(new Ui::UserManual)
 {
 	ui->setupUi(this);
+
+	QShortcut* closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
 
 	QAction *actionShowSearch = new QAction(this);
 	actionShowSearch->setShortcut(Qt::CTRL + Qt::Key_F);
