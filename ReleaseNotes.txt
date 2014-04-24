@@ -1,8 +1,8 @@
-			Subsurface 4.0.2
-			================
+			Subsurface 4.1 BETA1
+			====================
 
 The Subsurface developer team is proud to announce the release of the
-next minor update of Subsurface.
+next update of Subsurface.
 
 Subsurface is an open source divelog program that runs on Windows, Mac
 and Linux.
@@ -36,6 +36,12 @@ strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
+
+New in version 4.1 (compared to Subsurface 4.0.3):
+--------------------------------------------------
+
+New in version 4.0.3 (compared to Subsurface 4.0.2):
+----------------------------------------------------
 
 New in version 4.0.2 (compared to Subsurface 4.0.1):
 ----------------------------------------------------

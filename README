@@ -1,30 +1,10 @@
 
-This is the README file for Subsurface 4.0.2
+This is the README file for Subsurface 4.1 BETA1
 
-After the release of Subsurface 3.1 the Subsurface developer team
-decided to make a major change in the development direction of the
-project. We switched to Qt as our UI toolkit and slowly, step by step
-replaced all the Gtk with corresponding Qt code.
+This is mainly a bug fix release, but there are rather significant changes
+under the hood.
 
-This caused lots of changes, from adding C++ to the list of
-programming languages used, to switching build systems to qmake, to
-refactoring the tightly interwoven UI and logic code that we had up
-until 3.1. The vast majority of this work was done by just a handful
-of people with Tomaz Canabrava carrying the biggest part of the
-load. As we had hoped, the switch to Qt brought us many new active
-developers and the Qt community has been extremely helpful supporting
-us when we ran into trouble.
-
-At this stage the Qt version has by and large reached functional
-parity with version 3.1; two notable features are missing: the filter
-by event type and the dive planner. The user experience and look and
-feel on the other hand far surpass what was available in 3.1.
-
-As always in a massive rewrite like this, there are still a small
-handful of known bugs and issues - please check ReleaseNotes.txt and
-our bug tracker at trac.hohndel.org.
-
-The latest public version is Subsurface 4.0.2, released in January of 2014.
+The latest public version is Subsurface 4.0.3, released in February of 2014.
 
 License: GPLv2
 
@@ -40,12 +20,12 @@ You can also browse the sources via gitweb at git.hohndel.org
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via
 
-git checkout v4.0.2  (or whatever the last release is)
+git checkout v4.0.3  (or whatever the last release is)
 
 if you have already cloned the git repository as shown above or you
 can get a tar ball from
 
-http://subsurface.hohndel.org/downloads/Subsurface-4.0.2.tgz
+http://subsurface.hohndel.org/downloads/Subsurface-4.0.3.tgz
 
 
 Basic Usage:
