@@ -592,7 +592,7 @@ void MainWindow::on_actionUserManual_triggered()
 {
 #ifndef NO_USERMANUAL
 	if (!helpView) {
-		helpView = new UserManual();
+		helpView = new UserManual(this);
 	}
 	helpView->show();
 #endif
