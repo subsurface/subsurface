@@ -378,7 +378,13 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 		} else {
 			process_dives(true, preferDownloaded());
 		}
-	} else {
+	} else if (currentState == CANCELLING || currentState == CANCELLED){
+		if (import_thread_cancelled) {
+			// walk backwards so we don't keep moving the dives
+			// down in the dive_table
+			for (int i = dive_table.nr - 1; i >= previousLast; i--)
+				delete_single_dive(i);
+		}
 		updateState(CANCELLED);
 	}
 }
