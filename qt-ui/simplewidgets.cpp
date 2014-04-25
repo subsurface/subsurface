@@ -14,6 +14,7 @@
 #include <QTime>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QShortcut>
 #include "exif.h"
 #include "../dive.h"
 #include "../file.h"
@@ -181,6 +182,10 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent)
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(changeTime()));
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(changeTime()));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
