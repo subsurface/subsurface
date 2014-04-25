@@ -1,9 +1,10 @@
 #include "divecomputermanagementdialog.h"
 #include "models.h"
 #include "mainwindow.h"
+#include "qthelper.h"
+#include "helpers.h"
 #include <QMessageBox>
-#include "../qthelper.h"
-#include "../helpers.h"
+#include <QShortcut>
 
 DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	model(0)
@@ -11,6 +12,10 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 	ui.setupUi(this);
 	init();
 	connect(ui.tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(tryRemove(QModelIndex)));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 void DiveComputerManagementDialog::init()

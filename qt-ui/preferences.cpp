@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
+#include <QShortcut>
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -20,6 +21,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	loadSettings();
 	setUiFromPrefs();
 	rememberPrefs();
