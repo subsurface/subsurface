@@ -1,5 +1,6 @@
 #include <QtDebug>
 #include <QFileDialog>
+#include <QShortcut>
 #include "divelogimportdialog.h"
 #include "mainwindow.h"
 #include "ui_divelogimportdialog.h"
@@ -44,6 +45,10 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 	connect(ui->cnsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	connect(ui->CSVstopdepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 DiveLogImportDialog::~DiveLogImportDialog()

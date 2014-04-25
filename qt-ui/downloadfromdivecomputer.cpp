@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QShortcut>
 
 struct product {
 	const char *product;
@@ -80,6 +81,10 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	updateState(INITIAL);
 	memset(&data, 0, sizeof(data));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 void DownloadFromDCWidget::updateProgressBar()

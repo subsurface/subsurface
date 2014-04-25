@@ -14,6 +14,7 @@
 #include <QSettings>
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
+#include <QShortcut>
 
 #include "dive.h"
 #include "divelist.h"
@@ -323,6 +324,10 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f)
 	ui.progressBar->setRange(0, 1);
 	ui.progressBar->setValue(-1);
 	ui.saveUidLocal->setChecked(prefs.save_userid_local);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
@@ -648,6 +653,10 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 	ui.password->setText(s.value("divelogde_pass").toString());
 	ui.saveUidLocal->hide();
 	hideUpload();
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
 void DivelogsDeWebServices::startUpload()
