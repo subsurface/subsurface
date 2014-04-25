@@ -19,6 +19,7 @@
 #include <QDesktopServices>
 #include <QStringList>
 #include <QSettings>
+#include <QShortcut>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -437,6 +438,10 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 		yearlyStats->setMinimumWidth(600);
 		yearlyStats->setWindowTitle(tr("Yearly Statistics"));
 		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
+		QShortcut* closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats);
+		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
+		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats);
+		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
 	}
 	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
 	 * class the user needs to close the window/widget and re-open it for it to update.
