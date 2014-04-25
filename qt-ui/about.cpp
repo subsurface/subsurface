@@ -2,6 +2,7 @@
 #include "ssrf-version.h"
 #include <QDesktopServices>
 #include <QUrl>
+#include <QShortcut>
 
 SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
@@ -15,6 +16,9 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 				  "<span style='font-size: 8pt'>"
 				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2014"
 				  "</span>").arg(VERSION_STRING));
+
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
 }
 
 void SubsurfaceAbout::on_licenseButton_clicked()
