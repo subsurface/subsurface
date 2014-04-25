@@ -442,6 +442,8 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
 		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
+		QShortcut* quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats);
+		connect(quitKey, SIGNAL(activated()), this, SLOT(close()));
 	}
 	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
 	 * class the user needs to close the window/widget and re-open it for it to update.
