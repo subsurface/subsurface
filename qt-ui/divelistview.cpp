@@ -813,7 +813,7 @@ void DiveListView::exportSelectedDivesAsUDDF()
 	filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), fi.absolutePath(),
 						tr("UDDF files (*.uddf *.UDDF)"));
 	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_uddf(filename.toUtf8(), true);
+		export_dives_xslt(filename.toUtf8(), true, "uddf-export.xslt");
 }
 
 

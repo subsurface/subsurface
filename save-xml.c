@@ -618,7 +618,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	return error;
 }
 
-int export_dives_uddf(const char *filename, const bool selected)
+int export_dives_xslt(const char *filename, const bool selected, const char *export_xslt)
 {
 	FILE *f;
 	struct membuffer buf = { 0 };
@@ -626,15 +626,16 @@ int export_dives_uddf(const char *filename, const bool selected)
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
 
+
 	if (!filename)
-		return report_error("No filename for UDDF export");
+		return report_error("No filename for export");
 
 	/* Save XML to file and convert it into a memory buffer */
 	save_dives_buffer(&buf, selected);
 
 	/*
 	 * Parse the memory buffer into XML document and
-	 * transform it to UDDF format, finally dumping
+	 * transform it to selected export format, finally dumping
 	 * the XML into a character buffer.
 	 */
 	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, 0);
@@ -642,16 +643,16 @@ int export_dives_uddf(const char *filename, const bool selected)
 	if (!doc)
 		return report_error("Failed to read XML memory");
 
-	/* Convert to UDDF format */
-	xslt = get_stylesheet("uddf-export.xslt");
+	/* Convert to export format */
+	xslt = get_stylesheet(export_xslt);
 	if (!xslt)
-		return report_error("Failed to open UDDF conversion stylesheet");
+		return report_error("Failed to open export conversion stylesheet");
 
 	transformed = xsltApplyStylesheet(xslt, doc, NULL);
 	xsltFreeStylesheet(xslt);
 	xmlFreeDoc(doc);
 
-	/* Write the transformed XML to file */
+	/* Write the transformed export to file */
 	f = subsurface_fopen(filename, "w");
 	if (!f)
 		return report_error("Failed to open %s for writing (%s)", filename, strerror(errno));

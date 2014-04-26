@@ -280,7 +280,17 @@ void MainWindow::on_actionExportUDDF_triggered()
 	QString filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), fi.absolutePath(),
 							tr("UDDF files (*.uddf *.UDDF)"));
 	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_uddf(filename.toUtf8(), false);
+		export_dives_xslt(filename.toUtf8(), false, "uddf-export.xslt");
+}
+
+void MainWindow::on_actionExport_CSV_triggered()
+{
+	QFileInfo fi(system_default_filename());
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), fi.absolutePath(),
+							tr("CSV files (*.csv *.CSV)"));
+
+	if (!filename.isNull() && !filename.isEmpty())
+		export_dives_xslt(filename.toUtf8(), false, "xml2csv.xslt");
 }
 
 void MainWindow::on_actionExportHTMLworldmap_triggered()
