@@ -2218,3 +2218,23 @@ void set_userid(char *rUserId)
 		strcpy(prefs.userid, rUserId);
 }
 #undef MAX_USERID_SIZE
+
+int average_depth(struct diveplan *dive)
+{
+	int integral = 0;
+	int last_time = 0;
+	int last_depth = 0;
+	struct divedatapoint *dp = dive->dp;
+
+	while (dp) {
+		if (dp->time) {
+			/* Ignore gas indication samples */
+			integral += (dp->depth + last_depth) * (dp->time - last_time) / 2;
+			last_time = dp->time;
+			last_depth = dp->depth;
+		}
+		dp = dp->next;
+	}
+
+	return integral / last_time;
+}

@@ -915,6 +915,7 @@ extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
 extern volume_t string_to_volume(const char *str, pressure_t workp);
 extern fraction_t string_to_fraction(const char *str);
+extern int average_depth(struct diveplan *dive);
 
 #include "pref.h"
 
