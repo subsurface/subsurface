@@ -311,6 +311,8 @@ static double calculate_airuse(struct dive *dive)
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
+		if (!end.mbar || start.mbar <= end.mbar)
+			continue;
 
 		airuse += gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
