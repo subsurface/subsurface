@@ -50,6 +50,7 @@ slots:
 	void mergeDives();
 	void saveSelectedDivesAs();
 	void exportSelectedDivesAsUDDF();
+	void exportSelectedDivesAsCSV();
 	void shiftTimes();
 	void loadImages();
 	void uploadToDivelogsDE();

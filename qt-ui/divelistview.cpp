@@ -761,6 +761,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected >= 1) {
 		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
 		popup.addAction(tr("export As UDDF"), this, SLOT(exportSelectedDivesAsUDDF()));
+		popup.addAction(tr("export As CSV"), this, SLOT(exportSelectedDivesAsCSV()));
 		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("load images"), this, SLOT(loadImages()));
 	}
@@ -814,6 +815,17 @@ void DiveListView::exportSelectedDivesAsUDDF()
 						tr("UDDF files (*.uddf *.UDDF)"));
 	if (!filename.isNull() && !filename.isEmpty())
 		export_dives_xslt(filename.toUtf8(), true, "uddf-export.xslt");
+}
+
+void DiveListView::exportSelectedDivesAsCSV()
+{
+	QString filename;
+	QFileInfo fi(system_default_filename());
+
+	filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), fi.absolutePath(),
+						tr("CSV files (*.csv *.CSV)"));
+	if (!filename.isNull() && !filename.isEmpty())
+		export_dives_xslt(filename.toUtf8(), true, "xml2csv.xslt");
 }
 
 
