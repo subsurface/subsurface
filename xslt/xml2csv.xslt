@@ -6,7 +6,7 @@
   <xsl:variable name="fs">,</xsl:variable>
 
   <xsl:template match="/divelog/dives">
-    <xsl:value-of select='concat("dive number", $fs, "dive date", $fs, "dive time", $fs, "time", $fs, "depth", $fs, "temperature", $fs, "pressure")'/>
+    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;dive date&quot;', $fs, '&quot;dive time&quot;', $fs, '&quot;time&quot;', $fs, '&quot;depth&quot;', $fs, '&quot;temperature&quot;', $fs, '&quot;pressure&quot;')"/>
     <xsl:text>
 </xsl:text>
     <xsl:apply-templates select="dive|trip/dive"/>
