@@ -610,6 +610,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	bool clear_to_ascend;
 	int clock, previous_point_time;
 	int avg_depth, bottom_time;
+	int last_ascend_rate;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -634,6 +635,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	}
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 	avg_depth = average_depth(diveplan);
+	last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!add_deco) {
@@ -676,6 +678,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 			/* Ascend to next stop depth */
 			assert(deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) < depth);
 			int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			if (ascend_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
+				plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+				previous_point_time = clock;
+				stopping = false;
+				last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
+			}
 			if (depth - deltad < stoplevels[stopidx])
 				deltad = depth - stoplevels[stopidx];
 
