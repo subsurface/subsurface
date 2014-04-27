@@ -418,6 +418,12 @@
             </xsl:attribute>
           </xsl:if>
 
+          <xsl:if test="tankpressure|u:tankpressure|u1:tankpressure != ''">
+            <xsl:attribute name="pressure">
+              <xsl:value-of select="concat(format-number(tankpressure|u:tankpressure|u1:tankpressure div 100000, '0.0'), ' bar')"/>
+            </xsl:attribute>
+          </xsl:if>
+
           <xsl:if test="otu|u:otu|u1:otu &gt; 0">
             <xsl:attribute name="otu">
               <xsl:value-of select="otu|u:otu|u1:otu"/>
