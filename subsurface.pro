@@ -197,6 +197,7 @@ TRANSLATIONS = \
 	translations/subsurface_de_CH.ts \
 	translations/subsurface_de_DE.ts \
 	translations/subsurface_el_GR.ts \
+	translations/subsurface_en_GB.ts \
 	translations/subsurface_es_ES.ts \
 	translations/subsurface_et_EE.ts \
 	translations/subsurface_fi_FI.ts \
