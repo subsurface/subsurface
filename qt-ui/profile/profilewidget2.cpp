@@ -406,7 +406,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		if (pInfo.maxhr) {
 			heartBeatAxis->setMinimum(pInfo.minhr);
 			heartBeatAxis->setMaximum(pInfo.maxhr);
-			heartBeatAxis->updateTicks(); // this shows the ticks
+			heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
 			heartBeatAxis->setVisible(true);
 		} else {
 			heartBeatAxis->setVisible(false);

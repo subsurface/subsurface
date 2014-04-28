@@ -54,6 +54,7 @@ typedef enum {
 	MEAN_DEPTH,
 	HR_TEXT,
 	HR_PLOT,
+	HR_AXIS,
 	DEPTH_TOP,
 	DEPTH_BOTTOM,
 	TEMP_TEXT,

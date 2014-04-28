@@ -124,7 +124,7 @@ void emptyList(QList<T *> &list, double steps)
 	}
 }
 
-void DiveCartesianAxis::updateTicks()
+void DiveCartesianAxis::updateTicks(color_indice_t color)
 {
 	if (!scene())
 		return;
@@ -220,7 +220,7 @@ void DiveCartesianAxis::updateTicks()
 		}
 		DiveLineItem *line = new DiveLineItem(this);
 		QPen pen;
-		pen.setBrush(getColor(TIME_GRID));
+		pen.setBrush(getColor(color));
 		pen.setCosmetic(true);
 		pen.setWidthF(2);
 		line->setPen(pen);

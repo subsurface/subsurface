@@ -38,6 +38,7 @@
 #define BLACK1_LOW_TRANS QColor::fromRgbF(0.0, 0.0, 0.0, 0.75)
 #define BLACK1_HIGH_TRANS QColor::fromRgbF(0.0, 0.0, 0.0, 0.25)
 #define TUNDORA1_MED_TRANS QColor::fromRgbF(0.3, 0.3, 0.3, 0.5)
+#define MED_GRAY_HIGH_TRANS QColor::fromRgbF(0.5, 0.5, 0.5, 0.25)
 #define MERCURY1_MED_TRANS QColor::fromRgbF(0.9, 0.9, 0.9, 0.5)
 #define CONCRETE1_LOWER_TRANS QColor::fromRgbF(0.95, 0.95, 0.95, 0.9)
 #define WHITE1_MED_TRANS QColor::fromRgbF(1.0, 1.0, 1.0, 0.5)

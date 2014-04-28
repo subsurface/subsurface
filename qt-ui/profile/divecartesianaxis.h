@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsLineItem>
+#include <graphicsview-common.h>
 
 class QPropertyAnimation;
 class DiveTextItem;
@@ -47,7 +48,7 @@ public:
 	int unitSystem;
 public
 slots:
-	virtual void updateTicks();
+	virtual void updateTicks(color_indice_t color = TIME_GRID);
 
 signals:
 	void sizeChanged();
