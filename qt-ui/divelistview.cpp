@@ -218,6 +218,8 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	if (idx.parent().isValid()) {
 		setAnimated(false);
 		expand(idx.parent());
+		if (scrollto)
+			scrollTo(idx.parent());
 		setAnimated(true);
 	}
 	if (scrollto)
@@ -274,6 +276,8 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 	Q_EMIT currentDiveChanged(selected_dive);
 	const QModelIndex &idx = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive).first();
+	if (idx.parent().isValid())
+		scrollTo(idx.parent());
 	scrollTo(idx);
 }
 
@@ -371,6 +375,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		if (!isExpanded(curr)) {
 			setAnimated(false);
 			expand(curr);
+			scrollTo(curr);
 			setAnimated(true);
 		}
 	}
