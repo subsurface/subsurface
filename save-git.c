@@ -833,6 +833,26 @@ static int get_authorship(git_repository *repo, git_signature **authorp)
 #endif
 }
 
+static void create_commit_message(struct membuffer *msg)
+{
+	int nr = dive_table.nr;
+	struct dive *dive = get_dive(nr-1);
+
+	if (dive) {
+		dive_trip_t *trip = dive->divetrip;
+		const char *location = dive->location ? : "no location";
+
+		if (dive->number)
+			nr = dive->number;
+
+		put_format(msg, "dive %d: %s", nr, location);
+		if (trip->location && *trip->location && strcmp(trip->location, location))
+			put_format(msg, " (%s)", trip->location);
+		put_format(msg, "\n\n");
+	}
+	put_format(msg, "Created by subsurface %s\n", VERSION_STRING);
+}
+
 static int create_new_commit(git_repository *repo, const char *branch, git_oid *tree_id)
 {
 	int ret;
@@ -842,7 +862,6 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 	git_signature *author;
 	git_commit *commit;
 	git_tree *tree;
-	struct membuffer commit_msg = { 0 };
 
 	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
 	switch (ret) {
@@ -882,9 +901,12 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 		/* Else we do want to create the new branch, but with the old commit */
 		commit = (git_commit *) parent;
 	} else {
-		put_format(&commit_msg, "Created by subsurface %s\n", VERSION_STRING);
+		struct membuffer commit_msg = { 0 };
+
+		create_commit_message(&commit_msg);
 		if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent))
 			return report_error("Git commit create failed (%s)", strerror(errno));
+		free_buffer(&commit_msg);
 
 		if (git_commit_lookup(&commit, repo, &commit_id))
 			return report_error("Could not look up newly created commit");
