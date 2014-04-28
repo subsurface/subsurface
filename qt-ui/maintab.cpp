@@ -950,8 +950,11 @@ void MainTab::on_location_textChanged(const QString &text)
 		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 		EDIT_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		if (!ui.coordinates->isModified() ||
-		    ui.coordinates->text().trimmed().isEmpty()) {
+		// if we have a location text and haven't edited the coordinates, try to fill the coordinates
+		// from the existing dives
+		if (!text.isEmpty() &&
+		    (!ui.coordinates->isModified() ||
+		     ui.coordinates->text().trimmed().isEmpty())) {
 			struct dive *dive;
 			int i = 0;
 			for_each_dive(i, dive) {
