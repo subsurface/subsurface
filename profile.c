@@ -686,6 +686,8 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 		unsigned int mbar = dive->cylinder[cyl].start.mbar;
 		if (mbar > maxpressure)
 			maxpressure = mbar;
+		if (mbar < minpressure)
+			minpressure = mbar;
 	}
 
 	/* Then do all the samples from all the dive computers */
