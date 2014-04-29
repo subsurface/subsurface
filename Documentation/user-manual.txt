@@ -66,21 +66,21 @@ The _Subsurface_ window is usually divided into four panels with a *Main
 Menu* (File Import Log View Filter Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
-1) The *Dive List* to the bottom left containing a list of all the dives in the
+1. The *Dive List* to the bottom left containing a list of all the dives in the
 user's
 dive log. A dive can be selected and highlighted on the dive list by clicking on
 it. In most situations the up/down keys can be used to switch
 between dives. The Dive List is an important tool for manipulating a dive log.
 
-2) The *Dive Map* to the bottom right, showing the user's dive sites on a world
+2. The *Dive Map* to the bottom right, showing the user's dive sites on a world
 map
 and centred on the site of the last dive selected in the *Dive List*.
 
-3) The *Dive Info* to the top left, giving more detailed information on the
+3. The *Dive Info* to the top left, giving more detailed information on the
 dive selected in the *Dive List*, including some statistics for the selected dive or for all
 highlighted dive(s).
 
-4) The *Dive Profile* to the top right, showing a graphical dive profile of the
+4. The *Dive Profile* to the top right, showing a graphical dive profile of the
 selected dive in the *Dive List*.
 
 The dividers can be dragged between panels in order to change the size of any of
@@ -447,21 +447,24 @@ involves setting up the communications port (or mount point) of the computer
 with _Subsurface_ that communicates with the dive computer. In order to set up
 this communication, one needs to find the appropriate information to
 instruct
-_Subsurface_ where and how to import the dive information. *Appendix A* provides
-the technical information to help the user achieving this for different
+_Subsurface_ where and how to import the dive information.
+xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+provides the technical information to help the user achieving this for different
 operating
-systems and *Appendix B* has dive computer specific information.
+systems and
+xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B]
+has dive computer specific information.
 
 After this, the dive computer can be hooked up to the user's PC, which can be
 achieved by following these steps:
 
- - The interface cable should be connected to a free USB port (or the Infrared
+1. The interface cable should be connected to a free USB port (or the Infrared
 	or Bluetooth connection set up as described later in this manual)
 
- - The dive computer should be placed into PC Communication mode.
+2. The dive computer should be placed into PC Communication mode.
 	(Users should refer to the manual of their specific dive computer)
 
- - In _Subsurface_, from the Main Menu, the user must select _Import -> Import
+3. In _Subsurface_, from the Main Menu, the user must select _Import -> Import
 From Dive Computer_.
 Dialogue *A* in the figure below appears:
 
@@ -486,9 +489,11 @@ the dive computer must be selected, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck
 
  - The *Device or Mount Point* drop-down list contains the USB or Bluetooth port
 name that _Subsurface_ needs in order to communicate with the dive computer.
-The appropriate port name must be selected. Consult *Appendix A*
-and *Appendix B* for
-technical details on how to find the appropriate port information for a
+The appropriate port name must be selected. Consult
+xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+and
+xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B]
+for technical details on how to find the appropriate port information for a
 particular dive
 computer and, in some cases, how to do the correct settings to the operating
 system of the computer on which _Subsurface_ is running.
@@ -541,16 +546,25 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 *PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?*
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Check the following: 1) Is the dive computer still in PC-communication or
+Check the following:
+
+ - Is the dive computer still in PC-communication or
 Upload mode?
-2) Is the battery of the dive computer fully charged? If not then the battery
+
+ - Is the battery of the dive computer fully charged? If not then the battery
 must be charged or replaced.
-3) Is the connecting cable faulty? Does the cable work perfectly using other
+
+ - Is the connecting cable faulty? Does the cable work perfectly using other
 software? Has it worked before, or is this the first time the cable is being used?
-4) Consult *Appendix A* and make sure that the correct Mount Point
+
+ - Consult
+xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+and make sure that the correct Mount Point
 was specified (see above).
-5) On Unix-like operating systems, does the user have write permission to the
-USB port? If not, consult *Appendix A*.
+
+ - On Unix-like operating systems, does the user have write permission to the
+USB port? If not, consult
+xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
 
 If the _Subsurface_ computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
@@ -851,17 +865,17 @@ directly imported into
 _Subsurface_. Mares dive logs need to be imported using a three-step process,
 using _www.divelogs.de_ as a mechanism to extract the dive log information.
 
- - The dive log data from Mares Dive Organiser need to be exported to the user's
+1. The dive log data from Mares Dive Organiser need to be exported to the user's
 desktop, using
  a _.sdf_ file name extension. Refer to xref:Mares_Export[Appendix C] for more
 information.
- - Data should then be imported into _www.divelogs.de_. One needs to create a user
+2. Data should then be imported into _www.divelogs.de_. One needs to create a user
 account in
 _www.divelogs.de_, log into that web site, then
 select _Import Logbook -> Dive Organiser_ from the menu on the left hand side.
 The instructions must be carefully followed to transfer the dive information
 (in _.sdf_ format) from the Dive Organiser data base to _www.divelogs.de_.
- - Finally,  import the dives
+3. Finally,  import the dives
 from _divelogs.de_ to _Subsurface_, using the instructions below.
 
 
@@ -2274,9 +2288,9 @@ can be found
 xref:Unified_import[here.]
 However, in some cases, a two-step process may be required:
 
- - Export the forieign dive log data to format that is accessible from
+1. Export the forieign dive log data to format that is accessible from
 _Subsurface_.
- - Import the accessible dive log data into _Subsurface_.
+2. Import the accessible dive log data into _Subsurface_.
 
 This appendix provides some information about approaches to export dive log
 data from foreign
@@ -2293,18 +2307,17 @@ conventions to export dive log data.
 
 *Divemanager 3 (DM3):*
 
- - Start 'Suunto Divemanager 3' and log in with the name containing the logs
- - Do not start the import wizard to import dives from the dive computer.
- - In the navigation tree on the left side of the program-window, select the appropriate
+1. Start 'Suunto Divemanager 3' and log in with the name containing the logs
+2. Do not start the import wizard to import dives from the dive computer.
+3. In the navigation tree on the left side of the program-window, select the appropriate
 dives.
- - Within the list of dives, select the dives you would like to import later:
+4. Within the list of dives, select the dives you would like to import later:
 	* To select certain dives: hold 'ctrl' and click the dive
 	* To select all dives:  Select the first dive, hold down shift and
 select the
 last dive
- - With the dives marked, use the program menu _File -> Export_
- - The export pop-up will show
- - Within this pop-up, there is one field called 'Export Path'.
+5. With the dives marked, use the program menu _File -> Export_
+6. The export pop-up will show. Within this pop-up, there is one field called 'Export Path'.
 	* Click the browse button next to the field Export Path
 		** A file-manager like window pops up
 		** Navigate to the directory or storing the
@@ -2312,7 +2325,7 @@ Divelog.SDE file
 		** Optionally change the name of the file for saving
 		** Click 'Save'
 	* Back in the Export pop-up, press the button 'Export'
- - The dives are now exported to the file Divelogs.SDE.
+7. The dives are now exported to the file Divelogs.SDE.
 
 *Divemanager 4 (DM4):*
 
@@ -2322,21 +2335,21 @@ database or make a backup of the dives. Both methods are described here.
 
 Locating the Suunto DM4 database:
 
- * Start Suunto DM4
- * Select 'Help -> About'
- * Click 'Copy' after text 'Copy log folder path to clipboard'
- * Now open Windows Explorer
- * Paste the address to the path box at the top of the File Explorer
- * The database is called DM4.db
+1. Start Suunto DM4
+2. Select 'Help -> About'
+3. Click 'Copy' after text 'Copy log folder path to clipboard'
+4. Now open Windows Explorer
+5. Paste the address to the path box at the top of the File Explorer
+6. The database is called DM4.db
 
 Backing up Suunto DM4:
 
- * Start Suunto DM4
- * Select 'File - Create backup'
- * From the file menu select the location and name for the backup, we'll
+1. Start Suunto DM4
+2. Select 'File - Create backup'
+3. From the file menu select the location and name for the backup, we'll
    use DM4 in here with the default extension .bak
- * Click 'Save'
- * The dives are now exported to the file DM4.bak
+4. Click 'Save'
+5. The dives are now exported to the file DM4.bak
 
 
 === Exporting from Mares Dive Organiser V2.1
@@ -2351,14 +2364,14 @@ computer and all Mares dive computers used. The safest way to obtain a copy
 of the dive data base is to export the information to another compatible format
 which can be imported into _Subsurface_.
 
- - Within Dive Organiser, select
+1. Within Dive Organiser, select
 _Database -> Backup_ from the main menu and back up the data base to the desk
 top.
 This creates a zipped file DiveOrganiserxxxxx.dbf.
- - Rename the file to
+2. Rename the file to
 DiveOrganiserxxxxx.zip. Inside the zipped directory is a file
 _DiveOrganiser.sdf_.
- - Extract the _.sdf_ file from the zipped folder to your Desktop.
+3. Extract the _.sdf_ file from the zipped folder to your Desktop.
 
 [[S_ImportingDivinglog]]
 === Exporting dives from *DivingLog 5.0*
@@ -2373,9 +2386,9 @@ to use the Metric system (one can easily change this within Diving Log by
 selecting 'File -> Preferences -> Units and Language' by clicking the 'Metric'
 button). Then do the following:
 
- - In Divinglog open the 'File -> Export -> XML' menu
- - Select the dives to export
- - Click on the export button and select the filename
+1. In Divinglog open the 'File -> Export -> XML' menu
+2. Select the dives to export
+3. Click on the export button and select the filename
 
 
 == APPENDIX D: FAQs.
