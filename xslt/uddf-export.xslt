@@ -197,7 +197,7 @@
           <xsl:variable name="timefirst">
             <xsl:call-template name="time2sec">
               <xsl:with-param name="time">
-                <xsl:value-of select="//sample[position() = $position]/@time"/>
+                <xsl:value-of select="../sample[position() = $position]/@time"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:variable>
@@ -225,7 +225,7 @@
           <xsl:variable name="depthfirst">
             <xsl:call-template name="depth2mm">
               <xsl:with-param name="depth">
-                <xsl:value-of select="//sample[position() = $position]/@depth"/>
+                <xsl:value-of select="../sample[position() = $position]/@depth"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:variable>
