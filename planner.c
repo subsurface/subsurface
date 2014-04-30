@@ -12,6 +12,7 @@
 #include "divelist.h"
 #include "planner.h"
 #include "gettext.h"
+#include "libdivecomputer/parser.h"
 
 #define TIMESTEP 1 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
@@ -263,7 +264,7 @@ struct dive *create_dive_from_plan(struct diveplan *diveplan)
 		/* Check for SetPoint change */
 		if (oldpo2 != po2) {
 			if (lasttime)
-				add_event(dc, lasttime, 20, 0, po2, "SP change"); // SAMPLE_EVENT_PO2
+				add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, "SP change");
 			oldpo2 = po2;
 		}
 
