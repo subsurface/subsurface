@@ -88,7 +88,7 @@ void DiveEventItem::setupToolTipString()
 			name += ": ";
 			if (he)
 				name += QString("%1/%2").arg(o2).arg(he);
-			else if (is_air(o2, he))
+			else if (o2 == 21) // don't use is_air() as that assumes permille
 				name += tr("air");
 			else
 				name += QString(tr("EAN%1")).arg(o2);
