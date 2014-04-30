@@ -89,6 +89,9 @@ void init_ui(void)
 	// 106 is "UTF-8", this is faster than lookup by name
 	// [http://www.iana.org/assignments/character-sets/character-sets.xml]
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForMib(106));
+	// and for reasons I can't understand, I need to do the same again for tr
+	// even though that clearly uses C strings as well...
+	QTextCodec::setCodecForTr(QTextCodec::codecForMib(106));
 #ifdef Q_OS_WIN
 	QFile::setDecodingFunction(decodeUtf8);
 	QFile::setEncodingFunction(encodeUtf8);
