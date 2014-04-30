@@ -121,7 +121,7 @@ void init_ui(void)
 	// we don't have translations for English - if we don't check for this
 	// Qt will proceed to load the second language in preference order - not what we want
 	// on Linux this tends to be en-US, but on the Mac it's just en
-	if (!uiLang.startsWith("en")) {
+	if (!uiLang.startsWith("en") || uiLang.startsWith("en-GB")) {
 		qtTranslator = new QTranslator;
 		if (qtTranslator->load(loc, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 			application->installTranslator(qtTranslator);
