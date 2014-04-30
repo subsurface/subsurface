@@ -2659,7 +2659,7 @@ Bitte entferne diese zuerst.</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation>Eine neuere Subsurface Version kann hier heruntergeladen werden&lt;br/&gt;&lt;a href=&quot;%1&quot;&lt;/a&gt;</translation>
+        <translation>Eine neuere Subsurface Version kann hier heruntergeladen werden&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
