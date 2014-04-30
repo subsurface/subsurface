@@ -1655,7 +1655,7 @@ image::images/MergedDive.png["Example: Merged dive",align="center"]
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
 
-A dive log can be saved in two formats:
+A dive log can be saved in three formats:
 
 * _Subsurface_ XML format. This is the native format used by _Subsurface_.
 
@@ -1663,15 +1663,21 @@ A dive log can be saved in two formats:
 UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 
+* CSV format, that includes the most critical information of the dive
+profile. Included information of a dive is: number, date, time,
+duration, depth, temperature and pressure.
+
 In order to save the WHOLE dive log (i.e. all trips and dives), select *File*
 from the Main menu. To save in _Subsurface_ XML format, select _File -> Save as_.
-To save in UDDF format, select _File -> Export UDDF_.
+To save in UDDF format, select _File -> Export UDDF_ and to save in CSV
+format, select _File -> Export CSV_.
 
 In order to save only one or more dives or one or two trips, select the
 appropriate dives or trips in the *Dive List* panel and then right-click the
 selected dives to bring up the context menu. To save in _Subsurface_ XML
-format, select _Save as_ from the context menu. To save in UDDF format, select
-_Export as UDDF_ from the context menu.
+format, select _Save as_ from the context menu. To save in UDDF or CSV
+format, select _Export as UDDF_ or _Export as CSV_ from the context menu
+respectively.
 
 Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
