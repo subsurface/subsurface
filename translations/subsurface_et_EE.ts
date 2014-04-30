@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="et_EE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="et_EE" version="2.0">
 <context>
     <name>CylindersModel</name>
     <message>
@@ -218,7 +216,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>add dive(s) to trip immediately below</source>
-        <translation type="unfinished"></translation>
+        <translation>lisa sukeldumine(sed) vahetult allolevale väljasõidule </translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="749"/>
@@ -253,7 +251,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="764"/>
         <source>export As CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspordi CSV failina</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="765"/>
@@ -278,7 +276,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="814"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspordi UDDF fail kujul</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="815"/>
@@ -288,12 +286,12 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="825"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksport CSV fail kujul</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="826"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV failid (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="843"/>
@@ -397,7 +395,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="278"/>
         <source>Manual dives</source>
-        <translation type="unfinished"></translation>
+        <translation>Käsitsi sisestatud sukeldumised</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="302"/>
@@ -533,7 +531,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1150"/>
         <source>Run time</source>
-        <translation type="unfinished"></translation>
+        <translation>Töö aeg</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1152"/>
@@ -750,7 +748,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="131"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>zip-faili loomine üleslaadimiseks ebaõnnestus: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="155"/>
@@ -863,7 +861,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="322"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali sukeldumiskompuutri allalaadimise logifail</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="323"/>
@@ -878,17 +876,17 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="340"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation type="unfinished"></translation>
+        <translation>libdivecomputer tõmmisefaili salvestamine EI LAE sukeldumised sukeldumiste listi.</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="351"/>
         <source>Choose file for divecomputer binary dump file</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali sukeldumiskompuutri binaarformaadis tõmmisefail</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="352"/>
         <source>Dump files (*.bin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tõmmisefailid (*.bin)</translation>
     </message>
 </context>
 <context>
@@ -948,7 +946,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="125"/>
         <source>Save libdivecomputer dumpfile</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta libdivecomputer tõmmisefail</translation>
     </message>
 </context>
 <context>
@@ -1500,12 +1498,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="946"/>
         <source>&amp;Check for Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kontrolli kas on uuendusi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="951"/>
         <source>Export CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspordi CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="726"/>
@@ -1515,7 +1513,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="112"/>
         <source>Enable the pO2 Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba pO2 graaf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="115"/>
@@ -1538,12 +1536,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="326"/>
         <source>Enable MOD</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="193"/>
         <source>Show the DC Reported Ceiling</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita sukeldumiskompuutri poolt teatatud lagi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="222"/>
@@ -1563,12 +1561,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="404"/>
         <source>Show SAC Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita SAC määra</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="430"/>
         <source>Enable / Disable the Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba / keela mõõtühikute riba</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="731"/>
@@ -1668,17 +1666,17 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="899"/>
         <source>Import divelog files from other applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Impordi sukeldumislogi failid teistest rakendustest</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="915"/>
         <source>&amp;Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Täisekraan</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="918"/>
         <source>Toggle Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita täisekraan</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="921"/>
@@ -1751,7 +1749,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="280"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspordi UDDF fail kujul</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="281"/>
@@ -1761,12 +1759,12 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspordi CSV fail kujul</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="290"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV failid (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="299"/>
@@ -1791,17 +1789,17 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1084"/>
         <source>Open Dive Log File</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava sukeldumiste logi fail</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1084"/>
         <source>Dive Log Files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;JDiveLog Files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Logifailid (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML failid (*.xml);;UDDF/UDCF failid (*.uddf *.udcf);;JDiveLog Files(*.jlb);;Suunto failid (*.sde *.db);;CSV failid (*.csv);;Kõik failid (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1107"/>
         <source>Please, first finish the current edition before trying to do another.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõpeta praegune toimetamine enne järgmise alustamist.</translation>
     </message>
 </context>
 <context>
@@ -1984,12 +1982,12 @@ palun eemalda need esmalt.</translation>
     <message utf8="true">
         <location filename="../qt-ui/preferences.ui" line="636"/>
         <source>max ppO₂ when showing MOD</source>
-        <translation type="unfinished"></translation>
+        <translation>max ppO₂ kui kuvatakse MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="657"/>
         <source>draw dive computer reported ceiling red</source>
-        <translation type="unfinished"></translation>
+        <translation>kuva sukeldumiskompuutri esitatud lagi punasega</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="747"/>
@@ -2054,7 +2052,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="668"/>
         <source>Show non-used cylinders in Equipment Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita kasutamata balloone varustuse sakis</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="679"/>
@@ -2346,7 +2344,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="733"/>
         <source>Unhide all events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida kõik sündmused</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="746"/>
@@ -2376,7 +2374,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="833"/>
         <source>Custom name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohandatud nimi</translation>
     </message>
 </context>
 <context>
@@ -2440,7 +2438,7 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="34"/>
         <source>Shift times of image(s) by</source>
-        <translation type="unfinished"></translation>
+        <translation>Nihuta pildi (piltide) aegu</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="102"/>
@@ -2455,22 +2453,22 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="145"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sukeldumiskompuutri ja kaamera kellade näidu vahe arvutamiseks pildista kompuutri kellaajaga ekraani. Lae see pilt arvutisse ja vajuta sellele klahvikle.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="155"/>
         <source>Determine camera time offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Määra kaamera kellaaja nihe</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="158"/>
         <source>Select image of divecomputer showing time</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali pilt sukeldumiskompuutri ajaga</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="196"/>
         <source>Which date and time are displayed on the image?</source>
-        <translation type="unfinished"></translation>
+        <translation>Mis kuupäev ja kellaaeg on pildil?</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="212"/>
@@ -2637,42 +2635,42 @@ palun eemalda need esmalt.</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolli kas on uuendusi</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="37"/>
         <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Subsurface ei suutnud kontrollida kas on uuendusi.&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
         <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Tekkis järgmine viga:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="43"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Kontrolli internetiühendust.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="52"/>
         <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutad Subsurface kõige uuemat versiooni.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Subsurface uus versioon on väljas.&lt;br/&gt;Kliki:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; selle allalaadimiseks.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Subsurface uus versioon on ilmunud.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uuenduste olemasolu kontrolli viga.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -3240,7 +3238,7 @@ Maksimum</translation>
     </message>
     <message>
         <location filename="../file.c" line="166"/>
-        <source>Database connection failed &apos;%s&apos;.
+        <source>Database connection failed '%s'.
 </source>
         <translation>Andmebaasi ühendus ebaõnnestus &apos;%s&apos;.
 </translation>
@@ -3248,7 +3246,7 @@ Maksimum</translation>
     <message>
         <location filename="../parse-xml.c" line="1887"/>
         <location filename="../parse-xml.c" line="2034"/>
-        <source>Database query failed &apos;%s&apos;.
+        <source>Database query failed '%s'.
 </source>
         <translation>Andmebaasi päring ebaõnnestus &apos;%s&apos;.
 </translation>

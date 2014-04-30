@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl_NL" version="2.0">
 <context>
     <name>CylindersModel</name>
     <message>
@@ -253,7 +251,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="764"/>
         <source>export As CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>als CSV exporteren</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="765"/>
@@ -278,7 +276,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="814"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteer UDDF bestand als</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="815"/>
@@ -288,12 +286,12 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="825"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteer CSV bestand als</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="826"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV Bestanden (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="843"/>
@@ -1505,7 +1503,7 @@ Verwijder deze eerst.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="951"/>
         <source>Export CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>als CSV exporteren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="726"/>
@@ -1751,7 +1749,7 @@ Verwijder deze eerst.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="280"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>UDDF Exporteren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="281"/>
@@ -1761,12 +1759,12 @@ Verwijder deze eerst.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteer CSV bestand als</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="290"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV bestanden (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="299"/>
@@ -3240,7 +3238,7 @@ Maximum</translation>
     </message>
     <message>
         <location filename="../file.c" line="166"/>
-        <source>Database connection failed &apos;%s&apos;.
+        <source>Database connection failed '%s'.
 </source>
         <translation>Databaseconnectie is mislukt &apos;%s&apos;.
 </translation>
@@ -3248,7 +3246,7 @@ Maximum</translation>
     <message>
         <location filename="../parse-xml.c" line="1887"/>
         <location filename="../parse-xml.c" line="2034"/>
-        <source>Database query failed &apos;%s&apos;.
+        <source>Database query failed '%s'.
 </source>
         <translation>Database-query mislukt: &apos;%s&apos;
 </translation>

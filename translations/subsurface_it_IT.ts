@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
 <context>
     <name>CylindersModel</name>
     <message>
@@ -132,7 +130,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="92"/>
         <source>EAN%1</source>
-        <translation>EAN1%</translation>
+        <translation>EAN%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="99"/>
@@ -162,7 +160,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/profile/diveprofileitem.cpp" line="476"/>
         <source>EAN%1</source>
-        <translation>EAN1%</translation>
+        <translation>EAN%1</translation>
     </message>
 </context>
 <context>
@@ -253,7 +251,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="764"/>
         <source>export As CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta in formato CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="765"/>
@@ -278,7 +276,7 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="814"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta il documento UDDF come</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="815"/>
@@ -288,12 +286,12 @@ il computer seleizonato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="825"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta il documento CSV come</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="826"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV files (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="843"/>
@@ -1505,7 +1503,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="951"/>
         <source>Export CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="726"/>
@@ -1751,7 +1749,7 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="280"/>
         <source>Export UDDF File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta il documento UDDF come</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="281"/>
@@ -1761,12 +1759,12 @@ Per favore, rimuovile prima.</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="289"/>
         <source>Export CSV File as</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta il documento CSV come</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="290"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV files (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="299"/>
@@ -3241,7 +3239,7 @@ Media</translation>
     </message>
     <message>
         <location filename="../file.c" line="166"/>
-        <source>Database connection failed &apos;%s&apos;.
+        <source>Database connection failed '%s'.
 </source>
         <translation>Connessione al database fallita &apos;%s&apos;.
 </translation>
@@ -3249,7 +3247,7 @@ Media</translation>
     <message>
         <location filename="../parse-xml.c" line="1887"/>
         <location filename="../parse-xml.c" line="2034"/>
-        <source>Database query failed &apos;%s&apos;.
+        <source>Database query failed '%s'.
 </source>
         <translation>Interrogazione al database fallita &apos;%s&apos;.
 </translation>
