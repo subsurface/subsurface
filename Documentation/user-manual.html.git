@@ -410,7 +410,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.1,  April 2014</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.1,  May 2014</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
 extensive infrastructure to describe, organise, interpret and print scuba
 and free dives. <em>Subsurface</em> offers many advantages above other similar
@@ -465,19 +465,37 @@ Divers</p></div>
 <div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
 Menu</strong> (File Import Log View Filter Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:</p></div>
-<div class="paragraph"><p>1) The <strong>Dive List</strong> to the bottom left containing a list of all the dives in the
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+The <strong>Dive List</strong> to the bottom left containing a list of all the dives in the
 user&#8217;s
 dive log. A dive can be selected and highlighted on the dive list by clicking on
 it. In most situations the up/down keys can be used to switch
-between dives. The Dive List is an important tool for manipulating a dive log.</p></div>
-<div class="paragraph"><p>2) The <strong>Dive Map</strong> to the bottom right, showing the user&#8217;s dive sites on a world
+between dives. The Dive List is an important tool for manipulating a dive log.
+</p>
+</li>
+<li>
+<p>
+The <strong>Dive Map</strong> to the bottom right, showing the user&#8217;s dive sites on a world
 map
-and centred on the site of the last dive selected in the <strong>Dive List</strong>.</p></div>
-<div class="paragraph"><p>3) The <strong>Dive Info</strong> to the top left, giving more detailed information on the
+and centred on the site of the last dive selected in the <strong>Dive List</strong>.
+</p>
+</li>
+<li>
+<p>
+The <strong>Dive Info</strong> to the top left, giving more detailed information on the
 dive selected in the <strong>Dive List</strong>, including some statistics for the selected dive or for all
-highlighted dive(s).</p></div>
-<div class="paragraph"><p>4) The <strong>Dive Profile</strong> to the top right, showing a graphical dive profile of the
-selected dive in the <strong>Dive List</strong>.</p></div>
+highlighted dive(s).
+</p>
+</li>
+<li>
+<p>
+The <strong>Dive Profile</strong> to the top right, showing a graphical dive profile of the
+selected dive in the <strong>Dive List</strong>.
+</p>
+</li>
+</ol></div>
 <div class="paragraph"><p>The dividers can be dragged between panels in order to change the size of any of
 the panels. <em>Subsurface</em> remembers the position of the dividers, so the next
 time <em>Subsurface</em> starts it uses the positions of the dividers when the program
@@ -871,13 +889,16 @@ involves setting up the communications port (or mount point) of the computer
 with <em>Subsurface</em> that communicates with the dive computer. In order to set up
 this communication, one needs to find the appropriate information to
 instruct
-<em>Subsurface</em> where and how to import the dive information. <strong>Appendix A</strong> provides
-the technical information to help the user achieving this for different
+<em>Subsurface</em> where and how to import the dive information.
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix A</a>
+provides the technical information to help the user achieving this for different
 operating
-systems and <strong>Appendix B</strong> has dive computer specific information.</p></div>
+systems and
+<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a>
+has dive computer specific information.</p></div>
 <div class="paragraph"><p>After this, the dive computer can be hooked up to the user&#8217;s PC, which can be
 achieved by following these steps:</p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 The interface cable should be connected to a free USB port (or the Infrared
@@ -897,7 +918,7 @@ From Dive Computer</em>.
 Dialogue <strong>A</strong> in the figure below appears:
 </p>
 </li>
-</ul></div>
+</ol></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/ImportFromDC1.jpg" alt="FIGURE: Download dialogue 1" />
@@ -926,9 +947,11 @@ the dive computer must be selected, e.g. D4 (Suunto), Veo200 (Oceanic), or Puck
 <p>
 The <strong>Device or Mount Point</strong> drop-down list contains the USB or Bluetooth port
 name that <em>Subsurface</em> needs in order to communicate with the dive computer.
-The appropriate port name must be selected. Consult <strong>Appendix A</strong>
-and <strong>Appendix B</strong> for
-technical details on how to find the appropriate port information for a
+The appropriate port name must be selected. Consult
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix A</a>
+and
+<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a>
+for technical details on how to find the appropriate port information for a
 particular dive
 computer and, in some cases, how to do the correct settings to the operating
 system of the computer on which <em>Subsurface</em> is running.
@@ -1003,18 +1026,44 @@ message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Check the following: 1) Is the dive computer still in PC-communication or
-Upload mode?
-2) Is the battery of the dive computer fully charged? If not then the battery
-must be charged or replaced.
-3) Is the connecting cable faulty? Does the cable work perfectly using other
-software? Has it worked before, or is this the first time the cable is being used?
-4) Consult <strong>Appendix A</strong> and make sure that the correct Mount Point
-was specified (see above).
-5) On Unix-like operating systems, does the user have write permission to the
-USB port? If not, consult <strong>Appendix A</strong>.</td>
+<td class="content">Check the following:</td>
 </tr></table>
 </div>
+<div class="ulist"><ul>
+<li>
+<p>
+Is the dive computer still in PC-communication or
+Upload mode?
+</p>
+</li>
+<li>
+<p>
+Is the battery of the dive computer fully charged? If not then the battery
+must be charged or replaced.
+</p>
+</li>
+<li>
+<p>
+Is the connecting cable faulty? Does the cable work perfectly using other
+software? Has it worked before, or is this the first time the cable is being used?
+</p>
+</li>
+<li>
+<p>
+Consult
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix A</a>
+and make sure that the correct Mount Point
+was specified (see above).
+</p>
+</li>
+<li>
+<p>
+On Unix-like operating systems, does the user have write permission to the
+USB port? If not, consult
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix A</a>
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>If the <em>Subsurface</em> computer does not recognise the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility that the cable or USB adaptor is faulty. A faulty cable is the most
@@ -1351,7 +1400,7 @@ multi-platform applications, these dive logs cannot be
 directly imported into
 <em>Subsurface</em>. Mares dive logs need to be imported using a three-step process,
 using <em>www.divelogs.de</em> as a mechanism to extract the dive log information.</p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 The dive log data from Mares Dive Organiser need to be exported to the user&#8217;s
@@ -1376,7 +1425,7 @@ Finally,  import the dives
 from <em>divelogs.de</em> to <em>Subsurface</em>, using the instructions below.
 </p>
 </li>
-</ul></div>
+</ol></div>
 </div>
 <div class="sect3">
 <h4 id="S_ImportingDivelogsDe">3.3.3. Importing dives from <strong>divelogs.de</strong></h4>
@@ -1555,18 +1604,19 @@ appear in the <strong>Dive List</strong> area of <em>Subsurface</em>.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Companion">3.4. Importing GPS coordinates with the <strong>Subsurface Companion App</strong> for mobile phones</h3>
-<div class="paragraph"><p>If the user has an Android device with GPS, the coordinates for the diving
-location can be obtained and automatically passed to the <em>Subsurface</em>
-divelog. This takes place when the Companion App stores the dive locations on
+<h3 id="S_Companion">3.4. Importing GPS coordinates with the <em>Subsurface Companion App</em> for mobile phones</h3>
+<div class="paragraph"><p>Using the <strong>Subsurface Companion App</strong> on an Android device with a GPS, the coordinates
+for the diving
+location can be automatically passed to the <em>Subsurface</em>
+divelog. The Companion App stores the dive locations on
 a dedicated Internet-based file server. <em>Subsurface</em>, in turn, can collect
 the localities from the file server.</p></div>
-<div class="paragraph"><p>To do this, one needs to:</p></div>
+<div class="paragraph"><p>To do this:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Register on the <a href="http://api.hohndel.org/login/">Subsurface companion web page</a>.
-A confirmation mail with instructions and a personal <strong>DIVERID</strong> will be send together with
+Register on the <a href="http://api.hohndel.org/login/"><em>Subsurface companion web page</em></a>.
+A confirmation email with instructions and a personal <strong>DIVERID</strong> will be send together with
 a long number that gives access to the file server and Companion App capabilities.
 </p>
 </li>
@@ -1587,7 +1637,7 @@ from
 <li>
 <p>
 <em>Create a new account.</em>  Equivalent to registering in <em>Subsurface</em> companion
-page.
+page using an Internet browser.
 </p>
 </li>
 <li>
@@ -1606,13 +1656,13 @@ option (see below).
 </ul></div>
 <div class="paragraph"><p>Now one is ready to get a dive position and send it to the server. The Android
 display will look like the left hand image (<strong>A</strong>) below, but without any dive.</p></div>
-<div class="paragraph"><p>Touch the "+" icon on the top right to add a new dive site. Users will be
-prompted for a place name (or asked to activate the GPS if it is turned off).
+<div class="paragraph"><p>Touch the "+" icon on the top right to add a new dive site, resulting in a prompt
+for a place name (or a request to activate the GPS if it is turned off).
 The main screen shows a list of dive locations, each with a name, date and
-time. Some dives may have an arrow-up icon on the selection box to the left (see
+time. Some locations may have an arrow-up icon on the selection box to the left (see
 image B in the middle, below) indicating that they require upload to the server.</p></div>
-<div class="paragraph"><p>There are several ways to send dives to the server; the easiest is by simply
-selecting the dive. See middle image below (<strong>B</strong>):</p></div>
+<div class="paragraph"><p>There are several ways to send locationd to the server; the easiest is by simply
+selecting the location. See middle image below (<strong>B</strong>):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Companion.jpg" alt="FIGURE: Screen shots (A-C) of companion app" />
@@ -1624,14 +1674,32 @@ selecting the dive. See middle image below (<strong>B</strong>):</p></div>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Users must be careful, as the trash icon on the right means exactly what it is supposed to mean,
+<td class="content">Users must be careful, as the trash icon on the right means exactly what it should mean:
 it deletes the dive location(s).</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>The new dive points are now stored on the server and can be downloaded to the
+<div class="paragraph"><p>New dive locations are now stored on the server and can be downloaded to the
 <em>Subsurface</em> dive log whenever users upload or add dives to <em>Subsurface</em>.
-After a dive trip using the Companion app, all dive locations are ready to be
+After a dive trip using the Companion App, all dive locations are ready to be
 saved on a <em>Subsurface</em> dive log (see below).</p></div>
+<div class="paragraph"><p>When you click on a dive (<strong>not</strong> selecting the check button as shown in the images above), the
+name given to it, date/time and GPS coordinates will be shown, with two options:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Edit:  Change the text name of the dive location.
+</p>
+</li>
+<li>
+<p>
+Maps:  Display a map showing the dive location (you&#8217;ll be prompted to
+choose which helper app use from your installed apps). Currently this feature is
+non fully functional, but is under active development.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>After editing and saving a dive location, one needs to upload it to the web
+service, as explained above.</p></div>
 <div class="sect4">
 <h5 id="_settings_on_the_companion_app">Settings on the Companion app</h5>
 <div class="paragraph"><p>Selecting the <em>Settings</em> menu option results in the right hand image above (<strong>C</strong>).</p></div>
@@ -1646,8 +1714,8 @@ saved on a <em>Subsurface</em> dive log (see below).</p></div>
 </li>
 <li>
 <p>
-<em>User ID.</em> Obtained by registering as indicated above. The easiest way to
-obtain it is simply to copy and paste from the confirmation mail but, of
+<em>User ID.</em> The DIVERID obtained by registering as described above. The easiest way to
+obtain it is simply to copy and paste from the confirmation email but, of
 course, users can also type this information.
 </p>
 </li>
@@ -1658,14 +1726,14 @@ course, users can also type this information.
 <div class="ulist"><ul>
 <li>
 <p>
-<em>Synchronize on startup.</em> If selected, dives in the Android device and those
-on the web service will synchronize each time the app is started.
+<em>Synchronize on startup.</em> If selected, dive locations in the Android device and those
+on the web service synchronize each time the app is started.
 </p>
 </li>
 <li>
 <p>
-<em>Upload new dives.</em> If selected, each time the user adds a dive location it will
-automatically be sent to the server.
+<em>Upload new dives.</em> If selected, each time the user adds a dive location it is
+automatically sent to the server.
 </p>
 </li>
 </ul></div>
@@ -1673,23 +1741,23 @@ automatically be sent to the server.
 <div class="sect4">
 <h5 id="_background_service">Background service</h5>
 <div class="paragraph"><p>Instead of entering a unique dive location, users can leave the service running
-in the background of their device, thus allowing the continuous collection of GPS locations.</p></div>
+in the background of their Android device, allowing the continuous collection of GPS locations.</p></div>
 <div class="paragraph"><p>The settings below define the behaviour of the service:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>Min duration.</em> In minutes. The app will try to get a position each X minutes
-until it&#8217;s stopped by the user.
+<em>Min duration.</em> In minutes. The app will try to get a location every X minutes
+until stopped by the user.
 </p>
 </li>
 <li>
 <p>
-<em>Min distance.</em> In meters. Minimum distance between two position fixes.
+<em>Min distance.</em> In meters. Minimum distance between two locations.
 </p>
 </li>
 <li>
 <p>
-<em>Name template.</em> The name the app will use when saving the position fixes.
+<em>Name template.</em> The name the app will use when saving the locations.
 </p>
 </li>
 </ul></div>
@@ -1698,13 +1766,14 @@ until it&#8217;s stopped by the user.
 <td class="icon">
 <img src="images/icons/info.jpg" alt="Tip" />
 </td>
-<td class="content"><em>How does the background service work?</em> Assuming that the user set 5 minutes and 50
-meters in the settings above, the app will start by taking a fix at the current location,
-followed by another one
-at every 5 minutes. If this 2nd (3rd, 4th &#8230;) location is within a radius of 50
-meters from the previous one, then this new fix is not saved. If the user is not moving,
-only one fix is saved, but if the user is moving, then a trace of the journey is obtained,
-by saving each new position at every 5 minutes.</td>
+<td class="content"><em>How does the background service work?</em> Assuming the user sets 5 minutes and 50
+meters in the settings above, the app will start by recording a location at the current
+location, followed by another one at every 5 minutes <strong>or</strong> every time one moves 50m
+from previous location.
+If subsequent locations are within a radius of 50 meters from the previous one,
+a new location is not saved. If the user is not moving, only one location is saved,
+but if the user is moving, a trace of the route is obtained by saving a
+location every 50 meters.</td>
 </tr></table>
 </div>
 </div>
@@ -1724,26 +1793,26 @@ Subsurface mailing list.
 </li>
 <li>
 <p>
-<em>Version.</em> Displays the current version of the companion app.
+<em>Version.</em> Displays the current version of the Companion App.
 </p>
 </li>
 </ul></div>
 </div>
 <div class="sect4">
 <h5 id="_search">Search</h5>
-<div class="paragraph"><p>Here one can search one&#8217;s saved dive locations by the name or by date and hour.</p></div>
+<div class="paragraph"><p>Search the saved dive locations by name or by date and time.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_start_service">Start service</h5>
-<div class="paragraph"><p>Initiates the <em>background service</em> depending on the previously defined settings.</p></div>
+<div class="paragraph"><p>Initiates the <em>background service</em> following the previously defined settings.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_disconnect">Disconnect</h5>
-<div class="paragraph"><p>This is a badly named option. It disconnects the app from the server by
+<div class="paragraph"><p>This is a badly named option that disconnects the app from the server by
 resetting the user ID in the app, showing the first screen where an account
 can be created, retrieve the ID for an existing account or use the users own
 ID. The disconnect option
-is useful if a user&#8217;s Android device was used to download the dive positions
+is useful if a user&#8217;s Android device was used to download the dive locations
 of another registered diver.</p></div>
 </div>
 <div class="sect4">
@@ -1757,9 +1826,9 @@ of another registered diver.</p></div>
 <em>Subsurface</em> before obtaining the GPS coordinates from the server. The download
 dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main Menu <em>Import
 &#8594; Import GPS data from Subsurface Service</em>, resulting in the image on the
-left (<strong>A</strong>), below. On first use the DIVERID text box will be blank. Users must provide their
-DIVERID and then select the <em>Download</em> button to initiate the download process. When this
-is completed, users will see the screen on the right (<strong>B</strong>), below:</p></div>
+left (<strong>A</strong>), below. On first use the DIVERID text box is blank. Provide a
+DIVERID, then select the <em>Download</em> button to initiate the download process, after
+which the screen on the right (<strong>B</strong>) below appears:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DownloadGPS.jpg" alt="FIGURE: Downloading Companion app GPS data" />
@@ -1768,24 +1837,49 @@ is completed, users will see the screen on the right (<strong>B</strong>), below
 <div class="paragraph"><p>Note that the <em>Apply</em> button is now active. By clicking on it, users can update the locations
 of the newly entered or uploaded dives in <em>Subsurface</em> which applies the
 coordinates and names entered on the app for all the new dives that match the
-date-times of the uploaded GPS localities.</p></div>
+date-times of the uploaded GPS localities. If one has entered the name of the dive
+location in <em>Subsurface</em> before downloading the GPS coordinates, this name will take
+precedence over downloaded one.</p></div>
+<div class="paragraph"><p>Since <em>Subsurface</em> matches GPS locations from the Android device and dive information from the
+dive computer based on date-time data, automatic assignment of GPS data to dives is dependent
+on agreement of the date-time information between these two devices. Although <em>Subsurface</em> has
+a wide range tolerance, it may be unable to identify the appropriate dive if there is
+a large difference between the time in the dive computer and that of the Android device,
+resulting in no updates.</p></div>
+<div class="paragraph"><p>Similar date-times may not always be possible and there may be many reasons for this (e.g. time zones), or
+<em>Subsurface</em> may be unable to decide which is the correct position for a dive (e.g. on repetitive
+dives while running <em>background service</em> there may be several locations that would be
+included in the time range that fit not only the first dive, but one or more subsequent dives as well).
+A workaround for this situation to manually edit the date-time of a dive in the <em>Subsurface</em>
+Dive List <strong>before</strong> downloading the GPS data and then to change the date-time back again <strong>after</strong>
+downloading GPS data.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/info.jpg" alt="Note" />
 </td>
-<td class="content"><em>Features, issues and tips.</em>  Since <em>Subsurface</em> matches GPS locations from the
-Android device and dive information from the dive computer based on date-time
-data, automatic assignment of GPS data to dives is dependent on agreement of
-date and time between these two devices. If there is a large difference between
-the time in the dive computer and the time in the Android device,
-<em>Subsurface</em> is unable to identify the dive matching a location and nothing
-happens. Similar date-times may be not always be possible.  A dirty hack is
-manually editing the date-time of a dive in Subsurface&#8217;s Dive List <em>before</em>
-downloading the GPS data and then to edit the date-time back again <em>after</em>
-downloading GPS data.</td>
+<td class="content">TIPS:</td>
 </tr></table>
 </div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Background service</em>, being a very powerful tool, may fill the location list with
+many unnecessary locations not corresponding to the exact dive point but reflecting the boat&#8217;s route.
+Currently these locations are dificult to delete from the server. In some situations it
+is therefore prudent to clean up the list on the Android device before sending the dive points to the web
+server by simply deleting the inappropriate locations. This might be necesary, for
+instance, if one wants to keep the location list clear to see dives in the web service map display (see above).
+</p>
+</li>
+<li>
+<p>
+It may also make sense to give informative names to the locations sent to the web server, or at least
+to use an informative name in the <em>Name Template</em> setting while running the <em>background service</em>,
+especially on a dive trip with many dives and dive locations.
+</p>
+</li>
+</ul></div>
 </div>
 </div>
 </div>
@@ -1827,7 +1921,7 @@ water temperature and surface air consumption (SAC).</p></div>
 <h3 id="S_DiveProfile">4.3. The <strong>Dive Profile</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Profile2.png" alt="Typical dive profile" />
+<img src="images/Profile2.jpg" alt="Typical dive profile" />
 </div>
 </div>
 <div class="paragraph"><p>Of all the panels in <em>Subsurface</em>, the Dive Profile contains the most detailed
@@ -1937,9 +2031,16 @@ coding is not relative to some absolute values but relative to the average
 normalised air consumption during the dive. So areas that are red or orange
 indicate
 times of increased normalized air consumption while dark green reflects times
-when the diver was using less gas than average. The colour coding is obviously
-only possible when a tank sensor is connected and tank pressure readings during
-the dive are available.</p></div>
+when the diver was using less gas than average.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/Heartbutton.png" alt="Note" />
+</td>
+<td class="content">Clicking on the heartrate button will allow the display of heart rate information
+during the dive if the dive computer was attached to a heart rate sensor.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>It is possible to <strong>zoom</strong> into the profile graph. This is done either by using
 the scroll wheel / scroll gesture of your mouse or trackpad. By default
 <em>Subsurface</em> always shows a profile area large enough for at least 30 minutes
@@ -1966,8 +2067,11 @@ two red dots.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The profile can also include the dive computer reported <strong>ceiling</strong> (more
-precisely, the deepest deco stop that the dive computer calculated for each particular moment in time) as a red overlay on  the dive profile. Ascent ceilings arise when a direct ascent to the surface increases
-the risk of a diver suffering from decompression sickness (DCS) and it is necessary to either ascend
+precisely, the deepest deco stop that the dive computer calculated for each
+particular moment in time) as a red overlay on  the dive profile. Ascent ceilings
+arise when a direct ascent to the surface increases
+the risk of a diver suffering from decompression sickness (DCS) and it is necessary
+to either ascend
 slower or to perform decompression stop(s) before ascending to the surface. Not
 all dive computers record this information and make it available for download;
 for example all of the Suunto dive computers fail to make this very useful data
@@ -1975,7 +2079,8 @@ available to divelog software. <em>Subsurface</em> also calculates ceilings inde
 shown as a green overlay on the dive profile.
 Because of the differences in algorithms used
 and amount of data available (and other factors taken into consideration at the time
-of the calculation) it is unlikely that ceilings from dive computers and from <em>Subsurface</em> are the same, even if the same algorithm and <em>gradient factors</em> (see below) are used.
+of the calculation) it is unlikely that ceilings from dive computers and from <em>Subsurface</em>
+are the same, even if the same algorithm and <em>gradient factors</em> (see below) are used.
 It is also quite common that <em>Subsurface</em> calculates a ceiling for
 non-decompression dives when the dive computer stayed in non-deco mode during
 the whole dive (represented by the <span class="green">dark green</span> section in the profile
@@ -2003,7 +2108,8 @@ shown as a red area by checking <strong>Dive computer reported ceiling</strong> 
 <td class="icon">
 <img src="images/icons/ceiling1.jpg" alt="Note" />
 </td>
-<td class="content">If the <strong>Calculated ceiling</strong> button on the Profile Panel is clicked, then a ceiling, calculated by <em>Subsurface</em>, is shown in green if it exists for
+<td class="content">If the <strong>Calculated ceiling</strong> button on the Profile Panel is clicked, then a ceiling,
+calculated by <em>Subsurface</em>, is shown in green if it exists for
 a particular dive (<strong>A</strong> in figure below). This setting can be modified in two ways:</td>
 </tr></table>
 </div>
@@ -3095,7 +3201,7 @@ already provides for communication using the IrDA protocol. However,
 the user additionally needs to load a driver for the IrDA interface
 with the dive computer. The easiest way is to load the <strong>irda-tools</strong>
 package from the <a href="http://irda.sourceforge.net/docs/startirda.html">Linux IrDA Project</a>.
-After the installation of the irda-tools, the root user can specify a device name
+After the installation of the irda-tools, the <strong>root user</strong> can specify a device name
 from the console as follows:
 <code>irattach irda0</code></td>
 </tr></table>
@@ -3172,7 +3278,7 @@ the dialogue found by selecting <em>Import</em> from the Main Menu, then clickin
 can be found
 <a href="#Unified_import">here.</a>
 However, in some cases, a two-step process may be required:</p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 Export the forieign dive log data to format that is accessible from
@@ -3184,7 +3290,7 @@ Export the forieign dive log data to format that is accessible from
 Import the accessible dive log data into <em>Subsurface</em>.
 </p>
 </li>
-</ul></div>
+</ol></div>
 <div class="paragraph"><p>This appendix provides some information about approaches to export dive log
 data from foreign
 dive log software. The procedures below mostly apply to Linux and/or Windows.</p></div>
@@ -3202,7 +3308,7 @@ conventions to export dive log data.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p><strong>Divemanager 3 (DM3):</strong></p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 Start <em>Suunto Divemanager 3</em> and log in with the name containing the logs
@@ -3245,12 +3351,7 @@ With the dives marked, use the program menu <em>File &#8594; Export</em>
 </li>
 <li>
 <p>
-The export pop-up will show
-</p>
-</li>
-<li>
-<p>
-Within this pop-up, there is one field called <em>Export Path</em>.
+The export pop-up will show. Within this pop-up, there is one field called <em>Export Path</em>.
 </p>
 <div class="ulist"><ul>
 <li>
@@ -3293,13 +3394,13 @@ Back in the Export pop-up, press the button <em>Export</em>
 The dives are now exported to the file Divelogs.SDE.
 </p>
 </li>
-</ul></div>
+</ol></div>
 <div class="paragraph"><p><strong>Divemanager 4 (DM4):</strong></p></div>
 <div class="paragraph"><p>To export divelog from <em>Suunto DM4</em>, one needs to locate the DM4 database
 where the dives are stored. the user can either look for the original
 database or make a backup of the dives. Both methods are described here.</p></div>
 <div class="paragraph"><p>Locating the Suunto DM4 database:</p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 Start Suunto DM4
@@ -3330,9 +3431,9 @@ Paste the address to the path box at the top of the File Explorer
 The database is called DM4.db
 </p>
 </li>
-</ul></div>
+</ol></div>
 <div class="paragraph"><p>Backing up Suunto DM4:</p></div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 Start Suunto DM4
@@ -3359,7 +3460,7 @@ Click <em>Save</em>
 The dives are now exported to the file DM4.bak
 </p>
 </li>
-</ul></div>
+</ol></div>
 </div>
 <div class="sect2">
 <h3 id="_exporting_from_mares_dive_organiser_v2_1">12.2. Exporting from Mares Dive Organiser V2.1</h3>
@@ -3376,7 +3477,7 @@ of the dive data base is to export the information to another compatible format
 which can be imported into <em>Subsurface</em>.</td>
 </tr></table>
 </div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 Within Dive Organiser, select
@@ -3397,7 +3498,7 @@ DiveOrganiserxxxxx.zip. Inside the zipped directory is a file
 Extract the <em>.sdf</em> file from the zipped folder to your Desktop.
 </p>
 </li>
-</ul></div>
+</ol></div>
 </div>
 <div class="sect2">
 <h3 id="S_ImportingDivinglog">12.3. Exporting dives from <strong>DivingLog 5.0</strong></h3>
@@ -3415,7 +3516,7 @@ selecting <em>File &#8594; Preferences &#8594; Units and Language</em> by clicki
 button). Then do the following:</td>
 </tr></table>
 </div>
-<div class="ulist"><ul>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 In Divinglog open the <em>File &#8594; Export &#8594; XML</em> menu
@@ -3431,7 +3532,7 @@ Select the dives to export
 Click on the export button and select the filename
 </p>
 </li>
-</ul></div>
+</ol></div>
 </div>
 </div>
 </div>
@@ -3486,7 +3587,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-04-10 09:12:33 PDT
+Last updated 2014-04-29 22:07:43 PDT
 </div>
 </div>
 </body>
