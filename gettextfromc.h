@@ -2,6 +2,7 @@
 #define GETTEXTFROMC_H
 
 #include <QHash>
+#include <QCoreApplication>
 
 extern "C" const char *trGettext(const char *text);
 
