@@ -1,5 +1,5 @@
-// Subsurface 4.0.1 User Manual
-// ============================
+// Subsurface 4.1 User Manual
+// ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat
@@ -16,7 +16,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 [big]#USER MANUAL#
 
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
 [blue]#_Version 4.1,  May 2014_#
 
