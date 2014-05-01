@@ -52,6 +52,8 @@ New in version 4.1 (compared to Subsurface 4.0.3):
 - improved error handling when downloading from divecomputer
 - export an HTML world map with dive sites
 - make backups before overwriting XML files
+- don't display unused cylinders in the equipment tab (this can be turned
+  off and the old behavior restored in the preferences)
 - lots of code cleanup, style fixes, improved consistency
 - improve Qt5 support (but there are still some visual oddities)
 - many improvements to the build infrastructure (out of tree builds,
