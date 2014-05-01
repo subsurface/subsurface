@@ -241,6 +241,9 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 		messageWidget->setWordWrap(true);
 		messageWidget->animatedShow();
 		editingDiveLocation = true;
+		if(fixZoomTimer->isActive())
+			fixZoomTimer->stop();
+		setZoom(1200, Marble::Automatic);
 	}
 }
 
