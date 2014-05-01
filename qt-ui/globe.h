@@ -32,6 +32,7 @@ private:
 	KMessageWidget *messageWidget;
 	QTimer *fixZoomTimer;
 	int currentZoomLevel;
+	bool needResetZoom;
 	bool editingDiveLocation;
 
 public

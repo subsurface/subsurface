@@ -30,6 +30,7 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	messageWidget(new KMessageWidget(this)),
 	fixZoomTimer(new QTimer(this)),
 	currentZoomLevel(0),
+	needResetZoom(false),
 	editingDiveLocation(false)
 {
 	// check if Google Sat Maps are installed
@@ -214,12 +215,17 @@ void GlobeGPS::centerOn(dive *dive)
 		return;
 	}
 
-	// set the zoom as seen from n kilometer above. 3km / 10,000ft seems pleasant
-	// do not change it it was already modified by user
-	if (!zoom())
-		zoomView(zoomFromDistance(3));
-
-	if (!fixZoomTimer->isActive())
+	// if no zoom is set up, set the zoom as seen from 3km above
+	// if we come back from a dive without GPS data, reset to the last zoom value
+	// otherwise check to make sure we aren't still running an animation and then remember
+	// the current zoom level
+	if (!zoom()) {
+		currentZoomLevel = zoomFromDistance(3);
+		fixZoom();
+	} else if (needResetZoom) {
+		needResetZoom = false;
+		fixZoom();
+	} else if (!fixZoomTimer->isActive())
 		currentZoomLevel = zoom();
 	// From the marble source code, the maximum time of
 	// 'spin and fit' is 2 seconds, so wait a bit them zoom again.
@@ -230,7 +236,7 @@ void GlobeGPS::centerOn(dive *dive)
 
 void GlobeGPS::fixZoom()
 {
-	zoomView(currentZoomLevel, Marble::Linear);
+	setZoom(currentZoomLevel, Marble::Linear);
 }
 
 void GlobeGPS::prepareForGetDiveCoordinates()
@@ -241,9 +247,18 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 		messageWidget->setWordWrap(true);
 		messageWidget->animatedShow();
 		editingDiveLocation = true;
-		if(fixZoomTimer->isActive())
-			fixZoomTimer->stop();
-		setZoom(1200, Marble::Automatic);
+		// if the dive has no GPS location, zoom out quite a bit to show the globe
+		// and remember that the next time we show a dive with GPS location we need
+		// to zoom in again
+		if (!dive_has_gps_location(current_dive)) {
+			if(fixZoomTimer->isActive())
+				fixZoomTimer->stop();
+			setZoom(1200, Marble::Automatic);
+			if (!needResetZoom) {
+				needResetZoom = true;
+				currentZoomLevel = zoom();
+			}
+		}
 	}
 }
 
