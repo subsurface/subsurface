@@ -109,7 +109,7 @@ void GlobeGPS::contextMenuEvent(QContextMenuEvent *ev)
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
 	// don't mess with the selection while the user is editing a dive
-	if (MainWindow::instance()->information()->isEditing())
+	if (MainWindow::instance()->information()->isEditing() || messageWidget->isVisible())
 		return;
 
 	GeoDataCoordinates here(lon, lat, unit);
