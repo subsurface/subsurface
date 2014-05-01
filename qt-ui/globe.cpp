@@ -3,9 +3,10 @@
 #include "kmessagewidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "../dive.h"
-#include "../divelist.h"
-#include "../helpers.h"
+#include "dive.h"
+#include "divelist.h"
+#include "helpers.h"
+#include "display.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -203,15 +204,24 @@ void GlobeGPS::reload()
 void GlobeGPS::centerOn(dive *dive)
 {
 	// dive has changed, if we had the 'editingDive', hide it.
-	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive)))
+	if (messageWidget->isVisible()
+	    && (!dive || dive_has_gps_location(dive) || amount_selected != 1 ))
 		messageWidget->hide();
+
+	editingDiveLocation = false;
 	if (!dive)
 		return;
+
 	qreal longitude = dive->longitude.udeg / 1000000.0;
 	qreal latitude = dive->latitude.udeg / 1000000.0;
 
-	if (!longitude || !latitude || MainWindow::instance()->information()->isEditing()) {
-		prepareForGetDiveCoordinates();
+	if ((!dive_has_gps_location(dive) || MainWindow::instance()->information()->isEditing())
+	    && amount_selected == 1) {
+		prepareForGetDiveCoordinates(dive);
+		return;
+	}
+	if (!dive_has_gps_location(dive)) {
+		zoomOutForNoGPS();
 		return;
 	}
 
@@ -239,7 +249,21 @@ void GlobeGPS::fixZoom()
 	setZoom(currentZoomLevel, Marble::Linear);
 }
 
-void GlobeGPS::prepareForGetDiveCoordinates()
+void GlobeGPS::zoomOutForNoGPS()
+{
+	// this is called if the dive has no GPS location.
+	// zoom out quite a bit to show the globe and remember that the next time
+	// we show a dive with GPS location we need to zoom in again
+	if(fixZoomTimer->isActive())
+		fixZoomTimer->stop();
+	setZoom(1200, Marble::Automatic);
+	if (!needResetZoom) {
+		needResetZoom = true;
+		currentZoomLevel = zoom();
+	}
+}
+
+void GlobeGPS::prepareForGetDiveCoordinates(struct dive *dive)
 {
 	if (!messageWidget->isVisible()) {
 		messageWidget->setMessageType(KMessageWidget::Warning);
@@ -247,18 +271,8 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 		messageWidget->setWordWrap(true);
 		messageWidget->animatedShow();
 		editingDiveLocation = true;
-		// if the dive has no GPS location, zoom out quite a bit to show the globe
-		// and remember that the next time we show a dive with GPS location we need
-		// to zoom in again
-		if (!dive_has_gps_location(current_dive)) {
-			if(fixZoomTimer->isActive())
-				fixZoomTimer->stop();
-			setZoom(1200, Marble::Automatic);
-			if (!needResetZoom) {
-				needResetZoom = true;
-				currentZoomLevel = zoom();
-			}
-		}
+		if (!dive_has_gps_location(dive))
+			zoomOutForNoGPS();
 	}
 }
 

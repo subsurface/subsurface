@@ -251,7 +251,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 		return;
 	}
 	MainWindow::instance()->dive_list()->setEnabled(false);
-	MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
+	if (amount_selected == 1)
+		MainWindow::instance()->globe()->prepareForGetDiveCoordinates(current_dive);
 	// We may be editing one or more dives here. backup everything.
 	notesBackup.clear();
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
