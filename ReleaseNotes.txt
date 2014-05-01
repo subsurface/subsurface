@@ -44,6 +44,9 @@ New in version 4.1 (compared to Subsurface 4.0.3):
   a new toolbox to turn on and off many of the additional graphs and
   information displays
 - improved CVS import and added CVS export
+- import of exported log files from Sensus (CSV) and Shearwater Desktop
+  (XML)
+- improved UDDF and divelogs.de support
 - generalized import dialog
 - much improved consistency for dialog boxes, keyboard shortcuts, etc
 - improved error handling when downloading from divecomputer
