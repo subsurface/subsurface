@@ -37,6 +37,10 @@
 #define UEMIS_MAX_TIMEOUT 2000000 /* 2s */
 #endif
 
+#ifdef UEMIS_DEBUG
+#define debugfile stderr
+#endif
+
 static char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
 static int reqtxt_file;
@@ -503,7 +507,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				if (lseek(ans_file, 3, SEEK_CUR) == -1)
 					goto fs_error;
 				buf = malloc(size - 2);
-				if ((r = read(ans_file, buf, size - 3) != size - 3)) {
+				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
 					free(buf);
 					goto fs_error;
 				}
