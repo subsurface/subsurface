@@ -830,6 +830,9 @@ void MainTab::rejectChanges()
 	}
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->setFocus();
+	// the user could have edited the location and then canceled the edit
+	// let's get the correct location back in view
+	MainWindow::instance()->globe()->centerOn(current_dive);
 }
 #undef EDIT_TEXT2
 
