@@ -289,7 +289,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 		lat = lat * 180 / M_PI;
 	}
 
-	/* change everything on the selection. */
+	// right now we try to only ever do this with one dive selected,
+	// but we keep the code here that changes the coordinates for each selected dive
 	int i;
 	struct dive *dive;
 	for_each_dive(i, dive) {
@@ -306,6 +307,9 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 
 void GlobeGPS::mousePressEvent(QMouseEvent *event)
 {
+	if (event->type() != QEvent::MouseButtonDblClick)
+		return;
+
 	qreal lat, lon;
 	bool clickOnGlobe = geoCoordinates(event->pos().x(), event->pos().y(), lon, lat, GeoDataCoordinates::Degree);
 
