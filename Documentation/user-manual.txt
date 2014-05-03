@@ -1076,13 +1076,24 @@ option (see below).
 Now one is ready to get a dive position and send it to the server. The Android
 display will look like the left hand image (*A*) below, but without any dive.
 
-Touch the "+" icon on the top right to add a new dive site, resulting in a prompt
-for a place name (or a request to activate the GPS if it is turned off).
+Touch the "+" icon on the top right to add a new dive site, a selectable menu will be
+deployed with 3 options:
+
+* Current: A prompt for a place name (or a request to activate the GPS if it is turned
+off) will be displayed and the user will get a fix for the actual position.
+* Use Map: For future use, currently inactive.
+* Import local GPX file: The android device will search for .gpx files and located
+archives will be shown. By clicking the choosen one it'll be opened and the stored
+locations displayed. Now the user will select the pertinent locations and click on the
+tab in the upper right, the locations will be sent to the web service, and added to the
+list in the android device.
+
 The main screen shows a list of dive locations, each with a name, date and
 time. Some locations may have an arrow-up icon on the selection box to the left (see
 image B in the middle, below) indicating that they require upload to the server.
 
-There are several ways to send locationd to the server; the easiest is by simply
+
+There are several ways to send locations to the server; the easiest is by simply
 selecting the location. See middle image below (*B*):
 
 image::images/Companion.jpg["FIGURE: Screen shots (A-C) of companion app",align="center"]
