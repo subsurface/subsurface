@@ -298,7 +298,7 @@
           <xsl:value-of select="./@tank"/>
         </xsl:variable>
         <xsl:variable name="idx">
-          <xsl:value-of select="//equipment_used/tank_used[@id=$tank_idx]/gas_ref/@ref"/>
+          <xsl:value-of select="../../equipment_used/tank_used[@id=$tank_idx]/gas_ref/@ref"/>
         </xsl:variable>
 
         <event name="gaschange" type="11">
