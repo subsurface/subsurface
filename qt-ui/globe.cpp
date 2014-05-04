@@ -26,6 +26,12 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 
+// as of Marble 4.10 (which has MARBLE_VERSION 0x001000) zoomView is
+// deprecated and has been replaced by setZoom with the same function signature
+#if MARBLE_VERSION < 0x001000
+#define setZoom zoomView
+#endif
+
 GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	loadedDives(0),
 	messageWidget(new KMessageWidget(this)),
