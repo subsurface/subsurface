@@ -43,6 +43,7 @@ struct preferences {
 	short show_average_depth;
 	short zoomed_plot;
 	short hrgraph;
+	short rulergraph;
 	short save_userid_local;
 	char *userid;
 };

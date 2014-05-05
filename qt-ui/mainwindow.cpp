@@ -722,7 +722,7 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(pp_graphs.pn2, pn2graph, profPn2);
 	TOOLBOX_PREF_BUTTON(pp_graphs.po2, po2graph, profPO2);
 	TOOLBOX_PREF_BUTTON(hrgraph, hrgraph, profHR);
-	ui.profRuler->setChecked(s.value("rulergraph").toBool());
+	TOOLBOX_PREF_BUTTON(rulergraph, rulergraph, profRuler);
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 }
 
@@ -1191,6 +1191,7 @@ void MainWindow::on_profHR_clicked(bool triggered)
 }
 void MainWindow::on_profRuler_clicked(bool triggered)
 {
+	prefs.rulergraph = triggered;
 	TOOLBOX_PREF_PROFILE(rulergraph);
 }
 void MainWindow::on_profSAC_clicked(bool triggered)
