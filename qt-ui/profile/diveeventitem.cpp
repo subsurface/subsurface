@@ -92,12 +92,14 @@ void DiveEventItem::setupToolTipString()
 				name += tr("air");
 			else
 				name += QString(tr("EAN%1")).arg(o2);
-		} else if (type == SAMPLE_EVENT_PO2) {
+		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {
 			name += QString(":%1").arg(value);
 		}
-	} else if (type == SAMPLE_EVENT_PO2) {
+	} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
+		// this is a bad idea - we are abusing an existing event type that is supposed to
+		// warn of high or low PO2 and are turning it into a set point change event
 		name += "\n" + tr("Bailing out to OC");
 	} else {
 		name += internalEvent->flags == SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
