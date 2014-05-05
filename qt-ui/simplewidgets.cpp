@@ -239,7 +239,7 @@ time_t ShiftImageTimesDialog::epochFromExiv(EXIFInfo *exif)
 	struct tm tm;
 	int year, month, day, hour, min, sec;
 
-	if (strlen(exif->DateTime.c_str()))
+	if (strlen(exif->DateTimeOriginal.c_str()))
 		sscanf(exif->DateTimeOriginal.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
 	else
 		sscanf(exif->DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
