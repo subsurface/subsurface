@@ -143,7 +143,7 @@ void PreferencesDialog::rememberPrefs()
 #define GET_BOOL(name, field)                           \
 	v = s.value(QString(name));                     \
 	if (v.isValid())                                \
-		prefs.field = v.toInt() ? true : false; \
+		prefs.field = v.toBool();               \
 	else                                            \
 		prefs.field = default_prefs.field
 
