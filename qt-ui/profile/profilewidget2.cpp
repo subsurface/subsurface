@@ -475,9 +475,10 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 
 void ProfileWidget2::settingsChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-	if (prefs.pp_graphs.phe || prefs.pp_graphs.po2 || prefs.pp_graphs.pn2) {
+	// if we are showing calculated ceilings then we have to replot()
+	// because the GF could have changed; otherwise we try to avoid replot()
+	bool needReplot = prefs.calcceiling;
+	if (PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
@@ -488,20 +489,21 @@ void ProfileWidget2::settingsChanged()
 	}
 	if (prefs.zoomed_plot != isPlotZoomed) {
 		isPlotZoomed = prefs.zoomed_plot;
-		replot();
+		needReplot = true;
 	}
 
 	if (currentState == PROFILE) {
-		bool rulerVisible = s.value("rulergraph", false).toBool();
-		rulerItem->setVisible(rulerVisible);
-		rulerItem->destNode()->setVisible(rulerVisible);
-		rulerItem->sourceNode()->setVisible(rulerVisible);
-		replot();
+		rulerItem->setVisible(prefs.rulergraph);
+		rulerItem->destNode()->setVisible(prefs.rulergraph);
+		rulerItem->sourceNode()->setVisible(prefs.rulergraph);
+		needReplot = true;
 	} else {
 		rulerItem->setVisible(false);
 		rulerItem->destNode()->setVisible(false);
 		rulerItem->sourceNode()->setVisible(false);
 	}
+	if (needReplot)
+		replot();
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent *event)
