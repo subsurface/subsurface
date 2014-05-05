@@ -138,42 +138,42 @@ void PreferencesDialog::rememberPrefs()
 	if (v.isValid())                                            \
 		prefs.units.field = (v.toInt() == (t)) ? (t) : (f); \
 	else                                                        \
-	prefs.units.field = default_prefs.units.field
+		prefs.units.field = default_prefs.units.field
 
 #define GET_BOOL(name, field)                           \
 	v = s.value(QString(name));                     \
 	if (v.isValid())                                \
 		prefs.field = v.toInt() ? true : false; \
 	else                                            \
-	prefs.field = default_prefs.field
+		prefs.field = default_prefs.field
 
 #define GET_DOUBLE(name, field)             \
 	v = s.value(QString(name));         \
 	if (v.isValid())                    \
 		prefs.field = v.toDouble(); \
 	else                                \
-	prefs.field = default_prefs.field
+		prefs.field = default_prefs.field
 
 #define GET_INT(name, field)             \
 	v = s.value(QString(name));      \
 	if (v.isValid())                 \
 		prefs.field = v.toInt(); \
 	else                             \
-	prefs.field = default_prefs.field
+		prefs.field = default_prefs.field
 
 #define GET_TXT(name, field)                                             \
 	v = s.value(QString(name));                                      \
 	if (v.isValid())                                                 \
 		prefs.field = strdup(v.toString().toUtf8().constData()); \
 	else                                                             \
-	prefs.field = default_prefs.field
+		prefs.field = default_prefs.field
 
 #define GET_TXT(name, field)                                             \
 	v = s.value(QString(name));                                      \
 	if (v.isValid())                                                 \
 		prefs.field = strdup(v.toString().toUtf8().constData()); \
 	else                                                             \
-	prefs.field = default_prefs.field
+		prefs.field = default_prefs.field
 
 void PreferencesDialog::syncSettings()
 {
