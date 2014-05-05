@@ -845,6 +845,9 @@ void DiveListView::loadImages()
 	EXIFInfo exif;
 	int retval;
 	time_t imagetime;
+	struct divecomputer *dc;
+	time_t when;
+	int duration_s;
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image Files"), lastUsedImageDir(), tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
 
 	if (fileNames.isEmpty())
@@ -874,26 +877,32 @@ void DiveListView::loadImages()
 		for_each_dive(j, dive) {
 			if (!dive->selected)
 				continue;
-			// FIXME: this adds the events only to the first DC
-			if (dive->when - 3600 < imagetime && dive->when + dive->duration.seconds + 3600 > imagetime) {
-				if (dive->when > imagetime) {
-					// Before dive
-					add_event(&(dive->dc), 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
-				} else if (dive->when + dive->duration.seconds < imagetime) {
-					// After dive
-					add_event(&(dive->dc), dive->duration.seconds, 123, 0, 0, fileNames.at(i).toUtf8().data());
-				} else {
-					add_event(&(dive->dc), imagetime - dive->when, 123, 0, 0, fileNames.at(i).toUtf8().data());
+			dc = &(dive->dc);
+			while (dc) {
+				when = dc->when ? dc->when : dive->when;
+				duration_s = dc->duration.seconds ? dc->duration.seconds : dive->duration.seconds;
+				if (when - 3600 < imagetime && when + duration_s + 3600 > imagetime) {
+					if (when > imagetime) {
+						// Before dive
+						add_event(dc, 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					} else if (when + duration_s < imagetime) {
+						// After dive
+						add_event(dc, duration_s, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					} else {
+						add_event(dc, imagetime - when, 123, 0, 0, fileNames.at(i).toUtf8().data());
+					}
+					if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)) {
+						dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
+						dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
+					}
+					mark_divelist_changed(true);
+					MainWindow::instance()->refreshDisplay();
+					MainWindow::instance()->graphics()->replot();
 				}
-				if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)) {
-					dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
-					dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
-				}
-				mark_divelist_changed(true);
+				dc = dc->next;
 			}
 		}
 	}
-	MainWindow::instance()->refreshDisplay();
 }
 
 void DiveListView::uploadToDivelogsDE()
