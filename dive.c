@@ -552,7 +552,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	default:
 		return;
 	}
-	len = snprintf(buffer, sizeof(buffer), fmt, rint(cuft));
+	len = snprintf(buffer, sizeof(buffer), fmt, (int)rint(cuft));
 	p = malloc(len + 1);
 	if (!p)
 		return;
