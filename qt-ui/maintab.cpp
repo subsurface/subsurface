@@ -728,11 +728,6 @@ void MainTab::resetPallete()
 	free(what);                    \
 	what = strdup(textByteArray.data());
 
-#define EDIT_TEXT(what, text)                     \
-	QByteArray textByteArray = text.toUtf8(); \
-	free(what);                               \
-	what = strdup(textByteArray.data());
-
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
@@ -859,6 +854,21 @@ void MainTab::rejectChanges()
 		WHAT;                                        \
 	} while (0)
 
+// this macro is rather fragile and is intended to be used as WHAT inside
+// an invocation of EDIT_SELECTED_DIVES(WHAT)
+#define EDIT_TEXT(what, text)                                                                        \
+	if ((!mydive->what && !current_dive->what) ||                                                \
+	    (mydive->what && current_dive->what && strcmp(mydive->what, current_dive->what) == 0)) { \
+		QByteArray textByteArray = text.toUtf8();                                            \
+		free(mydive->what);                                                                  \
+		mydive->what = strdup(textByteArray.data());                                         \
+	}
+
+#define EDIT_TRIP_TEXT(what, text)                   \
+	QByteArray textByteArray = text.toUtf8();    \
+	free(what);                                  \
+	what = strdup(textByteArray.data());
+
 void markChangedWidget(QWidget *w)
 {
 	QPalette p;
@@ -874,7 +884,7 @@ void MainTab::on_buddy_textChanged()
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
-	EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->buddy, text));
+	EDIT_SELECTED_DIVES(EDIT_TEXT(buddy, text));
 	markChangedWidget(ui.buddy);
 }
 
@@ -884,7 +894,7 @@ void MainTab::on_divemaster_textChanged()
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
-	EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->divemaster, text));
+	EDIT_SELECTED_DIVES(EDIT_TEXT(divemaster, text));
 	markChangedWidget(ui.divemaster);
 }
 
@@ -959,7 +969,7 @@ void MainTab::on_location_textChanged(const QString &text)
 	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
 		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-		EDIT_TEXT(currentTrip->location, text);
+		EDIT_TRIP_TEXT(currentTrip->location, text);
 	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// if we have a location text and haven't edited the coordinates, try to fill the coordinates
 		// from the existing dives
@@ -981,7 +991,7 @@ void MainTab::on_location_textChanged(const QString &text)
 				}
 			}
 		}
-		EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->location, text));
+		EDIT_SELECTED_DIVES(EDIT_TEXT(location, text));
 		MainWindow::instance()->globe()->repopulateLabels();
 	}
 	markChangedWidget(ui.location);
@@ -989,7 +999,7 @@ void MainTab::on_location_textChanged(const QString &text)
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->suit, text));
+	EDIT_SELECTED_DIVES(EDIT_TEXT(suit, text));
 	markChangedWidget(ui.suit);
 }
 
@@ -1000,14 +1010,15 @@ void MainTab::on_notes_textChanged()
 	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing a trip
 		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-		EDIT_TEXT(currentTrip->notes, ui.notes->toPlainText());
+		EDIT_TRIP_TEXT(currentTrip->notes, ui.notes->toPlainText());
 	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		EDIT_SELECTED_DIVES(EDIT_TEXT(mydive->notes, ui.notes->toPlainText()));
+		EDIT_SELECTED_DIVES(EDIT_TEXT(notes, ui.notes->toPlainText()));
 	}
 	markChangedWidget(ui.notes);
 }
 
 #undef EDIT_TEXT
+#undef EDIT_TRIP_TEXT
 
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
