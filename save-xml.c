@@ -190,7 +190,7 @@ static void show_location(struct membuffer *b, struct dive *dive)
 		int len = sprintf(buffer, "  <location ");
 
 		len += format_location(buffer + len, latitude, longitude);
-		if (!dive->location) {
+		if (!dive->location || dive->location[0] == '\0') {
 			memcpy(buffer + len, "/>\n\0", 5);
 			put_string(b, buffer);
 			return;
