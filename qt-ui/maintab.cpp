@@ -856,12 +856,11 @@ void MainTab::rejectChanges()
 
 // this macro is rather fragile and is intended to be used as WHAT inside
 // an invocation of EDIT_SELECTED_DIVES(WHAT)
-#define EDIT_TEXT(what, text)                                                                        \
-	if ((!mydive->what && !current_dive->what) ||                                                \
-	    (mydive->what && current_dive->what && strcmp(mydive->what, current_dive->what) == 0)) { \
-		QByteArray textByteArray = text.toUtf8();                                            \
-		free(mydive->what);                                                                  \
-		mydive->what = strdup(textByteArray.data());                                         \
+#define EDIT_TEXT(what, text)                                \
+	if (same_string(mydive->what, current_dive->what)) { \
+		QByteArray textByteArray = text.toUtf8();    \
+		free(mydive->what);                          \
+		mydive->what = strdup(textByteArray.data()); \
 	}
 
 #define EDIT_VALUE(what, value)                      \

@@ -71,14 +71,6 @@ bool cylinder_none(void *_data)
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
-/* descriptions are equal if they are both NULL or both non-NULL
-   and the same text */
-static bool description_equal(const char *desc1, const char *desc2)
-{
-	return ((!desc1 && !desc2) ||
-		(desc1 && desc2 && strcmp(desc1, desc2) == 0));
-}
-
 bool weightsystem_none(void *_data)
 {
 	weightsystem_t *ws = _data;
@@ -98,7 +90,7 @@ bool no_weightsystems(weightsystem_t *ws)
 static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 {
 	return ws1->weight.grams == ws2->weight.grams &&
-	       description_equal(ws1->description, ws2->description);
+	       same_string(ws1->description, ws2->description);
 }
 
 bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
