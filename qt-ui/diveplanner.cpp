@@ -456,11 +456,13 @@ QStringList &DivePlannerPointsModel::getGasList()
 
 void DivePlannerPointsModel::removeDeco()
 {
+	bool oldrec = setRecalc(false);
 	QVector<int> computedPoints;
 	for (int i = 0; i < plannerModel->rowCount(); i++)
 		if (!plannerModel->at(i).entered)
 			computedPoints.push_back(i);
 	removeSelectedPoints(computedPoints);
+	setRecalc(oldrec);
 }
 
 void DivePlannerGraphics::drawProfile()
@@ -539,7 +541,7 @@ void DivePlannerGraphics::drawProfile()
 			lines << item;
 			if (dp->depth) {
 				if (dp->depth == lastdepth || dp->o2 != dp->next->o2 || dp->he != dp->next->he)
-					plannerModel->addStop(dp->depth, dp->time, dp->o2, dp->he, 0, false);
+					plannerModel->addStop(dp->depth, dp->time, dp->next->o2, dp->next->he, 0, false);
 				lastdepth = dp->depth;
 			}
 		}
@@ -1087,7 +1089,6 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			else
 				return p.time / 60;
 		case GAS:
-
 			return dpGasToStr(p);
 		}
 	} else if (role == Qt::DecorationRole) {
@@ -1275,6 +1276,9 @@ int DivePlannerPointsModel::lastEnteredPoint()
 
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint, bool entered)
 {
+	if (recalcQ())
+		removeDeco();
+
 	int row = divepoints.count();
 	if (seconds == 0 && milimeters == 0 && row != 0) {
 		/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
@@ -1333,16 +1337,6 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		}
 	}
 
-	// Get rid of deco stops before adding waypoints
-	bool oldRecalc = setRecalc(false);
-	if (oldRecalc) {
-		QVector<int> computedPoints;
-		for (int i = 0; i < plannerModel->rowCount(); i++)
-			if (!plannerModel->at(i).entered)
-				computedPoints.push_back(i);
-		plannerModel->removeSelectedPoints(computedPoints);
-	}
-	setRecalc(oldRecalc);
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
