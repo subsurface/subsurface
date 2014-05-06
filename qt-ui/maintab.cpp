@@ -864,6 +864,11 @@ void MainTab::rejectChanges()
 		mydive->what = strdup(textByteArray.data());                                         \
 	}
 
+#define EDIT_VALUE(what, value)                      \
+	if (mydive->what == current_dive->what) {    \
+		mydive->what = value;                \
+	}
+
 #define EDIT_TRIP_TEXT(what, text)                   \
 	QByteArray textByteArray = text.toUtf8();    \
 	free(what);                                  \
@@ -900,14 +905,14 @@ void MainTab::on_divemaster_textChanged()
 
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(mydive->airtemp.mkelvin = parseTemperatureToMkelvin(text));
+	EDIT_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin, parseTemperatureToMkelvin(text)));
 	markChangedWidget(ui.airtemp);
 	validate_temp_field(ui.airtemp, text);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(mydive->watertemp.mkelvin = parseTemperatureToMkelvin(text));
+	EDIT_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin, parseTemperatureToMkelvin(text)));
 	markChangedWidget(ui.watertemp);
 	validate_temp_field(ui.watertemp, text);
 }
@@ -939,14 +944,18 @@ void MainTab::validate_temp_field(QLineEdit *tempField,const QString &text)
 		missing_precision = false;
 	}
 }
+
+// changing the time stamp on multiple dives really needs to be a relative shift
 void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime)
 {
 	QDateTime dateTimeUtc(datetime);
 	dateTimeUtc.setTimeSpec(Qt::UTC);
-	EDIT_SELECTED_DIVES(mydive->when = dateTimeUtc.toTime_t());
+	time_t offset = current_dive->when - dateTimeUtc.toTime_t();
+	EDIT_SELECTED_DIVES(mydive->when -= offset);
 	markChangedWidget(ui.dateTimeEdit);
 }
 
+// changing the tags on multiple dives is semantically strange - what's the right thing to do?
 void MainTab::saveTags()
 {
 	EDIT_SELECTED_DIVES(
@@ -1017,9 +1026,6 @@ void MainTab::on_notes_textChanged()
 	markChangedWidget(ui.notes);
 }
 
-#undef EDIT_TEXT
-#undef EDIT_TRIP_TEXT
-
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
 	bool gpsChanged = false;
@@ -1036,13 +1042,18 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	EDIT_SELECTED_DIVES(mydive->rating = value);
+	EDIT_SELECTED_DIVES(EDIT_VALUE(rating, value));
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	EDIT_SELECTED_DIVES(mydive->visibility = value);
+	EDIT_SELECTED_DIVES(EDIT_VALUE(visibility, value));
 }
+
+#undef EDIT_SELECTED_DIVES
+#undef EDIT_TEXT
+#undef EDIT_TRIP_TEXT
+#undef EDIT_VALUE
 
 void MainTab::editCylinderWidget(const QModelIndex &index)
 {
