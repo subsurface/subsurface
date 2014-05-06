@@ -148,42 +148,16 @@ static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 	put_string(b, " />\n");
 }
 
-/*
- * Format degrees to within 6 decimal places. That's about 0.1m
- * on a great circle (ie longitude at equator). And micro-degrees
- * is also enough to fit in a fixed-point 32-bit integer.
- */
-static int format_degrees(char *buffer, degrees_t value)
-{
-	int udeg = value.udeg;
-	const char *sign = "";
-
-	if (udeg < 0) {
-		sign = "-";
-		udeg = -udeg;
-	}
-	return sprintf(buffer, "%s%u.%06u",
-		       sign, udeg / 1000000, udeg % 1000000);
-}
-
-static int format_location(char *buffer, degrees_t latitude, degrees_t longitude)
-{
-	int len = sprintf(buffer, "gps='");
-
-	len += format_degrees(buffer + len, latitude);
-	buffer[len++] = ' ';
-	len += format_degrees(buffer + len, longitude);
-	buffer[len++] = '\'';
-
-	return len;
-}
-
 static void show_location(struct membuffer *b, struct dive *dive)
 {
-	char buffer[80];
-	const char *prefix = "  <location>";
 	degrees_t latitude = dive->latitude;
 	degrees_t longitude = dive->longitude;
+
+	/* Should we write a location tag at all? */
+	if (!(latitude.udeg || longitude.udeg) && !dive->location)
+		return;
+
+	put_string(b, "  <location");
 
 	/*
 	 * Ok, theoretically I guess you could dive at
@@ -192,19 +166,15 @@ static void show_location(struct membuffer *b, struct dive *dive)
 	 * you dove a few meters away.
 	 */
 	if (latitude.udeg || longitude.udeg) {
-		int len = sprintf(buffer, "  <location ");
-
-		len += format_location(buffer + len, latitude, longitude);
-		if (!dive->location || dive->location[0] == '\0') {
-			memcpy(buffer + len, "/>\n\0", 5);
-			put_string(b, buffer);
-			return;
-		}
-		buffer[len++] = '>';
-		buffer[len] = 0;
-		prefix = buffer;
+		put_degrees(b, latitude, " gps='", " ");
+		put_degrees(b, longitude, "", "'");
 	}
-	show_utf8(b, dive->location, prefix, "</location>\n", 0);
+
+	/* Do we have a location name or should we write a empty tag? */
+	if (dive->location && dive->location[0] != '\0')
+		show_utf8(b, dive->location, ">", "</location>\n", 0);
+	else
+		put_string(b, "/>\n");
 }
 
 static void save_overview(struct membuffer *b, struct dive *dive)
