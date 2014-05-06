@@ -1,4 +1,4 @@
-			Subsurface 4.1 BETA1
+			Subsurface 4.1 BETA4
 			====================
 
 The Subsurface developer team is proud to announce the release of the
