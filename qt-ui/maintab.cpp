@@ -836,20 +836,27 @@ void MainTab::rejectChanges()
 }
 #undef EDIT_TEXT2
 
+// tricky little macro to edit all the selected dives
+// loop over all dives, for each selected dive do WHAT, but do it
+// last for the current dive; this is required in case the invocation
+// wants to compare things to the original value in current_dive like it should
 #define EDIT_SELECTED_DIVES(WHAT)                            \
 	do {                                                 \
+		struct dive *mydive = NULL;                  \
 		if (editMode == NONE)                        \
 			return;                              \
-										 \
+							     \
 		for (int _i = 0; _i < dive_table.nr; _i++) { \
-			struct dive *mydive = get_dive(_i);  \
-			if (!mydive)                         \
+			mydive = get_dive(_i);               \
+			if (!mydive || mydive == current_dive)\
 				continue;                    \
 			if (!mydive->selected)               \
 				continue;                    \
-										 \
+							     \
 			WHAT;                                \
 		}                                            \
+		mydive = current_dive;                       \
+		WHAT;                                        \
 	} while (0)
 
 void markChangedWidget(QWidget *w)
