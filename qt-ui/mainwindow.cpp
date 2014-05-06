@@ -352,11 +352,17 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
+	if (ui.InfoWidget->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
 		return;
 	}
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+		DivePlannerPointsModel::instance()->cancelPlan();
+		if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)
+			// The planned dive was not discarded
+			return;
+	}
+
 	if (unsaved_changes() && (askSaveChanges() == false))
 		return;
 	writeSettings();
