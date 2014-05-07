@@ -71,6 +71,7 @@ static void quote(struct membuffer *b, const char *text, int is_attribute)
 static void show_utf8(struct membuffer *b, const char *text, const char *pre, const char *post, int is_attribute)
 {
 	int len;
+	char *cleaned;
 
 	if (!text)
 		return;
@@ -81,10 +82,11 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 		return;
 	while (len && isspace(text[len - 1]))
 		len--;
-	/* FIXME! Quoting! */
+	cleaned = strndup(text, len);
 	put_string(b, pre);
-	quote(b, text, is_attribute);
+	quote(b, cleaned, is_attribute);
 	put_string(b, post);
+	free(cleaned);
 }
 
 static void save_depths(struct membuffer *b, struct divecomputer *dc)
