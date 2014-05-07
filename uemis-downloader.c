@@ -180,7 +180,7 @@ static char *build_filename(const char *path, const char *name)
 	int len = strlen(path) + strlen(name) + 2;
 	char *buf = malloc(len);
 #if WIN32
-	snprintf(buf, len, "%s\%s", path, name);
+	snprintf(buf, len, "%s\\%s", path, name);
 #else
 	snprintf(buf, len, "%s/%s", path, name);
 #endif
