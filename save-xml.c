@@ -75,6 +75,7 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 
 	if (!text)
 		return;
+	/* remove leading and trailing space */
 	while (isspace(*text))
 		text++;
 	len = strlen(text);
@@ -82,7 +83,9 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 		return;
 	while (len && isspace(text[len - 1]))
 		len--;
-	cleaned = strndup(text, len);
+	/* strndup would be easier, but that doesn't appear to exist on Windows / Mac */
+	cleaned = strdup(text);
+	cleaned[len] = '\0';
 	put_string(b, pre);
 	quote(b, cleaned, is_attribute);
 	put_string(b, post);
