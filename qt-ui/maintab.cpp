@@ -994,6 +994,8 @@ void MainTab::on_tagWidget_textChanged()
 
 void MainTab::on_location_textChanged(const QString &text)
 {
+	if (editMode == NONE)
+		return;
 	markChangedWidget(ui.location);
 }
 
