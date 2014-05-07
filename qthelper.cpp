@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <libxslt/documents.h>
+#include "mainwindow.h"
 
 #define tr(_arg) QObject::tr(_arg)
 
@@ -119,6 +120,11 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	} gpsStyle = ISO6709D;
 	int eastWest = 4;
 	int northSouth = 1;
+	QString trHemisphere[4];
+	trHemisphere[0] = MainWindow::instance()->information()->trHemisphere("N");
+	trHemisphere[1] = MainWindow::instance()->information()->trHemisphere("S");
+	trHemisphere[2] = MainWindow::instance()->information()->trHemisphere("E");
+	trHemisphere[3] = MainWindow::instance()->information()->trHemisphere("W");
 	QString regExp;
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
 	if (gps_text.trimmed() == "") {
@@ -136,39 +142,39 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		gpsStyle = ISO6709D;
 		regExp = QString("(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([NS%1%2])"
 				 "\\s*(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([EW%3%4])")
-			     .arg(tr("N"))
-			     .arg(tr("S"))
-			     .arg(tr("E"))
-			     .arg(tr("W"));
+				.arg(trHemisphere[0])
+				.arg(trHemisphere[1])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3]);
 	} else if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
 				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
-			     .arg(tr("N"))
-			     .arg(tr("S"))
-			     .arg(tr("E"))
-			     .arg(tr("W"))
-			     .arg(tr("E"))
-			     .arg(tr("W"));
+				.arg(trHemisphere[0])
+				.arg(trHemisphere[1])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3]);
 	} else if (gps_text.count(QChar('\'')) == 2) {
 		gpsStyle = MINUTES;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
 				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
-			     .arg(tr("N"))
-			     .arg(tr("S"))
-			     .arg(tr("E"))
-			     .arg(tr("W"))
-			     .arg(tr("E"))
-			     .arg(tr("W"));
+				.arg(trHemisphere[0])
+				.arg(trHemisphere[1])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3]);
 	} else {
 		gpsStyle = DECIMAL;
 		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
-			     .arg(tr("N"))
-			     .arg(tr("S"))
-			     .arg(tr("E"))
-			     .arg(tr("W"))
-			     .arg(tr("E"))
-			     .arg(tr("W"));
+				.arg(trHemisphere[0])
+				.arg(trHemisphere[1])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3])
+				.arg(trHemisphere[2])
+				.arg(trHemisphere[3]);
 	}
 	QRegExp r(regExp);
 	if (r.indexIn(gps_text) != -1) {
@@ -201,9 +207,9 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 			*longitude = (r.cap(5) + QString(".") + r.cap(6)).toDouble();
 			break;
 		}
-		if (r.cap(northSouth) == "S" || r.cap(northSouth) == tr("S") || r.cap(northSouth) == "-")
+		if (r.cap(northSouth) == "S" || r.cap(northSouth) == trHemisphere[1] || r.cap(northSouth) == "-")
 			*latitude *= -1.0;
-		if (r.cap(eastWest) == "W" || r.cap(eastWest) == tr("W") || r.cap(eastWest) == "-")
+		if (r.cap(eastWest) == "W" || r.cap(eastWest) == trHemisphere[3] || r.cap(eastWest) == "-")
 			*longitude *= -1.0;
 		// qDebug("%s -> %8.5f / %8.5f", gps_text.toLocal8Bit().data(), *latitude, *longitude);
 		return true;

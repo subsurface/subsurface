@@ -1110,3 +1110,8 @@ void MainTab::updateGpsCoordinates(const struct dive *dive)
 		ui.coordinates->clear();
 	}
 }
+
+QString MainTab::trHemisphere(const char *orig)
+{
+	return tr(orig);
+}
