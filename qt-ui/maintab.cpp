@@ -996,6 +996,11 @@ void MainTab::on_location_textChanged(const QString &text)
 {
 	if (editMode == NONE)
 		return;
+	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+		// we are editing a trip
+		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
+		EDIT_TRIP_TEXT(currentTrip->location, text);
+	}
 	markChangedWidget(ui.location);
 }
 
