@@ -224,7 +224,7 @@ void GlobeGPS::centerOnCurrentDive()
 
 	if ((!dive_has_gps_location(dive) || MainWindow::instance()->information()->isEditing())
 	    && amount_selected == 1) {
-		prepareForGetDiveCoordinates(dive);
+		prepareForGetDiveCoordinates();
 		return;
 	}
 	if (!dive_has_gps_location(dive)) {
@@ -270,7 +270,7 @@ void GlobeGPS::zoomOutForNoGPS()
 	}
 }
 
-void GlobeGPS::prepareForGetDiveCoordinates(struct dive *dive)
+void GlobeGPS::prepareForGetDiveCoordinates()
 {
 	if (!messageWidget->isVisible()) {
 		messageWidget->setMessageType(KMessageWidget::Warning);
@@ -278,7 +278,7 @@ void GlobeGPS::prepareForGetDiveCoordinates(struct dive *dive)
 		messageWidget->setWordWrap(true);
 		messageWidget->animatedShow();
 		editingDiveLocation = true;
-		if (!dive_has_gps_location(dive))
+		if (!dive_has_gps_location(current_dive))
 			zoomOutForNoGPS();
 	}
 }

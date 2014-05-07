@@ -41,7 +41,7 @@ slots:
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void fixZoom();
 	void zoomOutForNoGPS();
-	void prepareForGetDiveCoordinates(struct dive *dive);
+	void prepareForGetDiveCoordinates();
 };
 
 #else // NO_MARBLE
