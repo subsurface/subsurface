@@ -1050,13 +1050,12 @@ the localities from the file server.
 To do this:
 
 - Register on the http://api.hohndel.org/login/[_Subsurface companion web page_].
-A confirmation email with instructions and a personal *DIVERID* will be send together with
+A confirmation email with instructions and a personal *DIVERID* will be sent,
 a long number that gives access to the file server and Companion App capabilities.
 
 - Download the app from
 https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
-or
-from
+or from
 http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
 ==== Using the Subsurface companion app on a smartphone
@@ -1064,63 +1063,96 @@ http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-
 On first use the app has three options:
 
 * _Create a new account._  Equivalent to registering in _Subsurface_ companion
-page using an Internet browser.
+page using an Internet browser. One can request a *DIVERID* using this option,
+but this is supplied via email and followed up by interaction with the
+http://api.hohndel.org/login/[_Subsurface companion web page_] in order to
+activate the account.
 
-* _Retrieve an account._  If users forgot their DIVERID they will receive an email
+* _Retrieve an account._  If users forgot their *DIVERID* they will receive an email
 to recover the number.
 
-* _Use an existing account._ Users are prompted for their DIVERID. The app saves
-this DIVERID and does not ask for it again unless one uses the _Disconnect_ menu
+* _Use an existing account._ Users are prompted for their *DIVERID*. The app saves
+this *DIVERID* and does not ask for it again unless one uses the _Disconnect_ menu
 option (see below).
+
+[icon="images/icons/important.png"]
+[IMPORTANT]
+In the _Subsurface_ main program, the *DIVERID* should also be entered on the
+Default Preferences
+panel, obtained by selecting _File->Preferences->Defaults_ from the main menu
+in _Subsurface_ itself.
+This facilitates synchronisation between _Subsurface_ and the Companion App.
 
 Now one is ready to get a dive position and send it to the server. The Android
 display will look like the left hand image (*A*) below, but without any dive.
 
-Touch the "+" icon on the top right to add a new dive site, a selectable menu will be
-deployed with 3 options:
+Touch the "+" icon on the top right to add a new dive site, a menu will be
+showed with 3 options:
 
 * Current: A prompt for a place name (or a request to activate the GPS if it is turned
-off) will be displayed and the user will get a fix for the actual position.
-* Use Map: For future use, currently inactive.
-* Import local GPX file: The android device will search for .gpx files and located
-archives will be shown. By clicking the choosen one it'll be opened and the stored
-locations displayed. Now the user will select the pertinent locations and click on the
-tab in the upper right, the locations will be sent to the web service, and added to the
-list in the android device.
+off) will be displayed, after which the current location is saved.
+
+* Use Map: This option allows the user to fix a position by searching a world map. A
+world map is shown (see *A* below) on which one should indicate the desired position on the touch
+sensitive screen (if the marked location is erroneous, simply indicate a new location)
+and select the tab in the upper right. A dialog is shown allowing to enter the
+name of the dive location and the date-time of the dive (see *B* below). In order to import this
+dive location in _Subsurface_ it's advisable to set the time to agree with the time of
+that dive on the dive computer.
+
+image::images/Companion_2.jpg["FIGURE: Companion App, add location using map",align="center"]
+
+
+* Import local GPX file: The android device searches for .gpx files and located
+archives will be shown. The selected .gpx file is opened and the stored
+locations shown. Now one needs to select the appropriate locations, then select the
+tab in the upper right, after which the locations will be sent to the web service
+and added to the list on the Android device.
 
 The main screen shows a list of dive locations, each with a name, date and
-time. Some locations may have an arrow-up icon on the selection box to the left (see
-image B in the middle, below) indicating that they require upload to the server.
+time. Some locations may have an arrow-up icon in the selection box to the left (see
+image *B* in the middle, below) indicating that they require upload to the server. One
+can select individual dive locations from the list. A selected location has a
+check mark in the selection box on the left. Group operations (such as Delete or Send)
+are performed on several locations that are selected.
 
+Dive locations in the Companion can be viewed in two ways: a list of locations or a
+map indicating the dive locations. The display mode (List or Map) is changed by
+selecting _Dives_ at the top left of the screen (see *A* below) and then selecting
+the display option. The display mode can be changed either from the list
+of locations or from the map (see *B* below). If one selects a location (on the list
+or on the map), an editing
+panel opens (see *C* below) where the dive description or other details may be changed.
+
+image::images/Companion_4.jpg["FIGURE: Companion App, add location using map",align="center"]
+
+
+When one clicks on a dive (*not* selecting the check button as shown in the images below), the
+name given to it, date/time and GPS coordinates will be shown, with two options at the top
+of the screen:
+
+- Edit (pencil):  Change the text name of the dive location.
+
+- Maps:  Display a map showing the dive location.
+
+After editing and saving a dive location (see *C* above), one needs to upload it to the web
+service, as explained above.
 
 There are several ways to send locations to the server; the easiest is by simply
-selecting the location. See middle image below (*B*):
-
-image::images/Companion.jpg["FIGURE: Screen shots (A-C) of companion app",align="center"]
-
-Touching the right arrow will send it to the server.
+selecting the location (See *B* below) and then touching the right arrow at the
+top right of the screen.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Users must be careful, as the trash icon on the right means exactly what it should mean:
-it deletes the dive location(s).
+Users must be careful, as the trash icon on the right means exactly what it should:
+it deletes the selected dive location(s).
 
-New dive locations are now stored on the server and can be downloaded to the
-_Subsurface_ dive log whenever users upload or add dives to _Subsurface_.
+image::images/Companion.jpg["FIGURE: Screen shots (A-C) of companion app",align="center"]
+
+
 After a dive trip using the Companion App, all dive locations are ready to be
-saved on a _Subsurface_ dive log (see below).
+downloaded to a _Subsurface_ dive log (see below).
 
-When you click on a dive (*not* selecting the check button as shown in the images above), the
-name given to it, date/time and GPS coordinates will be shown, with two options:
-
-- Edit:  Change the text name of the dive location.
-
-- Maps:  Display a map showing the dive location (you'll be prompted to
-choose which helper app use from your installed apps). Currently this feature is
-non fully functional, but is under active development.
-
-After editing and saving a dive location, one needs to upload it to the web
-service, as explained above.
 
 ===== Settings on the Companion app
 
