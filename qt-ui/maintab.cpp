@@ -1021,13 +1021,14 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 {
 	bool gpsChanged = false;
 	bool parsed = false;
+	QPalette p;
+	ui.coordinates->setPalette(p); // reset palette
 	EDIT_SELECTED_DIVES(gpsChanged |= gpsHasChanged(mydive, current_dive, text, &parsed));
-	if (gpsChanged) {
-		markChangedWidget(ui.coordinates);
-	} else if (!parsed) {
-		QPalette p;
+	if (gpsChanged)
+		markChangedWidget(ui.coordinates); // marks things yellow
+	if (!parsed) {
 		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
-		ui.coordinates->setPalette(p);
+		ui.coordinates->setPalette(p); // marks things red
 	}
 }
 
