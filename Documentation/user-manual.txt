@@ -1049,6 +1049,8 @@ the localities from the file server.
 
 To do this:
 
+==== Create a Companion App account
+
 - Register on the http://api.hohndel.org/login/[_Subsurface companion web page_].
 A confirmation email with instructions and a personal *DIVERID* will be sent,
 a long number that gives access to the file server and Companion App capabilities.
@@ -1083,7 +1085,10 @@ panel, obtained by selecting _File->Preferences->Defaults_ from the main menu
 in _Subsurface_ itself.
 This facilitates synchronisation between _Subsurface_ and the Companion App.
 
-Now one is ready to get a dive position and send it to the server. The Android
+===== Creating new dive locations
+
+Now one is ready to get a dive position and
+send it to the server. The Android
 display will look like the left hand image (*A*) below, but without any dive.
 
 Touch the "+" icon on the top right to add a new dive site, a menu will be
@@ -1093,14 +1098,15 @@ showed with 3 options:
 off) will be displayed, after which the current location is saved.
 
 * Use Map: This option allows the user to fix a position by searching a world map. A
-world map is shown (see *A* below) on which one should indicate the desired position on the touch
+world map is shown (see *B* below) on which one should indicate the desired position
+with a _long press_ on the touch
 sensitive screen (if the marked location is erroneous, simply indicate a new location)
-and select the tab in the upper right. A dialog is shown allowing to enter the
-name of the dive location and the date-time of the dive (see *B* below). In order to import this
+and select the check symbol in the upper right. A dialog is shown allowing to enter the
+name of the dive location and the date-time of the dive (see *C* below). In order to import this
 dive location in _Subsurface_ it's advisable to set the time to agree with the time of
 that dive on the dive computer.
 
-image::images/Companion_2.jpg["FIGURE: Companion App, add location using map",align="center"]
+image::images/Companion_5.jpg["FIGURE: Companion App, add location using map",align="center"]
 
 
 * Import local GPX file: The android device searches for .gpx files and located
@@ -1109,17 +1115,19 @@ locations shown. Now one needs to select the appropriate locations, then select 
 tab in the upper right, after which the locations will be sent to the web service
 and added to the list on the Android device.
 
+===== Lists of dive locations
+
 The main screen shows a list of dive locations, each with a name, date and
-time. Some locations may have an arrow-up icon in the selection box to the left (see
-image *B* in the middle, below) indicating that they require upload to the server. One
+time (see *A* below). Some locations may have an arrow-up icon over the selection box to the left
+indicating that they require upload to the server. One
 can select individual dive locations from the list. A selected location has a
-check mark in the selection box on the left. Group operations (such as Delete or Send)
+check mark in the selection box on the left. Group operations (such as _Delete_ or _Send_)
 are performed on several locations that are selected.
 
-Dive locations in the Companion can be viewed in two ways: a list of locations or a
+Dive locations in this list can be viewed in two ways: a list of locations or a
 map indicating the dive locations. The display mode (List or Map) is changed by
 selecting _Dives_ at the top left of the screen (see *A* below) and then selecting
-the display option. The display mode can be changed either from the list
+the display mode. The display mode can be changed either from the list
 of locations or from the map (see *B* below). If one selects a location (on the list
 or on the map), an editing
 panel opens (see *C* below) where the dive description or other details may be changed.
@@ -1127,19 +1135,22 @@ panel opens (see *C* below) where the dive description or other details may be c
 image::images/Companion_4.jpg["FIGURE: Companion App, add location using map",align="center"]
 
 
-When one clicks on a dive (*not* selecting the check button as shown in the images below), the
+When one clicks on a dive (*not* selecting the check box), the
 name given to it, date/time and GPS coordinates will be shown, with two options at the top
 of the screen:
 
-- Edit (pencil):  Change the text name of the dive location.
+- Edit (pencil):  Change the text name or other characteristics of the dive location.
 
 - Maps:  Display a map showing the dive location.
 
 After editing and saving a dive location (see *C* above), one needs to upload it to the web
 service, as explained above.
 
-There are several ways to send locations to the server; the easiest is by simply
-selecting the location (See *B* below) and then touching the right arrow at the
+===== Uploading dive locations
+
+There are several ways to send locations to the server.
+The easiest is by simply
+selecting the locations (See *A* below) and then touching the right arrow at the
 top right of the screen.
 
 [icon="images/icons/important.png"]
@@ -1147,7 +1158,7 @@ top right of the screen.
 Users must be careful, as the trash icon on the right means exactly what it should:
 it deletes the selected dive location(s).
 
-image::images/Companion.jpg["FIGURE: Screen shots (A-C) of companion app",align="center"]
+image::images/Companion_1.jpg["FIGURE: Screen shots (A-B) of companion app",align="center"]
 
 
 After a dive trip using the Companion App, all dive locations are ready to be
@@ -1156,7 +1167,7 @@ downloaded to a _Subsurface_ dive log (see below).
 
 ===== Settings on the Companion app
 
-Selecting the _Settings_ menu option results in the right hand image above (*C*).
+Selecting the _Settings_ menu option results in the right hand image above (*B*).
 
 ===== Server and account
 

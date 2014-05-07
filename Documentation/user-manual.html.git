@@ -409,7 +409,7 @@ asciidoc.install(3);
 </div>
 <div class="paragraph"><p><span class="big">USER MANUAL</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,  Salvador Cuñat</p></div>
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat</p></div>
 <div class="paragraph"><p><span class="blue"><em>Version 4.1,  May 2014</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging programme with
 extensive infrastructure to describe, organise, interpret and print scuba
@@ -1612,11 +1612,13 @@ divelog. The Companion App stores the dive locations on
 a dedicated Internet-based file server. <em>Subsurface</em>, in turn, can collect
 the localities from the file server.</p></div>
 <div class="paragraph"><p>To do this:</p></div>
+<div class="sect3">
+<h4 id="_create_a_companion_app_account">3.4.1. Create a Companion App account</h4>
 <div class="ulist"><ul>
 <li>
 <p>
 Register on the <a href="http://api.hohndel.org/login/"><em>Subsurface companion web page</em></a>.
-A confirmation email with instructions and a personal <strong>DIVERID</strong> will be send together with
+A confirmation email with instructions and a personal <strong>DIVERID</strong> will be sent,
 a long number that gives access to the file server and Companion App capabilities.
 </p>
 </li>
@@ -1624,85 +1626,159 @@ a long number that gives access to the file server and Companion App capabilitie
 <p>
 Download the app from
 <a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play Store</a>
-or
-from
+or from
 <a href="http://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
 </p>
 </li>
 </ul></div>
+</div>
 <div class="sect3">
-<h4 id="_using_the_subsurface_companion_app_on_a_smartphone">3.4.1. Using the Subsurface companion app on a smartphone</h4>
+<h4 id="_using_the_subsurface_companion_app_on_a_smartphone">3.4.2. Using the Subsurface companion app on a smartphone</h4>
 <div class="paragraph"><p>On first use the app has three options:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
 <em>Create a new account.</em>  Equivalent to registering in <em>Subsurface</em> companion
-page using an Internet browser.
+page using an Internet browser. One can request a <strong>DIVERID</strong> using this option,
+but this is supplied via email and followed up by interaction with the
+<a href="http://api.hohndel.org/login/"><em>Subsurface companion web page</em></a> in order to
+activate the account.
 </p>
 </li>
 <li>
 <p>
-<em>Retrieve an account.</em>  If users forgot their DIVERID they will receive an email
+<em>Retrieve an account.</em>  If users forgot their <strong>DIVERID</strong> they will receive an email
 to recover the number.
 </p>
 </li>
 <li>
 <p>
-<em>Use an existing account.</em> Users are prompted for their DIVERID. The app saves
-this DIVERID and does not ask for it again unless one uses the <em>Disconnect</em> menu
+<em>Use an existing account.</em> Users are prompted for their <strong>DIVERID</strong>. The app saves
+this <strong>DIVERID</strong> and does not ask for it again unless one uses the <em>Disconnect</em> menu
 option (see below).
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Now one is ready to get a dive position and send it to the server. The Android
-display will look like the left hand image (<strong>A</strong>) below, but without any dive.</p></div>
-<div class="paragraph"><p>Touch the "+" icon on the top right to add a new dive site, resulting in a prompt
-for a place name (or a request to activate the GPS if it is turned off).
-The main screen shows a list of dive locations, each with a name, date and
-time. Some locations may have an arrow-up icon on the selection box to the left (see
-image B in the middle, below) indicating that they require upload to the server.</p></div>
-<div class="paragraph"><p>There are several ways to send locationd to the server; the easiest is by simply
-selecting the location. See middle image below (<strong>B</strong>):</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion.jpg" alt="FIGURE: Screen shots (A-C) of companion app" />
-</div>
-</div>
-<div class="paragraph"><p>Touching the right arrow will send it to the server.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Users must be careful, as the trash icon on the right means exactly what it should mean:
-it deletes the dive location(s).</td>
+<td class="content">In the <em>Subsurface</em> main program, the <strong>DIVERID</strong> should also be entered on the
+Default Preferences
+panel, obtained by selecting <em>File&#8594;Preferences&#8594;Defaults</em> from the main menu
+in <em>Subsurface</em> itself.
+This facilitates synchronisation between <em>Subsurface</em> and the Companion App.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>New dive locations are now stored on the server and can be downloaded to the
-<em>Subsurface</em> dive log whenever users upload or add dives to <em>Subsurface</em>.
-After a dive trip using the Companion App, all dive locations are ready to be
-saved on a <em>Subsurface</em> dive log (see below).</p></div>
-<div class="paragraph"><p>When you click on a dive (<strong>not</strong> selecting the check button as shown in the images above), the
-name given to it, date/time and GPS coordinates will be shown, with two options:</p></div>
+<div class="sect4">
+<h5 id="_creating_new_dive_locations">Creating new dive locations</h5>
+<div class="paragraph"><p>Now one is ready to get a dive position and
+send it to the server. The Android
+display will look like the left hand image (<strong>A</strong>) below, but without any dive.</p></div>
+<div class="paragraph"><p>Touch the "+" icon on the top right to add a new dive site, a menu will be
+showed with 3 options:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Edit:  Change the text name of the dive location.
+Current: A prompt for a place name (or a request to activate the GPS if it is turned
+off) will be displayed, after which the current location is saved.
 </p>
 </li>
 <li>
 <p>
-Maps:  Display a map showing the dive location (you&#8217;ll be prompted to
-choose which helper app use from your installed apps). Currently this feature is
-non fully functional, but is under active development.
+Use Map: This option allows the user to fix a position by searching a world map. A
+world map is shown (see <strong>B</strong> below) on which one should indicate the desired position
+with a <em>long press</em> on the touch
+sensitive screen (if the marked location is erroneous, simply indicate a new location)
+and select the check symbol in the upper right. A dialog is shown allowing to enter the
+name of the dive location and the date-time of the dive (see <strong>C</strong> below). In order to import this
+dive location in <em>Subsurface</em> it&#8217;s advisable to set the time to agree with the time of
+that dive on the dive computer.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>After editing and saving a dive location, one needs to upload it to the web
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_5.jpg" alt="FIGURE: Companion App, add location using map" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Import local GPX file: The android device searches for .gpx files and located
+archives will be shown. The selected .gpx file is opened and the stored
+locations shown. Now one needs to select the appropriate locations, then select the
+tab in the upper right, after which the locations will be sent to the web service
+and added to the list on the Android device.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_lists_of_dive_locations">Lists of dive locations</h5>
+<div class="paragraph"><p>The main screen shows a list of dive locations, each with a name, date and
+time (see <strong>A</strong> below). Some locations may have an arrow-up icon over the selection box to the left
+indicating that they require upload to the server. One
+can select individual dive locations from the list. A selected location has a
+check mark in the selection box on the left. Group operations (such as <em>Delete</em> or <em>Send</em>)
+are performed on several locations that are selected.</p></div>
+<div class="paragraph"><p>Dive locations in this list can be viewed in two ways: a list of locations or a
+map indicating the dive locations. The display mode (List or Map) is changed by
+selecting <em>Dives</em> at the top left of the screen (see <strong>A</strong> below) and then selecting
+the display mode. The display mode can be changed either from the list
+of locations or from the map (see <strong>B</strong> below). If one selects a location (on the list
+or on the map), an editing
+panel opens (see <strong>C</strong> below) where the dive description or other details may be changed.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_4.jpg" alt="FIGURE: Companion App, add location using map" />
+</div>
+</div>
+<div class="paragraph"><p>When one clicks on a dive (<strong>not</strong> selecting the check box), the
+name given to it, date/time and GPS coordinates will be shown, with two options at the top
+of the screen:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Edit (pencil):  Change the text name or other characteristics of the dive location.
+</p>
+</li>
+<li>
+<p>
+Maps:  Display a map showing the dive location.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>After editing and saving a dive location (see <strong>C</strong> above), one needs to upload it to the web
 service, as explained above.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_uploading_dive_locations">Uploading dive locations</h5>
+<div class="paragraph"><p>There are several ways to send locations to the server.
+The easiest is by simply
+selecting the locations (See <strong>A</strong> below) and then touching the right arrow at the
+top right of the screen.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Users must be careful, as the trash icon on the right means exactly what it should:
+it deletes the selected dive location(s).</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_1.jpg" alt="FIGURE: Screen shots (A-B) of companion app" />
+</div>
+</div>
+<div class="paragraph"><p>After a dive trip using the Companion App, all dive locations are ready to be
+downloaded to a <em>Subsurface</em> dive log (see below).</p></div>
+</div>
 <div class="sect4">
 <h5 id="_settings_on_the_companion_app">Settings on the Companion app</h5>
-<div class="paragraph"><p>Selecting the <em>Settings</em> menu option results in the right hand image above (<strong>C</strong>).</p></div>
+<div class="paragraph"><p>Selecting the <em>Settings</em> menu option results in the right hand image above (<strong>B</strong>).</p></div>
 </div>
 <div class="sect4">
 <h5 id="_server_and_account">Server and account</h5>
@@ -1821,7 +1897,7 @@ of another registered diver.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_downloading_dive_locations_to_the_em_subsurface_em_divelog">3.4.2. Downloading dive locations to the <em>Subsurface</em> divelog</h4>
+<h4 id="_downloading_dive_locations_to_the_em_subsurface_em_divelog">3.4.3. Downloading dive locations to the <em>Subsurface</em> divelog</h4>
 <div class="paragraph"><p>Download dive(s) from a dive computer or enter them manually into
 <em>Subsurface</em> before obtaining the GPS coordinates from the server. The download
 dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main Menu <em>Import
@@ -2420,7 +2496,7 @@ below shows the depth profile two such dives that were merged:</p></div>
 <div class="sect1">
 <h2 id="S_ExportLog">6. Exporting the dive log or parts of the dive log</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>A dive log can be saved in two formats:</p></div>
+<div class="paragraph"><p>A dive log can be saved in three formats:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2434,15 +2510,24 @@ UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 </p>
 </li>
+<li>
+<p>
+CSV format, that includes the most critical information of the dive
+profile. Included information of a dive is: number, date, time,
+duration, depth, temperature and pressure.
+</p>
+</li>
 </ul></div>
 <div class="paragraph"><p>In order to save the WHOLE dive log (i.e. all trips and dives), select <strong>File</strong>
 from the Main menu. To save in <em>Subsurface</em> XML format, select <em>File &#8594; Save as</em>.
-To save in UDDF format, select <em>File &#8594; Export UDDF</em>.</p></div>
+To save in UDDF format, select <em>File &#8594; Export UDDF</em> and to save in CSV
+format, select <em>File &#8594; Export CSV</em>.</p></div>
 <div class="paragraph"><p>In order to save only one or more dives or one or two trips, select the
 appropriate dives or trips in the <strong>Dive List</strong> panel and then right-click the
 selected dives to bring up the context menu. To save in <em>Subsurface</em> XML
-format, select <em>Save as</em> from the context menu. To save in UDDF format, select
-<em>Export as UDDF</em> from the context menu.</p></div>
+format, select <em>Save as</em> from the context menu. To save in UDDF or CSV
+format, select <em>Export as UDDF</em> or <em>Export as CSV</em> from the context menu
+respectively.</p></div>
 <div class="paragraph"><p>Export to other formats can be achieved through third party facilities, for
 instance <em>www.divelogs.de</em>.</p></div>
 </div>
@@ -3587,7 +3672,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-04-29 22:07:43 PDT
+Last updated 2014-05-08 08:19:07 PDT
 </div>
 </div>
 </body>
