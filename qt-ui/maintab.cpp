@@ -584,6 +584,48 @@ void MainTab::reload()
 	tagModel.updateModel();
 }
 
+// tricky little macro to edit all the selected dives
+// loop over all dives, for each selected dive do WHAT, but do it
+// last for the current dive; this is required in case the invocation
+// wants to compare things to the original value in current_dive like it should
+#define EDIT_SELECTED_DIVES(WHAT)                            \
+	do {                                                 \
+		struct dive *mydive = NULL;                  \
+		if (editMode == NONE)                        \
+			return;                              \
+							     \
+		for (int _i = 0; _i < dive_table.nr; _i++) { \
+			mydive = get_dive(_i);               \
+			if (!mydive || mydive == current_dive)\
+				continue;                    \
+			if (!mydive->selected)               \
+				continue;                    \
+							     \
+			WHAT;                                \
+		}                                            \
+		mydive = current_dive;                       \
+		WHAT;                                        \
+	} while (0)
+
+// this macro is rather fragile and is intended to be used as WHAT inside
+// an invocation of EDIT_SELECTED_DIVES(WHAT)
+#define EDIT_TEXT(what, text)                                \
+	if (same_string(mydive->what, current_dive->what)) { \
+		QByteArray textByteArray = text.toUtf8();    \
+		free(mydive->what);                          \
+		mydive->what = strdup(textByteArray.data()); \
+	}
+
+#define EDIT_VALUE(what, value)                      \
+	if (mydive->what == current_dive->what) {    \
+		mydive->what = value;                \
+	}
+
+#define EDIT_TRIP_TEXT(what, text)                   \
+	QByteArray textByteArray = text.toUtf8();    \
+	free(what);                                  \
+	what = strdup(textByteArray.data());
+
 void MainTab::acceptChanges()
 {
 	MainWindow::instance()->dive_list()->setEnabled(true);
@@ -614,6 +656,28 @@ void MainTab::acceptChanges()
 		    notesBackup[curr].visibility != ui.rating->currentStars() ||
 		    notesBackup[curr].tags != ui.tagWidget->text()) {
 			mark_divelist_changed(true);
+		}
+		if (notesBackup[curr].location != ui.location->text()) {
+			EDIT_SELECTED_DIVES(EDIT_TEXT(location, ui.location->text()));
+			// if we have a location text and haven't edited the coordinates, try to fill the coordinates
+			// from the existing dives
+			if (!ui.location->text().trimmed().isEmpty() &&
+			    (!ui.coordinates->isModified() ||
+			     ui.coordinates->text().trimmed().isEmpty())) {
+				struct dive *dive;
+				int i = 0;
+				for_each_dive(i, dive) {
+					QString location(dive->location);
+					if (location == ui.location->text() &&
+					    (dive->latitude.udeg || dive->longitude.udeg)) {
+						EDIT_SELECTED_DIVES(if (same_string(mydive->location, dive->location)) {
+										mydive->latitude = dive->latitude;
+										mydive->longitude = dive->longitude;
+									});
+						break;
+					}
+				}
+			}
 		}
 		if (notesBackup[curr].location != ui.location->text() ||
 		    notesBackup[curr].coordinates != ui.coordinates->text()) {
@@ -831,48 +895,6 @@ void MainTab::rejectChanges()
 }
 #undef EDIT_TEXT2
 
-// tricky little macro to edit all the selected dives
-// loop over all dives, for each selected dive do WHAT, but do it
-// last for the current dive; this is required in case the invocation
-// wants to compare things to the original value in current_dive like it should
-#define EDIT_SELECTED_DIVES(WHAT)                            \
-	do {                                                 \
-		struct dive *mydive = NULL;                  \
-		if (editMode == NONE)                        \
-			return;                              \
-							     \
-		for (int _i = 0; _i < dive_table.nr; _i++) { \
-			mydive = get_dive(_i);               \
-			if (!mydive || mydive == current_dive)\
-				continue;                    \
-			if (!mydive->selected)               \
-				continue;                    \
-							     \
-			WHAT;                                \
-		}                                            \
-		mydive = current_dive;                       \
-		WHAT;                                        \
-	} while (0)
-
-// this macro is rather fragile and is intended to be used as WHAT inside
-// an invocation of EDIT_SELECTED_DIVES(WHAT)
-#define EDIT_TEXT(what, text)                                \
-	if (same_string(mydive->what, current_dive->what)) { \
-		QByteArray textByteArray = text.toUtf8();    \
-		free(mydive->what);                          \
-		mydive->what = strdup(textByteArray.data()); \
-	}
-
-#define EDIT_VALUE(what, value)                      \
-	if (mydive->what == current_dive->what) {    \
-		mydive->what = value;                \
-	}
-
-#define EDIT_TRIP_TEXT(what, text)                   \
-	QByteArray textByteArray = text.toUtf8();    \
-	free(what);                                  \
-	what = strdup(textByteArray.data());
-
 void markChangedWidget(QWidget *w)
 {
 	QPalette p;
@@ -972,36 +994,6 @@ void MainTab::on_tagWidget_textChanged()
 
 void MainTab::on_location_textChanged(const QString &text)
 {
-	if (editMode == NONE)
-		return;
-	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		// we are editing a trip
-		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-		EDIT_TRIP_TEXT(currentTrip->location, text);
-	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		// if we have a location text and haven't edited the coordinates, try to fill the coordinates
-		// from the existing dives
-		if (!text.isEmpty() &&
-		    (!ui.coordinates->isModified() ||
-		     ui.coordinates->text().trimmed().isEmpty())) {
-			struct dive *dive;
-			int i = 0;
-			for_each_dive(i, dive) {
-				QString location(dive->location);
-				if (location == text &&
-				    (dive->latitude.udeg || dive->longitude.udeg)) {
-					EDIT_SELECTED_DIVES(mydive->latitude = dive->latitude);
-					EDIT_SELECTED_DIVES(mydive->longitude = dive->longitude);
-					//Don't use updateGpsCoordinates() since we don't want to set modified state yet
-					ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
-					markChangedWidget(ui.coordinates);
-					break;
-				}
-			}
-		}
-		EDIT_SELECTED_DIVES(EDIT_TEXT(location, text));
-		MainWindow::instance()->globe()->repopulateLabels();
-	}
 	markChangedWidget(ui.location);
 }
 
