@@ -254,7 +254,6 @@ void DownloadFromDCWidget::on_search_clicked()
 								    tr("Find Uemis dive computer"),
 								    QDir::homePath(),
 								    QFileDialog::ShowDirsOnly);
-		qDebug() << dirName;
 		if (ui.device->findText(dirName) == -1)
 			ui.device->addItem(dirName);
 		ui.device->setEditText(dirName);
