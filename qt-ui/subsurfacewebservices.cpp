@@ -343,7 +343,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(true);
 			MainWindow::instance()->globe()->repopulateLabels();
-			MainWindow::instance()->globe()->centerOn(current_dive);
+			MainWindow::instance()->globe()->centerOnCurrentDive();
 			MainWindow::instance()->information()->updateDiveInfo(selected_dive);
 		}
 

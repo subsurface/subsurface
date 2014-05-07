@@ -207,8 +207,9 @@ void GlobeGPS::reload()
 	repopulateLabels();
 }
 
-void GlobeGPS::centerOn(dive *dive)
+void GlobeGPS::centerOnCurrentDive()
 {
+	struct dive *dive = current_dive;
 	// dive has changed, if we had the 'editingDive', hide it.
 	if (messageWidget->isVisible()
 	    && (!dive || dive_has_gps_location(dive) || amount_selected != 1 ))

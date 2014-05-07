@@ -19,7 +19,7 @@ public:
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void repopulateLabels();
-	void centerOn(struct dive *dive);
+	void centerOnCurrentDive();
 	bool eventFilter(QObject *, QEvent *);
 
 protected:

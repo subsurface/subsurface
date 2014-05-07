@@ -147,7 +147,7 @@ void MainWindow::current_dive_changed(int divenr)
 {
 	if (divenr >= 0) {
 		select_dive(divenr);
-		ui.globe->centerOn(get_dive(selected_dive));
+		ui.globe->centerOnCurrentDive();
 	}
 
 	/* It looks like it's a bit too cumberstone to send *one* dive using a QList,
