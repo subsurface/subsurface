@@ -63,6 +63,31 @@ New in version 4.1 (compared to Subsurface 4.0.3):
 - experimental "check for updates" feature (mostly for Windows and Mac)
 - experimental undocumented alternative storage format
 
+Known issues:
+
+- (Windows specific) Many Windows fonts don't support specific characters,
+  specifically subscript "2" (eg in pO2). New installations of Subsurface
+  will automatically pick a font that contains this character, but if you
+  had Subsurface installed on a specific system before, it likely has
+  saved the previous font in its settings. In that case the best solution
+  is to manually change the font to one that contains this character,
+  e.g. Calibri.
+
+Known bugs:
+
+- There are a number of small inconsistencies in the UI when editing
+  multiple dives. For example, if multiple dives are edited and some of
+  them already have coordinates set, under certain circumstances the
+  changes aren't saved. To circumvent this bug only edit dives with the
+  same coordinates or edit the dives individually.
+
+- (Windows specific) If an ad blocker is used and set to offline mode, the
+  manual check for an update crashes subsurface.
+
+- When using the globe / map widget to edit dive locations, double clicks
+  some times fail to set the correct position.
+
+
 New in version 4.0.3 (compared to Subsurface 4.0.2):
 ----------------------------------------------------
 
