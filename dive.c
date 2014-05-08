@@ -6,7 +6,6 @@
 #include <limits.h>
 #include "gettext.h"
 #include "dive.h"
-#include "planner.h"
 
 struct tag_entry *g_tag_list = NULL;
 
