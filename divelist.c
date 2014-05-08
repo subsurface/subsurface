@@ -113,48 +113,15 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
-		struct gasmix *mix = &cyl->gasmix;
-		int o2 = mix->o2.permille;
-		int he = mix->he.permille;
-		struct divecomputer *dc = &dive->dc;
+		int o2 = get_o2(&cyl->gasmix);
+		int he = get_he(&cyl->gasmix);
 		int used = 0;
 		int first_gas_explicit = 0;
 
-		while (dc) {
-			struct event *event = dc->events;
-			while (event) {
-				if (event->value) {
-					if (event->name && !strcmp(event->name, "gaschange")) {
-						unsigned int event_he = event->value >> 16;
-						unsigned int event_o2 = event->value & 0xffff;
-
-						if (event->time.seconds < 30)
-							first_gas_explicit = 1;
-						if (is_air(o2, he)) {
-							if (is_air(event_o2 * 10, event_he * 10))
-								used = 1;
-						} else {
-							if (he == event_he * 10 && o2 == event_o2 * 10)
-								used = 1;
-						}
-					}
-				}
-				event = event->next;
-			}
-			dc = dc->next;
-		}
-
-		/* Unless explicity set, the first gas to use has index 0 */
-		if (i == 0 && !first_gas_explicit)
-			used = 1;
-
-		if (!used)
+		if (!cyl->used)
 			continue;
-
 		if (cylinder_none(cyl))
 			continue;
-		if (!o2)
-			o2 = O2_IN_AIR;
 		if (o2 < mino2)
 			mino2 = o2;
 		if (he > maxhe)
