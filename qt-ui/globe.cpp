@@ -345,6 +345,6 @@ GlobeGPS::GlobeGPS(QWidget* parent) { setText("MARBLE DISABLED AT BUILD TIME"); 
 void GlobeGPS::repopulateLabels() {}
 void GlobeGPS::centerOn(dive* dive) {}
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev) {}
-void GlobeGPS::prepareForGetDiveCoordinates() {}
+void GlobeGPS::prepareForGetDiveCoordinates(struct dive *dive) {}
 void GlobeGPS::reload() {}
 #endif
