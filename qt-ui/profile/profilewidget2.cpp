@@ -841,10 +841,8 @@ void ProfileWidget2::editName()
 			lengthWarning.exec();
 			return;
 		}
-		const char *temp;
-		temp = newName.toStdString().c_str();
-		strcpy(event->name, temp);
-		remember_event(temp);
+		strcpy(event->name, newName.toUtf8());
+		remember_event(event->name);
 	}
 	replot();
 }
