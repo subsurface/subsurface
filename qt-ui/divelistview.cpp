@@ -275,7 +275,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
 		this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 	Q_EMIT currentDiveChanged(selected_dive);
-	const QModelIndex &idx = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive).first();
+	QModelIndex idx = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive).first();
 	if (idx.parent().isValid())
 		scrollTo(idx.parent());
 	scrollTo(idx);
