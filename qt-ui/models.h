@@ -120,6 +120,7 @@ public:
 	void clear();
 	void update();
 	void setDive(struct dive *d);
+	void copyFromDive(struct dive *d);
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 

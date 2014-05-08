@@ -325,6 +325,8 @@ void MainWindow::enableDcShortcuts()
 
 void MainWindow::on_actionDivePlanner_triggered()
 {
+	int i;
+	struct dive *dive;
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	    ui.InfoWidget->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to plan a dive."));
@@ -334,6 +336,13 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
 	CylindersModel::instance()->clear();
+	for_each_dive(i,dive) {
+		if(dive->selected){
+			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
+			CylindersModel::instance()->copyFromDive(dive);
+			break;
+		}
+	}
 	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE);
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }

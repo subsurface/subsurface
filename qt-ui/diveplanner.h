@@ -48,6 +48,7 @@ public:
 	void rememberTanks();
 	bool tankInUse(int o2, int he);
 	void copyCylinders(struct dive *d);
+	void copyCylindersFrom(struct dive *d);
 	/**
 	 * @return the row number.
 	 */

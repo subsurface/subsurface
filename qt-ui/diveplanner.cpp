@@ -436,6 +436,11 @@ void DivePlannerPointsModel::copyCylinders(dive *d)
 	copy_cylinders(stagingDive, d);
 }
 
+void DivePlannerPointsModel::copyCylindersFrom(dive *d)
+{
+	copy_cylinders(d, stagingDive);
+}
+
 QStringList &DivePlannerPointsModel::getGasList()
 {
 	struct dive *activeDive = isPlanner() ? stagingDive : current_dive;
