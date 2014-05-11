@@ -246,8 +246,9 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 QList<int> getDivesInTrip(dive_trip_t *trip)
 {
 	QList<int> ret;
-	for (int i = 0; i < dive_table.nr; i++) {
-		struct dive *d = get_dive(i);
+	int i;
+	struct dive *d;
+	for_each_dive (i, d) {
 		if (d->divetrip == trip) {
 			ret.push_back(get_divenr(d));
 		}
