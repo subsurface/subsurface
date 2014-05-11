@@ -37,7 +37,7 @@ software solutions:
    of your operating systems in a unified way.
  - Do you use Linux or Mac and your dive computer has only Microsoft-based software
    for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
-   storing and anaysing your dive logs on other operating systems.
+   storing and analysing your dive logs on other operating systems.
 
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
@@ -477,7 +477,7 @@ _Subsurface_ only imports dives that have not been uploaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 If, for some reason, the user wishes to import ALL dives from the dive computer,
-even though some may already be in the logbook, then check the the check box labeled
+even though some may already be in the logbook, then check the check box labeled
 _Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the
@@ -859,7 +859,7 @@ accessible through the Import dialogue are also supported, as explained below.
 
 ==== Importing from Mares Dive Organiser V2.1
 
-Since Mares utilise proprietory Microsoft software not compatible with
+Since Mares utilise proprietary Microsoft software not compatible with
 multi-platform applications, these dive logs cannot be
 directly imported into
 _Subsurface_. Mares dive logs need to be imported using a three-step process,
@@ -1281,9 +1281,9 @@ TIPS:
 
 - _Background service_, being a very powerful tool, may fill the location list with
 many unnecessary locations not corresponding to the exact dive point but reflecting the boat's route.
-Currently these locations are dificult to delete from the server. In some situations it
+Currently these locations are difficult to delete from the server. In some situations it
 is therefore prudent to clean up the list on the Android device before sending the dive points to the web
-server by simply deleting the inappropriate locations. This might be necesary, for
+server by simply deleting the inappropriate locations. This might be necessary, for
 instance, if one wants to keep the location list clear to see dives in the web service map display (see above).
 
 - It may also make sense to give informative names to the locations sent to the web server, or at least
@@ -1517,7 +1517,7 @@ maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
 instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
 as the calculated ceiling for several Bühlmann tissue compartments.
 
-The user has control over the display of several statstics, represented as four
+The user has control over the display of several statistics, represented as four
 buttons on the left of the profile panel. These are:
 
 [icon="images/icons/MOD.jpg"]
@@ -1973,9 +1973,9 @@ should not closely approach the calculated ceiling. The partial gas pressures se
 display are indicates as graphs below the dive profile. The partial pressures of any of the
 gasses should not exceed the limits defined in the _Preferences_ panel of _Subsurface_. If
 any of the gases exceed the specified partial pressures, the appropriate segments of the
-dive prifile is highlighted in red.
+dive profile is highlighted in red.
 
-Below is an the dive plan completed in the previous figure and which can now be evaluated
+Below is the dive plan completed in the previous figure which can now be evaluated
 against the ceiling (determined by the gradient factors) as well as against the
 maximum gas partial pressures. Notice the plan is deficient in terms of gas planning:
 there is no provision for any reserve gas.
@@ -2348,7 +2348,7 @@ can be found
 xref:Unified_import[here.]
 However, in some cases, a two-step process may be required:
 
-1. Export the forieign dive log data to format that is accessible from
+1. Export the foreign dive log data to format that is accessible from
 _Subsurface_.
 2. Import the accessible dive log data into _Subsurface_.
 
@@ -2491,7 +2491,7 @@ And as mentioned, the "contains less air than you thought it did" really
 starts becoming much more noticeable at high pressure. A 400 bar really does not
 contain twice as much air as a 200 bar one. At lower pressures, air acts pretty much like an ideal gas.
 
-=== Some dive profiles have time discrepances with the recorded samples from my dive computer...
+=== Some dive profiles have time discrepancies with the recorded samples from my dive computer...
 
 _Subsurface_ ends up ignoring surface time for many things (average depth, divetime, SAC, etc).
  For example, if you end up doing a weight check (deep enough to trigger the "dive started")
