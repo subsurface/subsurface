@@ -525,15 +525,15 @@ int EXIFInfo::parseFromEXIFSegment(const unsigned char *buf, unsigned len)
 void EXIFInfo::clear()
 {
 	// Strings
-	ImageDescription = "";
-	Make = "";
-	Model = "";
-	Software = "";
-	DateTime = "";
-	DateTimeOriginal = "";
-	DateTimeDigitized = "";
-	SubSecTimeOriginal = "";
-	Copyright = "";
+	ImageDescription.clear();
+	Make.clear();
+	Model.clear();
+	Software.clear();
+	DateTime.clear();
+	DateTimeOriginal.clear();
+	DateTimeDigitized.clear();
+	SubSecTimeOriginal.clear();
+	Copyright.clear();
 
 	// Shorts / unsigned / double
 	ByteAlign = 0;

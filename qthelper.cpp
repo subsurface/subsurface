@@ -66,17 +66,17 @@ const DiveComputerNode *DiveComputerList::get(QString m)
 
 void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QString f)
 {
-	if (m == "" || d == 0)
+	if (m.isEmpty() || d == 0)
 		return;
 	const DiveComputerNode *existNode = this->getExact(m, d);
 	DiveComputerNode newNode(m, d, s, f, n);
 	if (existNode) {
 		if (newNode.changesValues(*existNode)) {
-			if (n != "" && existNode->nickName != n)
+			if (n.size() && existNode->nickName != n)
 				qDebug("new nickname %s for DC model %s deviceId 0x%x", n.toUtf8().data(), m.toUtf8().data(), d);
-			if (f != "" && existNode->firmware != f)
+			if (f.size() && existNode->firmware != f)
 				qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.toUtf8().data(), m.toUtf8().data(), d);
-			if (s != "" && existNode->serialNumber != s)
+			if (s.size() && existNode->serialNumber != s)
 				qDebug("new serial number %s for DC model %s deviceId 0x%x", s.toUtf8().data(), m.toUtf8().data(), d);
 		} else {
 			return;
@@ -127,7 +127,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	trHemisphere[3] = MainWindow::instance()->information()->trHemisphere("W");
 	QString regExp;
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
-	if (gps_text.trimmed() == "") {
+	if (gps_text.trimmed().isEmpty()) {
 		*latitude = 0.0;
 		*longitude = 0.0;
 		return true;

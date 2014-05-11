@@ -48,11 +48,11 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	QDir marble;
 	if (!list.contains("earth/googlesat/googlesat.dgml")) {
 		subsurfaceDataPath = getSubsurfaceDataPath("marbledata");
-		if (subsurfaceDataPath != "") {
+		if (subsurfaceDataPath.size()) {
 			MarbleDirs::setMarbleDataPath(subsurfaceDataPath);
 		} else {
 			subsurfaceDataPath = getSubsurfaceDataPath("data");
-			if (subsurfaceDataPath != "")
+			if (subsurfaceDataPath.size())
 				MarbleDirs::setMarbleDataPath(subsurfaceDataPath);
 		}
 	}

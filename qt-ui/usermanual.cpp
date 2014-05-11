@@ -30,7 +30,7 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 
 	ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
-	if (searchPath != "") {
+	if (searchPath.size()) {
 		QUrl url(searchPath.append("/user-manual.html"));
 		ui->webView->setUrl(url);
 	} else {
