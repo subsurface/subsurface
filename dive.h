@@ -525,7 +525,7 @@ extern bool has_hr_data(struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
-extern int getUniqID(struct dive *d);
+extern int dive_getUniqID(struct dive *d);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern unsigned int dc_watertemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);

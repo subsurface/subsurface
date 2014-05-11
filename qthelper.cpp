@@ -260,7 +260,7 @@ QList<int> getDivesInTrip(dive_trip_t *trip)
 // it doesn't change during the life time of a Subsurface session
 // oh, and it has no meaning whatsoever - that's why we have the
 // silly initial number and increment by 3 :-)
-int getUniqID(struct dive *d)
+int dive_getUniqID(struct dive *d)
 {
 	static QSet<int> ids;
 	static int maxId = 83529;
