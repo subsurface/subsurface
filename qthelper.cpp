@@ -25,11 +25,11 @@ DiveComputerList::~DiveComputerList()
 
 bool DiveComputerNode::operator==(const DiveComputerNode &a) const
 {
-	return this->model == a.model &&
-	       this->deviceId == a.deviceId &&
-	       this->firmware == a.firmware &&
-	       this->serialNumber == a.serialNumber &&
-	       this->nickName == a.nickName;
+	return model == a.model &&
+	       deviceId == a.deviceId &&
+	       firmware == a.firmware &&
+	       serialNumber == a.serialNumber &&
+	       nickName == a.nickName;
 }
 
 bool DiveComputerNode::operator!=(const DiveComputerNode &a) const
@@ -39,13 +39,13 @@ bool DiveComputerNode::operator!=(const DiveComputerNode &a) const
 
 bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
 {
-	if (this->model != b.model || this->deviceId != b.deviceId) {
+	if (model != b.model || deviceId != b.deviceId) {
 		qDebug("DiveComputerNodes were not for the same DC");
 		return false;
 	}
-	return (b.firmware != "" && this->firmware != b.firmware) ||
-	       (b.serialNumber != "" && this->serialNumber != b.serialNumber) ||
-	       (b.nickName != "" && this->nickName != b.nickName);
+	return (firmware != b.firmware) ||
+	       (serialNumber != b.serialNumber) ||
+	       (nickName != b.nickName);
 }
 
 const DiveComputerNode *DiveComputerList::getExact(QString m, uint32_t d)
