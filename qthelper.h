@@ -35,8 +35,8 @@ public:
 	void rmDC(QString m, uint32_t d);
 	DiveComputerNode matchDC(QString m, uint32_t d);
 	DiveComputerNode matchModel(QString m);
-	QMultiMap<QString, class DiveComputerNode> dcMap;
-	QMultiMap<QString, class DiveComputerNode> dcWorkingMap;
+	QMultiMap<QString, DiveComputerNode> dcMap;
+	QMultiMap<QString, DiveComputerNode> dcWorkingMap;
 };
 
 QString weight_string(int weight_in_grams);
