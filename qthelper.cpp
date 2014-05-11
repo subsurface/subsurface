@@ -48,7 +48,7 @@ bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
 	       (nickName != b.nickName);
 }
 
-const DiveComputerNode *DiveComputerList::getExact(QString m, uint32_t d)
+const DiveComputerNode *DiveComputerList::getExact(const QString& m, uint32_t d)
 {
 	for (QMap<QString, DiveComputerNode>::iterator it = dcMap.find(m); it != dcMap.end() && it.key() == m; ++it)
 		if (it->deviceId == d)
@@ -56,7 +56,7 @@ const DiveComputerNode *DiveComputerList::getExact(QString m, uint32_t d)
 	return NULL;
 }
 
-const DiveComputerNode *DiveComputerList::get(QString m)
+const DiveComputerNode *DiveComputerList::get(const QString& m)
 {
 	QMap<QString, DiveComputerNode>::iterator it = dcMap.find(m);
 	if (it != dcMap.end())
@@ -64,7 +64,7 @@ const DiveComputerNode *DiveComputerList::get(QString m)
 	return NULL;
 }
 
-void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QString f)
+void DiveComputerList::addDC(const QString& m, uint32_t d, const QString& n, const QString& s,const QString& f)
 {
 	if (m.isEmpty() || d == 0)
 		return;
@@ -86,7 +86,7 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 	dcMap.insert(m, newNode);
 }
 
-void DiveComputerList::rmDC(QString m, uint32_t d)
+void DiveComputerList::rmDC(const QString& m, uint32_t d)
 {
 	const DiveComputerNode *existNode = this->getExact(m, d);
 	dcMap.remove(m, *existNode);
