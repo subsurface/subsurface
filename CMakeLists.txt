@@ -104,6 +104,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	gettextfromc.cpp
 	#dirk ported some core functionality to c++.
 	qthelper.cpp
+	divecomputer.cpp
 )
 
 #the interface, in C++

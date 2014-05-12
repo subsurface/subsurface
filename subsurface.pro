@@ -39,6 +39,7 @@ HEADERS = \
 	profile.h \
 	qt-gui.h \
 	qthelper.h \
+	divecomputer.h \
 	qt-ui/about.h \
 	qt-ui/completionmodels.h \
 	qt-ui/divecomputermanagementdialog.h \
@@ -105,6 +106,7 @@ SOURCES =  \
 	parse-xml.c \
 	planner.c \
 	profile.c \
+	divecomputer.cpp \
 	worldmap-save.c \
 	qt-gui.cpp \
 	qthelper.cpp \

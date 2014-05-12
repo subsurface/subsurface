@@ -25,7 +25,7 @@
 #include <QFileDialog>
 #include <string>
 #include <iostream>
-
+#include "../qthelper.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(this)
 {

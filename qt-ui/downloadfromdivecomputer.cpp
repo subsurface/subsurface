@@ -1,9 +1,10 @@
 #include "downloadfromdivecomputer.h"
-
+#include "../divecomputer.h"
 #include "../libdivecomputer.h"
 #include "../helpers.h"
 #include "../display.h"
 #include "../divelist.h"
+
 #include "mainwindow.h"
 #include <cstdlib>
 #include <QThread>

@@ -14,7 +14,7 @@
 
 #include "../dive.h"
 #include "../divelist.h"
-#include "../qthelper.h"
+#include "../divecomputer.h"
 
 QFont defaultModelFont();
 
