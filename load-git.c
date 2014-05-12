@@ -934,15 +934,21 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 {
 	int yyyy = -1, mm = -1, dd = -1;
 	int h, m, s;
-	int mday_off = timeoff - 7;
-	int month_off = mday_off - 3;
-	int year_off = month_off - 5;
+	int mday_off, month_off, year_off;
 	struct tm tm;
 
-	/* There has to be a mday */
-	if (mday_off < 0)
+	/* Skip the '-' before the time */
+	mday_off = timeoff;
+	if (!mday_off || name[--mday_off] != '-')
 		return GIT_WALK_SKIP;
-	if (name[timeoff-1] != '-')
+	/* Skip the day name */
+	while (mday_off > 0 && name[--mday_off] != '-')
+		/* nothing */;
+
+	mday_off = mday_off - 2;
+	month_off = mday_off - 3;
+	year_off = month_off - 5;
+	if (mday_off < 0)
 		return GIT_WALK_SKIP;
 
 	/* Get the time of day */
