@@ -751,7 +751,7 @@ static bool process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 				dive->number = atoi(val);
 		} else if (!log && !strcmp(tag, "logfilenr")) {
 			/* this one tells us which dive we are adding data to */
-			dive = get_dive_by_diveid(atoi(val), deviceid);
+			dive = get_dive_by_uemis_diveid(atoi(val), deviceid);
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!log && dive && !strcmp(tag, "divespot_id")) {

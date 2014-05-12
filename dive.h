@@ -421,7 +421,7 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 #define for_each_gps_location(_i, _x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid)
+static inline struct dive *get_dive_by_uemis_diveid(uint32_t diveid, uint32_t deviceid)
 {
 	int i;
 	struct dive *dive;
@@ -435,10 +435,7 @@ static inline struct dive *get_dive_by_diveid(uint32_t diveid, uint32_t deviceid
 	}
 	return NULL;
 }
-// this is very different from get_dive_by_diveid() (which is only used
-// by the UEMIS downloader) -- this uses the unique diveID to allow us
-// to hold an identifier for a dive across operations that might change
-// the dive_table
+
 static inline struct dive *getDiveById(int id)
 {
 	int i;
