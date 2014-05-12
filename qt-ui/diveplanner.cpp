@@ -1624,17 +1624,10 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem *parent) : QGraphicsRectItem(pa
 	leftWing(new QGraphicsPixmapItem(this)),
 	rightWing(new QGraphicsPixmapItem(this))
 {
-	QPixmap p;
-#define CREATE(item, pixmap)          \
-	p = QPixmap(QString(pixmap)); \
-	item->setPixmap(p);
-
-	CREATE(icon, ":icon_time");
-	CREATE(bg, ":round_base");
-	CREATE(leftWing, ":left_wing");
-	CREATE(rightWing, ":right_wing");
-#undef CREATE
-
+	icon->setPixmap(QPixmap(":icon_time"));
+	bg->setPixmap(QPixmap(":round_base"));
+	leftWing->setPixmap(QPixmap(":left_wing"));
+	rightWing->setPixmap(QPixmap(":right_wing"));
 	decreaseBtn->setPixmap(QPixmap(":arrow_down"));
 	increaseBtn->setPixmap(QPixmap(":arrow_up"));
 
