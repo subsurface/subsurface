@@ -566,10 +566,8 @@ static void delete_trip(dive_trip_t *trip)
 	}
 
 	/* .. and free it */
-	if (trip->location)
-		free(trip->location);
-	if (trip->notes)
-		free(trip->notes);
+	free(trip->location);
+	free(trip->notes);
 	free(trip);
 }
 
@@ -703,18 +701,12 @@ void delete_single_dive(int idx)
 	dive_table.dives[--dive_table.nr] = NULL;
 	/* free all allocations */
 	free(dive->dc.sample);
-	if (dive->location)
-		free((void *)dive->location);
-	if (dive->notes)
-		free((void *)dive->notes);
-	if (dive->divemaster)
-		free((void *)dive->divemaster);
-	if (dive->buddy)
-		free((void *)dive->buddy);
-	if (dive->suit)
-		free((void *)dive->suit);
-	if (dive->tag_list)
-		taglist_free(dive->tag_list);
+	free((void *)dive->location);
+	free((void *)dive->notes);
+	free((void *)dive->divemaster);
+	free((void *)dive->buddy);
+	free((void *)dive->suit);
+	taglist_free(dive->tag_list);
 	free(dive);
 }
 

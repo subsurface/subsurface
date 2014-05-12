@@ -245,10 +245,9 @@ void MainWindow::on_actionClose_triggered()
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
-	if (existing_filename) {
-		free((void *)existing_filename);
-		existing_filename = NULL;
-	}
+	free((void *)existing_filename);
+	existing_filename = NULL;
+
 	cleanUpEmpty();
 	mark_divelist_changed(false);
 

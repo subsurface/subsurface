@@ -165,10 +165,8 @@ void exit_ui(void)
 {
 	delete window;
 	delete application;
-	if (existing_filename)
-		free((void *)existing_filename);
-	if (default_dive_computer_device)
-		free((void *)default_dive_computer_device);
+	free((void *)existing_filename);
+	free((void *)default_dive_computer_device);
 }
 
 void set_filename(const char *filename, bool force)

@@ -243,7 +243,7 @@ void DownloadFromDCWidget::fill_computer_list()
 	if (!productList["Uemis"].contains("Zurich"))
 		productList["Uemis"].push_back("Zurich");
 
-	descriptorLookup[QString("UemisZurich")] = (dc_descriptor_t *)mydescriptor;
+	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
 
 	qSort(vendorList);
 }
@@ -322,8 +322,7 @@ void DownloadFromDCWidget::pickLogFile()
 	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer download logfile"),
 					       filename, tr("Log files (*.log)"));
 	if (!logFile.isEmpty()) {
-		if (logfile_name)
-			free(logfile_name);
+		free(logfile_name);
 		logfile_name = strdup(logFile.toUtf8().data());
 	}
 }
@@ -351,8 +350,7 @@ void DownloadFromDCWidget::pickDumpFile()
 	dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer binary dump file"),
 						filename, tr("Dump files (*.bin)"));
 	if (!dumpFile.isEmpty()) {
-		if (dumpfile_name)
-			free(dumpfile_name);
+		free(dumpfile_name);
 		dumpfile_name = strdup(dumpFile.toUtf8().data());
 	}
 }

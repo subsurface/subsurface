@@ -130,10 +130,9 @@ void set_default_dive_computer(const char *vendor, const char *product)
 		return;
 	if (is_default_dive_computer(vendor, product))
 		return;
-	if (default_dive_computer_vendor)
-		free((void *)default_dive_computer_vendor);
-	if (default_dive_computer_product)
-		free((void *)default_dive_computer_product);
+
+	free((void *)default_dive_computer_vendor);
+	free((void *)default_dive_computer_product);
 	default_dive_computer_vendor = strdup(vendor);
 	default_dive_computer_product = strdup(product);
 	s.beginGroup("DiveComputer");
@@ -150,8 +149,8 @@ void set_default_dive_computer_device(const char *name)
 		return;
 	if (is_default_dive_computer_device(name))
 		return;
-	if (default_dive_computer_device)
-		free((void *)default_dive_computer_device);
+
+	free((void *)default_dive_computer_device);
 	default_dive_computer_device = strdup(name);
 	s.beginGroup("DiveComputer");
 	s.setValue("dive_computer_device", name);

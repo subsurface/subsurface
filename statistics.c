@@ -114,11 +114,10 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	 * case (one dive per year or all dives during
 	 * one month) for yearly and monthly statistics*/
 
-	if (stats_yearly != NULL) {
-		free(stats_yearly);
-		free(stats_monthly);
-		free(stats_by_trip);
-	}
+	free(stats_yearly);
+	free(stats_monthly);
+	free(stats_by_trip);
+
 	size = sizeof(stats_t) * (dive_table.nr + 1);
 	stats_yearly = malloc(size);
 	stats_monthly = malloc(size);

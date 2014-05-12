@@ -1184,8 +1184,8 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 {
 	int o2, he, o2low;
 	init_decompression(dive);
-	if (last_pi_entry_new) /* Create the new plot data */
-		free((void *)last_pi_entry_new);
+	/* Create the new plot data */
+	free((void *)last_pi_entry_new);
 	get_dive_gas(dive, &o2, &he, &o2low);
 	if (he > 0) {
 		pi->dive_type = TRIMIX;
