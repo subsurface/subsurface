@@ -447,10 +447,14 @@ static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
  * time of the directory structure it is created in: the dive
  * might be part of a trip that straddles a month (or even a
  * year).
+ *
+ * We do *not* want to use localized weekdays and cause peoples save
+ * formats to depend on their locale.
  */
 static void create_dive_name(struct dive *dive, struct membuffer *name, struct tm *dirtm)
 {
 	struct tm tm;
+	static const char weekday[7][4] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
 	utc_mkdate(dive->when, &tm);
 	if (tm.tm_year != dirtm->tm_year)
@@ -459,7 +463,7 @@ static void create_dive_name(struct dive *dive, struct membuffer *name, struct t
 		put_format(name, "%02u-", tm.tm_mon+1);
 
 	put_format(name, "%02u-%s-%02u:%02u:%02u",
-		tm.tm_mday, weekday(tm.tm_wday),
+		tm.tm_mday, weekday[tm.tm_wday],
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
