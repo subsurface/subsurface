@@ -436,7 +436,7 @@ static inline struct dive *get_dive_by_uemis_diveid(uint32_t diveid, uint32_t de
 	return NULL;
 }
 
-static inline struct dive *getDiveById(int id)
+static inline struct dive *get_dive_by_diveid(int id)
 {
 	int i;
 	struct dive *dive = NULL;
@@ -445,6 +445,12 @@ static inline struct dive *getDiveById(int id)
 		if (dive->id == id)
 			break;
 	}
+#ifdef DEBUG
+	if(dive == NULL){
+		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
+		exit(1);
+	}
+#endif
 	return dive;
 }
 

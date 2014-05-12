@@ -227,7 +227,7 @@ void ProfileWidget2::replot()
 {
 	int diveId = dataModel->id();
 	dataModel->clear();
-	plotDives(QList<dive *>() << getDiveById(diveId));
+	plotDives(QList<dive *>() << get_dive_by_diveid(diveId));
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -808,7 +808,7 @@ void ProfileWidget2::changeGas()
 	int diveId = dataModel->id();
 	int o2, he;
 	int seconds = timeAxis->valueAt(scenePos);
-	struct dive *d = getDiveById(diveId);
+	struct dive *d = get_dive_by_diveid(diveId);
 
 	validate_gas(gas.toUtf8().constData(), &o2, &he);
 	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, o2, he));

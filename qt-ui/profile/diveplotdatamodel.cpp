@@ -178,9 +178,7 @@ void DivePlotDataModel::emitDataChanged()
 
 void DivePlotDataModel::calculateDecompression()
 {
-	struct dive *d = getDiveById(id());
-	if (!d)
-		return;
+	struct dive *d = get_dive_by_diveid(id());
 	struct divecomputer *dc = select_dc(d);
 	init_decompression(d);
 	calculate_deco_information(d, dc, &pInfo, false);

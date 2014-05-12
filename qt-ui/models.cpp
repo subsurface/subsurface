@@ -1056,7 +1056,7 @@ static int nitrox_sort_value(struct dive *dive)
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
-	struct dive *dive = getDiveById(diveId);
+	struct dive *dive = get_dive_by_diveid(diveId);
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
@@ -1203,8 +1203,7 @@ bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role
 		if (d->number == v)
 			return false;
 	}
-	d = getDiveById(diveId);
-	Q_ASSERT(d != NULL);
+	d = get_dive_by_diveid(diveId);
 	d->number = value.toInt();
 	mark_divelist_changed(true);
 	return true;
@@ -1212,8 +1211,7 @@ bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role
 
 QString DiveItem::displayDate() const
 {
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	return get_dive_date_string(dive->when);
 }
 
@@ -1221,8 +1219,7 @@ QString DiveItem::displayDepth() const
 {
 	QString fract, str;
 	const int scale = 1000;
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	if (get_units()->length == units::METERS) {
 		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 100);
 		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 1, QChar('0'));
@@ -1236,8 +1233,7 @@ QString DiveItem::displayDepth() const
 QString DiveItem::displayDuration() const
 {
 	int hrs, mins, secs;
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	secs = dive->duration.seconds % 60;
 	mins = dive->duration.seconds / 60;
 	hrs = mins / 60;
@@ -1255,8 +1251,7 @@ QString DiveItem::displayDuration() const
 QString DiveItem::displayTemperature() const
 {
 	QString str;
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	if (!dive->watertemp.mkelvin)
 		return str;
 	if (get_units()->temperature == units::CELSIUS)
@@ -1269,8 +1264,7 @@ QString DiveItem::displayTemperature() const
 QString DiveItem::displaySac() const
 {
 	QString str;
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != NULL);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	if (get_units()->volume == units::LITER)
 		str = QString::number(dive->sac / 1000.0, 'f', 1).append(tr(" l/min"));
 	else
@@ -1286,8 +1280,7 @@ QString DiveItem::displayWeight() const
 
 int DiveItem::weight() const
 {
-	struct dive *dive = getDiveById(diveId);
-	Q_ASSERT(dive != 0);
+	struct dive *dive = get_dive_by_diveid(diveId);
 	weight_t tw = { total_weight(dive) };
 	return tw.grams;
 }
@@ -1907,8 +1900,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 
 	switch (role) {
 	case Qt::DisplayRole: {
-		struct dive *dive = getDiveById(diveId);
-		Q_ASSERT(dive != NULL);
+		struct dive *dive = get_dive_by_diveid(diveId);
 		struct DiveItem di;
 		di.diveId = diveId;
 
