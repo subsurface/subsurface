@@ -919,7 +919,7 @@ const char *do_uemis_import(const char *mountpath, short force_download)
 				if (divenr == -1) {
 					offset--;
 				} else {
-					offset = i - divenr;
+					offset += i - divenr;
 				}
 #if UEMIS_DEBUG & 2
 				fprintf(debugfile, " -> trying again with offset %d\n", offset);
