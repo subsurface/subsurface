@@ -110,6 +110,32 @@ QString weight_string(int weight_in_grams)
 	return (str);
 }
 
+QString printGPSCoords(int lat, int lon)
+{
+	unsigned int latdeg, londeg;
+	unsigned int latmin, lonmin;
+	double latsec, lonsec;
+	QString lath, lonh, result;
+
+	if (!lat && !lon)
+		return QString();
+
+	lath = lat >= 0 ? tr("N") : tr("S");
+	lonh = lon >= 0 ? tr("E") : tr("W");
+	lat = abs(lat);
+	lon = abs(lon);
+	latdeg = lat / 1000000;
+	londeg = lon / 1000000;
+	latmin = (lat % 1000000) * 60;
+	lonmin = (lon % 1000000) * 60;
+	latsec = (latmin % 1000000) * 60;
+	lonsec = (lonmin % 1000000) * 60;
+	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
+		       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
+		       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
+	return result;
+}
+
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 {
 	enum {
@@ -121,10 +147,10 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	int eastWest = 4;
 	int northSouth = 1;
 	QString trHemisphere[4];
-	trHemisphere[0] = MainWindow::instance()->information()->trHemisphere("N");
-	trHemisphere[1] = MainWindow::instance()->information()->trHemisphere("S");
-	trHemisphere[2] = MainWindow::instance()->information()->trHemisphere("E");
-	trHemisphere[3] = MainWindow::instance()->information()->trHemisphere("W");
+	trHemisphere[0] = tr("N");
+	trHemisphere[1] = tr("S");
+	trHemisphere[2] = tr("E");
+	trHemisphere[3] = tr("W");
 	QString regExp;
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
 	if (gps_text.trimmed().isEmpty()) {
@@ -301,7 +327,6 @@ extern "C" void call_for_each_dc(void *f, void (*callback)(void *, const char *,
 			 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
 	}
 }
-
 
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {

@@ -41,6 +41,6 @@ public:
 
 QString weight_string(int weight_in_grams);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed);
-
+QString printGPSCoords(int lat, int lon);
 QList<int> getDivesInTrip(dive_trip_t *trip);
 #endif // QTHELPER_H

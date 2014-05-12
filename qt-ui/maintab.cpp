@@ -1076,32 +1076,6 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 		ui.weights->edit(index);
 }
 
-QString MainTab::printGPSCoords(int lat, int lon)
-{
-	unsigned int latdeg, londeg;
-	unsigned int latmin, lonmin;
-	double latsec, lonsec;
-	QString lath, lonh, result;
-
-	if (!lat && !lon)
-		return QString("");
-
-	lath = lat >= 0 ? tr("N") : tr("S");
-	lonh = lon >= 0 ? tr("E") : tr("W");
-	lat = abs(lat);
-	lon = abs(lon);
-	latdeg = lat / 1000000;
-	londeg = lon / 1000000;
-	latmin = (lat % 1000000) * 60;
-	lonmin = (lon % 1000000) * 60;
-	latsec = (latmin % 1000000) * 60;
-	lonsec = (lonmin % 1000000) * 60;
-	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
-		       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
-		       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
-	return result;
-}
-
 void MainTab::updateCoordinatesText(qreal lat, qreal lon)
 {
 	int ulat = rint(lat * 1000000);

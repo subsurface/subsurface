@@ -120,7 +120,6 @@ private:
 	Completers completers;
 	void resetPallete();
 	void saveTags();
-	QString printGPSCoords(int lat, int lon);
 	void updateGpsCoordinates(const struct dive *dive);
 };
 
