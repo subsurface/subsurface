@@ -965,12 +965,7 @@ void MainWindow::recentFileTriggered(bool checked)
 int MainWindow::file_save_as(void)
 {
 	QString filename;
-	const char *default_filename;
-
-	if (existing_filename)
-		default_filename = existing_filename;
-	else
-		default_filename = prefs.default_filename;
+	const char *default_filename = existing_filename;
 	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), default_filename,
 						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 	if (filename.isNull() || filename.isEmpty())
