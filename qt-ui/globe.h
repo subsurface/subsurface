@@ -57,7 +57,7 @@ public:
 	void centerOnCurrentDive();
 	bool eventFilter(QObject*, QEvent*);
 public slots:
-	void prepareForGetDiveCoordinates(struct dive *dive);
+	void prepareForGetDiveCoordinates();
 };
 
 #endif // NO_MARBLE
