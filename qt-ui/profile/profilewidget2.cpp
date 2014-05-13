@@ -376,7 +376,8 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	if (d->id == dataModel->id() && dc_number == dataModel->dcShown())
 		return;
 
-	setProfileState();
+	if (currentState == EMPTY)
+		setProfileState();
 
 	// next get the dive computer structure - if there are no samples
 	// let's create a fake profile that's somewhat reasonable for the
