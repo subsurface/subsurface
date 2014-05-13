@@ -43,7 +43,7 @@ New in version 4.1 (compared to Subsurface 4.0.3):
 - new and improved profile widget with animations, better info box, and
   a new toolbox to turn on and off many of the additional graphs and
   information displays
-- improved CVS import and added CVS export
+- improved CSV import and added CSV export
 - import of exported log files from Sensus (CSV) and Shearwater Desktop
   (XML)
 - improved UDDF and divelogs.de support
