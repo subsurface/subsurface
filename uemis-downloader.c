@@ -795,13 +795,12 @@ static char *uemis_get_divenr(char *deviceidstr)
 	deviceid = atoi(deviceidstr);
 	struct dive *d;
 	for_each_dive (i, d) {
-		struct divecomputer *dc = &d->dc;
-		while (dc) {
+		struct divecomputer *dc;
+		for_each_dc(d, dc) {
 			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
 			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid) &&
 			    dc->diveid > maxdiveid)
 				maxdiveid = dc->diveid;
-			dc = dc->next;
 		}
 	}
 	snprintf(divenr, 10, "%d", maxdiveid);

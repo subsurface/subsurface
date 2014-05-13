@@ -1320,11 +1320,8 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 static void cylinder_renumber(struct dive *dive, int mapping[])
 {
 	struct divecomputer *dc;
-
-	dc = &dive->dc;
-	do {
+	for_each_dc(dive, dc)
 		dc_cylinder_renumber(dive, dc, mapping);
-	} while ((dc = dc->next) != NULL);
 }
 
 /*

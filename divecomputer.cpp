@@ -162,9 +162,9 @@ extern "C" void set_dc_nickname(struct dive *dive)
 	if (!dive)
 		return;
 
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc;
 
-	while (dc) {
+	for_each_dc(dive, dc) {
 		if (dc->model && *dc->model && dc->deviceid &&
 		    !dcList.getExact(dc->model, dc->deviceid)) {
 			// we don't have this one, yet
@@ -181,6 +181,5 @@ extern "C" void set_dc_nickname(struct dive *dive)
 				dcList.addDC(dc->model, dc->deviceid);
 			}
 		}
-		dc = dc->next;
 	}
 }

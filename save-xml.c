@@ -392,12 +392,8 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
 	/* Save the dive computer data */
-	dc = &dive->dc;
-	do {
+	for_each_dc(dive, dc)
 		save_dc(b, dive, dc);
-		dc = dc->next;
-	} while (dc);
-
 	put_format(b, "</dive>\n");
 }
 

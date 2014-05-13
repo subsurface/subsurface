@@ -294,12 +294,12 @@ void get_selected_dives_text(char *buffer, int size)
 
 static bool is_gas_used(struct dive *dive, int idx)
 {
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc;
 	bool firstGasExplicit = false;
 	if (cylinder_none(&dive->cylinder[idx]))
 		return false;
 
-	while (dc) {
+	for_each_dc(dive, dc) {
 		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
 			if (event->time.seconds < 30)
@@ -308,7 +308,6 @@ static bool is_gas_used(struct dive *dive, int idx)
 				return true;
 			event = get_next_event(event->next, "gaschange");
 		}
-		dc = dc->next;
 	}
 	if (idx == 0 && !firstGasExplicit)
 		return true;

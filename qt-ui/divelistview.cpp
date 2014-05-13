@@ -887,8 +887,7 @@ void DiveListView::loadImages()
 		for_each_dive(j, dive) {
 			if (!dive->selected)
 				continue;
-			dc = &(dive->dc);
-			while (dc) {
+			for_each_dc(dive, dc) {
 				when = dc->when ? dc->when : dive->when;
 				duration_s = dc->duration.seconds ? dc->duration.seconds : dive->duration.seconds;
 				if (when - 3600 < imagetime && when + duration_s + 3600 > imagetime) {
@@ -909,7 +908,6 @@ void DiveListView::loadImages()
 					MainWindow::instance()->refreshDisplay();
 					MainWindow::instance()->graphics()->replot();
 				}
-				dc = dc->next;
 			}
 		}
 	}
