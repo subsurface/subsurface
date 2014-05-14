@@ -912,6 +912,9 @@ void process_dives(bool is_imported, bool prefer_imported)
 		for (i = preexisting; i < dive_table.nr; i++)
 			set_dc_nickname(dive_table.dives[i]);
 
+	for (i = preexisting; i < dive_table.nr; i++)
+		dive_table.dives[i]->downloaded = true;
+
 	/* This does the right thing for -1: NULL */
 	last = get_dive(preexisting - 1);
 
