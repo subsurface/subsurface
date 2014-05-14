@@ -845,6 +845,8 @@ static void create_commit_message(struct membuffer *msg)
 	if (dive) {
 		dive_trip_t *trip = dive->divetrip;
 		const char *location = dive->location ? : "no location";
+		struct divecomputer *dc = &dive->dc;
+		const char *sep = "\n";
 
 		if (dive->number)
 			nr = dive->number;
@@ -852,7 +854,14 @@ static void create_commit_message(struct membuffer *msg)
 		put_format(msg, "dive %d: %s", nr, location);
 		if (trip && trip->location && *trip->location && strcmp(trip->location, location))
 			put_format(msg, " (%s)", trip->location);
-		put_format(msg, "\n\n");
+		put_format(msg, "\n");
+		do {
+			if (dc->model && *dc->model) {
+				put_format(msg, "%s%s", sep, dc->model);
+				sep = ", ";
+			}
+		} while ((dc = dc->next) != NULL);
+		put_format(msg, "\n");
 	}
 	put_format(msg, "Created by subsurface %s\n", VERSION_STRING);
 }
