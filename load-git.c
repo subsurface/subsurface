@@ -1115,11 +1115,13 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 	/* Did we already fill that in? */
 	if (dc->samples || dc->model || dc->when) {
 		struct divecomputer *newdc = calloc(1, sizeof(*newdc));
-		if (newdc) {
-			dc->next = newdc;
-			dc = newdc;
-		}
+		if (!newdc)
+			return NULL;
+		dc->next = newdc;
+		dc = newdc;
 	}
+	dc->when = dive->when;
+	dc->duration = dive->duration;
 	return dc;
 }
 
