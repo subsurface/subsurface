@@ -2135,7 +2135,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	if (dl) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
 		join_dive_computers(&res->dc, &dl->dc, &a->dc, 1);
-	} else if (offset)
+	} else if (offset && might_be_same_device(&a->dc, &b->dc))
 		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
 	else
 		join_dive_computers(&res->dc, &a->dc, &b->dc, 0);
