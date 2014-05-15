@@ -816,7 +816,8 @@ void ProfileWidget2::unhideEvents()
 	for (int i = 0; i < evn_used; i++) {
 		ev_namelist[i].plot_ev = true;
 	}
-	replot();
+	Q_FOREACH (DiveEventItem *item, eventItems)
+		item->show();
 }
 
 void ProfileWidget2::removeEvent()
