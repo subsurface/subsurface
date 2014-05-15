@@ -156,10 +156,8 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 			if (!entry->in_deco) {
 				/* not in deco implies this is a safety stop, no ceiling */
 				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(0)));
-			} else if (entry->stopdepth < entry->depth) {
-				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->stopdepth)));
-			} else {
-				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth)));
+			} else{
+				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(qMin(entry->stopdepth, entry->depth))));
 			}
 		}
 		setPolygon(p);
@@ -562,11 +560,7 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	plot_data *entry = dataModel->data().entry;
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++, entry++) {
 		if (entry->in_deco && entry->stopdepth) {
-			if (entry->stopdepth < entry->depth) {
-				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->stopdepth)));
-			} else {
-				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth)));
-			}
+			p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(qMin(entry->stopdepth, entry->depth))));
 		} else {
 			p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(0)));
 		}
