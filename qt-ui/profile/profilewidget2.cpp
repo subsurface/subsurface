@@ -796,14 +796,18 @@ void ProfileWidget2::hideEvents()
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		if (event->name) {
 			for (int i = 0; i < evn_used; i++) {
-				if (!strcmp(event->name, ev_namelist[i].ev_name)) {
+				if (same_string(event->name, ev_namelist[i].ev_name)) {
 					ev_namelist[i].plot_ev = false;
 					break;
 				}
 			}
+			Q_FOREACH (DiveEventItem *evItem, eventItems) {
+				if(same_string(evItem->getEvent()->name, event->name))
+					evItem->hide();
+			}
+		} else {
+			item->hide();
 		}
-		item->hide();
-		replot();
 	}
 }
 
