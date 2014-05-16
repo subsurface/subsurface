@@ -66,6 +66,7 @@ public:
 	void initialUiSetup();
 	bool isEditing();
 	void updateCoordinatesText(qreal lat, qreal lon);
+	void nextInputField(QKeyEvent *event);
 public
 slots:
 	void addCylinder_clicked();

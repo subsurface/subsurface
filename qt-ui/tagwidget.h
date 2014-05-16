@@ -27,6 +27,7 @@ protected:
 
 private:
 	QCompleter *m_completer;
+	bool lastFinishedTag;
 };
 
 #endif // TAGWIDGET_H

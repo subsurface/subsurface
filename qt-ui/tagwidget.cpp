@@ -4,8 +4,9 @@
 #include <QAbstractItemView>
 #include <QSettings>
 #include <QFont>
+#include "mainwindow.h"
 
-TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL)
+TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL), lastFinishedTag(false)
 {
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(reparse()));
 	connect(this, SIGNAL(textChanged()), this, SLOT(reparse()));
@@ -176,6 +177,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 {
 	QPair<int, int> pos;
 	QAbstractItemView *popup;
+	bool finishedTag = false;
 	switch (e->key()) {
 	case Qt::Key_Escape:
 		pos = getCursorTagPosition();
@@ -199,13 +201,17 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 			if (popup)
 				popup->hide();
 		}
+		finishedTag = true;
 	}
-	if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // let's pretend this is a comma instead
+	if (e->key() == Qt::Key_Tab && lastFinishedTag) { // if we already end in comma, go to next/prev field
+		MainWindow::instance()->information()->nextInputField(e); // by sending the key event to the MainTab widget
+	} else if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // otherwise let's pretend this is a comma instead
 		QKeyEvent fakeEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
 		GroupedLineEdit::keyPressEvent(&fakeEvent);
 	} else {
 		GroupedLineEdit::keyPressEvent(e);
 	}
+	lastFinishedTag = finishedTag;
 }
 
 void TagWidget::wheelEvent(QWheelEvent *event)

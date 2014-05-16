@@ -335,6 +335,11 @@ void MainTab::clearEquipment()
 	weightModel->clear();
 }
 
+void MainTab::nextInputField(QKeyEvent *event)
+{
+	keyPressEvent(event);
+}
+
 void MainTab::clearInfo()
 {
 	ui.sacText->clear();
