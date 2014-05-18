@@ -221,6 +221,7 @@ struct dive *alloc_dive(void)
 	if (!dive)
 		exit(1);
 	memset(dive, 0, sizeof(*dive));
+	dive->id = dive_getUniqID(dive);
 	return dive;
 }
 
@@ -955,7 +956,10 @@ struct dive *fixup_dive(struct dive *dive)
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
 	}
-	dive->id = dive_getUniqID(dive);
+	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
+	 * but we want to make sure... */
+	if (!dive->id)
+		dive->id = dive_getUniqID(dive);
 
 	return dive;
 }
