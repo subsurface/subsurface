@@ -51,7 +51,7 @@ const char *system_default_filename(void)
 
 int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 {
-	int index = -1;
+	int index = -1, entries = 0;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
 	size_t i;
@@ -85,7 +85,8 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 					}
 					callback(filename, userdata);
 					if (is_default_dive_computer_device(filename))
-						index = i;
+						index = entries;
+					entries++;
 					break;
 				}
 			}
@@ -93,6 +94,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		closedir(dp);
 	}
 	if (dc_type != DC_TYPE_SERIAL) {
+		int num_uemis = 0;
 		file = fopen("/proc/mounts", "r");
 		if (file == NULL)
 			return index;
@@ -114,14 +116,16 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 				callback(fname, userdata);
 
 				if (is_default_dive_computer_device(fname))
-					index = i;
-				i++;
+					index = entries;
+				entries++;
+				num_uemis++;
 				free((void *)fname);
 			}
 		}
-
 		free(line);
 		fclose(file);
+		if (num_uemis == 1 && entries == 1) /* if we found only one and it's a mounted Uemis, pick it */
+			index = 0;
 	}
 	return index;
 }

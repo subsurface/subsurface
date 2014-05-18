@@ -90,6 +90,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 	}
 	if (dc_type != DC_TYPE_SERIAL) {
 		int i;
+		int count_drives = 0;
 		const int bufdef = 512;
 		const char *dlabels[] = {"UEMISSDA", NULL};
 		char bufname[bufdef], bufval[bufdef], *p;
@@ -110,12 +111,14 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 							snprintf(data, sizeof(data), "%s (%s)", p, dlabels[i]);
 							callback(data, userdata);
 							if (is_default_dive_computer_device(p))
-								index = i;
-							i++;
+								index = count_drives;
+							count_drives++;
 						}
 				}
 				p = &p[strlen(p) + 1];
 			}
+			if (count_drives == 1) /* we found exactly one Uemis "drive" */
+				index = 0; /* make it the selected "device" */
 		}
 	}
 	return index;

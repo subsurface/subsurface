@@ -56,7 +56,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 	progress_bar_text = "";
 
-	fill_device_list(DC_TYPE_OTHER);
 	fill_computer_list();
 
 	ui.chooseDumpFile->setEnabled(ui.dumpToFile->isChecked());

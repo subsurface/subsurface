@@ -47,7 +47,7 @@ const char *system_default_filename(void)
 
 int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 {
-	int index = -1;
+	int index = -1, entries = 0;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
 	size_t i;
@@ -75,7 +75,8 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 					}
 					callback(filename, userdata);
 					if (is_default_dive_computer_device(filename))
-						index = i;
+						index = entries;
+					entries++;
 					break;
 				}
 			}
@@ -84,6 +85,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 	}
 	if (dc_type != DC_TYPE_SERIAL) {
 		const char *dirname = "/Volumes";
+		int num_uemis = 0;
 		dp = opendir(dirname);
 		if (dp == NULL) {
 			return -1;
@@ -99,11 +101,15 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 				}
 				callback(filename, userdata);
 				if (is_default_dive_computer_device(filename))
-					index = i;
+					index = entries;
+				entries++;
+				num_uemis++;
 				break;
 			}
 		}
 		closedir(dp);
+		if (num_uemis == 1 && entries == 1) /* if we find exactly one entry and that's a Uemis, select it */
+			index = 0;
 	}
 	return index;
 }
