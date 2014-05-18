@@ -124,14 +124,14 @@ MainWindow *MainWindow::instance()
 }
 
 // this gets called after we download dives from a divecomputer
-void MainWindow::refreshDisplay(bool recreateDiveList)
+void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
 	showError(get_error_string());
 	ui.InfoWidget->reload();
 	TankInfoModel::instance()->update();
 	ui.globe->reload();
-	if (recreateDiveList)
-		ui.ListWidget->reload(DiveTripModel::CURRENT);
+	if (doRecreateDiveList)
+		recreateDiveList();
 	ui.ListWidget->setFocus();
 	WSInfoModel::instance()->updateInfo();
 	// refresh the yearly stats if the window has an instance
@@ -141,6 +141,11 @@ void MainWindow::refreshDisplay(bool recreateDiveList)
 		yearlyStatsModel = new YearlyStatisticsModel();
 		yearlyStats->setModel(yearlyStatsModel);
 	}
+}
+
+void MainWindow::recreateDiveList()
+{
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
 }
 
 void MainWindow::current_dive_changed(int divenr)

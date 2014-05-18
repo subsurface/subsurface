@@ -189,6 +189,8 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 void DiveListView::unselectDives()
 {
 	selectionModel()->clearSelection();
+	if (amount_selected != 0)
+		qDebug() << "selection information inconsistent";
 }
 
 QList<dive_trip_t *> DiveListView::selectedTrips()
@@ -211,6 +213,8 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, i, 2, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
+	if (match.isEmpty())
+		return;
 	QModelIndex idx = match.first();
 	flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
 	flags |= QItemSelectionModel::Rows;
