@@ -1069,7 +1069,8 @@ bool DivePlannerPointsModel::recalcQ()
 
 void DivePlannerPointsModel::emitCylinderModelEdited()
 {
-	cylinderModelEdited();
+	if (isPlanner())
+		cylinderModelEdited();
 }
 
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
@@ -1199,13 +1200,13 @@ DivePlannerPointsModel *DivePlannerPointsModel::instance()
 
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
-	diveplan.bottomsac = sac;
+	diveplan.bottomsac = sac * 1000;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDecoSac(int sac)
 {
-	diveplan.decosac = sac;
+	diveplan.decosac = sac * 1000;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
