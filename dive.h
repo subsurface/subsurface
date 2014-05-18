@@ -436,7 +436,7 @@ static inline struct dive *get_dive_by_uemis_diveid(uint32_t diveid, uint32_t de
 	return NULL;
 }
 
-static inline struct dive *get_dive_by_diveid(int id)
+static inline struct dive *get_dive_by_uniq_id(int id)
 {
 	int i;
 	struct dive *dive = NULL;

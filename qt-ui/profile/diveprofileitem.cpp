@@ -427,7 +427,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	int last_pressure[MAX_CYLINDERS] = { 0, };
 	int last_time[MAX_CYLINDERS] = { 0, };
 	struct plot_data *entry;
-	struct dive *dive = get_dive_by_diveid(dataModel->id());
+	struct dive *dive = get_dive_by_uniq_id(dataModel->id());
 
 	cyl = -1;
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
@@ -489,7 +489,7 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QPen pen;
 	pen.setCosmetic(true);
 	pen.setWidth(2);
-	struct dive *d = get_dive_by_diveid(dataModel->id());
+	struct dive *d = get_dive_by_uniq_id(dataModel->id());
 	struct plot_data *entry = dataModel->data().entry;
 	Q_FOREACH(const QPolygonF & poly, polygons) {
 		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
