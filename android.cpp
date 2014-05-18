@@ -29,7 +29,7 @@ const char *system_default_filename(void)
 	return strdup(system_default_filename.toUtf8().data());
 }
 
-int enumerate_devices (device_callback_t callback, void *userdata)
+int enumerate_devices (device_callback_t callback, void *userdata, int dc_type)
 {
 	/* FIXME: we need to enumerate in some other way on android */
 	/* qtserialport maybee? */

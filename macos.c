@@ -45,27 +45,52 @@ const char *system_default_filename(void)
 	return buffer;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata)
+int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 {
 	int index = -1;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
 	size_t i;
-	const char *dirname = "/dev";
-	const char *patterns[] = {
-		"tty.*",
-		"usbserial",
-		NULL
-	};
+	if (dc_type != DC_TYPE_UEMIS) {
+		const char *dirname = "/dev";
+		const char *patterns[] = {
+			"tty.*",
+			"usbserial",
+			NULL
+		};
 
-	dp = opendir(dirname);
-	if (dp == NULL) {
-		return -1;
+		dp = opendir(dirname);
+		if (dp == NULL) {
+			return -1;
+		}
+
+		while ((ep = readdir(dp)) != NULL) {
+			for (i = 0; patterns[i] != NULL; ++i) {
+				if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
+					char filename[1024];
+					int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
+					if (n >= sizeof(filename)) {
+						closedir(dp);
+						return -1;
+					}
+					callback(filename, userdata);
+					if (is_default_dive_computer_device(filename))
+						index = i;
+					break;
+				}
+			}
+		}
+		closedir(dp);
 	}
+	if (dc_type != DC_TYPE_SERIAL) {
+		const char *dirname = "/Volumes";
+		dp = opendir(dirname);
+		if (dp == NULL) {
+			return -1;
+		}
 
-	while ((ep = readdir(dp)) != NULL) {
-		for (i = 0; patterns[i] != NULL; ++i) {
-			if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
+		while ((ep = readdir(dp)) != NULL) {
+			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0) {
 				char filename[1024];
 				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
 				if (n >= sizeof(filename)) {
@@ -78,10 +103,8 @@ int enumerate_devices(device_callback_t callback, void *userdata)
 				break;
 			}
 		}
+		closedir(dp);
 	}
-	// TODO: list UEMIS mount point from /proc/mounts
-
-	closedir(dp);
 	return index;
 }
 

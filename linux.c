@@ -49,78 +49,80 @@ const char *system_default_filename(void)
 	return buffer;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata)
+int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 {
 	int index = -1;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
 	size_t i;
-	const char *dirname = "/dev";
-	const char *patterns[] = {
-		"ttyUSB*",
-		"ttyS*",
-		"ttyACM*",
-		"rfcomm*",
-		NULL
-	};
 	FILE *file;
 	char *line = NULL;
 	char *fname;
 	size_t len;
+	if (dc_type != DC_TYPE_UEMIS) {
+		const char *dirname = "/dev";
+		const char *patterns[] = {
+			"ttyUSB*",
+			"ttyS*",
+			"ttyACM*",
+			"rfcomm*",
+			NULL
+		};
 
-	dp = opendir(dirname);
-	if (dp == NULL) {
-		return -1;
-	}
+		dp = opendir(dirname);
+		if (dp == NULL) {
+			return -1;
+		}
 
-	while ((ep = readdir(dp)) != NULL) {
-		for (i = 0; patterns[i] != NULL; ++i) {
-			if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
-				char filename[1024];
-				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
-				if (n >= sizeof(filename)) {
-					closedir(dp);
-					return -1;
+		while ((ep = readdir(dp)) != NULL) {
+			for (i = 0; patterns[i] != NULL; ++i) {
+				if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
+					char filename[1024];
+					int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
+					if (n >= sizeof(filename)) {
+						closedir(dp);
+						return -1;
+					}
+					callback(filename, userdata);
+					if (is_default_dive_computer_device(filename))
+						index = i;
+					break;
 				}
-				callback(filename, userdata);
-				if (is_default_dive_computer_device(filename))
-					index = i;
-				break;
 			}
 		}
+		closedir(dp);
 	}
-	closedir(dp);
+	if (dc_type != DC_TYPE_SERIAL) {
+		file = fopen("/proc/mounts", "r");
+		if (file == NULL)
+			return index;
 
-	file = fopen("/proc/mounts", "r");
-	if (file == NULL)
-		return index;
+		while ((getline(&line, &len, file)) != -1) {
+			char *ptr = strstr(line, "UEMISSDA");
+			if (ptr) {
+				char *end = ptr, *start = ptr;
+				while (start > line && *start != ' ')
+					start--;
+				if (*start == ' ')
+					start++;
+				while (*end != ' ' && *end != '\0')
+					end++;
 
-	while ((getline(&line, &len, file)) != -1) {
-		char *ptr = strstr(line, "UEMISSDA");
-		if (ptr) {
-			char *end = ptr, *start = ptr;
-			while (start > line && *start != ' ')
-				start--;
-			if (*start == ' ')
-				start++;
-			while (*end != ' ' && *end != '\0')
-				end++;
+				*end = '\0';
+				fname = strdup(start);
 
-			*end = '\0';
-			fname = strdup(start);
+				callback(fname, userdata);
 
-			callback(fname, userdata);
-
-			if (is_default_dive_computer_device(fname))
-				index = i;
-			i++;
-			free((void *)fname);
+				if (is_default_dive_computer_device(fname))
+					index = i;
+				i++;
+				free((void *)fname);
+			}
 		}
+
+		free(line);
+		fclose(file);
 	}
-
-	free(line);
-	fclose(file);
-
 	return index;
 }
 

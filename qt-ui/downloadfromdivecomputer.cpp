@@ -56,7 +56,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 	progress_bar_text = "";
 
-	fill_device_list();
+	fill_device_list(DC_TYPE_OTHER);
 	fill_computer_list();
 
 	ui.chooseDumpFile->setEnabled(ui.dumpToFile->isChecked());
@@ -104,7 +104,7 @@ void DownloadFromDCWidget::updateState(states state)
 		return;
 
 	if (state == INITIAL) {
-		fill_device_list();
+		fill_device_list(DC_TYPE_OTHER);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
@@ -176,12 +176,17 @@ void DownloadFromDCWidget::updateState(states state)
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 {
+	int dcType = DC_TYPE_SERIAL;
 	QAbstractItemModel *currentModel = ui.product->model();
 	if (!currentModel)
 		return;
 
 	productModel = new QStringListModel(productList[vendor]);
 	ui.product->setModel(productModel);
+
+	if (vendor == QString("Uemis"))
+		dcType = DC_TYPE_UEMIS;
+	fill_device_list(dcType);
 
 	// Memleak - but deleting gives me a crash.
 	//currentModel->deleteLater();
@@ -429,11 +434,11 @@ static void fillDeviceList(const char *name, void *data)
 	comboBox->addItem(name);
 }
 
-void DownloadFromDCWidget::fill_device_list()
+void DownloadFromDCWidget::fill_device_list(int dc_type)
 {
 	int deviceIndex;
 	ui.device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui.device);
+	deviceIndex = enumerate_devices(fillDeviceList, ui.device, dc_type);
 	if (deviceIndex >= 0)
 		ui.device->setCurrentIndex(deviceIndex);
 }
