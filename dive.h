@@ -361,6 +361,7 @@ struct dive_table {
 extern struct dive_table dive_table;
 
 extern int selected_dive;
+extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
 #define current_dc (get_dive_dc(current_dive, dc_number))
 
@@ -404,6 +405,8 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 	}
 	return dc;
 }
+
+extern void make_first_dc(void);
 
 /*
  * Iterate over each dive, with the first parameter being the index

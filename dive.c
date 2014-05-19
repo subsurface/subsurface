@@ -19,6 +19,26 @@ static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "deco")
 };
 
+void make_first_dc()
+{
+	struct divecomputer *dc = &current_dive->dc;
+	struct divecomputer *newdc = malloc(sizeof(*newdc));
+	struct divecomputer *cur_dc = current_dc; /* needs to be in a local variable so the macro isn't re-executed */
+
+	/* skip the current DC in the linked list */
+	while (dc && dc->next != cur_dc)
+		dc = dc->next;
+	if (!dc) {
+		fprintf(stderr, "data inconsistent: can't find the current DC");
+		return;
+	}
+	dc->next = cur_dc->next;
+	*newdc = current_dive->dc;
+	current_dive->dc = *cur_dc;
+	current_dive->dc.next = newdc;
+	free(cur_dc);
+}
+
 void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;

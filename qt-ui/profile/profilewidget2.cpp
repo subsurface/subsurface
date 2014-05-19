@@ -107,6 +107,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #endif
 }
 
+#define SUBSURFACE_OBJ_DATA 1
+#define SUBSURFACE_OBJ_DC_TEXT 0x42
+
 void ProfileWidget2::addItemsToScene()
 {
 	scene()->addItem(background);
@@ -120,6 +123,11 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(temperatureItem);
 	scene()->addItem(gasPressureItem);
 	scene()->addItem(meanDepth);
+	// I cannot seem to figure out if an object that I find with itemAt() on the scene
+	// is the object I am looking for - my guess is there's a simple way in Qt to do that
+	// but nothing I tried worked.
+	// so instead this adds a special magic key/value pair to the object to mark it
+	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(diveCeiling);
 	scene()->addItem(reportedCeiling);
@@ -692,9 +700,32 @@ extern int evn_used;
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
+	QMenu m;
+	bool isDCName = false;
 	if (selected_dive == -1)
 		return;
-	QMenu m;
+	// figure out if we are ontop of the dive computer name in the profile
+	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
+	if (sceneItem) {
+		QGraphicsItem *parentItem = sceneItem;
+		while (parentItem) {
+			if (parentItem->data(SUBSURFACE_OBJ_DATA) == SUBSURFACE_OBJ_DC_TEXT) {
+				isDCName = true;
+				break;
+			}
+			parentItem = parentItem->parentItem();
+		}
+		if (isDCName) {
+			if (dc_number == 0)
+				return;
+			// create menu to show when right clicking on dive computer name
+			m.addAction(tr("Make first divecomputer"), this, SLOT(makeFirstDC()));
+			m.exec(event->globalPos());
+			// don't show the regular profile context menu
+			return;
+		}
+	}
+	// create the profile context menu
 	QMenu *gasChange = m.addMenu(tr("Add Gas Change"));
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
@@ -708,7 +739,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	}
 	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
-	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
 		action->setText(tr("Remove Event"));
@@ -740,6 +770,18 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(event->globalPos());
 	}
 	m.exec(event->globalPos());
+}
+
+void ProfileWidget2::makeFirstDC()
+{
+	make_first_dc();
+	mark_divelist_changed(true);
+	// this is now the first DC, so we need to redraw the profile and refresh the dive list
+	// (and no, it's not just enough to rewrite the text - the first DC is special so values in the
+	// dive list may change).
+	// As a side benefit, this returns focus to the dive list.
+	dc_number = 0;
+	MainWindow::instance()->refreshDisplay();
 }
 
 void ProfileWidget2::hideEvents()
