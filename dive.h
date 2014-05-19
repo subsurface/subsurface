@@ -454,6 +454,24 @@ static inline struct dive *get_dive_by_uniq_id(int id)
 	return dive;
 }
 
+static inline int get_idx_by_uniq_id(int id)
+{
+	int i;
+	struct dive *dive = NULL;
+
+	for_each_dive(i, dive) {
+		if (dive->id == id)
+			break;
+	}
+#ifdef DEBUG
+	if(dive == NULL){
+		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
+		exit(1);
+	}
+#endif
+	return i;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
