@@ -131,8 +131,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
-	for (idx = 0; idx < dive_table.nr; idx++) {
-		dp = dive_table.dives[idx];
+	for_each_dive (idx, dp) {
 		if (dive && dp->when == dive->when) {
 			/* that's the one we are showing */
 			if (idx > 0)
@@ -230,10 +229,10 @@ static void get_ranges(char *buffer, int size)
 {
 	int i, len;
 	int first = -1, last = -1;
+	struct dive *dive;
 
 	snprintf(buffer, size, "%s", translate("gettextFromC", "for dives #"));
-	for (i = 0; i < dive_table.nr; i++) {
-		struct dive *dive = get_dive(i);
+	for_each_dive (i, dive) {
 		if (!dive->selected)
 			continue;
 		if (dive->number < 1) {

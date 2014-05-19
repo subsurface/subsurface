@@ -793,8 +793,9 @@ static char *uemis_get_divenr(char *deviceidstr)
 	char divenr[10];
 
 	deviceid = atoi(deviceidstr);
-	for (i = 0; i < dive_table.nr; i++) {
-		struct divecomputer *dc = &dive_table.dives[i]->dc;
+	struct dive *d;
+	for_each_dive (i, d) {
+		struct divecomputer *dc = &d->dc;
 		while (dc) {
 			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
 			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid) &&

@@ -706,8 +706,7 @@ void DiveListView::deleteDive()
 	// so instead of using the for_each_dive macro I'm using an explicit for loop
 	// to make this easier to understand
 	int lastDiveNr = -1;
-	for (i = 0; i < dive_table.nr; i++) {
-		d = get_dive(i);
+	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
 		delete_single_dive(i);

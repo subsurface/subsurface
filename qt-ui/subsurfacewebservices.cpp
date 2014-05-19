@@ -133,7 +133,9 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	}
 
 	/* walk the dive list in chronological order */
-	for (int i = 0; i < dive_table.nr; i++) {
+	int i;
+	struct dive *dive;
+	for_each_dive(i, dive) {
 		FILE *f;
 		char filename[PATH_MAX];
 		int streamsize;
@@ -145,9 +147,6 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		 * Get the i'th dive in XML format so we can process it.
 		 * We need to save to a file before we can reload it back into memory...
 		 */
-		struct dive *dive = get_dive(i);
-		if (!dive)
-			continue;
 		if (selected && !dive->selected)
 			continue;
 		f = tmpfile();

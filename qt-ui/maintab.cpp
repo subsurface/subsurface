@@ -270,10 +270,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 
 		// We may be editing one or more dives here. backup everything.
 		struct dive *mydive;
-		for (int i = 0; i < dive_table.nr; i++) {
-			mydive = get_dive(i);
-			if (!mydive)
-				continue;
+		int i;
+		for_each_dive(i, mydive) {
 			if (!mydive->selected)
 				continue;
 
@@ -596,14 +594,12 @@ void MainTab::reload()
 #define EDIT_SELECTED_DIVES(WHAT)                            \
 	do {                                                 \
 		struct dive *mydive = NULL;                  \
+		int _i;                                      \
 		if (editMode == NONE)                        \
 			return;                              \
 							     \
-		for (int _i = 0; _i < dive_table.nr; _i++) { \
-			mydive = get_dive(_i);               \
-			if (!mydive || mydive == current_dive)\
-				continue;                    \
-			if (!mydive->selected)               \
+		for_each_dive (_i, mydive) {                 \
+			if (!mydive->selected || mydive == current_dive) \
 				continue;                    \
 							     \
 			WHAT;                                \
@@ -836,10 +832,8 @@ void MainTab::rejectChanges()
 		}
 
 		struct dive *mydive;
-		for (int i = 0; i < dive_table.nr; i++) {
-			mydive = get_dive(i);
-			if (!mydive)
-				continue;
+		int i;
+		for_each_dive (i, mydive) {
 			if (!mydive->selected)
 				continue;
 
