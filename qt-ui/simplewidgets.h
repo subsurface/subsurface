@@ -40,6 +40,7 @@ class RenumberDialog : public QDialog {
 	Q_OBJECT
 public:
 	static RenumberDialog *instance();
+	void renumberOnlySelected(bool selected = true);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
@@ -47,6 +48,7 @@ slots:
 private:
 	explicit RenumberDialog(QWidget *parent);
 	Ui::RenumberDialog ui;
+	bool selectedOnly;
 };
 
 class ShiftTimesDialog : public QDialog {

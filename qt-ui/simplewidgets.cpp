@@ -16,8 +16,9 @@
 #include <QDateTime>
 #include <QShortcut>
 #include "exif.h"
-#include "../dive.h"
-#include "../file.h"
+#include "dive.h"
+#include "file.h"
+#include "display.h"
 #include "mainwindow.h"
 #include "helpers.h"
 
@@ -117,15 +118,24 @@ RenumberDialog *RenumberDialog::instance()
 	return self;
 }
 
+void RenumberDialog::renumberOnlySelected(bool selected)
+{
+	if (selected && amount_selected == 1)
+		ui.groupBox->setTitle(tr("New number"));
+	else
+		ui.groupBox->setTitle(tr("New starting number"));
+	selectedOnly = selected;
+}
+
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		qDebug() << "Renumbering.";
-		renumber_dives(ui.spinBox->value());
+		renumber_dives(ui.spinBox->value(), selectedOnly);
 	}
 }
 
-RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent)
+RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(false)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));

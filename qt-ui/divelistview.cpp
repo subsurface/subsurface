@@ -529,6 +529,12 @@ void DiveListView::mergeDives()
 	MainWindow::instance()->refreshDisplay();
 }
 
+void DiveListView::renumberDives()
+{
+	RenumberDialog::instance()->renumberOnlySelected();
+	RenumberDialog::instance()->show();
+}
+
 void DiveListView::merge_trip(const QModelIndex &a, int offset)
 {
 	int i = a.row() + offset;
@@ -768,6 +774,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
+		popup.addAction(tr("renumber dive(s)"), this, SLOT(renumberDives()));
 		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
 		popup.addAction(tr("export As UDDF"), this, SLOT(exportSelectedDivesAsUDDF()));
 		popup.addAction(tr("export As CSV"), this, SLOT(exportSelectedDivesAsCSV()));

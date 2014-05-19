@@ -149,13 +149,14 @@ void parse_argument(const char *arg)
 	} while (*++p);
 }
 
-void renumber_dives(int nr)
+void renumber_dives(int start_nr, bool selected_only)
 {
-	int i;
+	int i, nr = start_nr;
+	struct dive *dive;
 
-	for (i = 0; i < dive_table.nr; i++) {
-		struct dive *dive = dive_table.dives[i];
-		dive->number = nr + i;
+	for_each_dive (i, dive) {
+		if (dive->selected)
+			dive->number = nr++;
 	}
 	mark_divelist_changed(true);
 }

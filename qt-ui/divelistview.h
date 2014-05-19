@@ -48,6 +48,7 @@ slots:
 	void addToTripAbove();
 	void addToTripBelow();
 	void mergeDives();
+	void renumberDives();
 	void saveSelectedDivesAs();
 	void exportSelectedDivesAsUDDF();
 	void exportSelectedDivesAsCSV();

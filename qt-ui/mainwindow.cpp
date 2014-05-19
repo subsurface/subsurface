@@ -444,6 +444,7 @@ void MainWindow::on_actionAddDive_triggered()
 
 void MainWindow::on_actionRenumber_triggered()
 {
+	RenumberDialog::instance()->renumberOnlySelected(false);
 	RenumberDialog::instance()->show();
 }
 
