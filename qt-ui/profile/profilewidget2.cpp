@@ -467,7 +467,11 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		event->setVisible(!event->shouldBeHidden());
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds << "is hidden:" << event->isHidden();
 	}
-	diveComputerText->setText(currentdc->model);
+	QString dcText = currentdc->model;
+	int nr;
+	if ((nr = number_of_computers(current_dive)) > 1)
+		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
+	diveComputerText->setText(dcText);
 	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
 		prefs.animation = animSpeedBackup;
 	}
