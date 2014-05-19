@@ -383,22 +383,17 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			for (int i = dive_table.nr - 1; i >= previousLast; i--)
 				delete_single_dive(i);
 		} else if (dive_table.nr) {
-			int i;
-			struct dive *d;
+			int uniqId, idx;
 			// remember the last downloaded dive (on most dive computers this will be the chronologically
 			// first new dive) and select it again after processing all the dives
 			MainWindow::instance()->dive_list()->unselectDives();
-			get_dive(dive_table.nr - 1)->selected = true;
+			uniqId = get_dive(dive_table.nr - 1)->id;
 			process_dives(true, preferDownloaded());
 			// after process_dives does any merging or resorting needed, we need
 			// to recreate the model for the dive list so we can select the newest dive
 			MainWindow::instance()->recreateDiveList();
-			for_each_dive(i, d) {
-				if (d->selected)
-					break;
-			}
-			d->selected = false;
-			MainWindow::instance()->dive_list()->selectDive(i, true);
+			idx = get_idx_by_uniq_id(uniqId);
+			MainWindow::instance()->dive_list()->selectDive(idx, true);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED){
 		if (import_thread_cancelled) {
