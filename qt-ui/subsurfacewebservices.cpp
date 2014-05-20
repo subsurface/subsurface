@@ -601,11 +601,11 @@ void DivelogsDeWebServices::downloadDives()
 	exec();
 }
 
-void DivelogsDeWebServices::prepareDivesForUpload()
+void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 {
 	/* generate a random filename and create/open that file with zip_open */
 	QString filename = QDir::tempPath() + "/import-" + QString::number(qrand() % 99999999) + ".dld";
-	if (prepare_dives_for_divelogs(filename, true)) {
+	if (prepare_dives_for_divelogs(filename, selected)) {
 		QFile f(filename);
 		if (f.open(QIODevice::ReadOnly)) {
 			uploadDives((QIODevice *)&f);

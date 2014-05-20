@@ -563,7 +563,7 @@
      <x>0</x>
      <y>0</y>
      <width>1418</width>
-     <height>25</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -576,9 +576,7 @@
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
-    <addaction name="actionExportUDDF"/>
-    <addaction name="actionExport_CSV"/>
-    <addaction name="actionExportHTMLworldmap"/>
+    <addaction name="actionExport"/>
     <addaction name="actionPrint"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
@@ -700,22 +698,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
-   </property>
-  </action>
-  <action name="actionExportUDDF">
-   <property name="text">
-    <string>Export &amp;UDDF</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+U</string>
-   </property>
-  </action>
-  <action name="actionExportHTMLworldmap">
-   <property name="text">
-    <string>Export HTML World Map</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+H</string>
    </property>
   </action>
   <action name="actionPrint">
@@ -946,9 +928,15 @@
     <string>&amp;Check for Updates</string>
    </property>
   </action>
-  <action name="actionExport_CSV">
+  <action name="actionExport">
    <property name="text">
-    <string>Export CSV</string>
+    <string>Export</string>
+   </property>
+   <property name="toolTip">
+    <string>Export Dive Logs</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

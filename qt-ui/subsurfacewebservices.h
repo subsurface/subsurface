@@ -71,7 +71,7 @@ class DivelogsDeWebServices : public WebServices {
 public:
 	static DivelogsDeWebServices *instance();
 	void downloadDives();
-	void prepareDivesForUpload();
+	void prepareDivesForUpload(bool selected);
 
 private
 slots:

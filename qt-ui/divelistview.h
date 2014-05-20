@@ -50,11 +50,9 @@ slots:
 	void mergeDives();
 	void renumberDives();
 	void saveSelectedDivesAs();
-	void exportSelectedDivesAsUDDF();
-	void exportSelectedDivesAsCSV();
+	void exportDives();
 	void shiftTimes();
 	void loadImages();
-	void uploadToDivelogsDE();
 	static QString lastUsedImageDir();
 
 signals:

@@ -9,6 +9,7 @@
 #include "modeldelegates.h"
 #include "mainwindow.h"
 #include "subsurfacewebservices.h"
+#include "divelogexportdialog.h"
 #include "../display.h"
 #include "exif.h"
 #include "../file.h"
@@ -775,13 +776,10 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected >= 1) {
 		popup.addAction(tr("renumber dive(s)"), this, SLOT(renumberDives()));
 		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
-		popup.addAction(tr("export As UDDF"), this, SLOT(exportSelectedDivesAsUDDF()));
-		popup.addAction(tr("export As CSV"), this, SLOT(exportSelectedDivesAsCSV()));
+		popup.addAction(tr("export dive log"), this, SLOT(exportDives()));
 		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("load images"), this, SLOT(loadImages()));
 	}
-	if (d)
-		popup.addAction(tr("upload dive(s) to divelogs.de"), this, SLOT(uploadToDivelogsDE()));
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction *actionTaken = popup.exec(event->globalPos());
@@ -821,28 +819,11 @@ void DiveListView::saveSelectedDivesAs()
 	save_dives_logic(bt.data(), true);
 }
 
-void DiveListView::exportSelectedDivesAsUDDF()
+void DiveListView::exportDives()
 {
-	QString filename;
-	QFileInfo fi(system_default_filename());
-
-	filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), fi.absolutePath(),
-						tr("UDDF files (*.uddf *.UDDF)"));
-	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_xslt(filename.toUtf8(), true, "uddf-export.xslt");
+	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog();
+	diveLogExport->show();
 }
-
-void DiveListView::exportSelectedDivesAsCSV()
-{
-	QString filename;
-	QFileInfo fi(system_default_filename());
-
-	filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), fi.absolutePath(),
-						tr("CSV files (*.csv *.CSV)"));
-	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_xslt(filename.toUtf8(), true, "xml2csv.xslt");
-}
-
 
 void DiveListView::shiftTimes()
 {
@@ -911,11 +892,6 @@ void DiveListView::loadImages()
 			}
 		}
 	}
-}
-
-void DiveListView::uploadToDivelogsDE()
-{
-	DivelogsDeWebServices::instance()->prepareDivesForUpload();
 }
 
 QString DiveListView::lastUsedImageDir()

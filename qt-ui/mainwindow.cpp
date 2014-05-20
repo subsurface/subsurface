@@ -43,6 +43,7 @@
 #include "printdialog.h"
 #endif
 #include "divelogimportdialog.h"
+#include "divelogexportdialog.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
@@ -276,34 +277,6 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 	QSettings s;
 	s.beginGroup("FileDialog");
 	s.setValue("LastDir", dir);
-}
-
-void MainWindow::on_actionExportUDDF_triggered()
-{
-	QFileInfo fi(system_default_filename());
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), fi.absolutePath(),
-							tr("UDDF files (*.uddf *.UDDF)"));
-	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_xslt(filename.toUtf8(), false, "uddf-export.xslt");
-}
-
-void MainWindow::on_actionExport_CSV_triggered()
-{
-	QFileInfo fi(system_default_filename());
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), fi.absolutePath(),
-							tr("CSV files (*.csv *.CSV)"));
-
-	if (!filename.isNull() && !filename.isEmpty())
-		export_dives_xslt(filename.toUtf8(), false, "xml2csv.xslt");
-}
-
-void MainWindow::on_actionExportHTMLworldmap_triggered()
-{
-	QFileInfo fi(system_default_filename());
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), fi.absolutePath(),
-							tr("HTML files (*.html)"));
-	if (!filename.isNull() && !filename.isEmpty())
-		export_worldmap_HTML(filename.toUtf8().data());
 }
 
 void MainWindow::on_actionPrint_triggered()
@@ -1222,3 +1195,9 @@ void MainWindow::on_profScaled_clicked(bool triggered)
 }
 
 #undef TOOLBOX_PREF_PROFILE
+
+void MainWindow::on_actionExport_triggered()
+{
+	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog();
+	diveLogExport->show();
+}

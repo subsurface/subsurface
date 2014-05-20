@@ -90,9 +90,6 @@ slots:
 	void on_actionSave_triggered();
 	void on_actionSaveAs_triggered();
 	void on_actionClose_triggered();
-	void on_actionExportUDDF_triggered();
-	void on_actionExport_CSV_triggered();
-	void on_actionExportHTMLworldmap_triggered();
 	void on_actionPrint_triggered();
 	void on_actionPreferences_triggered();
 	void on_actionQuit_triggered();
@@ -145,6 +142,8 @@ slots:
 	void on_profRuler_clicked(bool triggered);
 	void on_profSAC_clicked(bool triggered);
 	void on_profScaled_clicked(bool triggered);
+
+	void on_actionExport_triggered();
 
 protected:
 	void closeEvent(QCloseEvent *);
