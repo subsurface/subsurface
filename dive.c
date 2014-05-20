@@ -1926,6 +1926,9 @@ static void interleave_dive_computers(struct divecomputer *res,
 		if (match) {
 			merge_events(res, a, match, offset);
 			merge_samples(res, a, match, offset);
+			/* Use the diveid of the later dive! */
+			if (offset > 0)
+				res->diveid = match->diveid;
 		} else {
 			res->sample = a->sample;
 			res->samples = a->samples;
