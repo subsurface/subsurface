@@ -364,8 +364,6 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	s.beginGroup("TecDetails");
 	const bool rulerVisible = s.value("rulergraph", false).toBool() && !printMode;
 	rulerItem->setVisible(rulerVisible);
-	rulerItem->sourceNode()->setVisible(rulerVisible);
-	rulerItem->destNode()->setVisible(rulerVisible);
 
 	// No need to do this again if we are already showing the same dive
 	// computer of the same dive, so we check the unique id of the dive
@@ -507,13 +505,9 @@ void ProfileWidget2::settingsChanged()
 
 	if (currentState == PROFILE) {
 		rulerItem->setVisible(prefs.rulergraph);
-		rulerItem->destNode()->setVisible(prefs.rulergraph);
-		rulerItem->sourceNode()->setVisible(prefs.rulergraph);
 		needReplot = true;
 	} else {
 		rulerItem->setVisible(false);
-		rulerItem->destNode()->setVisible(false);
-		rulerItem->sourceNode()->setVisible(false);
 	}
 	if (needReplot)
 		replot();
@@ -617,8 +611,6 @@ void ProfileWidget2::setEmptyState()
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
 	rulerItem->setVisible(false);
-	rulerItem->destNode()->setVisible(false);
-	rulerItem->sourceNode()->setVisible(false);
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
@@ -691,8 +683,6 @@ void ProfileWidget2::setProfileState()
 	s.beginGroup("TecDetails");
 	bool rulerVisible = s.value("rulergraph", false).toBool();
 	rulerItem->setVisible(rulerVisible);
-	rulerItem->destNode()->setVisible(rulerVisible);
-	rulerItem->sourceNode()->setVisible(rulerVisible);
 }
 
 extern struct ev_select *ev_namelist;

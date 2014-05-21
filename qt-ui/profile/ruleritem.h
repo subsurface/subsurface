@@ -40,7 +40,7 @@ public:
 	RulerNodeItem2 *sourceNode() const;
 	RulerNodeItem2 *destNode() const;
 	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);
-
+	void setVisible(bool visible);
 private:
 	struct plot_info pInfo;
 	QPointF startPoint, endPoint;
