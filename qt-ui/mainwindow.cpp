@@ -1198,6 +1198,6 @@ void MainWindow::on_profScaled_clicked(bool triggered)
 
 void MainWindow::on_actionExport_triggered()
 {
-	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog();
+	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog(this);
 	diveLogExport->show();
 }

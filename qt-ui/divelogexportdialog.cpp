@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QString>
+#include <QShortcut>
 
 #include "mainwindow.h"
 #include "divelogexportdialog.h"
@@ -12,6 +13,10 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) :
 	ui(new Ui::DiveLogExportDialog)
 {
 	ui->setupUi(this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
 }
 
 DiveLogExportDialog::~DiveLogExportDialog()
