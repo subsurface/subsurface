@@ -21,7 +21,6 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QDebug>
-#include <QSettings>
 #include <QScrollBar>
 #include <QtCore/qmath.h>
 #include <QMessageBox>
@@ -360,10 +359,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
-	QSettings s;
-	s.beginGroup("TecDetails");
-	const bool rulerVisible = s.value("rulergraph", false).toBool() && !printMode;
-	rulerItem->setVisible(rulerVisible);
+	rulerItem->setVisible(prefs.rulergraph && !printMode);
 
 	// No need to do this again if we are already showing the same dive
 	// computer of the same dive, so we check the unique id of the dive
@@ -679,10 +675,7 @@ void ProfileWidget2::setProfileState()
 			tissue->setVisible(true);
 		}
 	}
-	QSettings s;
-	s.beginGroup("TecDetails");
-	bool rulerVisible = s.value("rulergraph", false).toBool();
-	rulerItem->setVisible(rulerVisible);
+	rulerItem->setVisible(prefs.rulergraph);
 }
 
 extern struct ev_select *ev_namelist;
