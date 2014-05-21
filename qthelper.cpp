@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <QSettings>
 #include <libxslt/documents.h>
-#include "mainwindow.h"
 
 #define tr(_arg) QObject::tr(_arg)
 

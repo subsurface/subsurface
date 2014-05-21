@@ -136,6 +136,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/tagwidget.cpp
 	qt-ui/groupedlineedit.cpp
 	qt-ui/usermanual.cpp
+	qt-ui/divelogexportdialog.cpp
 )
 
 #the profile widget
