@@ -411,17 +411,17 @@ QString TemperatureAxis::textForValue(double value)
 
 PartialGasPressureAxis::PartialGasPressureAxis()
 {
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(preferencesChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 }
 
 void PartialGasPressureAxis::setModel(DivePlotDataModel *m)
 {
 	model = m;
-	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(preferencesChanged()));
-	preferencesChanged();
+	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(settingsChanged()));
+	settingsChanged();
 }
 
-void PartialGasPressureAxis::preferencesChanged()
+void PartialGasPressureAxis::settingsChanged()
 {
 	bool showPhe = prefs.pp_graphs.phe;
 	bool showPn2 = prefs.pp_graphs.pn2;

@@ -110,7 +110,7 @@ public:
 	void setModel(DivePlotDataModel *model);
 public
 slots:
-	void preferencesChanged();
+	void settingsChanged();
 
 private:
 	DivePlotDataModel *model;

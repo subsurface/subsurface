@@ -18,10 +18,10 @@
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsPolygonItem(), hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(preferencesChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 }
 
-void AbstractProfilePolygonItem::preferencesChanged()
+void AbstractProfilePolygonItem::settingsChanged()
 {
 }
 
@@ -192,7 +192,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	}
 }
 
-void DiveProfileItem::preferencesChanged()
+void DiveProfileItem::settingsChanged()
 {
 	//TODO: Only modelDataChanged() here if we need to rebuild the graph ( for instance,
 	// if the prefs.dcceiling are enabled, but prefs.redceiling is disabled
@@ -296,7 +296,7 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	painter->drawPolyline(polygon());
 }
 
-void DiveHeartrateItem::preferencesChanged()
+void DiveHeartrateItem::settingsChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");
@@ -503,7 +503,7 @@ DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientF
 	gradientFactor->setY(0);
 	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
 	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-	preferencesChanged();
+	settingsChanged();
 }
 
 void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -542,10 +542,10 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 DiveCalculatedTissue::DiveCalculatedTissue()
 {
-	preferencesChanged();
+	settingsChanged();
 }
 
-void DiveCalculatedTissue::preferencesChanged()
+void DiveCalculatedTissue::settingsChanged()
 {
 	setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
@@ -579,7 +579,7 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	setBrush(pat);
 }
 
-void DiveCalculatedCeiling::preferencesChanged()
+void DiveCalculatedCeiling::settingsChanged()
 {
 	if (dataModel && is3mIncrement != prefs.calcceiling3m) {
 		// recalculate that part.
@@ -589,7 +589,7 @@ void DiveCalculatedCeiling::preferencesChanged()
 	setVisible(prefs.calcceiling);
 }
 
-void DiveReportedCeiling::preferencesChanged()
+void DiveReportedCeiling::settingsChanged()
 {
 	setVisible(prefs.dcceiling);
 }
@@ -696,7 +696,7 @@ PartialPressureGasItem::PartialPressureGasItem()
 {
 }
 
-void PartialPressureGasItem::preferencesChanged()
+void PartialPressureGasItem::settingsChanged()
 {
 	QSettings s;
 	s.beginGroup("TecDetails");

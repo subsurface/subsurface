@@ -203,7 +203,7 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
 	heartBeatItem->setVisibilitySettingsKey("hrgraph");
-	heartBeatItem->preferencesChanged();
+	heartBeatItem->settingsChanged();
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
@@ -211,7 +211,7 @@ void ProfileWidget2::setupItemOnScene()
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS);                                                            \
 	ITEM->setColors(getColor(COLOR, isGrayscale), getColor(COLOR_ALERT, isGrayscale));                              \
-	ITEM->preferencesChanged();                                                                                     \
+	ITEM->settingsChanged();                                                                                     \
 	ITEM->setZValue(99);
 
 	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");

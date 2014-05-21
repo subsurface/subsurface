@@ -46,7 +46,7 @@ public:
 	}
 public
 slots:
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void modelDataRemoved(const QModelIndex &parent, int from, int to);
 
@@ -75,7 +75,7 @@ public:
 	DiveProfileItem();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 	void plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
 
 private:
@@ -100,7 +100,7 @@ public:
 	DiveHeartrateItem();
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	bool isVisible();
 
@@ -130,7 +130,7 @@ public:
 	DiveCalculatedCeiling();
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 
 private:
 	bool is3mIncrement;
@@ -143,14 +143,14 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem {
 public:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 };
 
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
 	DiveCalculatedTissue();
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 };
 
 class MeanDepthLine : public DiveLineItem {
@@ -176,7 +176,7 @@ public:
 	PartialPressureGasItem();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	virtual void preferencesChanged();
+	virtual void settingsChanged();
 	void setThreshouldSettingsKey(const QString &threshouldSettingsKey);
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	void setColors(const QColor &normalColor, const QColor &alertColor);
