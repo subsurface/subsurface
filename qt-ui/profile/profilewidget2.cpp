@@ -830,13 +830,7 @@ void ProfileWidget2::removeEvent()
 							      tr("Remove the selected event?"),
 							      tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		struct event **ep = &current_dc->events;
-		while (ep && *ep != event)
-			ep = &(*ep)->next;
-		if (ep) {
-			*ep = event->next;
-			free(event);
-		}
+		remove_event(event);
 		mark_divelist_changed(true);
 		replot();
 	}

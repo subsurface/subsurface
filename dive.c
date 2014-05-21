@@ -65,6 +65,17 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 	remember_event(name);
 }
 
+void remove_event(struct event* event)
+{
+	struct event **ep = &current_dc->events;
+	while (ep && *ep != event)
+		ep = &(*ep)->next;
+	if (ep) {
+		*ep = event->next;
+		free(event);
+	}
+}
+
 int get_pressure_units(unsigned int mb, const char **units)
 {
 	int pressure;
