@@ -83,14 +83,16 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive)
 	}
 }
 
-void writeMarkers(struct membuffer *b)
+void writeMarkers(struct membuffer *b, const bool selected_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
 
 	for_each_dive(i, dive) {
-		/*export selected dives only ?*/
-
+		if (selected_only) {
+			if (!dive->selected)
+				continue;
+		}
 		if (dive->latitude.udeg == 0 && dive->longitude.udeg == 0)
 			continue;
 
@@ -120,7 +122,7 @@ void insert_css(struct membuffer *b)
 	put_format(b, "<style type=\"text/css\">%s</style>\n", css);
 }
 
-void insert_javascript(struct membuffer *b)
+void insert_javascript(struct membuffer *b, const bool selected_only)
 {
 	put_string(b, "<script type=\"text/javascript\" src=\"");
 	put_string(b, getGoogleApi());
@@ -129,25 +131,25 @@ void insert_javascript(struct membuffer *b)
 	put_string(b, "rotateControl: false,\n\tstreetViewControl: false,\n\tmapTypeControl: false\n};\n");
 	put_string(b, "map = new google.maps.Map(document.getElementById(\"map-canvas\"),mapOptions);\nvar markers = new Array();");
 	put_string(b, "\nvar infowindows = new Array();\nvar temp;\nvar tempinfowindow;\n");
-	writeMarkers(b);
+	writeMarkers(b, selected_only);
 	put_string(b, "\nfor(var i=0;i<markers.length;i++)\n\tmarkers[i].setMap(map);\n}\n");
 	put_string(b, "google.maps.event.addDomListener(window, 'load', initialize);</script>\n");
 }
 
-void export(struct membuffer *b)
+void export(struct membuffer *b, const bool selected_only)
 {
 	insert_html_header(b);
 	insert_css(b);
-	insert_javascript(b);
+	insert_javascript(b, selected_only);
 	put_string(b, "\t</head>\n<body>\n<div id=\"map-canvas\"></div>\n</body>\n</html>");
 }
 
-void export_worldmap_HTML(const char *file_name)
+void export_worldmap_HTML(const char *file_name, const bool selected_only)
 {
 	FILE *f;
 
 	struct membuffer buf = { 0 };
-	export(&buf);
+	export(&buf, selected_only);
 
 	f = fopen(file_name, "w+");
 	if (!f)

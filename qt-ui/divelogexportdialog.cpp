@@ -40,13 +40,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), fi.absolutePath(),
 				tr("HTML files (*.html)"));
 		if (!filename.isNull() && !filename.isEmpty())
-			export_worldmap_HTML(filename.toUtf8().data());
-		return;
-	} else if (ui->exportWorldMap->isChecked()) {
-		filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), fi.absolutePath(),
-							tr("HTML files (*.html)"));
-		if (!filename.isNull() && !filename.isEmpty())
-			export_worldmap_HTML(filename.toUtf8().data());
+			export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		return;
 	}
 

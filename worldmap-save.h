@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern void export_worldmap_HTML(const char* x);
+extern void export_worldmap_HTML(const char* file_name, const bool selected_only);
 
 
 #ifdef __cplusplus
