@@ -172,8 +172,6 @@ void RulerItem2::setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth)
 void RulerItem2::setVisible(bool visible)
 {
 	QGraphicsLineItem::setVisible(visible);
-	if (source)
-		source->setVisible(visible);
-	if (dest)
-		dest->setVisible(visible);
+	source->setVisible(visible);
+	dest->setVisible(visible);
 }
