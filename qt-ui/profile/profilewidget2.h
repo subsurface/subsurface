@@ -68,6 +68,7 @@ public:
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
+	State currentState;
 
 public
 slots: // Necessary to call from QAction's signals.
@@ -98,7 +99,6 @@ private: /*methods*/
 
 private:
 	DivePlotDataModel *dataModel;
-	State currentState;
 	int zoomLevel;
 	qreal zoomFactor;
 	DivePixmapItem *background;

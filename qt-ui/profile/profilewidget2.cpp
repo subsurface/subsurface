@@ -499,11 +499,6 @@ void ProfileWidget2::settingsChanged()
 		needReplot = true;
 	}
 
-	if (currentState == PROFILE) {
-		rulerItem->setVisible(prefs.rulergraph);
-	} else {
-		rulerItem->setVisible(false);
-	}
 	if (needReplot)
 		replot();
 }

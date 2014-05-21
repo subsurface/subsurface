@@ -1,5 +1,7 @@
 #include "ruleritem.h"
 #include "divetextitem.h"
+#include "profilewidget2.h"
+#include "../preferences.h"
 
 #include <QFont>
 #include <QFontMetrics>
@@ -79,6 +81,15 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItemBack->setPen(QColor(Qt::white));
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+}
+
+void RulerItem2::settingsChanged()
+{
+	ProfileWidget2 *profWidget = NULL;
+	if(scene() && scene()->views().count())
+		profWidget = qobject_cast<ProfileWidget2*>(scene()->views().first());
+	setVisible(profWidget->currentState == ProfileWidget2::PROFILE ? prefs.rulergraph : false);
 }
 
 void RulerItem2::recalculate()
