@@ -75,6 +75,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
 
 	ui.mainErrorMessage->hide();
 	initialUiSetup();

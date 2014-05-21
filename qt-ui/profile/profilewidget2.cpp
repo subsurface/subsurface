@@ -606,6 +606,7 @@ void ProfileWidget2::setEmptyState()
 	if (currentState == EMPTY)
 		return;
 
+	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
 	currentState = EMPTY;
 	MainWindow::instance()->setToolButtonsEnabled(false);
@@ -641,6 +642,11 @@ void ProfileWidget2::setProfileState()
 	// Then starting Empty State, move the background up.
 	if (currentState == PROFILE)
 		return;
+
+	if (dive_table.nr == 0) { // oops, called to plot something with zero dives. bail out.
+		setEmptyState();
+		return;
+	}
 
 	currentState = PROFILE;
 	MainWindow::instance()->setToolButtonsEnabled(true);

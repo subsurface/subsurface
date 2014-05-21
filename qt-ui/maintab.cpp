@@ -761,6 +761,7 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics()->replot();
+		emit addDiveFinished();
 	} else {
 		editMode = NONE;
 		MainWindow::instance()->dive_list()->rememberSelection();
@@ -861,6 +862,7 @@ void MainTab::rejectChanges()
 			delete_single_dive(selected_dive);
 			MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT);
 			MainWindow::instance()->dive_list()->restoreSelection();
+			emit addDiveFinished();
 		}
 		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
