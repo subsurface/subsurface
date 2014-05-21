@@ -540,6 +540,30 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 	toolTipItem->setPos(mapToScene(toolTipPos));
 }
 
+void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	if (currentState == PLAN || currentState == ADD) {
+		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+		QPointF mappedPos = mapToScene(event->pos());
+		if (isPointOutOfBoundaries(mappedPos))
+			return;
+
+		int minutes = rint(timeAxis->valueAt(mappedPos) / 60);
+		int milimeters = rint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+		plannerModel->addStop(milimeters, minutes * 60, -1, 0, 0, true);
+	}
+}
+
+bool ProfileWidget2::isPointOutOfBoundaries(const QPointF &point) const
+{
+	double xpos = timeAxis->valueAt(point);
+	double ypos = profileYAxis->valueAt(point);
+	return (xpos > timeAxis->maximum() ||
+		xpos < timeAxis->minimum() ||
+		ypos > profileYAxis->maximum() ||
+		ypos < profileYAxis->minimum());
+}
+
 void ProfileWidget2::scrollViewTo(const QPoint &pos)
 {
 	/* since we cannot use translate() directly on the scene we hack on
@@ -670,6 +694,26 @@ void ProfileWidget2::setProfileState()
 		}
 	}
 	rulerItem->setVisible(prefs.rulergraph);
+}
+
+void ProfileWidget2::setAddState()
+{
+	if (currentState == ADD)
+		return;
+
+	/* show the same stuff that the profile shows. */
+	currentState = ADD; /* enable the add state. */
+	setBackgroundBrush(QColor(Qt::blue).light());
+}
+
+void ProfileWidget2::setPlanState()
+{
+	if (currentState == PLAN)
+		return;
+
+	/* show the same stuff that the profile shows. */
+	currentState = PLAN; /* enable the add state. */
+	setBackgroundBrush(QColor(Qt::green).light());
 }
 
 extern struct ev_select *ev_namelist;

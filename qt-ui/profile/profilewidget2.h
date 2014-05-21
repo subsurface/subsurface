@@ -68,6 +68,7 @@ public:
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
+	bool isPointOutOfBoundaries(const QPointF& point) const;
 	State currentState;
 
 public
@@ -75,6 +76,8 @@ slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 	void setEmptyState();
 	void setProfileState();
+	void setPlanState();
+	void setAddState();
 	void changeGas();
 	void addBookmark();
 	void hideEvents();
@@ -88,6 +91,7 @@ protected:
 	virtual void wheelEvent(QWheelEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
 	virtual void contextMenuEvent(QContextMenuEvent *event);
+	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
 private: /*methods*/
 	void fixBackgroundPos();
