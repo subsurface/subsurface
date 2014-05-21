@@ -85,11 +85,14 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QStackedWidget" name="stackedWidget">
+       <widget class="QTabWidget" name="stackedWidget">
         <property name="currentIndex">
          <number>0</number>
         </property>
         <widget class="QWidget" name="page_5">
+         <attribute name="title">
+          <string>Profile Visualization</string>
+         </attribute>
          <layout class="QGridLayout" name="gridLayout">
           <property name="leftMargin">
            <number>0</number>
@@ -495,6 +498,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="page_6">
+         <attribute name="title">
+          <string>Old Planner Visualization</string>
+         </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
            <number>0</number>
@@ -563,7 +569,7 @@
      <x>0</x>
      <y>0</y>
      <width>1418</width>
-     <height>29</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
