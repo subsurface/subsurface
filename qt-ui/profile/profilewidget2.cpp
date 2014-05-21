@@ -501,7 +501,6 @@ void ProfileWidget2::settingsChanged()
 
 	if (currentState == PROFILE) {
 		rulerItem->setVisible(prefs.rulergraph);
-		needReplot = true;
 	} else {
 		rulerItem->setVisible(false);
 	}
