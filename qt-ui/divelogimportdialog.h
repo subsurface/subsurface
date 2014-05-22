@@ -6,8 +6,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 
-namespace Ui
-{
+namespace Ui {
 	class DiveLogImportDialog;
 }
 

@@ -70,7 +70,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.tagWidget->installEventFilter(this);
 
 	QList<QObject *> statisticsTabWidgets = ui.statisticsTab->children();
-	Q_FOREACH(QObject * obj, statisticsTabWidgets) {
+	Q_FOREACH (QObject *obj, statisticsTabWidgets) {
 		QLabel *label = qobject_cast<QLabel *>(obj);
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);
@@ -136,7 +136,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 			"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
 			"    stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
 			"}");
-		Q_FOREACH(QGroupBox * box, findChildren<QGroupBox *>()) {
+		Q_FOREACH (QGroupBox *box, findChildren<QGroupBox *>()) {
 			box->setStyleSheet(gnomeCss);
 		}
 	}
@@ -271,7 +271,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 		// We may be editing one or more dives here. backup everything.
 		struct dive *mydive;
 		int i;
-		for_each_dive(i, mydive) {
+		for_each_dive (i, mydive) {
 			if (!mydive->selected)
 				continue;
 
@@ -667,7 +667,7 @@ void MainTab::acceptChanges()
 			     ui.coordinates->text().trimmed().isEmpty())) {
 				struct dive *dive;
 				int i = 0;
-				for_each_dive(i, dive) {
+				for_each_dive (i, dive) {
 					QString location(dive->location);
 					if (location == ui.location->text() &&
 					    (dive->latitude.udeg || dive->longitude.udeg)) {
@@ -691,7 +691,7 @@ void MainTab::acceptChanges()
 			DivePlannerPointsModel::instance()->copyCylinders(curr);
 		} else if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
-			Q_FOREACH(dive * d, notesBackup.keys()) {
+			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (notesBackup.keys().count() > 1)
 						// only copy the cylinder type, none of the other values
@@ -705,7 +705,7 @@ void MainTab::acceptChanges()
 
 		if (weightModel->changed) {
 			mark_divelist_changed(true);
-			Q_FOREACH(dive * d, notesBackup.keys()) {
+			Q_FOREACH (dive *d, notesBackup.keys()) {
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 					d->weightsystem[i] = multiEditEquipmentPlaceholder.weightsystem[i];
 				}
@@ -730,7 +730,7 @@ void MainTab::acceptChanges()
 	}
 	// each dive that was selected might have had the temperatures in its active divecomputer changed
 	// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
-	Q_FOREACH(dive * d, notesBackup.keys()) {
+	Q_FOREACH (dive *d, notesBackup.keys()) {
 		if (d)
 			fixup_dive(d);
 	}
@@ -747,7 +747,7 @@ void MainTab::acceptChanges()
 		// and then clear that flag out on the other side of the sort_table()
 		d->selected = true;
 		sort_table(&dive_table);
-		for_each_dive(rememberSelected, d) {
+		for_each_dive (rememberSelected, d) {
 			if (d->selected) {
 				d->selected = false;
 				break;
@@ -939,7 +939,7 @@ void MainTab::on_watertemp_textChanged(const QString &text)
 	validate_temp_field(ui.watertemp, text);
 }
 
-void MainTab::validate_temp_field(QLineEdit *tempField,const QString &text)
+void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 {
 	static bool missing_unit = false;
 	static bool missing_precision = false;
@@ -981,11 +981,11 @@ void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime)
 void MainTab::saveTags()
 {
 	EDIT_SELECTED_DIVES(
-	    QString tag;
-	    taglist_free(mydive->tag_list);
-	    mydive->tag_list = NULL;
-	    foreach(tag, ui.tagWidget->getBlockStringList())
-		    taglist_add_tag(&mydive->tag_list, tag.toUtf8().data()););
+		QString tag;
+		taglist_free(mydive->tag_list);
+		mydive->tag_list = NULL;
+		foreach (tag, ui.tagWidget->getBlockStringList())
+			taglist_add_tag(&mydive->tag_list, tag.toUtf8().data()););
 }
 
 void MainTab::on_tagWidget_textChanged()

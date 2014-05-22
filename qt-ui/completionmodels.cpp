@@ -8,7 +8,7 @@
 		QStringList list;                              \
 		struct dive *dive;                             \
 		int i = 0;                                     \
-		for_each_dive(i, dive)                         \
+		for_each_dive (i, dive)                        \
 		{                                              \
 			QString buddy(dive->diveStructMember); \
 			if (!list.contains(buddy)) {           \
@@ -24,10 +24,10 @@
 		QSet<QString> set;                                                               \
 		struct dive *dive;                                                               \
 		int i = 0;                                                                       \
-		for_each_dive(i, dive)                                                           \
+		for_each_dive (i, dive)                                                          \
 		{                                                                                \
 			QString buddy(dive->diveStructMember);                                   \
-			foreach(const QString &value, buddy.split(",", QString::SkipEmptyParts)) \
+			foreach (const QString &value, buddy.split(",", QString::SkipEmptyParts)) \
 			{                                                                        \
 				set.insert(value.trimmed());                                     \
 			}                                                                        \

@@ -129,7 +129,7 @@ void DivePlannerGraphics::settingsChanged()
 void DivePlannerGraphics::keyDownAction()
 {
 #if 0
-	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
@@ -146,7 +146,7 @@ void DivePlannerGraphics::keyDownAction()
 void DivePlannerGraphics::keyUpAction()
 {
 #if 0
-	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
@@ -165,7 +165,7 @@ void DivePlannerGraphics::keyUpAction()
 void DivePlannerGraphics::keyLeftAction()
 {
 #if 0
-	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
@@ -177,7 +177,7 @@ void DivePlannerGraphics::keyLeftAction()
 			// maybe this is a good place for a 'goto'?
 			double xpos = timeLine->posAtValue((dp.time - 60) / 60);
 			bool nextStep = false;
-			Q_FOREACH(DiveHandler * h, handles) {
+			Q_FOREACH (DiveHandler *h, handles) {
 				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
@@ -196,7 +196,7 @@ void DivePlannerGraphics::keyLeftAction()
 void DivePlannerGraphics::keyRightAction()
 {
 #if 0
-	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
@@ -207,7 +207,7 @@ void DivePlannerGraphics::keyRightAction()
 			// maybe this is a good place for a 'goto'?
 			double xpos = timeLine->posAtValue((dp.time + 60) / 60);
 			bool nextStep = false;
-			Q_FOREACH(DiveHandler * h, handles) {
+			Q_FOREACH (DiveHandler *h, handles) {
 				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
@@ -229,7 +229,7 @@ void DivePlannerGraphics::keyDeleteAction()
 	int selCount = scene()->selectedItems().count();
 	if (selCount) {
 		QVector<int> selectedIndexes;
-		Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
+		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 				selectedIndexes.push_back(handles.indexOf(handler));
 			}
@@ -301,7 +301,7 @@ void DivePlannerGraphics::decreaseDepth()
 	if (depthLine->maximum() - M_OR_FT(10, 30) < MIN_DEPTH)
 		return;
 
-	Q_FOREACH(DiveHandler * d, handles) {
+	Q_FOREACH (DiveHandler *d, handles) {
 		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - M_OR_FT(10, 30)) {
 			QMessageBox::warning(MainWindow::instance(),
 					     tr("Handler Position Error"),
@@ -519,7 +519,7 @@ void DivePlannerGraphics::mousePressEvent(QMouseEvent *event)
 
 	QPointF mappedPos = mapToScene(event->pos());
 	if (event->button() == Qt::LeftButton) {
-		Q_FOREACH(QGraphicsItem * item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())) {
+		Q_FOREACH (QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())) {
 			if (DiveHandler *h = qgraphicsitem_cast<DiveHandler *>(item)) {
 				activeDraggedHandler = h;
 				activeDraggedHandler->setBrush(Qt::red);
@@ -1068,7 +1068,7 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	endRemoveRows();
 }
 
-struct diveplan& DivePlannerPointsModel::getDiveplan()
+struct diveplan &DivePlannerPointsModel::getDiveplan()
 {
 	return diveplan;
 }
@@ -1330,7 +1330,7 @@ ExpanderGraphics::ExpanderGraphics(QGraphicsItem *parent) : QGraphicsRectItem(pa
 	//I need to bottom align the items, I need to make the 0,0 ( orgin ) to be
 	// the bottom of this item, so shift everything up.
 	QRectF r = childrenBoundingRect();
-	Q_FOREACH(QGraphicsItem * i, childItems()) {
+	Q_FOREACH (QGraphicsItem *i, childItems()) {
 		i->setPos(i->pos().x(), i->pos().y() - r.height());
 	}
 	setScale(0.7);

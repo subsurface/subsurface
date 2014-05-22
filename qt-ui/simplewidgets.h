@@ -55,11 +55,11 @@ class ShiftTimesDialog : public QDialog {
 	Q_OBJECT
 public:
 	static ShiftTimesDialog *instance();
-	void showEvent ( QShowEvent * event );
+	void showEvent(QShowEvent *event);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
-	void changeTime ();
+	void changeTime();
 
 private:
 	explicit ShiftTimesDialog(QWidget *parent);

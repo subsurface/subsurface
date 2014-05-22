@@ -236,7 +236,7 @@ void PreferencesDialog::syncSettings()
 
 	// Animation
 	s.beginGroup("Animations");
-	s.setValue("animation_speed",ui.velocitySlider->value());
+	s.setValue("animation_speed", ui.velocitySlider->value());
 	s.endGroup();
 
 	loadSettings();

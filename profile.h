@@ -80,7 +80,6 @@ int get_maxtime(struct plot_info *pi);
 int get_maxdepth(struct plot_info *pi);
 
 
-
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]

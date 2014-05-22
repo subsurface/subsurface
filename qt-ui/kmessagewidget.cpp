@@ -74,7 +74,7 @@ void KMessageWidgetPrivate::createLayout()
 	qDeleteAll(buttons);
 	buttons.clear();
 
-	Q_FOREACH(QAction * action, q->actions()) {
+	Q_FOREACH (QAction *action, q->actions()) {
 		QToolButton *button = new QToolButton(content);
 		button->setDefaultAction(action);
 		button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -94,7 +94,7 @@ void KMessageWidgetPrivate::createLayout()
 
 		QHBoxLayout *buttonLayout = new QHBoxLayout;
 		buttonLayout->addStretch();
-		Q_FOREACH(QToolButton * button, buttons) {
+		Q_FOREACH (QToolButton *button, buttons) {
 			// For some reason, calling show() is necessary if wordwrap is true,
 			// otherwise the buttons do not show up. It is not needed if
 			// wordwrap is false.
@@ -108,7 +108,7 @@ void KMessageWidgetPrivate::createLayout()
 		layout->addWidget(iconLabel);
 		layout->addWidget(textLabel);
 
-		Q_FOREACH(QToolButton * button, buttons) {
+		Q_FOREACH (QToolButton *button, buttons) {
 			layout->addWidget(button);
 		}
 
@@ -238,7 +238,7 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 	bg2 = bg1.darker(110);
 	border = bg2.darker(110);
 	d->content->setStyleSheet(
-	    QString(".QFrame {"
+		QString(".QFrame {"
 			"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
 			"    stop: 0 %1,"
 			"    stop: 0.1 %2,"
@@ -248,16 +248,16 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 			"margin: %5px;"
 			"}"
 			".QLabel { color: %6; }").arg(bg0.name())
-		.arg(bg1.name())
-		.arg(bg2.name())
-		.arg(border.name())
-	    /*
+			.arg(bg1.name())
+			.arg(bg2.name())
+			.arg(border.name())
+		/*
 		DefaultFrameWidth returns the size of the external margin + border width.
 		We know our border is 1px, so we subtract this from the frame
 		normal QStyle FrameWidth to get our margin
 		*/
-		.arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) - 1)
-		.arg(fg.name()));
+			.arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) - 1)
+			.arg(fg.name()));
 }
 
 QSize KMessageWidget::sizeHint() const

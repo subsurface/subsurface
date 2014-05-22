@@ -8,8 +8,7 @@
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
 
-DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) :
-	QDialog(parent),
+DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui(new Ui::DiveLogExportDialog)
 {
 	ui->setupUi(this);
@@ -43,7 +42,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		return;
 	} else if (ui->exportWorldMap->isChecked()) {
 		filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), fi.absolutePath(),
-				tr("HTML files (*.html)"));
+							tr("HTML files (*.html)"));
 		if (!filename.isNull() && !filename.isEmpty())
 			export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		return;

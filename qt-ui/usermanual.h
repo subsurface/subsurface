@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include <QWebPage>
 
-namespace Ui
-{
+namespace Ui {
 	class UserManual;
 }
 

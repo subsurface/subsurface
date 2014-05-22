@@ -18,8 +18,8 @@ const char *system_default_filename(void)
 {
 	/* Replace this when QtCore/QStandardPaths getExternalStorageDirectory landed */
 	QAndroidJniObject externalStorage = QAndroidJniObject::callStaticObjectMethod("android/os/Environment", "getExternalStorageDirectory", "()Ljava/io/File;");
-	QAndroidJniObject externalStorageAbsolute = externalStorage.callObjectMethod( "getAbsolutePath", "()Ljava/lang/String;" );
-	QString system_default_filename = externalStorageAbsolute.toString()+"/subsurface.xml";
+	QAndroidJniObject externalStorageAbsolute = externalStorage.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+	QString system_default_filename = externalStorageAbsolute.toString() + "/subsurface.xml";
 	QAndroidJniEnvironment env;
 	if (env->ExceptionCheck()) {
 		// FIXME: Handle exception here.
@@ -29,7 +29,7 @@ const char *system_default_filename(void)
 	return strdup(system_default_filename.toUtf8().data());
 }
 
-int enumerate_devices (device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 {
 	/* FIXME: we need to enumerate in some other way on android */
 	/* qtserialport maybee? */
@@ -77,5 +77,4 @@ void subsurface_console_exit(void)
 {
 	/* NOP */
 }
-
 }

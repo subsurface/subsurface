@@ -98,7 +98,7 @@ int PrintLayout::estimateTotalDives() const
 {
 	int total = 0, i = 0;
 	struct dive *dive;
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
 		total++;
@@ -168,7 +168,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		yOffsetTable = scaledH - tableH;
 
 	// plot the dives at specific rows and columns on the page
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
 		if (col == divesPerColumn) {
@@ -183,7 +183,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
-		profile->plotDives(QList<struct dive*>() << dive);
+		profile->plotDives(QList<struct dive *>() << dive);
 		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		painter.setTransform(origTransform);
 
@@ -202,7 +202,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
-	profile->plotDives(QList<struct dive*>() << current_dive);
+	profile->plotDives(QList<struct dive *>() << current_dive);
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
@@ -309,7 +309,7 @@ void PrintLayout::printTable()
 	addTablePrintHeadingRow(&model, row); // add one heading row
 	row++;
 	progress = 0;
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->selected && printOptions->print_selected)
 			continue;
 		addTablePrintDataRow(&model, row, dive);

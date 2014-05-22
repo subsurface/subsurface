@@ -6,8 +6,7 @@
 
 class QObject;
 
-namespace Animations
-{
+namespace Animations {
 	void hide(QObject *obj);
 	void moveTo(QObject *obj, qreal x, qreal y);
 	void moveTo(QObject *obj, const QPointF &pos);

@@ -4,8 +4,7 @@
 #include <QPropertyAnimation>
 #include <QPointF>
 
-namespace Animations
-{
+namespace Animations {
 
 	void hide(QObject *obj)
 	{
@@ -26,15 +25,14 @@ namespace Animations
 
 	void moveTo(QObject *obj, qreal x, qreal y)
 	{
-		if (prefs.animation != 0){
+		if (prefs.animation != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
 			animation->setDuration(prefs.animation);
 			animation->setStartValue(obj->property("pos").toPointF());
 			animation->setEndValue(QPointF(x, y));
 			animation->start(QAbstractAnimation::DeleteWhenStopped);
-		}
-		else{
-			obj->setProperty("pos", QPointF(x,y));
+		} else {
+			obj->setProperty("pos", QPointF(x, y));
 		}
 	}
 

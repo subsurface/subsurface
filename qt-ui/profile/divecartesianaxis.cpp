@@ -97,7 +97,7 @@ void DiveCartesianAxis::setTextVisible(bool arg1)
 		return;
 	}
 	textVisibility = arg1;
-	Q_FOREACH(DiveTextItem * item, labels) {
+	Q_FOREACH (DiveTextItem *item, labels) {
 		item->setVisible(textVisibility);
 	}
 }
@@ -108,7 +108,7 @@ void DiveCartesianAxis::setLinesVisible(bool arg1)
 		return;
 	}
 	lineVisibility = arg1;
-	Q_FOREACH(DiveLineItem * item, lines) {
+	Q_FOREACH (DiveLineItem *item, lines) {
 		item->setVisible(lineVisibility);
 	}
 }
@@ -161,8 +161,8 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 
 	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
 		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
-				     begin + i * stepSize :
-				     begin - i * stepSize;
+					 begin + i * stepSize :
+					 begin - i * stepSize;
 
 		labels[i]->setText(textForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
@@ -174,8 +174,8 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 
 	for (int i = 0, count = lines.size(); i < count; i++, currValueLine += interval) {
 		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
-				     begin + i * stepSize :
-				     begin - i * stepSize;
+					 begin + i * stepSize :
+					 begin - i * stepSize;
 
 		if (orientation == LeftToRight || orientation == RightToLeft) {
 			lines[i]->animateMoveTo(childPos, m.y1());
@@ -237,9 +237,9 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		}
 	}
 
-	Q_FOREACH(DiveTextItem * item, labels)
+	Q_FOREACH (DiveTextItem *item, labels)
 		item->setVisible(textVisibility);
-	Q_FOREACH(DiveLineItem * item, lines)
+	Q_FOREACH (DiveLineItem *item, lines)
 		item->setVisible(lineVisibility);
 }
 
@@ -272,8 +272,8 @@ qreal DiveCartesianAxis::valueAt(const QPointF &p) const
 	relativePosition -= pos(); // normalize p based on the axis' offset on screen
 
 	double retValue = (orientation == LeftToRight || orientation == RightToLeft) ?
-			      max * (relativePosition.x() - m.x1()) / (m.x2() - m.x1()) :
-			      max * (relativePosition.y() - m.y1()) / (m.y2() - m.y1());
+				  max * (relativePosition.x() - m.x1()) / (m.x2() - m.x1()) :
+				  max * (relativePosition.y() - m.y1()) / (m.y2() - m.y1());
 	return retValue;
 }
 
@@ -289,8 +289,8 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 
 
 	double realSize = orientation == LeftToRight || orientation == RightToLeft ?
-			      m.x2() - m.x1() :
-			      m.y2() - m.y1();
+				  m.x2() - m.x1() :
+				  m.y2() - m.y1();
 
 	// Inverted axis, just invert the percentage.
 	if (orientation == RightToLeft || orientation == BottomToTop)
@@ -298,10 +298,10 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 
 	double retValue = realSize * percent;
 	double adjusted =
-	    orientation == LeftToRight ? retValue + m.x1() + p.x() :
-					 orientation == RightToLeft ? retValue + m.x1() + p.x() :
-								      orientation == TopToBottom ? retValue + m.y1() + p.y() :
-												   /* entation == BottomToTop */ retValue + m.y1() + p.y();
+		orientation == LeftToRight ? retValue + m.x1() + p.x() :
+					     orientation == RightToLeft ? retValue + m.x1() + p.x() :
+									  orientation == TopToBottom ? retValue + m.y1() + p.y() :
+												       /* entation == BottomToTop */ retValue + m.y1() + p.y();
 	return adjusted;
 }
 

@@ -171,7 +171,7 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 			QKeyEvent *ev = static_cast<QKeyEvent *>(event);
 			if (ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down) {
 				currCombo.ignoreSelection = true;
-				if (!currCombo.comboEditor->completer()->popup()->isVisible()){
+				if (!currCombo.comboEditor->completer()->popup()->isVisible()) {
 					currCombo.comboEditor->showPopup();
 					return true;
 				}

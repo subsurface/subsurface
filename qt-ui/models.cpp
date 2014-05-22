@@ -68,7 +68,7 @@ CylindersModel::CylindersModel(QObject *parent) : current(0), rows(0)
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
 #ifdef ENABLE_PLANNER
-			<< tr("Switch at")
+					   << tr("Switch at")
 #endif
 			     );
 }
@@ -364,11 +364,10 @@ void CylindersModel::remove(const QModelIndex &index)
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) ||
-	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING && cyl->used))
-	{
+	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING && cyl->used)) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
-								 tr("Cylinder cannot be removed"),
-								 tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
+								 	tr("Cylinder cannot be removed"),
+									tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
 				     QMessageBox::Ok);
 		return;
 	}
@@ -1199,7 +1198,7 @@ bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role
 
 	int i;
 	struct dive *d;
-	for_each_dive(i, d) {
+	for_each_dive (i, d) {
 		if (d->number == v)
 			return false;
 	}
@@ -2056,7 +2055,7 @@ LanguageModel::LanguageModel(QObject *parent) : QAbstractListModel(parent)
 	QSettings s;
 	QDir d(getSubsurfaceDataPath("translations"));
 	QStringList result = d.entryList();
-	Q_FOREACH(const QString & s, result) {
+	Q_FOREACH (const QString &s, result) {
 		if (s.startsWith("subsurface_") && s.endsWith(".qm")) {
 			languages.push_back((s == "subsurface_source.qm") ? "English" : s);
 		}

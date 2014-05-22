@@ -41,7 +41,7 @@ bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
 	       (nickName != b.nickName);
 }
 
-const DiveComputerNode *DiveComputerList::getExact(const QString& m, uint32_t d)
+const DiveComputerNode *DiveComputerList::getExact(const QString &m, uint32_t d)
 {
 	for (QMap<QString, DiveComputerNode>::iterator it = dcMap.find(m); it != dcMap.end() && it.key() == m; ++it)
 		if (it->deviceId == d)
@@ -49,7 +49,7 @@ const DiveComputerNode *DiveComputerList::getExact(const QString& m, uint32_t d)
 	return NULL;
 }
 
-const DiveComputerNode *DiveComputerList::get(const QString& m)
+const DiveComputerNode *DiveComputerList::get(const QString &m)
 {
 	QMap<QString, DiveComputerNode>::iterator it = dcMap.find(m);
 	if (it != dcMap.end())
@@ -57,7 +57,7 @@ const DiveComputerNode *DiveComputerList::get(const QString& m)
 	return NULL;
 }
 
-void DiveComputerList::addDC(const QString& m, uint32_t d, const QString& n, const QString& s,const QString& f)
+void DiveComputerList::addDC(const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
 {
 	if (m.isEmpty() || d == 0)
 		return;
@@ -79,7 +79,7 @@ void DiveComputerList::addDC(const QString& m, uint32_t d, const QString& n, con
 	dcMap.insert(m, newNode);
 }
 
-void DiveComputerList::rmDC(const QString& m, uint32_t d)
+void DiveComputerList::rmDC(const QString &m, uint32_t d)
 {
 	const DiveComputerNode *existNode = this->getExact(m, d);
 	dcMap.remove(m, *existNode);
@@ -96,8 +96,8 @@ extern "C" bool compareDC(const DiveComputerNode &a, const DiveComputerNode &b)
 	return a.deviceId < b.deviceId;
 }
 
-extern "C" void call_for_each_dc(void *f, void (*callback)(void *, const char *, uint32_t,
-						const char *, const char *, const char *))
+extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t,
+							   const char *, const char *, const char *))
 {
 	QList<DiveComputerNode> values = dcList.dcMap.values();
 	qSort(values.begin(), values.end(), compareDC);
@@ -164,7 +164,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 
 	struct divecomputer *dc;
 
-	for_each_dc(dive, dc) {
+	for_each_dc (dive, dc) {
 		if (dc->model && *dc->model && dc->deviceid &&
 		    !dcList.getExact(dc->model, dc->deviceid)) {
 			// we don't have this one, yet

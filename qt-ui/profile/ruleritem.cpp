@@ -26,7 +26,7 @@ RulerNodeItem2::RulerNodeItem2() : entry(NULL), ruler(NULL)
 	setFlag(ItemIgnoresTransformations);
 }
 
-void RulerNodeItem2::setPlotInfo(plot_info& info)
+void RulerNodeItem2::setPlotInfo(plot_info &info)
 {
 	pInfo = info;
 	entry = pInfo.entry;
@@ -87,8 +87,8 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 void RulerItem2::settingsChanged()
 {
 	ProfileWidget2 *profWidget = NULL;
-	if(scene() && scene()->views().count())
-		profWidget = qobject_cast<ProfileWidget2*>(scene()->views().first());
+	if (scene() && scene()->views().count())
+		profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 	setVisible(profWidget->currentState == ProfileWidget2::PROFILE ? prefs.rulergraph : false);
 }
 

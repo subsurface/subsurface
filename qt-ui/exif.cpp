@@ -34,8 +34,7 @@
 
 using std::string;
 
-namespace
-{
+namespace {
 	// IF Entry
 	struct IFEntry {
 		// Raw fields
@@ -459,15 +458,15 @@ int EXIFInfo::parseFromEXIFSegment(const unsigned char *buf, unsigned len)
 				// GPS latitude
 				if (format == 5 && length == 3) {
 					this->GeoLocation.LatComponents.degrees =
-					    parseEXIFRational(buf + data + tiff_header_start, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start, alignIntel);
 					this->GeoLocation.LatComponents.minutes =
-					    parseEXIFRational(buf + data + tiff_header_start + 8, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start + 8, alignIntel);
 					this->GeoLocation.LatComponents.seconds =
-					    parseEXIFRational(buf + data + tiff_header_start + 16, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start + 16, alignIntel);
 					this->GeoLocation.Latitude =
-					    this->GeoLocation.LatComponents.degrees +
-					    this->GeoLocation.LatComponents.minutes / 60 +
-					    this->GeoLocation.LatComponents.seconds / 3600;
+						this->GeoLocation.LatComponents.degrees +
+						this->GeoLocation.LatComponents.minutes / 60 +
+						this->GeoLocation.LatComponents.seconds / 3600;
 					if ('S' == this->GeoLocation.LatComponents.direction)
 						this->GeoLocation.Latitude = -this->GeoLocation.Latitude;
 				}
@@ -484,15 +483,15 @@ int EXIFInfo::parseFromEXIFSegment(const unsigned char *buf, unsigned len)
 				// GPS longitude
 				if (format == 5 && length == 3) {
 					this->GeoLocation.LonComponents.degrees =
-					    parseEXIFRational(buf + data + tiff_header_start, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start, alignIntel);
 					this->GeoLocation.LonComponents.minutes =
-					    parseEXIFRational(buf + data + tiff_header_start + 8, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start + 8, alignIntel);
 					this->GeoLocation.LonComponents.seconds =
-					    parseEXIFRational(buf + data + tiff_header_start + 16, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start + 16, alignIntel);
 					this->GeoLocation.Longitude =
-					    this->GeoLocation.LonComponents.degrees +
-					    this->GeoLocation.LonComponents.minutes / 60 +
-					    this->GeoLocation.LonComponents.seconds / 3600;
+						this->GeoLocation.LonComponents.degrees +
+						this->GeoLocation.LonComponents.minutes / 60 +
+						this->GeoLocation.LonComponents.seconds / 3600;
 					if ('W' == this->GeoLocation.LonComponents.direction)
 						this->GeoLocation.Longitude = -this->GeoLocation.Longitude;
 				}
@@ -509,7 +508,7 @@ int EXIFInfo::parseFromEXIFSegment(const unsigned char *buf, unsigned len)
 				// GPS altitude reference
 				if (format == 5) {
 					this->GeoLocation.Altitude =
-					    parseEXIFRational(buf + data + tiff_header_start, alignIntel);
+						parseEXIFRational(buf + data + tiff_header_start, alignIntel);
 					if (1 == this->GeoLocation.AltitudeRef)
 						this->GeoLocation.Altitude = -this->GeoLocation.Altitude;
 				}

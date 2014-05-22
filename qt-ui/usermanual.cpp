@@ -11,9 +11,9 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 {
 	ui->setupUi(this);
 
-	QShortcut* closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut* quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
 
 	QAction *actionShowSearch = new QAction(this);

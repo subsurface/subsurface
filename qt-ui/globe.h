@@ -55,8 +55,9 @@ public:
 	void reload();
 	void repopulateLabels();
 	void centerOnCurrentDive();
-	bool eventFilter(QObject*, QEvent*);
-public slots:
+	bool eventFilter(QObject *, QEvent *);
+public
+slots:
 	void prepareForGetDiveCoordinates();
 };
 

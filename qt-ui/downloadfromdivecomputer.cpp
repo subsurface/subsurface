@@ -34,8 +34,7 @@ struct mydescriptor {
 	unsigned int model;
 };
 
-namespace DownloadFromDcGlobal
-{
+namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
@@ -395,7 +394,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			idx = get_idx_by_uniq_id(uniqId);
 			MainWindow::instance()->dive_list()->selectDive(idx, true);
 		}
-	} else if (currentState == CANCELLING || currentState == CANCELLED){
+	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {
 			// walk backwards so we don't keep moving the dives
 			// down in the dive_table

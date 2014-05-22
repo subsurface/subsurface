@@ -21,7 +21,7 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon)
 {
 	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + SPACING;
-	Q_FOREACH(ToolTip t, toolTips) {
+	Q_FOREACH (ToolTip t, toolTips) {
 		yValue += t.second->boundingRect().height();
 	}
 	if (!icon.isNull()) {
@@ -39,7 +39,7 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon)
 
 void ToolTipItem::clear()
 {
-	Q_FOREACH(ToolTip t, toolTips) {
+	Q_FOREACH (ToolTip t, toolTips) {
 		delete t.first;
 		delete t.second;
 	}
@@ -96,7 +96,7 @@ void ToolTipItem::expand()
 		return;
 
 	double width = 0, height = title->boundingRect().height() + SPACING;
-	Q_FOREACH(ToolTip t, toolTips) {
+	Q_FOREACH (ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
 			width = t.second->boundingRect().width();
 		height += t.second->boundingRect().height();
@@ -226,7 +226,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 	free_buffer(&mb);
 
 	QList<QGraphicsItem *> items = scene()->items(pos, Qt::IntersectsItemShape, Qt::DescendingOrder, scene()->views().first()->transform());
-	Q_FOREACH(QGraphicsItem * item, items) {
+	Q_FOREACH (QGraphicsItem *item, items) {
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}

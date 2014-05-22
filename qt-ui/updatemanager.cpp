@@ -4,11 +4,10 @@
 #include "subsurfacewebservices.h"
 #include "ssrf-version.h"
 
-UpdateManager::UpdateManager(QObject *parent) :
-	QObject(parent)
+UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 {
 	manager = SubsurfaceWebServices::manager();
-	connect (manager, SIGNAL(finished(QNetworkReply*)), SLOT(requestReceived(QNetworkReply*)));
+	connect(manager, SIGNAL(finished(QNetworkReply *)), SLOT(requestReceived(QNetworkReply *)));
 }
 
 void UpdateManager::checkForUpdates()

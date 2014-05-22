@@ -49,7 +49,7 @@ static bool merge_locations_into_dives(void)
 
 	sort_table(&gps_location_table);
 
-	for_each_gps_location(i, gpsfix) {
+	for_each_gps_location (i, gpsfix) {
 		if (is_automatic_fix(gpsfix)) {
 			dive = find_dive_including(gpsfix->when);
 			if (dive && !dive_has_gps_location(dive)) {
@@ -135,7 +135,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	/* walk the dive list in chronological order */
 	int i;
 	struct dive *dive;
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		FILE *f;
 		char filename[PATH_MAX];
 		int streamsize;
@@ -526,8 +526,8 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 	if (reader.readNextStartElement() && reader.name() != "DiveDateReader") {
 		result.errorCondition = invalidXmlError;
 		result.errorDetails =
-		    DivelogsDeWebServices::tr("Expected XML tag 'DiveDateReader', got instead '%1")
-			.arg(reader.name().toString());
+			DivelogsDeWebServices::tr("Expected XML tag 'DiveDateReader', got instead '%1")
+				.arg(reader.name().toString());
 		goto out;
 	}
 
@@ -580,8 +580,8 @@ out:
 		// if there was an XML error, overwrite the result or other error conditions
 		result.errorCondition = invalidXmlError;
 		result.errorDetails = DivelogsDeWebServices::tr("Malformed XML response. Line %1: %2")
-					  .arg(reader.lineNumber())
-					  .arg(reader.errorString());
+						.arg(reader.lineNumber())
+						.arg(reader.errorString());
 	}
 	return result;
 }

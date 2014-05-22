@@ -64,7 +64,7 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	setProjection(Marble::Spherical);
 
 	setAnimationsEnabled(true);
-	Q_FOREACH(AbstractFloatItem * i, floatItems()) {
+	Q_FOREACH (AbstractFloatItem *i, floatItems()) {
 		i->setVisible(false);
 	}
 
@@ -142,7 +142,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	struct dive *dive;
 	bool clear = !(QApplication::keyboardModifiers() & Qt::ControlModifier);
 	QList<int> selectedDiveIds;
-	for_each_dive(idx, dive) {
+	for_each_dive (idx, dive) {
 		long lat_diff, lon_diff;
 		if (!dive_has_gps_location(dive))
 			continue;
@@ -175,7 +175,7 @@ void GlobeGPS::repopulateLabels()
 
 	int idx = 0;
 	struct dive *dive;
-	for_each_dive(idx, dive) {
+	for_each_dive (idx, dive) {
 		if (dive_has_gps_location(dive)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
@@ -211,8 +211,7 @@ void GlobeGPS::centerOnCurrentDive()
 {
 	struct dive *dive = current_dive;
 	// dive has changed, if we had the 'editingDive', hide it.
-	if (messageWidget->isVisible()
-	    && (!dive || dive_has_gps_location(dive) || amount_selected != 1 ))
+	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive) || amount_selected != 1))
 		messageWidget->hide();
 
 	editingDiveLocation = false;
@@ -222,8 +221,7 @@ void GlobeGPS::centerOnCurrentDive()
 	qreal longitude = dive->longitude.udeg / 1000000.0;
 	qreal latitude = dive->latitude.udeg / 1000000.0;
 
-	if ((!dive_has_gps_location(dive) || MainWindow::instance()->information()->isEditing())
-	    && amount_selected == 1) {
+	if ((!dive_has_gps_location(dive) || MainWindow::instance()->information()->isEditing()) && amount_selected == 1) {
 		prepareForGetDiveCoordinates();
 		return;
 	}
@@ -261,7 +259,7 @@ void GlobeGPS::zoomOutForNoGPS()
 	// this is called if the dive has no GPS location.
 	// zoom out quite a bit to show the globe and remember that the next time
 	// we show a dive with GPS location we need to zoom in again
-	if(fixZoomTimer->isActive())
+	if (fixZoomTimer->isActive())
 		fixZoomTimer->stop();
 	setZoom(1200, Marble::Automatic);
 	if (!needResetZoom) {
@@ -300,7 +298,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	// but we keep the code here that changes the coordinates for each selected dive
 	int i;
 	struct dive *dive;
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->selected)
 			continue;
 		dive->latitude.udeg = lrint(lat * 1000000.0);
@@ -341,10 +339,23 @@ void GlobeGPS::resizeEvent(QResizeEvent *event)
 }
 #else
 
-GlobeGPS::GlobeGPS(QWidget* parent) { setText("MARBLE DISABLED AT BUILD TIME"); }
-void GlobeGPS::repopulateLabels() {}
-void GlobeGPS::centerOnCurrentDive() {}
-bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev) {}
-void GlobeGPS::prepareForGetDiveCoordinates() {}
-void GlobeGPS::reload() {}
+GlobeGPS::GlobeGPS(QWidget *parent)
+{
+	setText("MARBLE DISABLED AT BUILD TIME");
+}
+void GlobeGPS::repopulateLabels()
+{
+}
+void GlobeGPS::centerOnCurrentDive()
+{
+}
+bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
+{
+}
+void GlobeGPS::prepareForGetDiveCoordinates()
+{
+}
+void GlobeGPS::reload()
+{
+}
 #endif

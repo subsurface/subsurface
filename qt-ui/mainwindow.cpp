@@ -196,7 +196,7 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
-ProfileWidget2* MainWindow::graphics() const
+ProfileWidget2 *MainWindow::graphics() const
 {
 	return ui.newProfile;
 }
@@ -314,8 +314,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
 	CylindersModel::instance()->clear();
-	for_each_dive(i,dive) {
-		if(dive->selected){
+	for_each_dive (i, dive) {
+		if (dive->selected) {
 			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
 			CylindersModel::instance()->copyFromDive(dive);
 			break;
@@ -443,11 +443,11 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 		yearlyStats->setMinimumWidth(600);
 		yearlyStats->setWindowTitle(tr("Yearly Statistics"));
 		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
-		QShortcut* closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats);
+		QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
 		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
-		QShortcut* quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats);
+		QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats);
 		connect(quitKey, SIGNAL(activated()), this, SLOT(close()));
 	}
 	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
@@ -854,7 +854,7 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 		}
 	}
 
-	foreach(const QString & file, newFiles) {
+	foreach (const QString &file, newFiles) {
 		int index = files.indexOf(file);
 
 		if (index >= 0) {
@@ -862,7 +862,7 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 		}
 	}
 
-	foreach(const QString & file, newFiles) {
+	foreach (const QString &file, newFiles) {
 		if (QFile::exists(file)) {
 			files.prepend(file);
 		}
@@ -910,7 +910,7 @@ void MainWindow::removeRecentFile(QStringList failedFiles)
 		}
 	}
 
-	foreach(QString file, failedFiles)
+	foreach (QString file, failedFiles)
 		files.removeAll(file);
 
 	for (int c = 1; c <= 4; c++) {

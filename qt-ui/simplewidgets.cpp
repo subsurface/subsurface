@@ -171,10 +171,10 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 	}
 }
 
-void ShiftTimesDialog::showEvent(QShowEvent * event)
+void ShiftTimesDialog::showEvent(QShowEvent *event)
 {
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
-	when = get_times();//get time of first selected dive
+	when = get_times(); //get time of first selected dive
 	ui.currentTime->setText(get_dive_date_string(when));
 	ui.shiftedTime->setText(get_dive_date_string(when));
 }
@@ -187,7 +187,7 @@ void ShiftTimesDialog::changeTime()
 	if (ui.backwards->isChecked())
 		amount *= -1;
 
-	ui.shiftedTime->setText (get_dive_date_string(amount+when));
+	ui.shiftedTime->setText(get_dive_date_string(amount + when));
 }
 
 ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent)

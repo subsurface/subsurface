@@ -70,7 +70,7 @@ public:
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
-	bool isPointOutOfBoundaries(const QPointF& point) const;
+	bool isPointOutOfBoundaries(const QPointF &point) const;
 	State currentState;
 
 public

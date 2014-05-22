@@ -138,7 +138,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
-	Q_FOREACH (DiveCalculatedTissue * tissue, allTissues) {
+	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
 }
@@ -211,7 +211,7 @@ void ProfileWidget2::setupItemOnScene()
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
 	ITEM->setVisibilitySettingsKey(VISIBILITY_SETTINGS);                                                            \
 	ITEM->setColors(getColor(COLOR, isGrayscale), getColor(COLOR_ALERT, isGrayscale));                              \
-	ITEM->settingsChanged();                                                                                     \
+	ITEM->settingsChanged();                                                                                        \
 	ITEM->setZValue(99);
 
 	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
@@ -479,7 +479,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		event = event->next;
 	}
 	// Only set visible the events that should be visible
-	Q_FOREACH(DiveEventItem * event, eventItems) {
+	Q_FOREACH (DiveEventItem *event, eventItems) {
 		event->setVisible(!event->shouldBeHidden());
 		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds << "is hidden:" << event->isHidden();
 	}
@@ -649,10 +649,10 @@ void ProfileWidget2::setEmptyState()
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
-	Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
+	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		tissue->setVisible(false);
 	}
-	Q_FOREACH(DiveEventItem * event, eventItems) {
+	Q_FOREACH (DiveEventItem *event, eventItems) {
 		event->setVisible(false);
 	}
 }
@@ -711,7 +711,7 @@ void ProfileWidget2::setProfileState()
 	reportedCeiling->setVisible(prefs.dcceiling);
 
 	if (prefs.calcalltissues) {
-		Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
+		Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 			tissue->setVisible(true);
 		}
 	}
@@ -855,7 +855,7 @@ void ProfileWidget2::hideEvents()
 				}
 			}
 			Q_FOREACH (DiveEventItem *evItem, eventItems) {
-				if(same_string(evItem->getEvent()->name, event->name))
+				if (same_string(evItem->getEvent()->name, event->name))
 					evItem->hide();
 			}
 		} else {
@@ -880,8 +880,8 @@ void ProfileWidget2::removeEvent()
 	struct event *event = item->getEvent();
 
 	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
-							      tr("Remove the selected event?"),
-							      tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+								  tr("Remove the selected event?"),
+								  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		remove_event(event);
 		mark_divelist_changed(true);
@@ -953,9 +953,9 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
 
 	disconnect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-		this, SLOT(pointInserted(const QModelIndex &, int, int)));
+		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 }
 
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)

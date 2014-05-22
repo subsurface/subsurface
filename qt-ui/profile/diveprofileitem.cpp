@@ -156,7 +156,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 			if (!entry->in_deco) {
 				/* not in deco implies this is a safety stop, no ceiling */
 				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(0)));
-			} else{
+			} else {
 				p.append(QPointF(hAxis->posAtValue(entry->sec), vAxis->posAtValue(qMin(entry->stopdepth, entry->depth))));
 			}
 		}
@@ -489,7 +489,7 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	pen.setWidth(2);
 	struct dive *d = get_dive_by_uniq_id(dataModel->id());
 	struct plot_data *entry = dataModel->data().entry;
-	Q_FOREACH(const QPolygonF & poly, polygons) {
+	Q_FOREACH (const QPolygonF &poly, polygons) {
 		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
 			pen.setBrush(getSacColor(entry->sac, d->sac));
 			painter->setPen(pen);
@@ -682,9 +682,8 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 
 	QPolygonF poly;
 	painter->setPen(QPen(alertColor, pWidth));
-	Q_FOREACH(const QPolygonF & poly, alertPolygons)
+	Q_FOREACH (const QPolygonF &poly, alertPolygons)
 		painter->drawPolyline(poly);
-
 }
 
 void PartialPressureGasItem::setThreshouldSettingsKey(const QString &threshouldSettingsKey)

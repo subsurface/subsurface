@@ -10,7 +10,6 @@
 #define tr(_arg) QObject::tr(_arg)
 
 
-
 QString weight_string(int weight_in_grams)
 {
 	QString str;
@@ -87,39 +86,39 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		gpsStyle = ISO6709D;
 		regExp = QString("(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([NS%1%2])"
 				 "\\s*(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([EW%3%4])")
-				.arg(trHemisphere[0])
-				.arg(trHemisphere[1])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3]);
+				 .arg(trHemisphere[0])
+				 .arg(trHemisphere[1])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3]);
 	} else if (gps_text.count(QChar('"')) == 2) {
 		gpsStyle = SECONDS;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
 				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
-				.arg(trHemisphere[0])
-				.arg(trHemisphere[1])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3]);
+				 .arg(trHemisphere[0])
+				 .arg(trHemisphere[1])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3]);
 	} else if (gps_text.count(QChar('\'')) == 2) {
 		gpsStyle = MINUTES;
 		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
 				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
-				.arg(trHemisphere[0])
-				.arg(trHemisphere[1])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3]);
+				 .arg(trHemisphere[0])
+				 .arg(trHemisphere[1])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3]);
 	} else {
 		gpsStyle = DECIMAL;
 		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
-				.arg(trHemisphere[0])
-				.arg(trHemisphere[1])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3])
-				.arg(trHemisphere[2])
-				.arg(trHemisphere[3]);
+				 .arg(trHemisphere[0])
+				 .arg(trHemisphere[1])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3])
+				 .arg(trHemisphere[2])
+				 .arg(trHemisphere[3]);
 	}
 	QRegExp r(regExp);
 	if (r.indexIn(gps_text) != -1) {

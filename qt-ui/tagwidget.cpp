@@ -138,13 +138,13 @@ void TagWidget::reparse()
 	}
 }
 
-void TagWidget::completionSelected(const QString& completion)
+void TagWidget::completionSelected(const QString &completion)
 {
 	completionHighlighted(completion);
 	emit textChanged();
 }
 
-void TagWidget::completionHighlighted(const QString& completion)
+void TagWidget::completionHighlighted(const QString &completion)
 {
 	QPair<int, int> pos = getCursorTagPosition();
 	setText(text().remove(pos.first, pos.second - pos.first).insert(pos.first, completion));
@@ -158,7 +158,7 @@ void TagWidget::setCursorPosition(int position)
 	blockSignals(false);
 }
 
-void TagWidget::setText(const QString& text)
+void TagWidget::setText(const QString &text)
 {
 	blockSignals(true);
 	GroupedLineEdit::setText(text);
@@ -185,7 +185,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 			setText(text().remove(pos.first, pos.second - pos.first));
 			setCursorPosition(pos.first);
 		}
-		popup= m_completer->popup();
+		popup = m_completer->popup();
 		if (popup)
 			popup->hide();
 		return;
@@ -203,8 +203,8 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 		}
 		finishedTag = true;
 	}
-	if (e->key() == Qt::Key_Tab && lastFinishedTag) { // if we already end in comma, go to next/prev field
-		MainWindow::instance()->information()->nextInputField(e); // by sending the key event to the MainTab widget
+	if (e->key() == Qt::Key_Tab && lastFinishedTag) {		    // if we already end in comma, go to next/prev field
+		MainWindow::instance()->information()->nextInputField(e);   // by sending the key event to the MainTab widget
 	} else if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // otherwise let's pretend this is a comma instead
 		QKeyEvent fakeEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
 		GroupedLineEdit::keyPressEvent(&fakeEvent);

@@ -26,7 +26,7 @@
 
 static inline int same_string(const char *a, const char *b)
 {
-	return !strcmp(a ? : "", b ? : "");
+	return !strcmp(a ?: "", b ?: "");
 }
 
 #include <libxml/tree.h>
@@ -429,7 +429,7 @@ static inline struct dive *get_dive_by_uemis_diveid(uint32_t diveid, uint32_t de
 	int i;
 	struct dive *dive;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		struct divecomputer *dc = &dive->dc;
 		do {
 			if (dc->diveid == diveid && dc->deviceid == deviceid)
@@ -444,12 +444,12 @@ static inline struct dive *get_dive_by_uniq_id(int id)
 	int i;
 	struct dive *dive = NULL;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (dive->id == id)
 			break;
 	}
 #ifdef DEBUG
-	if(dive == NULL){
+	if (dive == NULL) {
 		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
 		exit(1);
 	}
@@ -462,12 +462,12 @@ static inline int get_idx_by_uniq_id(int id)
 	int i;
 	struct dive *dive = NULL;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (dive->id == id)
 			break;
 	}
 #ifdef DEBUG
-	if(dive == NULL){
+	if (dive == NULL) {
 		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
 		exit(1);
 	}
@@ -508,7 +508,7 @@ extern int export_dives_xslt(const char *filename, const bool selected, const ch
 
 struct git_oid;
 struct git_repository;
-#define dummy_git_repository ((git_repository *) 3ul) /* Random bogus pointer, not NULL */
+#define dummy_git_repository ((git_repository *)3ul) /* Random bogus pointer, not NULL */
 extern struct git_repository *is_git_repository(const char *filename, const char **branchp);
 extern int git_save_dives(struct git_repository *, const char *, bool select_only);
 extern int git_load_dives(struct git_repository *, const char *);
@@ -562,7 +562,7 @@ extern void copy_samples(struct dive *s, struct dive *d);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
-extern void remove_event(struct event* event);
+extern void remove_event(struct event *event);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
 extern int nr_cylinders(struct dive *dive);
@@ -693,7 +693,7 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 #define ascii_strtod(str, ptr) strtod_flags(str, ptr, STRTOD_ASCII)
 
 extern void set_save_userid_local(short value);
-extern void set_userid(char* user_id);
+extern void set_userid(char *user_id);
 
 #ifdef __cplusplus
 }
