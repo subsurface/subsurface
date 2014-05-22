@@ -48,7 +48,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	horizontalLine(new QGraphicsLineItem(fromPercent(0, Qt::Horizontal), fromPercent(0, Qt::Vertical), fromPercent(100, Qt::Horizontal), fromPercent(0, Qt::Vertical))),
 	activeDraggedHandler(0),
 	diveBg(new QGraphicsPolygonItem()),
-	timeLine(new Ruler()),
 	timeString(new QGraphicsSimpleTextItem()),
 	depthString(new QGraphicsSimpleTextItem()),
 	depthHandler(new ExpanderGraphics()),
@@ -67,36 +66,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 
 	horizontalLine->setPen(QPen(Qt::DotLine));
 	scene()->addItem(horizontalLine);
-
-	timeLine->setMinimum(0);
-	timeLine->setMaximum(TIME_INITIAL_MAX);
-	timeLine->setTickInterval(10);
-	timeLine->setColor(getColor(TIME_GRID));
-	timeLine->setLine(fromPercent(10, Qt::Horizontal),
-			  fromPercent(85, Qt::Vertical),
-			  fromPercent(90, Qt::Horizontal),
-			  fromPercent(85, Qt::Vertical));
-	timeLine->setOrientation(Qt::Horizontal);
-	timeLine->setTickSize(fromPercent(1, Qt::Vertical));
-	timeLine->setTextColor(getColor(TIME_TEXT));
-	timeLine->updateTicks();
-	scene()->addItem(timeLine);
-
-	depthLine = new Ruler();
-	depthLine->setMinimum(0);
-	depthLine->setMaximum(M_OR_FT(40, 120));
-	depthLine->setTickInterval(M_OR_FT(10, 30));
-	depthLine->setLine(fromPercent(10, Qt::Horizontal),
-			   fromPercent(10, Qt::Vertical),
-			   fromPercent(10, Qt::Horizontal),
-			   fromPercent(85, Qt::Vertical));
-	depthLine->setOrientation(Qt::Vertical);
-	depthLine->setTickSize(fromPercent(1, Qt::Horizontal));
-	depthLine->setColor(getColor(DEPTH_GRID));
-	depthLine->setTextColor(getColor(SAMPLE_DEEP));
-	depthLine->updateTicks();
-	depthLine->unitSystem = prefs.units.length;
-	scene()->addItem(depthLine);
 
 	timeString->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	timeString->setBrush(profile_color[TIME_TEXT].at(0));
@@ -155,31 +124,11 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 
 void DivePlannerGraphics::settingsChanged()
 {
-	if (depthLine->unitSystem == prefs.units.length)
-		return;
-
-	depthLine->setTickInterval(M_OR_FT(10, 30));
-	depthLine->updateTicks();
-	depthLine->unitSystem = prefs.units.length;
-}
-
-void DivePlannerGraphics::pointInserted(const QModelIndex &parent, int start, int end)
-{
-	DiveHandler *item = new DiveHandler();
-	scene()->addItem(item);
-	handles << item;
-
-	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
-	scene()->addItem(gasChooseBtn);
-	gasChooseBtn->setZValue(10);
-	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	gases << gasChooseBtn;
-	if (plannerModel->recalcQ())
-		drawProfile();
 }
 
 void DivePlannerGraphics::keyDownAction()
 {
+#if 0
 	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -191,10 +140,12 @@ void DivePlannerGraphics::keyDownAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+#endif
 }
 
 void DivePlannerGraphics::keyUpAction()
 {
+#if 0
 	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -208,10 +159,12 @@ void DivePlannerGraphics::keyUpAction()
 		}
 	}
 	drawProfile();
+#endif
 }
 
 void DivePlannerGraphics::keyLeftAction()
 {
+#if 0
 	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -237,10 +190,12 @@ void DivePlannerGraphics::keyLeftAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+#endif
 }
 
 void DivePlannerGraphics::keyRightAction()
 {
+#if 0
 	Q_FOREACH(QGraphicsItem * i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -265,10 +220,12 @@ void DivePlannerGraphics::keyRightAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+#endif
 }
 
 void DivePlannerGraphics::keyDeleteAction()
 {
+#if 0
 	int selCount = scene()->selectedItems().count();
 	if (selCount) {
 		QVector<int> selectedIndexes;
@@ -279,20 +236,9 @@ void DivePlannerGraphics::keyDeleteAction()
 		}
 		plannerModel->removeSelectedPoints(selectedIndexes);
 	}
+#endif
 }
 
-void DivePlannerGraphics::pointsRemoved(const QModelIndex &, int start, int end)
-{ // start and end are inclusive.
-	int num = (end - start) + 1;
-	for (int i = num; i != 0; i--) {
-		delete handles.back();
-		handles.pop_back();
-		delete gases.back();
-		gases.pop_back();
-	}
-	scene()->clearSelection();
-	drawProfile();
-}
 
 bool intLessThan(int a, int b)
 {
@@ -329,24 +275,29 @@ qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientatio
 
 void DivePlannerGraphics::increaseDepth()
 {
+#if 0
 	if (depthLine->maximum() + M_OR_FT(10, 30) > MAX_DEPTH)
 		return;
 	minDepth += M_OR_FT(10, 30);
 	depthLine->setMaximum(minDepth);
 	depthLine->updateTicks();
 	drawProfile();
+#endif
 }
 
 void DivePlannerGraphics::increaseTime()
 {
+#if 0
 	minMinutes += 10;
 	timeLine->setMaximum(minMinutes);
 	timeLine->updateTicks();
 	drawProfile();
+#endif
 }
 
 void DivePlannerGraphics::decreaseDepth()
 {
+#if 0
 	if (depthLine->maximum() - M_OR_FT(10, 30) < MIN_DEPTH)
 		return;
 
@@ -363,10 +314,12 @@ void DivePlannerGraphics::decreaseDepth()
 	depthLine->setMaximum(minDepth);
 	depthLine->updateTicks();
 	drawProfile();
+#endif
 }
 
 void DivePlannerGraphics::decreaseTime()
 {
+#if 0
 	if (timeLine->maximum() - 10 < TIME_INITIAL_MAX || timeLine->maximum() - 10 < dpMaxTime)
 		return;
 
@@ -374,17 +327,7 @@ void DivePlannerGraphics::decreaseTime()
 	timeLine->setMaximum(timeLine->maximum() - 10);
 	timeLine->updateTicks();
 	drawProfile();
-}
-
-void DivePlannerGraphics::mouseDoubleClickEvent(QMouseEvent *event)
-{
-	QPointF mappedPos = mapToScene(event->pos());
-	if (isPointOutOfBoundaries(mappedPos))
-		return;
-
-	int minutes = rint(timeLine->valueAt(mappedPos));
-	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	plannerModel->addStop(milimeters, minutes * 60, -1, 0, 0, true);
+#endif
 }
 
 void DivePlannerPointsModel::createSimpleDive()
@@ -465,85 +408,13 @@ void DivePlannerPointsModel::removeDeco()
 
 void DivePlannerGraphics::drawProfile()
 {
-	if (!plannerModel->recalcQ())
-		return;
-	qDeleteAll(lines);
-	lines.clear();
-
-	plannerModel->createTemporaryPlan();
-	struct diveplan diveplan = plannerModel->getDiveplan();
-	struct divedatapoint *dp = diveplan.dp;
-	unsigned int max_depth = 0;
-
-	if (!dp) {
-		plannerModel->deleteTemporaryPlan();
-		return;
-	}
-	//TODO: divedatapoint_list_get_max_depth on C - code?
-	while (dp->next) {
-		if (dp->time && dp->depth > max_depth)
-			max_depth = dp->depth;
-		dp = dp->next;
-	}
-
-	if (!activeDraggedHandler && (timeLine->maximum() < dp->time / 60.0 + 5 || dp->time / 60.0 + 15 < timeLine->maximum())) {
-		minMinutes = fmax(dp->time / 60.0 + 5, minMinutes);
-		timeLine->setMaximum(minMinutes);
-		timeLine->updateTicks();
-	}
-	if (!activeDraggedHandler && (depthLine->maximum() < max_depth + M_OR_FT(10, 30) || max_depth + M_OR_FT(10, 30) < depthLine->maximum())) {
-		minDepth = fmax(max_depth + M_OR_FT(10, 30), minDepth);
-		depthLine->setMaximum(minDepth);
-		depthLine->updateTicks();
-	}
-
-	// (re-) create the profile with different colors for segments that were
-	// entered vs. segments that were calculated
-	double lastx = timeLine->posAtValue(0);
-	double lasty = depthLine->posAtValue(0);
-
-	QPolygonF poly;
-	poly.append(QPointF(lastx, lasty));
-
+	// Code ported to the new profile is deleted. This part that I left here
+	// is because I didn't fully understood the reason of the magic with
+	// the plannerModel.
 	bool oldRecalc = plannerModel->setRecalc(false);
 	plannerModel->removeDeco();
-
-	unsigned int lastdepth = 0;
-	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
-		if (dp->time == 0) // magic entry for available tank
-			continue;
-		double xpos = timeLine->posAtValue(dp->time / 60.0);
-		double ypos = depthLine->posAtValue(dp->depth);
-		if (!dp->entered) {
-			QGraphicsLineItem *item = new QGraphicsLineItem(lastx, lasty, xpos, ypos);
-			item->setPen(QPen(QBrush(Qt::red), 0));
-
-			scene()->addItem(item);
-			lines << item;
-			if (dp->depth) {
-				if (dp->depth == lastdepth || dp->o2 != dp->next->o2 || dp->he != dp->next->he)
-					plannerModel->addStop(dp->depth, dp->time, dp->next->o2, dp->next->he, 0, false);
-				lastdepth = dp->depth;
-			}
-		}
-		lastx = xpos;
-		lasty = ypos;
-		poly.append(QPointF(lastx, lasty));
-	}
+	// Here we plotted the old planner profile. why there's the magic with the plannerModel here?
 	plannerModel->setRecalc(oldRecalc);
-
-	diveBg->setPolygon(poly);
-	QRectF b = poly.boundingRect();
-	QLinearGradient pat(
-	    b.x(),
-	    b.y(),
-	    b.x(),
-	    b.height() + b.y());
-
-	pat.setColorAt(1, profile_color[DEPTH_BOTTOM].first());
-	pat.setColorAt(0, profile_color[DEPTH_TOP].first());
-	diveBg->setBrush(pat);
-
 	plannerModel->deleteTemporaryPlan();
 }
 
@@ -559,11 +430,12 @@ void DivePlannerGraphics::showEvent(QShowEvent *event)
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
+
 void DivePlannerGraphics::mouseMoveEvent(QMouseEvent *event)
 {
 	QPointF mappedPos = mapToScene(event->pos());
 
-
+#if 0
 	double xpos = timeLine->valueAt(mappedPos);
 	double ypos = depthLine->valueAt(mappedPos);
 
@@ -605,10 +477,12 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent *event)
 		verticalLine->setPen(QPen(Qt::DotLine));
 		horizontalLine->setPen(QPen(Qt::DotLine));
 	}
+#endif
 }
 
 void DivePlannerGraphics::moveActiveHandler(const QPointF &mappedPos, const int pos)
 {
+#if 0
 	divedatapoint data = plannerModel->at(pos);
 	int mintime = 0, maxtime = (timeLine->maximum() + 10) * 60;
 	if (pos > 0)
@@ -633,20 +507,7 @@ void DivePlannerGraphics::moveActiveHandler(const QPointF &mappedPos, const int 
 	qDeleteAll(lines);
 	lines.clear();
 	drawProfile();
-}
-
-bool DivePlannerGraphics::isPointOutOfBoundaries(const QPointF &point)
-{
-	double xpos = timeLine->valueAt(point);
-	double ypos = depthLine->valueAt(point);
-
-	if (xpos > timeLine->maximum() ||
-	    xpos < timeLine->minimum() ||
-	    ypos > depthLine->maximum() ||
-	    ypos < depthLine->minimum()) {
-		return true;
-	}
-	return false;
+#endif
 }
 
 void DivePlannerGraphics::mousePressEvent(QMouseEvent *event)
@@ -741,154 +602,6 @@ void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	so, let's force a grab and release, to get rid of a warning. */
 	grabKeyboard();
 	ungrabKeyboard();
-}
-
-void Ruler::setMaximum(double maximum)
-{
-	max = maximum;
-}
-
-void Ruler::setMinimum(double minimum)
-{
-	min = minimum;
-}
-
-void Ruler::setTextColor(const QColor &color)
-{
-	textColor = color;
-}
-
-void Ruler::eraseAll()
-{
-	qDeleteAll(ticks);
-	ticks.clear();
-	qDeleteAll(labels);
-	labels.clear();
-}
-
-Ruler::Ruler() : unitSystem(0),
-	orientation(Qt::Horizontal),
-	min(0),
-	max(0),
-	interval(0),
-	tickSize(0)
-{
-}
-
-Ruler::~Ruler()
-{
-	eraseAll();
-}
-
-void Ruler::setOrientation(Qt::Orientation o)
-{
-	orientation = o;
-	// position the elements on the screen.
-	setMinimum(minimum());
-	setMaximum(maximum());
-}
-
-void Ruler::updateTicks()
-{
-	eraseAll();
-
-	QLineF m = line();
-	QGraphicsLineItem *item = NULL;
-	QGraphicsSimpleTextItem *label = NULL;
-
-	double steps = (max - min) / interval;
-	qreal pos;
-	double currValue = min;
-
-	if (orientation == Qt::Horizontal) {
-		double stepSize = (m.x2() - m.x1()) / steps;
-		for (pos = m.x1(); pos <= m.x2(); pos += stepSize, currValue += interval) {
-			item = new QGraphicsLineItem(pos, m.y1(), pos, m.y1() + tickSize, this);
-			item->setPen(pen());
-			ticks.push_back(item);
-
-			label = new QGraphicsSimpleTextItem(QString::number(currValue), this);
-			label->setBrush(QBrush(textColor));
-			label->setFlag(ItemIgnoresTransformations);
-			label->setPos(pos - label->boundingRect().width() / 2, m.y1() + tickSize + 5);
-			labels.push_back(label);
-		}
-	} else {
-		double stepSize = (m.y2() - m.y1()) / steps;
-		for (pos = m.y1(); pos <= m.y2(); pos += stepSize, currValue += interval) {
-			item = new QGraphicsLineItem(m.x1(), pos, m.x1() - tickSize, pos, this);
-			item->setPen(pen());
-			ticks.push_back(item);
-
-			label = new QGraphicsSimpleTextItem(get_depth_string(currValue, false, false), this);
-			label->setBrush(QBrush(textColor));
-			label->setFlag(ItemIgnoresTransformations);
-			label->setPos(m.x2() - 80, pos);
-			labels.push_back(label);
-		}
-	}
-}
-
-void Ruler::setTickSize(qreal size)
-{
-	tickSize = size;
-}
-
-void Ruler::setTickInterval(double i)
-{
-	interval = i;
-}
-
-qreal Ruler::valueAt(const QPointF &p)
-{
-	QLineF m = line();
-	double retValue = orientation == Qt::Horizontal ?
-			      max * (p.x() - m.x1()) / (m.x2() - m.x1()) :
-			      max * (p.y() - m.y1()) / (m.y2() - m.y1());
-	return retValue;
-}
-
-qreal Ruler::posAtValue(qreal value)
-{
-	QLineF m = line();
-	double size = max - min;
-	double percent = value / size;
-	double realSize = orientation == Qt::Horizontal ?
-			      m.x2() - m.x1() :
-			      m.y2() - m.y1();
-	double retValue = realSize * percent;
-	retValue = (orientation == Qt::Horizontal) ?
-		       retValue + m.x1() :
-		       retValue + m.y1();
-	return retValue;
-}
-
-qreal Ruler::percentAt(const QPointF &p)
-{
-	qreal value = valueAt(p);
-	double size = max - min;
-	double percent = value / size;
-	return percent;
-}
-
-double Ruler::maximum() const
-{
-	return max;
-}
-
-double Ruler::minimum() const
-{
-	return min;
-}
-
-void Ruler::setColor(const QColor &color)
-{
-	QPen defaultPen(color);
-	defaultPen.setJoinStyle(Qt::RoundJoin);
-	defaultPen.setCapStyle(Qt::RoundCap);
-	defaultPen.setWidth(2);
-	defaultPen.setCosmetic(true);
-	setPen(defaultPen);
 }
 
 Button::Button(QObject *parent, QGraphicsItem *itemParent) : QObject(parent),

@@ -150,45 +150,12 @@ slots:
 	void changeGas();
 };
 
-class Ruler : public QGraphicsLineItem {
-public:
-	Ruler();
-	~Ruler();
-	void setMinimum(double minimum);
-	void setMaximum(double maximum);
-	void setTickInterval(double interval);
-	void setOrientation(Qt::Orientation orientation);
-	void setTickSize(qreal size);
-	void updateTicks();
-	double minimum() const;
-	double maximum() const;
-	qreal valueAt(const QPointF &p);
-	qreal percentAt(const QPointF &p);
-	qreal posAtValue(qreal value);
-	void setColor(const QColor &color);
-	void setTextColor(const QColor &color);
-	int unitSystem;
-
-private:
-	void eraseAll();
-
-	Qt::Orientation orientation;
-	QList<QGraphicsLineItem *> ticks;
-	QList<QGraphicsSimpleTextItem *> labels;
-	double min;
-	double max;
-	double interval;
-	double tickSize;
-	QColor textColor;
-};
-
 class DivePlannerGraphics : public QGraphicsView {
 	Q_OBJECT
 public:
 	DivePlannerGraphics(QWidget *parent = 0);
 
 protected:
-	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 	virtual void showEvent(QShowEvent *event);
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -212,8 +179,6 @@ slots:
 	void decreaseTime();
 	void decreaseDepth();
 	void drawProfile();
-	void pointInserted(const QModelIndex &, int start, int end);
-	void pointsRemoved(const QModelIndex &, int start, int end);
 
 private:
 	void moveActiveHandler(const QPointF &MappedPos, const int pos);
@@ -240,11 +205,9 @@ private:
 	QGraphicsPolygonItem *diveBg;
 
 	/* This is the bottom ruler - the x axis, and it's associated text */
-	Ruler *timeLine;
 	QGraphicsSimpleTextItem *timeString;
 
 	/* this is the left ruler, the y axis, and it's associated text. */
-	Ruler *depthLine;
 	QGraphicsSimpleTextItem *depthString;
 
 	/* Buttons */
