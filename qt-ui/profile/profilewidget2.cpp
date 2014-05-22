@@ -138,7 +138,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
-	Q_FOREACH(DiveCalculatedTissue * tissue, allTissues) {
+	Q_FOREACH (DiveCalculatedTissue * tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
 }
@@ -343,6 +343,19 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	if (!d)
 		return;
 
+	//TODO: This is a temporary hack to help me understand the Planner.
+	// It seems that each time the 'createTemporaryPlan' runs, a new
+	// dive is created, and thus, we can plot that. hm...
+	if (currentState == ADD) {
+		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+		plannerModel->createTemporaryPlan();
+		if (!plannerModel->getDiveplan().dp) {
+			plannerModel->deleteTemporaryPlan();
+			return;
+		}
+	}
+	//END
+
 	int animSpeedBackup = -1;
 	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
 		animSpeedBackup = prefs.animation;
@@ -477,6 +490,12 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	diveComputerText->setText(dcText);
 	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
 		prefs.animation = animSpeedBackup;
+	}
+
+	if (currentState == ADD) { // TODO: figure a way to move this from here.
+		repositionDiveHandlers();
+		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+		model->deleteTemporaryPlan();
 	}
 }
 
@@ -644,11 +663,6 @@ void ProfileWidget2::setProfileState()
 	if (currentState == PROFILE)
 		return;
 
-	if (dive_table.nr == 0) { // oops, called to plot something with zero dives. bail out.
-		setEmptyState();
-		return;
-	}
-
 	disconnectTemporaryConnections();
 	currentState = PROFILE;
 	MainWindow::instance()->setToolButtonsEnabled(true);
@@ -709,7 +723,15 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
+	setProfileState();
 	disconnectTemporaryConnections();
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+		this, SLOT(pointInserted(const QModelIndex &, int, int)));
+	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::blue).light());
@@ -719,7 +741,7 @@ void ProfileWidget2::setPlanState()
 {
 	if (currentState == PLAN)
 		return;
-
+	setProfileState();
 	disconnectTemporaryConnections();
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
@@ -963,4 +985,25 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 	}
 	scene()->clearSelection();
 	replot();
+}
+
+void ProfileWidget2::repositionDiveHandlers()
+{
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	// Re-position the user generated dive handlers
+	int last = 0;
+	for (int i = 0; i < plannerModel->rowCount(); i++) {
+		struct divedatapoint datapoint = plannerModel->at(i);
+		if (datapoint.time == 0) // those are the magic entries for tanks
+			continue;
+		DiveHandler *h = handles.at(i);
+		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth));
+		QPointF p1 = (last == i) ? QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0)) : handles[last]->pos();
+		QPointF p2 = handles[i]->pos();
+		QLineF line(p1, p2);
+		QPointF pos = line.pointAt(0.5);
+		gases[i]->setPos(pos);
+		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
+		last = i;
+	}
 }

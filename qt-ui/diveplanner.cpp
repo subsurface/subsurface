@@ -150,13 +150,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
 
-	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(drawProfile()));
-	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(drawProfile()));
-
-	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-		this, SLOT(pointInserted(const QModelIndex &, int, int)));
-	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 	setRenderHint(QPainter::Antialiasing);
 }
 
@@ -502,23 +495,6 @@ void DivePlannerGraphics::drawProfile()
 		minDepth = fmax(max_depth + M_OR_FT(10, 30), minDepth);
 		depthLine->setMaximum(minDepth);
 		depthLine->updateTicks();
-	}
-
-	// Re-position the user generated dive handlers
-	int last = 0;
-	for (int i = 0; i < plannerModel->rowCount(); i++) {
-		struct divedatapoint datapoint = plannerModel->at(i);
-		if (datapoint.time == 0) // those are the magic entries for tanks
-			continue;
-		DiveHandler *h = handles.at(i);
-		h->setPos(timeLine->posAtValue(datapoint.time / 60), depthLine->posAtValue(datapoint.depth));
-		QPointF p1 = (last == i) ? QPointF(timeLine->posAtValue(0), depthLine->posAtValue(0)) : handles[last]->pos();
-		QPointF p2 = handles[i]->pos();
-		QLineF line(p1, p2);
-		QPointF pos = line.pointAt(0.5);
-		gases[i]->setPos(pos);
-		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
-		last = i;
 	}
 
 	// (re-) create the profile with different colors for segments that were
@@ -1379,7 +1355,7 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	endRemoveRows();
 }
 
-struct diveplan DivePlannerPointsModel::getDiveplan()
+struct diveplan& DivePlannerPointsModel::getDiveplan()
 {
 	return diveplan;
 }

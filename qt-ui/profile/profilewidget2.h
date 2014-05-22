@@ -145,6 +145,7 @@ private:
 	//specifics for ADD and PLAN
 	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
+	void repositionDiveHandlers();
 };
 
 #endif // PROFILEWIDGET2_H

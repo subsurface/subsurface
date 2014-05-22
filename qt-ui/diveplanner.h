@@ -55,7 +55,7 @@ public:
 	void editStop(int row, divedatapoint newData);
 	divedatapoint at(int row);
 	int size();
-	struct diveplan getDiveplan();
+	struct diveplan& getDiveplan();
 	QStringList &getGasList();
 	QVector<QPair<int, int> > collectGases(dive *d);
 	int lastEnteredPoint();
@@ -275,5 +275,8 @@ slots:
 private:
 	Ui::DivePlanner ui;
 };
+
+QString gasToStr(const int o2Permille, const int hePermille);
+QString dpGasToStr(const divedatapoint &p);
 
 #endif // DIVEPLANNER_H

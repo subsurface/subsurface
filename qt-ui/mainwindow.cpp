@@ -410,10 +410,11 @@ void MainWindow::on_actionAddDive_triggered()
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.InfoWidget->addDiveStarted();
 	ui.infoPane->setCurrentIndex(MAINTAB);
+
+	ui.newProfile->setAddState();
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
-	ui.newProfile->setAddState();
 }
 
 void MainWindow::on_actionRenumber_triggered()
