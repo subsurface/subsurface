@@ -80,7 +80,6 @@ slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
 	void restoreBackupDive();
-	void emitCylinderModelEdited();
 
 signals:
 	void planCreated();
