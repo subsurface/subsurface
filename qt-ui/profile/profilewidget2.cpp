@@ -606,6 +606,7 @@ void ProfileWidget2::setEmptyState()
 	if (currentState == EMPTY)
 		return;
 
+	disconnectTemporaryConnections();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
 	currentState = EMPTY;
@@ -648,6 +649,7 @@ void ProfileWidget2::setProfileState()
 		return;
 	}
 
+	disconnectTemporaryConnections();
 	currentState = PROFILE;
 	MainWindow::instance()->setToolButtonsEnabled(true);
 	toolTipItem->readPos();
@@ -707,6 +709,7 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
+	disconnectTemporaryConnections();
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::blue).light());
@@ -717,6 +720,7 @@ void ProfileWidget2::setPlanState()
 	if (currentState == PLAN)
 		return;
 
+	disconnectTemporaryConnections();
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::green).light());
@@ -918,6 +922,18 @@ void ProfileWidget2::editName()
 		remember_event(event->name);
 	}
 	replot();
+}
+
+void ProfileWidget2::disconnectTemporaryConnections()
+{
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	disconnect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
+	disconnect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+
+	disconnect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+		this, SLOT(pointInserted(const QModelIndex &, int, int)));
+	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 }
 
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)

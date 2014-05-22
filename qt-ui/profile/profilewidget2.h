@@ -67,7 +67,6 @@ public:
 
 	ProfileWidget2(QWidget *parent = 0);
 	void plotDives(QList<dive *> dives);
-	void replot();
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
@@ -90,6 +89,7 @@ slots: // Necessary to call from QAction's signals.
 	void makeFirstDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
+	void replot();
 
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
@@ -105,6 +105,8 @@ private: /*methods*/
 	void setupItemSizes();
 	void addItemsToScene();
 	void setupItemOnScene();
+	void disconnectTemporaryConnections();
+
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
