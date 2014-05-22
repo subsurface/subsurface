@@ -919,3 +919,32 @@ void ProfileWidget2::editName()
 	}
 	replot();
 }
+
+void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)
+{
+	DiveHandler *item = new DiveHandler();
+	scene()->addItem(item);
+	handles << item;
+
+	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
+	scene()->addItem(gasChooseBtn);
+	gasChooseBtn->setZValue(10);
+	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+	gases << gasChooseBtn;
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	if (plannerModel->recalcQ())
+		replot();
+}
+
+void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
+{ // start and end are inclusive.
+	int num = (end - start) + 1;
+	for (int i = num; i != 0; i--) {
+		delete handles.back();
+		handles.pop_back();
+		delete gases.back();
+		gases.pop_back();
+	}
+	scene()->clearSelection();
+	replot();
+}

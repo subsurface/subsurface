@@ -40,6 +40,9 @@ class DiveCalculatedTissue;
 class PartialPressureGasItem;
 class PartialGasPressureAxis;
 class AbstractProfilePolygonItem;
+class DiveHandler;
+class QGraphicsSimpleTextItem;
+class QModelIndex;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -85,6 +88,8 @@ slots: // Necessary to call from QAction's signals.
 	void removeEvent();
 	void editName();
 	void makeFirstDC();
+	void pointInserted(const QModelIndex &parent, int start, int end);
+	void pointsRemoved(const QModelIndex &, int start, int end);
 
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
@@ -100,7 +105,6 @@ private: /*methods*/
 	void setupItemSizes();
 	void addItemsToScene();
 	void setupItemOnScene();
-
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
@@ -135,6 +139,10 @@ private:
 	RulerItem2 *rulerItem;
 	bool isGrayscale;
 	bool printMode;
+
+	//specifics for ADD and PLAN
+	QList<DiveHandler *> handles;
+	QList<QGraphicsSimpleTextItem *> gases;
 };
 
 #endif // PROFILEWIDGET2_H
