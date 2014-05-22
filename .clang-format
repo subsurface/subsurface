@@ -10,6 +10,7 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ColumnLimit: 0
 IndentFunctionDeclarationAfterType: false #personal taste, good for long methods
 IndentWidth: 8
+ContinuationIndentWidth: 8
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
 SpaceBeforeAssignmentOperators: true
@@ -18,3 +19,4 @@ SpacesInParentheses: false
 SpacesBeforeTrailingComments: 1
 UseTab: Always
 PointerBindsToType: false
+# doesn't work, yet -> ForEachMacros: "Q_FOREACH"
