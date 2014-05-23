@@ -544,8 +544,7 @@ void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent *event)
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
 	setRect(-5, -5, 10, 10);
-	setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	setFlag(QGraphicsItem::ItemIsSelectable);
+	setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 	setBrush(Qt::white);
 	setZValue(2);
 }
@@ -587,21 +586,12 @@ void DiveHandler::changeGas()
 	plannerModel->setData(index, action->text());
 }
 
-void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent *event)
+QVariant DiveHandler::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-	if (event->button() != Qt::LeftButton)
-		return;
-
-	if (event->modifiers().testFlag(Qt::ControlModifier)) {
-		setSelected(true);
+	if (change == ItemPositionHasChanged && scene()) {
+		emit moved();
 	}
-	// mousePressEvent 'grabs' the mouse and keyboard, annoying.
-	ungrabMouse();
-
-	/* hack. Sometimes the keyboard is grabbed, sometime it's not,
-	so, let's force a grab and release, to get rid of a warning. */
-	grabKeyboard();
-	ungrabKeyboard();
+	return QGraphicsItem::itemChange(change, value);
 }
 
 Button::Button(QObject *parent, QGraphicsItem *itemParent) : QObject(parent),

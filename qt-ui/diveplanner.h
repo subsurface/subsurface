@@ -139,9 +139,10 @@ public:
 	DiveHandler();
 
 protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-
+	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+signals:
+	void moved();
 private:
 	int parentIndex();
 public
@@ -161,7 +162,6 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
-	bool isPointOutOfBoundaries(const QPointF &point);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 public
 slots:
