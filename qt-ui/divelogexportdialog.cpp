@@ -1,6 +1,9 @@
 #include <QFileDialog>
 #include <QString>
 #include <QShortcut>
+#include <QAbstractButton>
+#include <QDebug>
+#include <QButtonGroup>
 
 #include "mainwindow.h"
 #include "divelogexportdialog.h"
@@ -21,6 +24,19 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 DiveLogExportDialog::~DiveLogExportDialog()
 {
 	delete ui;
+}
+
+void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
+{
+	if (ui->exportUDDF->isChecked()) {
+		ui->description->setText("UDDF is a generic format that enables communication among many dive computers and computer programs");
+	} else if (ui->exportCSV->isChecked()) {
+		ui->description->setText("CSV format, that includes the most critical information of the dive profile.");
+	} else if (ui->exportDivelogs->isChecked()) {
+		ui->description->setText("Subsurface XML format. This is the native format used by Subsurface.");
+	} else if (ui->exportWorldMap->isChecked()) {
+		ui->description->setText("Export the currently open dive logbook locations in HTML format and draw these on a world map.");
+	}
 }
 
 void DiveLogExportDialog::on_buttonBox_accepted()

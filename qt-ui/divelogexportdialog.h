@@ -2,6 +2,7 @@
 #define DIVELOGEXPORTDIALOG_H
 
 #include <QDialog>
+#include <QAbstractButton>
 
 namespace Ui {
 	class DiveLogExportDialog;
@@ -17,6 +18,7 @@ public:
 private
 slots:
 	void on_buttonBox_accepted();
+	void on_exportGroup_buttonClicked(QAbstractButton *);
 
 private:
 	Ui::DiveLogExportDialog *ui;
