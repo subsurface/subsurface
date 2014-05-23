@@ -964,6 +964,7 @@ void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end
 	scene()->addItem(item);
 	handles << item;
 
+	connect(item, SIGNAL(moved()), this, SLOT(recreatePlannedDive()));
 	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
@@ -1006,4 +1007,27 @@ void ProfileWidget2::repositionDiveHandlers()
 		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
 		last = i;
 	}
+}
+
+void ProfileWidget2::recreatePlannedDive()
+{
+	DiveHandler *activeHandler = qobject_cast<DiveHandler*>(sender());
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	int index = handles.indexOf(activeHandler);
+
+	int mintime = 0, maxtime = (timeAxis->maximum() + 10) * 60;
+	if (index > 0)
+		mintime = plannerModel->at(index - 1).time;
+	if (index < plannerModel->size() - 1)
+		maxtime = plannerModel->at(index + 1).time;
+
+	int minutes = rint(timeAxis->valueAt(activeHandler->pos()) / 60);
+	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
+		return;
+
+	divedatapoint data = plannerModel->at(index);
+	data.depth = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);;
+	data.time = rint(timeAxis->valueAt(activeHandler->pos()));
+
+	plannerModel->editStop(index, data);
 }

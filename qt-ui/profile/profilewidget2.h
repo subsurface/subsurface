@@ -91,6 +91,9 @@ slots: // Necessary to call from QAction's signals.
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void replot();
 
+	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
+	void recreatePlannedDive();
+
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);

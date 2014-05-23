@@ -480,36 +480,6 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent *event)
 #endif
 }
 
-void DivePlannerGraphics::moveActiveHandler(const QPointF &mappedPos, const int pos)
-{
-#if 0
-	divedatapoint data = plannerModel->at(pos);
-	int mintime = 0, maxtime = (timeLine->maximum() + 10) * 60;
-	if (pos > 0)
-		mintime = plannerModel->at(pos - 1).time;
-	if (pos < plannerModel->size() - 1)
-		maxtime = plannerModel->at(pos + 1).time;
-
-	int minutes = rint(timeLine->valueAt(mappedPos));
-	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
-		return;
-
-	int milimeters = rint(depthLine->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	double xpos = timeLine->posAtValue(minutes);
-	double ypos = depthLine->posAtValue(milimeters);
-
-	data.depth = milimeters;
-	data.time = rint(timeLine->valueAt(mappedPos)) * 60;
-
-	plannerModel->editStop(pos, data);
-
-	activeDraggedHandler->setPos(QPointF(xpos, ypos));
-	qDeleteAll(lines);
-	lines.clear();
-	drawProfile();
-#endif
-}
-
 void DivePlannerGraphics::mousePressEvent(QMouseEvent *event)
 {
 	if (event->modifiers()) {
@@ -586,12 +556,13 @@ void DiveHandler::changeGas()
 	plannerModel->setData(index, action->text());
 }
 
-QVariant DiveHandler::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (change == ItemPositionHasChanged && scene()) {
-		emit moved();
-	}
-	return QGraphicsItem::itemChange(change, value);
+	ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
+	if(view->isPointOutOfBoundaries(event->scenePos()))
+		return;
+	QGraphicsEllipseItem::mouseMoveEvent(event);
+	emit moved();
 }
 
 Button::Button(QObject *parent, QGraphicsItem *itemParent) : QObject(parent),

@@ -140,7 +140,7 @@ public:
 
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 signals:
 	void moved();
 private:
