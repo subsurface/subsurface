@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
 #include "dive.h"
 #include "membuffer.h"
+#include "save-html.h"
 #include "worldmap-save.h"
 #include "worldmap-options.h"
 #include "gettext.h"
@@ -12,82 +14,6 @@ char *getGoogleApi()
 {
 	/* google maps api auth*/
 	return "https://maps.googleapis.com/maps/api/js?key=AIzaSyDzo9PWsqYDDSddVswg_13rpD9oH_dLuoQ";
-}
-
-void put_HTML_date(struct membuffer *b, struct dive *dive)
-{
-	struct tm tm;
-	utc_mkdate(dive->when, &tm);
-	put_format(b, "<p>%s: %04u-%02u-%02u</p>", translate("gettextFromC", "Date"), tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-	put_format(b, "<p>%s: %02u:%02u:%02u</p>", translate("gettextFromC", "Time"), tm.tm_hour, tm.tm_min, tm.tm_sec);
-}
-
-void put_HTML_temp(struct membuffer *b, struct dive *dive)
-{
-	const char *unit;
-	double value;
-
-	value = get_temp_units(dive->airtemp.mkelvin, &unit);
-	put_format(b, "<p>%s: %.1f %s</p>", translate("gettextFromC", "Air Temp"), value, unit);
-
-	value = get_temp_units(dive->watertemp.mkelvin, &unit);
-	put_format(b, "<p>%s: %.1f %s</p>", translate("gettextFromC", "Water Temp"), value, unit);
-}
-
-char *replace_char(char *str, char replace, char *replace_by)
-{
-	/*
-		this fumction can't replace a character with a substring
-		where the substring contains the character, infinte loop.
-	*/
-
-	if (!str)
-		return 0;
-
-	int i = 0, char_count = 0, new_size;
-
-	while (str[i] != '\0') {
-		if (str[i] == replace)
-			char_count++;
-		i++;
-	}
-
-	new_size = strlen(str) + char_count * strlen(replace_by) + 1;
-	char *result = malloc(new_size);
-	char *temp = strdup(str);
-	char *p0, *p1;
-	if (!result || !temp)
-		return 0;
-	result[0] = '\0';
-	p0 = temp;
-	p1 = strchr(temp, replace);
-	while (p1) {
-		*p1 = '\0';
-		strcat(result, p0);
-		strcat(result, replace_by);
-		p0 = p1 + 1;
-		p1 = strchr(p0, replace);
-	}
-	strcat(result, p0); /*concat the rest of the string*/
-	free(temp);
-	return result;
-}
-
-char *quote(char *string)
-{
-	char *new_line_removed = replace_char(string, '\n', "<br>");
-	char *single_quotes_removed = replace_char(new_line_removed, '\'', "&#39;");
-	free(new_line_removed);
-	return single_quotes_removed;
-}
-
-void put_HTML_notes(struct membuffer *b, struct dive *dive)
-{
-	if (dive->notes) {
-		char *notes = quote(dive->notes);
-		put_format(b, "<p>%s: %s </p>", translate("gettextFromC", "Notes"), notes);
-		free(notes);
-	}
 }
 
 void writeMarkers(struct membuffer *b, const bool selected_only)
@@ -106,12 +32,14 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_degrees(b, dive->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
 		put_degrees(b, dive->longitude, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
-		put_format(b, "<p><b>%s</b></p>", quote(dive->location));
-		put_HTML_date(b, dive);
+		put_HTML_date(b, dive, translate("gettextFromC", "<p>Date:"), "</p>");
+		put_HTML_time(b, dive, translate("gettextFromC", "<p>Time:"), "</p>");
 		put_duration(b, dive->duration, translate("gettextFromC", "<p>Duration: "), translate("gettextFromC", " min</p>"));
 		put_depth(b, dive->maxdepth, translate("gettextFromC", "<p>Max Depth: "), translate("gettextFromC", " m</p>"));
-		put_HTML_temp(b, dive);
-		put_HTML_notes(b, dive);
+		put_HTML_airtemp(b, dive, translate("gettextFromC", "<p>Air Temp: "), "</p>");
+		put_HTML_watertemp(b, dive,translate("gettextFromC", "<p>Water Temp : ") , "</p>");
+		put_format(b, "<p>Location : <b>%s</b></p>", quote(dive->location));
+		put_HTML_notes(b, dive, translate("gettextFromC", "<p> Notes"), " </p>");
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
 		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", dive_no, dive_no, dive_no);
 		put_format(b, ");google.maps.event.addListener(markers[%d], 'mouseout', function() {\ninfowindows[%d].close();});\n", dive_no, dive_no);

@@ -2,7 +2,6 @@
 #include <QString>
 #include <QShortcut>
 #include <QAbstractButton>
-#include <QDebug>
 #include <QSettings>
 
 #include "mainwindow.h"
@@ -10,6 +9,7 @@
 #include "ui_divelogexportdialog.h"
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
+#include "save-html.h"
 
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui(new Ui::DiveLogExportDialog)
@@ -39,6 +39,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText("HTML export of the dive locations, visualized on a world map.");
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
 		ui->description->setText("Subsurface native XML format.");
+	} else if (ui->exportHtml->isChecked()) {
+		ui->description->setText("Html export of dive list can be viewed in any web browser.");
 	}
 }
 
@@ -84,7 +86,13 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			QByteArray bt = QFile::encodeName(filename);
 			save_dives_logic(bt.data(), true);
 		}
+	} else if (ui->exportHtml->isChecked()) {
+		filename = QFileDialog::getSaveFileName(this, tr("Export HTML"), lastDir,
+							tr("HTML files (*.html)"));
+		if (!filename.isNull() && !filename.isEmpty())
+			export_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
 	}
+
 	if (!filename.isNull() && !filename.isEmpty()) {
 		// remember the last export path
 		QFileInfo fileInfo(filename);
