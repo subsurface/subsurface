@@ -535,17 +535,9 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 
 	dive_trip_t *trip_a = (dive_trip_t *)a.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	dive_trip_t *trip_b = (dive_trip_t *)b.data(DiveTripModel::TRIP_ROLE).value<void *>();
-	// TODO: merge_trip on the C code? some part of this needs to stay ( getting the trips from the model,
-	// but not the algorithm.
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
-
-	if (!trip_a->location && trip_b->location)
-		trip_a->location = strdup(trip_b->location);
-	if (!trip_a->notes && trip_b->notes)
-		trip_a->notes = strdup(trip_b->notes);
-	while (trip_b->dives)
-		add_dive_to_trip(trip_b->dives, trip_a);
+	combine_trips(trip_a, trip_b);
 	rememberSelection();
 	reload(currentLayout, false);
 	fixMessyQtModelBehaviour();

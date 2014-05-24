@@ -864,6 +864,25 @@ void select_dives_in_trip(struct dive_trip *trip)
 		select_dive(get_divenr(dive));
 }
 
+/* This only gets called with non-NULL trips.
+ * It does not combine notes or location, just picks the first one
+ * (or the second one if the first one is empty */
+void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
+{
+	if (same_string(trip_a->location, "") && trip_b->location) {
+		free(trip_a->location);
+		trip_a->location = strdup(trip_b->location);
+	}
+	if (same_string(trip_a->notes, "") && trip_b->notes) {
+		free(trip_a->notes);
+		trip_a->notes = strdup(trip_b->notes);
+	}
+	/* this also removes the dives from trip_b and eventually
+	 * calls delete_trip(trip_b) when the last dive has been moved */
+	while (trip_b->dives)
+		add_dive_to_trip(trip_b->dives, trip_a);
+}
+
 void mark_divelist_changed(int changed)
 {
 	dive_list_changed = changed;
