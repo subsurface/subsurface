@@ -59,10 +59,10 @@
   <widget class="QGroupBox" name="exportFormat">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>100</y>
-     <width>120</width>
-     <height>141</height>
+     <x>20</x>
+     <y>70</y>
+     <width>161</width>
+     <height>171</height>
     </rect>
    </property>
    <property name="title">
@@ -71,8 +71,8 @@
    <widget class="QRadioButton" name="exportUDDF">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>20</y>
+      <x>10</x>
+      <y>30</y>
       <width>110</width>
       <height>24</height>
      </rect>
@@ -90,14 +90,14 @@
    <widget class="QRadioButton" name="exportDivelogs">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>110</width>
+      <x>10</x>
+      <y>60</y>
+      <width>131</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>divelogs</string>
+     <string>divelogs.de</string>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">exportGroup</string>
@@ -106,8 +106,8 @@
    <widget class="QRadioButton" name="exportCSV">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>80</y>
+      <x>10</x>
+      <y>90</y>
       <width>110</width>
       <height>24</height>
      </rect>
@@ -122,8 +122,8 @@
    <widget class="QRadioButton" name="exportWorldMap">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>110</y>
+      <x>10</x>
+      <y>120</y>
       <width>110</width>
       <height>24</height>
      </rect>
@@ -140,9 +140,9 @@
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>100</y>
-     <width>151</width>
-     <height>80</height>
+     <y>70</y>
+     <width>191</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="title">
@@ -155,8 +155,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>131</width>
+      <y>30</y>
+      <width>151</width>
       <height>24</height>
      </rect>
     </property>
@@ -171,7 +171,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
+      <y>60</y>
       <width>110</width>
       <height>24</height>
      </rect>
@@ -197,10 +197,10 @@
   <widget class="QLabel" name="description">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>270</y>
-     <width>271</width>
-     <height>71</height>
+     <x>30</x>
+     <y>260</y>
+     <width>341</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="text">

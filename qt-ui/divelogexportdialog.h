@@ -22,6 +22,7 @@ slots:
 
 private:
 	Ui::DiveLogExportDialog *ui;
+	void showExplanation();
 };
 
 #endif // DIVELOGEXPORTDIALOG_H

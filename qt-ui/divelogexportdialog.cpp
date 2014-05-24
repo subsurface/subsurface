@@ -15,6 +15,7 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui(new Ui::DiveLogExportDialog)
 {
 	ui->setupUi(this);
+	showExplanation();
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -26,17 +27,22 @@ DiveLogExportDialog::~DiveLogExportDialog()
 	delete ui;
 }
 
-void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
+void DiveLogExportDialog::showExplanation()
 {
 	if (ui->exportUDDF->isChecked()) {
-		ui->description->setText("UDDF is a generic format that enables communication among many dive computers and computer programs");
+		ui->description->setText("Generic format that is used for data exchange between a variety of diving related programs.");
 	} else if (ui->exportCSV->isChecked()) {
-		ui->description->setText("CSV format, that includes the most critical information of the dive profile.");
+		ui->description->setText("Comma separated values that include the most relevant information of the dive profile.");
 	} else if (ui->exportDivelogs->isChecked()) {
-		ui->description->setText("Subsurface XML format. This is the native format used by Subsurface.");
+		ui->description->setText("Send the dive data to Divelogs.de website.");
 	} else if (ui->exportWorldMap->isChecked()) {
-		ui->description->setText("Export the currently open dive logbook locations in HTML format and draw these on a world map.");
+		ui->description->setText("HTML export of the dive locations, visualized on a world map.");
 	}
+}
+
+void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
+{
+	showExplanation();
 }
 
 void DiveLogExportDialog::on_buttonBox_accepted()
