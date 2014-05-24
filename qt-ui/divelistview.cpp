@@ -190,8 +190,13 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 void DiveListView::unselectDives()
 {
 	selectionModel()->clearSelection();
-	if (amount_selected != 0)
-		qDebug() << "selection information inconsistent";
+	// clearSelection should emit selectionChanged() but sometimes that
+	// appears not to happen
+	int i;
+	struct dive *dive;
+	for_each_dive(i, dive) {
+		deselect_dive(i);
+	}
 }
 
 QList<dive_trip_t *> DiveListView::selectedTrips()
