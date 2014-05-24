@@ -160,9 +160,6 @@ protected:
 	virtual void showEvent(QShowEvent *event);
 	virtual void resizeEvent(QResizeEvent *event);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
-public
-slots:
-	void settingsChanged();
 private
 slots:
 	void keyEscAction();
@@ -171,11 +168,6 @@ slots:
 	void keyDownAction();
 	void keyLeftAction();
 	void keyRightAction();
-	void increaseTime();
-	void increaseDepth();
-	void decreaseTime();
-	void decreaseDepth();
-	void drawProfile();
 
 private:
 	void moveActiveHandler(const QPointF &MappedPos, const int pos);

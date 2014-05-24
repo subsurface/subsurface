@@ -122,10 +122,6 @@ DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent
 	setRenderHint(QPainter::Antialiasing);
 }
 
-void DivePlannerGraphics::settingsChanged()
-{
-}
-
 void DivePlannerGraphics::keyDownAction()
 {
 #if 0
@@ -266,70 +262,6 @@ void DivePlannerGraphics::keyEscAction()
 		plannerModel->cancelPlan();
 }
 
-qreal DivePlannerGraphics::fromPercent(qreal percent, Qt::Orientation orientation)
-{
-	qreal total = orientation == Qt::Horizontal ? sceneRect().width() : sceneRect().height();
-	qreal result = (total * percent) / 100;
-	return result;
-}
-
-void DivePlannerGraphics::increaseDepth()
-{
-#if 0
-	if (depthLine->maximum() + M_OR_FT(10, 30) > MAX_DEPTH)
-		return;
-	minDepth += M_OR_FT(10, 30);
-	depthLine->setMaximum(minDepth);
-	depthLine->updateTicks();
-	drawProfile();
-#endif
-}
-
-void DivePlannerGraphics::increaseTime()
-{
-#if 0
-	minMinutes += 10;
-	timeLine->setMaximum(minMinutes);
-	timeLine->updateTicks();
-	drawProfile();
-#endif
-}
-
-void DivePlannerGraphics::decreaseDepth()
-{
-#if 0
-	if (depthLine->maximum() - M_OR_FT(10, 30) < MIN_DEPTH)
-		return;
-
-	Q_FOREACH (DiveHandler *d, handles) {
-		if (depthLine->valueAt(d->pos()) > depthLine->maximum() - M_OR_FT(10, 30)) {
-			QMessageBox::warning(MainWindow::instance(),
-					     tr("Handler Position Error"),
-					     tr("One or more of your stops will be lost with this operations, \n"
-						"Please, remove them first."));
-			return;
-		}
-	}
-	minDepth -= M_OR_FT(10, 30);
-	depthLine->setMaximum(minDepth);
-	depthLine->updateTicks();
-	drawProfile();
-#endif
-}
-
-void DivePlannerGraphics::decreaseTime()
-{
-#if 0
-	if (timeLine->maximum() - 10 < TIME_INITIAL_MAX || timeLine->maximum() - 10 < dpMaxTime)
-		return;
-
-	minMinutes -= 10;
-	timeLine->setMaximum(timeLine->maximum() - 10);
-	timeLine->updateTicks();
-	drawProfile();
-#endif
-}
-
 void DivePlannerPointsModel::createSimpleDive()
 {
 	//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
@@ -416,18 +348,6 @@ void DivePlannerGraphics::drawProfile()
 	// Here we plotted the old planner profile. why there's the magic with the plannerModel here?
 	plannerModel->setRecalc(oldRecalc);
 	plannerModel->deleteTemporaryPlan();
-}
-
-void DivePlannerGraphics::resizeEvent(QResizeEvent *event)
-{
-	QGraphicsView::resizeEvent(event);
-	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
-}
-
-void DivePlannerGraphics::showEvent(QShowEvent *event)
-{
-	QGraphicsView::showEvent(event);
-	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
