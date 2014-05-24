@@ -45,6 +45,7 @@ public:
 	bool isExpanded() const;
 	void persistPos();
 	void readPos();
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	void setTimeAxis(DiveCartesianAxis *axis);
 	void setPlotInfo(const plot_info &plot);
@@ -64,6 +65,8 @@ private:
 	DiveCartesianAxis *timeAxis;
 	plot_info pInfo;
 	int lastTime;
+
+	QList<QGraphicsItem*> oldSelection;
 };
 
 #endif // DIVETOOLTIPITEM_H

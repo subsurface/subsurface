@@ -1,5 +1,6 @@
 #include "divetooltipitem.h"
 #include "divecartesianaxis.h"
+#include "profilewidget2.h"
 #include "profile.h"
 #include "dive.h"
 #include "membuffer.h"
@@ -180,6 +181,9 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	persistPos();
 	QGraphicsPathItem::mouseReleaseEvent(event);
+	Q_FOREACH (QGraphicsItem *item, oldSelection) {
+		item->setSelected(true);
+	}
 }
 
 void ToolTipItem::persistPos()
@@ -230,4 +234,11 @@ void ToolTipItem::refresh(const QPointF &pos)
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}
+}
+
+void ToolTipItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	oldSelection = scene()->selectedItems();
+	scene()->clearSelection();
+	QGraphicsItem::mousePressEvent(event);
 }
