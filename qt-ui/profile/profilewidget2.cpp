@@ -1009,12 +1009,29 @@ void ProfileWidget2::repositionDiveHandlers()
 	}
 }
 
+int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
+{
+	int index = handles.indexOf(activeHandler);
+	if (index > 0 && index < handles.count() - 1) {
+		DiveHandler *before = handles[index - 1];
+		if (before->pos().x() > activeHandler->pos().x()) {
+			handles.swap(index, index-1);
+			return index - 1;
+		}
+		DiveHandler *after = handles[index + 1];
+		if (after->pos().x() < activeHandler->pos().x()) {
+			handles.swap(index, index+1);
+			return index + 1;
+		}
+	}
+	return index;
+}
+
 void ProfileWidget2::recreatePlannedDive()
 {
 	DiveHandler *activeHandler = qobject_cast<DiveHandler*>(sender());
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	int index = handles.indexOf(activeHandler);
-
+	int index = fixHandlerIndex(activeHandler);
 	int mintime = 0, maxtime = (timeAxis->maximum() + 10) * 60;
 	if (index > 0)
 		mintime = plannerModel->at(index - 1).time;

@@ -149,6 +149,7 @@ private:
 	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
 	void repositionDiveHandlers();
+	int fixHandlerIndex(DiveHandler *activeHandler);
 };
 
 #endif // PROFILEWIDGET2_H
