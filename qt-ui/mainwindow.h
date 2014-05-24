@@ -178,6 +178,4 @@ private:
 	UpdateManager *updateManager;
 };
 
-MainWindow *mainWindow();
-
 #endif // MAINWINDOW_H

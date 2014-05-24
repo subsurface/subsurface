@@ -125,12 +125,7 @@ public:
 	DivePlannerGraphics(QWidget *parent = 0);
 private
 slots:
-	void keyEscAction();
-	void keyDeleteAction();
-	void keyUpAction();
-	void keyDownAction();
-	void keyLeftAction();
-	void keyRightAction();
+
 };
 
 #include "ui_diveplanner.h"

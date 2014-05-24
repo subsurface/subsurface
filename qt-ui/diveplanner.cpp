@@ -45,136 +45,8 @@ static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance()
 
 DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent)
 {
-	QAction *action = NULL;
-#define ADD_ACTION(SHORTCUT, Slot)                      \
-	action = new QAction(this);                     \
-	action->setShortcut(SHORTCUT);                  \
-	action->setShortcutContext(Qt::WindowShortcut); \
-	addAction(action);                              \
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(Slot))
 
-	ADD_ACTION(Qt::Key_Escape, keyEscAction());
-	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
-	ADD_ACTION(Qt::Key_Up, keyUpAction());
-	ADD_ACTION(Qt::Key_Down, keyDownAction());
-	ADD_ACTION(Qt::Key_Left, keyLeftAction());
-	ADD_ACTION(Qt::Key_Right, keyRightAction());
-#undef ADD_ACTION
 }
-
-void DivePlannerGraphics::keyDownAction()
-{
-#if 0
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
-			divedatapoint dp = plannerModel->at(row);
-			if (dp.depth >= depthLine->maximum())
-				continue;
-
-			dp.depth += M_OR_FT(1, 5);
-			plannerModel->editStop(row, dp);
-		}
-	}
-#endif
-}
-
-void DivePlannerGraphics::keyUpAction()
-{
-#if 0
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
-			divedatapoint dp = plannerModel->at(row);
-
-			if (dp.depth <= 0)
-				continue;
-
-			dp.depth -= M_OR_FT(1, 5);
-			plannerModel->editStop(row, dp);
-		}
-	}
-	drawProfile();
-#endif
-}
-
-void DivePlannerGraphics::keyLeftAction()
-{
-#if 0
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
-			divedatapoint dp = plannerModel->at(row);
-
-			if (dp.time / 60 <= 0)
-				continue;
-
-			// don't overlap positions.
-			// maybe this is a good place for a 'goto'?
-			double xpos = timeLine->posAtValue((dp.time - 60) / 60);
-			bool nextStep = false;
-			Q_FOREACH (DiveHandler *h, handles) {
-				if (IS_FP_SAME(h->pos().x(), xpos)) {
-					nextStep = true;
-					break;
-				}
-			}
-			if (nextStep)
-				continue;
-
-			dp.time -= 60;
-			plannerModel->editStop(row, dp);
-		}
-	}
-#endif
-}
-
-void DivePlannerGraphics::keyRightAction()
-{
-#if 0
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
-			divedatapoint dp = plannerModel->at(row);
-			if (dp.time / 60 >= timeLine->maximum())
-				continue;
-
-			// don't overlap positions.
-			// maybe this is a good place for a 'goto'?
-			double xpos = timeLine->posAtValue((dp.time + 60) / 60);
-			bool nextStep = false;
-			Q_FOREACH (DiveHandler *h, handles) {
-				if (IS_FP_SAME(h->pos().x(), xpos)) {
-					nextStep = true;
-					break;
-				}
-			}
-			if (nextStep)
-				continue;
-
-			dp.time += 60;
-			plannerModel->editStop(row, dp);
-		}
-	}
-#endif
-}
-
-void DivePlannerGraphics::keyDeleteAction()
-{
-#if 0
-	int selCount = scene()->selectedItems().count();
-	if (selCount) {
-		QVector<int> selectedIndexes;
-		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-				selectedIndexes.push_back(handles.indexOf(handler));
-			}
-		}
-		plannerModel->removeSelectedPoints(selectedIndexes);
-	}
-#endif
-}
-
 
 bool intLessThan(int a, int b)
 {
@@ -190,16 +62,6 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.remove(v2[i]);
 	}
 	endRemoveRows();
-}
-
-void DivePlannerGraphics::keyEscAction()
-{
-	if (scene()->selectedItems().count()) {
-		scene()->clearSelection();
-		return;
-	}
-	if (DivePlannerPointsModel::instance()->isPlanner())
-		plannerModel->cancelPlan();
 }
 
 void DivePlannerPointsModel::createSimpleDive()

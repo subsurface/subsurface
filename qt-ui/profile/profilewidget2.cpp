@@ -99,6 +99,23 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	setEmptyState();
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 
+	QAction *action = NULL;
+#define ADD_ACTION(SHORTCUT, Slot)                                  \
+	action = new QAction(this);                                 \
+	action->setShortcut(SHORTCUT);                              \
+	action->setShortcutContext(Qt::WindowShortcut);             \
+	addAction(action);                                          \
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(Slot)); \
+	actionsForKeys[SHORTCUT] = action;
+
+	ADD_ACTION(Qt::Key_Escape, keyEscAction());
+	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
+	ADD_ACTION(Qt::Key_Up, keyUpAction());
+	ADD_ACTION(Qt::Key_Down, keyDownAction());
+	ADD_ACTION(Qt::Key_Left, keyLeftAction());
+	ADD_ACTION(Qt::Key_Right, keyRightAction());
+#undef ADD_ACTION
+
 #ifndef QT_NO_DEBUG
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
@@ -664,6 +681,9 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	disconnectTemporaryConnections();
+	//TODO: Move the DC handling to another method.
+	MainWindow::instance()->enableDcShortcuts();
+
 	currentState = PROFILE;
 	MainWindow::instance()->setToolButtonsEnabled(true);
 	toolTipItem->readPos();
@@ -725,6 +745,15 @@ void ProfileWidget2::setAddState()
 
 	setProfileState();
 	disconnectTemporaryConnections();
+	//TODO: Move this method to another place, shouldn't be on mainwindow.
+	MainWindow::instance()->disableDcShortcuts();
+	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
+	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
+	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
+	actionsForKeys[Qt::Key_Down]->setShortcut(Qt::Key_Down);
+	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
+	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
+
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
 	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
@@ -956,6 +985,11 @@ void ProfileWidget2::disconnectTemporaryConnections()
 		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+
+
+	Q_FOREACH (QAction *action, actionsForKeys.values()) {
+		action->setShortcut(QKeySequence());
+	}
 }
 
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)
@@ -1015,12 +1049,12 @@ int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
 	if (index > 0 && index < handles.count() - 1) {
 		DiveHandler *before = handles[index - 1];
 		if (before->pos().x() > activeHandler->pos().x()) {
-			handles.swap(index, index-1);
+			handles.swap(index, index - 1);
 			return index - 1;
 		}
 		DiveHandler *after = handles[index + 1];
 		if (after->pos().x() < activeHandler->pos().x()) {
-			handles.swap(index, index+1);
+			handles.swap(index, index + 1);
 			return index + 1;
 		}
 	}
@@ -1029,7 +1063,7 @@ int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
 
 void ProfileWidget2::recreatePlannedDive()
 {
-	DiveHandler *activeHandler = qobject_cast<DiveHandler*>(sender());
+	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int index = fixHandlerIndex(activeHandler);
 	int mintime = 0, maxtime = (timeAxis->maximum() + 10) * 60;
@@ -1043,8 +1077,145 @@ void ProfileWidget2::recreatePlannedDive()
 		return;
 
 	divedatapoint data = plannerModel->at(index);
-	data.depth = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);;
+	data.depth = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 	data.time = rint(timeAxis->valueAt(activeHandler->pos()));
 
 	plannerModel->editStop(index, data);
+}
+
+void ProfileWidget2::keyDownAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+			if (dp.depth >= profileYAxis->maximum())
+				continue;
+
+			dp.depth += M_OR_FT(1, 5);
+			plannerModel->editStop(row, dp);
+		}
+	}
+}
+
+void ProfileWidget2::keyUpAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+
+			if (dp.depth <= 0)
+				continue;
+
+			dp.depth -= M_OR_FT(1, 5);
+			plannerModel->editStop(row, dp);
+		}
+	}
+}
+
+void ProfileWidget2::keyLeftAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+
+			if (dp.time / 60 <= 0)
+				continue;
+
+			// don't overlap positions.
+			// maybe this is a good place for a 'goto'?
+			double xpos = timeAxis->posAtValue((dp.time - 60) / 60);
+			bool nextStep = false;
+			Q_FOREACH (DiveHandler *h, handles) {
+				if (IS_FP_SAME(h->pos().x(), xpos)) {
+					nextStep = true;
+					break;
+				}
+			}
+			if (nextStep)
+				continue;
+
+			dp.time -= 60;
+			plannerModel->editStop(row, dp);
+		}
+	}
+}
+
+void ProfileWidget2::keyRightAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+			int row = handles.indexOf(handler);
+			divedatapoint dp = plannerModel->at(row);
+			if (dp.time / 60 >= timeAxis->maximum())
+				continue;
+
+			// don't overlap positions.
+			// maybe this is a good place for a 'goto'?
+			double xpos = timeAxis->posAtValue((dp.time + 60) / 60);
+			bool nextStep = false;
+			Q_FOREACH (DiveHandler *h, handles) {
+				if (IS_FP_SAME(h->pos().x(), xpos)) {
+					nextStep = true;
+					break;
+				}
+			}
+			if (nextStep)
+				continue;
+
+			dp.time += 60;
+			plannerModel->editStop(row, dp);
+		}
+	}
+}
+
+void ProfileWidget2::keyDeleteAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	int selCount = scene()->selectedItems().count();
+	if (selCount) {
+		QVector<int> selectedIndexes;
+		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+				selectedIndexes.push_back(handles.indexOf(handler));
+			}
+		}
+		plannerModel->removeSelectedPoints(selectedIndexes);
+	}
+}
+
+void ProfileWidget2::keyEscAction()
+{
+	if (currentState != ADD && currentState != PLAN)
+		return;
+
+	if (scene()->selectedItems().count()) {
+		scene()->clearSelection();
+		return;
+	}
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	if (plannerModel->isPlanner())
+		plannerModel->cancelPlan();
 }

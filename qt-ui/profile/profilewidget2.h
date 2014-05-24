@@ -94,6 +94,14 @@ slots: // Necessary to call from QAction's signals.
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
 
+	/* key press handlers */
+	void keyEscAction();
+	void keyDeleteAction();
+	void keyUpAction();
+	void keyDownAction();
+	void keyLeftAction();
+	void keyRightAction();
+
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
@@ -151,6 +159,7 @@ private:
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;
+	QHash<Qt::Key, QAction *> actionsForKeys;
 };
 
 #endif // PROFILEWIDGET2_H
