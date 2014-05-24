@@ -775,8 +775,6 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
 		popup.addAction(tr("renumber dive(s)"), this, SLOT(renumberDives()));
-		popup.addAction(tr("save As"), this, SLOT(saveSelectedDivesAs()));
-		popup.addAction(tr("export dive log"), this, SLOT(exportDives()));
 		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("load images"), this, SLOT(loadImages()));
 	}
@@ -790,39 +788,6 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		this->setAnimated(true);
 	}
 	event->accept();
-}
-
-void DiveListView::saveSelectedDivesAs()
-{
-	QSettings settings;
-	QString lastDir = QDir::homePath();
-
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir")) {
-		if (QDir::setCurrent(settings.value("LastDir").toString())) {
-			lastDir = settings.value("LastDir").toString();
-		}
-	}
-	settings.endGroup();
-
-	QString fileName = QFileDialog::getSaveFileName(MainWindow::instance(), tr("Save Dives As..."), QDir::homePath());
-	if (fileName.isEmpty())
-		return;
-
-	// Keep last open dir
-	QFileInfo fileInfo(fileName);
-	settings.beginGroup("FileDialog");
-	settings.setValue("LastDir", fileInfo.dir().path());
-	settings.endGroup();
-
-	QByteArray bt = QFile::encodeName(fileName);
-	save_dives_logic(bt.data(), true);
-}
-
-void DiveListView::exportDives()
-{
-	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog();
-	diveLogExport->show();
 }
 
 void DiveListView::shiftTimes()

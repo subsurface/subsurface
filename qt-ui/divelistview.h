@@ -49,8 +49,6 @@ slots:
 	void addToTripBelow();
 	void mergeDives();
 	void renumberDives();
-	void saveSelectedDivesAs();
-	void exportDives();
 	void shiftTimes();
 	void loadImages();
 	static QString lastUsedImageDir();
