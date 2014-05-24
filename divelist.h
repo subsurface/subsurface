@@ -30,6 +30,8 @@ extern struct dive *merge_two_dives(struct dive *a, struct dive *b);
 extern bool consecutive_selected();
 extern void select_dive(int idx);
 extern void deselect_dive(int idx);
+extern void select_dives_in_trip(struct dive_trip *trip);
+extern void deselect_dives_in_trip(struct dive_trip *trip);
 extern void find_new_trip_start_time(dive_trip_t *trip);
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();

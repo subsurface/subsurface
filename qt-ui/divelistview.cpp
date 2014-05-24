@@ -455,18 +455,10 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			continue;
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
-		if (!dive) { // it's a trip!
-			//TODO: deselect_trip_dives on c-code?
-			if (model->rowCount(index)) {
-				struct dive *child = (struct dive *)model->data(index.child(0, 0), DiveTripModel::DIVE_ROLE).value<void *>();
-				while (child) {
-					deselect_dive(get_divenr(child));
-					child = child->next;
-				}
-			}
-		} else {
+		if (!dive) // it's a trip!
+			deselect_dives_in_trip((dive_trip_t *)model->data(index, DiveTripModel::TRIP_ROLE).value<void *>());
+		else
 			deselect_dive(get_divenr(dive));
-		}
 	}
 	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
 		if (index.column() != 0)
@@ -475,14 +467,9 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
 		if (!dive) { // it's a trip!
-			//TODO: select_trip_dives on C code?
 			if (model->rowCount(index)) {
 				QItemSelection selection;
-				struct dive *child = (struct dive *)model->data(index.child(0, 0), DiveTripModel::DIVE_ROLE).value<void *>();
-				while (child) {
-					select_dive(get_divenr(child));
-					child = child->next;
-				}
+				select_dives_in_trip((dive_trip_t *)model->data(index, DiveTripModel::TRIP_ROLE).value<void *>());
 				selection.select(index.child(0, 0), index.child(model->rowCount(index) - 1, 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);

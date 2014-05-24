@@ -846,6 +846,24 @@ void deselect_dive(int idx)
 	}
 }
 
+void deselect_dives_in_trip(struct dive_trip *trip)
+{
+	struct dive *dive;
+	if (!trip)
+		return;
+	for (dive = trip->dives; dive; dive = dive->next)
+		deselect_dive(get_divenr(dive));
+}
+
+void select_dives_in_trip(struct dive_trip *trip)
+{
+	struct dive *dive;
+	if (!trip)
+		return;
+	for (dive = trip->dives; dive; dive = dive->next)
+		select_dive(get_divenr(dive));
+}
+
 void mark_divelist_changed(int changed)
 {
 	dive_list_changed = changed;
