@@ -150,6 +150,7 @@ private:
 	QList<QGraphicsSimpleTextItem *> gases;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
+	friend class DiveHandler;
 };
 
 #endif // PROFILEWIDGET2_H

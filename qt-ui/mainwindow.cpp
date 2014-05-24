@@ -68,7 +68,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlanner, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
 	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
@@ -86,9 +85,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.globe->reload();
 	ui.ListWidget->expand(ui.ListWidget->model()->index(0, 0));
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
-	ui.divePlanner->settingsChanged();
 	ui.divePlannerWidget->settingsChanged();
-
 
 #ifndef ENABLE_PLANNER
 	ui.menuLog->removeAction(ui.actionDivePlanner);

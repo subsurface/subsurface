@@ -101,38 +101,6 @@ private:
 	QVector<QPair<int, int> > oldGases;
 };
 
-class Button : public QObject, public QGraphicsRectItem {
-	Q_OBJECT
-public:
-	Button(QObject *parent = 0, QGraphicsItem *itemParent = 0);
-	void setText(const QString &text);
-	void setPixmap(const QPixmap &pixmap);
-
-protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-signals:
-	void clicked();
-
-private:
-	QGraphicsPixmapItem *icon;
-	QGraphicsSimpleTextItem *text;
-};
-
-
-class ExpanderGraphics : public QGraphicsRectItem {
-public:
-	ExpanderGraphics(QGraphicsItem *parent = 0);
-
-	QGraphicsPixmapItem *icon;
-	Button *increaseBtn;
-	Button *decreaseBtn;
-
-private:
-	QGraphicsPixmapItem *bg;
-	QGraphicsPixmapItem *leftWing;
-	QGraphicsPixmapItem *rightWing;
-};
-
 class DiveHandler : public QObject, public QGraphicsEllipseItem {
 	Q_OBJECT
 public:
@@ -155,11 +123,6 @@ class DivePlannerGraphics : public QGraphicsView {
 	Q_OBJECT
 public:
 	DivePlannerGraphics(QWidget *parent = 0);
-
-protected:
-	virtual void showEvent(QShowEvent *event);
-	virtual void resizeEvent(QResizeEvent *event);
-	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 private
 slots:
 	void keyEscAction();
@@ -168,46 +131,6 @@ slots:
 	void keyDownAction();
 	void keyLeftAction();
 	void keyRightAction();
-
-private:
-	void moveActiveHandler(const QPointF &MappedPos, const int pos);
-
-	/* This are the lines of the plotted dive. */
-	QList<QGraphicsLineItem *> lines;
-
-	/* This is the user-entered handles. */
-	QList<DiveHandler *> handles;
-	QList<QGraphicsSimpleTextItem *> gases;
-
-	/* those are the lines that follows the mouse. */
-	QGraphicsLineItem *verticalLine;
-	QGraphicsLineItem *horizontalLine;
-
-	/* This is the handler that's being dragged. */
-	DiveHandler *activeDraggedHandler;
-
-	// When we start to move the handler, this pos is saved.
-	// so we can revert it later.
-	QPointF originalHandlerPos;
-
-	/* this is the background of the dive, the blue-gradient. */
-	QGraphicsPolygonItem *diveBg;
-
-	/* This is the bottom ruler - the x axis, and it's associated text */
-	QGraphicsSimpleTextItem *timeString;
-
-	/* this is the left ruler, the y axis, and it's associated text. */
-	QGraphicsSimpleTextItem *depthString;
-
-	/* Buttons */
-	ExpanderGraphics *depthHandler;
-	ExpanderGraphics *timeHandler;
-
-	int minMinutes; // this holds the minimum requested window time
-	int minDepth;   // this holds the minimum requested window depth
-	int dpMaxTime;  // this is the time of the dive calculated by the deco.
-
-	friend class DiveHandler;
 };
 
 #include "ui_diveplanner.h"
