@@ -430,56 +430,6 @@ void DivePlannerGraphics::showEvent(QShowEvent *event)
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 }
 
-
-void DivePlannerGraphics::mouseMoveEvent(QMouseEvent *event)
-{
-	QPointF mappedPos = mapToScene(event->pos());
-
-#if 0
-	double xpos = timeLine->valueAt(mappedPos);
-	double ypos = depthLine->valueAt(mappedPos);
-
-	xpos = (xpos > timeLine->maximum()) ? timeLine->posAtValue(timeLine->maximum()) : (xpos < timeLine->minimum()) ? timeLine->posAtValue(timeLine->minimum()) : timeLine->posAtValue(xpos);
-
-	ypos = (ypos > depthLine->maximum()) ? depthLine->posAtValue(depthLine->maximum()) : (ypos < depthLine->minimum()) ? depthLine->posAtValue(depthLine->minimum()) : depthLine->posAtValue(ypos);
-
-	verticalLine->setPos(xpos, fromPercent(0, Qt::Vertical));
-	horizontalLine->setPos(fromPercent(0, Qt::Horizontal), ypos);
-
-	depthString->setPos(fromPercent(1, Qt::Horizontal), ypos);
-	timeString->setPos(xpos + 1, fromPercent(95, Qt::Vertical));
-
-	if (isPointOutOfBoundaries(mappedPos))
-		return;
-
-	depthString->setText(get_depth_string(depthLine->valueAt(mappedPos), true, false));
-	timeString->setText(QString::number(rint(timeLine->valueAt(mappedPos))) + "min");
-
-	// calculate the correct color for the depthString.
-	// QGradient doesn't returns it's interpolation, meh.
-	double percent = depthLine->percentAt(mappedPos);
-	QColor &startColor = profile_color[SAMPLE_SHALLOW].first();
-	QColor &endColor = profile_color[SAMPLE_DEEP].first();
-	short redDelta = (endColor.red() - startColor.red()) * percent + startColor.red();
-	short greenDelta = (endColor.green() - startColor.green()) * percent + startColor.green();
-	short blueDelta = (endColor.blue() - startColor.blue()) * percent + startColor.blue();
-	depthString->setBrush(QColor(redDelta, greenDelta, blueDelta));
-
-	if (activeDraggedHandler)
-		moveActiveHandler(mappedPos, handles.indexOf(activeDraggedHandler));
-	if (!handles.count())
-		return;
-
-	if (handles.last()->x() > mappedPos.x()) {
-		verticalLine->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-		horizontalLine->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-	} else {
-		verticalLine->setPen(QPen(Qt::DotLine));
-		horizontalLine->setPen(QPen(Qt::DotLine));
-	}
-#endif
-}
-
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
 	setRect(-5, -5, 10, 10);

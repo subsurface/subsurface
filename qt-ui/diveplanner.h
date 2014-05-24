@@ -159,7 +159,6 @@ public:
 protected:
 	virtual void showEvent(QShowEvent *event);
 	virtual void resizeEvent(QResizeEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
 	qreal fromPercent(qreal percent, Qt::Orientation orientation);
 public
 slots:
