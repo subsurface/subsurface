@@ -578,6 +578,44 @@ void find_new_trip_start_time(dive_trip_t *trip)
 	trip->when = when;
 }
 
+/* check if we have a trip right before / after this dive */
+bool is_trip_before_after(struct dive *dive, bool before)
+{
+	int idx = get_idx_by_uniq_id(dive->id);
+	if (before) {
+		if (idx > 0 && get_dive(idx - 1)->divetrip)
+			return true;
+	} else {
+		if (idx < dive_table.nr - 1 && get_dive(idx + 1)->divetrip)
+			return true;
+	}
+	return false;
+}
+
+struct dive *first_selected_dive()
+{
+	int idx;
+	struct dive *d;
+
+	for_each_dive (idx, d) {
+		if (d->selected)
+			return d;
+	}
+	return NULL;
+}
+
+struct dive *last_selected_dive()
+{
+	int idx;
+	struct dive *d, *ret = NULL;
+
+	for_each_dive (idx, d) {
+		if (d->selected)
+			ret = d;
+	}
+	return ret;
+}
+
 void remove_dive_from_trip(struct dive *dive, short was_autogen)
 {
 	struct dive *next, **pprev;

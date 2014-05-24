@@ -634,18 +634,10 @@ void DiveListView::addToTrip(bool below)
 
 	if (d->selected) { // we are right-clicking on one of possibly many selected dive(s)
 		// find the top selected dive, depending on the list order
-		if (delta == 1) {
-			for_each_dive (idx, d) {
-				if (d->selected)
-					pd = d;
-			}
-			d = pd; // this way we have the chronologically last
-		} else {
-			for_each_dive (idx, d) {
-				if (d->selected)
-					break; // now that's the chronologically first
-			}
-		}
+		if (delta == 1)
+			d = last_selected_dive();
+		else
+			d = first_selected_dive();
 	}
 	// now find the trip "above" in the dive list
 	if ((pd = get_dive(get_divenr(d) + delta)) != NULL) {
@@ -757,8 +749,12 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		if (d) {
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
-			popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
-			popup.addAction(tr("add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
+			if (!d->divetrip) {
+				if (is_trip_before_after(d, (currentOrder == Qt::AscendingOrder)))
+					popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
+				if (is_trip_before_after(d, (currentOrder == Qt::DescendingOrder)))
+					popup.addAction(tr("add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
+			}
 		}
 		if (trip) {
 			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));
