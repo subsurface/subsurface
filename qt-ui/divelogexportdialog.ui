@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>419</height>
+    <width>448</width>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>360</y>
+     <y>420</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -61,8 +61,8 @@
     <rect>
      <x>20</x>
      <y>70</y>
-     <width>161</width>
-     <height>171</height>
+     <width>201</width>
+     <height>211</height>
     </rect>
    </property>
    <property name="title">
@@ -72,16 +72,22 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>70</y>
       <width>110</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>110</width>
+      <height>16777215</height>
+     </size>
     </property>
     <property name="text">
      <string>UDDF</string>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">exportGroup</string>
@@ -91,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>100</y>
       <width>131</width>
       <height>24</height>
      </rect>
@@ -107,7 +113,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
+      <y>130</y>
       <width>110</width>
       <height>24</height>
      </rect>
@@ -123,8 +129,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
-      <width>110</width>
+      <y>160</y>
+      <width>171</width>
       <height>24</height>
      </rect>
     </property>
@@ -135,11 +141,36 @@
      <string notr="true">exportGroup</string>
     </attribute>
    </widget>
+   <widget class="QRadioButton" name="exportSubsurfaceXML">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>171</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Subsurface XML</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">exportGroup</string>
+    </attribute>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="exportSelection">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>240</x>
      <y>70</y>
      <width>191</width>
      <height>141</height>
@@ -185,7 +216,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>240</y>
+     <y>280</y>
      <width>231</width>
      <height>16</height>
     </rect>
@@ -198,7 +229,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>260</y>
+     <y>310</y>
      <width>341</width>
      <height>91</height>
     </rect>
