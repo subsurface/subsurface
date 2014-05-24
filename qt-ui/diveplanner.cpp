@@ -480,37 +480,6 @@ void DivePlannerGraphics::mouseMoveEvent(QMouseEvent *event)
 #endif
 }
 
-void DivePlannerGraphics::mousePressEvent(QMouseEvent *event)
-{
-	if (event->modifiers()) {
-		QGraphicsView::mousePressEvent(event);
-		return;
-	}
-
-	QPointF mappedPos = mapToScene(event->pos());
-	if (event->button() == Qt::LeftButton) {
-		Q_FOREACH (QGraphicsItem *item, scene()->items(mappedPos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder, transform())) {
-			if (DiveHandler *h = qgraphicsitem_cast<DiveHandler *>(item)) {
-				activeDraggedHandler = h;
-				activeDraggedHandler->setBrush(Qt::red);
-				originalHandlerPos = activeDraggedHandler->pos();
-			}
-		}
-	}
-	QGraphicsView::mousePressEvent(event);
-}
-
-void DivePlannerGraphics::mouseReleaseEvent(QMouseEvent *event)
-{
-	if (activeDraggedHandler) {
-		/* we already deal with all the positioning in the life update,
-		 * so all we need to do here is change the color of the handler */
-		activeDraggedHandler->setBrush(QBrush(Qt::white));
-		activeDraggedHandler = 0;
-		drawProfile();
-	}
-}
-
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
 	setRect(-5, -5, 10, 10);
