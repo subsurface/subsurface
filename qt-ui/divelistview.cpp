@@ -750,9 +750,20 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
 			if (!d->divetrip) {
-				if (is_trip_before_after(d, (currentOrder == Qt::AscendingOrder)))
+				struct dive *top = d;
+				struct dive *bottom = d;
+				if (d->selected) {
+					if (currentOrder == Qt::AscendingOrder) {
+						top = first_selected_dive();
+						bottom = last_selected_dive();
+					} else {
+						top = last_selected_dive();
+						bottom = first_selected_dive();
+					}
+				}
+				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
 					popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
-				if (is_trip_before_after(d, (currentOrder == Qt::DescendingOrder)))
+				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
 					popup.addAction(tr("add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
 			}
 		}
