@@ -20,6 +20,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QShortcut>
+#include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -365,6 +366,24 @@ bool MainWindow::plannerStateClean()
 	return true;
 }
 
+void MainWindow::createFakeDiveForAddAndPlan()
+{
+	// now cheat - create one dive that we use to store the info tab data in
+	//TODO: C-function create_temporary_dive ?
+	struct dive *dive = alloc_dive();
+	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
+	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
+
+	dive->latitude.udeg = 0;
+	dive->longitude.udeg = 0;
+	record_dive(dive);
+	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
+	// accepting the dive
+	select_dive(get_divenr(dive));
+	ui.InfoWidget->updateDiveInfo(selected_dive);
+}
+
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	if (!plannerStateClean())
@@ -396,20 +415,9 @@ void MainWindow::on_actionAddDive_triggered()
 	dive_list()->unselectDives();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
-	// now cheat - create one dive that we use to store the info tab data in
-	//TODO: C-function create_temporary_dive ?
-	struct dive *dive = alloc_dive();
-	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
-	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
+	createFakeDiveForAddAndPlan();
 
-	dive->latitude.udeg = 0;
-	dive->longitude.udeg = 0;
-	record_dive(dive);
-	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
-	// accepting the dive
-	select_dive(get_divenr(dive));
 	ui.InfoWidget->setCurrentIndex(0);
-	ui.InfoWidget->updateDiveInfo(selected_dive);
 	ui.InfoWidget->addDiveStarted();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 

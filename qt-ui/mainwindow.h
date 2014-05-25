@@ -174,6 +174,7 @@ private:
 	UpdateManager *updateManager;
 
 	bool plannerStateClean();
+	void createFakeDiveForAddAndPlan();
 };
 
 #endif // MAINWINDOW_H
