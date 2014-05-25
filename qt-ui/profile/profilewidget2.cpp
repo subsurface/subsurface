@@ -770,9 +770,17 @@ void ProfileWidget2::setPlanState()
 {
 	if (currentState == PLAN)
 		return;
+
 	setProfileState();
 	disconnectTemporaryConnections();
-	/* show the same stuff that the profile shows. */
+	//TODO: Move this method to another place, shouldn't be on mainwindow.
+	MainWindow::instance()->disableDcShortcuts();
+	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
+	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
+	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
+	actionsForKeys[Qt::Key_Down]->setShortcut(Qt::Key_Down);
+	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
+	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
@@ -781,7 +789,7 @@ void ProfileWidget2::setPlanState()
 		this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
-
+	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::green).light());
 }
