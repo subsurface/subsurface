@@ -99,7 +99,7 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_degrees(b, dive->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
 		put_degrees(b, dive->longitude, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
-		put_format(b, "<p><b>%s</b></p>", dive->location);
+		put_format(b, "<p><b>%s</b></p>", quote(dive->location));
 		put_HTML_date(b, dive);
 		put_duration(b, dive->duration, "<p>Duration: ", " min</p>");
 		put_depth(b, dive->maxdepth, "<p>Max Depth: ", " m</p>");
