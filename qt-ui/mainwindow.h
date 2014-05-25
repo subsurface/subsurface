@@ -172,6 +172,8 @@ private:
 	void updateLastUsedDir(const QString &s);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
+
+	bool plannerStateClean();
 };
 
 #endif // MAINWINDOW_H

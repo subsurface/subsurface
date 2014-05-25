@@ -355,15 +355,24 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 	DiveComputerManagementDialog::instance()->show();
 }
 
-void MainWindow::on_actionDivePlanner_triggered()
+bool MainWindow::plannerStateClean()
 {
-	int i;
-	struct dive *dive;
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to plan a dive."));
-		return;
+		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
+		return false;
 	}
+	return true;
+}
+
+void MainWindow::on_actionDivePlanner_triggered()
+{
+	if (!plannerStateClean())
+		return;
+
+	int i;
+	struct dive *dive;
+
 	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
@@ -381,11 +390,9 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
+	if(!plannerStateClean())
 		return;
-	}
+
 	dive_list()->rememberSelection();
 	dive_list()->unselectDives();
 	disableDcShortcuts();
