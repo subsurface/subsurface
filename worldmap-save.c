@@ -6,6 +6,7 @@
 #include "membuffer.h"
 #include "worldmap-save.h"
 #include "worldmap-options.h"
+#include "gettext.h"
 
 char *getGoogleApi()
 {
@@ -17,8 +18,8 @@ void put_HTML_date(struct membuffer *b, struct dive *dive)
 {
 	struct tm tm;
 	utc_mkdate(dive->when, &tm);
-	put_format(b, "<p>Date: %04u-%02u-%02u</p>", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-	put_format(b, "<p>Time: %02u:%02u:%02u</p>", tm.tm_hour, tm.tm_min, tm.tm_sec);
+	put_format(b, "<p>%s: %04u-%02u-%02u</p>", translate("gettextFromC", "Date"), tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+	put_format(b, "<p>%s: %02u:%02u:%02u</p>", translate("gettextFromC", "Time"), tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 void put_HTML_temp(struct membuffer *b, struct dive *dive)
@@ -27,10 +28,10 @@ void put_HTML_temp(struct membuffer *b, struct dive *dive)
 	double value;
 
 	value = get_temp_units(dive->airtemp.mkelvin, &unit);
-	put_format(b, "<p>Air Temp: %.1f %s</p>", value, unit);
+	put_format(b, "<p>%s: %.1f %s</p>", translate("gettextFromC", "Air Temp"), value, unit);
 
 	value = get_temp_units(dive->watertemp.mkelvin, &unit);
-	put_format(b, "<p>Water Temp: %.1f %s</p>", value, unit);
+	put_format(b, "<p>%s: %.1f %s</p>", translate("gettextFromC", "Water Temp"), value, unit);
 }
 
 char *replace_char(char *str, char replace, char *replace_by)
@@ -84,7 +85,7 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive)
 {
 	if (dive->notes) {
 		char *notes = quote(dive->notes);
-		put_format(b, "<p>Notes: %s </p>", notes);
+		put_format(b, "<p>%s: %s </p>", translate("gettextFromC", "Notes"), notes);
 		free(notes);
 	}
 }
@@ -107,8 +108,8 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
 		put_format(b, "<p><b>%s</b></p>", quote(dive->location));
 		put_HTML_date(b, dive);
-		put_duration(b, dive->duration, "<p>Duration: ", " min</p>");
-		put_depth(b, dive->maxdepth, "<p>Max Depth: ", " m</p>");
+		put_duration(b, dive->duration, translate("gettextFromC", "<p>Duration: "), translate("gettextFromC", " min</p>"));
+		put_depth(b, dive->maxdepth, translate("gettextFromC", "<p>Max Depth: "), translate("gettextFromC", " m</p>"));
 		put_HTML_temp(b, dive);
 		put_HTML_notes(b, dive);
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
