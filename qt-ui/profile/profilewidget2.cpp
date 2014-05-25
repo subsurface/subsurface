@@ -783,6 +783,10 @@ extern int evn_used;
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
+	if (currentState == ADD || currentState == PLAN) {
+		QGraphicsView::contextMenuEvent(event);
+		return;
+	}
 	QMenu m;
 	bool isDCName = false;
 	if (selected_dive == -1)
