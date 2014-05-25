@@ -253,7 +253,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	case O2:
 		if (CHANGED()) {
 			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
-			cyl->depth.mm = 1600 * 1000 / cyl->gasmix.o2.permille * 10 - 10000;
+			pressure_t modppO2;
+			modppO2.mbar = 1600;
+			cyl->depth = gas_mod(&cyl->gasmix, modppO2);
 			changed = true;
 		}
 		break;
