@@ -383,18 +383,19 @@ void MainWindow::createFakeDiveForAddAndPlan()
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 }
 
-
 void MainWindow::on_actionDivePlanner_triggered()
 {
-	if (!plannerStateClean())
+	if(!plannerStateClean())
 		return;
 
-	int i;
-	struct dive *dive;
+	dive_list()->rememberSelection();
+	dive_list()->unselectDives();
 
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->clear();
 	CylindersModel::instance()->clear();
+	int i;
+	struct dive *dive;
 	for_each_dive (i, dive) {
 		if (dive->selected) {
 			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
@@ -402,8 +403,16 @@ void MainWindow::on_actionDivePlanner_triggered()
 			break;
 		}
 	}
+	createFakeDiveForAddAndPlan();
+
+	ui.InfoWidget->setCurrentIndex(0);
+	ui.infoPane->setCurrentIndex(MAINTAB);
+
 	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+	DivePlannerPointsModel::instance()->clear();
+	DivePlannerPointsModel::instance()->createSimpleDive();
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
 }
 
 void MainWindow::on_actionAddDive_triggered()

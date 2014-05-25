@@ -363,7 +363,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	//TODO: This is a temporary hack to help me understand the Planner.
 	// It seems that each time the 'createTemporaryPlan' runs, a new
 	// dive is created, and thus, we can plot that. hm...
-	if (currentState == ADD) {
+	if (currentState == ADD || currentState == PLAN) {
 		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
 		if (!plannerModel->getDiveplan().dp) {
@@ -509,7 +509,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		prefs.animation = animSpeedBackup;
 	}
 
-	if (currentState == ADD) { // TODO: figure a way to move this from here.
+	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.
 		repositionDiveHandlers();
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
