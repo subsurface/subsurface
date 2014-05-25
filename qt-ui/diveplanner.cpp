@@ -414,8 +414,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
-	int o2 = backupDive.cylinder[0].gasmix.o2.permille;
-	int he = backupDive.cylinder[0].gasmix.he.permille;
+	int o2 = get_o2(&backupDive.cylinder[0].gasmix);
+	int he = get_he(&backupDive.cylinder[0].gasmix);
 	for (int i = 0; i < backupDive.dc.samples - 1; i++) {
 		const sample &s = backupDive.dc.sample[i];
 		if (s.time.seconds == 0)
@@ -453,7 +453,7 @@ QStringList &DivePlannerPointsModel::getGasList()
 			cylinder_t *cyl = &activeDive->cylinder[i];
 			if (cylinder_nodata(cyl))
 				break;
-			list.push_back(gasToStr(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
+			list.push_back(gasToStr(get_o2(&cyl->gasmix), get_he(&cyl->gasmix)));
 		}
 	}
 	return list;
@@ -1246,6 +1246,12 @@ bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 
 bool DivePlannerPointsModel::addGas(int o2, int he)
 {
+	struct gasmix mix;
+
+	mix.o2.permille = o2;
+	mix.he.permille = he;
+	sanitize_gasmix(&mix);
+
 	if (is_air(o2, he))
 		o2 = 0;
 
@@ -1255,16 +1261,14 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 			fill_default_cylinder(cyl);
 			cyl->gasmix.o2.permille = o2;
 			cyl->gasmix.he.permille = he;
+			sanitize_gasmix(&cyl->gasmix);
 			/* The depth to change to that gas is given by the depth where its pO2 is 1.6 bar.
 			 * The user should be able to change this depth manually. */
-			if (!o2)
-				cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000;
-			else
-				cyl->depth.mm = 1600 * 1000 / o2 * 10 - 10000;
+			cyl->depth.mm = 1600 * 1000 / get_o2(&mix) * 10 - 10000;
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}
-		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he)
+		if (!gasmix_distance(&cyl->gasmix, &mix))
 			return true;
 	}
 	qDebug("too many gases");
@@ -1299,8 +1303,8 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		//Default to the first defined gas, if we got one.
 		cylinder_t *cyl = &stagingDive->cylinder[0];
 		if (cyl) {
-			o2 = cyl->gasmix.o2.permille;
-			he = cyl->gasmix.he.permille;
+			o2 = get_o2(&cyl->gasmix);
+			he = get_he(&cyl->gasmix);
 		}
 	}
 	if (o2 != -1)
@@ -1420,7 +1424,7 @@ QVector<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &d->cylinder[i];
 		if (!cylinder_nodata(cyl))
-			l.push_back(qMakePair(cyl->gasmix.o2.permille, cyl->gasmix.he.permille));
+			l.push_back(qMakePair(get_o2(&cyl->gasmix), get_he(&cyl->gasmix)));
 	}
 	return l;
 }
@@ -1520,7 +1524,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cyl->depth.mm) {
-			dp = create_dp(0, cyl->depth.mm, cyl->gasmix.o2.permille, cyl->gasmix.he.permille, 0);
+			dp = create_dp(0, cyl->depth.mm, get_o2(&cyl->gasmix), get_he(&cyl->gasmix), 0);
 			if (diveplan.dp) {
 				dp->next = diveplan.dp->next;
 				diveplan.dp->next = dp;

@@ -72,23 +72,19 @@ void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 	}
 }
 
-/* simple helper function to compare two permille values with
- * (rounded) percent granularity */
-static inline bool match_percent(int a, int b)
-{
-	return (a + 5) / 10 == (b + 5) / 10;
-}
-
 int get_gasidx(struct dive *dive, int o2, int he)
 {
 	int gasidx = -1;
+	struct gasmix mix;
+
+	mix.o2.permille = o2;
+	mix.he.permille = he;
 
 	/* we treat air as 0/0 because it is special */
-	if (is_air(o2, he))
-		o2 = 0;
+	//if (is_air(o2, he))
+	//	o2 = 0;
 	while (++gasidx < MAX_CYLINDERS)
-		if (match_percent(dive->cylinder[gasidx].gasmix.o2.permille, o2) &&
-		    match_percent(dive->cylinder[gasidx].gasmix.he.permille, he))
+		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, &mix) < 200)
 			return gasidx;
 	return -1;
 }
@@ -138,8 +134,8 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	psample = sample = dc->sample;
 	lastdepth = t0 = 0;
 	/* we always start with gas 0 (unless an event tells us otherwise) */
-	o2 = dive->cylinder[0].gasmix.o2.permille;
-	he = dive->cylinder[0].gasmix.he.permille;
+	o2 = get_o2(&dive->cylinder[0].gasmix);
+	he = get_he(&dive->cylinder[0].gasmix);
 	for (i = 0; i < dc->samples; i++, sample++) {
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &o2, &he);
@@ -189,14 +185,17 @@ static int add_gas(struct dive *dive, int o2, int he)
 {
 	int i;
 	struct gasmix *mix;
+	struct gasmix mix_in;
 	cylinder_t *cyl;
 
+	mix_in.o2.permille = o2;
+	mix_in.he.permille = he;
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cyl = dive->cylinder + i;
 		mix = &cyl->gasmix;
 		if (cylinder_nodata(cyl))
 			break;
-		if (match_percent(o2, mix->o2.permille) && match_percent(he, mix->he.permille))
+		if (gasmix_distance(mix, &mix_in) < 200)
 			return i;
 	}
 	if (i == MAX_CYLINDERS) {
@@ -206,6 +205,7 @@ static int add_gas(struct dive *dive, int o2, int he)
 	fill_default_cylinder(cyl);
 	mix->o2.permille = o2;
 	mix->he.permille = he;
+	sanitize_gasmix(mix);
 	return i;
 }
 
@@ -388,6 +388,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
+	struct gasmix mix;
 
 	while (dp) {
 		if (dp->time == 0 && dp->depth <= depth) {
@@ -403,9 +404,10 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 			}
 			gaschanges[i].depth = dp->depth;
 			gaschanges[i].gasidx = -1;
+			mix.o2.permille = dp->o2;
+			mix.he.permille = dp->he;
 			do {
-				if (dive->cylinder[j].gasmix.o2.permille == dp->o2 &&
-				    dive->cylinder[j].gasmix.he.permille == dp->he) {
+				if (!gasmix_distance(&dive->cylinder[j].gasmix, &mix)) {
 					gaschanges[i].gasidx = j;
 					break;
 				}
@@ -419,8 +421,8 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 #if DEBUG_PLAN & 16
 	for (nr = 0; nr < *gaschangenr; nr++)
 		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%d/%d)\n", nr, gaschanges[nr].depth / 1000.0,
-		       gaschanges[nr].gasidx, (dive->cylinder[gaschanges[nr].gasidx].gasmix.o2.permille + 5) / 10,
-		       (dive->cylinder[gaschanges[nr].gasidx].gasmix.he.permille + 5) / 10);
+		       gaschanges[nr].gasidx, (get_o2(&dive->cylinder[gaschanges[nr].gasidx].gasmix) + 5) / 10,
+		       (get_he(&dive->cylinder[gaschanges[nr].gasidx].gasmix) + 5) / 10);
 #endif
 	return gaschanges;
 }
@@ -493,8 +495,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	snprintf(buffer, sizeof(buffer), translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
 		 disclaimer, plangflow * 100, plangfhigh * 100);
 	/* we start with gas 0, then check if that was changed */
-	o2 = dive->cylinder[0].gasmix.o2.permille;
-	he = dive->cylinder[0].gasmix.he.permille;
+	o2 = get_o2(&dive->cylinder[0].gasmix);
+	he = get_he(&dive->cylinder[0].gasmix);
 	do {
 		const char *depth_unit;
 		char gas[64];
@@ -568,8 +570,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 			continue;
 		len = strlen(buffer);
 		volume = get_volume_units(consumption[gasidx], NULL, &unit);
-		get_gas_string(dive->cylinder[gasidx].gasmix.o2.permille,
-			       dive->cylinder[gasidx].gasmix.he.permille, gas, sizeof(gas));
+		get_gas_string(get_o2(&dive->cylinder[gasidx].gasmix),
+			       get_he(&dive->cylinder[gasidx].gasmix), gas, sizeof(gas));
 		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s\n"), volume, unit, gas);
 	}
 	dive->notes = strdup(buffer);
@@ -625,8 +627,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	/* we start with gas 0, then check if that was changed */
-	o2 = dive->cylinder[0].gasmix.o2.permille;
-	he = dive->cylinder[0].gasmix.he.permille;
+	o2 = get_o2(&dive->cylinder[0].gasmix);
+	he = get_he(&dive->cylinder[0].gasmix);
 	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	if ((current_cylinder = get_gasidx(dive, o2, he)) == -1) {
@@ -704,8 +706,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 			stopping = true;
 
 			current_cylinder = gaschanges[gi].gasidx;
-			o2 = dive->cylinder[current_cylinder].gasmix.o2.permille;
-			he = dive->cylinder[current_cylinder].gasmix.he.permille;
+			o2 = get_o2(&dive->cylinder[current_cylinder].gasmix);
+			he = get_he(&dive->cylinder[current_cylinder].gasmix);
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 				       (o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);

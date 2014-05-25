@@ -488,7 +488,7 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 	return abs(a.mbar - b.mbar) <= 500;
 }
 
-static void sanitize_gasmix(struct gasmix *mix)
+void sanitize_gasmix(struct gasmix *mix)
 {
 	unsigned int o2, he;
 
@@ -1218,7 +1218,7 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
 	*res = *a;
 }
 
-static int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
+int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 {
 	int a_o2 = get_o2(a), b_o2 = get_o2(b);
 	int a_he = get_he(a), b_he = get_he(b);
