@@ -64,6 +64,7 @@ private:
 	DiveTripModel::Layout currentLayout;
 	QLineEdit searchBox;
 	QModelIndex contextMenuIndex;
+	bool dontEmitDiveChangedSignal;
 
 	/* if dive_trip_t is null, there's no problem. */
 	QMultiHash<dive_trip_t *, int> selectedDives;

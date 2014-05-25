@@ -28,7 +28,8 @@
 #include <iostream>
 #include "../qthelper.h"
 
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0), currentOrder(Qt::DescendingOrder), searchBox(this)
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0)
+	, currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -241,6 +242,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	if (!newDiveSelection.count())
 		return;
 
+	dontEmitDiveChangedSignal = true;
 	// select the dives, highest index first - this way the oldest of the dives
 	// becomes the selected_dive that we scroll to
 	QList<int> sortedSelection = newDiveSelection;
@@ -254,6 +256,9 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		scrollTo(idx.parent());
 	scrollTo(idx);
 
+	// now that everything is up to date, update the widgets
+	Q_EMIT currentDiveChanged(selected_dive);
+	dontEmitDiveChangedSignal = false;
 	return;
 }
 
@@ -454,8 +459,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-	// now that everything is up to date, update the widgets
-	Q_EMIT currentDiveChanged(selected_dive);
+	if(!dontEmitDiveChangedSignal)
+		Q_EMIT currentDiveChanged(selected_dive);
 }
 
 static bool can_merge(const struct dive *a, const struct dive *b)
