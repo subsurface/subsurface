@@ -119,15 +119,6 @@ slots:
 	void changeGas();
 };
 
-class DivePlannerGraphics : public QGraphicsView {
-	Q_OBJECT
-public:
-	DivePlannerGraphics(QWidget *parent = 0);
-private
-slots:
-
-};
-
 #include "ui_diveplanner.h"
 
 class DivePlannerWidget : public QWidget {

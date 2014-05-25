@@ -43,11 +43,6 @@ QString dpGasToStr(const divedatapoint &p)
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 
-DivePlannerGraphics::DivePlannerGraphics(QWidget *parent) : QGraphicsView(parent)
-{
-
-}
-
 bool intLessThan(int a, int b)
 {
 	return a <= b;
@@ -139,6 +134,7 @@ void DivePlannerPointsModel::removeDeco()
 	removeSelectedPoints(computedPoints);
 	setRecalc(oldrec);
 }
+
 #if 0
 void DivePlannerGraphics::drawProfile()
 {

@@ -42,10 +42,6 @@ public:
 		COLLAPSED,
 		EXPANDED
 	};
-	enum StackWidgetIndexes {
-		PROFILE,
-		PLANNERPROFILE
-	};
 	enum InfoWidgetIndexes {
 		MAINTAB,
 		PLANNERWIDGET

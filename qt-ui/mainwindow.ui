@@ -85,15 +85,8 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QTabWidget" name="stackedWidget">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="page_5">
-         <attribute name="title">
-          <string>Profile Visualization</string>
-         </attribute>
-         <layout class="QGridLayout" name="gridLayout">
+       <widget class="QWidget" name="ProfileWidget">
+       <layout class="QGridLayout" name="gridLayout">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -496,32 +489,6 @@
            </spacer>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="page_6">
-         <attribute name="title">
-          <string>Old Planner Visualization</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="DivePlannerGraphics" name="divePlanner"/>
-          </item>
-         </layout>
-        </widget>
        </widget>
       </widget>
       <widget class="QSplitter" name="listGlobeSplitter">

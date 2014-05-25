@@ -318,14 +318,16 @@ void MainWindow::on_actionDivePlanner_triggered()
 			break;
 		}
 	}
-	ui.stackedWidget->setCurrentIndex(PLANNERPROFILE);
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }
 
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
-	ui.stackedWidget->setCurrentIndex(PROFILE);
+	//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
+	// and I'm sleepy now, so I think I should not try to fix right away.
+	// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
+	//ui.stackedWidget->setCurrentIndex(PROFILE);
 	ui.infoPane->setCurrentIndex(MAINTAB);
 }
 
@@ -1101,14 +1103,20 @@ void MainWindow::editCurrentDive()
 	if (defaultDC == "manually added dive") {
 		disableDcShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+		//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
+		// and I'm sleepy now, so I think I should not try to fix right away.
+		// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
+		//ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
 		ui.infoPane->setCurrentIndex(MAINTAB);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
 		disableDcShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-		ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+		//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
+		// and I'm sleepy now, so I think I should not try to fix right away.
+		// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
+		//ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
 		ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
