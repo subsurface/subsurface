@@ -87,9 +87,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
 
-#ifndef ENABLE_PLANNER
-	ui.menuLog->removeAction(ui.actionDivePlanner);
-#endif
 #ifdef NO_MARBLE
 	ui.layoutWidget->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
@@ -318,6 +315,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 			break;
 		}
 	}
+	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }
 

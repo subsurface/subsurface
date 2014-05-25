@@ -15,10 +15,6 @@ A2X = a2x
 BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
-ENABLE_PLANNER := 0
-ifeq ($(ENABLE_PLANNER), 1)
-ENABLE_PLANNER_ATTR=-a ENABLE_PLANNER=$(ENABLE_PLANNER)
-endif
 
 all: doc $(addprefix $(DOCNAME).,pdf text)
 
@@ -33,11 +29,11 @@ $(OUT)$(DOCNAME).pdf: $(DOCSOURCE)
 $(OUT)$(HTMLDOC): $(DOCSOURCE)
 	@echo "if asciidoc isn't found the html file included in the sources is copied"
 	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) \
-		$(ENABLE_PLANNER_ATTR) -o $(OUT)$(HTMLDOC) $< || cp $(HTMLDOC).git $(OUT)$(HTMLDOC)
+		-o $(OUT)$(HTMLDOC) $< || cp $(HTMLDOC).git $(OUT)$(HTMLDOC)
 
 # Alternatively::
 $(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
-	$(A2X) $(ENABLE_PLANNER_ATTR) --icons -f xhtml $<
+	$(A2X) --icons -f xhtml $<
 
 show: $(HTMLDOC)
 	$(BROWSER) $<

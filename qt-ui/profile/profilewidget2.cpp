@@ -773,6 +773,15 @@ void ProfileWidget2::setPlanState()
 	setProfileState();
 	disconnectTemporaryConnections();
 	/* show the same stuff that the profile shows. */
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+		this, SLOT(pointInserted(const QModelIndex &, int, int)));
+	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+
 	currentState = PLAN; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::green).light());
 }
