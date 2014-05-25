@@ -23,8 +23,14 @@ void put_HTML_date(struct membuffer *b, struct dive *dive)
 
 void put_HTML_temp(struct membuffer *b, struct dive *dive)
 {
-	put_temperature(b, dive->airtemp, "<p>Air Temp: ", "°C</p>");
-	put_temperature(b, dive->watertemp, "<p>Water Temp: ", "°C</p>");
+	const char *unit;
+	double value;
+
+	value = get_temp_units(dive->airtemp.mkelvin, &unit);
+	put_format(b, "<p>Air Temp: %.1f %s</p>", value, unit);
+
+	value = get_temp_units(dive->watertemp.mkelvin, &unit);
+	put_format(b, "<p>Water Temp: %.1f %s</p>", value, unit);
 }
 
 char *replace_char(char *str, char replace, char *replace_by)
