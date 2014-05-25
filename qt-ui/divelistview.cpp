@@ -309,6 +309,8 @@ void DiveListView::headerClicked(int i)
 		}
 	}
 	restoreSelection();
+	// remember the new sort column
+	sortColumn = i;
 }
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
