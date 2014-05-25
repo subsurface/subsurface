@@ -104,6 +104,12 @@ static inline int interpolate(int a, int b, int part, int whole)
 	return rint(x / whole);
 }
 
+static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit) {
+	depth_t depth;
+	depth.mm = po2_limit.mbar * 1000 / get_o2(mix) * 10 - 10000;
+	return depth;
+}
+
 struct sample {
 	duration_t time;
 	depth_t depth;

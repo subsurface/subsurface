@@ -499,10 +499,9 @@ bool DivePlannerPointsModel::addGas(int o2, int he)
 			cyl->gasmix.he.permille = he;
 			/* The depth to change to that gas is given by the depth where its pO2 is 1.6 bar.
 			 * The user should be able to change this depth manually. */
-			if (!o2)
-				cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000;
-			else
-				cyl->depth.mm = 1600 * 1000 / o2 * 10 - 10000;
+			pressure_t modppO2;
+			modppO2.mbar = 1600;
+			cyl->depth = gas_mod(&cyl->gasmix, modppO2);
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}
