@@ -72,7 +72,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 		if (default_dive_computer_product)
 			ui.product->setCurrentIndex(ui.product->findText(default_dive_computer_product));
 	}
-	connect(ui.product, SIGNAL(currentIndexChanged(int)), this, SLOT(on_product_currentIndexChanged()), Qt::UniqueConnection);
 	if (default_dive_computer_device)
 		ui.device->setEditText(default_dive_computer_device);
 
@@ -190,11 +189,11 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	//currentModel->deleteLater();
 }
 
-void DownloadFromDCWidget::on_product_currentIndexChanged()
+void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
 {
 	// Set up the DC descriptor
 	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+	descriptor = descriptorLookup[ui.vendor->currentText() + product];
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
