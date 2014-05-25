@@ -241,54 +241,20 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	if (!newDiveSelection.count())
 		return;
 
-	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-		   this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-		   this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+	// select the dives, highest index first - this way the oldest of the dives
+	// becomes the selected_dive that we scroll to
+	QList<int> sortedSelection = newDiveSelection;
+	qSort(sortedSelection.begin(), sortedSelection.end());
+	while (!sortedSelection.isEmpty())
+		selectDive(sortedSelection.takeLast());
 
-	setAnimated(false);
-	collapseAll();
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::Select | QItemSelectionModel::Rows;
-
-	QItemSelection newDeselected = selectionModel()->selection();
-	QModelIndexList diveList;
-
-	//TODO: This should be called find_first_selected_dive and be ported to C code.
-	int firstSelectedDive = -1;
-	/* context for temp. variables. */ {
-		int i = 0;
-		struct dive *dive;
-		for_each_dive (i, dive) {
-			dive->selected = newDiveSelection.contains(i) == true;
-			if (firstSelectedDive == -1 && dive->selected) {
-				firstSelectedDive = i;
-				break;
-			}
-		}
-	}
-	select_dive(firstSelectedDive);
-	Q_FOREACH (int i, newDiveSelection) {
-		diveList.append(m->match(m->index(0, 0), DiveTripModel::DIVE_IDX,
-					 i, 2, Qt::MatchRecursive).first());
-	}
-	Q_FOREACH (const QModelIndex &idx, diveList) {
-		selectionModel()->select(idx, flags);
-		if (idx.parent().isValid() && !isExpanded(idx.parent())) {
-			expand(idx.parent());
-		}
-	}
-	setAnimated(true);
-	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
-	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-		this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-		this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-	Q_EMIT currentDiveChanged(selected_dive);
 	QModelIndex idx = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive).first();
 	if (idx.parent().isValid())
 		scrollTo(idx.parent());
 	scrollTo(idx);
+
+	return;
 }
 
 void DiveListView::showSearchEdit()
