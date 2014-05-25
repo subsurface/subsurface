@@ -59,13 +59,15 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 	endRemoveRows();
 }
 
-void DivePlannerPointsModel::createSimpleDive()
+void DivePlannerPointsModel::createSimpleDive(bool planner)
 {
 	//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
 	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, O2_IN_AIR, 0, 0, true);
 	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, O2_IN_AIR, 0, 0, true);
-	plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, O2_IN_AIR, 0, 0, true);
-	plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, O2_IN_AIR, 0, 0, true);
+	if (!planner) {
+		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, O2_IN_AIR, 0, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, O2_IN_AIR, 0, 0, true);
+	}
 }
 
 void DivePlannerPointsModel::loadFromDive(dive *d)

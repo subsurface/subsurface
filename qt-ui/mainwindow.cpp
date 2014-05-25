@@ -411,7 +411,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 	DivePlannerPointsModel::instance()->clear();
-	DivePlannerPointsModel::instance()->createSimpleDive();
+	DivePlannerPointsModel::instance()->createSimpleDive(true);
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 }
 
