@@ -295,30 +295,6 @@ void MainWindow::enableDcShortcuts()
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
 }
 
-void MainWindow::on_actionDivePlanner_triggered()
-{
-	int i;
-	struct dive *dive;
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to plan a dive."));
-		return;
-	}
-	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->clear();
-	CylindersModel::instance()->clear();
-	for_each_dive (i, dive) {
-		if (dive->selected) {
-			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
-			CylindersModel::instance()->copyFromDive(dive);
-			break;
-		}
-	}
-	ui.newProfile->setPlanState();
-	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
-}
-
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
@@ -377,6 +353,30 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 	DiveComputerManagementDialog::instance()->init();
 	DiveComputerManagementDialog::instance()->update();
 	DiveComputerManagementDialog::instance()->show();
+}
+
+void MainWindow::on_actionDivePlanner_triggered()
+{
+	int i;
+	struct dive *dive;
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	    ui.InfoWidget->isEditing()) {
+		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to plan a dive."));
+		return;
+	}
+	disableDcShortcuts();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	DivePlannerPointsModel::instance()->clear();
+	CylindersModel::instance()->clear();
+	for_each_dive (i, dive) {
+		if (dive->selected) {
+			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
+			CylindersModel::instance()->copyFromDive(dive);
+			break;
+		}
+	}
+	ui.newProfile->setPlanState();
+	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 }
 
 void MainWindow::on_actionAddDive_triggered()
