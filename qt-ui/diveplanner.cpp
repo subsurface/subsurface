@@ -186,11 +186,9 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void DiveHandler::selfRemove()
 {
-#if 0
 	setSelected(true);
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 	view->keyDeleteAction();
-#endif
 }
 
 void DiveHandler::changeGas()
