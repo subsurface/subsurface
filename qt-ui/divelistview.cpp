@@ -59,7 +59,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	searchBox.hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
-	setupUi();
+	// calling setupUi() here appears to be too early; it does NOT correctly set the column widths
+	//	setupUi();
 }
 
 DiveListView::~DiveListView()
@@ -315,6 +316,13 @@ void DiveListView::headerClicked(int i)
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
+	// we want to run setupUi() once we actually are displaying something
+	// in the widget
+	static bool first = true;
+	if (first && dive_table.nr > 0) {
+		setupUi();
+		first = false;
+	}
 	if (layout == DiveTripModel::CURRENT)
 		layout = currentLayout;
 	else
