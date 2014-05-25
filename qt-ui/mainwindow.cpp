@@ -373,7 +373,6 @@ void MainWindow::on_actionDivePlanner_triggered()
 	int i;
 	struct dive *dive;
 
-	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
 	CylindersModel::instance()->clear();
@@ -395,7 +394,6 @@ void MainWindow::on_actionAddDive_triggered()
 
 	dive_list()->rememberSelection();
 	dive_list()->unselectDives();
-	disableDcShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	// now cheat - create one dive that we use to store the info tab data in
