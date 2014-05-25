@@ -351,7 +351,6 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 				setCurrentIndex(firstDiveOrTrip);
 		}
 	}
-	setupUi();
 	if (selectedIndexes().count()) {
 		QModelIndex curr = selectedIndexes().first();
 		curr = curr.parent().isValid() ? curr.parent() : curr;
