@@ -678,7 +678,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 		/* We will break out when we hit the surface */
 		do {
 			/* Ascend to next stop depth */
-			if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) < depth)
+			if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) > depth)
 				fprintf(stderr, "user provided way point above ceiling\n");
 			int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 			if (ascend_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
