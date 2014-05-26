@@ -91,6 +91,9 @@ static inline int get_he(const struct gasmix *mix)
 	return mix->he.permille;
 }
 
+extern void sanitize_gasmix(struct gasmix *mix);
+extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
+
 static inline bool is_air(int o2, int he)
 {
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
