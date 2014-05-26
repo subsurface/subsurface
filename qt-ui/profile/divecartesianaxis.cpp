@@ -234,11 +234,13 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		lines.push_back(line);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0, -line_size, 0, 0);
+			line->setPos(scene()->sceneRect().width() + 10, m.y1()); // position it outside of the scene);
 			line->animateMoveTo(childPos, m.y1());
 		} else {
 			QPointF p1 = mapFromScene(3, 0);
 			QPointF p2 = mapFromScene(line_size, 0);
 			line->setLine(p1.x(), 0, p2.x(), 0);
+			line->setPos(m.x1(), scene()->sceneRect().height() + 10);
 			line->animateMoveTo(m.x1(), childPos);
 		}
 	}
