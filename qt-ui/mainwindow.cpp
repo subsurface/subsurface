@@ -391,7 +391,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	dive_list()->rememberSelection();
 	dive_list()->unselectDives();
 
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->clear();
 	CylindersModel::instance()->clear();
 	int i;
