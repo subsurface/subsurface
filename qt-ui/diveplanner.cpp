@@ -776,7 +776,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	if (plannerModel->recalcQ())
 		plan(&diveplan, &cache, &tempDive, isPlanner());
-	if (mode == ADD) {
+	if (mode == ADD || mode == PLAN) {
 		// copy the samples and events, but don't overwrite the cylinders
 		copy_samples(tempDive, current_dive);
 		copy_events(tempDive, current_dive);
