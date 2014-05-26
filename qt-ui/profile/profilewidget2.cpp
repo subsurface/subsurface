@@ -363,7 +363,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	//TODO: This is a temporary hack to help me understand the Planner.
 	// It seems that each time the 'createTemporaryPlan' runs, a new
 	// dive is created, and thus, we can plot that. hm...
-	if (currentState == ADD) {
+	if (currentState == ADD || currentState == PLAN) {
 		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
 		if (!plannerModel->getDiveplan().dp) {
@@ -509,7 +509,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		prefs.animation = animSpeedBackup;
 	}
 
-	if (currentState == ADD) { // TODO: figure a way to move this from here.
+	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.
 		repositionDiveHandlers();
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
@@ -770,8 +770,25 @@ void ProfileWidget2::setPlanState()
 {
 	if (currentState == PLAN)
 		return;
+
 	setProfileState();
 	disconnectTemporaryConnections();
+	//TODO: Move this method to another place, shouldn't be on mainwindow.
+	MainWindow::instance()->disableDcShortcuts();
+	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
+	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
+	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
+	actionsForKeys[Qt::Key_Down]->setShortcut(Qt::Key_Down);
+	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
+	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
+
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+		this, SLOT(pointInserted(const QModelIndex &, int, int)));
+	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	setBackgroundBrush(QColor(Qt::green).light());

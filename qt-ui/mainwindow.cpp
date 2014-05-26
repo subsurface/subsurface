@@ -20,6 +20,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QShortcut>
+#include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
 
@@ -87,9 +88,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
 
-#ifndef ENABLE_PLANNER
-	ui.menuLog->removeAction(ui.actionDivePlanner);
-#endif
 #ifdef NO_MARBLE
 	ui.layoutWidget->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
@@ -298,29 +296,6 @@ void MainWindow::enableDcShortcuts()
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
 }
 
-void MainWindow::on_actionDivePlanner_triggered()
-{
-	int i;
-	struct dive *dive;
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to plan a dive."));
-		return;
-	}
-	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->clear();
-	CylindersModel::instance()->clear();
-	for_each_dive (i, dive) {
-		if (dive->selected) {
-			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
-			CylindersModel::instance()->copyFromDive(dive);
-			break;
-		}
-	}
-	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
-}
-
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
@@ -381,18 +356,18 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 	DiveComputerManagementDialog::instance()->show();
 }
 
-void MainWindow::on_actionAddDive_triggered()
+bool MainWindow::plannerStateClean()
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	    ui.InfoWidget->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
-		return;
+		return false;
 	}
-	dive_list()->rememberSelection();
-	dive_list()->unselectDives();
-	disableDcShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	return true;
+}
 
+void MainWindow::createFakeDiveForAddAndPlan()
+{
 	// now cheat - create one dive that we use to store the info tab data in
 	//TODO: C-function create_temporary_dive ?
 	struct dive *dive = alloc_dive();
@@ -405,8 +380,53 @@ void MainWindow::on_actionAddDive_triggered()
 	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
 	// accepting the dive
 	select_dive(get_divenr(dive));
-	ui.InfoWidget->setCurrentIndex(0);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
+}
+
+void MainWindow::on_actionDivePlanner_triggered()
+{
+	if(!plannerStateClean())
+		return;
+
+	dive_list()->rememberSelection();
+	dive_list()->unselectDives();
+
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	DivePlannerPointsModel::instance()->clear();
+	CylindersModel::instance()->clear();
+	int i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		if (dive->selected) {
+			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
+			CylindersModel::instance()->copyFromDive(dive);
+			break;
+		}
+	}
+	createFakeDiveForAddAndPlan();
+
+	ui.InfoWidget->setCurrentIndex(0);
+	ui.infoPane->setCurrentIndex(MAINTAB);
+
+	ui.newProfile->setPlanState();
+	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+	DivePlannerPointsModel::instance()->clear();
+	DivePlannerPointsModel::instance()->createSimpleDive(true);
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
+}
+
+void MainWindow::on_actionAddDive_triggered()
+{
+	if(!plannerStateClean())
+		return;
+
+	dive_list()->rememberSelection();
+	dive_list()->unselectDives();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+
+	createFakeDiveForAddAndPlan();
+
+	ui.InfoWidget->setCurrentIndex(0);
 	ui.InfoWidget->addDiveStarted();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 

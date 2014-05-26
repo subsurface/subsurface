@@ -102,9 +102,7 @@ public:
 		END,
 		O2,
 		HE,
-#ifdef ENABLE_PLANNER
 		DEPTH,
-#endif
 		COLUMNS
 	};
 
