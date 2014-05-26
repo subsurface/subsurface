@@ -383,8 +383,8 @@ bool MainTab::isEditing()
 
 void MainTab::updateDiveInfo(int dive)
 {
-	// don't execute this while adding a dive
-	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE)
+	// don't execute this while adding / planning a dive
+	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
 		return;
 	if (!isEnabled() && dive != -1)
 		setEnabled(true);

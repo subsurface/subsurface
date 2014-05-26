@@ -71,6 +71,7 @@ public:
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool isPointOutOfBoundaries(const QPointF &point) const;
+	bool isPlanner();
 	State currentState;
 
 public

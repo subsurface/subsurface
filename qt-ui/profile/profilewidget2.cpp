@@ -816,6 +816,11 @@ extern struct ev_select *ev_namelist;
 extern int evn_allocated;
 extern int evn_used;
 
+bool ProfileWidget2::isPlanner()
+{
+	return currentState == PLAN;
+}
+
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {
