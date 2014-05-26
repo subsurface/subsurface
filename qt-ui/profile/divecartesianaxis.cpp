@@ -34,6 +34,7 @@ double DiveCartesianAxis::tickSize() const
 void DiveCartesianAxis::setFontLabelScale(qreal scale)
 {
 	labelScale = scale;
+	changed = true;
 }
 
 void DiveCartesianAxis::setMaximum(double maximum)
@@ -41,6 +42,7 @@ void DiveCartesianAxis::setMaximum(double maximum)
 	if (IS_FP_SAME(max, maximum))
 		return;
 	max = maximum;
+	changed = true;
 	emit maxChanged();
 }
 
@@ -49,6 +51,7 @@ void DiveCartesianAxis::setMinimum(double minimum)
 	if (IS_FP_SAME(min, minimum))
 		return;
 	min = minimum;
+	changed = true;
 }
 
 void DiveCartesianAxis::setTextColor(const QColor &color)
@@ -67,7 +70,8 @@ DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	textVisibility(true),
 	lineVisibility(true),
 	labelScale(1.0),
-	line_size(1)
+	line_size(1),
+	changed(true)
 {
 	setPen(gridPen());
 }
@@ -79,11 +83,13 @@ DiveCartesianAxis::~DiveCartesianAxis()
 void DiveCartesianAxis::setLineSize(qreal lineSize)
 {
 	line_size = lineSize;
+	changed = true;
 }
 
 void DiveCartesianAxis::setOrientation(Orientation o)
 {
 	orientation = o;
+	changed = true;
 }
 
 QColor DiveCartesianAxis::colorForValue(double value)
@@ -126,7 +132,7 @@ void emptyList(QList<T *> &list, double steps)
 
 void DiveCartesianAxis::updateTicks(color_indice_t color)
 {
-	if (!scene())
+	if (!scene() || !changed)
 		return;
 	QLineF m = line();
 	// unused so far:
@@ -241,6 +247,7 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		item->setVisible(textVisibility);
 	Q_FOREACH (DiveLineItem *item, lines)
 		item->setVisible(lineVisibility);
+	changed = false;
 }
 
 void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)

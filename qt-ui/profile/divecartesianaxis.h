@@ -69,6 +69,7 @@ protected:
 	bool lineVisibility;
 	double labelScale;
 	qreal line_size;
+	bool changed;
 };
 
 class DepthAxis : public DiveCartesianAxis {
