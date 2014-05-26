@@ -3,6 +3,7 @@
 #include "divecartesianaxis.h"
 #include "graphicsview-common.h"
 #include "divetextitem.h"
+#include "profilewidget2.h"
 #include "profile.h"
 #include "dive.h"
 #include "preferences.h"
@@ -136,6 +137,17 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	}
 }
 
+int DiveProfileItem::maxCeiling(int row)
+{
+	int max = -1;
+	plot_data *entry = dataModel->data().entry + row;
+	for (int tissue = 0; tissue < 16; tissue++) {
+		if (max < entry->ceilings[tissue])
+			max = entry->ceilings[tissue];
+	}
+	return max;
+}
+
 void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	if (!shouldCalculateStuff(topLeft, bottomRight))
@@ -147,6 +159,18 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 
 	show_reported_ceiling = prefs.dcceiling;
 	reported_ceiling_in_red = prefs.redceiling;
+	profileColor = getColor(DEPTH_BOTTOM);
+
+	int currState = qobject_cast<ProfileWidget2 *>(scene()->views().first())->currentState;
+	if (currState == ProfileWidget2::PLAN) {
+		plot_data *entry = dataModel->data().entry + dataModel->rowCount() - 1;
+		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
+			int max = maxCeiling(i);
+			if (entry->depth < max) {
+				profileColor = QColor(Qt::red);
+			}
+		}
+	}
 
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
@@ -166,7 +190,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	// This is the blueish gradient that the Depth Profile should have.
 	// It's a simple QLinearGradient with 2 stops, starting from top to bottom.
 	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
-	pat.setColorAt(1, getColor(DEPTH_BOTTOM));
+	pat.setColorAt(1, profileColor);
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
 

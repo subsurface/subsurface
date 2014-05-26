@@ -77,10 +77,11 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void settingsChanged();
 	void plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
-
+	int maxCeiling(int row);
 private:
 	unsigned int show_reported_ceiling;
 	unsigned int reported_ceiling_in_red;
+	QColor profileColor;
 };
 
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
