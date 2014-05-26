@@ -108,7 +108,8 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 	virtual void mouseDoubleClickEvent(QMouseEvent *event);
-
+	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
 private: /*methods*/
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
@@ -160,6 +161,8 @@ private:
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
+	bool shouldCalculateMaxTime;
+	int maxtime;
 };
 
 #endif // PROFILEWIDGET2_H

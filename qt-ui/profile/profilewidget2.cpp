@@ -87,7 +87,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	heartBeatItem(new DiveHeartrateItem()),
 	rulerItem(new RulerItem2()),
 	isGrayscale(false),
-	printMode(false)
+	printMode(false),
+	shouldCalculateMaxTime(true)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -421,7 +422,8 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	 */
 	struct plot_info pInfo = calculate_max_limits_new(d, currentdc);
 	create_plot_info_new(d, currentdc, &pInfo);
-	int maxtime = get_maxtime(&pInfo);
+	if(shouldCalculateMaxTime)
+		maxtime = get_maxtime(&pInfo);
 	int maxdepth = get_maxdepth(&pInfo);
 
 	dataModel->setDive(d, pInfo);
@@ -544,6 +546,22 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
 	fixBackgroundPos();
+}
+
+void ProfileWidget2::mousePressEvent(QMouseEvent *event)
+{
+	QGraphicsView::mousePressEvent(event);
+	if(currentState == PLAN)
+		shouldCalculateMaxTime = false;
+}
+
+void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
+{
+	QGraphicsView::mouseReleaseEvent(event);
+	if(currentState == PLAN){
+		shouldCalculateMaxTime = true;
+		replot();
+	}
 }
 
 void ProfileWidget2::fixBackgroundPos()
