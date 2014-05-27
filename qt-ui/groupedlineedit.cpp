@@ -42,7 +42,6 @@
 #include <QBrush>
 #include <QColor>
 #include <QPalette>
-#include <QDebug>
 
 struct GroupedLineEdit::Private {
 	struct Block {
@@ -66,7 +65,6 @@ GroupedLineEdit::GroupedLineEdit(QWidget *parent) : QPlainTextEdit(parent),
 	document()->setMaximumBlockCount(1);
 }
 
-
 GroupedLineEdit::~GroupedLineEdit()
 {
 	delete d;
@@ -86,7 +84,6 @@ int GroupedLineEdit::cursorPosition() const
 void GroupedLineEdit::addBlock(int start, int end)
 {
 	Private::Block block;
-
 	block.start = start;
 	block.end = end;
 	block.text = text().mid(start, end - start + 1).trimmed();
@@ -107,8 +104,7 @@ void GroupedLineEdit::removeAllColors()
 QStringList GroupedLineEdit::getBlockStringList()
 {
 	QStringList retList;
-	Private::Block block;
-	foreach (block, d->blocks)
+	foreach (Private::Block block, d->blocks)
 		retList.append(block.text);
 	return retList;
 }
@@ -134,9 +130,7 @@ void GroupedLineEdit::clear()
 void GroupedLineEdit::selectAll()
 {
 	QTextCursor c = textCursor();
-
 	c.select(QTextCursor::LineUnderCursor);
-
 	setTextCursor(c);
 }
 
@@ -153,7 +147,6 @@ QSize GroupedLineEdit::sizeHint() const
 		document()->findBlock(0).layout()->lineAt(0).height() +
 			document()->documentMargin() * 2 +
 			frameWidth() * 2);
-
 	return rs;
 }
 
@@ -190,8 +183,12 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 	QVectorIterator<QColor> i(d->colors);
 	i.toFront();
 	foreach (const Private::Block &block, d->blocks) {
-		qreal start_x = line.cursorToX(block.start, QTextLine::Trailing);
-		qreal end_x = line.cursorToX(block.end + 1, QTextLine::Leading);
+		qreal start_x = line.cursorToX(block.start, QTextLine::Leading);
+#if QT_VERSION >= 0x050000
+		qreal end_x = line.cursorToX(block.end-1, QTextLine::Trailing);
+#else
+		qreal end_x = line.cursorToX(block.end, QTextLine::Trailing);
+#endif
 		QPainterPath path;
 		QRectF rectangle(
 			start_x - 1.0 - double(horizontalScrollBar()->value()),

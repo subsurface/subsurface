@@ -1,6 +1,5 @@
 #include "tagwidget.h"
 #include <QPair>
-#include <QDebug>
 #include <QAbstractItemView>
 #include <QSettings>
 #include <QFont>
@@ -67,50 +66,18 @@ QPair<int, int> TagWidget::getCursorTagPosition()
 	return qMakePair(start, end);
 }
 
-enum ParseState {
-	FINDSTART,
-	FINDEND
-};
-
 void TagWidget::highlight()
 {
 	int i = 0, start = 0, end = 0;
-	ParseState state = FINDEND;
 	removeAllBlocks();
-
-	while (i < text().length()) {
-		if (text().at(i) == ',') {
-			if (state == FINDSTART) {
-				/* Detect empty tags */
-			} else if (state == FINDEND) {
-				/* Found end of tag */
-				if (i > 1) {
-					if (text().at(i - 1) != '\\') {
-						addBlock(start, end);
-						state = FINDSTART;
-					}
-				} else {
-					state = FINDSTART;
-				}
-			}
-		} else if (text().at(i) == ' ') {
-			/* Handled */
-		} else {
-			/* Found start of tag */
-			if (state == FINDSTART) {
-				state = FINDEND;
-				start = i;
-			} else if (state == FINDEND) {
-				end = i;
-			}
-		}
-		i++;
-	}
-	if (state == FINDEND) {
-		if (end < start)
-			end = text().length() - 1;
-		if (text().length() > 0)
-			addBlock(start, end);
+	int lastPos = 0;
+	Q_FOREACH (const QString& s, text().split(QChar(','), QString::SkipEmptyParts)) {
+		QString trimmed = s.trimmed();
+		if (trimmed.isEmpty())
+			continue;
+		int start = text().indexOf(trimmed, lastPos);
+		addBlock(start, trimmed.size() + start);
+		lastPos = trimmed.size() + start;
 	}
 }
 
