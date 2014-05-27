@@ -130,6 +130,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	if (doRecreateDiveList)
 		recreateDiveList();
 	ui.ListWidget->setFocus();
+	ui.ListWidget->setEnabled(true);
 	WSInfoModel::instance()->updateInfo();
 	// refresh the yearly stats if the window has an instance
 	if (yearlyStats) {
@@ -407,6 +408,9 @@ void MainWindow::on_actionDivePlanner_triggered()
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	createFakeDiveForAddAndPlan();
 	DivePlannerPointsModel::instance()->createSimpleDive(true);
+
+	// disable the dive list
+	ui.ListWidget->setEnabled(false);
 }
 
 void MainWindow::on_actionAddDive_triggered()
