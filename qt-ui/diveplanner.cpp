@@ -59,14 +59,21 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 	endRemoveRows();
 }
 
-void DivePlannerPointsModel::createSimpleDive(bool planner)
+void DivePlannerPointsModel::createSimpleDive()
 {
+	int o2 = O2_IN_AIR;
+	int he = 0;
+	if (isPlanner()) {
+		// let's use the gas from the first cylinder
+		o2 = stagingDive->cylinder[0].gasmix.o2.permille;
+		he = stagingDive->cylinder[0].gasmix.he.permille;
+	}
 	//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, O2_IN_AIR, 0, 0, true);
-	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, O2_IN_AIR, 0, 0, true);
-	if (!planner) {
-		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, O2_IN_AIR, 0, 0, true);
-		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, O2_IN_AIR, 0, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, o2, he, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, o2, he, 0, true);
+	if (!isPlanner()) {
+		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, o2, he, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, o2, he, 0, true);
 	}
 }
 

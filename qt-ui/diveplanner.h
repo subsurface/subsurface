@@ -39,7 +39,7 @@ public:
 	void removeSelectedPoints(const QVector<int> &rows);
 	void setPlanMode(Mode mode);
 	bool isPlanner();
-	void createSimpleDive(bool planner = false);
+	void createSimpleDive();
 	void clear();
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);

@@ -419,7 +419,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	createFakeDiveForAddAndPlan();
-	DivePlannerPointsModel::instance()->createSimpleDive(true);
+	DivePlannerPointsModel::instance()->createSimpleDive();
 
 	// reload and then disable the dive list
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
