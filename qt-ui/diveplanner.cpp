@@ -251,7 +251,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 
-	// Creating the plan
+	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
@@ -666,6 +666,7 @@ void DivePlannerPointsModel::cancelPlan()
 		stagingDive = NULL;
 	}
 	setPlanMode(NOTHING);
+	MainWindow::instance()->graphics()->setProfileState();
 	diveplan.dp = NULL;
 }
 
@@ -877,4 +878,5 @@ void DivePlannerPointsModel::createPlan()
 	CylindersModel::instance()->setDive(current_dive);
 	CylindersModel::instance()->update();
 	plannerModel->setRecalc(oldRecalc);
+	MainWindow::instance()->graphics()->setProfileState();
 }
