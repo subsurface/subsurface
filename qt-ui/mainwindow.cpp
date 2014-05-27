@@ -130,8 +130,8 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	ui.globe->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
-	ui.ListWidget->setFocus();
 	ui.ListWidget->setEnabled(true);
+	ui.ListWidget->setFocus();
 	WSInfoModel::instance()->updateInfo();
 	// refresh the yearly stats if the window has an instance
 	if (yearlyStats) {
