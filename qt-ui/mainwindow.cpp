@@ -301,10 +301,7 @@ void MainWindow::enableDcShortcuts()
 void MainWindow::showProfile()
 {
 	enableDcShortcuts();
-	//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
-	// and I'm sleepy now, so I think I should not try to fix right away.
-	// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
-	//ui.stackedWidget->setCurrentIndex(PROFILE);
+	ui.newProfile->setProfileState();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 }
 

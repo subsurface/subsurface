@@ -256,7 +256,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(showProfile()));
-	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(refreshDisplay()));
 	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
 	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(showProfile()));
 
@@ -666,7 +665,6 @@ void DivePlannerPointsModel::cancelPlan()
 		stagingDive = NULL;
 	}
 	setPlanMode(NOTHING);
-	MainWindow::instance()->graphics()->setProfileState();
 	diveplan.dp = NULL;
 }
 
@@ -866,17 +864,10 @@ void DivePlannerPointsModel::createPlan()
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	diveplan.dp = NULL;
-	clear();
-
-	// we unselected all dives earlier, so as a side effect recreating the dive list will select the new dive
-	MainWindow::instance()->recreateDiveList();
 	planCreated();
 	setPlanMode(NOTHING);
 	free(stagingDive);
 	stagingDive = NULL;
-	oldRecalc = plannerModel->setRecalc(false);
-	CylindersModel::instance()->setDive(current_dive);
-	CylindersModel::instance()->update();
-	plannerModel->setRecalc(oldRecalc);
-	MainWindow::instance()->graphics()->setProfileState();
+	// we unselected all dives earlier, so as a side effect recreating the dive list will select the new dive
+	MainWindow::instance()->refreshDisplay();
 }
