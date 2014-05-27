@@ -719,7 +719,6 @@ void MainTab::acceptChanges()
 			current_dive->number = 1;
 		else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
 			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
-		DivePlannerPointsModel::instance()->cancelPlan();
 		MainWindow::instance()->showProfile();
 		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
