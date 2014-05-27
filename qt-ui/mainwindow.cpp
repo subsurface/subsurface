@@ -377,9 +377,11 @@ void MainWindow::createFakeDiveForAddAndPlan()
 	dive->latitude.udeg = 0;
 	dive->longitude.udeg = 0;
 	record_dive(dive);
-	// this isn't in the UI yet, so let's call the C helper function - we'll fix this up when
-	// accepting the dive
-	select_dive(get_divenr(dive));
+	// select this new dive (but remember the old selection
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
+	ui.ListWidget->rememberSelection();
+	ui.ListWidget->unselectDives();
+	ui.ListWidget->selectDives(QList<int>() << dive_table.nr - 1);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 }
 
@@ -388,31 +390,23 @@ void MainWindow::on_actionDivePlanner_triggered()
 	if(!plannerStateClean())
 		return;
 
-	dive_list()->rememberSelection();
-	dive_list()->unselectDives();
-
+	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->clear();
-	CylindersModel::instance()->clear();
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (dive->selected) {
-			DivePlannerPointsModel::instance()->copyCylindersFrom(dive);
-			CylindersModel::instance()->copyFromDive(dive);
-			break;
-		}
-	}
-	createFakeDiveForAddAndPlan();
-
-	ui.InfoWidget->setCurrentIndex(0);
-	ui.infoPane->setCurrentIndex(MAINTAB);
-
 	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+
+	// set up the staging dive and clean up the widgets
 	DivePlannerPointsModel::instance()->clear();
+
+	// setup the staging dive cylinders from the selected dive
+	if (current_dive) {
+		DivePlannerPointsModel::instance()->copyCylindersFrom(current_dive);
+		CylindersModel::instance()->copyFromDive(current_dive);
+	}
+
+	// create a simple starting dive, using the first gas from the just copied cylidners
+	createFakeDiveForAddAndPlan();
 	DivePlannerPointsModel::instance()->createSimpleDive(true);
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
 }
 
 void MainWindow::on_actionAddDive_triggered()
