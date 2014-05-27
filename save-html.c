@@ -76,8 +76,12 @@ void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, c
 	const char *unit;
 	double value;
 
+	if (!dive->airtemp.mkelvin) {
+		put_format(b, "%s--%s", pre, post);
+		return;
+	}
 	value = get_temp_units(dive->airtemp.mkelvin, &unit);
-	put_format(b, "%s%.1f %s%s",pre, value, unit, post);
+	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
 void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
@@ -85,8 +89,12 @@ void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre,
 	const char *unit;
 	double value;
 
+	if (!dive->watertemp.mkelvin) {
+		put_format(b, "%s--%s", pre, post);
+		return;
+	}
 	value = get_temp_units(dive->watertemp.mkelvin, &unit);
-	put_format(b, "%s%.1f %s%s",pre, value, unit, post);
+	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
 void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
@@ -100,40 +108,104 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 	put_string(b, post);
 }
 
-void write_dives(struct membuffer *b,bool selected_only)
+void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
+{
+	put_string(b, "{");
+	put_format(b, "\"number\":%d,", *dive_no);
+	put_format(b, "\"subsurface_number\":%d,", dive->number);
+	put_HTML_date(b, dive, "\"date\":\"", "\",");
+	put_HTML_time(b, dive, "\"time\":\"", "\",");
+	put_format(b, "\"location\":\"%s\",", dive->location);
+	put_format(b, "\"rating\":%d,", dive->rating);
+	put_format(b, "\"visibility\":%d,", dive->visibility);
+	put_string(b, "\"temperature\":{");
+	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
+	put_HTML_watertemp(b, dive, "\"water\":\"", "\",");
+	put_string(b, "	},");
+	put_format(b, "\"buddy\":\"%s\",", dive->buddy);
+	put_format(b, "\"divemaster\":\"%s\",", dive->divemaster);
+	put_format(b, "\"suit\":\"%s\",", dive->suit);
+	put_HTML_tags(b, dive, "\"tags\":\"", "\",");
+	put_HTML_notes(b, dive ,"\"notes\":\"" ,"\",");
+	put_string(b, "},\n");
+	(*dive_no)++;
+}
+
+void write_no_trip (struct membuffer *b, int *dive_no)
+{
+	int i;
+	struct dive *dive;
+
+	put_format(b, "{");
+	put_format(b, "\"name\":\"Other\",");
+	put_format(b, "\"dives\":[");
+
+	for_each_dive(i, dive) {
+		if (!dive->divetrip)
+			write_one_dive(b, dive, dive_no);
+	}
+	put_format(b, "]},\n\n");
+}
+
+void write_trip (struct membuffer *b, dive_trip_t *trip, int *dive_no)
+{
+	int i;
+	struct dive *dive;
+
+	put_format(b, "{");
+	put_format(b, "\"name\":\"%s\",",trip->location);
+	put_format(b, "\"dives\":[");
+
+	for (dive = trip->dives; dive != NULL; dive = dive->next){
+		write_one_dive(b, dive, dive_no);
+	}
+
+	put_format(b, "]},\n\n");
+}
+
+void write_trips(struct membuffer *b,bool selected_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
+	dive_trip_t *trip;
 
-	for_each_dive(i, dive) {
-		if (selected_only) {
+	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
+		trip->index = 0;
+
+	if (selected_only) {
+		put_format(b, "{");
+		put_format(b, "\"name\":\"Other\",");
+		put_format(b, "\"dives\":[");
+
+		for_each_dive(i, dive) {
 			if (!dive->selected)
 				continue;
+			write_one_dive(b, dive, &dive_no);
 		}
-		put_string(b, "{");
-		put_format(b, "\"number\":%d,", dive_no);
-		put_HTML_date(b, dive, "\"date\":\"", "\",");
-		put_HTML_time(b, dive, "\"time\":\"", "\",");
-		put_format(b, "\"location\":\"%s\",", dive->location);
-		put_format(b, "\"rating\":%d,", dive->rating);
-		put_format(b, "\"visibility\":%d,", dive->visibility);
-		put_string(b, "\"temperature\":{");
-		put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
-		put_HTML_watertemp(b, dive, "\"water\":\"", "\",");
-		put_string(b, "	},");
-		put_format(b, "\"buddy\":\"%s\",", dive->buddy);
-		put_format(b, "\"divemaster\":\"%s\",", dive->divemaster);
-		put_format(b, "\"suit\":\"%s\",", dive->suit);
-		put_HTML_tags(b, dive, "\"tags\":\"", "\",");
-		put_HTML_notes(b, dive ,"\"notes\":\"" ,"\",");
-		put_string(b, "},\n");
-		dive_no++;
+		put_format(b, "]},\n\n");
+	} else {
+
+		for_each_dive(i, dive) {
+
+			trip = dive->divetrip;
+
+			/*Continue if the dive have no trips or we have seen this trip before*/
+			if (!trip || trip->index)
+				continue;
+
+			/* We haven't seen this trip before - save it and all dives */
+			trip->index = 1;
+			write_trip(b, trip, &dive_no);
+		}
+
+		/*Save all remaining trips into Others*/
+		write_no_trip(b, &dive_no);
 	}
 }
 
-void export_dives(struct membuffer *b,bool selected_only){
-	put_string(b, "items=[");
-	write_dives(b, selected_only);
+void export_list(struct membuffer *b,bool selected_only){
+	put_string(b, "trips=[");
+	write_trips(b, selected_only);
 	put_string(b, "]");
 }
 
@@ -142,7 +214,7 @@ void export_HTML(const char *file_name, const bool selected_only)
 	FILE *f;
 
 	struct membuffer buf = { 0 };
-	export_dives(&buf, selected_only);
+	export_list(&buf, selected_only);
 
 	f = fopen(file_name, "w+");
 	if (!f)
