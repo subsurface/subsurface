@@ -390,7 +390,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	}
 
 	// reset some item visibility on printMode changes
-	toolTipItem->setVisible(!printMode);
+	toolTipItem->setVisible(!(printMode || currentState == PLAN));
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
 
 	// No need to do this again if we are already showing the same dive
@@ -783,6 +783,7 @@ void ProfileWidget2::setAddState()
 		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
+	diveCeiling->setVisible(true);
 	setBackgroundBrush(QColor(Qt::blue).light());
 }
 
@@ -811,6 +812,7 @@ void ProfileWidget2::setPlanState()
 		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
+	diveCeiling->setVisible(true);
 	setBackgroundBrush(QColor(Qt::green).light());
 }
 
