@@ -151,6 +151,7 @@ slots:
 	void recreateDiveList();
 	void showProfile();
 	void editCurrentDive();
+	void removeFakeDiveForAddAndPlan();
 
 private:
 	Ui::MainWindow ui;
@@ -175,6 +176,7 @@ private:
 
 	bool plannerStateClean();
 	void createFakeDiveForAddAndPlan();
+	int fakeDiveId;
 };
 
 #endif // MAINWINDOW_H
