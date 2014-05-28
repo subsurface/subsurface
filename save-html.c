@@ -59,7 +59,7 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, con
 {
 	if (dive->notes) {
 		char *notes = quote(dive->notes);
-		put_format(b, "%s: %s %s", pre, notes, post);
+		put_format(b, "%s%s%s", pre, notes, post);
 		free(notes);
 	}
 }
@@ -101,11 +101,22 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 {
 	put_string(b, pre);
 	struct tag_entry *tag = dive->tag_list;
+
+	if (!tag)
+		put_string(b, "--");
+
 	while(tag){
 		put_format(b, "%s ", tag->tag->name);
 		tag = tag->next;
 	}
 	put_string(b, post);
+}
+
+void write_attribute(struct membuffer *b, const char *att_name, const char *value)
+{
+	if(!value)
+		value="--";
+	put_format(b, "\"%s\":\"%s\",", att_name, value);
 }
 
 void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
@@ -115,16 +126,16 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 	put_format(b, "\"subsurface_number\":%d,", dive->number);
 	put_HTML_date(b, dive, "\"date\":\"", "\",");
 	put_HTML_time(b, dive, "\"time\":\"", "\",");
-	put_format(b, "\"location\":\"%s\",", dive->location);
+	write_attribute(b, "location", dive->location);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
 	put_string(b, "\"temperature\":{");
 	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
 	put_HTML_watertemp(b, dive, "\"water\":\"", "\",");
 	put_string(b, "	},");
-	put_format(b, "\"buddy\":\"%s\",", dive->buddy);
-	put_format(b, "\"divemaster\":\"%s\",", dive->divemaster);
-	put_format(b, "\"suit\":\"%s\",", dive->suit);
+	write_attribute(b, "buddy", dive->buddy);
+	write_attribute(b, "divemaster", dive->divemaster);
+	write_attribute(b, "suit", dive->suit);
 	put_HTML_tags(b, dive, "\"tags\":\"", "\",");
 	put_HTML_notes(b, dive ,"\"notes\":\"" ,"\",");
 	put_string(b, "},\n");
