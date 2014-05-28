@@ -247,7 +247,7 @@ void MainWindow::on_actionClose_triggered()
 	while (dive_table.nr)
 		delete_single_dive(0);
 
-	dive_list()->clearSelection();
+	ui.ListWidget->clearSelection();
 	/* clear the selection and the statistics */
 	selected_dive = -1;
 
@@ -401,13 +401,8 @@ void MainWindow::planCanceled()
 {
 	removeFakeDiveForAddAndPlan();
 	showProfile();
-	// restoring the selection causes a crash - somehow the model appears to be confused
-	// or maybe our internal data structures are messed up?
-	// commenting this out fixes the crash
-	//
-	//	dive_list()->restoreSelection();
-
-	dive_list()->reload(DiveTripModel::CURRENT);
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
+	ui.ListWidget->restoreSelection();
 	refreshDisplay();
 }
 
