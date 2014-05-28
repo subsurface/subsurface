@@ -883,6 +883,7 @@ void MainTab::rejectChanges()
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 	MainWindow::instance()->globe()->centerOnCurrentDive();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 }
 #undef EDIT_TEXT2
 
