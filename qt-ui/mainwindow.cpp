@@ -140,6 +140,8 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 		yearlyStatsModel = new YearlyStatisticsModel();
 		yearlyStats->setModel(yearlyStatsModel);
 	}
+	if (amount_selected == 0)
+		cleanUpEmpty();
 }
 
 void MainWindow::recreateDiveList()
