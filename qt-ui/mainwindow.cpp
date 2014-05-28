@@ -378,9 +378,9 @@ void MainWindow::createFakeDiveForAddAndPlan()
 	dive->longitude.udeg = 0;
 	record_dive(dive);
 	// select this new dive (but remember the old selection
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->rememberSelection();
 	ui.ListWidget->unselectDives();
+	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->selectDives(QList<int>() << dive_table.nr - 1);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 }
