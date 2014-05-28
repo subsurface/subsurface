@@ -256,7 +256,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
 	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(showProfile()));
-	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
 	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(showProfile()));
 
 	/* set defaults. */
@@ -654,8 +653,8 @@ void DivePlannerPointsModel::cancelPlan()
 			return;
 		}
 	}
-	clear();
 	// we unselected all dives earlier, so restore that first and then recreate the dive list
+	MainWindow::instance()->removeFakeDiveForAddAndPlan();
 	MainWindow::instance()->dive_list()->restoreSelection();
 	MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT);
 	MainWindow::instance()->refreshDisplay();
