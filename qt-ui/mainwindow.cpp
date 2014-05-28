@@ -401,7 +401,12 @@ void MainWindow::planCanceled()
 {
 	removeFakeDiveForAddAndPlan();
 	showProfile();
-	dive_list()->restoreSelection();
+	// restoring the selection causes a crash - somehow the model appears to be confused
+	// or maybe our internal data structures are messed up?
+	// commenting this out fixes the crash
+	//
+	//	dive_list()->restoreSelection();
+
 	dive_list()->reload(DiveTripModel::CURRENT);
 	refreshDisplay();
 }
