@@ -792,6 +792,7 @@ void MainTab::resetPallete()
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
+	editMode = NONE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 
@@ -874,7 +875,6 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->dive_list()->setEnabled(true);
 	notesBackup.clear();
 	resetPallete();
-	editMode = NONE;
 	MainWindow::instance()->globe()->reload();
 	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
