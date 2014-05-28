@@ -88,7 +88,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	rulerItem(new RulerItem2()),
 	isGrayscale(false),
 	printMode(false),
-	shouldCalculateMaxTime(true)
+	shouldCalculateMaxTime(true),
+	backgroundFile(":poster")
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -566,9 +567,9 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 
 void ProfileWidget2::fixBackgroundPos()
 {
+	static QPixmap toBeScaled(backgroundFile);
 	if (currentState != EMPTY)
 		return;
-	QPixmap toBeScaled = QPixmap(backgroundFile);
 	QPixmap p = toBeScaled.scaledToHeight(viewport()->height() - 40, Qt::SmoothTransformation);
 	int x = viewport()->width() / 2 - p.width() / 2;
 	int y = viewport()->height() / 2 - p.height() / 2;
@@ -666,7 +667,6 @@ void ProfileWidget2::setEmptyState()
 	currentState = EMPTY;
 	MainWindow::instance()->setToolButtonsEnabled(false);
 
-	backgroundFile = QString(":poster");
 	fixBackgroundPos();
 	background->setVisible(true);
 
@@ -684,12 +684,14 @@ void ProfileWidget2::setEmptyState()
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
-	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
-		tissue->setVisible(false);
-	}
-	Q_FOREACH (DiveEventItem *event, eventItems) {
-		event->setVisible(false);
-	}
+
+	#define HIDE_ALL(TYPE, CONTAINER) \
+	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
+	HIDE_ALL(DiveCalculatedTissue, allTissues);
+	HIDE_ALL(DiveEventItem, eventItems);
+	HIDE_ALL(DiveHandler, handles);
+	HIDE_ALL(QGraphicsSimpleTextItem, gases);
+	#undef HIDE_ALL
 }
 
 void ProfileWidget2::setProfileState()
@@ -1030,10 +1032,8 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 
-
-	Q_FOREACH (QAction *action, actionsForKeys.values()) {
+	Q_FOREACH (QAction *action, actionsForKeys.values())
 		action->setShortcut(QKeySequence());
-	}
 }
 
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)

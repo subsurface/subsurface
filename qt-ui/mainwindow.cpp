@@ -397,6 +397,15 @@ void MainWindow::removeFakeDiveForAddAndPlan()
 	delete_single_dive(idx);
 }
 
+void MainWindow::planCanceled()
+{
+	removeFakeDiveForAddAndPlan();
+	showProfile();
+	dive_list()->restoreSelection();
+	dive_list()->reload(DiveTripModel::CURRENT);
+	refreshDisplay();
+}
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	if(!plannerStateClean())

@@ -152,6 +152,7 @@ slots:
 	void showProfile();
 	void editCurrentDive();
 	void removeFakeDiveForAddAndPlan();
+	void planCanceled();
 
 private:
 	Ui::MainWindow ui;
