@@ -153,6 +153,7 @@ slots:
 	void editCurrentDive();
 	void removeFakeDiveForAddAndPlan();
 	void planCanceled();
+	void planCreated();
 
 private:
 	Ui::MainWindow ui;

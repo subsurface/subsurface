@@ -77,7 +77,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
-
+	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), MainWindow::instance(), SLOT(planCreated()));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), MainWindow::instance(), SLOT(planCanceled()));
 	ui.mainErrorMessage->hide();
 	initialUiSetup();
 	readSettings();
@@ -403,6 +404,13 @@ void MainWindow::planCanceled()
 	showProfile();
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->restoreSelection();
+	refreshDisplay();
+}
+
+void MainWindow::planCreated()
+{
+	removeFakeDiveForAddAndPlan();
+	showProfile();
 	refreshDisplay();
 }
 

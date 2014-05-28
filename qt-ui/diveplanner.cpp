@@ -274,9 +274,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
-	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(removeFakeDiveForAddAndPlan()));
-	connect(plannerModel, SIGNAL(planCreated()), MainWindow::instance(), SLOT(showProfile()));
-	connect(plannerModel, SIGNAL(planCanceled()), MainWindow::instance(), SLOT(planCanceled()));
 
 	/* set defaults. */
 	ui.startTime->setTime(QTime(1, 0));
@@ -879,10 +876,8 @@ void DivePlannerPointsModel::createPlan()
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	diveplan.dp = NULL;
-	planCreated();
 	setPlanMode(NOTHING);
 	free(stagingDive);
 	stagingDive = NULL;
-	// we unselected all dives earlier, so as a side effect recreating the dive list will select the new dive
-	MainWindow::instance()->refreshDisplay();
+	planCreated();
 }
