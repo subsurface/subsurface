@@ -226,7 +226,14 @@ timestamp_t parse_date(const char *date)
 enum csv_format {
 	CSV_DEPTH,
 	CSV_TEMP,
-	CSV_PRESSURE
+	CSV_PRESSURE,
+	POSEIDON_DEPTH,
+	POSEIDON_TEMP,
+	POSEIDON_SETPOINT,
+	POSEIDON_SENSOR1,
+	POSEIDON_SENSOR2,
+	POSEIDON_PRESSURE,
+	POSEIDON_DILUENT
 };
 
 static void add_sample_data(struct sample *sample, enum csv_format type, double val)
@@ -240,6 +247,27 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		break;
 	case CSV_PRESSURE:
 		sample->cylinderpressure.mbar = psi_to_mbar(val * 4);
+		break;
+	case POSEIDON_DEPTH:
+		sample->depth.mm = val * 0.5 *1000;
+		break;
+	case POSEIDON_TEMP:
+		sample->temperature.mkelvin = C_to_mkelvin(val * 0.2);
+		break;
+	case POSEIDON_SETPOINT:
+		sample->setpoint.mbar = val * 10;
+		break;
+	case POSEIDON_SENSOR1:
+		sample->o2sensor[0].mbar = val * 10;
+		break;
+	case POSEIDON_SENSOR2:
+		sample->o2sensor[1].mbar = val * 10;
+		break;
+	case POSEIDON_PRESSURE:
+		sample->cylinderpressure.mbar = val * 1000;
+		break;
+	case POSEIDON_DILUENT:
+		sample->diluentpressure.mbar = val * 1000;
 		break;
 	}
 }
@@ -382,6 +410,182 @@ int parse_file(const char *filename)
 
 	parse_file_buffer(filename, &mem);
 	free(mem.buffer);
+	return 0;
+}
+
+#define MATCH(buffer, pattern) \
+	memcmp(buffer, pattern, strlen(pattern))
+
+char *parse_mkvi_value(const char *haystack, const char *needle)
+{
+	char *lineptr, *valueptr, *endptr, *ret = NULL;
+
+	if ((lineptr = strstr(haystack, needle)) != NULL) {
+		if ((valueptr = strstr(lineptr, ": ")) != NULL) {
+			valueptr += 2;
+		}
+		if ((endptr = strstr(lineptr, "\n")) != NULL) {
+			*endptr = 0;
+			ret = strdup(valueptr);
+			*endptr = '\n';
+
+		}
+	}
+	return ret;
+}
+
+static int cur_cylinder_index;
+int parse_txt_file(const char *filename, const char *csv)
+{
+	struct memblock memtxt, memcsv;
+
+	if (readfile(filename, &memtxt) < 0) {
+		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+	}
+
+	/*
+	 * MkVI stores some information in .txt file but the whole profile and events are stored in .csv file. First
+	 * make sure the input .txt looks like proper MkVI file, then start parsing the .csv.
+	 */
+	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
+		int d, m, y;
+		int hh = 0, mm = 0, ss = 0;
+		int prev_depth = 0, cur_sampletime = 0;
+		bool has_depth = false;
+		char *lineptr;
+
+		struct dive *dive;
+		struct divecomputer *dc;
+		struct tm cur_tm;
+		timestamp_t date;
+
+		if (sscanf(parse_mkvi_value(memtxt.buffer, "Dive started at"), "%d-%d-%d %d:%d:%d",
+					&y, &m, &d, &hh, &mm, &ss) != 6) {
+			return -1;
+		}
+
+		cur_tm.tm_year = y;
+		cur_tm.tm_mon = m - 1;
+		cur_tm.tm_mday = d;
+		cur_tm.tm_hour = hh;
+		cur_tm.tm_min = mm;
+		cur_tm.tm_sec = ss;
+
+		dive = alloc_dive();
+		dive->when = utc_mktime(&cur_tm);;
+		dive->dc.model = strdup("Poseidon MkVI Discovery");
+		dive->dc.deviceid = atoi(parse_mkvi_value(memtxt.buffer, "Rig Serial number"));
+		dive->dc.dctype = CCR;
+
+		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
+		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
+		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
+		cur_cylinder_index++;
+
+		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
+		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
+		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
+		cur_cylinder_index++;
+
+		dc = &dive->dc;
+
+		/*
+		 * Read samples from the CSV file. A sample contains all the lines with same timestamp. The CSV file has
+		 * the following format:
+		 *
+		 * timestamp, type, value
+		 *
+		 * And following fields are of interest to us:
+		 *
+		 * 	6	sensor1
+		 * 	7	sensor2
+		 * 	8	depth
+		 *	13	o2 tank pressure
+		 *	14	diluent tank pressure
+		 *	20	o2 setpoint
+		 *	39	water temp
+		 */
+
+		if (readfile(csv, &memcsv) < 0) {
+			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
+		}
+		lineptr = memcsv.buffer;
+		for (;;) {
+			char *end;
+			double val;
+			struct sample *sample;
+			int type;
+			int value;
+			int sampletime;
+
+			/* Collect all the information for one sample */
+			sscanf(lineptr, "%d,%d,%d", &cur_sampletime, &type, &value);
+
+			has_depth = false;
+			sample = prepare_sample(dc);
+			sample->time.seconds = cur_sampletime;
+
+			do {
+				int i = sscanf(lineptr, "%d,%d,%d", &sampletime, &type, &value);
+				switch (i) {
+				case 3:
+					switch (type) {
+					case 6:
+						add_sample_data(sample, POSEIDON_SENSOR1, value);
+						break;
+					case 7:
+						add_sample_data(sample, POSEIDON_SENSOR2, value);
+						break;
+					case 8:
+						has_depth = true;
+						prev_depth = value;
+						add_sample_data(sample, POSEIDON_DEPTH, value);
+						break;
+					case 13:
+						add_sample_data(sample, POSEIDON_PRESSURE, value);
+						break;
+					case 14:
+						add_sample_data(sample, POSEIDON_DILUENT, value);
+						break;
+					case 20:
+						add_sample_data(sample, POSEIDON_SETPOINT, value);
+						break;
+					case 39:
+						add_sample_data(sample, POSEIDON_TEMP, value);
+						break;
+					default:
+						break;
+					} /* sample types */
+					break;
+				case EOF:
+					break;
+				default:
+					printf("Unable to parse input: %s\n", lineptr);
+					break;
+				}
+
+				lineptr = strchr(lineptr, '\n');
+				if (!lineptr || !*lineptr)
+					break;
+				lineptr++;
+
+				/* Grabbing next sample time */
+				sscanf(lineptr, "%d,%d,%d", &cur_sampletime, &type, &value);
+			} while (sampletime == cur_sampletime);
+
+			if (!has_depth)
+				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
+			finish_sample(dc);
+
+			if (!lineptr || !*lineptr)
+				break;
+		}
+		record_dive(dive);
+		return 1;
+	} else {
+		return report_error(translate("gettextFromC", "No matching DC found for file '%s'"), csv);
+	}
+
 	return 0;
 }
 

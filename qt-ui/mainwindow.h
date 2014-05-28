@@ -73,6 +73,7 @@ public:
 	void enableDcShortcuts();
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
+	void importTxtFiles(const QStringList fileNames);
 	void cleanUpEmpty();
 	void setToolButtonsEnabled(bool enabled);
 	ProfileWidget2 *graphics() const;

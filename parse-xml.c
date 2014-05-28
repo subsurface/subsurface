@@ -17,6 +17,7 @@
 
 #include "dive.h"
 #include "device.h"
+#include "membuffer.h"
 
 int verbose, quit;
 int metric = 1;
@@ -1736,6 +1737,13 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
+}
+
+void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char *starttime)
+{
+	dive_start();
+	divedate(starttime, &cur_dive->when);
+	dive_end();
 }
 
 extern int dm4_events(void *handle, int columns, char **data, char **column)

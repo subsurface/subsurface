@@ -1174,6 +1174,23 @@ void MainWindow::importFiles(const QStringList fileNames)
 	refreshDisplay();
 }
 
+void MainWindow::importTxtFiles(const QStringList fileNames)
+{
+	if (fileNames.isEmpty())
+		return;
+
+	QByteArray fileNamePtr, csv;
+
+	for (int i = 0; i < fileNames.size(); ++i) {
+		fileNamePtr = QFile::encodeName(fileNames.at(i));
+		csv = fileNamePtr.data();
+		csv.replace(strlen(csv.data()) - 3, 3, "csv");
+		parse_txt_file(fileNamePtr.data(), csv);
+	}
+	process_dives(true, false);
+	refreshDisplay();
+}
+
 void MainWindow::loadFiles(const QStringList fileNames)
 {
 	if (fileNames.isEmpty())
@@ -1208,14 +1225,15 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
 		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;"
 			"XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;"
-			"Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)"));
+			"Suunto Files(*.sde *.db);;CSV Files(*.csv);;MkVI Files(*.txt);;All Files(*)"));
 
 	if (fileNames.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!csv)", Qt::CaseInsensitive));
+	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!csv|?!txt)", Qt::CaseInsensitive));
 	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
+	QStringList txtFiles = fileNames.filter(".txt", Qt::CaseInsensitive);
 	if (logFiles.size()) {
 		importFiles(logFiles);
 	}
@@ -1225,6 +1243,10 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		diveLogImport->show();
 		process_dives(true, false);
 		refreshDisplay();
+	}
+
+	if (txtFiles.size()) {
+		importTxtFiles(txtFiles);
 	}
 }
 
