@@ -156,17 +156,10 @@ void DiveListView::restoreSelection()
 		QList<int> divesOnTrip = getDivesInTrip(trip);
 		QList<int> selectedDivesOnTrip = selectedDives.values(trip);
 
-		// Trip was not selected, let's select single-dives.
-		if (trip == NULL || divesOnTrip.count() != selectedDivesOnTrip.count()) {
-			Q_FOREACH (int i, selectedDivesOnTrip) {
-				selectDive(i);
-			}
-		} else {
+		// Only select trip if all of its dives were selected
+		if (trip != NULL && divesOnTrip.count() == selectedDivesOnTrip.count())
 			selectTrip(trip);
-			Q_FOREACH (int i, selectedDivesOnTrip) {
-				selectDive(i);
-			}
-		}
+		selectDives(selectedDivesOnTrip);
 	}
 }
 
