@@ -28,8 +28,8 @@
 #include <iostream>
 #include "../qthelper.h"
 
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0)
-	, currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false)
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
+	currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -59,8 +59,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	searchBox.hide();
 	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
-	// calling setupUi() here appears to be too early; it does NOT correctly set the column widths
-	//	setupUi();
 }
 
 DiveListView::~DiveListView()
