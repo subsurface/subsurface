@@ -804,24 +804,27 @@ void MainTab::rejectChanges()
 		if (lastMode == ADD) {
 			// clean up
 			DivePlannerPointsModel::instance()->cancelPlan();
+			hideMessage();
+			resetPallete();
+			return;
 		} else if (lastMode == MANUALLY_ADDED_DIVE) {
 			// when we tried to edit a manually added dive, we destroyed
 			// the dive we edited, so let's just restore it from backup
 			DivePlannerPointsModel::instance()->restoreBackupDive();
 		}
 		struct dive *curr = current_dive;
-		ui.notes->setText(notesBackup[curr].notes);
-		ui.location->setText(notesBackup[curr].location);
-		ui.buddy->setText(notesBackup[curr].buddy);
-		ui.suit->setText(notesBackup[curr].suit);
-		ui.divemaster->setText(notesBackup[curr].divemaster);
-		ui.rating->setCurrentStars(notesBackup[curr].rating);
-		ui.visibility->setCurrentStars(notesBackup[curr].visibility);
-		ui.airtemp->setText(notesBackup[curr].airtemp);
-		ui.watertemp->setText(notesBackup[curr].watertemp);
-		ui.tagWidget->setText(notesBackup[curr].tags);
-		// it's a little harder to do the right thing for the date time widget
 		if (curr) {
+			ui.notes->setText(notesBackup[curr].notes);
+			ui.location->setText(notesBackup[curr].location);
+			ui.buddy->setText(notesBackup[curr].buddy);
+			ui.suit->setText(notesBackup[curr].suit);
+			ui.divemaster->setText(notesBackup[curr].divemaster);
+			ui.rating->setCurrentStars(notesBackup[curr].rating);
+			ui.visibility->setCurrentStars(notesBackup[curr].visibility);
+			ui.airtemp->setText(notesBackup[curr].airtemp);
+			ui.watertemp->setText(notesBackup[curr].watertemp);
+			ui.tagWidget->setText(notesBackup[curr].tags);
+			// it's a little harder to do the right thing for the date time widget
 			ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime));
 		} else {
 			QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit *>();
@@ -854,12 +857,6 @@ void MainTab::rejectChanges()
 			}
 		}
 		updateGpsCoordinates(curr);
-		if (lastMode == ADD) {
-			delete_single_dive(selected_dive);
-			MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT);
-			MainWindow::instance()->dive_list()->restoreSelection();
-			emit addDiveFinished();
-		}
 		if (selected_dive >= 0) {
 			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
 			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
@@ -873,17 +870,15 @@ void MainTab::rejectChanges()
 
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
-	notesBackup.clear();
 	resetPallete();
 	MainWindow::instance()->globe()->reload();
-	if (lastMode == ADD || lastMode == MANUALLY_ADDED_DIVE) {
+	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
 		updateDiveInfo(selected_dive);
 		MainWindow::instance()->showProfile();
 		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
 		MainWindow::instance()->refreshDisplay(false);
 	}
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->setFocus();
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view

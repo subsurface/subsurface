@@ -65,6 +65,7 @@ private:
 	QLineEdit searchBox;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
+	bool selectionSaved;
 
 	/* if dive_trip_t is null, there's no problem. */
 	QMultiHash<dive_trip_t *, int> selectedDives;

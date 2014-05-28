@@ -29,7 +29,7 @@
 #include "../qthelper.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
-	currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false)
+	currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false), selectionSaved(false)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -147,10 +147,15 @@ void DiveListView::rememberSelection()
 		if (d)
 			selectedDives.insert(d->divetrip, get_divenr(d));
 	}
+	selectionSaved = true;
 }
 
 void DiveListView::restoreSelection()
 {
+	if (!selectionSaved)
+		return;
+
+	selectionSaved = false;
 	unselectDives();
 	Q_FOREACH (dive_trip_t *trip, selectedDives.keys()) {
 		QList<int> divesOnTrip = getDivesInTrip(trip);
