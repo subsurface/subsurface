@@ -428,8 +428,6 @@ void MainWindow::on_actionAddDive_triggered()
 	if(!plannerStateClean())
 		return;
 
-	dive_list()->rememberSelection();
-	dive_list()->unselectDives();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	createFakeDiveForAddAndPlan();
