@@ -100,21 +100,23 @@ void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre,
 void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
+	put_string(b, "[");
 	struct tag_entry *tag = dive->tag_list;
 
 	if (!tag)
-		put_string(b, "--");
+		put_string(b, "\"--\",");
 
-	while(tag){
-		put_format(b, "%s ", tag->tag->name);
+	while (tag) {
+		put_format(b, "\"%s\",", tag->tag->name);
 		tag = tag->next;
 	}
+	put_string(b, "]");
 	put_string(b, post);
 }
 
 void write_attribute(struct membuffer *b, const char *att_name, const char *value)
 {
-	if(!value)
+	if (!value)
 		value="--";
 	put_format(b, "\"%s\":\"%s\",", att_name, value);
 }
@@ -136,7 +138,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 	write_attribute(b, "buddy", dive->buddy);
 	write_attribute(b, "divemaster", dive->divemaster);
 	write_attribute(b, "suit", dive->suit);
-	put_HTML_tags(b, dive, "\"tags\":\"", "\",");
+	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive ,"\"notes\":\"" ,"\",");
 	put_string(b, "},\n");
 	(*dive_no)++;
