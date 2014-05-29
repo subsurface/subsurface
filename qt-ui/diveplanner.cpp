@@ -751,12 +751,11 @@ void DivePlannerPointsModel::tanksUpdated()
 
 void DivePlannerPointsModel::clear()
 {
+	Q_ASSERT(stagingDive == 0);
 	if (mode == ADD) {
 		stagingDive = current_dive;
 	} else {
-		if (!stagingDive)
-			stagingDive = alloc_dive();
-		memset(stagingDive->cylinder, 0, MAX_CYLINDERS * sizeof(cylinder_t));
+		stagingDive = alloc_dive();
 	}
 	CylindersModel::instance()->setDive(stagingDive);
 	if (rowCount() > 0) {
