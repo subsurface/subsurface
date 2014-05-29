@@ -116,7 +116,7 @@ void DivePlannerPointsModel::copyCylinders(dive *d)
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
-	if (!stagingDive)
+	if (!stagingDive || stagingDive == current_dive)
 		return;
 
 	if (current_dive) {
