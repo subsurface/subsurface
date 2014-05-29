@@ -21,7 +21,7 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 	int i, dive_no = 0;
 	struct dive *dive;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (selected_only) {
 			if (!dive->selected)
 				continue;
@@ -37,7 +37,7 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_duration(b, dive->duration, translate("gettextFromC", "<p>Duration: "), translate("gettextFromC", " min</p>"));
 		put_depth(b, dive->maxdepth, translate("gettextFromC", "<p>Max Depth: "), translate("gettextFromC", " m</p>"));
 		put_HTML_airtemp(b, dive, translate("gettextFromC", "<p>Air Temp: "), "</p>");
-		put_HTML_watertemp(b, dive,translate("gettextFromC", "<p>Water Temp : ") , "</p>");
+		put_HTML_watertemp(b, dive, translate("gettextFromC", "<p>Water Temp : "), "</p>");
 		put_format(b, "<p>Location : <b>%s</b></p>", quote(dive->location));
 		put_HTML_notes(b, dive, translate("gettextFromC", "<p> Notes"), " </p>");
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");

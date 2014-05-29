@@ -123,7 +123,7 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 void write_attribute(struct membuffer *b, const char *att_name, const char *value)
 {
 	if (!value)
-		value="--";
+		value = "--";
 	put_format(b, "\"%s\":\"%s\",", att_name, value);
 }
 
@@ -145,12 +145,12 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 	write_attribute(b, "divemaster", dive->divemaster);
 	write_attribute(b, "suit", dive->suit);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
-	put_HTML_notes(b, dive ,"\"notes\":\"" ,"\",");
+	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	put_string(b, "},\n");
 	(*dive_no)++;
 }
 
-void write_no_trip (struct membuffer *b, int *dive_no)
+void write_no_trip(struct membuffer *b, int *dive_no)
 {
 	int i;
 	struct dive *dive;
@@ -159,30 +159,30 @@ void write_no_trip (struct membuffer *b, int *dive_no)
 	put_format(b, "\"name\":\"Other\",");
 	put_format(b, "\"dives\":[");
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->divetrip)
 			write_one_dive(b, dive, dive_no);
 	}
 	put_format(b, "]},\n\n");
 }
 
-void write_trip (struct membuffer *b, dive_trip_t *trip, int *dive_no)
+void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no)
 {
 	int i;
 	struct dive *dive;
 
 	put_format(b, "{");
-	put_format(b, "\"name\":\"%s\",",trip->location);
+	put_format(b, "\"name\":\"%s\",", trip->location);
 	put_format(b, "\"dives\":[");
 
-	for (dive = trip->dives; dive != NULL; dive = dive->next){
+	for (dive = trip->dives; dive != NULL; dive = dive->next) {
 		write_one_dive(b, dive, dive_no);
 	}
 
 	put_format(b, "]},\n\n");
 }
 
-void write_trips(struct membuffer *b,bool selected_only)
+void write_trips(struct membuffer *b, bool selected_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
@@ -196,7 +196,7 @@ void write_trips(struct membuffer *b,bool selected_only)
 		put_format(b, "\"name\":\"Other\",");
 		put_format(b, "\"dives\":[");
 
-		for_each_dive(i, dive) {
+		for_each_dive (i, dive) {
 			if (!dive->selected)
 				continue;
 			write_one_dive(b, dive, &dive_no);
@@ -204,8 +204,7 @@ void write_trips(struct membuffer *b,bool selected_only)
 		put_format(b, "]},\n\n");
 	} else {
 
-		for_each_dive(i, dive) {
-
+		for_each_dive (i, dive) {
 			trip = dive->divetrip;
 
 			/*Continue if the dive have no trips or we have seen this trip before*/
@@ -222,7 +221,8 @@ void write_trips(struct membuffer *b,bool selected_only)
 	}
 }
 
-void export_list(struct membuffer *b,bool selected_only){
+void export_list(struct membuffer *b, bool selected_only)
+{
 	put_string(b, "trips=[");
 	write_trips(b, selected_only);
 	put_string(b, "]");
