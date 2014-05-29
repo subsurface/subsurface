@@ -316,6 +316,8 @@ void DivePlannerWidget::decoSacChanged(const QString &decosac)
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {
 	mode = m;
+	if (m == NOTHING)
+		stagingDive = NULL;
 }
 
 bool DivePlannerPointsModel::isPlanner()
@@ -671,10 +673,9 @@ void DivePlannerPointsModel::cancelPlan()
 		}
 	}
 
-	if (mode != ADD) {
+	if (mode != ADD) // for ADD stagingDive points at current_dive
 		free(stagingDive);
-		stagingDive = NULL;
-	}
+	stagingDive = NULL; // always reset the stagingDive to NULL
 	setPlanMode(NOTHING);
 	diveplan.dp = NULL;
 	emit planCanceled();
