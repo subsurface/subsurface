@@ -76,7 +76,7 @@ void remove_event(struct event* event)
 	}
 }
 
-int get_pressure_units(unsigned int mb, const char **units)
+int get_pressure_units(int mb, const char **units)
 {
 	int pressure;
 	const char *unit;
@@ -454,7 +454,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 
 static void fixup_pressure(struct dive *dive, struct sample *sample)
 {
-	unsigned int pressure, index;
+	int pressure, index;
 	cylinder_t *cyl;
 
 	pressure = sample->cylinderpressure.mbar;

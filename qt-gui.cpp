@@ -286,7 +286,7 @@ QString get_temp_unit()
 		return QString(UTF8_DEGREE "F");
 }
 
-QString get_volume_string(volume_t volume, bool showunit, unsigned int mbar)
+QString get_volume_string(volume_t volume, bool showunit, int mbar)
 {
 	if (prefs.units.volume == units::LITER) {
 		double liter = volume.mliter / 1000.0;

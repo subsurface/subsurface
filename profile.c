@@ -683,7 +683,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 
 	/* Get the per-cylinder maximum pressure if they are manual */
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		unsigned int mbar = dive->cylinder[cyl].start.mbar;
+		int mbar = dive->cylinder[cyl].start.mbar;
 		if (mbar > maxpressure)
 			maxpressure = mbar;
 		if (mbar < minpressure)
@@ -964,7 +964,7 @@ static void populate_pressure_information(struct dive *dive, struct divecomputer
 	current = NULL;
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		unsigned pressure = SENSOR_PRESSURE(entry);
+		int pressure = SENSOR_PRESSURE(entry);
 
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {

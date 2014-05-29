@@ -68,7 +68,7 @@ typedef struct
 	const char *description; /* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
-extern int get_pressure_units(unsigned int mb, const char **units);
+extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int ml, int *frac, const char **units);
 extern double get_temp_units(unsigned int mk, const char **units);
