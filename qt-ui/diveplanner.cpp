@@ -116,22 +116,25 @@ void DivePlannerPointsModel::copyCylinders(dive *d)
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
-	if (!stagingDive || stagingDive == current_dive)
+	if (!stagingDive)
 		return;
 
-	if (current_dive) {
-		copy_cylinders(current_dive, stagingDive);
-	} else {
-		if (!same_string(prefs.default_cylinder, "")) {
-			fill_default_cylinder(&stagingDive->cylinder[0]);
+	if (stagingDive != current_dive) {
+		if (current_dive) {
+			copy_cylinders(current_dive, stagingDive);
 		} else {
-			// roughly an AL80
-			stagingDive->cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
-			stagingDive->cylinder[0].type.size.mliter = 11100;
-			stagingDive->cylinder[0].type.workingpressure.mbar = 207000;
-			stagingDive->cylinder[0].used = true;
+			if (!same_string(prefs.default_cylinder, "")) {
+				fill_default_cylinder(&stagingDive->cylinder[0]);
+			} else {
+				// roughly an AL80
+				stagingDive->cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
+				stagingDive->cylinder[0].type.size.mliter = 11100;
+				stagingDive->cylinder[0].type.workingpressure.mbar = 207000;
+				stagingDive->cylinder[0].used = true;
+			}
 		}
 	}
+	reset_cylinders(stagingDive);
 	CylindersModel::instance()->copyFromDive(stagingDive);
 }
 
@@ -804,12 +807,14 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-	if (plannerModel->recalcQ())
-		plan(&diveplan, &cache, &tempDive, isPlanner());
-	if (mode == ADD || mode == PLAN) {
-		// copy the samples and events, but don't overwrite the cylinders
-		copy_samples(tempDive, current_dive);
-		copy_events(tempDive, current_dive);
+	if (plannerModel->recalcQ()) {
+		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
+		if (mode == ADD || mode == PLAN) {
+			// copy the samples and events, but don't overwrite the cylinders
+			copy_samples(tempDive, current_dive);
+			copy_events(tempDive, current_dive);
+			copy_cylinders(tempDive, current_dive);
+		}
 	}
 	// throw away the cache
 	free(cache);
@@ -851,26 +856,7 @@ void DivePlannerPointsModel::createPlan()
 	plannerModel->setRecalc(oldRecalc);
 
 	//TODO: C-based function here?
-	plan(&diveplan, &cache, &tempDive, isPlanner());
-	copy_cylinders(stagingDive, tempDive);
-	int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
-	per_cylinder_mean_depth(tempDive, select_dc(tempDive), mean, duration);
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = tempDive->cylinder + i;
-		if (cylinder_none(cyl))
-			continue;
-		// FIXME: The epic assumption that all the cylinders after the first is deco
-		int sac = i ? diveplan.decosac : diveplan.bottomsac;
-		cyl->start.mbar = cyl->type.workingpressure.mbar;
-		if (cyl->type.size.mliter) {
-			int consumption = ((depth_to_mbar(mean[i], tempDive) * duration[i] / 60) * sac) / (cyl->type.size.mliter / 1000);
-			cyl->end.mbar = cyl->start.mbar - consumption;
-		} else {
-			// Cylinders without a proper size are easily emptied.
-			// Don't attempt to to calculate the infinite pressure drop.
-			cyl->end.mbar = 0;
-		}
-	}
+	plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
 	record_dive(tempDive);
 	mark_divelist_changed(true);
 

@@ -181,3 +181,12 @@ void remove_weightsystem(struct dive *dive, int idx)
 	memmove(ws, ws + 1, nr * sizeof(*ws));
 	memset(ws + nr, 0, sizeof(*ws));
 }
+
+void reset_cylinders(struct dive *dive)
+{
+	int i;
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (dive->cylinder[i].type.workingpressure.mbar)
+			dive->cylinder[i].start.mbar = dive->cylinder[i].end.mbar = dive->cylinder[i].type.workingpressure.mbar;
+	}
+}
