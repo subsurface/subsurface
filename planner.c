@@ -24,7 +24,6 @@ int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000,
 				  180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
 				  320000, 340000, 360000, 380000 };
 double plangflow, plangfhigh;
-char *disclaimer;
 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
@@ -491,8 +490,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
 	if (!dp)
 		return;
 
-	snprintf(buffer, sizeof(buffer), translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %.0f and GFhigh = %.0f\n\n"),
-		 disclaimer, diveplan->gflow * 100, diveplan->gfhigh * 100);
+	snprintf(buffer, sizeof(buffer),
+		 translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\n"),
+		 translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
+			   "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
+			   "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+			   "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."),
+		 diveplan->gflow, diveplan->gfhigh);
 	/* we start with gas 0, then check if that was changed */
 	o2 = get_o2(&dive->cylinder[0].gasmix);
 	he = get_he(&dive->cylinder[0].gasmix);
