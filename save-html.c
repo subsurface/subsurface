@@ -50,8 +50,14 @@ char *replace_char(char *str, char replace, char *replace_by)
 char *quote(char *string)
 {
 	char *new_line_removed = replace_char(string, '\n', "<br>");
-	char *single_quotes_removed = replace_char(new_line_removed, '\'', "&#39;");
+	char *less_than_removed = replace_char(new_line_removed, '<', "&lt;");
+	char *greater_than_removed = replace_char(less_than_removed, '>', "&gt;");
+	char *double_quotes_removed = replace_char(greater_than_removed, '"', "&quot;");
+	char *single_quotes_removed = replace_char(double_quotes_removed, '\'', "&#39;");
 	free(new_line_removed);
+	free(less_than_removed);
+	free(greater_than_removed);
+	free(double_quotes_removed);
 	return single_quotes_removed;
 }
 
