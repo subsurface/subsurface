@@ -420,10 +420,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->clear();
 
 	// setup the staging dive cylinders from the selected dive
-	if (current_dive) {
-		DivePlannerPointsModel::instance()->copyCylindersFrom(current_dive);
-		CylindersModel::instance()->copyFromDive(current_dive);
-	}
+	DivePlannerPointsModel::instance()->setupCylinders();
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	createFakeDiveForAddAndPlan();
