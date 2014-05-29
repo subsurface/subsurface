@@ -143,6 +143,8 @@ slots:
 	void on_profTogglePicture_clicked(bool triggered);
 	void on_actionExport_triggered();
 
+	void on_actionConfigure_Dive_Computer_triggered();
+
 protected:
 	void closeEvent(QCloseEvent *);
 

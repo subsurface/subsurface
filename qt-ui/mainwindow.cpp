@@ -41,6 +41,7 @@
 #include "worldmap-save.h"
 #include "updatemanager.h"
 #include "planner.h"
+#include "configuredivecomputerdialog.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
@@ -1285,6 +1286,12 @@ void MainWindow::on_actionExport_triggered()
 {
 	DiveLogExportDialog diveLogExport;
 	diveLogExport.exec();
+}
+
+void MainWindow::on_actionConfigure_Dive_Computer_triggered()
+{
+	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this);
+	dcConfig->show();
 }
 
 void MainWindow::setEnabledToolbar(bool arg1)
