@@ -871,6 +871,7 @@ void DivePlannerPointsModel::createPlan()
 			cyl->end.mbar = 0;
 		}
 	}
+	record_dive(tempDive);
 	mark_divelist_changed(true);
 
 	// Remove and clean the diveplan, so we don't delete

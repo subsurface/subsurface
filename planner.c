@@ -769,8 +769,6 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, b
 	*divep = dive = create_dive_from_plan(diveplan);
 	if (!dive)
 		goto error_exit;
-	record_dive(dive);
-
 	add_plan_to_notes(diveplan, dive);
 
 error_exit:
