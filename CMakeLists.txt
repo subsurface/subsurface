@@ -92,6 +92,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	worldmap-save.c
 	save-git.c
 	save-xml.c
+	save-html.c
 	sha1.c
 	statistics.c
 	strtod.c
