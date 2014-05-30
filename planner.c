@@ -406,37 +406,37 @@ struct gaschanges {
 	int gasidx;
 };
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth)
+
+
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder)
 {
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
-	struct gasmix mix;
-
+	int best_depth = dive->cylinder[*asc_cylinder].depth.mm;
 	while (dp) {
-		if (dp->time == 0 && dp->depth <= depth) {
-			int i = 0, j = 0;
-			nr++;
-			gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
-			while (i < nr - 1) {
-				if (dp->depth < gaschanges[i].depth) {
-					memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
-					break;
+		if (dp->time == 0) {
+			if (dp->depth <= depth) {
+				int i = 0;
+				nr++;
+				gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
+				while (i < nr - 1) {
+					if (dp->depth < gaschanges[i].depth) {
+						memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
+						break;
+					}
+					i++;
 				}
-				i++;
+				gaschanges[i].depth = dp->depth;
+				gaschanges[i].gasidx = get_gasidx(dive, dp->o2, dp->he);
+				assert(gaschanges[i].gasidx != -1);
+			} else {
+				/* is there a better mix to start deco? */
+				if (dp->depth < best_depth) {
+					best_depth = dp->depth;
+					*asc_cylinder = get_gasidx(dive, dp->o2, dp->he);
+				}
 			}
-			gaschanges[i].depth = dp->depth;
-			gaschanges[i].gasidx = -1;
-			mix.o2.permille = dp->o2;
-			mix.he.permille = dp->he;
-			do {
-				if (!gasmix_distance(&dive->cylinder[j].gasmix, &mix)) {
-					gaschanges[i].gasidx = j;
-					break;
-				}
-				j++;
-			} while (j < MAX_CYLINDERS);
-			assert(gaschanges[i].gasidx != -1);
 		}
 		dp = dp->next;
 	}
@@ -632,6 +632,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	int clock, previous_point_time;
 	int avg_depth, bottom_time;
 	int last_ascend_rate;
+	int best_first_ascend_cylinder;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -677,8 +678,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
 #endif
 
+	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
-	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth);
+	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder);
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
 		if (decostoplevels[stopidx] >= depth)
@@ -693,6 +695,18 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
 	gi = gaschangenr - 1;
 
+	if (best_first_ascend_cylinder != current_cylinder) {
+		stopping = true;
+
+		current_cylinder = best_first_ascend_cylinder;
+		o2 = get_o2(&dive->cylinder[current_cylinder].gasmix);
+		he = get_he(&dive->cylinder[current_cylinder].gasmix);
+#if DEBUG_PLAN & 16
+		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
+			       (o2 + 5) / 10, (he + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
+#endif
+
+	}
 	while (1) {
 		/* We will break out when we hit the surface */
 		do {
