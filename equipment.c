@@ -182,11 +182,20 @@ void remove_weightsystem(struct dive *dive, int idx)
 	memset(ws + nr, 0, sizeof(*ws));
 }
 
+/* when planning a dive we need to make sure that all cylinders have a sane depth assigned
+ * and that the pressures are reset to start = end = workingpressure */
 void reset_cylinders(struct dive *dive)
 {
 	int i;
+	pressure_t pO2 = {.mbar = 1400};
+
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (dive->cylinder[i].type.workingpressure.mbar)
-			dive->cylinder[i].start.mbar = dive->cylinder[i].end.mbar = dive->cylinder[i].type.workingpressure.mbar;
+		cylinder_t *cyl = &dive->cylinder[i];
+		if (cylinder_none(cyl))
+			continue;
+		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, assume conservative pO2 */
+			cyl->depth = gas_mod(&cyl->gasmix, pO2);
+		if (cyl->type.workingpressure.mbar)
+			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 	}
 }
