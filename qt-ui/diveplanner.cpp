@@ -852,6 +852,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 void DivePlannerPointsModel::deleteTemporaryPlan()
 {
 	deleteTemporaryPlan(diveplan.dp);
+	diveplan.dp = NULL;
 	delete_single_dive(get_divenr(tempDive));
 	tempDive = NULL;
 }
