@@ -20,7 +20,7 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 
 }
 
-DivePictureView::DivePictureView(QWidget *parent): QListView(parent)
+DivePictureWidget::DivePictureWidget(QWidget *parent): QListView(parent)
 {
 
 }

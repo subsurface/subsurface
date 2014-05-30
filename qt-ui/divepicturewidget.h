@@ -16,10 +16,10 @@ class DivePictureDelegate : QStyledItemDelegate {
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class DivePictureView : public QListView{
+class DivePictureWidget : public QListView{
 	Q_OBJECT
 public:
-	DivePictureView(QWidget *parent);
+	DivePictureWidget(QWidget *parent);
 };
 
 class DivePictureThumbnailThread : public QThread {

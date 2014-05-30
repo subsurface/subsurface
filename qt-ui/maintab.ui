@@ -38,7 +38,7 @@
          <x>0</x>
          <y>0</y>
          <width>662</width>
-         <height>644</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -157,7 +157,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-		 <widget class="TagWidget" name="buddy">
+         <widget class="TagWidget" name="buddy">
           <property name="readOnly">
            <bool>false</bool>
           </property>
@@ -290,7 +290,7 @@
          <x>0</x>
          <y>0</y>
          <width>662</width>
-         <height>644</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -370,7 +370,7 @@
          <x>0</x>
          <y>0</y>
          <width>662</width>
-         <height>644</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -680,7 +680,7 @@
          <x>0</x>
          <y>0</y>
          <width>662</width>
-         <height>644</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -813,6 +813,16 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWidget" name="tab">
+   <attribute name="title">
+    <string>Photos</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="DivePictureWidget" name="listView"/>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -843,6 +853,11 @@
    <class>TagWidget</class>
    <extends>QPlainTextEdit</extends>
    <header>qt-ui/tagwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DivePictureWidget</class>
+   <extends>QListView</extends>
+   <header>divepicturewidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
