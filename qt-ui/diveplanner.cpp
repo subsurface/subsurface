@@ -656,6 +656,10 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	if (index.column() != REMOVE)
 		return;
 
+	divedatapoint dp = at(index.row());
+	if (!dp.entered)
+		return;
+
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	divepoints.remove(index.row());
 	endRemoveRows();
