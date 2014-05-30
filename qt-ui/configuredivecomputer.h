@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QThread>
+#include <QVariant>
 #include "libdivecomputer.h"
-
+#include <QDateTime>
 class ReadSettingsThread : public QThread {
 	Q_OBJECT
 public:
@@ -16,6 +17,21 @@ signals:
 	void error(QString err);
 private:
 	device_data_t *data;
+};
+
+class WriteSettingsThread : public QThread {
+	Q_OBJECT
+public:
+	WriteSettingsThread(QObject *parent, device_data_t *data, QString settingName, QVariant settingValue);
+	virtual void run();
+	QString result;
+	QString lastError;
+signals:
+	void error(QString err);
+private:
+	device_data_t *data;
+	QString m_settingName;
+	QVariant m_settingValue;
 };
 
 class ConfigureDiveComputer : public QObject
@@ -37,6 +53,9 @@ public:
 
 	QString lastError;
 	states currentState;
+
+	void setDeviceName(device_data_t *data, QString newName);
+	void setDeviceDateAndTime(device_data_t *data, QDateTime dateAndTime);
 signals:
 	void deviceSettings(QString settings);
 	void message(QString msg);
@@ -46,12 +65,13 @@ signals:
 	void stateChanged(states newState);
 private:
 	ReadSettingsThread *readThread;
+	WriteSettingsThread *writeThread;
 	void setState(states newState);
 
-
-	void readHWSettings(device_data_t *data);
+	void writeSettingToDevice(device_data_t *data, QString settingName, QVariant settingValue);
 private slots:
 	void readThreadFinished();
+	void writeThreadFinished();
 	void setError(QString err);
 };
 

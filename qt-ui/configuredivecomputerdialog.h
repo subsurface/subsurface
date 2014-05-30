@@ -28,6 +28,10 @@ private slots:
 	void configMessage(QString msg);
 	void configError(QString err);
 	void on_cancel_clicked();
+	void on_setDeviceName_clicked();
+
+	void on_setDateAndTime_clicked();
+
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 

@@ -7,6 +7,8 @@
 #include "../display.h"
 #include "../divelist.h"
 #include "configuredivecomputer.h"
+#include <QInputDialog>
+
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
@@ -184,4 +186,27 @@ void ConfigureDiveComputerDialog::getDeviceData()
 void ConfigureDiveComputerDialog::on_cancel_clicked()
 {
 	this->close();
+}
+
+void ConfigureDiveComputerDialog::on_setDeviceName_clicked()
+{
+	ui->statusLabel->clear();
+	ui->errorLabel->clear();
+	ui->availableDetails->clear();
+
+	QString newDeviceName = QInputDialog::getText(this, tr("Set device name"), tr("Enter the new name for this device:"));
+	if (newDeviceName.length() > 0) {
+		getDeviceData();
+		config->setDeviceName(&device_data, newDeviceName);
+	}
+}
+
+void ConfigureDiveComputerDialog::on_setDateAndTime_clicked()
+{
+	ui->statusLabel->clear();
+	ui->errorLabel->clear();
+	ui->availableDetails->clear();
+
+	getDeviceData();
+	config->setDeviceDateAndTime(&device_data, QDateTime::currentDateTime());
 }
