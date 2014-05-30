@@ -817,13 +817,13 @@ void DiveListView::loadImages()
 						dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
 						dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
 					}
-					mark_divelist_changed(true);
-					MainWindow::instance()->refreshDisplay();
-					MainWindow::instance()->graphics()->replot();
 				}
 			}
 		}
 	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+	MainWindow::instance()->graphics()->replot();
 }
 
 QString DiveListView::lastUsedImageDir()
