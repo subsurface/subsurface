@@ -267,9 +267,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			changed = true;
 		}
 	}
-	dataChanged(index, index);
 	if (addDiveMode)
 		DivePlannerPointsModel::instance()->tanksUpdated();
+	dataChanged(index, index);
 	return true;
 }
 
