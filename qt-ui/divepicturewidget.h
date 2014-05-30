@@ -7,9 +7,15 @@
 #include <QThread>
 
 class DivePictureModel : QAbstractTableModel {
+Q_OBJECT
+public:
+	DivePictureModel(QObject *parent);
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	void updateDivePictures(int divenr);
+private:
+	int numberOfPictures;
 };
 
 class DivePictureDelegate : QStyledItemDelegate {

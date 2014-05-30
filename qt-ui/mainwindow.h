@@ -180,6 +180,7 @@ private:
 	bool plannerStateClean();
 	void createFakeDiveForAddAndPlan();
 	int fakeDiveId;
+	DivePictureModel *divePictureModel;
 };
 
 #endif // MAINWINDOW_H

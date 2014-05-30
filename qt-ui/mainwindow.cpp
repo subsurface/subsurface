@@ -59,7 +59,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	yearlyStatsModel(0),
 	state(VIEWALL),
 	updateManager(0),
-	fakeDiveId(0)
+	fakeDiveId(0),
+	divePictureModel(new DivePictureModel(this))
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -165,6 +166,7 @@ void MainWindow::current_dive_changed(int divenr)
 	 */
 	ui.newProfile->plotDives(QList<dive *>() << (current_dive));
 	ui.InfoWidget->updateDiveInfo(divenr);
+	divePictureModel->updateDivePictures(divenr);
 }
 
 void MainWindow::on_actionNew_triggered()
