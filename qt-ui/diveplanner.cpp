@@ -350,8 +350,8 @@ int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 
 QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 {
+	divedatapoint p = divepoints.at(index.row());
 	if (role == Qt::DisplayRole) {
-		divedatapoint p = divepoints.at(index.row());
 		switch (index.column()) {
 		case CCSETPOINT:
 			return (double)p.po2 / 1000;
@@ -370,7 +370,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
 		case REMOVE:
-			return QIcon(":trash");
+			return p.entered ? QIcon(":trash") : QVariant();
 		}
 	} else if (role == Qt::FontRole) {
 		if (divepoints.at(index.row()).entered) {
