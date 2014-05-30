@@ -112,6 +112,16 @@ void MinMaxAvgWidget::setMinimum(const QString &minimum)
 	d->minValue->setText(minimum);
 }
 
+void MinMaxAvgWidget::overrideMinToolTipText(const QString &newTip)
+{
+	d->minIco->setToolTip(newTip);
+}
+
+void MinMaxAvgWidget::overrideMaxToolTipText(const QString &newTip)
+{
+	d->maxIco->setToolTip(newTip);
+}
+
 RenumberDialog *RenumberDialog::instance()
 {
 	static RenumberDialog *self = new RenumberDialog(MainWindow::instance());

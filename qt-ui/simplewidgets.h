@@ -30,6 +30,8 @@ public:
 	void setMinimum(const QString &minimum);
 	void setMaximum(const QString &maximum);
 	void setAverage(const QString &average);
+	void overrideMinToolTipText(const QString &newTip);
+	void overrideMaxToolTipText(const QString &newTip);
 	void clear();
 
 private:
