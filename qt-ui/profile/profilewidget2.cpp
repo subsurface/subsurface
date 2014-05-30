@@ -1083,12 +1083,14 @@ void ProfileWidget2::repositionDiveHandlers()
 		if (datapoint.time == 0) // those are the magic entries for tanks
 			continue;
 		DiveHandler *h = handles.at(i);
+		h->setVisible(datapoint.entered);
 		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth));
 		QPointF p1 = (last == i) ? QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0)) : handles[last]->pos();
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
+		gases[i]->setVisible(datapoint.entered);
 		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
 		last = i;
 	}
