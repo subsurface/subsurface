@@ -764,6 +764,7 @@ void DivePlannerPointsModel::clear()
 	} else {
 		stagingDive = alloc_dive();
 	}
+	bool oldRecalc = setRecalc(false);
 	CylindersModel::instance()->setDive(stagingDive);
 	if (rowCount() > 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
@@ -771,6 +772,7 @@ void DivePlannerPointsModel::clear()
 		endRemoveRows();
 	}
 	CylindersModel::instance()->clear();
+	setRecalc(oldRecalc);
 }
 
 void DivePlannerPointsModel::addDecoToModel()
