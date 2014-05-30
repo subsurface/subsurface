@@ -756,6 +756,11 @@ void ProfileWidget2::setProfileState()
 		}
 	}
 	rulerItem->setVisible(prefs.rulergraph);
+	#define HIDE_ALL(TYPE, CONTAINER) \
+	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
+	HIDE_ALL(DiveHandler, handles);
+	HIDE_ALL(QGraphicsSimpleTextItem, gases);
+	#undef HIDE_ALL
 }
 
 void ProfileWidget2::setAddState()
