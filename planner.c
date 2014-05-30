@@ -180,7 +180,9 @@ void fill_default_cylinder(cylinder_t *cyl)
 	cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000; // MOD of air
 }
 
-static int add_gas(struct dive *dive, int o2, int he)
+/* make sure that the gas we are switching to is represented in our
+ * list of cylinders */
+static int verify_gas_exists(struct dive *dive, int o2, int he)
 {
 	int i;
 	struct gasmix *mix;
@@ -224,7 +226,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	struct divecomputer *dc;
 	struct sample *sample;
 	cylinder_t *cyl;
-	int oldo2 = O2_IN_AIR, oldhe = 0;
+	int oldo2, oldhe;
 	int oldpo2 = 0;
 	int lasttime = 0;
 
@@ -242,21 +244,14 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	dp = diveplan->dp;
 	copy_cylinders(master_dive, dive);
 
-	/* reset the end pressure values and start with the first cylinder */
+	/* reset the end pressure values and start with the gas on the first cylinder */
 	reset_cylinders(master_dive);
 	cyl = &master_dive->cylinder[0];
-
-	/* let's start with the gas given on the first segment */
-	if (dp->o2 || dp->he) {
-		oldo2 = dp->o2;
-		oldhe = dp->he;
-	}
-
+	oldhe = cyl->gasmix.he.permille;
+	oldo2 = cyl->gasmix.o2.permille;
 	sample = prepare_sample(dc);
 	sample->po2 = dp->po2;
 	finish_sample(dc);
-	if (add_gas(dive, oldo2, oldhe) < 0)
-		goto gas_error_exit;
 	while (dp) {
 		int o2 = dp->o2, he = dp->he;
 		int po2 = dp->po2;
@@ -266,7 +261,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
 			 * additional gases that are available */
-			if (add_gas(dive, o2, he) < 0)
+			if (verify_gas_exists(dive, o2, he) < 0)
 				goto gas_error_exit;
 			dp = dp->next;
 			continue;
@@ -293,7 +288,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 			int plano2 = (o2 + 5) / 10 * 10;
 			int planhe = (he + 5) / 10 * 10;
 			int idx;
-			if ((idx = add_gas(dive, plano2, planhe)) < 0)
+			if ((idx = verify_gas_exists(dive, plano2, planhe)) < 0)
 				goto gas_error_exit;
 			add_gas_switch_event(dive, dc, lasttime, idx);
 			/* need to insert a last sample for the old gas */
