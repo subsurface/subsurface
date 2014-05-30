@@ -445,7 +445,7 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 {
-	if (index.column() != DURATION)
+	if (index.column() != DURATION && index.column() != REMOVE)
 		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 	else
 		return QAbstractItemModel::flags(index);
