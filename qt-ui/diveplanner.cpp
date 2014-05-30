@@ -777,6 +777,8 @@ void DivePlannerPointsModel::addDecoToModel()
 {
 	struct divedatapoint *dp;
 
+	if (diveplan_empty(&diveplan))
+		return;
 	bool oldRecalc = plannerModel->setRecalc(false);
 	plannerModel->removeDeco();
 
@@ -832,7 +834,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-	if (plannerModel->recalcQ()) {
+	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
 		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
 		addDecoToModel();
 		if (mode == ADD || mode == PLAN) {
