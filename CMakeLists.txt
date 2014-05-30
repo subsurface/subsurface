@@ -138,6 +138,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/groupedlineedit.cpp
 	qt-ui/usermanual.cpp
 	qt-ui/divelogexportdialog.cpp
+	qt-ui/divepicturewidget.cpp
 )
 
 #the profile widget

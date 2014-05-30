@@ -40,6 +40,7 @@ HEADERS = \
 	qt-ui/completionmodels.h \
 	qt-ui/divecomputermanagementdialog.h \
 	qt-ui/divelistview.h \
+	qt-ui/divepicturewidget.h \
 	qt-ui/diveplanner.h \
 	qt-ui/downloadfromdivecomputer.h \
 	qt-ui/globe.h \
@@ -112,6 +113,7 @@ SOURCES =  \
 	qt-ui/completionmodels.cpp \
 	qt-ui/divecomputermanagementdialog.cpp \
 	qt-ui/divelistview.cpp \
+	qt-ui/divepicturewidget.cpp \
 	qt-ui/diveplanner.cpp \
 	qt-ui/downloadfromdivecomputer.cpp \
 	qt-ui/globe.cpp \
