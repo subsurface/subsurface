@@ -87,7 +87,8 @@ HEADERS = \
 	qt-ui/divelogexportdialog.h \
 	qt-ui/usersurvey.h \
 	subsurfacesysinfo.h \
-	qt-ui/configuredivecomputerdialog.h
+	qt-ui/configuredivecomputerdialog.h \
+	qt-ui/configuredivecomputer.h \
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -167,7 +168,8 @@ SOURCES =  \
 	qt-ui/divelogexportdialog.cpp \
 	qt-ui/usersurvey.cpp \
 	subsurfacesysinfo.cpp \
-	qt-ui/configuredivecomputerdialog.cpp
+	qt-ui/configuredivecomputerdialog.cpp \
+	qt-ui/configuredivecomputer.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c

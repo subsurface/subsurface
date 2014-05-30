@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QStringListModel>
 #include "../libdivecomputer.h"
+
+class ConfigureDiveComputer;
+
 namespace Ui {
 class ConfigureDiveComputerDialog;
 }
@@ -21,8 +24,16 @@ private slots:
 
 	void on_product_currentIndexChanged(const QString &product);
 
+	void readSettings();
+	void configMessage(QString msg);
+	void configError(QString err);
+	void on_cancel_clicked();
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
+
+	ConfigureDiveComputer *config;
+	device_data_t device_data;
+	void getDeviceData();
 
 	QStringList vendorList;
 	QHash<QString, QStringList> productList;

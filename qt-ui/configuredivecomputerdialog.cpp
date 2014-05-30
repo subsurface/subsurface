@@ -6,6 +6,7 @@
 #include "../helpers.h"
 #include "../display.h"
 #include "../divelist.h"
+#include "configuredivecomputer.h"
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
@@ -28,10 +29,16 @@ struct mydescriptor {
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::ConfigureDiveComputerDialog),
+	config(0),
 	vendorModel(0),
 	productModel(0)
 {
 	ui->setupUi(this);
+
+	config = new ConfigureDiveComputer(this);
+	connect (config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
+	connect (config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
+	connect (config, SIGNAL(deviceSettings(QString)), ui->availableDetails, SLOT(setText(QString)));
 
 	fill_computer_list();
 
@@ -46,6 +53,10 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	}
 	if (default_dive_computer_device)
 		ui->device->setEditText(default_dive_computer_device);
+
+	memset(&device_data, 0, sizeof(device_data));
+
+	connect (ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
@@ -136,4 +147,41 @@ void ConfigureDiveComputerDialog::on_product_currentIndexChanged(const QString &
 		// otherwise disable the device node box
 		ui->device->setEnabled(false);
 	}
+}
+
+void ConfigureDiveComputerDialog::readSettings()
+{
+	ui->statusLabel->clear();
+	ui->errorLabel->clear();
+
+	getDeviceData();
+	config->readSettings(&device_data);
+}
+
+void ConfigureDiveComputerDialog::configMessage(QString msg)
+{
+	ui->statusLabel->setText(msg);
+}
+
+void ConfigureDiveComputerDialog::configError(QString err)
+{
+	ui->errorLabel->setText(err);
+}
+
+void ConfigureDiveComputerDialog::getDeviceData()
+{
+	device_data.devname = strdup(ui->device->currentText().toUtf8().data());
+	device_data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
+	device_data.product = strdup(ui->product->currentText().toUtf8().data());
+
+	device_data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
+	device_data.deviceid = device_data.diveid = 0;
+
+	set_default_dive_computer(device_data.vendor, device_data.product);
+	set_default_dive_computer_device(device_data.devname);
+}
+
+void ConfigureDiveComputerDialog::on_cancel_clicked()
+{
+	this->close();
 }
