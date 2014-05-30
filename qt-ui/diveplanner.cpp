@@ -876,9 +876,6 @@ void DivePlannerPointsModel::createPlan()
 	char *cache = NULL;
 	tempDive = NULL;
 
-	if (!diveplan.dp)
-		return cancelPlan();
-
 	bool oldRecalc = plannerModel->setRecalc(false);
 	removeDeco();
 	createTemporaryPlan();
