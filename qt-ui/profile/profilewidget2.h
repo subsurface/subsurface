@@ -72,6 +72,7 @@ public:
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner();
+	bool isAddOrPlanner();
 	State currentState;
 
 public

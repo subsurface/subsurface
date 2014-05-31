@@ -830,6 +830,11 @@ bool ProfileWidget2::isPlanner()
 	return currentState == PLAN;
 }
 
+bool ProfileWidget2::isAddOrPlanner()
+{
+	return currentState == PLAN || currentState == ADD;
+}
+
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {
