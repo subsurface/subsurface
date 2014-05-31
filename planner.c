@@ -49,6 +49,20 @@ void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
+bool diveplan_empty(struct diveplan *diveplan)
+{
+	struct divedatapoint *dp;
+	if (!diveplan || !diveplan->dp)
+		return true;
+	dp = diveplan->dp;
+	while(dp) {
+		if (dp->time)
+			return false;
+		dp = dp->next;
+	}
+	return true;
+}
+
 void set_last_stop(bool last_stop_6m)
 {
 	if (last_stop_6m == true)
