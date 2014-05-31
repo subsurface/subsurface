@@ -388,6 +388,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 {
 	int o2 = 0;
 	int he = 0;
+	int i, shift;
 	if (role == Qt::EditRole) {
 		divedatapoint &p = divepoints[index.row()];
 		switch (index.column()) {
@@ -398,10 +399,13 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			p.time = value.toInt() * 60;
 			break;
 		case DURATION:
-			if (index.row())
-				p.time = value.toInt() * 60 + divepoints[index.row() - 1].time;
+			i = index.row();
+			if (i)
+				shift = divepoints[i].time - divepoints[i - 1].time - value.toInt() * 60;
 			else
-				p.time = value.toInt() * 60;
+				shift = divepoints[i].time - value.toInt() * 60;
+			while (i < divepoints.size())
+				divepoints[i++].time -= shift;
 			break;
 		case CCSETPOINT: {
 			int po2 = 0;
@@ -445,7 +449,7 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 {
-	if (index.column() != DURATION && index.column() != REMOVE)
+	if (index.column() != REMOVE)
 		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 	else
 		return QAbstractItemModel::flags(index);
