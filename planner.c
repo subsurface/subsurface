@@ -209,7 +209,7 @@ static int verify_gas_exists(struct dive *dive, int o2, int he)
 		cyl = dive->cylinder + i;
 		mix = &cyl->gasmix;
 		if (cylinder_nodata(cyl))
-			break;
+			continue;
 		if (gasmix_distance(mix, &mix_in) < 200)
 			return i;
 	}
