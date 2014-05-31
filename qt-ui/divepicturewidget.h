@@ -16,6 +16,10 @@ public:
 	void updateDivePictures(int divenr);
 private:
 	int numberOfPictures;
+	// Currently, load the images on the fly
+	// Later, use a thread to load the images
+	// Later, save the thumbnails so we don't need to reopen every time.
+	QHash<QString, QPixmap> stringPixmapCache;
 };
 
 class DivePictureDelegate : QStyledItemDelegate {
