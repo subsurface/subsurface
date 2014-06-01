@@ -93,14 +93,14 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	return -1;
 }
 
-void get_gas_string(int o2, int he, char *text, int len)
+static void get_gas_string(const struct gasmix *gasmix, char *text, int len)
 {
-	if (is_air(o2, he))
+	if (gasmix_is_air(gasmix))
 		snprintf(text, len, "%s", translate("gettextFromC", "air"));
-	else if (he == 0)
-		snprintf(text, len, translate("gettextFromC", "EAN%d"), (o2 + 5) / 10);
+	else if (get_he(gasmix) == 0)
+		snprintf(text, len, translate("gettextFromC", "EAN%d"), (get_o2(gasmix) + 5) / 10);
 	else
-		snprintf(text, len, "(%d/%d)", (o2 + 5) / 10, (he + 5) / 10);
+		snprintf(text, len, "(%d/%d)", (get_o2(gasmix) + 5) / 10, (get_he(gasmix) + 5) / 10);
 }
 
 double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
@@ -144,7 +144,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		get_gas_from_events(&dive->dc, t0, &gas);
 		if ((gasidx = get_gasidx(dive, &gas)) == -1) {
 			char gas_string[50];
-			get_gas_string(gas.o2.permille, gas.he.permille, gas_string, sizeof(gas_string));
+			get_gas_string(&gas, gas_string, sizeof(gas_string));
 			report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
 			gasidx = 0;
 		}
@@ -532,7 +532,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		 translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\n"),
 		 disclaimer,  diveplan->gflow, diveplan->gfhigh);
 	do {
-		struct gasmix gasmix;
+		struct gasmix gasmix, newgasmix;
 		const char *depth_unit;
 		char gas[64];
 		double depthvalue;
@@ -542,16 +542,18 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 		if (dp->time == 0)
 			continue;
-		o2 = get_o2(&dp->gasmix);
-		he = get_he(&dp->gasmix);
+		gasmix = dp->gasmix;
+		o2 = get_o2(&gasmix);
+		he = get_he(&gasmix);
 		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		nextdp = dp->next;
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp) {
-			newo2 = get_o2(&nextdp->gasmix);
-			newhe = get_he(&nextdp->gasmix);
+			newgasmix = nextdp->gasmix;
+			newo2 = get_o2(&newgasmix);
+			newhe = get_he(&newgasmix);
 			if (newhe == 0 && newo2 == 0) {
 				/* same as last segment */
 				newo2 = o2;
@@ -561,9 +563,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
 			continue;
-		get_gas_string(o2, he, gas, sizeof(gas));
-		gasmix.he.permille = he;
-		gasmix.o2.permille = o2;
+		get_gas_string(&gasmix, gas, sizeof(gas));
 		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth)
@@ -580,7 +580,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				 gas);
 		if (nextdp && (o2 != newo2 || he != newhe) ) {
 			// gas switch at this waypoint
-			get_gas_string(newo2, newhe, gas, sizeof(gas));
+			get_gas_string(&newgasmix, gas, sizeof(gas));
 			len = strlen(buffer);
 			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gas);
 			o2 = newo2;
@@ -600,7 +600,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (cylinder_none(cyl))
 			break;
 		len = strlen(buffer);
-		get_gas_string(get_o2(&cyl->gasmix), get_he(&cyl->gasmix), gas, sizeof(gas));
+		get_gas_string(&cyl->gasmix, gas, sizeof(gas));
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
 			/* Warn if the plan uses more gas than is available in a cylinder
@@ -672,7 +672,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
 		char gas_string[50];
-		get_gas_string(gas.o2.permille, gas.he.permille, gas_string, sizeof(gas_string));
+		get_gas_string(&gas, gas_string, sizeof(gas_string));
 		report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
 		current_cylinder = 0;
 	}

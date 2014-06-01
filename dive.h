@@ -652,7 +652,6 @@ struct diveplan {
 };
 
 struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, struct gasmix gasmix, int po2, bool entered);
-void get_gas_string(int o2, int he, char *buf, int len);
 struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, int po2);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
