@@ -21,8 +21,7 @@ public:
 	void recalculate();
 
 protected:
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 private:
 	struct plot_info pInfo;
 	struct plot_data *entry;

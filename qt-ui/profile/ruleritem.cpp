@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <qgraphicssceneevent.h>
 #include <QDebug>
 
 #include <stdint.h>
@@ -58,23 +59,11 @@ void RulerNodeItem2::recalculate()
 	}
 }
 
-QVariant RulerNodeItem2::itemChange(GraphicsItemChange change, const QVariant &value)
+void RulerNodeItem2::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	// only run this if we actually have a ruler and are not adding or planning a dive
-	ProfileWidget2 *profWidget = NULL;
-	if (scene() && scene()->views().count())
-		profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-	if (ruler &&
-	    profWidget &&
-	    !profWidget->isAddOrPlanner() &&
-	    change == ItemPositionHasChanged) {
-		recalculate();
-		ruler->recalculate();
-	} else {
-		if (profWidget && profWidget->isAddOrPlanner())
-			qDebug() << "don't recalc ruler on Add/Plan";
-	}
-	return QGraphicsEllipseItem::itemChange(change, value);
+	setPos(event->scenePos());
+	recalculate();
+	ruler->recalculate();
 }
 
 RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
