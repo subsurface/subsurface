@@ -1,5 +1,6 @@
 marbledir.files = $$MARBLEDIR
 doc.files = $$DOC_FILES
+theme.files = $$THEME_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 exists($$[QT_INSTALL_TRANSLATIONS]) {
         qt_translation_dir = $$[QT_INSTALL_TRANSLATIONS]
@@ -160,13 +161,14 @@ mac {
 
 	marbledir.path = /$(EXPORT_DATADIR)/subsurface/data
 	doc.path = /$(EXPORT_DOCDIR)
+	theme.path = /$(EXPORT_DATADIR)/subsurface
 
 	doc.CONFIG += no_check_exist
 
 	translation.path = /$(EXPORT_DATADIR)/subsurface/translations
 	translation.CONFIG += no_check_exist
 
-	INSTALLS += target desktop manpage doc marbledir translation icon
+	INSTALLS += target desktop manpage doc marbledir translation icon theme
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {

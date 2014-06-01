@@ -244,6 +244,10 @@ marbledata.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/marbledata || $(COPY_DIR) $$P
 all.depends += marbledata
 QMAKE_EXTRA_TARGETS += marbledata
 
+theme.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/theme || $(COPY_DIR) $$PWD/theme $$OUT_PWD
+all.depends += theme
+QMAKE_EXTRA_TARGETS += theme
+
 DESKTOP_FILE = subsurface.desktop
 mac: ICON = packaging/macosx/Subsurface.icns
 else: ICON = subsurface-icon.svg
@@ -251,6 +255,7 @@ MANPAGE = subsurface.1
 XSLT_FILES = xslt
 ICONS_FILES = icons
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
+THEME_FILES = $$OUT_PWD/theme
 MARBLEDIR = marbledata/maps marbledata/bitmaps
 
 #DEPLOYMENT_PLUGIN += bearer/qnativewifibearer
