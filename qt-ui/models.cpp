@@ -286,8 +286,7 @@ void CylindersModel::add()
 
 	int row = rows;
 	fill_default_cylinder(&current->cylinder[row]);
-	// mark the cylinder as 'used' since it was manually added
-	current->cylinder[row].used = true;
+	current->cylinder[row].manually_added = true;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	changed = true;
@@ -316,9 +315,8 @@ void CylindersModel::setDive(dive *d)
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!cylinder_none(&d->cylinder[i]) &&
-		    (prefs.display_unused_tanks || d->cylinder[i].used)) {
+		    (prefs.display_unused_tanks || cylinder_is_used(d, &d->cylinder[i]) || d->cylinder[i].manually_added))
 			rows = i + 1;
-		}
 	}
 	current = d;
 	changed = false;
@@ -334,8 +332,7 @@ void CylindersModel::copyFromDive(dive *d)
 		return;
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&d->cylinder[i]) &&
-		    (prefs.display_unused_tanks || d->cylinder[i].used)) {
+		if (!cylinder_none(&d->cylinder[i]) && cylinder_is_used(d, &d->cylinder[i])) {
 			rows = i + 1;
 		}
 	}
@@ -360,9 +357,10 @@ void CylindersModel::remove(const QModelIndex &index)
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) ||
-	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING && cyl->used)) {
+	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
+	     (cyl->manually_added || (current_dive && cylinder_is_used(current_dive, cyl))))) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
-								 	tr("Cylinder cannot be removed"),
+									tr("Cylinder cannot be removed"),
 									tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
 				     QMessageBox::Ok);
 		return;

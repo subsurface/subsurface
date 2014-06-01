@@ -59,7 +59,7 @@ typedef struct
 	struct gasmix gasmix;
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
-	bool used;
+	bool manually_added;
 	volume_t gas_used;
 } cylinder_t;
 
@@ -565,7 +565,7 @@ extern void renumber_dives(int start_nr, bool selected_only);
 extern void copy_events(struct dive *s, struct dive *d);
 extern void copy_cylinders(struct dive *s, struct dive *d);
 extern void copy_samples(struct dive *s, struct dive *d);
-
+extern bool cylinder_is_used(struct dive *d, cylinder_t *cyl);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);

@@ -120,8 +120,13 @@ void DivePlannerPointsModel::setupCylinders()
 		return;
 
 	if (stagingDive != current_dive) {
+		// we are planning a dive
 		if (current_dive) {
+			// take the cylinders from the selected dive as starting point
+			CylindersModel::instance()->copyFromDive(current_dive);
 			copy_cylinders(current_dive, stagingDive);
+			reset_cylinders(stagingDive);
+			return;
 		} else {
 			if (!same_string(prefs.default_cylinder, "")) {
 				fill_default_cylinder(&stagingDive->cylinder[0]);
@@ -130,7 +135,6 @@ void DivePlannerPointsModel::setupCylinders()
 				stagingDive->cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
 				stagingDive->cylinder[0].type.size.mliter = 11100;
 				stagingDive->cylinder[0].type.workingpressure.mbar = 207000;
-				stagingDive->cylinder[0].used = true;
 			}
 		}
 	}
