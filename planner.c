@@ -601,14 +601,21 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		double volume;
 		const char *unit;
 		char gas[64];
+		const char *warning = "";
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cylinder_none(cyl))
 			break;
 		int consumed = mbar_to_atm(cyl->start.mbar - cyl->end.mbar) * cyl->type.size.mliter;
+		/* Warn if the plan uses more gas than is available in a cylinder
+		 * This only works if we have working pressure for the cylinder
+		 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
+		if (cyl->type.workingpressure.mbar && cyl->end.mbar < 10000)
+			warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
+
 		len = strlen(buffer);
 		volume = get_volume_units(consumed, NULL, &unit);
 		get_gas_string(get_o2(&cyl->gasmix), get_he(&cyl->gasmix), gas, sizeof(gas));
-		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s\n"), volume, unit, gas);
+		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
 	}
 	dive->notes = strdup(buffer);
 }
