@@ -56,7 +56,8 @@ bool cylinder_nodata(cylinder_t *cyl)
 	       !cyl->gasmix.o2.permille &&
 	       !cyl->gasmix.he.permille &&
 	       !cyl->start.mbar &&
-	       !cyl->end.mbar;
+	       !cyl->end.mbar &&
+	       !cyl->gas_used.mliter;
 }
 
 static bool cylinder_nosamples(cylinder_t *cyl)
@@ -197,5 +198,6 @@ void reset_cylinders(struct dive *dive)
 			cyl->depth = gas_mod(&cyl->gasmix, pO2);
 		if (cyl->type.workingpressure.mbar)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
+		cyl->gas_used.mliter = 0;
 	}
 }

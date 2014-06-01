@@ -60,6 +60,7 @@ typedef struct
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
 	bool used;
+	volume_t gas_used;
 } cylinder_t;
 
 typedef struct

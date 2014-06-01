@@ -225,12 +225,15 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	pressure_t delta_p;
 	depth_t mean_depth;
 
-	if (!cyl || !cyl->type.size.mliter)
+	if (!cyl)
 		return;
 	mean_depth.mm = (old_depth + new_depth) / 2;
 	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration;
-	delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter;
-	cyl->end.mbar -= delta_p.mbar;
+	cyl->gas_used.mliter += gas_used.mliter;
+	if (!cyl->type.size.mliter) {
+		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter;
+		cyl->end.mbar -= delta_p.mbar;
+	}
 }
 
 static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive *master_dive)
@@ -605,19 +608,15 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			break;
 		len = strlen(buffer);
 		get_gas_string(get_o2(&cyl->gasmix), get_he(&cyl->gasmix), gas, sizeof(gas));
-		if (cyl->type.workingpressure.mbar) {
-			int consumed = mbar_to_atm(cyl->start.mbar - cyl->end.mbar) * cyl->type.size.mliter;
-			volume = get_volume_units(consumed, NULL, &unit);
+		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
+		if (cyl->type.size.mliter) {
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
 				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
-			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
-		} else {
-			fprintf(stderr, "we really should calculate the consumption even without cylinder data\n");
-			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "did not track volume for %s"), gas);
 		}
+		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
 	}
 	dive->notes = strdup(buffer);
 }
