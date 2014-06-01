@@ -99,7 +99,6 @@ private:
 	QVector<sample> backupSamples; // For editing added dives.
 	struct dive *stagingDive;
 	QVector<QPair<int, int> > oldGases;
-	void addDecoToModel();
 };
 
 class DiveHandler : public QObject, public QGraphicsEllipseItem {

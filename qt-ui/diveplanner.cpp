@@ -779,30 +779,6 @@ void DivePlannerPointsModel::clear()
 	setRecalc(oldRecalc);
 }
 
-void DivePlannerPointsModel::addDecoToModel()
-{
-	struct divedatapoint *dp;
-
-	if (diveplan_empty(&diveplan))
-		return;
-	bool oldRecalc = plannerModel->setRecalc(false);
-	plannerModel->removeDeco();
-
-	unsigned int lastdepth = 0;
-	for (dp = diveplan.dp; dp != NULL; dp = dp->next) {
-		if (dp->time == 0) // magic entry for available tank
-			continue;
-		if (!dp->entered) {
-			if (dp->depth) {
-				if (dp->depth == lastdepth || dp->o2 != dp->next->o2 || dp->he != dp->next->he)
-					plannerModel->addStop(dp->depth, dp->time, dp->next->o2, dp->next->he, 0, false);
-				lastdepth = dp->depth;
-			}
-		}
-	}
-	plannerModel->setRecalc(oldRecalc);
-}
-
 void DivePlannerPointsModel::createTemporaryPlan()
 {
 	// This needs to be done in the following steps:
@@ -843,7 +819,6 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
 		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), false);
 		MainWindow::instance()->setPlanNotes(tempDive->notes);
-		addDecoToModel();
 		if (mode == ADD || mode == PLAN) {
 			// copy the samples and events, but don't overwrite the cylinders
 			copy_samples(tempDive, current_dive);
