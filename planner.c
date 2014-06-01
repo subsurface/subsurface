@@ -246,6 +246,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	int oldo2, oldhe;
 	int oldpo2 = 0;
 	int lasttime = 0;
+	int lastdepth = 0;
 
 	if (!diveplan || !diveplan->dp)
 		return NULL;
@@ -307,15 +308,12 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 			int idx;
 			if ((idx = verify_gas_exists(dive, plano2, planhe)) < 0)
 				goto gas_error_exit;
-			add_gas_switch_event(dive, dc, lasttime, idx);
-			/* need to insert a last sample for the old gas */
+			/* need to insert a first sample for the new gas */
+			add_gas_switch_event(dive, dc, lasttime + 1, idx);
 			sample = prepare_sample(dc);
 			sample[-1].po2 = po2;
-			sample->time.seconds = time - 1;
-			sample->depth.mm = depth;
-			update_cylinder_pressure(dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
-					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl);
-			sample->cylinderpressure.mbar = cyl->end.mbar;
+			sample->time.seconds = lasttime + 1;
+			sample->depth.mm = lastdepth;
 			finish_sample(dc);
 			cyl = &dive->cylinder[idx];
 			oldo2 = o2;
@@ -327,13 +325,12 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		/* and keep it valid for last sample - where it likely doesn't matter */
 		sample[-1].po2 = po2;
 		sample->po2 = po2;
-		sample->time.seconds = time;
-		sample->depth.mm = depth;
+		sample->time.seconds = lasttime = time;
+		sample->depth.mm = lastdepth = depth;
 		update_cylinder_pressure(dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
 				dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl);
 		sample->cylinderpressure.mbar = cyl->end.mbar;
 		finish_sample(dc);
-		lasttime = time;
 		dp = dp->next;
 	}
 	if (dc->samples <= 1) {
