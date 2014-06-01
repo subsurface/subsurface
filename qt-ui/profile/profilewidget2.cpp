@@ -992,12 +992,12 @@ void ProfileWidget2::changeGas()
 	// backup the things on the dataModel, since we will clear that out.
 	unsigned int diveComputer = dataModel->dcShown();
 	int diveId = dataModel->id();
-	int o2, he;
+	struct gasmix gasmix;
 	int seconds = timeAxis->valueAt(scenePos);
 	struct dive *d = get_dive_by_uniq_id(diveId);
 
-	validate_gas(gas.toUtf8().constData(), &o2, &he);
-	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, o2, he));
+	validate_gas(gas.toUtf8().constData(), &gasmix);
+	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, &gasmix));
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(d);
 	MainWindow::instance()->information()->updateDiveInfo(selected_dive);

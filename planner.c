@@ -71,34 +71,24 @@ void set_last_stop(bool last_stop_6m)
 		decostoplevels[1] = 3000;
 }
 
-void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
+void get_gas_from_events(struct divecomputer *dc, int time, struct gasmix *gas)
 {
 	// we don't modify the values passed in if nothing is found
-	// so don't call with uninitialized o2/he !
+	// so don't call with uninitialized gasmix !
 	struct event *event = dc->events;
 	while (event && event->time.seconds <= time) {
-		if (!strcmp(event->name, "gaschange")) {
-			struct gasmix *g = get_gasmix_from_event(event);
-			*o2 = get_o2(g);
-			*he = get_he(g);
-		}
+		if (!strcmp(event->name, "gaschange"))
+			*gas = *get_gasmix_from_event(event);
 		event = event->next;
 	}
 }
 
-int get_gasidx(struct dive *dive, int o2, int he)
+int get_gasidx(struct dive *dive, struct gasmix *mix)
 {
 	int gasidx = -1;
-	struct gasmix mix;
 
-	mix.o2.permille = o2;
-	mix.he.permille = he;
-
-	/* we treat air as 0/0 because it is special */
-	//if (is_air(o2, he))
-	//	o2 = 0;
 	while (++gasidx < MAX_CYLINDERS)
-		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, &mix) < 200)
+		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, mix) < 200)
 			return gasidx;
 	return -1;
 }
@@ -133,6 +123,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	int i, t0, t1, gasidx, lastdepth;
 	int o2, he;
 	double tissue_tolerance;
+	struct gasmix gas;
 
 	if (!dive)
 		return 0.0;
@@ -148,13 +139,14 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	psample = sample = dc->sample;
 	lastdepth = t0 = 0;
 	/* we always start with gas 0 (unless an event tells us otherwise) */
-	o2 = get_o2(&dive->cylinder[0].gasmix);
-	he = get_he(&dive->cylinder[0].gasmix);
+	gas = dive->cylinder[0].gasmix;
 	for (i = 0; i < dc->samples; i++, sample++) {
 		t1 = sample->time.seconds;
-		get_gas_from_events(&dive->dc, t0, &o2, &he);
-		if ((gasidx = get_gasidx(dive, o2, he)) == -1) {
-			report_error(translate("gettextFromC", "Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
+		get_gas_from_events(&dive->dc, t0, &gas);
+		if ((gasidx = get_gasidx(dive, &gas)) == -1) {
+			char gas_string[50];
+			get_gas_string(gas.o2.permille, gas.he.permille, gas_string, sizeof(gas_string));
+			report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
 			gasidx = 0;
 		}
 		if (i > 0)
@@ -425,12 +417,15 @@ struct gaschanges {
 
 static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder)
 {
+	struct gasmix gas;
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
 	int best_depth = dive->cylinder[*asc_cylinder].depth.mm;
 	while (dp) {
 		if (dp->time == 0) {
+			gas.o2.permille = dp->o2;
+			gas.he.permille = dp->he;
 			if (dp->depth <= depth) {
 				int i = 0;
 				nr++;
@@ -443,13 +438,13 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 					i++;
 				}
 				gaschanges[i].depth = dp->depth;
-				gaschanges[i].gasidx = get_gasidx(dive, dp->o2, dp->he);
+				gaschanges[i].gasidx = get_gasidx(dive, &gas);
 				assert(gaschanges[i].gasidx != -1);
 			} else {
 				/* is there a better mix to start deco? */
 				if (dp->depth < best_depth) {
 					best_depth = dp->depth;
-					*asc_cylinder = get_gasidx(dive, dp->o2, dp->he);
+					*asc_cylinder = get_gasidx(dive, &gas);
 				}
 			}
 		}
@@ -539,6 +534,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		 translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\n"),
 		 disclaimer,  diveplan->gflow, diveplan->gfhigh);
 	do {
+		struct gasmix gasmix;
 		const char *depth_unit;
 		char gas[64];
 		double depthvalue;
@@ -569,7 +565,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
 			continue;
 		get_gas_string(o2, he, gas, sizeof(gas));
-		gasidx = get_gasidx(dive, o2, he);
+		gasmix.he.permille = he;
+		gasmix.o2.permille = o2;
+		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth)
 			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
@@ -655,6 +653,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	int avg_depth, bottom_time;
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
+	struct gasmix gas;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -669,12 +668,15 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 	/* we start with gas 0, then check if that was changed */
-	o2 = get_o2(&dive->cylinder[0].gasmix);
-	he = get_he(&dive->cylinder[0].gasmix);
-	get_gas_from_events(&dive->dc, sample->time.seconds, &o2, &he);
+	gas = dive->cylinder[0].gasmix;
+	get_gas_from_events(&dive->dc, sample->time.seconds, &gas);
+	o2 = get_o2(&gas);
+	he = get_he(&gas);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
-	if ((current_cylinder = get_gasidx(dive, o2, he)) == -1) {
-		report_error(translate("gettextFromC", "Can't find gas %d/%d"), (o2 + 5) / 10, (he + 5) / 10);
+	if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
+		char gas_string[50];
+		get_gas_string(gas.o2.permille, gas.he.permille, gas_string, sizeof(gas_string));
+		report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
 		current_cylinder = 0;
 	}
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
@@ -866,7 +868,7 @@ static int get_permille(const char *begin, const char **end)
 	return value;
 }
 
-int validate_gas(const char *text, int *o2_p, int *he_p)
+int validate_gas(const char *text, struct gasmix *gas)
 {
 	int o2, he;
 
@@ -904,8 +906,8 @@ int validate_gas(const char *text, int *o2_p, int *he_p)
 		return 0;
 
 	/* Let it rip */
-	*o2_p = o2;
-	*he_p = he;
+	gas->o2.permille = o2;
+	gas->he.permille = he;
 	return 1;
 }
 

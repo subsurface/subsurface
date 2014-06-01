@@ -89,14 +89,13 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
-	int o2 = get_o2(&backupDive.cylinder[0].gasmix);
-	int he = get_he(&backupDive.cylinder[0].gasmix);
+	struct gasmix gas = backupDive.cylinder[0].gasmix;
 	for (int i = 0; i < backupDive.dc.samples - 1; i++) {
 		const sample &s = backupDive.dc.sample[i];
 		if (s.time.seconds == 0)
 			continue;
-		get_gas_from_events(&backupDive.dc, lasttime, &o2, &he);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, o2, he, 0, true);
+		get_gas_from_events(&backupDive.dc, lasttime, &gas);
+		plannerModel->addStop(s.depth.mm, s.time.seconds, get_o2(&gas), get_he(&gas), 0, true);
 		lasttime = s.time.seconds;
 	}
 }
@@ -390,8 +389,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 
 bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	int o2 = 0;
-	int he = 0;
+	struct gasmix gas = { 0 };
 	int i, shift;
 	if (role == Qt::EditRole) {
 		divedatapoint &p = divepoints[index.row()];
@@ -419,9 +417,9 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		} break;
 		case GAS:
 			QByteArray gasv = value.toByteArray();
-			if (validate_gas(gasv.data(), &o2, &he)) {
-				p.o2 = o2;
-				p.he = he;
+			if (validate_gas(gasv.data(), &gas)) {
+				p.o2 = get_o2(&gas);
+				p.he = get_he(&gas);
 			}
 			break;
 		}
