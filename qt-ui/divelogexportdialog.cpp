@@ -2,7 +2,9 @@
 #include <QString>
 #include <QShortcut>
 #include <QAbstractButton>
+#include <QTextStream>
 #include <QSettings>
+#include <QDir>
 
 #include "mainwindow.h"
 #include "divelogexportdialog.h"
@@ -10,6 +12,7 @@
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
 #include "save-html.h"
+#include "helpers.h"
 
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui(new Ui::DiveLogExportDialog)
@@ -20,6 +23,14 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
+
+	/* the names are not the actual values exported to the json files,The font-family property should hold several
+	font names as a "fallback" system, to ensure maximum compatibility between browsers/operating systems */
+	ui->fontSelection->addItem("Arial", "Arial, Helvetica, sans-serif");
+	ui->fontSelection->addItem("Impact", "Impact, Charcoal, sans-serif");
+	ui->fontSelection->addItem("Georgia", "Georgia, serif");
+	ui->fontSelection->addItem("Courier", "Courier, monospace");
+	ui->fontSelection->addItem("Verdana", "Verdana, Geneva, sans-serif");
 }
 
 DiveLogExportDialog::~DiveLogExportDialog()
@@ -39,9 +50,65 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText("HTML export of the dive locations, visualized on a world map.");
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
 		ui->description->setText("Subsurface native XML format.");
-	} else if (ui->exportHtml->isChecked()) {
-		ui->description->setText("Html export of dive list can be viewed in any web browser.");
 	}
+}
+
+void DiveLogExportDialog::exportHtmlInit(QString filename)
+{
+	QDir dir(filename);
+	if (!dir.exists()) {
+		/* I think this will not work as expected on windows */
+		QDir::home().mkpath(filename);
+	}
+
+	QString json_dive_data = filename + "/file.json";
+	QString json_settings = filename + "/settings.json";
+
+	exportHTMLsettings(json_settings);
+	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked());
+
+	QString searchPath = getSubsurfaceDataPath("theme");
+
+	if (searchPath == "") {
+		return ;
+	}
+
+	QFile *tmpFile;
+
+	tmpFile = new QFile(searchPath + "/dive_export.html");
+	tmpFile->copy(filename + "/dive_export.html");
+	delete tmpFile;
+
+	tmpFile = new QFile(searchPath + "/list_lib.js");
+	tmpFile->copy(filename + "/list_lib.js");
+	delete tmpFile;
+
+	tmpFile = new QFile(searchPath + "/poster.png");
+	tmpFile->copy(filename + "/poster.png");
+	delete tmpFile;
+
+	tmpFile = new QFile(searchPath + "/index.html");
+	tmpFile->copy(filename + "/index.html");
+	delete tmpFile;
+
+	if (ui->themeSelection->currentText() == "Light") {
+		tmpFile = new QFile(searchPath + "/light.css");
+	} else {
+		tmpFile = new QFile(searchPath + "/sand.css");
+	}
+	tmpFile->copy(filename + "/theme.css");
+	delete tmpFile;
+}
+
+void DiveLogExportDialog::exportHTMLsettings(QString filename)
+{
+	QString fontSize = ui->fontSizeSelection->currentText();
+	QString fontFamily = ui->fontSelection->itemData(ui->fontSelection->currentIndex()).toString();
+	QFile file(filename);
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&file);
+	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",}";
+	file.close();
 }
 
 void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
@@ -64,33 +131,38 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 	}
 	settings.endGroup();
 
-	if (ui->exportUDDF->isChecked()) {
-		stylesheet = "uddf-export.xslt";
-		filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), lastDir,
-							tr("UDDF files (*.uddf *.UDDF)"));
-	} else if (ui->exportCSV->isChecked()) {
-		stylesheet = "xml2csv.xslt";
-		filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), lastDir,
-							tr("CSV files (*.csv *.CSV)"));
-	} else if (ui->exportDivelogs->isChecked()) {
-		DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
-	} else if (ui->exportWorldMap->isChecked()) {
-		filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), lastDir,
-							tr("HTML files (*.html)"));
-		if (!filename.isNull() && !filename.isEmpty())
-			export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
-	} else if (ui->exportSubsurfaceXML->isChecked()) {
-		filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
-							tr("XML files (*.xml *.ssrf)"));
-		if (!filename.isNull() && !filename.isEmpty()) {
-			QByteArray bt = QFile::encodeName(filename);
-			save_dives_logic(bt.data(), true);
+	switch (ui->tabWidget->currentIndex()) {
+	case 0:
+		if (ui->exportUDDF->isChecked()) {
+			stylesheet = "uddf-export.xslt";
+			filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), lastDir,
+								tr("UDDF files (*.uddf *.UDDF)"));
+		} else if (ui->exportCSV->isChecked()) {
+			stylesheet = "xml2csv.xslt";
+			filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), lastDir,
+								tr("CSV files (*.csv *.CSV)"));
+		} else if (ui->exportDivelogs->isChecked()) {
+			DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
+		} else if (ui->exportWorldMap->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), lastDir,
+								tr("HTML files (*.html)"));
+			if (!filename.isNull() && !filename.isEmpty())
+				export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
+		} else if (ui->exportSubsurfaceXML->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
+								tr("XML files (*.xml *.ssrf)"));
+			if (!filename.isNull() && !filename.isEmpty()) {
+				QByteArray bt = QFile::encodeName(filename);
+				save_dives_logic(bt.data(), true);
+			}
 		}
-	} else if (ui->exportHtml->isChecked()) {
-		filename = QFileDialog::getSaveFileName(this, tr("Export HTML"), lastDir,
-							tr("HTML files (*.html)"));
+		break;
+	case 1:
+		filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface"), lastDir,
+							tr("Folders"),0 , QFileDialog::ShowDirsOnly);
 		if (!filename.isNull() && !filename.isEmpty())
-			export_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
+			exportHtmlInit(filename);
+		break;
 	}
 
 	if (!filename.isNull() && !filename.isEmpty()) {
