@@ -188,24 +188,21 @@ void fill_default_cylinder(cylinder_t *cyl)
 
 /* make sure that the gas we are switching to is represented in our
  * list of cylinders */
-static int verify_gas_exists(struct dive *dive, int o2, int he)
+static int verify_gas_exists(struct dive *dive, struct gasmix mix_in)
 {
 	int i;
-	struct gasmix *mix;
-	struct gasmix mix_in;
 	cylinder_t *cyl;
 
-	mix_in.o2.permille = o2;
-	mix_in.he.permille = he;
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cyl = dive->cylinder + i;
-		mix = &cyl->gasmix;
 		if (cylinder_nodata(cyl))
 			continue;
-		if (gasmix_distance(mix, &mix_in) < 200)
+		if (gasmix_distance(&cyl->gasmix, &mix_in) < 200)
 			return i;
 	}
-	fprintf(stderr, "this gas (%d/%d) should have been on the cylinder list\nThings will fail now\n", o2, he);
+	char gas[50];
+	get_gas_string(&mix_in, gas, sizeof(gas));
+	fprintf(stderr, "this gas %s should have been on the cylinder list\nThings will fail now\n", gas);
 	return -1;
 }
 
@@ -234,8 +231,8 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
 	struct sample *sample;
+	struct gasmix oldgasmix;
 	cylinder_t *cyl;
-	int oldo2, oldhe;
 	int oldpo2 = 0;
 	int lasttime = 0;
 	int lastdepth = 0;
@@ -257,14 +254,12 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	/* reset the end pressure values and start with the gas on the first cylinder */
 	reset_cylinders(master_dive);
 	cyl = &master_dive->cylinder[0];
-	oldhe = cyl->gasmix.he.permille;
-	oldo2 = cyl->gasmix.o2.permille;
+	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
 	sample->po2 = dp->po2;
 	finish_sample(dc);
 	while (dp) {
-		int o2 = get_o2(&dp->gasmix);
-		int he = get_he(&dp->gasmix);
+		struct gasmix gasmix = dp->gasmix;
 		int po2 = dp->po2;
 		int time = dp->time;
 		int depth = dp->depth;
@@ -272,15 +267,13 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
 			 * additional gases that are available */
-			if (verify_gas_exists(dive, o2, he) < 0)
+			if (verify_gas_exists(dive, gasmix) < 0)
 				goto gas_error_exit;
 			dp = dp->next;
 			continue;
 		}
-		if (!o2 && !he) {
-			o2 = oldo2;
-			he = oldhe;
-		}
+		if (gasmix_is_null(&gasmix))
+			gasmix = oldgasmix;
 
 		/* Check for SetPoint change */
 		if (oldpo2 != po2) {
@@ -292,14 +285,10 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 			oldpo2 = po2;
 		}
 
-		/* Create new gas, and gas change event if necessary;
-		 * Sadly, we inherited our gaschange event from libdivecomputer which only
-		 * support percentage values, so round the entries */
-		if (o2 != oldo2 || he != oldhe) {
-			int plano2 = (o2 + 5) / 10 * 10;
-			int planhe = (he + 5) / 10 * 10;
+		/* Make sure we have the new gas, and create a gas change event */
+		if (gasmix_distance(&gasmix, &oldgasmix) > 0) {
 			int idx;
-			if ((idx = verify_gas_exists(dive, plano2, planhe)) < 0)
+			if ((idx = verify_gas_exists(dive, gasmix)) < 0)
 				goto gas_error_exit;
 			/* need to insert a first sample for the new gas */
 			add_gas_switch_event(dive, dc, lasttime + 1, idx);
@@ -309,8 +298,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 			sample->depth.mm = lastdepth;
 			finish_sample(dc);
 			cyl = &dive->cylinder[idx];
-			oldo2 = o2;
-			oldhe = he;
+			oldgasmix = gasmix;
 		}
 		/* Create sample */
 		sample = prepare_sample(dc);
