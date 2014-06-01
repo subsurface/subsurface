@@ -113,6 +113,11 @@ static inline bool is_air(int o2, int he)
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
+static inline bool gasmix_is_air(const struct gasmix *gasmix)
+{
+	return is_air(gasmix->o2.permille, gasmix->he.permille);
+}
+
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
 {
@@ -626,11 +631,11 @@ extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
 extern void cache_deco_state(double, char **datap);
 extern double restore_deco_state(char *data);
 
+/* this should be converted to use our types */
 struct divedatapoint {
 	int time;
 	unsigned int depth;
-	int o2;
-	int he;
+	struct gasmix gasmix;
 	int po2;
 	bool entered;
 	struct divedatapoint *next;
@@ -646,9 +651,9 @@ struct diveplan {
 	struct divedatapoint *dp;
 };
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2, bool entered);
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, struct gasmix gasmix, int po2, bool entered);
 void get_gas_string(int o2, int he, char *buf, int len);
-struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2);
+struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, int po2);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif

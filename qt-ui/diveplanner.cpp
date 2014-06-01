@@ -30,16 +30,16 @@
 #define MAX_DEPTH M_OR_FT(150, 450)
 #define MIN_DEPTH M_OR_FT(20, 60)
 
-QString gasToStr(const int o2Permille, const int hePermille)
+QString gasToStr(struct gasmix gas)
 {
-	uint o2 = (o2Permille + 5) / 10, he = (hePermille + 5) / 10;
-	QString result = is_air(o2Permille, hePermille) ? QObject::tr("AIR") : he == 0 ? QString("EAN%1").arg(o2, 2, 10, QChar('0')) : QString("%1/%2").arg(o2).arg(he);
+	uint o2 = (gas.o2.permille + 5) / 10, he = (gas.he.permille + 5) / 10;
+	QString result = gasmix_is_air(&gas) ? QObject::tr("AIR") : he == 0 ? QString("EAN%1").arg(o2, 2, 10, QChar('0')) : QString("%1/%2").arg(o2).arg(he);
 	return result;
 }
 
 QString dpGasToStr(const divedatapoint &p)
 {
-	return gasToStr(p.o2, p.he);
+	return gasToStr(p.gasmix);
 }
 
 static DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
@@ -153,7 +153,7 @@ QStringList &DivePlannerPointsModel::getGasList()
 			cylinder_t *cyl = &activeDive->cylinder[i];
 			if (cylinder_nodata(cyl))
 				break;
-			list.push_back(gasToStr(get_o2(&cyl->gasmix), get_he(&cyl->gasmix)));
+			list.push_back(gasToStr(cyl->gasmix));
 		}
 	}
 	return list;
@@ -417,10 +417,8 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		} break;
 		case GAS:
 			QByteArray gasv = value.toByteArray();
-			if (validate_gas(gasv.data(), &gas)) {
-				p.o2 = get_o2(&gas);
-				p.he = get_he(&gas);
-			}
+			if (validate_gas(gasv.data(), &gas))
+				p.gasmix = gas;
 			break;
 		}
 		editStop(index.row(), p);
@@ -573,8 +571,8 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		const divedatapoint t = divepoints.at(lastEnteredPoint());
 		milimeters = t.depth;
 		seconds = t.time + 600; // 10 minutes.
-		o2 = t.o2;
-		he = t.he;
+		o2 = get_o2(&t.gasmix);
+		he = get_he(&t.gasmix);
 		ccpoint = t.po2;
 	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
@@ -607,16 +605,16 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 	}
 	if (o2 == -1) {
 		if (row > 0) {
-			o2 = divepoints.at(row - 1).o2;
-			he = divepoints.at(row - 1).he;
+			o2 = get_o2(&divepoints.at(row - 1).gasmix);
+			he = get_he(&divepoints.at(row - 1).gasmix);
 		} else {
 			// when we add a first data point we need to make sure that there is a
 			// tank for it to use;
 			// first check to the right, then to the left, but if there's nothing,
 			// we simply default to AIR
 			if (row < divepoints.count()) {
-				o2 = divepoints.at(row).o2;
-				he = divepoints.at(row).he;
+				o2 = get_o2(&divepoints.at(row).gasmix);
+				he = get_he(&divepoints.at(row).gasmix);
 			} else {
 				o2 = O2_IN_AIR;
 				if (!addGas(o2, 0))
@@ -630,8 +628,8 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 	divedatapoint point;
 	point.depth = milimeters;
 	point.time = seconds;
-	point.o2 = o2;
-	point.he = he;
+	point.gasmix.o2.permille = o2;
+	point.gasmix.he.permille = he;
 	point.po2 = ccpoint;
 	point.entered = entered;
 	divepoints.append(point);
@@ -714,7 +712,7 @@ void DivePlannerPointsModel::rememberTanks()
 	oldGases = collectGases(stagingDive);
 }
 
-bool DivePlannerPointsModel::tankInUse(int o2, int he)
+bool DivePlannerPointsModel::tankInUse(struct gasmix gasmix)
 {
 	for (int j = 0; j < rowCount(); j++) {
 		divedatapoint &p = divepoints[j];
@@ -722,8 +720,7 @@ bool DivePlannerPointsModel::tankInUse(int o2, int he)
 			continue;
 		if (!p.entered) // removing deco gases is ok
 			continue;
-		if ((p.o2 == o2 && p.he == he) ||
-		    (is_air(p.o2, p.he) && is_air(o2, he)))
+		if (gasmix_distance(&p.gasmix, &gasmix) < 200)
 			return true;
 	}
 	return false;
@@ -747,12 +744,12 @@ void DivePlannerPointsModel::tanksUpdated()
 				}
 				for (int j = 0; j < rowCount(); j++) {
 					divedatapoint &p = divepoints[j];
-					int o2 = oldGases.at(i).first;
-					int he = oldGases.at(i).second;
-					if ((p.o2 == o2 && p.he == he) ||
-					    (is_air(p.o2, p.he) && (is_air(o2, he) || (o2 == 0 && he == 0)))) {
-						p.o2 = gases.at(i).first;
-						p.he = gases.at(i).second;
+					struct gasmix gas;
+					gas.o2.permille = oldGases.at(i).first;
+					gas.he.permille = oldGases.at(i).second;
+					if (gasmix_distance(&gas, &p.gasmix) < 200) {
+						p.gasmix.o2.permille = gases.at(i).first;
+						p.gasmix.he.permille = gases.at(i).second;
 					}
 				}
 				break;
@@ -797,7 +794,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
 		if (p.entered)
-			plan_add_segment(&diveplan, deltaT, p.depth, p.o2, p.he, p.po2, true);
+			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.po2, true);
 	}
 	char *cache = NULL;
 	tempDive = NULL;
@@ -805,7 +802,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cyl->depth.mm) {
-			dp = create_dp(0, cyl->depth.mm, get_o2(&cyl->gasmix), get_he(&cyl->gasmix), 0);
+			dp = create_dp(0, cyl->depth.mm, cyl->gasmix, 0);
 			if (diveplan.dp) {
 				dp->next = diveplan.dp->next;
 				diveplan.dp->next = dp;

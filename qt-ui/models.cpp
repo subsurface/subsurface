@@ -356,7 +356,7 @@ void CylindersModel::remove(const QModelIndex &index)
 	}
 	cylinder_t *cyl = &current->cylinder[index.row()];
 	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix.o2.permille, cyl->gasmix.he.permille)) ||
+	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix)) ||
 	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
 	     (cyl->manually_added || (current_dive && cylinder_is_used(current_dive, cyl))))) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(

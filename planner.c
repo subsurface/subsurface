@@ -121,7 +121,6 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
 	int i, t0, t1, gasidx, lastdepth;
-	int o2, he;
 	double tissue_tolerance;
 	struct gasmix gas;
 
@@ -264,7 +263,8 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	sample->po2 = dp->po2;
 	finish_sample(dc);
 	while (dp) {
-		int o2 = dp->o2, he = dp->he;
+		int o2 = get_o2(&dp->gasmix);
+		int he = get_he(&dp->gasmix);
 		int po2 = dp->po2;
 		int time = dp->time;
 		int depth = dp->depth;
@@ -352,15 +352,14 @@ void free_dps(struct divedatapoint *dp)
 	}
 }
 
-struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po2)
+struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, int po2)
 {
 	struct divedatapoint *dp;
 
 	dp = malloc(sizeof(struct divedatapoint));
 	dp->time = time_incr;
 	dp->depth = depth;
-	dp->o2 = o2;
-	dp->he = he;
+	dp->gasmix = gasmix;
 	dp->po2 = po2;
 	dp->entered = false;
 	dp->next = NULL;
@@ -371,6 +370,7 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 {
 	struct divedatapoint **ldpp, *dp = diveplan->dp;
 	int i = 0;
+	struct gasmix air = { 0 };
 	ldpp = &diveplan->dp;
 
 	while (dp && i++ < idx) {
@@ -378,7 +378,7 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 		dp = dp->next;
 	}
 	while (i++ <= idx) {
-		*ldpp = dp = create_dp(0, 0, 0, 0, 0);
+		*ldpp = dp = create_dp(0, 0, air, 0);
 		ldpp = &((*ldpp)->next);
 	}
 	return dp;
@@ -400,9 +400,9 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int o2, int he, int po2, bool entered)
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, struct gasmix gasmix, int po2, bool entered)
 {
-	struct divedatapoint *dp = create_dp(duration, depth, o2, he, po2);
+	struct divedatapoint *dp = create_dp(duration, depth, gasmix, po2);
 	dp->entered = entered;
 	add_to_end_of_diveplan(diveplan, dp);
 	return (dp);
@@ -424,8 +424,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 	int best_depth = dive->cylinder[*asc_cylinder].depth.mm;
 	while (dp) {
 		if (dp->time == 0) {
-			gas.o2.permille = dp->o2;
-			gas.he.permille = dp->he;
+			gas = dp->gasmix;
 			if (dp->depth <= depth) {
 				int i = 0;
 				nr++;
@@ -516,7 +515,6 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer)
 {
 	char buffer[20000];
-	int consumption[MAX_CYLINDERS] = { 0, };
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	int o2, he;
@@ -539,22 +537,21 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		char gas[64];
 		double depthvalue;
 		int decimals;
-		double used;
 		int newo2 = -1, newhe = -1;
 		struct divedatapoint *nextdp;
 
 		if (dp->time == 0)
 			continue;
-		o2 = dp->o2;
-		he = dp->he;
+		o2 = get_o2(&dp->gasmix);
+		he = get_he(&dp->gasmix);
 		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		nextdp = dp->next;
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp) {
-			newo2 = nextdp->o2;
-			newhe = nextdp->he;
+			newo2 = get_o2(&nextdp->gasmix);
+			newhe = get_he(&nextdp->gasmix);
 			if (newhe == 0 && newo2 == 0) {
 				/* same as last segment */
 				newo2 = o2;
@@ -686,7 +683,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!add_deco) {
 		transitiontime = depth / 75; /* this still needs to be made configurable */
-		plan_add_segment(diveplan, transitiontime, 0, o2, he, po2, false);
+		plan_add_segment(diveplan, transitiontime, 0, gas, po2, false);
 		/* re-create the dive */
 		delete_single_dive(dive_table.nr - 1);
 		*divep = dive = create_dive_from_plan(diveplan, master_dive);
@@ -723,8 +720,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		stopping = true;
 
 		current_cylinder = best_first_ascend_cylinder;
-		o2 = get_o2(&dive->cylinder[current_cylinder].gasmix);
-		he = get_he(&dive->cylinder[current_cylinder].gasmix);
+		gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
 			       (o2 + 5) / 10, (he + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
@@ -737,7 +733,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			/* Ascend to next stop depth */
 			int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 			if (ascend_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
-				plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+				plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 				previous_point_time = clock;
 				stopping = false;
 				last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
@@ -757,13 +753,12 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
 			/* We have reached a gas change.
 			 * Record this in the dive plan */
-			plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+			plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 			previous_point_time = clock;
 			stopping = true;
 
 			current_cylinder = gaschanges[gi].gasidx;
-			o2 = get_o2(&dive->cylinder[current_cylinder].gasmix);
-			he = get_he(&dive->cylinder[current_cylinder].gasmix);
+			gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 				       (o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);
@@ -798,7 +793,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			if (!stopping) {
 				/* The last segment was an ascend segment.
 				 * Add a waypoint for start of this deco stop */
-				plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+				plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 				previous_point_time = clock;
 				stopping = true;
 			}
@@ -809,7 +804,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		}
 		if (stopping) {
 			/* Next we will ascend again. Add a waypoint if we have spend deco time */
-			plan_add_segment(diveplan, clock - previous_point_time, depth, o2, he, po2, false);
+			plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 			previous_point_time = clock;
 			stopping = false;
 		}
@@ -817,7 +812,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	}
 
 	/* We made it to the surface */
-	plan_add_segment(diveplan, clock - previous_point_time, 0, o2, he, po2, false);
+	plan_add_segment(diveplan, clock - previous_point_time, 0, gas, po2, false);
 	delete_single_dive(dive_table.nr - 1);
 	*divep = dive = create_dive_from_plan(diveplan, master_dive);
 	if (!dive)

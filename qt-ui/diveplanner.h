@@ -46,7 +46,7 @@ public:
 	bool recalcQ();
 	void tanksUpdated();
 	void rememberTanks();
-	bool tankInUse(int o2, int he);
+	bool tankInUse(struct gasmix gasmix);
 	void copyCylinders(struct dive *d);
 	void setupCylinders();
 	/**
@@ -137,7 +137,7 @@ private:
 	Ui::DivePlanner ui;
 };
 
-QString gasToStr(const int o2Permille, const int hePermille);
+QString gasToStr(gasmix gas);
 QString dpGasToStr(const divedatapoint &p);
 
 #endif // DIVEPLANNER_H
