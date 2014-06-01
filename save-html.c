@@ -168,7 +168,6 @@ void write_no_trip(struct membuffer *b, int *dive_no)
 
 void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no)
 {
-	int i;
 	struct dive *dive;
 
 	put_format(b, "{");

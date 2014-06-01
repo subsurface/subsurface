@@ -68,7 +68,6 @@ QPair<int, int> TagWidget::getCursorTagPosition()
 
 void TagWidget::highlight()
 {
-	int i = 0, start = 0, end = 0;
 	removeAllBlocks();
 	int lastPos = 0;
 	Q_FOREACH (const QString& s, text().split(QChar(','), QString::SkipEmptyParts)) {
