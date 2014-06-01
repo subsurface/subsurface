@@ -160,7 +160,7 @@ static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time
 			break;
 		if (strcmp(event->name, "gaschange"))
 			continue;
-		o2permille = 10 * (event->value & 0xffff);
+		o2permille = get_o2(get_gasmix_from_event(event));
 	}
 	return o2permille;
 }

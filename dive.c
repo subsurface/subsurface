@@ -6,6 +6,7 @@
 #include <limits.h>
 #include "gettext.h"
 #include "dive.h"
+#include "libdivecomputer.h"
 
 struct tag_entry *g_tag_list = NULL;
 
@@ -74,6 +75,19 @@ void remove_event(struct event* event)
 		*ep = event->next;
 		free(event);
 	}
+}
+
+/* this returns a pointer to static variable - so use it right away after calling */
+struct gasmix *get_gasmix_from_event(struct event *ev)
+{
+	static struct gasmix g;
+	g.o2.permille = g.he.permille = 0;
+	if (ev && (ev->type == SAMPLE_EVENT_GASCHANGE || ev->type == SAMPLE_EVENT_GASCHANGE2)) {
+		g.o2.permille = 10 * ev->value & 0xffff;
+		if (ev->type == SAMPLE_EVENT_GASCHANGE2)
+			g.he.permille = 10 * (ev->value >> 16);
+	}
+	return &g;
 }
 
 int get_pressure_units(int mb, const char **units)

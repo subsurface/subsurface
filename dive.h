@@ -69,6 +69,18 @@ typedef struct
 	const char *description; /* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
+/*
+ * Events are currently based straight on what libdivecomputer gives us.
+ *  We need to wrap these into our own events at some point to remove some of the limitations.
+ */
+struct event {
+	struct event *next;
+	duration_t time;
+	int type, flags, value;
+	bool deleted;
+	char name[];
+};
+
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int ml, int *frac, const char **units);
@@ -94,6 +106,7 @@ static inline int get_he(const struct gasmix *mix)
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
+extern struct gasmix *get_gasmix_from_event(struct event *ev);
 
 static inline bool is_air(int o2, int he)
 {
@@ -166,22 +179,6 @@ int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len);
 
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
-
-/*
- * Events are currently pretty meaningless. This is
- * just based on the random data that libdivecomputer
- * gives us. I'm not sure what a real "architected"
- * event model would actually look like, but right
- * now you can associate a list of events with a dive,
- * and we'll do something about it.
- */
-struct event {
-	struct event *next;
-	duration_t time;
-	int type, flags, value;
-	bool deleted;
-	char name[];
-};
 
 /*
  * NOTE! The deviceid and diveid are model-specific *hashes* of

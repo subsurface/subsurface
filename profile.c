@@ -578,13 +578,15 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	int i;
 	int best = 0, score = INT_MAX;
 	int target_o2, target_he;
+	struct gasmix *g;
 
 	/*
 	 * Crazy gas change events give us odd encoded o2/he in percent.
 	 * Decode into our internal permille format.
 	 */
-	target_o2 = (ev->value & 0xFFFF) * 10;
-	target_he = (ev->value >> 16) * 10;
+	g = get_gasmix_from_event(ev);
+	target_o2 = get_o2(g);
+	target_he = get_he(g);
 
 	/*
 	 * Try to find a cylinder that best matches the target gas

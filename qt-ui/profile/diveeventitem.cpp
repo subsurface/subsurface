@@ -82,8 +82,9 @@ void DiveEventItem::setupToolTipString()
 	int type = internalEvent->type;
 	if (value) {
 		if (type == SAMPLE_EVENT_GASCHANGE || type == SAMPLE_EVENT_GASCHANGE2) {
-			int he = value >> 16;
-			int o2 = value & 0xffff;
+			struct gasmix *g = get_gasmix_from_event(internalEvent);
+			int he = get_he(g);
+			int o2 = get_o2(g);
 
 			name += ": ";
 			if (he)

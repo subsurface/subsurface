@@ -78,8 +78,9 @@ void get_gas_from_events(struct divecomputer *dc, int time, int *o2, int *he)
 	struct event *event = dc->events;
 	while (event && event->time.seconds <= time) {
 		if (!strcmp(event->name, "gaschange")) {
-			*o2 = 10 * event->value & 0xffff;
-			*he = 10 * event->value >> 16;
+			struct gasmix *g = get_gasmix_from_event(event);
+			*o2 = get_o2(g);
+			*he = get_he(g);
 		}
 		event = event->next;
 	}
