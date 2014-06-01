@@ -1,0 +1,139 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>dive log export</title>
+<link rel="stylesheet" type="text/css" href="theme.css">
+<script src="file.json"></script>
+<script src="settings.json"></script>
+<script src="list_lib.js" type="text/javascript"></script>
+<script>
+//////////////////////////////////
+//advance settings window//
+
+var advanced_shown=false;
+function showdiv(){
+	var search = document.getElementById("advanced_search");
+	if(advanced_shown==false){
+		search.style.display='block';
+		advanced_shown=true;
+	}
+	else{
+	search.style.display='none';
+	advanced_shown=false;
+	}
+}
+function hideAdvanced(){
+	if(advanced_shown==false) return;
+	var search = document.getElementById("advanced_search");
+	search.style.display='none';
+	advanced_shown=false;
+}
+
+document.onclick=check;
+function check(e)
+{
+	var target = (e && e.target) || (event && event.srcElement);
+	var obj = document.getElementById('advanced_search');
+	var obj2 = document.getElementById('adv_srch_sp');
+	if(target!=obj && target!=obj2 && target.type!="checkbox"){
+		hideAdvanced();
+	}
+}
+
+////////////////////////////////
+
+function loadSettings(){
+	if(typeof settings === 'undefined')return;
+	document.body.style.fontSize=settings.fontSize;
+	document.body.style.fontFamily=settings.fontFamily;
+}
+
+var searchingModules = new Array();
+
+window.onload=function(){
+
+	//initialize settings
+	loadSettings();
+
+	//initializing default searchers
+	searchingModules["location"] = new SearchModule(true);
+	searchingModules["divemaster"] = new SearchModule(true);
+	searchingModules["buddy"] = new SearchModule(true);
+	searchingModules["notes"] = new SearchModule(true);
+	searchingModules["tags"] = new SearchModule(true);
+
+	getItems();
+
+	//initializing search words
+	for(var i=0;i<items.length;i++){
+		searchingModules["location"].Enter_search_string(items[i].location,i);
+
+		searchingModules["divemaster"].Enter_search_string(items[i].divemaster,i);
+
+		searchingModules["buddy"].Enter_search_string(items[i].buddy,i);
+
+		searchingModules["notes"].Enter_search_string(items[i].notes,i);
+
+		searchingModules["tags"].Enter_search_tag(items[i].tags,i);
+	}
+
+	sizeofpage=10;
+	showAllDives();
+}
+
+function changeAdvSearch(e){
+	searchingModules[e.value].enabled=e.checked;
+	SearchModules(document.getElementById("search_input").value);
+}
+
+</script>
+</head>
+<body>
+	<center>
+	<div id="header_container">
+	<div id="logo"></div>
+	<h1>Subsurface</h1>
+	</div>
+	</center>
+	<div id="divePanel">
+	<div id="controlbox">
+		<input id="search_input" oninput="SearchModules(this.value)" placeholder="search"/><a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
+		<div id="advanced_search">
+		<input type="checkbox" onchange="changeAdvSearch(this)" value="location" checked>Location<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" value="divemaster" checked>Divemaster<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" value="buddy" checked>Buddy<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" value="notes" checked>Notes<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" value="tags" checked>Tags<br>
+		</div>
+		<div id="toolbox">
+		<select id="no_dives_selector" onChange="setNumberOfDives(this)">
+			<option>10</option>
+			<option>20</option>
+			<option>50</option>
+			<option>100</option>
+		</select>
+		<button onClick="expandAll()"> Expand All </button>
+		<button onClick="collapseAll()"> Collapse All </button>
+		<button id="trip_button" onclick="toggleTrips();">trips</button>
+		</div>
+	</div>
+		<div id="header">
+		<div onClick="list_sort('1')" class="item">Number</div>
+		<div onClick="list_sort('2')" class="item">Date</div>
+		<div onClick="list_sort('3')" class="item">Time</div>
+		<div onClick="list_sort('6')" class="item_large">Location</div>
+		<div onClick="list_sort('4')" class="item">Air Temp</div>
+		<div onClick="list_sort('5')" class="item">Water Temp</div>
+	</div>
+	<div id="diveslist">
+	</div>
+	<center>
+	<div id="controller">
+		<button onClick="prev_page()"><-</button>
+		<span id="pagging"></span>
+		<button onClick="next_page()">-></button>
+	</div>
+	</center>
+	</div>
+</body>
+</html>
