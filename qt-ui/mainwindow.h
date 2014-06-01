@@ -77,6 +77,7 @@ public:
 	ProfileWidget2 *graphics() const;
 	void setLoadedWithFiles(bool filesFromCommandLine);
 	bool filesFromCommandLine() const;
+	void setPlanNotes(const char *notes);
 private
 slots:
 	/* file menu action */

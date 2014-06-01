@@ -415,6 +415,11 @@ void MainWindow::planCreated()
 	refreshDisplay();
 }
 
+void MainWindow::setPlanNotes(const char *notes)
+{
+	ui.divePlanOutput->setText(notes);
+}
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	if(!plannerStateClean())

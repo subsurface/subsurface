@@ -842,6 +842,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
 		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
+		MainWindow::instance()->setPlanNotes(tempDive->notes);
 		addDecoToModel();
 		if (mode == ADD || mode == PLAN) {
 			// copy the samples and events, but don't overwrite the cylinders
