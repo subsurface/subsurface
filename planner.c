@@ -537,24 +537,21 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	snprintf(buffer, sizeof(buffer),
 		 translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\n"),
 		 disclaimer,  diveplan->gflow, diveplan->gfhigh);
-	/* we start with gas 0, then check if that was changed */
-	o2 = get_o2(&dive->cylinder[0].gasmix);
-	he = get_he(&dive->cylinder[0].gasmix);
 	do {
 		const char *depth_unit;
 		char gas[64];
 		double depthvalue;
 		int decimals;
 		double used;
-		int newo2 = o2, newhe = he;
+		int newo2 = -1, newhe = -1;
 		struct divedatapoint *nextdp;
 
 		if (dp->time == 0)
 			continue;
+		o2 = dp->o2;
+		he = dp->he;
 		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
-		/* do we change gas after this segment? We need to look at the gas
-		 * for the next segment (that isn't just a record of available gas !!)
-		 * to find out */
+		/* analyze the dive points ahead */
 		nextdp = dp->next;
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
@@ -585,13 +582,14 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				 FRACTION(dp->time - lasttime, 60),
 				 FRACTION(dp->time, 60),
 				 gas);
-		get_gas_string(newo2, newhe, gas, sizeof(gas));
-		if (o2 != newo2 || he != newhe) {
+		if (nextdp && (o2 != newo2 || he != newhe) ) {
+			// gas switch at this waypoint
+			get_gas_string(newo2, newhe, gas, sizeof(gas));
 			len = strlen(buffer);
 			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gas);
+			o2 = newo2;
+			he = newhe;
 		}
-		o2 = newo2;
-		he = newhe;
 		lasttime = dp->time;
 		lastdepth = dp->depth;
 	} while ((dp = dp->next) != NULL);
@@ -605,17 +603,21 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cylinder_none(cyl))
 			break;
-		int consumed = mbar_to_atm(cyl->start.mbar - cyl->end.mbar) * cyl->type.size.mliter;
-		/* Warn if the plan uses more gas than is available in a cylinder
-		 * This only works if we have working pressure for the cylinder
-		 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
-		if (cyl->type.workingpressure.mbar && cyl->end.mbar < 10000)
-			warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
-
 		len = strlen(buffer);
-		volume = get_volume_units(consumed, NULL, &unit);
 		get_gas_string(get_o2(&cyl->gasmix), get_he(&cyl->gasmix), gas, sizeof(gas));
-		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
+		if (cyl->type.workingpressure.mbar) {
+			int consumed = mbar_to_atm(cyl->start.mbar - cyl->end.mbar) * cyl->type.size.mliter;
+			volume = get_volume_units(consumed, NULL, &unit);
+			/* Warn if the plan uses more gas than is available in a cylinder
+			 * This only works if we have working pressure for the cylinder
+			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
+			if (cyl->end.mbar < 10000)
+				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
+			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
+		} else {
+			fprintf(stderr, "we really should calculate the consumption even without cylinder data\n");
+			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "did not track volume for %s"), gas);
+		}
 	}
 	dive->notes = strdup(buffer);
 }
