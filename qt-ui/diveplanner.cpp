@@ -841,7 +841,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	dump_plan(&diveplan);
 #endif
 	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
-		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
+		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), false);
 		MainWindow::instance()->setPlanNotes(tempDive->notes);
 		addDecoToModel();
 		if (mode == ADD || mode == PLAN) {
@@ -889,7 +889,7 @@ void DivePlannerPointsModel::createPlan()
 	plannerModel->setRecalc(oldRecalc);
 
 	//TODO: C-based function here?
-	plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner());
+	plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), true);
 	record_dive(tempDive);
 	mark_divelist_changed(true);
 

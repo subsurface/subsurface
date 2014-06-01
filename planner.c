@@ -517,24 +517,26 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 	return stoplevels;
 }
 
-static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive)
+static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer)
 {
 	char buffer[20000];
 	int consumption[MAX_CYLINDERS] = { 0, };
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	int o2, he;
+	const char *disclaimer = "";
 
 	if (!dp)
 		return;
 
+	if (show_disclaimer)
+		disclaimer = translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
+				       "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
+				       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+				       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
 	snprintf(buffer, sizeof(buffer),
 		 translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\n"),
-		 translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
-			   "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
-			   "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-			   "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."),
-		 diveplan->gflow, diveplan->gfhigh);
+		 disclaimer,  diveplan->gflow, diveplan->gfhigh);
 	/* we start with gas 0, then check if that was changed */
 	o2 = get_o2(&dive->cylinder[0].gasmix);
 	he = get_he(&dive->cylinder[0].gasmix);
@@ -627,7 +629,7 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 		return 6000 / 60;
 }
 
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, struct dive *master_dive, bool add_deco)
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, struct dive *master_dive, bool add_deco, bool show_disclaimer)
 {
 	struct dive *dive;
 	struct sample *sample;
@@ -812,7 +814,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	*divep = dive = create_dive_from_plan(diveplan, master_dive);
 	if (!dive)
 		goto error_exit;
-	add_plan_to_notes(diveplan, dive);
+	add_plan_to_notes(diveplan, dive, show_disclaimer);
 
 error_exit:
 	free(stoplevels);

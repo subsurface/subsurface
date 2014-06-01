@@ -654,7 +654,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int o2, int he, int po
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
-void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, struct dive *master_dive, bool add_deco);
+void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, struct dive *master_dive, bool add_deco, bool show_disclaimer);
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, char *name);
