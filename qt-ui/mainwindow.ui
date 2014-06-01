@@ -495,25 +495,59 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="DiveListView" name="ListWidget">
-        <property name="alternatingRowColors">
-         <bool>true</bool>
+       <widget class="QStackedWidget" name="diveListPane">
+        <property name="currentIndex">
+         <number>0</number>
         </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::ExtendedSelection</enum>
-        </property>
-        <property name="rootIsDecorated">
-         <bool>true</bool>
-        </property>
-        <property name="sortingEnabled">
-         <bool>false</bool>
-        </property>
-        <property name="animated">
-         <bool>true</bool>
-        </property>
-        <property name="allColumnsShowFocus">
-         <bool>true</bool>
-        </property>
+        <widget class="DiveListView" name="ListWidget">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+         <property name="rootIsDecorated">
+          <bool>true</bool>
+         </property>
+         <property name="sortingEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="animated">
+          <bool>true</bool>
+         </property>
+         <property name="allColumnsShowFocus">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QWidget" name="fullPlan">
+         <layout class="QVBoxLayout" name="horizontalLayout_p4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+	  <item>
+	   <widget class="QLabel" name="divePlanOutputLabel">
+	    <property name="text">
+	     <string>Dive plan details</string>
+	    </property>
+           </widget>
+	  </item>
+          <item>
+           <widget class="QTextEdit" name="divePlanOutput" native="true"/>
+          </item>
+         </layout>
+        </widget>
        </widget>
        <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout">
