@@ -64,7 +64,7 @@ public:
 
 public
 slots:
-	int addStop(int millimeters = 0, int seconds = 0, int o2 = 0, int he = 0, int ccpoint = 0, bool entered = true);
+	int addStop(int millimeters, int seconds, struct gasmix gas, int ccpoint, bool entered, bool usePrevious = false);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int ghflow);
@@ -88,7 +88,7 @@ signals:
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
-	bool addGas(int o2, int he);
+	bool addGas(struct gasmix mix);
 	struct diveplan diveplan;
 	Mode mode;
 	bool recalc;

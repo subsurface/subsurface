@@ -62,19 +62,16 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	int o2 = O2_IN_AIR;
-	int he = 0;
-	if (isPlanner()) {
+	struct gasmix gas = { 0 };
+	if (isPlanner())
 		// let's use the gas from the first cylinder
-		o2 = stagingDive->cylinder[0].gasmix.o2.permille;
-		he = stagingDive->cylinder[0].gasmix.he.permille;
-	}
-	//	plannerModel->addStop(0, 0, O2_IN_AIR, 0, 0);
-	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, o2, he, 0, true);
-	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, o2, he, 0, true);
+		gas = stagingDive->cylinder[0].gasmix;
+
+	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, gas, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, gas, 0, true);
 	if (!isPlanner()) {
-		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, o2, he, 0, true);
-		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, o2, he, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, gas, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, gas, 0, true);
 	}
 }
 
@@ -95,7 +92,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (s.time.seconds == 0)
 			continue;
 		get_gas_from_events(&backupDive.dc, lasttime, &gas);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, get_o2(&gas), get_he(&gas), 0, true);
+		plannerModel->addStop(s.depth.mm, s.time.seconds, gas, 0, true);
 		lasttime = s.time.seconds;
 	}
 }
@@ -519,29 +516,20 @@ bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 	return p1.time <= p2.time;
 }
 
-bool DivePlannerPointsModel::addGas(int o2, int he)
+bool DivePlannerPointsModel::addGas(struct gasmix mix)
 {
-	struct gasmix mix;
-
-	mix.o2.permille = o2;
-	mix.he.permille = he;
 	sanitize_gasmix(&mix);
-
-	if (is_air(o2, he))
-		o2 = 0;
 
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &stagingDive->cylinder[i];
 		if (cylinder_nodata(cyl)) {
 			fill_default_cylinder(cyl);
-			cyl->gasmix.o2.permille = o2;
-			cyl->gasmix.he.permille = he;
-			sanitize_gasmix(&cyl->gasmix);
+			cyl->gasmix = mix;
 			/* The depth to change to that gas is given by the depth where its pO2 is 1.6 bar.
 			 * The user should be able to change this depth manually. */
 			pressure_t modppO2;
 			modppO2.mbar = 1600;
-			cyl->depth = gas_mod(&cyl->gasmix, modppO2);
+			cyl->depth = gas_mod(&mix, modppO2);
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}
@@ -560,8 +548,9 @@ int DivePlannerPointsModel::lastEnteredPoint()
 	return -1;
 }
 
-int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he, int ccpoint, bool entered)
+int DivePlannerPointsModel::addStop(int milimeters, int seconds, struct gasmix gas, int ccpoint, bool entered, bool usePrevious)
 {
+	struct gasmix air = { 0 };
 	if (recalcQ())
 		removeDeco();
 
@@ -571,21 +560,18 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 		const divedatapoint t = divepoints.at(lastEnteredPoint());
 		milimeters = t.depth;
 		seconds = t.time + 600; // 10 minutes.
-		o2 = get_o2(&t.gasmix);
-		he = get_he(&t.gasmix);
+		gas = t.gasmix;
 		ccpoint = t.po2;
 	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
 		seconds = 600;		     // 10 min
 		//Default to the first defined gas, if we got one.
 		cylinder_t *cyl = &stagingDive->cylinder[0];
-		if (cyl) {
-			o2 = get_o2(&cyl->gasmix);
-			he = get_he(&cyl->gasmix);
-		}
+		if (cyl)
+			gas = cyl->gasmix;
 	}
-	if (o2 != -1)
-		if (!addGas(o2, he))
+	if (!usePrevious)
+		if (!addGas(gas))
 			qDebug("addGas failed"); // FIXME add error propagation
 
 	// check if there's already a new stop before this one:
@@ -603,21 +589,18 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 			break;
 		}
 	}
-	if (o2 == -1) {
+	if (usePrevious) {
 		if (row > 0) {
-			o2 = get_o2(&divepoints.at(row - 1).gasmix);
-			he = get_he(&divepoints.at(row - 1).gasmix);
+			gas = divepoints.at(row - 1).gasmix;
 		} else {
 			// when we add a first data point we need to make sure that there is a
 			// tank for it to use;
 			// first check to the right, then to the left, but if there's nothing,
 			// we simply default to AIR
 			if (row < divepoints.count()) {
-				o2 = get_o2(&divepoints.at(row).gasmix);
-				he = get_he(&divepoints.at(row).gasmix);
+				gas = divepoints.at(row).gasmix;
 			} else {
-				o2 = O2_IN_AIR;
-				if (!addGas(o2, 0))
+				if (!addGas(air))
 					qDebug("addGas failed"); // FIXME add error propagation
 			}
 		}
@@ -628,8 +611,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int o2, int he,
 	divedatapoint point;
 	point.depth = milimeters;
 	point.time = seconds;
-	point.gasmix.o2.permille = o2;
-	point.gasmix.he.permille = he;
+	point.gasmix = gas;
 	point.po2 = ccpoint;
 	point.entered = entered;
 	divepoints.append(point);
