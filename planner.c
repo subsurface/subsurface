@@ -226,7 +226,7 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	mean_depth.mm = (old_depth + new_depth) / 2;
 	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration;
 	cyl->gas_used.mliter += gas_used.mliter;
-	if (!cyl->type.size.mliter) {
+	if (cyl->type.size.mliter) {
 		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter;
 		cyl->end.mbar -= delta_p.mbar;
 	}
