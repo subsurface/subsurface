@@ -2259,3 +2259,22 @@ int average_depth(struct diveplan *dive)
 
 	return integral / last_time;
 }
+
+void picture_load_exif_data(struct picture *p)
+{
+
+}
+
+struct picture* dive_add_picture(struct dive *d, char *picture)
+{
+
+}
+
+uint dive_get_picture_count(struct dive *d)
+{
+}
+
+void dive_remove_picture(struct dive *d, char *picture)
+{
+
+}
