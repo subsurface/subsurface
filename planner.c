@@ -505,7 +505,6 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	char buffer[20000];
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
-	int o2, he;
 	const char *disclaimer = "";
 
 	if (!dp)
@@ -525,14 +524,11 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		char gas[64];
 		double depthvalue;
 		int decimals;
-		int newo2 = -1, newhe = -1;
 		struct divedatapoint *nextdp;
 
 		if (dp->time == 0)
 			continue;
 		gasmix = dp->gasmix;
-		o2 = get_o2(&gasmix);
-		he = get_he(&gasmix);
 		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		nextdp = dp->next;
@@ -540,16 +536,15 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			nextdp = nextdp->next;
 		if (nextdp) {
 			newgasmix = nextdp->gasmix;
-			newo2 = get_o2(&newgasmix);
-			newhe = get_he(&newgasmix);
-			if (newhe == 0 && newo2 == 0) {
-				/* same as last segment */
-				newo2 = o2;
-				newhe = he;
-			}
+			if (gasmix_is_null(&newgasmix))
+				newgasmix = gasmix;
 		}
 		/* do we want to skip this leg as it is devoid of anything useful? */
-		if (!dp->entered && o2 == newo2 && he == newhe && nextdp && dp->depth != lastdepth && nextdp->depth != dp->depth)
+		if (!dp->entered &&
+		    gasmix_distance(&gasmix, &newgasmix) == 0 &&
+		    nextdp &&
+		    dp->depth != lastdepth &&
+		    nextdp->depth != dp->depth)
 			continue;
 		get_gas_string(&gasmix, gas, sizeof(gas));
 		gasidx = get_gasidx(dive, &gasmix);
@@ -566,13 +561,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				 FRACTION(dp->time - lasttime, 60),
 				 FRACTION(dp->time, 60),
 				 gas);
-		if (nextdp && (o2 != newo2 || he != newhe) ) {
+		if (nextdp && gasmix_distance(&gasmix, &newgasmix)) {
 			// gas switch at this waypoint
 			get_gas_string(&newgasmix, gas, sizeof(gas));
 			len = strlen(buffer);
 			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gas);
-			o2 = newo2;
-			he = newhe;
+			gasmix = newgasmix;
 		}
 		lasttime = dp->time;
 		lastdepth = dp->depth;
