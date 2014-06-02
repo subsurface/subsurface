@@ -81,6 +81,13 @@ struct event {
 	char name[];
 };
 
+/* picture list and methods related to dive picture handling */
+struct picture_list{
+	char *filename;
+	time_t timestamp;
+	struct picture_list *next;
+};
+
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
 extern double get_volume_units(unsigned int ml, int *frac, const char **units);
@@ -278,6 +285,7 @@ struct dive {
 	struct tag_entry *tag_list;
 	struct divecomputer dc;
 	int id; // unique ID for this dive
+	struct picture_list *picture_list;
 };
 
 static inline int dive_has_gps_location(struct dive *dive)
