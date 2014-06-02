@@ -463,8 +463,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 			if (!seen_cyl[cyl]) {
 				plot_pressure_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
 				plot_gas_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
-					       get_o2(&dive->cylinder[cyl].gasmix),
-					       get_he(&dive->cylinder[cyl].gasmix));
+					       dive->cylinder[cyl].gasmix);
 				seen_cyl[cyl] = true;
 			}
 		}
@@ -491,11 +490,9 @@ void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::Alig
 	texts.push_back(text);
 }
 
-void DiveGasPressureItem::plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, int o2, int he)
+void DiveGasPressureItem::plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, struct gasmix gasmix)
 {
-	QString gas = (is_air(o2, he)) ? tr("air") :
-					 (he == 0) ? QString(tr("EAN%1")).arg((o2 + 5) / 10) :
-						     QString("%1/%2").arg((o2 + 5) / 10).arg((he + 5) / 10);
+	QString gas = gasToStr(gasmix);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
 	text->setText(gas);

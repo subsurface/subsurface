@@ -120,7 +120,7 @@ public:
 
 private:
 	void plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align);
-	void plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, int o2, int he);
+	void plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, struct gasmix gasmix);
 	QVector<QPolygonF> polygons;
 };
 

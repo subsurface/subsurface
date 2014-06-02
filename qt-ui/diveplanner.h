@@ -137,7 +137,6 @@ private:
 	Ui::DivePlanner ui;
 };
 
-QString gasToStr(gasmix gas);
 QString dpGasToStr(const divedatapoint &p);
 
 #endif // DIVEPLANNER_H
