@@ -32,7 +32,7 @@ void DivePictureModel::updateDivePictures(int divenr)
 	}
 
 	struct dive *d = get_dive(divenr);
-	int numberOfPictures = dive_get_picture_count(d);
+	numberOfPictures = dive_get_picture_count(d);
 	if (!d || numberOfPictures == 0) {
 		return;
 	}
@@ -58,7 +58,15 @@ int DivePictureModel::columnCount(const QModelIndex &parent) const
 
 QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 {
+	QVariant ret;
+	if (!index.isValid())
+		return ret;
 
+	QString key = stringPixmapCache.keys().at(index.row());
+	switch(role){
+		case Qt::DisplayRole : return key;
+		case Qt::DecorationRole : return stringPixmapCache[key];
+	}
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
