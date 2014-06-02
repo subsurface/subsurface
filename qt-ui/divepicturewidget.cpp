@@ -9,7 +9,6 @@ void DivePictureDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 DivePictureModel::DivePictureModel(QObject *parent): QAbstractTableModel(parent)
 {
-
 }
 
 typedef QPair<QString, QPixmap> SPixmap;
@@ -53,7 +52,7 @@ void DivePictureModel::updateDivePictures(int divenr)
 
 int DivePictureModel::columnCount(const QModelIndex &parent) const
 {
-
+	return 1;
 }
 
 QVariant DivePictureModel::data(const QModelIndex &index, int role) const
@@ -64,9 +63,10 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 
 	QString key = stringPixmapCache.keys().at(index.row());
 	switch(role){
-		case Qt::DisplayRole : return key;
-		case Qt::DecorationRole : return stringPixmapCache[key];
+		case Qt::DisplayRole : ret = key; break;
+		case Qt::DecorationRole : ret = stringPixmapCache[key]; break;
 	}
+	return ret;
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
@@ -76,5 +76,4 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 
 DivePictureWidget::DivePictureWidget(QWidget *parent): QListView(parent)
 {
-
 }

@@ -16,6 +16,7 @@
 #include "divelist.h"
 #include "qthelper.h"
 #include "display.h"
+#include "divepicturewidget.h"
 
 #include <QLabel>
 #include <QCompleter>
@@ -29,7 +30,8 @@
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(CylindersModel::instance()),
-	editMode(NONE)
+	editMode(NONE),
+	divePictureModel(new DivePictureModel(this))
 {
 	ui.setupUi(this);
 
@@ -37,6 +39,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
+	ui.photosView->setModel(divePictureModel);
 	closeMessage();
 
 	QAction *action = new QAction(tr("Save"), this);
@@ -371,6 +374,7 @@ void MainTab::updateDiveInfo(int dive)
 	process_selected_dives();
 	process_all_dives(d, &prevd);
 
+	divePictureModel->updateDivePictures(dive);
 	UPDATE_TEXT(d, notes);
 	UPDATE_TEXT(d, location);
 	UPDATE_TEXT(d, suit);

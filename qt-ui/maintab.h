@@ -93,6 +93,7 @@ private:
 	LocationCompletionModel locationModel;
 	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
+	DivePictureModel *divePictureModel;
 	struct dive editedDive; // when editing we do all changes on a copy of the real data and only apply when saved
 	Completers completers;
 	void resetPallete();

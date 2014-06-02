@@ -59,8 +59,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	yearlyStatsModel(0),
 	state(VIEWALL),
 	updateManager(0),
-	fakeDiveId(0),
-	divePictureModel(new DivePictureModel(this))
+	fakeDiveId(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -90,7 +89,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->expand(ui.ListWidget->model()->index(0, 0));
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
-
 #ifdef NO_MARBLE
 	ui.layoutWidget->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
@@ -166,7 +164,6 @@ void MainWindow::current_dive_changed(int divenr)
 	 */
 	ui.newProfile->plotDives(QList<dive *>() << (current_dive));
 	ui.InfoWidget->updateDiveInfo(divenr);
-	divePictureModel->updateDivePictures(divenr);
 }
 
 void MainWindow::on_actionNew_triggered()

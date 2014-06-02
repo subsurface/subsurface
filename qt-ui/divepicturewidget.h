@@ -6,7 +6,7 @@
 #include <QListView>
 #include <QThread>
 
-class DivePictureModel : QAbstractTableModel {
+class DivePictureModel : public QAbstractTableModel {
 Q_OBJECT
 public:
 	DivePictureModel(QObject *parent);
