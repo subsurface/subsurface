@@ -2272,6 +2272,10 @@ struct picture* dive_add_picture(struct dive *d, char *picture)
 
 uint dive_get_picture_count(struct dive *d)
 {
+	uint i = 0;
+	FOR_EACH_PICTURE( d )
+		i++;
+	return i;
 }
 
 void dive_remove_picture(struct dive *d, char *picture)

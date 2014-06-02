@@ -289,6 +289,9 @@ struct picture {
 	struct picture *next;
 };
 
+#define FOR_EACH_PICTURE( DIVE ) \
+	for(struct picture *picture = DIVE->picture_list; picture; picture = picture->next)
+
 extern struct picture *dive_add_picture(struct dive *d, char *picture);
 extern void dive_remove_picture(struct dive *d, char *picture);
 extern uint dive_get_picture_count(struct dive *d);
