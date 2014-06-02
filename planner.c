@@ -632,6 +632,22 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		}
 		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gasname(&cyl->gasmix), warning);
 	}
+	dp = diveplan->dp;
+	while (dp) {
+		if (dp->time != 0) {
+			int pO2 = depth_to_atm(dp->depth, dive) * dp->gasmix.o2.permille;
+			if (pO2 > 1600) {
+				const char *depth_unit;
+				int decimals;
+				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
+				len = strlen(buffer);
+				snprintf(buffer + len, sizeof(buffer) - len,
+					 translate("gettextFromC", "Warning: high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), depth_value, decimals, depth_unit);
+			}
+		}
+		dp = dp->next;
+	}
 	dive->notes = strdup(buffer);
 }
 
