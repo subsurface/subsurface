@@ -461,8 +461,8 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		if (cyl != entry->cylinderindex) {
 			cyl = entry->cylinderindex;
 			if (!seen_cyl[cyl]) {
-				plot_pressure_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
-				plot_gas_value(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
+				plotPressureValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
+				plotGasValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
 					       dive->cylinder[cyl].gasmix);
 				seen_cyl[cyl] = true;
 			}
@@ -473,12 +473,12 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			plot_pressure_value(last_pressure[cyl], last_time[cyl], Qt::AlignLeft | Qt::AlignTop);
+			plotPressureValue(last_pressure[cyl], last_time[cyl], Qt::AlignLeft | Qt::AlignTop);
 		}
 	}
 }
 
-void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags)
+void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags)
 {
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
@@ -490,7 +490,7 @@ void DiveGasPressureItem::plot_pressure_value(int mbar, int sec, QFlags<Qt::Alig
 	texts.push_back(text);
 }
 
-void DiveGasPressureItem::plot_gas_value(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, struct gasmix gasmix)
+void DiveGasPressureItem::plotGasValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, struct gasmix gasmix)
 {
 	QString gas = gasToStr(gasmix);
 	DiveTextItem *text = new DiveTextItem(this);
