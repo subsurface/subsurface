@@ -67,11 +67,11 @@ void DivePlannerPointsModel::createSimpleDive()
 		// let's use the gas from the first cylinder
 		gas = stagingDive->cylinder[0].gasmix;
 
-	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, gas, 0, true);
-	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, gas, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, &gas, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, &gas, 0, true);
 	if (!isPlanner()) {
-		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, gas, 0, true);
-		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, gas, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, &gas, 0, true);
+		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, &gas, 0, true);
 	}
 }
 
@@ -92,7 +92,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (s.time.seconds == 0)
 			continue;
 		get_gas_from_events(&backupDive.dc, lasttime, &gas);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, gas, 0, true);
+		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
 		lasttime = s.time.seconds;
 	}
 }
@@ -548,9 +548,15 @@ int DivePlannerPointsModel::lastEnteredPoint()
 	return -1;
 }
 
-int DivePlannerPointsModel::addStop(int milimeters, int seconds, struct gasmix gas, int ccpoint, bool entered, bool usePrevious)
+int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in, int ccpoint, bool entered)
 {
 	struct gasmix air = { 0 };
+	struct gasmix gas = { 0 };
+	bool usePrevious = false;
+	if (gas_in)
+		gas = *gas_in;
+	else
+		usePrevious = true;
 	if (recalcQ())
 		removeDeco();
 
