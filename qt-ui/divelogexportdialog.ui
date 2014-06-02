@@ -48,7 +48,7 @@
     <widget class="QGroupBox" name="exportSelection">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>260</x>
        <y>20</y>
        <width>171</width>
        <height>114</height>
@@ -230,6 +230,26 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
+    <widget class="Line" name="line_3">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>60</y>
+       <width>20</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <zorder>exportSelection</zorder>
+    <zorder>exportFormat</zorder>
+    <zorder>description</zorder>
+    <zorder>line</zorder>
+    <zorder>line_3</zorder>
+    <zorder>exportAll</zorder>
+    <zorder>exportSelected</zorder>
    </widget>
    <widget class="QWidget" name="HTML_tab">
     <attribute name="title">
@@ -248,7 +268,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>Advanced Options</string>
+      <string>Style Options</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -297,6 +317,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="fontSizeSelection">
+         <property name="currentIndex">
+          <number>3</number>
+         </property>
          <item>
           <property name="text">
            <string>8</string>
@@ -385,7 +408,7 @@
      <widget class="Line" name="line_2">
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>210</x>
         <y>40</y>
         <width>20</width>
         <height>141</height>
@@ -395,16 +418,49 @@
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QWidget" name="layoutWidget4">
+     <widget class="QWidget" name="layoutWidget5">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>201</width>
+        <width>191</width>
         <height>80</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="exportOptions">
+      <layout class="QVBoxLayout" name="additionalOptions">
+       <item>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="text">
+          <string>Order dives from 0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_2">
+         <property name="text">
+          <string>Minimum Javascript</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_3">
+         <property name="text">
+          <string>Dive List only</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>50</y>
+        <width>132</width>
+        <height>52</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QRadioButton" name="exportSelectedDives">
          <property name="minimumSize">
@@ -433,44 +489,11 @@
           </size>
          </property>
          <property name="text">
-          <string>All</string>
+          <string>All Dives</string>
          </property>
          <attribute name="buttonGroup">
           <string notr="true">buttonGroup</string>
          </attribute>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget5">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>50</y>
-        <width>191</width>
-        <height>80</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="additionalOptions">
-       <item>
-        <widget class="QCheckBox" name="checkBox">
-         <property name="text">
-          <string>Dives Starting from 0</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkBox_2">
-         <property name="text">
-          <string>Minimum Javascript</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkBox_3">
-         <property name="text">
-          <string>Dive List only</string>
-         </property>
         </widget>
        </item>
       </layout>
