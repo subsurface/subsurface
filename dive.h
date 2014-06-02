@@ -108,14 +108,11 @@ extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
 extern struct gasmix *get_gasmix_from_event(struct event *ev);
 
-static inline bool is_air(int o2, int he)
-{
-	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
-}
-
 static inline bool gasmix_is_air(const struct gasmix *gasmix)
 {
-	return is_air(gasmix->o2.permille, gasmix->he.permille);
+	int o2 = gasmix->o2.permille;
+	int he = gasmix->he.permille;
+	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
 /* in the planner we use a null gasmix to indicate that we keep using the gas as before
@@ -139,6 +136,9 @@ static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit) {
 	depth.mm = po2_limit.mbar * 1000 / get_o2(mix) * 10 - 10000;
 	return depth;
 }
+
+void get_gas_string(const struct gasmix *gasmix, char *text, int len);
+const char *gasname(const struct gasmix *gasmix);
 
 struct sample {
 	duration_t time;

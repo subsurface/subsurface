@@ -337,7 +337,6 @@ char *get_gaslist(struct dive *dive)
 {
 	int idx, offset = 0;
 	static char buf[MAXBUF];
-	int o2, he;
 
 	buf[0] = '\0';
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
@@ -345,20 +344,11 @@ char *get_gaslist(struct dive *dive)
 		if (!is_gas_used(dive, idx))
 			continue;
 		cyl = &dive->cylinder[idx];
-		o2 = get_o2(&cyl->gasmix);
-		he = get_he(&cyl->gasmix);
 		if (offset > 0) {
 			strncpy(buf + offset, "\n", MAXBUF - offset);
 			offset = strlen(buf);
 		}
-		if (is_air(o2, he))
-			strncpy(buf + offset, translate("gettextFromC", "air"), MAXBUF - offset);
-		else if (he == 0)
-			snprintf(buf + offset, MAXBUF - offset,
-				 translate("gettextFromC", "EAN%d"), (o2 + 5) / 10);
-		else
-			snprintf(buf + offset, MAXBUF - offset,
-				 "%d/%d", (o2 + 5) / 10, (he + 5) / 10);
+		strncpy(buf + offset, gasname(&cyl->gasmix), MAXBUF - offset);
 		offset = strlen(buf);
 	}
 	if (*buf == '\0')

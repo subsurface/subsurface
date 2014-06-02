@@ -93,24 +93,6 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	return -1;
 }
 
-static void get_gas_string(const struct gasmix *gasmix, char *text, int len)
-{
-	if (gasmix_is_air(gasmix))
-		snprintf(text, len, "%s", translate("gettextFromC", "air"));
-	else if (get_he(gasmix) == 0)
-		snprintf(text, len, translate("gettextFromC", "EAN%d"), (get_o2(gasmix) + 5) / 10);
-	else
-		snprintf(text, len, "(%d/%d)", (get_o2(gasmix) + 5) / 10, (get_he(gasmix) + 5) / 10);
-}
-
-/* Returns a static char buffer - only good for immediate use by printf etc */
-static const char *gasname(const struct gasmix *gasmix)
-{
-	static char gas[64];
-	get_gas_string(gasmix, gas, sizeof(gas));
-	return gas;
-}
-
 double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
 {
 	int j;
