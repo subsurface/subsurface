@@ -73,6 +73,10 @@ slots:
 	void setDecoSac(int sac);
 	void setStartTime(const QTime &t);
 	void setLastStop6m(bool value);
+	void setVerbatim(bool value);
+	void setDisplayRuntime(bool value);
+	void setDisplayDuration(bool value);
+	void setDisplayTransitions(bool value);
 	void createPlan();
 	void remove(const QModelIndex &index);
 	void cancelPlan();

@@ -62,87 +62,7 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ATMPressure"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Bottom SAC</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>GFHigh</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>SAC on DECO Stop</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLineEdit" name="bottomSAC"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="decoStopSAC"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>GFLow</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QSpinBox" name="gflow">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>150</number>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QSpinBox" name="gfhigh">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>150</number>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QCheckBox" name="lastStop">
-         <property name="text">
-          <string>Last Stop at 6m</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="TableView" name="cylinderTableWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>50</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
+       <item row="10" column="0" colspan="2">
         <widget class="TableView" name="tableWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -159,14 +79,33 @@
         </widget>
        </item>
        <item row="9" column="0" colspan="2">
-        <widget class="QDialogButtonBox" name="buttonBox">
-         <property name="standardButtons">
-          <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>
+        <widget class="TableView" name="cylinderTableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QTimeEdit" name="startTime"/>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="decoStopSAC"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QSpinBox" name="gflow">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>150</number>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -175,10 +114,111 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>GFLow</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTimeEdit" name="startTime"/>
+       </item>
+       <item row="11" column="0" colspan="2">
+        <widget class="QDialogButtonBox" name="buttonBox">
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QCheckBox" name="lastStop">
+         <property name="text">
+          <string>Last Stop at 6m</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLineEdit" name="bottomSAC"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="gfhigh">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>150</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="verbatim_plan">
+         <property name="text">
+          <string>verbatim diveplan</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>SAC on DECO Stop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Bottom SAC</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>GFHigh</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>ATM Pressure</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="ATMPressure"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QCheckBox" name="display_duration">
+         <property name="toolTip">
+          <string>In dive plan, show duration (relative time) of stops</string>
+         </property>
+         <property name="text">
+          <string>display stop duration</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QCheckBox" name="display_runtime">
+         <property name="toolTip">
+          <string>In dive plan, show runtime (absolute time) of stops</string>
+         </property>
+         <property name="text">
+          <string>display runtime</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QCheckBox" name="display_transitions">
+         <property name="toolTip">
+          <string>In diveplan, list transitions or treat them as implicit</string>
+         </property>
+         <property name="text">
+          <string>display transitions</string>
          </property>
         </widget>
        </item>

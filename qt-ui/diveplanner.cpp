@@ -273,6 +273,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
+	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
+	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
+	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
+	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
 
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
@@ -502,6 +506,30 @@ void DivePlannerPointsModel::setSurfacePressure(int pressure)
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
 	set_last_stop(value);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setVerbatim(bool value)
+{
+	set_verbatim(value);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setDisplayRuntime(bool value)
+{
+	set_display_runtime(value);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setDisplayDuration(bool value)
+{
+	set_display_duration(value);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setDisplayTransitions(bool value)
+{
+	set_display_transitions(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
