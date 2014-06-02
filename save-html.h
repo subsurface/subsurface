@@ -13,9 +13,7 @@ void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, c
 void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
-
-char *replace_char(char *str, char replace, char *replace_by);
-char *quote(char *string);
+void put_HTML_quoted(struct membuffer *b, const char *text);
 
 void export_HTML(const char *file_name, const bool selected_only);
 

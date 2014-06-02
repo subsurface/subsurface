@@ -96,7 +96,7 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 			return;
 		}
 
-		room = len+1;
+		room = len + 1;
 	}
 }
 
@@ -174,5 +174,57 @@ void put_degrees(struct membuffer *b, degrees_t value, const char *pre, const ch
 		udeg = -udeg;
 		sign = "-";
 	}
-	put_format(b,"%s%s%u.%06u%s", pre, sign, FRACTION(udeg, 1000000), post);
+	put_format(b, "%s%s%u.%06u%s", pre, sign, FRACTION(udeg, 1000000), post);
+}
+
+void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_html)
+{
+	const char *p = text;
+
+	for (;;) {
+		const char *escape;
+
+		switch (*p++) {
+		default:
+			continue;
+		case 0:
+			escape = NULL;
+			break;
+		case 1 ... 8:
+		case 11:
+		case 12:
+		case 14 ... 31:
+			escape = "?";
+			break;
+		case '<':
+			escape = "&lt;";
+			break;
+		case '>':
+			escape = "&gt;";
+			break;
+		case '&':
+			escape = "&amp;";
+			break;
+		case '\'':
+			if (!is_attribute)
+				continue;
+			escape = "&apos;";
+			break;
+		case '\"':
+			if (!is_attribute)
+				continue;
+			escape = "&quot;";
+			break;
+		case '\n':
+			if (!is_html)
+				continue;
+			else
+				escape = "<br>";
+		}
+		put_bytes(b, text, (p - text - 1));
+		if (!escape)
+			break;
+		put_string(b, escape);
+		text = p;
+	}
 }

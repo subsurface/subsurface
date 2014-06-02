@@ -38,7 +38,9 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_depth(b, dive->maxdepth, translate("gettextFromC", "<p>Max Depth: "), translate("gettextFromC", " m</p>"));
 		put_HTML_airtemp(b, dive, translate("gettextFromC", "<p>Air Temp: "), "</p>");
 		put_HTML_watertemp(b, dive, translate("gettextFromC", "<p>Water Temp : "), "</p>");
-		put_format(b, "<p>Location : <b>%s</b></p>", quote(dive->location));
+		put_string(b, "<p>Location : <b>");
+		put_HTML_quoted(b, dive->location);
+		put_string(b, "</b></p>");
 		put_HTML_notes(b, dive, translate("gettextFromC", "<p> Notes"), " </p>");
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
 		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", dive_no, dive_no, dive_no);

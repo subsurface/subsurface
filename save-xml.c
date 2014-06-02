@@ -23,49 +23,8 @@
  */
 static void quote(struct membuffer *b, const char *text, int is_attribute)
 {
-	const char *p = text;
-
-	for (;;) {
-		const char *escape;
-
-		switch (*p++) {
-		default:
-			continue;
-		case 0:
-			escape = NULL;
-			break;
-		case 1 ... 8:
-		case 11:
-		case 12:
-		case 14 ... 31:
-			escape = "?";
-			break;
-		case '<':
-			escape = "&lt;";
-			break;
-		case '>':
-			escape = "&gt;";
-			break;
-		case '&':
-			escape = "&amp;";
-			break;
-		case '\'':
-			if (!is_attribute)
-				continue;
-			escape = "&apos;";
-			break;
-		case '\"':
-			if (!is_attribute)
-				continue;
-			escape = "&quot;";
-			break;
-		}
-		put_bytes(b, text, (p - text - 1));
-		if (!escape)
-			break;
-		put_string(b, escape);
-		text = p;
-	}
+	int is_html = 0;
+	put_quoted(b, text, is_attribute, is_html);
 }
 
 static void show_utf8(struct membuffer *b, const char *text, const char *pre, const char *post, int is_attribute)

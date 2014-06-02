@@ -8,65 +8,18 @@ void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, cons
 	put_format(b, "%s%04u-%02u-%02u%s", pre, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, post);
 }
 
-char *replace_char(char *str, char replace, char *replace_by)
+void put_HTML_quoted(struct membuffer *b, const char *text)
 {
-	/*
-		this function can't replace a character with a substring
-		where the substring contains the character, infinite loop.
-	*/
-
-	if (!str)
-		return 0;
-
-	int i = 0, char_count = 0, new_size;
-
-	while (str[i] != '\0') {
-		if (str[i] == replace)
-			char_count++;
-		i++;
-	}
-
-	new_size = strlen(str) + char_count * strlen(replace_by) + 1;
-	char *result = malloc(new_size);
-	char *temp = strdup(str);
-	char *p0, *p1;
-	if (!result || !temp)
-		return 0;
-	result[0] = '\0';
-	p0 = temp;
-	p1 = strchr(temp, replace);
-	while (p1) {
-		*p1 = '\0';
-		strcat(result, p0);
-		strcat(result, replace_by);
-		p0 = p1 + 1;
-		p1 = strchr(p0, replace);
-	}
-	strcat(result, p0); /*concat the rest of the string*/
-	free(temp);
-	return result;
-}
-
-char *quote(char *string)
-{
-	char *less_than_removed = replace_char(string, '<', "&lt;");
-	char *greater_than_removed = replace_char(less_than_removed, '>', "&gt;");
-	char *new_line_removed = replace_char(greater_than_removed, '\n', "<br>");
-	char *double_quotes_removed = replace_char(new_line_removed, '"', "&quot;");
-	char *single_quotes_removed = replace_char(double_quotes_removed, '\'', "&#39;");
-	free(new_line_removed);
-	free(less_than_removed);
-	free(greater_than_removed);
-	free(double_quotes_removed);
-	return single_quotes_removed;
+	int is_html = 1, is_attribute = 1;
+	put_quoted(b, text, is_attribute, is_html);
 }
 
 void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	if (dive->notes) {
-		char *notes = quote(dive->notes);
-		put_format(b, "%s%s%s", pre, notes, post);
-		free(notes);
+		put_string(b, pre);
+		put_HTML_quoted(b, dive->notes);
+		put_string(b, post);
 	}
 }
 
@@ -113,7 +66,9 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 		put_string(b, "\"--\",");
 
 	while (tag) {
-		put_format(b, "\"%s\",", tag->tag->name);
+		put_string(b, "\"");
+		put_HTML_quoted(b, tag->tag->name);
+		put_string(b, "\",");
 		tag = tag->next;
 	}
 	put_string(b, "]");
@@ -124,7 +79,9 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 {
 	if (!value)
 		value = "--";
-	put_format(b, "\"%s\":\"%s\",", att_name, value);
+	put_format(b, "\"%s\":\"", att_name);
+	put_HTML_quoted(b, value);
+	put_string(b, "\",");
 }
 
 void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
