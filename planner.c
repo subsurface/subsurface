@@ -103,6 +103,14 @@ static void get_gas_string(const struct gasmix *gasmix, char *text, int len)
 		snprintf(text, len, "(%d/%d)", (get_o2(gasmix) + 5) / 10, (get_he(gasmix) + 5) / 10);
 }
 
+/* Returns a static char buffer - only good for immediate use by printf etc */
+static const char *gasname(const struct gasmix *gasmix)
+{
+	static char gas[64];
+	get_gas_string(gasmix, gas, sizeof(gas));
+	return gas;
+}
+
 double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
 {
 	int j;
@@ -143,9 +151,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		t1 = sample->time.seconds;
 		get_gas_from_events(&dive->dc, t0, &gas);
 		if ((gasidx = get_gasidx(dive, &gas)) == -1) {
-			char gas_string[50];
-			get_gas_string(&gas, gas_string, sizeof(gas_string));
-			report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
+			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 			gasidx = 0;
 		}
 		if (i > 0)
@@ -200,9 +206,7 @@ static int verify_gas_exists(struct dive *dive, struct gasmix mix_in)
 		if (gasmix_distance(&cyl->gasmix, &mix_in) < 200)
 			return i;
 	}
-	char gas[50];
-	get_gas_string(&mix_in, gas, sizeof(gas));
-	fprintf(stderr, "this gas %s should have been on the cylinder list\nThings will fail now\n", gas);
+	fprintf(stderr, "this gas %s should have been on the cylinder list\nThings will fail now\n", gasname(&mix_in));
 	return -1;
 }
 
@@ -439,10 +443,11 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 	}
 	*gaschangenr = nr;
 #if DEBUG_PLAN & 16
-	for (nr = 0; nr < *gaschangenr; nr++)
-		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%d/%d)\n", nr, gaschanges[nr].depth / 1000.0,
-		       gaschanges[nr].gasidx, (get_o2(&dive->cylinder[gaschanges[nr].gasidx].gasmix) + 5) / 10,
-		       (get_he(&dive->cylinder[gaschanges[nr].gasidx].gasmix) + 5) / 10);
+	for (nr = 0; nr < *gaschangenr; nr++) {
+		int idx = gaschanges[nr].gasidx;
+		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
+		       idx, gasname(&dive->cylinder[idx].gasmix));
+	}
 #endif
 	return gaschanges;
 }
@@ -521,7 +526,6 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	do {
 		struct gasmix gasmix, newgasmix;
 		const char *depth_unit;
-		char gas[64];
 		double depthvalue;
 		int decimals;
 		struct divedatapoint *nextdp;
@@ -546,7 +550,6 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		    dp->depth != lastdepth &&
 		    nextdp->depth != dp->depth)
 			continue;
-		get_gas_string(&gasmix, gas, sizeof(gas));
 		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth)
@@ -554,18 +557,16 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				 decimals, depthvalue, depth_unit,
 				 FRACTION(dp->time - lasttime, 60),
 				 FRACTION(dp->time, 60),
-				 gas);
+				 gasname(&gasmix));
 		else
 			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
 				 decimals, depthvalue, depth_unit,
 				 FRACTION(dp->time - lasttime, 60),
 				 FRACTION(dp->time, 60),
-				 gas);
+				 gasname(&gasmix));
 		if (nextdp && gasmix_distance(&gasmix, &newgasmix)) {
 			// gas switch at this waypoint
-			get_gas_string(&newgasmix, gas, sizeof(gas));
-			len = strlen(buffer);
-			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gas);
+			snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gasname(&newgasmix));
 			gasmix = newgasmix;
 		}
 		lasttime = dp->time;
@@ -576,13 +577,11 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
-		char gas[64];
 		const char *warning = "";
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cylinder_none(cyl))
 			break;
 		len = strlen(buffer);
-		get_gas_string(&cyl->gasmix, gas, sizeof(gas));
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
 			/* Warn if the plan uses more gas than is available in a cylinder
@@ -591,7 +590,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			if (cyl->end.mbar < 10000)
 				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
 		}
-		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gas, warning);
+		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gasname(&cyl->gasmix), warning);
 	}
 	dive->notes = strdup(buffer);
 }
@@ -651,9 +650,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	get_gas_from_events(&dive->dc, sample->time.seconds, &gas);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
-		char gas_string[50];
-		get_gas_string(&gas, gas_string, sizeof(gas_string));
-		report_error(translate("gettextFromC", "Can't find gas %s"), gas_string);
+		report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 		current_cylinder = 0;
 	}
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
@@ -675,7 +672,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 
 #if DEBUG_PLAN & 4
-	printf("gas %d/%d\n", gas.o2.permille, gas.he.permille);
+	printf("gas %s\n", gasname(&gas));
 	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
 #endif
 
