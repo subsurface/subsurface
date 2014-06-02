@@ -243,13 +243,6 @@
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <zorder>exportSelection</zorder>
-    <zorder>exportFormat</zorder>
-    <zorder>description</zorder>
-    <zorder>line</zorder>
-    <zorder>line_3</zorder>
-    <zorder>exportAll</zorder>
-    <zorder>exportSelected</zorder>
    </widget>
    <widget class="QWidget" name="HTML_tab">
     <attribute name="title">
@@ -378,6 +371,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="themeSelection">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
          <item>
           <property name="text">
            <string>Light</string>
@@ -451,7 +447,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>250</x>

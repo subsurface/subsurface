@@ -31,6 +31,19 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui->fontSelection->addItem("Georgia", "Georgia, serif");
 	ui->fontSelection->addItem("Courier", "Courier, monospace");
 	ui->fontSelection->addItem("Verdana", "Verdana, Geneva, sans-serif");
+
+	QSettings settings;
+	settings.beginGroup("HTML");
+	if (settings.contains("fontSelection")) {
+		ui->fontSelection->setCurrentIndex(settings.value("fontSelection").toInt());
+	}
+	if (settings.contains("fontSizeSelection")) {
+		ui->fontSizeSelection->setCurrentIndex(settings.value("fontSizeSelection").toInt());
+	}
+	if (settings.contains("themeSelection")) {
+		ui->themeSelection->setCurrentIndex(settings.value("themeSelection").toInt());
+	}
+	settings.endGroup();
 }
 
 DiveLogExportDialog::~DiveLogExportDialog()
@@ -102,6 +115,13 @@ void DiveLogExportDialog::exportHtmlInit(QString filename)
 
 void DiveLogExportDialog::exportHTMLsettings(QString filename)
 {
+	QSettings settings;
+	settings.beginGroup("HTML");
+	settings.setValue("fontSelection", ui->fontSelection->currentIndex());
+	settings.setValue("fontSizeSelection", ui->fontSizeSelection->currentIndex());
+	settings.setValue("themeSelection", ui->themeSelection->currentIndex());
+	settings.endGroup();
+
 	QString fontSize = ui->fontSizeSelection->currentText();
 	QString fontFamily = ui->fontSelection->itemData(ui->fontSelection->currentIndex()).toString();
 	QFile file(filename);
