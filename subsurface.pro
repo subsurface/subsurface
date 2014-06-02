@@ -1,6 +1,6 @@
 include(subsurface-configure.pri)
 
-QT = core gui network svg
+QT = core gui network svg concurrent
 lessThan(QT_MAJOR_VERSION, 5) {
 	QT += webkit
 } else {
