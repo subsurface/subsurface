@@ -1,5 +1,8 @@
 #include "qthelper.h"
 #include "qt-gui.h"
+#include "dive.h"
+#include <exif.h>
+#include "file.h"
 #include <QRegExp>
 #include <QDir>
 
@@ -259,4 +262,21 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 	}
 
 	return xslt;
+}
+
+extern "C" void picture_load_exif_data(struct picture *p)
+{
+	EXIFInfo exif;
+	memblock mem;
+
+	if (readfile(p->filename, &mem) <= 0)
+		goto picture_load_exit;
+	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
+		goto picture_load_exit;
+	p->timestamp = exif.epoch();
+	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
+	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
+	picture_load_exit:
+		free(mem.buffer);
+		return;
 }

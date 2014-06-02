@@ -129,6 +129,8 @@ public:
 	{
 		clear();
 	}
+
+	time_t epoch();
 };
 
 // Parse was successful

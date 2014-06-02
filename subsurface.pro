@@ -58,7 +58,7 @@ HEADERS = \
 	qt-ui/starwidget.h \
 	qt-ui/subsurfacewebservices.h \
 	qt-ui/tableview.h \
-	qt-ui/exif.h \
+	exif.h \
 	sha1.h \
 	statistics.h \
 	subsurfacestartup.h \
@@ -131,7 +131,7 @@ SOURCES =  \
 	qt-ui/starwidget.cpp \
 	qt-ui/subsurfacewebservices.cpp \
 	qt-ui/tableview.cpp \
-	qt-ui/exif.cpp \
+	exif.cpp \
 	save-git.c \
 	save-xml.c \
 	sha1.c \

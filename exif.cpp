@@ -30,6 +30,7 @@
      EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <algorithm>
+#include "dive.h"
 #include "exif.h"
 
 using std::string;
@@ -565,4 +566,22 @@ void EXIFInfo::clear()
 	GeoLocation.LonComponents.minutes = 0;
 	GeoLocation.LonComponents.seconds = 0;
 	GeoLocation.LonComponents.direction = 0;
+}
+
+time_t EXIFInfo::epoch()
+{
+	struct tm tm;
+	int year, month, day, hour, min, sec;
+
+	if (DateTimeOriginal.size())
+		sscanf(DateTimeOriginal.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
+	else
+		sscanf(DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
+	tm.tm_year = year;
+	tm.tm_mon = month - 1;
+	tm.tm_mday = day;
+	tm.tm_hour = hour;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	return (utc_mktime(&tm));
 }

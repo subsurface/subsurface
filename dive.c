@@ -2260,14 +2260,26 @@ int average_depth(struct diveplan *dive)
 	return integral / last_time;
 }
 
-void picture_load_exif_data(struct picture *p)
+struct picture *alloc_picture()
 {
-
+	struct picture *pic = malloc(sizeof(struct picture));
+	if (!pic)
+		exit(1);
+	memset(pic, 0, sizeof(struct picture));
+	return pic;
 }
 
-struct picture* dive_add_picture(struct dive *d, char *picture)
+void dive_add_picture(struct dive *d, struct picture *picture)
 {
-
+	if (d->picture_list == NULL) {
+		d->picture_list = picture;
+		return;
+	}
+	struct picture *last = d->picture_list;
+	while( last->next )
+		last = last->next;
+	last->next = picture;
+	return;
 }
 
 uint dive_get_picture_count(struct dive *d)
@@ -2278,7 +2290,15 @@ uint dive_get_picture_count(struct dive *d)
 	return i;
 }
 
-void dive_remove_picture(struct dive *d, char *picture)
+void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
+{
+	if (!d->latitude.udeg && pic->latitude.udeg) {
+		d->latitude = pic->latitude;
+		d->longitude = pic->longitude;
+	}
+}
+
+void dive_remove_picture(struct dive *d, struct picture *p)
 {
 
 }

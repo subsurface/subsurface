@@ -247,29 +247,10 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	free(mem.buffer);
 	if (retval != PARSE_EXIF_SUCCESS)
 		return;
-	dcImageEpoch = epochFromExiv(&exiv);
+	dcImageEpoch = exiv.epoch();
 	dcDateTime.setTime_t(dcImageEpoch);
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
-}
-
-//TODO: This should be moved to C-Code.
-time_t ShiftImageTimesDialog::epochFromExiv(EXIFInfo *exif)
-{
-	struct tm tm;
-	int year, month, day, hour, min, sec;
-
-	if (strlen(exif->DateTimeOriginal.c_str()))
-		sscanf(exif->DateTimeOriginal.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
-	else
-		sscanf(exif->DateTime.c_str(), "%d:%d:%d %d:%d:%d", &year, &month, &day, &hour, &min, &sec);
-	tm.tm_year = year;
-	tm.tm_mon = month - 1;
-	tm.tm_mday = day;
-	tm.tm_hour = hour;
-	tm.tm_min = min;
-	tm.tm_sec = sec;
-	return (utc_mktime(&tm));
 }
 
 void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)

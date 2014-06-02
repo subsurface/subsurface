@@ -106,6 +106,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	#dirk ported some core functionality to c++.
 	qthelper.cpp
 	divecomputer.cpp
+	exif.cpp
 )
 
 #the interface, in C++
@@ -132,7 +133,6 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/starwidget.cpp
 	qt-ui/subsurfacewebservices.cpp
 	qt-ui/tableview.cpp
-	qt-ui/exif.cpp
 	qt-ui/divelogimportdialog.cpp
 	qt-ui/tagwidget.cpp
 	qt-ui/groupedlineedit.cpp

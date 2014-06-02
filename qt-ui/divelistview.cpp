@@ -764,63 +764,33 @@ void DiveListView::shiftTimes()
 
 void DiveListView::loadImages()
 {
-	struct memblock mem;
-	EXIFInfo exif;
-	int retval;
-	time_t imagetime;
-	struct divecomputer *dc;
-	time_t when;
-	int duration_s;
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image Files"), lastUsedImageDir(), tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
-
 	if (fileNames.isEmpty())
 		return;
 
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
-
 	ShiftImageTimesDialog shiftDialog(this);
 	shiftDialog.setOffset(lastImageTimeOffset());
 	shiftDialog.exec();
 	updateLastImageTimeOffset(shiftDialog.amount());
 
-	for (int i = 0; i < fileNames.size(); ++i) {
-		if (readfile(fileNames.at(i).toUtf8().data(), &mem) <= 0)
-			continue;
-		//TODO: This inner code should be ported to C-Code.
-		retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
-		free(mem.buffer);
-		if (retval != PARSE_EXIF_SUCCESS)
-			continue;
-		imagetime = shiftDialog.epochFromExiv(&exif);
-		if (!imagetime)
-			continue;
-		imagetime += shiftDialog.amount(); // TODO: this should be cached and passed to the C-function
+	Q_FOREACH(const QString& fileName, fileNames) {
+		picture *p = alloc_picture();
+		p->filename = qstrdup(fileName.toUtf8().data());
+		picture_load_exif_data(p);
+
+		if (p->timestamp)
+			p->timestamp += shiftDialog.amount(); // TODO: this should be cached and passed to the C-function
 		int j = 0;
 		struct dive *dive;
 		for_each_dive (j, dive) {
 			if (!dive->selected)
 				continue;
-			for_each_dc (dive, dc) {
-				when = dc->when ? dc->when : dive->when;
-				duration_s = dc->duration.seconds ? dc->duration.seconds : dive->duration.seconds;
-				if (when - 3600 < imagetime && when + duration_s + 3600 > imagetime) {
-					if (when > imagetime) {
-						// Before dive
-						add_event(dc, 0, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					} else if (when + duration_s < imagetime) {
-						// After dive
-						add_event(dc, duration_s, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					} else {
-						add_event(dc, imagetime - when, 123, 0, 0, fileNames.at(i).toUtf8().data());
-					}
-					if (!dive->latitude.udeg && !IS_FP_SAME(exif.GeoLocation.Latitude, 0.0)) {
-						dive->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
-						dive->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
-					}
-				}
-			}
+			dive_add_picture(dive, p);
+			dive_set_geodata_from_picture(dive, p);
 		}
 	}
+
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
 	MainWindow::instance()->graphics()->replot();

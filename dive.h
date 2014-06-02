@@ -286,16 +286,21 @@ struct dive {
 struct picture {
 	char *filename;
 	time_t timestamp;
+	degrees_t latitude;
+	degrees_t longitude;
 	struct picture *next;
 };
 
 #define FOR_EACH_PICTURE( DIVE ) \
 	for(struct picture *picture = DIVE->picture_list; picture; picture = picture->next)
 
-extern struct picture *dive_add_picture(struct dive *d, char *picture);
-extern void dive_remove_picture(struct dive *d, char *picture);
+
+extern struct picture *alloc_picture();
+extern void dive_add_picture(struct dive *d, struct picture *pic);
+extern void dive_remove_picture(struct dive *d, struct picture *pic);
 extern uint dive_get_picture_count(struct dive *d);
 extern void picture_load_exif_data(struct picture *p);
+extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 
 static inline int dive_has_gps_location(struct dive *dive)
