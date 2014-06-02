@@ -616,7 +616,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 {
 	struct dive *dive;
 	struct sample *sample;
-	int o2, he, po2;
+	int po2;
 	int transitiontime, gi;
 	int current_cylinder;
 	unsigned int stopidx;
@@ -649,8 +649,6 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	/* we start with gas 0, then check if that was changed */
 	gas = dive->cylinder[0].gasmix;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &gas);
-	o2 = get_o2(&gas);
-	he = get_he(&gas);
 	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
 	if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
 		char gas_string[50];
@@ -677,7 +675,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	tissue_tolerance = tissue_at_end(dive, cached_datap);
 
 #if DEBUG_PLAN & 4
-	printf("gas %d/%d\n", o2, he);
+	printf("gas %d/%d\n", gas.o2.permille, gas.he.permille);
 	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
 #endif
 
@@ -705,7 +703,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
-			       (o2 + 5) / 10, (he + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
+			       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
 #endif
 
 	}
@@ -743,7 +741,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-				       (o2 + 5) / 10, (he + 5) / 10, gaschanges[gi].depth / 1000.0);
+				       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 			gi--;
 		}
