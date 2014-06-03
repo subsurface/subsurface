@@ -2282,9 +2282,9 @@ void dive_add_picture(struct dive *d, struct picture *picture)
 	return;
 }
 
-uint dive_get_picture_count(struct dive *d)
+unsigned int dive_get_picture_count(struct dive *d)
 {
-	uint i = 0;
+	unsigned int i = 0;
 	FOR_EACH_PICTURE( d )
 		i++;
 	return i;

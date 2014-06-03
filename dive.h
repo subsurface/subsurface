@@ -298,7 +298,7 @@ struct picture {
 extern struct picture *alloc_picture();
 extern void dive_add_picture(struct dive *d, struct picture *pic);
 extern void dive_remove_picture(struct dive *d, struct picture *pic);
-extern uint dive_get_picture_count(struct dive *d);
+extern unsigned int dive_get_picture_count(struct dive *d);
 extern void picture_load_exif_data(struct picture *p);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
