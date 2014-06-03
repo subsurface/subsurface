@@ -291,8 +291,9 @@ struct picture {
 	struct picture *next;
 };
 
-#define FOR_EACH_PICTURE( DIVE ) \
-	for(struct picture *picture = DIVE->picture_list; picture; picture = picture->next)
+#define FOR_EACH_PICTURE(_dive) \
+	if (_dive)              \
+		for (struct picture *picture = (_dive)->picture_list; picture; picture = picture->next)
 
 
 extern struct picture *alloc_picture();
