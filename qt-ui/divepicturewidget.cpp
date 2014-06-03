@@ -1,6 +1,7 @@
 #include "divepicturewidget.h"
 #include <dive.h>
 #include <qtconcurrentmap.h>
+#include <qdir.h>
 
 void DivePictureDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -11,11 +12,11 @@ DivePictureModel::DivePictureModel(QObject *parent): QAbstractTableModel(parent)
 {
 }
 
-typedef QPair<QString, QPixmap> SPixmap;
+typedef QPair<QString, QImage> SPixmap;
 typedef QList<SPixmap> SPixmapList;
 
 SPixmap scaleImages(const QString& s) {
-	QPixmap p = QPixmap(s).scaled(128,128, Qt::KeepAspectRatio);
+	QImage p = QImage(s).scaled(128,128, Qt::KeepAspectRatio);
 	SPixmap ret;
 	ret.first = s;
 	ret.second = p;
@@ -63,8 +64,9 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 
 	QString key = stringPixmapCache.keys().at(index.row());
 	switch(role){
-		case Qt::DisplayRole : ret = key; break;
+		case Qt::ToolTipRole : ret = key; break;
 		case Qt::DecorationRole : ret = stringPixmapCache[key]; break;
+		case Qt::DisplayRole : ret = QFileInfo(key).fileName();
 	}
 	return ret;
 }

@@ -289,8 +289,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>662</width>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -369,8 +369,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>399</width>
-         <height>325</height>
+         <width>662</width>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -679,8 +679,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>267</width>
-         <height>115</height>
+         <width>662</width>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -819,7 +819,11 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="DivePictureWidget" name="photosView"/>
+     <widget class="DivePictureWidget" name="photosView">
+      <property name="viewMode">
+       <enum>QListView::IconMode</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

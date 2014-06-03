@@ -19,7 +19,7 @@ private:
 	// Currently, load the images on the fly
 	// Later, use a thread to load the images
 	// Later, save the thumbnails so we don't need to reopen every time.
-	QHash<QString, QPixmap> stringPixmapCache;
+	QHash<QString, QImage> stringPixmapCache;
 };
 
 class DivePictureDelegate : QStyledItemDelegate {
