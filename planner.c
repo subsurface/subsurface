@@ -561,13 +561,15 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		    dp->depth != lastdepth &&
 		    nextdp->depth != dp->depth)
 			continue;
+		if (dp->time - lasttime < 10 && !(gaschange && dp->next && dp->depth != dp->next->depth))
+			continue;
 		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
 		if (nextdp && gasmix_distance(&gasmix, &newgasmix))
 			gaschange = true;
 		if (plan_verbatim) {
 			if (dp->depth != lastdepth) {
-				if (plan_display_transitions || dp->entered || !dp->next)
+				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != dp->next->depth))
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s<br>"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
@@ -581,7 +583,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 						gasname(&gasmix));
 			}
 		} else {
-			if (dp->depth == lastdepth || plan_display_transitions || dp->entered || !dp->next) {
+			if (dp->depth == lastdepth || plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != dp->next->depth)) {
 				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<tr><td align=right>%3.0f%s</td>"), depthvalue, depth_unit);
 				if (plan_display_runtime)
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  <td align=right>%3dmin</td> "), (dp->time + 30) / 60);
