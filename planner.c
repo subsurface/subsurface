@@ -520,18 +520,18 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		return;
 
 	if (show_disclaimer)
-		disclaimer = translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
+		disclaimer = translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
 				       "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
 				       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-				       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
+				       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b>");
 	len = snprintf(buffer, sizeof(buffer),
-		       translate("gettextFromC", "%s\nSubsurface dive plan\nbased on GFlow = %d and GFhigh = %d\n\ndepth"),
+		       translate("gettextFromC", "%s<br>Subsurface dive plan\nbased on GFlow = %d and GFhigh = %d<br><br>depth"),
 		       disclaimer,  diveplan->gflow, diveplan->gfhigh);
 	if (plan_display_runtime)
 		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", " runtime"));
 	if (plan_display_duration)
-		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", " stop time"));
-	len += snprintf(buffer + len, sizeof(buffer) - len, " gas\n");
+		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  duration"));
+	len += snprintf(buffer + len, sizeof(buffer) - len, " gas<br>");
 	do {
 		struct gasmix gasmix, newgasmix;
 		const char *depth_unit;
@@ -562,28 +562,28 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
 		if (dp->depth != lastdepth) {
-			if (plan_display_transitions)
+			if (plan_display_transitions && plan_verbatim)
 				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
 					 decimals, depthvalue, depth_unit,
 					 FRACTION(dp->time - lasttime, 60),
 					 FRACTION(dp->time, 60),
 					 gasname(&gasmix));
 			else
-				if (dp->entered) {
+				if (dp->entered || plan_display_transitions) {
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
 					if (plan_display_runtime)
 						len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  %3dmin "), (dp->time + 30) / 60);
 					if (plan_display_duration)
 						len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "   %3dmin "), (dp->time - lasttime + 30) / 60);
 					if (gaschange) {
-						len += snprintf(buffer + len, sizeof(buffer) - len, " %s", gasname(&newgasmix));
+						len += snprintf(buffer + len, sizeof(buffer) - len, " <b>%s</b>", gasname(&newgasmix));
 						gaschange = false;
 					}
-					len += snprintf(buffer + len, sizeof(buffer) - len, "\n");
+					len += snprintf(buffer + len, sizeof(buffer) - len, "<br>");
 				}
 		} else {
 			if (plan_verbatim) {
-				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s\n"),
+				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s<br>"),
 					 decimals, depthvalue, depth_unit,
 					 FRACTION(dp->time - lasttime, 60),
 					 FRACTION(dp->time, 60),
@@ -595,16 +595,16 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				if (plan_display_duration)
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "   %3dmin "), (dp->time - lasttime + 30) / 60);
 				if (gaschange) {
-					len += snprintf(buffer + len, sizeof(buffer) - len, " %s", gasname(&newgasmix));
+					len += snprintf(buffer + len, sizeof(buffer) - len, " <b>%s</b>", gasname(&newgasmix));
 					gaschange = false;
 				}
-				len += snprintf(buffer + len, sizeof(buffer) - len, "\n");
+				len += snprintf(buffer + len, sizeof(buffer) - len, "<br>");
 			}
 		}
 		if (nextdp && gasmix_distance(&gasmix, &newgasmix)) {
 			// gas switch at this waypoint
 			if (plan_verbatim)
-				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s\n"), gasname(&newgasmix));
+				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s<br>"), gasname(&newgasmix));
 			else
 				gaschange = true;
 			gasmix = newgasmix;

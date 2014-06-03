@@ -195,7 +195,7 @@
           <string>In dive plan, show duration (relative time) of stops</string>
          </property>
          <property name="text">
-          <string>display stop duration</string>
+          <string>display segment duration</string>
          </property>
         </widget>
        </item>

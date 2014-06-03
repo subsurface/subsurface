@@ -416,7 +416,7 @@ void MainWindow::planCreated()
 
 void MainWindow::setPlanNotes(const char *notes)
 {
-	ui.divePlanOutput->setText(notes);
+	ui.divePlanOutput->setHtml(notes);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
