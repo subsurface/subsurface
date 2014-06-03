@@ -15,7 +15,7 @@
 #include "helpers.h"
 
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
-	ui(new Ui::DiveLogExportDialog)
+							    ui(new Ui::DiveLogExportDialog)
 {
 	ui->setupUi(this);
 	showExplanation();
@@ -83,7 +83,7 @@ void DiveLogExportDialog::exportHtmlInit(QString filename)
 	QString searchPath = getSubsurfaceDataPath("theme");
 
 	if (searchPath == "") {
-		return ;
+		return;
 	}
 
 	QFile *tmpFile;
@@ -179,7 +179,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		break;
 	case 1:
 		filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface"), lastDir,
-							tr("Folders"),0 , QFileDialog::ShowDirsOnly);
+							tr("Folders"), 0, QFileDialog::ShowDirsOnly);
 		if (!filename.isNull() && !filename.isEmpty())
 			exportHtmlInit(filename);
 		break;
