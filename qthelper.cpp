@@ -161,10 +161,13 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	return false;
 }
 
-bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed)
+bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
 {
 	double latitude, longitude;
 	int latudeg, longudeg;
+	bool ignore;
+	bool *parsed = parsed_out ?: &ignore;
+
 
 	/* if we have a master and the dive's gps address is different from it,
 	 * don't change the dive */

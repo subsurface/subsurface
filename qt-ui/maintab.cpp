@@ -33,7 +33,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 {
 	ui.setupUi(this);
 
-	memset(&multiEditEquipmentPlaceholder, 0, sizeof(multiEditEquipmentPlaceholder));
+	memset(&editedDive, 0, sizeof(editedDive));
 
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
@@ -251,13 +251,12 @@ void MainTab::enableEdition(EditMode newEditMode)
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	if (amount_selected == 1)
 		MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
-	// We may be editing one or more dives here. backup everything.
-	notesBackup.clear();
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
-		notesBackup[NULL].notes = ui.notes->toPlainText();
-		notesBackup[NULL].location = ui.location->text();
+		editedDive.location = current_dive->divetrip->location;
+		editedDive.notes = current_dive->divetrip->notes;
+		ui.dateTimeEdit->setEnabled(false);
 		editMode = TRIP;
 	} else {
 		if (amount_selected > 1) {
@@ -265,40 +264,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 		} else {
 			displayMessage(tr("This dive is being edited."));
 		}
-
-		// We may be editing one or more dives here. backup everything.
-		struct dive *mydive;
-		int i;
-		for_each_dive (i, mydive) {
-			if (!mydive->selected)
-				continue;
-
-			notesBackup[mydive].buddy = QString(mydive->buddy);
-			notesBackup[mydive].suit = QString(mydive->suit);
-			notesBackup[mydive].notes = QString(mydive->notes);
-			notesBackup[mydive].divemaster = QString(mydive->divemaster);
-			notesBackup[mydive].location = QString(mydive->location);
-			notesBackup[mydive].rating = mydive->rating;
-			notesBackup[mydive].visibility = mydive->visibility;
-			notesBackup[mydive].latitude = mydive->latitude;
-			notesBackup[mydive].longitude = mydive->longitude;
-			notesBackup[mydive].coordinates = ui.coordinates->text();
-			notesBackup[mydive].airtemp = get_temperature_string(mydive->airtemp, true);
-			notesBackup[mydive].watertemp = get_temperature_string(mydive->watertemp, true);
-			notesBackup[mydive].datetime = QDateTime::fromTime_t(mydive->when).toUTC().toString();
-			char buf[1024];
-			taglist_get_tagstring(mydive->tag_list, buf, 1024);
-			notesBackup[mydive].tags = QString(buf);
-
-			// maybe this is a place for memset?
-			for (int j = 0; j < MAX_CYLINDERS; j++) {
-				notesBackup[mydive].cylinders[j] = mydive->cylinder[j];
-			}
-			for (int j = 0; j < MAX_WEIGHTSYSTEMS; j++) {
-				notesBackup[mydive].weightsystem[j] = mydive->weightsystem[j];
-			}
-		}
-
+		// copy the current dive into editedDive and edit that
+		editedDive = *current_dive;
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
 }
@@ -471,9 +438,9 @@ void MainTab::updateDiveInfo(int dive)
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
 			ui.equipmentTab->setEnabled(true);
-			multiEditEquipmentPlaceholder = *d;
-			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
-			weightModel->setDive(&multiEditEquipmentPlaceholder);
+			editedDive = *d;
+			cylindersModel->setDive(&editedDive);
+			weightModel->setDive(&editedDive);
 			taglist_get_tagstring(d->tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 		}
@@ -595,72 +562,78 @@ void MainTab::reload()
 	do {                                                 \
 		struct dive *mydive = NULL;                  \
 		int _i;                                      \
-		if (editMode == NONE)                        \
-			return;                              \
-							     \
 		for_each_dive (_i, mydive) {                 \
-			if (!mydive->selected || mydive == current_dive) \
+			if (!mydive->selected || mydive == cd) \
 				continue;                    \
 							     \
 			WHAT;                                \
 		}                                            \
-		mydive = current_dive;                       \
+		mydive = cd;                                 \
 		WHAT;                                        \
+		mark_divelist_changed(true);                 \
 	} while (0)
 
-// this macro is rather fragile and is intended to be used as WHAT inside
-// an invocation of EDIT_SELECTED_DIVES(WHAT)
-#define EDIT_TEXT(what, text)                                \
-	if (same_string(mydive->what, current_dive->what)) { \
-		QByteArray textByteArray = text.toUtf8();    \
+#define EDIT_TEXT(what)                                      \
+	if (same_string(mydive->what, cd->what)) {           \
 		free(mydive->what);                          \
-		mydive->what = strdup(textByteArray.data()); \
+		mydive->what = strdup(editedDive.what);      \
 	}
 
-#define EDIT_VALUE(what, value)                      \
-	if (mydive->what == current_dive->what) {    \
-		mydive->what = value;                \
+#define EDIT_VALUE(what)                                     \
+	if (mydive->what == cd->what) {                      \
+		mydive->what = editedDive.what;              \
 	}
-
-#define EDIT_TRIP_TEXT(what, text)                   \
-	QByteArray textByteArray = text.toUtf8();    \
-	free(what);                                  \
-	what = strdup(textByteArray.data());
 
 void MainTab::acceptChanges()
 {
+	int i;
+	struct dive *d;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	/* now figure out if things have changed */
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		if (notesBackup[NULL].notes != ui.notes->toPlainText() ||
-		    notesBackup[NULL].location != ui.location->text())
-			mark_divelist_changed(true);
-	} else {
-		struct dive *curr = current_dive;
-		//Reset coordinates field, in case it contains garbage.
-		updateGpsCoordinates(curr);
-		if (notesBackup[curr].buddy != ui.buddy->text() ||
-		    notesBackup[curr].suit != ui.suit->text() ||
-		    notesBackup[curr].notes != ui.notes->toPlainText() ||
-		    notesBackup[curr].divemaster != ui.divemaster->text() ||
-		    notesBackup[curr].location != ui.location->text() ||
-		    notesBackup[curr].coordinates != ui.coordinates->text() ||
-		    notesBackup[curr].rating != ui.visibility->currentStars() ||
-		    notesBackup[curr].airtemp != ui.airtemp->text() ||
-		    notesBackup[curr].watertemp != ui.watertemp->text() ||
-		    notesBackup[curr].datetime != ui.dateTimeEdit->dateTime().toString() ||
-		    notesBackup[curr].visibility != ui.rating->currentStars() ||
-		    notesBackup[curr].tags != ui.tagWidget->text()) {
+		if (!same_string(editedDive.notes, current_dive->divetrip->notes)) {
+			current_dive->divetrip->notes = strdup(editedDive.notes);
 			mark_divelist_changed(true);
 		}
-		if (notesBackup[curr].location != ui.location->text()) {
-			EDIT_SELECTED_DIVES(EDIT_TEXT(location, ui.location->text()));
+		if (!same_string(editedDive.location, current_dive->divetrip->location)) {
+			current_dive->divetrip->location = strdup(editedDive.location);
+			mark_divelist_changed(true);
+		}
+		ui.dateTimeEdit->setEnabled(true);
+	} else {
+		struct dive *cd = current_dive;
+		//Reset coordinates field, in case it contains garbage.
+		updateGpsCoordinates(&editedDive);
+		// now check if something has changed and if yes, edit the selected dives that
+		// were identical with the master dive shown (and mark the divelist as changed)
+		if (!same_string(editedDive.buddy, cd->buddy))
+			EDIT_SELECTED_DIVES(EDIT_TEXT(buddy));
+		if (!same_string(editedDive.suit, cd->suit))
+			EDIT_SELECTED_DIVES(EDIT_TEXT(suit));
+		if (!same_string(editedDive.notes, cd->notes))
+			EDIT_SELECTED_DIVES(EDIT_TEXT(notes));
+		if (!same_string(editedDive.divemaster, cd->divemaster))
+			EDIT_SELECTED_DIVES(EDIT_TEXT(divemaster));
+		if (editedDive.rating != cd->rating)
+			EDIT_SELECTED_DIVES(EDIT_VALUE(rating));
+		if (editedDive.visibility != cd->visibility)
+			EDIT_SELECTED_DIVES(EDIT_VALUE(visibility));
+		if (editedDive.airtemp.mkelvin != cd->airtemp.mkelvin)
+			EDIT_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
+		if (editedDive.watertemp.mkelvin != cd->watertemp.mkelvin)
+			EDIT_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
+		if (editedDive.when != cd->when) {
+			time_t offset = current_dive->when - editedDive.when;
+			EDIT_SELECTED_DIVES(mydive->when -= offset;);
+		}
+		if (!same_string(editedDive.location, cd->location)) {
+			EDIT_SELECTED_DIVES(EDIT_TEXT(location));
 			// if we have a location text and haven't edited the coordinates, try to fill the coordinates
 			// from the existing dives
-			if (!ui.location->text().trimmed().isEmpty() &&
+			if (!same_string(cd->location, "") &&
 			    (!ui.coordinates->isModified() ||
 			     ui.coordinates->text().trimmed().isEmpty())) {
 				struct dive *dive;
@@ -673,41 +646,49 @@ void MainTab::acceptChanges()
 										mydive->latitude = dive->latitude;
 										mydive->longitude = dive->longitude;
 									});
+						MainWindow::instance()->globe()->reload();
 						break;
 					}
 				}
 			}
 		}
-		if (notesBackup[curr].location != ui.location->text() ||
-		    notesBackup[curr].coordinates != ui.coordinates->text()) {
-			MainWindow::instance()->globe()->reload();
+		if (ui.coordinates->isModified()) {
+			EDIT_SELECTED_DIVES(gpsHasChanged(mydive, cd, ui.coordinates->text(), 0));
 		}
-
-		if (notesBackup[curr].tags != ui.tagWidget->text())
+		if (tagsChanged(&editedDive, cd))
 			saveTags();
 		if (editMode == MANUALLY_ADDED_DIVE) {
-			DivePlannerPointsModel::instance()->copyCylinders(curr);
+			DivePlannerPointsModel::instance()->copyCylinders(cd);
 		} else if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
-			Q_FOREACH (dive *d, notesBackup.keys()) {
+			EDIT_SELECTED_DIVES(
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
-					if (notesBackup.keys().count() > 1)
-						// only copy the cylinder type, none of the other values
-						d->cylinder[i].type = multiEditEquipmentPlaceholder.cylinder[i].type;
-					else
-						d->cylinder[i] = multiEditEquipmentPlaceholder.cylinder[i];
+					if (mydive != cd) {
+						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description))
+							// only copy the cylinder type, none of the other values
+							mydive->cylinder[i].type = editedDive.cylinder[i].type;
+					} else {
+						mydive->cylinder[i] = editedDive.cylinder[i];
+					}
 				}
-			}
+			);
 			MainWindow::instance()->graphics()->replot();
 		}
 
 		if (weightModel->changed) {
 			mark_divelist_changed(true);
-			Q_FOREACH (dive *d, notesBackup.keys()) {
+			EDIT_SELECTED_DIVES(
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					d->weightsystem[i] = multiEditEquipmentPlaceholder.weightsystem[i];
+					if (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))
+						mydive->weightsystem[i] = editedDive.weightsystem[i];
 				}
-			}
+			);
+		}
+		// each dive that was selected might have had the temperatures in its active divecomputer changed
+		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
+		for_each_dive (i, d) {
+			if (d->selected)
+				fixup_dive(d);
 		}
 	}
 	if (current_dive->divetrip) {
@@ -724,12 +705,6 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->showProfile();
 		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	}
-	// each dive that was selected might have had the temperatures in its active divecomputer changed
-	// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
-	Q_FOREACH (dive *d, notesBackup.keys()) {
-		if (d)
-			fixup_dive(d);
 	}
 	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
@@ -766,6 +741,7 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}
+	updateDiveInfo();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->dive_list()->setFocus();
@@ -798,11 +774,7 @@ void MainTab::rejectChanges()
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 
-	MainWindow::instance()->dive_list()->setEnabled(true);
-	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		ui.notes->setText(notesBackup[NULL].notes);
-		ui.location->setText(notesBackup[NULL].location);
-	} else {
+	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() != 1) {
 		if (lastMode == ADD) {
 			// clean up
 			DivePlannerPointsModel::instance()->cancelPlan();
@@ -814,55 +786,10 @@ void MainTab::rejectChanges()
 			// the dive we edited, so let's just restore it from backup
 			DivePlannerPointsModel::instance()->restoreBackupDive();
 		}
-		struct dive *curr = current_dive;
-		if (curr) {
-			ui.notes->setText(notesBackup[curr].notes);
-			ui.location->setText(notesBackup[curr].location);
-			ui.buddy->setText(notesBackup[curr].buddy);
-			ui.suit->setText(notesBackup[curr].suit);
-			ui.divemaster->setText(notesBackup[curr].divemaster);
-			ui.rating->setCurrentStars(notesBackup[curr].rating);
-			ui.visibility->setCurrentStars(notesBackup[curr].visibility);
-			ui.airtemp->setText(notesBackup[curr].airtemp);
-			ui.watertemp->setText(notesBackup[curr].watertemp);
-			ui.tagWidget->setText(notesBackup[curr].tags);
-			// it's a little harder to do the right thing for the date time widget
-			ui.dateTimeEdit->setDateTime(QDateTime::fromString(notesBackup[curr].datetime));
-		} else {
-			QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit *>();
-			le->setText("");
-		}
-
-		struct dive *mydive;
-		int i;
-		for_each_dive (i, mydive) {
-			if (!mydive->selected)
-				continue;
-
-			QByteArray textByteArray;
-			EDIT_TEXT2(mydive->buddy, notesBackup[mydive].buddy);
-			EDIT_TEXT2(mydive->suit, notesBackup[mydive].suit);
-			EDIT_TEXT2(mydive->notes, notesBackup[mydive].notes);
-			EDIT_TEXT2(mydive->divemaster, notesBackup[mydive].divemaster);
-			EDIT_TEXT2(mydive->location, notesBackup[mydive].location);
-			mydive->latitude = notesBackup[mydive].latitude;
-			mydive->longitude = notesBackup[mydive].longitude;
-			mydive->rating = notesBackup[mydive].rating;
-			mydive->visibility = notesBackup[mydive].visibility;
-
-			// maybe this is a place for memset?
-			for (int j = 0; j < MAX_CYLINDERS; j++) {
-				mydive->cylinder[j] = notesBackup[mydive].cylinders[j];
-			}
-			for (int j = 0; j < MAX_WEIGHTSYSTEMS; j++) {
-				mydive->weightsystem[j] = notesBackup[mydive].weightsystem[j];
-			}
-		}
-		updateGpsCoordinates(curr);
 		if (selected_dive >= 0) {
-			multiEditEquipmentPlaceholder = *get_dive(selected_dive);
-			cylindersModel->setDive(&multiEditEquipmentPlaceholder);
-			weightModel->setDive(&multiEditEquipmentPlaceholder);
+			editedDive = *get_dive(selected_dive);
+			cylindersModel->setDive(&editedDive);
+			weightModel->setDive(&editedDive);
 		} else {
 			cylindersModel->clear();
 			weightModel->clear();
@@ -872,6 +799,7 @@ void MainTab::rejectChanges()
 
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
+	ui.dateTimeEdit->setEnabled(true);
 	resetPallete();
 	MainWindow::instance()->globe()->reload();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
@@ -886,6 +814,7 @@ void MainTab::rejectChanges()
 	// let's get the correct location back in view
 	MainWindow::instance()->globe()->centerOnCurrentDive();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
+	updateDiveInfo();
 }
 #undef EDIT_TEXT2
 
@@ -900,34 +829,42 @@ void markChangedWidget(QWidget *w)
 
 void MainTab::on_buddy_textChanged()
 {
+	if (editMode == NONE)
+		return;
 	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
-	EDIT_SELECTED_DIVES(EDIT_TEXT(buddy, text));
+	editedDive.buddy = strdup(text.toUtf8().data());
 	markChangedWidget(ui.buddy);
 }
 
 void MainTab::on_divemaster_textChanged()
 {
+	if (editMode == NONE)
+		return;
 	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
-	EDIT_SELECTED_DIVES(EDIT_TEXT(divemaster, text));
+	editedDive.divemaster = strdup(text.toUtf8().data());
 	markChangedWidget(ui.divemaster);
 }
 
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin, parseTemperatureToMkelvin(text)));
+	if (editMode == NONE)
+		return;
+	editedDive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.airtemp);
 	validate_temp_field(ui.airtemp, text);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin, parseTemperatureToMkelvin(text)));
+	if (editMode == NONE)
+		return;
+	editedDive.watertemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.watertemp);
 	validate_temp_field(ui.watertemp, text);
 }
@@ -960,47 +897,72 @@ void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 	}
 }
 
-// changing the time stamp on multiple dives really needs to be a relative shift
 void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime)
 {
+	if (editMode == NONE)
+		return;
 	QDateTime dateTimeUtc(datetime);
 	dateTimeUtc.setTimeSpec(Qt::UTC);
-	time_t offset = current_dive->when - dateTimeUtc.toTime_t();
-	EDIT_SELECTED_DIVES(mydive->when -= offset);
+	editedDive.when = dateTimeUtc.toTime_t();
 	markChangedWidget(ui.dateTimeEdit);
+}
+
+bool MainTab::tagsChanged(dive *a, dive *b)
+{
+	char bufA[1024], bufB[1024];
+	taglist_get_tagstring(a->tag_list, bufA, sizeof(bufA));
+	taglist_get_tagstring(b->tag_list, bufB, sizeof(bufB));
+	QString tagStringA(bufA);
+	QString tagStringB(bufB);
+	QStringList text_list = tagStringA.split(",", QString::SkipEmptyParts);
+	for (int i = 0; i < text_list.size(); i++)
+		text_list[i] = text_list[i].trimmed();
+	QString textA = text_list.join(", ");
+	text_list = tagStringB.split(",", QString::SkipEmptyParts);
+	for (int i = 0; i < text_list.size(); i++)
+		text_list[i] = text_list[i].trimmed();
+	QString textB = text_list.join(", ");
+	return textA != textB;
 }
 
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
 void MainTab::saveTags()
 {
+	struct dive *cd = current_dive;
 	EDIT_SELECTED_DIVES(
 		QString tag;
 		taglist_free(mydive->tag_list);
 		mydive->tag_list = NULL;
-		foreach (tag, ui.tagWidget->getBlockStringList())
+		Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
 			taglist_add_tag(&mydive->tag_list, tag.toUtf8().data()););
 }
 
 void MainTab::on_tagWidget_textChanged()
 {
-	markChangedWidget(ui.tagWidget);
+	if (editMode == NONE)
+		return;
+	QString tag;
+	taglist_free(editedDive.tag_list);
+	editedDive.tag_list = NULL;
+	Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
+		taglist_add_tag(&editedDive.tag_list, tag.toUtf8().data());
+	if (tagsChanged(&editedDive, current_dive))
+		markChangedWidget(ui.tagWidget);
 }
 
 void MainTab::on_location_textChanged(const QString &text)
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		// we are editing a trip
-		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-		EDIT_TRIP_TEXT(currentTrip->location, text);
-	}
+	editedDive.location = strdup(ui.location->text().toUtf8().data());
 	markChangedWidget(ui.location);
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
-	EDIT_SELECTED_DIVES(EDIT_TEXT(suit, text));
+	if (editMode == NONE)
+		return;
+	editedDive.suit = strdup(text.toUtf8().data());
 	markChangedWidget(ui.suit);
 }
 
@@ -1008,23 +970,19 @@ void MainTab::on_notes_textChanged()
 {
 	if (editMode == NONE)
 		return;
-	if (editMode == TRIP && MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		// we are editing a trip
-		dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-		EDIT_TRIP_TEXT(currentTrip->notes, ui.notes->toPlainText());
-	} else if (editMode == DIVE || editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		EDIT_SELECTED_DIVES(EDIT_TEXT(notes, ui.notes->toPlainText()));
-	}
+	editedDive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
 	markChangedWidget(ui.notes);
 }
 
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
+	if (editMode == NONE)
+		return;
 	bool gpsChanged = false;
 	bool parsed = false;
 	QPalette p;
 	ui.coordinates->setPalette(p); // reset palette
-	EDIT_SELECTED_DIVES(gpsChanged |= gpsHasChanged(mydive, current_dive, text, &parsed));
+	gpsChanged = gpsHasChanged(&editedDive, current_dive, text, &parsed);
 	if (gpsChanged)
 		markChangedWidget(ui.coordinates); // marks things yellow
 	if (!parsed) {
@@ -1035,17 +993,16 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	EDIT_SELECTED_DIVES(EDIT_VALUE(rating, value));
+	editedDive.rating = value;
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	EDIT_SELECTED_DIVES(EDIT_VALUE(visibility, value));
+	editedDive.visibility = value;
 }
 
 #undef EDIT_SELECTED_DIVES
 #undef EDIT_TEXT
-#undef EDIT_TRIP_TEXT
 #undef EDIT_VALUE
 
 void MainTab::editCylinderWidget(const QModelIndex &index)

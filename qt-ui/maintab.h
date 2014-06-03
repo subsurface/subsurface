@@ -18,25 +18,6 @@
 class QCompleter;
 struct dive;
 
-struct NotesBackup {
-	QString airtemp;
-	QString watertemp;
-	QString datetime;
-	QString location;
-	QString coordinates;
-	degrees_t latitude;
-	degrees_t longitude;
-	QString notes;
-	QString buddy;
-	QString suit;
-	int rating;
-	int visibility;
-	QString divemaster;
-	QString tags;
-	cylinder_t cylinders[MAX_CYLINDERS];
-	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
-};
-
 struct Completers {
 	QCompleter *location;
 	QCompleter *divemaster;
@@ -106,24 +87,17 @@ private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
-	QMap<dive *, NotesBackup> notesBackup;
 	EditMode editMode;
-
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
 	LocationCompletionModel locationModel;
 	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
-
-	/* since the multi-edition of the equipment is fairly more
-	 * complex than a single item, because it involves a Qt
-	 * Model to edit things, we are copying the first selected
-	 * dive to this structure, making all editions there,
-	 * then applying the changes on the other dives.*/
-	struct dive multiEditEquipmentPlaceholder;
+	struct dive editedDive; // when editing we do all changes on a copy of the real data and only apply when saved
 	Completers completers;
 	void resetPallete();
 	void saveTags();
+	bool tagsChanged(struct dive *a, struct dive *b);
 	void updateGpsCoordinates(const struct dive *dive);
 };
 

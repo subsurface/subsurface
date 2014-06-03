@@ -12,7 +12,7 @@
 extern QTranslator *qtTranslator, *ssrfTranslator;
 
 QString weight_string(int weight_in_grams);
-bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed);
+bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 QString printGPSCoords(int lat, int lon);
 QList<int> getDivesInTrip(dive_trip_t *trip);
 QString gasToStr(struct gasmix gas);
