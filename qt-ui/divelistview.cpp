@@ -775,19 +775,12 @@ void DiveListView::loadImages()
 	updateLastImageTimeOffset(shiftDialog.amount());
 
 	Q_FOREACH(const QString& fileName, fileNames) {
-		picture *p = alloc_picture();
-		p->filename = qstrdup(fileName.toUtf8().data());
-		picture_load_exif_data(p);
-
-		if (p->timestamp)
-			p->timestamp += shiftDialog.amount(); // TODO: this should be cached and passed to the C-function
 		int j = 0;
 		struct dive *dive;
 		for_each_dive (j, dive) {
 			if (!dive->selected)
 				continue;
-			dive_add_picture(dive, p);
-			dive_set_geodata_from_picture(dive, p);
+			dive_create_picture(dive, qstrdup(fileName.toUtf8().data()), shiftDialog.amount());
 		}
 	}
 

@@ -2269,6 +2269,17 @@ struct picture *alloc_picture()
 	return pic;
 }
 
+void dive_create_picture(struct dive *d, char *filename, int shift_time)
+{
+	struct picture *p = alloc_picture();
+	if (p->timestamp)
+		p->timestamp += shift_time;
+	p->filename = filename;
+	picture_load_exif_data(p);
+	dive_add_picture(d, p);
+	dive_set_geodata_from_picture(d, p);
+}
+
 void dive_add_picture(struct dive *d, struct picture *picture)
 {
 	if (d->picture_list == NULL) {
