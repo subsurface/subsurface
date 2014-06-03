@@ -1154,6 +1154,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("air.divetemperature", temperature, &dive->airtemp))
 		return;
+	if (MATCH("water.divetemperature", temperature, &dive->watertemp))
+		return;
 
 	nonmatch("dive", name, buf);
 }
