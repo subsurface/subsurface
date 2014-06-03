@@ -6,6 +6,12 @@
 #include <QListView>
 #include <QThread>
 
+struct picture;
+struct PhotoHelper{
+	QImage image;
+	struct picture *picture;
+};
+
 class DivePictureModel : public QAbstractTableModel {
 Q_OBJECT
 public:
@@ -20,7 +26,7 @@ private:
 	// Currently, load the images on the fly
 	// Later, use a thread to load the images
 	// Later, save the thumbnails so we don't need to reopen every time.
-	QHash<QString, QImage> stringPixmapCache;
+	QHash<QString, PhotoHelper> stringPixmapCache;
 };
 
 class DivePictureDelegate : QStyledItemDelegate {

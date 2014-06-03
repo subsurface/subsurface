@@ -43,15 +43,17 @@ void DivePictureModel::updateDivePictures(int divenr)
 		return;
 	}
 
+	stringPixmapCache.clear();
 	QStringList pictures;
 	FOR_EACH_PICTURE( d ) {
+		stringPixmapCache[QString(picture->filename)].picture = picture;
 		pictures.push_back(QString(picture->filename));
 	}
 
-	stringPixmapCache.clear();
+
 	SPixmapList retList = QtConcurrent::blockingMapped<SPixmapList>( pictures, scaleImages);
 	Q_FOREACH(const SPixmap & pixmap, retList)
-		stringPixmapCache[pixmap.first] = pixmap.second;
+		stringPixmapCache[pixmap.first].image = pixmap.second;
 
 	beginInsertRows(QModelIndex(), 0, numberOfPictures-1);
 	endInsertRows();
@@ -59,7 +61,7 @@ void DivePictureModel::updateDivePictures(int divenr)
 
 int DivePictureModel::columnCount(const QModelIndex &parent) const
 {
-	return 1;
+	return 2;
 }
 
 QVariant DivePictureModel::data(const QModelIndex &index, int role) const
@@ -69,10 +71,17 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 		return ret;
 
 	QString key = stringPixmapCache.keys().at(index.row());
-	switch(role){
-		case Qt::ToolTipRole : ret = key; break;
-		case Qt::DecorationRole : ret = stringPixmapCache[key]; break;
-		case Qt::DisplayRole : ret = QFileInfo(key).fileName();
+	if(index.column() == 0){
+		switch(role){
+			case Qt::ToolTipRole : ret = key; break;
+			case Qt::DecorationRole : ret = stringPixmapCache[key].image; break;
+			case Qt::DisplayRole : ret = QFileInfo(key).fileName();
+		}
+	}
+	else if (index.column() == 1){
+		switch(role){
+			case Qt::UserRole : ret = QVariant::fromValue( (void*) stringPixmapCache[key].picture);
+		}
 	}
 	return ret;
 }
