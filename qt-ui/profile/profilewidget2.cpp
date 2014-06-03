@@ -1295,10 +1295,16 @@ void ProfileWidget2::plotPictures()
 	pictures.clear();
 
 	DivePictureModel *m = DivePictureModel::instance();
-	for(int i = 0; i < m->rowCount(); i++){
+	for (int i = 0; i < m->rowCount(); i++) {
+		struct picture *pic  = (struct picture*) m->index(i,1).data(Qt::UserRole).value<void*>();
+		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
+		// information area.
+		if (!pic->timestamp)
+			continue;
 		DivePixmapItem *item = new DivePixmapItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
-		item->setPos(10,10); // TODO: put the item in the correct place.
+		// TODO: put the item in the correct place. use the pic.timestamp to find where it belongs on the dive.
+		item->setPos(10 ,10);
 		item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 		scene()->addItem(item);
 		pictures.push_back(item);
