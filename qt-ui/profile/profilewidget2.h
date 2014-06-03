@@ -91,6 +91,7 @@ slots: // Necessary to call from QAction's signals.
 	void makeFirstDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
+	void plotPictures();
 	void replot();
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
@@ -159,6 +160,7 @@ private:
 	//specifics for ADD and PLAN
 	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
+	QList<DivePixmapItem*> pictures;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;
