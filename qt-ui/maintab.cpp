@@ -26,6 +26,7 @@
 #include <QTableView>
 #include <QPalette>
 #include <QScrollBar>
+#include <QShortcut>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
@@ -48,6 +49,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	action = new QAction(tr("Cancel"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+
+	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
+
 	addMessageAction(action);
 
 	if (qApp->style()->objectName() == "oxygen")
@@ -280,6 +285,7 @@ bool MainTab::eventFilter(QObject *object, QEvent *event)
 
 	if (editMode != NONE)
 		return false;
+
 	// for the dateTimeEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
 	if (object->objectName() == "dateTimeEdit" &&
 	    (event->type() == QEvent::FocusIn || event->type() == QEvent::Wheel))
@@ -1051,4 +1057,10 @@ void MainTab::updateGpsCoordinates(const struct dive *dive)
 QString MainTab::trHemisphere(const char *orig)
 {
 	return tr(orig);
+}
+
+void MainTab::escDetected()
+{
+	if (editMode != NONE)
+		rejectChanges();
 }

@@ -82,6 +82,7 @@ slots:
 	void toggleTriggeredColumn();
 	void updateTextLabels(bool showUnits = true);
 	QString trHemisphere(const char *orig);
+	void escDetected(void);
 
 private:
 	Ui::MainTab ui;
