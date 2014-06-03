@@ -1044,8 +1044,10 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 
-	Q_FOREACH (QAction *action, actionsForKeys.values())
+	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
+		action->setShortcutContext(Qt::WidgetShortcut);
+	}
 }
 
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)

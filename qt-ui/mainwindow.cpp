@@ -502,11 +502,11 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 		yearlyStats->setMinimumWidth(600);
 		yearlyStats->setWindowTitle(tr("Yearly Statistics"));
 		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
-		QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats);
+		QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats, 0, 0, Qt::WidgetShortcut);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
-		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats);
+		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats, 0, 0, Qt::WidgetShortcut);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
-		QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats);
+		QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats, 0, 0, Qt::WidgetShortcut);
 		connect(quitKey, SIGNAL(activated()), this, SLOT(close()));
 	}
 	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
