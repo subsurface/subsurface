@@ -369,6 +369,18 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	put_format(b, "  </divecomputer>\n");
 }
 
+static void save_picture(struct membuffer *b, struct picture *pic)
+{
+	put_string(b, "  <picture filename='");
+	put_string(b, pic->filename);
+	put_string(b, "'");
+	if (pic->latitude.udeg || pic->longitude.udeg) {
+		put_degrees(b, pic->latitude, " gps='", " ");
+		put_degrees(b, pic->longitude, "", "'");
+	}
+	put_string(b, "/>\n");
+}
+
 void save_one_dive(struct membuffer *b, struct dive *dive)
 {
 	struct divecomputer *dc;
@@ -394,6 +406,8 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 	/* Save the dive computer data */
 	for_each_dc(dive, dc)
 		save_dc(b, dive, dc);
+	FOR_EACH_PICTURE(dive)
+		save_picture(b, picture);
 	put_format(b, "</dive>\n");
 }
 
