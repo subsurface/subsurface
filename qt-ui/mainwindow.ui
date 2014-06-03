@@ -63,6 +63,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="page_2">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="spacing">
            <number>0</number>
@@ -80,7 +83,11 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="DivePlannerWidget" name="divePlannerWidget" native="true"/>
+           <widget class="DivePlannerWidget" name="divePlannerWidget" native="true">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -497,7 +504,7 @@
        </property>
        <widget class="QStackedWidget" name="diveListPane">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="DiveListView" name="ListWidget">
          <property name="alternatingRowColors">

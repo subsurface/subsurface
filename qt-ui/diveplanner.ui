@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>DivePlanner</class>
  <widget class="QWidget" name="DivePlanner">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -195,17 +198,23 @@
           <string>In diveplan, list transitions or treat them as implicit</string>
          </property>
          <property name="text">
-          <string>display transitions</string>
+          <string>display transitions in deco</string>
          </property>
         </widget>
        </item>
        <item row="7" column="1">
         <widget class="QCheckBox" name="display_duration">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="toolTip">
           <string>In dive plan, show duration (relative time) of stops</string>
          </property>
          <property name="text">
           <string>display segment duration</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

@@ -56,7 +56,7 @@ bool diveplan_empty(struct diveplan *diveplan)
 	if (!diveplan || !diveplan->dp)
 		return true;
 	dp = diveplan->dp;
-	while(dp) {
+	while (dp) {
 		if (dp->time)
 			return false;
 		dp = dp->next;
@@ -316,7 +316,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		update_cylinder_pressure(dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
-				dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl);
+					 dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl);
 		sample->cylinderpressure.mbar = cyl->end.mbar;
 		finish_sample(dc);
 		dp = dp->next;
@@ -407,7 +407,6 @@ struct gaschanges {
 	int depth;
 	int gasidx;
 };
-
 
 
 static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder)
@@ -514,24 +513,27 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	const char *disclaimer = "";
-	bool gaschange = true;
+	bool gaschange = !plan_verbatim;
 
 	if (!dp)
 		return;
 
 	if (show_disclaimer)
 		disclaimer = translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
-				       "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
-				       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-				       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b>");
+						       "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
+						       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+						       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b>");
 	len = snprintf(buffer, sizeof(buffer),
-		       translate("gettextFromC", "%s<br>Subsurface dive plan\nbased on GFlow = %d and GFhigh = %d<br><br>depth"),
-		       disclaimer,  diveplan->gflow, diveplan->gfhigh);
-	if (plan_display_runtime)
-		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", " runtime"));
-	if (plan_display_duration)
-		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  duration"));
-	len += snprintf(buffer + len, sizeof(buffer) - len, " gas<br>");
+		       translate("gettextFromC", "%s<br>Subsurface dive plan\nbased on GFlow = %d and GFhigh = %d<br><br>"),
+		       disclaimer, diveplan->gflow, diveplan->gfhigh);
+	if (!plan_verbatim) {
+		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<table cellspacing=5%><thead><tr><th>depth</th>"));
+		if (plan_display_runtime)
+			len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", " <th>runtime</th>"));
+		if (plan_display_duration)
+			len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  <th>duration</th>"));
+		len += snprintf(buffer + len, sizeof(buffer) - len, " <th align=left>gas</th></tr><tbody align=right>");
+	}
 	do {
 		struct gasmix gasmix, newgasmix;
 		const char *depth_unit;
@@ -561,59 +563,52 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			continue;
 		gasidx = get_gasidx(dive, &gasmix);
 		len = strlen(buffer);
-		if (dp->depth != lastdepth) {
-			if (plan_display_transitions && plan_verbatim)
-				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s\n"),
-					 decimals, depthvalue, depth_unit,
-					 FRACTION(dp->time - lasttime, 60),
-					 FRACTION(dp->time, 60),
-					 gasname(&gasmix));
-			else
-				if (dp->entered || plan_display_transitions) {
-					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
-					if (plan_display_runtime)
-						len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  %3dmin "), (dp->time + 30) / 60);
-					if (plan_display_duration)
-						len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "   %3dmin "), (dp->time - lasttime + 30) / 60);
-					if (gaschange) {
-						len += snprintf(buffer + len, sizeof(buffer) - len, " <b>%s</b>", gasname(&newgasmix));
-						gaschange = false;
-					}
-					len += snprintf(buffer + len, sizeof(buffer) - len, "<br>");
-				}
-		} else {
-			if (plan_verbatim) {
-				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s<br>"),
-					 decimals, depthvalue, depth_unit,
-					 FRACTION(dp->time - lasttime, 60),
-					 FRACTION(dp->time, 60),
-					 gasname(&gasmix));
+		if (nextdp && gasmix_distance(&gasmix, &newgasmix))
+			gaschange = true;
+		if (plan_verbatim) {
+			if (dp->depth != lastdepth) {
+				if (plan_display_transitions || dp->entered || !dp->next)
+					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s<br>"),
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gasname(&gasmix));
 			} else {
-				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
+				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s<br>"),
+						decimals, depthvalue, depth_unit,
+						FRACTION(dp->time - lasttime, 60),
+						FRACTION(dp->time, 60),
+						gasname(&gasmix));
+			}
+		} else {
+			if (dp->depth == lastdepth || plan_display_transitions || dp->entered || !dp->next) {
+				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<tr><td align=right>%3.0f%s</td>"), depthvalue, depth_unit);
 				if (plan_display_runtime)
-					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  %3dmin "), (dp->time + 30) / 60);
+					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  <td align=right>%3dmin</td> "), (dp->time + 30) / 60);
 				if (plan_display_duration)
-					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "   %3dmin "), (dp->time - lasttime + 30) / 60);
+					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "   <td align=right>%3dmin</td> "), (dp->time - lasttime + 30) / 60);
 				if (gaschange) {
-					len += snprintf(buffer + len, sizeof(buffer) - len, " <b>%s</b>", gasname(&newgasmix));
+					len += snprintf(buffer + len, sizeof(buffer) - len, " <td align=left style=color:red><b>%s</b></td>", gasname(&newgasmix));
 					gaschange = false;
+				} else {
+					len += snprintf(buffer + len, sizeof(buffer) - len, " <td><b>&nbsp;</b><td>");
 				}
-				len += snprintf(buffer + len, sizeof(buffer) - len, "<br>");
+				len += snprintf(buffer + len, sizeof(buffer) - len, "</tr>");
 			}
 		}
-		if (nextdp && gasmix_distance(&gasmix, &newgasmix)) {
+		if (gaschange) {
 			// gas switch at this waypoint
-			if (plan_verbatim)
+			if (plan_verbatim) {
 				snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Switch gas to %s<br>"), gasname(&newgasmix));
-			else
-				gaschange = true;
+				gaschange = false;
+			}
 			gasmix = newgasmix;
 		}
 		lasttime = dp->time;
 		lastdepth = dp->depth;
 	} while ((dp = dp->next) != NULL);
 	len = strlen(buffer);
-	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "\nGas consumption:\n"));
+	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "</tbody></table><br>Gas consumption:\n"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
@@ -661,7 +656,7 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 	if (depth <= 6000)
 		return 1000 / 60;
 
-	if (depth * 4 > avg_depth *3)
+	if (depth * 4 > avg_depth * 3)
 		return 9000 / 60;
 	else
 		return 6000 / 60;
@@ -756,9 +751,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
-			       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
+		       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
 #endif
-
 	}
 	while (1) {
 		/* We will break out when we hit the surface */
@@ -780,7 +774,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		} while (depth > stoplevels[stopidx]);
 
 		if (depth <= 0)
-			break;	/* We are at the surface */
+			break; /* We are at the surface */
 
 
 		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
@@ -794,7 +788,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			gas = dive->cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-				       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[gi].depth / 1000.0);
+			       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 			gi--;
 		}
@@ -804,13 +798,13 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 		/* Save the current state and try to ascend to the next stopdepth */
 		int trial_depth = depth;
 		cache_deco_state(tissue_tolerance, &trial_cache);
-		while(1) {
+		while (1) {
 			/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 			clear_to_ascend = true;
 			while (trial_depth > stoplevels[stopidx]) {
 				int deltad = ascend_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
 				tissue_tolerance = add_segment(depth_to_mbar(trial_depth, dive) / 1000.0, &dive->cylinder[current_cylinder].gasmix, TIMESTEP, po2, dive);
-				if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) > trial_depth - deltad){
+				if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, dive, 1) > trial_depth - deltad) {
 					/* We should have stopped */
 					clear_to_ascend = false;
 					break;
@@ -819,8 +813,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			}
 			restore_deco_state(trial_cache);
 
-			if(clear_to_ascend)
-				break;	/* We did not hit the ceiling */
+			if (clear_to_ascend)
+				break; /* We did not hit the ceiling */
 
 			/* Add a minute of deco time and then try again */
 			if (!stopping) {
@@ -841,7 +835,6 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 			previous_point_time = clock;
 			stopping = false;
 		}
-
 	}
 
 	/* We made it to the surface */
