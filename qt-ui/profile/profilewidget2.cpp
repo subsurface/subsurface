@@ -701,6 +701,11 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	disconnectTemporaryConnections();
+	connect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),this, SLOT(plotPictureS()));
+	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
+	/* show the same stuff that the profile shows. */
+
 	//TODO: Move the DC handling to another method.
 	MainWindow::instance()->enableDcShortcuts();
 
@@ -1043,6 +1048,10 @@ void ProfileWidget2::disconnectTemporaryConnections()
 		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+
+	disconnect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
+	disconnect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),this, SLOT(plotPictureS()));
+	disconnect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
 
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
