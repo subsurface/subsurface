@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QTableView>
 #include <QColor>
+#include <QShortcut>
 
 #include <algorithm>
 #include <string.h>
@@ -282,6 +283,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
+	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+	connect(closeKey, SIGNAL(activated()), plannerModel, SLOT(cancelPlan()));
 
 	/* set defaults. */
 	ui.startTime->setTime(QTime(1, 0));
