@@ -277,6 +277,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
+	connect(ui.printPlan, SIGNAL(pressed()), this, SLOT(printDecoPlan()));
 
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
@@ -318,6 +319,11 @@ void DivePlannerWidget::bottomSacChanged(const QString &bottomSac)
 void DivePlannerWidget::decoSacChanged(const QString &decosac)
 {
 	plannerModel->setDecoSac(decosac.toInt());
+}
+
+void DivePlannerWidget::printDecoPlan()
+{
+	MainWindow::instance()->printPlan();
 }
 
 void DivePlannerPointsModel::setPlanMode(Mode m)

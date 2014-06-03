@@ -136,6 +136,7 @@ slots:
 	void atmPressureChanged(const QString &pressure);
 	void bottomSacChanged(const QString &bottomSac);
 	void decoSacChanged(const QString &decosac);
+	void printDecoPlan();
 
 private:
 	Ui::DivePlanner ui;

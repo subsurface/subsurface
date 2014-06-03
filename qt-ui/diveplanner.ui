@@ -124,7 +124,7 @@
        <item row="1" column="0">
         <widget class="QTimeEdit" name="startTime"/>
        </item>
-       <item row="11" column="0" colspan="2">
+       <item row="13" column="0" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="standardButtons">
           <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>
@@ -189,6 +189,16 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="ATMPressure"/>
        </item>
+       <item row="8" column="0">
+        <widget class="QCheckBox" name="display_transitions">
+         <property name="toolTip">
+          <string>In diveplan, list transitions or treat them as implicit</string>
+         </property>
+         <property name="text">
+          <string>display transitions</string>
+         </property>
+        </widget>
+       </item>
        <item row="7" column="1">
         <widget class="QCheckBox" name="display_duration">
          <property name="toolTip">
@@ -212,13 +222,10 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QCheckBox" name="display_transitions">
-         <property name="toolTip">
-          <string>In diveplan, list transitions or treat them as implicit</string>
-         </property>
+       <item row="8" column="1">
+        <widget class="QPushButton" name="printPlan">
          <property name="text">
-          <string>display transitions</string>
+          <string>Print</string>
          </property>
         </widget>
        </item>

@@ -78,6 +78,7 @@ public:
 	void setLoadedWithFiles(bool filesFromCommandLine);
 	bool filesFromCommandLine() const;
 	void setPlanNotes(const char *notes);
+	void printPlan();
 private
 slots:
 	/* file menu action */

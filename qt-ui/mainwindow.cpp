@@ -20,6 +20,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QShortcut>
+#include <QPrintDialog>
 #include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
@@ -417,6 +418,17 @@ void MainWindow::planCreated()
 void MainWindow::setPlanNotes(const char *notes)
 {
 	ui.divePlanOutput->setHtml(notes);
+}
+
+void MainWindow::printPlan()
+{
+	QPrinter printer;
+	QPrintDialog *dialog = new QPrintDialog(&printer, this);
+	dialog->setWindowTitle(tr("Print runtime table"));
+	if (dialog->exec() != QDialog::Accepted)
+		return;
+
+	ui.divePlanOutput->print(&printer);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
