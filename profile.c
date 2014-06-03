@@ -834,7 +834,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		pi->has_ndl |= sample->ndl.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
-		entry->po2 = sample->po2 / 1000.0;
+		entry->po2 = sample->po2.mbar / 1000.0;
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
@@ -843,7 +843,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		else
 			entry->temperature = lasttemp;
 		entry->heartbeat = sample->heartbeat;
-		entry->bearing = sample->bearing;
+		entry->bearing = sample->bearing.degrees;
 
 		/* skip events that happened at this time */
 		while (ev && ev->time.seconds == time)

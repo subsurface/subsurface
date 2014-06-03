@@ -375,8 +375,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	}
 	if (!strcmp(key, "po2")) {
 		pressure_t p = get_pressure(value);
-		// Ugh, typeless.
-		sample->po2 = p.mbar;
+		sample->po2.mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
@@ -384,7 +383,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 		return;
 	}
 	if (!strcmp(key, "bearing")) {
-		sample->bearing = atoi(value);
+		sample->bearing.degrees = atoi(value);
 		return;
 	}
 	report_error("Unexpected sample key/value pair (%s/%s)", key, value);

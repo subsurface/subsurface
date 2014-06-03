@@ -59,22 +59,32 @@ typedef int64_t timestamp_t;
 
 typedef struct
 {
-	int seconds;
+	uint32_t seconds; // durations up to 68 yrs
 } duration_t;
 
 typedef struct
 {
-	int mm;
-} depth_t;
+	int32_t mm;
+} depth_t; // depth to 2000 km
 
 typedef struct
 {
-	int mbar;
+	int32_t mbar; // pressure up to 2000 bar
 } pressure_t;
 
 typedef struct
 {
-	int mkelvin;
+	uint16_t mbar;
+} o2pressure_t; // pressure up to 65 bar
+
+typedef struct
+{
+	int16_t degrees;
+} bearing_t; // compass bearing
+
+typedef struct
+{
+	int32_t mkelvin; // up to 1750 degrees K
 } temperature_t;
 
 typedef struct

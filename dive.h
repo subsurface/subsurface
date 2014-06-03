@@ -141,21 +141,25 @@ static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit) {
 void get_gas_string(const struct gasmix *gasmix, char *text, int len);
 const char *gasname(const struct gasmix *gasmix);
 
-struct sample {
-	duration_t time;
-	depth_t depth;
-	temperature_t temperature;
-	pressure_t cylinderpressure;
-	int sensor; /* Cylinder pressure sensor index */
-	duration_t ndl;
-	duration_t stoptime;
-	depth_t stopdepth;
-	bool in_deco;
-	int cns;
-	int po2;
-	int heartbeat;
-	int bearing;
-};
+struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DESCRIPTION
+{                                     // --------- -----  -----    -----      -----------
+        duration_t time;               // uint32_t   4  seconds  (0-68 yrs)   elapsed dive time up to this sample
+        duration_t stoptime;           // uint32_t   4  seconds  (0-18 h)     time duration of next deco stop
+        duration_t ndl;                // uint32_t   4  seconds  (0-18 h)     time duration before no-deco limit
+        depth_t depth;                 // int32_t    4    mm     (0-2000 km)  dive depth of this sample
+        depth_t stopdepth;             // int32_t    4    mm     (0-2000 km)  depth of next deco stop
+        temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature
+        pressure_t cylinderpressure;   // int32_t    4    mbar   (0-2 Mbar)   main cylinder pressure
+        pressure_t diluentpressure;    // int32_t    4    mbar   (0-2 Mbar)   CCR diluent pressure (rebreather)
+        o2pressure_t po2;              // uint16_t    2    mbar  (0-65 bar)   O2 partial pressure
+        o2pressure_t o2setpoint;       // uint16_t    2    mbar  (0-65 bar)   CCR O2 setpoint (rebreather)
+        o2pressure_t o2sensor[3];      // uint16_t    6    mbar  (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
+        bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
+        uint8_t sensor;                // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
+        uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
+        uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
+        bool    in_deco;               // bool       1    y/n      y/n        this sample is part of deco
+};                      // Total size of structure: 48 bytes, excluding padding at end
 
 struct divetag {
 	/*

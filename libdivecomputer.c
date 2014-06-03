@@ -198,7 +198,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->ndl.seconds = ndl;
 			sample->stoptime.seconds = stoptime;
 			sample->stopdepth.mm = stopdepth;
-			sample->po2 = po2;
+			sample->po2.mbar = po2;
 			sample->cns = cns;
 		}
 		sample = prepare_sample(dc);
@@ -225,7 +225,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->heartbeat = value.heartbeat;
 		break;
 	case DC_SAMPLE_BEARING:
-		sample->bearing = value.bearing;
+		sample->bearing.degrees = value.bearing;
 		break;
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
@@ -237,10 +237,10 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 #if DC_VERSION_CHECK(0, 3, 0)
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
-		sample->po2 = po2 = rint(value.setpoint * 1000);
+		sample->po2.mbar = po2 = rint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
-		sample->po2 = po2 = rint(value.ppo2 * 1000);
+		sample->po2.mbar = po2 = rint(value.ppo2 * 1000);
 		break;
 	case DC_SAMPLE_CNS:
 		sample->cns = cns = rint(value.cns * 100);

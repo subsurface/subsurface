@@ -159,7 +159,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		}
 		if (i > 0)
 			lastdepth = psample->depth.mm;
-		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth.mm, &dive->cylinder[gasidx].gasmix, sample->po2);
+		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth.mm, &dive->cylinder[gasidx].gasmix, sample->po2.mbar);
 		psample = sample;
 		t0 = t1;
 	}
@@ -263,7 +263,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	cyl = &master_dive->cylinder[0];
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
-	sample->po2 = dp->po2;
+	sample->po2.mbar = dp->po2;
 	finish_sample(dc);
 	while (dp) {
 		struct gasmix gasmix = dp->gasmix;
@@ -300,7 +300,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 			/* need to insert a first sample for the new gas */
 			add_gas_switch_event(dive, dc, lasttime + 1, idx);
 			sample = prepare_sample(dc);
-			sample[-1].po2 = po2;
+			sample[-1].po2.mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
 			finish_sample(dc);
@@ -311,8 +311,8 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
 		/* and keep it valid for last sample - where it likely doesn't matter */
-		sample[-1].po2 = po2;
-		sample->po2 = po2;
+		sample[-1].po2.mbar = po2;
+		sample->po2.mbar = po2;
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		update_cylinder_pressure(dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
@@ -703,7 +703,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	/* we start with gas 0, then check if that was changed */
 	gas = dive->cylinder[0].gasmix;
 	get_gas_from_events(&dive->dc, sample->time.seconds, &gas);
-	po2 = dive->dc.sample[dive->dc.samples - 1].po2;
+	po2 = dive->dc.sample[dive->dc.samples - 1].po2.mbar;
 	if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
 		report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 		current_cylinder = 0;

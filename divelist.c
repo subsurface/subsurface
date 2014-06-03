@@ -178,8 +178,8 @@ static int calculate_otu(struct dive *dive)
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->po2) {
-			po2 = sample->po2;
+		if (sample->po2.mbar) {
+			po2 = sample->po2.mbar;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
 			po2 = o2 * depth_to_atm(sample->depth.mm, dive);
@@ -242,8 +242,8 @@ static int calculate_cns(struct dive *dive)
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->po2) {
-			po2 = sample->po2;
+		if (sample->po2.mbar) {
+			po2 = sample->po2.mbar;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
 			po2 = o2 / depth_to_atm(sample->depth.mm, dive);
@@ -326,7 +326,7 @@ static void add_dive_to_deco(struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			(void)add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					  &dive->cylinder[sample->sensor].gasmix, 1, sample->po2, dive);
+					  &dive->cylinder[sample->sensor].gasmix, 1, sample->po2.mbar, dive);
 		}
 	}
 }

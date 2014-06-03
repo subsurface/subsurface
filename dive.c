@@ -1105,7 +1105,7 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 			sample.sensor = as->sensor;
 		if (as->cns)
 			sample.cns = as->cns;
-		if (as->po2)
+		if (as->po2.mbar)
 			sample.po2 = as->po2;
 		if (as->ndl.seconds)
 			sample.ndl = as->ndl;
