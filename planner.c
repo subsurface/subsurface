@@ -625,7 +625,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
-				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!<br>");
+				warning = translate("gettextFromC", " &mdash; <span style='color: red;'>WARNING:</span> "
+						    "this is more gas than available in the specified cylinder!<br>");
 		}
 		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s<br>"), volume, unit, gasname(&cyl->gasmix), warning);
 	}
@@ -639,7 +640,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
 				len = strlen(buffer);
 				snprintf(buffer + len, sizeof(buffer) - len,
-					 translate("gettextFromC", "Warning: high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s<br>"),
+					 translate("gettextFromC", "<span style='color: red;'>Warning:</span> "
+						   "high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s<br>"),
 					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), depth_value, decimals, depth_unit);
 			}
 		}
