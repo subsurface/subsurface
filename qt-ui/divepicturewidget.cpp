@@ -8,7 +8,13 @@ void DivePictureDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	QStyledItemDelegate::paint(painter, option, index);
 }
 
-DivePictureModel::DivePictureModel(QObject *parent): QAbstractTableModel(parent)
+DivePictureModel *DivePictureModel::instance()
+{
+	static DivePictureModel* self = new DivePictureModel();
+	return self;
+}
+
+DivePictureModel::DivePictureModel()
 {
 }
 

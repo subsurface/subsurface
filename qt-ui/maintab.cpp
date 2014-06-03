@@ -32,7 +32,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(CylindersModel::instance()),
 	editMode(NONE),
-	divePictureModel(new DivePictureModel(this))
+	divePictureModel(DivePictureModel::instance())
 {
 	ui.setupUi(this);
 
