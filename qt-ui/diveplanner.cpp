@@ -361,7 +361,7 @@ int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 {
 	divedatapoint p = divepoints.at(index.row());
-	if (role == Qt::DisplayRole) {
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
 		case CCSETPOINT:
 			return (double)p.po2 / 1000;
