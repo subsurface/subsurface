@@ -524,7 +524,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 						       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
 						       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b>");
 	len = snprintf(buffer, sizeof(buffer),
-		       translate("gettextFromC", "%s<br>Subsurface dive plan\nbased on GFlow = %d and GFhigh = %d<br><br>"),
+		       translate("gettextFromC", "%s<br>Subsurface dive plan<br>based on GFlow = %d and GFhigh = %d<br><br>"),
 		       disclaimer, diveplan->gflow, diveplan->gfhigh);
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<table cellspacing=5%><thead><tr><th>depth</th>"));
@@ -610,7 +610,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastdepth = dp->depth;
 	} while ((dp = dp->next) != NULL);
 	len = strlen(buffer);
-	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "</tbody></table><br>Gas consumption:\n"));
+	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "</tbody></table><br>Gas consumption:<br>"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
@@ -625,9 +625,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
-				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!");
+				warning = translate("gettextFromC", "WARNING: this is more gas than available in the specified cylinder!<br>");
 		}
-		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s\n"), volume, unit, gasname(&cyl->gasmix), warning);
+		snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "%.0f%s of %s%s<br>"), volume, unit, gasname(&cyl->gasmix), warning);
 	}
 	dp = diveplan->dp;
 	while (dp) {
@@ -639,7 +639,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
 				len = strlen(buffer);
 				snprintf(buffer + len, sizeof(buffer) - len,
-					 translate("gettextFromC", "Warning: high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+					 translate("gettextFromC", "Warning: high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s<br>"),
 					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), depth_value, decimals, depth_unit);
 			}
 		}
