@@ -726,7 +726,7 @@ static void fixup_meandepth(struct dive *dive)
 static void fixup_duration(struct dive *dive)
 {
 	struct divecomputer *dc;
-	int duration = 0;
+	unsigned int duration = 0;
 
 	for_each_dc(dive, dc)
 		duration = MAX(duration, dc->duration.seconds);
