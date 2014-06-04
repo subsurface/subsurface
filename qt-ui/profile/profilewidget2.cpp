@@ -355,6 +355,8 @@ void ProfileWidget2::setupSceneAndFlags()
 void ProfileWidget2::plotDives(QList<dive *> dives)
 {
 	static bool firstCall = true;
+	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
+	measureDuration.start();
 
 	// I Know that it's a list, but currently we are
 	// using just the first.
@@ -516,6 +518,12 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 		repositionDiveHandlers();
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
+	}
+	// OK, how long did this take us? Anything above the second is way too long,
+	// so if we are calculation TTS / NDL then let's force that off.
+	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
+		MainWindow::instance()->turnOffNdlTts();
+		MainWindow::instance()->showError("Show NDL / TTS was disabled because of excessive processing time");
 	}
 }
 

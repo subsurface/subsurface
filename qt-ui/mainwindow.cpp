@@ -1226,6 +1226,12 @@ void MainWindow::on_profNdl_tts_clicked(bool triggered)
 	prefs.calcndltts = triggered;
 	TOOLBOX_PREF_PROFILE(calcndltts);
 }
+void MainWindow::turnOffNdlTts()
+{
+	const bool triggered = prefs.calcndltts = false;
+	TOOLBOX_PREF_PROFILE(calcndltts);
+}
+
 void MainWindow::on_profPhe_clicked(bool triggered)
 {
 	prefs.pp_graphs.phe = triggered;

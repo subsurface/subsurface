@@ -148,6 +148,7 @@ protected:
 
 public
 slots:
+	void turnOffNdlTts();
 	void readSettings();
 	void refreshDisplay(bool doRecreateDiveList = true);
 	void recreateDiveList();
