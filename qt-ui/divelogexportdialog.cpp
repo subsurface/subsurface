@@ -74,7 +74,7 @@ void DiveLogExportDialog::exportHtmlInit(QString filename)
 		QDir::home().mkpath(filename);
 	}
 
-	QString json_dive_data = filename + "/file.json";
+	QString json_dive_data = filename + QDir::separator() + "file.json";
 	QString json_settings = filename + "/settings.json";
 
 	exportHTMLsettings(json_settings);
