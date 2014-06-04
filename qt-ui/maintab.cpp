@@ -960,7 +960,8 @@ void MainTab::on_tagWidget_textChanged()
 	if (editMode == NONE)
 		return;
 	QString tag;
-	taglist_free(editedDive.tag_list);
+	if (editedDive.tag_list != current_dive->tag_list)
+		taglist_free(editedDive.tag_list);
 	editedDive.tag_list = NULL;
 	Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&editedDive.tag_list, tag.toUtf8().data());
