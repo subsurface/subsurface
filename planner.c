@@ -260,10 +260,11 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 
 	/* reset the end pressure values and start with the gas on the first cylinder */
 	reset_cylinders(master_dive);
-	cyl = &master_dive->cylinder[0];
+	cyl = &dive->cylinder[0];
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
 	sample->po2.mbar = dp->po2;
+	sample->cylinderpressure.mbar = cyl->end.mbar;
 	finish_sample(dc);
 	while (dp) {
 		struct gasmix gasmix = dp->gasmix;
@@ -299,12 +300,13 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 				goto gas_error_exit;
 			/* need to insert a first sample for the new gas */
 			add_gas_switch_event(dive, dc, lasttime + 1, idx);
+			cyl = &dive->cylinder[idx];
 			sample = prepare_sample(dc);
 			sample[-1].po2.mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
+			sample->cylinderpressure.mbar = cyl->sample_end.mbar;
 			finish_sample(dc);
-			cyl = &dive->cylinder[idx];
 			oldgasmix = gasmix;
 		}
 		/* Create sample */
