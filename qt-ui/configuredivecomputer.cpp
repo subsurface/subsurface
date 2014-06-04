@@ -83,13 +83,12 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 
 void ReadSettingsThread::run()
 {
-	QString vendor = data->vendor;
 	dc_status_t rc;
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
-		if (vendor.trimmed() == "Heinrichs Weikamp") {
+		if (dc_device_get_type(data->device) == DC_FAMILY_HW_OSTC3) {
 			unsigned char hw_data[10];
-			hw_frog_device_version(data->device, hw_data, 10);
+			hw_ostc3_device_version(data->device, hw_data, 10);
 			QTextStream (&result) << "Device Version: " << hw_data; //just a test. I will work on decoding this
 		} else {
 			lastError = tr("This feature is not yet available for the selected dive computer.");
@@ -112,18 +111,21 @@ void WriteSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-	QString product = data->product;
-	QString vendor = data->vendor;
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		dc_status_t result;
-		if (product.trimmed() == "OSTC 3") {
+		if (dc_device_get_type(data->device) == DC_FAMILY_HW_OSTC3) {
 			if (m_settingName == "Name") {
 				supported = true;
 				result = hw_ostc3_device_customtext(data->device, m_settingValue.toByteArray().data());
 			}
+		} else if ( dc_device_get_type(data->device) == DC_FAMILY_HW_FROG ) {
+			if (m_settingName == "Name") {
+				supported = true;
+				result = hw_frog_device_customtext(data->device, m_settingValue.toByteArray().data());
+			}
 		}
-		if (vendor.trimmed() == "Heinrichs Weikamp" && m_settingName == "DateAndTime") {
+		if ( dc_device_get_type(data->device) == DC_FAMILY_HW_OSTC3 && m_settingName == "DateTime" ) {
 			supported = true;
 			QDateTime timeToSet = m_settingValue.toDateTime();
 			dc_datetime_t time;
