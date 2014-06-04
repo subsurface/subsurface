@@ -308,13 +308,16 @@ int nr_weightsystems(struct dive *dive)
 	return nr;
 }
 
-void copy_cylinders(struct dive *s, struct dive *d)
+void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 {
 	int i;
 	if (!s || !d)
 		return;
 	for (i = 0; i < MAX_CYLINDERS; i++)
-		d->cylinder[i] = s->cylinder[i];
+		if (!used_only || cylinder_is_used(s, &s->cylinder[i]))
+			d->cylinder[i] = s->cylinder[i];
+		else
+			memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 }
 
 void copy_samples(struct dive *s, struct dive *d)

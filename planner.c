@@ -256,7 +256,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 	dc = &dive->dc;
 	dc->model = "planned dive"; /* do not translate here ! */
 	dp = diveplan->dp;
-	copy_cylinders(master_dive, dive);
+	copy_cylinders(master_dive, dive, false);
 
 	/* reset the end pressure values and start with the gas on the first cylinder */
 	reset_cylinders(master_dive);

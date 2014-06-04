@@ -83,7 +83,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	memcpy(&backupDive, d, sizeof(struct dive));
 	copy_samples(d, &backupDive);
 	copy_events(d, &backupDive);
-	copy_cylinders(d, stagingDive); // this way the correct cylinder data is shown
+	copy_cylinders(d, stagingDive, false); // this way the correct cylinder data is shown
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
@@ -105,7 +105,7 @@ void DivePlannerPointsModel::restoreBackupDive()
 
 void DivePlannerPointsModel::copyCylinders(dive *d)
 {
-	copy_cylinders(stagingDive, d);
+	copy_cylinders(stagingDive, d, false);
 }
 
 // copy the tanks from the current dive, or the default cylinder
@@ -119,9 +119,9 @@ void DivePlannerPointsModel::setupCylinders()
 	if (stagingDive != current_dive) {
 		// we are planning a dive
 		if (current_dive) {
-			// take the cylinders from the selected dive as starting point
+			// take the used cylinders from the selected dive as starting point
 			CylindersModel::instance()->copyFromDive(current_dive);
-			copy_cylinders(current_dive, stagingDive);
+			copy_cylinders(current_dive, stagingDive, true);
 			reset_cylinders(stagingDive);
 			return;
 		} else {
@@ -847,7 +847,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 			// copy the samples and events, but don't overwrite the cylinders
 			copy_samples(tempDive, current_dive);
 			copy_events(tempDive, current_dive);
-			copy_cylinders(tempDive, current_dive);
+			copy_cylinders(tempDive, current_dive, false);
 		}
 	}
 	// throw away the cache
