@@ -84,6 +84,7 @@ slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
 	void restoreBackupDive();
+	void emitDataChanged();
 
 signals:
 	void planCreated();

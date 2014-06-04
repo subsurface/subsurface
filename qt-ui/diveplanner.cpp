@@ -272,7 +272,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
 	connect(ui.decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
+	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
+	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
@@ -482,6 +484,11 @@ DivePlannerPointsModel *DivePlannerPointsModel::instance()
 	return self.data();
 }
 
+void DivePlannerPointsModel::emitDataChanged()
+{
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
 	diveplan.bottomsac = sac * 1000;
@@ -497,13 +504,11 @@ void DivePlannerPointsModel::setDecoSac(int sac)
 void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 {
 	diveplan.gfhigh = gfhigh;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setGFLow(const int ghflow)
 {
 	diveplan.gflow = ghflow;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
