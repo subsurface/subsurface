@@ -778,6 +778,10 @@ void MainTab::resetPallete()
 	free(what);                    \
 	what = strdup(textByteArray.data());
 
+#define FREE_IF_DIFFERENT(what)           \
+	if (editedDive.what != cd->what) \
+		free(editedDive.what)
+
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
@@ -814,6 +818,14 @@ void MainTab::rejectChanges()
 			setEnabled(false);
 		}
 	}
+	// now let's avoid memory leaks
+	struct dive *cd = current_dive;
+	FREE_IF_DIFFERENT(tag_list);
+	FREE_IF_DIFFERENT(location);
+	FREE_IF_DIFFERENT(buddy);
+	FREE_IF_DIFFERENT(divemaster);
+	FREE_IF_DIFFERENT(notes);
+	FREE_IF_DIFFERENT(suit);
 
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
