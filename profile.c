@@ -1017,7 +1017,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	const int ascent_s_per_deco_step = 1;
 	const int ascent_mm_per_deco_step = 16; /* 1 m/min */
 	/* how long time steps in deco calculations? */
-	const int time_stepsize = 10;
+	const int time_stepsize = 60;
 	const int deco_stepsize = 3000;
 	/* at what depth is the current deco-step? */
 	int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
