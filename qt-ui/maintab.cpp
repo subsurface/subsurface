@@ -27,6 +27,7 @@
 #include <QPalette>
 #include <QScrollBar>
 #include <QShortcut>
+#include <QMessageBox>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
@@ -780,6 +781,13 @@ void MainTab::resetPallete()
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
+	if (lastMode != NONE && current_dive && memcmp(&editedDive, current_dive, sizeof(struct dive))) {
+		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the Changes?"),
+									       tr("You are about to discard your changes.")),
+					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
+			return;
+		}
+	}
 	editMode = NONE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
