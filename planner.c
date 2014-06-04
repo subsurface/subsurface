@@ -518,6 +518,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	struct divedatapoint *dp = diveplan->dp;
 	const char *empty = "";
 	bool gaschange = !plan_verbatim;
+	struct divedatapoint *nextdp;
 
 	disclaimer =  translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
 				"ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
@@ -543,7 +544,6 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		const char *depth_unit;
 		double depthvalue;
 		int decimals;
-		struct divedatapoint *nextdp;
 
 		if (dp->time == 0)
 			continue;
@@ -573,7 +573,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			gaschange = true;
 		if (plan_verbatim) {
 			if (dp->depth != lastdepth) {
-				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && (dp->depth != dp->next->depth || !dp->next->time))) {
+				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s<br>"),
 							decimals, depthvalue, depth_unit,
 							FRACTION(dp->time - lasttime, 60),
@@ -582,15 +582,17 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					lasttime = dp->time;
 				}
 			} else {
-				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s<br>"),
-						decimals, depthvalue, depth_unit,
-						FRACTION(dp->time - lasttime, 60),
-						FRACTION(dp->time, 60),
-						gasname(&gasmix));
-				lasttime = dp->time;
+				if (dp->depth != nextdp->depth) {
+					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s<br>"),
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gasname(&gasmix));
+					lasttime = dp->time;
+				}
 			}
 		} else {
-			if (dp->depth == lastdepth || plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && (dp->depth != dp->next->depth || !dp->next->time))) {
+			if ((dp->depth == lastdepth && dp->depth != nextdp->depth) || plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
 				len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<tr><td align=right>%3.0f%s</td>"), depthvalue, depth_unit);
 				if (plan_display_runtime)
 					len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  <td align=right>%3dmin</td> "), (dp->time + 30) / 60);
@@ -615,7 +617,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			gasmix = newgasmix;
 		}
 		lastdepth = dp->depth;
-	} while ((dp = dp->next) != NULL);
+	} while ((dp = nextdp) != NULL);
 	len = strlen(buffer);
 	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "</tbody></table><br>Gas consumption:<br>"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
