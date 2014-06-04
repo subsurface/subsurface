@@ -802,7 +802,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
+		on_actionQuit_triggered();
 		event->ignore();
 		return;
 	}
