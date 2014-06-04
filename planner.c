@@ -26,6 +26,8 @@ int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000,
 double plangflow, plangfhigh;
 bool plan_verbatim = false, plan_display_runtime = true, plan_display_duration = false, plan_display_transitions = false;
 
+const char *disclaimer;
+
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
 {
@@ -514,20 +516,20 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	char buffer[20000];
 	int len, gasidx, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
-	const char *disclaimer = "";
+	const char *empty = "";
 	bool gaschange = !plan_verbatim;
+
+	disclaimer =  translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
+				"ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
+				"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+				"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b><br>");
 
 	if (!dp)
 		return;
 
-	if (show_disclaimer)
-		disclaimer = translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
-						       "ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
-						       "RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-						       "PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</b>");
 	len = snprintf(buffer, sizeof(buffer),
 		       translate("gettextFromC", "%s<br>Subsurface dive plan<br>based on GFlow = %d and GFhigh = %d<br><br>"),
-		       disclaimer, diveplan->gflow, diveplan->gfhigh);
+		       show_disclaimer ? disclaimer : empty, diveplan->gflow, diveplan->gfhigh);
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<table cellspacing=5%><thead><tr><th>depth</th>"));
 		if (plan_display_runtime)

@@ -21,7 +21,7 @@ extern bool diveplan_empty(struct diveplan *diveplan);
 
 extern struct dive *planned_dive;
 extern char *cache_data;
-extern char *disclaimer;
+extern const char *disclaimer;
 extern double plangflow, plangfhigh;
 
 

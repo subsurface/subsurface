@@ -41,6 +41,7 @@
 #include "about.h"
 #include "worldmap-save.h"
 #include "updatemanager.h"
+#include "planner.h"
 #ifndef NO_PRINTING
 #include "printdialog.h"
 #endif
@@ -424,13 +425,18 @@ void MainWindow::setPlanNotes(const char *notes)
 
 void MainWindow::printPlan()
 {
+	QString diveplan = ui.divePlanOutput->toHtml();
+	QString withDisclaimer = diveplan + QString(disclaimer);
+
 	QPrinter printer;
 	QPrintDialog *dialog = new QPrintDialog(&printer, this);
 	dialog->setWindowTitle(tr("Print runtime table"));
 	if (dialog->exec() != QDialog::Accepted)
 		return;
 
+	ui.divePlanOutput->setHtml(withDisclaimer);
 	ui.divePlanOutput->print(&printer);
+	ui.divePlanOutput->setHtml(diveplan);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
