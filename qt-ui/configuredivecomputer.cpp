@@ -125,8 +125,7 @@ void WriteSettingsThread::run()
 				result = hw_frog_device_customtext(data->device, m_settingValue.toByteArray().data());
 			}
 		}
-		if ( dc_device_get_type(data->device) == DC_FAMILY_HW_OSTC3 && m_settingName == "DateTime" ) {
-			supported = true;
+		if (m_settingName == "DateAndTime") {
 			QDateTime timeToSet = m_settingValue.toDateTime();
 			dc_datetime_t time;
 			time.year = timeToSet.date().year();
@@ -135,7 +134,21 @@ void WriteSettingsThread::run()
 			time.hour = timeToSet.time().hour();
 			time.minute = timeToSet.time().minute();
 			time.second = timeToSet.time().second();
-			result = hw_ostc_device_clock(data->device, &time); //Toto fix error here
+
+			switch (dc_device_get_type(data->device)) {
+			case DC_FAMILY_HW_OSTC3:
+				supported = true;
+				result = hw_ostc3_device_clock(data->device, &time);
+				break;
+			case DC_FAMILY_HW_OSTC:
+				supported = true;
+				result = hw_ostc_device_clock(data->device, &time);
+				break;
+			case DC_FAMILY_HW_FROG:
+				supported = true;
+				result = hw_frog_device_clock(data->device, &time);
+				break;
+			}
 		}
 		if (result !=  DC_STATUS_SUCCESS) {
 			qDebug() << result;
