@@ -114,15 +114,16 @@ void WriteSettingsThread::run()
 	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		dc_status_t result;
-		if (dc_device_get_type(data->device) == DC_FAMILY_HW_OSTC3) {
-			if (m_settingName == "Name") {
+		if (m_settingName == "Name") {
+			switch (dc_device_get_type(data->device)) {
+			case DC_FAMILY_HW_OSTC3:
 				supported = true;
 				result = hw_ostc3_device_customtext(data->device, m_settingValue.toByteArray().data());
-			}
-		} else if ( dc_device_get_type(data->device) == DC_FAMILY_HW_FROG ) {
-			if (m_settingName == "Name") {
+				break;
+			case DC_FAMILY_HW_FROG:
 				supported = true;
 				result = hw_frog_device_customtext(data->device, m_settingValue.toByteArray().data());
+				break;
 			}
 		}
 		if (m_settingName == "DateAndTime") {
