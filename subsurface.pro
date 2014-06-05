@@ -255,7 +255,7 @@ MANPAGE = subsurface.1
 XSLT_FILES = xslt
 ICONS_FILES = icons
 DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
-THEME_FILES = $$OUT_PWD/theme
+THEME_FILES = theme
 MARBLEDIR = marbledata/maps marbledata/bitmaps
 
 #DEPLOYMENT_PLUGIN += bearer/qnativewifibearer

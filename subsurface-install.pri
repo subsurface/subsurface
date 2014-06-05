@@ -31,10 +31,11 @@ mac {
 
 	datadir = Contents/Resources/share
 	marbledir.path = Contents/Resources/data
+	theme.path = Contents/Resources/data
 	doc.path = $$datadir/Documentation
 	translation.path = Contents/Resources/translations
 	qttranslation.path = Contents/Resources/translations
-	QMAKE_BUNDLE_DATA += marbledir doc translation qttranslation
+	QMAKE_BUNDLE_DATA += marbledir doc translation qttranslation theme
 
 	mac_deploy.target = mac-deploy
 	mac_deploy.commands += $$[QT_INSTALL_BINS]/macdeployqt $${TARGET}.app
@@ -61,7 +62,8 @@ mac {
 	deploy.CONFIG += no_check_exist
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
-	INSTALLS += deploy marbledir target doc
+	theme.path = $$WINDOWSSTAGING/data
+	INSTALLS += deploy marbledir target doc theme
 
 	translation.path = $$WINDOWSSTAGING/translations
 	qttranslation.path = $$WINDOWSSTAGING/translations
