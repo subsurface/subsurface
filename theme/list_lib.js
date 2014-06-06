@@ -136,7 +136,7 @@ function collapseAll(){
 
 function setNumberOfDives(e){
 	var value = e.options[e.selectedIndex].value;
-	sizeofpage=parseInt(value);
+	sizeofpage=parseInt(value,10);
 	var end = start + sizeofpage -1;
 	view_in_range(start,end);
 }
@@ -325,16 +325,16 @@ function cmpDateDes(j,iSmaller){
 	return items[j].date > items[iSmaller].date ;
 }
 function cmpAtempAsc(j,iSmaller){
-	return parseInt(items[j].temperature.air) < parseInt(items[iSmaller].temperature.air) ;
+	return parseInt(items[j].temperature.air,10) < parseInt(items[iSmaller].temperature.air,10) ;
 }
 function cmpAtempDes(j,iSmaller){
-	return parseInt(items[j].temperature.air) > parseInt(items[iSmaller].temperature.air) ;
+	return parseInt(items[j].temperature.air,10) > parseInt(items[iSmaller].temperature.air,10) ;
 }
 function cmpWtempAsc(j,iSmaller){
-	return parseInt(items[j].temperature.water) < parseInt(items[iSmaller].temperature.water) ;
+	return parseInt(items[j].temperature.water,10) < parseInt(items[iSmaller].temperature.water,10) ;
 }
 function cmpWtempDes(j,iSmaller){
-	return parseInt(items[j].temperature.water) > parseInt(items[iSmaller].temperature.water) ;
+	return parseInt(items[j].temperature.water,10) > parseInt(items[iSmaller].temperature.water,10) ;
 }
 
 function sort_it(sortOn,function_){
