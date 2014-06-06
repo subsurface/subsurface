@@ -14,7 +14,7 @@
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
 
-#define TIMESTEP 1 /* second */
+#define TIMESTEP 3 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
