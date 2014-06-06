@@ -345,11 +345,11 @@ function sort_it(sortOn,function_){
 	}
 	for(var i=0;i< itemsToShow.length ;i++){
 		for(var j=0;j<itemsToShow.length;j++)
-		if(visited[j] == false)
+		if(visited[j] === false)
 		var iSmaller=j;
 		for(var j=0;j<itemsToShow.length;j++){
 			if(function_(itemsToShow[j],itemsToShow[iSmaller])){
-				if(visited[j] == false){
+				if(visited[j] === false){
 					iSmaller = j;
 				}
 			}
@@ -390,7 +390,7 @@ Set.prototype.forEach = function(do_){
 };
 
 Set.prototype.Union = function(another_set){
-	if (another_set == null) {
+	if (another_set === null) {
 		return;
 	}
 	for(var i=0; i<another_set.keys.length ;i++){
@@ -427,19 +427,19 @@ function SearchModules(searchfor){
 		resultKeys.Union(x.search(searchfor));
 	});
 
-	if(searchingModules["location"].enabled==true)
+	if(searchingModules["location"].enabled===true)
 	resultKeys.Union(searchingModules["location"].search(searchfor));
 
-	if(searchingModules["divemaster"].enabled==true)
+	if(searchingModules["divemaster"].enabled===true)
 	resultKeys.Union(searchingModules["divemaster"].search(searchfor));
 
-	if(searchingModules["buddy"].enabled==true)
+	if(searchingModules["buddy"].enabled===true)
 	resultKeys.Union(searchingModules["buddy"].search(searchfor));
 
-	if(searchingModules["notes"].enabled==true)
+	if(searchingModules["notes"].enabled===true)
 	resultKeys.Union(searchingModules["notes"].search(searchfor));
 
-	if(searchingModules["tags"].enabled==true)
+	if(searchingModules["tags"].enabled===true)
 	resultKeys.Union(searchingModules["tags"].search(searchfor));
 
 	if(resultKeys.isEmpty()){
@@ -545,7 +545,7 @@ function showtrips(){
 }
 
 function toggle_trip_expansion(trip){
-	if(trips[trip].expanded ==true){
+	if(trips[trip].expanded ===true){
 		unexpand_trip(trip);
 	}else{
 		expand_trip(trip);
