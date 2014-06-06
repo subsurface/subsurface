@@ -236,6 +236,10 @@ QTTRANSLATIONS = \
 	qt_sv.qm \
 	qt_zh_TW.qm
 
+USERMANUALS = \
+	user-manual.html \
+	user-manual_es.html
+
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += doc
 QMAKE_EXTRA_TARGETS += doc all
@@ -254,7 +258,8 @@ else: ICON = subsurface-icon.svg
 MANPAGE = subsurface.1
 XSLT_FILES = xslt
 ICONS_FILES = icons
-DOC_FILES = $$OUT_PWD/Documentation/user-manual.html Documentation/images
+DOC_FILES = Documentation/images
+for(MANUAL,USERMANUALS) DOC_FILES += $$OUT_PWD/Docuementation/$$MANUAL
 THEME_FILES = theme
 MARBLEDIR = marbledata/maps marbledata/bitmaps
 
