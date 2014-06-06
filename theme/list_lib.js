@@ -181,8 +181,8 @@ function getlimited (dive) {
 function getExpanded (dive) {
     return '<table><tr><td class="words">Date: </td><td>'+dive.date+
 	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>'+dive.time +
-	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>'+'<a onclick=\"Search_list_Modules(\''+dive.location+'\')\">'
-	+dive.location +'</a>'+
+	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>'+'<a onclick=\"Search_list_Modules(\''+dive.location+'\')\">'+
+	dive.location +'</a>'+
 	'</td></tr></table><table><tr><td class="words">Rating:</td><td>'+putRating(dive.rating)+
 	'</td><td class="words">&nbsp&nbsp&nbspVisibilty:</td><td>'+putRating(dive.visibility)+
 	'</td></tr></table>'+
@@ -536,8 +536,8 @@ function showtrips(){
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML="";
 	for(var i=0;i<trips.length;i++){
-		divelist.innerHTML+='<ul id="trip_'+i+'" class="trips" onclick="toggle_trip_expansion('+i+')">'
-		+trips[i].name+' ( '+trips[i].dives.length+' dives)'+'</ul>'+'<div id="trip_dive_list_'+i+'"></div>';
+		divelist.innerHTML+='<ul id="trip_'+i+'" class="trips" onclick="toggle_trip_expansion('+i+')">'+
+		trips[i].name+' ( '+trips[i].dives.length+' dives)'+'</ul>'+'<div id="trip_dive_list_'+i+'"></div>';
 	};
 	for(var i=0;i<trips.length;i++){
 		unexpand_trip(i);
