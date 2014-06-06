@@ -76,9 +76,36 @@ void init_qt(int *argcp, char ***argvp)
 	application = new QApplication(*argcp, *argvp);
 }
 
+QString uiLanguage(QLocale *callerLoc)
+{
+	QSettings s;
+	s.beginGroup("Language");
+	QLocale loc;
+
+	if (!s.value("UseSystemLanguage", true).toBool()) {
+		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
+	}
+
+	QString uiLang = loc.uiLanguages().first();
+	s.endGroup();
+
+	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
+	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
+		QLocale loc2(loc.bcp47Name());
+		loc = loc2;
+		uiLang = loc2.uiLanguages().first();
+	}
+	if (callerLoc)
+		*callerLoc = loc;
+
+	return uiLang;
+}
+
 void init_ui(void)
 {
 	QVariant v;
+	QSettings s;
+
 	// tell Qt to use system proxies
 	// note: on Linux, "system" == "environment variables"
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -102,24 +129,8 @@ void init_ui(void)
 	QCoreApplication::setApplicationName("Subsurface");
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
-
-	QSettings s;
-	s.beginGroup("Language");
 	QLocale loc;
-
-	if (!s.value("UseSystemLanguage", true).toBool()) {
-		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
-	}
-
-	QString uiLang = loc.uiLanguages().first();
-	s.endGroup();
-
-	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
-	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
-		QLocale loc2(loc.bcp47Name());
-		loc = loc2;
-		uiLang = loc2.uiLanguages().first();
-	}
+	QString uiLang = uiLanguage(&loc);
 
 	// we don't have translations for English - if we don't check for this
 	// Qt will proceed to load the second language in preference order - not what we want

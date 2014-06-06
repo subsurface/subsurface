@@ -1,10 +1,12 @@
 #include <QDesktopServices>
 #include <QShortcut>
+#include <QFile>
+#include <QDebug>
 
 #include "usermanual.h"
 #include "ui_usermanual.h"
 
-#include "../helpers.h"
+#include "helpers.h"
 
 UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 	ui(new Ui::UserManual)
@@ -31,7 +33,15 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 	ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
-		QUrl url(searchPath.append("/user-manual.html"));
+		// look for localized versions of the manual first
+		QString lang = uiLanguage(NULL);
+		QString prefix = searchPath.append("/user-manual");
+		QFile manual(prefix + "_" + lang + ".html");
+		if (!manual.exists())
+			manual.setFileName(prefix + "_" + lang.left(2) + ".html");
+		if (!manual.exists())
+			manual.setFileName(prefix + ".html");
+		QUrl url(manual.fileName());
 		ui->webView->setUrl(url);
 	} else {
 		ui->webView->setHtml(tr("Cannot find the Subsurface manual"));

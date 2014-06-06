@@ -32,6 +32,7 @@ int parseTemperatureToMkelvin(const QString &text);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
 QString get_trip_date_string(timestamp_t when, int nr);
+QString uiLanguage(QLocale *callerLoc);
 
 #define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
 
