@@ -146,13 +146,8 @@ contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE NO_USERMANUAL NO_PRINTIN
 #
 !isEmpty(LIBMARBLEDEVEL) {
 	# find it next to our sources
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/graphicsview
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata/parser
-	INCLUDEPATH += $$LIBMARBLEDEVEL/src/lib/marble/geodata/data
-	LIBS += -L$$LIBMARBLEDEVEL/build/src/lib/marble
+	INCLUDEPATH += $$LIBMARBLEDEVEL/include
+	LIBS += -L$$LIBMARBLEDEVEL/lib
 }
 !contains(DEFINES, NO_MARBLE) {
 	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
