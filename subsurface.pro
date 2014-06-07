@@ -259,7 +259,7 @@ MANPAGE = subsurface.1
 XSLT_FILES = xslt
 ICONS_FILES = icons
 DOC_FILES = Documentation/images
-for(MANUAL,USERMANUALS) DOC_FILES += $$OUT_PWD/Docuementation/$$MANUAL
+for(MANUAL,USERMANUALS) DOC_FILES += $$OUT_PWD/Documentation/$$MANUAL
 THEME_FILES = theme
 MARBLEDIR = marbledata/maps marbledata/bitmaps
 
