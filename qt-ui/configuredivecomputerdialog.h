@@ -32,6 +32,8 @@ private slots:
 
 	void on_setDateAndTime_clicked();
 
+	void on_setBrightnessButton_clicked();
+
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 

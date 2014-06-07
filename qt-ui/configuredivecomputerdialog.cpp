@@ -210,3 +210,9 @@ void ConfigureDiveComputerDialog::on_setDateAndTime_clicked()
 	getDeviceData();
 	config->setDeviceDateAndTime(&device_data, QDateTime::currentDateTime());
 }
+
+void ConfigureDiveComputerDialog::on_setBrightnessButton_clicked()
+{
+	getDeviceData();
+	config->setDeviceBrightness(&device_data, ui->brightnessComboBox->currentIndex());
+}

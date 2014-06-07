@@ -56,6 +56,7 @@ public:
 
 	void setDeviceName(device_data_t *data, QString newName);
 	void setDeviceDateAndTime(device_data_t *data, QDateTime dateAndTime);
+	void setDeviceBrightness(device_data_t *data, int brighnessLevel);
 signals:
 	void deviceSettings(QString settings);
 	void message(QString msg);

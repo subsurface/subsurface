@@ -34,6 +34,11 @@ void ConfigureDiveComputer::setDeviceDateAndTime(device_data_t *data, QDateTime 
 	writeSettingToDevice(data, "DateAndTime", dateAndTime);
 }
 
+void ConfigureDiveComputer::setDeviceBrightness(device_data_t *data, int brighnessLevel)
+{
+	writeSettingToDevice(data, "Brightness", brighnessLevel);
+}
+
 void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 {
 	currentState = newState;
@@ -151,6 +156,17 @@ void WriteSettingsThread::run()
 				break;
 			}
 		}
+		if (m_settingName == "Brightness") {
+			switch (dc_device_get_type(data->device)) {
+			case DC_FAMILY_HW_OSTC3:
+				qDebug() << "Brightness";
+				supported = true;
+				unsigned char packet[1] = { m_settingValue.toInt() };
+				result = hw_ostc3_device_config_write(data->device, 0x2D, packet, sizeof (packet));
+				break;
+			}
+		}
+		qDebug() << result;
 		if (result !=  DC_STATUS_SUCCESS) {
 			qDebug() << result;
 			lastError = tr("An error occurred while sending data to the dive computer.");
