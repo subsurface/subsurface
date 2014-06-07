@@ -134,11 +134,10 @@ static enum import_source {
 	UDDF,
 } import_source;
 
-static void divedate(char *buffer, void *_when)
+static void divedate(char *buffer, timestamp_t *when)
 {
 	int d, m, y;
 	int hh, mm, ss;
-	timestamp_t *when = _when;
 
 	hh = 0;
 	mm = 0;
@@ -161,10 +160,9 @@ static void divedate(char *buffer, void *_when)
 	*when = utc_mktime(&cur_tm);
 }
 
-static void divetime(char *buffer, void *_when)
+static void divetime(char *buffer, timestamp_t *when)
 {
 	int h, m, s = 0;
-	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
 		cur_tm.tm_hour = h;
@@ -175,11 +173,10 @@ static void divetime(char *buffer, void *_when)
 }
 
 /* Libdivecomputer: "2011-03-20 10:22:38" */
-static void divedatetime(char *buffer, void *_when)
+static void divedatetime(char *buffer, timestamp_t *when)
 {
 	int y, m, d;
 	int hr, min, sec;
-	timestamp_t *when = _when;
 
 	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
 		   &y, &m, &d, &hr, &min, &sec) == 6) {
@@ -197,9 +194,8 @@ enum ParseState {
 	FINDSTART,
 	FINDEND
 };
-static void divetags(char *buffer, void *_tags)
+static void divetags(char *buffer, struct tag_entry **tags)
 {
-	struct tag_entry **tags = _tags;
 	int i = 0, start = 0, end = 0;
 	enum ParseState state = FINDEND;
 	int len = buffer ? strlen(buffer) : 0;
@@ -283,10 +279,9 @@ static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 	return parse_float(buffer, &res->fp, &end);
 }
 
-static void pressure(char *buffer, void *_press)
+static void pressure(char *buffer, pressure_t *pressure)
 {
 	double mbar = 0.0;
-	pressure_t *pressure = _press;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -318,9 +313,8 @@ static void pressure(char *buffer, void *_press)
 	}
 }
 
-static void salinity(char *buffer, void *_salinity)
+static void salinity(char *buffer, int *salinity)
 {
-	int *salinity = _salinity;
 	union int_or_float val;
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
@@ -331,9 +325,8 @@ static void salinity(char *buffer, void *_salinity)
 	}
 }
 
-static void depth(char *buffer, void *_depth)
+static void depth(char *buffer, depth_t *depth)
 {
-	depth_t *depth = _depth;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -352,9 +345,8 @@ static void depth(char *buffer, void *_depth)
 	}
 }
 
-static void weight(char *buffer, void *_weight)
+static void weight(char *buffer, weight_t *weight)
 {
-	weight_t *weight = _weight;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -373,9 +365,8 @@ static void weight(char *buffer, void *_weight)
 	}
 }
 
-static void temperature(char *buffer, void *_temperature)
+static void temperature(char *buffer, temperature_t *temperature)
 {
-	temperature_t *temperature = _temperature;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -401,11 +392,10 @@ static void temperature(char *buffer, void *_temperature)
 		temperature->mkelvin = 0;
 }
 
-static void sampletime(char *buffer, void *_time)
+static void sampletime(char *buffer, duration_t *time)
 {
 	int i;
 	int min, sec;
-	duration_t *time = _time;
 
 	i = sscanf(buffer, "%d:%d", &min, &sec);
 	switch (i) {
@@ -421,7 +411,7 @@ static void sampletime(char *buffer, void *_time)
 	}
 }
 
-static void duration(char *buffer, void *_time)
+static void duration(char *buffer, duration_t *time)
 {
 	/* DivingLog 5.08 (and maybe other versions) appear to sometimes
 	 * store the dive time as 44.00 instead of 44:00;
@@ -430,16 +420,15 @@ static void duration(char *buffer, void *_time)
 		char *mybuffer = strdup(buffer);
 		char *dot = strchr(mybuffer, '.');
 		*dot = ':';
-		sampletime(mybuffer, _time);
+		sampletime(mybuffer, time);
 		free(mybuffer);
 	} else {
-		sampletime(buffer, _time);
+		sampletime(buffer, time);
 	}
 }
 
-static void percent(char *buffer, void *_fraction)
+static void percent(char *buffer, fraction_t *fraction)
 {
-	fraction_t *fraction = _fraction;
 	double val;
 	const char *end;
 
@@ -464,23 +453,22 @@ static void percent(char *buffer, void *_fraction)
 	}
 }
 
-static void gasmix(char *buffer, void *_fraction)
+static void gasmix(char *buffer, fraction_t *fraction)
 {
 	/* libdivecomputer does negative percentages. */
 	if (*buffer == '-')
 		return;
 	if (cur_cylinder_index < MAX_CYLINDERS)
-		percent(buffer, _fraction);
+		percent(buffer, fraction);
 }
 
-static void gasmix_nitrogen(char *buffer, void *_gasmix)
+static void gasmix_nitrogen(char *buffer, struct gasmix *gasmix)
 {
 	/* Ignore n2 percentages. There's no value in them. */
 }
 
-static void cylindersize(char *buffer, void *_volume)
+static void cylindersize(char *buffer, volume_t *volume)
 {
-	volume_t *volume = _volume;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -511,39 +499,46 @@ static void utf8_string(char *buffer, void *_res)
 	*(char **)_res = res;
 }
 
-#define MATCH(pattern, fn, dest) \
-	match(pattern, strlen(pattern), name, fn, buf, dest)
+#define MATCH(pattern, fn, dest) ({ 			\
+	/* Silly type compatibility test */ 		\
+	if (0) (fn)("test", dest);			\
+	match(pattern, strlen(pattern), name, (matchfn_t) (fn), buf, dest); })
 
-static void get_index(char *buffer, void *_i)
+static void get_index(char *buffer, int *i)
 {
-	int *i = _i;
 	*i = atoi(buffer);
 }
 
-static void get_rating(char *buffer, void *_i)
+static void get_uint8(char *buffer, uint8_t *i)
 {
-	int *i = _i;
+	*i = atoi(buffer);
+}
+
+static void get_bearing(char *buffer, bearing_t *bearing)
+{
+	bearing->degrees = atoi(buffer);
+}
+
+static void get_rating(char *buffer, int *i)
+{
 	int j = atoi(buffer);
 	if (j >= 0 && j <= 5) {
 		*i = j;
 	}
 }
 
-static void double_to_permil(char *buffer, void *_i)
+static void double_to_o2pressure(char *buffer, o2pressure_t *i)
 {
-	int *i = _i;
-	*i = rint(ascii_strtod(buffer, NULL) * 1000.0);
+	i->mbar = rint(ascii_strtod(buffer, NULL) * 1000.0);
 }
 
-static void hex_value(char *buffer, void *_i)
+static void hex_value(char *buffer, uint32_t *i)
 {
-	uint32_t *i = _i;
 	*i = strtoul(buffer, NULL, 16);
 }
 
-static void get_tripflag(char *buffer, void *_tf)
+static void get_tripflag(char *buffer, tripflag_t *tf)
 {
-	tripflag_t *tf = _tf;
 	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
 }
 
@@ -570,9 +565,8 @@ static void get_tripflag(char *buffer, void *_tf)
  * - temperature == 32.0  -> garbage, it's a missing temperature (zero converted from C to F)
  * - temperatures > 32.0 == Fahrenheit
  */
-static void fahrenheit(char *buffer, void *_temperature)
+static void fahrenheit(char *buffer, temperature_t *temperature)
 {
-	temperature_t *temperature = _temperature;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -609,9 +603,8 @@ static void fahrenheit(char *buffer, void *_temperature)
  * have to have some arbitrary cut-off point where we assume
  * that smaller values mean bar.. Not good.
  */
-static void psi_or_bar(char *buffer, void *_pressure)
+static void psi_or_bar(char *buffer, pressure_t *pressure)
 {
-	pressure_t *pressure = _pressure;
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
@@ -635,9 +628,8 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, char *
 	       0;
 }
 
-static void uddf_gasswitch(char *buffer, void *_sample)
+static void uddf_gasswitch(char *buffer, struct sample *sample)
 {
-	struct sample *sample = _sample;
 	int idx = atoi(buffer);
 	int seconds = sample->time.seconds;
 	struct dive *dive = cur_dive;
@@ -656,9 +648,8 @@ static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
 	       0;
 }
 
-static void eventtime(char *buffer, void *_duration)
+static void eventtime(char *buffer, duration_t *duration)
 {
-	duration_t *duration = _duration;
 	sampletime(buffer, duration);
 	if (cur_sample)
 		duration->seconds += cur_sample->time.seconds;
@@ -781,9 +772,8 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	add_event(dc, seconds, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
 }
 
-static void get_cylinderindex(char *buffer, void *_i)
+static void get_cylinderindex(char *buffer, uint8_t *i)
 {
-	int *i = _i;
 	*i = atoi(buffer);
 	if (lastcylinderindex != *i) {
 		add_gas_switch_event(cur_dive, get_dc(), cur_sample->time.seconds, *i);
@@ -791,9 +781,8 @@ static void get_cylinderindex(char *buffer, void *_i)
 	}
 }
 
-static void get_sensor(char *buffer, void *_i)
+static void get_sensor(char *buffer, uint8_t *i)
 {
-	int *i = _i;
 	*i = atoi(buffer);
 	lastsensor = *i;
 }
@@ -832,13 +821,13 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("stopdepth.sample", depth, &sample->stopdepth))
 		return;
-	if (MATCH("cns.sample", get_index, &sample->cns))
+	if (MATCH("cns.sample", get_uint8, &sample->cns))
 		return;
-	if (MATCH("po2.sample", double_to_permil, &sample->po2))
+	if (MATCH("po2.sample", double_to_o2pressure, &sample->po2))
 		return;
-	if (MATCH("heartbeat", get_index, &sample->heartbeat))
+	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
 		return;
-	if (MATCH("bearing", get_index, &sample->bearing))
+	if (MATCH("bearing", get_bearing, &sample->bearing))
 		return;
 
 	switch (import_source) {
@@ -867,9 +856,8 @@ void try_to_fill_userid(const char *name, char *buf)
 
 static const char *country, *city;
 
-static void divinglog_place(char *place, void *_location)
+static void divinglog_place(char *place, char **location)
 {
-	char **location = _location;
 	char buffer[1024], *p;
 	int len;
 
@@ -914,11 +902,10 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
  *
  * There are many variations on that. This handles the useful cases.
  */
-static void uddf_datetime(char *buffer, void *_when)
+static void uddf_datetime(char *buffer, timestamp_t *when)
 {
 	char c;
 	int y, m, d, hh, mm, ss;
-	timestamp_t *when = _when;
 	struct tm tm = { 0 };
 	int i;
 
@@ -951,12 +938,11 @@ success:
 	*when = utc_mktime(&tm);
 }
 
-#define uddf_datedata(name, offset)                        \
-	static void uddf_##name(char *buffer, void *_when) \
-	{                                                  \
-		timestamp_t *when = _when;                 \
-		cur_tm.tm_##name = atoi(buffer) + offset;  \
-		*when = utc_mktime(&cur_tm);               \
+#define uddf_datedata(name, offset)                              \
+	static void uddf_##name(char *buffer, timestamp_t *when) \
+	{                                                        \
+		cur_tm.tm_##name = atoi(buffer) + offset;        \
+		*when = utc_mktime(&cur_tm);                     \
 	}
 
 uddf_datedata(year, 0)
@@ -1026,26 +1012,23 @@ degrees_t parse_degrees(char *buf, char **end)
 	return ret;
 }
 
-static void gps_lat(char *buffer, void *_dive)
+static void gps_lat(char *buffer, struct dive *dive)
 {
 	char *end;
-	struct dive *dive = _dive;
 
 	dive->latitude = parse_degrees(buffer, &end);
 }
 
-static void gps_long(char *buffer, void *_dive)
+static void gps_long(char *buffer, struct dive *dive)
 {
 	char *end;
-	struct dive *dive = _dive;
 
 	dive->longitude = parse_degrees(buffer, &end);
 }
 
-static void gps_location(char *buffer, void *_dive)
+static void gps_location(char *buffer, struct dive *dive)
 {
 	char *end;
-	struct dive *dive = _dive;
 
 	dive->latitude = parse_degrees(buffer, &end);
 	dive->longitude = parse_degrees(end, &end);
