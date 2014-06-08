@@ -90,9 +90,9 @@ void export_worldmap_HTML(const char *file_name, const bool selected_only)
 	struct membuffer buf = { 0 };
 	export(&buf, selected_only);
 
-	f = fopen(file_name, "w+");
+	f = subsurface_fopen(file_name, "w+");
 	if (!f)
-		printf("error"); /*report error*/
+		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
 
 	flush_buffer(&buf, f); /*check for writing errors? */
 	free_buffer(&buf);
