@@ -30,6 +30,22 @@ if [[ $1 == "Qt5" ]] ; then
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		$BASEDIR/../../subsurface.pro
 
+elif [[ $1 == "Qt5debug" ]] ; then
+	shift
+	mingw32-qmake-qt5 \
+		CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw \
+		QMAKE_LRELEASE=/usr/i686-w64-mingw32/bin/qt5/lrelease \
+		QMAKE_MOC=/usr/i686-w64-mingw32/bin/qt5/moc \
+		QMAKE_UIC=/usr/i686-w64-mingw32/bin/qt5/uic \
+		QMAKE_RCC=/usr/i686-w64-mingw32/bin/qt5/rcc \
+		QMAKE_CFLAGS_RELEASE='$$QMAKE_CFLAGS_DEBUG -O0 -g' \
+		QMAKE_CXXFLAGS_RELEASE='$$QMAKE_CXXFLAGS_DEBUG -O0 -g' \
+		LIBDCDEVEL=../libdivecomputer \
+		LIBMARBLEDEVEL=../marble \
+		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
+		V=1 \
+		$BASEDIR/../../subsurface.pro
+
 else
 
 	mingw32-qmake-qt4 \
