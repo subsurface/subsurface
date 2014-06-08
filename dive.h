@@ -302,7 +302,7 @@ struct picture {
 
 extern struct picture *alloc_picture();
 extern void dive_create_picture(struct dive *d, char *filename, int shift_time);
-extern void dive_add_picture(struct dive *d, struct picture *pic);
+extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern void dive_remove_picture(struct dive *d, struct picture *pic);
 extern unsigned int dive_get_picture_count(struct dive *d);
 extern void picture_load_exif_data(struct picture *p);

@@ -2294,16 +2294,14 @@ void dive_create_picture(struct dive *d, char *filename, int shift_time)
 	dive_set_geodata_from_picture(d, p);
 }
 
-void dive_add_picture(struct dive *d, struct picture *picture)
+void dive_add_picture(struct dive *d, struct picture *newpic)
 {
-	if (d->picture_list == NULL) {
-		d->picture_list = picture;
-		return;
-	}
-	struct picture *last = d->picture_list;
-	while( last->next )
-		last = last->next;
-	last->next = picture;
+	struct picture **pic_ptr = &d->picture_list;
+	/* let's keep the list sorted by time */
+	while( *pic_ptr && (*pic_ptr)->timestamp < newpic->timestamp )
+		pic_ptr = &(*pic_ptr)->next;
+	newpic->next = *pic_ptr;
+	*pic_ptr = newpic;
 	return;
 }
 
