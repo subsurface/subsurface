@@ -83,16 +83,8 @@ void DiveEventItem::setupToolTipString()
 	if (value) {
 		if (type == SAMPLE_EVENT_GASCHANGE || type == SAMPLE_EVENT_GASCHANGE2) {
 			struct gasmix *g = get_gasmix_from_event(internalEvent);
-			int he = get_he(g);
-			int o2 = get_o2(g);
-
 			name += ": ";
-			if (he)
-				name += QString("%1/%2").arg(o2).arg(he);
-			else if (o2 == 21) // don't use is_air() as that assumes permille
-				name += tr("air");
-			else
-				name += QString(tr("EAN%1")).arg(o2);
+			name += gasname(g);
 		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {
