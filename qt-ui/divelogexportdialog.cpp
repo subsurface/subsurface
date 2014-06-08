@@ -81,10 +81,8 @@ void DiveLogExportDialog::exportHtmlInit(QString filename)
 	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked());
 
 	QString searchPath = getSubsurfaceDataPath("theme");
-
-	if (searchPath == "") {
-		return;
-	}
+	if (searchPath.isEmpty())
+			return;
 
 	QFile *tmpFile;
 
