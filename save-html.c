@@ -1,5 +1,20 @@
 #include "save-html.h"
 #include "gettext.h"
+#include "stdio.h"
+
+void put_HTML_samples(struct membuffer *b, struct dive *dive)
+{
+	int i;
+	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
+	put_format(b, "\"duration\":%d,", dive->dc.duration.seconds);
+	put_string(b, "\"samples\":\[");
+	struct sample *s = dive->dc.sample;
+	for (i = 0; i < dive->dc.samples; i++) {
+		put_format(b, "[%d,%d],", s->time.seconds, s->depth.mm);
+		s++;
+	}
+	put_string(b, "],");
+}
 
 void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
@@ -103,6 +118,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 	write_attribute(b, "suit", dive->suit);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
+	put_HTML_samples(b, dive);
 	put_string(b, "},\n");
 	(*dive_no)++;
 }
