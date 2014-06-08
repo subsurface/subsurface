@@ -241,9 +241,11 @@ USERMANUALS = \
 	user-manual_es.html
 
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
-all.depends += doc
+all.depends += usermanual
 docclean.commands += $(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation ENABLE_PLANNER=$$ENABLE_PLANNER clean
-QMAKE_EXTRA_TARGETS += doc docclean all
+usermanual.depends += doc
+usermanual.target = $$OUT_PWD/Documentation/user-manual.html
+QMAKE_EXTRA_TARGETS += doc docclean usermanual all
 CLEAN_DEPS += docclean
 
 marbledata.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/marbledata || $(COPY_DIR) $$PWD/marbledata $$OUT_PWD
