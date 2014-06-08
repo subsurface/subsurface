@@ -33,6 +33,12 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 	shadow->setZValue(-2);
 
 	setTransformOriginPoint(boundingRect().width()/2, boundingRect().height()/2);
+
+	qreal angle = qrand() % 5;
+	if (rand() % 2)
+		angle *= -1;
+
+	setRotation(angle);
 }
 
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
