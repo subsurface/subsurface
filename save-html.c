@@ -2,6 +2,48 @@
 #include "gettext.h"
 #include "stdio.h"
 
+void write_attribute(struct membuffer *b, const char *att_name, const char *value)
+{
+	if (!value)
+		value = "--";
+	put_format(b, "\"%s\":\"", att_name);
+	put_HTML_quoted(b, value);
+	put_string(b, "\",");
+}
+
+static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
+{
+	int i, nr;
+
+	nr = nr_cylinders(dive);
+
+	put_string(b, "\"Cylinders\":[");
+
+	for (i = 0; i < nr; i++) {
+		cylinder_t *cylinder = dive->cylinder + i;
+		put_string(b, "{");
+		write_attribute(b, "Type", cylinder->type.description);
+		if (cylinder->type.size.mliter) {
+			put_milli(b, "\"Size\":\"", cylinder->type.size.mliter, " l\",");
+		} else {
+			write_attribute(b, "Size", "--");
+		}
+		put_pressure(b, cylinder->type.workingpressure, "\"WPressure\":\"", " bar\",");
+		put_pressure(b, cylinder->start, "\"SPressure\":\"", " bar\",");
+		put_pressure(b, cylinder->end, "\"EPressure\":\"", " bar\",");
+
+		if (cylinder->gasmix.o2.permille) {
+			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
+		} else {
+			write_attribute(b, "O2", "--");
+		}
+		put_string(b, "},");
+	}
+
+	put_string(b, "],");
+}
+
+
 void put_HTML_samples(struct membuffer *b, struct dive *dive)
 {
 	int i;
@@ -90,15 +132,6 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 	put_string(b, post);
 }
 
-void write_attribute(struct membuffer *b, const char *att_name, const char *value)
-{
-	if (!value)
-		value = "--";
-	put_format(b, "\"%s\":\"", att_name);
-	put_HTML_quoted(b, value);
-	put_string(b, "\",");
-}
-
 void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 {
 	put_string(b, "{");
@@ -118,6 +151,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no)
 	write_attribute(b, "suit", dive->suit);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
+	put_cylinder_HTML(b, dive);
 	put_HTML_samples(b, dive);
 	put_string(b, "},\n");
 	(*dive_no)++;
