@@ -31,7 +31,7 @@ mac {
 
 	datadir = Contents/Resources/share
 	marbledir.path = Contents/Resources/data
-	theme.path = Contents/Resources/data
+	theme.path = Contents/Resources
 	doc.path = $$datadir/Documentation
 	translation.path = Contents/Resources/translations
 	qttranslation.path = Contents/Resources/translations
@@ -62,7 +62,7 @@ mac {
 	deploy.CONFIG += no_check_exist
 	target.path = $$WINDOWSSTAGING
 	marbledir.path = $$WINDOWSSTAGING/data
-	theme.path = $$WINDOWSSTAGING/data
+	theme.path = $$WINDOWSSTAGING
 	INSTALLS += deploy marbledir target doc theme
 
 	translation.path = $$WINDOWSSTAGING/translations

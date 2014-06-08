@@ -102,6 +102,7 @@ Section
     # the DLLs there that we depend on, this is much easier
     File subsurface.exe
     File /r data
+    File /r theme
     File /r images
     File /r plugins
     File /r Documentation
