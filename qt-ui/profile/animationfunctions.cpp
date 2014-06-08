@@ -36,6 +36,16 @@ namespace Animations {
 		}
 	}
 
+	void scaleTo(QObject *obj, qreal scale)
+	{
+		QPropertyAnimation *animation = new QPropertyAnimation(obj, "scale");
+		animation->setDuration(prefs.animation);
+		animation->setStartValue(obj->property("scale").toReal());
+		animation->setEndValue(QVariant::fromValue(scale));
+		animation->setEasingCurve(QEasingCurve::InCubic);
+		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	}
+
 	void moveTo(QObject *obj, const QPointF &pos)
 	{
 		moveTo(obj, pos.x(), pos.y());
