@@ -1301,7 +1301,7 @@ void ProfileWidget2::plotPictures()
 {
 	qDeleteAll(pictures);
 	pictures.clear();
-
+	double x, y, lastX = -1.0, lastY = -1.0;
 	DivePictureModel *m = DivePictureModel::instance();
 	for (int i = 0; i < m->rowCount(); i++) {
 		struct picture *pic  = (struct picture*) m->index(i,1).data(Qt::UserRole).value<void*>();
@@ -1313,8 +1313,14 @@ void ProfileWidget2::plotPictures()
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		qreal x = timeAxis->posAtValue(pic->timestamp - current_dive->when);
-		qreal y = 10;
+		x = timeAxis->posAtValue(pic->timestamp - current_dive->when);
+		if (i == 0)
+			y = 10;
+		else
+			if (fabs(x - lastX) < 4)
+				y = lastY + 3;
+		lastX = x;
+		lastY = y;
 		item->setPos(x, y);
 		item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 		scene()->addItem(item);
