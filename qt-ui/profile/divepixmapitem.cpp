@@ -3,6 +3,7 @@
 
 #include <QPen>
 #include <QBrush>
+#include <QGraphicsDropShadowEffect>
 
 DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {
@@ -22,6 +23,15 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 	rect->setPen(Qt::NoPen);
 	rect->setBrush(QColor(Qt::white));
 	rect->setFlag(ItemStacksBehindParent);
+	rect->setZValue(-1);
+
+	QGraphicsRectItem *shadow = new QGraphicsRectItem(rect->boundingRect(), this);
+	shadow->setPos(5,5);
+	shadow->setPen(Qt::NoPen);
+	shadow->setBrush(QColor(Qt::lightGray));
+	shadow->setFlag(ItemStacksBehindParent);
+	shadow->setZValue(-2);
+
 	setTransformOriginPoint(boundingRect().width()/2, boundingRect().height()/2);
 }
 
