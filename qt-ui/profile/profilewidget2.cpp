@@ -1311,8 +1311,11 @@ void ProfileWidget2::plotPictures()
 			continue;
 		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
-		// TODO: put the item in the correct place. use the pic.timestamp to find where it belongs on the dive.
-		item->setPos(10 ,10);
+		// let's put the picture at the correct time, but at a fixed "depth" on the profile
+		// not sure this is ideal, but it seems to look right.
+		qreal x = timeAxis->posAtValue(pic->timestamp - current_dive->when);
+		qreal y = 10;
+		item->setPos(x, y);
 		item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 		scene()->addItem(item);
 		pictures.push_back(item);
