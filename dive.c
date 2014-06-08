@@ -2272,8 +2272,19 @@ struct picture *alloc_picture()
 	return pic;
 }
 
+static bool new_picture_for_dive(struct dive *d, char *filename)
+{
+	FOR_EACH_PICTURE(d) {
+		if (same_string(picture->filename, filename))
+			return false;
+	}
+	return true;
+}
+
 void dive_create_picture(struct dive *d, char *filename, int shift_time)
 {
+	if (!new_picture_for_dive(d, filename))
+		return;
 	struct picture *p = alloc_picture();
 	p->filename = filename;
 	picture_load_exif_data(p);
