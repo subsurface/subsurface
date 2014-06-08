@@ -14,4 +14,15 @@ public:
 	DivePixmapItem(QObject *parent = 0);
 };
 
+class DivePictureItem : public DivePixmapItem {
+	Q_OBJECT
+	Q_PROPERTY(qreal scale WRITE setScale READ scale)
+public:
+	DivePictureItem(QObject *parent = 0);
+	void setPixmap(const QPixmap& pix);
+protected:
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+};
+
 #endif // DIVEPIXMAPITEM_H

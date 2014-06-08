@@ -43,6 +43,7 @@ class AbstractProfilePolygonItem;
 class DiveHandler;
 class QGraphicsSimpleTextItem;
 class QModelIndex;
+class DivePictureItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -160,7 +161,7 @@ private:
 	//specifics for ADD and PLAN
 	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
-	QList<DivePixmapItem*> pictures;
+	QList<DivePictureItem*> pictures;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;

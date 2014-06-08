@@ -1309,7 +1309,7 @@ void ProfileWidget2::plotPictures()
 		// information area.
 		if (!pic->timestamp)
 			continue;
-		DivePixmapItem *item = new DivePixmapItem();
+		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
 		// TODO: put the item in the correct place. use the pic.timestamp to find where it belongs on the dive.
 		item->setPos(10 ,10);
