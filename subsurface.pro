@@ -242,7 +242,9 @@ USERMANUALS = \
 
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += doc
-QMAKE_EXTRA_TARGETS += doc all
+docclean.commands += $(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation ENABLE_PLANNER=$$ENABLE_PLANNER clean
+QMAKE_EXTRA_TARGETS += doc docclean all
+CLEAN_DEPS += docclean
 
 marbledata.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/marbledata || $(COPY_DIR) $$PWD/marbledata $$OUT_PWD
 all.depends += marbledata
@@ -289,3 +291,7 @@ OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLED
 
 include(subsurface-gen-version.pri)
 include(subsurface-install.pri)
+
+# to build debuggable binaries on Windows, you need something like this
+#QMAKE_CFLAGS_RELEASE=$$QMAKE_CFLAGS_DEBUG -O0 -g
+#QMAKE_CXXFLAGS_RELEASE=$$QMAKE_CXXFLAGS_DEBUG -O0 -g
