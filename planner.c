@@ -369,7 +369,7 @@ struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
 {
 	struct divedatapoint **ldpp, *dp = diveplan->dp;
 	int i = 0;
-	struct gasmix air = { 0 };
+	struct gasmix air = { };
 	ldpp = &diveplan->dp;
 
 	while (dp && i++ < idx) {
