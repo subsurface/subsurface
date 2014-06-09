@@ -333,8 +333,8 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "  <picture filename='");
 	put_string(b, pic->filename);
 	put_string(b, "'");
-	if (pic->timestamp)
-		put_format(b, " timestamp='%ld'", pic->timestamp);
+	if (pic->offset)
+		put_format(b, " offset='%d'", pic->offset);
 	if (pic->latitude.udeg || pic->longitude.udeg) {
 		put_degrees(b, pic->latitude, " gps='", " ");
 		put_degrees(b, pic->longitude, "", "'");
