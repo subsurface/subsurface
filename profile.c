@@ -1230,7 +1230,9 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
-	double depthvalue, tempvalue, speedvalue;
+	double depthvalue, tempvalue, speedvalue, sacvalue;
+	int decimals;
+	const char *unit;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	put_format(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
@@ -1247,9 +1249,9 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (entry->speed > 0)
 		speedvalue *= -1;
 	put_format(b, translate("gettextFromC", "V: %.1f%s\n"), speedvalue, vertical_speed_unit);
-
+	sacvalue = get_volume_units(entry->sac, &decimals, &unit);
 	if (entry->sac && prefs.show_sac)
-		put_format(b, translate("gettextFromC", "SAC: %2.1fl/min\n"), entry->sac / 1000.0);
+		put_format(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), sacvalue, decimals, unit);
 	if (entry->cns)
 		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2)

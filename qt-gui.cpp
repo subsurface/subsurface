@@ -307,10 +307,9 @@ QString get_volume_string(volume_t volume, bool showunit, int mbar)
 
 QString get_volume_unit()
 {
-	if (prefs.units.volume == units::LITER)
-		return "l";
-	else
-		return "cuft";
+	const char *unit;
+	(void) get_volume_units(0, NULL, &unit);
+	return QString(unit);
 }
 
 QString get_pressure_string(pressure_t pressure, bool showunit)

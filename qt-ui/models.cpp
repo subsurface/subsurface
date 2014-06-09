@@ -1258,11 +1258,10 @@ QString DiveItem::displaySac() const
 {
 	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (get_units()->volume == units::LITER)
-		str = QString::number(dive->sac / 1000.0, 'f', 1).append(tr(" l/min"));
-	else
-		str = QString::number(ml_to_cuft(dive->sac), 'f', 2).append(tr(" cuft/min"));
-	return str;
+	const char *unit;
+	int decimal;
+	double value = get_volume_units(dive->sac, &decimal, &unit);
+	return QString::number(value, 'f', decimal).append(unit).append(tr("/min"));
 }
 
 QString DiveItem::displayWeight() const
