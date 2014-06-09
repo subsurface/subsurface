@@ -1246,7 +1246,8 @@ void MainWindow::on_profNdl_tts_clicked(bool triggered)
 }
 void MainWindow::turnOffNdlTts()
 {
-	const bool triggered = prefs.calcndltts = false;
+	const bool triggered = false;
+	prefs.calcndltts = triggered;
 	TOOLBOX_PREF_PROFILE(calcndltts);
 }
 
