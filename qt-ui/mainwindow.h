@@ -169,6 +169,8 @@ private:
 	QString filter();
 	static MainWindow *m_Instance;
 	bool askSaveChanges();
+	bool okToClose(QString message);
+	void closeCurrentFile();
 	void writeSettings();
 	int file_save();
 	int file_save_as();

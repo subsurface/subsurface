@@ -175,16 +175,14 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before opening a new file."));
+	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
-	}
+
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastUsedDir(), filter());
 	if (filename.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(filename).dir().path());
-	on_actionClose_triggered();
+	closeCurrentFile();
 	loadFiles(QStringList() << filename);
 }
 
@@ -234,16 +232,21 @@ void MainWindow::setToolButtonsEnabled(bool enabled)
 	ui.profHR->setEnabled(enabled);
 }
 
-void MainWindow::on_actionClose_triggered()
+bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 	    ui.InfoWidget->isEditing()) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before closing the file."));
-		return;
+		QMessageBox::warning(this, tr("Warning"), message);
+		return false;
 	}
-	if (unsaved_changes() && (askSaveChanges() == false))
-		return;
+	if (unsaved_changes() && askSaveChanges() == false)
+		return false;
 
+	return true;
+}
+
+void MainWindow::closeCurrentFile()
+{
 	ui.newProfile->setEmptyState();
 	/* free the dives and trips */
 	clear_git_id();
@@ -261,6 +264,12 @@ void MainWindow::on_actionClose_triggered()
 	mark_divelist_changed(false);
 
 	clear_events();
+}
+
+void MainWindow::on_actionClose_triggered()
+{
+	if (okToClose(tr("Please save or cancel the current dive edit before closing the file.")))
+		closeCurrentFile();
 }
 
 QString MainWindow::lastUsedDir()
@@ -1001,12 +1010,15 @@ void MainWindow::recentFileTriggered(bool checked)
 {
 	Q_UNUSED(checked);
 
+	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
+		return;
+
 	QAction *actionRecent = (QAction *)sender();
 
 	const QString &filename = actionRecent->toolTip();
 
 	updateLastUsedDir(QFileInfo(filename).dir().path());
-	on_actionClose_triggered();
+	closeCurrentFile();
 	loadFiles(QStringList() << filename);
 }
 
