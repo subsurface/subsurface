@@ -59,7 +59,7 @@ const char *getSetting(QSettings &s, QString name)
 	return NULL;
 }
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && QT_VERSION < 0x050000
 static QByteArray encodeUtf8(const QString &fname)
 {
 	return fname.toUtf8();
