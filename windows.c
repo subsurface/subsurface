@@ -2,6 +2,7 @@
 /* implements Windows specific functions */
 #include "dive.h"
 #include "display.h"
+#undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
 #include <windows.h>
 #include <shlobj.h>
