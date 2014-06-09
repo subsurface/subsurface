@@ -98,6 +98,7 @@ static struct divecomputer *cur_dc;
 static struct dive *cur_dive;
 static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
+static struct picture *cur_picture;
 static struct {
 	int active;
 	duration_t time;
@@ -1034,6 +1035,14 @@ static void gps_location(char *buffer, struct dive *dive)
 	dive->longitude = parse_degrees(end, &end);
 }
 
+static void gps_picture_location(char *buffer, struct picture *pic)
+{
+	char *end;
+
+	pic->latitude = parse_degrees(buffer, &end);
+	pic->longitude = parse_degrees(end, &end);
+}
+
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
@@ -1073,6 +1082,12 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (match_dc_data_fields(&dive->dc, name, buf))
 		return;
 
+	if (MATCH("filename.picture", utf8_string, &cur_picture->filename))
+		return;
+	if (MATCH("offset.picture", get_index, &cur_picture->offset))
+		return;
+	if (MATCH("gps.picture", gps_picture_location, cur_picture))
+		return;
 	if (MATCH("cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
 	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))
@@ -1282,6 +1297,17 @@ static void event_end(void)
 		free((void *)cur_event.name);
 	}
 	cur_event.active = 0;
+}
+
+static void picture_start(void)
+{
+	cur_picture = alloc_picture();
+}
+
+static void picture_end(void)
+{
+	dive_add_picture(cur_dive, cur_picture);
+	cur_picture = NULL;
 }
 
 static void cylinder_start(void)
@@ -1523,6 +1549,7 @@ static struct nesting {
 	  { "divecomputer", divecomputer_start, divecomputer_end },
 	  { "P", sample_start, sample_end },
 	  { "userid", userid_start, userid_stop},
+	  { "picture", picture_start, picture_end },
 
 	  /* Import type recognition */
 	  { "Divinglog", DivingLog_importer },
