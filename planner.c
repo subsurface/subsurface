@@ -651,7 +651,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				snprintf(buffer + len, sizeof(buffer) - len,
 					 translate("gettextFromC", "<span style='color: red;'>Warning:</span> "
 						   "high pO2 value %.2f at %d:%02u with gas %s at depth %.*f %s<br>"),
-					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), depth_value, decimals, depth_unit);
+					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), decimals, depth_value, depth_unit);
 			}
 		}
 		dp = dp->next;

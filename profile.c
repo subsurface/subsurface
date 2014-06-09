@@ -1251,7 +1251,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	put_format(b, translate("gettextFromC", "V: %.1f%s\n"), speedvalue, vertical_speed_unit);
 	sacvalue = get_volume_units(entry->sac, &decimals, &unit);
 	if (entry->sac && prefs.show_sac)
-		put_format(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), sacvalue, decimals, unit);
+		put_format(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), decimals, sacvalue, unit);
 	if (entry->cns)
 		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2)
