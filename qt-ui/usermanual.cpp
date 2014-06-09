@@ -41,8 +41,13 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 			manual.setFileName(prefix + "_" + lang.left(2) + ".html");
 		if (!manual.exists())
 			manual.setFileName(prefix + ".html");
-		QUrl url(manual.fileName());
-		ui->webView->setUrl(url);
+		if (!manual.exists()) {
+			ui->webView->setHtml(tr("Cannot find the Subsurface manual"));
+		} else {
+			QString urlString = QString("file:///") + manual.fileName();
+			QUrl url(urlString, QUrl::TolerantMode);
+			ui->webView->setUrl(url);
+		}
 	} else {
 		ui->webView->setHtml(tr("Cannot find the Subsurface manual"));
 	}
