@@ -341,7 +341,7 @@ function sort_it(sortOn,function_){
 	var res = new Array();
 	var visited = new Array(itemsToShow.length);
 	for(var j=0;j<itemsToShow.length;j++){
-		visited[j]=0;
+		visited[j]=false;
 	}
 	for(var i=0;i< itemsToShow.length ;i++){
 		for(var j=0;j<itemsToShow.length;j++)
