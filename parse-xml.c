@@ -1084,7 +1084,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH("filename.picture", utf8_string, &cur_picture->filename))
 		return;
-	if (MATCH("offset.picture", get_index, &cur_picture->offset))
+	if (MATCH("offset.picture", sampletime, &cur_picture->offset))
 		return;
 	if (MATCH("gps.picture", gps_picture_location, cur_picture))
 		return;
@@ -1295,7 +1295,7 @@ static void event_end(void)
 			if (cur_event.type == 123) {
 				struct picture *pic = alloc_picture();
 				pic->filename = strdup(cur_event.name);
-				pic->offset = cur_event.time.seconds;
+				pic->offset = cur_event.time;
 				dive_add_picture(cur_dive, pic);
 			} else {
 				add_event(dc, cur_event.time.seconds,

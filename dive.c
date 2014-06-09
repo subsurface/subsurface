@@ -2290,7 +2290,7 @@ void dive_create_picture(struct dive *d, char *filename, int shift_time)
 	p->filename = filename;
 	picture_load_exif_data(p, &timestamp);
 	if (timestamp)
-		p->offset = timestamp - d->when + shift_time;
+		p->offset.seconds = timestamp - d->when + shift_time;
 	dive_add_picture(d, p);
 	dive_set_geodata_from_picture(d, p);
 }
@@ -2299,7 +2299,7 @@ void dive_add_picture(struct dive *d, struct picture *newpic)
 {
 	struct picture **pic_ptr = &d->picture_list;
 	/* let's keep the list sorted by time */
-	while( *pic_ptr && (*pic_ptr)->offset < newpic->offset )
+	while( *pic_ptr && (*pic_ptr)->offset.seconds < newpic->offset.seconds )
 		pic_ptr = &(*pic_ptr)->next;
 	newpic->next = *pic_ptr;
 	*pic_ptr = newpic;

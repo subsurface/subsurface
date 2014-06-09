@@ -1307,13 +1307,13 @@ void ProfileWidget2::plotPictures()
 		struct picture *pic  = (struct picture*) m->index(i,1).data(Qt::UserRole).value<void*>();
 		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
 		// information area.
-		if (!pic->offset)
+		if (!pic->offset.seconds)
 			continue;
 		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(pic->offset);
+		x = timeAxis->posAtValue(pic->offset.seconds);
 		if (i == 0)
 			y = 10;
 		else
