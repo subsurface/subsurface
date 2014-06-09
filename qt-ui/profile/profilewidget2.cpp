@@ -61,11 +61,12 @@ static struct _ItemPos {
 } itemPos;
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
-	dataModel(new DivePlotDataModel(this)),
 	currentState(INVALID),
+	dataModel(new DivePlotDataModel(this)),
 	zoomLevel(0),
 	zoomFactor(1.15),
 	background(new DivePixmapItem()),
+	backgroundFile(":poster"),
 	toolTipItem(new ToolTipItem()),
 	isPlotZoomed(prefs.zoomed_plot),
 	profileYAxis(new DepthAxis()),
@@ -88,8 +89,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	rulerItem(new RulerItem2()),
 	isGrayscale(false),
 	printMode(false),
-	shouldCalculateMaxTime(true),
-	backgroundFile(":poster")
+	shouldCalculateMaxTime(true)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
