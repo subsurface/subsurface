@@ -663,7 +663,8 @@ void MainTab::acceptChanges()
 				}
 			}
 		}
-		if (ui.coordinates->isModified()) {
+		if (editedDive.latitude.udeg != current_dive->latitude.udeg ||
+		    editedDive.longitude.udeg != current_dive->longitude.udeg) {
 			EDIT_SELECTED_DIVES(gpsHasChanged(mydive, cd, ui.coordinates->text(), 0));
 		}
 		if (tagsChanged(&editedDive, cd))
