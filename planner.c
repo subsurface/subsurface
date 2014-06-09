@@ -692,7 +692,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	bool stopping = false;
 	bool clear_to_ascend;
 	int clock, previous_point_time;
-	int avg_depth, bottom_time;
+	int avg_depth, bottom_time = 0;
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas;
