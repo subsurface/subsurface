@@ -11,7 +11,11 @@ DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixm
 
 DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	setAcceptsHoverEvents(true);
+#else
+	setAcceptHoverEvents(true);
+#endif
 	setScale(0.2);
 }
 
