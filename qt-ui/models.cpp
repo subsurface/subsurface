@@ -538,7 +538,7 @@ volume_t string_to_volume(const char *str, pressure_t workp)
 	QString local_cuft = CylindersModel::tr("cuft");
 	volume_t volume;
 
-	if (rest.startsWith("l") || rest.startsWith(local_l))
+	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))
 		goto l;
 	if (rest.startsWith("cuft") || rest.startsWith(local_cuft))
 		goto cuft;
