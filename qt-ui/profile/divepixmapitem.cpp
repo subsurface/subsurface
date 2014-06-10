@@ -48,9 +48,11 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 1.0);
+	this->setZValue(5);
 }
 
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 0.2);
+	this->setZValue(0);
 }
