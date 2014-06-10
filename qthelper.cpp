@@ -305,7 +305,7 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 			}
 	}
 	Q_FOREACH(gas, gasUsed.keys()) {
-		gasUsedOrdered.append(QPair<QString, int>(gas, gasUsed[gas]));
+		gasUsedOrdered.append(qMakePair(gas, gasUsed[gas]));
 	}
 	qSort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
 }
