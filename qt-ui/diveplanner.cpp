@@ -302,8 +302,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 void DivePlannerWidget::settingsChanged()
 {
-	ui.gflow->setValue(prefs.gflow);
-	ui.gfhigh->setValue(prefs.gfhigh);
+	// right now there's nothing special we do when settings change
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
