@@ -530,6 +530,23 @@ void MainTab::updateDiveInfo(int dive)
 		ui.timeLimits->setAverage(get_time_string(seconds, 0));
 		ui.timeLimits->setMaximum(get_time_string(stats_selection.longest_time.seconds, 0));
 		ui.timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
+		// now let's get some gas use statistics
+		QVector<QPair<QString, int> > gasUsed;
+		QString gasUsedString;
+		QPair<QString, int> topGases[8] = { };
+		volume_t vol;
+		selectedDivesGasUsed(gasUsed);
+		for (int j = 0; j < 8; j++) {
+			if (gasUsed.isEmpty())
+				break;
+			QPair<QString, int> gasPair = gasUsed.last();
+			gasUsed.pop_back();
+			vol.mliter = gasPair.second;
+			gasUsedString.append(gasPair.first).append(": ").append(get_volume_string(vol, true)).append("\n");
+		}
+		if (!gasUsed.isEmpty())
+			gasUsedString.append("...");
+		ui.gasConsumption->setText(gasUsedString);
 	} else {
 		/* clear the fields */
 		clearInfo();

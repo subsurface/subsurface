@@ -1,11 +1,12 @@
 #include "qthelper.h"
 #include "qt-gui.h"
 #include "dive.h"
+#include "statistics.h"
 #include <exif.h>
 #include "file.h"
 #include <QRegExp>
 #include <QDir>
-
+#include <QMap>
 #include <QDebug>
 #include <QSettings>
 #include <libxslt/documents.h>
@@ -279,4 +280,32 @@ extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp
 	picture_load_exit:
 		free(mem.buffer);
 		return;
+}
+
+static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
+{
+	return a.second < b.second;
+}
+
+void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
+{
+	int i, j;
+	struct dive *d;
+	QString gas;
+	QMap<QString, int> gasUsed;
+	for_each_dive (i, d) {
+		if (!d->selected)
+			continue;
+		volume_t diveGases[MAX_CYLINDERS] = {};
+		get_gas_used(d, diveGases);
+		for (j = 0; j < MAX_CYLINDERS; j++)
+			if (diveGases[j].mliter) {
+				QString gasName = gasname(&d->cylinder[j].gasmix);
+				gasUsed[gasName] += diveGases[j].mliter;
+			}
+	}
+	Q_FOREACH(gas, gasUsed.keys()) {
+		gasUsedOrdered.append(QPair<QString, int>(gas, gasUsed[gas]));
+	}
+	qSort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
 }
