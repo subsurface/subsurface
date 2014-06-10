@@ -7,9 +7,8 @@
 #include "../display.h"
 #include "../divelist.h"
 #include "configuredivecomputer.h"
-#include <QInputDialog>
-#include <QDebug>
-
+#include <QFileDialog>
+#include <QMessageBox>
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
@@ -126,6 +125,15 @@ void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
 		ui->device->setCurrentIndex(deviceIndex);
 }
 
+void ConfigureDiveComputerDialog::populateDeviceDetails()
+{
+	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
+	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
+	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
+	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
+}
+
 void ConfigureDiveComputerDialog::on_vendor_currentIndexChanged(const QString &vendor)
 {
 	int dcType = DC_TYPE_SERIAL;
@@ -200,11 +208,7 @@ void ConfigureDiveComputerDialog::deviceReadFinished()
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 {
-	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
-	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
-	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
-	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
-	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
+	populateDeviceDetails();
 	getDeviceData();
 	config->saveDeviceDetails(deviceDetails, &device_data);
 }
@@ -225,3 +229,29 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
 }
 
+
+void ConfigureDiveComputerDialog::on_backupButton_clicked()
+{
+	QString filename = existing_filename ?: prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
+	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup Dive Computer Settings"),
+							filename, tr("Backup files (*.xml)")
+							);
+	if (!backupPath.isEmpty()) {
+		populateDeviceDetails();
+		getDeviceData();
+		QString errorText = "";
+		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data, errorText)) {
+			QMessageBox::critical(this, tr("XML Backup Error"),
+					      tr("An eror occurred while saving the backup file.\n%1")
+					      .arg(errorText)
+					      );
+		} else {
+			QMessageBox::information(this, tr("Backup succeeded"),
+						 tr("Your settings have been saved to: %1")
+						 .arg(filename)
+						 );
+		}
+	}
+}

@@ -30,7 +30,7 @@ public:
 	device_data_t *m_data;
 	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
-
+	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data, QString errorText);
 signals:
 	void message(QString msg);
 	void error(QString err);

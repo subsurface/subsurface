@@ -31,6 +31,8 @@ private slots:
 	void on_saveSettingsPushButton_clicked();
 	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
 	void reloadValues();
+	void on_backupButton_clicked();
+
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 
@@ -48,6 +50,7 @@ private:
 	void fill_device_list(int dc_type);
 
 	DeviceDetails *deviceDetails;
+	void populateDeviceDetails();
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H
