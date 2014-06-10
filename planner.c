@@ -697,7 +697,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	int best_first_ascend_cylinder;
 	struct gasmix gas;
 
-	set_gf(diveplan->gflow, diveplan->gfhigh, default_prefs.gf_low_at_maxdepth);
+	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	if (*divep)
