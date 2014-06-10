@@ -8,6 +8,7 @@
 #include "../divelist.h"
 #include "configuredivecomputer.h"
 #include <QInputDialog>
+#include <QDebug>
 
 struct product {
 	const char *product;
@@ -43,6 +44,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	connect (config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect (config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
 	connect (config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
+	connect (config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
+		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
 
 	fill_computer_list();
 
@@ -159,7 +162,7 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui->errorLabel->clear();
 
 	getDeviceData();
-	config->readSettings(deviceDetails, &device_data);
+	config->readSettings(&device_data);
 }
 
 void ConfigureDiveComputerDialog::configMessage(QString msg)
@@ -183,8 +186,6 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	set_default_dive_computer(device_data.vendor, device_data.product);
 	set_default_dive_computer_device(device_data.devname);
-
-	//deviceDetails->setData(&device_data);
 }
 
 void ConfigureDiveComputerDialog::on_cancel_clicked()
@@ -194,11 +195,32 @@ void ConfigureDiveComputerDialog::on_cancel_clicked()
 
 void ConfigureDiveComputerDialog::deviceReadFinished()
 {
-	ui->brightnessComboBox->setCurrentIndex(config->m_deviceDetails->brightness());
+
 }
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 {
-	config->saveDeviceDetails();
+	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
+	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
+	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
+	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	getDeviceData();
+	config->saveDeviceDetails(deviceDetails, &device_data);
+}
+
+void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails *newDeviceDetails)
+{
+	deviceDetails = newDeviceDetails;
+	reloadValues();
+}
+
+void ConfigureDiveComputerDialog::reloadValues()
+{
+	ui->serialNoLineEdit->setText(deviceDetails->serialNo());
+	ui->firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
+	ui->customTextLlineEdit->setText(deviceDetails->customText());
+	ui->brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
+	ui->languageComboBox->setCurrentIndex(deviceDetails->language());
+	ui->dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
 }
 

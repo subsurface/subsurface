@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>343</width>
-    <height>365</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,12 +93,8 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Brightness:</string>
-       </property>
-      </widget>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="customTextLlineEdit"/>
      </item>
      <item row="3" column="1">
       <widget class="QComboBox" name="brightnessComboBox">
@@ -119,10 +115,10 @@
        </item>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="serialNoLineEdit">
-       <property name="readOnly">
-        <bool>true</bool>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Firmware Version:</string>
        </property>
       </widget>
      </item>
@@ -150,20 +146,17 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="customTextLlineEdit"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Language:</string>
+        <string>Brightness:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Serial No.</string>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="serialNoLineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -174,10 +167,17 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_8">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Firmware Version:</string>
+        <string>Serial No.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Language:</string>
        </property>
       </widget>
      </item>
@@ -186,6 +186,32 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Date Format:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="dateFormatComboBox">
+       <item>
+        <property name="text">
+         <string>MMDDYY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DDMMYY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>YYMMDD</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

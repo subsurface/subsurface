@@ -13,7 +13,7 @@ class ConfigureDiveComputer : public QObject
 	Q_OBJECT
 public:
 	explicit ConfigureDiveComputer(QObject *parent = 0);
-	void readSettings(DeviceDetails *deviceDetails, device_data_t *data);
+	void readSettings(device_data_t *data);
 
 	enum states {
 			INITIAL,
@@ -27,9 +27,8 @@ public:
 
 	QString lastError;
 	states currentState;
-	DeviceDetails *m_deviceDetails;
 	device_data_t *m_data;
-	void saveDeviceDetails();
+	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
 
 signals:
@@ -38,6 +37,7 @@ signals:
 	void readFinished();
 	void writeFinished();
 	void stateChanged(states newState);
+	void deviceDetailsChanged(DeviceDetails *newDetails);
 
 private:
 	ReadSettingsThread *readThread;

@@ -11,31 +11,29 @@
 class ReadSettingsThread : public QThread {
 	Q_OBJECT
 public:
-	ReadSettingsThread(QObject *parent, DeviceDetails *deviceDetails, device_data_t *data);
+	ReadSettingsThread(QObject *parent, device_data_t *data);
 	virtual void run();
 	QString result;
 	QString lastError;
 signals:
 	void error(QString err);
+	void devicedetails(DeviceDetails *newDeviceDetails);
 private:
-	DeviceDetails *m_deviceDetails;
 	device_data_t *m_data;
 };
 
 class WriteSettingsThread : public QThread {
 	Q_OBJECT
 public:
-	WriteSettingsThread(QObject *parent, DeviceDetails *deviceDetails, QString settingName, QVariant settingValue);
+	WriteSettingsThread(QObject *parent, device_data_t *data);
+	void setDeviceDetails(DeviceDetails *details);
 	virtual void run();
 	QString result;
 	QString lastError;
 signals:
 	void error(QString err);
 private:
-	device_data_t *data;
-	QString m_settingName;
-	QVariant m_settingValue;
-
+	device_data_t *m_data;
 	DeviceDetails *m_deviceDetails;
 };
 

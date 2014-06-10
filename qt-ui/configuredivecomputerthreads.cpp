@@ -2,8 +2,8 @@
 #include "libdivecomputer/hw.h"
 #include <QDebug>
 
-ReadSettingsThread::ReadSettingsThread(QObject *parent, DeviceDetails *deviceDetails, device_data_t *data)
-	: QThread(parent), m_deviceDetails(deviceDetails), m_data(data)
+ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
+	: QThread(parent), m_data(data)
 {
 
 }
@@ -14,6 +14,7 @@ void ReadSettingsThread::run()
 	dc_status_t rc;
 	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
+		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
@@ -25,7 +26,8 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setLanguage(0);
 			m_deviceDetails->setLastDeco(0);
 			m_deviceDetails->setSerialNo("");
-			unsigned char uData[1];
+			//Read general settings
+			unsigned char uData[1] = {0};
 			rc = hw_ostc3_device_config_read(m_data->device, 0x2D, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setBrightness(uData[0]);
@@ -35,6 +37,20 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, 0x33, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setDateFormat(uData[0]);
+
+			//read firmware settings
+			unsigned char fData[64] = {0};
+			rc = hw_ostc3_device_version (m_data->device, fData, sizeof (fData));
+			if (rc == DC_STATUS_SUCCESS) {
+				int serial = fData[0] + (fData[1] << 8);
+				m_deviceDetails->setSerialNo(QString::number(serial));
+				int fw = (fData[2] << 8) + fData[3];
+				m_deviceDetails->setFirmwareVersion(QString::number(fw));
+				QByteArray ar((char *)fData + 4, 60);
+				m_deviceDetails->setCustomText(ar.trimmed());
+			}
+
+			emit devicedetails(m_deviceDetails);
 			break;
 
 		}
@@ -51,31 +67,46 @@ void ReadSettingsThread::run()
 	}
 }
 
-WriteSettingsThread::WriteSettingsThread(QObject *parent, DeviceDetails *deviceDetails, QString settingName, QVariant settingValue)
-	: QThread(parent), m_deviceDetails(deviceDetails), m_settingName(settingName), m_settingValue(settingValue)
-{
+WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data)
+	: QThread(parent), m_data(data) {
 
+}
+
+void WriteSettingsThread::setDeviceDetails(DeviceDetails *details)
+{
+	m_deviceDetails = details;
 }
 
 void WriteSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
+	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	if (rc == DC_STATUS_SUCCESS) {
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_HW_OSTC3:
+			supported = true;
+			//write general settings
+			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
+			unsigned char data[1] = {0};
+			data[0] = m_deviceDetails->brightness();
+			hw_ostc3_device_config_write(m_data->device, 0x2D, data, sizeof(data));
+			data[0] = m_deviceDetails->language();
+			hw_ostc3_device_config_write(m_data->device, 0x32, data, sizeof(data));
+			data[0] = m_deviceDetails->dateFormat();
+			hw_ostc3_device_config_write(m_data->device, 0x33, data, sizeof(data));
+			break;
 
-	switch (dc_device_get_type(data->device)) {
-	case DC_FAMILY_HW_OSTC3:
-		rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
-		if (rc == DC_STATUS_SUCCESS) {
-
-		} else {
-			lastError = tr("Could not a establish connection to the dive computer.");
-			emit error(lastError);
 		}
-		break;
+		dc_device_close(m_data->device);
 
 		if (!supported) {
 			lastError = tr("This feature is not yet available for the selected dive computer.");
 			emit error(lastError);
 		}
+	}
+	else {
+		lastError = tr("Could not a establish connection to the dive computer.");
+		emit error(lastError);
 	}
 }

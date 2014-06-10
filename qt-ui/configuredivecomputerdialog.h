@@ -29,6 +29,8 @@ private slots:
 	void on_cancel_clicked();
 	void deviceReadFinished();
 	void on_saveSettingsPushButton_clicked();
+	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
+	void reloadValues();
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 
