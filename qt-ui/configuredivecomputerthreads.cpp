@@ -1,6 +1,7 @@
 #include "configuredivecomputerthreads.h"
 #include "libdivecomputer/hw.h"
 #include <QDebug>
+#include <QDateTime>
 
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 	: QThread(parent), m_data(data)
@@ -95,6 +96,20 @@ void WriteSettingsThread::run()
 			hw_ostc3_device_config_write(m_data->device, 0x32, data, sizeof(data));
 			data[0] = m_deviceDetails->dateFormat();
 			hw_ostc3_device_config_write(m_data->device, 0x33, data, sizeof(data));
+
+			//sync date and time
+			if (m_deviceDetails->syncTime()) {
+				QDateTime timeToSet = QDateTime::currentDateTime();
+				dc_datetime_t time;
+				time.year = timeToSet.date().year();
+				time.month = timeToSet.date().month();
+				time.day = timeToSet.date().day();
+				time.hour = timeToSet.time().hour();
+				time.minute = timeToSet.time().minute();
+				time.second = timeToSet.time().second();
+				hw_ostc3_device_clock(m_data->device, &time);
+			}
+
 			break;
 
 		}

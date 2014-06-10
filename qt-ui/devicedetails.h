@@ -38,6 +38,9 @@ public:
 	int lastDeco() const;
 	void setLastDeco(int lastDeco);
 
+	bool syncTime() const;
+	void setSyncTime(bool syncTime);
+
 private:
 	device_data_t *m_data;
 	QString m_serialNo;
@@ -48,6 +51,7 @@ private:
 	int m_language;
 	int m_dateFormat;
 	int m_lastDeco;
+	bool m_syncTime;
 };
 
 

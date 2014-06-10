@@ -204,6 +204,7 @@ void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
 	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
 	getDeviceData();
 	config->saveDeviceDetails(deviceDetails, &device_data);
 }

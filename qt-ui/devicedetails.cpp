@@ -86,3 +86,13 @@ void DeviceDetails::setLastDeco(int lastDeco)
 {
 	m_lastDeco = lastDeco;
 }
+bool DeviceDetails::syncTime() const
+{
+	return m_syncTime;
+}
+
+void DeviceDetails::setSyncTime(bool syncTime)
+{
+	m_syncTime = syncTime;
+}
+
