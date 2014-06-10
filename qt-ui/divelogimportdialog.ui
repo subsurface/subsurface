@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>515</width>
-    <height>370</height>
+    <width>522</width>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,27 +20,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label_3">
-     <property name="font">
-      <font>
-       <family>Droid Sans [unknown]</family>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="text">
-      <string>Import CSV Dive Log Files</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -49,651 +28,488 @@
       <attribute name="title">
        <string>CSV options</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>10</y>
-         <width>281</width>
-         <height>65</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Field Separator</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QComboBox" name="CSVSeparator"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>80</y>
-         <width>281</width>
-         <height>65</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>Pre-configured imports</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QComboBox" name="knownImports">
-          <property name="currentIndex">
-           <number>-1</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>185</width>
-         <height>246</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>Field Configuration</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="3" column="1">
-         <widget class="QSpinBox" name="CSVpo2">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="CSVDepth">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSpinBox" name="CSVTemperature">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Depth</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QSpinBox" name="CSVstopdepth">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="stopdepthCheckBox">
-          <property name="text">
-           <string>Stopdepth</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="po2CheckBox">
-          <property name="text">
-           <string>PO2</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="temperatureCheckBox">
-          <property name="text">
-           <string>Temp</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="CSVTime">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QSpinBox" name="CSVcns">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="cnsCheckBox">
-          <property name="text">
-           <string>Cns</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-       <zorder>label</zorder>
-       <zorder>label_2</zorder>
-       <zorder>CSVTime</zorder>
-       <zorder>CSVDepth</zorder>
-       <zorder>temperatureCheckBox</zorder>
-       <zorder>CSVTemperature</zorder>
-       <zorder>po2CheckBox</zorder>
-       <zorder>CSVpo2</zorder>
-       <zorder>cnsCheckBox</zorder>
-       <zorder>CSVcns</zorder>
-       <zorder>stopdepthCheckBox</zorder>
-       <zorder>CSVstopdepth</zorder>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_7">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>150</y>
-         <width>271</width>
-         <height>80</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Units</string>
-       </property>
-       <widget class="QComboBox" name="CSVUnits">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>30</y>
-          <width>251</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <item>
-         <property name="text">
-          <string>Metric</string>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0" rowspan="3">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Imperial</string>
+         <property name="title">
+          <string>Field Configuration</string>
          </property>
-        </item>
-       </widget>
-      </widget>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="CSVpo2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="CSVDepth">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="CSVTemperature">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Depth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="CSVstopdepth">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="stopdepthCheckBox">
+            <property name="text">
+             <string>Stopdepth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="po2CheckBox">
+            <property name="text">
+             <string>PO2</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Time</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="temperatureCheckBox">
+            <property name="text">
+             <string>Temp</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="CSVTime">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="CSVcns">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="cnsCheckBox">
+            <property name="text">
+             <string>Cns</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+         <zorder>label</zorder>
+         <zorder>label_2</zorder>
+         <zorder>CSVTime</zorder>
+         <zorder>CSVDepth</zorder>
+         <zorder>temperatureCheckBox</zorder>
+         <zorder>CSVTemperature</zorder>
+         <zorder>po2CheckBox</zorder>
+         <zorder>CSVpo2</zorder>
+         <zorder>cnsCheckBox</zorder>
+         <zorder>CSVcns</zorder>
+         <zorder>stopdepthCheckBox</zorder>
+         <zorder>CSVstopdepth</zorder>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Field Separator</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QComboBox" name="CSVSeparator"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Pre-configured imports</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QComboBox" name="knownImports">
+            <property name="currentIndex">
+             <number>-1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Units</string>
+         </property>
+         <widget class="QComboBox" name="CSVUnits">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>251</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <item>
+           <property name="text">
+            <string>Metric</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Imperial</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
        <string>Manual dives</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>331</width>
-         <height>231</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Field Configuration</string>
-       </property>
-       <widget class="QCheckBox" name="DiveNumberCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>32</y>
-          <width>81</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Dive #</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="DateCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>67</y>
-          <width>71</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Date</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="TimeCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>102</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Time</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="DurationCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>137</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Duration</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="TagsCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>207</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Tags</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="LocationCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>172</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Location</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="GpsCheck">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>207</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Gps</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="MaxDepthCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>32</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Max depth</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="MeanDepthCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>67</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Mean depth</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="BuddyCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>102</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Buddy</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="NotesCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>137</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Notes</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="WeightCheck">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>172</y>
-          <width>94</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Weight</string>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="DiveNumber">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>30</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Date">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>65</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Time">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>100</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Duration">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>135</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Location">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>170</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Gps">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>205</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="MaxDepth">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>30</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Buddy">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>100</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Weight">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>170</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Tags">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>205</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="Notes">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>135</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="MeanDepth">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>65</y>
-          <width>56</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="geometry">
-        <rect>
-         <x>360</x>
-         <y>10</y>
-         <width>120</width>
-         <height>80</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Field Separator</string>
-       </property>
-       <widget class="QComboBox" name="ManualSeparator">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>85</width>
-          <height>29</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_6">
-       <property name="geometry">
-        <rect>
-         <x>360</x>
-         <y>100</y>
-         <width>120</width>
-         <height>80</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Units</string>
-       </property>
-       <widget class="QComboBox" name="Units">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>85</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <item>
-         <property name="text">
-          <string>Metric</string>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Units</string>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Imperial</string>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QComboBox" name="Units">
+            <item>
+             <property name="text">
+              <string>Metric</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Imperial</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Field Configuration</string>
          </property>
-        </item>
-       </widget>
-      </widget>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="DiveNumberCheck">
+            <property name="text">
+             <string>Dive #</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="DiveNumber">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="MaxDepthCheck">
+            <property name="text">
+             <string>Max depth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QSpinBox" name="MaxDepth">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="DateCheck">
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="Date">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="MeanDepthCheck">
+            <property name="text">
+             <string>Mean depth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QSpinBox" name="MeanDepth">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="TimeCheck">
+            <property name="text">
+             <string>Time</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="Time">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="BuddyCheck">
+            <property name="text">
+             <string>Buddy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QSpinBox" name="Buddy">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="DurationCheck">
+            <property name="text">
+             <string>Duration</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="Duration">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QCheckBox" name="NotesCheck">
+            <property name="text">
+             <string>Notes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QSpinBox" name="Notes">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="LocationCheck">
+            <property name="text">
+             <string>Location</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="Location">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QCheckBox" name="WeightCheck">
+            <property name="text">
+             <string>Weight</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QSpinBox" name="Weight">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="GpsCheck">
+            <property name="text">
+             <string>Gps</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="Gps">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QCheckBox" name="TagsCheck">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QSpinBox" name="Tags">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Field Separator</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QComboBox" name="ManualSeparator"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -770,8 +586,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>310</x>
-     <y>286</y>
+     <x>334</x>
+     <y>467</y>
     </hint>
     <hint type="destinationlabel">
      <x>215</x>
@@ -786,8 +602,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>310</x>
-     <y>286</y>
+     <x>334</x>
+     <y>467</y>
     </hint>
     <hint type="destinationlabel">
      <x>215</x>
@@ -802,12 +618,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>191</y>
+     <x>108</x>
+     <y>169</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>191</y>
+     <x>238</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
@@ -818,12 +634,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>223</y>
+     <x>108</x>
+     <y>201</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>223</y>
+     <x>238</x>
+     <y>203</y>
     </hint>
    </hints>
   </connection>
@@ -834,12 +650,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>255</y>
+     <x>108</x>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>255</y>
+     <x>238</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -850,12 +666,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>108</x>
+     <y>265</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>238</x>
+     <y>267</y>
     </hint>
    </hints>
   </connection>
@@ -866,12 +682,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
@@ -882,12 +698,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>137</y>
     </hint>
    </hints>
   </connection>
@@ -898,12 +714,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>169</y>
     </hint>
    </hints>
   </connection>
@@ -914,12 +730,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>231</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>
@@ -930,12 +746,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>263</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>265</y>
     </hint>
    </hints>
   </connection>
@@ -946,12 +762,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
@@ -962,12 +778,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>137</y>
     </hint>
    </hints>
   </connection>
@@ -978,12 +794,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>169</y>
     </hint>
    </hints>
   </connection>
@@ -994,12 +810,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>201</y>
     </hint>
    </hints>
   </connection>
@@ -1010,12 +826,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>263</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>265</y>
     </hint>
    </hints>
   </connection>
@@ -1026,12 +842,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>185</x>
+     <y>231</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>296</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>
@@ -1042,12 +858,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>287</y>
+     <x>96</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>287</y>
+     <x>176</x>
+     <y>201</y>
     </hint>
    </hints>
   </connection>
