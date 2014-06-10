@@ -69,13 +69,14 @@ void DiveLogExportDialog::showExplanation()
 
 void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 {
-	QDir dir(filename);
-	if (!dir.exists()) {
-		dir.mkpath(filename);
-	}
+	QFile file(filename);
+	QFileInfo info(file);
+	QDir mainDir = info.absoluteDir();
+	mainDir.mkdir(file.fileName() + "_files");
+	QString exportFiles = file.fileName() + "_files/";
 
-	QString json_dive_data = filename + QDir::separator() + "file.json";
-	QString json_settings = filename + QDir::separator() + "settings.json";
+	QString json_dive_data = exportFiles + QDir::separator() + "file.json";
+	QString json_settings = exportFiles + QDir::separator() + "settings.json";
 
 	exportHTMLsettings(json_settings);
 	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked());
@@ -85,14 +86,12 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 		return;
 
 	searchPath += QDir::separator();
-	QString dirname = filename + QDir::separator();
 
-	QFile::copy(searchPath + "dive_export.html", dirname + "dive_export.html");
-	QFile::copy(searchPath + "list_lib.js", dirname + "list_lib.js");
-	QFile::copy(searchPath + "poster.png", dirname + "poster.png");
-	QFile::copy(searchPath + "index.html", dirname + "index.html");
-	QFile::copy(searchPath + ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css",
-		    filename + "theme.css");
+	QFile::copy(searchPath + "dive_export.html", filename);
+	QFile::copy(searchPath + "list_lib.js", exportFiles + "list_lib.js");
+	QFile::copy(searchPath + "poster.png", exportFiles + "poster.png");
+	QFile::copy(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
+		    exportFiles + "theme.css");
 }
 
 void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
@@ -160,7 +159,8 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		}
 		break;
 	case 1:
-		filename = QFileDialog::getExistingDirectory(this, tr("Export Subsurface"), lastDir);
+		filename = QFileDialog::getSaveFileName(this, tr("Export HTML files as"), lastDir,
+							tr("HTML files (*.html)"));
 		if (!filename.isNull() && !filename.isEmpty())
 			exportHtmlInit(filename);
 		break;
