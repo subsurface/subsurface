@@ -4,8 +4,7 @@
 #include <QDialog>
 #include <QStringListModel>
 #include "../libdivecomputer.h"
-
-class ConfigureDiveComputer;
+#include "configuredivecomputer.h"
 
 namespace Ui {
 class ConfigureDiveComputerDialog;
@@ -28,12 +27,8 @@ private slots:
 	void configMessage(QString msg);
 	void configError(QString err);
 	void on_cancel_clicked();
-	void on_setDeviceName_clicked();
-
-	void on_setDateAndTime_clicked();
-
-	void on_setBrightnessButton_clicked();
-
+	void deviceReadFinished();
+	void on_saveSettingsPushButton_clicked();
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 
@@ -49,6 +44,8 @@ private:
 	QStringListModel *productModel;
 	void fill_computer_list();
 	void fill_device_list(int dc_type);
+
+	DeviceDetails *deviceDetails;
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H

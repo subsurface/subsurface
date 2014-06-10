@@ -33,14 +33,16 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	ui(new Ui::ConfigureDiveComputerDialog),
 	config(0),
 	vendorModel(0),
-	productModel(0)
+	productModel(0),
+	deviceDetails(0)
 {
 	ui->setupUi(this);
 
+	deviceDetails = new DeviceDetails(this);
 	config = new ConfigureDiveComputer(this);
 	connect (config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect (config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
-	connect (config, SIGNAL(deviceSettings(QString)), ui->availableDetails, SLOT(setText(QString)));
+	connect (config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
 
 	fill_computer_list();
 
@@ -157,7 +159,7 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui->errorLabel->clear();
 
 	getDeviceData();
-	config->readSettings(&device_data);
+	config->readSettings(deviceDetails, &device_data);
 }
 
 void ConfigureDiveComputerDialog::configMessage(QString msg)
@@ -181,6 +183,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	set_default_dive_computer(device_data.vendor, device_data.product);
 	set_default_dive_computer_device(device_data.devname);
+
+	//deviceDetails->setData(&device_data);
 }
 
 void ConfigureDiveComputerDialog::on_cancel_clicked()
@@ -188,31 +192,13 @@ void ConfigureDiveComputerDialog::on_cancel_clicked()
 	this->close();
 }
 
-void ConfigureDiveComputerDialog::on_setDeviceName_clicked()
+void ConfigureDiveComputerDialog::deviceReadFinished()
 {
-	ui->statusLabel->clear();
-	ui->errorLabel->clear();
-	ui->availableDetails->clear();
-
-	QString newDeviceName = QInputDialog::getText(this, tr("Set device name"), tr("Enter the new name for this device:"));
-	if (newDeviceName.length() > 0) {
-		getDeviceData();
-		config->setDeviceName(&device_data, newDeviceName);
-	}
+	ui->brightnessComboBox->setCurrentIndex(config->m_deviceDetails->brightness());
 }
 
-void ConfigureDiveComputerDialog::on_setDateAndTime_clicked()
+void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 {
-	ui->statusLabel->clear();
-	ui->errorLabel->clear();
-	ui->availableDetails->clear();
-
-	getDeviceData();
-	config->setDeviceDateAndTime(&device_data, QDateTime::currentDateTime());
+	config->saveDeviceDetails();
 }
 
-void ConfigureDiveComputerDialog::on_setBrightnessButton_clicked()
-{
-	getDeviceData();
-	config->setDeviceBrightness(&device_data, ui->brightnessComboBox->currentIndex());
-}

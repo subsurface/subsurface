@@ -89,6 +89,8 @@ HEADERS = \
 	subsurfacesysinfo.h \
 	qt-ui/configuredivecomputerdialog.h \
 	qt-ui/configuredivecomputer.h \
+	qt-ui/configuredivecomputerthreads.h \
+	qt-ui/devicedetails.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -169,7 +171,9 @@ SOURCES =  \
 	qt-ui/usersurvey.cpp \
 	subsurfacesysinfo.cpp \
 	qt-ui/configuredivecomputerdialog.cpp \
-	qt-ui/configuredivecomputer.cpp
+	qt-ui/configuredivecomputer.cpp \
+	qt-ui/configuredivecomputerthreads.cpp \
+	qt-ui/devicedetails.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c
