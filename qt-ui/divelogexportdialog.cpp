@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QSettings>
 #include <QDir>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "divelogexportdialog.h"
@@ -15,7 +16,7 @@
 #include "helpers.h"
 
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
-							    ui(new Ui::DiveLogExportDialog)
+	ui(new Ui::DiveLogExportDialog)
 {
 	ui->setupUi(this);
 	showExplanation();
@@ -66,52 +67,35 @@ void DiveLogExportDialog::showExplanation()
 	}
 }
 
-void DiveLogExportDialog::exportHtmlInit(QString filename)
+void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 {
 	QDir dir(filename);
 	if (!dir.exists()) {
-		/* I think this will not work as expected on windows */
-		QDir::home().mkpath(filename);
+		dir.mkpath(filename);
 	}
 
 	QString json_dive_data = filename + QDir::separator() + "file.json";
-	QString json_settings = filename + "/settings.json";
+	QString json_settings = filename + QDir::separator() + "settings.json";
 
 	exportHTMLsettings(json_settings);
 	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked());
 
 	QString searchPath = getSubsurfaceDataPath("theme");
 	if (searchPath.isEmpty())
-			return;
+		return;
 
-	QFile *tmpFile;
+	searchPath += QDir::separator();
+	QString dirname = filename + QDir::separator();
 
-	tmpFile = new QFile(searchPath + "/dive_export.html");
-	tmpFile->copy(filename + "/dive_export.html");
-	delete tmpFile;
-
-	tmpFile = new QFile(searchPath + "/list_lib.js");
-	tmpFile->copy(filename + "/list_lib.js");
-	delete tmpFile;
-
-	tmpFile = new QFile(searchPath + "/poster.png");
-	tmpFile->copy(filename + "/poster.png");
-	delete tmpFile;
-
-	tmpFile = new QFile(searchPath + "/index.html");
-	tmpFile->copy(filename + "/index.html");
-	delete tmpFile;
-
-	if (ui->themeSelection->currentText() == "Light") {
-		tmpFile = new QFile(searchPath + "/light.css");
-	} else {
-		tmpFile = new QFile(searchPath + "/sand.css");
-	}
-	tmpFile->copy(filename + "/theme.css");
-	delete tmpFile;
+	QFile::copy(searchPath + "dive_export.html", dirname + "dive_export.html");
+	QFile::copy(searchPath + "list_lib.js", dirname + "list_lib.js");
+	QFile::copy(searchPath + "poster.png", dirname + "poster.png");
+	QFile::copy(searchPath + "index.html", dirname + "index.html");
+	QFile::copy(searchPath + ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css",
+		    filename + "theme.css");
 }
 
-void DiveLogExportDialog::exportHTMLsettings(QString filename)
+void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 {
 	QSettings settings;
 	settings.beginGroup("HTML");

@@ -23,8 +23,8 @@ slots:
 private:
 	Ui::DiveLogExportDialog *ui;
 	void showExplanation();
-	void exportHtmlInit(QString filename);
-	void exportHTMLsettings(QString filename);
+	void exportHtmlInit(const QString& filename);
+	void exportHTMLsettings(const QString& filename);
 };
 
 #endif // DIVELOGEXPORTDIALOG_H
