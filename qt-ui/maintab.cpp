@@ -533,10 +533,10 @@ void MainTab::updateDiveInfo(int dive)
 		// now let's get some gas use statistics
 		QVector<QPair<QString, int> > gasUsed;
 		QString gasUsedString;
-		QPair<QString, int> topGases[8] = { };
+		QPair<QString, int> topGases[20] = { };
 		volume_t vol;
 		selectedDivesGasUsed(gasUsed);
-		for (int j = 0; j < 8; j++) {
+		for (int j = 0; j < 20; j++) {
 			if (gasUsed.isEmpty())
 				break;
 			QPair<QString, int> gasPair = gasUsed.last();
