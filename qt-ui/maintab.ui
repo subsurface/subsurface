@@ -289,8 +289,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>668</width>
-         <height>658</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -369,8 +369,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>668</width>
-         <height>658</height>
+         <width>387</width>
+         <height>285</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -736,98 +736,138 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QGroupBox" name="groupBox_14">
-          <property name="title">
-           <string>Duration</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_12b">
-           <item>
-            <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
-           </item>
-          </layout>
-         </widget>
+         <layout class="QVBoxLayout" name="vl0">
+          <item>
+           <widget class="QGroupBox" name="groupBox_14">
+            <property name="title">
+             <string>Duration</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_12b">
+             <item>
+              <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="innerSpacer0">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
         <item row="1" column="1">
-         <widget class="QGroupBox" name="groupBox_11b">
-          <property name="title">
-           <string>Total Time</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_11b">
-           <item>
-            <widget class="QLabel" name="totalTimeAllText">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         <layout class="QVBoxLayout" name="vl1">
+          <item>
+           <widget class="QGroupBox" name="groupBox_11b">
+            <property name="title">
+             <string>Total Time</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_11b">
+             <item>
+              <widget class="QLabel" name="totalTimeAllText">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_7b">
+            <property name="title">
+             <string>Dives</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_15">
+             <item>
+              <widget class="QLabel" name="divesAllText">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="innerSpacer1">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
-        <item row="2" column="1">
-         <widget class="QGroupBox" name="groupBox_7b">
-          <property name="title">
-           <string>Dives</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_15">
-           <item>
-            <widget class="QLabel" name="divesAllText">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="2" rowspan="3">
-         <widget class="QGroupBox" name="groupBox_13">
-          <property name="title">
-           <string>Gas Consumption</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_15b">
-           <item>
-            <widget class="QLabel" name="gasConsumption">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+        <item row="1" column="2">
+         <layout class="QVBoxLayout" name="vl2">
+          <item>
+           <widget class="QGroupBox" name="groupBox_13">
+            <property name="title">
+             <string>Gas Consumption</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_15b">
+             <item>
+              <widget class="QLabel" name="gasConsumption">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="innerSpacer2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
        <zorder>groupBox_8b</zorder>
        <zorder>groupBox_4b</zorder>
-       <zorder>groupBox_11b</zorder>
-       <zorder>groupBox_14</zorder>
        <zorder>groupBoxb</zorder>
-       <zorder>groupBox_7b</zorder>
-       <zorder>groupBox_13</zorder>
       </widget>
      </widget>
     </item>
