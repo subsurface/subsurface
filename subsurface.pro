@@ -187,7 +187,8 @@ FORMS = \
 	qt-ui/tableview.ui \
 	qt-ui/divelogimportdialog.ui \
 	qt-ui/usermanual.ui \
-	qt-ui/divelogexportdialog.ui
+	qt-ui/divelogexportdialog.ui \
+	qt-ui/plannerSettings.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/usermanual.ui qt-ui/printoptions.ui

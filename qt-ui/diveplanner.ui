@@ -65,10 +65,10 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <item row="10" column="0" colspan="2">
-        <widget class="TableView" name="tableWidget" native="true">
+       <item row="7" column="0" colspan="2">
+        <widget class="TableView" name="cylinderTableWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -81,10 +81,10 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0" colspan="2">
-        <widget class="TableView" name="cylinderTableWidget" native="true">
+       <item row="8" column="0" colspan="2">
+        <widget class="TableView" name="tableWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -110,6 +110,9 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="0">
+        <widget class="QTimeEdit" name="startTime"/>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -124,20 +127,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QTimeEdit" name="startTime"/>
-       </item>
-       <item row="13" column="0" colspan="2">
+       <item row="11" column="0" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="standardButtons">
           <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QCheckBox" name="lastStop">
-         <property name="text">
-          <string>Last Stop at 6m</string>
          </property>
         </widget>
        </item>
@@ -151,13 +144,6 @@
          </property>
          <property name="maximum">
           <number>150</number>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QCheckBox" name="verbatim_plan">
-         <property name="text">
-          <string>verbatim diveplan</string>
          </property>
         </widget>
        </item>
@@ -192,46 +178,7 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="ATMPressure"/>
        </item>
-       <item row="8" column="0">
-        <widget class="QCheckBox" name="display_transitions">
-         <property name="toolTip">
-          <string>In diveplan, list transitions or treat them as implicit</string>
-         </property>
-         <property name="text">
-          <string>display transitions in deco</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QCheckBox" name="display_duration">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="toolTip">
-          <string>In dive plan, show duration (relative time) of stops</string>
-         </property>
-         <property name="text">
-          <string>display segment duration</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QCheckBox" name="display_runtime">
-         <property name="toolTip">
-          <string>In dive plan, show runtime (absolute time) of stops</string>
-         </property>
-         <property name="text">
-          <string>display runtime</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
+       <item row="6" column="1">
         <widget class="QPushButton" name="printPlan">
          <property name="text">
           <string>Print</string>

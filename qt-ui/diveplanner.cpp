@@ -275,11 +275,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
-	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
-	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
-	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
-	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
 	connect(ui.printPlan, SIGNAL(pressed()), this, SLOT(printDecoPlan()));
 
 	// Creating (and canceling) the plan
@@ -329,6 +324,41 @@ void DivePlannerWidget::printDecoPlan()
 {
 	MainWindow::instance()->printPlan();
 }
+
+PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
+{
+	ui.setupUi(this);
+
+	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
+	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
+	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
+	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
+	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
+
+	setMinimumWidth(0);
+	setMinimumHeight(0);
+}
+
+void PlannerSettingsWidget::settingsChanged()
+{
+}
+
+void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
+{
+}
+
+void PlannerSettingsWidget::bottomSacChanged(const QString &bottomSac)
+{
+}
+
+void PlannerSettingsWidget::decoSacChanged(const QString &decosac)
+{
+}
+
+void PlannerSettingsWidget::printDecoPlan()
+{
+}
+
 
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {

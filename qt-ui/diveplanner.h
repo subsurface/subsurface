@@ -143,6 +143,25 @@ private:
 	Ui::DivePlanner ui;
 };
 
+#include "ui_plannerSettings.h"
+
+class PlannerSettingsWidget : public QWidget {
+	Q_OBJECT
+public:
+	explicit PlannerSettingsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+
+public
+slots:
+	void settingsChanged();
+	void atmPressureChanged(const QString &pressure);
+	void bottomSacChanged(const QString &bottomSac);
+	void decoSacChanged(const QString &decosac);
+	void printDecoPlan();
+
+private:
+	Ui::plannerSettingsWidget ui;
+};
+
 QString dpGasToStr(const divedatapoint &p);
 
 #endif // DIVEPLANNER_H

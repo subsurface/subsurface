@@ -133,6 +133,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	if (doRecreateDiveList)
 		recreateDiveList();
 	ui.diveListPane->setCurrentIndex(0); // switch to the dive list
+	ui.globePane->setCurrentIndex(0);
 	ui.ListWidget->setEnabled(true);
 	ui.ListWidget->setFocus();
 	WSInfoModel::instance()->updateInfo();
@@ -472,6 +473,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->setEnabled(false);
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
+	ui.globePane->setCurrentIndex(1);
 }
 
 void MainWindow::on_actionAddDive_triggered()

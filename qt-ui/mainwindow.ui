@@ -38,7 +38,7 @@
        </property>
        <widget class="QStackedWidget" name="infoPane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -504,7 +504,7 @@
        </property>
        <widget class="QStackedWidget" name="diveListPane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="DiveListView" name="ListWidget">
          <property name="alternatingRowColors">
@@ -526,7 +526,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QWidget" name="fullPlan">
+        <widget class="PlannerSettingsWidget" name="fullPlan">
          <layout class="QVBoxLayout" name="horizontalLayout_p4">
           <property name="spacing">
            <number>0</number>
@@ -543,8 +543,42 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QStackedWidget" name="globePane">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="stackedWidgetPage1" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="GlobeGPS" name="globe" native="true"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QLabel" name="divePlanOutputLabel">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
             <property name="text">
              <string>Dive plan details</string>
             </property>
@@ -552,6 +586,12 @@
           </item>
           <item>
            <widget class="QTextEdit" name="divePlanOutput">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">font: 13pt &quot;Courier&quot;;</string>
             </property>
@@ -570,18 +610,14 @@ p, li { white-space: pre-wrap; }
          </layout>
         </widget>
        </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="GlobeGPS" name="globe" native="true"/>
-         </item>
-        </layout>
-       </widget>
       </widget>
      </widget>
     </item>
     <item>
-     <widget class="KMessageWidget" name="mainErrorMessage" native="true"/>
+     <widget class="KMessageWidget" name="mainErrorMessage" native="true">
+      <zorder>mainSplitter</zorder>
+      <zorder>mainSplitter</zorder>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -1002,6 +1038,12 @@ p, li { white-space: pre-wrap; }
    <class>ProfileWidget2</class>
    <extends>QGraphicsView</extends>
    <header>qt-ui/profile/profilewidget2.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlannerSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header>diveplanner.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
