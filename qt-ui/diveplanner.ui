@@ -252,6 +252,22 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>startTime</tabstop>
+  <tabstop>ATMPressure</tabstop>
+  <tabstop>bottomSAC</tabstop>
+  <tabstop>decoStopSAC</tabstop>
+  <tabstop>gflow</tabstop>
+  <tabstop>gfhigh</tabstop>
+  <tabstop>lastStop</tabstop>
+  <tabstop>display_runtime</tabstop>
+  <tabstop>display_transitions</tabstop>
+  <tabstop>verbatim_plan</tabstop>
+  <tabstop>display_duration</tabstop>
+  <tabstop>printPlan</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
