@@ -505,7 +505,9 @@ void MainTab::updateDiveInfo(int dive)
 			ui.salinityText->clear();
 		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
 		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
-		ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
+		// the overall average depth is really confusing when listed between the
+		// deepest and shallowest dive - let's just not set it
+		// ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
 		ui.depthLimits->overrideMaxToolTipText(QObject::tr("Deepest Dive"));
 		ui.depthLimits->overrideMinToolTipText(QObject::tr("Shallowest Dive"));
 		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
