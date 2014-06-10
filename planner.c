@@ -532,12 +532,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		       translate("gettextFromC", "%s<br>Subsurface dive plan<br>based on GFlow = %d and GFhigh = %d<br><br>"),
 		       show_disclaimer ? disclaimer : empty, diveplan->gflow, diveplan->gfhigh);
 	if (!plan_verbatim) {
-		len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "<table cellspacing=5%><thead><tr><th>depth</th>"));
+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s", translate("gettextFromC", "<table cellspacing=5%><thead><tr><th>depth</th>"));
 		if (plan_display_runtime)
-			len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", " <th>runtime</th>"));
+			len += snprintf(buffer + len, sizeof(buffer) - len, "%s", translate("gettextFromC", " <th>runtime</th>"));
 		if (plan_display_duration)
-			len += snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "  <th>duration</th>"));
-		len += snprintf(buffer + len, sizeof(buffer) - len, " <th align=left>gas</th></tr><tbody align=right>");
+			len += snprintf(buffer + len, sizeof(buffer) - len, "%s", translate("gettextFromC", "  <th>duration</th>"));
+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s", translate("gettextFromC"," <th align=left>gas</th></tr><tbody align=right>"));
 	}
 	do {
 		struct gasmix gasmix, newgasmix;
@@ -619,7 +619,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastdepth = dp->depth;
 	} while ((dp = nextdp) != NULL);
 	len = strlen(buffer);
-	snprintf(buffer + len, sizeof(buffer) - len, translate("gettextFromC", "</tbody></table><br>Gas consumption:<br>"));
+	snprintf(buffer + len, sizeof(buffer) - len, "%s", translate("gettextFromC", "</tbody></table><br>Gas consumption:<br>"));
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
 		const char *unit;
