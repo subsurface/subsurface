@@ -2,13 +2,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>dive log export</title>
-<link rel="stylesheet" type="text/css" href="theme.css">
-<script src="file.json"></script>
-<script src="settings.json"></script>
-<script src="list_lib.js" type="text/javascript"></script>
 <script>
 //////////////////////////////////
 //advance settings window//
+load_scripts();
+
+function load_scripts(){
+	var fileref=document.createElement("link");
+	fileref.setAttribute("rel", "stylesheet");
+	fileref.setAttribute("type", "text/css");
+	fileref.setAttribute("href", location.pathname+"_files/theme.css");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+	fileref=document.createElement('script');
+	fileref.setAttribute("src", location.pathname+"_files/file.json");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+	fileref=document.createElement('script');
+	fileref.setAttribute("src", location.pathname+"_files/settings.json");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+	fileref=document.createElement('script');
+	fileref.setAttribute("type","text/javascript");
+	fileref.setAttribute("src", location.pathname+"_files/list_lib.js");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+}
 
 var advanced_shown=false;
 function showdiv(){
@@ -80,6 +98,7 @@ window.onload=function(){
 	sizeofpage=10;
 	showAllDives();
 	document.getElementById("divePanel").style.display='none';
+	document.body.style.visibility='visible';
 }
 
 function changeAdvSearch(e){

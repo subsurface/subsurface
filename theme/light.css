@@ -3,6 +3,7 @@ body{
 	background-color:#dfdfdf;
 	font-size:12px;
 	font-family: 'Lobster', helvetica, arial;
+	visibility: hidden;
 }
 
 h1 {
