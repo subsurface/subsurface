@@ -192,6 +192,46 @@ ul:hover{
 	margin-bottom:10px;
 }
 
+#profileCanvas{
+	border:1px solid #d3d3d3;
+	width:98%;
+	margin:1%;
+	height:300px;
+}
+
+#diveListPanel{
+	padding:5px;
+	width:90%;
+	margin:0% 5% 0% 5%;
+	margin-bottom:50px;
+	background-color: rgba(88,121,139,0.3);
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.Cyl{
+	padding-right:25px;
+}
+
+#diveinfo{
+	border-style:solid;
+}
+
+#diveprofile{
+	border-style:solid;
+}
+
+#dive_equipments{
+	border-style:solid;
+}
+
+#divestats{
+	border-style:solid;
+}
+
+#bookmarks{
+	border-style:solid;
+}
+
 @media (max-width: 768px) {
 	#divePanel{
 		padding:4px;

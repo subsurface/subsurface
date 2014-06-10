@@ -192,7 +192,8 @@ function getExpanded (dive) {
 	'</td></tr><tr><td class="words"><p>Buddy: </p></td><td>'+dive.buddy +
 	'</td></tr><tr><td class="words">Suit: </td><td>'+dive.suit +
 	'</td></tr><tr><td class="words">Tags: </td><td>'+putTags(dive.tags)+
-	'</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes +'</div>';
+	'</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes +'</div>'+
+	'<center><a onclick="showDiveDetails('+dive.number+')">show more details</a></center>';
 };
 
 function putTags(tags){
@@ -574,4 +575,241 @@ function getItems(){
 			items[count++]=trips[i].dives[j];
 		}
 	}
+}
+
+////////////////////////canvas///////////////////
+
+/*
+Canvas Colors Constants
+*/
+var CAMARONE1 = rgb(0,0.4,0);
+var LIMENADE1 = rgb(0.4,0.8,0);
+var RIOGRANDE1 = rgb (0.8,0.8,0);
+var PIRATEGOLD1= rgb(0.8,0.5,0);
+var RED1 = rgb(1,0,0);
+
+/*
+Some Global variables that hold the current shown dive data.
+*/
+var dive_id;//current shown ID
+var points;//reference to the samples array of the shown dive.
+var MAX_HEIGHT;//Maximum depth, then its the maximum height for canvas
+var MAX_WIDTH;//dive duration, then its the maximum width for canvas
+
+/**
+*Return RGB css color string.
+*/
+function rgb(r, g, b){
+	r = Math.floor(r*255);
+	g = Math.floor(g*255);
+	b = Math.floor(b*255);
+	return ["rgb(",r,",",g,",",b,")"].join("");
+}
+
+/**
+*This function returns the value scaled to the size of canvas
+*new scale = (old scale * height of canvas) / max height in dive
+*to ensure that the dive profile is filling the whole area available
+*/
+function scaleHeight(vari){
+	var height = document.getElementById("profileCanvas").height;
+	max = MAX_HEIGHT;
+	return (vari*height)/max;
+}
+
+/**
+*This function returns the value scaled to the size of canvas
+*new scale = (old scale * width of canvas) / max width in dive
+*to ensure that the dive profile is filling the whole area available
+*/
+function scaleWidth(vari){
+	var width = document.getElementById("profileCanvas").width;
+	max = MAX_WIDTH;
+	return (vari*width)/max;
+}
+
+/**
+*Show Axis information(Numbers on scale)
+*put a Number every 300 second scaled to canvas width.
+*/
+function canvas_showAxisInfo(){
+	var c=document.getElementById("profileCanvas");
+	var ctx=c.getContext("2d");
+	ctx.font="27px Georgia";/*This is better be a variable scale*/
+	for (var i=0;i<MAX_WIDTH/scaleWidth(5);i++)
+		ctx.fillText(""+i*5+"",scaleWidth(i*5*60),scaleHeight(MAX_HEIGHT-150));
+}
+
+/**
+*Draw the grid
+*with spacing = 5 * 60 = 300
+*draw line every 5 minutes
+*/
+function canvas_showGrid() {
+	var cnv = document.getElementById("profileCanvas");
+	var cnvWidth = cnv.width;
+	var cnvHeight = cnv.height;
+	var lineOptions= {
+		separation: scaleWidth(300),
+		color: '#AAAAAA'
+	};
+	var ctx = cnv.getContext('2d');
+
+	ctx.strokeStyle = lineOptions.color;
+	ctx.strokeWidth = 0.5;
+	ctx.beginPath();
+
+	var iCount = null;
+	var i = null;
+	var x = null;
+	var y = null;
+
+	//draw horizontal lines
+	iCount = Math.floor(cnvWidth / lineOptions.separation);
+	for (i = 1; i <= iCount; i++) {
+		x = (i * lineOptions.separation);
+		ctx.moveTo(x, 0);
+		ctx.lineTo(x, cnvHeight);
+		ctx.stroke();
+	}
+
+	//draw vertical lines
+	iCount = Math.floor(cnvHeight / lineOptions.separation);
+	for (i = 1; i <= iCount; i++) {
+		y = (i * lineOptions.separation);
+		ctx.moveTo(0, y);
+		ctx.lineTo(cnvWidth, y);
+		ctx.stroke();
+	}
+
+	ctx.closePath();
+}
+
+/**
+*The Main function used for drawing canvas lines
+*it automatically calcualte the slope of the line
+*and choose its color.
+*This is the function that should be used internally.
+*/
+function canvas_drawline(ctx,begin,end){
+	drawline(ctx,begin,end,getcolor(begin,end));
+}
+
+/**
+*Draw a line in the canvas with the given
+*starting point, ending point, and color.
+*/
+function drawline(ctx,begin,end,col){
+	ctx.strokeStyle = col;
+	ctx.beginPath();
+	ctx.moveTo(scaleWidth(begin[0]),scaleHeight(begin[1]));
+	ctx.lineTo(scaleWidth(end[0]),scaleHeight(end[1]));
+	ctx.stroke();
+}
+
+/**
+*Choose Color for different speeds.
+*this need to be fixed to go with subsurface conversion.
+*/
+function getcolor(begin,end){
+	var slope = (end[1]-begin[1])/(end[0]-begin[0]);
+	if (Math.abs(slope) > 300 ) return RED1;
+	if (Math.abs(slope) > 180 ) return PIRATEGOLD1;
+	if (Math.abs(slope) > 110  ) return RIOGRANDE1;
+	if (Math.abs(slope) > 70 ) return LIMENADE1;
+	return CAMARONE1;
+}
+
+/**
+*Return the HTML string for a dive cylinder entry in the table.
+*/
+function get_cylinder_HTML(cylinder){
+	return '<tr><td class="Cyl">'+cylinder.Type+'</td><td class="Cyl">'+cylinder.Size+'</td><td class="Cyl">'+cylinder.WPressure+'</td>'+
+	'<td class="Cyl">'+cylinder.SPressure+'</td><td class="Cyl">'+cylinder.EPressure+'</td><td class="Cyl">'+cylinder.O2+'</td></tr>';
+}
+
+/**
+*Return HTML table of cylinders of a dive.
+*/
+function get_cylinders_HTML(dive){
+	var result="";
+	result +='<h2>Dive equipments</h2><table><tr><td class="Cyl">Type</td><td class="Cyl">Size</td><td class="Cyl">Work Pressure</td><td class="Cyl">Start Pressure</td><td class="Cyl">End Pressure</td><td class="Cyl">O2</td></tr>';
+	for (var i in dive.Cylinders){
+		result+=get_cylinder_HTML(dive.Cylinders[i]);
+	}
+	result+='</table>';
+	return result;
+}
+
+/**
+*Return HTML main data of a dive
+*/
+function get_dive_HTML(dive) {
+	return '<h2>Dive Information</h2><table><tr><td class="words">Date: </td><td>'+dive.date+
+	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>'+dive.time +
+	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>'+'<a onclick=\"Search_list_Modules(\''+dive.location+'\')\">'+
+	dive.location +'</a>'+
+	'</td></tr></table><table><tr><td class="words">Rating:</td><td>'+putRating(dive.rating)+
+	'</td><td class="words">&nbsp&nbsp&nbspVisibilty:</td><td>'+putRating(dive.visibility)+
+	'</td></tr></table>'+
+	'<table><tr><td class="words">Air temp: </td><td>'+dive.temperature.air+
+	'</td><td class="words">&nbsp&nbsp&nbsp&nbspWater temp: </td><td>'+dive.temperature.water +
+	'</td></tr></table><table><tr><td class="words">DiveMaster: </td><td>'+dive.divemaster +
+	'</td></tr><tr><td class="words"><p>Buddy: </p></td><td>'+dive.buddy +
+	'</td></tr><tr><td class="words">Suit: </td><td>'+dive.suit +
+	'</td></tr><tr><td class="words">Tags: </td><td>'+putTags(dive.tags)+
+	'</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes +'</div>';
+};
+
+/**
+*Main canvas draw function
+*this calls the axis and grid initialization functions.
+*/
+function canvas_draw(){
+	var c=document.getElementById("profileCanvas");
+	c.width = window.innerWidth;
+	c.height = window.innerHeight;
+	canvas_showGrid();
+	canvas_showAxisInfo();
+	var ctx=c.getContext("2d");
+	ctx.lineWidth=4	//variable width
+	//draw starting line, draw all samples then draw the final line.
+	canvas_drawline(ctx,[0,0],points[0]);
+	for(var i=1;i<points.length;i++){
+		canvas_drawline(ctx,points[i-1],points[i]);
+	}
+	canvas_drawline(ctx,points[points.length-1],[MAX_WIDTH,0]);
+}
+
+/**
+*Initialize the detailed view,
+*set the global variables
+*Fill the dive data
+*Hide the list and show the canvas view.
+*this is called to view the dive details.
+*/
+function showDiveDetails(dive){
+	//set global variables
+	dive_id = dive;
+	points = items[dive_id].samples;
+	MAX_HEIGHT = items[dive_id].maxdepth*1.1;
+	MAX_WIDTH = items[dive_id].duration;
+
+	//draw the canvas and initialize the view
+	canvas_draw();
+	document.getElementById("diveinfo").innerHTML=get_dive_HTML(items[dive_id]);
+	document.getElementById("dive_equipments").innerHTML=get_cylinders_HTML(items[dive_id]);
+
+	//hide the list of dives and show the canvas.
+	document.getElementById("diveListPanel").style.display='none';
+	document.getElementById("divePanel").style.display='block';
+}
+
+/**
+*Show the list view and hide the detailed list view.
+*this function have to clear any data saved by showDiveDetails
+*/
+function unshowDiveDetails(dive){
+	document.getElementById("diveListPanel").style.display='block';
+	document.getElementById("divePanel").style.display='none';
 }

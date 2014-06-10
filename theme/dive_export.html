@@ -79,6 +79,7 @@ window.onload=function(){
 
 	sizeofpage=10;
 	showAllDives();
+	document.getElementById("divePanel").style.display='none';
 }
 
 function changeAdvSearch(e){
@@ -95,7 +96,7 @@ function changeAdvSearch(e){
 	<h1>Subsurface</h1>
 	</div>
 	</center>
-	<div id="divePanel">
+	<div id="diveListPanel">
 	<div id="controlbox">
 		<input id="search_input" oninput="SearchModules(this.value)" placeholder="search"/><a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
 		<div id="advanced_search">
@@ -134,6 +135,24 @@ function changeAdvSearch(e){
 		<button onClick="next_page()">-&gt;</button>
 	</div>
 	</center>
+	</div>
+	<div id="divePanel">
+		<div id="diveprofile">
+		<h2>Dive profile</h2>
+		<canvas id="profileCanvas"></canvas>
+		</div>
+		<div id="diveinfo">
+		<h2>Dive Information</h2>
+		</div>
+		<div id="dive_equipments">
+		<h2>Dive equipments</h2>
+		</div>
+		<div id="bookmarks">
+		<h2>Bookmarks</h2>
+		</div>
+		<div id="divestats">
+		<h2>Dive stats</h2>
+		</div>
 	</div>
 </body>
 </html>
