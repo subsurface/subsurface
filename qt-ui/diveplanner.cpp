@@ -336,6 +336,10 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 	mode = m;
 	if (m == NOTHING)
 		stagingDive = NULL;
+	// the planner may reset our GF settings that are used to show deco
+	// reset them to what's in the preferences
+	if (m != PLAN)
+		set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 }
 
 bool DivePlannerPointsModel::isPlanner()
