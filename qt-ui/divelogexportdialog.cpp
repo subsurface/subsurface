@@ -176,8 +176,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		}
 		break;
 	case 1:
-		filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface"), lastDir,
-							tr("Folders"), 0, QFileDialog::ShowDirsOnly);
+		filename = QFileDialog::getExistingDirectory(this, tr("Export Subsurface"), lastDir);
 		if (!filename.isNull() && !filename.isEmpty())
 			exportHtmlInit(filename);
 		break;
