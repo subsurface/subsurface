@@ -119,7 +119,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
 {
 	int j;
-	double tissue_tolerance;
+	double tissue_tolerance = 0.0;
 
 	for (j = t0; j < t1; j++) {
 		int depth = interpolate(d0, d1, j - t0, t1 - t0);
@@ -518,7 +518,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	struct divedatapoint *dp = diveplan->dp;
 	const char *empty = "";
 	bool gaschange = !plan_verbatim;
-	struct divedatapoint *nextdp;
+	struct divedatapoint *nextdp = NULL;
 
 	disclaimer =  translate("gettextFromC", "<b>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
 				"ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS "
@@ -684,7 +684,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, s
 	int current_cylinder;
 	unsigned int stopidx;
 	int depth;
-	double tissue_tolerance;
+	double tissue_tolerance = 0.0;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
 	int *stoplevels = NULL;

@@ -159,7 +159,7 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 	} else if (orientation == LeftToRight) {
 		begin = m.x1();
 		stepSize = (m.x2() - m.x1());
-	} else if (orientation == RightToLeft) {
+	} else /* if (orientation == RightToLeft) */ {
 		begin = m.x2();
 		stepSize = (m.x2() - m.x1());
 	}
