@@ -242,7 +242,7 @@ USERMANUALS = \
 
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += usermanual
-docclean.commands += $(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation ENABLE_PLANNER=$$ENABLE_PLANNER clean
+docclean.commands += $(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation clean
 usermanual.depends += doc
 usermanual.target = $$OUT_PWD/Documentation/user-manual.html
 QMAKE_EXTRA_TARGETS += doc docclean usermanual all
