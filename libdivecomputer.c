@@ -116,11 +116,14 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		he = rint(gasmix.helium * 1000);
 
 		/* Ignore bogus data - libdivecomputer does some crazy stuff */
-		if (o2 + he <= O2_IN_AIR || o2 > 1000)
+		if (o2 + he <= O2_IN_AIR || o2 > 1000) {
+			report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
 			o2 = 0;
-		if (he < 0 || o2 + he > 1000)
+		}
+		if (he < 0 || o2 + he > 1000) {
+			report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
 			he = 0;
-
+		}
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 
