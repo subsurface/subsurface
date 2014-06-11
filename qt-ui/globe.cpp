@@ -88,17 +88,25 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 {
+	// sometimes Marble seems not to notice double clicks and consequently not call
+	// the right callback - so let's remember here if the last 'click' is a 'double' or not
+	enum QEvent::Type type = ev->type();
+	if (type == QEvent::MouseButtonDblClick)
+		doubleClick = true;
+	else if (type == QEvent::MouseButtonPress)
+		doubleClick = false;
+
 	// This disables Zooming when a double click occours on the scene.
-	if (ev->type() == QEvent::MouseButtonDblClick && !editingDiveLocation)
+	if (type == QEvent::MouseButtonDblClick && !editingDiveLocation)
 		return true;
 	// This disables the Marble's Context Menu
 	// we need to move this to our 'contextMenuEvent'
 	// if we plan to do a different one in the future.
-	if (ev->type() == QEvent::ContextMenu) {
+	if (type == QEvent::ContextMenu) {
 		contextMenuEvent(static_cast<QContextMenuEvent *>(ev));
 		return true;
 	}
-	if (ev->type() == QEvent::MouseButtonPress) {
+	if (type == QEvent::MouseButtonPress) {
 		QMouseEvent *e = static_cast<QMouseEvent *>(ev);
 		if (e->button() == Qt::RightButton)
 			return true;
@@ -116,6 +124,12 @@ void GlobeGPS::contextMenuEvent(QContextMenuEvent *ev)
 
 void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
+	if (doubleClick) {
+		// strangely sometimes we don't get the changeDiveGeoPosition callback
+		// and end up here instead
+		changeDiveGeoPosition(lon, lat, unit);
+		return;
+	}
 	// don't mess with the selection while the user is editing a dive
 	if (MainWindow::instance()->information()->isEditing() || messageWidget->isVisible())
 		return;

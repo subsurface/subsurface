@@ -34,6 +34,7 @@ private:
 	int currentZoomLevel;
 	bool needResetZoom;
 	bool editingDiveLocation;
+	bool doubleClick;
 
 public
 slots:
