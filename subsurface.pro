@@ -242,11 +242,12 @@ USERMANUALS = \
 
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += usermanual
-docclean.commands += $(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation clean
 usermanual.depends += doc
 usermanual.target = $$OUT_PWD/Documentation/user-manual.html
-QMAKE_EXTRA_TARGETS += doc docclean usermanual all
-CLEAN_DEPS += docclean
+QMAKE_EXTRA_TARGETS += doc usermanual all
+# add the generated user manual HTML files to the list of files to remove
+# when running make clean
+for(MANUAL,USERMANUALS) QMAKE_CLEAN += $$OUT_PWD/Documentation/$$MANUAL
 
 marbledata.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/marbledata || $(COPY_DIR) $$PWD/marbledata $$OUT_PWD
 all.depends += marbledata
