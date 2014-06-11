@@ -69,6 +69,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	backgroundFile(":poster"),
 	toolTipItem(new ToolTipItem()),
 	isPlotZoomed(prefs.zoomed_plot),
+	forceReplot(false),
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
@@ -401,9 +402,11 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	// showing (can't compare the dive pointers as those might change).
 	// I'm unclear what the semantics are supposed to be if we actually
 	// use more than one 'dives' as argument - so ignoring that right now :-)
-	if (d->id == dataModel->id() && dc_number == dataModel->dcShown())
+	if (d->id == dataModel->id() && dc_number == dataModel->dcShown() &&
+	    !forceReplot)
 		return;
 
+	forceReplot = false;
 	if (currentState == EMPTY)
 		setProfileState();
 
