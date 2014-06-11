@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>472</width>
-    <height>472</height>
+    <width>629</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,6 +77,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="saveSettingsPushButton">
+       <property name="text">
+        <string>Save Chages to Device</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -107,24 +114,55 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="3" column="0">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Custom Text:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Sampling Rate:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Brightness:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
+     <item row="5" column="2">
+      <widget class="QLabel" name="label_13">
        <property name="text">
-        <string>Serial No.</string>
+        <string>Salinity (0-5%):</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
+     <item row="7" column="0" colspan="3">
+      <widget class="QCheckBox" name="dateTimeSyncCheckBox">
        <property name="text">
-        <string>Custom Text:</string>
+        <string>Sync dive computer time with PC</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QSpinBox" name="salinitySpinBox">
+       <property name="suffix">
+        <string>%</string>
+       </property>
+       <property name="maximum">
+        <number>5</number>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="lastDecoSpinBox">
+       <property name="suffix">
+        <string> m</string>
        </property>
       </widget>
      </item>
@@ -135,17 +173,42 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Last Deco:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Serial No.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Language:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="customTextLlineEdit"/>
+     <item row="4" column="3">
+      <widget class="QComboBox" name="unitsComboBox">
+       <item>
+        <property name="text">
+         <string>m/°C</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ft/°F</string>
+        </property>
+       </item>
+      </widget>
      </item>
-     <item row="3" column="1">
+     <item row="3" column="3">
       <widget class="QComboBox" name="brightnessComboBox">
        <item>
         <property name="text">
@@ -164,14 +227,26 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Firmware Version:</string>
-       </property>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="dateFormatComboBox">
+       <item>
+        <property name="text">
+         <string>MMDDYY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DDMMYY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>YYMMDD</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="2" column="3">
       <widget class="QComboBox" name="languageComboBox">
        <item>
         <property name="text">
@@ -195,32 +270,6 @@
        </item>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Date Format:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="dateFormatComboBox">
-       <item>
-        <property name="text">
-         <string>MMDDYY</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DDMMYY</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>YYMMDD</string>
-        </property>
-       </item>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="firmwareVersionLineEdit">
        <property name="readOnly">
@@ -228,11 +277,137 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QCheckBox" name="dateTimeSyncCheckBox">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Sync dive computer time with PC</string>
+        <string>Date Format:</string>
        </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Firmware Version:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="customTextLlineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Units:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="samplingRateComboBox">
+       <item>
+        <property name="text">
+         <string>2s</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10s</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Dive Mode Colour:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="diveModeColour">
+       <item>
+        <property name="text">
+         <string>Standard</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Red</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Green</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Blue</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>Compass Gain:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="QComboBox" name="compassGainComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <item>
+        <property name="text">
+         <string>230LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>330LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>390LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>440LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>660LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>820LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1090LSB/Gauss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1370LSB/Gauss</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
@@ -270,13 +445,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QPushButton" name="saveSettingsPushButton">
-       <property name="text">
-        <string>Save Chages to Device</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -306,12 +474,21 @@
   <tabstop>device</tabstop>
   <tabstop>search</tabstop>
   <tabstop>retrieveDetails</tabstop>
+  <tabstop>backupButton</tabstop>
+  <tabstop>restoreBackupButton</tabstop>
   <tabstop>serialNoLineEdit</tabstop>
   <tabstop>firmwareVersionLineEdit</tabstop>
   <tabstop>customTextLlineEdit</tabstop>
-  <tabstop>brightnessComboBox</tabstop>
   <tabstop>languageComboBox</tabstop>
-  <tabstop>saveSettingsPushButton</tabstop>
+  <tabstop>lastDecoSpinBox</tabstop>
+  <tabstop>brightnessComboBox</tabstop>
+  <tabstop>dateFormatComboBox</tabstop>
+  <tabstop>unitsComboBox</tabstop>
+  <tabstop>samplingRateComboBox</tabstop>
+  <tabstop>salinitySpinBox</tabstop>
+  <tabstop>diveModeColour</tabstop>
+  <tabstop>compassGainComboBox</tabstop>
+  <tabstop>dateTimeSyncCheckBox</tabstop>
   <tabstop>cancel</tabstop>
  </tabstops>
  <resources/>

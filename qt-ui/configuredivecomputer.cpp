@@ -61,9 +61,15 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	xml += "\n</DiveComputer>";
 	xml += "\n<Settings>";
 	xml += addSettingToXML("CustomText", details->customText());
+	xml += addSettingToXML("LastDeco", details->lastDeco());
 	xml += addSettingToXML("Brightness", details->brightness());
+	xml += addSettingToXML("Units", details->units());
+	xml += addSettingToXML("SamplingRate", details->samplingRate());
+	xml += addSettingToXML("Salinity", details->salinity());
+	xml += addSettingToXML("DiveModeColor", details->diveModeColor());
 	xml += addSettingToXML("Language", details->language());
 	xml += addSettingToXML("DateFormat", details->dateFormat());
+	xml += addSettingToXML("CompassGain", details->compassGain());
 	xml += "\n</Settings>";
 	xml += "\n</DiveComputerSettingsBackup>";
 	QFile file(fileName);
@@ -120,14 +126,32 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 					if (settingName == "CustomText")
 						details->setCustomText(keyString);
 
+					if (settingName == "LastDeco")
+						details->setLastDeco(keyString.toInt());
+
 					if (settingName == "Brightness")
 						details->setBrightness(keyString.toInt());
+
+					if (settingName == "Units")
+						details->setUnits(keyString.toInt());
+
+					if (settingName == "SamplingRate")
+						details->setSamplingRate(keyString.toInt());
+
+					if (settingName == "Salinity")
+						details->setSalinity(keyString.toInt());
+
+					if (settingName == "DiveModeColour")
+						details->setDiveModeColor(keyString.toInt());
 
 					if (settingName == "Language")
 						details->setLanguage(keyString.toInt());
 
 					if (settingName == "DateFormat")
 						details->setDateFormat(keyString.toInt());
+
+					if (settingName == "CompassGain")
+						details->setCompassGain(keyString.toInt());
 				}
 
 				settingNode = settingNode->next;

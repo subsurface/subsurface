@@ -127,10 +127,16 @@ void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
 
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
+	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	deviceDetails->setLastDeco(ui->lastDecoSpinBox->value());
 	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
+	deviceDetails->setUnits(ui->unitsComboBox->currentIndex());
+	deviceDetails->setSamplingRate(ui->samplingRateComboBox->currentIndex());
+	deviceDetails->setSalinity(ui->salinitySpinBox->value());
+	deviceDetails->setDiveModeColor(ui->diveModeColour->currentIndex());
 	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
 	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
-	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	deviceDetails->setCompassGain(ui->compassGainComboBox->currentIndex());
 	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
 }
 
@@ -224,9 +230,15 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->serialNoLineEdit->setText(deviceDetails->serialNo());
 	ui->firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
 	ui->customTextLlineEdit->setText(deviceDetails->customText());
+	ui->lastDecoSpinBox->setValue(deviceDetails->lastDeco());
 	ui->brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
+	ui->unitsComboBox->setCurrentIndex(deviceDetails->units());
+	ui->samplingRateComboBox->setCurrentIndex(deviceDetails->samplingRate());
+	ui->salinitySpinBox->setValue(deviceDetails->salinity());
+	ui->diveModeColour->setCurrentIndex(deviceDetails->diveModeColor());
 	ui->languageComboBox->setCurrentIndex(deviceDetails->language());
 	ui->dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
+	ui->compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
 }
 
 
