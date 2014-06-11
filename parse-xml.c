@@ -483,22 +483,45 @@ static void cylindersize(char *buffer, volume_t *volume)
 	}
 }
 
+/* Trim a character string by removing leading and trailing white space characters.
+ * Parameter: a pointer to a null-terminated character string (buffer);
+ * Return value: length of the trimmed string, excluding the terminal 0x0 byte
+ * The original pointer (buffer) remains valid after this function has been called
+ * and points to the trimmed string */
+int trimspace(char *buffer) {
+	int i, size, start, end;
+	size = strlen(buffer);
+	for(start = 0; isspace(buffer[start]); start++)
+		if (start >= size) return 0;	// Find 1st character following leading whitespace
+	for(end = size - 1; isspace(buffer[end]); end--) // Find last character before trailing whitespace
+		if (end <= 0) return 0;
+	for(i = start; i <= end; i++)		// Move the nonspace characters to the start of the string
+		buffer[i-start] = buffer[i];
+	size = end - start + 1;
+	buffer[size] = 0x0;			// then terminate the string
+	return size;				// return string length
+}
+
+
 static void utf8_string(char *buffer, void *_res)
 {
-	int size;
 	char *res;
-	while (isspace(*buffer))
-		buffer++;
-	size = strlen(buffer);
-	while (size && isspace(buffer[size - 1]))
-		size--;
-	if (!size)
-		return;
-	res = malloc(size + 1);
-	memcpy(res, buffer, size);
-	res[size] = 0;
-	*(char **)_res = res;
+	int size;
+	size = trimspace(buffer);
+	if(size) {
+		res = malloc(size + 1);
+		memcpy(res, buffer, size);
+		res[size] = 0;
+		*(char **)_res = res;
+	}
 }
+
+/* Extract the dive computer type from the xml text buffer */
+static void get_dc_type(char *buffer, enum dive_comp_type *i)
+{
+	if((trimspace(buffer)) && (strcmp(buffer,"CCR") == 0))
+		*i = CCR;	// if the xml string = "CCR", set dc-type to CCR
+}				// otherwise the default dc-type is used (OC)
 
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
@@ -668,6 +691,35 @@ static void try_to_match_autogroup(const char *name, char *buf)
 	nonmatch("autogroup", name, buf);
 }
 
+void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+{
+	/* The gas switch event format is insane. It will be fixed, I think */
+	int o2 = get_o2(&dive->cylinder[idx].gasmix);
+	int he = get_he(&dive->cylinder[idx].gasmix);
+	int value;
+
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	add_event(dc, seconds, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
+}
+
+static void get_cylinderindex(char *buffer, uint8_t *i)
+{
+	*i = atoi(buffer);
+	if (lastcylinderindex != *i) {
+		add_gas_switch_event(cur_dive, get_dc(), cur_sample->time.seconds, *i);
+		lastcylinderindex = *i;
+	}
+}
+
+static void get_sensor(char *buffer, uint8_t *i)
+{
+	*i = atoi(buffer);
+	lastsensor = *i;
+}
+
 static void try_to_fill_dc_settings(const char *name, char *buf)
 {
 	start_match("divecomputerid", name, buf);
@@ -752,40 +804,14 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH("diveid", hex_value, &dc->diveid))
 		return;
-
+	if (MATCH("dctype", get_dc_type, &dc->dctype))
+		return;
+	if (MATCH("no_o2sensors", get_sensor, &dc->no_o2sensors))
+		return;
 	if (match_dc_data_fields(dc, name, buf))
 		return;
 
 	nonmatch("divecomputer", name, buf);
-}
-
-void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
-{
-	/* The gas switch event format is insane. It will be fixed, I think */
-	int o2 = get_o2(&dive->cylinder[idx].gasmix);
-	int he = get_he(&dive->cylinder[idx].gasmix);
-	int value;
-
-	o2 = (o2 + 5) / 10;
-	he = (he + 5) / 10;
-	value = o2 + (he << 16);
-
-	add_event(dc, seconds, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
-}
-
-static void get_cylinderindex(char *buffer, uint8_t *i)
-{
-	*i = atoi(buffer);
-	if (lastcylinderindex != *i) {
-		add_gas_switch_event(cur_dive, get_dc(), cur_sample->time.seconds, *i);
-		lastcylinderindex = *i;
-	}
-}
-
-static void get_sensor(char *buffer, uint8_t *i)
-{
-	*i = atoi(buffer);
-	lastsensor = *i;
 }
 
 /* We're in samples - try to convert the random xml value to something useful */

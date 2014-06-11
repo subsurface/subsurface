@@ -41,6 +41,8 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
+enum dive_comp_type {OC, CCR};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
@@ -217,7 +219,9 @@ struct divecomputer {
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
-	int salinity; // kg per 10000 l
+	enum dive_comp_type dctype;	// dive computer type: OC(default) or CCR
+	uint8_t no_o2sensors;		// rebreathers: number of O2 sensors used
+	int salinity; 			// kg per 10000 l
 	const char *model;
 	uint32_t deviceid, diveid;
 	int samples, alloc_samples;
