@@ -665,6 +665,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 	point.gasmix = gas;
 	point.po2 = ccpoint;
 	point.entered = entered;
+	point.next = NULL;
 	divepoints.append(point);
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	endInsertRows();
