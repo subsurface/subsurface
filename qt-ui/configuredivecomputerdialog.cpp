@@ -32,8 +32,6 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::ConfigureDiveComputerDialog),
 	config(0),
-	vendorModel(0),
-	productModel(0),
 	deviceDetails(0)
 {
 	ui->setupUi(this);
@@ -45,29 +43,35 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	connect (config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
 	connect (config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
 		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
+	connect (ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 
+	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
-
-	vendorModel = new QStringListModel(vendorList);
-	ui->vendor->setModel(vendorModel);
-	if (default_dive_computer_vendor) {
-		ui->vendor->setCurrentIndex(ui->vendor->findText(default_dive_computer_vendor));
-		productModel = new QStringListModel(productList[default_dive_computer_vendor]);
-		ui->product->setModel(productModel);
-		if (default_dive_computer_product)
-			ui->product->setCurrentIndex(ui->product->findText(default_dive_computer_product));
-	}
 	if (default_dive_computer_device)
 		ui->device->setEditText(default_dive_computer_device);
 
-	memset(&device_data, 0, sizeof(device_data));
-
-	connect (ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
+	on_tabWidget_currentChanged(0);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 {
 	delete ui;
+}
+
+
+static void fillDeviceList(const char *name, void *data)
+{
+	QComboBox *comboBox = (QComboBox *)data;
+	comboBox->addItem(name);
+}
+
+void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
+{
+	int deviceIndex;
+	ui->device->clear();
+	deviceIndex = enumerate_devices(fillDeviceList, ui->device, dc_type);
+	if (deviceIndex >= 0)
+		ui->device->setCurrentIndex(deviceIndex);
 }
 
 void ConfigureDiveComputerDialog::fill_computer_list()
@@ -77,7 +81,6 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 
 	struct mydescriptor *mydescriptor;
 
-	QStringList computer;
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
@@ -110,21 +113,6 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 	qSort(vendorList);
 }
 
-static void fillDeviceList(const char *name, void *data)
-{
-	QComboBox *comboBox = (QComboBox *)data;
-	comboBox->addItem(name);
-}
-
-void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
-{
-	int deviceIndex;
-	ui->device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui->device, dc_type);
-	if (deviceIndex >= 0)
-		ui->device->setCurrentIndex(deviceIndex);
-}
-
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
@@ -138,36 +126,6 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
 	deviceDetails->setCompassGain(ui->compassGainComboBox->currentIndex());
 	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
-}
-
-void ConfigureDiveComputerDialog::on_vendor_currentIndexChanged(const QString &vendor)
-{
-	int dcType = DC_TYPE_SERIAL;
-	QAbstractItemModel *currentModel = ui->product->model();
-	if (!currentModel)
-		return;
-
-	productModel = new QStringListModel(productList[vendor]);
-	ui->product->setModel(productModel);
-
-	if (vendor == QString("Uemis"))
-		dcType = DC_TYPE_UEMIS;
-	fill_device_list(dcType);
-}
-
-void ConfigureDiveComputerDialog::on_product_currentIndexChanged(const QString &product)
-{
-	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup[ui->vendor->currentText() + product];
-
-	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
-		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
-		ui->device->setEnabled(true);
-	} else {
-		// otherwise disable the device node box
-		ui->device->setEnabled(false);
-	}
 }
 
 void ConfigureDiveComputerDialog::readSettings()
@@ -192,13 +150,12 @@ void ConfigureDiveComputerDialog::configError(QString err)
 void ConfigureDiveComputerDialog::getDeviceData()
 {
 	device_data.devname = strdup(ui->device->currentText().toUtf8().data());
-	device_data.vendor = strdup(ui->vendor->currentText().toUtf8().data());
-	device_data.product = strdup(ui->product->currentText().toUtf8().data());
+	device_data.vendor = strdup(selected_vendor.toUtf8().data());
+	device_data.product = strdup(selected_product.toUtf8().data());
 
-	device_data.descriptor = descriptorLookup[ui->vendor->currentText() + ui->product->currentText()];
+	device_data.descriptor = descriptorLookup[selected_vendor + selected_product];
 	device_data.deviceid = device_data.diveid = 0;
 
-	set_default_dive_computer(device_data.vendor, device_data.product);
 	set_default_dive_computer_device(device_data.devname);
 }
 
@@ -248,8 +205,8 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup Dive Computer Settings"),
-							filename, tr("Backup files (*.xml)")
-							);
+							  filename, tr("Backup files (*.xml)")
+							  );
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
 		getDeviceData();
@@ -292,4 +249,21 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 						 );
 		}
 	}
+}
+
+void ConfigureDiveComputerDialog::on_tabWidget_currentChanged(int index)
+{
+	switch (index) {
+	case 0:
+		selected_vendor = "Heinrichs Weikamp";
+		selected_product = "OSTC 3";
+		break;
+	}
+
+	int dcType = DC_TYPE_SERIAL;
+
+
+	if (selected_vendor == QString("Uemis"))
+		dcType = DC_TYPE_UEMIS;
+	fill_device_list(dcType);
 }
