@@ -33,6 +33,8 @@ private slots:
 	void reloadValues();
 	void on_backupButton_clicked();
 
+	void on_restoreBackupButton_clicked();
+
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 

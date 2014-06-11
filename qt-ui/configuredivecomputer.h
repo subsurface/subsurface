@@ -8,6 +8,8 @@
 #include "configuredivecomputerthreads.h"
 #include <QDateTime>
 
+#include "libxml/xmlreader.h"
+
 class ConfigureDiveComputer : public QObject
 {
 	Q_OBJECT
@@ -31,6 +33,7 @@ public:
 	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
 	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data, QString errorText);
+	bool restoreXMLBackup(QString fileName, DeviceDetails *details, QString errorText);
 signals:
 	void message(QString msg);
 	void error(QString err);
@@ -43,7 +46,7 @@ private:
 	ReadSettingsThread *readThread;
 	WriteSettingsThread *writeThread;
 	void setState(states newState);
-
+	QString addSettingToXML(QString settingName, QVariant value);
 private slots:
 	void readThreadFinished();
 	void writeThreadFinished();

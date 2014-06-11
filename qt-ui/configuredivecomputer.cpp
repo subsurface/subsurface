@@ -2,6 +2,11 @@
 #include "libdivecomputer/hw.h"
 #include <QDebug>
 #include <QFile>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include <libxml/tree.h>
+#include <libxslt/transform.h>
+#include <QStringList>
 
 ConfigureDiveComputer::ConfigureDiveComputer(QObject *parent) :
 	QObject(parent),
@@ -49,17 +54,18 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	QString xml = "";
 	QString vendor = data->vendor;
 	QString product = data->product;
-	xml += "<backup>";
-	xml += "\n<divecomputer vendor='" + vendor
-			+ "' model = '" + product + "'"
-			+ " />";
-	xml += "\n<settings>";
-	xml += "\n<setting name='CustomText' value = '" + details->customText() + "' />";
-	xml += "\n<setting name='Brightness' value = '" + QString::number(details->brightness()) + "' />";
-	xml += "\n<setting name='Language' value = '" + QString::number(details->language()) + "' />";
-	xml += "\n<setting name='DateFormat' value = '" + QString::number(details->dateFormat()) + "' />";
-	xml += "\n</settings>";
-	xml += "\n</backup>";
+	xml += "<DiveComputerSettingsBackup>";
+	xml += "\n<DiveComputer>";
+	xml += addSettingToXML("Vendor", vendor);
+	xml += addSettingToXML("Product", product);
+	xml += "\n</DiveComputer>";
+	xml += "\n<Settings>";
+	xml += addSettingToXML("CustomText", details->customText());
+	xml += addSettingToXML("Brightness", details->brightness());
+	xml += addSettingToXML("Language", details->language());
+	xml += addSettingToXML("DateFormat", details->dateFormat());
+	xml += "\n</Settings>";
+	xml += "\n</DiveComputerSettingsBackup>";
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly)) {
 		errorText = tr("Could not save the backup file %1. Error Message: %2")
@@ -74,10 +80,75 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	return true;
 }
 
+bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *details, QString errorText)
+{
+	xmlDocPtr doc;
+	xmlNodePtr node;
+	xmlChar *key;
+
+	doc = xmlParseFile(fileName.toUtf8().data());
+
+	if (doc == NULL) {
+		errorText = tr("Could not read the backup file.");
+		return false;
+	}
+
+	node = xmlDocGetRootElement(doc);
+	if (node == NULL) {
+		errorText = tr("The specified file is invalid.");
+		xmlFreeDoc(doc);
+		return false;
+	}
+
+	if (xmlStrcmp(node->name, (const xmlChar *) "DiveComputerSettingsBackup")) {
+		errorText = tr("The specified file does not contain a valid backup.");
+		xmlFreeDoc(doc);
+		return false;
+	}
+
+	xmlNodePtr child = node->children;
+
+	while (child != NULL) {
+		QString nodeName = (char *)child->name;
+		if (nodeName == "Settings") {
+			xmlNodePtr settingNode = child->children;
+			while (settingNode != NULL) {
+				QString settingName = (char *)settingNode->name;
+				key = xmlNodeListGetString(doc, settingNode->xmlChildrenNode, 1);
+				QString keyString = (char *)key;
+				if (settingName != "text") {
+					if (settingName == "CustomText")
+						details->setCustomText(keyString);
+
+					if (settingName == "Brightness")
+						details->setBrightness(keyString.toInt());
+
+					if (settingName == "Language")
+						details->setLanguage(keyString.toInt());
+
+					if (settingName == "DateFormat")
+						details->setDateFormat(keyString.toInt());
+				}
+
+				settingNode = settingNode->next;
+			}
+		}
+		child = child->next;
+	}
+
+	return true;
+}
+
 void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 {
 	currentState = newState;
 	emit stateChanged(currentState);
+}
+
+
+QString ConfigureDiveComputer::addSettingToXML(QString settingName, QVariant value)
+{
+	return "\n<" + settingName + ">" + value.toString() + "</" + settingName + ">";
 }
 
 void ConfigureDiveComputer::setError(QString err)

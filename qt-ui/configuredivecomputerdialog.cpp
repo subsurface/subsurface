@@ -244,13 +244,39 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 		QString errorText = "";
 		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data, errorText)) {
 			QMessageBox::critical(this, tr("XML Backup Error"),
-					      tr("An eror occurred while saving the backup file.\n%1")
+					      tr("An error occurred while saving the backup file.\n%1")
 					      .arg(errorText)
 					      );
 		} else {
 			QMessageBox::information(this, tr("Backup succeeded"),
 						 tr("Your settings have been saved to: %1")
 						 .arg(filename)
+						 );
+		}
+	}
+}
+
+void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
+{
+	QString filename = existing_filename ?: prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
+	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore Dive Computer Settings"),
+							   filename, tr("Backup files (*.xml)")
+							   );
+	if (!restorePath.isEmpty()) {
+		QString errorText = "";
+		if (!config->restoreXMLBackup(restorePath, deviceDetails, errorText)) {
+			QMessageBox::critical(this, tr("XML Restore Error"),
+					      tr("An error occurred while restoring the backup file.\n%1")
+					      .arg(errorText)
+					      );
+		} else {
+			reloadValues();
+			//getDeviceData();
+			//config->saveDeviceDetails(deviceDetails, &device_data);
+			QMessageBox::information(this, tr("Restore succeeded"),
+						 tr("Your settings have been restored successfully.")
 						 );
 		}
 	}
