@@ -20,26 +20,6 @@ static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "deco")
 };
 
-void make_first_dc()
-{
-	struct divecomputer *dc = &current_dive->dc;
-	struct divecomputer *newdc = malloc(sizeof(*newdc));
-	struct divecomputer *cur_dc = current_dc; /* needs to be in a local variable so the macro isn't re-executed */
-
-	/* skip the current DC in the linked list */
-	while (dc && dc->next != cur_dc)
-		dc = dc->next;
-	if (!dc) {
-		fprintf(stderr, "data inconsistent: can't find the current DC");
-		return;
-	}
-	dc->next = cur_dc->next;
-	*newdc = current_dive->dc;
-	current_dive->dc = *cur_dc;
-	current_dive->dc.next = newdc;
-	free(cur_dc);
-}
-
 void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;
@@ -2325,4 +2305,64 @@ void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
 void dive_remove_picture(struct dive *d, struct picture *p)
 {
 
+}
+
+/* this always acts on the current divecomputer of the current dive */
+void make_first_dc()
+{
+	struct divecomputer *dc = &current_dive->dc;
+	struct divecomputer *newdc = malloc(sizeof(*newdc));
+	struct divecomputer *cur_dc = current_dc; /* needs to be in a local variable so the macro isn't re-executed */
+
+	/* skip the current DC in the linked list */
+	while (dc && dc->next != cur_dc)
+		dc = dc->next;
+	if (!dc) {
+		fprintf(stderr, "data inconsistent: can't find the current DC");
+		return;
+	}
+	dc->next = cur_dc->next;
+	*newdc = current_dive->dc;
+	current_dive->dc = *cur_dc;
+	current_dive->dc.next = newdc;
+	free(cur_dc);
+}
+
+/* always acts on the current dive */
+int count_divecomputers(void)
+{
+	int ret = 1;
+	struct divecomputer *dc = current_dive->dc.next;
+	while (dc) {
+		ret++;
+		dc = dc->next;
+	}
+	return ret;
+}
+
+/* always acts on the current dive */
+void delete_current_divecomputer(void)
+{
+	struct divecomputer *dc = current_dc;
+
+	if (dc == &current_dive->dc) {
+		/* remove the first one, so copy the second one in place of the first and free the second one
+		 * be careful about freeing the no longer needed structures - since we copy things around we can't use free_dc()*/
+		struct divecomputer *fdc = dc->next;
+		free(dc->sample);
+		free((void *)dc->model);
+		free_events(dc->events);
+		memcpy(dc, fdc, sizeof(struct divecomputer));
+		free(fdc);
+	} else {
+		struct divecomputer *pdc = &current_dive->dc;
+		while (pdc->next != dc && pdc->next)
+			pdc = pdc->next;
+		if (pdc->next == dc) {
+			pdc->next = dc->next;
+			free_dc(dc);
+		}
+	}
+	if (dc_number == count_divecomputers())
+		dc_number--;
 }

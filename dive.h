@@ -456,6 +456,8 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 }
 
 extern void make_first_dc(void);
+extern int count_divecomputers(void);
+extern void delete_current_divecomputer(void);
 
 /*
  * Iterate over each dive, with the first parameter being the index

@@ -873,10 +873,14 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			parentItem = parentItem->parentItem();
 		}
 		if (isDCName) {
-			if (dc_number == 0)
+			if (dc_number == 0 && count_divecomputers() == 1)
+				// nothing to do, can't delete or reorder
 				return;
 			// create menu to show when right clicking on dive computer name
-			m.addAction(tr("Make first divecomputer"), this, SLOT(makeFirstDC()));
+			if (dc_number > 0)
+				m.addAction(tr("Make first divecomputer"), this, SLOT(makeFirstDC()));
+			if (count_divecomputers() > 1)
+				m.addAction(tr("Delete this divecomputer"), this, SLOT(deleteCurrentDC()));
 			m.exec(event->globalPos());
 			// don't show the regular profile context menu
 			return;
@@ -927,6 +931,15 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(event->globalPos());
 	}
 	m.exec(event->globalPos());
+}
+
+void ProfileWidget2::deleteCurrentDC()
+{
+	delete_current_divecomputer();
+	mark_divelist_changed(true);
+	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
+	forceReplot = true;
+	MainWindow::instance()->refreshDisplay();
 }
 
 void ProfileWidget2::makeFirstDC()

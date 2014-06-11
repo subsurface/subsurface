@@ -90,6 +90,7 @@ slots: // Necessary to call from QAction's signals.
 	void removeEvent();
 	void editName();
 	void makeFirstDC();
+	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void plotPictures();
