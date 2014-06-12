@@ -206,11 +206,6 @@
   <tabstop>decoStopSAC</tabstop>
   <tabstop>gflow</tabstop>
   <tabstop>gfhigh</tabstop>
-  <tabstop>lastStop</tabstop>
-  <tabstop>display_runtime</tabstop>
-  <tabstop>display_transitions</tabstop>
-  <tabstop>verbatim_plan</tabstop>
-  <tabstop>display_duration</tabstop>
   <tabstop>printPlan</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>scrollArea</tabstop>

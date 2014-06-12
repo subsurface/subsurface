@@ -250,6 +250,20 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>verbatim_plan</tabstop>
+  <tabstop>display_runtime</tabstop>
+  <tabstop>display_duration</tabstop>
+  <tabstop>display_transitions</tabstop>
+  <tabstop>ascRate75</tabstop>
+  <tabstop>ascRate50</tabstop>
+  <tabstop>ascRateStops</tabstop>
+  <tabstop>ascRateLast6m</tabstop>
+  <tabstop>lastStop</tabstop>
+  <tabstop>backgasBreaks</tabstop>
+  <tabstop>ascRate75_2</tabstop>
+  <tabstop>ascRate75_3</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
