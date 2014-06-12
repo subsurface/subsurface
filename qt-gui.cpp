@@ -281,6 +281,14 @@ QString get_volume_string(volume_t volume, bool showunit, int mbar)
 	const char *unit;
 	int decimals;
 	double value = get_volume_units(volume.mliter, &decimals, &unit);
+	if (mbar) {
+		// we are showing a tank size
+		// fix the weird imperial way of denominating size and provide
+		// reasonable number of decimals
+		if (prefs.units.volume == units::CUFT)
+			value *= bar_to_atm(mbar / 1000.0);
+		decimals = (value > 20.0) ? 0 : (value > 2.0) ? 1 : 2;
+	}
 	return QString("%1%2").arg(value, 0, 'f', decimals).arg(showunit ? unit : "");
 }
 
