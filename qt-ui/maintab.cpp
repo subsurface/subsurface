@@ -273,8 +273,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 		} else {
 			displayMessage(tr("This dive is being edited."));
 		}
-		// copy the current dive into editedDive and edit that
-		editedDive = *current_dive;
+		// editedDive already contains the current dive (we set this up in updateDiveInfo),
+		// so all we need to do is update the editMode if necessary
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
 }
@@ -449,6 +449,9 @@ void MainTab::updateDiveInfo(int dive)
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
 			ui.equipmentTab->setEnabled(true);
+			// now copy the current dive over to editedDive and use THAT to show the
+			// cylinder and weight model (this way edits on the equipment tab happen in the
+			// editedDive and not on the real data (until the user hits save)
 			editedDive = *d;
 			cylindersModel->setDive(&editedDive);
 			weightModel->setDive(&editedDive);
