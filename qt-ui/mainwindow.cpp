@@ -769,6 +769,16 @@ void MainWindow::initialUiSetup()
 	settings.endGroup();
 }
 
+const char *getSetting(QSettings &s, QString name)
+{
+	QVariant v;
+	v = s.value(name);
+	if (v.isValid()) {
+		return strdup(v.toString().toUtf8().data());
+	}
+	return NULL;
+}
+
 #define TOOLBOX_PREF_BUTTON(pref, setting, button) \
 	prefs.pref = s.value(#setting).toBool();   \
 	ui.button->setChecked(prefs.pref);
@@ -797,6 +807,13 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(hrgraph, hrgraph, profHR);
 	TOOLBOX_PREF_BUTTON(rulergraph, rulergraph, profRuler);
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
+	s.endGroup();
+	s.beginGroup("DiveComputer");
+	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
+	default_dive_computer_product = getSetting(s, "dive_computer_product");
+	default_dive_computer_device = getSetting(s, "dive_computer_device");
+	s.endGroup();
+	loadRecentFiles(&s);
 }
 
 #undef TOOLBOX_PREF_BUTTON

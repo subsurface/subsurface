@@ -49,16 +49,6 @@ static MainWindow *window = NULL;
 int error_count;
 const char *existing_filename;
 
-const char *getSetting(QSettings &s, QString name)
-{
-	QVariant v;
-	v = s.value(name);
-	if (v.isValid()) {
-		return strdup(v.toString().toUtf8().data());
-	}
-	return NULL;
-}
-
 #if defined(Q_OS_WIN) && QT_VERSION < 0x050000
 static QByteArray encodeUtf8(const QString &fname)
 {
@@ -103,9 +93,6 @@ QString uiLanguage(QLocale *callerLoc)
 
 void init_ui(void)
 {
-	QVariant v;
-	QSettings s;
-
 	// tell Qt to use system proxies
 	// note: on Linux, "system" == "environment variables"
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -151,15 +138,7 @@ void init_ui(void)
 			qDebug() << "can't find Subsurface localization for locale" << uiLang;
 		}
 	}
-
-	s.beginGroup("DiveComputer");
-	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
-	default_dive_computer_product = getSetting(s, "dive_computer_product");
-	default_dive_computer_device = getSetting(s, "dive_computer_device");
-	s.endGroup();
-
 	window = new MainWindow();
-	window->loadRecentFiles(&s);
 	if (existing_filename && existing_filename[0] != '\0')
 		window->setTitle(MWTF_FILENAME);
 	else
