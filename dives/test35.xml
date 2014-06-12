@@ -1,0 +1,19 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='35' date='2014-04-01' time='07:00:00' duration='29:30 min'>
+  <notes>Pretend XML from CCR.</notes>
+  <divecomputer model='made up' dctype='	CCR ' no_o2sensors='3' deviceid='00001111' diveid='00001111'>
+  <depth max='70.0 m' mean='29.364 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='3:00 min' depth='30.0 m' />
+  <sample time='7:00 min' depth='70.0 m' />
+  <sample time='11:00 min' depth='70.0 m' />
+  <sample time='15:00 min' depth='30.0 m' />
+  <sample time='20:30 min' depth='5.0 m' />
+  <sample time='29:30 min' depth='5.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
