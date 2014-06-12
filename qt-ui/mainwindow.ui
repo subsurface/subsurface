@@ -38,7 +38,7 @@
        </property>
        <widget class="QStackedWidget" name="infoPane">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -504,7 +504,7 @@
        </property>
        <widget class="QStackedWidget" name="diveListPane">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="DiveListView" name="ListWidget">
          <property name="alternatingRowColors">
@@ -548,7 +548,7 @@
        </widget>
        <widget class="QStackedWidget" name="globePane">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="stackedWidgetPage1" native="true">
          <property name="sizePolicy">
