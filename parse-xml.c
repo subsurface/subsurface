@@ -505,15 +505,11 @@ int trimspace(char *buffer) {
 
 static void utf8_string(char *buffer, void *_res)
 {
-	char *res;
+	char **res = _res;
 	int size;
 	size = trimspace(buffer);
-	if(size) {
-		res = malloc(size + 1);
-		memcpy(res, buffer, size);
-		res[size] = 0;
-		*(char **)_res = res;
-	}
+	if(size)
+		*res = strdup(buffer);
 }
 
 /* Extract the dive computer type from the xml text buffer */
