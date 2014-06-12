@@ -246,7 +246,7 @@ static int calculate_cns(struct dive *dive)
 			po2 = sample->po2.mbar;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 / depth_to_atm(sample->depth.mm, dive);
+			po2 = o2 * depth_to_atm(sample->depth.mm, dive);
 		}
 		/* Find what table-row we should calculate % for */
 		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * 3); j++)
