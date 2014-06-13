@@ -79,6 +79,7 @@ public:
 	bool filesFromCommandLine() const;
 	void setPlanNotes(const char *notes);
 	void printPlan();
+	void checkSurvey(QSettings *s);
 private
 slots:
 	/* file menu action */
@@ -184,6 +185,7 @@ private:
 	bool plannerStateClean();
 	void createFakeDiveForAddAndPlan();
 	int fakeDiveId;
+	QDialog *survey;
 };
 
 #endif // MAINWINDOW_H

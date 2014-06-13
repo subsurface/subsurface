@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
-
+#include "ssrf-version.h"
 #include "dive.h"
 #include "display.h"
 #include "divelist.h"
@@ -47,6 +47,7 @@
 #endif
 #include "divelogimportdialog.h"
 #include "divelogexportdialog.h"
+#include "usersurvey.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
@@ -61,7 +62,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	yearlyStatsModel(0),
 	state(VIEWALL),
 	updateManager(0),
-	fakeDiveId(0)
+	fakeDiveId(0),
+	survey(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -814,9 +816,30 @@ void MainWindow::readSettings()
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
 	loadRecentFiles(&s);
+	checkSurvey(&s);
 }
 
 #undef TOOLBOX_PREF_BUTTON
+
+void MainWindow::checkSurvey(QSettings *s)
+{
+	s->beginGroup("UserSurvey");
+	if (!s->contains("FirstUse42")) {
+		QVariant value = QDate().currentDate();
+		s->setValue("FirstUse42", value);
+	} else {
+		// wait a week for production versions, but not at all for non-tagged builds
+		QString ver(VERSION_STRING);
+		int waitTime = ver.contains('-') ? -1 : 7;
+		QDate firstUse42 = s->value("FirstUse42").toDate();
+		if (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s->contains("SurveyDone")) {
+			if (!survey)
+				survey = new UserSurvey(this);
+			survey->show();
+		}
+	}
+	s->endGroup();
+}
 
 void MainWindow::writeSettings()
 {

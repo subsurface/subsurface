@@ -81,7 +81,8 @@ HEADERS = \
 	qt-ui/profile/divetooltipitem.h \
 	qt-ui/profile/ruleritem.h \
 	qt-ui/updatemanager.h \
-	qt-ui/divelogexportdialog.h
+	qt-ui/divelogexportdialog.h \
+	qt-ui/usersurvey.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -158,7 +159,8 @@ SOURCES =  \
 	qt-ui/profile/divetooltipitem.cpp \
 	qt-ui/profile/ruleritem.cpp \
 	qt-ui/updatemanager.cpp \
-	qt-ui/divelogexportdialog.cpp
+	qt-ui/divelogexportdialog.cpp \
+	qt-ui/usersurvey.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c
@@ -188,7 +190,8 @@ FORMS = \
 	qt-ui/divelogimportdialog.ui \
 	qt-ui/usermanual.ui \
 	qt-ui/divelogexportdialog.ui \
-	qt-ui/plannerSettings.ui
+	qt-ui/plannerSettings.ui \
+	qt-ui/usersurvey.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/usermanual.ui qt-ui/printoptions.ui
