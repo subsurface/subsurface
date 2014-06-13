@@ -14,7 +14,7 @@ DivePictureModel *DivePictureModel::instance()
 	return self;
 }
 
-DivePictureModel::DivePictureModel()
+DivePictureModel::DivePictureModel() : numberOfPictures(0)
 {
 }
 
