@@ -34,6 +34,14 @@ void ReadSettingsThread::run()
 
 			//Read general settings
 			unsigned char uData[1] = {0};
+			//DiveMode
+			rc = hw_ostc3_device_config_read(m_data->device, 0x20, uData, sizeof(uData));
+			if (rc == DC_STATUS_SUCCESS)
+				m_deviceDetails->setDiveMode(uData[0]);
+			//Saturation
+			rc = hw_ostc3_device_config_read(m_data->device, 0x2A, uData, sizeof(uData));
+			if (rc == DC_STATUS_SUCCESS)
+				m_deviceDetails->setSaturation(uData[0]);
 			//LastDeco
 			rc = hw_ostc3_device_config_read(m_data->device, 0x2D, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
@@ -121,6 +129,14 @@ void WriteSettingsThread::run()
 			//custom text
 			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
 			unsigned char data[1] = {0};
+
+			//dive mode
+			data[0] = m_deviceDetails->diveMode();
+			hw_ostc3_device_config_write(m_data->device, 0x20, data, sizeof(data));
+
+			//saturation
+			data[0] = m_deviceDetails->saturation();
+			hw_ostc3_device_config_write(m_data->device, 0x2A, data, sizeof(data));
 
 			//last deco
 			data[0] = m_deviceDetails->lastDeco();

@@ -61,6 +61,8 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	xml += "\n</DiveComputer>";
 	xml += "\n<Settings>";
 	xml += addSettingToXML("CustomText", details->customText());
+	xml += addSettingToXML("DiveMode", details->diveMode());
+	xml += addSettingToXML("Saturation", details->saturation());
 	xml += addSettingToXML("LastDeco", details->lastDeco());
 	xml += addSettingToXML("Brightness", details->brightness());
 	xml += addSettingToXML("Units", details->units());
@@ -125,6 +127,12 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				if (settingName != "text") {
 					if (settingName == "CustomText")
 						details->setCustomText(keyString);
+
+					if (settingName == "Saturation")
+						details->setSaturation(keyString.toInt());
+
+					if (settingName == "DiveMode")
+						details->setDiveMode(keyString.toInt());
 
 					if (settingName == "LastDeco")
 						details->setLastDeco(keyString.toInt());

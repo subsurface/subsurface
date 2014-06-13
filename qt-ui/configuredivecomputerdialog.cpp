@@ -116,6 +116,8 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
+	deviceDetails->setDiveMode(ui->diveModeComboBox->currentIndex());
+	deviceDetails->setSaturation(ui->saturationSpinBox->value());
 	deviceDetails->setLastDeco(ui->lastDecoSpinBox->value());
 	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
 	deviceDetails->setUnits(ui->unitsComboBox->currentIndex());
@@ -187,6 +189,8 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->serialNoLineEdit->setText(deviceDetails->serialNo());
 	ui->firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
 	ui->customTextLlineEdit->setText(deviceDetails->customText());
+	ui->diveModeComboBox->setCurrentIndex(deviceDetails->diveMode());
+	ui->saturationSpinBox->setValue(deviceDetails->saturation());
 	ui->lastDecoSpinBox->setValue(deviceDetails->lastDeco());
 	ui->brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
 	ui->unitsComboBox->setCurrentIndex(deviceDetails->units());
