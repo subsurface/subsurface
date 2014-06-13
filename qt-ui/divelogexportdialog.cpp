@@ -90,6 +90,12 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	QFile::copy(searchPath + "dive_export.html", filename);
 	QFile::copy(searchPath + "list_lib.js", exportFiles + "list_lib.js");
 	QFile::copy(searchPath + "poster.png", exportFiles + "poster.png");
+
+	// Remove theme file if already exist in the export dir
+	QFile theme(exportFiles + "theme.css");
+	if (theme.exists())
+		theme.remove();
+
 	QFile::copy(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
 		    exportFiles + "theme.css");
 }
