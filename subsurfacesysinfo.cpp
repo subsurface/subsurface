@@ -1,6 +1,8 @@
 #include "subsurfacesysinfo.h"
 #include <QString>
 #include "qplatformdefs.h"
+#include <QFile>
+#include <QSettings>
 
 #ifdef Q_OS_UNIX
 #include <sys/utsname.h>
@@ -318,73 +320,15 @@ static QString unquote(const char *begin, const char *end)
 
 static bool readEtcOsRelease(QUnixOSVersion &v)
 {
-	// we're avoiding QFile here
-
-	int fd = QT_OPEN("/etc/os-release", O_RDONLY);
-	if (fd == -1)
-		return false;
-
-	QT_STATBUF sbuf;
-	if (QT_FSTAT(fd, &sbuf) == -1) {
-		QT_CLOSE(fd);
-		return false;
+	QFile osRelease("/etc/os-release");
+	if (osRelease.exists()) {
+		QSettings parse("/etc/os-release", QSettings::IniFormat);
+		if (parse.contains("PRETTY_NAME")) {
+			v.versionText = parse.value("PRETTY_NAME").toString();
+		}
+		return true;
 	}
-
-	QString partialIdentifier;
-	QByteArray buffer(sbuf.st_size, Qt::Uninitialized);
-	buffer.resize(QT_READ(fd, buffer.data(), sbuf.st_size));
-	QT_CLOSE(fd);
-
-	const char *ptr = buffer.constData();
-	const char *end = buffer.constEnd();
-	const char *eol;
-	for ( ; ptr != end; ptr = eol + 1) {
-		static const char idString[] = "ID=";
-		static const char prettyNameString[] = "PRETTY_NAME=";
-		static const char versionIdString[] = "VERSION_ID=";
-
-		// find the end of the line after ptr
-		eol = static_cast<const char *>(memchr(ptr, '\n', end - ptr));
-		if (!eol)
-			eol = end - 1;
-
-		int cmp = strncmp(ptr, idString, strlen(idString));
-		if (cmp < 0)
-			continue;
-		if (cmp == 0) {
-			ptr += strlen(idString);
-			QString id = unquote(ptr, eol);
-			if (partialIdentifier.isNull())
-				partialIdentifier = id;
-			else
-				v.versionIdentifier = id + QLatin1Char('_') + partialIdentifier;
-			continue;
-		}
-
-		cmp = strncmp(ptr, prettyNameString, strlen(prettyNameString));
-		if (cmp < 0)
-			continue;
-		if (cmp == 0) {
-			ptr += strlen(prettyNameString);
-			v.versionText = unquote(ptr, eol);
-			continue;
-		}
-
-		cmp = strncmp(ptr, versionIdString, strlen(versionIdString));
-		if (cmp < 0)
-			continue;
-		if (cmp == 0) {
-			ptr += strlen(versionIdString);
-			QString id = unquote(ptr, eol);
-			if (partialIdentifier.isNull())
-				partialIdentifier = id;
-			else
-				v.versionIdentifier = partialIdentifier + QLatin1Char('_') + id;
-			continue;
-		}
-	}
-
-	return true;
+	return false;
 }
 #endif // USE_ETC_OS_RELEASE
 
