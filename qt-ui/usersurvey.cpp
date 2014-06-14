@@ -13,9 +13,16 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
 {
 	ui->setupUi(this);
+	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
+
 	// fill in the system data
+	ui->system->append(tr("Subsurface %1").arg(VERSION_STRING));
 	ui->system->append(tr("Operating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
 	ui->system->append(tr("CPU Architecture: %1").arg(SubsurfaceSysInfo::cpuArchitecture()));
+	ui->system->append(tr("Language: %1").arg(uiLanguage(NULL)));
 }
 
 UserSurvey::~UserSurvey()
