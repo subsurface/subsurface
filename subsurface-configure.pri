@@ -168,6 +168,9 @@ win32 {
 	LIBS += -lwsock32
 	DEFINES -= UNICODE
 }
+mac {
+	LIBS += -framework CoreServices
+}
 
 #
 # misc
