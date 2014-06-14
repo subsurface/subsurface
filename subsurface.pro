@@ -82,7 +82,8 @@ HEADERS = \
 	qt-ui/profile/ruleritem.h \
 	qt-ui/updatemanager.h \
 	qt-ui/divelogexportdialog.h \
-	qt-ui/usersurvey.h
+	qt-ui/usersurvey.h \
+	subsurfacesysinfo.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -160,7 +161,8 @@ SOURCES =  \
 	qt-ui/profile/ruleritem.cpp \
 	qt-ui/updatemanager.cpp \
 	qt-ui/divelogexportdialog.cpp \
-	qt-ui/usersurvey.cpp
+	qt-ui/usersurvey.cpp \
+	subsurfacesysinfo.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c

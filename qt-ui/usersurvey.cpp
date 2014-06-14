@@ -8,12 +8,14 @@
 #include "ssrf-version.h"
 
 #include "helpers.h"
-
+#include "subsurfacesysinfo.h"
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
 {
 	ui->setupUi(this);
 	// fill in the system data
+	ui->system->append(tr("Operating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
+	ui->system->append(tr("CPU Architecture: %1").arg(SubsurfaceSysInfo::cpuArchitecture()));
 }
 
 UserSurvey::~UserSurvey()
