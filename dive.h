@@ -404,7 +404,7 @@ extern const struct units SI_units, IMPERIAL_units;
 extern struct units xml_parsing_units;
 
 extern struct units *get_units(void);
-extern int verbose, quit;
+extern int run_survey, verbose, quit;
 
 struct dive_table {
 	int nr, allocated, preexisting;

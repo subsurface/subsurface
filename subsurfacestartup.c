@@ -35,6 +35,8 @@ struct preferences default_prefs = {
 	.show_average_depth = true
 };
 
+int run_survey;
+
 struct units *get_units()
 {
 	return &prefs.units;
@@ -97,6 +99,7 @@ static void print_help()
 	printf("\n --import logfile ...  Logs before this option is treated as base, everything after is imported");
 	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
 	printf("\n --version             Prints current version");
+	printf("\n --survey              Offer to submit a user survey");
 	printf("\n --win32console        Create a dedicated console if needed (Windows only). Add option before everything else\n\n");
 }
 
@@ -132,6 +135,10 @@ void parse_argument(const char *arg)
 			if (strcmp(arg, "--version") == 0) {
 				print_version();
 				exit(0);
+			}
+			if (strcmp(arg, "--survey") == 0) {
+				run_survey = true;
+				return;
 			}
 			if (strcmp(arg, "--win32console") == 0)
 				return;
