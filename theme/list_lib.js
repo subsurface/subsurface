@@ -227,7 +227,7 @@ function putRating(rating){
 this variables keep the state of
 each col. sorted asc or des
 */
-var number = true;
+var number = false;
 var time = true;
 var date = true;
 var air = true;
@@ -812,4 +812,16 @@ function showDiveDetails(dive){
 function unshowDiveDetails(dive){
 	document.getElementById("diveListPanel").style.display='block';
 	document.getElementById("divePanel").style.display='none';
+}
+
+function nextDetailedDive(){
+	if(dive_id<items.length){
+		showDiveDetails(++dive_id);
+	}
+}
+
+function prevDetailedDive(){
+	if(dive_id>0){
+		showDiveDetails(--dive_id);
+	}
 }
