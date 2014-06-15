@@ -46,6 +46,10 @@
 #include <QFile>
 #include <QSettings>
 
+#ifndef QStringLiteral
+#	define QStringLiteral QString::fromUtf8
+#endif
+
 #ifdef Q_OS_UNIX
 #include <sys/utsname.h>
 #endif
@@ -54,6 +58,8 @@
 #include <MacTypes.h>
 #include <CoreServices/CoreServices.h>
 #endif
+
+// --- this is a copy of Qt 5.4's src/corelib/global/archdetect.cpp ---
 
 // main part: processor type
 #if defined(Q_PROCESSOR_ALPHA)
@@ -126,24 +132,9 @@
 
 #define ARCH_FULL ARCH_PROCESSOR "-" ARCH_ENDIANNESS "-" ARCH_POINTER ARCH_ABI
 
+// --- end of archdetect.cpp ---
 
-#if defined(Q_OS_OSX)
-
-SubsurfaceSysInfo::MacVersion SubsurfaceSysInfo::macVersion()
-{
-#if defined(Q_OS_OSX)
-	SInt32 gestalt_version;
-	if (Gestalt(gestaltSystemVersionMinor, &gestalt_version) == noErr) {
-		// add 2 because OS X 10.0 is 0x02 in the enum
-		return SubsurfaceSysInfo::MacVersion(gestalt_version + 2);
-	}
-#elif defined(Q_OS_IOS)
-	return qt_ios_version(); // qtcore_mac_objc.mm
-#endif
-	return SubsurfaceSysInfo::MV_Unknown;
-}
-const SubsurfaceSysInfo::MacVersion SubsurfaceSysInfo::MacintoshVersion = SubsurfaceSysInfo::macVersion();
-#elif defined(Q_OS_WIN) || defined(Q_OS_CYGWIN) || defined(Q_OS_WINCE) || defined(Q_OS_WINRT)
+#if defined(Q_OS_WIN) || defined(Q_OS_CYGWIN) || defined(Q_OS_WINCE) || defined(Q_OS_WINRT)
 
 QT_BEGIN_INCLUDE_NAMESPACE
 #include "qt_windows.h"
@@ -181,118 +172,6 @@ static inline OSVERSIONINFO winOsVersion()
 }
 #endif // !Q_OS_WINRT
 
-SubsurfaceSysInfo::WinVersion SubsurfaceSysInfo::windowsVersion()
-{
-#ifndef VER_PLATFORM_WIN32s
-#define VER_PLATFORM_WIN32s            0
-#endif
-#ifndef VER_PLATFORM_WIN32_WINDOWS
-#define VER_PLATFORM_WIN32_WINDOWS  1
-#endif
-#ifndef VER_PLATFORM_WIN32_NT
-#define VER_PLATFORM_WIN32_NT            2
-#endif
-#ifndef VER_PLATFORM_WIN32_CE
-#define VER_PLATFORM_WIN32_CE            3
-#endif
-
-	static SubsurfaceSysInfo::WinVersion winver;
-	if (winver)
-		return winver;
-#ifdef Q_OS_WINRT
-	winver = SubsurfaceSysInfo::WV_WINDOWS8;
-#else
-	winver = SubsurfaceSysInfo::WV_NT;
-	const OSVERSIONINFO osver = winOsVersion();
-#ifdef Q_OS_WINCE
-	DWORD qt_cever = 0;
-	qt_cever = osver.dwMajorVersion * 100;
-	qt_cever += osver.dwMinorVersion * 10;
-#endif
-	switch (osver.dwPlatformId) {
-	case VER_PLATFORM_WIN32s:
-		winver = SubsurfaceSysInfo::WV_32s;
-		break;
-	case VER_PLATFORM_WIN32_WINDOWS:
-		// We treat Windows Me (minor 90) the same as Windows 98
-		if (osver.dwMinorVersion == 90)
-			winver = SubsurfaceSysInfo::WV_Me;
-		else if (osver.dwMinorVersion == 10)
-			winver = SubsurfaceSysInfo::WV_98;
-		else
-			winver = SubsurfaceSysInfo::WV_95;
-		break;
-#ifdef Q_OS_WINCE
-	case VER_PLATFORM_WIN32_CE:
-		if (qt_cever >= 600)
-			winver = SubsurfaceSysInfo::WV_CE_6;
-		if (qt_cever >= 500)
-			winver = SubsurfaceSysInfo::WV_CE_5;
-		else if (qt_cever >= 400)
-			winver = SubsurfaceSysInfo::WV_CENET;
-		else
-			winver = SubsurfaceSysInfo::WV_CE;
-		break;
-#endif
-	default: // VER_PLATFORM_WIN32_NT
-		if (osver.dwMajorVersion < 5) {
-			winver = SubsurfaceSysInfo::WV_NT;
-		} else if (osver.dwMajorVersion == 5 && osver.dwMinorVersion == 0) {
-			winver = SubsurfaceSysInfo::WV_2000;
-		} else if (osver.dwMajorVersion == 5 && osver.dwMinorVersion == 1) {
-			winver = SubsurfaceSysInfo::WV_XP;
-		} else if (osver.dwMajorVersion == 5 && osver.dwMinorVersion == 2) {
-			winver = SubsurfaceSysInfo::WV_2003;
-		} else if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 0) {
-			winver = SubsurfaceSysInfo::WV_VISTA;
-		} else if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 1) {
-			winver = SubsurfaceSysInfo::WV_WINDOWS7;
-		} else if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 2) {
-			winver = SubsurfaceSysInfo::WV_WINDOWS8;
-		} else if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 3) {
-			winver = SubsurfaceSysInfo::WV_WINDOWS8_1;
-		} else {
-			qWarning("Qt: Untested Windows version %d.%d detected!",
-				 int(osver.dwMajorVersion), int(osver.dwMinorVersion));
-			winver = SubsurfaceSysInfo::WV_NT_based;
-		}
-	}
-
-#ifdef QT_DEBUG
-	{
-		QByteArray override = qgetenv("QT_WINVER_OVERRIDE");
-		if (override.isEmpty())
-			return winver;
-
-		if (override == "Me")
-			winver = SubsurfaceSysInfo::WV_Me;
-		if (override == "95")
-			winver = SubsurfaceSysInfo::WV_95;
-		else if (override == "98")
-			winver = SubsurfaceSysInfo::WV_98;
-		else if (override == "NT")
-			winver = SubsurfaceSysInfo::WV_NT;
-		else if (override == "2000")
-			winver = SubsurfaceSysInfo::WV_2000;
-		else if (override == "2003")
-			winver = SubsurfaceSysInfo::WV_2003;
-		else if (override == "XP")
-			winver = SubsurfaceSysInfo::WV_XP;
-		else if (override == "VISTA")
-			winver = SubsurfaceSysInfo::WV_VISTA;
-		else if (override == "WINDOWS7")
-			winver = SubsurfaceSysInfo::WV_WINDOWS7;
-		else if (override == "WINDOWS8")
-			winver = SubsurfaceSysInfo::WV_WINDOWS8;
-		else if (override == "WINDOWS8_1")
-			winver = SubsurfaceSysInfo::WV_WINDOWS8_1;
-	}
-#endif
-#endif // !Q_OS_WINRT
-
-	return winver;
-}
-
 static const char *winVer_helper()
 {
 	switch (int(SubsurfaceSysInfo::WindowsVersion)) {
@@ -325,9 +204,6 @@ static const char *winVer_helper()
 	// unknown, future version
 	return 0;
 }
-
-const SubsurfaceSysInfo::WinVersion SubsurfaceSysInfo::WindowsVersion = SubsurfaceSysInfo::windowsVersion();
-
 #endif
 
 #if defined(Q_OS_UNIX)
@@ -403,7 +279,7 @@ static QUnixOSVersion detectUnixVersion()
 }
 #endif
 
-QString SubsurfaceSysInfo::unknownText()
+static QString unknownText()
 {
 	return QStringLiteral("unknown");
 }
@@ -525,15 +401,6 @@ QString SubsurfaceSysInfo::prettyOsName()
 	// get the known codenames
 	const char *basename = 0;
 	switch (int(MacintoshVersion)) {
-	case MV_CHEETAH:
-	case MV_PUMA:
-	case MV_JAGUAR:
-	case MV_PANTHER:
-	case MV_TIGER:
-		// This version of Qt does not run on those versions of OS X
-		// so this case label will never be reached
-		Q_UNREACHABLE();
-		break;
 	case MV_LEOPARD:
 		basename = "Mac OS X Leopard (";
 		break;
@@ -549,7 +416,7 @@ QString SubsurfaceSysInfo::prettyOsName()
 	case MV_MAVERICKS:
 		basename = "OS X Mavericks (";
 		break;
-	case MV_YOSEMITE:
+	case 0x000C: // MV_YOSEMITE
 		basename = "OS X Yosemite (";
 		break;
 	}
