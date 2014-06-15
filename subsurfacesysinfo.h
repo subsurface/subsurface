@@ -45,6 +45,7 @@
 
 #include <QtGlobal>
 
+#if QT_VERSION < 0x050000
 #if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM) || defined(__arm64__)
 #	define Q_PROCESSOR_ARM
 #	if defined(__arm64__)
@@ -197,6 +198,7 @@
 #		define Q_PROCESSOR_WORDSIZE        QT_POINTER_SIZE
 #	endif
 #endif
+#endif // Qt < 5.0.0
 
 class QString;
 class SubsurfaceSysInfo {
