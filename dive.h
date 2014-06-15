@@ -11,14 +11,14 @@
 
 /* Windows has no MIN/MAX macros - so let's just roll our own */
 #define MIN(x, y) ({                \
-	typeof(x) _min1 = (x);          \
-	typeof(y) _min2 = (y);          \
+	__typeof__(x) _min1 = (x);          \
+	__typeof__(y) _min2 = (y);          \
 	(void) (&_min1 == &_min2);      \
 	_min1 < _min2 ? _min1 : _min2; })
 
 #define MAX(x, y) ({                \
-	typeof(x) _max1 = (x);          \
-	typeof(y) _max2 = (y);          \
+	__typeof__(x) _max1 = (x);          \
+	__typeof__(y) _max2 = (y);          \
 	(void) (&_max1 == &_max2);      \
 	_max1 > _max2 ? _max1 : _max2; })
 
