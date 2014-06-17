@@ -94,7 +94,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
 #ifdef NO_MARBLE
-	ui.layoutWidget->hide();
+	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #endif
 #ifdef NO_USERMANUAL
@@ -135,6 +135,9 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	if (doRecreateDiveList)
 		recreateDiveList();
 	ui.diveListPane->setCurrentIndex(0); // switch to the dive list
+#ifdef NO_MARBLE
+	ui.globePane->hide();
+#endif
 	ui.globePane->setCurrentIndex(0);
 	ui.ListWidget->setEnabled(true);
 	ui.ListWidget->setFocus();
@@ -476,6 +479,9 @@ void MainWindow::on_actionDivePlanner_triggered()
 	ui.ListWidget->setEnabled(false);
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
 	ui.globePane->setCurrentIndex(1);
+#ifdef NO_MARBLE
+	ui.globePane->show();
+#endif
 }
 
 void MainWindow::on_actionAddDive_triggered()
