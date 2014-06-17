@@ -248,6 +248,9 @@ static int calculate_cns(struct dive *dive)
 			int o2 = active_o2(dive, dc, sample->time);
 			po2 = o2 * depth_to_atm(sample->depth.mm, dive);
 		}
+		/* CNS don't increse when below 500 matm */
+		if (po2 < 500)
+			continue;
 		/* Find what table-row we should calculate % for */
 		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * 3); j++)
 			if (po2 > cns_table[j][0])
