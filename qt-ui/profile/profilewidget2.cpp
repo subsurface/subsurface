@@ -393,7 +393,7 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	}
 
 	// reset some item visibility on printMode changes
-	toolTipItem->setVisible(!(printMode || currentState == PLAN));
+	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
 
 	// No need to do this again if we are already showing the same dive
