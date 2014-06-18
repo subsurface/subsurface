@@ -345,7 +345,7 @@ int get_divenr(struct dive *dive)
 	return -1;
 }
 
-static struct gasmix air = { .o2.permille = O2_IN_AIR };
+static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 
 /* take into account previous dives until there is a 48h gap between dives */
 double init_decompression(struct dive *dive)

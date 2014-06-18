@@ -167,9 +167,9 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 		plot_data *entry = dataModel->data().entry + dataModel->rowCount() - 1;
 		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
 			int max = maxCeiling(i);
-			if (entry->depth < max) {
+			// Don't screem if we violate the ceiling by a few cm
+			if (entry->depth < max - 100)
 				profileColor = QColor(Qt::red);
-			}
 		}
 	}
 
