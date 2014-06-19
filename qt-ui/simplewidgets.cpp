@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QDateTime>
 #include <QShortcut>
+#include <QCalendarWidget>
 #include "exif.h"
 #include "dive.h"
 #include "file.h"
@@ -299,16 +300,24 @@ bool isGnome3Session()
 #endif
 }
 
-DateWidget::DateWidget(QWidget *parent) : QWidget(parent)
+DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
+	calendarWidget(new QCalendarWidget())
 {
 	setDate(QDate::currentDate());
 	setMinimumSize(QSize(64,64));
+	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
+
+	connect(calendarWidget, SIGNAL(activated(QDate)), calendarWidget, SLOT(hide()));
+	connect(calendarWidget, SIGNAL(clicked(QDate)), calendarWidget, SLOT(hide()));
+	connect(calendarWidget, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
+	connect(calendarWidget, SIGNAL(clicked(QDate)), this, SLOT(setDate(QDate)));
 }
 
 void DateWidget::setDate(const QDate& date)
 {
 	mDate = date;
 	update();
+	emit dateChanged(mDate);
 }
 
 QDate DateWidget::date() const
@@ -343,5 +352,11 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	painter.setBrush(Qt::black);
 	painter.setFont(font);
 	painter.drawText(QPoint(32 - metrics.width(day)/2, 45), day);
-
 }
+
+void DateWidget::mousePressEvent(QMouseEvent *event)
+{
+	calendarWidget->move(event->globalPos());
+	calendarWidget->show();
+}
+

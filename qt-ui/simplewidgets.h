@@ -88,18 +88,23 @@ private:
 	time_t dcImageEpoch;
 };
 
+class QCalendarWidget;
+
 class DateWidget : public QWidget {
 	Q_OBJECT
 public:
 	DateWidget(QWidget *parent = 0);
-	void setDate(const QDate& date);
 	QDate date() const;
+public slots:
+	void setDate(const QDate& date);
 protected:
 	void paintEvent(QPaintEvent *event);
-
+	void mousePressEvent(QMouseEvent *event);
+signals:
+	void dateChanged(const QDate& date);
 private:
 	QDate mDate;
-
+	QCalendarWidget *calendarWidget;
 };
 
 bool isGnome3Session();
