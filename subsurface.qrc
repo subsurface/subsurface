@@ -53,5 +53,6 @@
         <file alias="icon_ceiling_dc">icons/pc.png</file>
         <file alias="icon_ead">icons/ead.png</file>
         <file alias="icon_HR">icons/icon-HR.png</file>
+	<file alias="calendar">icons/calendarbg.png</file>
     </qresource>
 </RCC>

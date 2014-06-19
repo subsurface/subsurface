@@ -88,6 +88,21 @@ private:
 	time_t dcImageEpoch;
 };
 
+class DateWidget : public QWidget {
+	Q_OBJECT
+public:
+	DateWidget(QWidget *parent = 0);
+	void setDate(const QDate& date);
+	QDate date() const;
+
+protected:
+	void paintEvent(QPaintEvent *event);
+
+private:
+	QDate mDate;
+
+};
+
 bool isGnome3Session();
 
 #endif // SIMPLEWIDGETS_H

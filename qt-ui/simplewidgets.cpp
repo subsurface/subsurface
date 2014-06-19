@@ -298,3 +298,49 @@ bool isGnome3Session()
 	return !p_stdout.isEmpty();
 #endif
 }
+
+DateWidget::DateWidget(QWidget *parent) : QWidget(parent)
+{
+	setDate(QDate::currentDate());
+}
+
+void DateWidget::setDate(const QDate& date)
+{
+	mDate = date;
+	update();
+}
+
+QDate DateWidget::date() const
+{
+	return mDate;
+}
+
+void DateWidget::paintEvent(QPaintEvent *event)
+{
+	static QPixmap pix = QPixmap(":/calendar").scaled(64,64);
+	static int pixRedTag = 18; 	/* calculated using a ruler. */
+
+	QPainter painter(this);
+	painter.drawPixmap(QPoint(0,0), pix);
+
+	QString month = mDate.toString("MMM");
+	QString year = mDate.toString("yyyy");
+	QString day = mDate.toString("dd");
+
+
+	QFont font = QFont("monospace", 5);
+	QFontMetrics metrics = QFontMetrics(font);
+	painter.setFont(font);
+	painter.setPen(QPen(QBrush(Qt::white), 0));
+	painter.setBrush(QBrush(Qt::white));
+	painter.drawText(QPoint(4, metrics.height() + 3), month);
+	painter.drawText(QPoint(64 - metrics.width(year) -6, 14), year);
+
+	font.setPointSize(14);
+	metrics = QFontMetrics(font);
+	painter.setPen(QPen(QBrush(Qt::black),0));
+	painter.setBrush(Qt::black);
+	painter.setFont(font);
+	painter.drawText(QPoint(32 - metrics.width(day)/2, 45), day);
+
+}
