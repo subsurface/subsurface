@@ -302,6 +302,7 @@ bool isGnome3Session()
 DateWidget::DateWidget(QWidget *parent) : QWidget(parent)
 {
 	setDate(QDate::currentDate());
+	setMinimumSize(QSize(64,64));
 }
 
 void DateWidget::setDate(const QDate& date)

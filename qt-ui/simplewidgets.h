@@ -94,7 +94,6 @@ public:
 	DateWidget(QWidget *parent = 0);
 	void setDate(const QDate& date);
 	QDate date() const;
-
 protected:
 	void paintEvent(QPaintEvent *event);
 
