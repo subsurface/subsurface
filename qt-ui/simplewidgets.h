@@ -100,6 +100,8 @@ public slots:
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent(QMouseEvent *event);
+	void focusInEvent(QFocusEvent *);
+	void focusOutEvent(QFocusEvent *);
 signals:
 	void dateChanged(const QDate& date);
 private:

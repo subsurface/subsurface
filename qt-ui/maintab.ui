@@ -19,9 +19,7 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true">
-      <zorder>scrollArea</zorder>
-     </widget>
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -248,7 +246,11 @@
          </widget>
         </item>
         <item row="1" column="0" rowspan="2">
-         <widget class="DateWidget" name="dateEdit" native="true"/>
+         <widget class="DateWidget" name="dateEdit" native="true">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -280,8 +282,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -360,8 +362,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>548</width>
+         <height>395</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -670,8 +672,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>468</width>
+         <height>229</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -923,6 +925,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
+  <tabstop>dateEdit</tabstop>
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
@@ -937,6 +940,7 @@
   <tabstop>scrollArea_2</tabstop>
   <tabstop>scrollArea_3</tabstop>
   <tabstop>scrollArea_4</tabstop>
+  <tabstop>photosView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

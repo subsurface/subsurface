@@ -305,6 +305,7 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 {
 	setDate(QDate::currentDate());
 	setMinimumSize(QSize(64,64));
+	setFocusPolicy(Qt::StrongFocus);
 	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
 
 	connect(calendarWidget, SIGNAL(activated(QDate)), calendarWidget, SLOT(hide()));
@@ -352,6 +353,9 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	painter.setBrush(Qt::black);
 	painter.setFont(font);
 	painter.drawText(QPoint(32 - metrics.width(day)/2, 45), day);
+
+	if(hasFocus())
+		painter.drawLine(0, 63, 63, 63);
 }
 
 void DateWidget::mousePressEvent(QMouseEvent *event)
@@ -360,3 +364,14 @@ void DateWidget::mousePressEvent(QMouseEvent *event)
 	calendarWidget->show();
 }
 
+
+void DateWidget::focusInEvent(QFocusEvent *event)
+{
+	setFocus();
+	QWidget::focusInEvent(event);
+}
+
+void DateWidget::focusOutEvent(QFocusEvent *event)
+{
+	QWidget::focusOutEvent(event);
+}
