@@ -375,3 +375,16 @@ void DateWidget::focusOutEvent(QFocusEvent *event)
 {
 	QWidget::focusOutEvent(event);
 }
+
+void DateWidget::keyPressEvent(QKeyEvent *event)
+{
+	if ( event->key() == Qt::Key_Return ||
+		 event->key() == Qt::Key_Enter ||
+		 event->key() == Qt::Key_Space){
+		calendarWidget->move(mapToGlobal(QPoint(0,64)));
+		calendarWidget->show();
+		event->setAccepted(true);
+	}else{
+		QWidget::keyPressEvent(event);
+	}
+}
