@@ -111,5 +111,6 @@ private:
 };
 
 bool isGnome3Session();
+QImage grayImage(const QImage& coloredImg);
 
 #endif // SIMPLEWIDGETS_H

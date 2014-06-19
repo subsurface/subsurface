@@ -7,18 +7,19 @@
 #include <unistd.h>
 #include <QStyle>
 #include <QStyleOption>
+#include "simplewidgets.h"
 
-QPixmap *StarWidget::activeStar = 0;
-QPixmap *StarWidget::inactiveStar = 0;
+QImage StarWidget::activeStar;
+QImage StarWidget::inactiveStar;
 
-QPixmap StarWidget::starActive()
+const QImage& StarWidget::starActive()
 {
-	return (*activeStar);
+	return activeStar;
 }
 
-QPixmap StarWidget::starInactive()
+const QImage& StarWidget::starInactive()
 {
-	return (*inactiveStar);
+	return inactiveStar;
 }
 
 int StarWidget::currentStars() const
@@ -48,12 +49,14 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 void StarWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter p(this);
+	QPixmap active = QPixmap::fromImage(starActive());
+	QPixmap inactive = QPixmap::fromImage(starInactive());
 
 	for (int i = 0; i < current; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starActive());
+		p.drawPixmap(i * IMG_SIZE + SPACING, 0, active);
 
 	for (int i = current; i < TOTALSTARS; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, starInactive());
+		p.drawPixmap(i * IMG_SIZE + SPACING, 0, inactive);
 
 	if (hasFocus()) {
 		QStyleOptionFocusRect option;
@@ -74,8 +77,7 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	current(0),
 	readOnly(false)
 {
-	if (!activeStar) {
-		activeStar = new QPixmap();
+	if (activeStar.isNull()) {
 		QSvgRenderer render(QString(":star"));
 		QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
 
@@ -83,18 +85,17 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 		QPainter painter(&renderedStar);
 
 		render.render(&painter, QRectF(0, 0, IMG_SIZE, IMG_SIZE));
-		(*activeStar) = renderedStar;
+		activeStar = renderedStar.toImage();
 	}
-	if (!inactiveStar) {
-		inactiveStar = new QPixmap();
-		(*inactiveStar) = grayImage(activeStar);
+	if (inactiveStar.isNull()) {
+		inactiveStar = grayImage(activeStar);
 	}
 	setFocusPolicy(Qt::StrongFocus);
 }
 
-QPixmap StarWidget::grayImage(QPixmap *coloredImg)
+QImage grayImage(const QImage& coloredImg)
 {
-	QImage img = coloredImg->toImage();
+	QImage img = coloredImg;
 	for (int i = 0; i < img.width(); ++i) {
 		for (int j = 0; j < img.height(); ++j) {
 			QRgb rgb = img.pixel(i, j);
@@ -107,7 +108,7 @@ QPixmap StarWidget::grayImage(QPixmap *coloredImg)
 		}
 	}
 
-	return QPixmap::fromImage(img);
+	return img;
 }
 
 QSize StarWidget::sizeHint() const

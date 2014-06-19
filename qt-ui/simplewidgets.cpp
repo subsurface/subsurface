@@ -332,7 +332,8 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	static int pixRedTag = 18; 	/* calculated using a ruler. */
 
 	QPainter painter(this);
-	painter.drawPixmap(QPoint(0,0), pix);
+
+	painter.drawPixmap(QPoint(0,0), isEnabled() ? pix : QPixmap::fromImage(grayImage(pix.toImage())));
 
 	QString month = mDate.toString("MMM");
 	QString year = mDate.toString("yyyy");

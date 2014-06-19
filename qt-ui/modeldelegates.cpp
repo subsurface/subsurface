@@ -47,10 +47,13 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	int deltaY = option.rect.height() / 2 - StarWidget::starActive().height() / 2;
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing, true);
+	const QPixmap active = QPixmap::fromImage(StarWidget::starActive());
+	const QPixmap inactive = QPixmap::fromImage(StarWidget::starInactive());
+
 	for (int i = 0; i < rating; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starActive());
+		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, active);
 	for (int i = rating; i < TOTALSTARS; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, StarWidget::starInactive());
+		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, inactive);
 	painter->restore();
 }
 

@@ -17,8 +17,8 @@ public:
 
 	/*reimp*/ QSize sizeHint() const;
 
-	static QPixmap starActive();
-	static QPixmap starInactive();
+	static const QImage& starActive();
+	static const QImage& starInactive();
 
 signals:
 	void valueChanged(int stars);
@@ -39,9 +39,8 @@ private:
 	int current;
 	bool readOnly;
 
-	static QPixmap *activeStar;
-	static QPixmap *inactiveStar;
-	QPixmap grayImage(QPixmap *coloredImg);
+	static QImage activeStar;
+	static QImage inactiveStar;
 };
 
 #endif // STARWIDGET_H
