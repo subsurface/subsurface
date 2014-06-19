@@ -354,8 +354,12 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	painter.setFont(font);
 	painter.drawText(QPoint(32 - metrics.width(day)/2, 45), day);
 
-	if(hasFocus())
-		painter.drawLine(0, 63, 63, 63);
+	if (hasFocus()) {
+		QStyleOptionFocusRect option;
+		option.initFrom(this);
+		option.backgroundColor = palette().color(QPalette::Background);
+		style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
+	}
 }
 
 void DateWidget::mousePressEvent(QMouseEvent *event)
