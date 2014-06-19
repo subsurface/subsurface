@@ -326,6 +326,13 @@ QDate DateWidget::date() const
 	return mDate;
 }
 
+void DateWidget::changeEvent(QEvent *event)
+{
+	if(event->type() == QEvent::EnabledChange){
+		update();
+	}
+}
+
 void DateWidget::paintEvent(QPaintEvent *event)
 {
 	static QPixmap pix = QPixmap(":/calendar").scaled(64,64);

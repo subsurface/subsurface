@@ -103,6 +103,7 @@ protected:
 	void focusInEvent(QFocusEvent *);
 	void focusOutEvent(QFocusEvent *);
 	void keyPressEvent(QKeyEvent *);
+	void changeEvent(QEvent *);
 signals:
 	void dateChanged(const QDate& date);
 private:
