@@ -75,7 +75,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.visibility->installEventFilter(this);
 	ui.airtemp->installEventFilter(this);
 	ui.watertemp->installEventFilter(this);
-	ui.dateTimeEdit->installEventFilter(this);
+	ui.dateEdit->installEventFilter(this);
 	ui.tagWidget->installEventFilter(this);
 
 	QList<QObject *> statisticsTabWidgets = ui.statisticsTab->children();
@@ -265,7 +265,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 		displayMessage(tr("This trip is being edited."));
 		editedDive.location = current_dive->divetrip->location;
 		editedDive.notes = current_dive->divetrip->notes;
-		ui.dateTimeEdit->setEnabled(false);
+		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
 	} else {
 		if (amount_selected > 1) {
@@ -287,14 +287,14 @@ bool MainTab::eventFilter(QObject *object, QEvent *event)
 	if (editMode != NONE)
 		return false;
 
-	// for the dateTimeEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
-	if (object->objectName() == "dateTimeEdit" &&
+	// for the dateEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
+	if (object->objectName() == "dateEdit" &&
 	    (event->type() == QEvent::FocusIn || event->type() == QEvent::Wheel))
 		return true;
-	// MouseButtonPress in any widget (not all will ever get this), KeyPress in the dateTimeEdit,
+	// MouseButtonPress in any widget (not all will ever get this), KeyPress in the dateEdit,
 	// FocusIn for the starWidgets or RequestSoftwareInputPanel for tagWidget start the editing
 	if ((event->type() == QEvent::MouseButtonPress) ||
-	    (event->type() == QEvent::KeyPress && object == ui.dateTimeEdit) ||
+	    (event->type() == QEvent::KeyPress && object == ui.dateEdit) ||
 	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility || object == ui.buddy || object == ui.tagWidget || object || ui.divemaster))) {
 		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
 		enableEdition();
@@ -391,7 +391,8 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEMP(d, watertemp);
 	if (d) {
 		updateGpsCoordinates(d);
-		ui.dateTimeEdit->setDateTime(QDateTime::fromTime_t(d->when).toUTC());
+		ui.dateEdit->setDate(QDateTime::fromTime_t(d->when).date());
+		//TODO: set also the time when the widget is ready.
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
@@ -557,9 +558,6 @@ void MainTab::updateDiveInfo(int dive)
 		ui.rating->setCurrentStars(0);
 		ui.coordinates->clear();
 		ui.visibility->setCurrentStars(0);
-		/* turns out this is non-trivial for a dateTimeEdit... this is a partial hack */
-		QLineEdit *le = ui.dateTimeEdit->findChild<QLineEdit *>();
-		le->setText("");
 	}
 }
 
@@ -634,7 +632,7 @@ void MainTab::acceptChanges()
 			current_dive->divetrip->location = strdup(editedDive.location);
 			mark_divelist_changed(true);
 		}
-		ui.dateTimeEdit->setEnabled(true);
+		ui.dateEdit->setEnabled(true);
 	} else {
 		struct dive *cd = current_dive;
 		//Reset coordinates field, in case it contains garbage.
@@ -791,7 +789,7 @@ void MainTab::resetPallete()
 	ui.suit->setPalette(p);
 	ui.airtemp->setPalette(p);
 	ui.watertemp->setPalette(p);
-	ui.dateTimeEdit->setPalette(p);
+	ui.dateEdit->setPalette(p);
 	ui.tagWidget->setPalette(p);
 }
 
@@ -851,7 +849,7 @@ void MainTab::rejectChanges()
 
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
-	ui.dateTimeEdit->setEnabled(true);
+	ui.dateEdit->setEnabled(true);
 	resetPallete();
 	MainWindow::instance()->globe()->reload();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
@@ -949,14 +947,14 @@ void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 	}
 }
 
-void MainTab::on_dateTimeEdit_dateTimeChanged(const QDateTime &datetime)
+void MainTab::on_dateEdit_dateChanged(const QDateTime &datetime)
 {
 	if (editMode == NONE)
 		return;
 	QDateTime dateTimeUtc(datetime);
 	dateTimeUtc.setTimeSpec(Qt::UTC);
 	editedDive.when = dateTimeUtc.toTime_t();
-	markChangedWidget(ui.dateTimeEdit);
+	markChangedWidget(ui.dateEdit);
 }
 
 bool MainTab::tagsChanged(dive *a, dive *b)

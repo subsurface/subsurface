@@ -19,7 +19,9 @@
    </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true">
+      <zorder>scrollArea</zorder>
+     </widget>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -37,8 +39,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>668</width>
-         <height>658</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -57,13 +59,6 @@
         <property name="spacing">
          <number>2</number>
         </property>
-        <item row="1" column="0">
-         <widget class="QLabel" name="DateTimeLabel">
-          <property name="text">
-           <string>Start time</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <layout class="QHBoxLayout" name="temperatureLabels">
           <item>
@@ -81,13 +76,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item row="2" column="0">
-         <widget class="QDateTimeEdit" name="dateTimeEdit">
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-         </widget>
         </item>
         <item row="2" column="1">
          <layout class="QHBoxLayout" name="airWaterTempLayout">
@@ -259,6 +247,9 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0" rowspan="2">
+         <widget class="DateWidget" name="dateEdit" native="true"/>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -289,8 +280,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -369,8 +360,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>387</width>
-         <height>285</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -679,8 +670,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>668</width>
-         <height>658</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -923,10 +914,15 @@
    <extends>QListView</extends>
    <header>divepicturewidget.h</header>
   </customwidget>
+  <customwidget>
+   <class>DateWidget</class>
+   <extends>QWidget</extends>
+   <header>simplewidgets.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
-  <tabstop>dateTimeEdit</tabstop>
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
