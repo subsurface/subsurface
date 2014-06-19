@@ -42,7 +42,6 @@
 
 #include "subsurfacesysinfo.h"
 #include <QString>
-#include "qplatformdefs.h"
 #include <QFile>
 #include <QSettings>
 

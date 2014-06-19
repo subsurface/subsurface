@@ -107,6 +107,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	qthelper.cpp
 	divecomputer.cpp
 	exif.cpp
+	subsurfacesysinfo.cpp
 )
 
 #the interface, in C++
@@ -139,6 +140,8 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/usermanual.cpp
 	qt-ui/divelogexportdialog.cpp
 	qt-ui/divepicturewidget.cpp
+	qt-ui/usersurvey.cpp
+
 )
 
 #the profile widget
