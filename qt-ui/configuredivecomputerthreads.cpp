@@ -32,6 +32,31 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setSamplingRate(0);
 			m_deviceDetails->setUnits(0);
 
+
+			//Gread gas mixes
+			gas gas1;
+			gas gas2;
+			gas gas3;
+			gas gas4;
+			gas gas5;
+			//Gas 1
+			unsigned char gasData[4] = {0,0,0,0};
+			rc = hw_ostc3_device_config_read(m_data->device, 0x10, gasData, sizeof(gasData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Gas 1 read successful
+				gas gas1;
+				gas1.depth = gasData[3];
+				gas1.oxygen = gasData[0];
+				gas1.helium = gasData[1];
+				gas1.type = gasData[2];
+			}
+
+			m_deviceDetails->setGas1(gas1);
+			m_deviceDetails->setGas2(gas2);
+			m_deviceDetails->setGas3(gas3);
+			m_deviceDetails->setGas4(gas4);
+			m_deviceDetails->setGas5(gas5);
+
 			//Read general settings
 			unsigned char uData[1] = {0};
 			//DiveMode

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>507</height>
+    <width>701</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,62 +98,38 @@
        <string>HW OSTC 3</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="5" column="1">
-        <widget class="QSpinBox" name="lastDecoSpinBox">
-         <property name="suffix">
-          <string> m</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_14">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Dive Mode Colour:</string>
+          <string>Serial No.</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="0" colspan="4">
-        <widget class="QCheckBox" name="dateTimeSyncCheckBox">
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="serialNoLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>Sync dive computer time with PC</string>
+          <string>Firmware Version:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="2">
-        <widget class="QLabel" name="label_11">
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="firmwareVersionLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Units:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="2">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Salinity (0-5%):</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="3">
-        <widget class="QSpinBox" name="salinitySpinBox">
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="maximum">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Language:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Date Format:</string>
+          <string>Custom Text:</string>
          </property>
         </widget>
        </item>
@@ -167,95 +143,11 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_5">
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Custom Text:</string>
+          <string>Language:</string>
          </property>
-        </widget>
-       </item>
-       <item row="8" column="2">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>Compass Gain:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="firmwareVersionLineEdit">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Last Deco:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="serialNoLineEdit">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QComboBox" name="diveModeColour">
-         <item>
-          <property name="text">
-           <string>Standard</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Red</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Green</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Blue</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="10" column="0" colspan="4">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="1">
-        <widget class="QComboBox" name="dateFormatComboBox">
-         <item>
-          <property name="text">
-           <string>MMDDYY</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>DDMMYY</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>YYMMDD</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="2" column="3">
@@ -280,81 +172,6 @@
            <string>Italian</string>
           </property>
          </item>
-        </widget>
-       </item>
-       <item row="6" column="3">
-        <widget class="QComboBox" name="unitsComboBox">
-         <item>
-          <property name="text">
-           <string>m/°C</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ft/°F</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Brightness:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Serial No.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>Sampling Rate:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3">
-        <widget class="QComboBox" name="brightnessComboBox">
-         <item>
-          <property name="text">
-           <string>Eco</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Medium</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>High</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QComboBox" name="samplingRateComboBox">
-         <item>
-          <property name="text">
-           <string>2s</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>10s</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Firmware Version:</string>
-         </property>
         </widget>
        </item>
        <item row="3" column="0">
@@ -386,6 +203,197 @@
            <string>Apnea</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Saturation:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="saturationSpinBox">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Desaturation:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QSpinBox" name="desaturationSpinBox">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Last Deco:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="lastDecoSpinBox">
+         <property name="suffix">
+          <string> m</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Brightness:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QComboBox" name="brightnessComboBox">
+         <item>
+          <property name="text">
+           <string>Eco</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Medium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>High</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Date Format:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="dateFormatComboBox">
+         <item>
+          <property name="text">
+           <string>MMDDYY</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>DDMMYY</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>YYMMDD</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Units:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3">
+        <widget class="QComboBox" name="unitsComboBox">
+         <item>
+          <property name="text">
+           <string>m/°C</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ft/°F</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Sampling Rate:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="samplingRateComboBox">
+         <item>
+          <property name="text">
+           <string>2s</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10s</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Salinity (0-5%):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="3">
+        <widget class="QSpinBox" name="salinitySpinBox">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="maximum">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Dive Mode Colour:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="diveModeColour">
+         <item>
+          <property name="text">
+           <string>Standard</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Red</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Green</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Blue</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="8" column="2">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Compass Gain:</string>
+         </property>
         </widget>
        </item>
        <item row="8" column="3">
@@ -438,33 +446,183 @@
          </item>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_2">
+       <item row="9" column="0" colspan="2">
+        <widget class="QTableWidget" name="ostc3GasTable">
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Gas No.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%He</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%O2</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Type</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Change Depth</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Gas 1</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Gas 2</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>Gas 3</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>Gas 4</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>Gas 5</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="9" column="2" colspan="2">
+        <widget class="QTableWidget" name="ostc3DilTable">
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Gas No.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%He</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%O2</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Type</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Change Depth</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Gas 1</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Gas 2</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>Gas 3</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>Gas 4</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>Gas 5</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="10" column="0" colspan="2">
+        <widget class="QCheckBox" name="dateTimeSyncCheckBox">
          <property name="text">
-          <string>Saturation:</string>
+          <string>Sync dive computer time with PC</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QSpinBox" name="saturationSpinBox">
-         <property name="suffix">
-          <string>%</string>
+       <item row="11" column="0" colspan="4">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Desaturation:</string>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
-        <widget class="QSpinBox" name="desaturationSpinBox">
-         <property name="suffix">
-          <string>%</string>
-         </property>
-        </widget>
+        </spacer>
        </item>
       </layout>
      </widget>

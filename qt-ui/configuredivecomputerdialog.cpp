@@ -118,6 +118,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
 	deviceDetails->setDiveMode(ui->diveModeComboBox->currentIndex());
 	deviceDetails->setSaturation(ui->saturationSpinBox->value());
+	deviceDetails->setDesaturation(ui->desaturationSpinBox->value());
 	deviceDetails->setLastDeco(ui->lastDecoSpinBox->value());
 	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
 	deviceDetails->setUnits(ui->unitsComboBox->currentIndex());
@@ -168,7 +169,7 @@ void ConfigureDiveComputerDialog::on_cancel_clicked()
 
 void ConfigureDiveComputerDialog::deviceReadFinished()
 {
-
+	ui->statusLabel->setText(tr("Dive computer details read successfully."));
 }
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
@@ -191,6 +192,7 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->customTextLlineEdit->setText(deviceDetails->customText());
 	ui->diveModeComboBox->setCurrentIndex(deviceDetails->diveMode());
 	ui->saturationSpinBox->setValue(deviceDetails->saturation());
+	ui->desaturationSpinBox->setValue(deviceDetails->desaturation());
 	ui->lastDecoSpinBox->setValue(deviceDetails->lastDeco());
 	ui->brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
 	ui->unitsComboBox->setCurrentIndex(deviceDetails->units());
@@ -200,6 +202,12 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->languageComboBox->setCurrentIndex(deviceDetails->language());
 	ui->dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
 	ui->compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
+
+	//load gas 1 values
+	ui->ostc3GasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
+	ui->ostc3GasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
+	ui->ostc3GasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
+	ui->ostc3GasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
 }
 
 
