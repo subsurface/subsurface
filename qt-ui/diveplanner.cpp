@@ -269,8 +269,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
-	connect(ui.bottomSAC, SIGNAL(textChanged(QString)), this, SLOT(bottomSacChanged(QString)));
-	connect(ui.decoStopSAC, SIGNAL(textChanged(QString)), this, SLOT(decoSacChanged(QString)));
+	connect(ui.bottomSAC, SIGNAL(valueChanged(int)), this, SLOT(bottomSacChanged(int)));
+	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
@@ -286,8 +286,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	/* set defaults. */
 	ui.startTime->setTime(QTime(1, 0));
 	ui.ATMPressure->setText("1013");
-	ui.bottomSAC->setText("20");
-	ui.decoStopSAC->setText("17");
+	ui.bottomSAC->setValue(20);
+	ui.decoStopSAC->setValue(17);
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 
@@ -310,14 +310,14 @@ void DivePlannerWidget::atmPressureChanged(const QString &pressure)
 	plannerModel->setSurfacePressure(pressure.toInt());
 }
 
-void DivePlannerWidget::bottomSacChanged(const QString &bottomSac)
+void DivePlannerWidget::bottomSacChanged(const int bottomSac)
 {
-	plannerModel->setBottomSac(bottomSac.toInt());
+	plannerModel->setBottomSac(bottomSac);
 }
 
-void DivePlannerWidget::decoSacChanged(const QString &decosac)
+void DivePlannerWidget::decoSacChanged(const int decosac)
 {
-	plannerModel->setDecoSac(decosac.toInt());
+	plannerModel->setDecoSac(decosac);
 }
 
 void DivePlannerWidget::printDecoPlan()
@@ -347,11 +347,11 @@ void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
 {
 }
 
-void PlannerSettingsWidget::bottomSacChanged(const QString &bottomSac)
+void PlannerSettingsWidget::bottomSacChanged(const int bottomSac)
 {
 }
 
-void PlannerSettingsWidget::decoSacChanged(const QString &decosac)
+void PlannerSettingsWidget::decoSacChanged(const int decosac)
 {
 }
 
