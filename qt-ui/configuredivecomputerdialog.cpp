@@ -208,6 +208,30 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->ostc3GasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
 	ui->ostc3GasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
 	ui->ostc3GasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+
+	//load gas 2 values
+	ui->ostc3GasTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
+	ui->ostc3GasTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
+	ui->ostc3GasTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
+	ui->ostc3GasTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+
+	//load gas 3 values
+	ui->ostc3GasTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
+	ui->ostc3GasTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
+	ui->ostc3GasTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
+	ui->ostc3GasTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+
+	//load gas 4 values
+	ui->ostc3GasTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
+	ui->ostc3GasTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
+	ui->ostc3GasTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
+	ui->ostc3GasTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+
+	//load gas 5 values
+	ui->ostc3GasTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
+	ui->ostc3GasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
+	ui->ostc3GasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
+	ui->ostc3GasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
 }
 
 

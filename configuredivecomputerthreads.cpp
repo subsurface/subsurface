@@ -2,6 +2,7 @@
 #include "libdivecomputer/hw.h"
 #include <QDebug>
 #include <QDateTime>
+#include <QStringList>
 
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 	: QThread(parent), m_data(data)
@@ -43,12 +44,47 @@ void ReadSettingsThread::run()
 			unsigned char gasData[4] = {0,0,0,0};
 			rc = hw_ostc3_device_config_read(m_data->device, 0x10, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
-				//Gas 1 read successful
-				gas gas1;
+				//Gas data read successful
 				gas1.depth = gasData[3];
 				gas1.oxygen = gasData[0];
 				gas1.helium = gasData[1];
 				gas1.type = gasData[2];
+			}
+			//Gas 2
+			rc = hw_ostc3_device_config_read(m_data->device, 0x11, gasData, sizeof(gasData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Gas data read successful
+				gas2.depth = gasData[3];
+				gas2.oxygen = gasData[0];
+				gas2.helium = gasData[1];
+				gas2.type = gasData[2];
+			}
+			//Gas 3
+			rc = hw_ostc3_device_config_read(m_data->device, 0x12, gasData, sizeof(gasData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Gas data read successful
+				gas3.depth = gasData[3];
+				gas3.oxygen = gasData[0];
+				gas3.helium = gasData[1];
+				gas3.type = gasData[2];
+			}
+			//Gas 4
+			rc = hw_ostc3_device_config_read(m_data->device, 0x13, gasData, sizeof(gasData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Gas data read successful
+				gas4.depth = gasData[3];
+				gas4.oxygen = gasData[0];
+				gas4.helium = gasData[1];
+				gas4.type = gasData[2];
+			}
+			//Gas 5
+			rc = hw_ostc3_device_config_read(m_data->device, 0x14, gasData, sizeof(gasData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Gas data read successful
+				gas5.depth = gasData[3];
+				gas5.oxygen = gasData[0];
+				gas5.helium = gasData[1];
+				gas5.type = gasData[2];
 			}
 
 			m_deviceDetails->setGas1(gas1);
@@ -57,7 +93,7 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setGas4(gas4);
 			m_deviceDetails->setGas5(gas5);
 
-			//Read general settings
+			//Read other settings
 			unsigned char uData[1] = {0};
 			//DiveMode
 			rc = hw_ostc3_device_config_read(m_data->device, 0x20, uData, sizeof(uData));
