@@ -129,6 +129,44 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
 	deviceDetails->setCompassGain(ui->compassGainComboBox->currentIndex());
 	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
+
+	//set gas values
+	gas gas1;
+	gas gas2;
+	gas gas3;
+	gas gas4;
+	gas gas5;
+
+	gas1.oxygen = ui->ostc3GasTable->item(0, 1)->text().toInt();
+	gas1.helium = ui->ostc3GasTable->item(0, 2)->text().toInt();
+	gas1.type = ui->ostc3GasTable->item(0, 3)->text().toInt();
+	gas1.depth = ui->ostc3GasTable->item(0, 4)->text().toInt();
+
+	gas2.oxygen = ui->ostc3GasTable->item(1, 1)->text().toInt();
+	gas2.helium = ui->ostc3GasTable->item(1, 2)->text().toInt();
+	gas2.type = ui->ostc3GasTable->item(1, 3)->text().toInt();
+	gas2.depth = ui->ostc3GasTable->item(1, 4)->text().toInt();
+
+	gas3.oxygen = ui->ostc3GasTable->item(2, 1)->text().toInt();
+	gas3.helium = ui->ostc3GasTable->item(2, 2)->text().toInt();
+	gas3.type = ui->ostc3GasTable->item(2, 3)->text().toInt();
+	gas3.depth = ui->ostc3GasTable->item(2, 4)->text().toInt();
+
+	gas4.oxygen = ui->ostc3GasTable->item(3, 1)->text().toInt();
+	gas4.helium = ui->ostc3GasTable->item(3, 2)->text().toInt();
+	gas4.type = ui->ostc3GasTable->item(3, 3)->text().toInt();
+	gas4.depth = ui->ostc3GasTable->item(3, 4)->text().toInt();
+
+	gas5.oxygen = ui->ostc3GasTable->item(4, 1)->text().toInt();
+	gas5.helium = ui->ostc3GasTable->item(4, 2)->text().toInt();
+	gas5.type = ui->ostc3GasTable->item(4, 3)->text().toInt();
+	gas5.depth = ui->ostc3GasTable->item(4, 4)->text().toInt();
+
+	deviceDetails->setGas1(gas1);
+	deviceDetails->setGas2(gas2);
+	deviceDetails->setGas3(gas3);
+	deviceDetails->setGas4(gas4);
+	deviceDetails->setGas5(gas5);
 }
 
 void ConfigureDiveComputerDialog::readSettings()

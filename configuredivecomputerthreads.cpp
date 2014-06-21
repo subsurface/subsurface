@@ -185,8 +185,44 @@ void WriteSettingsThread::run()
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
-			//write general settings
+			//write gas values
+			unsigned char gas1Data[4] = {m_deviceDetails->gas1().oxygen,
+						     m_deviceDetails->gas1().helium,
+						     m_deviceDetails->gas1().type,
+						     m_deviceDetails->gas1().depth};
 
+			unsigned char gas2Data[4] = {m_deviceDetails->gas2().oxygen,
+						     m_deviceDetails->gas2().helium,
+						     m_deviceDetails->gas2().type,
+						     m_deviceDetails->gas2().depth};
+
+			unsigned char gas3Data[4] = {m_deviceDetails->gas3().oxygen,
+						     m_deviceDetails->gas3().helium,
+						     m_deviceDetails->gas3().type,
+						     m_deviceDetails->gas3().depth};
+
+			unsigned char gas4Data[4] = {m_deviceDetails->gas4().oxygen,
+						     m_deviceDetails->gas4().helium,
+						     m_deviceDetails->gas4().type,
+						     m_deviceDetails->gas4().depth};
+
+			unsigned char gas5Data[4] = {m_deviceDetails->gas5().oxygen,
+						     m_deviceDetails->gas5().helium,
+						     m_deviceDetails->gas5().type,
+						     m_deviceDetails->gas5().depth};
+			//gas 1
+			hw_ostc3_device_config_write(m_data->device, 0x10, gas1Data, sizeof(gas1Data));
+			//gas 2
+			hw_ostc3_device_config_write(m_data->device, 0x11, gas2Data, sizeof(gas2Data));
+			//gas 3
+			hw_ostc3_device_config_write(m_data->device, 0x12, gas3Data, sizeof(gas3Data));
+			//gas 4
+			hw_ostc3_device_config_write(m_data->device, 0x13, gas4Data, sizeof(gas4Data));
+			//gas 5
+			hw_ostc3_device_config_write(m_data->device, 0x14, gas5Data, sizeof(gas5Data));
+
+
+			//write general settings
 			//custom text
 			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
 			unsigned char data[1] = {0};
