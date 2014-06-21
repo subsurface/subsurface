@@ -205,6 +205,28 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setDil3(dil3);
 	deviceDetails->setDil4(dil4);
 	deviceDetails->setDil5(dil5);
+
+	//set set point details
+	setpoint sp1;
+	setpoint sp2;
+	setpoint sp3;
+	setpoint sp4;
+	setpoint sp5;
+
+	sp1.sp = ui->ostc3SetPointTable->item(0, 1)->text().toInt();
+	sp1.depth = ui->ostc3SetPointTable->item(0, 2)->text().toInt();
+
+	sp2.sp = ui->ostc3SetPointTable->item(1, 1)->text().toInt();
+	sp2.depth = ui->ostc3SetPointTable->item(1, 2)->text().toInt();
+
+	sp3.sp = ui->ostc3SetPointTable->item(2, 1)->text().toInt();
+	sp3.depth = ui->ostc3SetPointTable->item(2, 2)->text().toInt();
+
+	sp4.sp = ui->ostc3SetPointTable->item(3, 1)->text().toInt();
+	sp4.depth = ui->ostc3SetPointTable->item(3, 2)->text().toInt();
+
+	sp5.sp = ui->ostc3SetPointTable->item(4, 1)->text().toInt();
+	sp5.depth = ui->ostc3SetPointTable->item(4, 2)->text().toInt();
 }
 
 void ConfigureDiveComputerDialog::readSettings()
@@ -338,6 +360,26 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->ostc3DilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
 	ui->ostc3DilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
 	ui->ostc3DilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+
+	//load set point 1 values
+	ui->ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
+	ui->ostc3SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1().depth)));
+
+	//load set point 2 values
+	ui->ostc3SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2().sp)));
+	ui->ostc3SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2().depth)));
+
+	//load set point 3 values
+	ui->ostc3SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3().sp)));
+	ui->ostc3SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3().depth)));
+
+	//load set point 4 values
+	ui->ostc3SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4().sp)));
+	ui->ostc3SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4().depth)));
+
+	//load set point 5 values
+	ui->ostc3SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5().sp)));
+	ui->ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
 }
 
 

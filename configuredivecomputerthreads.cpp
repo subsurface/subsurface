@@ -152,6 +152,52 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setDil4(dil4);
 			m_deviceDetails->setDil5(dil5);
 
+			//Read set point Values
+			setpoint sp1;
+			setpoint sp2;
+			setpoint sp3;
+			setpoint sp4;
+			setpoint sp5;
+
+			unsigned char spData[2] = {0,0};
+
+			//Sp 1
+			rc = hw_ostc3_device_config_read(m_data->device, 0x1A, spData, sizeof(spData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				sp1.sp = dilData[0];
+				sp1.depth = dilData[1];
+			}
+			//Sp 2
+			rc = hw_ostc3_device_config_read(m_data->device, 0x1B, spData, sizeof(spData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				sp2.sp = dilData[0];
+				sp2.depth = dilData[1];
+			}
+			//Sp 3
+			rc = hw_ostc3_device_config_read(m_data->device, 0x1C, spData, sizeof(spData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				sp3.sp = dilData[0];
+				sp3.depth = dilData[1];
+			}
+			//Sp 4
+			rc = hw_ostc3_device_config_read(m_data->device, 0x1D, spData, sizeof(spData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				sp4.sp = dilData[0];
+				sp4.depth = dilData[1];
+			}
+			//Sp 5
+			rc = hw_ostc3_device_config_read(m_data->device, 0x1E, spData, sizeof(spData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				sp5.sp = dilData[0];
+				sp5.depth = dilData[1];
+			}
+
+
 			//Read other settings
 			unsigned char uData[1] = {0};
 			//DiveMode
@@ -279,6 +325,33 @@ void WriteSettingsThread::run()
 			hw_ostc3_device_config_write(m_data->device, 0x13, gas4Data, sizeof(gas4Data));
 			//gas 5
 			hw_ostc3_device_config_write(m_data->device, 0x14, gas5Data, sizeof(gas5Data));
+
+			//write set point values
+			unsigned char sp1Data[2] = {m_deviceDetails->sp1().sp,
+						     m_deviceDetails->sp1().depth};
+
+			unsigned char sp2Data[2] = {m_deviceDetails->sp2().sp,
+						     m_deviceDetails->sp2().depth};
+
+			unsigned char sp3Data[2] = {m_deviceDetails->sp3().sp,
+						     m_deviceDetails->sp3().depth};
+
+			unsigned char sp4Data[2] = {m_deviceDetails->sp4().sp,
+						     m_deviceDetails->sp4().depth};
+
+			unsigned char sp5Data[2] = {m_deviceDetails->sp5().sp,
+						     m_deviceDetails->sp5().depth};
+
+			//sp 1
+			hw_ostc3_device_config_write(m_data->device, 0x1A, sp1Data, sizeof(sp1Data));
+			//sp 2
+			hw_ostc3_device_config_write(m_data->device, 0x1B, sp2Data, sizeof(sp2Data));
+			//sp 3
+			hw_ostc3_device_config_write(m_data->device, 0x1C, sp3Data, sizeof(sp3Data));
+			//sp 4
+			hw_ostc3_device_config_write(m_data->device, 0x1D, sp4Data, sizeof(sp4Data));
+			//sp 5
+			hw_ostc3_device_config_write(m_data->device, 0x1E, sp5Data, sizeof(sp5Data));
 
 			//write dil values
 			unsigned char dil1Data[4] = {m_deviceDetails->dil1().oxygen,

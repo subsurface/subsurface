@@ -135,6 +135,34 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	xml += addSettingToXML("Dil4", dil4);
 	xml += addSettingToXML("Dil5", dil5);
 	//
+	//Add set point values
+	QString sp1 = QString("%1,%2")
+			.arg(QString::number(details->sp1().sp),
+			     QString::number(details->sp1().depth)
+			     );
+	QString sp2 = QString("%1,%2")
+			.arg(QString::number(details->sp2().sp),
+			     QString::number(details->sp2().depth)
+			     );
+	QString sp3 = QString("%1,%2")
+			.arg(QString::number(details->sp3().sp),
+			     QString::number(details->sp3().depth)
+			     );
+	QString sp4 = QString("%1,%2")
+			.arg(QString::number(details->sp4().sp),
+			     QString::number(details->sp4().depth)
+			     );
+	QString sp5 = QString("%1,%2")
+			.arg(QString::number(details->sp5().sp),
+			     QString::number(details->sp5().depth)
+			     );
+	xml += addSettingToXML("SetPoint1", sp1);
+	xml += addSettingToXML("SetPoint2", sp2);
+	xml += addSettingToXML("SetPoint3", sp3);
+	xml += addSettingToXML("SetPoint4", sp4);
+	xml += addSettingToXML("SetPoint5", sp5);
+
+	//Other Settings
 	xml += addSettingToXML("DiveMode", details->diveMode());
 	xml += addSettingToXML("Saturation", details->saturation());
 	xml += addSettingToXML("Desaturation", details->desaturation());
@@ -301,6 +329,46 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 						dil5.type = dilData.at(2).toInt();
 						dil5.depth = dilData.at(3).toInt();
 						details->setDil5(dil5);
+					}
+
+					if (settingName == "SetPoint1") {
+						QStringList spData = keyString.split(",");
+						setpoint sp1;
+						sp1.sp = spData.at(0).toInt();
+						sp1.depth = spData.at(1).toInt();
+						details->setSp1(sp1);
+					}
+
+					if (settingName == "SetPoint2") {
+						QStringList spData = keyString.split(",");
+						setpoint sp2;
+						sp2.sp = spData.at(0).toInt();
+						sp2.depth = spData.at(1).toInt();
+						details->setSp2(sp2);
+					}
+
+					if (settingName == "SetPoint3") {
+						QStringList spData = keyString.split(",");
+						setpoint sp3;
+						sp3.sp = spData.at(0).toInt();
+						sp3.depth = spData.at(1).toInt();
+						details->setSp3(sp3);
+					}
+
+					if (settingName == "SetPoint4") {
+						QStringList spData = keyString.split(",");
+						setpoint sp4;
+						sp4.sp = spData.at(0).toInt();
+						sp4.depth = spData.at(1).toInt();
+						details->setSp4(sp4);
+					}
+
+					if (settingName == "SetPoint5") {
+						QStringList spData = keyString.split(",");
+						setpoint sp5;
+						sp5.sp = spData.at(0).toInt();
+						sp5.depth = spData.at(1).toInt();
+						details->setSp5(sp5);
 					}
 
 					if (settingName == "Saturation")
