@@ -167,6 +167,44 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setGas3(gas3);
 	deviceDetails->setGas4(gas4);
 	deviceDetails->setGas5(gas5);
+
+	//set dil values
+	gas dil1;
+	gas dil2;
+	gas dil3;
+	gas dil4;
+	gas dil5;
+
+	dil1.oxygen = ui->ostc3DilTable->item(0, 1)->text().toInt();
+	dil1.helium = ui->ostc3DilTable->item(0, 2)->text().toInt();
+	dil1.type = ui->ostc3DilTable->item(0, 3)->text().toInt();
+	dil1.depth = ui->ostc3DilTable->item(0, 4)->text().toInt();
+
+	dil2.oxygen = ui->ostc3DilTable->item(1, 1)->text().toInt();
+	dil2.helium = ui->ostc3DilTable->item(1, 2)->text().toInt();
+	dil2.type = ui->ostc3DilTable->item(1, 3)->text().toInt();
+	dil2.depth = ui->ostc3DilTable->item(1, 4)->text().toInt();
+
+	dil3.oxygen = ui->ostc3DilTable->item(2, 1)->text().toInt();
+	dil3.helium = ui->ostc3DilTable->item(2, 2)->text().toInt();
+	dil3.type = ui->ostc3DilTable->item(2, 3)->text().toInt();
+	dil3.depth = ui->ostc3DilTable->item(2, 4)->text().toInt();
+
+	dil4.oxygen = ui->ostc3DilTable->item(3, 1)->text().toInt();
+	dil4.helium = ui->ostc3DilTable->item(3, 2)->text().toInt();
+	dil4.type = ui->ostc3DilTable->item(3, 3)->text().toInt();
+	dil4.depth = ui->ostc3DilTable->item(3, 4)->text().toInt();
+
+	dil5.oxygen = ui->ostc3DilTable->item(4, 1)->text().toInt();
+	dil5.helium = ui->ostc3DilTable->item(4, 2)->text().toInt();
+	dil5.type = ui->ostc3DilTable->item(4, 3)->text().toInt();
+	dil5.depth = ui->ostc3DilTable->item(4, 4)->text().toInt();
+
+	deviceDetails->setDil1(dil1);
+	deviceDetails->setDil2(dil2);
+	deviceDetails->setDil3(dil3);
+	deviceDetails->setDil4(dil4);
+	deviceDetails->setDil5(dil5);
 }
 
 void ConfigureDiveComputerDialog::readSettings()
@@ -270,6 +308,36 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->ostc3GasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
 	ui->ostc3GasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
 	ui->ostc3GasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+
+	//load dil 1 values
+	ui->ostc3DilTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
+	ui->ostc3DilTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
+	ui->ostc3DilTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
+	ui->ostc3DilTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+
+	//load dil 2 values
+	ui->ostc3DilTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
+	ui->ostc3DilTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
+	ui->ostc3DilTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
+	ui->ostc3DilTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+
+	//load dil 3 values
+	ui->ostc3DilTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
+	ui->ostc3DilTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
+	ui->ostc3DilTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
+	ui->ostc3DilTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+
+	//load dil 4 values
+	ui->ostc3DilTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
+	ui->ostc3DilTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
+	ui->ostc3DilTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
+	ui->ostc3DilTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+
+	//load dil 5 values
+	ui->ostc3DilTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
+	ui->ostc3DilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
+	ui->ostc3DilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
+	ui->ostc3DilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
 }
 
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>620</height>
+    <width>699</width>
+    <height>618</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -475,17 +475,17 @@
          </row>
          <column>
           <property name="text">
-           <string>Gas No.</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>%He</string>
+           <string/>
           </property>
          </column>
          <column>
           <property name="text">
            <string>%O2</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%He</string>
           </property>
          </column>
          <column>
@@ -554,7 +554,7 @@
          </row>
          <column>
           <property name="text">
-           <string>Gas No.</string>
+           <string/>
           </property>
          </column>
          <column>
@@ -579,27 +579,27 @@
          </column>
          <item row="0" column="0">
           <property name="text">
-           <string>Gas 1</string>
+           <string>Dil 1</string>
           </property>
          </item>
          <item row="1" column="0">
           <property name="text">
-           <string>Gas 2</string>
+           <string>Dil 2</string>
           </property>
          </item>
          <item row="2" column="0">
           <property name="text">
-           <string>Gas 3</string>
+           <string>Dil 3</string>
           </property>
          </item>
          <item row="3" column="0">
           <property name="text">
-           <string>Gas 4</string>
+           <string>Dil 4</string>
           </property>
          </item>
          <item row="4" column="0">
           <property name="text">
-           <string>Gas 5</string>
+           <string>Dil 5</string>
           </property>
          </item>
         </widget>

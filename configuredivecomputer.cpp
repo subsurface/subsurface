@@ -98,6 +98,43 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	xml += addSettingToXML("Gas4", gas4);
 	xml += addSettingToXML("Gas5", gas5);
 	//
+	//Add dil values
+	QString dil1 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->dil1().oxygen),
+			     QString::number(details->dil1().helium),
+			     QString::number(details->dil1().type),
+			     QString::number(details->dil1().depth)
+			     );
+	QString dil2 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->dil2().oxygen),
+			     QString::number(details->dil2().helium),
+			     QString::number(details->dil2().type),
+			     QString::number(details->dil2().depth)
+			     );
+	QString dil3 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->dil3().oxygen),
+			     QString::number(details->dil3().helium),
+			     QString::number(details->dil3().type),
+			     QString::number(details->dil3().depth)
+			     );
+	QString dil4 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->dil4().oxygen),
+			     QString::number(details->dil4().helium),
+			     QString::number(details->dil4().type),
+			     QString::number(details->dil4().depth)
+			     );
+	QString dil5 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->dil5().oxygen),
+			     QString::number(details->dil5().helium),
+			     QString::number(details->dil5().type),
+			     QString::number(details->dil5().depth)
+			     );
+	xml += addSettingToXML("Dil1", dil1);
+	xml += addSettingToXML("Dil2", dil2);
+	xml += addSettingToXML("Dil3", dil3);
+	xml += addSettingToXML("Dil4", dil4);
+	xml += addSettingToXML("Dil5", dil5);
+	//
 	xml += addSettingToXML("DiveMode", details->diveMode());
 	xml += addSettingToXML("Saturation", details->saturation());
 	xml += addSettingToXML("Desaturation", details->desaturation());
@@ -214,6 +251,56 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 						gas5.type = gasData.at(2).toInt();
 						gas5.depth = gasData.at(3).toInt();
 						details->setGas5(gas5);
+					}
+
+					if (settingName == "Dil1") {
+						QStringList dilData = keyString.split(",");
+						gas dil1;
+						dil1.oxygen = dilData.at(0).toInt();
+						dil1.helium = dilData.at(1).toInt();
+						dil1.type = dilData.at(2).toInt();
+						dil1.depth = dilData.at(3).toInt();
+						details->setDil1(dil1);
+					}
+
+					if (settingName == "Dil2") {
+						QStringList dilData = keyString.split(",");
+						gas dil2;
+						dil2.oxygen = dilData.at(0).toInt();
+						dil2.helium = dilData.at(1).toInt();
+						dil2.type = dilData.at(2).toInt();
+						dil2.depth = dilData.at(3).toInt();
+						details->setDil1(dil2);
+					}
+
+					if (settingName == "Dil3") {
+						QStringList dilData = keyString.split(",");
+						gas dil3;
+						dil3.oxygen = dilData.at(0).toInt();
+						dil3.helium = dilData.at(1).toInt();
+						dil3.type = dilData.at(2).toInt();
+						dil3.depth = dilData.at(3).toInt();
+						details->setDil3(dil3);
+					}
+
+					if (settingName == "Dil4") {
+						QStringList dilData = keyString.split(",");
+						gas dil4;
+						dil4.oxygen = dilData.at(0).toInt();
+						dil4.helium = dilData.at(1).toInt();
+						dil4.type = dilData.at(2).toInt();
+						dil4.depth = dilData.at(3).toInt();
+						details->setDil4(dil4);
+					}
+
+					if (settingName == "Dil5") {
+						QStringList dilData = keyString.split(",");
+						gas dil5;
+						dil5.oxygen = dilData.at(0).toInt();
+						dil5.helium = dilData.at(1).toInt();
+						dil5.type = dilData.at(2).toInt();
+						dil5.depth = dilData.at(3).toInt();
+						details->setDil5(dil5);
 					}
 
 					if (settingName == "Saturation")

@@ -93,6 +93,65 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setGas4(gas4);
 			m_deviceDetails->setGas5(gas5);
 
+			//Read Dil Values
+			gas dil1;
+			gas dil2;
+			gas dil3;
+			gas dil4;
+			gas dil5;
+			//Dil 1
+			unsigned char dilData[4] = {0,0,0,0};
+			rc = hw_ostc3_device_config_read(m_data->device, 0x15, dilData, sizeof(dilData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				dil1.depth = dilData[3];
+				dil1.oxygen = dilData[0];
+				dil1.helium = dilData[1];
+				dil1.type = dilData[2];
+			}
+			//Dil 2
+			rc = hw_ostc3_device_config_read(m_data->device, 0x16, dilData, sizeof(dilData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				dil2.depth = dilData[3];
+				dil2.oxygen = dilData[0];
+				dil2.helium = dilData[1];
+				dil2.type = dilData[2];
+			}
+			//Dil 3
+			rc = hw_ostc3_device_config_read(m_data->device, 0x17, dilData, sizeof(dilData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				dil3.depth = dilData[3];
+				dil3.oxygen = dilData[0];
+				dil3.helium = dilData[1];
+				dil3.type = dilData[2];
+			}
+			//Dil 4
+			rc = hw_ostc3_device_config_read(m_data->device, 0x18, dilData, sizeof(dilData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				dil4.depth = dilData[3];
+				dil4.oxygen = dilData[0];
+				dil4.helium = dilData[1];
+				dil4.type = dilData[2];
+			}
+			//Dil 5
+			rc = hw_ostc3_device_config_read(m_data->device, 0x19, dilData, sizeof(dilData));
+			if (rc == DC_STATUS_SUCCESS) {
+				//Data read successful
+				dil5.depth = dilData[3];
+				dil5.oxygen = dilData[0];
+				dil5.helium = dilData[1];
+				dil5.type = dilData[2];
+			}
+
+			m_deviceDetails->setDil1(dil1);
+			m_deviceDetails->setDil2(dil2);
+			m_deviceDetails->setDil3(dil3);
+			m_deviceDetails->setDil4(dil4);
+			m_deviceDetails->setDil5(dil5);
+
 			//Read other settings
 			unsigned char uData[1] = {0};
 			//DiveMode
@@ -220,6 +279,42 @@ void WriteSettingsThread::run()
 			hw_ostc3_device_config_write(m_data->device, 0x13, gas4Data, sizeof(gas4Data));
 			//gas 5
 			hw_ostc3_device_config_write(m_data->device, 0x14, gas5Data, sizeof(gas5Data));
+
+			//write dil values
+			unsigned char dil1Data[4] = {m_deviceDetails->dil1().oxygen,
+						     m_deviceDetails->dil1().helium,
+						     m_deviceDetails->dil1().type,
+						     m_deviceDetails->dil1().depth};
+
+			unsigned char dil2Data[4] = {m_deviceDetails->dil2().oxygen,
+						     m_deviceDetails->dil2().helium,
+						     m_deviceDetails->dil2().type,
+						     m_deviceDetails->dil2().depth};
+
+			unsigned char dil3Data[4] = {m_deviceDetails->dil3().oxygen,
+						     m_deviceDetails->dil3().helium,
+						     m_deviceDetails->dil3().type,
+						     m_deviceDetails->dil3().depth};
+
+			unsigned char dil4Data[4] = {m_deviceDetails->dil4().oxygen,
+						     m_deviceDetails->dil4().helium,
+						     m_deviceDetails->dil4().type,
+						     m_deviceDetails->dil4().depth};
+
+			unsigned char dil5Data[4] = {m_deviceDetails->dil5().oxygen,
+						     m_deviceDetails->dil5().helium,
+						     m_deviceDetails->dil5().type,
+						     m_deviceDetails->dil5().depth};
+			//dil 1
+			hw_ostc3_device_config_write(m_data->device, 0x15, dil1Data, sizeof(gas1Data));
+			//dil 2
+			hw_ostc3_device_config_write(m_data->device, 0x16, dil2Data, sizeof(dil2Data));
+			//dil 3
+			hw_ostc3_device_config_write(m_data->device, 0x17, dil3Data, sizeof(dil3Data));
+			//dil 4
+			hw_ostc3_device_config_write(m_data->device, 0x18, dil4Data, sizeof(dil4Data));
+			//dil 5
+			hw_ostc3_device_config_write(m_data->device, 0x19, dil5Data, sizeof(dil5Data));
 
 
 			//write general settings
