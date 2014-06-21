@@ -61,6 +61,43 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	xml += "\n</DiveComputer>";
 	xml += "\n<Settings>";
 	xml += addSettingToXML("CustomText", details->customText());
+	//Add gasses
+	QString gas1 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->gas1().oxygen),
+			     QString::number(details->gas1().helium),
+			     QString::number(details->gas1().type),
+			     QString::number(details->gas1().depth)
+			     );
+	QString gas2 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->gas2().oxygen),
+			     QString::number(details->gas2().helium),
+			     QString::number(details->gas2().type),
+			     QString::number(details->gas2().depth)
+			     );
+	QString gas3 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->gas3().oxygen),
+			     QString::number(details->gas3().helium),
+			     QString::number(details->gas3().type),
+			     QString::number(details->gas3().depth)
+			     );
+	QString gas4 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->gas4().oxygen),
+			     QString::number(details->gas4().helium),
+			     QString::number(details->gas4().type),
+			     QString::number(details->gas4().depth)
+			     );
+	QString gas5 = QString("%1,%2,%3,%4")
+			.arg(QString::number(details->gas5().oxygen),
+			     QString::number(details->gas5().helium),
+			     QString::number(details->gas5().type),
+			     QString::number(details->gas5().depth)
+			     );
+	xml += addSettingToXML("Gas1", gas1);
+	xml += addSettingToXML("Gas2", gas2);
+	xml += addSettingToXML("Gas3", gas3);
+	xml += addSettingToXML("Gas4", gas4);
+	xml += addSettingToXML("Gas5", gas5);
+	//
 	xml += addSettingToXML("DiveMode", details->diveMode());
 	xml += addSettingToXML("Saturation", details->saturation());
 	xml += addSettingToXML("Desaturation", details->desaturation());
@@ -128,6 +165,56 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				if (settingName != "text") {
 					if (settingName == "CustomText")
 						details->setCustomText(keyString);
+
+					if (settingName == "Gas1") {
+						QStringList gasData = keyString.split(",");
+						gas gas1;
+						gas1.oxygen = gasData.at(0).toInt();
+						gas1.helium = gasData.at(1).toInt();
+						gas1.type = gasData.at(2).toInt();
+						gas1.depth = gasData.at(3).toInt();
+						details->setGas1(gas1);
+					}
+
+					if (settingName == "Gas2") {
+						QStringList gasData = keyString.split(",");
+						gas gas2;
+						gas2.oxygen = gasData.at(0).toInt();
+						gas2.helium = gasData.at(1).toInt();
+						gas2.type = gasData.at(2).toInt();
+						gas2.depth = gasData.at(3).toInt();
+						details->setGas1(gas2);
+					}
+
+					if (settingName == "Gas3") {
+						QStringList gasData = keyString.split(",");
+						gas gas3;
+						gas3.oxygen = gasData.at(0).toInt();
+						gas3.helium = gasData.at(1).toInt();
+						gas3.type = gasData.at(2).toInt();
+						gas3.depth = gasData.at(3).toInt();
+						details->setGas3(gas3);
+					}
+
+					if (settingName == "Gas4") {
+						QStringList gasData = keyString.split(",");
+						gas gas4;
+						gas4.oxygen = gasData.at(0).toInt();
+						gas4.helium = gasData.at(1).toInt();
+						gas4.type = gasData.at(2).toInt();
+						gas4.depth = gasData.at(3).toInt();
+						details->setGas4(gas4);
+					}
+
+					if (settingName == "Gas5") {
+						QStringList gasData = keyString.split(",");
+						gas gas5;
+						gas5.oxygen = gasData.at(0).toInt();
+						gas5.helium = gasData.at(1).toInt();
+						gas5.type = gasData.at(2).toInt();
+						gas5.depth = gasData.at(3).toInt();
+						details->setGas5(gas5);
+					}
 
 					if (settingName == "Saturation")
 						details->setSaturation(keyString.toInt());
