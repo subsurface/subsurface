@@ -157,8 +157,8 @@ struct tank_info_t tank_info[100] = {
 	{ "", },
 
 	/* Size-only metric cylinders */
-	{ "10.0 l", .ml = 10000 },
-	{ "11.1 l", .ml = 11100 },
+	{ "10.0ℓ", .ml = 10000 },
+	{ "11.1ℓ", .ml = 11100 },
 
 	/* Most common AL cylinders */
 	{ "AL40", .cuft = 40, .psi = 3000 },
@@ -182,14 +182,14 @@ struct tank_info_t tank_info[100] = {
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
 	/* Common European steel cylinders */
-	{ "3L 232 bar", .ml = 3000, .bar = 232 },
-	{ "3L 300 bar", .ml = 3000, .bar = 300 },
-	{ "10L 300 bar", .ml = 10000, .bar = 300 },
-	{ "12L 200 bar", .ml = 12000, .bar = 200 },
-	{ "12L 232 bar", .ml = 12000, .bar = 232 },
-	{ "12L 300 bar", .ml = 12000, .bar = 300 },
-	{ "15L 200 bar", .ml = 15000, .bar = 200 },
-	{ "15L 232 bar", .ml = 15000, .bar = 232 },
+	{ "3ℓ 232 bar", .ml = 3000, .bar = 232 },
+	{ "3ℓ 300 bar", .ml = 3000, .bar = 300 },
+	{ "10ℓ 300 bar", .ml = 10000, .bar = 300 },
+	{ "12ℓ 200 bar", .ml = 12000, .bar = 200 },
+	{ "12ℓ 232 bar", .ml = 12000, .bar = 232 },
+	{ "12ℓ 300 bar", .ml = 12000, .bar = 300 },
+	{ "15ℓ 200 bar", .ml = 15000, .bar = 200 },
+	{ "15ℓ 232 bar", .ml = 15000, .bar = 232 },
 	{ "D7 300 bar", .ml = 14000, .bar = 300 },
 	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
 	{ "D12 232 bar", .ml = 24000, .bar = 232 },
