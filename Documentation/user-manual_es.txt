@@ -866,7 +866,7 @@ a un registro por línea. Los archivos CSV pueden abrirse con cualquier editor d
 texto. A continuación un ejemplo muy simplificado y acortado de un archivo CSV
 de un rebreather aPD:
 
-	Dive Time (s)   Depth (m)       PPO2 - Setpoint (Bar)   PPO2 - C1 ...
+	Dive Time (s)   Depth (m)       pO₂ - Setpoint (Bar)   pO₂ - C1 ...
 	0       0.0     0.70    0.81    13.1
 	0       1.2     0.70    0.71    13.1
 	0       0.0     0.70    0.71    13.1
@@ -900,7 +900,7 @@ ejemplo anterior:
       Time:           columna 1
       Depth:          columna 2
       Temperature:    columna 5
-      ppO2:           columna 4
+      pO₂:           columna 4
 
 Armado con esta información, importar en _Subsurface_ es muy fácil. Selecciona
 _Importar→Importar CSV_ en el menú principal. Aparecerá el siguiente dialogo:

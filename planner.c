@@ -116,14 +116,14 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	return -1;
 }
 
-double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int ppo2)
+double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int po2)
 {
 	int j;
 	double tissue_tolerance = 0.0;
 
 	for (j = t0; j < t1; j++) {
 		int depth = interpolate(d0, d1, j - t0, t1 - t0);
-		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, ppo2, dive);
+		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2, dive);
 	}
 	return tissue_tolerance;
 }

@@ -911,7 +911,7 @@ data, one record per line. CSV files can be opened with a normal text editor.
 Following is a highly simplified and shortened example of a CSV file from an
 APD rebreather:
 
-	Dive Time (s)	Depth (m)	PPO2 - Setpoint (Bar)	PPO2 - C1 Cell
+	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar)	pO₂ - C1 Cell
 1 (Bar)	Ambient temp. (Celsius)
 	0	0.0	0.70	0.81	13.1
 	0	1.2	0.70	0.71	13.1
@@ -949,7 +949,7 @@ instance for the above example:
 	Time:		column 1
 	Depth:		column 2
 	Temperature:	column 5
-	ppO2:		column 4
+	pO₂:		column 4
 
 Armed with this information, importing the data into _Subsurface_ is
 straightforward. Select
@@ -1965,7 +1965,7 @@ specified in the _Preferences_ panel of _Subsurface_.
 been activated on the left part of the *Dive Profile* panel.
 
 - Ensure that the appropriate button(s) for the display of the partial pressures of gases
-(PO2, PN2, PHe) have been activated on the left part of the *Dive Profile* panel.
+(pO₂, pN₂, pHe) have been activated on the left part of the *Dive Profile* panel.
 
 The dive profile is shown in conjunction with the relevant dive ceiling. The dive profile
 should not closely approach the calculated ceiling. The partial gas pressures selected for

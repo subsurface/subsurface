@@ -18,9 +18,8 @@ CNS		 Central Nervous System Oxygen Toxicity - a
 
 maxCNS		 the highest CNS value during a dive
 
-PO2, PN2, PHe	 These are all partial pressures of the three
-PO₂, PN₂	 gases Oxygen (O2 or O₂), Nitrogen (N2 or N₂)
-		 and Helium (He).
+pO₂, pN₂, pHe	 These are all partial pressures of the three
+		 gases Oxygen (O₂), Nitrogen (N₂) and Helium (He).
 
 O₂%, He%	 The fraction of Oxygen and Helium in a gas.
 		 The partial pressure is therefore the pressure

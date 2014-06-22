@@ -104,7 +104,7 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case CYLINDERINDEX:
 		return tr("Cylinder Index");
 	case SENSOR_PRESSURE:
-		return tr("Pressure  S");
+		return tr("Pressure S");
 	case INTERPOLATED_PRESSURE:
 		return tr("Pressure I");
 	case CEILING:
@@ -112,11 +112,11 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case SAC:
 		return tr("SAC");
 	case PN2:
-		return tr("PN2");
+		return tr("pN₂");
 	case PHE:
-		return tr("PHE");
+		return tr("pHe");
 	case PO2:
-		return tr("PO2");
+		return tr("pO₂");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);

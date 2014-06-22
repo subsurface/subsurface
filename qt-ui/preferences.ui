@@ -633,12 +633,12 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>max ppO₂ when showing MOD</string>
+                 <string>max pO₂ when showing MOD</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="maxppo2">
+               <widget class="QDoubleSpinBox" name="maxpo2">
                 <property name="enabled">
                  <bool>true</bool>
                 </property>

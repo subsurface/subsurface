@@ -16,7 +16,7 @@ struct preferences default_prefs = {
 		.phe_threshold = 13.0,
 	},
 	.mod = false,
-	.modppO2 = 1.6,
+	.modpO2 = 1.6,
 	.ead = false,
 	.hrgraph = true,
 	.dcceiling = true,

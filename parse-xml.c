@@ -1727,7 +1727,7 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 			cur_event.name = strdup("OLF");
 			break;
 		case 12:
-			/* 12 High ppO2 */
+			/* 12 High pO₂ */
 			cur_event.name = strdup("PO2");
 			break;
 		case 13:

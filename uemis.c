@@ -200,12 +200,12 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
 		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed Warning"));
 	if (flags[1] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Green Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Green Warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Ascend Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Ascend Warning"));
 	if (flags[1] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "PO2 Ascend Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Ascend Alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)

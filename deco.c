@@ -177,8 +177,8 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 {
 	int ci;
 	int fo2 = get_o2(gasmix), fhe = get_he(gasmix);
-	double ppn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - fhe) / 1000.0;
-	double pphe = (pressure - WV_PRESSURE) * fhe / 1000.0;
+	double pn2 = (pressure - WV_PRESSURE) * (1000 - fo2 - fhe) / 1000.0;
+	double phe = (pressure - WV_PRESSURE) * fhe / 1000.0;
 
 	if (buehlmann_config.gf_low_at_maxdepth && pressure > gf_low_pressure_this_dive)
 		gf_low_pressure_this_dive = pressure;
@@ -188,24 +188,24 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 		rel_o2_amb = ccpo2 / pressure / 1000;
 		f_dilutent = (1 - rel_o2_amb) / (1 - fo2 / 1000.0);
 		if (f_dilutent < 0) { /* setpoint is higher than ambient pressure -> pure O2 */
-			ppn2 = 0.0;
-			pphe = 0.0;
+			pn2 = 0.0;
+			phe = 0.0;
 		} else if (f_dilutent < 1.0) {
-			ppn2 *= f_dilutent;
-			pphe *= f_dilutent;
+			pn2 *= f_dilutent;
+			phe *= f_dilutent;
 		}
 	}
 
 	for (ci = 0; ci < 16; ci++) {
-		double ppn2_oversat = ppn2 - tissue_n2_sat[ci];
-		double pphe_oversat = pphe - tissue_he_sat[ci];
+		double pn2_oversat = pn2 - tissue_n2_sat[ci];
+		double phe_oversat = phe - tissue_he_sat[ci];
 		double n2_f = n2_factor(period_in_seconds, ci);
 		double he_f = he_factor(period_in_seconds, ci);
-		double n2_satmult = ppn2_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
-		double he_satmult = pphe_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
+		double n2_satmult = pn2_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
+		double he_satmult = phe_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
 
-		tissue_n2_sat[ci] += n2_satmult * ppn2_oversat * n2_f;
-		tissue_he_sat[ci] += he_satmult * pphe_oversat * he_f;
+		tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
+		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
 	return tissue_tolerance_calc(dive);
 }

@@ -66,7 +66,7 @@ New in version 4.1 (compared to Subsurface 4.0.3):
 Known issues:
 
 - (Windows specific) Many Windows fonts don't support specific characters,
-  specifically subscript "2" (eg in pO2). New installations of Subsurface
+  specifically subscript "2" (eg in pO₂). New installations of Subsurface
   will automatically pick a font that contains this character, but if you
   had Subsurface installed on a specific system before, it likely has
   saved the previous font in its settings. In that case the best solution
@@ -192,16 +192,16 @@ New in version 3.1 (compared to Subsurface 3.0.2):
 New in version 3.0.2 (compared to Subsurface 3.0.1):
 ----------------------------------------------------
 
-This update was mainly triggered by a bug in the handling of pO2
+This update was mainly triggered by a bug in the handling of pO₂
 values read from CCR / rebreather dive computers. This bug can lead to
 incorrect data being stored in the Subsurface XML file. Installing
 Subsurface 3.0.2 and re-downloading the dives will correct the
 incorrect data. In order to re-download the dives connect your dive
 computer (this should only affect people with certain tec dive
-computers like the Shearwater Petrel or Predator that store pO2 values
-read from a pO2 sensor in their dive log), open the download dialog,
+computers like the Shearwater Petrel or Predator that store pO₂ values
+read from a pO₂ sensor in their dive log), open the download dialog,
 check the box "Force download of all dives" and download your
-dives. After you save your data file the correct pO2 data should be
+dives. After you save your data file the correct pO₂ data should be
 stored in the samples.
 
 If you are using one of those dive computers, have saved data files
@@ -268,7 +268,7 @@ New in version 3.0 (compared to Subsurface 2.1):
   - TriMix support
   - CCR support (fixed or variable setpoint, on dive computers that support
     this)
-  - Optional pO2, pN2 and pHe graphs
+  - Optional pO₂, pN₂ and pHe graphs
   - CNS tracking for supported divecomputers
 - Lots of bug fixes
 

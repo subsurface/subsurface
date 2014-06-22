@@ -600,11 +600,11 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 		if (cylinder_nodata(cyl)) {
 			fill_default_cylinder(cyl);
 			cyl->gasmix = mix;
-			/* The depth to change to that gas is given by the depth where its pO2 is 1.6 bar.
+			/* The depth to change to that gas is given by the depth where its pO₂ is 1.6 bar.
 			 * The user should be able to change this depth manually. */
-			pressure_t modppO2;
-			modppO2.mbar = 1600;
-			cyl->depth = gas_mod(&mix, modppO2);
+			pressure_t modpO2;
+			modpO2.mbar = 1600;
+			cyl->depth = gas_mod(&mix, modpO2);
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}

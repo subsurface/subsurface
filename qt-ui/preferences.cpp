@@ -54,7 +54,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.pheThreshold->setValue(prefs.pp_graphs.phe_threshold);
 	ui.po2Threshold->setValue(prefs.pp_graphs.po2_threshold);
 	ui.pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
-	ui.maxppo2->setValue(prefs.modppO2);
+	ui.maxpo2->setValue(prefs.modpO2);
 	ui.red_ceiling->setChecked(prefs.redceiling);
 	ui.units_group->setEnabled(ui.personalize->isChecked());
 
@@ -187,7 +187,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("phethreshold", ui.pheThreshold->value());
 	s.setValue("po2threshold", ui.po2Threshold->value());
 	s.setValue("pn2threshold", ui.pn2Threshold->value());
-	s.setValue("modppO2", ui.maxppo2->value());
+	s.setValue("modpO2", ui.maxpo2->value());
 	SB("redceiling", ui.red_ceiling);
 	s.setValue("gflow", ui.gflow->value());
 	s.setValue("gfhigh", ui.gfhigh->value());
@@ -280,7 +280,7 @@ void PreferencesDialog::loadSettings()
 	GET_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
 	GET_DOUBLE("phethreshold", pp_graphs.phe_threshold);
 	GET_BOOL("mod", mod);
-	GET_DOUBLE("modppO2", modppO2);
+	GET_DOUBLE("modpO2", modpO2);
 	GET_BOOL("ead", ead);
 	GET_BOOL("redceiling", redceiling);
 	GET_BOOL("dcceiling", dcceiling);

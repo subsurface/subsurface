@@ -23,7 +23,7 @@ struct preferences {
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;
-	double modppO2;
+	double modpO2;
 	short ead;
 	short dcceiling;
 	short redceiling;

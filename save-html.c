@@ -33,9 +33,9 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		put_pressure(b, cylinder->end, "\"EPressure\":\"", " bar\",");
 
 		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"O₂\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
 		} else {
-			write_attribute(b, "O2", "--");
+			write_attribute(b, "O₂", "--");
 		}
 		put_string(b, "},");
 	}
