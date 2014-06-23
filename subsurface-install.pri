@@ -130,6 +130,8 @@ mac {
 } else: android {
 	# Android install rules
 	QMAKE_BUNDLE_DATA += translation qttranslation
+	# Android template directory
+	ANDROID_PACKAGE_SOURCE_DIR = $$OUT_PWD/android
 } else {
 	# Linux install rules
 	# On Linux, we can count on packagers doing the right thing

@@ -263,6 +263,12 @@ theme.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/theme || $(COPY_DIR) $$PWD/theme $
 all.depends += theme
 QMAKE_EXTRA_TARGETS += theme
 
+android {
+	android.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/android || $(COPY_DIR) $$PWD/android $$OUT_PWD
+	all.depends += android
+	QMAKE_EXTRA_TARGETS += android
+}
+
 DESKTOP_FILE = subsurface.desktop
 mac: ICON = packaging/macosx/Subsurface.icns
 else: ICON = subsurface-icon.svg
