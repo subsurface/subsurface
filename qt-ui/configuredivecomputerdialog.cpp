@@ -38,12 +38,12 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 
 	deviceDetails = new DeviceDetails(this);
 	config = new ConfigureDiveComputer(this);
-	connect (config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
-	connect (config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
-	connect (config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
-	connect (config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
+	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
+	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
+	connect(config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
+	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
 		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
-	connect (ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
+	connect(ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
@@ -450,4 +450,19 @@ void ConfigureDiveComputerDialog::on_tabWidget_currentChanged(int index)
 	if (selected_vendor == QString("Uemis"))
 		dcType = DC_TYPE_UEMIS;
 	fill_device_list(dcType);
+}
+
+void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
+{
+	QString filename = existing_filename ?: prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath();
+	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
+							  filename, tr("All files (*.*)")
+							  );
+	if (!firmwarePath.isEmpty()) {
+		getDeviceData();
+		QString errText;
+		config->startFirmwareUpdate(firmwarePath, &device_data, errText);
+	}
 }

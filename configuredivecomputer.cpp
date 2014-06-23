@@ -24,10 +24,10 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 		readThread->deleteLater();
 
 	readThread = new ReadSettingsThread(this, data);
-	connect (readThread, SIGNAL(finished()),
+	connect(readThread, SIGNAL(finished()),
 		 this, SLOT(readThreadFinished()), Qt::QueuedConnection);
-	connect (readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect (readThread, SIGNAL(devicedetails(DeviceDetails*)), this,
+	connect(readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
+	connect(readThread, SIGNAL(devicedetails(DeviceDetails*)), this,
 		 SIGNAL(deviceDetailsChanged(DeviceDetails*)));
 
 	readThread->start();
@@ -41,9 +41,9 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 		writeThread->deleteLater();
 
 	writeThread = new WriteSettingsThread(this, data);
-	connect (writeThread, SIGNAL(finished()),
+	connect(writeThread, SIGNAL(finished()),
 		 this, SLOT(writeThreadFinished()), Qt::QueuedConnection);
-	connect (writeThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
+	connect(writeThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
 
 	writeThread->setDeviceDetails(details);
 	writeThread->start();
@@ -415,6 +415,11 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 	}
 
 	return true;
+}
+
+void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data, QString errorText)
+{
+
 }
 
 void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)

@@ -467,3 +467,35 @@ void WriteSettingsThread::run()
 		emit error(lastError);
 	}
 }
+
+
+FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName)
+: QThread(parent), m_data(data), m_fileName(fileName)
+{
+
+}
+
+void FirmwareUpdateThread::run()
+{
+	bool supported = false;
+	dc_status_t rc;
+	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	if (rc == DC_STATUS_SUCCESS) {
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_HW_OSTC3:
+			supported = true;
+			//hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+			break;
+		}
+		dc_device_close(m_data->device);
+
+		if (!supported) {
+			lastError = tr("This feature is not yet available for the selected dive computer.");
+			emit error(lastError);
+		}
+	}
+	else {
+		lastError = tr("Could not a establish connection to the dive computer.");
+		emit error(lastError);
+	}
+}

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>787</width>
-    <height>672</height>
+    <width>785</width>
+    <height>670</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,6 +86,13 @@
       <widget class="QPushButton" name="restoreBackupButton">
        <property name="text">
         <string>Restore Backup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="updateFirmwareButton">
+       <property name="text">
+        <string>Update Firmware</string>
        </property>
       </widget>
      </item>

@@ -33,6 +33,8 @@ private slots:
 
 	void on_tabWidget_currentChanged(int index);
 
+	void on_updateFirmwareButton_clicked();
+
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
 
