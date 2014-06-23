@@ -50,8 +50,7 @@ static bool merge_locations_into_dives(void)
 	sort_table(&gps_location_table);
 
 	for_each_gps_location (i, gpsfix) {
-		if (is_automatic_fix(gpsfix)) {
-			dive = find_dive_including(gpsfix->when);
+		if (is_automatic_fix(gpsfix) && (dive = find_dive_including(gpsfix->when))) {
 			if (dive && !dive_has_gps_location(dive)) {
 #if DEBUG_WEBSERVICE
 				struct tm tm;
