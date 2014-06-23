@@ -276,6 +276,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.printPlan, SIGNAL(pressed()), this, SLOT(printDecoPlan()));
+#ifdef NO_PRINTING
+	ui.printPlan->hide();
+#endif
 
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));

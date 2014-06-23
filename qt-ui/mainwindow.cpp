@@ -20,7 +20,6 @@
 #include <QStringList>
 #include <QSettings>
 #include <QShortcut>
-#include <QPrintDialog>
 #include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
@@ -43,6 +42,7 @@
 #include "updatemanager.h"
 #include "planner.h"
 #ifndef NO_PRINTING
+#include <QPrintDialog>
 #include "printdialog.h"
 #endif
 #include "divelogimportdialog.h"
@@ -440,6 +440,7 @@ void MainWindow::setPlanNotes(const char *notes)
 
 void MainWindow::printPlan()
 {
+#ifndef NO_PRINTING
 	QString diveplan = ui.divePlanOutput->toHtml();
 	QString withDisclaimer = diveplan + QString(disclaimer);
 
@@ -452,6 +453,7 @@ void MainWindow::printPlan()
 	ui.divePlanOutput->setHtml(withDisclaimer);
 	ui.divePlanOutput->print(&printer);
 	ui.divePlanOutput->setHtml(diveplan);
+#endif
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
