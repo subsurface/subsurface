@@ -73,6 +73,7 @@ slots:
 	void setDecoSac(int sac);
 	void setStartTime(const QTime &t);
 	void setLastStop6m(bool value);
+	void setDropStoneMode(bool value);
 	void setVerbatim(bool value);
 	void setDisplayRuntime(bool value);
 	void setDisplayDuration(bool value);
@@ -104,6 +105,7 @@ private:
 	QVector<sample> backupSamples; // For editing added dives.
 	struct dive *stagingDive;
 	QVector<QPair<int, int> > oldGases;
+	bool drop_stone_mode;
 };
 
 class DiveHandler : public QObject, public QGraphicsEllipseItem {

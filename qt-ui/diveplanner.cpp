@@ -276,6 +276,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.printPlan, SIGNAL(pressed()), this, SLOT(printDecoPlan()));
+	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
 #endif
@@ -583,6 +584,28 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
+void DivePlannerPointsModel::setDropStoneMode(bool value)
+{
+	drop_stone_mode = value;
+	if (drop_stone_mode) {
+	/* Remove the first entry if we enable drop_stone_mode */
+		if (rowCount() >= 2) {
+			beginRemoveRows(QModelIndex(), 0, 0);
+			divepoints.remove(0);
+			endRemoveRows();
+		}
+	} else {
+		/* Add a first entry if we disable drop_stone_mode */
+		beginInsertRows(QModelIndex(), 0, 0);
+		/* Copy the first current point */
+		divedatapoint p = divepoints.at(0);
+		p.time = p.depth / 300;
+		divepoints.push_front(p);
+		endInsertRows();
+	}
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	diveplan.when = (t.msec() + QDateTime::currentMSecsSinceEpoch()) / 1000 - gettimezoneoffset();
@@ -860,6 +883,12 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
+		if (i == 0 && drop_stone_mode) {
+			/* Okay, we add a fist segment where we go down to depth */
+			/* FIXME: make this configurable, now hard-coded to 18 m/s */
+			plan_add_segment(&diveplan, p.depth / 300, p.depth, p.gasmix, p.po2, false);
+			deltaT -= p.depth / 300;
+		}
 		if (p.entered)
 			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.po2, true);
 	}
