@@ -922,6 +922,8 @@ function showDiveDetails(dive)
 */
 function unshowDiveDetails(dive)
 {
+	start = dive_id;
+	viewInPage();
 	document.getElementById("diveListPanel").style.display = 'block';
 	document.getElementById("divePanel").style.display = 'none';
 }
