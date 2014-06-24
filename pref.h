@@ -46,6 +46,13 @@ struct preferences {
 	short rulergraph;
 	short save_userid_local;
 	char *userid;
+	int ascrate75;
+	int ascrate50;
+	int ascratestops;
+	int ascratelast6m;
+	int descrate;
+	int bottompo2;
+	int decopo2;
 };
 enum unit_system_values {
 	METRIC,

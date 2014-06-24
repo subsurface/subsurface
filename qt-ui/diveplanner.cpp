@@ -31,6 +31,8 @@
 #define MAX_DEPTH M_OR_FT(150, 450)
 #define MIN_DEPTH M_OR_FT(20, 60)
 
+#define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
+
 QString gasToStr(struct gasmix gas)
 {
 	uint o2 = (gas.o2.permille + 5) / 10, he = (gas.he.permille + 5) / 10;
@@ -333,11 +335,34 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 {
 	ui.setupUi(this);
 
+	if (prefs.units.METERS == units::FEET) {
+		ui.ascRate75->setSuffix("ft/min");
+		ui.ascRate50->setSuffix("ft/min");
+		ui.ascRateStops->setSuffix("ft/min");
+		ui.ascRateLast6m->setSuffix("ft/min");
+		ui.descRate->setSuffix("ft/min");
+	}
+	ui.ascRate75->setValue(prefs.ascrate75 / UNIT_FACTOR);
+	ui.ascRate50->setValue(prefs.ascrate50 / UNIT_FACTOR);
+	ui.ascRateStops->setValue(prefs.ascratestops / UNIT_FACTOR);
+	ui.ascRateLast6m->setValue(prefs.ascratelast6m / UNIT_FACTOR);
+	ui.descRate->setValue(prefs.descrate / UNIT_FACTOR);
+
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
+	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscRate75(int)));
+	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRate50, SIGNAL(valueChanged(int)), this, SLOT(setAscRate50(int)));
+	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), this, SLOT(setAscRateStops(int)));
+	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscRateLast6m(int)));
+	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate()));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -363,6 +388,30 @@ void PlannerSettingsWidget::printDecoPlan()
 {
 }
 
+void PlannerSettingsWidget::setAscRate75(int rate)
+{
+	prefs.ascrate75 = rate * UNIT_FACTOR;
+}
+
+void PlannerSettingsWidget::setAscRate50(int rate)
+{
+	prefs.ascrate50 = rate * UNIT_FACTOR;
+}
+
+void PlannerSettingsWidget::setAscRateStops(int rate)
+{
+	prefs.ascratestops = rate * UNIT_FACTOR;
+}
+
+void PlannerSettingsWidget::setAscRateLast6m(int rate)
+{
+	prefs.ascratelast6m = rate * UNIT_FACTOR;
+}
+
+void PlannerSettingsWidget::setDescRate(int rate)
+{
+	prefs.descrate = rate * UNIT_FACTOR;
+}
 
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {

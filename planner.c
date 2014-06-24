@@ -687,13 +687,18 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 	/* As an example (and possibly reasonable default) this is the Tech 1 provedure according
 	 * to http://www.globalunderwaterexplorers.org/files/Standards_and_Procedures/SOP_Manual_Ver2.0.2.pdf */
 
-	if (depth <= 6000)
-		return 1000 / 60;
-
-	if (depth * 4 > avg_depth * 3)
-		return 9000 / 60;
-	else
-		return 6000 / 60;
+	if (depth * 4 > avg_depth * 3) {
+		return prefs.ascrate75;
+	} else {
+		if (depth * 2 > avg_depth) {
+			return prefs.ascrate50;
+		} else {
+			if (depth > 6000)
+				return prefs.ascratestops;
+			else
+				return prefs.ascratelast6m;
+		}
+	}
 }
 
 void plan(struct diveplan *diveplan, char **cached_datap, struct dive **divep, struct dive *master_dive, bool add_deco, bool show_disclaimer)

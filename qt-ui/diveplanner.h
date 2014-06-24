@@ -159,6 +159,11 @@ slots:
 	void bottomSacChanged(const int bottomSac);
 	void decoSacChanged(const int decosac);
 	void printDecoPlan();
+	void setAscRate75(int rate);
+	void setAscRate50(int rate);
+	void setAscRateStops(int rate);
+	void setAscRateLast6m(int rate);
+	void setDescRate(int rate);
 
 private:
 	Ui::plannerSettingsWidget ui;

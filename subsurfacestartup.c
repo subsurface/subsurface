@@ -32,7 +32,12 @@ struct preferences default_prefs = {
 	.display_invalid_dives = false,
 	.show_sac = false,
 	.display_unused_tanks = false,
-	.show_average_depth = true
+	.show_average_depth = true,
+	.ascrate75 = 9000 / 60,
+	.ascrate50 = 6000 / 60,
+	.ascratestops = 6000 / 60,
+	.ascratelast6m = 1000 / 60,
+	.descrate = 18000 / 60
 };
 
 int run_survey;
