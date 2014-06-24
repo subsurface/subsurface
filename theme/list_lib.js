@@ -826,6 +826,29 @@ function get_cylinders_HTML(dive)
 }
 
 /**
+Return the HTML string for a bookmark entry in the table.
+*/
+function get_bookmark_HTML(event)
+{
+	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + event.time + '</td></tr>';
+}
+
+/**
+*Return HTML table of bookmarks of a dive.
+*/
+function get_bookmarks_HTML(dive)
+{
+	var result = "";
+	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td></tr>';
+	for (var i in dive.events) {
+		result += get_bookmark_HTML(dive.events[i]);
+	}
+	result += '</table>';
+	return result;
+}
+
+
+/**
 *Return HTML main data of a dive
 */
 function get_dive_HTML(dive)
@@ -886,6 +909,7 @@ function showDiveDetails(dive)
 	canvas_draw();
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
 	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
+	document.getElementById("bookmarks").innerHTML=get_bookmarks_HTML(items[dive_id]);
 
 	//hide the list of dives and show the canvas.
 	document.getElementById("diveListPanel").style.display = 'none';

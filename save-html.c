@@ -11,6 +11,18 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 	put_string(b, "\",");
 }
 
+void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
+{
+	struct event *ev = dive->dc.events;
+	put_string(b, "\"events\":[");
+	while (ev) {
+		put_format(b, "{\"name\":\"%s\",", ev->name);
+		put_format(b, "\"time\":\"%d:%02d min\",},", FRACTION(ev->time.seconds, 60));
+		ev = ev->next;
+	}
+	put_string(b, "],");
+}
+
 static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
@@ -155,6 +167,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no, const 
 	if (!list_only) {
 		put_cylinder_HTML(b, dive);
 		put_HTML_samples(b, dive);
+		put_HTML_bookmarks(b, dive);
 	}
 	put_string(b, "},\n");
 	(*dive_no)++;
