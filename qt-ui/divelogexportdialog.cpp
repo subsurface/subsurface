@@ -67,6 +67,14 @@ void DiveLogExportDialog::showExplanation()
 	}
 }
 
+void DiveLogExportDialog::copy_and_overwrite(const QString &fileName, const QString &newName)
+{
+	QFile file(newName);
+	if (file.exists())
+		file.remove();
+	QFile::copy(fileName, newName);
+}
+
 void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 {
 	QFile file(filename);
@@ -87,17 +95,11 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 
 	searchPath += QDir::separator();
 
-	QFile::copy(searchPath + "dive_export.html", filename);
-	QFile::copy(searchPath + "list_lib.js", exportFiles + "list_lib.js");
-	QFile::copy(searchPath + "poster.png", exportFiles + "poster.png");
-
-	// Remove theme file if already exist in the export dir
-	QFile theme(exportFiles + "theme.css");
-	if (theme.exists())
-		theme.remove();
-
-	QFile::copy(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
-		    exportFiles + "theme.css");
+	copy_and_overwrite(searchPath + "dive_export.html", filename);
+	copy_and_overwrite(searchPath + "list_lib.js", exportFiles + "list_lib.js");
+	copy_and_overwrite(searchPath + "poster.png", exportFiles + "poster.png");
+	copy_and_overwrite(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
+			   exportFiles + "theme.css");
 }
 
 void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
