@@ -79,7 +79,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	QString json_settings = exportFiles + QDir::separator() + "settings.json";
 
 	exportHTMLsettings(json_settings);
-	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked());
+	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
 
 	QString searchPath = getSubsurfaceDataPath("theme");
 	if (searchPath.isEmpty())
@@ -114,7 +114,8 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	QFile file(filename);
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
-	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",}";
+	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""<<
+	ui->exportListOnly->isChecked() << "\",}";
 	file.close();
 }
 

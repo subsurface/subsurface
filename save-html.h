@@ -15,7 +15,7 @@ void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, cons
 void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_quoted(struct membuffer *b, const char *text);
 
-void export_HTML(const char *file_name, const bool selected_only);
+void export_HTML(const char *file_name, const bool selected_only, const bool list_only);
 
 #ifdef __cplusplus
 }

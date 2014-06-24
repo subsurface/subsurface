@@ -179,7 +179,7 @@ function getlimited (dive) {
 };
 
 function getExpanded (dive) {
-    return '<table><tr><td class="words">Date: </td><td>'+dive.date+
+	var res = '<table><tr><td class="words">Date: </td><td>'+dive.date+
 	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>'+dive.time +
 	'</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>'+'<a onclick=\"Search_list_Modules(\''+dive.location+'\')\">'+
 	dive.location +'</a>'+
@@ -192,8 +192,11 @@ function getExpanded (dive) {
 	'</td></tr><tr><td class="words"><p>Buddy: </p></td><td>'+dive.buddy +
 	'</td></tr><tr><td class="words">Suit: </td><td>'+dive.suit +
 	'</td></tr><tr><td class="words">Tags: </td><td>'+putTags(dive.tags)+
-	'</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes +'</div>'+
-	'<center><a onclick="showDiveDetails('+dive.number+')">show more details</a></center>';
+	'</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes +'</div>';
+	if(settings.listOnly==='0'){
+		res += '<center><a onclick="showDiveDetails('+dive.number+')">show more details</a></center>';
+	}
+	return res;
 };
 
 function putTags(tags){
