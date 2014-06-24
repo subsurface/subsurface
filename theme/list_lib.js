@@ -170,7 +170,7 @@ function unexpand(ul){
 //////////////////////////////////////
 
 function getlimited (dive) {
-    return '<div style="height:20px"><div class="item">'+dive.subsurface_number+'</div>'+
+	return '<div style="height:20px"><div class="item">'+(settings.subsurfaceNumbers==='0'?dive.number:dive.subsurface_number)+'</div>'+
 	'<div class="item">'+dive.date+'</div>'+
 	'<div class="item">'+dive.time+'</div>'+
 	'<div class="item_large">'+dive.location+'</div>'+

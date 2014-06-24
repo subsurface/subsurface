@@ -114,8 +114,8 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	QFile file(filename);
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
-	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""<<
-	ui->exportListOnly->isChecked() << "\",}";
+	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""
+	    << ui->exportListOnly->isChecked() << "\",\"subsurfaceNumbers\":\"" << ui->exportSubsurfaceNumber->isChecked() << "\",}";
 	file.close();
 }
 

@@ -185,9 +185,9 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="exportSubsurfaceNumber">
             <property name="text">
-             <string>Order dives from 0</string>
+             <string>Subsurface Numbers</string>
             </property>
            </widget>
           </item>
