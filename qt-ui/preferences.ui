@@ -278,13 +278,28 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="default_uid">
-             </widget>
+             <widget class="QLineEdit" name="default_uid"/>
             </item>
             <item>
              <widget class="QCheckBox" name="save_uid_local">
               <property name="text">
                <string>Save User ID locally?</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_9">
+           <property name="title">
+            <string>Clear all settings</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7b">
+            <item>
+             <widget class="QPushButton" name="resetSettings">
+              <property name="text">
+               <string>Reset all settings to their default value</string>
               </property>
              </widget>
             </item>
@@ -538,7 +553,7 @@
             </widget>
            </item>
           </layout>
-	 </item>
+         </item>
          <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
@@ -670,18 +685,18 @@
                </widget>
               </item>
              </layout>
-	    </item>
-	    <item>
-	     <layout class="QHBoxLayout" name="horizontalLayout_11d">
-	      <item>
-	       <widget class="QCheckBox" name="show_average_depth">
-		<property name="text">
-		 <string>show average depth</string>
-		</property>
-	       </widget>
-	      </item>
-	     </layout>
-	    </item>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11d">
+              <item>
+               <widget class="QCheckBox" name="show_average_depth">
+                <property name="text">
+                 <string>show average depth</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
          </item>
@@ -1086,12 +1101,12 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_6"/>
  </buttongroups>
 </ui>

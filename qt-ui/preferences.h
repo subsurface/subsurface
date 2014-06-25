@@ -21,6 +21,7 @@ public
 slots:
 	void buttonClicked(QAbstractButton *button);
 	void on_chooseFile_clicked();
+	void on_resetSettings_clicked();
 	void syncSettings();
 	void loadSettings();
 	void restorePrefs();

@@ -350,6 +350,30 @@ void PreferencesDialog::on_chooseFile_clicked()
 		ui.defaultfilename->setText(choosenFileName);
 }
 
+void PreferencesDialog::on_resetSettings_clicked()
+{
+	QSettings s;
+
+	QMessageBox response(this);
+	response.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	response.setDefaultButton(QMessageBox::Cancel);
+	response.setWindowTitle(tr("Warning"));
+	response.setText(tr("If you click OK, all settings of Subsurface are reset to their default values. This will be applied immediately."));
+	response.setWindowModality(Qt::WindowModal);
+
+	int result = response.exec();
+	if (result == QMessageBox::Ok) {
+		prefs = default_prefs;
+		setUiFromPrefs();
+		QStringList keys = s.allKeys();
+		Q_FOREACH (QString key, keys) {
+			s.remove(key);
+		}
+		syncSettings();
+		close();
+	}
+}
+
 void PreferencesDialog::emitSettingsChanged()
 {
 	emit settingsChanged();
