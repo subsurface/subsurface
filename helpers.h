@@ -35,8 +35,6 @@ QString get_trip_date_string(timestamp_t when, int nr);
 QString uiLanguage(QLocale *callerLoc);
 void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
 
-#define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
 #else

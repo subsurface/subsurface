@@ -16,6 +16,12 @@ extern "C" {
 #define SURFACE_PRESSURE_STRING "1013"
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
+#ifdef __cplusplus
+#define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
+#else
+#define M_OR_FT(_m, _f) ((prefs.units.length == METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
+#endif
+
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY 10300
 #define FRESHWATER_SALINITY 10000

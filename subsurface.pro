@@ -35,6 +35,7 @@ HEADERS = \
 	profile.h \
 	qt-gui.h \
 	qthelper.h \
+	units.h \
 	divecomputer.h \
 	qt-ui/about.h \
 	qt-ui/completionmodels.h \

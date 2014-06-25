@@ -694,7 +694,7 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 			 * The user should be able to change this depth manually. */
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&mix, modpO2, 3000);
+			cyl->depth = gas_mod(&mix, modpO2, M_OR_FT(3,10));
 
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;

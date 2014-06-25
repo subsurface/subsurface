@@ -241,7 +241,7 @@ void reset_cylinders(struct dive *dive)
 		if (cylinder_none(cyl))
 			continue;
 		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, assume conservative pO2 */
-			cyl->depth = gas_mod(&cyl->gasmix, pO2, 3000);
+			cyl->depth = gas_mod(&cyl->gasmix, pO2, M_OR_FT(3,10));
 		if (cyl->type.workingpressure.mbar)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 		cyl->gas_used.mliter = 0;
