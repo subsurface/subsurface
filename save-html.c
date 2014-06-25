@@ -64,7 +64,7 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	put_string(b, "\"samples\":\[");
 	struct sample *s = dive->dc.sample;
 	for (i = 0; i < dive->dc.samples; i++) {
-		put_format(b, "[%d,%d],", s->time.seconds, s->depth.mm);
+		put_format(b, "[%d,%d,%d,%d],", s->time.seconds, s->depth.mm, s->cylinderpressure.mbar, s->temperature.mkelvin);
 		s++;
 	}
 	put_string(b, "],");
