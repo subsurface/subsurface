@@ -361,7 +361,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscRateLast6m(int)));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate()));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 
 	setMinimumWidth(0);
