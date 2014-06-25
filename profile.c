@@ -1163,7 +1163,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int) (prefs.modpO2 * 1000) };
-		entry->mod = (double) gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2).mm;
+		entry->mod = (double) gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *

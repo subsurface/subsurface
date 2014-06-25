@@ -72,16 +72,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QPlainTextEdit" name="bottompo2">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>20</height>
-             </size>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
@@ -90,12 +80,34 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QPlainTextEdit" name="decopo2">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>20</height>
-             </size>
+           <widget class="QDoubleSpinBox" name="decopo2">
+            <property name="suffix">
+             <string>bar</string>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.600000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="bottompo2">
+            <property name="suffix">
+             <string>bar</string>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.400000000000000</double>
             </property>
            </widget>
           </item>
@@ -299,8 +311,6 @@
   <tabstop>display_transitions</tabstop>
   <tabstop>lastStop</tabstop>
   <tabstop>backgasBreaks</tabstop>
-  <tabstop>bottompo2</tabstop>
-  <tabstop>decopo2</tabstop>
   <tabstop>descRate</tabstop>
  </tabstops>
  <resources/>

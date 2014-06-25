@@ -347,6 +347,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.ascRateStops->setValue(prefs.ascratestops / UNIT_FACTOR);
 	ui.ascRateLast6m->setValue(prefs.ascratelast6m / UNIT_FACTOR);
 	ui.descRate->setValue(prefs.descrate / UNIT_FACTOR);
+	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
+	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
@@ -363,6 +365,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
+	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -412,6 +416,17 @@ void PlannerSettingsWidget::setDescRate(int rate)
 {
 	prefs.descrate = rate * UNIT_FACTOR;
 }
+
+void PlannerSettingsWidget::setBottomPo2(double po2)
+{
+	prefs.bottompo2 = (int) (po2 * 1000.0);
+}
+
+void PlannerSettingsWidget::setDecoPo2(double po2)
+{
+	prefs.decopo2 = (int) (po2 * 1000.0);
+}
+
 
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {
@@ -678,8 +693,9 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 			/* The depth to change to that gas is given by the depth where its pO₂ is 1.6 bar.
 			 * The user should be able to change this depth manually. */
 			pressure_t modpO2;
-			modpO2.mbar = 1600;
-			cyl->depth = gas_mod(&mix, modpO2);
+			modpO2.mbar = prefs.decopo2;
+			cyl->depth = gas_mod(&mix, modpO2, 3000);
+
 			CylindersModel::instance()->setDive(stagingDive);
 			return true;
 		}

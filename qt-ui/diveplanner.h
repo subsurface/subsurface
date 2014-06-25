@@ -164,6 +164,8 @@ slots:
 	void setAscRateStops(int rate);
 	void setAscRateLast6m(int rate);
 	void setDescRate(int rate);
+	void setBottomPo2(double po2);
+	void setDecoPo2(double po2);
 
 private:
 	Ui::plannerSettingsWidget ui;

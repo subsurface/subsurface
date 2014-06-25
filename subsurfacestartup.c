@@ -37,7 +37,9 @@ struct preferences default_prefs = {
 	.ascrate50 = 6000 / 60,
 	.ascratestops = 6000 / 60,
 	.ascratelast6m = 1000 / 60,
-	.descrate = 18000 / 60
+	.descrate = 18000 / 60,
+	.bottompo2 = 1400,
+	.decopo2 = 1600
 };
 
 int run_survey;
