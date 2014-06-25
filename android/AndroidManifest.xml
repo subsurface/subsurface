@@ -82,6 +82,7 @@
             -->
             <!-- Splash screen -->
 
+        </activity>
     </application>
 
     <uses-sdk android:minSdkVersion="12" />
