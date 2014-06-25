@@ -648,7 +648,7 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 		beginInsertRows(QModelIndex(), 0, 0);
 		/* Copy the first current point */
 		divedatapoint p = divepoints.at(0);
-		p.time = p.depth / 300;
+		p.time = p.depth / prefs.descrate;
 		divepoints.push_front(p);
 		endInsertRows();
 	}
@@ -934,9 +934,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && drop_stone_mode) {
 			/* Okay, we add a fist segment where we go down to depth */
-			/* FIXME: make this configurable, now hard-coded to 18 m/s */
-			plan_add_segment(&diveplan, p.depth / 300, p.depth, p.gasmix, p.po2, false);
-			deltaT -= p.depth / 300;
+			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.gasmix, p.po2, false);
+			deltaT -= p.depth / prefs.descrate;
 		}
 		if (p.entered)
 			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.po2, true);
