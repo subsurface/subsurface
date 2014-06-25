@@ -20,12 +20,12 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 
 	QAction *actionShowSearch = new QAction(this);
 	actionShowSearch->setShortcut(Qt::CTRL + Qt::Key_F);
-	actionShowSearch->setShortcutContext(Qt::WidgetShortcut);
+	actionShowSearch->setShortcutContext(Qt::WindowShortcut);
 	addAction(actionShowSearch);
 
 	QAction *actionHideSearch = new QAction(this);
 	actionHideSearch->setShortcut(Qt::Key_Escape);
-	actionHideSearch->setShortcutContext(Qt::WidgetShortcut);
+	actionHideSearch->setShortcutContext(Qt::WindowShortcut);
 	addAction(actionHideSearch);
 
 	setWindowTitle(tr("User Manual"));
