@@ -168,6 +168,9 @@ struct tank_info_t tank_info[100] = {
 	{ "AL80", .cuft = 80, .psi = 3000 },
 	{ "AL100", .cuft = 100, .psi = 3300 },
 
+	/* Metric AL cylinders */
+	{ "ALU7", .ml = 7000, .bar = 200 },
+
 	/* Somewhat common LP steel cylinders */
 	{ "LP85", .cuft = 85, .psi = 2640 },
 	{ "LP95", .cuft = 95, .psi = 2640 },
