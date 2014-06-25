@@ -40,6 +40,7 @@ th{
 .words{
 	font-size:inherit;
 	font-weight:bold;
+	padding-right:25px;
 }
 
 .item{
@@ -213,24 +214,9 @@ ul:hover{
 	padding-right:25px;
 }
 
-#diveinfo{
-	border-style:solid;
-}
-
-#diveprofile{
-	border-style:solid;
-}
-
-#dive_equipments{
-	border-style:solid;
-}
-
-#divestats{
-	border-style:solid;
-}
-
-#bookmarks{
-	border-style:solid;
+.det_hed{
+	background-color:#5f7f8f;
+	padding:3px;
 }
 
 @media (max-width: 768px) {

@@ -817,7 +817,7 @@ function get_cylinder_HTML(cylinder)
 function get_cylinders_HTML(dive)
 {
 	var result = "";
-	result += '<h2>Dive equipments</h2><table><tr><td class="Cyl">Type</td><td class="Cyl">Size</td><td class="Cyl">Work Pressure</td><td class="Cyl">Start Pressure</td><td class="Cyl">End Pressure</td><td class="Cyl">O2</td></tr>';
+	result += '<h2 class="det_hed">Dive equipments</h2><table><tr><td class="words">Type</td><td class="words">Size</td><td class="words">Work Pressure</td><td class="words">Start Pressure</td><td class="words">End Pressure</td><td class="words">O2</td></tr>';
 	for (var i in dive.Cylinders) {
 		result += get_cylinder_HTML(dive.Cylinders[i]);
 	}
@@ -853,7 +853,7 @@ function get_bookmarks_HTML(dive)
 */
 function get_dive_HTML(dive)
 {
-	return '<h2>Dive Information</h2><table><tr><td class="words">Date: </td><td>' + dive.date +
+	return '<h2 class="det_hed">Dive Information</h2><table><tr><td class="words">Date: </td><td>' + dive.date +
 	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>' + dive.time +
 	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
 	       dive.location + '</a>' +

@@ -40,6 +40,7 @@ th{
 .words{
 	font-size:inherit;
 	font-weight:bold;
+	padding-right:25px;
 }
 
 .item{
@@ -211,28 +212,9 @@ ul:hover{
 	box-shadow: 7px 7px 5px rgba(215, 107, 27, 0.43);
 }
 
-.Cyl{
-	padding-right:25px;
-}
-
-#diveinfo{
-	border-style:solid;
-}
-
-#diveprofile{
-	border-style:solid;
-}
-
-#dive_equipments{
-	border-style:solid;
-}
-
-#divestats{
-	border-style:solid;
-}
-
-#bookmarks{
-	border-style:solid;
+.det_hed{
+	background-color:#EFC15F;
+	padding:3px;
 }
 
 @media (max-width: 768px) {
