@@ -7,25 +7,37 @@
 //advance settings window//
 load_scripts();
 
-function load_scripts(){
+function load_script_sync(name)
+{
+	var fileref=document.createElement('script');
+	fileref.setAttribute("type","text/javascript");
+	fileref.async = false;
+	fileref.setAttribute("src", location.pathname + "_files/" + name);
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+}
+
+function load_scripts()
+{
 	var fileref=document.createElement("link");
 	fileref.setAttribute("rel", "stylesheet");
 	fileref.setAttribute("type", "text/css");
-	fileref.setAttribute("href", location.pathname+"_files/theme.css");
+	fileref.setAttribute("href", location.pathname + "_files/theme.css");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname+"_files/file.json");
+	fileref.setAttribute("src", location.pathname + "_files/file.json");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname+"_files/settings.json");
+	fileref.setAttribute("src", location.pathname + "_files/settings.json");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
-	fileref=document.createElement('script');
-	fileref.setAttribute("type","text/javascript");
-	fileref.setAttribute("src", location.pathname+"_files/list_lib.js");
-	document.getElementsByTagName("head")[0].appendChild(fileref);
+	load_script_sync("list_lib.js");
+	load_script_sync("jquery.min.js");
+	load_script_sync("jquery.jqplot.min.js");
+	load_script_sync("jqplot.highlighter.min.js");
+	load_script_sync("jqplot.canvasAxisTickRenderer.min.js");
+	load_script_sync("jqplot.canvasTextRenderer.min.js");
 }
 
 var advanced_shown=false;
@@ -164,8 +176,12 @@ function changeAdvSearch(e){
 	</div>
 	</center>
 		<div id="diveprofile">
+		<center>
+		<h2 id="dive_no"></h2>
+		<h3 id="dive_location"></h3>
+		</center>
 		<h2 class="det_hed">Dive profile</h2>
-		<canvas id="profileCanvas"></canvas>
+		<div style="width:100%" id="chart1"></div>
 		</div>
 		<div id="diveinfo">
 		<h2 class="det_hed">Dive Information</h2>
@@ -174,7 +190,7 @@ function changeAdvSearch(e){
 		<h2 class="det_hed">Dive equipments</h2>
 		</div>
 		<div id="bookmarks">
-		<h2 class="det_hed">Bookmarks</h2>
+		<h2 class="det_hed">Events</h2>
 		</div>
 		<div id="divestats">
 		<h2 class="det_hed">Dive stats</h2>

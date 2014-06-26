@@ -98,6 +98,11 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	copy_and_overwrite(searchPath + "dive_export.html", filename);
 	copy_and_overwrite(searchPath + "list_lib.js", exportFiles + "list_lib.js");
 	copy_and_overwrite(searchPath + "poster.png", exportFiles + "poster.png");
+	copy_and_overwrite(searchPath + "jqplot.highlighter.min.js", exportFiles + "jqplot.highlighter.min.js");
+	copy_and_overwrite(searchPath + "jquery.jqplot.min.js", exportFiles + "jquery.jqplot.min.js");
+	copy_and_overwrite(searchPath + "jqplot.canvasAxisTickRenderer.min.js", exportFiles + "jqplot.canvasAxisTickRenderer.min.js");
+	copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.min.js", exportFiles + "jqplot.canvasTextRenderer.min.js");
+	copy_and_overwrite(searchPath + "jquery.min.js", exportFiles + "jquery.min.js");
 	copy_and_overwrite(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
 			   exportFiles + "theme.css");
 }

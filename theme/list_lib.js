@@ -869,25 +869,87 @@ function get_dive_HTML(dive)
 	       '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
 };
 
+var ZERO_C_IN_MKELVIN = 273150;
+
+function mkelvin_to_C(mkelvin)
+{
+	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
+}
+
+function mbar_to_bar(mbar){
+	return mbar/1000;
+}
+
+function mm_to_meter(mm){
+	return mm/(1000);
+}
+
+var plot1;
+
 /**
 *Main canvas draw function
 *this calls the axis and grid initialization functions.
 */
-function canvas_draw()
-{
-	var c = document.getElementById("profileCanvas");
-	c.width = window.innerWidth;
-	c.height = window.innerHeight;
-	canvas_showGrid();
-	canvas_showAxisInfo();
-	var ctx = c.getContext("2d");
-	ctx.lineWidth = 4 //variable width
-		//draw starting line, draw all samples then draw the final line.
-		canvas_drawline(ctx, [0,0], points[0]);
-	for (var i = 1; i < points.length; i++) {
-		canvas_drawline(ctx, points[i - 1], points[i]);
+function canvas_draw(){
+	document.getElementById("chart1").innerHTML="";
+	var d1 = new Array();
+	var d2 = new Array();
+	for (var i =0; i< items[dive_id].samples.length;i++){
+		d1.push([items[dive_id].samples[i][0]/60,-1*mm_to_meter(items[dive_id].samples[i][1])]);
+		if (items[dive_id].samples[i][2]!=0) {
+			d2.push([items[dive_id].samples[i][0]/60,mbar_to_bar(items[dive_id].samples[i][2])]);
+		}
 	}
-	canvas_drawline(ctx, points[points.length - 1], [MAX_WIDTH,0]);
+	plot1 = $.jqplot('chart1', [d1,d2], {
+	grid: {
+		drawBorder: true,
+		shadow: false,
+		background: 'rgba(0,0,0,0)'
+	},
+	highlighter: { show: true },
+	seriesDefaults: {
+		shadowAlpha: 0.1,
+		shadowDepth: 2,
+		fillToZero: true
+        },
+	series: [{
+		color: 'rgba(35,58,58,.6)',
+		negativeColor: 'rgba(35,58,58,.6)',
+		showMarker: true,
+		showLine: true,
+		fill: true,
+		yaxis:'yaxis',
+	},{
+		color: 'rgba(44, 190, 160, 0.7)',
+		showMarker: false,
+                rendererOptions: {
+                    smooth: true,
+                },
+                yaxis:'y2axis',
+	},],
+	axes: {
+		xaxis: {
+			pad: 1.0,
+			tickRenderer: $.jqplot.CanvasAxisTickRenderer ,
+			tickOptions: {
+			  showGridline: false,
+			  formatString:'%i min',
+			  angle: -30
+			}
+		},
+		yaxis: {
+			max: 0,
+			tickRenderer: $.jqplot.CanvasAxisTickRenderer ,
+			tickOptions:{ formatString:'%.2f'},
+			pad: 2.05
+		},
+		y2axis: {
+			tickRenderer: $.jqplot.CanvasAxisTickRenderer ,
+			tickOptions:{ formatString:'%ibar'},
+			pad: 3.05
+		},
+	}
+	});
 }
 
 /**
@@ -906,14 +968,21 @@ function showDiveDetails(dive)
 	MAX_WIDTH = items[dive_id].duration;
 
 	//draw the canvas and initialize the view
-	canvas_draw();
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
 	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML=get_bookmarks_HTML(items[dive_id]);
+	setDiveTitle(items[dive_id]);
 
 	//hide the list of dives and show the canvas.
 	document.getElementById("diveListPanel").style.display = 'none';
 	document.getElementById("divePanel").style.display = 'block';
+	canvas_draw();
+}
+
+function setDiveTitle(dive){
+	document.getElementById("dive_no").innerHTML="Dive No. "+(settings.subsurfaceNumbers === '0'?
+	dive.number : dive.subsurface_number);
+	document.getElementById("dive_location").innerHTML=dive.location;
 }
 
 /**
@@ -924,6 +993,7 @@ function unshowDiveDetails(dive)
 {
 	start = dive_id;
 	viewInPage();
+	plot1 = null;
 	document.getElementById("diveListPanel").style.display = 'block';
 	document.getElementById("divePanel").style.display = 'none';
 }
