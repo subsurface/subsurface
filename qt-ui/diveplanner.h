@@ -136,7 +136,8 @@ public:
 public
 slots:
 	void settingsChanged();
-	void atmPressureChanged(const QString &pressure);
+	void atmPressureChanged(const int pressure);
+	void heightChanged(const int height);
 	void bottomSacChanged(const int bottomSac);
 	void decoSacChanged(const int decosac);
 	void printDecoPlan();

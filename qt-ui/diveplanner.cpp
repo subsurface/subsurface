@@ -241,6 +241,8 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
+	if (prefs.units.METERS == units::FEET)
+		ui.atmHeight->setSuffix("ft");
 	ui.tableWidget->setTitle(tr("Dive Planner Points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setRecalc(true);
@@ -270,18 +272,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
-	connect(ui.ATMPressure, SIGNAL(textChanged(QString)), this, SLOT(atmPressureChanged(QString)));
-	connect(ui.bottomSAC, SIGNAL(valueChanged(int)), this, SLOT(bottomSacChanged(int)));
-	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
-	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
-	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
-	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.printPlan, SIGNAL(pressed()), this, SLOT(printDecoPlan()));
-	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
-#ifdef NO_PRINTING
-	ui.printPlan->hide();
-#endif
+	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
+	connect(ui.atmHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
 
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
@@ -291,11 +283,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 	/* set defaults. */
 	ui.startTime->setTime(QTime(1, 0));
-	ui.ATMPressure->setText("1013");
-	ui.bottomSAC->setValue(20);
-	ui.decoStopSAC->setValue(17);
-	ui.gflow->setValue(prefs.gflow);
-	ui.gfhigh->setValue(prefs.gfhigh);
+	ui.ATMPressure->setValue(1013);
+	ui.atmHeight->setValue(0);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -311,9 +300,23 @@ void DivePlannerPointsModel::addCylinder_clicked()
 	CylindersModel::instance()->add();
 }
 
-void DivePlannerWidget::atmPressureChanged(const QString &pressure)
+void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
-	plannerModel->setSurfacePressure(pressure.toInt());
+	const char *depthunit;
+
+	plannerModel->setSurfacePressure(pressure);
+	ui.atmHeight->blockSignals(true);
+	ui.atmHeight->setValue((int) get_depth_units((int)(log(1013.0 / pressure) * 7800000), NULL,NULL));
+	ui.atmHeight->blockSignals(false);
+}
+
+void DivePlannerWidget::heightChanged(const int height)
+{
+	int pressure = (int) (1013.0 * exp(- (double) units_to_depth((double) height) / 7800000.0));
+	ui.ATMPressure->blockSignals(true);
+	ui.ATMPressure->setValue(pressure);
+	ui.ATMPressure->blockSignals(false);
+	plannerModel->setSurfacePressure(pressure);
 }
 
 void DivePlannerWidget::bottomSacChanged(const int bottomSac)
@@ -350,6 +353,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 
+
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
@@ -367,6 +371,18 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
+	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
+	connect(ui.bottomSAC, SIGNAL(valueChanged(int)), this, SLOT(bottomSacChanged(int)));
+	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
+	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
+//	connect(ui.gfhigh, SIGNAL(valueChanged()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
+//	connect(ui.gflow, SIGNAL(valueChanged()), plannerModel, SLOT(emitDataChanged()));
+
+	ui.bottomSAC->setValue(20);
+	ui.decoStopSAC->setValue(17);
+	ui.gflow->setValue(prefs.gflow);
+	ui.gfhigh->setValue(prefs.gfhigh);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
@@ -605,11 +621,13 @@ void DivePlannerPointsModel::setDecoSac(int sac)
 void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 {
 	diveplan.gfhigh = gfhigh;
+	plannerModel->emitDataChanged();
 }
 
 void DivePlannerPointsModel::setGFLow(const int ghflow)
 {
 	diveplan.gflow = ghflow;
+	plannerModel->emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1418</width>
-    <height>1084</height>
+    <width>1682</width>
+    <height>1151</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -38,7 +38,7 @@
        </property>
        <widget class="QStackedWidget" name="infoPane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -109,57 +109,18 @@
          <property name="spacing">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QToolButton" name="profPO2">
-           <property name="toolTip">
-            <string>Enable the pO2 Graph</string>
+         <item row="14" column="0">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../subsurface.qrc">
-             <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
-           </property>
-           <property name="iconSize">
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>24</width>
-             <height>24</height>
+             <width>20</width>
+             <height>40</height>
             </size>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QToolButton" name="profPn2">
-           <property name="toolTip">
-            <string>Enable the pN2 Graph</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../subsurface.qrc">
-             <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
+          </spacer>
          </item>
          <item row="2" column="0">
           <widget class="QToolButton" name="profPhe">
@@ -172,6 +133,32 @@
            <property name="icon">
             <iconset resource="../subsurface.qrc">
              <normaloff>:/icon_he</normaloff>:/icon_he</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QToolButton" name="profCalcAllTissues">
+           <property name="toolTip">
+            <string>Calculate All Tissues</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../subsurface.qrc">
+             <normaloff>:/icon_ceiling_alltissues</normaloff>:/icon_ceiling_alltissues</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -245,17 +232,17 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
-          <widget class="QToolButton" name="profCalcAllTissues">
+         <item row="10" column="0">
+          <widget class="QToolButton" name="profNdl_tts">
            <property name="toolTip">
-            <string>Calculate All Tissues</string>
+            <string>Show NDL / TTS</string>
            </property>
            <property name="text">
             <string>...</string>
            </property>
            <property name="icon">
             <iconset resource="../subsurface.qrc">
-             <normaloff>:/icon_ceiling_alltissues</normaloff>:/icon_ceiling_alltissues</iconset>
+             <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -375,32 +362,6 @@
            </property>
           </widget>
          </item>
-         <item row="10" column="0">
-          <widget class="QToolButton" name="profNdl_tts">
-           <property name="toolTip">
-            <string>Show NDL / TTS</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../subsurface.qrc">
-             <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="11" column="0">
           <widget class="QToolButton" name="profSAC">
            <property name="toolTip">
@@ -412,32 +373,6 @@
            <property name="icon">
             <iconset resource="../subsurface.qrc">
              <normaloff>:/icon_lung</normaloff>:/icon_lung</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="12" column="0">
-          <widget class="QToolButton" name="profRuler">
-           <property name="toolTip">
-            <string>Enable / Disable the Ruler</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../subsurface.qrc">
-             <normaloff>:/units</normaloff>:/units</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -479,21 +414,86 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1" rowspan="15">
-          <widget class="ProfileWidget2" name="newProfile"/>
-         </item>
-         <item row="14" column="0">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+         <item row="12" column="0">
+          <widget class="QToolButton" name="profRuler">
+           <property name="toolTip">
+            <string>Enable / Disable the Ruler</string>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../subsurface.qrc">
+             <normaloff>:/units</normaloff>:/units</iconset>
+           </property>
+           <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
-          </spacer>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QToolButton" name="profPO2">
+           <property name="toolTip">
+            <string>Enable the pO2 Graph</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../subsurface.qrc">
+             <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QToolButton" name="profPn2">
+           <property name="toolTip">
+            <string>Enable the pN2 Graph</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../subsurface.qrc">
+             <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" rowspan="15">
+          <widget class="ProfileWidget2" name="newProfile"/>
          </item>
         </layout>
        </widget>
@@ -504,7 +504,7 @@
        </property>
        <widget class="QStackedWidget" name="diveListPane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="DiveListView" name="ListWidget">
          <property name="alternatingRowColors">
@@ -548,9 +548,9 @@
        </widget>
        <widget class="QStackedWidget" name="globePane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
-        <widget class="QWidget" name="stackedWidgetPage1" native="true">
+        <widget class="QWidget" name="stackedWidgetPage1">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -570,22 +570,54 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLabel" name="divePlanOutputLabel">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Dive plan details</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="divePlanOutputLabel">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dive plan details&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::RichText</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="printPlan">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Print</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QTextEdit" name="divePlanOutput">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -614,10 +646,7 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
     <item>
-     <widget class="KMessageWidget" name="mainErrorMessage" native="true">
-      <zorder>mainSplitter</zorder>
-      <zorder>mainSplitter</zorder>
-     </widget>
+     <widget class="KMessageWidget" name="mainErrorMessage" native="true"/>
     </item>
    </layout>
   </widget>
@@ -626,7 +655,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1418</width>
+     <width>1682</width>
      <height>22</height>
     </rect>
    </property>

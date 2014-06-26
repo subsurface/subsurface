@@ -65,23 +65,7 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <item row="7" column="0" colspan="2">
-        <widget class="TableView" name="cylinderTableWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>50</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
+       <item row="6" column="0" colspan="2">
         <widget class="TableView" name="tableWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -97,21 +81,22 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QSpinBox" name="decoStopSAC"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QSpinBox" name="gflow">
-         <property name="minimum">
-          <number>1</number>
+       <item row="5" column="0" colspan="2">
+        <widget class="TableView" name="cylinderTableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="maximum">
-          <number>150</number>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
          </property>
+         <zorder>label_2</zorder>
         </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QTimeEdit" name="startTime"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -120,82 +105,50 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>GFLow</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0" colspan="2">
+       <item row="9" column="0" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="standardButtons">
           <set>QDialogButtonBox::Abort|QDialogButtonBox::Save</set>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QSpinBox" name="bottomSAC"/>
+       <item row="1" column="0">
+        <widget class="QTimeEdit" name="startTime"/>
        </item>
-       <item row="5" column="1">
-        <widget class="QSpinBox" name="gfhigh">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>150</number>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Altitide</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>SAC on DECO Stop</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Bottom SAC</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>GFHigh</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>ATM Pressure</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ATMPressure">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="ATMPressure">
+         <property name="suffix">
+          <string>bar</string>
+         </property>
+         <property name="maximum">
+          <number>2000</number>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QCheckBox" name="drop_stone_mode">
-         <property name="text">
-          <string>Drop like a stone mode</string>
+       <item row="3" column="0">
+        <widget class="QSpinBox" name="atmHeight">
+         <property name="suffix">
+          <string>m</string>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QPushButton" name="printPlan">
-         <property name="text">
-          <string>Print</string>
+         <property name="minimum">
+          <number>-2000</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
          </property>
         </widget>
        </item>
@@ -215,12 +168,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>startTime</tabstop>
-  <tabstop>ATMPressure</tabstop>
-  <tabstop>bottomSAC</tabstop>
-  <tabstop>decoStopSAC</tabstop>
-  <tabstop>gflow</tabstop>
-  <tabstop>gfhigh</tabstop>
-  <tabstop>printPlan</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>

@@ -83,6 +83,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), MainWindow::instance(), SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), MainWindow::instance(), SLOT(planCanceled()));
+	connect(ui.printPlan, SIGNAL(pressed()), ui.divePlannerWidget, SLOT(printDecoPlan()));
+#ifdef NO_PRINTING
+	ui.printPlan->hide();
+#endif
+
 	ui.mainErrorMessage->hide();
 	initialUiSetup();
 	readSettings();
