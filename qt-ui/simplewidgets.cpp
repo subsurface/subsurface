@@ -324,10 +324,10 @@ void DateWidget::changeEvent(QEvent *event)
 	}
 }
 
+#define DATEWIDGETWIDTH 80
 void DateWidget::paintEvent(QPaintEvent *event)
 {
-	static QPixmap pix = QPixmap(":/calendar").scaled(64,64);
-	static int pixRedTag = 18; 	/* calculated using a ruler. */
+	static QPixmap pix = QPixmap(":/calendar").scaled(DATEWIDGETWIDTH,64);
 
 	QPainter painter(this);
 
@@ -338,20 +338,20 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	QString day = mDate.toString("dd");
 
 
-	QFont font = QFont("monospace", 5);
+	QFont font = QFont("monospace", 10);
 	QFontMetrics metrics = QFontMetrics(font);
 	painter.setFont(font);
 	painter.setPen(QPen(QBrush(Qt::white), 0));
 	painter.setBrush(QBrush(Qt::white));
-	painter.drawText(QPoint(4, metrics.height() + 3), month);
-	painter.drawText(QPoint(64 - metrics.width(year) -6, 14), year);
+	painter.drawText(QPoint(6, metrics.height() + 1), month);
+	painter.drawText(QPoint(DATEWIDGETWIDTH - metrics.width(year) - 6, metrics.height() + 1), year);
 
 	font.setPointSize(14);
 	metrics = QFontMetrics(font);
 	painter.setPen(QPen(QBrush(Qt::black),0));
 	painter.setBrush(Qt::black);
 	painter.setFont(font);
-	painter.drawText(QPoint(32 - metrics.width(day)/2, 45), day);
+	painter.drawText(QPoint(DATEWIDGETWIDTH / 2 - metrics.width(day) / 2, 45), day);
 
 	if (hasFocus()) {
 		QStyleOptionFocusRect option;
