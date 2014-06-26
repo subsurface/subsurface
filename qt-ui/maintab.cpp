@@ -948,13 +948,14 @@ void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 	}
 }
 
-void MainTab::on_dateEdit_dateChanged(const QDateTime &datetime)
+void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
 	if (editMode == NONE)
 		return;
-	QDateTime dateTimeUtc(datetime);
-	dateTimeUtc.setTimeSpec(Qt::UTC);
-	editedDive.when = dateTimeUtc.toTime_t();
+	QDateTime dateTime = QDateTime::fromTime_t(editedDive.when);
+	dateTime.setTimeSpec(Qt::UTC);
+	dateTime.setDate(date);
+	editedDive.when = dateTime.toTime_t();
 	markChangedWidget(ui.dateEdit);
 }
 
@@ -963,6 +964,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	if (editMode == NONE)
 		return;
 	QDateTime dateTime = QDateTime::fromTime_t(editedDive.when);
+	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
 	editedDive.when = dateTime.toTime_t();
 	markChangedWidget(ui.timeEdit);
