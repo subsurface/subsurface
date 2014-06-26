@@ -467,6 +467,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	if(!plannerStateClean())
 		return;
 
+	ui.ListWidget->endSearch();
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	ui.newProfile->setPlanState();
@@ -497,6 +498,7 @@ void MainWindow::on_actionAddDive_triggered()
 	if(!plannerStateClean())
 		return;
 
+	ui.ListWidget->endSearch();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	createFakeDiveForAddAndPlan();

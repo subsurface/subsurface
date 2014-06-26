@@ -52,6 +52,7 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	static QString lastUsedImageDir();
+	void endSearch();
 
 signals:
 	void currentDiveChanged(int divenr);
