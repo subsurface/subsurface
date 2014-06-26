@@ -28,6 +28,7 @@ slots:
 	void rememberPrefs();
 	void gflowChanged(int gf);
 	void gfhighChanged(int gf);
+	void on_proxyType_changed(int idx);
 
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);

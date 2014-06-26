@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
 #include <QShortcut>
+#include <QNetworkProxy>
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -18,6 +19,12 @@ PreferencesDialog *PreferencesDialog::instance()
 PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
+	ui.proxyType->clear();
+	ui.proxyType->addItem(tr("No proxy"), QNetworkProxy::NoProxy);
+	ui.proxyType->addItem(tr("System proxy"), QNetworkProxy::DefaultProxy);
+	ui.proxyType->addItem(tr("HTTP proxy"), QNetworkProxy::HttpProxy);
+	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
+	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
@@ -377,4 +384,20 @@ void PreferencesDialog::on_resetSettings_clicked()
 void PreferencesDialog::emitSettingsChanged()
 {
 	emit settingsChanged();
+}
+
+void PreferencesDialog::on_proxyType_changed(int idx)
+{
+	if (idx == -1) {
+		return;
+	}
+
+	int proxyType = ui.proxyType->itemData(idx).toInt();
+	bool hpEnabled = (proxyType == QNetworkProxy::Socks5Proxy || proxyType == QNetworkProxy::HttpProxy);
+	ui.proxyHost->setEnabled(hpEnabled);
+	ui.proxyPort->setEnabled(hpEnabled);
+	ui.proxyAuthRequired->setEnabled(hpEnabled);
+	ui.proxyUsername->setEnabled(hpEnabled & ui.proxyAuthRequired->isChecked());
+	ui.proxyPassword->setEnabled(hpEnabled & ui.proxyAuthRequired->isChecked());
+	ui.proxyAuthRequired->setChecked(ui.proxyAuthRequired->isChecked());
 }
