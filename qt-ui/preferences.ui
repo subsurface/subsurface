@@ -120,6 +120,16 @@
          </iconset>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Network</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/round_base</normalon>
+         </iconset>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -793,6 +803,147 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="page_5">
+        <layout class="QVBoxLayout" name="verticalLayout_15">
+         <item>
+          <widget class="QGroupBox" name="groupBox_10">
+           <property name="title">
+            <string>Proxy</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_21">
+              <property name="text">
+               <string>Proxy type</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="proxyType"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_22">
+              <property name="text">
+               <string>Host</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="proxyHost">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>2</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maxLength">
+               <number>64</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_23">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Port</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QSpinBox" name="proxyPort">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximum">
+               <number>65535</number>
+              </property>
+              <property name="value">
+               <number>80</number>
+              </property>
+             </widget>
+            </item>
+			<item row="2" column="1">
+			 <widget class="QCheckBox" name="proxyAuthRequired">
+			  <property name="layoutDirection">
+			   <enum>Qt::LeftToRight</enum>
+			  </property>
+			  <property name="text">
+			   <string>Requires authentication</string>
+			  </property>
+			 </widget>
+			</item>
+			<item row="3" column="1">
+             <widget class="QLineEdit" name="proxyUsername">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maxLength">
+               <number>32</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>Username</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="proxyPassword">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maxLength">
+               <number>32</number>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>Password</string>
+              </property>
+             </widget>
+            </item>
+			<item row="5" column="0">
+			 <spacer name="verticalSpacer_3">
+			  <property name="orientation">
+			   <enum>Qt::Vertical</enum>
+			  </property>
+			  <property name="sizeHint" stdset="0">
+			   <size>
+				<width>20</width>
+				<height>40</height>
+			   </size>
+			  </property>
+			 </spacer>
+			</item>
+		   </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -866,12 +1017,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>845</x>
-     <y>51</y>
+     <x>185</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>308</x>
-     <y>100</y>
+     <x>186</x>
+     <y>23</y>
     </hint>
    </hints>
   </connection>
@@ -882,12 +1033,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>176</x>
-     <y>30</y>
+     <x>126</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>171</x>
-     <y>79</y>
+     <x>186</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -898,12 +1049,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>209</x>
-     <y>34</y>
+     <x>126</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>599</x>
-     <y>33</y>
+     <x>185</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
@@ -914,12 +1065,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>46</y>
+     <x>164</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>119</y>
+     <x>175</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -930,12 +1081,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>46</y>
+     <x>142</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>119</y>
+     <x>153</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -946,12 +1097,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>46</y>
+     <x>164</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>153</y>
+     <x>175</x>
+     <y>33</y>
     </hint>
    </hints>
   </connection>
@@ -962,12 +1113,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>46</y>
+     <x>142</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>153</y>
+     <x>153</x>
+     <y>33</y>
     </hint>
    </hints>
   </connection>
@@ -978,12 +1129,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>46</y>
+     <x>164</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>187</y>
+     <x>175</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -994,12 +1145,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>46</y>
+     <x>142</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>187</y>
+     <x>153</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -1010,12 +1161,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>46</y>
+     <x>164</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>221</y>
+     <x>175</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -1026,12 +1177,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>46</y>
+     <x>142</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>221</y>
+     <x>153</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -1042,12 +1193,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>46</y>
+     <x>164</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>255</y>
+     <x>175</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -1058,12 +1209,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>46</y>
+     <x>142</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>255</y>
+     <x>153</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -1074,12 +1225,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>718</x>
-     <y>415</y>
+     <x>181</x>
+     <y>319</y>
     </hint>
     <hint type="destinationlabel">
-     <x>823</x>
-     <y>414</y>
+     <x>798</x>
+     <y>314</y>
     </hint>
    </hints>
   </connection>
@@ -1090,12 +1241,44 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>790</x>
-     <y>400</y>
+     <x>798</x>
+     <y>314</y>
     </hint>
     <hint type="destinationlabel">
-     <x>580</x>
-     <y>417</y>
+     <x>181</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuthRequired</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyUsername</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>151</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuthRequired</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyPassword</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>187</y>
     </hint>
    </hints>
   </connection>
@@ -1104,9 +1287,9 @@
   <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
