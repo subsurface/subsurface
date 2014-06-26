@@ -1255,10 +1255,7 @@ void MainWindow::editCurrentDive()
 	if (defaultDC == "manually added dive") {
 		disableDcShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-		//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
-		// and I'm sleepy now, so I think I should not try to fix right away.
-		// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
-		//ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
+		ui.newProfile->setAddState();
 		ui.infoPane->setCurrentIndex(MAINTAB);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
