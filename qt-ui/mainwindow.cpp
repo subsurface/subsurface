@@ -51,6 +51,7 @@
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
+#include <QNetworkProxy>
 
 MainWindow *MainWindow::m_Instance = NULL;
 
@@ -828,6 +829,18 @@ void MainWindow::readSettings()
 	default_dive_computer_product = getSetting(s, "dive_computer_product");
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
+
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
+	proxy.setHostName(prefs.proxy_host);
+	proxy.setPort(prefs.proxy_port);
+	if (prefs.proxy_auth) {
+		proxy.setUser(prefs.proxy_user);
+		proxy.setPassword(prefs.proxy_pass);
+	}
+	QNetworkProxy::setApplicationProxy(proxy);
+
+
 	loadRecentFiles(&s);
 	checkSurvey(&s);
 }
