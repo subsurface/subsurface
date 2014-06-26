@@ -57,7 +57,14 @@
         <property name="spacing">
          <number>2</number>
         </property>
-        <item row="1" column="1">
+        <item row="5" column="0">
+         <widget class="QLabel" name="CoordinatedLabel">
+          <property name="text">
+           <string>Coordinates</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
          <layout class="QHBoxLayout" name="temperatureLabels">
           <item>
            <widget class="QLabel" name="airTempLabel">
@@ -75,7 +82,14 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="1">
+        <item row="13" column="0">
+         <widget class="QLabel" name="NotesLabel">
+          <property name="text">
+           <string>Notes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
          <layout class="QHBoxLayout" name="airWaterTempLayout">
           <item>
            <widget class="QLineEdit" name="airtemp">
@@ -93,10 +107,24 @@
           </item>
          </layout>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="4" column="0" colspan="3">
          <widget class="QLineEdit" name="location">
           <property name="readOnly">
            <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0" colspan="3">
+         <widget class="QTextEdit" name="notes">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="2">
+         <widget class="QLabel" name="SuitLabel">
+          <property name="text">
+           <string>Suit</string>
           </property>
          </widget>
         </item>
@@ -107,48 +135,7 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="TagLabel">
-          <property name="text">
-           <string>Tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QLineEdit" name="coordinates">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="TagWidget" name="divemaster">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="CoordinatedLabel">
-          <property name="text">
-           <string>Coordinates</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QLabel" name="BuddyLabel">
-          <property name="text">
-           <string>Buddy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
+        <item row="8" column="2">
          <widget class="TagWidget" name="buddy">
           <property name="maximumSize">
            <size>
@@ -161,6 +148,20 @@
           </property>
          </widget>
         </item>
+        <item row="7" column="2">
+         <widget class="QLabel" name="BuddyLabel">
+          <property name="text">
+           <string>Buddy</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="3">
+         <widget class="QLineEdit" name="coordinates">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="7" column="0">
          <widget class="QLabel" name="DivemasterLabel">
           <property name="text">
@@ -168,69 +169,19 @@
           </property>
          </widget>
         </item>
-        <item row="14" column="0" colspan="2">
-         <widget class="QTextEdit" name="notes">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
+        <item row="10" column="2">
          <widget class="QLineEdit" name="suit">
           <property name="readOnly">
            <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
-         <layout class="QHBoxLayout" name="ratingVisibilityLabels">
-          <item>
-           <widget class="QLabel" name="RatingLabel">
-            <property name="text">
-             <string>Rating</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="visibilityLabel">
-            <property name="text">
-             <string>Visibility</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="NotesLabel">
+        <item row="11" column="0">
+         <widget class="QLabel" name="TagLabel">
           <property name="text">
-           <string>Notes</string>
+           <string>Tags</string>
           </property>
          </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="QLabel" name="SuitLabel">
-          <property name="text">
-           <string>Suit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
-          <item>
-           <widget class="StarWidget" name="rating" native="true">
-            <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="StarWidget" name="visibility" native="true">
-            <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
         <item row="1" column="0" rowspan="2">
          <widget class="DateWidget" name="dateEdit" native="true">
@@ -239,7 +190,7 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="12" column="0" colspan="3">
          <widget class="TagWidget" name="tagWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -269,6 +220,65 @@
            <enum>QPlainTextEdit::NoWrap</enum>
           </property>
          </widget>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="TagWidget" name="divemaster">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="ratingVisibilityLabels">
+          <item>
+           <widget class="QLabel" name="RatingLabel">
+            <property name="text">
+             <string>Rating</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="visibilityLabel">
+            <property name="text">
+             <string>Visibility</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="10" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
+          <item>
+           <widget class="StarWidget" name="rating" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="StarWidget" name="visibility" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Time</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QTimeEdit" name="timeEdit"/>
         </item>
        </layout>
       </widget>
