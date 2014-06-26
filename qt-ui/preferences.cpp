@@ -345,7 +345,7 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 
 	s.beginGroup("Network");
-	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::NoProxy);
+	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
 	GET_TXT("proxy_host", proxy_host);
 	GET_INT("proxy_port", proxy_port);
 	GET_BOOL("proxy_auth", proxy_auth);
