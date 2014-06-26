@@ -391,8 +391,9 @@ void MainTab::updateDiveInfo(int dive)
 	UPDATE_TEMP(d, watertemp);
 	if (d) {
 		updateGpsCoordinates(d);
-		ui.dateEdit->setDate(QDateTime::fromTime_t(d->when).date());
-		ui.timeEdit->setTime(QDateTime::fromTime_t(d->when).time());
+		QDateTime localTime = QDateTime::fromTime_t(d->when - gettimezoneoffset());
+		ui.dateEdit->setDate(localTime.date());
+		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
