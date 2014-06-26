@@ -53,6 +53,12 @@ struct preferences {
 	int descrate;
 	int bottompo2;
 	int decopo2;
+	int proxy_type;
+	char *proxy_host;
+	int proxy_port;
+	short proxy_auth;
+	char *proxy_user;
+	char *proxy_pass;
 };
 enum unit_system_values {
 	METRIC,
