@@ -2,8 +2,9 @@
 #define TAGWIDGET_H
 
 #include "groupedlineedit.h"
-#include <QCompleter>
 #include <QPair>
+
+class QCompleter;
 
 class TagWidget : public GroupedLineEdit {
 	Q_OBJECT

@@ -11,7 +11,6 @@
 #include "divelistview.h"
 #include "modeldelegates.h"
 #include "globe.h"
-#include "completionmodels.h"
 #include "diveplanner.h"
 #include "divelist.h"
 #include "qthelper.h"

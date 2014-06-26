@@ -2,7 +2,7 @@
 #define DIVELOGIMPORTDIALOG_H
 
 #include <QDialog>
-#include <QModelIndex>
+
 #include "../dive.h"
 #include "../divelist.h"
 

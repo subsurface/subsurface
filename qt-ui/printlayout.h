@@ -2,10 +2,11 @@
 #define PRINTLAYOUT_H
 
 #include <QObject>
-#include <QPrinter>
 #include <QList>
 #include <QVector>
+#include <QRect>
 
+class QPrinter;
 class QTableView;
 class PrintDialog;
 class TablePrintModel;

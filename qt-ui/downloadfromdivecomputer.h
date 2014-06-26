@@ -5,9 +5,11 @@
 #include <QThread>
 #include <QHash>
 #include <QMap>
-#include <QStringListModel>
+
 #include "../libdivecomputer.h"
 #include "ui_downloadfromdivecomputer.h"
+
+class QStringListModel;
 
 class DownloadThread : public QThread {
 	Q_OBJECT

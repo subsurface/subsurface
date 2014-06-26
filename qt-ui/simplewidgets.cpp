@@ -1,19 +1,10 @@
 #include "simplewidgets.h"
 
 #include <QLabel>
-#include <QLabel>
-#include <QFormLayout>
-#include <QIcon>
-#include <QAbstractButton>
-#include <QSpinBox>
-#include <QButtonGroup>
-#include <QDebug>
 #include <QProcess>
 #include <QStringList>
 #include <QDebug>
-#include <QTime>
 #include <QFileDialog>
-#include <QDateTime>
 #include <QShortcut>
 #include <QCalendarWidget>
 #include "exif.h"
@@ -375,7 +366,6 @@ void DateWidget::mousePressEvent(QMouseEvent *event)
 	calendarWidget->move(event->globalPos());
 	calendarWidget->show();
 }
-
 
 void DateWidget::focusInEvent(QFocusEvent *event)
 {

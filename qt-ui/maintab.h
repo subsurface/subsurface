@@ -11,12 +11,13 @@
 #include <QDialog>
 #include <QMap>
 
-#include "models.h"
 #include "ui_maintab.h"
 #include "completionmodels.h"
+#include "dive.h"
 
+class WeightModel;
+class CylindersModel;
 class QCompleter;
-struct dive;
 
 struct Completers {
 	QCompleter *location;

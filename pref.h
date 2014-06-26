@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "units.h"
+
 /* can't use 'bool' for the boolean values - different size in C and C++ */
 typedef struct
 {

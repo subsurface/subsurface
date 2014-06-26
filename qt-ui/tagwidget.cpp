@@ -2,6 +2,7 @@
 #include <QPair>
 #include <QAbstractItemView>
 #include <QSettings>
+#include <QCompleter>
 #include <QFont>
 #include "mainwindow.h"
 

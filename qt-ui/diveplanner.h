@@ -1,11 +1,8 @@
 #ifndef DIVEPLANNER_H
 #define DIVEPLANNER_H
 
-#include <QGraphicsView>
 #include <QGraphicsPathItem>
-#include <QDialog>
 #include <QAbstractTableModel>
-#include <QDateTime>
 
 #include "dive.h"
 

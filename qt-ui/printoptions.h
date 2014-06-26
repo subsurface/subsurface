@@ -2,8 +2,6 @@
 #define PRINTOPTIONS_H
 
 #include <QWidget>
-#include <QSlider>
-#include <QLabel>
 
 #include "ui_printoptions.h"
 

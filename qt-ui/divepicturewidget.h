@@ -2,7 +2,6 @@
 #define DIVEPICTUREWIDGET_H
 
 #include <QAbstractTableModel>
-#include <QStyledItemDelegate>
 #include <QListView>
 #include <QThread>
 
@@ -28,10 +27,6 @@ private:
 	// Later, use a thread to load the images
 	// Later, save the thumbnails so we don't need to reopen every time.
 	QHash<QString, PhotoHelper> stringPixmapCache;
-};
-
-class DivePictureDelegate : QStyledItemDelegate {
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
 class DivePictureWidget : public QListView {

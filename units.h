@@ -26,6 +26,7 @@ extern "C" {
 #define SEAWATER_SALINITY 10300
 #define FRESHWATER_SALINITY 10000
 
+#include <stdint.h>
 /*
  * Some silly typedefs to make our units very explicit.
  *

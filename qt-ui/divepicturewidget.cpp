@@ -1,12 +1,7 @@
 #include "divepicturewidget.h"
 #include <dive.h>
-#include <qtconcurrentmap.h>
-#include <qdir.h>
-
-void DivePictureDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	QStyledItemDelegate::paint(painter, option, index);
-}
+#include <QtConcurrentMap>
+#include <QDir>
 
 DivePictureModel *DivePictureModel::instance()
 {

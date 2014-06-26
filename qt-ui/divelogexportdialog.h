@@ -2,7 +2,7 @@
 #define DIVELOGEXPORTDIALOG_H
 
 #include <QDialog>
-#include <QAbstractButton>
+class QAbstractButton;
 
 namespace Ui {
 	class DiveLogExportDialog;

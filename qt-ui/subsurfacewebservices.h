@@ -10,7 +10,6 @@
 #include "ui_webservices.h"
 
 class QAbstractButton;
-class QNetworkReply;
 class QHttpMultiPart;
 
 class WebServices : public QDialog {

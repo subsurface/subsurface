@@ -2,7 +2,6 @@
 #define ABOUT_H
 
 #include <QDialog>
-#include <QPushButton>
 #include "ui_about.h"
 
 class SubsurfaceAbout : public QDialog {
