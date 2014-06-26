@@ -24,6 +24,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->addItem(tr("System proxy"), QNetworkProxy::DefaultProxy);
 	ui.proxyType->addItem(tr("HTTP proxy"), QNetworkProxy::HttpProxy);
 	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
+	ui.proxyType->setCurrentIndex(-1);
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
@@ -124,6 +125,13 @@ void PreferencesDialog::setUiFromPrefs()
 		ui.languageView->setCurrentIndex(languages.first());
 
 	s.endGroup();
+
+	ui.proxyHost->setText(prefs.proxy_host);
+	ui.proxyPort->setValue(prefs.proxy_port);
+	ui.proxyAuthRequired->setChecked(prefs.proxy_auth);
+	ui.proxyUsername->setText(prefs.proxy_user);
+	ui.proxyPassword->setText(prefs.proxy_pass);
+	ui.proxyType->setCurrentIndex(ui.proxyType->findData(prefs.proxy_type));
 }
 
 void PreferencesDialog::restorePrefs()
@@ -168,12 +176,12 @@ void PreferencesDialog::rememberPrefs()
 	else                             \
 		prefs.field = default_prefs.field
 
-#define GET_TXT(name, field)                                             \
+#define GET_INT_DEF(name, field, defval)                                             \
 	v = s.value(QString(name));                                      \
 	if (v.isValid())                                                 \
-		prefs.field = strdup(v.toString().toUtf8().constData()); \
+		prefs.field = v.toInt(); \
 	else                                                             \
-		prefs.field = default_prefs.field
+		prefs.field = defval
 
 #define GET_TXT(name, field)                                             \
 	v = s.value(QString(name));                                      \
@@ -244,6 +252,15 @@ void PreferencesDialog::syncSettings()
 	// Animation
 	s.beginGroup("Animations");
 	s.setValue("animation_speed", ui.velocitySlider->value());
+	s.endGroup();
+
+	s.beginGroup("Network");
+	s.setValue("proxy_type", ui.proxyType->itemData(ui.proxyType->currentIndex()).toInt());
+	s.setValue("proxy_host", ui.proxyHost->text());
+	s.setValue("proxy_port", ui.proxyPort->value());
+	SB("proxy_auth", ui.proxyAuthRequired);
+	s.setValue("proxy_user", ui.proxyUsername->text());
+	s.setValue("proxy_pass", ui.proxyPassword->text());
 	s.endGroup();
 
 	loadSettings();
@@ -325,6 +342,16 @@ void PreferencesDialog::loadSettings()
 
 	s.beginGroup("Animations");
 	GET_INT("animation_speed", animation);
+	s.endGroup();
+
+	s.beginGroup("Network");
+	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::NoProxy);
+	GET_TXT("proxy_host", proxy_host);
+	GET_INT("proxy_port", proxy_port);
+	GET_BOOL("proxy_auth", proxy_auth);
+	GET_TXT("proxy_user", proxy_user);
+	GET_TXT("proxy_pass", proxy_pass);
+	s.endGroup();
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)
