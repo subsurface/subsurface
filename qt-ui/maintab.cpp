@@ -75,6 +75,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.airtemp->installEventFilter(this);
 	ui.watertemp->installEventFilter(this);
 	ui.dateEdit->installEventFilter(this);
+	ui.timeEdit->installEventFilter(this);
 	ui.tagWidget->installEventFilter(this);
 
 	QList<QObject *> statisticsTabWidgets = ui.statisticsTab->children();
@@ -391,7 +392,7 @@ void MainTab::updateDiveInfo(int dive)
 	if (d) {
 		updateGpsCoordinates(d);
 		ui.dateEdit->setDate(QDateTime::fromTime_t(d->when).date());
-		//TODO: set also the time when the widget is ready.
+		ui.timeEdit->setTime(QDateTime::fromTime_t(d->when).time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip Notes"));
 			// only use trip relevant fields
@@ -789,6 +790,7 @@ void MainTab::resetPallete()
 	ui.airtemp->setPalette(p);
 	ui.watertemp->setPalette(p);
 	ui.dateEdit->setPalette(p);
+	ui.timeEdit->setPalette(p);
 	ui.tagWidget->setPalette(p);
 }
 
@@ -954,6 +956,16 @@ void MainTab::on_dateEdit_dateChanged(const QDateTime &datetime)
 	dateTimeUtc.setTimeSpec(Qt::UTC);
 	editedDive.when = dateTimeUtc.toTime_t();
 	markChangedWidget(ui.dateEdit);
+}
+
+void MainTab::on_timeEdit_timeChanged(const QTime &time)
+{
+	if (editMode == NONE)
+		return;
+	QDateTime dateTime = QDateTime::fromTime_t(editedDive.when);
+	dateTime.setTime(time);
+	editedDive.when = dateTime.toTime_t();
+	markChangedWidget(ui.timeEdit);
 }
 
 bool MainTab::tagsChanged(dive *a, dive *b)
