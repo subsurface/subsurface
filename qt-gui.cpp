@@ -29,7 +29,6 @@
 #include <QSettings>
 #include <QDesktopWidget>
 #include <QStyle>
-#include <QDebug>
 #include <QMap>
 #include <QMultiMap>
 #include <QNetworkProxy>
@@ -48,6 +47,9 @@ static MainWindow *window = NULL;
 
 int error_count;
 const char *existing_filename;
+static QString shortDateFormat;
+static QString dateFormat;
+static QString timeFormat;
 
 #if defined(Q_OS_WIN) && QT_VERSION < 0x050000
 static QByteArray encodeUtf8(const QString &fname)
@@ -88,6 +90,14 @@ QString uiLanguage(QLocale *callerLoc)
 	if (callerLoc)
 		*callerLoc = loc;
 
+	// the short format is fine
+	// the long format uses long weekday and month names, so replace those with the short ones
+	// for time we don't want the time zone designator and don't want leading zeroes on the hours
+	shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
+	dateFormat = loc.dateFormat(QLocale::LongFormat);
+	dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
+	timeFormat = loc.timeFormat();
+	timeFormat.replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H");
 	return uiLang;
 }
 
@@ -380,27 +390,16 @@ int parseTemperatureToMkelvin(const QString &text)
 
 QString get_dive_date_string(timestamp_t when)
 {
-	struct tm tm;
-	utc_mkdate(when, &tm);
-	return translate("gettextFromC", "%1, %2 %3, %4 %5:%6")
-		.arg(weekday(tm.tm_wday))
-		.arg(monthname(tm.tm_mon))
-		.arg(tm.tm_mday)
-		.arg(tm.tm_year + 1900)
-		.arg(tm.tm_hour, 2, 10, QChar('0'))
-		.arg(tm.tm_min, 2, 10, QChar('0'));
+	QDateTime ts;
+	ts.setMSecsSinceEpoch(when * 1000);
+	return ts.toUTC().toString(dateFormat + " " + timeFormat);
 }
 
 QString get_short_dive_date_string(timestamp_t when)
 {
-	struct tm tm;
-	utc_mkdate(when, &tm);
-	return translate("gettextFromC", "%1 %2, %3\n%4:%5")
-		.arg(monthname(tm.tm_mon))
-		.arg(tm.tm_mday)
-		.arg(tm.tm_year + 1900)
-		.arg(tm.tm_hour, 2, 10, QChar('0'))
-		.arg(tm.tm_min, 2, 10, QChar('0'));
+	QDateTime ts;
+	ts.setMSecsSinceEpoch(when * 1000);
+	return ts.toUTC().toString(shortDateFormat + " " + timeFormat);
 }
 
 QString get_trip_date_string(timestamp_t when, int nr)
