@@ -634,7 +634,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastdepth = dp->depth;
 	} while ((dp = nextdp) != NULL);
 
-	snprintf(temp, sizeof(temp), translate("gettextFromC", "Gas consumption:"));
+	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div><div><br>%s<br>", temp);
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume;
