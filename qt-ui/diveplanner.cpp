@@ -70,7 +70,11 @@ void DivePlannerPointsModel::createSimpleDive()
 		// let's use the gas from the first cylinder
 		gas = stagingDive->cylinder[0].gasmix;
 
-	plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, &gas, 0, true);
+	// If we're in drop_stone_mode, don't add a first point.
+	// It will be added implicit.
+	if (!drop_stone_mode)
+		plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, &gas, 0, true);
+
 	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, &gas, 0, true);
 	if (!isPlanner()) {
 		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, &gas, 0, true);
