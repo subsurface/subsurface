@@ -1,21 +1,25 @@
 #include "divepixmapitem.h"
 #include "animationfunctions.h"
+#include <divepicturewidget.h>
 
 #include <QPen>
 #include <QBrush>
 #include <QGraphicsDropShadowEffect>
+#include <QDesktopServices>
+#include <QUrl>
 
 DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {
 }
 
-DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent)
+DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(parent)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	setAcceptsHoverEvents(true);
 #else
 	setAcceptHoverEvents(true);
 #endif
+	rowOnModel = row;
 	setScale(0.2);
 }
 
@@ -55,4 +59,10 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 0.2);
 	this->setZValue(0);
+}
+
+void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QString filePath = DivePictureModel::instance()->index(rowOnModel,0).data(Qt::ToolTipRole).toString();
+	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }

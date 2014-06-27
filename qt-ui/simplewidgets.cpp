@@ -337,7 +337,6 @@ void DateWidget::paintEvent(QPaintEvent *event)
 	QString year = mDate.toString("yyyy");
 	QString day = mDate.toString("dd");
 
-
 	QFont font = QFont("monospace", 10);
 	QFontMetrics metrics = QFontMetrics(font);
 	painter.setFont(font);

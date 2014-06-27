@@ -1325,16 +1325,15 @@ void ProfileWidget2::plotPictures()
 		// information area.
 		if (!pic->offset.seconds)
 			continue;
-		DivePictureItem *item = new DivePictureItem();
+		DivePictureItem *item = new DivePictureItem(i);
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(pic->offset.seconds);
 		if (i == 0)
 			y = 10;
-		else
-			if (fabs(x - lastX) < 4)
-				y = lastY + 3;
+		else if (fabs(x - lastX) < 4)
+			y = lastY + 3;
 		lastX = x;
 		lastY = y;
 		item->setPos(x, y);
