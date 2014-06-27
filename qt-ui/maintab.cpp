@@ -27,6 +27,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
@@ -41,6 +42,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
 	ui.photosView->setModel(divePictureModel);
+	connect(ui.photosView, SIGNAL(photoDoubleClicked(QString)), this, SLOT(photoDoubleClicked(QString)));
 	closeMessage();
 
 	QAction *action = new QAction(tr("Save"), this);
@@ -1118,4 +1120,9 @@ void MainTab::escDetected()
 {
 	if (editMode != NONE)
 		rejectChanges();
+}
+
+void MainTab::photoDoubleClicked(const QString filePath)
+{
+	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }

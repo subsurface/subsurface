@@ -85,6 +85,7 @@ slots:
 	void updateTextLabels(bool showUnits = true);
 	QString trHemisphere(const char *orig);
 	void escDetected(void);
+	void photoDoubleClicked(const QString filePath);
 
 private:
 	Ui::MainTab ui;
