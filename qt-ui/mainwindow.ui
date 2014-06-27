@@ -526,7 +526,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="PlannerSettingsWidget" name="fullPlan">
+        <widget class="PlannerSettingsWidget" name="plannerSettingsWidget">
          <layout class="QVBoxLayout" name="horizontalLayout_p4">
           <property name="spacing">
            <number>0</number>
@@ -656,7 +656,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1682</width>
-     <height>27</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

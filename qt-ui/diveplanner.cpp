@@ -261,8 +261,6 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
-	if (prefs.units.METERS == units::FEET)
-		ui.atmHeight->setSuffix("ft");
 	ui.tableWidget->setTitle(tr("Dive Planner Points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setRecalc(true);
@@ -319,7 +317,13 @@ void DivePlannerWidget::setupStartTime(QDateTime startTime)
 
 void DivePlannerWidget::settingsChanged()
 {
-	// right now there's nothing special we do when settings change
+	// Adopt units
+	if (get_units()->length == units::FEET) {
+		ui.atmHeight->setSuffix("ft");
+	} else {
+		ui.atmHeight->setSuffix(("m"));
+	}
+
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
@@ -363,13 +367,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 {
 	ui.setupUi(this);
 
-	if (prefs.units.METERS == units::FEET) {
-		ui.ascRate75->setSuffix("ft/min");
-		ui.ascRate50->setSuffix("ft/min");
-		ui.ascRateStops->setSuffix("ft/min");
-		ui.ascRateLast6m->setSuffix("ft/min");
-		ui.descRate->setSuffix("ft/min");
-	}
 	ui.ascRate75->setValue(prefs.ascrate75 / UNIT_FACTOR);
 	ui.ascRate50->setValue(prefs.ascrate50 / UNIT_FACTOR);
 	ui.ascRateStops->setValue(prefs.ascratestops / UNIT_FACTOR);
@@ -400,9 +397,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bottomSAC, SIGNAL(valueChanged(int)), this, SLOT(bottomSacChanged(int)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
-//	connect(ui.gfhigh, SIGNAL(valueChanged()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
-//	connect(ui.gflow, SIGNAL(valueChanged()), plannerModel, SLOT(emitDataChanged()));
 
 	ui.bottomSAC->setValue(20);
 	ui.decoStopSAC->setValue(17);
@@ -415,6 +410,22 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 void PlannerSettingsWidget::settingsChanged()
 {
+	if (get_units()->length == units::FEET) {
+		ui.ascRate75->setSuffix("ft/min");
+		ui.ascRate50->setSuffix("ft/min");
+		ui.ascRateStops->setSuffix("ft/min");
+		ui.ascRateLast6m->setSuffix("ft/min");
+		ui.descRate->setSuffix("ft/min");
+		ui.lastStop->setText(tr("Last stop at 20ft"));
+	} else {
+		ui.ascRate75->setSuffix("m/min");
+		ui.ascRate50->setSuffix("m/min");
+		ui.ascRateStops->setSuffix("m/min");
+		ui.ascRateLast6m->setSuffix("m/min");
+		ui.descRate->setSuffix("m/min");
+		ui.lastStop->setText(tr("Last stop at 6m"));
+
+	}
 }
 
 void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
