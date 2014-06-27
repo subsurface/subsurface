@@ -77,6 +77,9 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(key).fileName();
+			break;
+		case Qt::DisplayPropertyRole:
+			ret = QFileInfo(key).filePath();
 		}
 	} else if (index.column() == 1) {
 		switch (role) {
@@ -94,4 +97,11 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 
 DivePictureWidget::DivePictureWidget(QWidget *parent) : QListView(parent)
 {
+	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClicked(const QModelIndex &)));
+}
+
+void DivePictureWidget::doubleClicked(const QModelIndex &index)
+{
+	QString filePath = model()->data(index, Qt::DisplayPropertyRole).toString();
+	emit photoDoubleClicked(filePath);
 }

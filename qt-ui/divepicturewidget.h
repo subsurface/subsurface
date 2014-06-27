@@ -33,6 +33,11 @@ class DivePictureWidget : public QListView {
 	Q_OBJECT
 public:
 	DivePictureWidget(QWidget *parent);
+signals:
+	void photoDoubleClicked(const QString filePath);
+private
+slots:
+	void doubleClicked(const QModelIndex &index);
 };
 
 class DivePictureThumbnailThread : public QThread {
