@@ -1337,7 +1337,6 @@ void ProfileWidget2::plotPictures()
 		lastX = x;
 		lastY = y;
 		item->setPos(x, y);
-		item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 		scene()->addItem(item);
 		pictures.push_back(item);
 	}

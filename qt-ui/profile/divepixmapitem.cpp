@@ -14,6 +14,7 @@ DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixm
 
 DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(parent)
 {
+	setFlag(ItemIgnoresTransformations);
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	setAcceptsHoverEvents(true);
 #else
@@ -39,14 +40,6 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 	shadow->setBrush(QColor(Qt::lightGray));
 	shadow->setFlag(ItemStacksBehindParent);
 	shadow->setZValue(-2);
-
-	setTransformOriginPoint(boundingRect().width()/2, boundingRect().height()/2);
-
-	qreal angle = qrand() % 5;
-	if (rand() % 2)
-		angle *= -1;
-
-	setRotation(angle);
 }
 
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
