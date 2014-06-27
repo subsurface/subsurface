@@ -306,8 +306,6 @@ void DivePlannerPointsModel::addCylinder_clicked()
 
 void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
-	const char *depthunit;
-
 	plannerModel->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int)(log(1013.0 / pressure) * 7800000), NULL,NULL));
