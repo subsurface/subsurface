@@ -41,13 +41,23 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 			write_attribute(b, "Size", "--");
 		}
 		put_pressure(b, cylinder->type.workingpressure, "\"WPressure\":\"", " bar\",");
-		put_pressure(b, cylinder->start, "\"SPressure\":\"", " bar\",");
-		put_pressure(b, cylinder->end, "\"EPressure\":\"", " bar\",");
+
+		if (cylinder->start.mbar) {
+			put_milli(b, "\"EPressure\":\"", cylinder->start.mbar, " bar\",");
+		} else {
+			write_attribute(b, "EPressure", "--");
+		}
+
+		if (cylinder->end.mbar) {
+			put_milli(b, "\"SPressure\":\"", cylinder->end.mbar, " bar\",");
+		} else {
+			write_attribute(b, "SPressure", "--");
+		}
 
 		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O₂\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
 		} else {
-			write_attribute(b, "O₂", "--");
+			write_attribute(b, "O2", "--");
 		}
 		put_string(b, "},");
 	}
