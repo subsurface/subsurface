@@ -1709,29 +1709,39 @@ image::images/MergedDive.png["Example: Merged dive",align="center"]
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
 
-A dive log can be saved in three formats:
+The export function can be reached by selecting _File -> Export_, which brings up
+the Export dialog. This dialog always gives two options: save ALL dives, or save only
+the dives selected in *Dive List* panel of _Subsurface_. Click the appropriate
+radio button (see images below).
 
-* _Subsurface_ XML format. This is the native format used by _Subsurface_.
+image::images/Export.jpg["Figure: Export dialog",align="center"]
 
-* Universal Dive Data format (UDDF). Refer to http://uddf.org for more information.
+A dive log or part of it can be saved in three formats:
+
+* _Subsurface XML_ format. This is the native format used by _Subsurface_.
+
+* Universal Dive Data Format (_UDDF_). Refer to _http://uddf.org_ for more information.
 UDDF is a generic format that enables communication among many dive computers
 and computer programs.
 
-* CSV format, that includes the most critical information of the dive
-profile. Included information of a dive is: number, date, time,
+* _Divelogs.de_, an Internet-based dive log repository. In order to upload to _Divelogs.de_,
+one needs a user-ID as well as a password for _Divelogs.de_. Log into _http://en.divelogs.de_
+and subscribe to this service in order to upload dive log data from _Subsurface_.
+
+* _CSV_ format, that includes the most critical information of the dive
+profile. Included information of a dive is: dive number, date, time,
 duration, depth, temperature and pressure.
 
-In order to save the WHOLE dive log (i.e. all trips and dives), select *File*
-from the Main menu. To save in _Subsurface_ XML format, select _File -> Save as_.
-To save in UDDF format, select _File -> Export UDDF_ and to save in CSV
-format, select _File -> Export CSV_.
+* _Worldmap_ format, an HTML file with a world map upon which each dive and
+some information about it are indicated. This map is not editable.
 
-In order to save only one or more dives or one or two trips, select the
-appropriate dives or trips in the *Dive List* panel and then right-click the
-selected dives to bring up the context menu. To save in _Subsurface_ XML
-format, select _Save as_ from the context menu. To save in UDDF or CSV
-format, select _Export as UDDF_ or _Export as CSV_ from the context menu
-respectively.
+* _HTML_ format, in which the dive(s) are stored in an HTML format, readable
+with an Internet browser. This file is not editable. HTML export is specified
+on the second tab of the Export dialog (image *B* above). If the _Export List
+only_ option is checked,
+the dive profile information is not exported. This dialog also has some
+style-related options. The HTML dive log contains most of the information
+and aslo contains a search option to search the dive log.
 
 Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
@@ -2067,19 +2077,19 @@ in the _Rates_ section of the dive setup.
 
 ** *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
 pressure for oxygen needs to be specified for the
-bottom part of the dive (bottom po2) as well as for the decompression part of the dive (deco po2).
+bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
 The most commonly
-used values are 1.4 bar for the bottom part of the dive and 1.5 b ar for any decompression
+used values are 1.4 bar for the bottom part of the dive and 1.5 bar for any decompression
 stages. Normally, a partial pressure of 1.5 bar is not exceeded.
 
 
 ** *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
 cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
-sharing with a buddy. Undr the _Gas Options_ heading, specify the best (but conservative) estimate
+sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
 determined by the settings of the _Preferences_ tab of _Subsurface_.  Specify the SAC during the
-bottom part of the dive (bottom SAC) as well as during the decompression or safety stops of the
-dive (deco SAC). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
+bottom part of the dive (_bottom SA_) as well as during the decompression or safety stops of the
+dive (_deco SAC_). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
 is not sufficient and one needs to
 monitor one's gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
 The planner will calculate the total volume of gas used during the dive and will issue a warning
