@@ -25,7 +25,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->addItem(tr("HTTP proxy"), QNetworkProxy::HttpProxy);
 	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
 	ui.proxyType->setCurrentIndex(-1);
-	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_proxyType_changed(int)));
+	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
@@ -413,7 +413,7 @@ void PreferencesDialog::emitSettingsChanged()
 	emit settingsChanged();
 }
 
-void PreferencesDialog::on_proxyType_changed(int idx)
+void PreferencesDialog::proxyType_changed(int idx)
 {
 	if (idx == -1) {
 		return;
