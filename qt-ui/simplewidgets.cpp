@@ -297,8 +297,8 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	setDate(QDate::currentDate());
 	setMinimumSize(QSize(80,64));
 	setFocusPolicy(Qt::StrongFocus);
-	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
-	calendarWidget->setWindowFlags(Qt::WindowStaysOnTopHint);
+	calendarWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	calendarWidget->setWindowModality(Qt::ApplicationModal);
 	calendarWidget->setFirstDayOfWeek(getLocale().firstDayOfWeek());
 	calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
