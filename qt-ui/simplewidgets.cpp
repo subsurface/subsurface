@@ -300,6 +300,7 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
 	calendarWidget->setWindowFlags(Qt::WindowStaysOnTopHint);
 	calendarWidget->setFirstDayOfWeek(getLocale().firstDayOfWeek());
+	calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
 	connect(calendarWidget, SIGNAL(activated(QDate)), calendarWidget, SLOT(hide()));
 	connect(calendarWidget, SIGNAL(clicked(QDate)), calendarWidget, SLOT(hide()));
