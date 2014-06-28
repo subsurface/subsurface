@@ -70,6 +70,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_Instance = this;
 	ui.setupUi(this);
 	setWindowIcon(QIcon(":subsurface-icon"));
+	if (!QIcon::hasThemeIcon("window-close")) {
+		QIcon::setThemeName("subsurface");
+	}
 	connect(ui.ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(update()));
