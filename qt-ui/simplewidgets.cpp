@@ -298,6 +298,7 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	setMinimumSize(QSize(64,64));
 	setFocusPolicy(Qt::StrongFocus);
 	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
+	calendarWidget->setWindowFlags(Qt::WindowStaysOnTopHint);
 
 	connect(calendarWidget, SIGNAL(activated(QDate)), calendarWidget, SLOT(hide()));
 	connect(calendarWidget, SIGNAL(clicked(QDate)), calendarWidget, SLOT(hide()));
