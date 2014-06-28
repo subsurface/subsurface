@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat
-// :revnumber: 4.1
-// :revdate: May 2014
+// :revnumber: 4.2
+// :revdate: July 2014
 :icons:
 :toc:
 :toc-placement: manual
@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
-[blue]#_Version 4.1,  May 2014_#
+[blue]#_Version 4.2,  July 2014_#
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging programme with
@@ -1889,8 +1889,90 @@ language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
 combination from the list of included localizations.
 
+
+[[S_LoadImage]]
+== The _Subsurface_ Photograph loader
+
+Many (if not most) divers take a camera with them and take photographs
+during a dive. One would like to associate each photograph with a specific
+dive. _Subsurface_ allows one to load photos into a dive. Photos are superimposed
+on the dive profile, from where they can be viewed.
+
+=== Loading photos and getting syncronisation between dive computer and camera
+
+Click on a dive or on a group of dives on the dive list. Then right-click on this
+dive or group of dives and choose the option _Load Images_:
+
+image::images/LoadImage1.jpg["FIGURE: Load images option",align="center"]
+
+The system file browser appears. Select the folder and photographs that need
+to be loaded into _Subsurface_ and click the _Open_ button.
+
+image::images/LoadImage2.jpg["FIGURE: Load images option",align="center"]
+
+This brings one to the time synchronisation dialog, shown below. The
+critical problem is that the time
+synchronisation is not perfect between the dive computer used during a dive,
+and the camera used during that same dive. These two devices
+often differ by several minutes. If _Subsurface_ can achieve synchronisation,
+then the exact times of photographs can be used to position photographs on
+the dive profile.
+
+_Subsurface_ achieves this synchronisation in two ways:
+
+- *Manually*: If the user wrote down the exact camera time at the start of a dive, the
+difference in time between the two devices can be achieved. Actually, as long as the device
+settings for time has not been changed in either device, one could write down the times of
+both devices after the dive or even at the end of the day. One can then manually set the time
+difference in the _Time shift_ dialog. Towards the top of the dialog is a time setting tool
+immediately under the heading _Shift times of image(s) by_, evident in figure *A* below.
+If the camera time is 7 munutes later than that of the dive computer, set the time setting
+tool to a value of 00:07. Ignore any "AM" or "PM" suffix in that tool. Click the _OK_ button
+and synchronisation will be achieved. Select either the _earlier_ or _later_ radio button.
+In the above example, the _earlier_ option is appropriate, since the photos need to be shifted
+7 minutes earlier (camera is 7 minutes ahead of dive computer).
+
+image::images/LoadImage3b.jpg["FIGURE: Synchronisation dialog",align="center"]
+
+
+- *By photograph*: There is a very slick way of achieving synchronisation. If one takes a
+photograph of the face of the dive computer showing the time, then _Subsurface_ can obtain
+the exact time the photograph was taken, using the metadata that the camera stores within
+each photo. In order to do this, use the bottom half of the Time shift_ dialog. If one uses
+the bottom part, the top part of the dialog is ignored. Click on
+the horizontal bar entitled "_Select image of divecomputer showing time_. This brings up
+a file browser with which one can select the photograph of the dive computer. Select the
+photograph using the file browser and click on _OK_. This photograph of the dive computer
+appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows exactly
+when the photograph has been taken. Now set the date-time dialog to the left of the photo
+so that this tool reflects the date and time of the dive computer in the photo. When the
+date-time tool has been set, _Subsurface_ knows axactly what the time difference between
+camera and dive computer is, and synchronisation is achieved. The image nelow shows a
+photograph with the face of the dive computer and with the date-time tool set to the
+date-time on image *B above.
+
+=== Viewing the images
+
+After the images have been loaded, they appear in the _Photos_ tab of the *Dive Notes* panel.
+They also appear as tiny icons on the dive profile at the appropriate
+positions reflecting the time each photograph was taken. See below:
+
+image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
+
+If one hovers with the mouse over any of the photo icons, then a thumbnail photo
+is shown of the appropriate photo. See the image below:
+
+image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
+
+If one clicks on the thumbnail, then a full size
+photo is shown overlaid onto the _Subsurface_ window. This allows good viewing of
+the photographs that have been imported. See below:
+
+image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
+
+
 [[S_DivePlanner]]
-== The Subsurface dive planner
+== The _Subsurface_ dive planner
 Dive planning is an advanced feature of _Subsurface_, accessible by selecting _Log -> Plan Dive_ from the main menu. It allows calulation of
 nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition of gradient factors as
 implemented by Erik Baker.
@@ -2083,6 +2165,13 @@ maximum gas partial pressures. Notice the plan is deficient in terms of gas plan
 there is no provision for any reserve gas.
 
 image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
+
+=== Planning for repetitive dives
+
+Repetitive dives can easily be planned if the start times of the repetitive dive set
+is specified appropriately in the top left-hand _Start Time_ field. _Subsurface_
+calculates the gas loading figures correctly and the effect of the first dive is
+evaluated on later dives.
 
 == Description of the Subsurface Main Menu items
 
