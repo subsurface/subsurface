@@ -843,14 +843,20 @@ void MainTab::rejectChanges()
 		}
 	}
 	// now let's avoid memory leaks
-	struct dive *cd = current_dive;
-	FREE_IF_DIFFERENT(tag_list);
-	FREE_IF_DIFFERENT(location);
-	FREE_IF_DIFFERENT(buddy);
-	FREE_IF_DIFFERENT(divemaster);
-	FREE_IF_DIFFERENT(notes);
-	FREE_IF_DIFFERENT(suit);
-
+	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+		if (editedDive.location != current_dive->divetrip->location)
+			free(editedDive.location);
+		if (editedDive.notes != current_dive->divetrip->notes)
+			free(editedDive.notes);
+	} else {
+		struct dive *cd = current_dive;
+		FREE_IF_DIFFERENT(tag_list);
+		FREE_IF_DIFFERENT(location);
+		FREE_IF_DIFFERENT(buddy);
+		FREE_IF_DIFFERENT(divemaster);
+		FREE_IF_DIFFERENT(notes);
+		FREE_IF_DIFFERENT(suit);
+	}
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
 	ui.dateEdit->setEnabled(true);
