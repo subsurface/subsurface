@@ -115,6 +115,12 @@
         <layout class="QHBoxLayout" name="dateAndTime">
          <item>
           <widget class="DateWidget" name="dateEdit" native="true">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::StrongFocus</enum>
            </property>
@@ -128,7 +134,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Altitide</string>
+          <string>Altitude</string>
          </property>
         </widget>
        </item>
