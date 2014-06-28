@@ -3,6 +3,7 @@
 
 #include <QGraphicsPathItem>
 #include <QAbstractTableModel>
+#include <QDateTime>
 
 #include "dive.h"
 
@@ -37,6 +38,7 @@ public:
 	void setPlanMode(Mode mode);
 	bool isPlanner();
 	void createSimpleDive();
+	void setupStartTime();
 	void clear();
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);
@@ -69,6 +71,7 @@ slots:
 	void setBottomSac(int sac);
 	void setDecoSac(int sac);
 	void setStartTime(const QTime &t);
+	void setStartDate(const QDate &date);
 	void setLastStop6m(bool value);
 	void setDropStoneMode(bool value);
 	void setVerbatim(bool value);
@@ -88,6 +91,7 @@ signals:
 	void planCreated();
 	void planCanceled();
 	void cylinderModelEdited();
+	void startTimeChanged(QDateTime);
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
@@ -103,6 +107,7 @@ private:
 	struct dive *stagingDive;
 	QVector<QPair<int, int> > oldGases;
 	bool drop_stone_mode;
+	QDateTime startTime;
 };
 
 class DiveHandler : public QObject, public QGraphicsEllipseItem {
@@ -129,9 +134,9 @@ class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
 	explicit DivePlannerWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
-
 public
 slots:
+	void setupStartTime(QDateTime startTime);
 	void settingsChanged();
 	void atmPressureChanged(const int pressure);
 	void heightChanged(const int height);

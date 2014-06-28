@@ -82,6 +82,22 @@ void DivePlannerPointsModel::createSimpleDive()
 	}
 }
 
+void DivePlannerPointsModel::setupStartTime()
+{
+	// if the latest dive is in the future, then start an hour after it ends
+	// otherwise start an hour from now
+	startTime = QDateTime::currentDateTimeUtc().addSecs(3600 + gettimezoneoffset());
+	if (dive_table.nr) {
+		struct dive *d = get_dive(dive_table.nr - 1);
+		time_t ends = d->when + d->duration.seconds;
+		time_t diff = ends - startTime.toTime_t();
+		if (diff > 0) {
+			startTime = startTime.addSecs(diff + 3600);
+		}
+	}
+	emit startTimeChanged(startTime);
+}
+
 void DivePlannerPointsModel::loadFromDive(dive *d)
 {
 	// We need to make a copy, because as soon as the model is modified, it will
@@ -276,8 +292,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
+	connect(ui.dateEdit, SIGNAL(dateChanged(QDate)), plannerModel, SLOT(setStartDate(QDate)));
 	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
 	connect(ui.atmHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
 
 	// Creating (and canceling) the plan
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
@@ -286,12 +304,17 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(closeKey, SIGNAL(activated()), plannerModel, SLOT(cancelPlan()));
 
 	/* set defaults. */
-	ui.startTime->setTime(QTime(1, 0));
 	ui.ATMPressure->setValue(1013);
 	ui.atmHeight->setValue(0);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+}
+
+void DivePlannerWidget::setupStartTime(QDateTime startTime)
+{
+	ui.startTime->setTime(startTime.time());
+	ui.dateEdit->setDate(startTime.date());
 }
 
 void DivePlannerWidget::settingsChanged()
@@ -595,6 +618,7 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	memset(&backupDive, 0, sizeof(backupDive));
+	startTime = QDateTime::currentDateTimeUtc();
 }
 
 DivePlannerPointsModel *DivePlannerPointsModel::instance()
@@ -690,9 +714,17 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
+void DivePlannerPointsModel::setStartDate(const QDate &date)
+{
+	startTime.setDate(date);
+	diveplan.when = startTime.toTime_t();
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
-	diveplan.when = (t.msec() + QDateTime::currentMSecsSinceEpoch()) / 1000 - gettimezoneoffset();
+	startTime.setTime(t);
+	diveplan.when = startTime.toTime_t();
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
