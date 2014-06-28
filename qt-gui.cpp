@@ -50,6 +50,7 @@ const char *existing_filename;
 static QString shortDateFormat;
 static QString dateFormat;
 static QString timeFormat;
+static QLocale loc;
 
 #if defined(Q_OS_WIN) && QT_VERSION < 0x050000
 static QByteArray encodeUtf8(const QString &fname)
@@ -72,10 +73,11 @@ QString uiLanguage(QLocale *callerLoc)
 {
 	QSettings s;
 	s.beginGroup("Language");
-	QLocale loc;
 
 	if (!s.value("UseSystemLanguage", true).toBool()) {
 		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
+	} else {
+		loc = QLocale(QLocale().uiLanguages().first());
 	}
 
 	QString uiLang = loc.uiLanguages().first();
@@ -392,14 +394,14 @@ QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000);
-	return ts.toUTC().toString(dateFormat + " " + timeFormat);
+	return loc.toString(ts.toUTC(), dateFormat + " " + timeFormat);
 }
 
 QString get_short_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000);
-	return ts.toUTC().toString(shortDateFormat + " " + timeFormat);
+	return loc.toString(ts.toUTC(), shortDateFormat + " " + timeFormat);
 }
 
 QString get_trip_date_string(timestamp_t when, int nr)
