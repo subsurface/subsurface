@@ -103,6 +103,11 @@ QString uiLanguage(QLocale *callerLoc)
 	return uiLang;
 }
 
+QLocale getLocale()
+{
+	return loc;
+}
+
 void init_ui(void)
 {
 	// tell Qt to use system proxies

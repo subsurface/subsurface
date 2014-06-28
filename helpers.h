@@ -33,6 +33,7 @@ QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
 QString get_trip_date_string(timestamp_t when, int nr);
 QString uiLanguage(QLocale *callerLoc);
+QLocale getLocale();
 void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
 
 #if defined __APPLE__
