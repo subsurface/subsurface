@@ -483,6 +483,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setupCylinders();
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
+	DivePlannerPointsModel::instance()->setupStartTime();
 	createFakeDiveForAddAndPlan();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 

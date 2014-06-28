@@ -95,13 +95,12 @@
            <height>50</height>
           </size>
          </property>
-         <zorder>label_2</zorder>
         </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Start Time</string>
+          <string>Planned Dive Time</string>
          </property>
         </widget>
        </item>
@@ -113,7 +112,18 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QTimeEdit" name="startTime"/>
+        <layout class="QHBoxLayout" name="dateAndTime">
+         <item>
+          <widget class="DateWidget" name="dateEdit" native="true">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTimeEdit" name="startTime"/>
+         </item>
+        </layout>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_7">
@@ -163,6 +173,12 @@
    <class>TableView</class>
    <extends>QWidget</extends>
    <header>tableview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DateWidget</class>
+   <extends>QWidget</extends>
+   <header>simplewidgets.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
