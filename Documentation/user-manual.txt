@@ -1891,8 +1891,16 @@ combination from the list of included localizations.
 
 [[S_DivePlanner]]
 == The Subsurface dive planner
-The dive planner is accessed by selecting _Log -> Plan Dive_ from the main menu. This
-feature IS EXPERIMENTAL and assumes the user is already familiar with the _Subsurface_
+Dive planning is an advanced feature of _Subsurface_, accessible by selecting _Log -> Plan Dive_ from the main menu. It allows calulation of
+nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition of gradient factors as
+implemented by Erik Baker.
+
+****
+[icon="images/icons/warning2.png"]
+[WARNING]
+
+The _Subsurface_ dive planner IS CURRENTLY EXPERIMENTAL
+and assumes the user is already familiar with the _Subsurface_
 user interface. It is explicitly used under the following conditions:
 
 - The user is conversant with dive planning and has the necessary training to perform
@@ -1902,77 +1910,172 @@ dive planning.
 and cannot compensate for individual physiology or health or personal history or
 life style characteristics.
 - The safety of a dive plan depends heavily on the way in which the planner is used.
+- The user is familiar with the user interface of _Subsurface_.
 - A user who is not absolutely sure about any of the above requirements should not use
 this feature.
+****
 
-The dive planner currently comprises two parts: constructing a dive plan and evaluating
-that dive plan. Currently the only evaluation available is with respect to dive
-ceilings and maximal partial gas pressures. To perform dive planning, perform these steps:
+=== The _Subsurface_ dive planner screen
+
+Like the _Subsurface_ dive log, the planner screen is divided into several sections (see image below). The *setup*
+parameters for a dive are entered into the several sections on the left hand side of the screen.
+The setup is divided into several sections: Available Gases, Rates, Planning, Gas Options and Dive Notes.
+
+At the top right hand is a green *design panel* upon which the profile of the dive can be
+manipulated directly by dragging and clicking as explained below. This feature makes the
+_Subsurface_ dive planner unique in ease of use.
+
+At the bottom right is a text panel with a heading of _Dive Plan Deails_. This is where the details of
+the dive plan are provided in a way that can easily be copied to other software. This is also where
+any warning messages about the dive plan are printed.
+
+image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="center"]
+
+
+=== Initiating dive planning
+
+The dive planner comprises two parts: *constructing a dive plan* and *evaluating*
+that dive plan. To perform dive planning, perform these steps:
 
 - Clear the existing dive log by creating a new planning log. This achieved by selecting
 _File -> New logbook_ from the main menu. This way, dive plans are kept totally separate
 from the existing dive log of completed dives.
 
-- In the top right-hand area of the screen, ensure that the constant dive parameters are
-appropriate. These are: ATM Pressure, Bottom SAC, SAC on Deco, GFHigh, GFLow and whether
-the last deco stop should be at 6m instead of the default 3m.
+- In the top left-hand area of the screen, ensure that the constant dive parameters are
+appropriate. These are: Start time of the dive, Atmospheric Pressure and Altitude above sea
+level of the dive site.
 
 - In the table labeled _Available Gases_, add the information of the cylinders to be used
 as well as the gas composition within that cylinder. This is done in a similar way as for
-<<S_CylinderData,providing cylinder data for dive logs>>.
+<<S_CylinderData,providing cylinder data for dive logs>>. Choose the cylinder type by
+double clicking the cylinder type and using the dropdown list, then specify the work
+pressure of this cylinder. By leaving the oxygen concentration (O2%) filed empty,
+the dive gas is assumed to be air. Otherwise enter the oxygen and/or helium
+concentration in the boxes provided in this dialogue. Add additional cylinders by using the
+"+" icon to the top righthand of the dialogue.
 
-- Construct a dive profile, using similar procedures as for <<S_CreateProfile,hand-creating a dive profile>>
-in the sections above. The unique feature of _Subsurface_ is the graphical interface
-for constructing dive plans. Drag the profile around using the waypoints on the
-design screen on the right, create more waypoints by double-clicking on the profile
-line and ensuring that the profile reflects the intended dive.
+- The dialogue indicating _Dive Planner Points_ is usually not used at this stage of the dive
+planning.
+
+=== Managing nitrogen, oxygen and gas consumption
+
+- The planning is performed in three stages:
+
+** *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
+as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
+to the bottom left of the planning screen. Gradient Factor settings strongly affect the calculated ceilings and their depths.
+For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
+For more information external to this manual see:
+
+ ** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+
+ ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+
+ ** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress, Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+An excellent non-technical review.]
+
+** The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
+for several depth ranges, utilising the average (or mean) depth as a yardstick. The mean depth
+of the dive plan is indicated on the dive profile in the green panel of the dive planner. Ascent rates
+at deeper levels are often in the range of 8-12 m/min, while ascent rates near the surface are
+often in the range of 4-9 m/min. The descent rate is also specified. If the option _Drop to first depth_
+is actvated, then the descent phase of the planned dive will be at the maximal descent rate specified
+in the _Rates_ section of the dive setup.
+
+
+** *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
+pressure for oxygen needs to be specified for the
+bottom part of the dive (bottom po2) as well as for the decompression part of the dive (deco po2).
+The most commonly
+used values are 1.4 bar for the bottom part of the dive and 1.5 b ar for any decompression
+stages. Normally, a partial pressure of 1.5 bar is not exceeded.
+
+
+** *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
+cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
+sharing with a buddy. Undr the _Gas Options_ heading, specify the best (but conservative) estimate
+of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
+determined by the settings of the _Preferences_ tab of _Subsurface_.  Specify the SAC during the
+bottom part of the dive (bottom SAC) as well as during the decompression or safety stops of the
+dive (deco SAC). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
+is not sufficient and one needs to
+monitor one's gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
+The planner will calculate the total volume of gas used during the dive and will issue a warning
+if one exceeds the total amount of gas available. Good practice demands that one does not dive to
+the limit of the gas supply but that an appropriate reserve is kept for unforeseen surcumstances.
+For technical diving, this reserve can be up to 66% of the total available gas.
+
+- Now (at last) one can start the detailed time-depth planning of the dive. _Subsurface_ offers a unique
+graphical interface for performing this part of the planning. The mechanics of doing this is
+similar to hand-entering a dive profile in the dive log part of _Subsurface_. Upon activating the
+planner, a default dive of depth 15 m for 40 min is offered in the green design surface to the top
+right hand of the screen. The white dots (waypoints) on the
+profile can be dragged with a mouse. Create more waypoints by double-clicking on the profile
+line and ensuring that the profile reflects the intended dive. Drag the waypoints to represent
+the depth and duration of the dive.
+If any of the management limits (for nitrogen, oxygen or gas) is exceeded, the surface
+above the dive profile changes from BLUE to RED.
+
+- Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
+left of the dive planner panel. Ensure that the _Used Gas_ value in each row
+of that table corresponds to one of the gas mixtures specified in the table with
+_Available Gases_ immediately above the Dive Planner Points. Add new waypoints
+until the main features of the dive have been completed, e.g. the
+bottom time segment and deep stops (if these are implemented). Leave the remaining
+waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
+computes additional way points in order to fulfill decompression requirements for that
+dive.
 
 - Indicate any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
+If two or more gases are used, automatic gas switces will be suggested during the ascent to
+the surface. However, these changes can be deleted by right-clicking the gas change and by
+manually creating a gas change by right-clicking on the appropriate waypoint.
 
-- Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
-bottom left of the dive planner panel. Ensure that the _Used Gas_ value in each row
-of that table corresponds to one of the gas mixtures specified in the table with
-_Available Gases_ immediately above the Dive Planner Points.
+- The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
+order to obtain a precise presentation of the dive plan.
 
-- Add new waypoints until the main features of the dive have been completed, e.g. the
-bottom time segment and deep stops (if these are implemented). Leave the remaining
-waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
-computes additional way points in order to fulfill decompression requirements for that
-dive. These appear in the table with _Computed Waypoints_ to the right of the Dive Planner
-Points.
+Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
+and using the settings as described above.
 
-Below is an example of a dive plan to 40m using EAN28:
-
-image::images/Planner1.jpg["FIGURE: Planning a dive: setup",align="center"]
+image::images/DivePlanner2.jpg["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above has been completed, one can save it by clicking the _Save_ button
-towards the middle bottom of the dive planner panel. The saved dive plan will appear
-in the *Dive List* panel.
+towards the bottom left of the green design panel. The saved dive plan will appear
+in the *Dive List* panel of _Subsurface_.
+
+=== The dive plan details
+
+On the bottom right of the dive planner, under _Dive Plan Details_, the exact details
+of the dive plan are indicated. These details may be modified by checking any of the
+options under the _Dive Notes_ section of the dive planner, immediately to the left
+of the _Dive Plan Details_. If a _Verbatim diveplan_
+is requested, a detailed sentence-level explanation of the dive plan is given. If any
+of the management specifications have been exceeded during the planning, a warning
+message is printed underneath the dive plan information.
+
+=== Evaluating the dive plan
 
 The dive plan can be evaluated by doing the following:
 
-- Ensure that the appropriate gradient factors have been selected in the _Preferences_
-panel of _Subsurface_.
+*Nitrogen management*: The dive profile is shown in conjunction with the relevant dive
+ceiling. The dive profile
+should not come more shallow than the calculated ceiling. This normally taken care of
+automatically by the planner and can only be an issue if one made manual modifications
+to the dive plan. The partial gas pressures selected for
+display are indicated as graphs below the dive profile.
 
-- Ensure that the appropriate maximal partial pressures of the gases used have been
-specified in the _Preferences_ panel of _Subsurface_.
+*Oxygen management*: If
+any of the gases exceed the specified oxygen partial pressures, the appropriate segments of the
+dive profile are highlighted in red. Ensure that the oxygen partial pressures in the graph below
+the profile do not exceed the values specified in the settings under _Gas Options_. Normally,
+there must be good motivation for exceeding an oxygen partial pressure of 1.5.
 
-- Select the appropriate dive plan from the *Dive List* panel.
-
-- Ensure that the appropriate button(s) for the display of the calculated ceiling have
-been activated on the left part of the *Dive Profile* panel.
-
-- Ensure that the appropriate button(s) for the display of the partial pressures of gases
-(pO₂, pN₂, pHe) have been activated on the left part of the *Dive Profile* panel.
-
-The dive profile is shown in conjunction with the relevant dive ceiling. The dive profile
-should not closely approach the calculated ceiling. The partial gas pressures selected for
-display are indicates as graphs below the dive profile. The partial pressures of any of the
-gasses should not exceed the limits defined in the _Preferences_ panel of _Subsurface_. If
-any of the gases exceed the specified partial pressures, the appropriate segments of the
-dive profile is highlighted in red.
+*Gas management*: The _Dive Plan Details_ text provides the amount of gas required to fulfill
+the envisaged dive plan. The foreseen gas pressures in the cylinder(s) are indicated in the graph
+over the dive profile. Ensure that the gas cylinders defined in the _Available Gases_ dialog
+can hold enough gas for the dive plan. Moreover, ENSURE SUFFICIENT RESERVE GAS.
 
 Below is the dive plan completed in the previous figure which can now be evaluated
 against the ceiling (determined by the gradient factors) as well as against the
@@ -1980,8 +2083,6 @@ maximum gas partial pressures. Notice the plan is deficient in terms of gas plan
 there is no provision for any reserve gas.
 
 image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
-
-This part of the software is in active development.
 
 == Description of the Subsurface Main Menu items
 
