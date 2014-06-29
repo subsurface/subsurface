@@ -37,8 +37,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>668</width>
+         <height>658</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -238,6 +238,12 @@
          <layout class="QHBoxLayout" name="ratingVisibilityLabels">
           <item>
            <widget class="QLabel" name="RatingLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Rating</string>
             </property>
@@ -245,6 +251,12 @@
           </item>
           <item>
            <widget class="QLabel" name="visibilityLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Visibility</string>
             </property>
@@ -256,6 +268,12 @@
          <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
           <item>
            <widget class="StarWidget" name="rating" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -263,6 +281,12 @@
           </item>
           <item>
            <widget class="StarWidget" name="visibility" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -278,7 +302,14 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QTimeEdit" name="timeEdit"/>
+         <widget class="QTimeEdit" name="timeEdit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -310,8 +341,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -390,8 +421,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>387</width>
+         <height>285</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -700,8 +731,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>341</width>
+         <height>167</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
