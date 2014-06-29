@@ -344,12 +344,12 @@ void DivePlannerWidget::heightChanged(const int height)
 	plannerModel->setSurfacePressure(pressure);
 }
 
-void DivePlannerWidget::bottomSacChanged(const int bottomSac)
+void PlannerSettingsWidget::bottomSacChanged(const int bottomSac)
 {
 	plannerModel->setBottomSac(bottomSac);
 }
 
-void DivePlannerWidget::decoSacChanged(const int decosac)
+void PlannerSettingsWidget::decoSacChanged(const int decosac)
 {
 	plannerModel->setDecoSac(decosac);
 }
@@ -418,14 +418,6 @@ void PlannerSettingsWidget::settingsChanged()
 }
 
 void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
-{
-}
-
-void PlannerSettingsWidget::bottomSacChanged(const int bottomSac)
-{
-}
-
-void PlannerSettingsWidget::decoSacChanged(const int decosac)
 {
 }
 
