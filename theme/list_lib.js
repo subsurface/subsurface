@@ -626,7 +626,7 @@ function unexpand_trip(trip)
 {
 	trips[trip].expanded = false;
 	var d = document.getElementById("trip_dive_list_" + trip);
-	d.innerHTML ='';
+	d.innerHTML = '';
 }
 
 function getItems()
@@ -995,8 +995,8 @@ function showDiveDetails(dive)
 
 function setDiveTitle(dive)
 {
-	document.getElementById("dive_no").innerHTML="Dive No. " + (settings.subsurfaceNumbers === '0'?
-	dive.number : dive.subsurface_number);
+	document.getElementById("dive_no").innerHTML = "Dive No. " + (settings.subsurfaceNumbers === '0' ?
+		dive.number : dive.subsurface_number);
 	document.getElementById("dive_location").innerHTML = dive.location;
 }
 
