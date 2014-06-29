@@ -20,6 +20,7 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
+	char pre[1000], post[1000];
 
 	for_each_dive (i, dive) {
 		if (selected_only) {
@@ -32,16 +33,26 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_degrees(b, dive->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
 		put_degrees(b, dive->longitude, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
-		put_HTML_date(b, dive, translate("gettextFromC", "<p>Date:"), "</p>");
-		put_HTML_time(b, dive, translate("gettextFromC", "<p>Time:"), "</p>");
-		put_duration(b, dive->duration, translate("gettextFromC", "<p>Duration: "), translate("gettextFromC", " min</p>"));
-		put_depth(b, dive->maxdepth, translate("gettextFromC", "<p>Max Depth: "), translate("gettextFromC", " m</p>"));
-		put_HTML_airtemp(b, dive, translate("gettextFromC", "<p>Air Temp: "), "</p>");
-		put_HTML_watertemp(b, dive, translate("gettextFromC", "<p>Water Temp : "), "</p>");
-		put_string(b, "<p>Location : <b>");
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Date:"));
+		put_HTML_date(b, dive, pre, "</p>");
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Time:"));
+		put_HTML_time(b, dive, pre, "</p>");
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Duration:"));
+		snprintf(post, sizeof(post), " %s</p>", translate("gettextFromC", "min"));
+		put_duration(b, dive->duration, pre, post);
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Max Depth:"));
+		snprintf(post, sizeof(post), " %s</p>", translate("gettextFromC", "m"));
+		put_depth(b, dive->maxdepth, pre, post);
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Air Temp:"));
+		put_HTML_airtemp(b, dive, pre, "</p>");
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Water Temp:"));
+		put_HTML_watertemp(b, dive, pre, "</p>");
+		snprintf(pre, sizeof(pre), "<p>%s <b>", translate("gettextFromC", "Location:"));
+		put_string(b, pre);
 		put_HTML_quoted(b, dive->location);
 		put_string(b, "</b></p>");
-		put_HTML_notes(b, dive, translate("gettextFromC", "<p> Notes"), " </p>");
+		snprintf(pre, sizeof(pre), "<p> %s ", translate("gettextFromC", "Notes:"));
+		put_HTML_notes(b, dive, pre, " </p>");
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
 		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", dive_no, dive_no, dive_no);
 		put_format(b, ");google.maps.event.addListener(markers[%d], 'mouseout', function() {\ninfowindows[%d].close();});\n", dive_no, dive_no);
