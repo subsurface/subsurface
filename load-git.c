@@ -659,6 +659,20 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, voi
 	create_device_node(id.model, id.deviceid, id.serial, id.firmware, id.nickname);
 }
 
+static void parse_picture_filename(char *line, struct membuffer *str, void *_pic)
+{
+	struct picture *pic = _pic;
+	pic->filename = get_utf8(str);
+}
+
+static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
+{
+	struct picture *pic = _pic;
+
+	pic->latitude = parse_degrees(line, &line);
+	pic->longitude = parse_degrees(line, &line);
+}
+
 /* These need to be sorted! */
 struct keyword_action dc_action[] = {
 #undef D
@@ -713,6 +727,18 @@ static struct keyword_action settings_action[] = {
 static void settings_parser(char *line, struct membuffer *str, void *_unused)
 {
 	match_action(line, str, NULL, settings_action, ARRAY_SIZE(settings_action));
+}
+
+/* These need to be sorted! */
+static struct keyword_action picture_action[] = {
+#undef D
+#define D(x) { #x, parse_picture_ ## x }
+	D(filename), D(gps)
+};
+
+static void picture_parser(char *line, struct membuffer *str, void *_pic)
+{
+	match_action(line, str, _pic, picture_action, ARRAY_SIZE(picture_action));
 }
 
 /*
@@ -1010,6 +1036,13 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 	return GIT_WALK_OK;
 }
 
+static int picture_directory(const char *root, const char *name)
+{
+	if (!active_dive)
+		return GIT_WALK_SKIP;
+	return GIT_WALK_OK;
+}
+
 /*
  * Return the length of the string without the unique part.
  */
@@ -1051,6 +1084,8 @@ static int nonunique_length(const char *str)
  *    are optional, and may be encoded in the path leading up to
  *    the dive).
  *
+ *  - It is a per-dive picture directory ("Pictures")
+ *
  *  - It's some random non-dive-data directory.
  *
  *    Subsurface doesn't create these yet, but maybe we'll encode
@@ -1063,6 +1098,9 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	const char *name = git_tree_entry_name(entry);
 	int digits = 0, len;
 	char c;
+
+	if (!strcmp(name, "Pictures"))
+		return picture_directory(root, name);
 
 	while (isdigit(c = name[digits]))
 		digits++;
@@ -1180,20 +1218,63 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	return 0;
 }
 
+static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry, const char *name)
+{
+	git_blob *blob;
+	struct picture *pic;
+	int hh, mm, ss, offset;
+	char sign;
+
+	/*
+	 * The format of the picture name files is just the offset
+	 * within the dive in form [[+-]hh:mm:ss, possibly followed
+	 * by a hash to make the filename unique (which we can just
+	 * ignore).
+	 */
+	if (sscanf(name, "%c%d:%d:%d", &sign, &hh, &mm, &ss) != 4)
+		return report_error("Unknown file name %s", name);
+	offset = ss + 60*(mm + 60*hh);
+	if (sign == '-')
+		offset = -offset;
+
+	blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read trip file");
+
+	pic = alloc_picture();
+	pic->offset.seconds = offset;
+	dive_add_picture(active_dive, pic);
+
+	for_each_line(blob, picture_parser, pic);
+	git_blob_free(blob);
+	return 0;
+}
+
 static int walk_tree_file(const char *root, const git_tree_entry *entry, git_repository *repo)
 {
 	struct dive *dive = active_dive;
 	dive_trip_t *trip = active_trip;
 	const char *name = git_tree_entry_name(entry);
 
-	if (dive && !strncmp(name, "Divecomputer", 12))
-		return parse_divecomputer_entry(repo, entry, name+12);
-	if (dive && !strncmp(name, "Dive", 4))
-		return parse_dive_entry(repo, entry, name+4);
-	if (trip && !strcmp(name, "00-Trip"))
-		return parse_trip_entry(repo, entry);
-	if (!strcmp(name, "00-Subsurface"))
-		return parse_settings_entry(repo, entry);
+	switch (*name) {
+	/* Picture file? They are saved as time offsets in the dive */
+	case '-': case '+':
+		if (dive)
+			return parse_picture_entry(repo, entry, name);
+		break;
+	case 'D':
+		if (dive && !strncmp(name, "Divecomputer", 12))
+			return parse_divecomputer_entry(repo, entry, name+12);
+		if (dive && !strncmp(name, "Dive", 4))
+			return parse_dive_entry(repo, entry, name+4);
+		break;
+	case '0':
+		if (trip && !strcmp(name, "00-Trip"))
+			return parse_trip_entry(repo, entry);
+		if (!strcmp(name, "00-Subsurface"))
+			return parse_settings_entry(repo, entry);
+		break;
+	}
 	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
 	return GIT_WALK_SKIP;
 }
