@@ -179,10 +179,10 @@ fields are visible:
 
 image::images/AddDive2.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Start time* field reflects the date and the time of the dive. By clicking
-the down-arrow on the right of that field a calendar will be displayed from
-which
-one can choose the correct date. The time values (hour and minutes) can also be
+The *Time* field reflects the date and the time of the dive. By clicking
+the date, a calendar is displayed from which
+one can choose the correct date. Press ESC to escape from the calendar.
+The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by overtyping the
 information displayed.
 
@@ -597,6 +597,23 @@ make and model
 as well as contextual information about the dives recorded on the dive computer.
 ****
 
+[[S_DeviceNames]]
+==== Changing the name of a dive computer
+
+It may be necessary to distinguish between different dive computers used to
+upload dive logs to _Subsurface_. For instance if one's partner's dive computer is the
+same make and model as one's own and dive logs are uploaded from both dive computers
+to the same _Subsurface_ computer, then
+one would perhaps like to call one dc "Annie's Suunto D4" and the other one
+"John's Suunto D4". Alternatively, perhaps a technical diver dives with two or more
+dive computers of the same model, the logs of both (or all) being uploaded.
+In this case it might be prudent to call one of them
+"Suunto D4 (1)" and another one "Suunto D4 (2)". This is easily done in _Subsurface_.
+On the *Main Menu*, select _Log -> Edit device names_. A dialog opens, indicating the
+current Model, ID and Nickname of the dive computers used for upload. Edit the Nickname
+field for the appropriate dive computer. After saving the Nickname, the dive logs
+show the nickname for that particular device instead of the model name,
+allowing easy identification of devices.
 
 [[S_EditDiveInfo]]
 ==== Updating the dive information imported from the dive computer.
@@ -619,12 +636,12 @@ visible:
 
 image::images/AddDive3.jpg["FIGURE: The Dive Notes tab",align="center"]
 
-The *Start time* field reflects the date and the time of the dive, as supplied by
-the dive computer. It should therefore not be necessary to edit this, but one
-could make changes by clicking the down-arrow on the right of that field to
-display a calendar from which the correct date can be chosen. The hour and
-minutes values can also be edited by clicking on each of them in the text box
-and by overtyping the information displayed.
+The *Time* field reflects the date and the time of the dive. By clicking
+the date, a calendar is displayed from which
+one can choose the correct date. Press ESC to escape from the calendar.
+The time values (hour and minutes) can also be
+edited directly by clicking on each of them in the text box and by overtyping the
+information displayed.
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
@@ -1894,7 +1911,8 @@ the value of a gradient factor, the more conservative the calculations are with
 respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
 factors of 20/60 are considered conservative and values of 60/90 are considered
 harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the
-deepest depth of a dive. For more information see:
+deepest depth of a dive. If this box is not checked, GF_Low is applied at
+all depths deeper than the first deco stop. For more information see:
 
  ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
@@ -2059,13 +2077,14 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
 The dive planner comprises two parts: *constructing a dive plan* and *evaluating*
 that dive plan. To perform dive planning, perform these steps:
 
-- Clear the existing dive log by creating a new planning log. This achieved by selecting
-_File -> New logbook_ from the main menu. This way, dive plans are kept totally separate
+- Clear the existing dive log by creating a new planning log. This is achieved by selecting
+_File -> New logbook_ from the main menu. This way, dive plans are kept separate
 from the existing dive log of completed dives.
 
 - In the top left-hand area of the screen, ensure that the constant dive parameters are
-appropriate. These are: Start time of the dive, Atmospheric Pressure and Altitude above sea
-level of the dive site.
+appropriate. These are: Start date and time of the dive, Atmospheric Pressure and Altitude
+above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
+in metres, assuming an atmospheric pressure of 1.013 bar.
 
 - In the table labeled _Available Gases_, add the information of the cylinders to be used
 as well as the gas composition within that cylinder. This is done in a similar way as for
@@ -2085,7 +2104,13 @@ planning.
 
 ** *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
-to the bottom left of the planning screen. Gradient Factor settings strongly affect the calculated ceilings and their depths.
+to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the _Preferences_
+panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
+the planner), the new values are
+used without changing the original specifications in the _Preferences_.
+
+Gradient Factor settings strongly affect the calculated ceilings and their depths.
+A very low GFLow value brings about decompression stops early on during the dive.
 For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
 For more information external to this manual see:
 
@@ -2111,6 +2136,10 @@ bottom part of the dive (_bottom po2_) as well as for the decompression part of 
 The most commonly
 used values are 1.4 bar for the bottom part of the dive and 1.5 bar for any decompression
 stages. Normally, a partial pressure of 1.5 bar is not exceeded.
+
+Po2 settings and the depth at which switching to a gas takes place can also be edited in the
+_Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
+ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
 
 ** *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
@@ -2148,15 +2177,18 @@ waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
 computes additional way points in order to fulfill decompression requirements for that
 dive.
 
+- A waypoint can be moved by selecting that waypoint and by using the arrow keys.
+
+- The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
+order to obtain a precise presentation of the dive plan. In fact, one can create the
+whole dive profile by editing the _Dive Planner Points_ dialog.
+
 - Indicate any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
 If two or more gases are used, automatic gas switces will be suggested during the ascent to
 the surface. However, these changes can be deleted by right-clicking the gas change and by
 manually creating a gas change by right-clicking on the appropriate waypoint.
-
-- The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
-order to obtain a precise presentation of the dive plan.
 
 Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
 and using the settings as described above.
@@ -2170,12 +2202,24 @@ in the *Dive List* panel of _Subsurface_.
 === The dive plan details
 
 On the bottom right of the dive planner, under _Dive Plan Details_, the exact details
-of the dive plan are indicated. These details may be modified by checking any of the
+of the dive plan are provided. These details may be modified by checking any of the
 options under the _Dive Notes_ section of the dive planner, immediately to the left
 of the _Dive Plan Details_. If a _Verbatim diveplan_
 is requested, a detailed sentence-level explanation of the dive plan is given. If any
 of the management specifications have been exceeded during the planning, a warning
 message is printed underneath the dive plan information.
+
+If the option _Display segment duration_ is checked, then the duration of each depth
+level is indicated in the _Dive Plan Details_. This duration INCUDES the transition
+time to get to that level. However, if the _Display transition in deco_ option is checked,
+the transitions are shown separately from the segment durations at a particulat level.
+
+=== Printing the dive plan
+
+Selecting the _Print_ button in the planner allows printing of the  _Dive Plan Details_
+for wet notes. Alternatively one can cut and paste the _Dive Plan Details_ for
+inclusion in a text file or word processing document.
+
 
 === Evaluating the dive plan
 
@@ -2192,12 +2236,14 @@ display are indicated as graphs below the dive profile.
 any of the gases exceed the specified oxygen partial pressures, the appropriate segments of the
 dive profile are highlighted in red. Ensure that the oxygen partial pressures in the graph below
 the profile do not exceed the values specified in the settings under _Gas Options_. Normally,
-there must be good motivation for exceeding an oxygen partial pressure of 1.5.
+there must be good motivation for exceeding an oxygen partial pressure of 1.5. Exceeding the
+specified oxygen partial pressure causes a warning message in the _Dive Plan Details_.
 
 *Gas management*: The _Dive Plan Details_ text provides the amount of gas required to fulfill
 the envisaged dive plan. The foreseen gas pressures in the cylinder(s) are indicated in the graph
 over the dive profile. Ensure that the gas cylinders defined in the _Available Gases_ dialog
-can hold enough gas for the dive plan. Moreover, ENSURE SUFFICIENT RESERVE GAS.
+can hold enough gas for the dive plan. Moreover, ENSURE SUFFICIENT RESERVE GAS. If gas usage
+exceeds the capacity of the cylinder(s), a warning is generated in the _Dive Plan Details_.
 
 Below is the dive plan completed in the previous figure which can now be evaluated
 against the ceiling (determined by the gradient factors) as well as against the
@@ -2208,10 +2254,22 @@ image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
 
 === Planning for repetitive dives
 
-Repetitive dives can easily be planned if the start times of the repetitive dive set
+Repetitive dives can easily be planned if the dates and start times of the
+repetitive dive set
 is specified appropriately in the top left-hand _Start Time_ field. _Subsurface_
 calculates the gas loading figures correctly and the effect of the first dive is
 evaluated on later dives.
+
+If one has just completed a long/deep dive and is planning
+another dive, then highlight, in the *Dive List*, the dive that has just been completed
+and then activate the planner. Depending on the start time of the planned dive,
+the planner takes into account the gas loading incurred during the completed dive
+and allows planning within these limitations.
+
+If only a few standard configurations are used (e.g. in GUE), then a template dive can
+be created conforming to one of the configurations. If one now wishes to plan a dive using
+this configuration, just highlight the template dive in the *Dive List* and activate the
+planner: the planner takes into account the configuration in the highlighted dive.
 
 == Description of the Subsurface Main Menu items
 
@@ -2251,7 +2309,7 @@ from _www.Divelogs.de_.
 panel.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
-- _Edit Device Names_ - Edit the names of dive computers to facilitate your logs.
+- <<S_DeviceNames_,_Edit Device Names_ - Edit the names of dive computers to facilitate your logs.
 
 === View
 - <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
