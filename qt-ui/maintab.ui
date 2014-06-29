@@ -137,12 +137,6 @@
         </item>
         <item row="8" column="2">
          <widget class="TagWidget" name="buddy">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
           <property name="readOnly">
            <bool>false</bool>
           </property>
@@ -204,12 +198,6 @@
             <height>0</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
@@ -223,12 +211,6 @@
         </item>
         <item row="8" column="0" colspan="2">
          <widget class="TagWidget" name="divemaster">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
           <property name="readOnly">
            <bool>false</bool>
           </property>
