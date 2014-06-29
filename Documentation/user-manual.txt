@@ -1809,31 +1809,31 @@ image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
 There are several settings within _Subsurface_ that the users can specify. These
 are found when selecting _File->Preferences_. The settings are performed in
-four groups: *Defaults*, *Units*, *Graph* and *Language*. All four sections
+four groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*. All five sections
 operate on the same principles: the user must specify the settings the are to be changed, then
 these changes are saved using the *Apply* button. After applying all the new settings users can then
 leave the settings panel by selecting *OK*.
 
 === Defaults
 
-There are four settings in the *Defaults* panel:
+There are several settings in the *Defaults* panel:
 
-image::images/Preferences1.jpg["FIGURE: Preferences defaults page",align="center"]
+image::images/Pref1.jpg["FIGURE: Preferences defaults page",align="center"]
 
   ** *Lists and tables*: Here one can specify the font type and font size of the
-Dive Table panel. By decreasing the font size of the Dive table, users can see more dives on a screen.
+*Dive Table* panel. By decreasing the font size of the *Dive Table*, users can see more dives on a screen.
 
   ** *Dives*: For the _Default Dive File_ one need to specify the directory and
 file name of one's
 electronic dive log book. This is a file with filename extension .xml. When
-launched, _Subsurface_ will then automatically load the specified dive log book.
+launched, _Subsurface_ will automatically load the specified dive log book.
 
   ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
 dives that he/she don't consider valid dives, e.g. pool dives, but still want to
 keep them in the dive log). This controls whether those dives are displayed in
 the dive list.
 
-  ** *Use Default cylinder*: Here users can specify the default cylinder listed in
+  ** *Default cylinder*: Here users can specify the default cylinder listed in
 the *Equipment* tab of the *Dive Notes* panel.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
@@ -1844,8 +1844,16 @@ by setting this slider
 with faster animation speed to the left, with a 0 value representing no animation
 at all.
 
+ ** *Subsurface Webservice*: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
+long and hard-to-remember userID is issued. This is the place to save that userID. By
+checking the option _Save User ID locally?_, one ensures that a local copy of that userID
+is saved.
+
+ ** *Clear all settings*: As indicated in the button below this heading, all settings are
+cleared and set to default values.
+
 === Units
-image::images/Preferences2.jpg["FIGURE: Preferences Units page",align="center"]
+image::images/Pref2.jpg["FIGURE: Preferences Units page",align="center"]
 
 Here user can choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
@@ -1854,14 +1862,14 @@ Alternatively, if one selects the *Personalise* radio button, units can be selec
 independently, with some units in the metric system and other in the imperial.
 
 === Graph
-image::images/Preferences3.jpg["FIGURE: Preferences Graph page",align="center"]
+image::images/Pref3.jpg["FIGURE: Preferences Graph page",align="center"]
 
 [[S_GradientFactors]]
 This panel allows two type of selections:
 
 * *Show*: Here users can specify the amount of information shown as part of
 the dive profile:
-** Gas pressure graphs: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
+** Thresholds: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
 the dive. These are enabled using the toolbar on the left hand side of the *Dive Profile*
 panel. For each of these graphs users can specify a threshold value on the right-hand side of the
 Preferences panel. If any of the graphs go above this threshold level, the graph is
@@ -1869,12 +1877,12 @@ highlighted in red, indicating that the threshold has been exceeded.
 
 ** _draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
 Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-from the ceilings calculated by Subsurface. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+from the ceilings calculated by _Subsurface_. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
 dive computer can calculate ceilings during a dive.
 
 ** _Show non-used cylinders in Equipment Tab_: This checkbox allows display of information about non-used cylinders when viewing the *Equipment Tab*. Conversely, if this box is un-checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 
-** _show average depth_: Activating this checkbox causes Subsurface to draw a red line across
+** _show average depth_: Activating this checkbox causes _Subsurface_ to draw a red line across
 the dive profile, indicating the mean depth of the dive.
 
 * *Misc*: *Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
@@ -1892,13 +1900,35 @@ deepest depth of a dive. For more information see:
 
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
-=== Languages
+=== Language
+Choose a language that _Subsurface_ mus use.
+
+image::images/Pref4.jpg["FIGURE: Preferences Language page",align="center"]
+
 A checkbox allows one to use the _System Default_ language which in most cases
 will be the correct setting; with this _Subsurface_ simply runs in the same
 language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
-combination from the list of included localizations.
+combination from the list of included localizations. The _Filter_ text box allows
+one to list similar languages. For instance there are several system variants of English
+or French.
 
+=== Network
+This panel facilitates communication between _Subsurface_ and data sources on the Internet.
+
+image::images/Pref5.jpg["FIGURE: Preferences Network page",align="center"]
+
+This important, for instance, when _Subsurface_ needs to communicate with Internet
+services such as the <<S_Companion,__Subsurface Companion app_>> or data export/import
+from _Divelogs.de_. These Internet requirements are determined by one's type of
+connection to the Internet and by the Internet Service Provider (ISP) used.
+One's ISP should provide the appropriate information.
+If a proxy server is used for Internet access, the appropriate information needs
+to be provided here. The type of proxy needs to be selected from the dropdown list.
+after which the IP address of the host and the appropriate port number should
+be provided. If the proxy server uses authentication, the appropriate userID and
+password also needs to be provided so that _Subsurface_ can automatically pass
+through the proxy server to access the Internet.
 
 [[S_LoadImage]]
 == The _Subsurface_ Photograph loader
@@ -2198,11 +2228,8 @@ logbook to open.
 - _Save as_: - Save the current logbook or the currently selected dives within
 the present logbook under a different filename.
 - _Close_ -  Close the dive logbook that is currently open.
-- <<S_ExportLog,_Export UDDF_>> -  Export the currently open dive logbook (or
-the selected dives in the logbook) in UDDF format.
-- _Export HTML World Map_ - Export the currently open dive logbook locations
-in HTML format and draw these on a world map. The dive notes and some other information
-about each dive can be viewed by hovering over each dive location.
+- <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
+the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - _Quit_ - Quit _Subsurface_.
@@ -2219,12 +2246,12 @@ from _www.Divelogs.de_.
 
 === Log
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
+- <<S_DivePlanner,_Plan Dive_>> - This feature allows the planning of dives.
 - <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List*
 panel.
--_Plan Dive_ - This experimental feature allows planning of simple dives.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
-- _Edit Device Names_ - Edit the names of dive computers.
+- _Edit Device Names_ - Edit the names of dive computers to facilitate your logs.
 
 === View
 - <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
@@ -2690,7 +2717,9 @@ contain twice as much air as a 200 bar one. At lower pressures, air acts pretty 
 === Some dive profiles have time discrepancies with the recorded samples from my dive computer...
 
 _Subsurface_ ends up ignoring surface time for many things (average depth, divetime, SAC, etc).
- For example, if you end up doing a weight check (deep enough to trigger the "dive started")
+'Question':  Why do dive durations in my dive computer differ from that given by _Subsurface_?
+
+'Answer': For example, if you end up doing a weight check (deep enough to trigger the "dive started")
 but then come back up and wait five minutes for your buddies, your dive computer may say
 that your dive is 50 minutes long - because you have fifty minutes worth of samples - but
 subsurface will say it's 45 minutes - because you were actually diving for 45 minutes.
