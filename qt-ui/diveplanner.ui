@@ -148,7 +148,7 @@
        <item row="3" column="1">
         <widget class="QSpinBox" name="ATMPressure">
          <property name="suffix">
-          <string>bar</string>
+          <string>mbar</string>
          </property>
          <property name="maximum">
           <number>2000</number>
