@@ -58,12 +58,15 @@ void DiveEventItem::setEvent(struct event *ev)
 void DiveEventItem::setupPixmap()
 {
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(30, 28, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (!internalEvent->name) {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":flag"));
 	} else if (strcmp(internalEvent->name, "heading") == 0) {
 		setPixmap(EVENT_PIXMAP(":flag"));
+	} else if (internalEvent->type == SAMPLE_EVENT_GASCHANGE || internalEvent->type == SAMPLE_EVENT_GASCHANGE2) {
+		setPixmap(EVENT_PIXMAP_BIGGER(":gaschange"));
 	} else {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	}
