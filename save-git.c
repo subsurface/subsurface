@@ -439,6 +439,26 @@ static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
 	return subdir;
 }
 
+static struct dir *mktree(struct dir *dir, const char *fmt, ...)
+{
+	struct membuffer buf = { 0 };
+	struct dir *subdir;
+
+	VA_BUF(&buf, fmt);
+	for (subdir = dir->subdirs; subdir; subdir = subdir->sibling) {
+		if (subdir->unique)
+			continue;
+		if (strncmp(subdir->name, buf.buffer, buf.len))
+			continue;
+		if (!subdir->name[buf.len])
+			break;
+	}
+	if (!subdir)
+		subdir = new_directory(dir, &buf);
+	free_buffer(&buf);
+	return subdir;
+}
+
 /*
  * The name of a dive is the date and the dive number (and possibly
  * the uniqueness suffix).
@@ -499,6 +519,40 @@ static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct 
 	return ret;
 }
 
+static int save_one_picture(git_repository *repo, struct dir *dir, struct picture *pic)
+{
+	int offset = pic->offset.seconds;
+	struct membuffer buf = { 0 };
+	char sign = '+';
+	unsigned h;
+
+	show_utf8(&buf, "filename ", pic->filename, "\n");
+	show_gps(&buf, pic->latitude, pic->longitude);
+
+	/* Picture loading will load even negative offsets.. */
+	if (offset < 0) {
+		offset = -offset;
+		sign = '-';
+	}
+
+	/* Use full hh:mm:ss format to make it all sort nicely */
+	h = offset / 3600;
+	offset -= h *3600;
+	return blob_insert(repo, dir, &buf, "%c%02u:%02u:%02u",
+		sign, h, FRACTION(offset, 60));
+}
+
+static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
+{
+	if (dive->picture_list) {
+		dir = mktree(dir, "Pictures");
+		FOR_EACH_PICTURE(dive) {
+			save_one_picture(repo, dir, picture);
+		}
+	}
+	return 0;
+}
+
 static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm)
 {
 	struct divecomputer *dc;
@@ -531,6 +585,8 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 		dc = dc->next;
 	} while (dc);
 
+	/* Save the picture data, if any */
+	save_pictures(repo, subdir, dive);
 	return 0;
 }
 
@@ -660,26 +716,6 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 	}
 
 	return 0;
-}
-
-static struct dir *mktree(struct dir *dir, const char *fmt, ...)
-{
-	struct membuffer buf = { 0 };
-	struct dir *subdir;
-
-	VA_BUF(&buf, fmt);
-	for (subdir = dir->subdirs; subdir; subdir = subdir->sibling) {
-		if (subdir->unique)
-			continue;
-		if (strncmp(subdir->name, buf.buffer, buf.len))
-			continue;
-		if (!subdir->name[buf.len])
-			break;
-	}
-	if (!subdir)
-		subdir = new_directory(dir, &buf);
-	free_buffer(&buf);
-	return subdir;
 }
 
 static void save_userid(void *_b)
