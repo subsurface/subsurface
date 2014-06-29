@@ -1088,6 +1088,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	int i;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	double tissue_tolerance = 0;
+	int last_ndl_tts_calc_time = 0;
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
@@ -1112,6 +1113,17 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		/* should we do more calculations?
 		 * We don't for print-mode because this info doesn't show up there */
 		if (prefs.calcndltts && !print_mode) {
+			/* only calculate ndl/tts on every 30 seconds */
+			if ((entry->sec - last_ndl_tts_calc_time) < 30) {
+				struct plot_data *prev_entry = (entry - 1);
+				entry->stoptime_calc = prev_entry->stoptime_calc;
+				entry->stopdepth_calc = prev_entry->stopdepth_calc;
+				entry->tts_calc = prev_entry->tts_calc;
+				entry->ndl_calc = prev_entry->ndl_calc;
+				continue;
+			}
+			last_ndl_tts_calc_time = entry->sec;
+
 			/* We are going to mess up deco state, so store it for later restore */
 			char *cache_data = NULL;
 			cache_deco_state(tissue_tolerance, &cache_data);
