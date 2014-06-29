@@ -552,6 +552,9 @@ void MainTab::updateDiveInfo(int dive)
 		}
 		if (!gasUsed.isEmpty())
 			gasUsedString.append("...");
+		volume_t o2_tot = {}, he_tot = {};
+		selected_dives_gas_parts(&o2_tot, &he_tot);
+		gasUsedString.append(QString("These gases could be\nmixed from Air and using:\nHe: %1 and O2: %2\n").arg(get_volume_string(he_tot, true)).arg(get_volume_string(o2_tot, true)));
 		ui.gasConsumption->setText(gasUsedString);
 	} else {
 		/* clear the fields */

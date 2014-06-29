@@ -357,3 +357,39 @@ char *get_gaslist(struct dive *dive)
 	buf[MAXBUF - 1] = '\0';
 	return buf;
 }
+
+/* Quite crude reverse-blender-function, but it produces a approx result */
+static void get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup, volume_t *o2, volume_t *he)
+{
+	volume_t air = {};
+
+	if (gasmix_is_air(&mix)) {
+		o2->mliter = 0;
+		he->mliter = 0;
+		return;
+	}
+
+	air.mliter = (vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup);
+	he->mliter = (vol.mliter * get_he(&mix)) / 1000;
+	o2->mliter += vol.mliter - he->mliter - air.mliter;
+}
+
+void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot)
+{
+	int i, j;
+	struct dive *d;
+	for_each_dive (i, d) {
+		if (!d->selected)
+			continue;
+		volume_t diveGases[MAX_CYLINDERS] = {};
+		get_gas_used(d, diveGases);
+		for (j = 0; j < MAX_CYLINDERS; j++) {
+			if (diveGases[j].mliter) {
+				volume_t o2 = {}, he = {};
+				get_gas_parts(d->cylinder[j].gasmix, diveGases[j], O2_IN_AIR, &o2, &he);
+				o2_tot->mliter += o2.mliter;
+				he_tot->mliter += he.mliter;
+			}
+		}
+	}
+}
