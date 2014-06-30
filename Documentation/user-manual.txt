@@ -227,7 +227,7 @@ negative value, e.g. -30.22496. Similarly western longitudes are given with a
 
 Please note that GPS coordinates of a dive site are linked to the Location
 name - so adding coordinates to dives that does not have a location description
-will cause unexpected behavior (Subsurface will think that all of these
+will cause unexpected behaviour (Subsurface will think that all of these
 dives have the same location and try to keep their GPS coordinates the
 same.
 
@@ -362,7 +362,7 @@ dive being described:
 image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 
 _Modifying the dive profile_: When the cursor is moved around the dive profile,
-its position is indicated by two colored lines (red and green) as shown below.
+its position is indicated by two coloured lines (red and green) as shown below.
 The depth and time
 that the cursor represents are indicated, respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
@@ -458,7 +458,7 @@ has dive computer specific information.
 After this, the dive computer can be hooked up to the user's PC, which can be
 achieved by following these steps:
 
-1. The interface cable should be connected to a free USB port (or the Infrared
+1. The interface cable should be connected to a free USB port (or the Infra-red
 	or Bluetooth connection set up as described later in this manual)
 
 2. The dive computer should be placed into PC Communication mode.
@@ -477,7 +477,7 @@ _Subsurface_ only imports dives that have not been uploaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 If, for some reason, the user wishes to import ALL dives from the dive computer,
-even though some may already be in the logbook, then check the check box labeled
+even though some may already be in the logbook, then check the check box labelled
 _Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the
@@ -514,7 +514,7 @@ system of the computer on which _Subsurface_ is running.
    *Dive List* panel, the record in the _Subsurface_ divelog will be overwritten
    by the record from the dive computer
 
- -  Do *not* check the checkboxes labeled _Save libdivecomputer logfile_ and
+ -  Do *not* check the checkboxes labelled _Save libdivecomputer logfile_ and
     _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
     when problems with downloads are experienced (see below).
 
@@ -730,7 +730,7 @@ message in a blue box at the top of the panel:
 
 image::images/BlueEditBar.jpg["FIGURE: Blue edit bar",align="center"]
 
-indicates that the dive is being edited.This is a highly interactive part of
+indicates that the dive is being edited. This is a highly interactive part of
 _Subsurface_ and the information on
 cylinders and gases (entered here) determines the behaviour of the dive profile
 (top right-hand panel).
@@ -823,8 +823,8 @@ that the new data should be saved.
 
 If a user has been diving for some time, it is possible that several dives were
 logged using other dive log software. This information does not need retyping
-because these divelogs can probably be
-imported onto _Subsurface_. _Subsurface_ will import divelogs from a range of
+because these dive logs can probably be
+imported onto _Subsurface_. _Subsurface_ will import dive logs from a range of
 other
 dive log software. While some software is supported natively, for others the
 user has to
@@ -837,7 +837,7 @@ imports.
 Manually kept log files (e.g. in spreadsheet) can also be imported by
 configuring the CSV import.
 _Subsurface_ can also import UDDF and UDCF files used by some divelog
-software and some divecomputers, like the Heinrichs & Weikamp DR5. Finally,
+software and some dive computers, like the Heinrichs & Weikamp DR5. Finally,
 for some divelog software like Mares Dive Organiser it is currently suggested to
 import the logbooks first into a webservice like _divelogs.de_ and then import
 them from there with
@@ -1060,7 +1060,7 @@ appear in the *Dive List* area of _Subsurface_.
 Using the *Subsurface Companion App* on an Android device with a GPS, the coordinates
 for the diving
 location can be automatically passed to the _Subsurface_
-divelog. The Companion App stores the dive locations on
+dive log. The Companion App stores the dive locations on
 a dedicated Internet-based file server. _Subsurface_, in turn, can collect
 the localities from the file server.
 
@@ -1405,7 +1405,7 @@ when the diver was using less gas than average.
 
 [icon="images/icons/Heartbutton.png"]
 [NOTE]
-Clicking on the heartrate button will allow the display of heart rate information
+Clicking on the heart rate button will allow the display of heart rate information
 during the dive if the dive computer was attached to a heart rate sensor.
 
 It is possible to *zoom* into the profile graph. This is done either by using
@@ -1793,7 +1793,7 @@ Under _Print options_ users need to select:
 - Printing only the dives that have been selected from the dive list prior to
 activating the print dialogue, achieved by checking the box _Print only
 selected dives_.
-- Printing in colour, achieved by checking the box with _Print in color_.
+- Printing in colour, achieved by checking the box with _Print in colour_.
 
 The _Ordering_ affects the layout of the page (or part of it) for each dive.
 The dive profile could be printed at the top of each dive, with the textual
@@ -1984,7 +1984,7 @@ settings for time has not been changed in either device, one could write down th
 both devices after the dive or even at the end of the day. One can then manually set the time
 difference in the _Time shift_ dialog. Towards the top of the dialog is a time setting tool
 immediately under the heading _Shift times of image(s) by_, evident in figure *A* below.
-If the camera time is 7 munutes later than that of the dive computer, set the time setting
+If the camera time is 7 minutes later than that of the dive computer, set the time setting
 tool to a value of 00:07. Ignore any "AM" or "PM" suffix in that tool. Click the _OK_ button
 and synchronisation will be achieved. Select either the _earlier_ or _later_ radio button.
 In the above example, the _earlier_ option is appropriate, since the photos need to be shifted
@@ -2004,8 +2004,8 @@ photograph using the file browser and click on _OK_. This photograph of the dive
 appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows exactly
 when the photograph has been taken. Now set the date-time dialog to the left of the photo
 so that this tool reflects the date and time of the dive computer in the photo. When the
-date-time tool has been set, _Subsurface_ knows axactly what the time difference between
-camera and dive computer is, and synchronisation is achieved. The image nelow shows a
+date-time tool has been set, _Subsurface_ knows exactly what the time difference between
+camera and dive computer is, and synchronisation is achieved. The image below shows a
 photograph with the face of the dive computer and with the date-time tool set to the
 date-time on image *B above.
 
@@ -2031,7 +2031,7 @@ image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
-Dive planning is an advanced feature of _Subsurface_, accessible by selecting _Log -> Plan Dive_ from the main menu. It allows calulation of
+Dive planning is an advanced feature of _Subsurface_, accessible by selecting _Log -> Plan Dive_ from the main menu. It allows calculation of
 nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition of gradient factors as
 implemented by Erik Baker.
 
@@ -2065,7 +2065,7 @@ At the top right hand is a green *design panel* upon which the profile of the di
 manipulated directly by dragging and clicking as explained below. This feature makes the
 _Subsurface_ dive planner unique in ease of use.
 
-At the bottom right is a text panel with a heading of _Dive Plan Deails_. This is where the details of
+At the bottom right is a text panel with a heading of _Dive Plan Details_. This is where the details of
 the dive plan are provided in a way that can easily be copied to other software. This is also where
 any warning messages about the dive plan are printed.
 
@@ -2086,7 +2086,7 @@ appropriate. These are: Start date and time of the dive, Atmospheric Pressure an
 above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
 in metres, assuming an atmospheric pressure of 1.013 bar.
 
-- In the table labeled _Available Gases_, add the information of the cylinders to be used
+- In the table labelled _Available Gases_, add the information of the cylinders to be used
 as well as the gas composition within that cylinder. This is done in a similar way as for
 <<S_CylinderData,providing cylinder data for dive logs>>. Choose the cylinder type by
 double clicking the cylinder type and using the dropdown list, then specify the work
@@ -2118,15 +2118,15 @@ For more information external to this manual see:
 
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
- ** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress, Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
-An excellent non-technical review.]
+ ** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+An excellent non-technical review.
 
 ** The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
 for several depth ranges, utilising the average (or mean) depth as a yardstick. The mean depth
 of the dive plan is indicated on the dive profile in the green panel of the dive planner. Ascent rates
 at deeper levels are often in the range of 8-12 m/min, while ascent rates near the surface are
 often in the range of 4-9 m/min. The descent rate is also specified. If the option _Drop to first depth_
-is actvated, then the descent phase of the planned dive will be at the maximal descent rate specified
+is activated, then the descent phase of the planned dive will be at the maximal descent rate specified
 in the _Rates_ section of the dive setup.
 
 
@@ -2153,7 +2153,7 @@ is not sufficient and one needs to
 monitor one's gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
 The planner will calculate the total volume of gas used during the dive and will issue a warning
 if one exceeds the total amount of gas available. Good practice demands that one does not dive to
-the limit of the gas supply but that an appropriate reserve is kept for unforeseen surcumstances.
+the limit of the gas supply but that an appropriate reserve is kept for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 
 - Now (at last) one can start the detailed time-depth planning of the dive. _Subsurface_ offers a unique
@@ -2174,7 +2174,7 @@ _Available Gases_ immediately above the Dive Planner Points. Add new waypoints
 until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
 waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
-computes additional way points in order to fulfill decompression requirements for that
+computes additional way points in order to fulfil decompression requirements for that
 dive.
 
 - A waypoint can be moved by selecting that waypoint and by using the arrow keys.
@@ -2186,7 +2186,7 @@ whole dive profile by editing the _Dive Planner Points_ dialog.
 - Indicate any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
-If two or more gases are used, automatic gas switces will be suggested during the ascent to
+If two or more gases are used, automatic gas switches will be suggested during the ascent to
 the surface. However, these changes can be deleted by right-clicking the gas change and by
 manually creating a gas change by right-clicking on the appropriate waypoint.
 
@@ -2212,7 +2212,7 @@ message is printed underneath the dive plan information.
 If the option _Display segment duration_ is checked, then the duration of each depth
 level is indicated in the _Dive Plan Details_. This duration INCUDES the transition
 time to get to that level. However, if the _Display transition in deco_ option is checked,
-the transitions are shown separately from the segment durations at a particulat level.
+the transitions are shown separately from the segment durations at a particular level.
 
 === Printing the dive plan
 
@@ -2220,37 +2220,6 @@ Selecting the _Print_ button in the planner allows printing of the  _Dive Plan D
 for wet notes. Alternatively one can cut and paste the _Dive Plan Details_ for
 inclusion in a text file or word processing document.
 
-
-=== Evaluating the dive plan
-
-The dive plan can be evaluated by doing the following:
-
-*Nitrogen management*: The dive profile is shown in conjunction with the relevant dive
-ceiling. The dive profile
-should not come more shallow than the calculated ceiling. This normally taken care of
-automatically by the planner and can only be an issue if one made manual modifications
-to the dive plan. The partial gas pressures selected for
-display are indicated as graphs below the dive profile.
-
-*Oxygen management*: If
-any of the gases exceed the specified oxygen partial pressures, the appropriate segments of the
-dive profile are highlighted in red. Ensure that the oxygen partial pressures in the graph below
-the profile do not exceed the values specified in the settings under _Gas Options_. Normally,
-there must be good motivation for exceeding an oxygen partial pressure of 1.5. Exceeding the
-specified oxygen partial pressure causes a warning message in the _Dive Plan Details_.
-
-*Gas management*: The _Dive Plan Details_ text provides the amount of gas required to fulfill
-the envisaged dive plan. The foreseen gas pressures in the cylinder(s) are indicated in the graph
-over the dive profile. Ensure that the gas cylinders defined in the _Available Gases_ dialog
-can hold enough gas for the dive plan. Moreover, ENSURE SUFFICIENT RESERVE GAS. If gas usage
-exceeds the capacity of the cylinder(s), a warning is generated in the _Dive Plan Details_.
-
-Below is the dive plan completed in the previous figure which can now be evaluated
-against the ceiling (determined by the gradient factors) as well as against the
-maximum gas partial pressures. Notice the plan is deficient in terms of gas planning:
-there is no provision for any reserve gas.
-
-image::images/Planner2.jpg["FIGURE: Planning a dive: evaluation",align="center"]
 
 === Planning for repetitive dives
 
@@ -2284,7 +2253,7 @@ clear all dive information.
 logbook to open.
 - _Save_ - Save the dive logbook that is currently open.
 - _Save as_: - Save the current logbook or the currently selected dives within
-the present logbook under a different filename.
+the present logbook under a different file name.
 - _Close_ -  Close the dive logbook that is currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
 the selected dives in the logbook) to one of several formats.
@@ -2342,13 +2311,13 @@ on the http://subsurface.hohndel.org/[_Subsurface_ web site].
 [NOTE]
 The operating system of the desktop computer needs the appropriate drivers in
 order to communicate with the dive computer in whichever way the dive
-computer prefers (e.g. bluetooth, USB, infrared).
+computer prefers (e.g. bluetooth, USB, infra-red).
 
 	* On Linux users need to have the correct kernel
 	  module loaded. Most distributions will do this automatically, so the
 	  user does not need to load kernel modules. However, some communication
 	  protocols require an additional driver, especially for rarely used
-	  technology such as infrared.
+	  technology such as infra-red.
 
 	* On Windows, the OS should offer to download the correct
 	  driver once the user connects the dive computer to the USB port and
@@ -2764,7 +2733,7 @@ Remember: one ATM is ~1.013 bar, so without the compressibility, your gas use is
 which is about 1445, not 1464. So there was 19 l too much in your simple
 calculation that ignored the difference between 1 bar and one ATM.
 The compressibility does show up above 200 bar, and takes that 1445 down
-about eight liters more, so you really did use only about 1437 l of air at surface pressure.
+about eight litres more, so you really did use only about 1437 l of air at surface pressure.
 
 So be happy: your SAC really is better than your calculations indicated.
 Or be sad: your cylinder contains less air than you thought it did.
