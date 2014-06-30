@@ -911,3 +911,16 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		break;
 	}
 }
+
+UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f)
+{
+
+}
+
+void UserSurveyServices::sendSurvey(QString values)
+{
+	QNetworkRequest request;
+	request.setUrl(QString("http://subsurface.hohndel.org/survey?%1").arg(values));
+	request.setRawHeader("Accept", "text/xml");
+	reply = manager()->get(request);
+}

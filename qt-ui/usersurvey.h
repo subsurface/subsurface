@@ -2,6 +2,8 @@
 #define USERSURVEY_H
 
 #include <QDialog>
+class QNetworkAccessManager;
+class QNetworkReply;
 
 namespace Ui {
 	class UserSurvey;
@@ -18,8 +20,13 @@ private
 slots:
 	void on_buttonBox_accepted();
 	void on_buttonBox_rejected();
+	void requestReceived(QNetworkReply *reply);
 
 private:
 	Ui::UserSurvey *ui;
+	QString os;
+	QString checkboxes;
+	QString suggestions;
+	QNetworkAccessManager *manager;
 };
 #endif // USERSURVEY_H

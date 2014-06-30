@@ -97,6 +97,13 @@ private:
 	bool uploadMode;
 };
 
+class UserSurveyServices : public WebServices {
+	Q_OBJECT
+public:
+	void sendSurvey(QString values);
+	explicit UserSurveyServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif

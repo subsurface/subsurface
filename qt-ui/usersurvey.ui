@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>524</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>490</y>
+     <y>560</y>
      <width>451</width>
      <height>32</height>
     </rect>
@@ -118,7 +118,7 @@
     <string>I am downloading dives from supported dive computer</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="import_2">
+  <widget class="QCheckBox" name="divecomputer">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -144,21 +144,14 @@
     <string>I am manually entering dives</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="suggestions">
+  <widget class="QPlainTextEdit" name="suggestions">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>270</y>
+     <y>300</y>
      <width>481</width>
      <height>101</height>
     </rect>
-   </property>
-   <property name="html">
-    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Suggestions and missing features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="companion">
@@ -174,21 +167,40 @@ p, li { white-space: pre-wrap; }
     <string>I use the Android companion app to track dive locations</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="system">
+  <widget class="QPlainTextEdit" name="system">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>380</y>
+     <y>450</y>
      <width>481</width>
      <height>101</height>
     </rect>
    </property>
-   <property name="html">
-    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>471</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Please type suggestions (in English) in the following box</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>420</y>
+     <width>471</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>The following information about your system will also be submitted</string>
    </property>
   </widget>
  </widget>
@@ -197,7 +209,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>tech</tabstop>
   <tabstop>planning</tabstop>
   <tabstop>download</tabstop>
-  <tabstop>import_2</tabstop>
+  <tabstop>divecomputer</tabstop>
   <tabstop>manual</tabstop>
   <tabstop>companion</tabstop>
   <tabstop>suggestions</tabstop>

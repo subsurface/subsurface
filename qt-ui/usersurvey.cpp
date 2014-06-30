@@ -6,9 +6,11 @@
 #include "usersurvey.h"
 #include "ui_usersurvey.h"
 #include "ssrf-version.h"
+#include "subsurfacewebservices.h"
 
 #include "helpers.h"
 #include "subsurfacesysinfo.h"
+
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
 {
@@ -19,10 +21,17 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
 
 	// fill in the system data
-	ui->system->append(tr("Subsurface %1").arg(VERSION_STRING));
-	ui->system->append(tr("Operating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
-	ui->system->append(tr("CPU Architecture: %1").arg(SubsurfaceSysInfo::cpuArchitecture()));
-	ui->system->append(tr("Language: %1").arg(uiLanguage(NULL)));
+	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
+	os = QString("ssrfVers=%1").arg(VERSION_STRING);
+	sysInfo.append(tr("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
+	os.append(QString("&prettyOsName=%1").arg(SubsurfaceSysInfo::prettyOsName()));
+	sysInfo.append(tr("\nCPU Architecture: %1").arg(SubsurfaceSysInfo::cpuArchitecture()));
+	os.append(QString("&cpuArch=%1").arg(SubsurfaceSysInfo::cpuArchitecture()));
+	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
+	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
+	ui->system->setPlainText(sysInfo);
+	manager = SubsurfaceWebServices::manager();
+	connect(manager, SIGNAL(finished(QNetworkReply *)), SLOT(requestReceived(QNetworkReply *)));
 }
 
 UserSurvey::~UserSurvey()
@@ -30,12 +39,22 @@ UserSurvey::~UserSurvey()
 	delete ui;
 }
 
+#define ADD_OPTION(_name) values.append(ui->_name->isChecked() ? "&" #_name "=1" : "&" #_name "=0")
+
 void UserSurvey::on_buttonBox_accepted()
 {
 	// now we need to collect the data and submit it
-	QSettings s;
-	s.beginGroup("UserSurvey");
-	s.setValue("SurveyDone", "submitted");
+	QString values = os;
+	ADD_OPTION(recreational);
+	ADD_OPTION(tech);
+	ADD_OPTION(planning);
+	ADD_OPTION(download);
+	ADD_OPTION(divecomputer);
+	ADD_OPTION(manual);
+	ADD_OPTION(companion);
+	values.append(QString("&suggestion=%1").arg(ui->suggestions->toPlainText()));
+	UserSurveyServices uss(this);
+	uss.sendSurvey(values);
 	hide();
 }
 
@@ -59,4 +78,40 @@ void UserSurvey::on_buttonBox_rejected()
 		break;
 	}
 	hide();
+}
+
+void UserSurvey::requestReceived(QNetworkReply *reply)
+{
+	QMessageBox msgbox;
+	QString msgTitle = tr("Submit User Survey.");
+	QString msgText = tr("<h3>Subsurface was unable to submit the user survey.</h3>");
+
+
+	if (reply->error() != QNetworkReply::NoError) {
+		//Network Error
+		msgText = msgText + tr("<br/><b>The following error occurred:</b><br/>") + reply->errorString()
+				+ tr("<br/><br/><b>Please check your internet connection.</b>");
+	} else {
+		//No network error
+		QString response(reply->readAll());
+		QString responseBody = response.split("\"").at(1);
+
+		msgbox.setIcon(QMessageBox::Information);
+
+		if (responseBody == "OK") {
+			msgText = tr("Survey successfully submitted.");
+			QSettings s;
+			s.beginGroup("UserSurvey");
+			s.setValue("SurveyDone", "submitted");
+		} else {
+			msgText = tr("There was an error while trying to check for updates.<br/><br/>%1").arg(responseBody);
+			msgbox.setIcon(QMessageBox::Warning);
+		}
+	}
+
+	msgbox.setWindowTitle(msgTitle);
+	msgbox.setText(msgText);
+	msgbox.setTextFormat(Qt::RichText);
+	msgbox.exec();
+	reply->deleteLater();
 }
