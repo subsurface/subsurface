@@ -1026,3 +1026,16 @@ function prevDetailedDive()
 		showDiveDetails(--dive_id);
 	}
 }
+
+function switchDives(e)
+{
+	if(document.getElementById("divePanel").style.display == 'block'){
+		e = e || window.event;
+		if (e.keyCode == '37') {
+			prevDetailedDive();
+		}
+		else if (e.keyCode == '39') {
+			nextDetailedDive();
+		}
+	}
+}

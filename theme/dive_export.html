@@ -111,6 +111,8 @@ window.onload=function(){
 	showAllDives();
 	document.getElementById("divePanel").style.display='none';
 	document.body.style.visibility='visible';
+
+	document.onkeydown = switchDives;
 }
 
 function changeAdvSearch(e){
