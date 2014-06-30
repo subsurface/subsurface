@@ -14,6 +14,7 @@
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
 {
+	QString osArch, arch;
 	ui->setupUi(this);
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
@@ -25,8 +26,16 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	os = QString("ssrfVers=%1").arg(VERSION_STRING);
 	sysInfo.append(tr("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
 	os.append(QString("&prettyOsName=%1").arg(SubsurfaceSysInfo::prettyOsName()));
-	sysInfo.append(tr("\nCPU Architecture: %1").arg(SubsurfaceSysInfo::cpuArchitecture()));
-	os.append(QString("&cpuArch=%1").arg(SubsurfaceSysInfo::cpuArchitecture()));
+	arch = SubsurfaceSysInfo::cpuArchitecture();
+	sysInfo.append(tr("\nCPU Architecture: %1").arg(arch));
+	os.append(QString("&appCpuArch=%1").arg(arch));
+	if (arch == "i386") {
+		osArch = SubsurfaceSysInfo::osArch();
+		if (!osArch.isEmpty()) {
+			sysInfo.append(tr("\nOS CPU Architecture %1").arg(osArch));
+			os.append(QString("&osCpuArch=%1").arg(osArch));
+		}
+	}
 	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
 	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
 	ui->system->setPlainText(sysInfo);

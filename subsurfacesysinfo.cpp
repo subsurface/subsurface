@@ -442,3 +442,33 @@ QString SubsurfaceSysInfo::prettyOsName()
 	return unknownText();
 #endif
 }
+
+// detect if the OS we are running on is 64 or 32bit
+// we only care when building on Intel for 32bit
+QString SubsurfaceSysInfo::osArch()
+{
+	QString res = "";
+#if defined(Q_PROCESSOR_X86_32)
+#if defined(Q_OS_UNIX)
+	struct utsname u;
+	if (uname(&u) != -1) {
+		res = u.machine;
+	}
+#elif defined(Q_OS_WIN)
+
+	/* this code is from
+	 * http://mark.koli.ch/reliably-checking-os-bitness-32-or-64-bit-on-windows-with-a-tiny-c-app
+	 * there is no license given, but 5 lines of code should be fine to reuse unless explicitly forbidden */
+	typedef BOOL (WINAPI *IW64PFP)(HANDLE, BOOL *);
+	BOOL os64 = FALSE;
+	IW64PFP IW64P = (IW64PFP)GetProcAddress(
+				GetModuleHandle((LPCSTR)"kernel32"), "IsWow64Process");
+
+	if(IW64P != NULL){
+		IW64P(GetCurrentProcess(), &os64);
+	}
+	res = os64 ? "x86_64" : "i386";
+#endif
+#endif
+	return res;
+}

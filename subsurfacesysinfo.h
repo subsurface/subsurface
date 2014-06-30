@@ -212,7 +212,9 @@ public:
 	static QString osKernelVersion();
 	static QString osVersion();
 	static QString prettyOsName();
+
 #endif
+	static QString osArch();
 };
 
 
