@@ -97,6 +97,20 @@ private:
 	bool uploadMode;
 };
 
+class UserSurveyServices : public WebServices {
+	Q_OBJECT
+public:
+	void sendSurvey(QString values);
+	explicit UserSurveyServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
+private
+slots:
+	// need to declare them as no ops or Qt4 is unhappy
+	virtual void startDownload() { }
+	virtual void startUpload() { }
+	virtual void buttonClicked(QAbstractButton *button) { }
+
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
