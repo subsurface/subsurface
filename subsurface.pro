@@ -4,7 +4,7 @@ QT = core gui network svg concurrent
 lessThan(QT_MAJOR_VERSION, 5) {
 	QT += webkit
 } else {
-	!android: QT += webkitwidgets
+	!android: QT += webkitwidgets webkit
 	android: QT += androidextras
 }
 INCLUDEPATH += qt-ui $$PWD
@@ -191,13 +191,13 @@ FORMS = \
 	qt-ui/webservices.ui \
 	qt-ui/tableview.ui \
 	qt-ui/divelogimportdialog.ui \
-	qt-ui/usermanual.ui \
+	qt-ui/searchbar.ui \
 	qt-ui/divelogexportdialog.ui \
 	qt-ui/plannerSettings.ui \
 	qt-ui/usersurvey.ui
 
 # Nether usermanual or printing is supported on android right now
-android: FORMS -= qt-ui/usermanual.ui qt-ui/printoptions.ui
+android: FORMS -= qt-ui/printoptions.ui
 
 RESOURCES = subsurface.qrc
 

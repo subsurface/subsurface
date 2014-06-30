@@ -706,7 +706,7 @@ void MainWindow::on_actionUserManual_triggered()
 {
 #ifndef NO_USERMANUAL
 	if (!helpView) {
-		helpView = new UserManual(this);
+		helpView = new UserManual();
 	}
 	helpView->show();
 #endif

@@ -29,6 +29,7 @@ class ProfileGraphicsView;
 class QWebView;
 class QSettings;
 class UpdateManager;
+class UserManual;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
@@ -163,7 +164,7 @@ private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
-	QMainWindow *helpView;
+	UserManual *helpView;
 	QTreeView *yearlyStats;
 	QAbstractItemModel *yearlyStatsModel;
 	CurrentState state;

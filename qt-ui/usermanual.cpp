@@ -4,19 +4,43 @@
 #include <QDebug>
 
 #include "usermanual.h"
-#include "ui_usermanual.h"
 
 #include "helpers.h"
 
-UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
-	ui(new Ui::UserManual)
+SearchBar::SearchBar(QWidget *parent): QWidget(parent)
 {
-	ui->setupUi(this);
+	ui.setupUi(this);
+	#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+	ui.findNext->setIcon(QIcon(":icons/subsurface/32x32/actions/go-down.png"));
+	ui.findPrev->setIcon(QIcon(":icons/subsurface/32x32/actions/go-up.png"));
+	ui.findClose->setIcon(QIcon(":icons/subsurface/32x32/actions/window-close.png"));
+	#endif
 
+	connect(ui.findNext, SIGNAL(pressed()), this, SIGNAL(searchNext()));
+	connect(ui.findPrev, SIGNAL(pressed()), this, SIGNAL(searchPrev()));
+	connect(ui.searchEdit, SIGNAL(textChanged(QString)), this, SIGNAL(searchTextChanged(QString)));
+	connect(ui.searchEdit, SIGNAL(textChanged(QString)), this, SLOT(enableButtons(QString)));
+	connect(ui.findClose, SIGNAL(pressed()), this, SLOT(hide()));
+}
+
+void SearchBar::setVisible(bool visible)
+{
+	QWidget::setVisible(visible);
+	ui.searchEdit->setFocus();
+}
+
+void SearchBar::enableButtons(const QString &s)
+{
+	ui.findPrev->setEnabled(s.length());
+	ui.findNext->setEnabled(s.length());
+}
+
+UserManual::UserManual(QWidget *parent) : QWebView(parent)
+{
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
+	connect(quitKey, SIGNAL(activated()), qApp, SLOT(quit()));
 
 	QAction *actionShowSearch = new QAction(this);
 	actionShowSearch->setShortcut(Qt::CTRL + Qt::Key_F);
@@ -30,7 +54,7 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 
 	setWindowTitle(tr("User Manual"));
 
-	ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+	page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
 		// look for localized versions of the manual first
@@ -42,65 +66,48 @@ UserManual::UserManual(QWidget *parent) : QMainWindow(parent),
 		if (!manual.exists())
 			manual.setFileName(prefix + ".html");
 		if (!manual.exists()) {
-			ui->webView->setHtml(tr("Cannot find the Subsurface manual"));
+			setHtml(tr("Cannot find the Subsurface manual"));
 		} else {
 			QString urlString = QString("file:///") + manual.fileName();
-			QUrl url(urlString, QUrl::TolerantMode);
-			ui->webView->setUrl(url);
+			setUrl(QUrl(urlString, QUrl::TolerantMode));
 		}
 	} else {
-		ui->webView->setHtml(tr("Cannot find the Subsurface manual"));
+		setHtml(tr("Cannot find the Subsurface manual"));
 	}
-	ui->searchPanel->setParent(this);
-	ui->searchPanel->hide();
 
-	connect(actionShowSearch, SIGNAL(triggered(bool)), this, SLOT(showSearchPanel()));
-	connect(actionHideSearch, SIGNAL(triggered(bool)), this, SLOT(hideSearchPanel()));
-	connect(ui->webView, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
-	connect(ui->searchEdit, SIGNAL(textChanged(QString)), this, SLOT(searchTextChanged(QString)));
-	connect(ui->findNext, SIGNAL(clicked()), this, SLOT(searchNext()));
-	connect(ui->findPrev, SIGNAL(clicked()), this, SLOT(searchPrev()));
-}
-
-void UserManual::showSearchPanel()
-{
-	ui->searchPanel->show();
-	ui->searchEdit->setFocus();
-	ui->searchEdit->selectAll();
-}
-
-void UserManual::hideSearchPanel()
-{
-	ui->searchPanel->hide();
+	searchBar = new SearchBar(this);
+	searchBar->hide();
+	connect(actionShowSearch, SIGNAL(triggered(bool)), searchBar, SLOT(show()));
+	connect(actionHideSearch, SIGNAL(triggered(bool)), searchBar, SLOT(hide()));
+	connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
+	connect(searchBar, SIGNAL(searchTextChanged(QString)), this, SLOT(searchTextChanged(QString)));
+	connect(searchBar, SIGNAL(searchNext()), this, SLOT(searchNext()));
+	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
 }
 
 void UserManual::search(QString text, QWebPage::FindFlags flags = 0)
 {
-	if (ui->webView->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
-		ui->searchEdit->setStyleSheet("");
+	if (findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
+		searchBar->setStyleSheet("");
 	} else {
-		ui->searchEdit->setStyleSheet("QLineEdit{background: red;}");
+		searchBar->setStyleSheet("QLineEdit{background: red;}");
 	}
 }
 
-void UserManual::searchTextChanged(QString text)
+void UserManual::searchTextChanged(const QString& text)
 {
-	bool hasText = text.length() > 0;
-
-	ui->findPrev->setEnabled(hasText);
-	ui->findNext->setEnabled(hasText);
-
+	mLastText = text;
 	search(text);
 }
 
 void UserManual::searchNext()
 {
-	search(ui->searchEdit->text());
+	search(mLastText);
 }
 
 void UserManual::searchPrev()
 {
-	search(ui->searchEdit->text(), QWebPage::FindBackward);
+	search(mLastText, QWebPage::FindBackward);
 }
 
 void UserManual::linkClickedSlot(QUrl url)
@@ -110,5 +117,4 @@ void UserManual::linkClickedSlot(QUrl url)
 
 UserManual::~UserManual()
 {
-	delete ui;
 }
