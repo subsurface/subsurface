@@ -805,7 +805,7 @@ void ProfileWidget2::setAddState()
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	diveCeiling->setVisible(true);
-	setBackgroundBrush(QColor(Qt::blue).light());
+	setBackgroundBrush(QColor("#A7DCFF"));
 }
 
 void ProfileWidget2::setPlanState()
@@ -834,7 +834,7 @@ void ProfileWidget2::setPlanState()
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	diveCeiling->setVisible(true);
-	setBackgroundBrush(QColor(Qt::green).light());
+	setBackgroundBrush(QColor("#D7E3EF"));
 }
 
 extern struct ev_select *ev_namelist;
