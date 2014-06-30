@@ -37,8 +37,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>668</width>
-         <height>658</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -177,13 +177,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" rowspan="2">
-         <widget class="DateWidget" name="dateEdit" native="true">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-         </widget>
-        </item>
         <item row="12" column="0" colspan="3">
          <widget class="TagWidget" name="tagWidget">
           <property name="sizePolicy">
@@ -293,6 +286,20 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QDateEdit" name="dateEdit">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Date</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -323,8 +330,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -403,8 +410,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>387</width>
-         <height>285</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -713,8 +720,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>341</width>
-         <height>167</height>
+         <width>662</width>
+         <height>642</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -957,16 +964,9 @@
    <extends>QListView</extends>
    <header>divepicturewidget.h</header>
   </customwidget>
-  <customwidget>
-   <class>DateWidget</class>
-   <extends>QWidget</extends>
-   <header>simplewidgets.h</header>
-   <container>1</container>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
-  <tabstop>dateEdit</tabstop>
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
