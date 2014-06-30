@@ -381,6 +381,7 @@ void DateWidget::paintEvent(QPaintEvent *event)
 
 void DateWidget::mousePressEvent(QMouseEvent *event)
 {
+	calendarWidget->setSelectedDate(mDate);
 	calendarWidget->move(event->globalPos());
 	calendarWidget->show();
 	calendarWidget->raise();
