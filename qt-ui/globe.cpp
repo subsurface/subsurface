@@ -216,8 +216,7 @@ void GlobeGPS::repopulateLabels()
 void GlobeGPS::reload()
 {
 	editingDiveLocation = false;
-	if (messageWidget->isVisible())
-		messageWidget->hide();
+	messageWidget->hide();
 	repopulateLabels();
 }
 
