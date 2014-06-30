@@ -809,6 +809,7 @@ const char *getSetting(QSettings &s, QString name)
 
 void MainWindow::readSettings()
 {
+	static bool firstRun = true;
 	QSettings s;
 	s.beginGroup("Display");
 	QFont defaultFont = QFont(default_prefs.divelist_font);
@@ -848,9 +849,11 @@ void MainWindow::readSettings()
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 
-
 	loadRecentFiles(&s);
-	checkSurvey(&s);
+	if (firstRun) {
+		checkSurvey(&s);
+		firstRun = false;
+	}
 }
 
 #undef TOOLBOX_PREF_BUTTON
