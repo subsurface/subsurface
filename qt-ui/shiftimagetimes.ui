@@ -91,6 +91,9 @@
           <second>0</second>
          </time>
         </property>
+        <property name="displayFormat">
+         <string>h:mm</string>
+        </property>
         <property name="timeSpec">
          <enum>Qt::LocalTime</enum>
         </property>
