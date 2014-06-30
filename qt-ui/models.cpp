@@ -1053,16 +1053,7 @@ QVariant DiveItem::data(int column, int role) const
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
-		switch (column) {
-		case DATE: /* fall through */
-		case SUIT: /* fall through */
-		case LOCATION:
-			retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
-			break;
-		default:
-			retVal = int(Qt::AlignRight | Qt::AlignVCenter);
-			break;
-		}
+		retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
 		break;
 	case DiveTripModel::SORT_ROLE:
 		Q_ASSERT(dive != NULL);
