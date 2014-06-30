@@ -174,6 +174,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 {
 	const char *cyl_name = prefs.default_cylinder;
 	struct tank_info_t *ti = tank_info;
+	pressure_t pO2 = {.mbar = 1600};
 
 	if (!cyl_name)
 		return;
@@ -194,7 +195,8 @@ void fill_default_cylinder(cylinder_t *cyl)
 		if (ti->psi)
 			cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
 	}
-	cyl->depth.mm = 1600 * 1000 / O2_IN_AIR * 10 - 10000; // MOD of air
+	// MOD of air
+	cyl->depth = gas_mod(&cyl->gasmix, pO2, 1);
 }
 
 /* make sure that the gas we are switching to is represented in our
