@@ -297,8 +297,7 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	setDate(QDate::currentDate());
 	setMinimumSize(QSize(80,64));
 	setFocusPolicy(Qt::StrongFocus);
-	calendarWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-	calendarWidget->setWindowModality(Qt::ApplicationModal);
+	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
 	calendarWidget->setFirstDayOfWeek(getLocale().firstDayOfWeek());
 	calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
@@ -306,7 +305,18 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	connect(calendarWidget, SIGNAL(clicked(QDate)), calendarWidget, SLOT(hide()));
 	connect(calendarWidget, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
 	connect(calendarWidget, SIGNAL(clicked(QDate)), this, SLOT(setDate(QDate)));
+	calendarWidget->installEventFilter(this);
 }
+
+bool DateWidget::eventFilter(QObject *object, QEvent *event)
+{
+	if(event->type() == QEvent::FocusOut){
+		calendarWidget->hide();
+		return true;
+	}
+	return QObject::eventFilter(object, event);
+}
+
 
 void DateWidget::setDate(const QDate& date)
 {
@@ -367,6 +377,8 @@ void DateWidget::mousePressEvent(QMouseEvent *event)
 {
 	calendarWidget->move(event->globalPos());
 	calendarWidget->show();
+	calendarWidget->raise();
+	calendarWidget->setFocus();
 }
 
 void DateWidget::focusInEvent(QFocusEvent *event)

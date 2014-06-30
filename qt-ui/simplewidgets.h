@@ -104,6 +104,7 @@ protected:
 	void focusOutEvent(QFocusEvent *);
 	void keyPressEvent(QKeyEvent *);
 	void changeEvent(QEvent *);
+	bool eventFilter(QObject *, QEvent *);
 signals:
 	void dateChanged(const QDate& date);
 private:
