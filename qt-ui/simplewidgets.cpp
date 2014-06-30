@@ -314,6 +314,12 @@ bool DateWidget::eventFilter(QObject *object, QEvent *event)
 		calendarWidget->hide();
 		return true;
 	}
+	if(event->type() == QEvent::KeyPress){
+		QKeyEvent *ev = static_cast<QKeyEvent*>(event);
+		if(ev->key() == Qt::Key_Escape){
+			calendarWidget->hide();
+		}
+	}
 	return QObject::eventFilter(object, event);
 }
 
