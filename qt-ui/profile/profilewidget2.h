@@ -107,6 +107,8 @@ slots: // Necessary to call from QAction's signals.
 	void keyLeftAction();
 	void keyRightAction();
 
+	void divePlannerHandlerClicked();
+	void divePlannerHandlerReleased();
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
@@ -115,6 +117,7 @@ protected:
 	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
+
 private: /*methods*/
 	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
@@ -169,7 +172,9 @@ private:
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMaxTime;
+	bool shouldCalculateMaxDepth;
 	int maxtime;
+	int maxdepth;
 };
 
 #endif // PROFILEWIDGET2_H

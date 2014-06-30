@@ -90,7 +90,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	rulerItem(new RulerItem2()),
 	isGrayscale(false),
 	printMode(false),
-	shouldCalculateMaxTime(true)
+	shouldCalculateMaxTime(true),
+	shouldCalculateMaxDepth(true)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -430,7 +431,19 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	create_plot_info_new(d, currentdc, &pInfo);
 	if(shouldCalculateMaxTime)
 		maxtime = get_maxtime(&pInfo);
-	int maxdepth = get_maxdepth(&pInfo);
+
+	/* Only update the max depth if it's bigger than the current ones
+	 * when we are dragging the handler to plan / add dive.
+	 * otherwhise, update normally.
+	 */
+	int newMaxDepth = get_maxdepth(&pInfo);
+	if(!shouldCalculateMaxDepth) {
+		if (maxdepth < newMaxDepth) {
+			maxdepth = newMaxDepth;
+		}
+	} else {
+		maxdepth = newMaxDepth;
+	}
 
 	dataModel->setDive(d, pInfo);
 	toolTipItem->setPlotInfo(pInfo);
@@ -506,7 +519,6 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 	// Only set visible the events that should be visible
 	Q_FOREACH (DiveEventItem *event, eventItems) {
 		event->setVisible(!event->shouldBeHidden());
-		// qDebug() << event->getEvent()->name << "@" << event->getEvent()->time.seconds << "is hidden:" << event->isHidden();
 	}
 	QString dcText = get_dc_nickname(currentdc->model, currentdc->deviceid);
 	int nr;
@@ -565,6 +577,18 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 	QGraphicsView::mousePressEvent(event);
 	if(currentState == PLAN)
 		shouldCalculateMaxTime = false;
+}
+
+void ProfileWidget2::divePlannerHandlerClicked()
+{
+	shouldCalculateMaxDepth = false;
+	replot();
+}
+
+void ProfileWidget2::divePlannerHandlerReleased()
+{
+	shouldCalculateMaxDepth = true;
+	replot();
 }
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
@@ -1090,6 +1114,8 @@ void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end
 	handles << item;
 
 	connect(item, SIGNAL(moved()), this, SLOT(recreatePlannedDive()));
+	connect(item, SIGNAL(clicked()), this, SLOT(divePlannerHandlerClicked()));
+	connect(item, SIGNAL(released()), this, SLOT(divePlannerHandlerReleased()));
 	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);

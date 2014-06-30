@@ -258,6 +258,18 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	emit moved();
 }
 
+void DiveHandler::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mousePressEvent(event);
+	emit clicked();
+}
+
+void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mouseReleaseEvent(event);
+	emit released();
+}
+
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);

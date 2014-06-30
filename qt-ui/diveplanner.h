@@ -118,8 +118,12 @@ public:
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 signals:
 	void moved();
+	void clicked();
+	void released();
 private:
 	int parentIndex();
 public
