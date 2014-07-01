@@ -4,6 +4,7 @@
 #include "animationfunctions.h"
 #include "libdivecomputer.h"
 #include "dive.h"
+#include "planner.h"
 #include "profile.h"
 #include <QDebug>
 #include "gettextfromc.h"
@@ -107,8 +108,22 @@ void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visibl
 
 bool DiveEventItem::shouldBeHidden()
 {
+	struct event *event = internalEvent;
+
+	/*
+	 * Gas change events - particularly at the beginning of a dive - are
+	 * special. It's just the dive computer specifying the initial gas.
+	 *
+	 * Don't bother showing them if they match the first gas already
+	 */
+	if (!strcmp(event->name, "gaschange") && !event->time.seconds) {
+		struct gasmix *mix = get_gasmix_from_event(event);
+		struct dive *dive = current_dive;
+		if (dive && get_gasidx(dive, mix) <= 0)
+			return true;
+	}
 	for (int i = 0; i < evn_used; i++) {
-		if (!strcmp(internalEvent->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
+		if (!strcmp(event->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
 			return true;
 	}
 	return false;
