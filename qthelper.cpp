@@ -277,9 +277,10 @@ extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp
 	*timestamp = exif.epoch();
 	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
 	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
-	picture_load_exit:
-		free(mem.buffer);
-		return;
+
+picture_load_exit:
+	free(mem.buffer);
+	return;
 }
 
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
