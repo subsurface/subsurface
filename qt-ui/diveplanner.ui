@@ -114,15 +114,9 @@
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="dateAndTime">
          <item>
-          <widget class="DateWidget" name="dateEdit" native="true">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
+          <widget class="QDateEdit" name="dateEdit">
+           <property name="calendarPopup">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -179,12 +173,6 @@
    <class>TableView</class>
    <extends>QWidget</extends>
    <header>tableview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DateWidget</class>
-   <extends>QWidget</extends>
-   <header>simplewidgets.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
