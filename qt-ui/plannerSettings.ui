@@ -71,10 +71,10 @@
          <property name="horizontalSpacing">
           <number>2</number>
          </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>75%-50% avg. depth</string>
+            <string>below 75% avg. depth</string>
            </property>
           </widget>
          </item>
@@ -88,10 +88,27 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>below 75% avg. depth</string>
+            <string>75%-50% avg. depth</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="ascRate50">
+           <property name="suffix">
+            <string>m/min</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>50% avg. depth - 6m/20ft</string>
            </property>
           </widget>
          </item>
@@ -112,16 +129,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="ascRate50">
-           <property name="suffix">
-            <string>m/min</string>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="1">
           <widget class="QSpinBox" name="ascRateLast6m">
            <property name="suffix">
@@ -129,13 +136,6 @@
            </property>
            <property name="minimum">
             <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>50% avg. depth - 6m/20ft</string>
            </property>
           </widget>
          </item>
@@ -241,13 +241,6 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="4" column="0" colspan="2">
-       <widget class="QCheckBox" name="backgasBreaks">
-        <property name="text">
-         <string>plan backgas breaks</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_15">
         <property name="text">
@@ -255,10 +248,13 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QCheckBox" name="lastStop">
-        <property name="text">
-         <string>Last Stop at 6m/20ft</string>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="gflow">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
         </property>
        </widget>
       </item>
@@ -286,13 +282,17 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="gflow">
-        <property name="minimum">
-         <number>1</number>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="lastStop">
+        <property name="text">
+         <string>Last Stop at 6m/20ft</string>
         </property>
-        <property name="maximum">
-         <number>150</number>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="backgasBreaks">
+        <property name="text">
+         <string>plan backgas breaks</string>
         </property>
        </widget>
       </item>
@@ -333,19 +333,30 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="decopo2">
-        <property name="suffix">
-         <string>bar</string>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>bottom SAC</string>
         </property>
-        <property name="maximum">
-         <double>2.000000000000000</double>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="bottomSAC"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>deco SAC</string>
         </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.600000000000000</double>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="decoStopSAC"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>bottom pO₂</string>
         </property>
        </widget>
       </item>
@@ -372,30 +383,19 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>bottom pO₂</string>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="decopo2">
+        <property name="suffix">
+         <string>bar</string>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="decoStopSAC"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string>bottom SAC</string>
+        <property name="maximum">
+         <double>2.000000000000000</double>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="bottomSAC"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>deco SAC</string>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.600000000000000</double>
         </property>
        </widget>
       </item>
@@ -436,13 +436,6 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="verbatim_plan">
-        <property name="text">
-         <string>verbatim diveplan</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="display_runtime">
         <property name="toolTip">
@@ -479,6 +472,13 @@
         </property>
         <property name="text">
          <string>display transitions in deco</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="verbatim_plan">
+        <property name="text">
+         <string>verbatim diveplan</string>
         </property>
        </widget>
       </item>
