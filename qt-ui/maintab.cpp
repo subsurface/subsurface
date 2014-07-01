@@ -1083,14 +1083,16 @@ void MainTab::on_visibility_valueChanged(int value)
 
 void MainTab::editCylinderWidget(const QModelIndex &index)
 {
+	// we need a local copy or bad things happen when enableEdition() is called
+	QModelIndex editIndex = index;
 	if (cylindersModel->changed && editMode == NONE) {
 		enableEdition();
 		return;
 	}
-	if (index.isValid() && index.column() != CylindersModel::REMOVE) {
+	if (editIndex.isValid() && editIndex.column() != CylindersModel::REMOVE) {
 		if (editMode == NONE)
 			enableEdition();
-		ui.cylinders->edit(index);
+		ui.cylinders->edit(editIndex);
 	}
 }
 
