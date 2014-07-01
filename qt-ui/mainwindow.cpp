@@ -453,7 +453,7 @@ void MainWindow::printPlan()
 {
 #ifndef NO_PRINTING
 	QString diveplan = ui.divePlanOutput->toHtml();
-	QString withDisclaimer = diveplan + QString(disclaimer);
+	QString withDisclaimer = QString("<img height=50 src=\":subsurface-icon\"> ") + diveplan + QString(disclaimer);
 
 	QPrinter printer;
 	QPrintDialog *dialog = new QPrintDialog(&printer, this);
