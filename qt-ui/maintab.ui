@@ -966,7 +966,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>scrollArea</tabstop>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>timeEdit</tabstop>
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
@@ -978,10 +979,6 @@
   <tabstop>suit</tabstop>
   <tabstop>tagWidget</tabstop>
   <tabstop>notes</tabstop>
-  <tabstop>scrollArea_2</tabstop>
-  <tabstop>scrollArea_3</tabstop>
-  <tabstop>scrollArea_4</tabstop>
-  <tabstop>photosView</tabstop>
  </tabstops>
  <resources/>
  <connections/>
