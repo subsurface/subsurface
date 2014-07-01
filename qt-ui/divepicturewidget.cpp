@@ -2,6 +2,7 @@
 #include <dive.h>
 #include <QtConcurrentMap>
 #include <QDir>
+#include <QHash>
 
 DivePictureModel *DivePictureModel::instance()
 {
@@ -18,10 +19,16 @@ typedef QList<SPixmap> SPixmapList;
 
 SPixmap scaleImages(const QString &s)
 {
-	QImage p = QImage(s).scaled(128, 128, Qt::KeepAspectRatio);
+	static QHash <QString, QImage > cache;
 	SPixmap ret;
 	ret.first = s;
-	ret.second = p;
+	if (cache.contains(s)) {
+		ret.second = cache.value(s);
+	} else {
+		QImage p = QImage(s).scaled(128, 128, Qt::KeepAspectRatio);
+		cache.insert(s, p);
+		ret.second = p;
+	}
 	return ret;
 }
 
