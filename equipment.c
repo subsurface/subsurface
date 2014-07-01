@@ -57,7 +57,8 @@ bool cylinder_nodata(cylinder_t *cyl)
 	       !cyl->gasmix.he.permille &&
 	       !cyl->start.mbar &&
 	       !cyl->end.mbar &&
-	       !cyl->gas_used.mliter;
+	       !cyl->gas_used.mliter &&
+	       !cyl->deco_gas_used.mliter;
 }
 
 static bool cylinder_nosamples(cylinder_t *cyl)

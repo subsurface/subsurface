@@ -63,6 +63,7 @@ typedef struct
 	depth_t depth;
 	bool manually_added;
 	volume_t gas_used;
+	volume_t deco_gas_used;
 } cylinder_t;
 
 typedef struct

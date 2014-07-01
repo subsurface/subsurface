@@ -217,7 +217,7 @@ static int verify_gas_exists(struct dive *dive, struct gasmix mix_in)
 
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the
  * latest segment. */
-static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl)
+static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco)
 {
 	volume_t gas_used;
 	pressure_t delta_p;
@@ -228,6 +228,8 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	mean_depth.mm = (old_depth + new_depth) / 2;
 	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration;
 	cyl->gas_used.mliter += gas_used.mliter;
+	if (in_deco)
+		cyl->deco_gas_used.mliter += gas_used.mliter;
 	if (cyl->type.size.mliter) {
 		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter;
 		cyl->end.mbar -= delta_p.mbar;
@@ -320,7 +322,7 @@ static struct dive *create_dive_from_plan(struct diveplan *diveplan, struct dive
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		update_cylinder_pressure(dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
-					 dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl);
+					 dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
 		sample->cylinderpressure.mbar = cyl->end.mbar;
 		finish_sample(dc);
 		dp = dp->next;
@@ -637,15 +639,17 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div><div><br>%s<br>", temp);
 	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
-		double volume;
-		const char *unit;
+		double volume, deco_volume, deco_pressure;
+		const char *unit, *pressure_unit;
 		char warning[1000] = "";
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cylinder_none(cyl))
 			break;
 
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
+		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
+			deco_pressure = get_pressure_units(1000.0 * cyl->deco_gas_used.mliter / cyl->type.size.mliter, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
@@ -653,8 +657,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				snprintf(warning, sizeof(warning), " &mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
+			snprintf(temp, sizeof(temp), translate("gettextFromC", "%.0f%s (%.0f%s/%.0f%s in planned ascent) of %s"), volume, unit, deco_volume, unit, deco_pressure, pressure_unit, gasname(&cyl->gasmix));
+		} else {
+			snprintf(temp, sizeof(temp), translate("gettextFromC", "%.0f%s (%.0f%s during planned ascent) of %s"), volume, unit, deco_volume, unit, gasname(&cyl->gasmix));
 		}
-		snprintf(temp, sizeof(temp), translate("gettextFromC", "%.0f%s of %s"), volume, unit, gasname(&cyl->gasmix));
 		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s<br>", temp, warning);
 	}
 	dp = diveplan->dp;
