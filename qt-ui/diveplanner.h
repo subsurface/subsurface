@@ -168,6 +168,7 @@ slots:
 	void setDescRate(int rate);
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
+	void setBackgasBreaks(bool dobreaks);
 
 private:
 	Ui::plannerSettingsWidget ui;

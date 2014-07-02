@@ -61,6 +61,7 @@ struct preferences {
 	short proxy_auth;
 	char *proxy_user;
 	char *proxy_pass;
+	bool doo2breaks;
 };
 enum unit_system_values {
 	METRIC,

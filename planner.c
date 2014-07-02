@@ -721,6 +721,9 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas;
+	int o2time = 0;
+	int breaktime = -1;
+	int breakcylinder;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -862,6 +865,31 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 						       DECOTIMESTEP, po2, &displayed_dive);
 			cache_deco_state(tissue_tolerance, &trial_cache);
 			clock += DECOTIMESTEP;
+			if (prefs.doo2breaks) {
+				if (get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000) {
+					o2time += DECOTIMESTEP;
+					if (o2time >= 12 * 60) {
+						breaktime = 0;
+						breakcylinder = current_cylinder;
+						plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
+						previous_point_time = clock;
+						current_cylinder = 0;
+						gas = displayed_dive.cylinder[current_cylinder].gasmix;
+					}
+				} else {
+					if (breaktime >= 0) {
+						breaktime += DECOTIMESTEP;
+						if (breaktime >= 6 * 60) {
+							o2time = 0;
+							plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
+							previous_point_time = clock;
+							current_cylinder = breakcylinder;
+							gas = displayed_dive.cylinder[current_cylinder].gasmix;
+							breaktime = -1;
+						}
+					}
+				}
+			}
 			trial_depth = depth;
 		}
 		if (stopping) {

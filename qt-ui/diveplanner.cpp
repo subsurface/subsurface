@@ -378,6 +378,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.descRate->setValue(prefs.descrate / UNIT_FACTOR);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
+	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
@@ -402,6 +403,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
+	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 
 	ui.bottomSAC->setValue(20);
 	ui.decoStopSAC->setValue(17);
@@ -473,6 +475,11 @@ void PlannerSettingsWidget::setBottomPo2(double po2)
 void PlannerSettingsWidget::setDecoPo2(double po2)
 {
 	prefs.decopo2 = (int) (po2 * 1000.0);
+}
+
+void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
+{
+	prefs.doo2breaks = dobreaks;
 }
 
 
