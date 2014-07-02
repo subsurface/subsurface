@@ -217,7 +217,7 @@ void MainWindow::cleanUpEmpty()
 	ui.InfoWidget->clearStats();
 	ui.InfoWidget->clearInfo();
 	ui.InfoWidget->clearEquipment();
-	ui.InfoWidget->updateDiveInfo(-1);
+	ui.InfoWidget->updateDiveInfo(true);
 	ui.newProfile->setEmptyState();
 	ui.ListWidget->reload(DiveTripModel::TREE);
 	ui.globe->reload();

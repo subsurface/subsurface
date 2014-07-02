@@ -344,30 +344,30 @@ void MainTab::clearStats()
 }
 
 #define UPDATE_TEXT(d, field)          \
-	if (!d || !d->field)           \
+	if (clear || !d.field)        \
 		ui.field->setText(""); \
 	else                           \
-	ui.field->setText(d->field)
+		ui.field->setText(d.field)
 
 #define UPDATE_TEMP(d, field)            \
-	if (!d || d->field.mkelvin == 0) \
+	if (clear || d.field.mkelvin == 0) \
 		ui.field->setText("");   \
 	else                             \
-	ui.field->setText(get_temperature_string(d->field, true))
+		ui.field->setText(get_temperature_string(d.field, true))
 
 bool MainTab::isEditing()
 {
 	return editMode != NONE;
 }
 
-void MainTab::updateDiveInfo(int dive)
+void MainTab::updateDiveInfo(bool clear)
 {
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
 		return;
-	if (!isEnabled() && dive != -1)
+	if (!isEnabled() && !clear)
 		setEnabled(true);
-	if (isEnabled() && dive == -1)
+	if (isEnabled() && clear)
 		setEnabled(false);
 	editMode = NONE;
 	// This method updates ALL tabs whenever a new dive or trip is
@@ -377,23 +377,22 @@ void MainTab::updateDiveInfo(int dive)
 	// selected_dive
 	temperature_t temp;
 	struct dive *prevd;
-	struct dive *d = get_dive(dive);
 	char buf[1024];
 
 	process_selected_dives();
-	process_all_dives(d, &prevd);
+	process_all_dives(&displayed_dive, &prevd);
 
-	divePictureModel->updateDivePictures(dive);
-	UPDATE_TEXT(d, notes);
-	UPDATE_TEXT(d, location);
-	UPDATE_TEXT(d, suit);
-	UPDATE_TEXT(d, divemaster);
-	UPDATE_TEXT(d, buddy);
-	UPDATE_TEMP(d, airtemp);
-	UPDATE_TEMP(d, watertemp);
-	if (d) {
-		updateGpsCoordinates(d);
-		QDateTime localTime = QDateTime::fromTime_t(d->when - gettimezoneoffset());
+	divePictureModel->updateDivePictures();
+	UPDATE_TEXT(displayed_dive, notes);
+	UPDATE_TEXT(displayed_dive, location);
+	UPDATE_TEXT(displayed_dive, suit);
+	UPDATE_TEXT(displayed_dive, divemaster);
+	UPDATE_TEXT(displayed_dive, buddy);
+	UPDATE_TEMP(displayed_dive, airtemp);
+	UPDATE_TEMP(displayed_dive, watertemp);
+	if (!clear) {
+		updateGpsCoordinates(&displayed_dive);
+		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset());
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
@@ -447,36 +446,31 @@ void MainTab::updateDiveInfo(int dive)
 			ui.waterTempLabel->setVisible(true);
 			ui.watertemp->setVisible(true);
 			/* and fill them from the dive */
-			ui.rating->setCurrentStars(d->rating);
-			ui.visibility->setCurrentStars(d->visibility);
+			ui.rating->setCurrentStars(displayed_dive.rating);
+			ui.visibility->setCurrentStars(displayed_dive.visibility);
 			// reset labels in case we last displayed trip notes
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
 			ui.equipmentTab->setEnabled(true);
-			// now copy the current dive over to dieplayed_dive and use THAT to show the
-			// cylinder and weight model (this way edits on the equipment tab happen in the
-			// displayed_dive and not on the real data (until the user hits save)
-			// all this will of course be redone in the next commit... one step at a time :-)
-			displayed_dive = *d;
 			cylindersModel->setDive(&displayed_dive);
 			weightModel->setDive(&displayed_dive);
-			taglist_get_tagstring(d->tag_list, buf, 1024);
+			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 		}
-		ui.maximumDepthText->setText(get_depth_string(d->maxdepth, true));
-		ui.averageDepthText->setText(get_depth_string(d->meandepth, true));
-		ui.otuText->setText(QString("%1").arg(d->otu));
-		ui.waterTemperatureText->setText(get_temperature_string(d->watertemp, true));
-		ui.airTemperatureText->setText(get_temperature_string(d->airtemp, true));
+		ui.maximumDepthText->setText(get_depth_string(displayed_dive.maxdepth, true));
+		ui.averageDepthText->setText(get_depth_string(displayed_dive.meandepth, true));
+		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
+		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
+		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
 		volume_t gases[MAX_CYLINDERS] = {};
-		get_gas_used(d, gases);
+		get_gas_used(&displayed_dive, gases);
 		QString volumes = get_volume_string(gases[0], true);
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
-		per_cylinder_mean_depth(d, select_dc(d), mean, duration);
+		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
 		volume_t sac;
 		QString SACs;
 		if (mean[0] && duration[0]) {
-			sac.mliter = gases[0].mliter / (depth_to_atm(mean[0], d) * duration[0] / 60.0);
+			sac.mliter = gases[0].mliter / (depth_to_atm(mean[0], &displayed_dive) * duration[0] / 60.0);
 			SACs = get_volume_string(sac, true).append(tr("/min"));
 		} else {
 			SACs = QString(tr("unknown"));
@@ -484,31 +478,31 @@ void MainTab::updateDiveInfo(int dive)
 		for (int i = 1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++) {
 			volumes.append("\n" + get_volume_string(gases[i], true));
 			if (duration[i]) {
-				sac.mliter = gases[i].mliter / (depth_to_atm(mean[i], d) * duration[i] / 60);
+				sac.mliter = gases[i].mliter / (depth_to_atm(mean[i], &displayed_dive) * duration[i] / 60);
 				SACs.append("\n" + get_volume_string(sac, true).append(tr("/min")));
 			} else {
 				SACs.append("\n");
 			}
 		}
 		ui.gasUsedText->setText(volumes);
-		ui.oxygenHeliumText->setText(get_gaslist(d));
-		ui.dateText->setText(get_short_dive_date_string(d->when));
-		ui.diveTimeText->setText(QString::number((int)((d->duration.seconds + 30) / 60)));
+		ui.oxygenHeliumText->setText(get_gaslist(&displayed_dive));
+		ui.dateText->setText(get_short_dive_date_string(displayed_dive.when));
+		ui.diveTimeText->setText(QString::number((int)((displayed_dive.duration.seconds + 30) / 60)));
 		if (prevd)
-			ui.surfaceIntervalText->setText(get_time_string(d->when - (prevd->when + prevd->duration.seconds), 4));
+			ui.surfaceIntervalText->setText(get_time_string(displayed_dive.when - (prevd->when + prevd->duration.seconds), 4));
 		else
 			ui.surfaceIntervalText->clear();
 		if (mean[0])
 			ui.sacText->setText(SACs);
 		else
 			ui.sacText->clear();
-		if (d->surface_pressure.mbar)
+		if (displayed_dive.surface_pressure.mbar)
 			/* this is ALWAYS displayed in mbar */
-			ui.airPressureText->setText(QString("%1mbar").arg(d->surface_pressure.mbar));
+			ui.airPressureText->setText(QString("%1mbar").arg(displayed_dive.surface_pressure.mbar));
 		else
 			ui.airPressureText->clear();
-		if (d->salinity)
-			ui.salinityText->setText(QString("%1g/l").arg(d->salinity / 10.0));
+		if (displayed_dive.salinity)
+			ui.salinityText->setText(QString("%1g/l").arg(displayed_dive.salinity / 10.0));
 		else
 			ui.salinityText->clear();
 		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
