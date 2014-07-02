@@ -175,13 +175,7 @@ void MainWindow::current_dive_changed(int divenr)
 		select_dive(divenr);
 		ui.globe->centerOnCurrentDive();
 	}
-
-	/* It looks like it's a bit too cumberstone to send *one* dive using a QList,
-	 * but this is just futureproofness, it's the best way in the future to show more than
-	 * a single profile plot on the canvas. I know that we are using only one right now,
-	 * but let's keep like this so it's easy to change when we need? :)
-	 */
-	ui.newProfile->plotDives(QList<dive *>() << (current_dive));
+	ui.newProfile->plotDive(current_dive);
 	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
@@ -656,16 +650,16 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
+	ui.newProfile->plotDive(current_dive);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 }
 
 void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
+	ui.newProfile->plotDive(current_dive);
 	ui.InfoWidget->updateDiveInfo(selected_dive);
-	ui.newProfile->plotDives(QList<struct dive *>() << (current_dive));
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)

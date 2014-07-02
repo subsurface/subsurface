@@ -255,7 +255,7 @@ void ProfileWidget2::replot()
 {
 	int diveId = dataModel->id();
 	dataModel->clear();
-	plotDives(QList<dive *>() << get_dive_by_uniq_id(diveId));
+	plotDive(get_dive_by_uniq_id(diveId)); // why are we doing the get diveId here???
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -354,7 +354,7 @@ void ProfileWidget2::setupSceneAndFlags()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDives(QList<dive *> dives)
+void ProfileWidget2::plotDive(struct dive *d)
 {
 	static bool firstCall = true;
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
@@ -362,7 +362,6 @@ void ProfileWidget2::plotDives(QList<dive *> dives)
 
 	// I Know that it's a list, but currently we are
 	// using just the first.
-	struct dive *d = dives.first();
 	if (!d)
 		return;
 

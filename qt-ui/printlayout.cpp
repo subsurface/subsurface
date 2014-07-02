@@ -183,7 +183,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
-		profile->plotDives(QList<struct dive *>() << dive);
+		profile->plotDive(dive);
 		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		painter.setTransform(origTransform);
 
@@ -202,7 +202,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
-	profile->plotDives(QList<struct dive *>() << current_dive);
+	profile->plotDive(current_dive);
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
