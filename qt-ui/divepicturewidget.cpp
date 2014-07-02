@@ -32,7 +32,7 @@ SPixmap scaleImages(const QString &s)
 	return ret;
 }
 
-void DivePictureModel::updateDivePictures(int divenr)
+void DivePictureModel::updateDivePictures()
 {
 	if (numberOfPictures != 0) {
 		beginRemoveRows(QModelIndex(), 0, numberOfPictures - 1);
@@ -40,15 +40,14 @@ void DivePictureModel::updateDivePictures(int divenr)
 		endRemoveRows();
 	}
 
-	struct dive *d = get_dive(divenr);
-	numberOfPictures = dive_get_picture_count(d);
-	if (!d || numberOfPictures == 0) {
+	numberOfPictures = dive_get_picture_count(&displayed_dive);
+	if (numberOfPictures == 0) {
 		return;
 	}
 
 	stringPixmapCache.clear();
 	QStringList pictures;
-	FOR_EACH_PICTURE (d) {
+	FOR_EACH_PICTURE (&displayed_dive) {
 		stringPixmapCache[QString(picture->filename)].picture = picture;
 		pictures.push_back(QString(picture->filename));
 	}

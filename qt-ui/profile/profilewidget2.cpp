@@ -1343,6 +1343,9 @@ void ProfileWidget2::keyEscAction()
 
 void ProfileWidget2::plotPictures()
 {
+	if (printMode)
+		return;
+
 	qDeleteAll(pictures);
 	pictures.clear();
 	double x, y, lastX = -1.0, lastY = -1.0;
