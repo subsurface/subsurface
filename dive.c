@@ -8,6 +8,11 @@
 #include "dive.h"
 #include "libdivecomputer.h"
 
+/* one could argue about the best place to have this variable -
+ * it's used in the UI, but it seems to make the most sense to have it
+ * here */
+struct dive displayed_dive;
+
 struct tag_entry *g_tag_list = NULL;
 
 static const char *default_tags[] = {

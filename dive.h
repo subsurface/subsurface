@@ -414,7 +414,7 @@ struct dive_table {
 };
 
 extern struct dive_table dive_table;
-
+extern struct dive displayed_dive;
 extern int selected_dive;
 extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
