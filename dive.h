@@ -598,6 +598,8 @@ extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
+extern void clear_dive(struct dive *dive);
+extern void copy_dive(struct dive *s, struct dive *d);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
@@ -612,9 +614,9 @@ extern unsigned int dc_watertemp(struct divecomputer *dc);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern void renumber_dives(int start_nr, bool selected_only);
-extern void copy_events(struct dive *s, struct dive *d);
+extern void copy_events(struct divecomputer *s, struct divecomputer *d);
 extern void copy_cylinders(struct dive *s, struct dive *d, bool used_only);
-extern void copy_samples(struct dive *s, struct dive *d);
+extern void copy_samples(struct divecomputer *s, struct divecomputer *d);
 extern bool cylinder_is_used(struct dive *d, cylinder_t *cyl);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);

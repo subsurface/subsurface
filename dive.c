@@ -255,16 +255,106 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
+static void free_dc(struct divecomputer *dc);
+static void free_pic(struct picture *picture);
+
+#define STRDUP(_ptr) ((_ptr) ? strdup(_ptr) : NULL)
+
+/* this is very different from the copy_divecomputer later in this file;
+ * this function actually makes full copies of the content */
+static void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
+{
+	*ddc = *sdc;
+	ddc->model = STRDUP(sdc->model);
+	copy_samples(sdc, ddc);
+	copy_events(sdc, ddc);
+}
+
+/* copy an element in a list of pictures */
+static void copy_pl(struct picture *sp, struct picture *dp)
+{
+	*dp = *sp;
+	dp->filename = STRDUP(sp->filename);
+}
+
+/* copy an element in a list of tags */
+static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
+{
+	dt->tag = malloc(sizeof(struct divetag));
+	dt->tag->name = STRDUP(st->tag->name);
+	dt->tag->source = STRDUP(st->tag->source);
+}
+
+/* Clear everything but the first element;
+ * this works for taglist, picturelist, even dive computers */
+#define STRUCTURED_LIST_FREE(_type, _start, _free) {\
+	_type *_ptr = _start;                      \
+	while(_ptr) {                              \
+		_type *_next = _ptr->next;         \
+		_free(_ptr);                       \
+		_ptr = _next;                      \
+	}}
+
+#define STRUCTURED_LIST_COPY(_type, _first, _dest, _cpy) {\
+	_type *_sptr = _first;                      \
+	_type **_dptr = &_dest;                     \
+	while(_sptr) {                              \
+		*_dptr = malloc(sizeof(_type));     \
+		_cpy(_sptr, *_dptr);                 \
+		_sptr = _sptr->next;                \
+		_dptr = &(*_dptr)->next;            \
+	}                                           \
+	*_dptr = 0;                                 \
+	}
+
+/* copy_dive makes duplicates of many components of a dive;
+ * in order not to leak memory, we need to free those .
+ * copy_dive doesn't play with the divetrip and forward/backward pointers
+ * so we can ignore those */
+void clear_dive(struct dive *d)
+{
+	if (!d)
+		return;
+	/* free the strings */
+	free(d->buddy);
+	free(d->divemaster);
+	free(d->location);
+	free(d->notes);
+	free(d->suit);
+	/* free tags, additional dive computers, and pictures */
+	taglist_free(d->tag_list);
+	STRUCTURED_LIST_FREE(struct divecomputer, d->dc.next, free_dc);
+	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_pic);
+	memset(d, 0, sizeof(struct dive));
+}
+
+void copy_dive(struct dive *s, struct dive *d)
+{
+	clear_dive(d);
+	/* simply copy things over, but then make actual copies of the
+	 * relevant components that are referenced through pointers,
+	 * so all the strings and the structured lists */
+	*d = *s;
+	d->buddy = STRDUP(s->buddy);
+	d->divemaster = STRDUP(s->divemaster);
+	d->location = STRDUP(s->location);
+	d->notes = STRDUP(s->notes);
+	d->suit = STRDUP(s->suit);
+	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
+	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
+	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+}
+
 /* only copies events from the first dive computer */
-void copy_events(struct dive *s, struct dive *d)
+void copy_events(struct divecomputer *s, struct divecomputer *d)
 {
 	struct event *ev;
 	if (!s || !d)
 		return;
-	ev = s->dc.events;
-	d->dc.events = NULL;
+	ev = s->events;
+	d->events = NULL;
 	while (ev != NULL) {
-		add_event(&d->dc, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
+		add_event(d, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
 		ev = ev->next;
 	}
 }
@@ -305,17 +395,17 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 			memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 }
 
-void copy_samples(struct dive *s, struct dive *d)
+void copy_samples(struct divecomputer *s, struct divecomputer *d)
 {
 	/* instead of carefully copying them one by one and calling add_sample
 	 * over and over again, let's just copy the whole blob */
 	if (!s || !d)
 		return;
-	int nr = s->dc.samples;
-	d->dc.samples = nr;
-	d->dc.sample = malloc(nr * sizeof(struct sample));
-	if (d->dc.sample)
-		memcpy(d->dc.sample, s->dc.sample, nr * sizeof(struct sample));
+	int nr = s->samples;
+	d->samples = nr;
+	d->sample = malloc(nr * sizeof(struct sample));
+	if (d->sample)
+		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
 }
 
 struct sample *prepare_sample(struct divecomputer *dc)
@@ -1771,6 +1861,14 @@ static void free_dc(struct divecomputer *dc)
 	free(dc);
 }
 
+static void free_pic(struct picture *picture)
+{
+	if (picture) {
+		free(picture->filename);
+		free(picture);
+	}
+}
+
 static int same_event(struct event *a, struct event *b)
 {
 	if (a->time.seconds != b->time.seconds)
@@ -2075,14 +2173,9 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 	return ret_tag;
 }
 
-/* Clear everything but the first element */
 void taglist_free(struct tag_entry *entry)
 {
-	while (entry) {
-		struct tag_entry *next = entry->next;
-		free(entry);
-		entry = next;
-	}
+	STRUCTURED_LIST_FREE(struct tag_entry, entry, free)
 }
 
 /* Merge src1 and src2, write to *dst */

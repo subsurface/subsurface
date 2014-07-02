@@ -103,8 +103,13 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// We need to make a copy, because as soon as the model is modified, it will
 	// remove all samples from the dive.
 	memcpy(&backupDive, d, sizeof(struct dive));
-	copy_samples(d, &backupDive);
-	copy_events(d, &backupDive);
+
+	// this code is just adjusted for the new API, it continues to just copy the first
+	// DC (which here is almost certainly sufficient)
+	// but it should most likely use copy_dive() instead
+	// but this whole section needs to be rewritten, anyway
+	copy_samples(&d->dc, &backupDive.dc);
+	copy_events(&d->dc, &backupDive.dc);
 	copy_cylinders(d, stagingDive, false); // this way the correct cylinder data is shown
 	CylindersModel::instance()->setDive(stagingDive);
 	int lasttime = 0;
@@ -1046,9 +1051,10 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), false);
 		MainWindow::instance()->setPlanNotes(tempDive->notes);
 		if (mode == ADD || mode == PLAN) {
-			// copy the samples and events, but don't overwrite the cylinders
-			copy_samples(tempDive, current_dive);
-			copy_events(tempDive, current_dive);
+			// copy the samples and events of the first dive computer, but don't overwrite the cylinders
+			// FIXME this needs to be rewritten
+			copy_samples(&tempDive->dc, &current_dive->dc);
+			copy_events(&tempDive->dc, &current_dive->dc);
 			copy_cylinders(tempDive, current_dive, false);
 		}
 	}
