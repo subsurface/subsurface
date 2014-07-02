@@ -879,7 +879,7 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->globe()->reload();
 	if (lastMode == MANUALLY_ADDED_DIVE) {
 		// more clean up
-		updateDiveInfo(selected_dive);
+		updateDiveInfo();
 		MainWindow::instance()->showProfile();
 		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
 		MainWindow::instance()->refreshDisplay(false);

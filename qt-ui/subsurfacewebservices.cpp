@@ -342,7 +342,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 			mark_divelist_changed(true);
 			MainWindow::instance()->globe()->repopulateLabels();
 			MainWindow::instance()->globe()->centerOnCurrentDive();
-			MainWindow::instance()->information()->updateDiveInfo(selected_dive);
+			MainWindow::instance()->information()->updateDiveInfo();
 		}
 
 		/* store last entered uid in config */

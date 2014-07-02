@@ -1055,7 +1055,7 @@ void ProfileWidget2::changeGas()
 	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, &gasmix));
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(d);
-	MainWindow::instance()->information()->updateDiveInfo(selected_dive);
+	MainWindow::instance()->information()->updateDiveInfo();
 	mark_divelist_changed(true);
 	replot();
 }

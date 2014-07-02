@@ -176,7 +176,7 @@ void MainWindow::current_dive_changed(int divenr)
 		ui.globe->centerOnCurrentDive();
 	}
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo(divenr);
+	ui.InfoWidget->updateDiveInfo();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -409,7 +409,7 @@ void MainWindow::createFakeDiveForAddAndPlan()
 	ui.ListWidget->unselectDives();
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->selectDives(QList<int>() << dive_table.nr - 1);
-	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.InfoWidget->updateDiveInfo();
 }
 
 void MainWindow::removeFakeDiveForAddAndPlan()
@@ -651,7 +651,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.InfoWidget->updateDiveInfo();
 }
 
 void MainWindow::on_actionNextDC_triggered()
@@ -659,7 +659,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo(selected_dive);
+	ui.InfoWidget->updateDiveInfo();
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)
