@@ -21,7 +21,7 @@
 
 #include <QEvent>
 #include <QGridLayout>
-#include <QHBoxLayout>
+#include <QDialogButtonBox>
 #include <QLabel>
 #include <QPainter>
 #include <QShowEvent>
@@ -92,27 +92,32 @@ void KMessageWidgetPrivate::createLayout()
 		layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
 		layout->addWidget(textLabel, 0, 1);
 
-		QHBoxLayout *buttonLayout = new QHBoxLayout;
-		buttonLayout->addStretch();
+		QDialogButtonBox *buttonLayout = new QDialogButtonBox();
+		//buttonLayout->addStretch();
 		Q_FOREACH (QToolButton *button, buttons) {
 			// For some reason, calling show() is necessary if wordwrap is true,
 			// otherwise the buttons do not show up. It is not needed if
 			// wordwrap is false.
 			button->show();
-			buttonLayout->addWidget(button);
+			buttonLayout->addButton(button, QDialogButtonBox::QDialogButtonBox::AcceptRole);
 		}
-		buttonLayout->addWidget(closeButton);
-		layout->addItem(buttonLayout, 1, 0, 1, 2);
+		buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
+		layout->addWidget(buttonLayout, 1, 0, 1, 2, Qt::AlignHCenter | Qt::AlignTop);
 	} else {
+		bool closeButtonVisible = closeButton->isVisible();
 		QHBoxLayout *layout = new QHBoxLayout(content);
 		layout->addWidget(iconLabel);
 		layout->addWidget(textLabel);
 
+		QDialogButtonBox *buttonLayout = new QDialogButtonBox();
 		Q_FOREACH (QToolButton *button, buttons) {
-			layout->addWidget(button);
+			buttonLayout->addButton(button, QDialogButtonBox::QDialogButtonBox::AcceptRole);
 		}
 
-		layout->addWidget(closeButton);
+		buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
+		// Something gets changed when added to the buttonLayout
+		closeButton->setVisible(closeButtonVisible);
+		layout->addWidget(buttonLayout);
 	};
 
 	if (q->isVisible()) {
