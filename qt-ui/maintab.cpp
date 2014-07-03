@@ -613,9 +613,27 @@ void MainTab::acceptChanges()
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	if (editMode == ADD) {
-		// we need to add the dive we just created to the dive list and select it.
+		// We need to add the dive we just created to the dive list and select it.
+		// And if we happen to have GPS data for the location entered, let's add those.
 		// Easy, right?
 		struct dive *added_dive = clone_dive(&displayed_dive);
+		if (!same_string(added_dive->location, "") &&
+		     ui.coordinates->text().trimmed().isEmpty()) {
+			struct dive *dive;
+			int i = 0;
+			for_each_dive (i, dive) {
+				QString location(dive->location);
+				if (location == ui.location->text() &&
+				    (dive->latitude.udeg || dive->longitude.udeg)) {
+					if (same_string(added_dive->location, dive->location)) {
+						added_dive->latitude = dive->latitude;
+						added_dive->longitude = dive->longitude;
+					}
+					MainWindow::instance()->globe()->reload();
+					break;
+				}
+			}
+		}
 		record_dive(added_dive);
 		addedId = added_dive->id;
 		// unselect everything as far as the UI is concerned - we'll fix that below
