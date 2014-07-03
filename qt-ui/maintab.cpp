@@ -265,8 +265,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
-		displayed_dive.location = current_dive->divetrip->location;
-		displayed_dive.notes = current_dive->divetrip->notes;
+		displayed_dive.location = copy_string(current_dive->divetrip->location);
+		displayed_dive.notes = copy_string(current_dive->divetrip->notes);
 		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
 	} else {
@@ -842,7 +842,7 @@ void MainTab::rejectChanges()
 			DivePlannerPointsModel::instance()->restoreBackupDive();
 		}
 		if (selected_dive >= 0) {
-			displayed_dive = *get_dive(selected_dive);
+			copy_dive(current_dive, &displayed_dive);
 			cylindersModel->setDive(&displayed_dive);
 			weightModel->setDive(&displayed_dive);
 		} else {
@@ -851,6 +851,7 @@ void MainTab::rejectChanges()
 			setEnabled(false);
 		}
 	}
+#if 0 // this makes no sense anymore - but let's make sure I think this through
 	// now let's avoid memory leaks
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		if (displayed_dive.location != current_dive->divetrip->location)
@@ -866,6 +867,7 @@ void MainTab::rejectChanges()
 		FREE_IF_DIFFERENT(notes);
 		FREE_IF_DIFFERENT(suit);
 	}
+#endif
 	hideMessage();
 	MainWindow::instance()->dive_list()->setEnabled(true);
 	ui.dateEdit->setEnabled(true);
@@ -904,6 +906,7 @@ void MainTab::on_buddy_textChanged()
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
+	free(displayed_dive.buddy);
 	displayed_dive.buddy = strdup(text.toUtf8().data());
 	markChangedWidget(ui.buddy);
 }
@@ -916,6 +919,7 @@ void MainTab::on_divemaster_textChanged()
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
+	free(displayed_dive.divemaster);
 	displayed_dive.divemaster = strdup(text.toUtf8().data());
 	markChangedWidget(ui.divemaster);
 }
@@ -1036,6 +1040,7 @@ void MainTab::on_location_textChanged(const QString &text)
 {
 	if (editMode == NONE)
 		return;
+	free(displayed_dive.location);
 	displayed_dive.location = strdup(ui.location->text().toUtf8().data());
 	markChangedWidget(ui.location);
 }
@@ -1044,6 +1049,7 @@ void MainTab::on_suit_textChanged(const QString &text)
 {
 	if (editMode == NONE)
 		return;
+	free(displayed_dive.suit);
 	displayed_dive.suit = strdup(text.toUtf8().data());
 	markChangedWidget(ui.suit);
 }
@@ -1052,6 +1058,7 @@ void MainTab::on_notes_textChanged()
 {
 	if (editMode == NONE)
 		return;
+	free(displayed_dive.notes);
 	displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
 	markChangedWidget(ui.notes);
 }
