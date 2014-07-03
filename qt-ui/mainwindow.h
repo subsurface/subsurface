@@ -156,7 +156,6 @@ slots:
 	void recreateDiveList();
 	void showProfile();
 	void editCurrentDive();
-	void removeFakeDiveForAddAndPlan();
 	void planCanceled();
 	void planCreated();
 
@@ -185,7 +184,6 @@ private:
 
 	bool plannerStateClean();
 	void createFakeDiveForAddAndPlan();
-	int fakeDiveId;
 	QDialog *survey;
 };
 

@@ -257,14 +257,14 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 	printf("in create_dive_from_plan\n");
 	dump_plan(diveplan);
 #endif
-	// clear out the dive, fill in the basics and get started
-	clear_dive(&displayed_dive);
-	displayed_dive.when = diveplan->when;
-	displayed_dive.dc.surface_pressure.mbar = diveplan->surface_pressure;
-	dc = &displayed_dive.dc;
-	dc->model = "planned dive"; /* do not translate here ! */
-	dp = diveplan->dp;
+	// reset the cylinders and clear out the samples of the displayed dive so we can restart
 	reset_cylinders(&displayed_dive);
+	dc = &displayed_dive.dc;
+	free(dc->sample);
+	dc->sample = NULL;
+	dc->samples = 0;
+	dc->alloc_samples = 0;
+	dp = diveplan->dp;
 	cyl = &displayed_dive.cylinder[0];
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);

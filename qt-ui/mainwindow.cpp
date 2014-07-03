@@ -63,7 +63,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	yearlyStatsModel(0),
 	state(VIEWALL),
 	updateManager(0),
-	fakeDiveId(0),
 	survey(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -392,48 +391,38 @@ bool MainWindow::plannerStateClean()
 	return true;
 }
 
+// setup displayed_dive so we can start planning with it
 void MainWindow::createFakeDiveForAddAndPlan()
 {
-	// now cheat - create one dive that we use to store the info tab data in
-	//TODO: C-function create_temporary_dive ?
-	struct dive *dive = alloc_dive();
-	fakeDiveId = dive->id;
-	dive->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
-	dive->dc.model = "manually added dive"; // don't translate! this is stored in the XML file
+	clear_dive(&displayed_dive);
+	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
+	// now show the mostly empty main tab
+	ui.InfoWidget->updateDiveInfo();
 
-	dive->latitude.udeg = 0;
-	dive->longitude.udeg = 0;
-	record_dive(dive);
+#if 0 // don't want to do any of this, I think
 	// select this new dive (but remember the old selection
 	ui.ListWidget->rememberSelection();
 	ui.ListWidget->unselectDives();
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->selectDives(QList<int>() << dive_table.nr - 1);
 	ui.InfoWidget->updateDiveInfo();
-}
-
-void MainWindow::removeFakeDiveForAddAndPlan()
-{
-	int idx;
-
-	if (!fakeDiveId ||
-	    (idx = get_idx_by_uniq_id(fakeDiveId)) == dive_table.nr)
-		return;
-	delete_single_dive(idx);
+	showProfile();
+#endif
 }
 
 void MainWindow::planCanceled()
 {
-	removeFakeDiveForAddAndPlan();
 	showProfile();
+#if 0 // shouldn't need this
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	ui.ListWidget->restoreSelection();
+#endif
 	refreshDisplay();
 }
 
 void MainWindow::planCreated()
 {
-	removeFakeDiveForAddAndPlan();
 	showProfile();
 	refreshDisplay();
 }
@@ -501,16 +490,26 @@ void MainWindow::on_actionAddDive_triggered()
 	ui.ListWidget->endSearch();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
-	createFakeDiveForAddAndPlan();
+	clear_dive(&displayed_dive);
+	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
 
+	// setup the dive cylinders
+	DivePlannerPointsModel::instance()->setupCylinders();
+
+	// now show the mostly empty main tab
+	ui.InfoWidget->updateDiveInfo();
+
+	// show main tab
 	ui.InfoWidget->setCurrentIndex(0);
+
 	ui.InfoWidget->addDiveStarted();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 
 	ui.newProfile->setAddState();
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->createSimpleDive();
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
+	ui.newProfile->plotDive();
 }
 
 void MainWindow::on_actionRenumber_triggered()

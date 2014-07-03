@@ -66,9 +66,13 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 void DivePlannerPointsModel::createSimpleDive()
 {
 	struct gasmix gas = { 0 };
+
+	// set the start time of the plan
+	diveplan.when = displayed_dive.when;
+
 	if (isPlanner())
 		// let's use the gas from the first cylinder
-		gas = stagingDive->cylinder[0].gasmix;
+		gas = displayed_dive.cylinder[0].gasmix;
 
 	// If we're in drop_stone_mode, don't add a first point.
 	// It will be added implicit.
@@ -110,15 +114,6 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// but this whole section needs to be rewritten, anyway
 	copy_samples(&d->dc, &backupDive.dc);
 	copy_events(&d->dc, &backupDive.dc);
-	copy_cylinders(d, stagingDive, false); // this way the correct cylinder data is shown
-
-
-
-// FIXME -- need to get rid of stagingDIve
-// the following now uses displayed_dive !!!!
-
-
-
 
 	CylindersModel::instance()->updateDive();
 	int lasttime = 0;
@@ -139,56 +134,39 @@ void DivePlannerPointsModel::restoreBackupDive()
 	memcpy(current_dive, &backupDive, sizeof(struct dive));
 }
 
-void DivePlannerPointsModel::copyCylinders(dive *d)
-{
-	copy_cylinders(stagingDive, d, false);
-}
-
 // copy the tanks from the current dive, or the default cylinder
 // or an unknown cylinder
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
-	if (!stagingDive)
+	if (mode == PLAN && current_dive) {
+		// take the used cylinders from the selected dive as starting point
+		CylindersModel::instance()->copyFromDive(current_dive);
+		copy_cylinders(current_dive, &displayed_dive, true);
+		reset_cylinders(&displayed_dive);
 		return;
-
-	if (stagingDive != current_dive) {
-		// we are planning a dive
-		if (current_dive) {
-			// take the used cylinders from the selected dive as starting point
-			CylindersModel::instance()->copyFromDive(current_dive);
-			copy_cylinders(current_dive, stagingDive, true);
-			reset_cylinders(stagingDive);
-			return;
-		} else {
-			if (!same_string(prefs.default_cylinder, "")) {
-				fill_default_cylinder(&stagingDive->cylinder[0]);
-			} else {
-				// roughly an AL80
-				stagingDive->cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
-				stagingDive->cylinder[0].type.size.mliter = 11100;
-				stagingDive->cylinder[0].type.workingpressure.mbar = 207000;
-			}
-		}
 	}
-	reset_cylinders(stagingDive);
-	CylindersModel::instance()->copyFromDive(stagingDive);
+	if (!same_string(prefs.default_cylinder, "")) {
+		fill_default_cylinder(&displayed_dive.cylinder[0]);
+	} else {
+		// roughly an AL80
+		displayed_dive.cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
+		displayed_dive.cylinder[0].type.size.mliter = 11100;
+		displayed_dive.cylinder[0].type.workingpressure.mbar = 207000;
+	}
+	reset_cylinders(&displayed_dive);
+	CylindersModel::instance()->copyFromDive(&displayed_dive);
 }
 
 QStringList &DivePlannerPointsModel::getGasList()
 {
-	struct dive *activeDive = isPlanner() ? stagingDive : current_dive;
 	static QStringList list;
 	list.clear();
-	if (!activeDive) {
-		list.push_back(tr("AIR"));
-	} else {
-		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			cylinder_t *cyl = &activeDive->cylinder[i];
-			if (cylinder_nodata(cyl))
-				break;
-			list.push_back(gasToStr(cyl->gasmix));
-		}
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = &displayed_dive.cylinder[i];
+		if (cylinder_nodata(cyl))
+			break;
+		list.push_back(gasToStr(cyl->gasmix));
 	}
 	return list;
 }
@@ -501,8 +479,6 @@ void PlannerSettingsWidget::setDecoPo2(double po2)
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {
 	mode = m;
-	if (m == NOTHING)
-		stagingDive = NULL;
 	// the planner may reset our GF settings that are used to show deco
 	// reset them to what's in the preferences
 	if (m != PLAN)
@@ -643,7 +619,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING), tempDive(NULL), stagingDive(NULL)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	memset(&backupDive, 0, sizeof(backupDive));
@@ -767,7 +743,7 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 	sanitize_gasmix(&mix);
 
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &stagingDive->cylinder[i];
+		cylinder_t *cyl = &displayed_dive.cylinder[i];
 		if (cylinder_nodata(cyl)) {
 			fill_default_cylinder(cyl);
 			cyl->gasmix = mix;
@@ -827,7 +803,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
 		seconds = 600;		     // 10 min
 		//Default to the first defined gas, if we got one.
-		cylinder_t *cyl = &stagingDive->cylinder[0];
+		cylinder_t *cyl = &displayed_dive.cylinder[0];
 		if (cyl)
 			gas = cyl->gasmix;
 	}
@@ -927,12 +903,16 @@ void DivePlannerPointsModel::cancelPlan()
 			return;
 		}
 	}
-
-	if (mode != ADD) // for ADD stagingDive points at current_dive
-		free(stagingDive);
-	stagingDive = NULL; // always reset the stagingDive to NULL
 	setPlanMode(NOTHING);
 	diveplan.dp = NULL;
+
+
+
+
+	// somewhere, somehow we need to make sure that the current_dive is displayed again
+
+
+
 	emit planCanceled();
 }
 
@@ -953,7 +933,7 @@ QVector<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
 }
 void DivePlannerPointsModel::rememberTanks()
 {
-	oldGases = collectGases(stagingDive);
+	oldGases = collectGases(&displayed_dive);
 }
 
 bool DivePlannerPointsModel::tankInUse(struct gasmix gasmix)
@@ -976,7 +956,7 @@ void DivePlannerPointsModel::tanksUpdated()
 	// "did a gas change on us". So we look through the diveplan to
 	// see if there is a gas that is now missing and if there is, we
 	// replace it with the matching new gas.
-	QVector<QPair<int, int> > gases = collectGases(stagingDive);
+	QVector<QPair<int, int> > gases = collectGases(&displayed_dive);
 	if (gases.count() == oldGases.count()) {
 		// either nothing relevant changed, or exactly ONE gasmix changed
 		for (int i = 0; i < gases.count(); i++) {
@@ -1005,12 +985,6 @@ void DivePlannerPointsModel::tanksUpdated()
 
 void DivePlannerPointsModel::clear()
 {
-	Q_ASSERT(stagingDive == 0);
-	if (mode == ADD) {
-		stagingDive = current_dive;
-	} else {
-		stagingDive = alloc_dive();
-	}
 	bool oldRecalc = setRecalc(false);
 
 
@@ -1033,13 +1007,7 @@ void DivePlannerPointsModel::clear()
 
 void DivePlannerPointsModel::createTemporaryPlan()
 {
-	// This needs to be done in the following steps:
 	// Get the user-input and calculate the dive info
-	// Not sure if this is the place to create the diveplan...
-	// We just start with a surface node at time = 0
-	if (!stagingDive)
-		return;
-	//TODO: this thingy looks like it could be a good C-based function
 	diveplan.dp = NULL;
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
@@ -1054,11 +1022,12 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		if (p.entered)
 			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.po2, true);
 	}
+
+	// what does the cache do???
 	char *cache = NULL;
-	tempDive = NULL;
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &stagingDive->cylinder[i];
+		cylinder_t *cyl = &displayed_dive.cylinder[i];
 		if (cyl->depth.mm) {
 			dp = create_dp(0, cyl->depth.mm, cyl->gasmix, 0);
 			if (diveplan.dp) {
@@ -1074,19 +1043,12 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	dump_plan(&diveplan);
 #endif
 	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
-		plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), false);
-		MainWindow::instance()->setPlanNotes(tempDive->notes);
-		if (mode == ADD || mode == PLAN) {
-			// copy the samples and events of the first dive computer, but don't overwrite the cylinders
-			// FIXME this needs to be rewritten
-			copy_samples(&tempDive->dc, &current_dive->dc);
-			copy_events(&tempDive->dc, &current_dive->dc);
-			copy_cylinders(tempDive, current_dive, false);
-		}
+		plan(&diveplan, &cache, isPlanner(), false);
 	}
 	// throw away the cache
 	free(cache);
 #if DEBUG_PLAN
+	save_dive(stderr, &displayed_dive);
 	dump_plan(&diveplan);
 #endif
 }
@@ -1095,8 +1057,6 @@ void DivePlannerPointsModel::deleteTemporaryPlan()
 {
 	deleteTemporaryPlan(diveplan.dp);
 	diveplan.dp = NULL;
-	delete_single_dive(get_divenr(tempDive));
-	tempDive = NULL;
 }
 
 void DivePlannerPointsModel::deleteTemporaryPlan(struct divedatapoint *dp)
@@ -1110,27 +1070,21 @@ void DivePlannerPointsModel::deleteTemporaryPlan(struct divedatapoint *dp)
 
 void DivePlannerPointsModel::createPlan()
 {
-	// Ok, so, here the diveplan creates a dive,
-	// puts it on the dive list, and we need to remember
-	// to not delete it later. mumble. ;p
+	// Ok, so, here the diveplan creates a dive
 	char *cache = NULL;
-	tempDive = NULL;
-
 	bool oldRecalc = plannerModel->setRecalc(false);
 	removeDeco();
 	createTemporaryPlan();
 	plannerModel->setRecalc(oldRecalc);
 
 	//TODO: C-based function here?
-	plan(&diveplan, &cache, &tempDive, stagingDive, isPlanner(), true);
-	record_dive(tempDive);
+	plan(&diveplan, &cache, isPlanner(), true);
+	record_dive(clone_dive(&displayed_dive));
 	mark_divelist_changed(true);
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	diveplan.dp = NULL;
 	setPlanMode(NOTHING);
-	free(stagingDive);
-	stagingDive = NULL;
 	planCreated();
 }

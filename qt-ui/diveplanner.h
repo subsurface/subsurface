@@ -46,7 +46,6 @@ public:
 	void tanksUpdated();
 	void rememberTanks();
 	bool tankInUse(struct gasmix gasmix);
-	void copyCylinders(struct dive *d);
 	void setupCylinders();
 	/**
 	 * @return the row number.
@@ -100,11 +99,9 @@ private:
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
-	struct dive *tempDive;
 	struct dive backupDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
-	struct dive *stagingDive;
 	QVector<QPair<int, int> > oldGases;
 	bool drop_stone_mode;
 	QDateTime startTime;

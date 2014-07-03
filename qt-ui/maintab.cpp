@@ -249,7 +249,7 @@ void MainTab::updateTextLabels(bool showUnits)
 
 void MainTab::enableEdition(EditMode newEditMode)
 {
-	if (current_dive == NULL || editMode != NONE)
+	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
 	modified = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
@@ -257,12 +257,22 @@ void MainTab::enableEdition(EditMode newEditMode)
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
 		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
 		// so exit this function here after editCurrentDive() returns
+
+
+
+		// FIXME : can we get rid of this recursive crap?
+
+
+
 		MainWindow::instance()->editCurrentDive();
 		return;
 	}
 	MainWindow::instance()->dive_list()->setEnabled(false);
-	if (amount_selected == 1)
+
+	// only setup the globe for editing if we are editing exactly one existing dive
+	if (amount_selected == 1 && newEditMode != ADD)
 		MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
+
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
@@ -276,8 +286,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 		} else {
 			displayMessage(tr("This dive is being edited."));
 		}
-		// editedDive already contains the current dive (we set this up in updateDiveInfo),
-		// so all we need to do is update the editMode if necessary
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
 }
@@ -598,14 +606,24 @@ void MainTab::reload()
 
 void MainTab::acceptChanges()
 {
-	int i;
+	int i, addedId = -1;
 	struct dive *d;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
-	/* now figure out if things have changed */
-	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+	if (editMode == ADD) {
+		// we need to add the dive we just created to the dive list and select it.
+		// Easy, right?
+		struct dive *added_dive = clone_dive(&displayed_dive);
+		record_dive(added_dive);
+		addedId = added_dive->id;
+		// unselect everything as far as the UI is concerned - we'll fix that below
+		MainWindow::instance()->dive_list()->unselectDives();
+		selected_dive = get_divenr(added_dive);
+		amount_selected = 1;
+	} else 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+		/* now figure out if things have changed */
 		if (!same_string(displayed_dive.notes, current_dive->divetrip->notes)) {
 			current_dive->divetrip->notes = strdup(displayed_dive.notes);
 			mark_divelist_changed(true);
@@ -670,9 +688,13 @@ void MainTab::acceptChanges()
 		}
 		if (tagsChanged(&displayed_dive, cd))
 			saveTags();
+
+#if 0 // with the new architecture this shouldn't be needed anymore
 		if (editMode == MANUALLY_ADDED_DIVE) {
 			DivePlannerPointsModel::instance()->copyCylinders(cd);
-		} else if (editMode != ADD && cylindersModel->changed) {
+		} else
+#endif
+		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -733,6 +755,12 @@ void MainTab::acceptChanges()
 	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
+		// now let's resort the dive list and make sure the newly added dive is still selected
+		sort_table(&dive_table);
+		MainWindow::instance()->dive_list()->unselectDives();
+		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
+		MainWindow::instance()->dive_list()->selectDive(newDiveNr, true);
+#if 0
 		// it's tricky to keep the right dive selected;
 		// first remember which one is selected in the current sort order
 		// and unselect all dives
@@ -753,7 +781,7 @@ void MainTab::acceptChanges()
 		// selected - but that may not be the right one, so select the one
 		// we remembered instead
 		MainWindow::instance()->dive_list()->selectDive(rememberSelected, true);
-
+#endif
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics()->replot();
