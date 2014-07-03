@@ -326,6 +326,9 @@ void clear_dive(struct dive *d)
 	memset(d, 0, sizeof(struct dive));
 }
 
+/* make a true copy that is independent of the source dive;
+ * all data structures are duplicated, so the copy can be modified without
+ * any impact on the source */
 void copy_dive(struct dive *s, struct dive *d)
 {
 	clear_dive(d);
@@ -341,6 +344,18 @@ void copy_dive(struct dive *s, struct dive *d)
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+}
+
+/* make a clone of the source dive and clean out the source dive;
+ * this is specifically so we can create a dive in the displayed_dive and then
+ * add it to the divelist.
+ * Note the difference to copy_dive() / clean_dive() */
+struct dive *clone_dive(struct dive *s)
+{
+	struct dive *dive = alloc_dive();
+	*dive = *s; // so all the pointers in dive point to the things s pointed to
+	memset(s, 0, sizeof(struct dive)); // and now the pointers in s are gone
+	return dive;
 }
 
 /* only copies events from the first dive computer */

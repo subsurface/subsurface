@@ -605,6 +605,7 @@ extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(struct dive *s, struct dive *d);
+extern struct dive *clone_dive(struct dive *s);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
