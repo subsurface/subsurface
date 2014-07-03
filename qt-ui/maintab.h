@@ -99,10 +99,12 @@ private:
 	TagCompletionModel tagModel;
 	DivePictureModel *divePictureModel;
 	Completers completers;
+	bool modified;
 	void resetPallete();
 	void saveTags();
 	bool tagsChanged(struct dive *a, struct dive *b);
 	void updateGpsCoordinates(const struct dive *dive);
+	void markChangedWidget(QWidget *w);
 };
 
 #endif // MAINTAB_H

@@ -251,6 +251,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 {
 	if (current_dive == NULL || editMode != NONE)
 		return;
+	modified = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
 	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
@@ -818,7 +819,11 @@ void MainTab::resetPallete()
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
-	if (lastMode != NONE && current_dive && memcmp(&displayed_dive, current_dive, sizeof(struct dive))) {
+
+	if (lastMode != NONE && current_dive &&
+	    (modified ||
+	     memcmp(&current_dive->cylinder[0], &displayed_dive.cylinder[0], sizeof(cylinder_t) * MAX_CYLINDERS) ||
+	     memcmp(&current_dive->cylinder[0], &displayed_dive.weightsystem[0], sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS))) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the Changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
@@ -889,13 +894,14 @@ void MainTab::rejectChanges()
 }
 #undef EDIT_TEXT2
 
-void markChangedWidget(QWidget *w)
+void MainTab::markChangedWidget(QWidget *w)
 {
 	QPalette p;
 	qreal h, s, l, a;
 	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
 	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
 	w->setPalette(p);
+	modified = true;
 }
 
 void MainTab::on_buddy_textChanged()
@@ -1082,15 +1088,21 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 
 void MainTab::on_rating_valueChanged(int value)
 {
-	displayed_dive.rating = value;
+	if (displayed_dive.rating != value) {
+		displayed_dive.rating = value;
+		modified = true;
+	}
 }
 
 void MainTab::on_visibility_valueChanged(int value)
 {
-	displayed_dive.visibility = value;
+	if (displayed_dive.visibility != value) {
+		displayed_dive.visibility = value;
+		modified = true;
+	}
 }
 
-#undef MODIFY_SELECTED_DIVESVES
+#undef MODIFY_SELECTED_DIVES
 #undef EDIT_TEXT
 #undef EDIT_VALUE
 
