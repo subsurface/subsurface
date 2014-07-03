@@ -29,6 +29,11 @@ static inline int same_string(const char *a, const char *b)
 	return !strcmp(a ?: "", b ?: "");
 }
 
+static inline char *copy_string(const char *s)
+{
+	return s ? strdup(s) : NULL;
+}
+
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
 

@@ -258,14 +258,12 @@ struct dive *alloc_dive(void)
 static void free_dc(struct divecomputer *dc);
 static void free_pic(struct picture *picture);
 
-#define STRDUP(_ptr) ((_ptr) ? strdup(_ptr) : NULL)
-
 /* this is very different from the copy_divecomputer later in this file;
  * this function actually makes full copies of the content */
 static void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
 {
 	*ddc = *sdc;
-	ddc->model = STRDUP(sdc->model);
+	ddc->model = copy_string(sdc->model);
 	copy_samples(sdc, ddc);
 	copy_events(sdc, ddc);
 }
@@ -274,15 +272,15 @@ static void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
 static void copy_pl(struct picture *sp, struct picture *dp)
 {
 	*dp = *sp;
-	dp->filename = STRDUP(sp->filename);
+	dp->filename = copy_string(sp->filename);
 }
 
 /* copy an element in a list of tags */
 static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 {
 	dt->tag = malloc(sizeof(struct divetag));
-	dt->tag->name = STRDUP(st->tag->name);
-	dt->tag->source = STRDUP(st->tag->source);
+	dt->tag->name = copy_string(st->tag->name);
+	dt->tag->source = copy_string(st->tag->source);
 }
 
 /* Clear everything but the first element;
@@ -335,11 +333,11 @@ void copy_dive(struct dive *s, struct dive *d)
 	 * relevant components that are referenced through pointers,
 	 * so all the strings and the structured lists */
 	*d = *s;
-	d->buddy = STRDUP(s->buddy);
-	d->divemaster = STRDUP(s->divemaster);
-	d->location = STRDUP(s->location);
-	d->notes = STRDUP(s->notes);
-	d->suit = STRDUP(s->suit);
+	d->buddy = copy_string(s->buddy);
+	d->divemaster = copy_string(s->divemaster);
+	d->location = copy_string(s->location);
+	d->notes = copy_string(s->notes);
+	d->suit = copy_string(s->suit);
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
@@ -1209,11 +1207,11 @@ static char *merge_text(const char *a, const char *b)
 	if (!a && !b)
 		return NULL;
 	if (!a || !*a)
-		return b ? strdup(b) : NULL;
+		return copy_string(b);
 	if (!b || !*b)
 		return strdup(a);
 	if (!strcmp(a, b))
-		return a ? strdup(a) : NULL;
+		return copy_string(a);
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
@@ -1984,7 +1982,7 @@ static struct divecomputer *find_matching_computer(struct divecomputer *match, s
 static void copy_dive_computer(struct divecomputer *res, struct divecomputer *a)
 {
 	*res = *a;
-	res->model = a->model ? strdup(a->model) : NULL;
+	res->model = copy_string(a->model);
 	res->samples = res->alloc_samples = 0;
 	res->sample = NULL;
 	res->events = NULL;
