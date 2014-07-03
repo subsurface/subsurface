@@ -432,8 +432,8 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.LocationLabel->setText(tr("Location"));
 			ui.NotesLabel->setText(tr("Notes"));
 			ui.equipmentTab->setEnabled(true);
-			cylindersModel->setDive(&displayed_dive);
-			weightModel->setDive(&displayed_dive);
+			cylindersModel->updateDive();
+			weightModel->updateDive();
 			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 		}
@@ -828,8 +828,8 @@ void MainTab::rejectChanges()
 		}
 		if (selected_dive >= 0) {
 			copy_dive(current_dive, &displayed_dive);
-			cylindersModel->setDive(&displayed_dive);
-			weightModel->setDive(&displayed_dive);
+			cylindersModel->updateDive();
+			weightModel->updateDive();
 		} else {
 			cylindersModel->clear();
 			weightModel->clear();

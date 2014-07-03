@@ -111,7 +111,16 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	copy_samples(&d->dc, &backupDive.dc);
 	copy_events(&d->dc, &backupDive.dc);
 	copy_cylinders(d, stagingDive, false); // this way the correct cylinder data is shown
-	CylindersModel::instance()->setDive(stagingDive);
+
+
+
+// FIXME -- need to get rid of stagingDIve
+// the following now uses displayed_dive !!!!
+
+
+
+
+	CylindersModel::instance()->updateDive();
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
 	struct gasmix gas = backupDive.cylinder[0].gasmix;
@@ -768,7 +777,15 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 			modpO2.mbar = prefs.decopo2;
 			cyl->depth = gas_mod(&mix, modpO2, M_OR_FT(3,10));
 
-			CylindersModel::instance()->setDive(stagingDive);
+
+
+
+			// FIXME -- need to get rid of stagingDIve
+			// the following now uses displayed_dive !!!!
+
+
+
+			CylindersModel::instance()->updateDive();
 			return true;
 		}
 		if (!gasmix_distance(&cyl->gasmix, &mix))
@@ -995,7 +1012,16 @@ void DivePlannerPointsModel::clear()
 		stagingDive = alloc_dive();
 	}
 	bool oldRecalc = setRecalc(false);
-	CylindersModel::instance()->setDive(stagingDive);
+
+
+
+	// FIXME -- need to get rid of stagingDIve
+	// the following now uses displayed_dive !!!!
+
+
+
+
+	CylindersModel::instance()->updateDive();
 	if (rowCount() > 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 		divepoints.clear();

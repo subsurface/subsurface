@@ -63,7 +63,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList &newHeaders)
 	headers = newHeaders;
 }
 
-CylindersModel::CylindersModel(QObject *parent) : current(0), rows(0)
+CylindersModel::CylindersModel(QObject *parent) : rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
@@ -93,7 +93,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
 
-	cylinder_t *cyl = &current->cylinder[index.row()];
+	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 	switch (role) {
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
@@ -164,7 +164,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
-	return &current->cylinder[index.row()];
+	return &displayed_dive.cylinder[index.row()];
 }
 
 // this is our magic 'pass data in' function that allows the delegate to get
@@ -285,17 +285,12 @@ void CylindersModel::add()
 	}
 
 	int row = rows;
-	fill_default_cylinder(&current->cylinder[row]);
-	current->cylinder[row].manually_added = true;
+	fill_default_cylinder(&displayed_dive.cylinder[row]);
+	displayed_dive.cylinder[row].manually_added = true;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
 	changed = true;
 	endInsertRows();
-}
-
-void CylindersModel::update()
-{
-	setDive(current);
 }
 
 void CylindersModel::clear()
@@ -306,19 +301,19 @@ void CylindersModel::clear()
 	}
 }
 
-void CylindersModel::setDive(dive *d)
+void CylindersModel::updateDive()
 {
-	if (current)
-		clear();
-	if (!d)
+	clear();
+	if (dive_table.nr == 0)
 		return;
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&d->cylinder[i]) &&
-		    (prefs.display_unused_tanks || cylinder_is_used(d, &d->cylinder[i]) || d->cylinder[i].manually_added))
+		if (!cylinder_none(&displayed_dive.cylinder[i]) &&
+		    (prefs.display_unused_tanks ||
+		     cylinder_is_used(&displayed_dive, &displayed_dive.cylinder[i]) ||
+		     displayed_dive.cylinder[i].manually_added))
 			rows = i + 1;
 	}
-	current = d;
 	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);
@@ -354,11 +349,11 @@ void CylindersModel::remove(const QModelIndex &index)
 	if (index.column() != REMOVE) {
 		return;
 	}
-	cylinder_t *cyl = &current->cylinder[index.row()];
+	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix)) ||
 	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-	     (cyl->manually_added || (current_dive && cylinder_is_used(current_dive, cyl))))) {
+	     (cyl->manually_added || cylinder_is_used(&displayed_dive, cyl)))) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
 									tr("Cylinder cannot be removed"),
 									tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
@@ -367,12 +362,12 @@ void CylindersModel::remove(const QModelIndex &index)
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
-	remove_cylinder(current, index.row());
+	remove_cylinder(&displayed_dive, index.row());
 	changed = true;
 	endRemoveRows();
 }
 
-WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent), current(0), rows(0)
+WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent), rows(0)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
@@ -380,7 +375,7 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent), current(0
 
 weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
 {
-	return &current->weightsystem[index.row()];
+	return &displayed_dive.weightsystem[index.row()];
 }
 
 void WeightModel::remove(const QModelIndex &index)
@@ -390,7 +385,7 @@ void WeightModel::remove(const QModelIndex &index)
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
-	remove_weightsystem(current, index.row());
+	remove_weightsystem(&displayed_dive, index.row());
 	changed = true;
 	endRemoveRows();
 }
@@ -409,7 +404,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || index.row() >= MAX_WEIGHTSYSTEMS)
 		return ret;
 
-	weightsystem_t *ws = &current->weightsystem[index.row()];
+	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
 
 	switch (role) {
 	case Qt::FontRole:
@@ -446,7 +441,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 // so we only implement the two columns we care about
 void WeightModel::passInData(const QModelIndex &index, const QVariant &value)
 {
-	weightsystem_t *ws = &current->weightsystem[index.row()];
+	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
 	if (index.column() == WEIGHT) {
 		if (ws->weight.grams != value.toInt()) {
 			ws->weight.grams = value.toInt();
@@ -574,7 +569,7 @@ fraction_t string_to_fraction(const char *str)
 bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	QString vString = value.toString();
-	weightsystem_t *ws = &current->weightsystem[index.row()];
+	weightsystem_t *ws = &displayed_dive.weightsystem[index.row()];
 	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
@@ -634,22 +629,15 @@ void WeightModel::add()
 	endInsertRows();
 }
 
-void WeightModel::update()
+void WeightModel::updateDive()
 {
-	setDive(current);
-}
-
-void WeightModel::setDive(dive *d)
-{
-	if (current)
-		clear();
+	clear();
 	rows = 0;
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-		if (!weightsystem_none(&d->weightsystem[i])) {
+		if (!weightsystem_none(&displayed_dive.weightsystem[i])) {
 			rows = i + 1;
 		}
 	}
-	current = d;
 	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);

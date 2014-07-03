@@ -116,8 +116,7 @@ public:
 	void passInData(const QModelIndex &index, const QVariant &value);
 	void add();
 	void clear();
-	void update();
-	void setDive(struct dive *d);
+	void updateDive();
 	void copyFromDive(struct dive *d);
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
@@ -127,7 +126,6 @@ slots:
 	void remove(const QModelIndex &index);
 
 private:
-	struct dive *current;
 	int rows;
 };
 
@@ -151,8 +149,7 @@ public:
 	void passInData(const QModelIndex &index, const QVariant &value);
 	void add();
 	void clear();
-	void update();
-	void setDive(struct dive *d);
+	void updateDive();
 	weightsystem_t *weightSystemAt(const QModelIndex &index);
 	bool changed;
 
@@ -161,7 +158,6 @@ slots:
 	void remove(const QModelIndex &index);
 
 private:
-	struct dive *current;
 	int rows;
 };
 
