@@ -1051,6 +1051,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	if (plannerModel->recalcQ() && !diveplan_empty(&diveplan)) {
 		plan(&diveplan, &cache, isPlanner(), false);
+		MainWindow::instance()->setPlanNotes(displayed_dive.notes);
 	}
 	// throw away the cache
 	free(cache);
