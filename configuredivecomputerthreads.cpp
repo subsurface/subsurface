@@ -4,6 +4,46 @@
 #include <QDateTime>
 #include <QStringList>
 
+#define OSTC3_GAS1			0x10
+#define OSTC3_GAS2			0x11
+#define OSTC3_GAS3			0x12
+#define OSTC3_GAS4			0x13
+#define OSTC3_GAS5			0x14
+#define OSTC3_DIL1			0x15
+#define OSTC3_DIL2			0x16
+#define OSTC3_DIL3			0x17
+#define OSTC3_DIL4			0x18
+#define OSTC3_DIL5			0x19
+#define OSTC3_SP1			0x1A
+#define OSTC3_SP2			0x1B
+#define OSTC3_SP3			0x1C
+#define OSTC3_SP4			0x1D
+#define OSTC3_SP5			0x1E
+#define OSTC3_CCR_MODE			0x1F
+#define OSTC3_DIVE_MODE			0x20
+#define OSTC3_DECO_TYPE			0x21
+#define OSTC3_PP02_MAX			0x22
+#define OSTC3_PP02_MIN			0x23
+#define OSTC3_FUTURE_TTS		0x24
+#define OSTC3_GF_LOW			0x25
+#define OSTC3_GF_HIGH			0x26
+#define OSTC3_AGF_LOW			0x27
+#define OSTC3_AGF_HIGH			0x28
+#define OSTC3_AGF_SELECTABLE		0x29
+#define OSTC3_SATURATION		0x2A
+#define OSTC3_DESATURATION		0x2B
+#define OSTC3_LAST_DECO			0x2C
+#define OSTC3_BRIGHTNESS		0x2D
+#define OSTC3_UNITS			0x2E
+#define OSTC3_SAMPLING_RATE		0x2F
+#define OSTC3_SALINITY			0x30
+#define OSTC3_DIVEMODE_COLOR		0x31
+#define OSTC3_LANGUAGE			0x32
+#define OSTC3_DATE_FORMAT		0x33
+#define OSTC3_COMPASS_GAIN		0x34
+#define OSTC3_PRESSURE_SENSOR_OFFSET	0x35
+#define OSTC3_SAFETY_STOP		0x36
+
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 	: QThread(parent), m_data(data)
 {
@@ -42,7 +82,7 @@ void ReadSettingsThread::run()
 			gas gas5;
 			//Gas 1
 			unsigned char gasData[4] = {0,0,0,0};
-			rc = hw_ostc3_device_config_read(m_data->device, 0x10, gasData, sizeof(gasData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS1, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
 				gas1.depth = gasData[3];
@@ -51,7 +91,7 @@ void ReadSettingsThread::run()
 				gas1.type = gasData[2];
 			}
 			//Gas 2
-			rc = hw_ostc3_device_config_read(m_data->device, 0x11, gasData, sizeof(gasData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS2, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
 				gas2.depth = gasData[3];
@@ -60,7 +100,7 @@ void ReadSettingsThread::run()
 				gas2.type = gasData[2];
 			}
 			//Gas 3
-			rc = hw_ostc3_device_config_read(m_data->device, 0x12, gasData, sizeof(gasData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS3, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
 				gas3.depth = gasData[3];
@@ -69,7 +109,7 @@ void ReadSettingsThread::run()
 				gas3.type = gasData[2];
 			}
 			//Gas 4
-			rc = hw_ostc3_device_config_read(m_data->device, 0x13, gasData, sizeof(gasData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS4, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
 				gas4.depth = gasData[3];
@@ -78,7 +118,7 @@ void ReadSettingsThread::run()
 				gas4.type = gasData[2];
 			}
 			//Gas 5
-			rc = hw_ostc3_device_config_read(m_data->device, 0x14, gasData, sizeof(gasData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS5, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
 				gas5.depth = gasData[3];
@@ -101,7 +141,7 @@ void ReadSettingsThread::run()
 			gas dil5;
 			//Dil 1
 			unsigned char dilData[4] = {0,0,0,0};
-			rc = hw_ostc3_device_config_read(m_data->device, 0x15, dilData, sizeof(dilData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL1, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				dil1.depth = dilData[3];
@@ -110,7 +150,7 @@ void ReadSettingsThread::run()
 				dil1.type = dilData[2];
 			}
 			//Dil 2
-			rc = hw_ostc3_device_config_read(m_data->device, 0x16, dilData, sizeof(dilData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL2, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				dil2.depth = dilData[3];
@@ -119,7 +159,7 @@ void ReadSettingsThread::run()
 				dil2.type = dilData[2];
 			}
 			//Dil 3
-			rc = hw_ostc3_device_config_read(m_data->device, 0x17, dilData, sizeof(dilData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL3, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				dil3.depth = dilData[3];
@@ -128,7 +168,7 @@ void ReadSettingsThread::run()
 				dil3.type = dilData[2];
 			}
 			//Dil 4
-			rc = hw_ostc3_device_config_read(m_data->device, 0x18, dilData, sizeof(dilData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL4, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				dil4.depth = dilData[3];
@@ -137,7 +177,7 @@ void ReadSettingsThread::run()
 				dil4.type = dilData[2];
 			}
 			//Dil 5
-			rc = hw_ostc3_device_config_read(m_data->device, 0x19, dilData, sizeof(dilData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL5, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				dil5.depth = dilData[3];
@@ -162,35 +202,35 @@ void ReadSettingsThread::run()
 			unsigned char spData[2] = {0,0};
 
 			//Sp 1
-			rc = hw_ostc3_device_config_read(m_data->device, 0x1A, spData, sizeof(spData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP1, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				sp1.sp = dilData[0];
 				sp1.depth = dilData[1];
 			}
 			//Sp 2
-			rc = hw_ostc3_device_config_read(m_data->device, 0x1B, spData, sizeof(spData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP2, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				sp2.sp = dilData[0];
 				sp2.depth = dilData[1];
 			}
 			//Sp 3
-			rc = hw_ostc3_device_config_read(m_data->device, 0x1C, spData, sizeof(spData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP3, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				sp3.sp = dilData[0];
 				sp3.depth = dilData[1];
 			}
 			//Sp 4
-			rc = hw_ostc3_device_config_read(m_data->device, 0x1D, spData, sizeof(spData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP4, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				sp4.sp = dilData[0];
 				sp4.depth = dilData[1];
 			}
 			//Sp 5
-			rc = hw_ostc3_device_config_read(m_data->device, 0x1E, spData, sizeof(spData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP5, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
 				sp5.sp = dilData[0];
@@ -201,43 +241,43 @@ void ReadSettingsThread::run()
 			//Read other settings
 			unsigned char uData[1] = {0};
 			//DiveMode
-			rc = hw_ostc3_device_config_read(m_data->device, 0x20, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIVE_MODE, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setDiveMode(uData[0]);
 			//Saturation
-			rc = hw_ostc3_device_config_read(m_data->device, 0x2A, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SATURATION, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setSaturation(uData[0]);
 			//LastDeco
-			rc = hw_ostc3_device_config_read(m_data->device, 0x2D, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_LAST_DECO, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setLastDeco(uData[0]);
 			//Brightness
-			rc = hw_ostc3_device_config_read(m_data->device, 0x2D, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_BRIGHTNESS, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setBrightness(uData[0]);
 			//Units
-			rc = hw_ostc3_device_config_read(m_data->device, 0x2E, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_UNITS, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setUnits(uData[0]);
 			//Sampling Rate
-			rc = hw_ostc3_device_config_read(m_data->device, 0x2F, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SAMPLING_RATE, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setSamplingRate(uData[0]);
 			//Salinity
-			rc = hw_ostc3_device_config_read(m_data->device, 0x30, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SALINITY, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setSalinity(uData[0]);
 			//Dive mode colour
-			rc = hw_ostc3_device_config_read(m_data->device, 0x31, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIVEMODE_COLOR, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setDiveModeColor(uData[0]);
 			//Language
-			rc = hw_ostc3_device_config_read(m_data->device, 0x32, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_LANGUAGE, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setLanguage(uData[0]);
 			//Date Format
-			rc = hw_ostc3_device_config_read(m_data->device, 0x33, uData, sizeof(uData));
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DATE_FORMAT, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setDateFormat(uData[0]);
 
@@ -316,15 +356,15 @@ void WriteSettingsThread::run()
 						     m_deviceDetails->gas5().type,
 						     m_deviceDetails->gas5().depth};
 			//gas 1
-			hw_ostc3_device_config_write(m_data->device, 0x10, gas1Data, sizeof(gas1Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
 			//gas 2
-			hw_ostc3_device_config_write(m_data->device, 0x11, gas2Data, sizeof(gas2Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS2, gas2Data, sizeof(gas2Data));
 			//gas 3
-			hw_ostc3_device_config_write(m_data->device, 0x12, gas3Data, sizeof(gas3Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS3, gas3Data, sizeof(gas3Data));
 			//gas 4
-			hw_ostc3_device_config_write(m_data->device, 0x13, gas4Data, sizeof(gas4Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS4, gas4Data, sizeof(gas4Data));
 			//gas 5
-			hw_ostc3_device_config_write(m_data->device, 0x14, gas5Data, sizeof(gas5Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
 
 			//write set point values
 			unsigned char sp1Data[2] = {m_deviceDetails->sp1().sp,
@@ -343,15 +383,15 @@ void WriteSettingsThread::run()
 						     m_deviceDetails->sp5().depth};
 
 			//sp 1
-			hw_ostc3_device_config_write(m_data->device, 0x1A, sp1Data, sizeof(sp1Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
 			//sp 2
-			hw_ostc3_device_config_write(m_data->device, 0x1B, sp2Data, sizeof(sp2Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SP2, sp2Data, sizeof(sp2Data));
 			//sp 3
-			hw_ostc3_device_config_write(m_data->device, 0x1C, sp3Data, sizeof(sp3Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SP3, sp3Data, sizeof(sp3Data));
 			//sp 4
-			hw_ostc3_device_config_write(m_data->device, 0x1D, sp4Data, sizeof(sp4Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SP4, sp4Data, sizeof(sp4Data));
 			//sp 5
-			hw_ostc3_device_config_write(m_data->device, 0x1E, sp5Data, sizeof(sp5Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
 
 			//write dil values
 			unsigned char dil1Data[4] = {m_deviceDetails->dil1().oxygen,
@@ -379,15 +419,15 @@ void WriteSettingsThread::run()
 						     m_deviceDetails->dil5().type,
 						     m_deviceDetails->dil5().depth};
 			//dil 1
-			hw_ostc3_device_config_write(m_data->device, 0x15, dil1Data, sizeof(gas1Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
 			//dil 2
-			hw_ostc3_device_config_write(m_data->device, 0x16, dil2Data, sizeof(dil2Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL2, dil2Data, sizeof(dil2Data));
 			//dil 3
-			hw_ostc3_device_config_write(m_data->device, 0x17, dil3Data, sizeof(dil3Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL3, dil3Data, sizeof(dil3Data));
 			//dil 4
-			hw_ostc3_device_config_write(m_data->device, 0x18, dil4Data, sizeof(dil4Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL4, dil4Data, sizeof(dil4Data));
 			//dil 5
-			hw_ostc3_device_config_write(m_data->device, 0x19, dil5Data, sizeof(dil5Data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL5, dil5Data, sizeof(dil5Data));
 
 
 			//write general settings
@@ -397,47 +437,47 @@ void WriteSettingsThread::run()
 
 			//dive mode
 			data[0] = m_deviceDetails->diveMode();
-			hw_ostc3_device_config_write(m_data->device, 0x20, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIVE_MODE, data, sizeof(data));
 
 			//saturation
 			data[0] = m_deviceDetails->saturation();
-			hw_ostc3_device_config_write(m_data->device, 0x2A, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SATURATION, data, sizeof(data));
 
 			//last deco
 			data[0] = m_deviceDetails->lastDeco();
-			hw_ostc3_device_config_write(m_data->device, 0x2C, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_LAST_DECO, data, sizeof(data));
 
 			//brightness
 			data[0] = m_deviceDetails->brightness();
-			hw_ostc3_device_config_write(m_data->device, 0x2D, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_BRIGHTNESS, data, sizeof(data));
 
 			//units
 			data[0] = m_deviceDetails->units();
-			hw_ostc3_device_config_write(m_data->device, 0x2E, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_UNITS, data, sizeof(data));
 
 			//sampling rate
 			data[0] = m_deviceDetails->samplingRate();
-			hw_ostc3_device_config_write(m_data->device, 0x2F, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SAMPLING_RATE, data, sizeof(data));
 
 			//salinity
 			data[0] = m_deviceDetails->salinity();
-			hw_ostc3_device_config_write(m_data->device, 0x30, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_SALINITY, data, sizeof(data));
 
 			//dive mode colour
 			data[0] = m_deviceDetails->diveModeColor();
-			hw_ostc3_device_config_write(m_data->device, 0x31, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DIVEMODE_COLOR, data, sizeof(data));
 
 			//language
 			data[0] = m_deviceDetails->language();
-			hw_ostc3_device_config_write(m_data->device, 0x32, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_LANGUAGE, data, sizeof(data));
 
 			//date format
 			data[0] = m_deviceDetails->dateFormat();
-			hw_ostc3_device_config_write(m_data->device, 0x33, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DATE_FORMAT, data, sizeof(data));
 
 			//compass gain
 			data[0] = m_deviceDetails->compassGain();
-			hw_ostc3_device_config_write(m_data->device, 0x34, data, sizeof(data));
+			hw_ostc3_device_config_write(m_data->device, OSTC3_COMPASS_GAIN, data, sizeof(data));
 
 			//sync date and time
 			if (m_deviceDetails->syncTime()) {
