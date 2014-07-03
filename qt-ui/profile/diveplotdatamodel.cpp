@@ -146,11 +146,6 @@ void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 	endInsertRows();
 }
 
-int DivePlotDataModel::id() const
-{
-	return diveId;
-}
-
 unsigned int DivePlotDataModel::dcShown() const
 {
 	return dcNr;
@@ -178,9 +173,8 @@ void DivePlotDataModel::emitDataChanged()
 
 void DivePlotDataModel::calculateDecompression()
 {
-	struct dive *d = get_dive_by_uniq_id(id());
-	struct divecomputer *dc = select_dc(d);
-	init_decompression(d);
-	calculate_deco_information(d, dc, &pInfo, false);
+	struct divecomputer *dc = select_dc(&displayed_dive);
+	init_decompression(&displayed_dive);
+	calculate_deco_information(&displayed_dive, dc, &pInfo, false);
 	dataChanged(index(0, CEILING), index(pInfo.nr - 1, TISSUE_16));
 }

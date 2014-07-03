@@ -253,7 +253,6 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::replot()
 {
-	int diveId = dataModel->id();
 	dataModel->clear();
 	plotDive(); // simply plot the displayed_dive again
 }
@@ -360,28 +359,25 @@ void ProfileWidget2::plotDive(struct dive *d)
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
 
-	if (!d) {
-		if (selected_dive == -1)
+	if (currentState != ADD && currentState != PLAN) {
+		if (!d) {
+			if (selected_dive == -1)
+				return;
+			d = current_dive; // display the current dive
+		}
+
+		// No need to do this again if we are already showing the same dive
+		// computer of the same dive, so we check the unique id of the dive
+		// and the selected dive computer number against the ones we are
+		// showing (can't compare the dive pointers as those might change).
+		if (d->id == displayed_dive.id && dc_number == dataModel->dcShown() && !forceReplot)
 			return;
-		d = current_dive; // display the current dive
-	}
 
-	// No need to do this again if we are already showing the same dive
-	// computer of the same dive, so we check the unique id of the dive
-	// and the selected dive computer number against the ones we are
-	// showing (can't compare the dive pointers as those might change).
-	if (d->id == dataModel->id() && dc_number == dataModel->dcShown() && !forceReplot)
-		return;
+		forceReplot = false;
 
-	forceReplot = false;
-
-	// this copies the dive and makes copies of all the relevant additional data
-	copy_dive(d, &displayed_dive);
-
-	//TODO: This is a temporary hack to help me understand the Planner.
-	// It seems that each time the 'createTemporaryPlan' runs, a new
-	// dive is created, and thus, we can plot that. hm...
-	if (currentState == ADD || currentState == PLAN) {
+		// this copies the dive and makes copies of all the relevant additional data
+		copy_dive(d, &displayed_dive);
+	} else {
 		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
 		if (!plannerModel->getDiveplan().dp) {
@@ -497,7 +493,7 @@ void ProfileWidget2::plotDive(struct dive *d)
 	else
 		meanDepth->setVisible(false);
 	meanDepth->setMeanDepth(pInfo.meandepth);
-	meanDepth->setLine(0, 0, timeAxis->posAtValue(d->duration.seconds), 0);
+	meanDepth->setLine(0, 0, timeAxis->posAtValue(displayed_dive.duration.seconds), 0);
 	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
@@ -524,7 +520,7 @@ void ProfileWidget2::plotDive(struct dive *d)
 	}
 	QString dcText = get_dc_nickname(currentdc->model, currentdc->deviceid);
 	int nr;
-	if ((nr = number_of_computers(current_dive)) > 1)
+	if ((nr = number_of_computers(&displayed_dive)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
 	diveComputerText->setText(dcText);
 	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
@@ -1046,15 +1042,16 @@ void ProfileWidget2::changeGas()
 	QString gas = action->text();
 	// backup the things on the dataModel, since we will clear that out.
 	unsigned int diveComputer = dataModel->dcShown();
-	int diveId = dataModel->id();
 	struct gasmix gasmix;
 	int seconds = timeAxis->valueAt(scenePos);
-	struct dive *d = get_dive_by_uniq_id(diveId);
 
 	validate_gas(gas.toUtf8().constData(), &gasmix);
-	add_gas_switch_event(d, get_dive_dc(d, diveComputer), seconds, get_gasidx(d, &gasmix));
+	add_gas_switch_event(&displayed_dive, get_dive_dc(&displayed_dive, diveComputer), seconds, get_gasidx(&displayed_dive, &gasmix));
 	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(d);
+	fixup_dive(&displayed_dive);
+
+	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
+
 	MainWindow::instance()->information()->updateDiveInfo();
 	mark_divelist_changed(true);
 	replot();

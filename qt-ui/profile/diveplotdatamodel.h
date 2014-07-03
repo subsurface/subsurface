@@ -54,7 +54,6 @@ public:
 	void clear();
 	void setDive(struct dive *d, const plot_info &pInfo);
 	const plot_info &data() const;
-	int id() const;
 	unsigned int dcShown() const;
 	double pheMax();
 	double pn2Max();
