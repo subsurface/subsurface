@@ -202,7 +202,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
-	profile->plotDive(current_dive);
+	profile->plotDive();
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */

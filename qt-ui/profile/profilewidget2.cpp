@@ -255,7 +255,7 @@ void ProfileWidget2::replot()
 {
 	int diveId = dataModel->id();
 	dataModel->clear();
-	plotDive(get_dive_by_uniq_id(diveId)); // why are we doing the get diveId here???
+	plotDive(); // simply plot the displayed_dive again
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -360,10 +360,23 @@ void ProfileWidget2::plotDive(struct dive *d)
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
 
-	// I Know that it's a list, but currently we are
-	// using just the first.
-	if (!d)
+	if (!d) {
+		if (selected_dive == -1)
+			return;
+		d = current_dive; // display the current dive
+	}
+
+	// No need to do this again if we are already showing the same dive
+	// computer of the same dive, so we check the unique id of the dive
+	// and the selected dive computer number against the ones we are
+	// showing (can't compare the dive pointers as those might change).
+	if (d->id == dataModel->id() && dc_number == dataModel->dcShown() && !forceReplot)
 		return;
+
+	forceReplot = false;
+
+	// this copies the dive and makes copies of all the relevant additional data
+	copy_dive(d, &displayed_dive);
 
 	//TODO: This is a temporary hack to help me understand the Planner.
 	// It seems that each time the 'createTemporaryPlan' runs, a new
@@ -378,6 +391,7 @@ void ProfileWidget2::plotDive(struct dive *d)
 	}
 	//END
 
+	// special handling for the first time we display things
 	int animSpeedBackup = -1;
 	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
 		animSpeedBackup = prefs.animation;
@@ -396,24 +410,13 @@ void ProfileWidget2::plotDive(struct dive *d)
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
 
-	// No need to do this again if we are already showing the same dive
-	// computer of the same dive, so we check the unique id of the dive
-	// and the selected dive computer number against the ones we are
-	// showing (can't compare the dive pointers as those might change).
-	// I'm unclear what the semantics are supposed to be if we actually
-	// use more than one 'dives' as argument - so ignoring that right now :-)
-	if (d->id == dataModel->id() && dc_number == dataModel->dcShown() &&
-	    !forceReplot)
-		return;
-
-	forceReplot = false;
 	if (currentState == EMPTY)
 		setProfileState();
 
 	// next get the dive computer structure - if there are no samples
 	// let's create a fake profile that's somewhat reasonable for the
 	// data that we have
-	struct divecomputer *currentdc = select_dc(d);
+	struct divecomputer *currentdc = select_dc(&displayed_dive);
 	Q_ASSERT(currentdc);
 	if (!currentdc || !currentdc->samples) {
 		currentdc = fake_dc(currentdc);
@@ -426,8 +429,8 @@ void ProfileWidget2::plotDive(struct dive *d)
 	 * so I'll *not* calculate everything if something is not being
 	 * shown.
 	 */
-	struct plot_info pInfo = calculate_max_limits_new(d, currentdc);
-	create_plot_info_new(d, currentdc, &pInfo);
+	struct plot_info pInfo = calculate_max_limits_new(&displayed_dive, currentdc);
+	create_plot_info_new(&displayed_dive, currentdc, &pInfo);
 	if(shouldCalculateMaxTime)
 		maxtime = get_maxtime(&pInfo);
 
@@ -444,7 +447,7 @@ void ProfileWidget2::plotDive(struct dive *d)
 		maxdepth = newMaxDepth;
 	}
 
-	dataModel->setDive(d, pInfo);
+	dataModel->setDive(&displayed_dive, pInfo);
 	toolTipItem->setPlotInfo(pInfo);
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for

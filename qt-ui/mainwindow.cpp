@@ -175,7 +175,7 @@ void MainWindow::current_dive_changed(int divenr)
 		select_dive(divenr);
 		ui.globe->centerOnCurrentDive();
 	}
-	ui.newProfile->plotDive(current_dive);
+	ui.newProfile->plotDive();
 	ui.InfoWidget->updateDiveInfo(divenr);
 }
 
@@ -650,7 +650,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
-	ui.newProfile->plotDive(current_dive);
+	ui.newProfile->plotDive();
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 }
 
@@ -658,7 +658,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
-	ui.newProfile->plotDive(current_dive);
+	ui.newProfile->plotDive();
 	ui.InfoWidget->updateDiveInfo(selected_dive);
 }
 
