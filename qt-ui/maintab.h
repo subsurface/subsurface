@@ -35,7 +35,8 @@ public:
 		DIVE,
 		TRIP,
 		ADD,
-		MANUALLY_ADDED_DIVE
+		MANUALLY_ADDED_DIVE,
+		IGNORE
 	};
 
 	MainTab(QWidget *parent);
@@ -44,7 +45,6 @@ public:
 	void clearInfo();
 	void clearEquipment();
 	void reload();
-	bool eventFilter(QObject *, QEvent *);
 	void initialUiSetup();
 	bool isEditing();
 	void updateCoordinatesText(qreal lat, qreal lon);

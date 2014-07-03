@@ -282,29 +282,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	}
 }
 
-bool MainTab::eventFilter(QObject *object, QEvent *event)
-{
-	if (!isEnabled())
-		return false;
-
-	if (editMode != NONE)
-		return false;
-
-	// for the dateEdit widget we need to ignore Wheel events as well (as long as we aren't editing)
-	if (object->objectName() == "dateEdit" &&
-	    (event->type() == QEvent::FocusIn || event->type() == QEvent::Wheel))
-		return true;
-	// MouseButtonPress in any widget (not all will ever get this), KeyPress in the dateEdit,
-	// FocusIn for the starWidgets or RequestSoftwareInputPanel for tagWidget start the editing
-	if ((event->type() == QEvent::MouseButtonPress) ||
-	    (event->type() == QEvent::KeyPress && object == ui.dateEdit) ||
-	    (event->type() == QEvent::FocusIn && (object == ui.rating || object == ui.visibility || object == ui.buddy || object == ui.tagWidget || object || ui.divemaster))) {
-		tabBar()->setTabIcon(currentIndex(), QIcon(":warning"));
-		enableEdition();
-	}
-	return false; // don't "eat" the event.
-}
-
 void MainTab::clearEquipment()
 {
 	cylindersModel->clear();
@@ -345,7 +322,7 @@ void MainTab::clearStats()
 }
 
 #define UPDATE_TEXT(d, field)          \
-	if (clear || !d.field)        \
+	if (clear || !d.field)         \
 		ui.field->setText(""); \
 	else                           \
 		ui.field->setText(d.field)
@@ -370,7 +347,8 @@ void MainTab::updateDiveInfo(bool clear)
 		setEnabled(true);
 	if (isEnabled() && clear)
 		setEnabled(false);
-	editMode = NONE;
+	editMode = IGNORE; // don't trigger on changes to the widgets
+
 	// This method updates ALL tabs whenever a new dive or trip is
 	// selected.
 	// If exactly one trip has been selected, we show the location / notes
@@ -391,6 +369,7 @@ void MainTab::updateDiveInfo(bool clear)
 	UPDATE_TEXT(displayed_dive, buddy);
 	UPDATE_TEMP(displayed_dive, airtemp);
 	UPDATE_TEMP(displayed_dive, watertemp);
+
 	if (!clear) {
 		updateGpsCoordinates(&displayed_dive);
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset());
@@ -561,6 +540,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.coordinates->clear();
 		ui.visibility->setCurrentStars(0);
 	}
+	editMode = NONE;
 }
 
 void MainTab::addCylinder_clicked()
@@ -898,15 +878,19 @@ void MainTab::markChangedWidget(QWidget *w)
 {
 	QPalette p;
 	qreal h, s, l, a;
+	enableEdition();
 	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
 	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
 	w->setPalette(p);
-	modified = true;
+	if (!modified) {
+		modified = true;
+		enableEdition();
+	}
 }
 
 void MainTab::on_buddy_textChanged()
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
@@ -919,7 +903,7 @@ void MainTab::on_buddy_textChanged()
 
 void MainTab::on_divemaster_textChanged()
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
@@ -932,7 +916,7 @@ void MainTab::on_divemaster_textChanged()
 
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	displayed_dive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.airtemp);
@@ -941,7 +925,7 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	displayed_dive.watertemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.watertemp);
@@ -978,7 +962,7 @@ void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -989,7 +973,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when);
 	dateTime.setTimeSpec(Qt::UTC);
@@ -1030,7 +1014,7 @@ void MainTab::saveTags()
 
 void MainTab::on_tagWidget_textChanged()
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	QString tag;
 	if (displayed_dive.tag_list != current_dive->tag_list)
@@ -1044,7 +1028,7 @@ void MainTab::on_tagWidget_textChanged()
 
 void MainTab::on_location_textChanged(const QString &text)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	free(displayed_dive.location);
 	displayed_dive.location = strdup(ui.location->text().toUtf8().data());
@@ -1053,7 +1037,7 @@ void MainTab::on_location_textChanged(const QString &text)
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	free(displayed_dive.suit);
 	displayed_dive.suit = strdup(text.toUtf8().data());
@@ -1062,7 +1046,7 @@ void MainTab::on_suit_textChanged(const QString &text)
 
 void MainTab::on_notes_textChanged()
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	free(displayed_dive.notes);
 	displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
@@ -1071,7 +1055,7 @@ void MainTab::on_notes_textChanged()
 
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
-	if (editMode == NONE)
+	if (editMode == IGNORE)
 		return;
 	bool gpsChanged = false;
 	bool parsed = false;
@@ -1091,6 +1075,7 @@ void MainTab::on_rating_valueChanged(int value)
 	if (displayed_dive.rating != value) {
 		displayed_dive.rating = value;
 		modified = true;
+		enableEdition();
 	}
 }
 
@@ -1099,6 +1084,7 @@ void MainTab::on_visibility_valueChanged(int value)
 	if (displayed_dive.visibility != value) {
 		displayed_dive.visibility = value;
 		modified = true;
+		enableEdition();
 	}
 }
 
