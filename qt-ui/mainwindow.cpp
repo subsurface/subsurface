@@ -391,33 +391,9 @@ bool MainWindow::plannerStateClean()
 	return true;
 }
 
-// setup displayed_dive so we can start planning with it
-void MainWindow::createFakeDiveForAddAndPlan()
-{
-	clear_dive(&displayed_dive);
-	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
-	// now show the mostly empty main tab
-	ui.InfoWidget->updateDiveInfo();
-
-#if 0 // don't want to do any of this, I think
-	// select this new dive (but remember the old selection
-	ui.ListWidget->rememberSelection();
-	ui.ListWidget->unselectDives();
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
-	ui.ListWidget->selectDives(QList<int>() << dive_table.nr - 1);
-	ui.InfoWidget->updateDiveInfo();
-	showProfile();
-#endif
-}
-
 void MainWindow::planCanceled()
 {
 	showProfile();
-#if 0 // shouldn't need this
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
-	ui.ListWidget->restoreSelection();
-#endif
 	refreshDisplay();
 }
 
@@ -458,23 +434,23 @@ void MainWindow::on_actionDivePlanner_triggered()
 	ui.ListWidget->endSearch();
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+
+	// clean out the dive and give it an id and the correct dc model
+	clear_dive(&displayed_dive);
+	displayed_dive.id = dive_getUniqID(&displayed_dive);
+	displayed_dive.dc.model = "planned dive"; // don't translate! this is stored in the XML file
+
 	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 
-	// set up the staging dive and clean up the widgets
-	DivePlannerPointsModel::instance()->clear();
-
 	// setup the staging dive cylinders from the selected dive
+	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	DivePlannerPointsModel::instance()->setupStartTime();
-	createFakeDiveForAddAndPlan();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 
-	// reload and then disable the dive list
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
-	ui.ListWidget->setEnabled(false);
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
 	ui.globePane->setCurrentIndex(1);
 #ifdef NO_MARBLE
