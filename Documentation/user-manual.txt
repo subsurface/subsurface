@@ -1752,24 +1752,26 @@ duration, depth, temperature and pressure.
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
 some information about it are indicated. This map is not editable.
 
-* _HTML_ format, in which the dive(s) are stored in an HTML format, readable
-with an Internet browser (Most modern web browsers are supported, Javascript
-must be enabled) This HTML file is not editable.
-The HTML dive log contains most of the information and aslo contains a search
+* _HTML_ format, in which the dive(s) are stored in HTML files, readable
+with an Internet browser. Most modern web browsers are supported, but Javascript
+must be enabled. This generated HTML file is not intended to be edited
+by the users.
+The HTML dive log contains most of the information and also contains a search
 option to search the dive log. HTML export is specified on the second tab of the
 Export dialog (image *B* above).
 
-From _General Settings_ Subsurface provides the following options:
+** _General Settings_, under the HTML tab, provides the following options:
 
-- Subsurface Numbers: if this option is checked, the dive(s) are exported with the
-numbers associated with them in subsurface, Otherwise the dive(s) will be numbered
+*** Subsurface Numbers: if this option is checked, the dive(s) are exported with the
+numbers associated with them in Subsurface, Otherwise the dive(s) will be numbered
 starting from 1.
-- Minimum Javascript: This will minimize the Javascript produced with the file,
+*** Minimum Javascript: This will minimize the Javascript produced with the file,
 some functionality will be lost.
-- Export List only: a list of dives will only be exported and the detailed dive
-information will not be exported.
+*** Export List only: a list of dives will only be exported and the detailed dive
+information will not be available.
 
-Under _Style Options_ some style-related options are available.
+** Under _Style Options_ some style-related options are available like font
+size and theme.
 
 Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
