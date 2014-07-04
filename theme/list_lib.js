@@ -86,7 +86,9 @@ function view_in_range(start, end)
 	view_pagging(start, end);
 }
 
-
+/**
+*Show the previous page, Will do nothing if no previous pages
+*/
 function prev_page()
 {
 	var end = start + sizeofpage - 1;
@@ -104,6 +106,9 @@ function prev_page()
 	updateView(start, end)
 }
 
+/**
+*Show the next page, Will do nothing if no next pages
+*/
 function next_page()
 {
 	var end = start + sizeofpage - 1;
@@ -118,14 +123,15 @@ function next_page()
 	updateView(start, end)
 }
 
-///////////////////////////////////////////////
-
 function view_pagging(start, end)
 {
 	var page = document.getElementById("pagging");
 	page.innerHTML = (start + 1) + ' to ' + (end + 1) + ' of ' + (itemsToShow.length) + ' dives';
 }
 
+/**
+*Expand all dives in the view.
+*/
 function expandAll()
 {
 	for (var i = start; i < start + sizeofpage; i++) {
@@ -136,6 +142,9 @@ function expandAll()
 	}
 }
 
+/**
+*Collapse all dives in the view.
+*/
 function collapseAll()
 {
 	for (var i = start; i < start + sizeofpage; i++) {
@@ -226,6 +235,10 @@ function putTags(tags)
 	return result;
 }
 
+/**
+*@param {integer} rate out of 5
+*return HTML string of stars
+*/
 function putRating(rating)
 {
 	var result;
@@ -314,6 +327,10 @@ function list_sort(sortOn)
 		break;
 	}
 }
+
+/*
+*sorting interface for different coloumns
+*/
 
 function cmpLocationAsc(j, iSmaller)
 {
@@ -406,6 +423,7 @@ function sort_it(sortOn, function_)
 //		Searching
 //
 //////////////////////////////////////
+
 function Set()
 {
 	this.keys = new Array();
@@ -442,15 +460,13 @@ Set.prototype.Union = function(another_set)
 	};
 };
 
-////////////////////////////////////////
-
 function Node(value)
 {
 	this.children = new Array();
 	this.value = value;
 	this.key = new Set();
 }
-///////////////////////////////////////
+
 function Search_list_Modules(searchfor)
 {
 	document.getElementById("search_input").value = searchfor;
@@ -576,6 +592,10 @@ function searchin(value, node)
 
 var tripsShown;
 
+
+/**
+*This is the main function called to show/hide trips
+*/
 function toggleTrips()
 {
 	var trip_button = document.getElementById('trip_button');
@@ -642,157 +662,12 @@ function getItems()
 ////////////////////////canvas///////////////////
 
 /*
-Canvas Colors Constants
-*/
-var CAMARONE1 = rgb(0, 0.4, 0);
-var LIMENADE1 = rgb(0.4, 0.8, 0);
-var RIOGRANDE1 = rgb(0.8, 0.8, 0);
-var PIRATEGOLD1 = rgb(0.8, 0.5, 0);
-var RED1 = rgb(1, 0, 0);
-
-/*
 Some Global variables that hold the current shown dive data.
 */
-var dive_id;    //current shown ID
-var points;     //reference to the samples array of the shown dive.
-var MAX_HEIGHT; //Maximum depth, then its the maximum height for canvas
-var MAX_WIDTH;  //dive duration, then its the maximum width for canvas
-
-/**
-*Return RGB css color string.
-*/
-function rgb(r, g, b)
-{
-	r = Math.floor(r * 255);
-	g = Math.floor(g * 255);
-	b = Math.floor(b * 255);
-	return["rgb(", r, ",", g, ",", b, ")"].join("");
-}
-
-/**
-*This function returns the value scaled to the size of canvas
-*new scale = (old scale * height of canvas) / max height in dive
-*to ensure that the dive profile is filling the whole area available
-*/
-function scaleHeight(vari)
-{
-	var height = document.getElementById("profileCanvas").height;
-	max = MAX_HEIGHT;
-	return (vari * height) / max;
-}
-
-/**
-*This function returns the value scaled to the size of canvas
-*new scale = (old scale * width of canvas) / max width in dive
-*to ensure that the dive profile is filling the whole area available
-*/
-function scaleWidth(vari)
-{
-	var width = document.getElementById("profileCanvas").width;
-	max = MAX_WIDTH;
-	return (vari * width) / max;
-}
-
-/**
-*Show Axis information(Numbers on scale)
-*put a Number every 300 second scaled to canvas width.
-*/
-function canvas_showAxisInfo()
-{
-	var c = document.getElementById("profileCanvas");
-	var ctx = c.getContext("2d");
-	ctx.font = "27px Georgia"; /*This is better be a variable scale*/
-	for (var i = 0; i < MAX_WIDTH / scaleWidth(5); i++)
-		ctx.fillText("" + i * 5 + "", scaleWidth(i * 5 * 60), scaleHeight(MAX_HEIGHT - 150));
-}
-
-/**
-*Draw the grid
-*with spacing = 5 * 60 = 300
-*draw line every 5 minutes
-*/
-function canvas_showGrid()
-{
-	var cnv = document.getElementById("profileCanvas");
-	var cnvWidth = cnv.width;
-	var cnvHeight = cnv.height;
-	var lineOptions = {
-		separation : scaleWidth(300),
-		color : '#AAAAAA'
-	};
-	var ctx = cnv.getContext('2d');
-
-	ctx.strokeStyle = lineOptions.color;
-	ctx.strokeWidth = 0.5;
-	ctx.beginPath();
-
-	var iCount = null;
-	var i = null;
-	var x = null;
-	var y = null;
-
-	//draw horizontal lines
-	iCount = Math.floor(cnvWidth / lineOptions.separation);
-	for (i = 1; i <= iCount; i++) {
-		x = (i * lineOptions.separation);
-		ctx.moveTo(x, 0);
-		ctx.lineTo(x, cnvHeight);
-		ctx.stroke();
-	}
-
-	//draw vertical lines
-	iCount = Math.floor(cnvHeight / lineOptions.separation);
-	for (i = 1; i <= iCount; i++) {
-		y = (i * lineOptions.separation);
-		ctx.moveTo(0, y);
-		ctx.lineTo(cnvWidth, y);
-		ctx.stroke();
-	}
-
-	ctx.closePath();
-}
-
-/**
-*The Main function used for drawing canvas lines
-*it automatically calcualte the slope of the line
-*and choose its color.
-*This is the function that should be used internally.
-*/
-function canvas_drawline(ctx, begin, end)
-{
-	drawline(ctx, begin, end, getcolor(begin, end));
-}
-
-/**
-*Draw a line in the canvas with the given
-*starting point, ending point, and color.
-*/
-function drawline(ctx, begin, end, col)
-{
-	ctx.strokeStyle = col;
-	ctx.beginPath();
-	ctx.moveTo(scaleWidth(begin[0]), scaleHeight(begin[1]));
-	ctx.lineTo(scaleWidth(end[0]), scaleHeight(end[1]));
-	ctx.stroke();
-}
-
-/**
-*Choose Color for different speeds.
-*this need to be fixed to go with subsurface conversion.
-*/
-function getcolor(begin, end)
-{
-	var slope = (end[1] - begin[1]) / (end[0] - begin[0]);
-	if (Math.abs(slope) > 300)
-		return RED1;
-	if (Math.abs(slope) > 180)
-		return PIRATEGOLD1;
-	if (Math.abs(slope) > 110)
-		return RIOGRANDE1;
-	if (Math.abs(slope) > 70)
-		return LIMENADE1;
-	return CAMARONE1;
-}
+var dive_id; //current shown ID
+var points;  //reference to the samples array of the shown dive.
+var ZERO_C_IN_MKELVIN = 273150;
+var plot1;
 
 /**
 *Return the HTML string for a dive cylinder entry in the table.
@@ -861,8 +736,6 @@ function get_dive_HTML(dive)
 	       '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
 };
 
-var ZERO_C_IN_MKELVIN = 273150;
-
 function mkelvin_to_C(mkelvin)
 {
 	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
@@ -878,15 +751,15 @@ function mm_to_meter(mm)
 	return mm / (1000);
 }
 
-function format_two_digit(n){
-    return n > 9 ? "" + n: "0" + n;
+function format_two_digit(n)
+{
+	return n > 9 ? "" + n : "0" + n;
 }
 
-function int_to_time (n){
-	return  Math.floor((n) /60) +":"+ format_two_digit((n) % (60))+" min";
+function int_to_time(n)
+{
+	return Math.floor((n) / 60) + ":" + format_two_digit((n) % (60)) + " min";
 }
-
-var plot1;
 
 /**
 *Main canvas draw function
@@ -895,11 +768,11 @@ var plot1;
 function canvas_draw()
 {
 	document.getElementById("chart1").innerHTML = "";
-	var d1 = new Array();
-	var d2 = new Array();
-	var d3 = new Array();
-	var d4 = new Array();
-	var last = 0 ;
+	var d1 = new Array(); //depth
+	var d2 = new Array(); //pressure
+	var d3 = new Array(); //events
+	var d4 = new Array(); //temperature
+	var last = 0;
 	for (var i = 0; i < items[dive_id].samples.length; i++) {
 		d1.push([
 			items[dive_id].samples[i][0] / 60,
@@ -917,9 +790,8 @@ function canvas_draw()
 				mkelvin_to_C(items[dive_id].samples[i][3]),
 			]);
 			last = items[dive_id].samples[i][3];
-		}
-		else {
-			if(last != 0) {
+		} else {
+			if (last != 0) {
 				d4.push([
 					items[dive_id].samples[i][0] / 60,
 					mkelvin_to_C(last),
@@ -932,8 +804,7 @@ function canvas_draw()
 		d3.push([
 			items[dive_id].events[i].time / 60,
 			0,
-			//-1 * mm_to_meter(items[dive_id].samples[x][1])
-			]);
+		]);
 	}
 	plot1 = $.jqplot('chart1', [
 					   d1,
@@ -1040,8 +911,6 @@ function showDiveDetails(dive)
 	//set global variables
 	dive_id = dive;
 	points = items[dive_id].samples;
-	MAX_HEIGHT = items[dive_id].maxdepth * 1.1;
-	MAX_WIDTH = items[dive_id].duration;
 
 	//draw the canvas and initialize the view
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
@@ -1089,14 +958,17 @@ function prevDetailedDive()
 	}
 }
 
+/**
+*This function handles keyboard events
+*shift to next/prev dives by keyboard arrows.
+*/
 function switchDives(e)
 {
-	if(document.getElementById("divePanel").style.display == 'block'){
+	if (document.getElementById("divePanel").style.display == 'block') {
 		e = e || window.event;
 		if (e.keyCode == '37') {
 			prevDetailedDive();
-		}
-		else if (e.keyCode == '39') {
+		} else if (e.keyCode == '39') {
 			nextDetailedDive();
 		}
 	}
