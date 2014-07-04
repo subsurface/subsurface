@@ -756,7 +756,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 
 #if DEBUG_PLAN & 4
 	printf("gas %s\n", gasname(&gas));
-	printf("depth %5.2lfm ceiling %5.2lfm\n", depth / 1000.0, ceiling / 1000.0);
+	printf("depth %5.2lfm \n", depth / 1000.0);
 #endif
 
 	best_first_ascend_cylinder = current_cylinder;
