@@ -822,7 +822,7 @@ Return the HTML string for a bookmark entry in the table.
 */
 function get_bookmark_HTML(event)
 {
-	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + event.time + '</td></tr>';
+	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + int_to_time(event.time) + '</td></tr>';
 }
 
 /**
@@ -878,6 +878,14 @@ function mm_to_meter(mm)
 	return mm / (1000);
 }
 
+function format_two_digit(n){
+    return n > 9 ? "" + n: "0" + n;
+}
+
+function int_to_time (n){
+	return  Math.floor((n) /60) +":"+ format_two_digit((n) % (60))+" min";
+}
+
 var plot1;
 
 /**
@@ -889,6 +897,7 @@ function canvas_draw()
 	document.getElementById("chart1").innerHTML = "";
 	var d1 = new Array();
 	var d2 = new Array();
+	var d3 = new Array();
 	for (var i = 0; i < items[dive_id].samples.length; i++) {
 		d1.push([
 			items[dive_id].samples[i][0] / 60,
@@ -901,9 +910,18 @@ function canvas_draw()
 			]);
 		}
 	}
+	for (var i = 0; i < items[dive_id].events.length; i++) {
+		//var x = get_sample(items[dive_id].events[i].time);
+		d3.push([
+			items[dive_id].events[i].time / 60,
+			0,
+			//-1 * mm_to_meter(items[dive_id].samples[x][1])
+			]);
+	}
 	plot1 = $.jqplot('chart1', [
 					   d1,
-					   d2
+					   d2,
+					   d3
 				   ],
 			 {
 				 grid : {
@@ -912,7 +930,13 @@ function canvas_draw()
 					 background : 'rgba(0,0,0,0)'
 				 },
 				 highlighter : {
-					 show : true
+					 show : true,
+					 tooltipContentEditor: function(str, seriesIndex, pointIndex, jqPlot) {
+						if(seriesIndex===2)
+						return items[dive_id].events[pointIndex].name;
+						else
+						return str;
+					 }
 				 },
 				 seriesDefaults : {
 					 shadowAlpha : 0.1,
@@ -935,6 +959,11 @@ function canvas_draw()
 							 smooth : true,
 						 },
 						 yaxis : 'y2axis',
+					 },
+					 {
+						  showLine:false,
+						  markerOptions: { size: 10, style:"o" },
+						  pointLabels: { show:false, } ,
 					 },
 				 ],
 				 axes : {
