@@ -497,6 +497,7 @@ void MainWindow::on_actionAddDive_triggered()
 	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
 
 	// setup the dive cylinders
+	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
 
 	// now show the mostly empty main tab
@@ -509,7 +510,6 @@ void MainWindow::on_actionAddDive_triggered()
 	ui.infoPane->setCurrentIndex(MAINTAB);
 
 	ui.newProfile->setAddState();
-	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	ui.newProfile->plotDive();
 }
