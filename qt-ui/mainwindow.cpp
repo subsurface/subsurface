@@ -426,6 +426,18 @@ void MainWindow::printPlan()
 #endif
 }
 
+void MainWindow::setupForAddAndPlan(const char *model)
+{
+	// clean out the dive and give it an id and the correct dc model
+	clear_dive(&displayed_dive);
+	displayed_dive.id = dive_getUniqID(&displayed_dive);
+	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
+	displayed_dive.dc.model = model; // don't translate! this is stored in the XML file
+	// setup the dive cylinders
+	DivePlannerPointsModel::instance()->clear();
+	DivePlannerPointsModel::instance()->setupCylinders();
+}
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
 	if(!plannerStateClean())
@@ -435,19 +447,11 @@ void MainWindow::on_actionDivePlanner_triggered()
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
-	// clean out the dive and give it an id and the correct dc model
-	clear_dive(&displayed_dive);
-	displayed_dive.id = dive_getUniqID(&displayed_dive);
-	displayed_dive.dc.model = "planned dive"; // don't translate! this is stored in the XML file
-
 	ui.newProfile->setPlanState();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 
-	// setup the staging dive cylinders from the selected dive
-	DivePlannerPointsModel::instance()->clear();
-	DivePlannerPointsModel::instance()->setupCylinders();
-
 	// create a simple starting dive, using the first gas from the just copied cylidners
+	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 
@@ -466,15 +470,8 @@ void MainWindow::on_actionAddDive_triggered()
 	ui.ListWidget->endSearch();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
-	clear_dive(&displayed_dive);
-	// but wait - we need a valid id... and a start time and an appropriatae dc model
-	displayed_dive.id = dive_getUniqID(&displayed_dive);
-	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
-
-	// setup the dive cylinders
-	DivePlannerPointsModel::instance()->clear();
-	DivePlannerPointsModel::instance()->setupCylinders();
+	// setup things so we can later create our starting dive
+	setupForAddAndPlan("manually added dive"); // don't translate, stored in the XML file
 
 	// now show the mostly empty main tab
 	ui.InfoWidget->updateDiveInfo();

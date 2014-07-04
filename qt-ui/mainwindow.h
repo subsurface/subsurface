@@ -183,7 +183,7 @@ private:
 	UpdateManager *updateManager;
 
 	bool plannerStateClean();
-	void createFakeDiveForAddAndPlan();
+	void setupForAddAndPlan(const char *model);
 	QDialog *survey;
 };
 
