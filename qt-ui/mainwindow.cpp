@@ -491,6 +491,8 @@ void MainWindow::on_actionAddDive_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	clear_dive(&displayed_dive);
+	// but wait - we need a valid id... and a start time and an appropriatae dc model
+	displayed_dive.id = dive_getUniqID(&displayed_dive);
 	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
 	displayed_dive.dc.model = "manually added dive"; // don't translate! this is stored in the XML file
 
