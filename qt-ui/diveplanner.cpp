@@ -994,14 +994,6 @@ void DivePlannerPointsModel::clear()
 {
 	bool oldRecalc = setRecalc(false);
 
-
-
-	// FIXME -- need to get rid of stagingDIve
-	// the following now uses displayed_dive !!!!
-
-
-
-
 	CylindersModel::instance()->updateDive();
 	if (rowCount() > 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);

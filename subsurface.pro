@@ -303,11 +303,14 @@ QMAKE_TARGET_COPYRIGHT = Linus Torvalds, Dirk Hohndel and others
 QMAKE_INFO_PLIST = packaging/macosx/Info.plist.in
 
 OTHER_FILES += $$DESKTOPFILE $$ICON $$MANPAGE $$XSLT_FILES $$DOC_FILES $$MARBLEDIR \
-        $$QMAKE_INFO_PLIST
+	$$QMAKE_INFO_PLIST
 
 include(subsurface-gen-version.pri)
 include(subsurface-install.pri)
 
+# to debug planner issues
+#QMAKE_CFLAGS += -DDEBUG_PLAN=31
+#QMAKE_CXXFLAGS += -DDEBUG_PLAN=31
 # to build debuggable binaries on Windows, you need something like this
 #QMAKE_CFLAGS_RELEASE=$$QMAKE_CFLAGS_DEBUG -O0 -g
 #QMAKE_CXXFLAGS_RELEASE=$$QMAKE_CXXFLAGS_DEBUG -O0 -g

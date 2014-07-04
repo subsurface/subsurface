@@ -774,32 +774,11 @@ void MainTab::acceptChanges()
 	resetPallete();
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// now let's resort the dive list and make sure the newly added dive is still selected
-		sort_table(&dive_table);
-		MainWindow::instance()->dive_list()->unselectDives();
+		selected_dive = -1;
+		amount_selected = 0;
+		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
 		MainWindow::instance()->dive_list()->selectDive(newDiveNr, true);
-#if 0
-		// it's tricky to keep the right dive selected;
-		// first remember which one is selected in the current sort order
-		// and unselect all dives
-		int rememberSelected = selected_dive;
-		MainWindow::instance()->dive_list()->unselectDives();
-		struct dive *d = get_dive(rememberSelected);
-		// mark the previously selected dive as remembered (abusing the selected flag)
-		// and then clear that flag out on the other side of the sort_table()
-		d->selected = true;
-		sort_table(&dive_table);
-		for_each_dive (rememberSelected, d) {
-			if (d->selected) {
-				d->selected = false;
-				break;
-			}
-		}
-		// refreshDisplay() will select the top dive if no dive was
-		// selected - but that may not be the right one, so select the one
-		// we remembered instead
-		MainWindow::instance()->dive_list()->selectDive(rememberSelected, true);
-#endif
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics()->replot();
