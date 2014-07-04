@@ -1753,12 +1753,23 @@ duration, depth, temperature and pressure.
 some information about it are indicated. This map is not editable.
 
 * _HTML_ format, in which the dive(s) are stored in an HTML format, readable
-with an Internet browser. This file is not editable. HTML export is specified
-on the second tab of the Export dialog (image *B* above). If the _Export List
-only_ option is checked,
-the dive profile information is not exported. This dialog also has some
-style-related options. The HTML dive log contains most of the information
-and aslo contains a search option to search the dive log.
+with an Internet browser (Most modern web browsers are supported, Javascript
+must be enabled) This HTML file is not editable.
+The HTML dive log contains most of the information and aslo contains a search
+option to search the dive log. HTML export is specified on the second tab of the
+Export dialog (image *B* above).
+
+From _General Settings_ Subsurface provides the following options:
+
+- Subsurface Numbers: if this option is checked, the dive(s) are exported with the
+numbers associated with them in subsurface, Otherwise the dive(s) will be numbered
+starting from 1.
+- Minimum Javascript: This will minimize the Javascript produced with the file,
+some functionality will be lost.
+- Export List only: a list of dives will only be exported and the detailed dive
+information will not be exported.
+
+Under _Style Options_ some style-related options are available.
 
 Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
