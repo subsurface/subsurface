@@ -260,7 +260,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 #endif
 	// reset the cylinders and clear out the samples and events of the
 	// displayed dive so we can restart
-	reset_cylinders(&displayed_dive);
+	reset_cylinders(&displayed_dive, track_gas);
 	dc = &displayed_dive.dc;
 	free(dc->sample);
 	dc->sample = NULL;

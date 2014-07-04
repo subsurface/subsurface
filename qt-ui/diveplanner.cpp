@@ -143,7 +143,7 @@ void DivePlannerPointsModel::setupCylinders()
 		// take the used cylinders from the selected dive as starting point
 		CylindersModel::instance()->copyFromDive(current_dive);
 		copy_cylinders(current_dive, &displayed_dive, true);
-		reset_cylinders(&displayed_dive);
+		reset_cylinders(&displayed_dive, true);
 		return;
 	}
 	if (!same_string(prefs.default_cylinder, "")) {
@@ -154,7 +154,7 @@ void DivePlannerPointsModel::setupCylinders()
 		displayed_dive.cylinder[0].type.size.mliter = 11100;
 		displayed_dive.cylinder[0].type.workingpressure.mbar = 207000;
 	}
-	reset_cylinders(&displayed_dive);
+	reset_cylinders(&displayed_dive, false);
 	CylindersModel::instance()->copyFromDive(&displayed_dive);
 }
 

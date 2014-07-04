@@ -231,8 +231,8 @@ void remove_weightsystem(struct dive *dive, int idx)
 }
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
- * and that the pressures are reset to start = end = workingpressure */
-void reset_cylinders(struct dive *dive)
+ * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
+void reset_cylinders(struct dive *dive, bool track_gas)
 {
 	int i;
 	pressure_t pO2 = {.mbar = 1400};
@@ -243,7 +243,7 @@ void reset_cylinders(struct dive *dive)
 			continue;
 		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, assume conservative pO2 */
 			cyl->depth = gas_mod(&cyl->gasmix, pO2, M_OR_FT(3,10));
-		if (cyl->type.workingpressure.mbar)
+		if (track_gas && cyl->type.workingpressure.mbar)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 		cyl->gas_used.mliter = 0;
 	}
