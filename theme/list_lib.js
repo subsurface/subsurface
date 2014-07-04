@@ -800,7 +800,6 @@ function canvas_draw()
 		}
 	}
 	for (var i = 0; i < items[dive_id].events.length; i++) {
-		//var x = get_sample(items[dive_id].events[i].time);
 		d3.push([
 			items[dive_id].events[i].time / 60,
 			0,
@@ -875,7 +874,8 @@ function canvas_draw()
 						 max : 0,
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
-							 formatString : '%.2f'
+						 formatter: function(format, value) { return -1 * value + "m"; },
+							 formatString : '%.2fm'
 						 },
 						 pad : 2.05
 					 },
@@ -893,6 +893,7 @@ function canvas_draw()
 							showMark: false,
 							showLabel: false,
 							shadow: false,
+							formatString : '%i C',
 						},
 					 },
 				 }
