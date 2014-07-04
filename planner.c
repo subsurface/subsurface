@@ -911,7 +911,6 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 	create_dive_from_plan(diveplan);
 	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer);
 
-error_exit:
 	free(stoplevels);
 	free(gaschanges);
 }
