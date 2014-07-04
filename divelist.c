@@ -338,10 +338,12 @@ int get_divenr(struct dive *dive)
 {
 	int i;
 	struct dive *d;
-	for_each_dive(i, d) {
-		if (d->id == dive->id) // don't compare pointers, we could be passing in a copy of the dive
-			return i;
-	}
+	// tempting as it may be, don't die when called with dive=NULL
+	if (dive)
+		for_each_dive(i, d) {
+			if (d->id == dive->id) // don't compare pointers, we could be passing in a copy of the dive
+				return i;
+		}
 	return -1;
 }
 
