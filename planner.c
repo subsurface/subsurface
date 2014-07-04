@@ -240,7 +240,7 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 
 /* simply overwrite the data in the displayed_dive
  * return false if something goes wrong */
-static void create_dive_from_plan(struct diveplan *diveplan)
+static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 {
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
@@ -275,7 +275,8 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
 	sample->po2.mbar = dp->po2;
-	sample->cylinderpressure.mbar = cyl->end.mbar;
+	if (track_gas)
+		sample->cylinderpressure.mbar = cyl->end.mbar;
 	finish_sample(dc);
 	while (dp) {
 		struct gasmix gasmix = dp->gasmix;
@@ -316,7 +317,8 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 			sample[-1].po2.mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
-			sample->cylinderpressure.mbar = cyl->sample_end.mbar;
+			if (track_gas)
+				sample->cylinderpressure.mbar = cyl->sample_end.mbar;
 			finish_sample(dc);
 			oldgasmix = gasmix;
 		}
@@ -328,9 +330,11 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 		sample->po2.mbar = po2;
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
-		update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
-					 dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
-		sample->cylinderpressure.mbar = cyl->end.mbar;
+		if (track_gas) {
+			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
+					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
+			sample->cylinderpressure.mbar = cyl->end.mbar;
+		}
 		finish_sample(dc);
 		dp = dp->next;
 	}
@@ -707,7 +711,7 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool show_disclaimer)
+void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
 {
 	struct sample *sample;
 	int po2;
@@ -734,7 +738,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
-	create_dive_from_plan(diveplan);
+	create_dive_from_plan(diveplan, is_planner);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
@@ -751,10 +755,10 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 	last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
-	if (!add_deco) {
+	if (!is_planner) {
 		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, gas, po2, false);
-		create_dive_from_plan(diveplan);
+		create_dive_from_plan(diveplan, is_planner);
 		return;
 	}
 
@@ -908,7 +912,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool add_deco, bool sh
 
 	/* We made it to the surface */
 	plan_add_segment(diveplan, clock - previous_point_time, 0, gas, po2, false);
-	create_dive_from_plan(diveplan);
+	create_dive_from_plan(diveplan, is_planner);
 	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer);
 
 	free(stoplevels);
