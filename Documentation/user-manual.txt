@@ -1969,7 +1969,7 @@ during a dive. One would like to associate each photograph with a specific
 dive. _Subsurface_ allows one to load photos into a dive. Photos are superimposed
 on the dive profile, from where they can be viewed.
 
-=== Loading photos and getting syncronisation between dive computer and camera
+=== Loading photos and getting synchronisation between dive computer and camera
 
 Click on a dive or on a group of dives on the dive list. Then right-click on this
 dive or group of dives and choose the option _Load Images_:
@@ -2223,7 +2223,7 @@ of the management specifications have been exceeded during the planning, a warni
 message is printed underneath the dive plan information.
 
 If the option _Display segment duration_ is checked, then the duration of each depth
-level is indicated in the _Dive Plan Details_. This duration INCUDES the transition
+level is indicated in the _Dive Plan Details_. This duration INCLUDES the transition
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
 
@@ -2643,12 +2643,12 @@ last dive
 6. The export pop-up will show. Within this pop-up, there is one field called 'Export Path'.
 	* Click the browse button next to the field Export Path
 		** A file-manager like window pops up
-		** Navigate to the directory or storing the
+		** Navigate to the directory for storing the
 Divelog.SDE file
 		** Optionally change the name of the file for saving
 		** Click 'Save'
 	* Back in the Export pop-up, press the button 'Export'
-7. The dives are now exported to the file Divelogs.SDE.
+7. The dives are now exported to the file Divelog.SDE.
 
 *Divemanager 4 (DM4):*
 
