@@ -626,7 +626,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING), drop_stone_mode(false)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	memset(&backupDive, 0, sizeof(backupDive));
