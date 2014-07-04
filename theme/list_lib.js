@@ -898,6 +898,8 @@ function canvas_draw()
 	var d1 = new Array();
 	var d2 = new Array();
 	var d3 = new Array();
+	var d4 = new Array();
+	var last = 0 ;
 	for (var i = 0; i < items[dive_id].samples.length; i++) {
 		d1.push([
 			items[dive_id].samples[i][0] / 60,
@@ -908,6 +910,21 @@ function canvas_draw()
 				items[dive_id].samples[i][0] / 60,
 				mbar_to_bar(items[dive_id].samples[i][2])
 			]);
+		}
+		if (items[dive_id].samples[i][3] != 0) {
+			d4.push([
+				items[dive_id].samples[i][0] / 60,
+				mkelvin_to_C(items[dive_id].samples[i][3]),
+			]);
+			last = items[dive_id].samples[i][3];
+		}
+		else {
+			if(last != 0) {
+				d4.push([
+					items[dive_id].samples[i][0] / 60,
+					mkelvin_to_C(last),
+				]);
+			}
 		}
 	}
 	for (var i = 0; i < items[dive_id].events.length; i++) {
@@ -921,7 +938,8 @@ function canvas_draw()
 	plot1 = $.jqplot('chart1', [
 					   d1,
 					   d2,
-					   d3
+					   d3,
+					   d4,
 				   ],
 			 {
 				 grid : {
@@ -965,6 +983,12 @@ function canvas_draw()
 						  markerOptions: { size: 10, style:"o" },
 						  pointLabels: { show:false, } ,
 					 },
+					 {
+						  showLine:true,
+						  showMarker : false,
+						  pointLabels: { show:false, } ,
+						  yaxis : 'y3axis',
+					 },
 				 ],
 				 axes : {
 					 xaxis : {
@@ -990,6 +1014,15 @@ function canvas_draw()
 							 formatString : '%ibar'
 						 },
 						 pad : 3.05
+					 },
+					 y3axis : {
+						padMax : 3.05,
+						tickOptions: {
+							showGridline: false,
+							showMark: false,
+							showLabel: false,
+							shadow: false,
+						},
 					 },
 				 }
 			 });
