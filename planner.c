@@ -246,6 +246,7 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 	struct divecomputer *dc;
 	struct sample *sample;
 	struct gasmix oldgasmix;
+	struct event *ev;
 	cylinder_t *cyl;
 	int oldpo2 = 0;
 	int lasttime = 0;
@@ -257,13 +258,18 @@ static void create_dive_from_plan(struct diveplan *diveplan)
 	printf("in create_dive_from_plan\n");
 	dump_plan(diveplan);
 #endif
-	// reset the cylinders and clear out the samples of the displayed dive so we can restart
+	// reset the cylinders and clear out the samples and events of the
+	// displayed dive so we can restart
 	reset_cylinders(&displayed_dive);
 	dc = &displayed_dive.dc;
 	free(dc->sample);
 	dc->sample = NULL;
 	dc->samples = 0;
 	dc->alloc_samples = 0;
+	while ((ev = dc->events)) {
+		dc->events = dc->events->next;
+		free(ev);
+	}
 	dp = diveplan->dp;
 	cyl = &displayed_dive.cylinder[0];
 	oldgasmix = cyl->gasmix;
