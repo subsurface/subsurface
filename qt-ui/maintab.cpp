@@ -749,18 +749,6 @@ void MainTab::acceptChanges()
 		find_new_trip_start_time(current_dive->divetrip);
 	}
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		// clean up the dive data (get duration, depth information from samples)
-		// remove the pressures from the samples (as those prevent the user from
-		// being able to manually set the start and end pressure)
-		struct sample *sample = current_dc->sample;
-		for (int i = 0; i < current_dc->samples; i++, sample++)
-			sample->cylinderpressure.mbar = 0;
-		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			cylinder_t *cyl = &current_dive->cylinder[i];
-			cyl->start.mbar = cyl->sample_start.mbar;
-			cyl->end.mbar = cyl->sample_end.mbar;
-			cyl->sample_end.mbar = cyl->sample_start.mbar = 0;
-		}
 		fixup_dive(current_dive);
 		if (dive_table.nr == 1)
 			current_dive->number = 1;
