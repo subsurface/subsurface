@@ -246,5 +246,6 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 		if (track_gas && cyl->type.workingpressure.mbar)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 		cyl->gas_used.mliter = 0;
+		cyl->deco_gas_used.mliter = 0;
 	}
 }
