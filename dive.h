@@ -124,14 +124,6 @@ static inline bool gasmix_is_air(const struct gasmix *gasmix)
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
-/* in the planner we use a null gasmix to indicate that we keep using the gas as before
- * this is BAD as a null gasmix can also be interpreted as air.
- * DANGER DANGER DANGER */
-static inline bool gasmix_is_null(const struct gasmix *gasmix)
-{
-	return gasmix->he.permille == 0 && gasmix->o2.permille == 0;
-}
-
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
 {

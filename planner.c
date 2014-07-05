@@ -292,8 +292,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			dp = dp->next;
 			continue;
 		}
-		if (gasmix_is_null(&gasmix))
-			gasmix = oldgasmix;
 
 		/* Check for SetPoint change */
 		if (oldpo2 != po2) {
@@ -566,11 +564,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		nextdp = dp->next;
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
-		if (nextdp) {
+		if (nextdp)
 			newgasmix = nextdp->gasmix;
-			if (gasmix_is_null(&newgasmix))
-				newgasmix = gasmix;
-		}
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered &&
 		    gasmix_distance(&gasmix, &newgasmix) == 0 &&
