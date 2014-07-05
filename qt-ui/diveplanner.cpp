@@ -833,20 +833,15 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 			break;
 		}
 	}
+	// Previous, actually means next as we are typically subdiving a segment and the gas for
+	// the segment is determined by the waypoint at the end.
 	if (usePrevious) {
-		if (row > 0) {
-			gas = divepoints.at(row - 1).gasmix;
+		if (row  < divepoints.count()) {
+			gas = divepoints.at(row).gasmix;
 		} else {
-			// when we add a first data point we need to make sure that there is a
-			// tank for it to use;
-			// first check to the right, then to the left, but if there's nothing,
-			// we simply default to AIR
-			if (row < divepoints.count()) {
-				gas = divepoints.at(row).gasmix;
-			} else {
-				if (!addGas(air))
-					qDebug("addGas failed"); // FIXME add error propagation
-			}
+			if (!addGas(air))
+				qDebug("addGas failed"); // FIXME add error propagation
+
 		}
 	}
 
