@@ -83,7 +83,6 @@ slots:
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
-	void restoreBackupDive();
 	void emitDataChanged();
 
 signals:
@@ -99,7 +98,6 @@ private:
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
-	struct dive backupDive;
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	QVector<QPair<int, int> > oldGases;

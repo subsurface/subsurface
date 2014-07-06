@@ -104,34 +104,18 @@ void DivePlannerPointsModel::setupStartTime()
 
 void DivePlannerPointsModel::loadFromDive(dive *d)
 {
-	// We need to make a copy, because as soon as the model is modified, it will
-	// remove all samples from the dive.
-	memcpy(&backupDive, d, sizeof(struct dive));
-
-	// this code is just adjusted for the new API, it continues to just copy the first
-	// DC (which here is almost certainly sufficient)
-	// but it should most likely use copy_dive() instead
-	// but this whole section needs to be rewritten, anyway
-	copy_samples(&d->dc, &backupDive.dc);
-	copy_events(&d->dc, &backupDive.dc);
-
 	CylindersModel::instance()->updateDive();
 	int lasttime = 0;
 	// we start with the first gas and see if it was changed
-	struct gasmix gas = backupDive.cylinder[0].gasmix;
-	for (int i = 0; i < backupDive.dc.samples - 1; i++) {
-		const sample &s = backupDive.dc.sample[i];
+	struct gasmix gas = d->cylinder[0].gasmix;
+	for (int i = 0; i < d->dc.samples - 1; i++) {
+		const sample &s = d->dc.sample[i];
 		if (s.time.seconds == 0)
 			continue;
-		get_gas_from_events(&backupDive.dc, lasttime, &gas);
+		get_gas_from_events(&d->dc, lasttime, &gas);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
 		lasttime = s.time.seconds;
 	}
-}
-
-void DivePlannerPointsModel::restoreBackupDive()
-{
-	memcpy(current_dive, &backupDive, sizeof(struct dive));
 }
 
 // copy the tanks from the current dive, or the default cylinder
@@ -629,7 +613,6 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING), drop_stone_mode(false)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
-	memset(&backupDive, 0, sizeof(backupDive));
 	startTime = QDateTime::currentDateTimeUtc();
 }
 
