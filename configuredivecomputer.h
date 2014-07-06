@@ -47,7 +47,6 @@ private:
 	ReadSettingsThread *readThread;
 	WriteSettingsThread *writeThread;
 	void setState(states newState);
-	QString addSettingToXML(QString settingName, QVariant value);
 private slots:
 	void readThreadFinished();
 	void writeThreadFinished();

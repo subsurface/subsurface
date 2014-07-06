@@ -7,6 +7,7 @@
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
 #include <QStringList>
+#include <QXmlStreamWriter>
 
 ConfigureDiveComputer::ConfigureDiveComputer(QObject *parent) :
 	QObject(parent),
@@ -54,13 +55,17 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	QString xml = "";
 	QString vendor = data->vendor;
 	QString product = data->product;
-	xml += "<DiveComputerSettingsBackup>";
-	xml += "\n<DiveComputer>";
-	xml += addSettingToXML("Vendor", vendor);
-	xml += addSettingToXML("Product", product);
-	xml += "\n</DiveComputer>";
-	xml += "\n<Settings>";
-	xml += addSettingToXML("CustomText", details->customText());
+	QXmlStreamWriter writer(&xml);
+	writer.setAutoFormatting(true);
+
+	writer.writeStartDocument();
+	writer.writeStartElement("DiveComputerSettingsBackup");
+	writer.writeStartElement("DiveComputer");
+	writer.writeTextElement("Vendor", vendor);
+	writer.writeTextElement("Product", product);
+	writer.writeEndElement();
+	writer.writeStartElement("Settings");
+	writer.writeTextElement("CustomText", details->customText());
 	//Add gasses
 	QString gas1 = QString("%1,%2,%3,%4")
 			.arg(QString::number(details->gas1().oxygen),
@@ -92,11 +97,11 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 			     QString::number(details->gas5().type),
 			     QString::number(details->gas5().depth)
 			     );
-	xml += addSettingToXML("Gas1", gas1);
-	xml += addSettingToXML("Gas2", gas2);
-	xml += addSettingToXML("Gas3", gas3);
-	xml += addSettingToXML("Gas4", gas4);
-	xml += addSettingToXML("Gas5", gas5);
+	writer.writeTextElement("Gas1", gas1);
+	writer.writeTextElement("Gas2", gas2);
+	writer.writeTextElement("Gas3", gas3);
+	writer.writeTextElement("Gas4", gas4);
+	writer.writeTextElement("Gas5", gas5);
 	//
 	//Add dil values
 	QString dil1 = QString("%1,%2,%3,%4")
@@ -129,11 +134,11 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 			     QString::number(details->dil5().type),
 			     QString::number(details->dil5().depth)
 			     );
-	xml += addSettingToXML("Dil1", dil1);
-	xml += addSettingToXML("Dil2", dil2);
-	xml += addSettingToXML("Dil3", dil3);
-	xml += addSettingToXML("Dil4", dil4);
-	xml += addSettingToXML("Dil5", dil5);
+	writer.writeTextElement("Dil1", dil1);
+	writer.writeTextElement("Dil2", dil2);
+	writer.writeTextElement("Dil3", dil3);
+	writer.writeTextElement("Dil4", dil4);
+	writer.writeTextElement("Dil5", dil5);
 	//
 	//Add set point values
 	QString sp1 = QString("%1,%2")
@@ -156,27 +161,30 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 			.arg(QString::number(details->sp5().sp),
 			     QString::number(details->sp5().depth)
 			     );
-	xml += addSettingToXML("SetPoint1", sp1);
-	xml += addSettingToXML("SetPoint2", sp2);
-	xml += addSettingToXML("SetPoint3", sp3);
-	xml += addSettingToXML("SetPoint4", sp4);
-	xml += addSettingToXML("SetPoint5", sp5);
+	writer.writeTextElement("SetPoint1", sp1);
+	writer.writeTextElement("SetPoint2", sp2);
+	writer.writeTextElement("SetPoint3", sp3);
+	writer.writeTextElement("SetPoint4", sp4);
+	writer.writeTextElement("SetPoint5", sp5);
 
 	//Other Settings
-	xml += addSettingToXML("DiveMode", details->diveMode());
-	xml += addSettingToXML("Saturation", details->saturation());
-	xml += addSettingToXML("Desaturation", details->desaturation());
-	xml += addSettingToXML("LastDeco", details->lastDeco());
-	xml += addSettingToXML("Brightness", details->brightness());
-	xml += addSettingToXML("Units", details->units());
-	xml += addSettingToXML("SamplingRate", details->samplingRate());
-	xml += addSettingToXML("Salinity", details->salinity());
-	xml += addSettingToXML("DiveModeColor", details->diveModeColor());
-	xml += addSettingToXML("Language", details->language());
-	xml += addSettingToXML("DateFormat", details->dateFormat());
-	xml += addSettingToXML("CompassGain", details->compassGain());
-	xml += "\n</Settings>";
-	xml += "\n</DiveComputerSettingsBackup>";
+	writer.writeTextElement("DiveMode", QString::number(details->diveMode()));
+	writer.writeTextElement("Saturation", QString::number(details->saturation()));
+	writer.writeTextElement("Desaturation", QString::number(details->desaturation()));
+	writer.writeTextElement("LastDeco", QString::number(details->lastDeco()));
+	writer.writeTextElement("Brightness", QString::number(details->brightness()));
+	writer.writeTextElement("Units", QString::number(details->units()));
+	writer.writeTextElement("SamplingRate", QString::number(details->samplingRate()));
+	writer.writeTextElement("Salinity", QString::number(details->salinity()));
+	writer.writeTextElement("DiveModeColor", QString::number(details->diveModeColor()));
+	writer.writeTextElement("Language", QString::number(details->language()));
+	writer.writeTextElement("DateFormat", QString::number(details->dateFormat()));
+	writer.writeTextElement("CompassGain", QString::number(details->compassGain()));
+
+	writer.writeEndElement();
+	writer.writeEndElement();
+
+	writer.writeEndDocument();
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly)) {
 		errorText = tr("Could not save the backup file %1. Error Message: %2")
@@ -426,12 +434,6 @@ void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 {
 	currentState = newState;
 	emit stateChanged(currentState);
-}
-
-
-QString ConfigureDiveComputer::addSettingToXML(QString settingName, QVariant value)
-{
-	return "\n<" + settingName + ">" + value.toString() + "</" + settingName + ">";
 }
 
 void ConfigureDiveComputer::setError(QString err)
