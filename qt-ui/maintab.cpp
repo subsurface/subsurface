@@ -537,7 +537,20 @@ void MainTab::updateDiveInfo(bool clear)
 			gasUsedString.append("...");
 		volume_t o2_tot = {}, he_tot = {};
 		selected_dives_gas_parts(&o2_tot, &he_tot);
-		gasUsedString.append(QString("These gases could be\nmixed from Air and using:\nHe: %1 and O2: %2\n").arg(get_volume_string(he_tot, true)).arg(get_volume_string(o2_tot, true)));
+
+		/* No need to show the gas mixing information if diving
+		 * with pure air, and only display the he / O2 part when
+		 * it is used.
+		 */
+		if (he_tot.mliter || o2_tot.mliter) {
+			gasUsedString.append(QString("These gases could be\nmixed from Air and using:\n"));
+			if (he_tot.mliter)
+				gasUsedString.append(QString("He: %1").arg(get_volume_string(he_tot, true)));
+			if (he_tot.mliter && o2_tot.mliter)
+				gasUsedString.append(QString(" and "));
+			if (o2_tot.mliter)
+				gasUsedString.append(QString("O2: %2\n").arg(get_volume_string(o2_tot, true)));
+		}
 		ui.gasConsumption->setText(gasUsedString);
 	} else {
 		/* clear the fields */
