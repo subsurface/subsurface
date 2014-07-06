@@ -908,13 +908,6 @@ void DivePlannerPointsModel::cancelPlan()
 	setPlanMode(NOTHING);
 	diveplan.dp = NULL;
 
-
-
-
-	// somewhere, somehow we need to make sure that the current_dive is displayed again
-
-
-
 	emit planCanceled();
 }
 

@@ -839,64 +839,25 @@ void MainTab::rejectChanges()
 	editMode = NONE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
-
-	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() != 1) {
-		if (lastMode == ADD) {
-			// clean up
-			DivePlannerPointsModel::instance()->cancelPlan();
-			hideMessage();
-			resetPallete();
-			return;
-		} else if (lastMode == MANUALLY_ADDED_DIVE) {
-			// when we tried to edit a manually added dive, we destroyed
-			// the dive we edited, so let's just restore it from backup
-			DivePlannerPointsModel::instance()->restoreBackupDive();
-		}
-		if (selected_dive >= 0) {
-			copy_dive(current_dive, &displayed_dive);
-			cylindersModel->updateDive();
-			weightModel->updateDive();
-		} else {
-			cylindersModel->clear();
-			weightModel->clear();
-			setEnabled(false);
-		}
-	}
-#if 0 // this makes no sense anymore - but let's make sure I think this through
-	// now let's avoid memory leaks
-	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-		if (displayed_dive.location != current_dive->divetrip->location)
-			free(displayed_dive.location);
-		if (displayed_dive.notes != current_dive->divetrip->notes)
-			free(displayed_dive.notes);
-	} else {
-		struct dive *cd = current_dive;
-		FREE_IF_DIFFERENT(tag_list);
-		FREE_IF_DIFFERENT(location);
-		FREE_IF_DIFFERENT(buddy);
-		FREE_IF_DIFFERENT(divemaster);
-		FREE_IF_DIFFERENT(notes);
-		FREE_IF_DIFFERENT(suit);
-	}
-#endif
 	hideMessage();
-	MainWindow::instance()->dive_list()->setEnabled(true);
-	ui.dateEdit->setEnabled(true);
 	resetPallete();
-	MainWindow::instance()->globe()->reload();
-	if (lastMode == MANUALLY_ADDED_DIVE) {
-		// more clean up
-		updateDiveInfo();
-		MainWindow::instance()->showProfile();
-		// we already reloaded the divelist above, so don't recreate it or we'll lose the selection
-		MainWindow::instance()->refreshDisplay(false);
-	}
-	MainWindow::instance()->dive_list()->setFocus();
+	// no harm done to call cancelPlan even if we were not in ADD or PLAN mode...
+	DivePlannerPointsModel::instance()->cancelPlan();
+
+	// now make sure that the correct dive is displayed
+	if (selected_dive >= 0)
+		copy_dive(current_dive, &displayed_dive);
+	else
+		clear_dive(&displayed_dive);
+	updateDiveInfo(selected_dive < 0);
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 	MainWindow::instance()->globe()->centerOnCurrentDive();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	updateDiveInfo();
+	MainWindow::instance()->globe()->reload();
+	// show the profile and dive info
+	MainWindow::instance()->graphics()->replot();
+	cylindersModel->updateDive();
+	weightModel->updateDive();
 }
 #undef EDIT_TEXT2
 

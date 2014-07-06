@@ -394,7 +394,7 @@ bool MainWindow::plannerStateClean()
 void MainWindow::planCanceled()
 {
 	showProfile();
-	refreshDisplay();
+	refreshDisplay(false);
 }
 
 void MainWindow::planCreated()
