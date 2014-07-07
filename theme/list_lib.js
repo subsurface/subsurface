@@ -788,31 +788,31 @@ function int_to_time(n)
 function canvas_draw()
 {
 	document.getElementById("chart1").innerHTML = "";
-	var d1 = new Array(); //depth
-	var d2 = new Array(); //pressure
-	var d3 = new Array(); //events
-	var d4 = new Array(); //temperature
+	var depthData = new Array();
+	var pressureData = new Array();
+	var eventsData = new Array();
+	var temperatureData = new Array();
 	var last = 0;
 	for (var i = 0; i < items[dive_id].samples.length; i++) {
-		d1.push([
+		depthData.push([
 			items[dive_id].samples[i][0] / 60,
 			-1 * mm_to_meter(items[dive_id].samples[i][1])
 		]);
 		if (items[dive_id].samples[i][2] != 0) {
-			d2.push([
+			pressureData.push([
 				items[dive_id].samples[i][0] / 60,
 				mbar_to_bar(items[dive_id].samples[i][2])
 			]);
 		}
 		if (items[dive_id].samples[i][3] != 0) {
-			d4.push([
+			temperatureData.push([
 				items[dive_id].samples[i][0] / 60,
 				mkelvin_to_C(items[dive_id].samples[i][3]),
 			]);
 			last = items[dive_id].samples[i][3];
 		} else {
 			if (last != 0) {
-				d4.push([
+				temperatureData.push([
 					items[dive_id].samples[i][0] / 60,
 					mkelvin_to_C(last),
 				]);
@@ -820,16 +820,16 @@ function canvas_draw()
 		}
 	}
 	for (var i = 0; i < items[dive_id].events.length; i++) {
-		d3.push([
+		eventsData.push([
 			items[dive_id].events[i].time / 60,
 			0,
 		]);
 	}
 	plot1 = $.jqplot('chart1', [
-					   d1,
-					   d2,
-					   d3,
-					   d4,
+					depthData,
+					pressureData,
+					eventsData,
+					temperatureData,
 				   ],
 			 {
 				 grid : {
@@ -886,9 +886,9 @@ function canvas_draw()
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
 							 showGridline : false,
-							 formatString : '%i min',
-							 angle : -30
-						 }
+							 formatString : '%i',
+						 },
+						 label:'Time (min)'
 					 },
 					 yaxis : {
 						 max : 0,

@@ -24,6 +24,12 @@ function load_scripts()
 	fileref.setAttribute("href", location.pathname + "_files/theme.css");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
+	fileref=document.createElement("link");
+	fileref.setAttribute("rel", "stylesheet");
+	fileref.setAttribute("type", "text/css");
+	fileref.setAttribute("href", location.pathname + "_files/jquery.jqplot.css");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
 	fileref=document.createElement('script');
 	fileref.setAttribute("src", location.pathname + "_files/file.json");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
