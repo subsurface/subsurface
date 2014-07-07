@@ -545,7 +545,8 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		divedatapoint &p = divepoints[index.row()];
 		switch (index.column()) {
 		case DEPTH:
-			p.depth = units_to_depth(value.toInt());
+			if (value.toInt() >= 0)
+				p.depth = units_to_depth(value.toInt());
 			break;
 		case RUNTIME:
 			p.time = value.toInt() * 60;
