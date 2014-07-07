@@ -526,25 +526,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="PlannerSettingsWidget" name="plannerSettingsWidget">
-         <layout class="QVBoxLayout" name="horizontalLayout_p4">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-         </layout>
-        </widget>
+        <widget class="PlannerSettingsWidget" name="plannerSettingsWidget"/>
        </widget>
        <widget class="QStackedWidget" name="globePane">
         <property name="currentIndex">
