@@ -365,7 +365,13 @@ double init_decompression(struct dive *dive)
 	divenr = get_divenr(dive);
 	when = dive->when;
 	i = divenr;
-	while (i && --i) {
+	if (i < 0) {
+		i = dive_table.nr - 1;
+		while (i >= 0 && get_dive(i)->when > when)
+			--i;
+		i++;
+	}
+	while (i--) {
 		struct dive *pdive = get_dive(i);
 		/* we don't want to mix dives from different trips as we keep looking
 		 * for how far back we need to go */
@@ -376,7 +382,7 @@ double init_decompression(struct dive *dive)
 		when = pdive->when;
 		lasttime = when + pdive->duration.seconds;
 	}
-	while (++i < divenr) {
+	while (++i < (divenr >= 0 ? divenr : dive_table.nr)) {
 		struct dive *pdive = get_dive(i);
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip)
