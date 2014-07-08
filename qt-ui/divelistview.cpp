@@ -785,8 +785,10 @@ void DiveListView::loadImages()
 	}
 
 	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
+	// the sequence is somewhat magic - replot re-populates the displayed_dive.
+	// calling refreshDisplay afterwards gets the picture model populated and the thumbnails displayed
 	MainWindow::instance()->graphics()->replot();
+	MainWindow::instance()->refreshDisplay();
 }
 
 QString DiveListView::lastUsedImageDir()
