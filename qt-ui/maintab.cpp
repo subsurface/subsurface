@@ -970,24 +970,6 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	markChangedWidget(ui.timeEdit);
 }
 
-bool MainTab::tagsChanged(dive *a, dive *b)
-{
-	char bufA[1024], bufB[1024];
-	taglist_get_tagstring(a->tag_list, bufA, sizeof(bufA));
-	taglist_get_tagstring(b->tag_list, bufB, sizeof(bufB));
-	QString tagStringA(bufA);
-	QString tagStringB(bufB);
-	QStringList text_list = tagStringA.split(",", QString::SkipEmptyParts);
-	for (int i = 0; i < text_list.size(); i++)
-		text_list[i] = text_list[i].trimmed();
-	QString textA = text_list.join(", ");
-	text_list = tagStringB.split(",", QString::SkipEmptyParts);
-	for (int i = 0; i < text_list.size(); i++)
-		text_list[i] = text_list[i].trimmed();
-	QString textB = text_list.join(", ");
-	return textA != textB;
-}
-
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
 void MainTab::saveTags()
 {
@@ -997,21 +979,16 @@ void MainTab::saveTags()
 		taglist_free(mydive->tag_list);
 		mydive->tag_list = NULL;
 		Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
-			taglist_add_tag(&mydive->tag_list, tag.toUtf8().data()););
+			taglist_add_tag(&mydive->tag_list, tag.toUtf8().data());
+	);
+	qDebug() << "Save tags called";
 }
 
 void MainTab::on_tagWidget_textChanged()
 {
 	if (editMode == IGNORE)
 		return;
-	QString tag;
-	if (displayed_dive.tag_list != current_dive->tag_list)
-		taglist_free(displayed_dive.tag_list);
-	displayed_dive.tag_list = NULL;
-	Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
-		taglist_add_tag(&displayed_dive.tag_list, tag.toUtf8().data());
-	if (tagsChanged(&displayed_dive, current_dive))
-		markChangedWidget(ui.tagWidget);
+	markChangedWidget(ui.tagWidget);
 }
 
 void MainTab::on_location_textChanged(const QString &text)
