@@ -669,13 +669,32 @@ var points;  //reference to the samples array of the shown dive.
 var ZERO_C_IN_MKELVIN = 273150;
 var plot1;
 
+function lastNonZero()
+{
+	for(var i = items[dive_id].samples.length-1; i >= 0; i--){
+		if(items[dive_id].samples[i][2] != 0)
+			return items[dive_id].samples[i][2];
+	}
+}
+
 /**
 *Return the HTML string for a dive cylinder entry in the table.
 */
 function get_cylinder_HTML(cylinder)
 {
-	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' +
-	       '<td class="Cyl">' + cylinder.SPressure + '</td><td class="Cyl">' + cylinder.EPressure + '</td><td class="Cyl">' + cylinder.O2 + '</td></tr>';
+	var cSPressure = cylinder.SPressure;
+	var cEPressure = cylinder.EPressure;
+
+	if (cSPressure === "--") {
+		cSPressure = mbar_to_bar(items[dive_id].samples[0][2]) + " bar";
+	}
+
+	if (cEPressure === "--") {
+		var nonZeroCEPressure = lastNonZero();
+		cEPressure = mbar_to_bar(nonZeroCEPressure) + " bar";
+	}
+
+	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' + '<td class="Cyl">' + cSPressure + '</td><td class="Cyl">' + cEPressure + '</td><td class="Cyl">' + cylinder.O2 + '</td></tr>';
 }
 
 /**
@@ -705,6 +724,7 @@ function get_bookmark_HTML(event)
 */
 function get_bookmarks_HTML(dive)
 {
+	if (dive.events <= 0) return "";
 	var result = "";
 	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td></tr>';
 	for (var i in dive.events) {
