@@ -719,8 +719,7 @@ void MainTab::acceptChanges()
 				}
 			}
 		}
-		if (tagsChanged(&displayed_dive, cd))
-			saveTags();
+		saveTags();
 
 #if 0 // with the new architecture this shouldn't be needed anymore
 		if (editMode == MANUALLY_ADDED_DIVE) {
