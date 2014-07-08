@@ -71,6 +71,11 @@ typedef struct
 
 typedef struct
 {
+	int32_t seconds; // offsets up to +/- 34 yrs
+} offset_t;
+
+typedef struct
+{
 	int32_t mm;
 } depth_t; // depth to 2000 km
 

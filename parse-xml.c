@@ -412,6 +412,20 @@ static void sampletime(char *buffer, duration_t *time)
 	}
 }
 
+static void offsettime(char *buffer, offset_t *time)
+{
+	duration_t uoffset;
+	int sign = 1;
+	if (*buffer == '-') {
+		sign = -1;
+		buffer++;
+	}
+	/* yes, this could indeed fail if we have an offset > 34yrs
+	 * - too bad */
+	sampletime(buffer, &uoffset);
+	time->seconds = sign * uoffset.seconds;
+}
+
 static void duration(char *buffer, duration_t *time)
 {
 	/* DivingLog 5.08 (and maybe other versions) appear to sometimes
@@ -1106,7 +1120,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 
 	if (MATCH("filename.picture", utf8_string, &cur_picture->filename))
 		return;
-	if (MATCH("offset.picture", sampletime, &cur_picture->offset))
+	if (MATCH("offset.picture", offsettime, &cur_picture->offset))
 		return;
 	if (MATCH("gps.picture", gps_picture_location, cur_picture))
 		return;
@@ -1317,7 +1331,8 @@ static void event_end(void)
 			if (cur_event.type == 123) {
 				struct picture *pic = alloc_picture();
 				pic->filename = strdup(cur_event.name);
-				pic->offset = cur_event.time;
+				/* theoretically this could fail - but we didn't support multi year offsets */
+				pic->offset.seconds = cur_event.time.seconds;
 				dive_add_picture(cur_dive, pic);
 			} else {
 				add_event(dc, cur_event.time.seconds,

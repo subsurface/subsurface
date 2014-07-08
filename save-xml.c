@@ -333,8 +333,15 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "  <picture filename='");
 	put_string(b, pic->filename);
 	put_string(b, "'");
-	if (pic->offset.seconds)
-		put_format(b, " offset='%u:%02u min'", FRACTION(pic->offset.seconds, 60));
+	if (pic->offset.seconds) {
+		int offset = pic->offset.seconds;
+		char sign = '+';
+		if (offset < 0) {
+			sign = '-';
+			offset = -offset;
+		}
+		put_format(b, " offset='%c%u:%02u min'", sign, FRACTION(offset, 60));
+	}
 	if (pic->latitude.udeg || pic->longitude.udeg) {
 		put_degrees(b, pic->latitude, " gps='", " ");
 		put_degrees(b, pic->longitude, "", "'");

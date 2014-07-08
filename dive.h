@@ -292,7 +292,7 @@ struct dive {
 /* picture list and methods related to dive picture handling */
 struct picture {
 	char *filename;
-	duration_t offset;
+	offset_t offset;
 	degrees_t latitude;
 	degrees_t longitude;
 	struct picture *next;

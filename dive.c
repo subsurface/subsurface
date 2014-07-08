@@ -2389,7 +2389,7 @@ void dive_create_picture(struct dive *d, char *filename, int shift_time)
 	picture_load_exif_data(p, &timestamp);
 	if (timestamp) {
 		p->offset.seconds = timestamp - d->when + shift_time;
-		if (p->offset.seconds < -D30MIN || p->offset.seconds > d->duration.seconds + D30MIN) {
+		if (p->offset.seconds < -D30MIN || p->offset.seconds > (int)d->duration.seconds + D30MIN) {
 			// this picture doesn't belong to this dive
 			free(p);
 			return;
