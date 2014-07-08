@@ -254,6 +254,7 @@ void ProfileWidget2::setupItemOnScene()
 void ProfileWidget2::replot()
 {
 	dataModel->clear();
+	forceReplot = true;
 	plotDive(); // simply plot the displayed_dive again
 }
 
