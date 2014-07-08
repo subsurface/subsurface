@@ -690,6 +690,10 @@ void MainTab::acceptChanges()
 			time_t offset = current_dive->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
+		if (displayed_dive.latitude.udeg != current_dive->latitude.udeg ||
+		    displayed_dive.longitude.udeg != current_dive->longitude.udeg) {
+			MODIFY_SELECTED_DIVES(gpsHasChanged(mydive, cd, ui.coordinates->text(), 0));
+		}
 		if (!same_string(displayed_dive.location, cd->location)) {
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(location));
 			// if we have a location text and haven't edited the coordinates, try to fill the coordinates
@@ -707,15 +711,13 @@ void MainTab::acceptChanges()
 										mydive->latitude = dive->latitude;
 										mydive->longitude = dive->longitude;
 									});
+						displayed_dive.latitude = dive->latitude;
+						displayed_dive.longitude = dive->longitude;
 						MainWindow::instance()->globe()->reload();
 						break;
 					}
 				}
 			}
-		}
-		if (displayed_dive.latitude.udeg != current_dive->latitude.udeg ||
-		    displayed_dive.longitude.udeg != current_dive->longitude.udeg) {
-			MODIFY_SELECTED_DIVES(gpsHasChanged(mydive, cd, ui.coordinates->text(), 0));
 		}
 		if (tagsChanged(&displayed_dive, cd))
 			saveTags();
