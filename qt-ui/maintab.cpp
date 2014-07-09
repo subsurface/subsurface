@@ -625,28 +625,11 @@ void MainTab::acceptChanges()
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
+	on_location_editingFinished(); // complete coordinates *before* saving
 	if (editMode == ADD) {
 		// We need to add the dive we just created to the dive list and select it.
-		// And if we happen to have GPS data for the location entered, let's add those.
 		// Easy, right?
 		struct dive *added_dive = clone_dive(&displayed_dive);
-		if (!same_string(added_dive->location, "") &&
-		     ui.coordinates->text().trimmed().isEmpty()) {
-			struct dive *dive;
-			int i = 0;
-			for_each_dive (i, dive) {
-				QString location(dive->location);
-				if (location == ui.location->text() &&
-				    (dive->latitude.udeg || dive->longitude.udeg)) {
-					if (same_string(added_dive->location, dive->location)) {
-						added_dive->latitude = dive->latitude;
-						added_dive->longitude = dive->longitude;
-					}
-					MainWindow::instance()->globe()->reload();
-					break;
-				}
-			}
-		}
 		record_dive(added_dive);
 		addedId = added_dive->id;
 		// unselect everything as far as the UI is concerned - we'll fix that below
@@ -687,45 +670,22 @@ void MainTab::acceptChanges()
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
 		if (displayed_dive.when != cd->when) {
-			time_t offset = current_dive->when - displayed_dive.when;
+			time_t offset = cd->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
-		if (displayed_dive.latitude.udeg != current_dive->latitude.udeg ||
-		    displayed_dive.longitude.udeg != current_dive->longitude.udeg) {
-			MODIFY_SELECTED_DIVES(gpsHasChanged(mydive, cd, ui.coordinates->text(), 0));
-		}
-		if (!same_string(displayed_dive.location, cd->location)) {
+		if (displayed_dive.latitude.udeg != cd->latitude.udeg ||
+		    displayed_dive.longitude.udeg != cd->longitude.udeg)
+			MODIFY_SELECTED_DIVES(
+				if (same_string(mydive->location, cd->location) &&
+				    mydive->latitude.udeg == cd->latitude.udeg &&
+				    mydive->longitude.udeg == cd->longitude.udeg)
+					gpsHasChanged(mydive, cd, ui.coordinates->text(), 0);
+			);
+		if (!same_string(displayed_dive.location, cd->location))
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(location));
-			// if we have a location text and haven't edited the coordinates, try to fill the coordinates
-			// from the existing dives
-			if (!same_string(cd->location, "") &&
-			    (!ui.coordinates->isModified() ||
-			     ui.coordinates->text().trimmed().isEmpty())) {
-				struct dive *dive;
-				int i = 0;
-				for_each_dive (i, dive) {
-					QString location(dive->location);
-					if (location == ui.location->text() &&
-					    (dive->latitude.udeg || dive->longitude.udeg)) {
-						MODIFY_SELECTED_DIVES(if (same_string(mydive->location, dive->location)) {
-										mydive->latitude = dive->latitude;
-										mydive->longitude = dive->longitude;
-									});
-						displayed_dive.latitude = dive->latitude;
-						displayed_dive.longitude = dive->longitude;
-						MainWindow::instance()->globe()->reload();
-						break;
-					}
-				}
-			}
-		}
+
 		saveTags();
 
-#if 0 // with the new architecture this shouldn't be needed anymore
-		if (editMode == MANUALLY_ADDED_DIVE) {
-			DivePlannerPointsModel::instance()->copyCylinders(cd);
-		} else
-#endif
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
 			MODIFY_SELECTED_DIVES(
@@ -1000,6 +960,26 @@ void MainTab::on_location_textChanged(const QString &text)
 	free(displayed_dive.location);
 	displayed_dive.location = strdup(ui.location->text().toUtf8().data());
 	markChangedWidget(ui.location);
+}
+
+// If we have GPS data for the location entered, add it.
+void MainTab::on_location_editingFinished()
+{
+	if (!same_string(displayed_dive.location, "") &&
+	    ui.coordinates->text().trimmed().isEmpty()) {
+		struct dive *dive;
+		int i = 0;
+		for_each_dive (i, dive) {
+			if (same_string(displayed_dive.location, dive->location) &&
+			    (dive->latitude.udeg || dive->longitude.udeg)) {
+				displayed_dive.latitude = dive->latitude;
+				displayed_dive.longitude = dive->longitude;
+				MainWindow::instance()->globe()->reload();
+				updateGpsCoordinates(&displayed_dive);
+				break;
+			}
+		}
+	}
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
