@@ -147,6 +147,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	duration_t time;               // uint32_t   4  seconds  (0-68 yrs)   elapsed dive time up to this sample
 	duration_t stoptime;           // uint32_t   4  seconds  (0-18 h)     time duration of next deco stop
 	duration_t ndl;                // uint32_t   4  seconds  (0-18 h)     time duration before no-deco limit
+	duration_t tts;                // uint32_t   4  seconds  (0-18 h)     time duration to reach the surface
 	depth_t depth;                 // int32_t    4    mm     (0-2000 km)  dive depth of this sample
 	depth_t stopdepth;             // int32_t    4    mm     (0-2000 km)  depth of next deco stop
 	temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature

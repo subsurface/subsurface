@@ -1316,6 +1316,8 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	} else if (has_ndl) {
 		put_format(b, translate("gettextFromC", "NDL: %umin\n"), DIV_UP(entry->ndl, 60));
 	}
+	if (entry->tts)
+		put_format(b, translate("gettextFromC", "TTS: %umin\n"), DIV_UP(entry->tts, 60));
 	if (entry->stopdepth_calc && entry->stoptime_calc) {
 		depthvalue = get_depth_units(entry->stopdepth_calc, NULL, &depth_unit);
 		put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),

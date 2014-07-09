@@ -850,6 +850,8 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("ndl.sample", sampletime, &sample->ndl))
 		return;
+	if (MATCH("tts.sample", sampletime, &sample->tts))
+		return;
 	if (MATCH("in_deco.sample", get_index, &in_deco)) {
 		sample->in_deco = (in_deco == 1);
 		return;

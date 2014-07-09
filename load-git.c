@@ -357,6 +357,10 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 		sample->ndl = get_duration(value);
 		return;
 	}
+	if (!strcmp(key, "tts")) {
+		sample->tts = get_duration(value);
+		return;
+	}
 	if (!strcmp(key, "in_deco")) {
 		sample->in_deco = atoi(value);
 		return;
