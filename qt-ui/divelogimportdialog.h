@@ -40,7 +40,7 @@ private:
 		QString separator;
 	};
 
-#define CSVAPPS 5
+#define CSVAPPS 6
 	static const CSVAppConfig CSVApps[CSVAPPS];
 };
 

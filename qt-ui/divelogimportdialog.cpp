@@ -6,10 +6,12 @@
 #include "ui_divelogimportdialog.h"
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
+	// time, depth, temperature, po2, cns, stopdepth
 	{ "", },
 	{ "APD Log Viewer", 1, 2, 16, 7, 18, 19, "Tab" },
 	{ "XP5", 1, 2, 10, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 10, 11, -1, -1, -1, -1, "," },
+	{ "Seabear CSV", 1, 2, 6, -1, -1, 5, ";" },
 	{ NULL, }
 };
 
