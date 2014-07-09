@@ -1,3 +1,5 @@
+CODECFORTR = UTF-8
+CODECFORSRC = UTF-8
 include(subsurface-configure.pri)
 
 QT = core gui network svg concurrent
