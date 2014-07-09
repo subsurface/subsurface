@@ -40,7 +40,8 @@ struct preferences default_prefs = {
 	.descrate = 18000 / 60,
 	.bottompo2 = 1400,
 	.decopo2 = 1600,
-	.doo2breaks = false
+	.doo2breaks = false,
+	.drop_stone_mode = false
 };
 
 int run_survey;

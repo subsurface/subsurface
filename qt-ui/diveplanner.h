@@ -101,7 +101,6 @@ private:
 	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	QVector<QPair<int, int> > oldGases;
-	bool drop_stone_mode;
 	QDateTime startTime;
 };
 

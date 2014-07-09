@@ -62,6 +62,7 @@ struct preferences {
 	char *proxy_user;
 	char *proxy_pass;
 	bool doo2breaks;
+	bool drop_stone_mode;
 };
 enum unit_system_values {
 	METRIC,

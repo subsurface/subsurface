@@ -76,7 +76,7 @@ void DivePlannerPointsModel::createSimpleDive()
 
 	// If we're in drop_stone_mode, don't add a first point.
 	// It will be added implicit.
-	if (!drop_stone_mode)
+	if (!prefs.drop_stone_mode)
 		plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, &gas, 0, true);
 
 	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, &gas, 0, true);
@@ -612,7 +612,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING), drop_stone_mode(false)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	startTime = QDateTime::currentDateTimeUtc();
@@ -691,8 +691,8 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
-	drop_stone_mode = value;
-	if (drop_stone_mode) {
+	prefs.drop_stone_mode = value;
+	if (prefs.drop_stone_mode) {
 	/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
 			beginRemoveRows(QModelIndex(), 0, 0);
@@ -986,7 +986,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		if (i == 0 && drop_stone_mode) {
+		if (i == 0 && prefs.drop_stone_mode) {
 			/* Okay, we add a fist segment where we go down to depth */
 			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.gasmix, p.po2, false);
 			deltaT -= p.depth / prefs.descrate;
