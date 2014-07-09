@@ -384,16 +384,17 @@ int parse_file(const char *filename)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx)
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[21];
+	char *params[23];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
 	char po2buf[MAXCOLDIGITS];
 	char cnsbuf[MAXCOLDIGITS];
+	char ndlbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
@@ -402,7 +403,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char curdate[9];
 	char curtime[6];
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS)
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
 	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
@@ -410,6 +411,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	snprintf(tempbuf, MAXCOLDIGITS, "%d", tempf);
 	snprintf(po2buf, MAXCOLDIGITS, "%d", po2f);
 	snprintf(cnsbuf, MAXCOLDIGITS, "%d", cnsf);
+	snprintf(ndlbuf, MAXCOLDIGITS, "%d", ndlf);
 	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unitbuf, MAXCOLDIGITS, "%d", unitidx);
@@ -431,6 +433,8 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	params[pnr++] = po2buf;
 	params[pnr++] = "cnsField";
 	params[pnr++] = cnsbuf;
+	params[pnr++] = "ndlField";
+	params[pnr++] = ndlbuf;
 	params[pnr++] = "stopdepthField";
 	params[pnr++] = stopdepthbuf;
 	params[pnr++] = "date";

@@ -8,6 +8,7 @@
   <xsl:param name="po2Field" select="po2Field"/>
   <xsl:param name="cnsField" select="cnsField"/>
   <xsl:param name="otuField" select="otuField"/>
+  <xsl:param name="ndlField" select="ndlField"/>
   <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
@@ -172,6 +173,15 @@
           <xsl:attribute name="otu">
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$otuField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:if test="$ndlField >= 0">
+          <xsl:attribute name="ndl">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$ndlField"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:attribute>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>352</height>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,7 +75,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="7" column="1">
            <widget class="QSpinBox" name="CSVstopdepth">
             <property name="enabled">
              <bool>false</bool>
@@ -88,7 +88,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="stopdepthCheckBox">
             <property name="text">
              <string>Stopdepth</string>
@@ -139,6 +139,26 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="ndlCheckBox">
+            <property name="text">
+             <string>NDL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="CSVndl">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0">
            <widget class="QCheckBox" name="cnsCheckBox">
             <property name="text">
@@ -147,6 +167,8 @@
            </widget>
           </item>
          </layout>
+         <zorder>ndlCheckBox</zorder>
+         <zorder>CSVndl</zorder>
          <zorder>label</zorder>
          <zorder>label_2</zorder>
          <zorder>CSVTime</zorder>
