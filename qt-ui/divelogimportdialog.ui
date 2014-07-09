@@ -31,12 +31,6 @@
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0" rowspan="3">
         <widget class="QGroupBox" name="groupBox_3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
          <property name="title">
           <string>Field Configuration</string>
          </property>
@@ -181,12 +175,6 @@
        </item>
        <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_4">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
          <property name="title">
           <string>Pre-configured imports</string>
          </property>
@@ -206,26 +194,22 @@
          <property name="title">
           <string>Units</string>
          </property>
-         <widget class="QComboBox" name="CSVUnits">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>30</y>
-            <width>251</width>
-            <height>29</height>
-           </rect>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <property name="text">
-            <string>Metric</string>
-           </property>
+           <widget class="QComboBox" name="CSVUnits">
+            <item>
+             <property name="text">
+              <string>Metric</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Imperial</string>
+             </property>
+            </item>
+           </widget>
           </item>
-          <item>
-           <property name="text">
-            <string>Imperial</string>
-           </property>
-          </item>
-         </widget>
+         </layout>
         </widget>
        </item>
        <item row="3" column="1">
