@@ -11,7 +11,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "APD Log Viewer", 1, 2, 16, 7, 18, -1, -1, 19, "Tab" },
 	{ "XP5", 1, 2, 10, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, -1, "," },
-	{ "Seabear CSV", 1, 2, 6, -1, -1, -1, -1, 5, ";" },
+	{ "Seabear CSV", 1, 2, 6, -1, -1, 3, 4, 5, ";" },
 	{ NULL, }
 };
 
@@ -92,6 +92,16 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					  VALUE_IF_CHECKED(Tags));
 		}
 	}
+	if (ui->knownImports->currentText() == QString("Seabear CSV")) {
+		/* Seabear CSV stores NDL and TTS in Minutes, not seconds */
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		for(int s_nr = 0 ; s_nr <= dive->dc.samples ; s_nr++) {
+			struct sample *sample = dive->dc.sample + s_nr;
+			sample->ndl.seconds *= 60;
+			sample->tts.seconds *= 60;
+		}
+	}
+
 	process_dives(true, false);
 
 	MainWindow::instance()->refreshDisplay();
