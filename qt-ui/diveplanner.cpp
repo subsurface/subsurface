@@ -464,6 +464,7 @@ void PlannerSettingsWidget::setDecoPo2(double po2)
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
 	prefs.doo2breaks = dobreaks;
+	plannerModel->emitDataChanged();
 }
 
 
