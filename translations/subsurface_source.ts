@@ -2856,17 +2856,17 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
-        <source>&lt;h3&gt;Subsurface was unable to check for updates.&lt;/h3&gt;</source>
+        <source>Subsurface was unable to check for updates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="41"/>
-        <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
+        <source>The following error occurred:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="42"/>
-        <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
+        <source>Please check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3017,17 +3017,17 @@ Language: %1</source>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="96"/>
-        <source>&lt;h3&gt;Subsurface was unable to submit the user survey.&lt;/h3&gt;</source>
+        <source>Subsurface was unable to submit the user survey.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="101"/>
-        <source>&lt;br/&gt;&lt;b&gt;The following error occurred:&lt;/b&gt;&lt;br/&gt;</source>
+        <source>The following error occurred:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="102"/>
-        <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Please check your internet connection.&lt;/b&gt;</source>
+        <source>Please check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

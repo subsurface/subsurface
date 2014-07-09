@@ -93,13 +93,13 @@ void UserSurvey::requestReceived(QNetworkReply *reply)
 {
 	QMessageBox msgbox;
 	QString msgTitle = tr("Submit User Survey.");
-	QString msgText = tr("<h3>Subsurface was unable to submit the user survey.</h3>");
+	QString msgText = "<h3>" + tr("Subsurface was unable to submit the user survey.") + "</h3>";
 
 
 	if (reply->error() != QNetworkReply::NoError) {
 		//Network Error
-		msgText = msgText + tr("<br/><b>The following error occurred:</b><br/>") + reply->errorString()
-				+ tr("<br/><br/><b>Please check your internet connection.</b>");
+		msgText = msgText + "<br/><b>" + tr("The following error occurred:") + "</b><br/>" + reply->errorString()
+				+ "<br/><br/><b>" + tr("Please check your internet connection.") + "</b>";
 	} else {
 		//No network error
 		QString response(reply->readAll());
