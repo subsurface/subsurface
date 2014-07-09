@@ -5,6 +5,7 @@
 #include "preferences.h"
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
+#include "mainwindow.h"
 #include <QPen>
 #include <QGraphicsScene>
 #include <QDebug>
@@ -132,7 +133,7 @@ void emptyList(QList<T *> &list, double steps)
 
 void DiveCartesianAxis::updateTicks(color_indice_t color)
 {
-	if (!scene() || !changed)
+	if (!scene() || (!changed && !MainWindow::instance()->graphics()->getPrintMode()))
 		return;
 	QLineF m = line();
 	// unused so far:

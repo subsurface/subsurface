@@ -90,7 +90,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	isGrayscale(false),
 	printMode(false),
 	shouldCalculateMaxTime(true),
-	shouldCalculateMaxDepth(true)
+	shouldCalculateMaxDepth(true),
+	fontPrintScale(1.0)
 {
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
@@ -1054,10 +1055,28 @@ void ProfileWidget2::changeGas()
 	replot();
 }
 
+bool ProfileWidget2::getPrintMode()
+{
+	return printMode;
+}
+
 void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
 	isGrayscale = mode ? grayscale : false;
+}
+
+void ProfileWidget2::setFontPrintScale(double scale)
+{
+	fontPrintScale = scale;
+}
+
+double ProfileWidget2::getFontPrintScale()
+{
+	if (printMode)
+		return fontPrintScale;
+	else
+		return 1.0;
 }
 
 void ProfileWidget2::editName()

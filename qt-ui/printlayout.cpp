@@ -136,6 +136,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int profileFrameStyle = profile->frameStyle();
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
+	profile->setFontPrintScale(0.4); // does a single scale work for all layouts???
 	QSize originalSize = profile->size();
 	// swap rows/col for landscape
 	if (printer->orientation() == QPrinter::Landscape) {

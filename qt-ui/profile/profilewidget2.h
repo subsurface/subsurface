@@ -71,9 +71,12 @@ public:
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
+	bool getPrintMode();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner();
 	bool isAddOrPlanner();
+	double getFontPrintScale();
+	void setFontPrintScale(double scale);
 	State currentState;
 
 public
@@ -174,6 +177,7 @@ private:
 	bool shouldCalculateMaxDepth;
 	int maxtime;
 	int maxdepth;
+	double fontPrintScale;
 };
 
 #endif // PROFILEWIDGET2_H
