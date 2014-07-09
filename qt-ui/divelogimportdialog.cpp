@@ -100,6 +100,18 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			sample->ndl.seconds *= 60;
 			sample->tts.seconds *= 60;
 		}
+
+		/* And the two first samples are "settings" from there software */
+		memcpy(dive->dc.sample, dive->dc.sample + 2, sizeof(dive->dc.sample) * dive->dc.samples - 2);
+		dive->dc.samples -= 2;
+		memset(dive->dc.sample + dive->dc.samples, 0, sizeof(dive->dc.sample) * 2);
+
+		/* And fix dammanged temperature from the initial samples */
+		dive->mintemp.mkelvin = 0;
+		dive->maxtemp.mkelvin = 0;
+		dive->watertemp.mkelvin = 0;
+		dive->dc.watertemp.mkelvin = 0;
+		fixup_dive(dive);
 	}
 
 	process_dives(true, false);
