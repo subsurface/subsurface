@@ -384,17 +384,18 @@ int parse_file(const char *filename)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx)
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[23];
+	char *params[25];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
 	char po2buf[MAXCOLDIGITS];
 	char cnsbuf[MAXCOLDIGITS];
 	char ndlbuf[MAXCOLDIGITS];
+	char ttsbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
@@ -412,6 +413,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	snprintf(po2buf, MAXCOLDIGITS, "%d", po2f);
 	snprintf(cnsbuf, MAXCOLDIGITS, "%d", cnsf);
 	snprintf(ndlbuf, MAXCOLDIGITS, "%d", ndlf);
+	snprintf(ttsbuf, MAXCOLDIGITS, "%d", ttsf);
 	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unitbuf, MAXCOLDIGITS, "%d", unitidx);
@@ -435,6 +437,8 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	params[pnr++] = cnsbuf;
 	params[pnr++] = "ndlField";
 	params[pnr++] = ndlbuf;
+	params[pnr++] = "ttsField";
+	params[pnr++] = ttsbuf;
 	params[pnr++] = "stopdepthField";
 	params[pnr++] = stopdepthbuf;
 	params[pnr++] = "date";

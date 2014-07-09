@@ -37,6 +37,7 @@ private:
 		int po2;
 		int cns;
 		int ndl;
+		int tts;
 		int stopdepth;
 		QString separator;
 	};

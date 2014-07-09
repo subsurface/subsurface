@@ -6,12 +6,12 @@
 #include "ui_divelogimportdialog.h"
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
-	// time, depth, temperature, po2, cns, ndl, stopdepth
+	// time, depth, temperature, po2, cns, ndl, tts, stopdepth
 	{ "", },
-	{ "APD Log Viewer", 1, 2, 16, 7, 18, -1, 19, "Tab" },
-	{ "XP5", 1, 2, 10, -1, -1, -1, -1, "Tab" },
-	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, "," },
-	{ "Seabear CSV", 1, 2, 6, -1, -1, -1, 5, ";" },
+	{ "APD Log Viewer", 1, 2, 16, 7, 18, -1, -1, 19, "Tab" },
+	{ "XP5", 1, 2, 10, -1, -1, -1, -1, -1, "Tab" },
+	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, -1, "," },
+	{ "Seabear CSV", 1, 2, 6, -1, -1, -1, -1, 5, ";" },
 	{ NULL, }
 };
 
@@ -47,6 +47,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 	connect(ui->cnsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	connect(ui->CSVndl, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->ndlCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+	connect(ui->CSVtts, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
+	connect(ui->ttsCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	connect(ui->CSVstopdepth, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -70,6 +72,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				       VALUE_IF_CHECKED(CSVpo2),
 				       VALUE_IF_CHECKED(CSVcns),
 				       VALUE_IF_CHECKED(CSVndl),
+				       VALUE_IF_CHECKED(CSVtts),
 				       VALUE_IF_CHECKED(CSVstopdepth),
 				       ui->CSVSeparator->currentIndex(),
 				       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
@@ -120,6 +123,7 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 	SET_VALUE_AND_CHECKBOX(CSVpo2, po2CheckBox, CSVApps[index].po2);
 	SET_VALUE_AND_CHECKBOX(CSVcns, cnsCheckBox, CSVApps[index].cns);
 	SET_VALUE_AND_CHECKBOX(CSVndl, ndlCheckBox, CSVApps[index].ndl);
+	SET_VALUE_AND_CHECKBOX(CSVtts, ttsCheckBox, CSVApps[index].tts);
 	SET_VALUE_AND_CHECKBOX(CSVstopdepth, stopdepthCheckBox, CSVApps[index].stopdepth);
 	ui->CSVSeparator->blockSignals(true);
 	int separator_index = ui->CSVSeparator->findText(CSVApps[index].separator);
