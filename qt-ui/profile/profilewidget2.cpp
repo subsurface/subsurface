@@ -69,7 +69,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	backgroundFile(":poster"),
 	toolTipItem(new ToolTipItem()),
 	isPlotZoomed(prefs.zoomed_plot),
-	forceReplot(false),
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
@@ -254,8 +253,7 @@ void ProfileWidget2::setupItemOnScene()
 void ProfileWidget2::replot()
 {
 	dataModel->clear();
-	forceReplot = true;
-	plotDive(); // simply plot the displayed_dive again
+	plotDive(0, true); // simply plot the displayed_dive again
 }
 
 void ProfileWidget2::setupItemSizes()
@@ -354,7 +352,7 @@ void ProfileWidget2::setupSceneAndFlags()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(struct dive *d)
+void ProfileWidget2::plotDive(struct dive *d, bool force)
 {
 	static bool firstCall = true;
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
@@ -371,10 +369,8 @@ void ProfileWidget2::plotDive(struct dive *d)
 		// computer of the same dive, so we check the unique id of the dive
 		// and the selected dive computer number against the ones we are
 		// showing (can't compare the dive pointers as those might change).
-		if (d->id == displayed_dive.id && dc_number == dataModel->dcShown() && !forceReplot)
+		if (d->id == displayed_dive.id && dc_number == dataModel->dcShown() && !force)
 			return;
-
-		forceReplot = false;
 
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
@@ -961,7 +957,7 @@ void ProfileWidget2::deleteCurrentDC()
 	delete_current_divecomputer();
 	mark_divelist_changed(true);
 	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
-	forceReplot = true;
+	MainWindow::instance()->graphics()->plotDive(0, true);
 	MainWindow::instance()->refreshDisplay();
 }
 

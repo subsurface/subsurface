@@ -67,7 +67,7 @@ public:
 	};
 
 	ProfileWidget2(QWidget *parent = 0);
-	void plotDive(struct dive *d = 0);
+	void plotDive(struct dive *d = 0, bool force = false);
 	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
@@ -135,7 +135,6 @@ private:
 	QString backgroundFile;
 	ToolTipItem *toolTipItem;
 	bool isPlotZoomed;
-	bool forceReplot;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.

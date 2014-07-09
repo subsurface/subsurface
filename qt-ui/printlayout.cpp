@@ -183,7 +183,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
-		profile->plotDive(dive);
+		profile->plotDive(dive, true); // make sure the profile is actually redrawn
 		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		painter.setTransform(origTransform);
 
@@ -202,7 +202,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
-	profile->plotDive();
+	// we need to force a redraw of the profile so it switches back from print mode
+	profile->plotDive(0, true);
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
