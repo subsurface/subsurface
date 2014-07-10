@@ -39,6 +39,7 @@ private:
 		int ndl;
 		int tts;
 		int stopdepth;
+		int pressure;
 		QString separator;
 	};
 

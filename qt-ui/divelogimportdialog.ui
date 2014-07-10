@@ -95,6 +95,26 @@
             </property>
            </widget>
           </item>
+          <item row="8" column="1">
+           <widget class="QSpinBox" name="CSVpressure">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="pressureCheckBox">
+            <property name="text">
+             <string>Pressure</string>
+            </property>
+           </widget>
+          </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="po2CheckBox">
             <property name="text">

@@ -11,6 +11,7 @@
   <xsl:param name="ndlField" select="ndlField"/>
   <xsl:param name="ttsField" select="ttsField"/>
   <xsl:param name="stopdepthField" select="stopdepthField"/>
+  <xsl:param name="pressureField" select="pressureField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
   <xsl:param name="units" select="units"/>
@@ -220,6 +221,15 @@
               <xsl:when test="$stopdepth > 0">1</xsl:when>
               <xsl:otherwise>0</xsl:otherwise>
             </xsl:choose>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:if test="$pressureField >= 0">
+          <xsl:attribute name="pressure">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$pressureField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
       </sample>

@@ -384,11 +384,11 @@ int parse_file(const char *filename)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int sepidx, const char *csvtemplate, int unitidx)
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[25];
+	char *params[27];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
@@ -397,6 +397,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char ndlbuf[MAXCOLDIGITS];
 	char ttsbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
+	char pressurebuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	time_t now;
@@ -404,7 +405,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char curdate[9];
 	char curtime[6];
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS)
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
 	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
@@ -415,6 +416,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	snprintf(ndlbuf, MAXCOLDIGITS, "%d", ndlf);
 	snprintf(ttsbuf, MAXCOLDIGITS, "%d", ttsf);
 	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
+	snprintf(pressurebuf, MAXCOLDIGITS, "%d", pressuref);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unitbuf, MAXCOLDIGITS, "%d", unitidx);
 	time(&now);
@@ -441,6 +443,8 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	params[pnr++] = ttsbuf;
 	params[pnr++] = "stopdepthField";
 	params[pnr++] = stopdepthbuf;
+	params[pnr++] = "pressureField";
+	params[pnr++] = pressurebuf;
 	params[pnr++] = "date";
 	params[pnr++] = curdate;
 	params[pnr++] = "time";
