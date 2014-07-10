@@ -2369,6 +2369,9 @@ int average_depth(struct diveplan *dive)
 	int last_depth = 0;
 	struct divedatapoint *dp = dive->dp;
 
+	if (!dp)
+		return 0;
+
 	while (dp) {
 		if (dp->time) {
 			/* Ignore gas indication samples */
