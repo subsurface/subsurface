@@ -126,7 +126,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normalon>:/round_base</normalon>
+          <normalon>:/network</normalon>
          </iconset>
         </property>
        </item>
