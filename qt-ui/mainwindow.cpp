@@ -1251,98 +1251,43 @@ void MainWindow::editCurrentDive()
 	}
 }
 
-#define TOOLBOX_PREF_PROFILE(PREFS)    \
+#define PREF_PROFILE(QT_PREFS) \
 	QSettings s;                   \
 	s.beginGroup("TecDetails");    \
-	s.setValue(#PREFS, triggered); \
+	s.setValue(#QT_PREFS, triggered); \
 	PreferencesDialog::instance()->emitSettingsChanged();
 
-void MainWindow::on_profCalcAllTissues_clicked(bool triggered)
-{
-	prefs.calcalltissues = triggered;
-	TOOLBOX_PREF_PROFILE(calcalltissues);
+#define TOOLBOX_PREF_PROFILE(METHOD, INTERNAL_PREFS, QT_PREFS)    \
+void MainWindow::on_ ## METHOD ##_clicked(bool triggered) \
+{ \
+    prefs. INTERNAL_PREFS = triggered;\
+	PREF_PROFILE(QT_PREFS); \
 }
-void MainWindow::on_profCalcCeiling_clicked(bool triggered)
-{
-	prefs.calcceiling = triggered;
-	TOOLBOX_PREF_PROFILE(calcceiling);
-}
-void MainWindow::on_profDcCeiling_clicked(bool triggered)
-{
-	prefs.dcceiling = triggered;
-	TOOLBOX_PREF_PROFILE(dcceiling);
-}
-void MainWindow::on_profEad_clicked(bool triggered)
-{
-	prefs.ead = triggered;
-	TOOLBOX_PREF_PROFILE(ead);
-}
-void MainWindow::on_profIncrement3m_clicked(bool triggered)
-{
-	prefs.calcceiling3m = triggered;
-	TOOLBOX_PREF_PROFILE(calcceiling3m);
-}
-void MainWindow::on_profMod_clicked(bool triggered)
-{
-	prefs.mod = triggered;
-	TOOLBOX_PREF_PROFILE(mod);
-}
-void MainWindow::on_profNdl_tts_clicked(bool triggered)
-{
-	prefs.calcndltts = triggered;
-	TOOLBOX_PREF_PROFILE(calcndltts);
-}
+
+TOOLBOX_PREF_PROFILE(profCalcAllTissues, calcalltissues, calcalltissues);
+TOOLBOX_PREF_PROFILE(profCalcCeiling, calcceiling, calcceiling);
+TOOLBOX_PREF_PROFILE(profDcCeiling, dcceiling, dcceiling);
+TOOLBOX_PREF_PROFILE(profEad, ead, ead);
+TOOLBOX_PREF_PROFILE(profIncrement3m, calcceiling3m, calcceiling3m);
+TOOLBOX_PREF_PROFILE(profMod, mod, mod);
+TOOLBOX_PREF_PROFILE(profNdl_tts, calcndltts, calcndltts);
+TOOLBOX_PREF_PROFILE(profPhe, pp_graphs.phe, phegraph);
+TOOLBOX_PREF_PROFILE(profPn2, pp_graphs.pn2, pn2graph);
+TOOLBOX_PREF_PROFILE(profPO2, pp_graphs.po2, po2graph);
+TOOLBOX_PREF_PROFILE(profHR, hrgraph, hrgraph);
+TOOLBOX_PREF_PROFILE(profRuler, rulergraph, rulergraph);
+TOOLBOX_PREF_PROFILE(profSAC, show_sac, show_sac);
+TOOLBOX_PREF_PROFILE(profScaled, zoomed_plot, zoomed_plot);
+TOOLBOX_PREF_PROFILE(profTogglePicture, show_pictures_in_profile, show_pictures_in_profile);
 void MainWindow::turnOffNdlTts()
 {
 	const bool triggered = false;
 	prefs.calcndltts = triggered;
-	TOOLBOX_PREF_PROFILE(calcndltts);
-}
-
-void MainWindow::on_profPhe_clicked(bool triggered)
-{
-	prefs.pp_graphs.phe = triggered;
-	TOOLBOX_PREF_PROFILE(phegraph);
-}
-void MainWindow::on_profPn2_clicked(bool triggered)
-{
-	prefs.pp_graphs.pn2 = triggered;
-	TOOLBOX_PREF_PROFILE(pn2graph);
-}
-void MainWindow::on_profPO2_clicked(bool triggered)
-{
-	prefs.pp_graphs.po2 = triggered;
-	TOOLBOX_PREF_PROFILE(po2graph);
-}
-void MainWindow::on_profHR_clicked(bool triggered)
-{
-	prefs.hrgraph = triggered;
-	TOOLBOX_PREF_PROFILE(hrgraph);
-}
-void MainWindow::on_profRuler_clicked(bool triggered)
-{
-	prefs.rulergraph = triggered;
-	TOOLBOX_PREF_PROFILE(rulergraph);
-}
-void MainWindow::on_profSAC_clicked(bool triggered)
-{
-	prefs.show_sac = triggered;
-	TOOLBOX_PREF_PROFILE(show_sac);
-}
-
-void MainWindow::on_profScaled_clicked(bool triggered)
-{
-	prefs.zoomed_plot = triggered;
-	TOOLBOX_PREF_PROFILE(zoomed_plot);
-}
-
-void MainWindow::on_profTogglePicture_clicked(bool triggered)
-{
-	prefs.show_pictures_in_profile = triggered;
-	TOOLBOX_PREF_PROFILE(show_pictures_in_planner);
+	PREF_PROFILE(calcndltts);
 }
 
 #undef TOOLBOX_PREF_PROFILE
+#undef PERF_PROFILE
 
 void MainWindow::on_actionExport_triggered()
 {
