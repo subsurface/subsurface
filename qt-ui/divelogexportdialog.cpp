@@ -168,7 +168,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 								tr("XML files (*.xml *.ssrf)"));
 			if (!filename.isNull() && !filename.isEmpty()) {
 				QByteArray bt = QFile::encodeName(filename);
-				save_dives_logic(bt.data(), true);
+				save_dives_logic(bt.data(), ui->exportSelected->isChecked());
 			}
 		}
 		break;
