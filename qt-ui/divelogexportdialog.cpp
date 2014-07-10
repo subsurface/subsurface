@@ -59,7 +59,7 @@ void DiveLogExportDialog::showExplanation()
 	} else if (ui->exportCSV->isChecked()) {
 		ui->description->setText("Comma separated values that include the most relevant information of the dive profile.");
 	} else if (ui->exportDivelogs->isChecked()) {
-		ui->description->setText("Send the dive data to Divelogs.de website.");
+		ui->description->setText("Send the dive data to divelogs.de website.");
 	} else if (ui->exportWorldMap->isChecked()) {
 		ui->description->setText("HTML export of the dive locations, visualized on a world map.");
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
@@ -150,16 +150,16 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 	case 0:
 		if (ui->exportUDDF->isChecked()) {
 			stylesheet = "uddf-export.xslt";
-			filename = QFileDialog::getSaveFileName(this, tr("Export UDDF File as"), lastDir,
+			filename = QFileDialog::getSaveFileName(this, tr("Export UDDF file as"), lastDir,
 								tr("UDDF files (*.uddf *.UDDF)"));
 		} else if (ui->exportCSV->isChecked()) {
 			stylesheet = "xml2csv.xslt";
-			filename = QFileDialog::getSaveFileName(this, tr("Export CSV File as"), lastDir,
+			filename = QFileDialog::getSaveFileName(this, tr("Export CSV file as"), lastDir,
 								tr("CSV files (*.csv *.CSV)"));
 		} else if (ui->exportDivelogs->isChecked()) {
 			DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
 		} else if (ui->exportWorldMap->isChecked()) {
-			filename = QFileDialog::getSaveFileName(this, tr("Export World Map"), lastDir,
+			filename = QFileDialog::getSaveFileName(this, tr("Export world map"), lastDir,
 								tr("HTML files (*.html)"));
 			if (!filename.isNull() && !filename.isEmpty())
 				export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());

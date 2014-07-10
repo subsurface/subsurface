@@ -11,17 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Export Dive Log Files</string>
+   <string>Export dive log files</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="General_tab">
       <attribute name="title">
-       <string>General Export</string>
+       <string>General export</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -181,13 +181,13 @@
        <item>
         <widget class="QGroupBox" name="GeneralOptions">
          <property name="title">
-          <string>General Settings</string>
+          <string>General settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
            <widget class="QCheckBox" name="exportSubsurfaceNumber">
             <property name="text">
-             <string>Subsurface Numbers</string>
+             <string>Subsurface numbers</string>
             </property>
            </widget>
           </item>
@@ -200,7 +200,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Selected Dives</string>
+             <string>Selected dives</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -226,7 +226,7 @@
              </size>
             </property>
             <property name="text">
-             <string>All Dives</string>
+             <string>All dives</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">buttonGroup</string>
@@ -236,7 +236,7 @@
           <item row="2" column="0">
            <widget class="QCheckBox" name="exportListOnly">
             <property name="text">
-             <string>Export List only</string>
+             <string>Export list only</string>
             </property>
            </widget>
           </item>
@@ -249,7 +249,7 @@
           <bool>true</bool>
          </property>
          <property name="title">
-          <string>Style Options</string>
+          <string>Style options</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
