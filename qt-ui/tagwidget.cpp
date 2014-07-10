@@ -182,7 +182,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 		MainWindow::instance()->information()->nextInputField(e);   // by sending the key event to the MainTab widget
 	} else if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // otherwise let's pretend this is a comma instead
 		QKeyEvent fakeEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
-		GroupedLineEdit::keyPressEvent(&fakeEvent);
+		keyPressEvent(&fakeEvent);
 	} else {
 		GroupedLineEdit::keyPressEvent(e);
 	}
