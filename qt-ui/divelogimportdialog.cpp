@@ -102,7 +102,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		}
 
 		/* And the two first samples are "settings" from there software */
-		memcpy(dive->dc.sample, dive->dc.sample + 2, sizeof(dive->dc.sample) * dive->dc.samples - 2);
+		memmove(dive->dc.sample, dive->dc.sample + 2, sizeof(dive->dc.sample) * dive->dc.samples - 2);
 		dive->dc.samples -= 2;
 		memset(dive->dc.sample + dive->dc.samples, 0, sizeof(dive->dc.sample) * 2);
 
