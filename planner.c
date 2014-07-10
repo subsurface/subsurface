@@ -672,9 +672,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	dp = diveplan->dp;
 	while (dp) {
 		if (dp->time != 0) {
-			int pO2 = depth_to_atm(dp->depth, dive) * dp->gasmix.o2.permille;
+			int pO2 = depth_to_atm(dp->depth, dive) * get_o2(&dp->gasmix);
 
-			if (pO2 > 1600) {
+			if (pO2 > dp->entered ? prefs.bottompo2 : prefs.decopo2) {
 				const char *depth_unit;
 				int decimals;
 				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
@@ -795,7 +795,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		gas = displayed_dive.cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
-		       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
+		       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
 #endif
 	}
 	while (1) {
@@ -834,7 +834,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			gas = displayed_dive.cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
 			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-			       (gas.o2.permille + 5) / 10, (gas.he.permille + 5) / 10, gaschanges[gi].depth / 1000.0);
+			       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 			gi--;
 		}
