@@ -74,16 +74,9 @@ extern struct preferences prefs, default_prefs;
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
-extern void subsurface_set_conf(const char *name, const char *value);
-extern void subsurface_set_conf_bool(const char *name, bool value);
-extern void subsurface_set_conf_int(const char *name, int value);
-
 extern const char system_divelist_default_font[];
 extern const int system_divelist_default_font_size;
 extern const char *system_default_filename();
-
-extern void load_preferences(void);
-extern void save_preferences(void);
 
 #ifdef __cplusplus
 }
