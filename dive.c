@@ -2466,6 +2466,7 @@ void make_first_dc()
 	while (dc && dc->next != cur_dc)
 		dc = dc->next;
 	if (!dc) {
+		free(newdc);
 		fprintf(stderr, "data inconsistent: can't find the current DC");
 		return;
 	}
