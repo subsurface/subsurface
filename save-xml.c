@@ -35,12 +35,15 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 	if (!text)
 		return;
 	/* remove leading and trailing space */
-	while (isspace(*text))
+	/* We need to combine isascii() with isspace(),
+	 * because we can only trust isspace() with 7-bit ascii,
+	 * on windows for example */
+	while (isascii(*text) && isspace(*text))
 		text++;
 	len = strlen(text);
 	if (!len)
 		return;
-	while (len && isspace(text[len - 1]))
+	while (len && isascii(text[len - 1]) && isspace(text[len - 1]))
 		len--;
 	/* strndup would be easier, but that doesn't appear to exist on Windows / Mac */
 	cleaned = strdup(text);
