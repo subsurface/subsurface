@@ -148,7 +148,7 @@
          <item>
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
-            <string>Lists and Tables</string>
+            <string>Lists and tables</string>
            </property>
            <layout class="QFormLayout" name="formLayout_2">
             <item row="0" column="0">
@@ -183,7 +183,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Default Dive file</string>
+               <string>Default dive log file</string>
               </property>
              </widget>
             </item>
@@ -204,7 +204,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>Display Invalid</string>
+               <string>Display invalid</string>
               </property>
              </widget>
             </item>
@@ -221,13 +221,13 @@
          <item>
           <widget class="QGroupBox" name="groupBox_6">
            <property name="title">
-            <string>Default Cylinder</string>
+            <string>Default cylinder</string>
            </property>
            <layout class="QFormLayout" name="formLayout_6">
             <item row="0" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>Use Default Cylinder</string>
+               <string>Use default cylinder</string>
               </property>
              </widget>
             </item>
@@ -277,13 +277,13 @@
          <item>
           <widget class="QGroupBox" name="groupBox_8">
            <property name="title">
-            <string>Subsurface Webservice</string>
+            <string>Subsurface web service</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
              <widget class="QLabel" name="label_16">
               <property name="text">
-               <string>Default User ID</string>
+               <string>Default user ID</string>
               </property>
              </widget>
             </item>
@@ -293,7 +293,7 @@
             <item>
              <widget class="QCheckBox" name="save_uid_local">
               <property name="text">
-               <string>Save User ID locally?</string>
+               <string>Save user ID locally?</string>
               </property>
              </widget>
             </item>
@@ -535,7 +535,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label13">
                 <property name="text">
-                 <string>Ascent/Descent speed denominator</string>
+                 <string>Ascent/descent speed denominator</string>
                 </property>
                </widget>
               </item>
@@ -595,7 +595,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>threshold when showing pO₂</string>
+                 <string>Threshold when showing pO₂</string>
                 </property>
                </widget>
               </item>
@@ -616,7 +616,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>threshold when showing pN₂</string>
+                 <string>Threshold when showing pN₂</string>
                 </property>
                </widget>
               </item>
@@ -637,7 +637,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>threshold when showing pHe</string>
+                 <string>Threshold when showing pHe</string>
                 </property>
                </widget>
               </item>
@@ -658,7 +658,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>max pO₂ when showing MOD</string>
+                 <string>Max pO₂ when showing MOD</string>
                 </property>
                </widget>
               </item>
@@ -679,7 +679,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>draw dive computer reported ceiling red</string>
+                 <string>Draw dive computer reported ceiling red</string>
                 </property>
                </widget>
               </item>
@@ -701,7 +701,7 @@
               <item>
                <widget class="QCheckBox" name="show_average_depth">
                 <property name="text">
-                 <string>show average depth</string>
+                 <string>Show average depth</string>
                 </property>
                </widget>
               </item>
@@ -769,7 +769,7 @@
            <item>
             <widget class="QCheckBox" name="languageSystemDefault">
              <property name="text">
-              <string>System Default</string>
+              <string>System default</string>
              </property>
             </widget>
            </item>
@@ -873,17 +873,17 @@
               </property>
              </widget>
             </item>
-			<item row="2" column="1">
-			 <widget class="QCheckBox" name="proxyAuthRequired">
-			  <property name="layoutDirection">
-			   <enum>Qt::LeftToRight</enum>
-			  </property>
-			  <property name="text">
-			   <string>Requires authentication</string>
-			  </property>
-			 </widget>
-			</item>
-			<item row="3" column="1">
+            <item row="2" column="1">
+             <widget class="QCheckBox" name="proxyAuthRequired">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Requires authentication</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
              <widget class="QLineEdit" name="proxyUsername">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -926,20 +926,20 @@
               </property>
              </widget>
             </item>
-			<item row="5" column="0">
-			 <spacer name="verticalSpacer_3">
-			  <property name="orientation">
-			   <enum>Qt::Vertical</enum>
-			  </property>
-			  <property name="sizeHint" stdset="0">
-			   <size>
-				<width>20</width>
-				<height>40</height>
-			   </size>
-			  </property>
-			 </spacer>
-			</item>
-		   </layout>
+            <item row="5" column="0">
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

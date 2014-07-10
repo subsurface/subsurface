@@ -378,7 +378,7 @@ void PreferencesDialog::buttonClicked(QAbstractButton *button)
 void PreferencesDialog::on_chooseFile_clicked()
 {
 	QFileInfo fi(system_default_filename());
-	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open Default Log File"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open default log file"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 
 	if (!choosenFileName.isEmpty())
 		ui.defaultfilename->setText(choosenFileName);
@@ -392,7 +392,7 @@ void PreferencesDialog::on_resetSettings_clicked()
 	response.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Cancel);
 	response.setWindowTitle(tr("Warning"));
-	response.setText(tr("If you click OK, all settings of Subsurface are reset to their default values. This will be applied immediately."));
+	response.setText(tr("If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately."));
 	response.setWindowModality(Qt::WindowModal);
 
 	int result = response.exec();
