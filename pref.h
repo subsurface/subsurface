@@ -63,6 +63,7 @@ struct preferences {
 	char *proxy_pass;
 	bool doo2breaks;
 	bool drop_stone_mode;
+	bool show_pictures_in_profile;
 };
 enum unit_system_values {
 	METRIC,

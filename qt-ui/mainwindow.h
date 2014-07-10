@@ -142,7 +142,7 @@ slots:
 	void on_profRuler_clicked(bool triggered);
 	void on_profSAC_clicked(bool triggered);
 	void on_profScaled_clicked(bool triggered);
-
+	void on_profTogglePicture_clicked(bool triggered);
 	void on_actionExport_triggered();
 
 protected:

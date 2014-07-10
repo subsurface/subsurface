@@ -100,7 +100,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	setupItemOnScene();
 	addItemsToScene();
 	scene()->installEventFilter(this);
-	setEmptyState();
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 
 	QAction *action = NULL;

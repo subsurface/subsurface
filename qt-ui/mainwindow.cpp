@@ -93,6 +93,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 
 	ui.mainErrorMessage->hide();
+	ui.newProfile->setEmptyState();
 	initialUiSetup();
 	readSettings();
 	ui.ListWidget->reload(DiveTripModel::TREE);
@@ -1332,6 +1333,12 @@ void MainWindow::on_profScaled_clicked(bool triggered)
 {
 	prefs.zoomed_plot = triggered;
 	TOOLBOX_PREF_PROFILE(zoomed_plot);
+}
+
+void MainWindow::on_profTogglePicture_clicked(bool triggered)
+{
+	prefs.show_pictures_in_profile = triggered;
+	TOOLBOX_PREF_PROFILE(show_pictures_in_planner);
 }
 
 #undef TOOLBOX_PREF_PROFILE

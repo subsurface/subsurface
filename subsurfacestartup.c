@@ -41,7 +41,8 @@ struct preferences default_prefs = {
 	.bottompo2 = 1400,
 	.decopo2 = 1600,
 	.doo2breaks = false,
-	.drop_stone_mode = false
+	.drop_stone_mode = false,
+	.show_pictures_in_profile = true
 };
 
 int run_survey;
