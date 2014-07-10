@@ -114,6 +114,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		dive->maxtemp.mkelvin = 0;
 		dive->watertemp.mkelvin = 0;
 		dive->dc.watertemp.mkelvin = 0;
+		dive->cylinder[0].start.mbar = 0;
+		dive->cylinder[0].sample_start.mbar = 0;
 		fixup_dive(dive);
 	}
 
