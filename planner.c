@@ -575,7 +575,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			continue;
 		if (dp->time - lasttime < 10 && !(gaschange && dp->next && dp->depth != dp->next->depth))
 			continue;
-		gasidx = get_gasidx(dive, &gasmix);
+
 		len = strlen(buffer);
 		if (nextdp && gasmix_distance(&gasmix, &newgasmix))
 			gaschange = true;
