@@ -59,7 +59,7 @@ void DiveEventItem::setEvent(struct event *ev)
 void DiveEventItem::setupPixmap()
 {
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(30, 28, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(40, 38, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (!internalEvent->name) {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
@@ -67,7 +67,12 @@ void DiveEventItem::setupPixmap()
 	} else if (strcmp(internalEvent->name, "heading") == 0) {
 		setPixmap(EVENT_PIXMAP(":flag"));
 	} else if (internalEvent->type == SAMPLE_EVENT_GASCHANGE || internalEvent->type == SAMPLE_EVENT_GASCHANGE2) {
-		setPixmap(EVENT_PIXMAP_BIGGER(":gaschange"));
+		if (internalEvent->value >> 16)
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
+		else if (internalEvent->value == 0)
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
+		else
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
 	} else {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	}
