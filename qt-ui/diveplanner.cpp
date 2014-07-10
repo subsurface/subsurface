@@ -207,7 +207,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		m.addAction(action);
 	}
 	m.addSeparator();
-	m.addAction(QObject::tr("Remove this Point"), this, SLOT(selfRemove()));
+	m.addAction(QObject::tr("Remove this point"), this, SLOT(selfRemove()));
 	m.exec(event->screenPos());
 }
 
@@ -249,11 +249,11 @@ void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
-	ui.tableWidget->setTitle(tr("Dive Planner Points"));
+	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setRecalc(true);
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-	ui.cylinderTableWidget->setTitle(tr("Available Gases"));
+	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
 	QTableView *view = ui.cylinderTableWidget->view();
 	view->setColumnHidden(CylindersModel::START, true);
@@ -276,7 +276,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
 		plannerModel, SIGNAL(cylinderModelEdited()));
 
-	ui.tableWidget->setBtnToolTip(tr("add dive data point"));
+	ui.tableWidget->setBtnToolTip(tr("Add dive data point"));
 	connect(ui.startTime, SIGNAL(timeChanged(QTime)), plannerModel, SLOT(setStartTime(QTime)));
 	connect(ui.dateEdit, SIGNAL(dateChanged(QDate)), plannerModel, SLOT(setStartDate(QDate)));
 	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
@@ -583,15 +583,15 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
 		switch (section) {
 		case DEPTH:
-			return tr("Final Depth");
+			return tr("Final depth");
 		case RUNTIME:
 			return tr("Run time");
 		case DURATION:
 			return tr("Duration");
 		case GAS:
-			return tr("Used Gas");
+			return tr("Used gas");
 		case CCSETPOINT:
-			return tr("CC Set Point");
+			return tr("CC set point");
 		}
 	} else if (role == Qt::FontRole) {
 		return defaultModelFont();
@@ -884,7 +884,7 @@ struct diveplan &DivePlannerPointsModel::getDiveplan()
 void DivePlannerPointsModel::cancelPlan()
 {
 	if (mode == PLAN && rowCount()) {
-		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the Plan?"),
+		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the plan?"),
 									       tr("You are about to discard your plan.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
 			return;

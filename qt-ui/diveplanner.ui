@@ -103,7 +103,7 @@
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred"/>
          </property>
          <property name="text">
-          <string>Planned Dive Time</string>
+          <string>Planned dive time</string>
          </property>
         </widget>
        </item>
@@ -138,7 +138,7 @@
        <item row="2" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>ATM Pressure</string>
+          <string>ATM pressure</string>
          </property>
         </widget>
        </item>
