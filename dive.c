@@ -2089,6 +2089,30 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 	remove_redundant_dc(res, prefer_downloaded);
 }
 
+static bool tag_seen_before(struct tag_entry *start, struct tag_entry *before)
+{
+	while(start && start != before) {
+		if (same_string(start->tag->name, before->tag->name))
+			return true;
+		start = start->next;
+	}
+	return false;
+}
+
+/* remove duplicates and empty nodes */
+void taglist_cleanup(struct tag_entry **tag_list)
+{
+	struct tag_entry **tl = tag_list;
+	while (*tl) {
+		/* skip tags that are empty or that we have seen before */
+		if (same_string((*tl)->tag->name, "") || tag_seen_before(*tag_list, *tl)) {
+			*tl = (*tl)->next;
+			continue;
+		}
+		tl = &(*tl)->next;
+	}
+}
+
 int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len)
 {
 	int i = 0;

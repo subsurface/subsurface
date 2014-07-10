@@ -197,6 +197,9 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag);
  */
 int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len);
 
+/* cleans up a list: removes empty tags and duplicates */
+void taglist_cleanup(struct tag_entry **tag_list);
+
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
 
