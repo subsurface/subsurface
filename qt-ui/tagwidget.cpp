@@ -169,6 +169,14 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 				popup->hide();
 		}
 		finishedTag = true;
+		break;
+	case Qt::Key_Comma: { /* if this is the last key, and the previous string is empty, ignore the comma. */
+		QString temp = text();
+		if (temp.split(QChar(',')).last().trimmed().isEmpty()){
+			e->ignore();
+			return;
+		}
+	  }
 	}
 	if (e->key() == Qt::Key_Tab && lastFinishedTag) {		    // if we already end in comma, go to next/prev field
 		MainWindow::instance()->information()->nextInputField(e);   // by sending the key event to the MainTab widget

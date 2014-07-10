@@ -87,6 +87,8 @@ void GroupedLineEdit::addBlock(int start, int end)
 	block.start = start;
 	block.end = end;
 	block.text = text().mid(start, end - start + 1).remove(',').trimmed();
+	if (block.text.isEmpty())
+		return;
 	d->blocks.append(block);
 	viewport()->update();
 }
