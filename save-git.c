@@ -1093,6 +1093,7 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 
 	if (stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		free(loc);
+		free(branch);
 		return dummy_git_repository;
 	}
 
