@@ -1291,6 +1291,6 @@ void MainWindow::turnOffNdlTts()
 
 void MainWindow::on_actionExport_triggered()
 {
-	DiveLogExportDialog *diveLogExport = new DiveLogExportDialog(this);
-	diveLogExport->show();
+	DiveLogExportDialog diveLogExport;
+	diveLogExport.exec();
 }
