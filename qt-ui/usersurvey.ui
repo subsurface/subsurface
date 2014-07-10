@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>User Survey</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -44,7 +44,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Subsurface User Survey</string>
+    <string>Subsurface user survey</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -76,7 +76,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Recreational DIver</string>
+    <string>Recreational diver</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="tech">
@@ -89,7 +89,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Tech Diver</string>
+    <string>Technical diver</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="planning">

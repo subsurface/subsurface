@@ -72,7 +72,7 @@ void UserSurvey::on_buttonBox_rejected()
 	QMessageBox response(this);
 	response.setText(tr("Should we ask you later?"));
 	response.addButton(tr("Don't ask me again"), QMessageBox::RejectRole);
-	response.addButton(tr("Ask Later"), QMessageBox::AcceptRole);
+	response.addButton(tr("Ask later"), QMessageBox::AcceptRole);
 	response.setWindowTitle(tr("Ask again?")); // Not displayed on MacOSX as described in Qt API
 	response.setIcon(QMessageBox::Question);
 	response.setWindowModality(Qt::WindowModal);
@@ -92,7 +92,7 @@ void UserSurvey::on_buttonBox_rejected()
 void UserSurvey::requestReceived(QNetworkReply *reply)
 {
 	QMessageBox msgbox;
-	QString msgTitle = tr("Submit User Survey.");
+	QString msgTitle = tr("Submit user survey.");
 	QString msgText = "<h3>" + tr("Subsurface was unable to submit the user survey.") + "</h3>";
 
 
