@@ -241,6 +241,7 @@ void MainWindow::setToolButtonsEnabled(bool enabled)
 	ui.profRuler->setEnabled(enabled);
 	ui.profScaled->setEnabled(enabled);
 	ui.profHR->setEnabled(enabled);
+	ui.profTogglePicture->setEnabled(enabled);
 }
 
 bool MainWindow::okToClose(QString message)
