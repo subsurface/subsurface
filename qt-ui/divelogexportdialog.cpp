@@ -55,15 +55,15 @@ DiveLogExportDialog::~DiveLogExportDialog()
 void DiveLogExportDialog::showExplanation()
 {
 	if (ui->exportUDDF->isChecked()) {
-		ui->description->setText("Generic format that is used for data exchange between a variety of diving related programs.");
+		ui->description->setText(tr("Generic format that is used for data exchange between a variety of diving related programs."));
 	} else if (ui->exportCSV->isChecked()) {
-		ui->description->setText("Comma separated values that include the most relevant information of the dive profile.");
+		ui->description->setText(tr("Comma separated values that include the most relevant information of the dive profile."));
 	} else if (ui->exportDivelogs->isChecked()) {
-		ui->description->setText("Send the dive data to divelogs.de website.");
+		ui->description->setText(tr("Send the dive data to divelogs.de website."));
 	} else if (ui->exportWorldMap->isChecked()) {
-		ui->description->setText("HTML export of the dive locations, visualized on a world map.");
+		ui->description->setText(tr("HTML export of the dive locations, visualized on a world map."));
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
-		ui->description->setText("Subsurface native XML format.");
+		ui->description->setText(tr("Subsurface native XML format."));
 	}
 }
 
