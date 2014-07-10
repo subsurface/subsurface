@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
-    <string>Dive Notes</string>
+    <string>Dive notes</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="2" column="1">
@@ -388,7 +388,7 @@
   </widget>
   <widget class="QWidget" name="infoTab">
    <attribute name="title">
-    <string>Dive Info</string>
+    <string>Dive info</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -471,7 +471,7 @@
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
-           <string>Gases Used</string>
+           <string>Gases used</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
@@ -490,7 +490,7 @@
         <item row="1" column="1">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
-           <string>Gas Consumed</string>
+           <string>Gas consumed</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
@@ -528,7 +528,7 @@
         <item row="2" column="0">
          <widget class="QGroupBox" name="groupBox_6">
           <property name="title">
-           <string>Max. Depth</string>
+           <string>Max. depth</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
@@ -547,7 +547,7 @@
         <item row="2" column="1">
          <widget class="QGroupBox" name="groupBox_7">
           <property name="title">
-           <string>Ave. Depth</string>
+           <string>Ave. depth</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
@@ -585,7 +585,7 @@
         <item row="3" column="0">
          <widget class="QGroupBox" name="groupBox_10">
           <property name="title">
-           <string>Air Pressure</string>
+           <string>Air pressure</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_10">
            <item>
@@ -604,7 +604,7 @@
         <item row="3" column="1">
          <widget class="QGroupBox" name="groupBox_9">
           <property name="title">
-           <string>Air Temperature</string>
+           <string>Air temperature</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_11">
            <item>
@@ -623,7 +623,7 @@
         <item row="3" column="2">
          <widget class="QGroupBox" name="groupBox_8">
           <property name="title">
-           <string>Water Temperature</string>
+           <string>Water temperature</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
@@ -642,7 +642,7 @@
         <item row="0" column="1">
          <widget class="QGroupBox" name="groupBox_11">
           <property name="title">
-           <string>Dive Time</string>
+           <string>Dive time</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
@@ -813,7 +813,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_11b">
             <property name="title">
-             <string>Total Time</string>
+             <string>Total time</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_11b">
              <item>
@@ -871,7 +871,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_13">
             <property name="title">
-             <string>Gas Consumption</string>
+             <string>Gas consumption</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_15b">
              <item>

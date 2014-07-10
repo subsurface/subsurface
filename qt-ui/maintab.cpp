@@ -384,7 +384,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-			setTabText(0, tr("Trip Notes"));
+			setTabText(0, tr("Trip notes"));
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
 			ui.CoordinatedLabel->setVisible(false);
@@ -406,14 +406,14 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
-			ui.LocationLabel->setText(tr("Trip Location"));
+			ui.LocationLabel->setText(tr("Trip location"));
 			ui.location->setText(currentTrip->location);
-			ui.NotesLabel->setText(tr("Trip Notes"));
+			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
 			clearEquipment();
 			ui.equipmentTab->setEnabled(false);
 		} else {
-			setTabText(0, tr("Dive Notes"));
+			setTabText(0, tr("Dive notes"));
 			// make all the fields visible writeable
 			ui.coordinates->setVisible(true);
 			ui.CoordinatedLabel->setVisible(true);
@@ -498,8 +498,8 @@ void MainTab::updateDiveInfo(bool clear)
 		// the overall average depth is really confusing when listed between the
 		// deepest and shallowest dive - let's just not set it
 		// ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
-		ui.depthLimits->overrideMaxToolTipText(tr("Deepest Dive"));
-		ui.depthLimits->overrideMinToolTipText(tr("Shallowest Dive"));
+		ui.depthLimits->overrideMaxToolTipText(tr("Deepest dive"));
+		ui.depthLimits->overrideMinToolTipText(tr("Shallowest dive"));
 		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
 		ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
 		ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, true).append(tr("/min")));
