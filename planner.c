@@ -518,7 +518,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer)
 {
 	char buffer[20000], temp[1000];
-	int len, gasidx, lastdepth = 0, lasttime = 0;
+	int len, lastdepth = 0, lasttime = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange = !plan_verbatim;
 	struct divedatapoint *nextdp = NULL;
@@ -637,7 +637,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div><div><br>%s<br>", temp);
-	for (gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
+	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure;
 		const char *unit, *pressure_unit;
 		char warning[1000] = "";
