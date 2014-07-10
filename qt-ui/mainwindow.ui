@@ -815,7 +815,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDownloadWeb">
    <property name="text">
-    <string>Import &amp;GPS data from Subsurface Service</string>
+    <string>Import &amp;GPS data from Subsurface web-service</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
@@ -823,12 +823,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionEditDeviceNames">
    <property name="text">
-    <string>&amp;Edit Device Names</string>
+    <string>&amp;Edit device names</string>
    </property>
   </action>
   <action name="actionAddDive">
    <property name="text">
-    <string>&amp;Add Dive</string>
+    <string>&amp;Add dive</string>
    </property>
    <property name="shortcut">
     <string>Ctrl++</string>
@@ -847,12 +847,12 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Auto &amp;Group</string>
+    <string>Auto &amp;group</string>
    </property>
   </action>
   <action name="actionYearlyStatistics">
    <property name="text">
-    <string>&amp;Yearly Statistics</string>
+    <string>&amp;Yearly statistics</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
@@ -860,7 +860,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionViewList">
    <property name="text">
-    <string>&amp;Dive List</string>
+    <string>&amp;Dive list</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+2</string>
@@ -892,7 +892,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionPreviousDC">
    <property name="text">
-    <string>P&amp;rev DC</string>
+    <string>P&amp;revious DC</string>
    </property>
    <property name="shortcut">
     <string>Left</string>
@@ -908,7 +908,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSelectEvents">
    <property name="text">
-    <string>&amp;Select Events</string>
+    <string>&amp;Select events</string>
    </property>
   </action>
   <action name="actionInputPlan">
@@ -926,7 +926,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionUserManual">
    <property name="text">
-    <string>User &amp;Manual</string>
+    <string>User &amp;manual</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -942,7 +942,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDivePlanner">
    <property name="text">
-    <string>P&amp;lan Dive</string>
+    <string>P&amp;lan dive</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
@@ -950,7 +950,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionImportDiveLog">
    <property name="text">
-    <string>&amp;Import Log Files</string>
+    <string>&amp;Import log files</string>
    </property>
    <property name="toolTip">
     <string>Import divelog files from other applications</string>
@@ -961,7 +961,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDivelogs_de">
    <property name="text">
-    <string>Import &amp;from Divelogs.de</string>
+    <string>Import &amp;from divelogs.de</string>
    </property>
   </action>
   <action name="actionFullScreen">
@@ -969,10 +969,10 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Full Screen</string>
+    <string>&amp;Full screen</string>
    </property>
    <property name="toolTip">
-    <string>Toggle Full Screen</string>
+    <string>Toggle full screen</string>
    </property>
    <property name="shortcut">
     <string>F11</string>
@@ -1000,7 +1000,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_Check_for_Updates">
    <property name="text">
-    <string>&amp;Check for Updates</string>
+    <string>&amp;Check for updates</string>
    </property>
   </action>
   <action name="actionExport">

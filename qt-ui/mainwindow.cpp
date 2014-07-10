@@ -188,7 +188,7 @@ void MainWindow::on_actionOpen_triggered()
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), lastUsedDir(), filter());
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), lastUsedDir(), filter());
 	if (filename.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(filename).dir().path());
@@ -511,7 +511,7 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 		yearlyStats = new QTreeView();
 		yearlyStats->setWindowModality(Qt::NonModal);
 		yearlyStats->setMinimumWidth(600);
-		yearlyStats->setWindowTitle(tr("Yearly Statistics"));
+		yearlyStats->setWindowTitle(tr("Yearly statistics"));
 		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
 		QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats, 0, 0, Qt::WidgetShortcut);
 		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
@@ -707,14 +707,14 @@ bool MainWindow::askSaveChanges()
 	QMessageBox response(MainWindow::instance());
 
 	if (existing_filename)
-		message = tr("Do you want to save the changes you made in the file %1?").arg(existing_filename);
+		message = tr("Do you want to save the changes that you made in the file %1?").arg(existing_filename);
 	else
-		message = tr("Do you want to save the changes you made in the datafile?");
+		message = tr("Do you want to save the changes that you made in the datafile?");
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
 	response.setText(message);
-	response.setWindowTitle(tr("Save Changes?")); // Not displayed on MacOSX as described in Qt API
+	response.setWindowTitle(tr("Save changes?")); // Not displayed on MacOSX as described in Qt API
 	response.setInformativeText(tr("Changes will be lost if you don't save them."));
 	response.setIcon(QMessageBox::Warning);
 	response.setWindowModality(Qt::WindowModal);
@@ -1072,7 +1072,7 @@ int MainWindow::file_save_as(void)
 {
 	QString filename;
 	const char *default_filename = existing_filename;
-	filename = QFileDialog::getSaveFileName(this, tr("Save File as"), default_filename,
+	filename = QFileDialog::getSaveFileName(this, tr("Save file as"), default_filename,
 						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
@@ -1196,9 +1196,9 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 void MainWindow::on_actionImportDiveLog_triggered()
 {
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Dive Log File"), lastUsedDir(),
-		tr("Dive Log Files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;"
-			"XML Files (*.xml);;UDDF/UDCF Files(*.uddf *.udcf);;JDiveLog Files(*.jlb);;"
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
+		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;"
+			"XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;"
 			"Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)"));
 
 	if (fileNames.isEmpty())
