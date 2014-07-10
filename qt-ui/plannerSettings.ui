@@ -292,7 +292,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QCheckBox" name="backgasBreaks">
         <property name="text">
-         <string>plan backgas breaks</string>
+         <string>Plan backgas breaks</string>
         </property>
        </widget>
       </item>
@@ -315,7 +315,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Gas Options</string>
+      <string>Gas options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <property name="leftMargin">
@@ -336,7 +336,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
-         <string>bottom SAC</string>
+         <string>Bottom SAC</string>
         </property>
        </widget>
       </item>
@@ -346,7 +346,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_14">
         <property name="text">
-         <string>deco SAC</string>
+         <string>Deco SAC</string>
         </property>
        </widget>
       </item>
@@ -356,7 +356,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>bottom pO₂</string>
+         <string>Bottom pO₂</string>
         </property>
        </widget>
       </item>
@@ -379,7 +379,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>deco pO₂</string>
+         <string>Deco pO₂</string>
         </property>
        </widget>
       </item>
@@ -418,7 +418,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
-      <string>Dive Notes</string>
+      <string>Dive notes</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <property name="leftMargin">
@@ -442,7 +442,7 @@
          <string>In dive plan, show runtime (absolute time) of stops</string>
         </property>
         <property name="text">
-         <string>display runtime</string>
+         <string>Display runtime</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -458,7 +458,7 @@
          <string>In dive plan, show duration (relative time) of stops</string>
         </property>
         <property name="text">
-         <string>display segment duration</string>
+         <string>Display segment duration</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -471,14 +471,14 @@
          <string>In diveplan, list transitions or treat them as implicit</string>
         </property>
         <property name="text">
-         <string>display transitions in deco</string>
+         <string>Display transitions in deco</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QCheckBox" name="verbatim_plan">
         <property name="text">
-         <string>verbatim diveplan</string>
+         <string>Verbatim diveplan</string>
         </property>
        </widget>
       </item>
