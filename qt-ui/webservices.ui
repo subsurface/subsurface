@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Webservice Connection</string>
+   <string>Web service connection</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -82,7 +82,7 @@
    <item row="4" column="0" colspan="4">
     <widget class="QCheckBox" name="saveUidLocal">
      <property name="text">
-      <string>Save User ID locally?</string>
+      <string>Save user ID locally?</string>
      </property>
     </widget>
    </item>
