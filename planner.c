@@ -674,7 +674,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (dp->time != 0) {
 			int pO2 = depth_to_atm(dp->depth, dive) * get_o2(&dp->gasmix);
 
-			if (pO2 > dp->entered ? prefs.bottompo2 : prefs.decopo2) {
+			if (pO2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2)) {
 				const char *depth_unit;
 				int decimals;
 				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
