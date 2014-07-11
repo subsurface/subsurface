@@ -35,7 +35,7 @@ void SearchBar::enableButtons(const QString &s)
 	ui.findNext->setEnabled(s.length());
 }
 
-UserManual::UserManual(QWidget *parent) : QWebView(parent)
+UserManual::UserManual(QWidget *parent) : QWidget(parent)
 {
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
@@ -54,7 +54,8 @@ UserManual::UserManual(QWidget *parent) : QWebView(parent)
 
 	setWindowTitle(tr("User Manual"));
 
-	page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+	userManual = new QWebView(this);
+	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
 		// look for localized versions of the manual first
@@ -66,28 +67,33 @@ UserManual::UserManual(QWidget *parent) : QWebView(parent)
 		if (!manual.exists())
 			manual.setFileName(prefix + ".html");
 		if (!manual.exists()) {
-			setHtml(tr("Cannot find the Subsurface manual"));
+			userManual->setHtml(tr("Cannot find the Subsurface manual"));
 		} else {
 			QString urlString = QString("file:///") + manual.fileName();
-			setUrl(QUrl(urlString, QUrl::TolerantMode));
+			userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
 		}
 	} else {
-		setHtml(tr("Cannot find the Subsurface manual"));
+		userManual->setHtml(tr("Cannot find the Subsurface manual"));
 	}
 
 	searchBar = new SearchBar(this);
 	searchBar->hide();
 	connect(actionShowSearch, SIGNAL(triggered(bool)), searchBar, SLOT(show()));
 	connect(actionHideSearch, SIGNAL(triggered(bool)), searchBar, SLOT(hide()));
-	connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
+	connect(userManual, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
 	connect(searchBar, SIGNAL(searchTextChanged(QString)), this, SLOT(searchTextChanged(QString)));
 	connect(searchBar, SIGNAL(searchNext()), this, SLOT(searchNext()));
 	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
+
+	QVBoxLayout *vboxLayout = new QVBoxLayout();
+	vboxLayout->addWidget(userManual);
+	vboxLayout->addWidget(searchBar);
+	setLayout(vboxLayout);
 }
 
 void UserManual::search(QString text, QWebPage::FindFlags flags = 0)
 {
-	if (findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
+	if (userManual->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
 		searchBar->setStyleSheet("");
 	} else {
 		searchBar->setStyleSheet("QLineEdit{background: red;}");
@@ -110,11 +116,7 @@ void UserManual::searchPrev()
 	search(mLastText, QWebPage::FindBackward);
 }
 
-void UserManual::linkClickedSlot(QUrl url)
+void UserManual::linkClickedSlot(const QUrl& url)
 {
 	QDesktopServices::openUrl(url);
-}
-
-UserManual::~UserManual()
-{
 }

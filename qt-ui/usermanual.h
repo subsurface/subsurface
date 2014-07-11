@@ -21,20 +21,19 @@ private:
 	Ui::SearchBar ui;
 };
 
-class UserManual : public QWebView {
+class UserManual : public QWidget {
 	Q_OBJECT
 
 public:
 	explicit UserManual(QWidget *parent = 0);
-	~UserManual();
 private
 slots:
 	void searchTextChanged(const QString& s);
 	void searchNext();
 	void searchPrev();
-	void linkClickedSlot(QUrl url);
-
+	void linkClickedSlot(const QUrl& url);
 private:
+	QWebView *userManual;
 	SearchBar *searchBar;
 	QString mLastText;
 	void search(QString, QWebPage::FindFlags);
