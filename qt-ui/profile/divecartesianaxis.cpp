@@ -201,7 +201,6 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		}
 		DiveTextItem *label = new DiveTextItem(this);
 		label->setText(textForValue(currValueText));
-		label->setBrush(QBrush(textColor));
 		label->setBrush(colorForValue(currValueText));
 		label->setScale(fontLabelScale());
 		label->setZValue(1);

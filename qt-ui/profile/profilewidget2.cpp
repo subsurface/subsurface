@@ -382,7 +382,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 			return;
 		}
 	}
-	//END
 
 	// special handling for the first time we display things
 	int animSpeedBackup = -1;

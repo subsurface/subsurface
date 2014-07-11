@@ -66,7 +66,7 @@ void DiveTextItem::updateText()
 		fnt.setPixelSize(size);
 	} else {
 		size = fnt.pointSizeF();
-		size *= scale * MainWindow::instance()->graphics()->getFontPrintScale();;
+		size *= scale * MainWindow::instance()->graphics()->getFontPrintScale();
 		fnt.setPointSizeF(size);
 	}
 	QFontMetrics fm(fnt);

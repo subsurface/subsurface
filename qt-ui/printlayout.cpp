@@ -120,9 +120,14 @@ int PrintLayout::estimateTotalDives() const
 void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 {
 	int i, row = 0, col = 0, printed = 0, total = estimateTotalDives();
+	bool animationOriginal = prefs.animation;
+
 	struct dive *dive;
 	if (!total)
 		return;
+
+	// disable animations on the profile:
+	prefs.animation = false;
 
 	// setup a painter
 	QPainter painter;
@@ -205,6 +210,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	profile->resize(originalSize);
 	// we need to force a redraw of the profile so it switches back from print mode
 	profile->plotDive(0, true);
+	// re-enable animations
+	prefs.animation = animationOriginal;
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
