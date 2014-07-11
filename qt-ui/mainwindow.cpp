@@ -802,6 +802,7 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(hrgraph, hrgraph, profHR);
 	TOOLBOX_PREF_BUTTON(rulergraph, rulergraph, profRuler);
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
+	TOOLBOX_PREF_BUTTON(show_pictures_in_profile, show_pictures_in_profile, profTogglePicture);
 	s.endGroup();
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
