@@ -20,7 +20,7 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 	QIcon plusIcon(":plus");
 	plusBtn = new QPushButton(plusIcon, QString(), ui.groupBox);
 	plusBtn->setFlat(true);
-	plusBtn->setToolTip(tr("Add Cylinder"));
+	plusBtn->setToolTip(tr("Add cylinder"));
 	plusBtn->setIconSize(QSize(16, 16));
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }

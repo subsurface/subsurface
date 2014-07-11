@@ -19,7 +19,7 @@ TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NUL
 		addColor(QColor(Qt::red).lighter(120));
 		addColor(QColor(Qt::green).lighter(120));
 		addColor(QColor(Qt::blue).lighter(120));
-	} else if (l <= 0.6) { // moderated dark text. get a somewhat brigth background
+	} else if (l <= 0.6) { // moderated dark text. get a somewhat bright background
 		addColor(QColor(Qt::red).lighter(60));
 		addColor(QColor(Qt::green).lighter(60));
 		addColor(QColor(Qt::blue).lighter(60));

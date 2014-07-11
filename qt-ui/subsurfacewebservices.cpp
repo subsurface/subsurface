@@ -440,7 +440,7 @@ void SubsurfaceWebServices::setStatusText(int status)
 	QString text;
 	switch (status) {
 	case DD_STATUS_ERROR_CONNECT:
-		text = tr("Connection Error: ");
+		text = tr("Connection error: ");
 		break;
 	case DD_STATUS_ERROR_ID:
 		text = tr("Invalid user identifier!");
@@ -449,7 +449,7 @@ void SubsurfaceWebServices::setStatusText(int status)
 		text = tr("Cannot parse response!");
 		break;
 	case DD_STATUS_OK:
-		text = tr("Download Success!");
+		text = tr("Download successful");
 		break;
 	}
 	ui.status->setText(text);
