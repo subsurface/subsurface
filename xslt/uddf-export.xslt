@@ -4,6 +4,7 @@
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
   <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
+  <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
 
   <xsl:template match="/divelog/dives">
     <uddf version="3.2.0">
@@ -21,6 +22,15 @@
           </datetime>
         </xsl:if>
       </generator>
+      <mediadata>
+        <xsl:for-each select="//picture[generate-id() = generate-id(key('images', concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset))[1])]">
+          <image id="{concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)}">
+            <objectname>
+              <xsl:value-of select="@filename"/>
+            </objectname>
+          </image>
+        </xsl:for-each>
+      </mediadata>
 
       <diver>
         <owner id="1">
@@ -456,6 +466,9 @@
           <para>
             <xsl:value-of select="notes"/>
           </para>
+          <xsl:for-each select="picture">
+            <link ref="{concat(../@number, ':', @filename, '@', @offset)}"/>
+          </xsl:for-each>
         </notes>
         <rating>
           <ratingvalue>
