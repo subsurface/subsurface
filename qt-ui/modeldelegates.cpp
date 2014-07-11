@@ -364,3 +364,31 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	}
 	QStyledItemDelegate::paint(painter, option, index);
 }
+
+SpinBoxDelegate::SpinBoxDelegate(int min, int max, QObject *parent):
+	QStyledItemDelegate(parent),
+	min(min),
+	max(max)
+{
+}
+
+QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	QSpinBox *w = qobject_cast<QSpinBox*>(QStyledItemDelegate::createEditor(parent, option, index));
+	w->setRange(min,max);
+	return w;
+}
+
+DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(qreal min, qreal max, QObject *parent):
+	QStyledItemDelegate(parent),
+	min(min),
+	max(max)
+{
+}
+
+QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	QDoubleSpinBox *w = qobject_cast<QDoubleSpinBox*>(QStyledItemDelegate::createEditor(parent, option, index));
+	w->setRange(min,max);
+	return w;
+}

@@ -88,4 +88,24 @@ public:
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
+class SpinBoxDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+public:
+	SpinBoxDelegate(int min, int max, QObject *parent = 0);
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+	int min;
+	int max;
+};
+
+class DoubleSpinBoxDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+public:
+	DoubleSpinBoxDelegate(qreal min, qreal max, QObject *parent = 0);
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+	int min;
+	int max;
+};
+
 #endif // MODELDELEGATES_H
