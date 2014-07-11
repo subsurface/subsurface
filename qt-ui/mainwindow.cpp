@@ -155,8 +155,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	WSInfoModel::instance()->updateInfo();
 	// refresh the yearly stats if the window has an instance
 	if (yearlyStats) {
-		if (yearlyStatsModel)
-			delete yearlyStatsModel;
+		delete yearlyStatsModel;
 		yearlyStatsModel = new YearlyStatisticsModel();
 		yearlyStats->setModel(yearlyStatsModel);
 	}
@@ -525,8 +524,7 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
 	 * class the user needs to close the window/widget and re-open it for it to update.
 	 */
-	if (yearlyStatsModel)
-		delete yearlyStatsModel;
+	delete yearlyStatsModel;
 	yearlyStatsModel = new YearlyStatisticsModel();
 	yearlyStats->setModel(yearlyStatsModel);
 	yearlyStats->raise();
