@@ -838,7 +838,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDownloadWeb">
    <property name="text">
-    <string>Import &amp;GPS data from Subsurface web-service</string>
+    <string>Import &amp;GPS data from Subsurface web service</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
