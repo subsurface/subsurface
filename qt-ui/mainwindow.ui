@@ -125,7 +125,7 @@
          <item row="2" column="0">
           <widget class="QToolButton" name="profPhe">
            <property name="toolTip">
-            <string>Enable the pHe graph</string>
+            <string>Toggle pHe graph</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -151,7 +151,7 @@
          <item row="5" column="0">
           <widget class="QToolButton" name="profCalcAllTissues">
            <property name="toolTip">
-            <string>Calculate All Tissues</string>
+            <string>Toggle calculating all tissues</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -180,7 +180,7 @@
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Show the DC Reported Ceiling</string>
+            <string>Toggle DC reported ceiling</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -209,7 +209,7 @@
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Show the Calculated Ceiling</string>
+            <string>Toggle calculated ceiling</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -235,7 +235,7 @@
          <item row="10" column="0">
           <widget class="QToolButton" name="profNdl_tts">
            <property name="toolTip">
-            <string>Show NDL / TTS</string>
+            <string>Toggle NDL, TTS</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -261,7 +261,7 @@
          <item row="6" column="0">
           <widget class="QToolButton" name="profIncrement3m">
            <property name="toolTip">
-            <string>Show Calculated Ceiling with 3m Increments</string>
+            <string>Toggle calculated ceiling with 3m increments</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -287,7 +287,7 @@
          <item row="7" column="0">
           <widget class="QToolButton" name="profHR">
            <property name="toolTip">
-            <string>Show/hide heart rate</string>
+            <string>Toggle heart rate</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -313,7 +313,7 @@
          <item row="8" column="0">
           <widget class="QToolButton" name="profMod">
            <property name="toolTip">
-            <string>Enable MOD</string>
+            <string>Toggle MOD</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -339,7 +339,7 @@
          <item row="9" column="0">
           <widget class="QToolButton" name="profEad">
            <property name="toolTip">
-            <string>Enable EAD, END, and EADD</string>
+            <string>Toggle EAD, END, EADD</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -365,7 +365,7 @@
          <item row="11" column="0">
           <widget class="QToolButton" name="profSAC">
            <property name="toolTip">
-            <string>Show SAC Rate</string>
+            <string>Toggle SAC rate</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -417,7 +417,7 @@
          <item row="12" column="0">
           <widget class="QToolButton" name="profRuler">
            <property name="toolTip">
-            <string>Enable / Disable the Ruler</string>
+            <string>Toggle ruler</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -443,7 +443,7 @@
          <item row="0" column="0">
           <widget class="QToolButton" name="profPO2">
            <property name="toolTip">
-            <string>Enable the pO2 Graph</string>
+            <string>Toggle pO2 Graph</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -472,7 +472,7 @@
          <item row="1" column="0">
           <widget class="QToolButton" name="profPn2">
            <property name="toolTip">
-            <string>Enable the pN2 Graph</string>
+            <string>Toggle pN2 Graph</string>
            </property>
            <property name="text">
             <string>...</string>
