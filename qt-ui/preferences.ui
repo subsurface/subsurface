@@ -690,7 +690,7 @@
               <item>
                <widget class="QCheckBox" name="display_unused_tanks">
                 <property name="text">
-                 <string>Show non-used cylinders in Equipment Tab</string>
+                 <string>Show unused cylinders in Equipment tab</string>
                 </property>
                </widget>
               </item>
