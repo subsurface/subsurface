@@ -1286,7 +1286,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("#");
 			break;
 		case DATE:
-			ret = tr("date");
+			ret = tr("Date");
 			break;
 		case RATING:
 			ret = UTF8_BLACKSTAR;
@@ -1295,7 +1295,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft");
 			break;
 		case DURATION:
-			ret = tr("min");
+			ret = tr("Mins");
 			break;
 		case TEMPERATURE:
 			ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
@@ -1304,10 +1304,10 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs");
 			break;
 		case SUIT:
-			ret = tr("suit");
+			ret = tr("Suit");
 			break;
 		case CYLINDER:
-			ret = tr("cyl");
+			ret = tr("Cyl");
 			break;
 		case NITROX:
 			ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
@@ -1319,10 +1319,10 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("OTU");
 			break;
 		case MAXCNS:
-			ret = tr("maxCNS");
+			ret = tr("Max CNS");
 			break;
 		case LOCATION:
-			ret = tr("location");
+			ret = tr("Location");
 			break;
 		}
 		break;
