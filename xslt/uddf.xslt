@@ -313,7 +313,7 @@
           <xsl:attribute name="value">
             <xsl:call-template name="gasConvert">
               <xsl:with-param name="mix">
-                <xsl:value-of select="//gas_def/gas_mix[@id=$idx]/o2"/>
+                <xsl:value-of select="translate(//gas_def/gas_mix[@id=$idx]/o2, ',', '.')"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
@@ -339,7 +339,7 @@
           <xsl:attribute name="value">
             <xsl:call-template name="gasConvert">
               <xsl:with-param name="mix">
-                <xsl:value-of select="//gasdefinitions/mix[@id=$idx]/o2|//u:gasdefinitions/u:mix[@id=$idx]/u:o2|//u1:gasdefinitions/u1:mix[@id=$idx]/u1:o2"/>
+                <xsl:value-of select="translate(//gasdefinitions/mix[@id=$idx]/o2|//u:gasdefinitions/u:mix[@id=$idx]/u:o2|//u1:gasdefinitions/u1:mix[@id=$idx]/u1:o2, ',', '.')"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
