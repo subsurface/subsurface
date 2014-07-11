@@ -94,13 +94,3 @@ void DiveTextItem::updateText()
 	textItem->setBrush(brush);
 	textItem->setPen(Qt::NoPen);
 }
-
-void DiveTextItem::animatedHide()
-{
-	Animations::hide(this);
-}
-
-void DiveTextItem::animateMoveTo(qreal x, qreal y)
-{
-	Animations::moveTo(this, x, y);
-}

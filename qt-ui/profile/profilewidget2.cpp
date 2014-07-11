@@ -490,7 +490,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		meanDepth->setVisible(false);
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(displayed_dive.duration.seconds), 0);
-	meanDepth->animateMoveTo(3, profileYAxis->posAtValue(pInfo.meandepth));
+	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(pInfo.meandepth));
 
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to

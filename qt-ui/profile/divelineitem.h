@@ -10,8 +10,6 @@ class DiveLineItem : public QObject, public QGraphicsLineItem {
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
 	DiveLineItem(QGraphicsItem *parent = 0);
-	void animatedHide();
-	void animateMoveTo(qreal x, qreal y);
 };
 
 #endif // DIVELINEITEM_H

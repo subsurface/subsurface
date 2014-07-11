@@ -17,8 +17,6 @@ public:
 	void setAlignment(int alignFlags);
 	void setScale(double newscale);
 	void setBrush(const QBrush &brush);
-	void animatedHide();
-	void animateMoveTo(qreal x, qreal y);
 	const QString &text();
 
 private:

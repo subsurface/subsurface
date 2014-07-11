@@ -4,6 +4,7 @@
 #include "graphicsview-common.h"
 #include "divetextitem.h"
 #include "profilewidget2.h"
+#include "animationfunctions.h"
 #include "profile.h"
 #include "dive.h"
 #include "preferences.h"
@@ -666,7 +667,7 @@ void MeanDepthLine::setAxis(DiveCartesianAxis *a)
 void MeanDepthLine::axisLineChanged()
 {
 	DiveCartesianAxis *axis = qobject_cast<DiveCartesianAxis *>(sender());
-	animateMoveTo(x(), axis->posAtValue(meanDepth));
+	Animations::moveTo(this, x(), axis->posAtValue(meanDepth));
 }
 
 void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)

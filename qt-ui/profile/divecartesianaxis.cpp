@@ -173,9 +173,9 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 
 		labels[i]->setText(textForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			labels[i]->animateMoveTo(childPos, m.y1() + tick_size);
+			Animations::moveTo(labels[i],childPos, m.y1() + tick_size);
 		} else {
-			labels[i]->animateMoveTo(m.x1() - tick_size, childPos);
+			Animations::moveTo(labels[i],m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -185,9 +185,9 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 					 begin - i * stepSize;
 
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			lines[i]->animateMoveTo(childPos, m.y1());
+			Animations::moveTo(lines[i],childPos, m.y1());
 		} else {
-			lines[i]->animateMoveTo(m.x1(), childPos);
+			Animations::moveTo(lines[i],m.x1(), childPos);
 		}
 	}
 
@@ -208,11 +208,11 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 			label->setPos(scene()->sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene);
-			label->animateMoveTo(childPos, m.y1() + tick_size);
+			Animations::moveTo(label,childPos, m.y1() + tick_size);
 		} else {
 			label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 			label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
-			label->animateMoveTo(m.x1() - tick_size, childPos);
+			Animations::moveTo(label,m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -235,13 +235,13 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0, -line_size, 0, 0);
 			line->setPos(scene()->sceneRect().width() + 10, m.y1()); // position it outside of the scene);
-			line->animateMoveTo(childPos, m.y1());
+			Animations::moveTo(line,childPos, m.y1());
 		} else {
 			QPointF p1 = mapFromScene(3, 0);
 			QPointF p2 = mapFromScene(line_size, 0);
 			line->setLine(p1.x(), 0, p2.x(), 0);
 			line->setPos(m.x1(), scene()->sceneRect().height() + 10);
-			line->animateMoveTo(m.x1(), childPos);
+			Animations::moveTo(line,m.x1(), childPos);
 		}
 	}
 
