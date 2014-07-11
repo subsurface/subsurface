@@ -905,7 +905,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	// create the profile context menu
-	QMenu *gasChange = m.addMenu(tr("Add Gas Change"));
+	QMenu *gasChange = m.addMenu(tr("Add gas change"));
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
@@ -916,11 +916,11 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(event->globalPos());
 		gasChange->addAction(action);
 	}
-	QAction *action = m.addAction(tr("Add Bookmark"), this, SLOT(addBookmark()));
+	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
-		action->setText(tr("Remove Event"));
+		action->setText(tr("Remove event"));
 		action->setData(QVariant::fromValue<void *>(item)); // so we know what to remove.
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(removeEvent()));
 		m.addAction(action);

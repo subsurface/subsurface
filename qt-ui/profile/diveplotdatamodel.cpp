@@ -100,9 +100,9 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case COLOR:
 		return tr("Color");
 	case USERENTERED:
-		return tr("User Entered");
+		return tr("User entered");
 	case CYLINDERINDEX:
-		return tr("Cylinder Index");
+		return tr("Cylinder index");
 	case SENSOR_PRESSURE:
 		return tr("Pressure S");
 	case INTERPOLATED_PRESSURE:
