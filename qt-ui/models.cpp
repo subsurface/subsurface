@@ -1967,14 +1967,10 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	}
 	case Qt::FontRole: {
 		QFont font;
-		const int baseSize = 7;
-		// dive #
+		font.setPointSize(6);
 		if (row == 0 && col == 0) {
 			font.setBold(true);
-			font.setPixelSize(baseSize + 1);
-			return QVariant::fromValue(font);
 		}
-		font.setPixelSize(baseSize);
 		return QVariant::fromValue(font);
 	}
 	case Qt::TextAlignmentRole: {
