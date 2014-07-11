@@ -9,6 +9,7 @@
 #include "preferences.h"
 #include "helpers.h"
 #include "diveplanner.h"
+#include "libdivecomputer/parser.h"
 
 #include <QPen>
 #include <QPainter>
@@ -151,6 +152,7 @@ int DiveProfileItem::maxCeiling(int row)
 
 void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+	bool eventAdded = false;
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
@@ -164,12 +166,17 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 
 	int currState = qobject_cast<ProfileWidget2 *>(scene()->views().first())->currentState;
 	if (currState == ProfileWidget2::PLAN) {
-		plot_data *entry = dataModel->data().entry + dataModel->rowCount() - 1;
-		for (int i = dataModel->rowCount() - 1; i >= 0; i--, entry--) {
+		plot_data *entry = dataModel->data().entry;
+		for (int i = 0; i < dataModel->rowCount(); i++, entry++) {
 			int max = maxCeiling(i);
 			// Don't scream if we violate the ceiling by a few cm
-			if (entry->depth < max - 100)
+			if (entry->depth < max - 100) {
 				profileColor = QColor(Qt::red);
+				if (!eventAdded) {
+					add_event(&displayed_dive.dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max / 1000, "planned waypoint above ceiling");
+					eventAdded = true;
+				}
+			}
 		}
 	}
 
