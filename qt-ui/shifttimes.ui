@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Shift selected times</string>
+   <string>Shift selected dive times</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -133,14 +133,14 @@
       <item>
        <widget class="QRadioButton" name="backwards">
         <property name="text">
-         <string>earlier</string>
+         <string>Earlier</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="forward">
         <property name="text">
-         <string>later</string>
+         <string>Later</string>
         </property>
         <property name="checked">
          <bool>true</bool>
