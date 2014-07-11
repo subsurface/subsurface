@@ -50,7 +50,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	header()->setMinimumHeight(metrics.height() + 10);
 #endif
 	header()->setStretchLastSection(true);
-	QAction *showSearchBox = new QAction(tr("Show Search Box"), this);
+	QAction *showSearchBox = new QAction(tr("Show search box"), this);
 	showSearchBox->setShortcut(Qt::CTRL + Qt::Key_F);
 	showSearchBox->setShortcutContext(Qt::WindowShortcut);
 	addAction(showSearchBox);
@@ -703,12 +703,12 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	dive_trip_t *trip = (dive_trip_t *)contextMenuIndex.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
-		popup.addAction(tr("expand all"), this, SLOT(expandAll()));
-		popup.addAction(tr("collapse all"), this, SLOT(collapseAll()));
-		collapseAction = popup.addAction(tr("collapse others"), this, SLOT(collapseAll()));
+		popup.addAction(tr("Expand all"), this, SLOT(expandAll()));
+		popup.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
+		collapseAction = popup.addAction(tr("Collapse others"), this, SLOT(collapseAll()));
 		if (d) {
-			popup.addAction(tr("remove dive(s) from trip"), this, SLOT(removeFromTrip()));
-			popup.addAction(tr("create new trip above"), this, SLOT(newTripAbove()));
+			popup.addAction(tr("Remove dive(s) from trip"), this, SLOT(removeFromTrip()));
+			popup.addAction(tr("Create new trip above"), this, SLOT(newTripAbove()));
 			if (!d->divetrip) {
 				struct dive *top = d;
 				struct dive *bottom = d;
@@ -722,28 +722,28 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 					}
 				}
 				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
-					popup.addAction(tr("add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
+					popup.addAction(tr("Add dive(s) to trip immediately above"), this, SLOT(addToTripAbove()));
 				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
-					popup.addAction(tr("add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
+					popup.addAction(tr("Add dive(s) to trip immediately below"), this, SLOT(addToTripBelow()));
 			}
 		}
 		if (trip) {
-			popup.addAction(tr("merge trip with trip above"), this, SLOT(mergeTripAbove()));
-			popup.addAction(tr("merge trip with trip below"), this, SLOT(mergeTripBelow()));
+			popup.addAction(tr("Merge trip with trip above"), this, SLOT(mergeTripAbove()));
+			popup.addAction(tr("Merge trip with trip below"), this, SLOT(mergeTripBelow()));
 		}
 	}
 	if (d) {
-		popup.addAction(tr("delete dive(s)"), this, SLOT(deleteDive()));
+		popup.addAction(tr("Delete dive(s)"), this, SLOT(deleteDive()));
 #if 0
-		popup.addAction(tr("mark dive(s) invalid", this, SLOT(markDiveInvalid())));
+		popup.addAction(tr("Mark dive(s) invalid", this, SLOT(markDiveInvalid())));
 #endif
 	}
 	if (amount_selected > 1 && consecutive_selected())
-		popup.addAction(tr("merge selected dives"), this, SLOT(mergeDives()));
+		popup.addAction(tr("Merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
-		popup.addAction(tr("renumber dive(s)"), this, SLOT(renumberDives()));
-		popup.addAction(tr("shift times"), this, SLOT(shiftTimes()));
-		popup.addAction(tr("load images"), this, SLOT(loadImages()));
+		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
+		popup.addAction(tr("Shift times"), this, SLOT(shiftTimes()));
+		popup.addAction(tr("Load images"), this, SLOT(loadImages()));
 	}
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
@@ -764,7 +764,7 @@ void DiveListView::shiftTimes()
 
 void DiveListView::loadImages()
 {
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image Files"), lastUsedImageDir(), tr("Image Files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open image files"), lastUsedImageDir(), tr("Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
 	if (fileNames.isEmpty())
 		return;
 
