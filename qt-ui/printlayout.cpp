@@ -6,6 +6,8 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QPointer>
+#include <QPicture>
+
 #include "mainwindow.h"
 #include "../dive.h"
 #include "../display.h"
@@ -136,6 +138,9 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 	painter.scale(scaleX, scaleY);
 
+	QPicture pic;
+	QPainter picPainter;
+
 	// setup the profile widget
 	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	const int profileFrameStyle = profile->frameStyle();
@@ -196,7 +201,10 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		// draw a table
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetTable);
 		model.setDive(dive);
-		table->render(&painter);
+		picPainter.begin(&pic);
+		table->render(&picPainter);
+		picPainter.end();
+		painter.drawPicture(QPoint(0,0), pic);
 		painter.setTransform(origTransform);
 		col++;
 		printed++;
