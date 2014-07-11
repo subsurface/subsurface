@@ -734,7 +734,6 @@ function get_bookmarks_HTML(dive)
 	return result;
 }
 
-
 /**
 *Return HTML main data of a dive
 */
@@ -754,6 +753,17 @@ function get_dive_HTML(dive)
 	       '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
 	       '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
 	       '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
+};
+
+/**
+*Return HTML dive status data
+*/
+function get_status_HTML(dive)
+{
+	return '<h2 class="det_hed">Dive Status</h2><table><tr><td class="words">Sac: </td><td>' + dive.sac +
+	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspOtu: </td><td>' + dive.otu +
+	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspCns: </td><td>' + dive.cns +
+	       '</td></tr></table>';
 };
 
 function mkelvin_to_C(mkelvin)
@@ -937,6 +947,7 @@ function showDiveDetails(dive)
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
 	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML = get_bookmarks_HTML(items[dive_id]);
+	document.getElementById("divestats").innerHTML = get_status_HTML(items[dive_id]);
 	setDiveTitle(items[dive_id]);
 
 	//hide the list of dives and show the canvas.

@@ -11,6 +11,13 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 	put_string(b, "\",");
 }
 
+void write_dive_status(struct membuffer *b, struct dive *dive)
+{
+	put_format(b, "\"sac\":\"%d\",", dive->sac);
+	put_format(b, "\"otu\":\"%d\",", dive->otu);
+	put_format(b, "\"cns\":\"%d\",", dive->cns);
+}
+
 void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 {
 	struct event *ev = dive->dc.events;
@@ -172,6 +179,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no, const 
 	write_attribute(b, "buddy", dive->buddy);
 	write_attribute(b, "divemaster", dive->divemaster);
 	write_attribute(b, "suit", dive->suit);
+	write_dive_status(b, dive);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	if (!list_only) {
