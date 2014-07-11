@@ -822,7 +822,6 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		if (depth <= 0)
 			break; /* We are at the surface */
 
-
 		if (gi >= 0 && stoplevels[stopidx] == gaschanges[gi].depth) {
 			/* We have reached a gas change.
 			 * Record this in the dive plan */
@@ -849,6 +848,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			clear_to_ascend = true;
 			while (trial_depth > stoplevels[stopidx]) {
 				int deltad = ascend_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
+				if (deltad > trial_depth) /* don't test against depth above surface */
+					deltad = trial_depth;
 				tissue_tolerance = add_segment(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0,
 							       &displayed_dive.cylinder[current_cylinder].gasmix,
 							       TIMESTEP, po2, &displayed_dive);
