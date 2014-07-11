@@ -1279,6 +1279,7 @@ TOOLBOX_PREF_PROFILE(profRuler, rulergraph, rulergraph);
 TOOLBOX_PREF_PROFILE(profSAC, show_sac, show_sac);
 TOOLBOX_PREF_PROFILE(profScaled, zoomed_plot, zoomed_plot);
 TOOLBOX_PREF_PROFILE(profTogglePicture, show_pictures_in_profile, show_pictures_in_profile);
+
 void MainWindow::turnOffNdlTts()
 {
 	const bool triggered = false;

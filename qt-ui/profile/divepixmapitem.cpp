@@ -1,6 +1,7 @@
 #include "divepixmapitem.h"
 #include "animationfunctions.h"
 #include <divepicturewidget.h>
+#include <preferences.h>
 
 #include <QPen>
 #include <QBrush>
@@ -22,6 +23,13 @@ DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(paren
 #endif
 	rowOnModel = row;
 	setScale(0.2);
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+	setVisible(prefs.show_pictures_in_profile);
+}
+
+void DivePictureItem::settingsChanged()
+{
+	setVisible(prefs.show_pictures_in_profile);
 }
 
 void DivePictureItem::setPixmap(const QPixmap &pix)

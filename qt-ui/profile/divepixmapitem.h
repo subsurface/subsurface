@@ -20,6 +20,8 @@ class DivePictureItem : public DivePixmapItem {
 public:
 	DivePictureItem(int row, QObject *parent = 0);
 	void setPixmap(const QPixmap& pix);
+public slots:
+	void settingsChanged();
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

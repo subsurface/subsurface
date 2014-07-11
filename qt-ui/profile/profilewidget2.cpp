@@ -555,7 +555,6 @@ void ProfileWidget2::settingsChanged()
 		isPlotZoomed = prefs.zoomed_plot;
 		needReplot = true;
 	}
-
 	if (needReplot)
 		replot();
 }
