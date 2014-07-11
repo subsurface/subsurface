@@ -66,7 +66,7 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList &newHeaders)
 CylindersModel::CylindersModel(QObject *parent) : rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
-	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("WorkPress") << tr("StartPress") << tr("EndPress") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
+	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
 					   << tr("Switch at")
 			     );
 }
@@ -430,7 +430,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 		break;
 	case Qt::ToolTipRole:
 		if (index.column() == REMOVE)
-			ret = tr("Clicking here will remove this weigthsystem.");
+			ret = tr("Clicking here will remove this weight system.");
 		break;
 	}
 	return ret;
@@ -1439,7 +1439,7 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 			ret = QIcon(":trash");
 			break;
 		case Qt::ToolTipRole:
-			ret = tr("Clicking here will remove this divecomputer.");
+			ret = tr("Clicking here will remove this dive computer.");
 			break;
 		}
 	}
@@ -1895,7 +1895,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		// headings
 		if (row == 2) {
 			if (col == 0)
-				return tr("Gas Used:");
+				return tr("Gas used:");
 			if (col == 2)
 				return tr("SAC:");
 			if (col == 3)

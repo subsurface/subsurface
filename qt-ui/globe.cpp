@@ -117,7 +117,7 @@ bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 void GlobeGPS::contextMenuEvent(QContextMenuEvent *ev)
 {
 	QMenu m;
-	QAction *a = m.addAction(tr("Edit Selected Dive Locations"), this, SLOT(prepareForGetDiveCoordinates()));
+	QAction *a = m.addAction(tr("Edit selected dive locations"), this, SLOT(prepareForGetDiveCoordinates()));
 	a->setData(QVariant::fromValue<void *>(&m));
 	m.exec(ev->globalPos());
 }

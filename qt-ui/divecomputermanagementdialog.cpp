@@ -47,7 +47,7 @@ void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
 
 	QMessageBox::StandardButton response = QMessageBox::question(
 	    this, TITLE_OR_TEXT(
-		      tr("Remove the selected Dive Computer?"),
+		      tr("Remove the selected dive computer?"),
 		      tr("Are you sure that you want to \n remove the selected dive computer?")),
 	    QMessageBox::Ok | QMessageBox::Cancel);
 
