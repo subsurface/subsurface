@@ -51,10 +51,23 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 	remember_event(name);
 }
 
+static int same_event(struct event *a, struct event *b)
+{
+	if (a->time.seconds != b->time.seconds)
+		return 0;
+	if (a->type != b->type)
+		return 0;
+	if (a->flags != b->flags)
+		return 0;
+	if (a->value != b->value)
+		return 0;
+	return !strcmp(a->name, b->name);
+}
+
 void remove_event(struct event* event)
 {
 	struct event **ep = &current_dc->events;
-	while (ep && *ep != event)
+	while (ep && !same_event(*ep, event))
 		ep = &(*ep)->next;
 	if (ep) {
 		*ep = event->next;
@@ -1884,19 +1897,6 @@ static void free_pic(struct picture *picture)
 		free(picture->filename);
 		free(picture);
 	}
-}
-
-static int same_event(struct event *a, struct event *b)
-{
-	if (a->time.seconds != b->time.seconds)
-		return 0;
-	if (a->type != b->type)
-		return 0;
-	if (a->flags != b->flags)
-		return 0;
-	if (a->value != b->value)
-		return 0;
-	return !strcmp(a->name, b->name);
 }
 
 static int same_sample(struct sample *a, struct sample *b)
