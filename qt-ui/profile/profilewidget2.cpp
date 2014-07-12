@@ -1093,10 +1093,14 @@ void ProfileWidget2::editName()
 			lengthWarning.exec();
 			return;
 		}
-		strcpy(event->name, newName.toUtf8());
-		remember_event(event->name);
+		// order is important! first update the current dive (by matching the unchanged event),
+		// then update the displayed dive (as event is part of the events on displayed dive
+		// and will be freed as part of changing the name!
+		update_event_name(current_dive, event, newName.toUtf8().data());
+		update_event_name(&displayed_dive, event, newName.toUtf8().data());
+		mark_divelist_changed(true);
+		replot();
 	}
-	replot();
 }
 
 void ProfileWidget2::disconnectTemporaryConnections()
