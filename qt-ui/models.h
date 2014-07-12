@@ -380,6 +380,7 @@ class ProfilePrintModel : public QAbstractTableModel {
 
 private:
 	int diveId;
+	double fontSize;
 	QString truncateString(char *str, const int maxlen) const;
 
 public:
@@ -388,6 +389,7 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	void setDive(struct dive *divePtr);
+	void setFontsize(double size);
 };
 
 class GasSelectionModel : public QStringListModel {

@@ -1854,6 +1854,11 @@ void ProfilePrintModel::setDive(struct dive *divePtr)
 	// reset();
 }
 
+void ProfilePrintModel::setFontsize(double size)
+{
+	fontSize = size;
+}
+
 int ProfilePrintModel::rowCount(const QModelIndex &parent) const
 {
 	return 12;
@@ -1967,7 +1972,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 	}
 	case Qt::FontRole: {
 		QFont font;
-		font.setPointSize(6);
+		font.setPointSizeF(fontSize);
 		if (row == 0 && col == 0) {
 			font.setBold(true);
 		}

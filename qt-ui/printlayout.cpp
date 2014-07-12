@@ -166,6 +166,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int padPT = 5;
 	// create a model and table
 	ProfilePrintModel model;
+	model.setFontsize(divesPerColumn == 1 ? 6.5 : 4.5);
 	QPointer<QTableView> table(createProfileTable(&model, scaledW));
 	// profilePrintTableMaxH updates after the table is created
 	const int tableH = profilePrintTableMaxH;
