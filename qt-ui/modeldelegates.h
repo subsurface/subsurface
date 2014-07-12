@@ -104,8 +104,8 @@ public:
 	DoubleSpinBoxDelegate(qreal min, qreal max, QObject *parent = 0);
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 private:
-	int min;
-	int max;
+	qreal min;
+	qreal max;
 };
 
 #endif // MODELDELEGATES_H
