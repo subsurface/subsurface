@@ -252,8 +252,10 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	const int cols = model->columnCount();
 	const int rows = model->rowCount();
 	// info on top
-	table->setSpan(0, 0, 1, 4);
-	table->setSpan(1, 0, 1, 4);
+	table->setSpan(0, 0, 1, 3);
+	table->setSpan(1, 0, 1, 3);
+	table->setSpan(0, 3, 1, 2);
+	table->setSpan(1, 3, 1, 2);
 	// gas used
 	table->setSpan(2, 0, 1, 2);
 	table->setSpan(3, 0, 1, 2);

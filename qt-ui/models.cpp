@@ -1886,7 +1886,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		if (row == 0) {
 			if (col == 0)
 				return tr("Dive #%1 - %2").arg(dive->number).arg(di.displayDate());
-			if (col == 4) {
+			if (col == 3) {
 				QString unit = (get_units()->length == units::METERS) ? "m" : "ft";
 				return tr("Max depth: %1 %2").arg(di.displayDepth()).arg(unit);
 			}
@@ -1894,7 +1894,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		if (row == 1) {
 			if (col == 0)
 				return QString(dive->location);
-			if (col == 4)
+			if (col == 3)
 				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
 		}
 		// headings
