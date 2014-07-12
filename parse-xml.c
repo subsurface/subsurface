@@ -11,6 +11,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
+#include <libdivecomputer/parser.h>
 
 #include "gettext.h"
 
@@ -712,7 +713,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	he = (he + 5) / 10;
 	value = o2 + (he << 16);
 
-	add_event(dc, seconds, 25, 0, value, "gaschange"); /* SAMPLE_EVENT_GASCHANGE2 */
+	add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
 }
 
 static void get_cylinderindex(char *buffer, uint8_t *i)
@@ -1341,7 +1342,7 @@ static void event_end(void)
 				 * one on import, if we encounter the type one missing.
 				 */
 				if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
-					cur_event.type = 25;
+					cur_event.type = cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
 
 				add_event(dc, cur_event.time.seconds,
 					  cur_event.type, cur_event.flags,
