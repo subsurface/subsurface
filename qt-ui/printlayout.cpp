@@ -32,9 +32,9 @@ PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct op
 	tablePrintColumnNames.append(tr("Buddy"));
 	tablePrintColumnNames.append(tr("Location"));
 	tablePrintColumnWidths.append(7);
-	tablePrintColumnWidths.append(10);
-	tablePrintColumnWidths.append(10);
-	tablePrintColumnWidths.append(10);
+	tablePrintColumnWidths.append(14);
+	tablePrintColumnWidths.append(8);
+	tablePrintColumnWidths.append(8);
 	tablePrintColumnWidths.append(15);
 	tablePrintColumnWidths.append(15);
 	tablePrintColumnWidths.append(33);

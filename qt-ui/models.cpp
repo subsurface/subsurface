@@ -1777,6 +1777,14 @@ QVariant TablePrintModel::data(const QModelIndex &index, int role) const
 		case 6:
 			return list.at(index.row())->location;
 		}
+	if (role == Qt::FontRole) {
+		QFont font;
+		font.setPointSizeF(7.5);
+		if (index.row() == 0 && index.column() == 0) {
+			font.setBold(true);
+		}
+		return QVariant::fromValue(font);
+	}
 	return QVariant();
 }
 
