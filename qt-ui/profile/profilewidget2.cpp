@@ -1042,7 +1042,7 @@ void ProfileWidget2::changeGas()
 	int seconds = timeAxis->valueAt(scenePos);
 
 	validate_gas(gas.toUtf8().constData(), &gasmix);
-	add_gas_switch_event(&displayed_dive, get_dive_dc(&displayed_dive, diveComputer), seconds, get_gasidx(&displayed_dive, &gasmix));
+	add_gas_switch_event(&displayed_dive, current_dc, seconds, get_gasidx(&displayed_dive, &gasmix));
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(&displayed_dive);
 
