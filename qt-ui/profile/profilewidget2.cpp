@@ -1027,6 +1027,7 @@ void ProfileWidget2::addBookmark()
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	add_event(current_dc, timeAxis->valueAt(scenePos), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	mark_divelist_changed(true);
 	replot();
 }
 
