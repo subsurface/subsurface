@@ -1337,6 +1337,12 @@ static void event_end(void)
 				pic->offset.seconds = cur_event.time.seconds;
 				dive_add_picture(cur_dive, pic);
 			} else {
+				/* At some point gas change events did not have any type. Thus we need to add
+				 * one on import, if we encounter the type one missing.
+				 */
+				if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
+					cur_event.type = 25;
+
 				add_event(dc, cur_event.time.seconds,
 					  cur_event.type, cur_event.flags,
 					  cur_event.value, cur_event.name);
