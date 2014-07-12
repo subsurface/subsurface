@@ -91,21 +91,23 @@ public:
 class SpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
-	SpinBoxDelegate(int min, int max, QObject *parent = 0);
+	SpinBoxDelegate(int min, int max, int step, QObject *parent = 0);
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 private:
 	int min;
 	int max;
+	int step;
 };
 
 class DoubleSpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
-	DoubleSpinBoxDelegate(double min, double max, QObject *parent = 0);
+	DoubleSpinBoxDelegate(double min, double max, double step, QObject *parent = 0);
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 private:
 	double min;
 	double max;
+	double step;
 };
 
 #endif // MODELDELEGATES_H

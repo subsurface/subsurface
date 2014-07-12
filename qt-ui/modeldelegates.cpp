@@ -365,10 +365,11 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	QStyledItemDelegate::paint(painter, option, index);
 }
 
-SpinBoxDelegate::SpinBoxDelegate(int min, int max, QObject *parent):
+SpinBoxDelegate::SpinBoxDelegate(int min, int max, int step, QObject *parent):
 	QStyledItemDelegate(parent),
 	min(min),
-	max(max)
+	max(max),
+	step(step)
 {
 }
 
@@ -376,13 +377,15 @@ QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
 {
 	QSpinBox *w = qobject_cast<QSpinBox*>(QStyledItemDelegate::createEditor(parent, option, index));
 	w->setRange(min,max);
+	w->setSingleStep(step);
 	return w;
 }
 
-DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(double min, double max, QObject *parent):
+DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(double min, double max, double step, QObject *parent):
 	QStyledItemDelegate(parent),
 	min(min),
-	max(max)
+	max(max),
+	step(step)
 {
 }
 
@@ -390,5 +393,6 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 {
 	QDoubleSpinBox *w = qobject_cast<QDoubleSpinBox*>(QStyledItemDelegate::createEditor(parent, option, index));
 	w->setRange(min,max);
+	w->setSingleStep(step);
 	return w;
 }
