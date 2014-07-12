@@ -1902,9 +1902,9 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 			if (col == 0)
 				return tr("Gas used:");
 			if (col == 2)
-				return tr("SAC:");
+				return tr("Tags:");
 			if (col == 3)
-				return tr("Max. CNS:");
+				return tr("SAC:");
 			if (col == 4)
 				return tr("Weights:");
 		}
@@ -1932,24 +1932,27 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		if (row == 3) {
 			if (col == 0) {
 				int added = 0;
-				const char *desc;
-				QString gases;
+				QString gas, gases;
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
-					desc = dive->cylinder[i].type.description;
+					gas = dive->cylinder[i].type.description;
+					gas += QString(!gas.isEmpty() ? " " : "") + gasname(&dive->cylinder[i].gasmix);
 					// if has a description and if such gas is not already present
-					if (desc && gases.indexOf(QString(desc)) == -1) {
+					if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 						if (added > 0)
 							gases += QString(" / ");
-						gases += QString(desc);
+						gases += gas;
 						added++;
 					}
 				}
 				return gases;
 			}
-			if (col == 2)
-				return di.displaySac();
+			if (col == 2) {
+				char buffer[256];
+				taglist_get_tagstring(dive->tag_list, buffer, 256);
+				return QString(buffer);
+			}
 			if (col == 3)
-				return QString::number(dive->maxcns);
+				return di.displaySac();
 			if (col == 4) {
 				weight_t tw = { total_weight(dive) };
 				return get_weight_string(tw, true);
