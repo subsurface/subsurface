@@ -206,6 +206,7 @@ struct DiveItem : public TreeItem {
 	QString displayDate() const;
 	QString displayDuration() const;
 	QString displayDepth() const;
+	QString displayDepthWithUnit() const;
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;

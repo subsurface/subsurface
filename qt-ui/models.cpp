@@ -1189,17 +1189,14 @@ QString DiveItem::displayDate() const
 
 QString DiveItem::displayDepth() const
 {
-	QString fract, str;
-	const int scale = 1000;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (get_units()->length == units::METERS) {
-		fract = QString::number((unsigned)(dive->maxdepth.mm % scale) / 100);
-		str = QString("%1.%2").arg((unsigned)(dive->maxdepth.mm / scale)).arg(fract, 1, QChar('0'));
-	}
-	if (get_units()->length == units::FEET) {
-		str = QString::number(mm_to_feet(dive->maxdepth.mm), 'f', 0);
-	}
-	return str;
+	return get_depth_string(dive->maxdepth);
+}
+
+QString DiveItem::displayDepthWithUnit() const
+{
+	struct dive *dive = get_dive_by_uniq_id(diveId);
+	return get_depth_string(dive->maxdepth, true);
 }
 
 QString DiveItem::displayDuration() const
