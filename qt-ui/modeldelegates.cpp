@@ -379,7 +379,7 @@ QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
 	return w;
 }
 
-DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(qreal min, qreal max, QObject *parent):
+DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(double min, double max, QObject *parent):
 	QStyledItemDelegate(parent),
 	min(min),
 	max(max)
