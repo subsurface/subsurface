@@ -1,5 +1,17 @@
 
-This is the README file for Subsurface 4.1
+This is the README file for Subsurface 4.1.90, the first Beta for 4.2
+
+A lot of the internals of Subsurface changed, and quite a few new features
+got added (see the Releasenotes.txt).
+
+Please be very careful when using it on your real data - while this is
+reasonably well tested by our developers, there's always a risk that this
+could eat your data file in unexpected ways.
+
+Report bugs and issues at http://trac.hohndel.org
+
+Previous REAMDE
+===============
 
 This is mainly a bug fix release, but there are rather significant changes
 under the hood. Check the ReleaseNotes.txt for details.
