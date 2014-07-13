@@ -32,7 +32,7 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	if (arch == "i386") {
 		osArch = SubsurfaceSysInfo::osArch();
 		if (!osArch.isEmpty()) {
-			sysInfo.append(tr("\nOS CPU Architecture %1").arg(osArch));
+			sysInfo.append(tr("\nOS CPU Architecture: %1").arg(osArch));
 			os.append(QString("&osCpuArch=%1").arg(osArch));
 		}
 	}
