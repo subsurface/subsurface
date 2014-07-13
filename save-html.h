@@ -15,8 +15,10 @@ void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, cons
 void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_quoted(struct membuffer *b, const char *text);
 
-void export_HTML(const char *file_name, const bool selected_only, const bool list_only);
+void export_HTML(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only);
 
+extern void copy_image_and_overwrite(const char *cfileName, const char *cnewName);
+extern const char* get_file_name(const char *fileName);
 #ifdef __cplusplus
 }
 #endif

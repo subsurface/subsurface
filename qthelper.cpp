@@ -4,6 +4,7 @@
 #include "statistics.h"
 #include <exif.h>
 #include "file.h"
+#include <QFile>
 #include <QRegExp>
 #include <QDir>
 #include <QMap>
@@ -281,6 +282,25 @@ extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp
 picture_load_exit:
 	free(mem.buffer);
 	return;
+}
+
+extern "C" const char* get_file_name(const char *fileName)
+{
+	QFile file(fileName);
+	QFileInfo fileInfo(file.fileName());
+	QString filename(fileInfo.fileName());
+	return filename.toStdString().c_str();
+}
+
+extern "C" void copy_image_and_overwrite(const char *cfileName, const char *cnewName)
+{
+	QString fileName = QString::fromUtf8(cfileName);
+	QString newName = QString::fromUtf8(cnewName);
+	newName += get_file_name(cfileName);
+	QFile file(newName);
+	if (file.exists())
+		file.remove();
+	QFile::copy(fileName, newName);
 }
 
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)

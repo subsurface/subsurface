@@ -16,4 +16,5 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 QString printGPSCoords(int lat, int lon);
 QList<int> getDivesInTrip(dive_trip_t *trip);
 QString gasToStr(struct gasmix gas);
+
 #endif // QTHELPER_H

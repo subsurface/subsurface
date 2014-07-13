@@ -212,6 +212,20 @@ ul:hover{
 	box-shadow: 7px 7px 5px rgba(215, 107, 27, 0.43);
 }
 
+#slider_container{
+	height:240px;
+	margin-bottom:20px;
+}
+
+#slider{
+	float:left;
+	width:80%;
+	min-width:350px;
+	height:240px;
+	border-style:solid;
+	overflow:hidden;
+}
+
 .det_hed{
 	background-color:#EFC15F;
 	padding:3px;

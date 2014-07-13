@@ -81,13 +81,16 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	QFileInfo info(file);
 	QDir mainDir = info.absoluteDir();
 	mainDir.mkdir(file.fileName() + "_files");
-	QString exportFiles = file.fileName() + "_files/";
+	QString exportFiles = file.fileName() + "_files";
 
 	QString json_dive_data = exportFiles + QDir::separator() + "file.json";
 	QString json_settings = exportFiles + QDir::separator() + "settings.json";
+	QString photos_directory = exportFiles + QDir::separator() + "photos" + QDir::separator();
+	mainDir.mkdir(photos_directory);
+	exportFiles += "/";
 
 	exportHTMLsettings(json_settings);
-	export_HTML(json_dive_data.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
+	export_HTML(json_dive_data.toUtf8().data(), photos_directory.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
 
 	QString searchPath = getSubsurfaceDataPath("theme");
 	if (searchPath.isEmpty())

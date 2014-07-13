@@ -724,7 +724,8 @@ function get_bookmark_HTML(event)
 */
 function get_bookmarks_HTML(dive)
 {
-	if (dive.events <= 0) return "";
+	if (dive.events <= 0)
+		return "";
 	var result = "";
 	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td></tr>';
 	for (var i in dive.events) {
@@ -765,6 +766,43 @@ function get_status_HTML(dive)
 	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspCns: </td><td>' + dive.cns +
 	       '</td></tr></table>';
 };
+
+function get_dive_photos(dive)
+{
+	if (dive.photos.length <= 0) {
+		document.getElementById("divephotos").style.display = 'none';
+		return "";
+	}
+	var slider = "";
+	document.getElementById("divephotos").style.display = 'block';
+	for (var i = 0; i < dive.photos.length; i++) {
+		slider += '<img src="'+location.pathname
+		+'_files/photos/'+dive.photos[i].filename+'" alt="" height="240" width="240">';
+	}
+	return slider;
+}
+
+function prev_photo()
+{
+	var temp = items[dive_id].photos[0];
+	var i;
+	for (i = 0; i < items[dive_id].photos.length - 1; i++) {
+		items[dive_id].photos[i] = items[dive_id].photos[i + 1]
+	}
+	items[dive_id].photos[i] = temp;
+	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
+}
+
+function next_photo()
+{
+	var temp = items[dive_id].photos[items[dive_id].photos.length - 1];
+	var i;
+	for (i = items[dive_id].photos.length - 1; i > 0; i--) {
+		items[dive_id].photos[i] = items[dive_id].photos[i - 1]
+	}
+	items[dive_id].photos[0] = temp;
+	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
+}
 
 function mkelvin_to_C(mkelvin)
 {
@@ -948,6 +986,7 @@ function showDiveDetails(dive)
 	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML = get_bookmarks_HTML(items[dive_id]);
 	document.getElementById("divestats").innerHTML = get_status_HTML(items[dive_id]);
+	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
 	setDiveTitle(items[dive_id]);
 
 	//hide the list of dives and show the canvas.

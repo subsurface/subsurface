@@ -11,6 +11,18 @@ void write_attribute(struct membuffer *b, const char *att_name, const char *valu
 	put_string(b, "\",");
 }
 
+void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
+{
+	struct picture *pic = dive->picture_list;
+	put_string(b, "\"photos\":[");
+	while (pic) {
+		put_format(b, "{\"filename\":\"%s\"},", get_file_name(pic->filename));
+		copy_image_and_overwrite(pic->filename, photos_dir);
+		pic = pic->next;
+	}
+	put_string(b, "],");
+}
+
 void write_dive_status(struct membuffer *b, struct dive *dive)
 {
 	put_format(b, "\"sac\":\"%d\",", dive->sac);
@@ -162,7 +174,7 @@ void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, cons
 }
 
 /* if exporting list_only mode, we neglect exporting the samples, bookmarks and cylinders */
-void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no, const bool list_only)
+void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, const bool list_only)
 {
 	put_string(b, "{");
 	put_format(b, "\"number\":%d,", *dive_no);
@@ -180,6 +192,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no, const 
 	write_attribute(b, "divemaster", dive->divemaster);
 	write_attribute(b, "suit", dive->suit);
 	write_dive_status(b, dive);
+	save_photos(b, photos_dir, dive);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	if (!list_only) {
@@ -191,7 +204,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, int *dive_no, const 
 	(*dive_no)++;
 }
 
-void write_no_trip(struct membuffer *b, int *dive_no, const bool list_only)
+void write_no_trip(struct membuffer *b, int *dive_no, const char *photos_dir, const bool list_only)
 {
 	int i;
 	struct dive *dive;
@@ -202,12 +215,12 @@ void write_no_trip(struct membuffer *b, int *dive_no, const bool list_only)
 
 	for_each_dive (i, dive) {
 		if (!dive->divetrip)
-			write_one_dive(b, dive, dive_no, list_only);
+			write_one_dive(b, dive, photos_dir, dive_no, list_only);
 	}
 	put_format(b, "]},\n\n");
 }
 
-void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, const bool list_only)
+void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, const char *photos_dir, const bool list_only)
 {
 	struct dive *dive;
 
@@ -216,13 +229,13 @@ void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, const bool
 	put_format(b, "\"dives\":[");
 
 	for (dive = trip->dives; dive != NULL; dive = dive->next) {
-		write_one_dive(b, dive, dive_no, list_only);
+		write_one_dive(b, dive, photos_dir, dive_no, list_only);
 	}
 
 	put_format(b, "]},\n\n");
 }
 
-void write_trips(struct membuffer *b, bool selected_only, const bool list_only)
+void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
 {
 	int i, dive_no = 0;
 	struct dive *dive;
@@ -239,7 +252,7 @@ void write_trips(struct membuffer *b, bool selected_only, const bool list_only)
 		for_each_dive (i, dive) {
 			if (!dive->selected)
 				continue;
-			write_one_dive(b, dive, &dive_no, list_only);
+			write_one_dive(b, dive, photos_dir, &dive_no, list_only);
 		}
 		put_format(b, "]},\n\n");
 	} else {
@@ -253,27 +266,27 @@ void write_trips(struct membuffer *b, bool selected_only, const bool list_only)
 
 			/* We haven't seen this trip before - save it and all dives */
 			trip->index = 1;
-			write_trip(b, trip, &dive_no, list_only);
+			write_trip(b, trip, &dive_no, photos_dir, list_only);
 		}
 
 		/*Save all remaining trips into Others*/
-		write_no_trip(b, &dive_no, list_only);
+		write_no_trip(b, &dive_no, photos_dir, list_only);
 	}
 }
 
-void export_list(struct membuffer *b, bool selected_only, const bool list_only)
+void export_list(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
 {
 	put_string(b, "trips=[");
-	write_trips(b, selected_only, list_only);
+	write_trips(b, photos_dir, selected_only, list_only);
 	put_string(b, "]");
 }
 
-void export_HTML(const char *file_name, const bool selected_only, const bool list_only)
+void export_HTML(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only)
 {
 	FILE *f;
 
 	struct membuffer buf = { 0 };
-	export_list(&buf, selected_only, list_only);
+	export_list(&buf, photos_dir, selected_only, list_only);
 
 	f = subsurface_fopen(file_name, "w+");
 	if (!f)
