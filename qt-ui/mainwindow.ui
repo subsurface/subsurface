@@ -497,6 +497,9 @@
          </item>
          <item row="14" column="0">
           <widget class="QToolButton" name="profTogglePicture">
+           <property name="toolTip">
+            <string>Toggle viewing picture thumbnails</string>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
