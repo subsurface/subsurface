@@ -528,7 +528,7 @@ function SearchModule(enabled)
 
 SearchModule.prototype.Enter_search_string = function(str, diveno)
 {
-	if (str == "" || !str)
+	if (str === "" || !str)
 		return;
 	var res = str.toLowerCase().split(" ");
 	for (var i = 0; i < res.length; i++) {
@@ -672,7 +672,7 @@ var plot1;
 function lastNonZero()
 {
 	for(var i = items[dive_id].samples.length-1; i >= 0; i--){
-		if(items[dive_id].samples[i][2] != 0)
+		if(items[dive_id].samples[i][2] !== 0)
 			return items[dive_id].samples[i][2];
 	}
 }
@@ -846,20 +846,20 @@ function canvas_draw()
 			items[dive_id].samples[i][0] / 60,
 			-1 * mm_to_meter(items[dive_id].samples[i][1])
 		]);
-		if (items[dive_id].samples[i][2] != 0) {
+		if (items[dive_id].samples[i][2] !== 0) {
 			pressureData.push([
 				items[dive_id].samples[i][0] / 60,
 				mbar_to_bar(items[dive_id].samples[i][2])
 			]);
 		}
-		if (items[dive_id].samples[i][3] != 0) {
+		if (items[dive_id].samples[i][3] !== 0) {
 			temperatureData.push([
 				items[dive_id].samples[i][0] / 60,
 				mkelvin_to_C(items[dive_id].samples[i][3]),
 			]);
 			last = items[dive_id].samples[i][3];
 		} else {
-			if (last != 0) {
+			if (last !== 0) {
 				temperatureData.push([
 					items[dive_id].samples[i][0] / 60,
 					mkelvin_to_C(last),
