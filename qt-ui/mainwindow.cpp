@@ -645,16 +645,6 @@ void MainWindow::on_actionFullScreen_triggered(bool checked)
 	}
 }
 
-void MainWindow::on_actionSelectEvents_triggered()
-{
-	qDebug("actionSelectEvents");
-}
-
-void MainWindow::on_actionInputPlan_triggered()
-{
-	qDebug("actionInputPlan");
-}
-
 void MainWindow::on_actionAboutSubsurface_triggered()
 {
 	SubsurfaceAbout dlg(this);

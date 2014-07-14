@@ -115,8 +115,6 @@ slots:
 	void on_actionFullScreen_triggered(bool checked);
 
 	/* other menu actions */
-	void on_actionSelectEvents_triggered();
-	void on_actionInputPlan_triggered();
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
 	void on_actionDivePlanner_triggered();

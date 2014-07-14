@@ -716,12 +716,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
    </widget>
-   <widget class="QMenu" name="menuFilter">
-    <property name="title">
-     <string>Filter</string>
-    </property>
-    <addaction name="actionSelectEvents"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>&amp;Help</string>
@@ -930,16 +924,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>Right</string>
-   </property>
-  </action>
-  <action name="actionSelectEvents">
-   <property name="text">
-    <string>&amp;Select events</string>
-   </property>
-  </action>
-  <action name="actionInputPlan">
-   <property name="text">
-    <string>Input Plan</string>
    </property>
   </action>
   <action name="actionAboutSubsurface">
