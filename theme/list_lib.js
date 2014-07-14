@@ -776,8 +776,8 @@ function get_dive_photos(dive)
 	var slider = "";
 	document.getElementById("divephotos").style.display = 'block';
 	for (var i = 0; i < dive.photos.length; i++) {
-		slider += '<img src="'+location.pathname
-		+'_files/photos/'+dive.photos[i].filename+'" alt="" height="240" width="240">';
+		slider += '<img src="'+location.pathname +
+			'_files/photos/'+dive.photos[i].filename+'" alt="" height="240" width="240">';
 	}
 	return slider;
 }
