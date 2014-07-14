@@ -855,14 +855,14 @@ function canvas_draw()
 		if (items[dive_id].samples[i][3] !== 0) {
 			temperatureData.push([
 				items[dive_id].samples[i][0] / 60,
-				mkelvin_to_C(items[dive_id].samples[i][3]),
+				mkelvin_to_C(items[dive_id].samples[i][3])
 			]);
 			last = items[dive_id].samples[i][3];
 		} else {
 			if (last !== 0) {
 				temperatureData.push([
 					items[dive_id].samples[i][0] / 60,
-					mkelvin_to_C(last),
+					mkelvin_to_C(last)
 				]);
 			}
 		}
@@ -870,14 +870,14 @@ function canvas_draw()
 	for (var i = 0; i < items[dive_id].events.length; i++) {
 		eventsData.push([
 			items[dive_id].events[i].time / 60,
-			0,
+			0
 		]);
 	}
 	plot1 = $.jqplot('chart1', [
 					depthData,
 					pressureData,
 					eventsData,
-					temperatureData,
+					temperatureData
 				   ],
 			 {
 				 grid : {
@@ -906,27 +906,27 @@ function canvas_draw()
 						 showMarker : true,
 						 showLine : true,
 						 fill : true,
-						 yaxis : 'yaxis',
+						 yaxis : 'yaxis'
 					 },
 					 {
 						 color : 'rgba(44, 190, 160, 0.7)',
 						 showMarker : false,
 						 rendererOptions : {
-							 smooth : true,
+							 smooth : true
 						 },
-						 yaxis : 'y2axis',
+						 yaxis : 'y2axis'
 					 },
 					 {
 						  showLine:false,
 						  markerOptions: { size: 10, style:"o" },
-						  pointLabels: { show:false, } ,
+						  pointLabels: { show:false }
 					 },
 					 {
 						  showLine:true,
 						  showMarker : false,
-						  pointLabels: { show:false, } ,
-						  yaxis : 'y3axis',
-					 },
+						  pointLabels: { show:false },
+						  yaxis : 'y3axis'
+					 }
 				 ],
 				 axes : {
 					 xaxis : {
@@ -934,7 +934,7 @@ function canvas_draw()
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
 							 showGridline : false,
-							 formatString : '%i',
+							 formatString : '%i'
 						 },
 						 label:'Time (min)'
 					 },
@@ -961,9 +961,9 @@ function canvas_draw()
 							showMark: false,
 							showLabel: false,
 							shadow: false,
-							formatString : '%i C',
-						},
-					 },
+							formatString : '%i C'
+						}
+					 }
 				 }
 			 });
 }
