@@ -205,14 +205,14 @@ function getlimited(dive)
 function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">Date: </td><td>' + dive.date +
-		  '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
 		  dive.location + '</a>' +
 		  '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
-		  '</td><td class="words">&nbsp&nbsp&nbspVisibilty:</td><td>' + putRating(dive.visibility) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
-		  '</td><td class="words">&nbsp&nbsp&nbsp&nbspWater temp: </td><td>' + dive.temperature.water +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
 		  '</td></tr></table><table><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
 		  '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
 		  '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
@@ -741,14 +741,14 @@ function get_bookmarks_HTML(dive)
 function get_dive_HTML(dive)
 {
 	return '<h2 class="det_hed">Dive Information</h2><table><tr><td class="words">Date: </td><td>' + dive.date +
-	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspTime: </td><td>' + dive.time +
-	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspLocation: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
 	       dive.location + '</a>' +
 	       '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
-	       '</td><td class="words">&nbsp&nbsp&nbspVisibilty:</td><td>' + putRating(dive.visibility) +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
 	       '</td></tr></table>' +
 	       '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
-	       '</td><td class="words">&nbsp&nbsp&nbsp&nbspWater temp: </td><td>' + dive.temperature.water +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
 	       '</td></tr></table><table><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
 	       '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
 	       '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
@@ -762,8 +762,8 @@ function get_dive_HTML(dive)
 function get_status_HTML(dive)
 {
 	return '<h2 class="det_hed">Dive Status</h2><table><tr><td class="words">Sac: </td><td>' + dive.sac +
-	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspOtu: </td><td>' + dive.otu +
-	       '</td><td class="words">&nbsp&nbsp&nbsp&nbsp&nbspCns: </td><td>' + dive.cns +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otu: </td><td>' + dive.otu +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cns: </td><td>' + dive.cns +
 	       '</td></tr></table>';
 };
 
