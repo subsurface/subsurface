@@ -634,9 +634,18 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		}
 		lastdepth = dp->depth;
 	} while ((dp = nextdp) != NULL);
+	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div>");
+
+	dive->cns = 0;
+	dive->maxcns = 0;
+	update_cylinder_related_info(dive);
+	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "CNS"));
+	len += snprintf(buffer + len, sizeof(buffer) - len, "<div><br>%s: %i%%", temp, dive->cns);
+	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "OTU"));
+	len += snprintf(buffer + len, sizeof(buffer) - len, "<br>%s: %i</div>", temp, dive->otu);
 
 	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
-	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div><div><br>%s<br>", temp);
+	len += snprintf(buffer + len, sizeof(buffer) - len, "<div><br>%s<br>", temp);
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure;
 		const char *unit, *pressure_unit;
