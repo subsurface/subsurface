@@ -206,9 +206,12 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 		m.addAction(action);
 	}
-	m.addSeparator();
-	m.addAction(QObject::tr("Remove this point"), this, SLOT(selfRemove()));
-	m.exec(event->screenPos());
+	// don't allow removing the last point
+	if (DivePlannerPointsModel::instance()->rowCount() > 1) {
+		m.addSeparator();
+		m.addAction(QObject::tr("Remove this point"), this, SLOT(selfRemove()));
+		m.exec(event->screenPos());
+	}
 }
 
 void DiveHandler::selfRemove()
@@ -530,7 +533,8 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
 		case REMOVE:
-			return p.entered ? QIcon(":trash") : QVariant();
+			if (rowCount() > 1)
+				return p.entered ? QIcon(":trash") : QVariant();
 		}
 	} else if (role == Qt::FontRole) {
 		if (divepoints.at(index.row()).entered) {
@@ -872,7 +876,7 @@ divedatapoint DivePlannerPointsModel::at(int row)
 
 void DivePlannerPointsModel::remove(const QModelIndex &index)
 {
-	if (index.column() != REMOVE)
+	if (index.column() != REMOVE || rowCount() == 1)
 		return;
 
 	divedatapoint dp = at(index.row());
