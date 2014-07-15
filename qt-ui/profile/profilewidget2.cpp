@@ -541,7 +541,7 @@ void ProfileWidget2::settingsChanged()
 	// if we are showing calculated ceilings then we have to replot()
 	// because the GF could have changed; otherwise we try to avoid replot()
 	bool needReplot = prefs.calcceiling;
-	if (PP_GRAPHS_ENABLED) {
+	if (PP_GRAPHS_ENABLED || prefs.hrgraph) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
@@ -751,7 +751,7 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setVisible(true);
 
 	profileYAxis->setPos(itemPos.depth.pos.on);
-	if (prefs.pp_graphs.phe || prefs.pp_graphs.po2 || prefs.pp_graphs.pn2) {
+	if (prefs.pp_graphs.phe || prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.hrgraph) {
 		profileYAxis->setLine(itemPos.depth.shrinked);
 		temperatureAxis->setLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->setLine(itemPos.cylinder.shrinked);
