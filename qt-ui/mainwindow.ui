@@ -737,7 +737,6 @@ p, li { white-space: pre-wrap; }
    <addaction name="menuImport"/>
    <addaction name="menuLog"/>
    <addaction name="menuView"/>
-   <addaction name="menuFilter"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew">
