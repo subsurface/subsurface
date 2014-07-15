@@ -829,6 +829,8 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 	if (usePrevious) {
 		if (row  < divepoints.count()) {
 			gas = divepoints.at(row).gasmix;
+		} else if (row > 0) {
+			gas = divepoints.at(row - 1).gasmix;
 		} else {
 			if (!addGas(air))
 				qDebug("addGas failed"); // FIXME add error propagation
