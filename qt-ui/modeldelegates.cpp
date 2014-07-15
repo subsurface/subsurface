@@ -77,6 +77,7 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 		c->setCurrentIndex(i);
 	else
 		c->setEditText(data);
+	c->lineEdit()->setSelection(0, c->lineEdit()->text().length());
 }
 
 struct CurrSelected {
