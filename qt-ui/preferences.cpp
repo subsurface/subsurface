@@ -399,8 +399,7 @@ void PreferencesDialog::on_resetSettings_clicked()
 	if (result == QMessageBox::Ok) {
 		prefs = default_prefs;
 		setUiFromPrefs();
-		QStringList keys = s.allKeys();
-		Q_FOREACH (QString key, keys) {
+		Q_FOREACH (QString key, s.allKeys()) {
 			s.remove(key);
 		}
 		syncSettings();

@@ -80,8 +80,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.timeEdit->installEventFilter(this);
 	ui.tagWidget->installEventFilter(this);
 
-	QList<QObject *> statisticsTabWidgets = ui.statisticsTab->children();
-	Q_FOREACH (QObject *obj, statisticsTabWidgets) {
+	Q_FOREACH (QObject *obj, ui.statisticsTab->children()) {
 		QLabel *label = qobject_cast<QLabel *>(obj);
 		if (label)
 			label->setAlignment(Qt::AlignHCenter);

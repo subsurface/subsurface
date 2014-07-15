@@ -52,8 +52,7 @@ void DivePictureModel::updateDivePictures()
 		pictures.push_back(QString(picture->filename));
 	}
 
-	SPixmapList retList = QtConcurrent::blockingMapped<SPixmapList>(pictures, scaleImages);
-	Q_FOREACH (const SPixmap &pixmap, retList)
+	Q_FOREACH (const SPixmap &pixmap, QtConcurrent::blockingMapped<SPixmapList>(pictures, scaleImages))
 		stringPixmapCache[pixmap.first].image = pixmap.second;
 
 	beginInsertRows(QModelIndex(), 0, numberOfPictures - 1);

@@ -199,9 +199,8 @@ void DiveListView::unselectDives()
 
 QList<dive_trip_t *> DiveListView::selectedTrips()
 {
-	QModelIndexList indexes = selectionModel()->selectedRows();
 	QList<dive_trip_t *> ret;
-	Q_FOREACH (const QModelIndex &index, indexes) {
+	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
 		dive_trip_t *trip = static_cast<dive_trip_t *>(index.data(DiveTripModel::TRIP_ROLE).value<void *>());
 		if (!trip)
 			continue;
