@@ -391,6 +391,9 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			// to recreate the model for the dive list so we can select the newest dive
 			MainWindow::instance()->recreateDiveList();
 			idx = get_idx_by_uniq_id(uniqId);
+			// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
+			// (but not visible as selected)
+			MainWindow::instance()->dive_list()->unselectDives();
 			MainWindow::instance()->dive_list()->selectDive(idx, true);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
