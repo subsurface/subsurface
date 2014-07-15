@@ -364,6 +364,18 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 {
 	ui.setupUi(this);
 
+	QSettings s;
+	s.beginGroup("Planner");
+	prefs.ascrate75 = s.value("ascrate75", 9).toInt();
+	prefs.ascrate50 = s.value("ascrate50", 6).toInt();
+	prefs.ascratestops = s.value("ascratestops", 6).toInt();
+	prefs.ascratelast6m = s.value("ascratelast6m", 1).toInt();
+	prefs.descrate = s.value("descrate", 18).toInt();
+	prefs.bottompo2 = s.value("bottompo2", 1400).toInt();
+	prefs.decopo2 = s.value("decopo2",1600).toInt();
+	prefs.doo2breaks = s.value("doo2breaks", false).toBool();
+	s.endGroup();
+
 	ui.ascRate75->setValue(prefs.ascrate75 / UNIT_FACTOR);
 	ui.ascRate50->setValue(prefs.ascrate50 / UNIT_FACTOR);
 	ui.ascRateStops->setValue(prefs.ascratestops / UNIT_FACTOR);
@@ -372,7 +384,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
-
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
@@ -405,6 +416,21 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+}
+
+PlannerSettingsWidget::~PlannerSettingsWidget()
+{
+	QSettings s;
+	s.beginGroup("Planner");
+	s.setValue("ascrate75", prefs.ascrate75);
+	s.setValue("ascrate50", prefs.ascrate50);
+	s.setValue("ascratestops", prefs.ascratestops);
+	s.setValue("ascratelast6m", prefs.ascratelast6m);
+	s.setValue("descrate", prefs.descrate);
+	s.setValue("bottompo2", prefs.bottompo2);
+	s.setValue("decopo2", prefs.decopo2);
+	s.setValue("doo2breaks", prefs.doo2breaks);
+	s.endGroup();
 }
 
 void PlannerSettingsWidget::settingsChanged()

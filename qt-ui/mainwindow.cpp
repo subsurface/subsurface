@@ -797,7 +797,6 @@ void MainWindow::readSettings()
 	default_dive_computer_product = getSetting(s, "dive_computer_product");
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	s.endGroup();
-
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
 	proxy.setHostName(prefs.proxy_host);

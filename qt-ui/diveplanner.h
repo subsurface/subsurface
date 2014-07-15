@@ -150,7 +150,7 @@ class PlannerSettingsWidget : public QWidget {
 	Q_OBJECT
 public:
 	explicit PlannerSettingsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
-
+	virtual ~PlannerSettingsWidget();
 public
 slots:
 	void settingsChanged();
