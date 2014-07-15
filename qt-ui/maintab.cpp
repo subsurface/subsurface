@@ -1079,11 +1079,6 @@ void MainTab::updateGpsCoordinates(const struct dive *dive)
 	}
 }
 
-QString MainTab::trHemisphere(const char *orig)
-{
-	return tr(orig);
-}
-
 void MainTab::escDetected()
 {
 	if (editMode != NONE)

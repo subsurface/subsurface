@@ -84,7 +84,6 @@ slots:
 	void enableEdition(EditMode newEditMode = NONE);
 	void toggleTriggeredColumn();
 	void updateTextLabels(bool showUnits = true);
-	QString trHemisphere(const char *orig);
 	void escDetected(void);
 	void photoDoubleClicked(const QString filePath);
 
