@@ -102,10 +102,11 @@ void export_worldmap_HTML(const char *file_name, const bool selected_only)
 	export(&buf, selected_only);
 
 	f = subsurface_fopen(file_name, "w+");
-	if (!f)
+	if (!f) {
 		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
-
-	flush_buffer(&buf, f); /*check for writing errors? */
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
 	free_buffer(&buf);
-	fclose(f);
 }
