@@ -455,8 +455,8 @@ weight_t string_to_weight(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_kg = WeightModel::tr("kg");
-	QString local_lbs = WeightModel::tr("lbs");
+	QString local_kg = QObject::tr("kg");
+	QString local_lbs = QObject::tr("lbs");
 	weight_t weight;
 
 	if (rest.startsWith("kg") || rest.startsWith(local_kg))
@@ -480,8 +480,8 @@ depth_t string_to_depth(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_ft = WeightModel::tr("ft");
-	QString local_m = WeightModel::tr("m");
+	QString local_ft = QObject::tr("ft");
+	QString local_m = QObject::tr("m");
 	depth_t depth;
 
 	if (rest.startsWith("m") || rest.startsWith(local_m))
@@ -504,8 +504,8 @@ pressure_t string_to_pressure(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_psi = CylindersModel::tr("psi");
-	QString local_bar = CylindersModel::tr("bar");
+	QString local_psi = QObject::tr("psi");
+	QString local_bar = QObject::tr("bar");
 	pressure_t pressure;
 
 	if (rest.startsWith("bar") || rest.startsWith(local_bar))
@@ -529,8 +529,8 @@ volume_t string_to_volume(const char *str, pressure_t workp)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_l = CylindersModel::tr("l");
-	QString local_cuft = CylindersModel::tr("cuft");
+	QString local_l = QObject::tr("l");
+	QString local_cuft = QObject::tr("cuft");
 	volume_t volume;
 
 	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))
