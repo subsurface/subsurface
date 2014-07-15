@@ -2404,8 +2404,10 @@ int average_depth(struct diveplan *dive)
 		}
 		dp = dp->next;
 	}
-
-	return integral / last_time;
+	if (last_time)
+		return integral / last_time;
+	else
+		return 0;
 }
 
 struct picture *alloc_picture()
