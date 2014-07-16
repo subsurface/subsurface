@@ -227,11 +227,17 @@ double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 	case METERS:
 	default:
 		d = mms / 1000.0 * time_factor;
-		unit = translate("gettextFromC", (units_p->vertical_speed_time == MINUTES) ? "m/min" : "m/s");
+		if (units_p->vertical_speed_time == MINUTES)
+			unit = translate("gettextFromC", "m/min");
+		else
+			unit = translate("gettextFromC", "m/s");
 		break;
 	case FEET:
 		d = mm_to_feet(mms) * time_factor;
-		unit = translate("gettextFromC", (units_p->vertical_speed_time == MINUTES) ? "ft/min" : "ft/s");
+		if (units_p->vertical_speed_time == MINUTES)
+			unit = translate("gettextFromC", "ft/min");
+		else
+			unit = translate("gettextFromC", "ft/s");
 		break;
 	}
 	if (frac)
