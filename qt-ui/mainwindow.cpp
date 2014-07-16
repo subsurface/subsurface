@@ -222,6 +222,7 @@ void MainWindow::cleanUpEmpty()
 	ui.globe->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
+	disableDcShortcuts();
 }
 
 void MainWindow::setToolButtonsEnabled(bool enabled)
