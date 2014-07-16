@@ -397,6 +397,7 @@ void MainWindow::planCanceled()
 {
 	showProfile();
 	refreshDisplay(false);
+	ui.newProfile->plotDive(get_dive(selected_dive));
 }
 
 void MainWindow::planCreated()
