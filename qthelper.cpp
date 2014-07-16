@@ -1,5 +1,6 @@
 #include "qthelper.h"
 #include "qt-gui.h"
+#include "gettextfromc.h"
 #include "dive.h"
 #include "statistics.h"
 #include <exif.h>
@@ -12,8 +13,7 @@
 #include <QSettings>
 #include <libxslt/documents.h>
 
-#define tr(_arg) QObject::tr(_arg)
-
+#define translate(_context, arg) trGettext(arg)
 
 QString weight_string(int weight_in_grams)
 {
@@ -43,8 +43,8 @@ QString printGPSCoords(int lat, int lon)
 	if (!lat && !lon)
 		return QString();
 
-	lath = lat >= 0 ? tr("N") : tr("S");
-	lonh = lon >= 0 ? tr("E") : tr("W");
+	lath = lat >= 0 ? translate("gettextFromC", "N") : translate("gettextFromC", "S");
+	lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
 	lat = abs(lat);
 	lon = abs(lon);
 	latdeg = lat / 1000000;
@@ -70,10 +70,10 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 	int eastWest = 4;
 	int northSouth = 1;
 	QString trHemisphere[4];
-	trHemisphere[0] = tr("N");
-	trHemisphere[1] = tr("S");
-	trHemisphere[2] = tr("E");
-	trHemisphere[3] = tr("W");
+	trHemisphere[0] = translate("gettextFromC", "N");
+	trHemisphere[1] = translate("gettextFromC", "S");
+	trHemisphere[2] = translate("gettextFromC", "E");
+	trHemisphere[3] = translate("gettextFromC", "W");
 	QString regExp;
 	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
 	if (gps_text.trimmed().isEmpty()) {
