@@ -346,20 +346,37 @@ void CylindersModel::remove(const QModelIndex &index)
 	if (index.column() != REMOVE) {
 		return;
 	}
+	int same_gas = -1;
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
-	if ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-	     DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix)) ||
-	    (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-	     (cyl->manually_added || cylinder_is_used(&displayed_dive, cyl)))) {
+	struct gasmix *mygas = &cyl->gasmix;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
+			continue;
+		struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
+		if (gasmix_distance(mygas, gas2) == 0)
+			same_gas = i;
+	}
+	if (same_gas == -1 &&
+	    ((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
+	      DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix)) ||
+	     (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
+	      (cyl->manually_added || cylinder_is_used(&displayed_dive, cyl))))) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
 									tr("Cylinder cannot be removed"),
-									tr("This gas in use. Only cylinders that are not used in the dive can be removed.")),
+									tr("This gas is in use. Only cylinders that are not used in the dive can be removed.")),
 				     QMessageBox::Ok);
 		return;
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
-	remove_cylinder(&displayed_dive, index.row());
+	if (index.row() == 0) {
+		// first gas - we need to make sure that the same gas ends up
+		// as first gas
+		memmove(cyl, &displayed_dive.cylinder[same_gas], sizeof(*cyl));
+		remove_cylinder(&displayed_dive, same_gas);
+	} else {
+		remove_cylinder(&displayed_dive, index.row());
+	}
 	changed = true;
 	endRemoveRows();
 }
