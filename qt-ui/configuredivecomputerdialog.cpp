@@ -50,7 +50,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	if (default_dive_computer_device)
 		ui->device->setEditText(default_dive_computer_device);
 
-	on_tabWidget_currentChanged(0);
+	ui->DiveComputerList->setCurrentRow(0);
+	on_DiveComputerList_currentRowChanged(0);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
@@ -435,23 +436,6 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	}
 }
 
-void ConfigureDiveComputerDialog::on_tabWidget_currentChanged(int index)
-{
-	switch (index) {
-	case 0:
-		selected_vendor = "Heinrichs Weikamp";
-		selected_product = "OSTC 3";
-		break;
-	}
-
-	int dcType = DC_TYPE_SERIAL;
-
-
-	if (selected_vendor == QString("Uemis"))
-		dcType = DC_TYPE_UEMIS;
-	fill_device_list(dcType);
-}
-
 void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 {
 	QString filename = existing_filename ?: prefs.default_filename;
@@ -465,4 +449,21 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		QString errText;
 		config->startFirmwareUpdate(firmwarePath, &device_data, errText);
 	}
+}
+
+void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
+{
+	switch (currentRow) {
+	case 0:
+		selected_vendor = "Heinrichs Weikamp";
+		selected_product = "OSTC 3";
+		break;
+	}
+
+	int dcType = DC_TYPE_SERIAL;
+
+
+	if (selected_vendor == QString("Uemis"))
+		dcType = DC_TYPE_UEMIS;
+	fill_device_list(dcType);
 }

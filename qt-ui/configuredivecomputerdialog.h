@@ -31,9 +31,10 @@ private slots:
 
 	void on_restoreBackupButton_clicked();
 
-	void on_tabWidget_currentChanged(int index);
 
 	void on_updateFirmwareButton_clicked();
+
+	void on_DiveComputerList_currentRowChanged(int currentRow);
 
 private:
 	Ui::ConfigureDiveComputerDialog *ui;
