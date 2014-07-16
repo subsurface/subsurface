@@ -1318,6 +1318,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qt-ui/maintab.cpp" line="545"/>
+        <source>These gases could be
+mixed from Air and using:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="549"/>
+        <source> and </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
         <source>Discard the changes?</source>
         <translation type="unfinished"></translation>
@@ -1388,16 +1400,6 @@
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Toggle ruler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/mainwindow.ui" line="446"/>
-        <source>Toggle pO2 Graph</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/mainwindow.ui" line="475"/>
-        <source>Toggle pN2 Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1676,6 +1678,16 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/mainwindow.ui" line="478"/>
         <location filename="../qt-ui/mainwindow.ui" line="504"/>
         <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.ui" line="446"/>
+        <source>Toggle pO₂ Graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.ui" line="475"/>
+        <source>Toggle pN₂ Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
