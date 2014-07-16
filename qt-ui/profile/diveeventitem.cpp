@@ -87,9 +87,15 @@ void DiveEventItem::setupToolTipString()
 	int type = internalEvent->type;
 	if (value) {
 		if (type == SAMPLE_EVENT_GASCHANGE || type == SAMPLE_EVENT_GASCHANGE2) {
-			struct gasmix *g = get_gasmix_from_event(internalEvent);
+			QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds);
+			if (result.isEmpty()) {
+				Q_ASSERT("can't find a spot in the dataModel");
+				return;
+			}
+			// We need to look at row + 1, where the new gas is active to find what we are switching to.
+			int cylinder_idx = dataModel->data(dataModel->index(result.first().row() + 1, DivePlotDataModel::CYLINDERINDEX)).toInt();
 			name += ": ";
-			name += gasname(g);
+			name += gasname(&current_dive->cylinder[cylinder_idx].gasmix);
 		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {
