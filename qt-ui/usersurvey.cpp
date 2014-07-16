@@ -16,6 +16,7 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 {
 	QString osArch, arch;
 	ui->setupUi(this);
+	this->adjustSize();
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);

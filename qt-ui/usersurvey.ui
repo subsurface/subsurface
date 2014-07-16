@@ -13,196 +13,122 @@
   <property name="windowTitle">
    <string>User Survey</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>560</y>
-     <width>451</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>481</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Subsurface user survey</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>481</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="recreational">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>140</y>
-     <width>261</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Recreational diver</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="tech">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>140</y>
-     <width>201</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Technical diver</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="planning">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>160</y>
-     <width>421</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Interested in dive planning</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="download">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>481</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>I am downloading dives from supported dive computer</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="divecomputer">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>200</y>
-     <width>481</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>I am importing dives from other software / sources</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="manual">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>220</y>
-     <width>481</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>I am manually entering dives</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="suggestions">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>300</y>
-     <width>481</width>
-     <height>101</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="companion">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>240</y>
-     <width>481</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>I use the Android companion app to track dive locations</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="system">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>450</y>
-     <width>481</width>
-     <height>101</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>270</y>
-     <width>471</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Please type suggestions (in English) in the following box</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>420</y>
-     <width>471</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>The following information about your system will also be submitted</string>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Subsurface user survey</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="tech">
+     <property name="text">
+      <string>Technical diver</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="recreational">
+     <property name="text">
+      <string>Recreational diver</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="planning">
+     <property name="text">
+      <string>Interested in dive planning</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="download">
+     <property name="text">
+      <string>I am downloading dives from supported dive computer</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="divecomputer">
+     <property name="text">
+      <string>I am importing dives from other software / sources</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="manual">
+     <property name="text">
+      <string>I am manually entering dives</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="companion">
+     <property name="text">
+      <string>I use the Android companion app to track dive locations</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Please type suggestions (in English) in the following box</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="suggestions"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>The following information about your system will also be submitted</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="system">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <tabstops>
   <tabstop>recreational</tabstop>
