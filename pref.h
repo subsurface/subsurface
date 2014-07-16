@@ -64,6 +64,7 @@ struct preferences {
 	bool doo2breaks;
 	bool drop_stone_mode;
 	bool show_pictures_in_profile;
+	bool use_default_file;
 };
 enum unit_system_values {
 	METRIC,

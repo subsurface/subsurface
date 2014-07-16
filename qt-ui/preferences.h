@@ -14,6 +14,7 @@ public:
 	static PreferencesDialog *instance();
 	void showEvent(QShowEvent *);
 	void emitSettingsChanged();
+
 signals:
 	void settingsChanged();
 public
@@ -28,6 +29,7 @@ slots:
 	void gflowChanged(int gf);
 	void gfhighChanged(int gf);
 	void proxyType_changed(int idx);
+	void on_btnUseDefaultFile_toggled(bool toggle);
 
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);

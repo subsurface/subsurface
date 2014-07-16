@@ -132,6 +132,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.proxyUsername->setText(prefs.proxy_user);
 	ui.proxyPassword->setText(prefs.proxy_pass);
 	ui.proxyType->setCurrentIndex(ui.proxyType->findData(prefs.proxy_type));
+	ui.btnUseDefaultFile->setChecked(prefs.use_default_file);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -227,6 +228,7 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("GeneralSettings");
 	s.setValue("default_filename", ui.defaultfilename->text());
 	s.setValue("default_cylinder", ui.default_cylinder->currentText());
+	s.setValue("use_default_file", ui.btnUseDefaultFile->isChecked());
 	s.endGroup();
 
 	s.beginGroup("Display");
@@ -326,6 +328,7 @@ void PreferencesDialog::loadSettings()
 	s.beginGroup("GeneralSettings");
 	GET_TXT("default_filename", default_filename);
 	GET_TXT("default_cylinder", default_cylinder);
+	GET_BOOL("use_default_file", use_default_file);
 	s.endGroup();
 
 	s.beginGroup("Display");
@@ -426,4 +429,14 @@ void PreferencesDialog::proxyType_changed(int idx)
 	ui.proxyUsername->setEnabled(hpEnabled & ui.proxyAuthRequired->isChecked());
 	ui.proxyPassword->setEnabled(hpEnabled & ui.proxyAuthRequired->isChecked());
 	ui.proxyAuthRequired->setChecked(ui.proxyAuthRequired->isChecked());
+}
+
+void PreferencesDialog::on_btnUseDefaultFile_toggled(bool toggle)
+{
+	if (toggle) {
+		ui.defaultfilename->setText(system_default_filename());
+		ui.defaultfilename->setEnabled(false);
+	} else {
+		ui.defaultfilename->setEnabled(true);
+	}
 }

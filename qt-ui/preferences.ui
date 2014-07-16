@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>872</width>
-    <height>648</height>
+    <height>830</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,6 +191,16 @@
              <layout class="QHBoxLayout" name="horizontalLayout_3b">
               <item>
                <widget class="QLineEdit" name="defaultfilename"/>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnUseDefaultFile">
+                <property name="text">
+                 <string>Use default</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QToolButton" name="chooseFile">
@@ -969,8 +979,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>635</y>
+     <x>259</x>
+     <y>817</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -985,8 +995,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>315</x>
-     <y>635</y>
+     <x>327</x>
+     <y>817</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -1225,12 +1235,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>181</x>
-     <y>319</y>
+     <x>361</x>
+     <y>439</y>
     </hint>
     <hint type="destinationlabel">
-     <x>798</x>
-     <y>314</y>
+     <x>831</x>
+     <y>447</y>
     </hint>
    </hints>
   </connection>
@@ -1241,12 +1251,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>798</x>
-     <y>314</y>
+     <x>831</x>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>319</y>
+     <x>361</x>
+     <y>439</y>
     </hint>
    </hints>
   </connection>
@@ -1257,12 +1267,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>122</y>
+     <x>200</x>
+     <y>42</y>
     </hint>
     <hint type="destinationlabel">
-     <x>257</x>
-     <y>151</y>
+     <x>200</x>
+     <y>42</y>
     </hint>
    </hints>
   </connection>
@@ -1273,23 +1283,39 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>230</x>
-     <y>124</y>
+     <x>200</x>
+     <y>42</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>187</y>
+     <x>200</x>
+     <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnUseDefaultFile</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chooseFile</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>754</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>801</x>
+     <y>213</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
