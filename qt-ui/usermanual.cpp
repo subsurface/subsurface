@@ -86,6 +86,7 @@ UserManual::UserManual(QWidget *parent) : QWidget(parent)
 	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
 
 	QVBoxLayout *vboxLayout = new QVBoxLayout();
+	userManual->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
 	vboxLayout->addWidget(userManual);
 	vboxLayout->addWidget(searchBar);
 	setLayout(vboxLayout);
