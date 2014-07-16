@@ -85,8 +85,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
-	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), MainWindow::instance(), SLOT(planCreated()));
-	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), MainWindow::instance(), SLOT(planCanceled()));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(ui.printPlan, SIGNAL(pressed()), ui.divePlannerWidget, SLOT(printDecoPlan()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
@@ -695,7 +695,7 @@ QString MainWindow::filter()
 bool MainWindow::askSaveChanges()
 {
 	QString message;
-	QMessageBox response(MainWindow::instance());
+	QMessageBox response(this);
 
 	if (existing_filename)
 		message = tr("Do you want to save the changes that you made in the file %1?").arg(existing_filename);
