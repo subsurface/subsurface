@@ -66,6 +66,8 @@ ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent) :
 {
 	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
 		this, SLOT(revertModelData(QWidget *, QAbstractItemDelegate::EndEditHint)));
+	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
+		this, SLOT(fixTabBehavior()));
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -105,7 +107,6 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	connect(comboDelegate, SIGNAL(activated(QString)), this, SLOT(fakeActivation()));
 	connect(comboPopup, SIGNAL(entered(QModelIndex)), this, SLOT(testActivation(QModelIndex)));
 	connect(comboPopup, SIGNAL(activated(QModelIndex)), this, SLOT(fakeActivation()));
-	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)), this, SLOT(fixTabBehavior()));
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
