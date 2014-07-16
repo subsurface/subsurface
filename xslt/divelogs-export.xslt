@@ -38,11 +38,39 @@
     <PARTNER>
       <xsl:value-of select="buddy"/>
     </PARTNER>
+
+    <!-- If there is a gas change event within the first few seconds
+         then we try to detect matching cylinder, otherwise the first
+         cylinder is used.
+         -->
+    <xsl:variable name="time">
+      <xsl:call-template name="time2sec">
+        <xsl:with-param name="time">
+          <xsl:value-of select="event[@name = 'gaschange']/@time"/>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="mix">
+      <xsl:value-of select="concat(event[@name = 'gaschange']/@value, '.0%')"/>
+    </xsl:variable>
+
+    <xsl:variable name="cylinder">
+      <xsl:choose>
+        <xsl:when test="$time &lt; 60">
+          <xsl:value-of select="count(cylinder[@o2 = $mix]/preceding-sibling::cylinder) + 1"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="1"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <CYLINDERDESCRIPTION>
-      <xsl:value-of select="cylinder/@description"/>
+      <xsl:value-of select="cylinder[position() = $cylinder]/@description"/>
     </CYLINDERDESCRIPTION>
     <CYLINDERSIZE>
-      <xsl:value-of select="substring-before(cylinder/@size, ' ')"/>
+      <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@size, ' ')"/>
     </CYLINDERSIZE>
     <CYLINDERSTARTPRESSURE>
       <xsl:choose>
@@ -50,7 +78,7 @@
           <xsl:value-of select="substring-before(node()/sample/@pressure, ' ')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="cylinder[1]/@start"/>
+          <xsl:value-of select="cylinder[position() = $cylinder]/@start"/>
         </xsl:otherwise>
       </xsl:choose>
     </CYLINDERSTARTPRESSURE>
@@ -60,10 +88,11 @@
           <xsl:value-of select="node()/sample[@pressure][last()]/@pressure"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="cylinder[1]/@end"/>
+          <xsl:value-of select="cylinder[$cylinder]/@end"/>
         </xsl:otherwise>
       </xsl:choose>
     </CYLINDERENDPRESSURE>
+
     <WEIGHT>
       <xsl:call-template name="sum">
         <xsl:with-param name="values" select="weightsystem/@weight"/>
