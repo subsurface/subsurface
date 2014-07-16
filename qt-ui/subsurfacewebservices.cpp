@@ -917,10 +917,11 @@ UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : Web
 
 }
 
-void UserSurveyServices::sendSurvey(QString values)
+QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 {
 	QNetworkRequest request;
 	request.setUrl(QString("http://subsurface.hohndel.org/survey?%1").arg(values));
 	request.setRawHeader("Accept", "text/xml");
 	reply = manager()->get(request);
+	return reply;
 }

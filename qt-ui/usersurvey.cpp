@@ -40,8 +40,6 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
 	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
 	ui->system->setPlainText(sysInfo);
-	manager = SubsurfaceWebServices::manager();
-	connect(manager, SIGNAL(finished(QNetworkReply *)), SLOT(requestReceived(QNetworkReply *)));
 }
 
 UserSurvey::~UserSurvey()
@@ -64,7 +62,7 @@ void UserSurvey::on_buttonBox_accepted()
 	ADD_OPTION(companion);
 	values.append(QString("&suggestion=%1").arg(ui->suggestions->toPlainText()));
 	UserSurveyServices uss(this);
-	uss.sendSurvey(values);
+	connect(uss.sendSurvey(values), SIGNAL(finished()), SLOT(requestReceived()));
 	hide();
 }
 
@@ -90,13 +88,13 @@ void UserSurvey::on_buttonBox_rejected()
 	hide();
 }
 
-void UserSurvey::requestReceived(QNetworkReply *reply)
+void UserSurvey::requestReceived()
 {
 	QMessageBox msgbox;
 	QString msgTitle = tr("Submit user survey.");
 	QString msgText = "<h3>" + tr("Subsurface was unable to submit the user survey.") + "</h3>";
 
-
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	if (reply->error() != QNetworkReply::NoError) {
 		//Network Error
 		msgText = msgText + "<br/><b>" + tr("The following error occurred:") + "</b><br/>" + reply->errorString()

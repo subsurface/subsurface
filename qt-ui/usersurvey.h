@@ -20,13 +20,10 @@ private
 slots:
 	void on_buttonBox_accepted();
 	void on_buttonBox_rejected();
-	void requestReceived(QNetworkReply *reply);
+	void requestReceived();
 
 private:
 	Ui::UserSurvey *ui;
 	QString os;
-	QString checkboxes;
-	QString suggestions;
-	QNetworkAccessManager *manager;
 };
 #endif // USERSURVEY_H

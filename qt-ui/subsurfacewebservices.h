@@ -100,7 +100,7 @@ private:
 class UserSurveyServices : public WebServices {
 	Q_OBJECT
 public:
-	void sendSurvey(QString values);
+	QNetworkReply* sendSurvey(QString values);
 	explicit UserSurveyServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
 private
 slots:

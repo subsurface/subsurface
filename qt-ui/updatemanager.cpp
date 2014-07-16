@@ -6,8 +6,6 @@
 
 UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 {
-	manager = SubsurfaceWebServices::manager();
-	connect(manager, SIGNAL(finished(QNetworkReply *)), SLOT(requestReceived(QNetworkReply *)));
 }
 
 void UpdateManager::checkForUpdates()
@@ -26,16 +24,16 @@ void UpdateManager::checkForUpdates()
 
 	QString version = VERSION_STRING;
 	QString url = QString("http://subsurface.hohndel.org/updatecheck.html?os=%1&ver=%2").arg(os, version);
-	manager->get(QNetworkRequest(QUrl(url)));
+	connect(SubsurfaceWebServices::manager()->get(QNetworkRequest(QUrl(url))), SIGNAL(finished()), this, SLOT(requestReceived()));
 }
 
-void UpdateManager::requestReceived(QNetworkReply *reply)
+void UpdateManager::requestReceived()
 {
 	QMessageBox msgbox;
 	QString msgTitle = tr("Check for updates.");
 	QString msgText = "<h3>" + tr("Subsurface was unable to check for updates.") + "</h3>";
 
-
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	if (reply->error() != QNetworkReply::NoError) {
 		//Network Error
 		msgText = msgText + "<br/><b>" + tr("The following error occurred:") + "</b><br/>" + reply->errorString()

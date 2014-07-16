@@ -12,11 +12,9 @@ public:
 	explicit UpdateManager(QObject *parent = 0);
 	void checkForUpdates();
 
-private:
-	QNetworkAccessManager *manager;
 public
 slots:
-	void requestReceived(QNetworkReply *reply);
+	void requestReceived();
 };
 
 #endif // UPDATEMANAGER_H
