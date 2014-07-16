@@ -88,7 +88,7 @@
           <xsl:value-of select="node()/sample[@pressure][last()]/@pressure"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="cylinder[$cylinder]/@end"/>
+          <xsl:value-of select="cylinder[position() = $cylinder]/@end"/>
         </xsl:otherwise>
       </xsl:choose>
     </CYLINDERENDPRESSURE>
@@ -99,7 +99,7 @@
       </xsl:call-template>
     </WEIGHT>
     <O2PCT>
-      <xsl:value-of select="substring-before(cylinder/@o2, '%')"/>
+      <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@o2, '%')"/>
     </O2PCT>
     <LOGNOTES>
       <xsl:value-of select="notes"/>
