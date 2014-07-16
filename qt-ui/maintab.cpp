@@ -808,6 +808,8 @@ void MainTab::rejectChanges()
 	resetPallete();
 	// no harm done to call cancelPlan even if we were not in ADD or PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
+	if(lastMode == ADD)
+		MainWindow::instance()->dive_list()->restoreSelection();
 
 	// now make sure that the correct dive is displayed
 	if (selected_dive >= 0)

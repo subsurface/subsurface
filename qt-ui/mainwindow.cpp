@@ -470,6 +470,11 @@ void MainWindow::on_actionAddDive_triggered()
 	if(!plannerStateClean())
 		return;
 
+	if (dive_list()->selectedTrips().count() >= 1){
+		dive_list()->rememberSelection();
+		dive_list()->clearSelection();
+	}
+
 	ui.ListWidget->endSearch();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
