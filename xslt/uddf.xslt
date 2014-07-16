@@ -301,7 +301,18 @@
           <xsl:value-of select="../../equipment_used/tank_used[@id=$tank_idx]/gas_ref/@ref"/>
         </xsl:variable>
 
-        <event name="gaschange" type="11">
+        <xsl:variable name="type">
+          <xsl:choose>
+            <xsl:when test="translate(//gas_def/gas_mix[@id=$idx]/o2, ',', '.') &gt; 0">
+              <xsl:value-of select="25"/> <!-- SAMPLE_EVENT_GASCHANGE2 -->
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="11"/> <!-- SAMPLE_EVENT_GASCHANGE -->
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <event name="gaschange" type="{$type}">
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
@@ -327,7 +338,18 @@
           <xsl:value-of select="./@ref"/>
         </xsl:variable>
 
-        <event name="gaschange" type="11">
+        <xsl:variable name="type">
+          <xsl:choose>
+            <xsl:when test="translate(//gasdefinitions/mix[@id=$idx]/he|//u:gasdefinitions/u:mix[@id=$idx]/u:he|//u1:gasdefinitions/u1:mix[@id=$idx]/u1:he, ',', '.') &gt; 0">
+              <xsl:value-of select="25"/> <!-- SAMPLE_EVENT_GASCHANGE2 -->
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="11"/> <!-- SAMPLE_EVENT_GASCHANGE -->
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <event name="gaschange" type="{$type}">
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
