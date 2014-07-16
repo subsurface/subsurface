@@ -693,11 +693,11 @@ void MainTab::acceptChanges()
 						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description))
 							// only copy the cylinder type, none of the other values
 							mydive->cylinder[i].type = displayed_dive.cylinder[i].type;
-					} else {
-						mydive->cylinder[i] = displayed_dive.cylinder[i];
 					}
 				}
 			);
+			for (int i = 0; i < MAX_CYLINDERS; i++)
+				cd->cylinder[i] = displayed_dive.cylinder[i];
 			MainWindow::instance()->graphics()->replot();
 		}
 
@@ -705,10 +705,12 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(true);
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					if (same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))
+					if (mydive != cd && same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))
 						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
 				}
 			);
+			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+				cd->weightsystem[i] = displayed_dive.weightsystem[i];
 		}
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
