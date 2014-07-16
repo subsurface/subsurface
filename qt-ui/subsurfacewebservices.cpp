@@ -31,69 +31,69 @@
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
-static bool is_automatic_fix(struct dive *gpsfix)
-{
-	if (gpsfix && gpsfix->location &&
-	    (!strcmp(gpsfix->location, "automatic fix") ||
-	     !strcmp(gpsfix->location, "Auto-created dive")))
-		return true;
-	return false;
-}
-
 #define SAME_GROUP 6 * 3600 // six hours
 //TODO: C Code. static functions are not good if we plan to have a test for them.
 static bool merge_locations_into_dives(void)
 {
-	int i, nr = 0, changed = 0;
-	struct dive *gpsfix, *last_named_fix = NULL, *dive;
+	int i, j, tracer=0, changed=0;
+	struct dive *gpsfix, *nextgpsfix, *dive;
 
 	sort_table(&gps_location_table);
 
-	for_each_gps_location (i, gpsfix) {
-		if (is_automatic_fix(gpsfix) && (dive = find_dive_including(gpsfix->when))) {
-			if (dive && !dive_has_gps_location(dive)) {
-#if DEBUG_WEBSERVICE
-				struct tm tm;
-				utc_mkdate(gpsfix->when, &tm);
-				printf("found dive named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-				       gpsfix->location,
-				       tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-				       tm.tm_hour, tm.tm_min, tm.tm_sec);
-#endif
-				changed++;
-				copy_gps_location(gpsfix, dive);
-			}
-		} else {
-			if (last_named_fix && dive_within_time_range(last_named_fix, gpsfix->when, SAME_GROUP)) {
-				nr++;
-			} else {
-				nr = 1;
-				last_named_fix = gpsfix;
-			}
-			dive = find_dive_n_near(gpsfix->when, nr, SAME_GROUP);
-			if (dive) {
-				if (!dive_has_gps_location(dive)) {
-					copy_gps_location(gpsfix, dive);
-					changed++;
+	for_each_dive (i, dive) {
+		if (!dive_has_gps_location(dive)) {
+			for (j = tracer; (gpsfix = get_gps_location(j, &gps_location_table)) !=NULL; j++) {
+				if (dive_within_time_range (dive, gpsfix->when, SAME_GROUP)) {
+					/*
+					 * If position is fixed during dive. This is the good one.
+					 * Asign and mark position, and end gps_location loop
+					 */
+					if ((dive->when <= gpsfix->when && gpsfix->when <= dive->when + dive->duration.seconds)) {
+						copy_gps_location(gpsfix,dive);
+						changed++;
+						tracer = j;
+						break;
+					} else {
+						/*
+						 * If it is not, check if there are more position fixes in SAME_GROUP range
+						 */
+						if ((nextgpsfix = get_gps_location(j+1,&gps_location_table)) &&
+						    dive_within_time_range (dive, nextgpsfix->when, SAME_GROUP)) {
+							/*
+							 * If distance from gpsfix to end of dive is shorter than distance between
+							 * gpsfix and nextgpsfix, gpsfix is the good one. Asign, mark and end loop.
+							 * If not, simply fail and nextgpsfix will be evaluated in next iteration.
+							 */
+							if ((dive->when + dive->duration.seconds - gpsfix->when) < (nextgpsfix->when - gpsfix->when)) {
+								copy_gps_location(gpsfix,dive);
+								tracer = j;
+								break;
+							}
+						/*
+						 * If no more positions in range, the actual is the one. Asign, mark and end loop.
+						 */
+						} else {
+							copy_gps_location(gpsfix,dive);
+							changed++;
+							tracer = j;
+							break;
+						}
+					}
+				} else {
+					/* If position is out of SAME_GROUP range and in the future, mark position for
+					 * next dive iteration and end the gps_location loop
+					 */
+					if (gpsfix->when >= dive->when + dive->duration.seconds + SAME_GROUP) {
+						tracer = j;
+						break;
+					}
 				}
-				if (!dive->location) {
-					dive->location = strdup(gpsfix->location);
-					changed++;
-				}
-			} else {
-				struct tm tm;
-				utc_mkdate(gpsfix->when, &tm);
-#if DEBUG_WEBSERVICE
-				printf("didn't find dive matching gps fix named %s @ %04d-%02d-%02d %02d:%02d:%02d\n",
-				       gpsfix->location,
-				       tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-				       tm.tm_hour, tm.tm_min, tm.tm_sec);
-#endif
 			}
 		}
 	}
 	return changed > 0;
 }
+
 //TODO: C-code.
 static void clear_table(struct dive_table *table)
 {

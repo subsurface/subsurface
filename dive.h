@@ -326,6 +326,9 @@ static inline void copy_gps_location(struct dive *from, struct dive *to)
 	if (from && to) {
 		to->latitude.udeg = from->latitude.udeg;
 		to->longitude.udeg = from->longitude.udeg;
+		if (!to->location) {
+			to->location = strdup(from->location);
+		}
 	}
 }
 
