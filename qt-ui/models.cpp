@@ -304,8 +304,6 @@ void CylindersModel::clear()
 void CylindersModel::updateDive()
 {
 	clear();
-	if (dive_table.nr == 0)
-		return;
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!cylinder_none(&displayed_dive.cylinder[i]) &&
