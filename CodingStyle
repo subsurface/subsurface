@@ -104,6 +104,12 @@ Basic rules
 	}
 	}
 
+- variable declarations
+  in C code we really like them to be at the beginning of a code block,
+  not interspersed in the middle.
+  in C++ we are a bit less strict about this - but still, try not to go
+  crazy.
+
 Sample Settings
 ===============
 
