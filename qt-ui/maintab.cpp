@@ -542,11 +542,11 @@ void MainTab::updateDiveInfo(bool clear)
 		 * it is used.
 		 */
 		if (he_tot.mliter || o2_tot.mliter) {
-			gasUsedString.append(QString("These gases could be\nmixed from Air and using:\n"));
+			gasUsedString.append(tr("These gases could be\nmixed from Air and using:\n"));
 			if (he_tot.mliter)
 				gasUsedString.append(QString("He: %1").arg(get_volume_string(he_tot, true)));
 			if (he_tot.mliter && o2_tot.mliter)
-				gasUsedString.append(QString(" and "));
+				gasUsedString.append(tr(" and "));
 			if (o2_tot.mliter)
 				gasUsedString.append(QString("O2: %2\n").arg(get_volume_string(o2_tot, true)));
 		}
