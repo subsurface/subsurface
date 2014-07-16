@@ -443,7 +443,7 @@
          <item row="0" column="0">
           <widget class="QToolButton" name="profPO2">
            <property name="toolTip">
-            <string>Toggle pO2 Graph</string>
+            <string>Toggle pO₂ Graph</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -472,7 +472,7 @@
          <item row="1" column="0">
           <widget class="QToolButton" name="profPn2">
            <property name="toolTip">
-            <string>Toggle pN2 Graph</string>
+            <string>Toggle pN₂ Graph</string>
            </property>
            <property name="text">
             <string>...</string>
