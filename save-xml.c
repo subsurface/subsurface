@@ -594,7 +594,7 @@ int export_dives_xslt(const char *filename, const bool selected, const char *exp
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
-
+	int res = 0;
 
 	if (!filename)
 		return report_error("No filename for export");
@@ -618,18 +618,19 @@ int export_dives_xslt(const char *filename, const bool selected, const char *exp
 		return report_error("Failed to open export conversion stylesheet");
 
 	transformed = xsltApplyStylesheet(xslt, doc, NULL);
-	xsltFreeStylesheet(xslt);
 	xmlFreeDoc(doc);
 
 	/* Write the transformed export to file */
 	f = subsurface_fopen(filename, "w");
-	if (!f)
-		return report_error("Failed to open %s for writing (%s)", filename, strerror(errno));
-
-	xmlDocFormatDump(f, transformed, 1);
+	if (f) {
+		xsltSaveResultToFile(f, transformed, xslt);
+		fclose(f);
+		/* Check write errors? */
+	} else {
+		res = report_error("Failed to open %s for writing (%s)", filename, strerror(errno));
+	}
+	xsltFreeStylesheet(xslt);
 	xmlFreeDoc(transformed);
 
-	fclose(f);
-	/* Check write errors? */
-	return 0;
+	return res;
 }

@@ -36,6 +36,7 @@ static inline char *copy_string(const char *s)
 
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
 
 #include "sha1.h"
 #include "units.h"
