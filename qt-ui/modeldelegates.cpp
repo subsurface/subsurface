@@ -222,18 +222,19 @@ void TankInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 	TankInfoModel *tanks = TankInfoModel::instance();
 	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText);
 	int row;
+	QString cylinderName = currCombo.activeText;
 	if (matches.isEmpty()) {
-		// we need to add this
 		tanks->insertRows(tanks->rowCount(), 1);
 		tanks->setData(tanks->index(tanks->rowCount() - 1, 0), currCombo.activeText);
 		row = tanks->rowCount() - 1;
 	} else {
 		row = matches.first().row();
+		cylinderName = matches.first().data().toString();
 	}
 	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
 	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
-	mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, Qt::EditRole);
+	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, Qt::EditRole);
 	mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), tankPressure);
 	mymodel->passInData(IDX(CylindersModel::SIZE), tankSize);
 }
