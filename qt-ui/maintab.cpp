@@ -1002,7 +1002,7 @@ void MainTab::on_notes_textChanged()
 	if (editMode == IGNORE)
 		return;
 	free(displayed_dive.notes);
-	displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+	displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
 	markChangedWidget(ui.notes);
 }
 
