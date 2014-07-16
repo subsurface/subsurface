@@ -108,6 +108,11 @@ QLocale getLocale()
 	return loc;
 }
 
+QString getDateFormat()
+{
+	return dateFormat;
+}
+
 void init_ui(void)
 {
 	// tell Qt to use system proxies
@@ -135,6 +140,7 @@ void init_ui(void)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;
 	QString uiLang = uiLanguage(&loc);
+	QLocale::setDefault(loc);
 
 	// we don't have translations for English - if we don't check for this
 	// Qt will proceed to load the second language in preference order - not what we want

@@ -252,6 +252,7 @@ void DiveHandler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
+	ui.dateEdit->setDisplayFormat(getDateFormat());
 	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setRecalc(true);

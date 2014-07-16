@@ -36,6 +36,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	divePictureModel(DivePictureModel::instance())
 {
 	ui.setupUi(this);
+	ui.dateEdit->setDisplayFormat(getDateFormat());
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
 
