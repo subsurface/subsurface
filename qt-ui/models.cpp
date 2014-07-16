@@ -312,7 +312,6 @@ void CylindersModel::updateDive()
 		     displayed_dive.cylinder[i].manually_added))
 			rows = i + 1;
 	}
-	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);
 		endInsertRows();
@@ -636,7 +635,6 @@ void WeightModel::updateDive()
 			rows = i + 1;
 		}
 	}
-	changed = false;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);
 		endInsertRows();

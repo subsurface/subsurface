@@ -757,6 +757,8 @@ void MainTab::acceptChanges()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->dive_list()->setFocus();
+	cylindersModel->changed = false;
+	weightModel->changed = false;
 }
 
 void MainTab::resetPallete()
@@ -818,6 +820,8 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->globe()->reload();
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();
+	cylindersModel->changed = false;
+	weightModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive();
 }
