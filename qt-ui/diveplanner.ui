@@ -147,8 +147,11 @@
          <property name="suffix">
           <string>mbar</string>
          </property>
+         <property name="minimum">
+          <number>689</number>
+         </property>
          <property name="maximum">
-          <number>2000</number>
+          <number>1100</number>
          </property>
         </widget>
        </item>
@@ -158,10 +161,13 @@
           <string>m</string>
          </property>
          <property name="minimum">
-          <number>-2000</number>
+          <number>-100</number>
          </property>
          <property name="maximum">
-          <number>10000</number>
+          <number>3000</number>
+         </property>
+         <property name="singleStep">
+          <number>10</number>
          </property>
         </widget>
        </item>
