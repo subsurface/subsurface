@@ -191,14 +191,14 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	write_attribute(b, "buddy", dive->buddy);
 	write_attribute(b, "divemaster", dive->divemaster);
 	write_attribute(b, "suit", dive->suit);
-	write_dive_status(b, dive);
-	save_photos(b, photos_dir, dive);
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	if (!list_only) {
 		put_cylinder_HTML(b, dive);
 		put_HTML_samples(b, dive);
 		put_HTML_bookmarks(b, dive);
+		write_dive_status(b, dive);
+		save_photos(b, photos_dir, dive);
 	}
 	put_string(b, "},\n");
 	(*dive_no)++;
