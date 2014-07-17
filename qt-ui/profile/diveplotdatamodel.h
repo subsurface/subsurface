@@ -62,7 +62,7 @@ public:
 	void calculateDecompression();
 
 private:
-	plot_info pInfo;
+	struct plot_info pInfo;
 	int diveId;
 	unsigned int dcNr;
 };
