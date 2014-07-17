@@ -292,7 +292,7 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
-static bool is_gas_used(struct dive *dive, int idx)
+static bool is_cylinder_used(struct dive *dive, int idx)
 {
 	struct divecomputer *dc;
 	bool firstGasExplicit = false;
@@ -321,7 +321,7 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;
 
-		if (!is_gas_used(dive, idx))
+		if (!is_cylinder_used(dive, idx))
 			continue;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
@@ -341,7 +341,7 @@ char *get_gaslist(struct dive *dive)
 	buf[0] = '\0';
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
 		cylinder_t *cyl;
-		if (!is_gas_used(dive, idx))
+		if (!is_cylinder_used(dive, idx))
 			continue;
 		cyl = &dive->cylinder[idx];
 		if (offset > 0) {
