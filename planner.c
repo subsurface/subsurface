@@ -94,12 +94,12 @@ void set_display_transitions(bool display)
 	plan_display_transitions = display;
 }
 
-void get_gas_from_events(struct divecomputer *dc, int time, struct gasmix *gas)
+void get_gas_from_events(struct divecomputer *dc, duration_t time, struct gasmix *gas)
 {
 	// we don't modify the values passed in if nothing is found
 	// so don't call with uninitialized gasmix !
 	struct event *event = dc->events;
-	while (event && event->time.seconds <= time) {
+	while (event && event->time.seconds <= time.seconds) {
 		if (!strcmp(event->name, "gaschange"))
 			*gas = *get_gasmix_from_event(event);
 		event = event->next;
@@ -133,7 +133,9 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
-	int i, t0, t1, gasidx, lastdepth;
+	int i, gasidx;
+	depth_t lastdepth = {};
+	duration_t t0 = {}, t1 = {};
 	double tissue_tolerance;
 	struct gasmix gas;
 
@@ -149,19 +151,18 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	if (!dc->samples)
 		return tissue_tolerance;
 	psample = sample = dc->sample;
-	lastdepth = t0 = 0;
 	/* we always start with gas 0 (unless an event tells us otherwise) */
 	gas = dive->cylinder[0].gasmix;
 	for (i = 0; i < dc->samples; i++, sample++) {
-		t1 = sample->time.seconds;
+		t1 = sample->time;
 		get_gas_from_events(&dive->dc, t0, &gas);
 		if ((gasidx = get_gasidx(dive, &gas)) == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 			gasidx = 0;
 		}
 		if (i > 0)
-			lastdepth = psample->depth.mm;
-		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth.mm, &dive->cylinder[gasidx].gasmix, sample->po2.mbar);
+			lastdepth = psample->depth;
+		tissue_tolerance = interpolate_transition(dive, t0.seconds, t1.seconds, lastdepth.mm, sample->depth.mm, &dive->cylinder[gasidx].gasmix, sample->po2.mbar);
 		psample = sample;
 		t0 = t1;
 	}
@@ -756,7 +757,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
 	/* we start with gas 0, then check if that was changed */
 	gas = displayed_dive.cylinder[0].gasmix;
-	get_gas_from_events(&displayed_dive.dc, sample->time.seconds, &gas);
+	get_gas_from_events(&displayed_dive.dc, sample->time, &gas);
 	po2 = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].po2.mbar;
 	if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 		report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));

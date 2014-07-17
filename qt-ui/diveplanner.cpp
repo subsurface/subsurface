@@ -105,7 +105,7 @@ void DivePlannerPointsModel::setupStartTime()
 void DivePlannerPointsModel::loadFromDive(dive *d)
 {
 	CylindersModel::instance()->updateDive();
-	int lasttime = 0;
+	duration_t lasttime = {};
 	// we start with the first gas and see if it was changed
 	struct gasmix gas = d->cylinder[0].gasmix;
 	for (int i = 0; i < d->dc.samples - 1; i++) {
@@ -114,7 +114,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 			continue;
 		get_gas_from_events(&d->dc, lasttime, &gas);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
-		lasttime = s.time.seconds;
+		lasttime = s.time;
 	}
 }
 
