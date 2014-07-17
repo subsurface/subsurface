@@ -95,7 +95,7 @@ void DiveEventItem::setupToolTipString()
 			// We need to look at row + 1, where the new gas is active to find what we are switching to.
 			int cylinder_idx = dataModel->data(dataModel->index(result.first().row() + 1, DivePlotDataModel::CYLINDERINDEX)).toInt();
 			name += ": ";
-			name += gasname(&current_dive->cylinder[cylinder_idx].gasmix);
+			name += gasname(&displayed_dive.cylinder[cylinder_idx].gasmix);
 		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {
@@ -128,7 +128,7 @@ bool DiveEventItem::shouldBeHidden()
 	 * Don't bother showing them if they match the first gas already
 	 */
 	if (!strcmp(event->name, "gaschange") && event->time.seconds <= 30) {
-		struct dive *dive = current_dive;
+		struct dive *dive = &displayed_dive;
 		if (dive && get_cylinder_index(dive, event) == 0)
 			return true;
 	}
