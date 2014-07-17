@@ -127,7 +127,7 @@ bool DiveEventItem::shouldBeHidden()
 	 *
 	 * Don't bother showing them if they match the first gas already
 	 */
-	if (!strcmp(event->name, "gaschange") && !event->time.seconds) {
+	if (!strcmp(event->name, "gaschange") && event->time.seconds <= 30) {
 		struct dive *dive = current_dive;
 		if (dive && get_cylinder_index(dive, event) == 0)
 			return true;
