@@ -213,7 +213,6 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	}
 	// cleanup
 	painter.end();
-	delete table;
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->resize(originalSize);
