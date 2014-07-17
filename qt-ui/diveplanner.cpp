@@ -375,6 +375,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.bottompo2 = s.value("bottompo2", 1400).toInt();
 	prefs.decopo2 = s.value("decopo2",1600).toInt();
 	prefs.doo2breaks = s.value("doo2breaks", false).toBool();
+	prefs.drop_stone_mode = s.value("drop_stone_mode", false).toBool();
+	prefs.bottomsac = s.value("bottomsac", 20000).toInt();
+	prefs.decosac = s.value("decosac", 17000).toInt();
 	s.endGroup();
 
 	ui.ascRate75->setValue(prefs.ascrate75 / UNIT_FACTOR);
@@ -385,6 +388,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
+	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
@@ -410,8 +414,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 
-	ui.bottomSAC->setValue(20);
-	ui.decoStopSAC->setValue(17);
+	ui.bottomSAC->setValue(prefs.bottomsac / 1000.0);
+	ui.decoStopSAC->setValue(prefs.decosac / 1000.0);
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 
@@ -431,6 +435,9 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("bottompo2", prefs.bottompo2);
 	s.setValue("decopo2", prefs.decopo2);
 	s.setValue("doo2breaks", prefs.doo2breaks);
+	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
+	s.setValue("bottomsac", prefs.bottomsac);
+	s.setValue("decosac", prefs.decosac);
 	s.endGroup();
 }
 
@@ -666,12 +673,14 @@ void DivePlannerPointsModel::emitDataChanged()
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
 	diveplan.bottomsac = sac * 1000;
+	prefs.bottomsac = diveplan.bottomsac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDecoSac(int sac)
 {
 	diveplan.decosac = sac * 1000;
+	prefs.decosac = diveplan.decosac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 

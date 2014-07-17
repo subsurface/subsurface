@@ -63,6 +63,8 @@ struct preferences {
 	char *proxy_pass;
 	bool doo2breaks;
 	bool drop_stone_mode;
+	int bottomsac;
+	int decosac;
 	bool show_pictures_in_profile;
 	bool use_default_file;
 };
