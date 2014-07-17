@@ -73,31 +73,6 @@ bool cylinder_none(void *_data)
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
-/* look at all dive computers and figure out if this cylinder is used anywhere
- * d has to be a valid dive (test before calling)
- * cyl does not have to be a cylinder that is part of this dive structure */
-bool cylinder_is_used(struct dive *d, cylinder_t *cyl)
-{
-	struct divecomputer *dc = &d->dc;
-	bool same_as_first = gasmix_distance(&cyl->gasmix, &d->cylinder[0].gasmix) < 200;
-	while (dc) {
-		struct event *ev = get_next_event(dc->events, "gaschange");
-		if (same_as_first && (!ev || ev->time.seconds > 30)) {
-			// unless there is a gas change in the first 30 seconds we can
-			// always mark the first cylinder as used
-			return true;
-		}
-		while (ev) {
-			if (gasmix_distance(&cyl->gasmix, get_gasmix_from_event(ev)) < 200)
-				return true;
-
-			ev = get_next_event(ev->next, "gaschange");
-		}
-		dc = dc->next;
-	}
-	return false;
-}
-
 void get_gas_string(const struct gasmix *gasmix, char *text, int len)
 {
 	if (gasmix_is_air(gasmix))

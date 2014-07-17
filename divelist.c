@@ -116,7 +116,7 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 		int o2 = get_o2(&cyl->gasmix);
 		int he = get_he(&cyl->gasmix);
 
-		if (!cylinder_is_used(dive, cyl))
+		if (!is_cylinder_used(dive, i))
 			continue;
 		if (cylinder_none(cyl))
 			continue;

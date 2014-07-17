@@ -292,7 +292,7 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
-static bool is_cylinder_used(struct dive *dive, int idx)
+bool is_cylinder_used(struct dive *dive, int idx)
 {
 	struct divecomputer *dc;
 	bool firstGasExplicit = false;
