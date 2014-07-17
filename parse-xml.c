@@ -298,14 +298,14 @@ static void pressure(char *buffer, pressure_t *pressure)
 		case BAR:
 			/* Assume mbar, but if it's really small, it's bar */
 			mbar = val.fp;
-			if (mbar < 5000)
+			if (fabs(mbar) < 5000)
 				mbar = mbar * 1000;
 			break;
 		case PSI:
 			mbar = psi_to_mbar(val.fp);
 			break;
 		}
-		if (mbar > 5 && mbar < 500000) {
+		if (fabs(mbar) > 5 && fabs(mbar) < 5000000) {
 			pressure->mbar = rint(mbar);
 			break;
 		}
