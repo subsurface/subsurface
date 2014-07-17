@@ -128,9 +128,8 @@ bool DiveEventItem::shouldBeHidden()
 	 * Don't bother showing them if they match the first gas already
 	 */
 	if (!strcmp(event->name, "gaschange") && !event->time.seconds) {
-		struct gasmix *mix = get_gasmix_from_event(event);
 		struct dive *dive = current_dive;
-		if (dive && get_gasidx(dive, mix) <= 0)
+		if (dive && get_cylinder_index(dive, event) == 0)
 			return true;
 	}
 	for (int i = 0; i < evn_used; i++) {
