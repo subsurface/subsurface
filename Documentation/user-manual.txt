@@ -300,7 +300,8 @@ The drop-down list can be used to select the cylinder type used
 for the dive or the user may start typing in the box which shows the
 available options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (*WorkPress*) will
-automatically be shown in the dialogue. If a cylinder is not shown in the dropdown list, type the name and description of that cylinder into the *Type* field.
+automatically be shown in the dialogue. If a cylinder is not shown in the dropdown list,
+type the name and description of that cylinder into the *Type* field.
 
 Next, indicate the starting pressure and the ending pressure of
 the
@@ -393,8 +394,8 @@ context menu.
 
 image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
 
-Below is the profile of a dive to 21 m for 31 min for which an extra waypoint was added at 18 m on the ascent and with a switch from air to
-EAN50 at 18 m. In this case the first cylinder in the *Equipment* tab
+Below is the profile of a dive to 21 m for 31 min and with a switch from air to
+EAN50 at 20m after 31 minutes. In this case the first cylinder in the *Equipment* tab
 contained air and the second cylinder contained EAN50.
 
 image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
@@ -1307,6 +1308,92 @@ instance, if one wants to keep the location list clear to see dives in the web s
 to use an informative name in the _Name Template_ setting while running the _background service_,
 especially on a dive trip with many dives and dive locations.
 
+[[S_LoadImage]]
+=== Adding photographs to dives
+
+Many (if not most) divers take a camera with them and take photographs
+during a dive. One would like to associate each photograph with a specific
+dive. _Subsurface_ allows one to load photos into a dive. Photos are superimposed
+on the dive profile, from where they can be viewed.
+
+==== Loading photos and getting synchronisation between dive computer and camera
+
+Left-lick on a dive or on a group of dives on the dive list. Then right-click on this
+dive or group of dives and choose the option _Load Images_:
+
+image::images/LoadImage1.jpg["FIGURE: Load images option",align="center"]
+
+The system file browser appears. Select the folder and photographs that need
+to be loaded into _Subsurface_ and click the _Open_ button.
+
+image::images/LoadImage2.jpg["FIGURE: Load images option",align="center"]
+
+This brings one to the time synchronisation dialog, shown below. The
+critical problem is that the time
+synchronisation is not perfect between the dive computer used during a dive,
+and the camera used during that same dive. These two devices
+often differ by several minutes. If _Subsurface_ can achieve synchronisation,
+then the exact times of photographs can be used to position photographs on
+the dive profile.
+
+_Subsurface_ achieves this synchronisation in two ways:
+
+- *Manually*: If the user wrote down the exact camera time at the start of a dive, the
+difference in time between the two devices can be determined. Actually, as long as the device
+settings for time has not been changed in either device, one could write down the times of
+both devices after the dive or even at the end of the day. One can then manually set the time
+difference in the _Time shift_ dialog. Towards the top of the dialog is a time setting tool
+immediately under the heading _Shift times of image(s) by_, evident in figure *A* below.
+If the camera time is 7 minutes later than that of the dive computer, set the time setting
+tool to a value of 00:07.  Select either the _earlier_ or _later_ radio button.
+In the above example, the _earlier_ option is appropriate, since the photos need to be shifted
+7 minutes earlier (camera is 7 minutes ahead of dive computer). Ignore any "AM" or "PM" suffix
+in that tool. Click the _OK_ button and synchronisation is achieved.
+
+image::images/LoadImage3b.jpg["FIGURE: Synchronisation dialog",align="center"]
+
+
+- *By photograph*: There is a very slick way of achieving synchronisation. If one takes a
+photograph of the face of the dive computer showing the time, then _Subsurface_ can obtain
+the exact time the photograph was taken, using the metadata that the camera stores within
+each photo. In order to do this, use the bottom half of the Time shift_ dialog. If one uses
+the bottom part, the top part of the dialog is ignored. Click on
+the horizontal bar entitled "_Select image of divecomputer showing time_. This brings up
+a file browser with which one can select the photograph of the dive computer. Select the
+photograph using the file browser and click on _OK_. This photograph of the dive computer
+appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows exactly
+when the photograph has been taken. Now set the date-time dialog to the left of the photo
+so that this tool reflects the date and time of the dive computer in the photo. When the
+date-time tool has been set, _Subsurface_ knows exactly what the time difference between
+camera and dive computer is, and synchronisation is achieved. The image below shows a
+photograph with the face of the dive computer and with the date-time tool set to the
+date-time on image *B* above.
+
+==== Viewing the photos
+
+In oder to view the photos added to a dive, activate the _show-photos_ button in the tool bar
+to the left of the dive profile:
+
+image::images/icons/ShowPhotos.png["FIGURE:Show photos toolbar button",align="left"]
+
+After the images have been loaded, they also appear in the _Photos_ tab of the *Dive Notes* panel.
+They also appear as tiny icons on the dive profile at the appropriate
+positions reflecting the time each photograph was taken. See below:
+
+image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
+
+If one hovers with the mouse over any of the photo icons, then a thumbnail photo
+is shown of the appropriate photo. See the image below:
+
+image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
+
+If one clicks on the thumbnail, then a full size
+photo is shown overlaid onto the _Subsurface_ window. This allows good viewing of
+the photographs that have been added. See below:
+
+image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
+
+
 == Obtaining more information about dives entered into the logbook
 
 === The *Dive Info* tab (for individual dives)
@@ -1426,6 +1513,15 @@ The measurement is done by dragging the red dots to the two points
 on the dive profile that the user wishes to measure. Information is then given
 in the horizontal white area underneath the
 two red dots.
+
+[icon="images/icons/ShowPhotos.png"]
+[NOTE]
+Photographs that have been added to a dive can be shown on the profile
+by selecting
+the *Show-photo* button. The position of a photo on the profile
+indicates the exact time when this photo was taken. If this button is not active,
+the photos are hidden.
+
 
 The profile can also include the dive computer reported *ceiling* (more
 precisely, the deepest deco stop that the dive computer calculated for each
@@ -1960,87 +2056,6 @@ after which the IP address of the host and the appropriate port number should
 be provided. If the proxy server uses authentication, the appropriate userID and
 password also needs to be provided so that _Subsurface_ can automatically pass
 through the proxy server to access the Internet.
-
-[[S_LoadImage]]
-== The _Subsurface_ Photograph loader
-
-Many (if not most) divers take a camera with them and take photographs
-during a dive. One would like to associate each photograph with a specific
-dive. _Subsurface_ allows one to load photos into a dive. Photos are superimposed
-on the dive profile, from where they can be viewed.
-
-=== Loading photos and getting synchronisation between dive computer and camera
-
-Click on a dive or on a group of dives on the dive list. Then right-click on this
-dive or group of dives and choose the option _Load Images_:
-
-image::images/LoadImage1.jpg["FIGURE: Load images option",align="center"]
-
-The system file browser appears. Select the folder and photographs that need
-to be loaded into _Subsurface_ and click the _Open_ button.
-
-image::images/LoadImage2.jpg["FIGURE: Load images option",align="center"]
-
-This brings one to the time synchronisation dialog, shown below. The
-critical problem is that the time
-synchronisation is not perfect between the dive computer used during a dive,
-and the camera used during that same dive. These two devices
-often differ by several minutes. If _Subsurface_ can achieve synchronisation,
-then the exact times of photographs can be used to position photographs on
-the dive profile.
-
-_Subsurface_ achieves this synchronisation in two ways:
-
-- *Manually*: If the user wrote down the exact camera time at the start of a dive, the
-difference in time between the two devices can be achieved. Actually, as long as the device
-settings for time has not been changed in either device, one could write down the times of
-both devices after the dive or even at the end of the day. One can then manually set the time
-difference in the _Time shift_ dialog. Towards the top of the dialog is a time setting tool
-immediately under the heading _Shift times of image(s) by_, evident in figure *A* below.
-If the camera time is 7 minutes later than that of the dive computer, set the time setting
-tool to a value of 00:07. Ignore any "AM" or "PM" suffix in that tool. Click the _OK_ button
-and synchronisation will be achieved. Select either the _earlier_ or _later_ radio button.
-In the above example, the _earlier_ option is appropriate, since the photos need to be shifted
-7 minutes earlier (camera is 7 minutes ahead of dive computer).
-
-image::images/LoadImage3b.jpg["FIGURE: Synchronisation dialog",align="center"]
-
-
-- *By photograph*: There is a very slick way of achieving synchronisation. If one takes a
-photograph of the face of the dive computer showing the time, then _Subsurface_ can obtain
-the exact time the photograph was taken, using the metadata that the camera stores within
-each photo. In order to do this, use the bottom half of the Time shift_ dialog. If one uses
-the bottom part, the top part of the dialog is ignored. Click on
-the horizontal bar entitled "_Select image of divecomputer showing time_. This brings up
-a file browser with which one can select the photograph of the dive computer. Select the
-photograph using the file browser and click on _OK_. This photograph of the dive computer
-appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows exactly
-when the photograph has been taken. Now set the date-time dialog to the left of the photo
-so that this tool reflects the date and time of the dive computer in the photo. When the
-date-time tool has been set, _Subsurface_ knows exactly what the time difference between
-camera and dive computer is, and synchronisation is achieved. The image below shows a
-photograph with the face of the dive computer and with the date-time tool set to the
-date-time on image *B above.
-
-=== Viewing the images
-
-After the images have been loaded, they appear in the _Photos_ tab of the *Dive Notes* panel.
-They also appear as tiny icons on the dive profile at the appropriate
-positions reflecting the time each photograph was taken. See below:
-
-image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
-
-If one hovers with the mouse over any of the photo icons, then a thumbnail photo
-is shown of the appropriate photo. See the image below:
-
-image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
-
-If one clicks on the thumbnail, then a full size
-photo is shown overlaid onto the _Subsurface_ window. This allows good viewing of
-the photographs that have been imported. See below:
-
-image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
-
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
