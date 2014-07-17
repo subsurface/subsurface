@@ -169,6 +169,7 @@ slots:
 
 private:
 	Ui::plannerSettingsWidget ui;
+	void updateUnitsUI();
 };
 
 QString dpGasToStr(const divedatapoint &p);

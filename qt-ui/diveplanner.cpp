@@ -321,7 +321,6 @@ void DivePlannerWidget::settingsChanged()
 	} else {
 		ui.atmHeight->setSuffix(("m"));
 	}
-
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
@@ -380,11 +379,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.decosac = s.value("decosac", 17000).toInt();
 	s.endGroup();
 
-	ui.ascRate75->setValue(prefs.ascrate75 / UNIT_FACTOR);
-	ui.ascRate50->setValue(prefs.ascrate50 / UNIT_FACTOR);
-	ui.ascRateStops->setValue(prefs.ascratestops / UNIT_FACTOR);
-	ui.ascRateLast6m->setValue(prefs.ascratelast6m / UNIT_FACTOR);
-	ui.descRate->setValue(prefs.descrate / UNIT_FACTOR);
+	updateUnitsUI();
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
@@ -423,6 +418,15 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	setMinimumHeight(0);
 }
 
+void PlannerSettingsWidget::updateUnitsUI()
+{
+	ui.ascRate75->setValue(rint(prefs.ascrate75 / UNIT_FACTOR));
+	ui.ascRate50->setValue(rint(prefs.ascrate50 / UNIT_FACTOR));
+	ui.ascRateStops->setValue(rint(prefs.ascratestops / UNIT_FACTOR));
+	ui.ascRateLast6m->setValue(rint(prefs.ascratelast6m / UNIT_FACTOR));
+	ui.descRate->setValue(rint(prefs.descrate / UNIT_FACTOR));
+}
+
 PlannerSettingsWidget::~PlannerSettingsWidget()
 {
 	QSettings s;
@@ -451,6 +455,7 @@ void PlannerSettingsWidget::settingsChanged()
 		vs.append(tr("m/min"));
 		ui.lastStop->setText(tr("Last stop at 6m"));
 	}
+	updateUnitsUI();
 	ui.ascRate75->setSuffix(vs);
 	ui.ascRate50->setSuffix(vs);
 	ui.ascRateStops->setSuffix(vs);
