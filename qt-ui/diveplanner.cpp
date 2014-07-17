@@ -112,7 +112,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		const sample &s = d->dc.sample[i];
 		if (s.time.seconds == 0)
 			continue;
-		get_gas_from_events(&d->dc, lasttime, &gas);
+		get_gas_at_time(d, &d->dc, lasttime, &gas);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
 		lasttime = s.time;
 	}
