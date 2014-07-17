@@ -353,6 +353,7 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	const int row = index.row();
 	const int col = index.column();
 
+	painter->save();
 	// grid color
 	painter->setPen(QPen(QColor(0xff999999)));
 	// horizontal lines
@@ -366,6 +367,7 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 		if (col == 4 || (col == 0 && row > 5))
 			painter->drawLine(rect.topRight(), rect.bottomRight());
 	}
+	painter->restore();
 	QStyledItemDelegate::paint(painter, option, index);
 }
 

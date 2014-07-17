@@ -120,6 +120,7 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	if (polygon().isEmpty())
 		return;
 
+	painter->save();
 	// This paints the Polygon + Background. I'm setting the pen to QPen() so we don't get a black line here,
 	// after all we need to plot the correct velocities colors later.
 	setPen(Qt::NoPen);
@@ -138,6 +139,7 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 		painter->setPen(pen);
 		painter->drawLine(poly[i - 1], poly[i]);
 	}
+	painter->restore();
 }
 
 int DiveProfileItem::maxCeiling(int row)
@@ -325,8 +327,10 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 {
 	if (polygon().isEmpty())
 		return;
+	painter->save();
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
+	painter->restore();
 }
 
 void DiveHeartrateItem::settingsChanged()
@@ -421,8 +425,10 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 {
 	if (polygon().isEmpty())
 		return;
+	painter->save();
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
+	painter->restore();
 }
 
 void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -516,6 +522,7 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QPen pen;
 	pen.setCosmetic(true);
 	pen.setWidth(2);
+	painter->save();
 	struct plot_data *entry = dataModel->data().entry;
 	Q_FOREACH (const QPolygonF &poly, polygons) {
 		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
@@ -524,6 +531,7 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 			painter->drawLine(poly[i - 1], poly[i]);
 		}
 	}
+	painter->restore();
 }
 
 DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientFactor(new DiveTextItem(this))
@@ -711,6 +719,7 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	const qreal pWidth = 0.0;
+	painter->save();
 	painter->setPen(QPen(normalColor, pWidth));
 	painter->drawPolyline(polygon());
 
@@ -718,6 +727,7 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 	painter->setPen(QPen(alertColor, pWidth));
 	Q_FOREACH (const QPolygonF &poly, alertPolygons)
 		painter->drawPolyline(poly);
+	painter->restore();
 }
 
 void PartialPressureGasItem::setThreshouldSettingsKey(const QString &threshouldSettingsKey)
