@@ -460,6 +460,20 @@ Set.prototype.Union = function(another_set)
 	};
 };
 
+Set.prototype.intersect = function(another_set)
+{
+	if (another_set === null) {
+		return;
+	}
+	var result = new Array();
+	for (var i = 0; i < another_set.keys.length; i++) {
+		if(this.contains(another_set.keys[i])) {
+			result.push(another_set.keys[i]);
+		}
+	};
+	this.keys = result;
+};
+
 function Node(value)
 {
 	this.children = new Array();
@@ -486,24 +500,32 @@ function SearchModules(searchfor)
 		return;
 	}
 
-	searchingModules.forEach (function(x) {
-		resultKeys.Union(x.search(searchfor));
-	});
+	var keywords = searchfor.split(" ");
 
-	if (searchingModules["location"].enabled === true)
-		resultKeys.Union(searchingModules["location"].search(searchfor));
+	for (var i = 0; i < keywords.length; i++) {
+		var keywordResult = new Set();
 
-	if (searchingModules["divemaster"].enabled === true)
-		resultKeys.Union(searchingModules["divemaster"].search(searchfor));
+		if (searchingModules["location"].enabled === true)
+			keywordResult.Union(searchingModules["location"].search(keywords[i]));
 
-	if (searchingModules["buddy"].enabled === true)
-		resultKeys.Union(searchingModules["buddy"].search(searchfor));
+		if (searchingModules["divemaster"].enabled === true)
+			keywordResult.Union(searchingModules["divemaster"].search(keywords[i]));
 
-	if (searchingModules["notes"].enabled === true)
-		resultKeys.Union(searchingModules["notes"].search(searchfor));
+		if (searchingModules["buddy"].enabled === true)
+			keywordResult.Union(searchingModules["buddy"].search(keywords[i]));
 
-	if (searchingModules["tags"].enabled === true)
-		resultKeys.Union(searchingModules["tags"].search(searchfor));
+		if (searchingModules["notes"].enabled === true)
+			keywordResult.Union(searchingModules["notes"].search(keywords[i]));
+
+		if (searchingModules["tags"].enabled === true)
+			keywordResult.Union(searchingModules["tags"].search(keywords[i]));
+
+		if (resultKeys.isEmpty()) {
+			resultKeys.Union(keywordResult);
+		} else {
+			resultKeys.intersect(keywordResult);
+		}
+	}
 
 	if (resultKeys.isEmpty()) {
 		//didn't find keys
