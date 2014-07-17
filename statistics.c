@@ -68,7 +68,7 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
 			       duration * dp->meandepth.mm) /
 			      stats->total_time.seconds;
-	if (dp->sac > 2800) { /* less than .1 cuft/min (2800ml/min) is bogus */
+	if (dp->sac > 100) { /* less than .1 l/min is bogus, even with a pSCR */
 		sac_time = stats->total_sac_time + duration;
 		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
 					 duration * dp->sac) /
