@@ -283,7 +283,7 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	// resize
 	table->resize(tableW, profilePrintTableMaxH);
 	// hide the grid and set a stylesheet
-	table->setItemDelegate(new ProfilePrintDelegate(this));
+	table->setItemDelegate(new ProfilePrintDelegate(table));
 	table->setShowGrid(false);
 	table->setStyleSheet(
 		"QTableView { border: none }"
