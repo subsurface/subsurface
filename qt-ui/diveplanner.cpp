@@ -451,9 +451,13 @@ void PlannerSettingsWidget::settingsChanged()
 	if (get_units()->length == units::FEET) {
 		vs.append(tr("ft/min"));
 		ui.lastStop->setText(tr("Last stop at 20ft"));
+		ui.asc50to6->setText(tr("50% avg. depth to 20ft"));
+		ui.asc6toSurf->setText(tr("20ft to surface"));
 	} else {
 		vs.append(tr("m/min"));
 		ui.lastStop->setText(tr("Last stop at 6m"));
+		ui.asc50to6->setText(tr("50% avg. depth to 6m"));
+		ui.asc6toSurf->setText(tr("6m to surface"));
 	}
 	updateUnitsUI();
 	ui.ascRate75->setSuffix(vs);
