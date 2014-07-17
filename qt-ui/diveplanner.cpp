@@ -367,11 +367,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	QSettings s;
 	s.beginGroup("Planner");
-	prefs.ascrate75 = s.value("ascrate75", 9).toInt();
-	prefs.ascrate50 = s.value("ascrate50", 6).toInt();
-	prefs.ascratestops = s.value("ascratestops", 6).toInt();
-	prefs.ascratelast6m = s.value("ascratelast6m", 1).toInt();
-	prefs.descrate = s.value("descrate", 18).toInt();
+	prefs.ascrate75 = s.value("ascrate75", 9 * 1000.0 / 60.0).toInt();
+	prefs.ascrate50 = s.value("ascrate50", 6 * 1000.0 / 60.0).toInt();
+	prefs.ascratestops = s.value("ascratestops", 6 * 1000.0 / 60.0).toInt();
+	prefs.ascratelast6m = s.value("ascratelast6m", 1 * 1000.0 / 60.0).toInt();
+	prefs.descrate = s.value("descrate", 18 * 1000.0 / 60.0).toInt();
 	prefs.bottompo2 = s.value("bottompo2", 1400).toInt();
 	prefs.decopo2 = s.value("decopo2",1600).toInt();
 	prefs.doo2breaks = s.value("doo2breaks", false).toBool();
