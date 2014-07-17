@@ -436,22 +436,19 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 
 void PlannerSettingsWidget::settingsChanged()
 {
+	QString vs;
 	if (get_units()->length == units::FEET) {
-		ui.ascRate75->setSuffix("ft/min");
-		ui.ascRate50->setSuffix("ft/min");
-		ui.ascRateStops->setSuffix("ft/min");
-		ui.ascRateLast6m->setSuffix("ft/min");
-		ui.descRate->setSuffix("ft/min");
+		vs.append(tr("ft/min"));
 		ui.lastStop->setText(tr("Last stop at 20ft"));
 	} else {
-		ui.ascRate75->setSuffix("m/min");
-		ui.ascRate50->setSuffix("m/min");
-		ui.ascRateStops->setSuffix("m/min");
-		ui.ascRateLast6m->setSuffix("m/min");
-		ui.descRate->setSuffix("m/min");
+		vs.append(tr("m/min"));
 		ui.lastStop->setText(tr("Last stop at 6m"));
-
 	}
+	ui.ascRate75->setSuffix(vs);
+	ui.ascRate50->setSuffix(vs);
+	ui.ascRateStops->setSuffix(vs);
+	ui.ascRateLast6m->setSuffix(vs);
+	ui.descRate->setSuffix(vs);
 }
 
 void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
