@@ -827,8 +827,9 @@ en la pestaña <strong>Equipo</strong> aparecen en el menú contextual:</p></div
 </div>
 </div>
 <div class="paragraph"><p>Abajo está el perfil de una inmersión a 21m durante 31 minutos, a la que se ha
-añadido un punto extra con EAN50 a 18m. En este caso, la primera botella en la
-pestaña <strong>Equipo</strong> contenía aire y la segunda contenía EAN50.</p></div>
+añadido un cambio de aire a EAN50 a 20 m tras los 31 minutos. En este caso, la
+primera botella en la pestaña <strong>Equipo</strong> contenía aire y la segunda contenía
+EAN50.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile4.jpg" alt="FIGURE: Perfil de inmersión completado" />
@@ -1929,10 +1930,114 @@ los viajes de buceo con muchas inmersiones y puntos de buceo.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_obtener_más_información_sobre_inmersiones_guardadas_en_el_diario">4. Obtener más información sobre inmersiones guardadas en el diario</h2>
+<h2 id="S_LoadImage">4. El cargador de fotografías de <em>Subsurface</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Muchos buceadores (si no la mayoría) llevan consigo una cámara y toman
+fotografías durante sus inmersiones. Sería interesante poder asociar cada
+fotografía con una inmersión concreta. <em>Subsurface</em> nos permite cargar fotos en
+una inmersión. Las fotos se superponen en el perfil de la inmersión, desde donde
+pueden visualizarse.</p></div>
+<div class="sect2">
+<h3 id="_cargar_fotos_y_sincronizar_la_cámara_con_el_ordenador_de_buceo">4.1. Cargar fotos y sincronizar la cámara con el ordenador de buceo</h3>
+<div class="paragraph"><p>Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
+clic-derecho en la selección y se elige la opción <em>Carga imagenes</em>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage1.jpg" alt="FIGURA: Opción de carga de imágenes" />
+</div>
+</div>
+<div class="paragraph"><p>Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
+fotografías que se necesitan cargar en <em>Subsurface</em> y se hace clic en el botón
+<em>Abrir</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage2.jpg" alt="FIGURA: Opción de carga de imágenes" />
+</div>
+</div>
+<div class="paragraph"><p>Esto desplegará el diálogo de sincronización que se muestra a continuación. El
+problema crítico es que la sincronización horaria entre la cámara y el ordenador
+de buceo no sea perfecta, en ocasiones difieren varios minutos. Si <em>Subsurface</em>
+puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
+posicionarlas en el perfil de la inmersión.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> puede conseguir esta sincronización de dos maneras:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Manualmente</strong>: Si el usuario anotó la hora exacta de la cámara al inicio de la
+inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
+En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
+la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
+la diferencia en el diálogo de <em>Desplazamiento horario</em>. En la parte de arriba
+del diálogo hay una herramienta para indicar tiempos, evidente en la figura <strong>A</strong>
+a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
+de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
+sufijo "AM" o "PM". Seleccionamos el botón <em>OK</em> y se habrá obtenido la
+sincronización. Hay que marcar <em>Más pronto</em> o <em>Más tarde</em> según corresponda. En
+el ejemplo a continuación, la opción <em>Más pronto</em> es la correcta ya que la
+cámara de fotos va 7 minutos por delante del ordenador de buceo.
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images//LoadImage3b.jpg" alt="FIGURA: Diálogo de sincronización" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Por fotografía</strong>: Hay una forma muy cómoda de conseguir sincronización. Si se
+toma una foto de la pantalla del ordenador mostrando la hora, <em>Subsurface</em> puede
+obtener la hora exacta a la que se tomó la foto usando los metadatos que la
+cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
+<em>Desplazamiento horario</em>. Si se selecciona la barra horizontal titulada
+"<em>Selecciona la imagen del ordenador de buceo mostrando la hora</em>", aparece un
+navegador de archivos. Se selecciona la fotografía y se pulsa <em>Abrir</em>. La foto
+del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
+<em>Subsurface</em> sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
+el diálogo a la izquierda de la foto para que refleje los de la pantalla del
+ordenador. Tras el ajuste <em>Subsurface</em> conoce exactamente cual es la diferencia
+entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
+fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
+y hora de la imagen <strong>B</strong> anterior.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_visualizar_las_imágenes">4.2. Visualizar las imágenes</h3>
+<div class="paragraph"><p>Después que las imagenes han sido cargadas aparecen en la pestaña <em>Fotos</em> del
+panel <strong>Notas de Inmersión</strong>. También aparecen como pequeños iconos en el perfil
+de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
+fotografía. Ver a continuación:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage4.jpg" alt="FIGURA: Fotos sobre un perfil de inmersión" />
+</div>
+</div>
+<div class="paragraph"><p>Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
+de la foto. Ver imagen a continuación:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage5.jpg" alt="FIGURA: Foto reducida sobre perfil de inmersión" />
+</div>
+</div>
+<div class="paragraph"><p>Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
+completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de las
+fotos que han sido importadas. Ver a continuación:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage6.jpg" alt="FIGURA: Foto a pantalla completa sobre el perfil de inmersión" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_obtener_más_información_sobre_inmersiones_guardadas_en_el_diario">5. Obtener más información sobre inmersiones guardadas en el diario</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_la_pestaña_información_de_la_inmersión_para_inmersiones_individuales">4.1. La pestaña Información de la inmersión (para inmersiones individuales)</h3>
+<h3 id="_la_pestaña_información_de_la_inmersión_para_inmersiones_individuales">5.1. La pestaña Información de la inmersión (para inmersiones individuales)</h3>
 <div class="paragraph"><p>La pestaña Información de la inmersión proporciona alguna información resumida
 sobre un buceo en particular que ha sido seleccionado en la <strong>Lista de
 inmersiones</strong>. La información útil incluye el intervalo en superficie antes de la
@@ -1952,7 +2057,7 @@ usuarios deberían consultar el Apendice_D para más información.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_la_pestaña_estadísticas_para_grupos_de_inmersiones">4.2. La pestaña Estadísticas (para grupos de inmersiones)</h3>
+<h3 id="_la_pestaña_estadísticas_para_grupos_de_inmersiones">5.2. La pestaña Estadísticas (para grupos de inmersiones)</h3>
 <div class="paragraph"><p>La pestaña Estadísticas facilita información resumida para más de una inmersión,
 suponiendo que se haya seleccionado más de un buceo en la <strong>Lista de inmersiones</strong>
 con los estándares "Ctrl+clic" o "Shift+clic" del ratón. Si solo se ha
@@ -1962,7 +2067,7 @@ para estas inmersiones, así como los máximos, mínimos y medios para la duraci
 profundidad, temperatura en agua y superficie y CAS.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">4.3. El Perfil de inmersión</h3>
+<h3 id="S_DiveProfile">5.3. El Perfil de inmersión</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Típico perfil de buceo" />
@@ -2111,6 +2216,17 @@ dos puntos del perfil entre los que deseas medir. La información se facilita en
 el área blanca horizontal bajo los dos puntos.</td>
 </tr></table>
 </div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ShowPhotos.png" alt="Note" />
+</td>
+<td class="content">Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
+seleccionando el botón <strong>Mostrar foto</strong>. La posición de la foto en el perfil
+indica la hora exacta a la que se tomó. Si el botón no está activado, las fotos
+permanecen ocultas</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>El perfil de buceo también puede incluir el <strong>techo</strong> registrado por el ordenador
 de buceo (o, más precisamente, la parada deco más profunda que el ordenador de
 buceo calcule para cada momento en el tiempo) como una capa roja en el perfil de
@@ -2205,7 +2321,7 @@ detallada de los factores de gradiente, consultar los siguientes links:</p></div
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_el_menú_contextual_del_perfil_de_inmersión">4.4. El menú contextual del Perfil de Inmersión</h3>
+<h3 id="_el_menú_contextual_del_perfil_de_inmersión">5.4. El menú contextual del Perfil de Inmersión</h3>
 <div class="paragraph"><p>Se accede al menú contextual del Perfil de Inmersión haciendo clic-derecho
 mientras el cursor del ratón está sobre el panel del Perfil de Inmersión. El
 menú permite la creación de marcadores o eventos de cambio de gas aparte de los
@@ -2219,7 +2335,7 @@ para permitir el borrado del marcador o permitir ocultar todos los marcadores de
 ese tipo.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_el_strong_recuadro_información_strong">4.5. El <strong>Recuadro Información</strong></h3>
+<h3 id="_el_strong_recuadro_información_strong">5.5. El <strong>Recuadro Información</strong></h3>
 <div class="paragraph"><p>El recuadro de Información muestra una amplia gama de información del <strong>perfil de
 inmersión</strong>. Normalmente el recuadro se situa en la parte de arriba a la
 izquierda del panel <strong>Perfil de Inmersión</strong>. Si el ratón apunta fuera del panel,
@@ -2306,10 +2422,10 @@ datos casi completo.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_organizar_el_registro_manipular_grupos_de_inmersiones">5. Organizar el registro (Manipular grupos de inmersiones)</h2>
+<h2 id="_organizar_el_registro_manipular_grupos_de_inmersiones">6. Organizar el registro (Manipular grupos de inmersiones)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_el_menú_contextual_de_la_lista_de_inmersiones">5.1. El menú contextual de la Lista de Inmersiones</h3>
+<h3 id="_el_menú_contextual_de_la_lista_de_inmersiones">6.1. El menú contextual de la Lista de Inmersiones</h3>
 <div class="paragraph"><p>Muchas acciones en <em>Subsurface</em> dependen de un menú contextual que se usa
 básicamente para manipular grupos de inmersiones. El menú contextual se
 encuentra seleccionando una inmersión o un grupo de ellas y haciendo
@@ -2323,7 +2439,7 @@ clic-derecho.</p></div>
 continuación.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Renumber">5.2. Renumerar las inmersiones</h3>
+<h3 id="S_Renumber">6.2. Renumerar las inmersiones</h3>
 <div class="paragraph"><p>Las inmersiones normalmente se numeran incrementando desde las no-recientes
 (menores números de secuencia) a las más recientes (números de secuencia más
 altos). Numerar los buceos no siempre es consistente. Por ejemplo, cuando se
@@ -2336,7 +2452,7 @@ nuevos números de secuencia (basados en fecha/hora) para los buceos del panel
 <strong>Lista de Inmersiones</strong>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Group">5.3. Agrupar las inmersiones en viajes y manipularlos</h3>
+<h3 id="S_Group">6.3. Agrupar las inmersiones en viajes y manipularlos</h3>
 <div class="paragraph"><p>Si buceas regularmente, la lista de inmersiones puede hacerse rápidamente muy
 larga. <em>Subsurface</em> puede agrupar los buceos en <em>viajes</em>. Lo hace agrupando
 inmersiones que tengan fechas/horas que no estén separadas más de dos días y
@@ -2354,7 +2470,7 @@ lista de inmersiones (desde el menú principal) se selecciona <em>Registro →
 Autoagrupar</em>. El panel Lista de Inmersiones ahora muestra solo los títulos de
 los viajes.</p></div>
 <div class="sect3">
-<h4 id="_editar_el_título_y_la_información_asociada_a_un_viaje_en_particular">5.3.1. Editar el título y la información asociada a un viaje en particular</h4>
+<h4 id="_editar_el_título_y_la_información_asociada_a_un_viaje_en_particular">6.3.1. Editar el título y la información asociada a un viaje en particular</h4>
 <div class="paragraph"><p>Normalmente, en la lista de inmersiones se incluye una mínima información en el
 título del viaje. Puede añadirse mucha más sobre un viaje seleccionando su
 título en la lista. Esto muestra una pestaña <strong>Notas del Viaje</strong> en el panel Notas
@@ -2365,26 +2481,26 @@ El título en la <strong>Lista de inmersiones</strong> debería reflejar ya algo
 información editada.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_ver_los_buceos_de_un_viaje_en_concreto">5.3.2. Ver los buceos de un viaje en concreto</h4>
+<h4 id="_ver_los_buceos_de_un_viaje_en_concreto">6.3.2. Ver los buceos de un viaje en concreto</h4>
 <div class="paragraph"><p>Una vez que las inmersiones agrupadas en viajes, los usuarios pueden expandir
 uno o más viajes clicando la punta de flecha a la izquierda del título. Con ello
 se expande el viaje mostrando los buceos individuales efectuados.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_colapsar_o_expandir_información_de_diferentes_viajes">5.3.3. Colapsar o expandir información de diferentes viajes</h4>
+<h4 id="_colapsar_o_expandir_información_de_diferentes_viajes">6.3.3. Colapsar o expandir información de diferentes viajes</h4>
 <div class="paragraph"><p>Si se hace clic-derecho después de seleccionar un viaje concreto de la lista, el
 menú resultante te ofrece varias posibilidades de expandir o contraer buceos
 incluidos en viajes. Entre ellas expandir todos los viajes, contraer todos los
 viajes y contraer todos excepto el seleccionado.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_mezclar_inmersiones_de_más_de_un_viaje_en_uno_solo">5.3.4. Mezclar inmersiones de más de un viaje en uno solo</h4>
+<h4 id="_mezclar_inmersiones_de_más_de_un_viaje_en_uno_solo">6.3.4. Mezclar inmersiones de más de un viaje en uno solo</h4>
 <div class="paragraph"><p>Al hacer clic-derecho en el título de un viaje seleccionado del panel <strong>Lista de
 Inmersiones</strong>, el menú permite mezclar viajes con el viaje de abajo o con el de
 arriba.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_separar_un_viaje_en_más_de_uno">5.3.5. Separar un viaje en más de uno</h4>
+<h4 id="_separar_un_viaje_en_más_de_uno">6.3.5. Separar un viaje en más de uno</h4>
 <div class="paragraph"><p>Si un viaje incluye cinco inmersiones, el usuario puede separar el viaje en dos
 (viaje 1: tres inmersiones de arriba; viaje 2: dos inmersiones de abajo)
 seleccionando y haciendo clic-derecho en las tres inmersiones de arriba. El menú
@@ -2400,30 +2516,30 @@ izquierda (A), la acción completada a la derecha (B):</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manipular_inmersiones_individuales">5.4. Manipular inmersiones individuales</h3>
+<h3 id="_manipular_inmersiones_individuales">6.4. Manipular inmersiones individuales</h3>
 <div class="sect3">
-<h4 id="_borrar_una_inmersión_del_diario">5.4.1. Borrar una inmersión del diario</h4>
+<h4 id="_borrar_una_inmersión_del_diario">6.4.1. Borrar una inmersión del diario</h4>
 <div class="paragraph"><p>Las inmersiones pueden borrarse permanentemente del diario seleccionándolas y
 haciendo clic-derecho para mostrar el menú y, entonces, seleccionando <strong>Borrar
 inmersión</strong>. Habitualmente esto se hará en casos donde se desee borrar
 inmersiones de prueba o buceos de duración extremadamente corta.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_separar_una_inmersión_de_un_viaje">5.4.2. Separar una inmersión de un viaje</h4>
+<h4 id="_separar_una_inmersión_de_un_viaje">6.4.2. Separar una inmersión de un viaje</h4>
 <div class="paragraph"><p>Se pueden separar inmersiones del viaje al que pertenecen. Para ello se
 selecciona y hace clic-derecho en los buceos para mostrar el menú. Luego se
 selecciona <strong>Quitar inmersión(es) del viaje</strong>. Las inmersiones que han sido
 separadas aparecerán ahora encima del viaje al que pertenecieron.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_añadir_una_inmersión_al_viaje_de_arriba">5.4.3. Añadir una inmersión al viaje de arriba</h4>
+<h4 id="_añadir_una_inmersión_al_viaje_de_arriba">6.4.3. Añadir una inmersión al viaje de arriba</h4>
 <div class="paragraph"><p>Las inmersiones seleccionadas pueden moverse del viaje al que pertenecen al
 inmediatamente superior al actual. Para ello se selecciona y hace clic-derecho
 en los buceos para mostrar el menú, luego se selecciona <strong>Añadir inmersión(es) al
 viaje de arriba</strong>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_desplazar_la_hora_de_inicio_del_buceo_s">5.4.4. Desplazar la hora de inicio del buceo(s)</h4>
+<h4 id="_desplazar_la_hora_de_inicio_del_buceo_s">6.4.4. Desplazar la hora de inicio del buceo(s)</h4>
 <div class="paragraph"><p>En ocasiones es necesario ajustar la hora de comienzo de una inmersión. Esto
 puede aplicarse a situaciones en las que las inmersiones se han efectuado en
 diferentes zonas horarias o si el ordenador de buceo tiene mal configurada la
@@ -2433,7 +2549,7 @@ horas y minutos) en el que deben ajustarse los buceos y se hace clic en la
 opción que indica si el ajuste debe ser hacia adelante o hacia atrás.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_juntar_buceos_en_uno_solo">5.4.5. Juntar buceos en uno solo</h4>
+<h4 id="_juntar_buceos_en_uno_solo">6.4.5. Juntar buceos en uno solo</h4>
 <div class="paragraph"><p>En ocasiones una inmersión se interrumpe brevemente, p.e. si un buceador regresa
 a superficie unos pocos minutos, dando como resultado dos o más inmersiones
 grabadas por el ordenador y apareciendo como buceos distintos en el panel <strong>Lista
@@ -2454,7 +2570,7 @@ inmersiones que fueron unidas:</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_ExportLog">6. Exportar el registro de inmersiones o parte del mismo</h2>
+<h2 id="S_ExportLog">7. Exportar el registro de inmersiones o parte del mismo</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Se llega a la función de exportación seleccionando <em>Archivo &#8594; Exportar</em> lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
@@ -2552,7 +2668,7 @@ en el navegador, como el tamaño de la letra o el tema aplicado.
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">7. Imprimir un diario</h2>
+<h2 id="S_PrintDivelog">8. Imprimir un diario</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> proporciona un interfaz simple para imprimir el diario completo o
 solo unas pocas inmersiones seleccionadas, incluyendo los perfiles de buceo y
@@ -2642,7 +2758,7 @@ continuación hay un ejemplo (bastante pequeño) de la salida de una impresión.
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Preferences">8. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
+<h2 id="S_Preferences">9. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Hay varios ajustes en <em>Subsurface</em> que el usuario puede especificar. Se
 encuentran a través de <em>Archivo → Preferencias</em>. Los ajustes se efectúan en
@@ -2653,7 +2769,7 @@ Tras aplicarlos todos se puede salir seleccionando <strong>Aceptar</strong> o <s
 guardar</strong> si
 finalmente decide no hacer los cambios.</p></div>
 <div class="sect2">
-<h3 id="_predeterminados">8.1. Predeterminados</h3>
+<h3 id="_predeterminados">9.1. Predeterminados</h3>
 <div class="paragraph"><p>Hay varios ajustes en el panel <strong>Predeterminados</strong>:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2720,7 +2836,7 @@ se borran todos los ajustes y se reinician con los valores por defecto.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_unidades">8.2. Unidades</h3>
+<h3 id="_unidades">9.2. Unidades</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref2.jpg" alt="FIGURA: Página de preferencias de unidades" />
@@ -2737,7 +2853,7 @@ botella, habitualmente, manejan velocidades en m/min, sin embargo, los apneísta
 ascienden mucho más deprisa por lo que suelen utilizar velocidades en m/s.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_gráfico">8.3. Gráfico</h3>
+<h3 id="_gráfico">9.3. Gráfico</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref3.jpg" alt="FIGURA: Página de Preferencias del gráfico" />
@@ -2824,7 +2940,7 @@ información, ver:
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_lenguaje">8.4. Lenguaje</h3>
+<h3 id="_lenguaje">9.4. Lenguaje</h3>
 <div class="paragraph"><p>Se elige el lenguaje que debe utilizar <em>Subsurface</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2840,7 +2956,7 @@ lista de traducciones. La casilla de texto <em>Filtro</em> permite listar lengua
 similares. Por ejemplo hay diversas variantes de inglés o francés.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_red">8.5. Red</h3>
+<h3 id="_red">9.5. Red</h3>
 <div class="paragraph"><p>Este panel facilita la comunicación entre <em>Subsurface</em> y las fuentes de datos en
 internet.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2859,110 +2975,6 @@ lo cual debe facilitarse la dirección IP del servidor y el número de puerto. S
 el servidor proxy utiliza autenticación también han de indicarse el usuario y su
 password para que <em>Subsurface</em> pueda pasar automáticamente a través del proxy
 para acceder a internet.</p></div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="S_LoadImage">9. El cargador de fotografías de <em>Subsurface</em></h2>
-<div class="sectionbody">
-<div class="paragraph"><p>Muchos buceadores (si no la mayoría) llevan consigo una cámara y toman
-fotografías durante sus inmersiones. Sería interesante poder asociar cada
-fotografía con una inmersión concreta. <em>Subsurface</em> nos permite cargar fotos en
-una inmersión. Las fotos se superponen en el perfil de la inmersión, desde donde
-pueden visualizarse.</p></div>
-<div class="sect2">
-<h3 id="_cargar_fotos_y_sincronizar_la_cámara_con_el_ordenador_de_buceo">9.1. Cargar fotos y sincronizar la cámara con el ordenador de buceo</h3>
-<div class="paragraph"><p>Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
-clic-derecho en la selección y se elige la opción <em>Carga imagenes</em>:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage1.jpg" alt="FIGURA: Opción de carga de imágenes" />
-</div>
-</div>
-<div class="paragraph"><p>Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
-fotografías que se necesitan cargar en <em>Subsurface</em> y se hace clic en el botón
-<em>Abrir</em>.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage2.jpg" alt="FIGURA: Opción de carga de imágenes" />
-</div>
-</div>
-<div class="paragraph"><p>Esto desplegará el diálogo de sincronización que se muestra a continuación. El
-problema crítico es que la sincronización horaria entre la cámara y el ordenador
-de buceo no sea perfecta, en ocasiones difieren varios minutos. Si <em>Subsurface</em>
-puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
-posicionarlas en el perfil de la inmersión.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> puede conseguir esta sincronización de dos maneras:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<strong>Manualmente</strong>: Si el usuario anotó la hora exacta de la cámara al inicio de la
-inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
-En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
-la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
-la diferencia en el diálogo de <em>Desplazamiento horario</em>. En la parte de arriba
-del diálogo hay una herramienta para indicar tiempos, evidente en la figura <strong>A</strong>
-a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
-de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
-sufijo "AM" o "PM". Seleccionamos el botón <em>OK</em> y se habrá obtenido la
-sincronización. Hay que marcar <em>Más pronto</em> o <em>Más tarde</em> según corresponda. En
-el ejemplo a continuación, la opción <em>Más pronto</em> es la correcta ya que la
-cámara de fotos va 7 minutos por delante del ordenador de buceo.
-</p>
-</li>
-</ul></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images//LoadImage3b.jpg" alt="FIGURA: Diálogo de sincronización" />
-</div>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-<strong>Por fotografía</strong>: Hay una forma muy cómoda de conseguir sincronización. Si se
-toma una foto de la pantalla del ordenador mostrando la hora, <em>Subsurface</em> puede
-obtener la hora exacta a la que se tomó la foto usando los metadatos que la
-cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
-<em>Desplazamiento horario</em>. Si se selecciona la barra horizontal titulada
-"<em>Selecciona la imagen del ordenador de buceo mostrando la hora</em>", aparece un
-navegador de archivos. Se selecciona la fotografía y se pulsa <em>Abrir</em>. La foto
-del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
-<em>Subsurface</em> sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
-el diálogo a la izquierda de la foto para que refleje los de la pantalla del
-ordenador. Tras el ajuste <em>Subsurface</em> conoce exactamente cual es la diferencia
-entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
-fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
-y hora de la imagen <strong>B</strong> anterior.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect2">
-<h3 id="_visualizar_las_imágenes">9.2. Visualizar las imágenes</h3>
-<div class="paragraph"><p>Después que las imagenes han sido cargadas aparecen en la pestaña <em>Fotos</em> del
-panel <strong>Notas de Inmersión</strong>. También aparecen como pequeños iconos en el perfil
-de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
-fotografía. Ver a continuación:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage4.jpg" alt="FIGURA: Fotos sobre un perfil de inmersión" />
-</div>
-</div>
-<div class="paragraph"><p>Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
-de la foto. Ver imagen a continuación:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage5.jpg" alt="FIGURA: Foto reducida sobre perfil de inmersión" />
-</div>
-</div>
-<div class="paragraph"><p>Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de las
-fotos que han sido importadas. Ver a continuación:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage6.jpg" alt="FIGURA: Foto a pantalla completa sobre el perfil de inmersión" />
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -4147,7 +4159,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-09 08:55:12 PDT
+Last updated 2014-07-17 07:25:55 PDT
 </div>
 </div>
 </body>

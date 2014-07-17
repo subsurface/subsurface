@@ -393,8 +393,9 @@ en la pestaña *Equipo* aparecen en el menú contextual:
 image::images/DiveProfile3.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
 Abajo está el perfil de una inmersión a 21m durante 31 minutos, a la que se ha
-añadido un punto extra con EAN50 a 18m. En este caso, la primera botella en la
-pestaña *Equipo* contenía aire y la segunda contenía EAN50.
+añadido un cambio de aire a EAN50 a 20 m tras los 31 minutos. En este caso, la
+primera botella en la pestaña *Equipo* contenía aire y la segunda contenía
+EAN50.
 
 image::images/DiveProfile4.jpg["FIGURE: Perfil de inmersión completado",align="center"]
 
@@ -1249,6 +1250,86 @@ localizaciones enviadas al servidor o, al menos, usar tal nombre en el ajuste
 _Name Template_ si se va a ejecutar el background service, especialmente durante
 los viajes de buceo con muchas inmersiones y puntos de buceo.
 
+[[S_LoadImage]]
+
+== El cargador de fotografías de _Subsurface_
+
+Muchos buceadores (si no la mayoría) llevan consigo una cámara y toman
+fotografías durante sus inmersiones. Sería interesante poder asociar cada
+fotografía con una inmersión concreta. _Subsurface_ nos permite cargar fotos en
+una inmersión. Las fotos se superponen en el perfil de la inmersión, desde donde
+pueden visualizarse.
+
+=== Cargar fotos y sincronizar la cámara con el ordenador de buceo
+
+Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
+clic-derecho en la selección y se elige la opción _Carga imagenes_:
+
+image::images/LoadImage1.jpg["FIGURA: Opción de carga de imágenes",align="center"]
+
+Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
+fotografías que se necesitan cargar en _Subsurface_ y se hace clic en el botón
+_Abrir_.
+
+image::images/LoadImage2.jpg["FIGURA: Opción de carga de imágenes",align="center"]
+
+Esto desplegará el diálogo de sincronización que se muestra a continuación. El
+problema crítico es que la sincronización horaria entre la cámara y el ordenador
+de buceo no sea perfecta, en ocasiones difieren varios minutos. Si _Subsurface_
+puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
+posicionarlas en el perfil de la inmersión.
+
+_Subsurface_ puede conseguir esta sincronización de dos maneras:
+
+- *Manualmente*: Si el usuario anotó la hora exacta de la cámara al inicio de la
+inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
+En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
+la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
+la diferencia en el diálogo de _Desplazamiento horario_. En la parte de arriba
+del diálogo hay una herramienta para indicar tiempos, evidente en la figura *A*
+a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
+de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
+sufijo "AM" o "PM". Seleccionamos el botón _OK_ y se habrá obtenido la
+sincronización. Hay que marcar _Más pronto_ o _Más tarde_ según corresponda. En
+el ejemplo a continuación, la opción _Más pronto_ es la correcta ya que la
+cámara de fotos va 7 minutos por delante del ordenador de buceo.
+
+image::images//LoadImage3b.jpg["FIGURA: Diálogo de sincronización",align="center"]
+
+- *Por fotografía*: Hay una forma muy cómoda de conseguir sincronización. Si se
+toma una foto de la pantalla del ordenador mostrando la hora, _Subsurface_ puede
+obtener la hora exacta a la que se tomó la foto usando los metadatos que la
+cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
+_Desplazamiento horario_. Si se selecciona la barra horizontal titulada
+"_Selecciona la imagen del ordenador de buceo mostrando la hora_", aparece un
+navegador de archivos. Se selecciona la fotografía y se pulsa _Abrir_. La foto
+del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
+_Subsurface_ sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
+el diálogo a la izquierda de la foto para que refleje los de la pantalla del
+ordenador. Tras el ajuste _Subsurface_ conoce exactamente cual es la diferencia
+entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
+fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
+y hora de la imagen *B* anterior.
+
+=== Visualizar las imágenes
+
+Después que las imagenes han sido cargadas aparecen en la pestaña _Fotos_ del
+panel *Notas de Inmersión*. También aparecen como pequeños iconos en el perfil
+de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
+fotografía. Ver a continuación:
+
+image::images/LoadImage4.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
+
+Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
+de la foto. Ver imagen a continuación:
+
+image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
+
+Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
+completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
+fotos que han sido importadas. Ver a continuación:
+
+image::images/LoadImage6.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
 
 == Obtener más información sobre inmersiones guardadas en el diario
 
@@ -1370,6 +1451,13 @@ Pueden hacerse *medidas de profundidad o tiempo* utilizando el botón *regla* de
 la izquierda del perfil La medición se hace arrastrando los puntos rojos a los
 dos puntos del perfil entre los que deseas medir. La información se facilita en
 el área blanca horizontal bajo los dos puntos.
+
+[icon="images/icons/ShowPhotos.png"]
+[NOTE]
+Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
+seleccionando el botón *Mostrar foto*. La posición de la foto en el perfil
+indica la hora exacta a la que se tomó. Si el botón no está activado, las fotos
+permanecen ocultas
 
 El perfil de buceo también puede incluir el *techo* registrado por el ordenador
 de buceo (o, más precisamente, la parada deco más profunda que el ordenador de
@@ -1927,87 +2015,6 @@ lo cual debe facilitarse la dirección IP del servidor y el número de puerto. S
 el servidor proxy utiliza autenticación también han de indicarse el usuario y su
 password para que _Subsurface_ pueda pasar automáticamente a través del proxy
 para acceder a internet.
-
-[[S_LoadImage]]
-
-== El cargador de fotografías de _Subsurface_
-
-Muchos buceadores (si no la mayoría) llevan consigo una cámara y toman
-fotografías durante sus inmersiones. Sería interesante poder asociar cada
-fotografía con una inmersión concreta. _Subsurface_ nos permite cargar fotos en
-una inmersión. Las fotos se superponen en el perfil de la inmersión, desde donde
-pueden visualizarse.
-
-=== Cargar fotos y sincronizar la cámara con el ordenador de buceo
-
-Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
-clic-derecho en la selección y se elige la opción _Carga imagenes_:
-
-image::images/LoadImage1.jpg["FIGURA: Opción de carga de imágenes",align="center"]
-
-Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
-fotografías que se necesitan cargar en _Subsurface_ y se hace clic en el botón
-_Abrir_.
-
-image::images/LoadImage2.jpg["FIGURA: Opción de carga de imágenes",align="center"]
-
-Esto desplegará el diálogo de sincronización que se muestra a continuación. El
-problema crítico es que la sincronización horaria entre la cámara y el ordenador
-de buceo no sea perfecta, en ocasiones difieren varios minutos. Si _Subsurface_
-puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
-posicionarlas en el perfil de la inmersión.
-
-_Subsurface_ puede conseguir esta sincronización de dos maneras:
-
-- *Manualmente*: Si el usuario anotó la hora exacta de la cámara al inicio de la
-inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
-En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
-la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
-la diferencia en el diálogo de _Desplazamiento horario_. En la parte de arriba
-del diálogo hay una herramienta para indicar tiempos, evidente en la figura *A*
-a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
-de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
-sufijo "AM" o "PM". Seleccionamos el botón _OK_ y se habrá obtenido la
-sincronización. Hay que marcar _Más pronto_ o _Más tarde_ según corresponda. En
-el ejemplo a continuación, la opción _Más pronto_ es la correcta ya que la
-cámara de fotos va 7 minutos por delante del ordenador de buceo.
-
-image::images//LoadImage3b.jpg["FIGURA: Diálogo de sincronización",align="center"]
-
-- *Por fotografía*: Hay una forma muy cómoda de conseguir sincronización. Si se
-toma una foto de la pantalla del ordenador mostrando la hora, _Subsurface_ puede
-obtener la hora exacta a la que se tomó la foto usando los metadatos que la
-cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
-_Desplazamiento horario_. Si se selecciona la barra horizontal titulada
-"_Selecciona la imagen del ordenador de buceo mostrando la hora_", aparece un
-navegador de archivos. Se selecciona la fotografía y se pulsa _Abrir_. La foto
-del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
-_Subsurface_ sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
-el diálogo a la izquierda de la foto para que refleje los de la pantalla del
-ordenador. Tras el ajuste _Subsurface_ conoce exactamente cual es la diferencia
-entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
-fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
-y hora de la imagen *B* anterior.
-
-=== Visualizar las imágenes
-
-Después que las imagenes han sido cargadas aparecen en la pestaña _Fotos_ del
-panel *Notas de Inmersión*. También aparecen como pequeños iconos en el perfil
-de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
-fotografía. Ver a continuación:
-
-image::images/LoadImage4.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
-
-Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
-de la foto. Ver imagen a continuación:
-
-image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
-
-Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
-fotos que han sido importadas. Ver a continuación:
-
-image::images/LoadImage6.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
 
 [[S_DivePlanner]]
 == El Planificador de _Subsurface_
