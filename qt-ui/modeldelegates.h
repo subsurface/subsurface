@@ -110,4 +110,10 @@ private:
 	double step;
 };
 
+class HTMLDelegate : public ProfilePrintDelegate {
+	Q_OBJECT
+public:
+	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
 #endif // MODELDELEGATES_H

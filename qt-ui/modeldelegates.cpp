@@ -17,6 +17,7 @@
 #include <QKeyEvent>
 #include <QAbstractItemView>
 #include <QApplication>
+#include <QTextDocument>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -398,4 +399,32 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	w->setRange(min,max);
 	w->setSingleStep(step);
 	return w;
+}
+
+void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex &index) const
+{
+	QStyleOptionViewItemV4 options = option;
+	initStyleOption(&options, index);
+	painter->save();
+	QTextDocument doc;
+	doc.setHtml(options.text);
+	doc.setTextWidth(options.rect.width());
+	doc.setDefaultFont(options.font);
+	options.text.clear();
+	options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
+	painter->translate(options.rect.left(), options.rect.top());
+	QRect clip(0, 0, options.rect.width(), options.rect.height());
+	doc.drawContents(painter, clip);
+	painter->restore();
+	ProfilePrintDelegate::paint(painter,option,index);
+}
+
+QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+    QStyleOptionViewItemV4 options = option;
+    initStyleOption(&options, index);
+    QTextDocument doc;
+    doc.setHtml(options.text);
+    doc.setTextWidth(options.rect.width());
+    return QSize(doc.idealWidth(), doc.size().height());
 }
