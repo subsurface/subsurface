@@ -380,7 +380,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		updateGpsCoordinates(&displayed_dive);
-		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset());
+		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {

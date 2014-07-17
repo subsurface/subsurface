@@ -372,10 +372,14 @@ QString getSubsurfaceDataPath(QString folderToFind)
 	return QString("");
 }
 
-int gettimezoneoffset()
+int gettimezoneoffset(time_t when)
 {
-	QDateTime dt1 = QDateTime::currentDateTime();
-	QDateTime dt2 = dt1.toUTC();
+	QDateTime dt1, dt2;
+	if (when == 0)
+		dt1 = QDateTime::currentDateTime();
+	else
+		dt1 = QDateTime::fromMSecsSinceEpoch(when * 1000);
+	dt2 = dt1.toUTC();
 	dt1.setTimeSpec(Qt::UTC);
 	return dt2.secsTo(dt1);
 }
