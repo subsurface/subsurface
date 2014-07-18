@@ -114,11 +114,13 @@ void put_HTML_quoted(struct membuffer *b, const char *text)
 
 void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
+	put_string(b, pre);
 	if (dive->notes) {
-		put_string(b, pre);
 		put_HTML_quoted(b, dive->notes);
-		put_string(b, post);
+	} else {
+		put_string(b, "--");
 	}
+	put_string(b, post);
 }
 
 void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
