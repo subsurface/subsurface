@@ -14,18 +14,7 @@ PrintOptions::PrintOptions(QWidget *parent, struct options *printOpt)
 
 void PrintOptions::setup(struct options *printOpt)
 {
-	/* these options are not supported ATM and we hide them.
-	 * basically the entire PrintDialog class needs re-implementation, so that
-	 * the paper size, DPI and all other options are displayed in one dialog.
-	 * this way we can print directly or do an optional preview first.
-	 */
-	ui.sizingHeights->setVisible(false);
-
 	printOptions = printOpt;
-	// layout height sliders
-	initSliderWithLabel(ui.sliderPHeight, ui.valuePHeight, printOptions->profile_height);
-	initSliderWithLabel(ui.sliderOHeight, ui.valueOHeight, printOptions->notes_height);
-	initSliderWithLabel(ui.sliderNHeight, ui.valueNHeight, printOptions->tanks_height);
 	// print type radio buttons
 	switch (printOptions->type) {
 	case options::PRETTY:
@@ -52,9 +41,6 @@ void PrintOptions::setup(struct options *printOpt)
 	// connect slots only once
 	if (hasSetupSlots)
 		return;
-	connect(ui.sliderPHeight, SIGNAL(sliderMoved(int)), this, SLOT(sliderPHeightMoved(int)));
-	connect(ui.sliderOHeight, SIGNAL(sliderMoved(int)), this, SLOT(sliderOHeightMoved(int)));
-	connect(ui.sliderNHeight, SIGNAL(sliderMoved(int)), this, SLOT(sliderNHeightMoved(int)));
 
 	connect(ui.radioSixDives, SIGNAL(clicked(bool)), this, SLOT(radioSixDivesClicked(bool)));
 	connect(ui.radioTwoDives, SIGNAL(clicked(bool)), this, SLOT(radioTwoDivesClicked(bool)));
@@ -66,37 +52,6 @@ void PrintOptions::setup(struct options *printOpt)
 	connect(ui.notesOnTop, SIGNAL(clicked(bool)), this, SLOT(notesOnTopClicked(bool)));
 	connect(ui.profileOnTop, SIGNAL(clicked(bool)), this, SLOT(profileOnTopClicked(bool)));
 	hasSetupSlots = true;
-}
-
-// layout height sliders
-void PrintOptions::initSliderWithLabel(QSlider *slider, QLabel *label, int value)
-{
-	slider->setValue(value);
-	label->setText(formatSliderValueText(value));
-}
-
-QString PrintOptions::formatSliderValueText(int value)
-{
-	QString str = QString("%1%").arg(QString::number(value));
-	return str;
-}
-
-void PrintOptions::sliderPHeightMoved(int value)
-{
-	ui.valuePHeight->setText(formatSliderValueText(value));
-	printOptions->profile_height = value;
-}
-
-void PrintOptions::sliderOHeightMoved(int value)
-{
-	ui.valueOHeight->setText(formatSliderValueText(value));
-	printOptions->notes_height = value;
-}
-
-void PrintOptions::sliderNHeightMoved(int value)
-{
-	ui.valueNHeight->setText(formatSliderValueText(value));
-	printOptions->tanks_height = value;
 }
 
 // print type radio buttons

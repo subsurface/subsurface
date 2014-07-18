@@ -15,17 +15,11 @@ public:
 
 private:
 	Ui::PrintOptions ui;
-	void setLabelFromSlider(QSlider *slider, QLabel *label);
-	void initSliderWithLabel(QSlider *slider, QLabel *label, int value);
-	QString formatSliderValueText(int value);
 	struct options *printOptions;
 	bool hasSetupSlots;
 
 private
 slots:
-	void sliderPHeightMoved(int value);
-	void sliderOHeightMoved(int value);
-	void sliderNHeightMoved(int value);
 	void radioSixDivesClicked(bool check);
 	void radioTwoDivesClicked(bool check);
 	void radioTablePrintClicked(bool check);
