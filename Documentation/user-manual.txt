@@ -630,7 +630,7 @@ _Subsurface_ window should be used.
 The date and time of the dive, gas mixture and (often) water temperature is
 shown as obtained from the dive computer, but the user needs to add some
 additional information by hand in order to have a more complete dive record.
-The message in a blue box at
+If the contents of this tab is changed or edited in any way, the message in a blue box at
 the top of the panel indicates that the dive is being edited. If the user
 clicks on the *Dive Notes* tab, the following fields are
 visible:
