@@ -982,7 +982,9 @@ image::images/Import_CSV1.jpg["FIGURE: CSV download dialogue",align="center"]
 There are pre-configured definitions for some dive computers, e.g. the APD
 rebreathers. If the user's dive computer is on this list, it should be selected
 using the dropdown
-box labeled _Pre-configured imports_. Finally _OK_ should be clicked and
+box labeled _Pre-configured imports_. Select the button at the bottom right
+to indicate whether the dive data are in metric of imperial units.
+Finally _OK_ should be clicked and
 the dive will be imported and listed in the *Dive List* tab of _Subsurface_.
 
 If the dive computer is not on the pre-configured list, the user must
