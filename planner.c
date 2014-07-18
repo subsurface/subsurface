@@ -118,14 +118,14 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	return -1;
 }
 
-double interpolate_transition(struct dive *dive, int t0, int t1, int d0, int d1, const struct gasmix *gasmix, int po2)
+double interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2)
 {
 	int j;
 	double tissue_tolerance = 0.0;
 
-	for (j = t0; j < t1; j++) {
-		int depth = interpolate(d0, d1, j - t0, t1 - t0);
-		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2, dive);
+	for (j = t0.seconds; j < t1.seconds; j++) {
+		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
+		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2.mbar, dive);
 	}
 	return tissue_tolerance;
 }
@@ -160,7 +160,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		get_gas_at_time(dive, dc, t0, &gas);
 		if (i > 0)
 			lastdepth = psample->depth;
-		tissue_tolerance = interpolate_transition(dive, t0.seconds, t1.seconds, lastdepth.mm, sample->depth.mm, &gas, sample->po2.mbar);
+		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, sample->po2);
 		psample = sample;
 		t0 = t1;
 	}
