@@ -75,8 +75,10 @@ void PrintDialog::previewClicked(void)
 void PrintDialog::printClicked(void)
 {
 	QPrintDialog printDialog(&printer, this);
-	if (printDialog.exec() == QDialog::Accepted)
+	if (printDialog.exec() == QDialog::Accepted){
 		printLayout->print();
+		close();
+	}
 }
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
