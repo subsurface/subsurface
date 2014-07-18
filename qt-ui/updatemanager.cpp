@@ -60,6 +60,7 @@ void UpdateManager::requestReceived()
 	}
 
 	msgbox.setWindowTitle(msgTitle);
+	msgbox.setWindowIcon(QIcon(":/subsurface-icon"));
 	msgbox.setText(msgText);
 	msgbox.setTextFormat(Qt::RichText);
 	msgbox.exec();

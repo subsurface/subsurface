@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Export dive log files</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/subsurface-icon</normalon>
+   </iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">

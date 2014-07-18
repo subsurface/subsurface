@@ -53,6 +53,8 @@ UserManual::UserManual(QWidget *parent) : QWidget(parent)
 	addAction(actionHideSearch);
 
 	setWindowTitle(tr("User Manual"));
+	setWindowIcon(QIcon(":/subsurface-icon"));
+
 
 	userManual = new QWebView(this);
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
