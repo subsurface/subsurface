@@ -42,6 +42,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "display.h"
+#include "planner.h"
 
 static short dive_list_changed = false;
 
@@ -152,17 +153,9 @@ int total_weight(struct dive *dive)
 
 static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
-	int o2permille = get_o2(&dive->cylinder[0].gasmix);
-	struct event *event;
-
-	for (event = dc->events; event; event = event->next) {
-		if (event->time.seconds > time.seconds)
-			break;
-		if (strcmp(event->name, "gaschange"))
-			continue;
-		o2permille = get_o2(get_gasmix_from_event(event));
-	}
-	return o2permille;
+	struct gasmix gas = dive->cylinder[0].gasmix;
+	get_gas_at_time(dive, dc, time, &gas);
+	return get_o2(&gas);
 }
 
 /* calculate OTU for a dive - this only takes the first divecomputer into account */
