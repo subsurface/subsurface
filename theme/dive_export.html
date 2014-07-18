@@ -123,7 +123,7 @@ window.onload=function(){
 
 function changeAdvSearch(e){
 	searchingModules[e.value].enabled=e.checked;
-	SearchModules(document.getElementById("search_input").value);
+	SearchModules(document.getElementById("search_input").value, null);
 }
 
 </script>
@@ -137,7 +137,7 @@ function changeAdvSearch(e){
 	</center>
 	<div id="diveListPanel">
 	<div id="controlbox">
-		<input id="search_input" oninput="SearchModules(this.value)" placeholder="search"/><a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
+		<input id="search_input" oninput="SearchModules(this.value, null)" placeholder="search"/><a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
 		<div id="advanced_search">
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="location" checked>Location<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="divemaster" checked>Divemaster<br>

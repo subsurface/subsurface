@@ -206,8 +206,7 @@ function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">Date: </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
-		  dive.location + '</a>' +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
 		  '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
@@ -228,7 +227,7 @@ function putTags(tags)
 {
 	var result = "";
 	for (var i in tags) {
-		result += '<a onclick=\"Search_list_Modules(\'' + tags[i] + '\')\">' + tags[i] + '</a>';
+		result += '<a onclick=\"Search_list_Modules(\'' + tags[i] + '\', {location:false, divemaster:false, buddy:false, notes:false, tags:true,})\">' + tags[i] + '</a>';
 		if (i < tags.length - 1)
 			result += ', ';
 	}
@@ -481,14 +480,15 @@ function Node(value)
 	this.key = new Set();
 }
 
-function Search_list_Modules(searchfor)
+function Search_list_Modules(searchfor, searchOptions)
 {
 	document.getElementById("search_input").value = searchfor;
-	SearchModules(searchfor);
+	SearchModules(searchfor, searchOptions);
 }
 
-function SearchModules(searchfor)
+function SearchModules(searchfor, searchOptions)
 {
+	unshowDiveDetails(dive_id);
 	var resultKeys = new Set(); //set
 
 	if (searchfor.length <= 0) {
@@ -502,22 +502,31 @@ function SearchModules(searchfor)
 
 	var keywords = searchfor.split(" ");
 
+	if (searchOptions === null) {
+		searchOptions = {};
+		searchOptions.location = searchingModules["location"].enabled;
+		searchOptions.divemaster = searchingModules["divemaster"].enabled;
+		searchOptions.buddy = searchingModules["buddy"].enabled;
+		searchOptions.notes = searchingModules["notes"].enabled;
+		searchOptions.tags = searchingModules["tags"].enabled;
+	}
+
 	for (var i = 0; i < keywords.length; i++) {
 		var keywordResult = new Set();
 
-		if (searchingModules["location"].enabled === true)
+		if (searchOptions.location === true)
 			keywordResult.Union(searchingModules["location"].search(keywords[i]));
 
-		if (searchingModules["divemaster"].enabled === true)
+		if (searchOptions.divemaster === true)
 			keywordResult.Union(searchingModules["divemaster"].search(keywords[i]));
 
-		if (searchingModules["buddy"].enabled === true)
+		if (searchOptions.buddy === true)
 			keywordResult.Union(searchingModules["buddy"].search(keywords[i]));
 
-		if (searchingModules["notes"].enabled === true)
+		if (searchOptions.notes === true)
 			keywordResult.Union(searchingModules["notes"].search(keywords[i]));
 
-		if (searchingModules["tags"].enabled === true)
+		if (searchOptions.tags === true)
 			keywordResult.Union(searchingModules["tags"].search(keywords[i]));
 
 		if (resultKeys.isEmpty()) {
@@ -764,7 +773,7 @@ function get_dive_HTML(dive)
 {
 	return '<h2 class="det_hed">Dive Information</h2><table><tr><td class="words">Date: </td><td>' + dive.date +
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\')\">' +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' +
 	       dive.location + '</a>' +
 	       '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
