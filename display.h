@@ -44,7 +44,6 @@ struct options {
 	int print_selected;
 	int color_selected;
 	bool notes_up;
-	int profile_height, notes_height, tanks_height;
 };
 
 extern unsigned int dc_number;
