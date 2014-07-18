@@ -193,10 +193,14 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		}
 		QTransform origTransform = painter.transform();
 
+		QImage image(scaledW, scaledH - tableH - padPT, QImage::Format_ARGB32);
+		QPainter imgPainter(&image);
 		// draw a profile
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
 		profile->plotDive(dive, true); // make sure the profile is actually redrawn
-		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+		profile->render(&imgPainter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+		imgPainter.end();
+		painter.drawImage(image.rect(),image);
 		painter.setTransform(origTransform);
 
 		// draw a table
