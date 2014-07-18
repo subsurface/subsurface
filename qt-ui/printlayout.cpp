@@ -261,7 +261,6 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	// notes
 	table->setSpan(6, 0, 1, 5);
 	table->setSpan(7, 0, 5, 5);
-
 	/* resize row heights to the 'profilePrintRowHeights' indexes.
 	 * profilePrintTableMaxH will then hold the table height. */
 	int i;
@@ -284,6 +283,8 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->resize(tableW, profilePrintTableMaxH);
 	// hide the grid and set a stylesheet
 	table->setItemDelegate(new ProfilePrintDelegate(table));
+	table->setItemDelegateForRow(7, new HTMLDelegate(table));
+
 	table->setShowGrid(false);
 	table->setStyleSheet(
 		"QTableView { border: none }"

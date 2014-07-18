@@ -113,6 +113,7 @@ private:
 class HTMLDelegate : public ProfilePrintDelegate {
 	Q_OBJECT
 public:
+	explicit HTMLDelegate(QObject *parent = 0);
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };

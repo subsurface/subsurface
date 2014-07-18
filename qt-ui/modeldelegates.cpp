@@ -403,6 +403,10 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	return w;
 }
 
+HTMLDelegate::HTMLDelegate(QObject *parent) : ProfilePrintDelegate(parent)
+{
+}
+
 void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex &index) const
 {
 	QStyleOptionViewItemV4 options = option;
