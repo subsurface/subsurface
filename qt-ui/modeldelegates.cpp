@@ -346,8 +346,7 @@ ProfilePrintDelegate::ProfilePrintDelegate(QObject *parent) : QStyledItemDelegat
 {
 }
 
-/* this method overrides the default table drawing method and places grid lines only at certain rows and columns */
-void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+static void paintRect(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
 	const QRect rect(option.rect);
 	const int row = index.row();
@@ -368,6 +367,12 @@ void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 			painter->drawLine(rect.topRight(), rect.bottomRight());
 	}
 	painter->restore();
+}
+
+/* this method overrides the default table drawing method and places grid lines only at certain rows and columns */
+void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	paintRect(painter, option, index);
 	QStyledItemDelegate::paint(painter, option, index);
 }
 
@@ -409,6 +414,7 @@ HTMLDelegate::HTMLDelegate(QObject *parent) : ProfilePrintDelegate(parent)
 
 void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex &index) const
 {
+	paintRect(painter, option, index);
 	QStyleOptionViewItemV4 options = option;
 	initStyleOption(&options, index);
 	painter->save();
@@ -422,7 +428,6 @@ void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option,
 	QRect clip(0, 0, options.rect.width(), options.rect.height());
 	doc.drawContents(painter, clip);
 	painter->restore();
-	ProfilePrintDelegate::paint(painter,option,index);
 }
 
 QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
