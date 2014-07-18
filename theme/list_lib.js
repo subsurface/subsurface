@@ -979,6 +979,7 @@ function canvas_draw()
 						 pad : 2.05
 					 },
 					 y2axis : {
+						 min : 0,
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
 							 formatString : '%ibar'
