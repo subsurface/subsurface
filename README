@@ -1,5 +1,10 @@
 
-This is the README file for Subsurface 4.1.90, the first Beta for 4.2
+This is the README file for Subsurface 4.1.91, the second Beta for 4.2
+
+We fixed literally dozens of bugs since the first Beta so this one to me
+is looking a lot better (printing, various corner cases in the planner and
+elsewhere), but there are still a few known and likely a few unknown
+problems...
 
 A lot of the internals of Subsurface changed, and quite a few new features
 got added (see the Releasenotes.txt).

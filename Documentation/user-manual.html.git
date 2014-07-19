@@ -1127,7 +1127,7 @@ the <strong>Dive Notes</strong> and the <strong>Equipment</strong> tabs on the t
 <div class="paragraph"><p>The date and time of the dive, gas mixture and (often) water temperature is
 shown as obtained from the dive computer, but the user needs to add some
 additional information by hand in order to have a more complete dive record.
-The message in a blue box at
+If the contents of this tab is changed or edited in any way, the message in a blue box at
 the top of the panel indicates that the dive is being edited. If the user
 clicks on the <strong>Dive Notes</strong> tab, the following fields are
 visible:</p></div>
@@ -1541,7 +1541,9 @@ files with a CSV extension:</p></div>
 <div class="paragraph"><p>There are pre-configured definitions for some dive computers, e.g. the APD
 rebreathers. If the user&#8217;s dive computer is on this list, it should be selected
 using the dropdown
-box labeled <em>Pre-configured imports</em>. Finally <em>OK</em> should be clicked and
+box labeled <em>Pre-configured imports</em>. Select the button at the bottom right
+to indicate whether the dive data are in metric of imperial units.
+Finally <em>OK</em> should be clicked and
 the dive will be imported and listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p>If the dive computer is not on the pre-configured list, the user must
 select the <em>Field
@@ -4208,7 +4210,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-16 23:06:39 PDT
+Last updated 2014-07-18 10:16:43 PDT
 </div>
 </div>
 </body>

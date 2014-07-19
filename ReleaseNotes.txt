@@ -1,4 +1,4 @@
-			Subsurface 4.2 Beta 1
+			Subsurface 4.2 Beta 2
 			=====================
 
 Some of the changes since 4.1

@@ -15,7 +15,7 @@ DEPENDPATH += qt-ui
 mac: TARGET = Subsurface
 else: TARGET = subsurface
 
-VERSION = 4.1.90
+VERSION = 4.1.91
 
 HEADERS = \
 	color.h \
