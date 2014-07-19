@@ -106,8 +106,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 {
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
-	// we start with the first gas and see if it was changed
-	struct gasmix gas = d->cylinder[0].gasmix;
+	struct gasmix gas;
 	for (int i = 0; i < d->dc.samples - 1; i++) {
 		const sample &s = d->dc.sample[i];
 		if (s.time.seconds == 0)

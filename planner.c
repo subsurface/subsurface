@@ -94,11 +94,13 @@ void set_display_transitions(bool display)
 	plan_display_transitions = display;
 }
 
+/* get the gas at a certain time during the dive */
 void get_gas_at_time(struct dive *dive, struct divecomputer *dc, duration_t time, struct gasmix *gas)
 {
-	// we don't modify the values passed in if nothing is found
-	// so don't call with uninitialized gasmix !
+	// we always start with the first gas, so that's our gas
+	// unless an event tells us otherwise
 	struct event *event = dc->events;
+	*gas = dive->cylinder[0].gasmix;
 	while (event && event->time.seconds <= time.seconds) {
 		if (!strcmp(event->name, "gaschange")) {
 			int cylinder_idx = get_cylinder_index(dive, event);
@@ -153,8 +155,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 	if (!dc->samples)
 		return tissue_tolerance;
 	psample = sample = dc->sample;
-	/* we always start with gas 0 (unless an event tells us otherwise) */
-	gas = dive->cylinder[0].gasmix;
+
 	for (i = 0; i < dc->samples; i++, sample++) {
 		t1 = sample->time;
 		get_gas_at_time(dive, dc, t0, &gas);
@@ -551,7 +552,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				translate("gettextFromC", "gas"));
 	}
 	do {
-		struct gasmix gasmix, newgasmix;
+		struct gasmix gasmix, newgasmix = {};
 		const char *depth_unit;
 		double depthvalue;
 		int decimals;
