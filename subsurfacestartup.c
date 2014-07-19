@@ -42,8 +42,8 @@ struct preferences default_prefs = {
 	.decopo2 = 1600,
 	.doo2breaks = false,
 	.drop_stone_mode = false,
-	.bottomsac = 20,
-	.decosac = 17,
+	.bottomsac = 20000,
+	.decosac = 17000,
 	.show_pictures_in_profile = true
 };
 

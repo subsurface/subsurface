@@ -365,17 +365,17 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	QSettings s;
 	s.beginGroup("Planner");
-	prefs.ascrate75 = s.value("ascrate75", 9 * 1000.0 / 60.0).toInt();
-	prefs.ascrate50 = s.value("ascrate50", 6 * 1000.0 / 60.0).toInt();
-	prefs.ascratestops = s.value("ascratestops", 6 * 1000.0 / 60.0).toInt();
-	prefs.ascratelast6m = s.value("ascratelast6m", 1 * 1000.0 / 60.0).toInt();
-	prefs.descrate = s.value("descrate", 18 * 1000.0 / 60.0).toInt();
-	prefs.bottompo2 = s.value("bottompo2", 1400).toInt();
-	prefs.decopo2 = s.value("decopo2",1600).toInt();
-	prefs.doo2breaks = s.value("doo2breaks", false).toBool();
-	prefs.drop_stone_mode = s.value("drop_stone_mode", false).toBool();
-	prefs.bottomsac = s.value("bottomsac", 20000).toInt();
-	prefs.decosac = s.value("decosac", 17000).toInt();
+	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
+	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
+	prefs.ascratestops = s.value("ascratestops", prefs.ascratestops).toInt();
+	prefs.ascratelast6m = s.value("ascratelast6m", prefs.ascratelast6m).toInt();
+	prefs.descrate = s.value("descrate", prefs.descrate).toInt();
+	prefs.bottompo2 = s.value("bottompo2", prefs.bottompo2).toInt();
+	prefs.decopo2 = s.value("decopo2", prefs.decopo2).toInt();
+	prefs.doo2breaks = s.value("doo2breaks", prefs.doo2breaks).toBool();
+	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
+	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
+	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
 	s.endGroup();
 
 	updateUnitsUI();
