@@ -1323,12 +1323,14 @@ el ordenador de buceo seleccionado?</translation>
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Estos gases podrían mezclarse
+a partir de aire y usando:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>y</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
@@ -1688,12 +1690,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Activar gráfico de pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Activar gráfico de pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>

@@ -25,17 +25,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Work press.</source>
-        <translation>Trykkrating.</translation>
+        <translation>Trykkrating</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Start press.</source>
-        <translation>Starttrykk.</translation>
+        <translation>Starttrykk</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>End press.</source>
-        <translation>Sluttrykk.</translation>
+        <translation>Sluttrykk</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="70"/>
@@ -1142,7 +1142,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="645"/>
         <source>Dive time</source>
-        <translation>Dykketid</translation>
+        <translation>Varighet</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="816"/>
@@ -1168,12 +1168,12 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="391"/>
         <source>Dive info</source>
-        <translation>Dykkeinfo</translation>
+        <translation>Detaljer</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="455"/>
         <source>Interval</source>
-        <translation>Intervall</translation>
+        <translation>Overflateintervall</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="512"/>
@@ -1264,7 +1264,7 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="242"/>
         <source>Water temp. [%1]</source>
-        <translation>Vantemp. [%1]</translation>
+        <translation>Vanntemp. [%1]</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="277"/>
@@ -1321,12 +1321,14 @@
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Disse gassene kan blandes
+fra luft og bruker:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>og</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
@@ -1686,12 +1688,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Skru av/på pO₂-graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Skru av/på  pN₂-graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1721,7 +1723,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="874"/>
         <source>&amp;Yearly statistics</source>
-        <translation>Årsstatistik</translation>
+        <translation>Årsstatistikk</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="882"/>

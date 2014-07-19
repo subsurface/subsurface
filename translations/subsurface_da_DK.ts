@@ -55,7 +55,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="366"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Denne gas er i brug. Kun flasker som ikke bruges i dykket, kan fjernes</translation>
     </message>
 </context>
 <context>
@@ -209,7 +209,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="745"/>
         <source>Load images</source>
-        <translation type="unfinished"/>
+        <translation>Indlæs billeder</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="766"/>
@@ -252,7 +252,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="94"/>
         <source>Worldmap</source>
-        <translation>Globalt kort</translation>
+        <translation>Verdens kort</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="107"/>
@@ -279,7 +279,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="216"/>
         <source>Minimum Javascript</source>
-        <translation>Minimum javascript</translation>
+        <translation>Minimum Javascript</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="14"/>
@@ -289,12 +289,12 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="24"/>
         <source>General export</source>
-        <translation type="unfinished"/>
+        <translation>Generel eksport</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="184"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Generelle indstillinger</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="190"/>
@@ -304,12 +304,12 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="239"/>
         <source>Export list only</source>
-        <translation type="unfinished"/>
+        <translation>Eksporter kun listen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="252"/>
         <source>Style options</source>
-        <translation type="unfinished"/>
+        <translation>Udseende muligheder</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="264"/>
@@ -384,12 +384,12 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="58"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation type="unfinished"/>
+        <translation>Basis format bruges til udveksling af data mellem diverse dykker relaterede programmer</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="60"/>
         <source>Comma separated values that include the most relevant information of the dive profile.</source>
-        <translation type="unfinished"/>
+        <translation>Komma separeret værdier der indeholder de mest betydende informationer fra dykker profilen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="62"/>
@@ -399,7 +399,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="64"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
-        <translation type="unfinished"/>
+        <translation>HTML eksport af dykker lokationer, vist på kortet</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="66"/>
@@ -430,7 +430,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="171"/>
         <source>Export Subsurface XML</source>
-        <translation>Exporter Subsurface XML</translation>
+        <translation>Eksporter Subsurface XML</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="172"/>
@@ -673,7 +673,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="255"/>
         <source>Dive planner points</source>
-        <translation type="unfinished"/>
+        <translation>Planlægnings punkter</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="259"/>
@@ -683,7 +683,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="282"/>
         <source>Add dive data point</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj punkt</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
         <source>Cylinder index</source>
-        <translation type="unfinished"/>
+        <translation>Flaske oversigt</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
@@ -784,7 +784,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1308"/>
         <source>Mins</source>
-        <translation type="unfinished"/>
+        <translation>Mins</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1317"/>
@@ -1185,7 +1185,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="550"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Gnm dybde</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
@@ -1322,12 +1322,14 @@ fjerne den valgte dykkercomputer?</translation>
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Disse gasser kan
+blandes fra Luft ved brug:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>og</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
@@ -1337,7 +1339,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/maintab.cpp" line="798"/>
         <source>You are about to discard your changes.</source>
-        <translation>Du er ved at kassere dine ændringer.</translation>
+        <translation>Du er ved at droppe dine ændringer.</translation>
     </message>
 </context>
 <context>
@@ -1350,57 +1352,57 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation type="unfinished"/>
+        <translation>Skift pH2 graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
         <source>Toggle calculating all tissues</source>
-        <translation type="unfinished"/>
+        <translation>Skift beregning af alle væv</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="183"/>
         <source>Toggle DC reported ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Skift DC rapporteret loft</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="212"/>
         <source>Toggle calculated ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Skift beregnet loft</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="238"/>
         <source>Toggle NDL, TTS</source>
-        <translation type="unfinished"/>
+        <translation>Skift NDL, TTS</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="264"/>
         <source>Toggle calculated ceiling with 3m increments</source>
-        <translation type="unfinished"/>
+        <translation>Skift beregnet loft med 3m stop</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="290"/>
         <source>Toggle heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Skift hjerte frekvens</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
         <source>Toggle MOD</source>
-        <translation type="unfinished"/>
+        <translation>Skift MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="342"/>
         <source>Toggle EAD, END, EADD</source>
-        <translation type="unfinished"/>
+        <translation>Skift EAD,END,EADD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
         <source>Toggle SAC rate</source>
-        <translation type="unfinished"/>
+        <translation>Skift SAC rate</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Toggle ruler</source>
-        <translation type="unfinished"/>
+        <translation>Skift måler</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
@@ -1424,7 +1426,11 @@ mixed from Air and using:
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Courier&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="693"/>
@@ -1529,7 +1535,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="837"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"/>
+        <translation>Importer &amp;GPS data fra Subsurface webservice</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="890"/>
@@ -1579,7 +1585,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="984"/>
         <source>Toggle full screen</source>
-        <translation type="unfinished"/>
+        <translation>Skift fuld skærm</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1012"/>
@@ -1594,7 +1600,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1020"/>
         <source>Export Dive Logs</source>
-        <translation>Eksporter dyk filerne</translation>
+        <translation>Eksporter log filerne</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1023"/>
@@ -1683,12 +1689,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Skift pO₂ graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Skift pN₂ graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1713,7 +1719,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="869"/>
         <source>Auto &amp;group</source>
-        <translation type="unfinished"/>
+        <translation>Auto &amp;grupering</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="874"/>
@@ -1748,7 +1754,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="914"/>
         <source>P&amp;revious DC</source>
-        <translation type="unfinished"/>
+        <translation>Fo&amp;rige DC</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="917"/>
@@ -1823,12 +1829,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="701"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du gemme ændringerne du foretog på denne fil %1?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="703"/>
         <source>Do you want to save the changes that you made in the data file?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du gemme ændringerne du foretog på data filen?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="708"/>
@@ -1848,7 +1854,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1191"/>
         <source>Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation>Dykkerlog filer (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML filer (*.xml);;UDDF/UDCF filer(*.uddf *.udcf);;JDiveLog filer(*.jlb);;Suunto Filer(*.sde *.db);;CSV Filer(*.csv);;Alle Filer(*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="709"/>
@@ -2092,7 +2098,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="207"/>
         <source>Display invalid</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldigt display</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="224"/>
@@ -2177,37 +2183,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="538"/>
         <source>Ascent/descent speed denominator</source>
-        <translation type="unfinished"/>
+        <translation>Op/Nedstignings hastigheds nævner</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="598"/>
         <source>Threshold when showing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Tærskel ved visning af pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="619"/>
         <source>Threshold when showing pN₂</source>
-        <translation type="unfinished"/>
+        <translation>Tærskel ved visning af pN2</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="640"/>
         <source>Threshold when showing pHe</source>
-        <translation type="unfinished"/>
+        <translation>Tærskel ved visning af pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="661"/>
         <source>Max pO₂ when showing MOD</source>
-        <translation type="unfinished"/>
+        <translation>Maks pO₂ ved visning af  MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="682"/>
         <source>Draw dive computer reported ceiling red</source>
-        <translation type="unfinished"/>
+        <translation>Tegn dykker computer rapporteret loft rødt</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="693"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Vis ubrugte flasker i Udstyrs fanebladet</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="704"/>
@@ -2257,7 +2263,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="395"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Hvis du klikker OK, vil alle indstillinger bliver set til deres standard værdier. Dette vil ske øjeblikkeligt. </translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="381"/>
@@ -2494,12 +2500,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="898"/>
         <source>Make first divecomputer</source>
-        <translation>Sæt som 1. dykkercomputer</translation>
+        <translation>Vælg som 1. dykkercomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="900"/>
         <source>Delete this divecomputer</source>
-        <translation>Slet denne dykkerconputer</translation>
+        <translation>Slet denne dykkercomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="907"/>
@@ -2572,7 +2578,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="212"/>
         <source>Remove this point</source>
-        <translation type="unfinished"/>
+        <translation>Fjern dette punkt</translation>
     </message>
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="58"/>
@@ -2702,7 +2708,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="23"/>
         <source>Shift selected image times</source>
-        <translation type="unfinished"/>
+        <translation>Skift valgte billede tider</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="105"/>
@@ -2750,7 +2756,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="23"/>
         <source>Shift selected dive times</source>
-        <translation type="unfinished"/>
+        <translation>Skift valgte dykker tider</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="49"/>
@@ -2986,7 +2992,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="66"/>
         <source>I am downloading dives from supported dive computer</source>
-        <translation>Jeg downloader dyk fra understøttet dykkercomputer</translation>
+        <translation>Jeg indlæser dyk fra understøttet dykkercomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="73"/>
@@ -3001,7 +3007,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="87"/>
         <source>I use the Android companion app to track dive locations</source>
-        <translation>Jeg bruger Android Companion App til lokationsbestemmelse</translation>
+        <translation>Jeg bruger Android Companion App til lokations bestemmelse</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="94"/>
@@ -3037,7 +3043,7 @@ Sprog: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="74"/>
         <source>Should we ask you later?</source>
-        <translation>Skal vi spørge senere?</translation>
+        <translation>Skal vi spørge dig senere?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="75"/>
@@ -3063,7 +3069,8 @@ Sprog: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="36"/>
         <source>
 OS CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+OS CPU Arkitektur: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="97"/>
@@ -3172,7 +3179,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="447"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation type="unfinished"/>
+        <translation>Et klik her vil fjerne dette vægt system.</translation>
     </message>
 </context>
 <context>
@@ -3304,17 +3311,17 @@ Gennemsnit</translation>
     <message>
         <location filename="../dive.c" line="233"/>
         <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="238"/>
         <source>ft/min</source>
-        <translation type="unfinished"/>
+        <translation>f/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="240"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>f/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="259"/>
@@ -3745,7 +3752,7 @@ Gennemsnit</translation>
         <location filename="../planner.c" line="609"/>
         <location filename="../planner.c" line="613"/>
         <source>%3dmin</source>
-        <translation type="unfinished"/>
+        <translation>%3dmin</translation>
     </message>
     <message>
         <location filename="../planner.c" line="629"/>
@@ -3755,7 +3762,7 @@ Gennemsnit</translation>
     <message>
         <location filename="../planner.c" line="642"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../planner.c" line="644"/>
@@ -3787,17 +3794,17 @@ Gennemsnit</translation>
     <message>
         <location filename="../planner.c" line="675"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s i planlagt opstigning)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="677"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s under planlagt opstigning) af %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="692"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>høj pO₂ værdi %.2f at %d:%02u med gas %s på dybde %.*f %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="990"/>
@@ -3841,6 +3848,7 @@ D: %.1f%s
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
+
 </translation>
     </message>
     <message>
@@ -3941,7 +3949,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1320"/>
         <source>TTS: %umin
 </source>
-        <translation type="unfinished"/>
+        <translation>TTS: %umin
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1323"/>
@@ -4149,7 +4158,7 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="169"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="214"/>
@@ -4701,12 +4710,12 @@ Er Uemis Zurich tilsluttet korrekt?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="461"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>Vis etappe varighed</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="474"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Vis overgange i deko</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="481"/>

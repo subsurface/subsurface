@@ -25,17 +25,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Work press.</source>
-        <translation type="unfinished"/>
+        <translation>Ciśn. robocze</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Start press.</source>
-        <translation type="unfinished"/>
+        <translation>Ciśn. początkowe</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>End press.</source>
-        <translation type="unfinished"/>
+        <translation>Ciśn. końcowe</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="70"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="366"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Ten gaz jest używany. Można usuwać tylko gazy, których nie używasz.</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="30"/>
         <source>Export format</source>
-        <translation type="unfinished"/>
+        <translation>Format danych</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="42"/>
@@ -279,17 +279,17 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="216"/>
         <source>Minimum Javascript</source>
-        <translation type="unfinished"/>
+        <translation>Minimalny Javascript</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="14"/>
         <source>Export dive log files</source>
-        <translation type="unfinished"/>
+        <translation>Eksportowanie nurkowań</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="24"/>
         <source>General export</source>
-        <translation type="unfinished"/>
+        <translation>Podstawowy eksport</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="184"/>
@@ -299,17 +299,17 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="190"/>
         <source>Subsurface numbers</source>
-        <translation type="unfinished"/>
+        <translation>Zachowaj numerację</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="239"/>
         <source>Export list only</source>
-        <translation type="unfinished"/>
+        <translation>Eksportuj tylko listę</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="252"/>
         <source>Style options</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia stylu</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="264"/>
@@ -359,17 +359,17 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="323"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Motyw</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="334"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Lekki</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="339"/>
         <source>Sand</source>
-        <translation type="unfinished"/>
+        <translation>Piasek</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="158"/>
@@ -384,27 +384,27 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="58"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation type="unfinished"/>
+        <translation>Format używany do wymiany danych pomiędzy różnorodnymi programami związanymi z nurkowaniem.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="60"/>
         <source>Comma separated values that include the most relevant information of the dive profile.</source>
-        <translation type="unfinished"/>
+        <translation>Lista oddzielonych przecinkami najważniejszych informacji z profilu nurkowania. </translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="62"/>
         <source>Send the dive data to divelogs.de website.</source>
-        <translation type="unfinished"/>
+        <translation>Wysyła dane na stronę divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="64"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
-        <translation type="unfinished"/>
+        <translation>Eksport danych o miejscach nurkowych w HTML z zaznaczeniem ich na mapie świata. </translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="66"/>
         <source>Subsurface native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Format XML używany przez Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="157"/>
@@ -440,7 +440,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="180"/>
         <source>Export HTML files as</source>
-        <translation type="unfinished"/>
+        <translation>Eksportuj pliki HTML jako</translation>
     </message>
 </context>
 <context>
@@ -607,7 +607,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="106"/>
         <source>Planned dive time</source>
-        <translation type="unfinished"/>
+        <translation>Planowany czas zanurzenia</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="141"/>
@@ -645,7 +645,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="626"/>
         <source>Duration</source>
-        <translation>Czas</translation>
+        <translation>Czas trwania</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="628"/>
@@ -716,7 +716,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="107"/>
         <source>Pressure S</source>
-        <translation type="unfinished"/>
+        <translation>Ciśnienie S</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="115"/>
@@ -784,7 +784,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1308"/>
         <source>Mins</source>
-        <translation type="unfinished"/>
+        <translation>Minut</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1317"/>
@@ -799,7 +799,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1332"/>
         <source>Max CNS</source>
-        <translation type="unfinished"/>
+        <translation>Max CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1335"/>
@@ -1043,7 +1043,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="120"/>
         <source>Edit selected dive locations</source>
-        <translation type="unfinished"/>
+        <translation>Wskaż miejsce zaznaczonych nurkowań</translation>
     </message>
 </context>
 <context>
@@ -1100,14 +1100,14 @@ wybrany komputer nurkowy?</translation>
         <location filename="../qt-ui/maintab.ui" line="607"/>
         <location filename="../qt-ui/maintab.cpp" line="244"/>
         <source>Air temp.</source>
-        <translation>Temperatura powietrza</translation>
+        <translation>Temp. powietrza</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <location filename="../qt-ui/maintab.ui" line="626"/>
         <location filename="../qt-ui/maintab.cpp" line="245"/>
         <source>Water temp.</source>
-        <translation>Temperatura wody</translation>
+        <translation>Temp. wody</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
@@ -1133,12 +1133,12 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="531"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Maks. głębokość</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="588"/>
         <source>Air pressure</source>
-        <translation>Ciśnienie atmosferyczne</translation>
+        <translation>Ciśn. atmosferyczne</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="645"/>
@@ -1186,7 +1186,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="550"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Śr. głębokość </translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
@@ -1311,34 +1311,36 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="500"/>
         <source>Deepest dive</source>
-        <translation type="unfinished"/>
+        <translation>Najgłębsze nurkowanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="501"/>
         <source>Shallowest dive</source>
-        <translation type="unfinished"/>
+        <translation>Najpłytsze nurkowanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="545"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Te gazy mogą być przygotowane
+z powietrza przy użyciu:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>oraz </translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
         <source>Discard the changes?</source>
-        <translation type="unfinished"/>
+        <translation>Porzucić zmiany?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="798"/>
         <source>You are about to discard your changes.</source>
-        <translation type="unfinished"/>
+        <translation>Masz zamiar porzucić zmiany.</translation>
     </message>
 </context>
 <context>
@@ -1406,7 +1408,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj miniaturki zdjęć</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1534,7 +1536,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="837"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"/>
+        <translation>Importuj dane GPS z usługi sieciowej Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="890"/>
@@ -1594,12 +1596,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1017"/>
         <source>&amp;Export</source>
-        <translation type="unfinished"/>
+        <translation>Eksport</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1020"/>
         <source>Export Dive Logs</source>
-        <translation type="unfinished"/>
+        <translation>Eksport Nurkowań</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1023"/>
@@ -1688,12 +1690,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj wykres pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj wykres pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1788,7 +1790,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="962"/>
         <source>&amp;Import log files</source>
-        <translation type="unfinished"/>
+        <translation>Importowanie logów nurkowych</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="965"/>
@@ -1818,7 +1820,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="421"/>
         <source>Print runtime table</source>
-        <translation type="unfinished"/>
+        <translation>Drukowanie planu nurkowego</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="516"/>
@@ -1957,12 +1959,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="306"/>
         <source>Clear all settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia fabryczne</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="312"/>
         <source>Reset all settings to their default value</source>
-        <translation type="unfinished"/>
+        <translation>Przywróć wszystkie ustawienia do ich wartości domyślnych </translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="341"/>
@@ -2047,7 +2049,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="817"/>
         <source>Proxy type</source>
-        <translation>Rodzaj Proxy</translation>
+        <translation>Rodzaj proxy</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="830"/>
@@ -2242,12 +2244,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="25"/>
         <source>HTTP proxy</source>
-        <translation>proxy HTTP</translation>
+        <translation>Proxy HTTP</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="26"/>
         <source>SOCKS proxy</source>
-        <translation>proxy SOCKS</translation>
+        <translation>Proxy SOCKS</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="245"/>
@@ -2262,7 +2264,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="395"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Jeśli klikniesz OK, wszystkie ustawienia Subsurface zostaną przywrócone do ich wartości początkowych - z natychmiastowym skutkiem.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="381"/>
@@ -2446,7 +2448,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Tagi:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
@@ -2499,12 +2501,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="898"/>
         <source>Make first divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>Ustaw jako pierwszy komputer nurkowy</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="900"/>
         <source>Delete this divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>Usuń ten komputer nurkowy</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="907"/>
@@ -2681,7 +2683,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="126"/>
         <source>New number</source>
-        <translation type="unfinished"/>
+        <translation>Nowy numer</translation>
     </message>
 </context>
 <context>
@@ -2689,7 +2691,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/searchbar.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularz</translation>
     </message>
 </context>
 <context>
@@ -2742,7 +2744,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="224"/>
         <source>Open image file</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz zdjęcie</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="226"/>
@@ -2961,27 +2963,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="32"/>
         <source>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</source>
-        <translation>Chcielibyśmy dowiedzieć się więcej o naszych użytkownikach, ich preferencjach i sposobie korzystania z Subsurface. Prosimy Cię o poświęcenie chwili na wypełnienie tej ankiety i podzielenie się nią z ekipą Subsurface. Proszę zaznaczyć wszystkie opcje, które Ciebie dotyczą.</translation>
+        <translation>Chcielibyśmy dowiedzieć się więcej o naszych użytkownikach, ich preferencjach i sposobie korzystania z programu Subsurface. Prosimy Cię o poświęcenie kilku chwil na wypełnienie tej ankiety i podzielenie się informacjami z ekipą Subsurface. Proszę zaznaczyć wszystkie opcje, które Ciebie dotyczą.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User Survey</source>
-        <translation type="unfinished"/>
+        <translation>Ankieta</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="25"/>
         <source>Subsurface user survey</source>
-        <translation type="unfinished"/>
+        <translation>Ankieta Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="52"/>
         <source>Recreational diver</source>
-        <translation type="unfinished"/>
+        <translation>Jestem płetwonurkiem rekreacyjnym</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="45"/>
         <source>Technical diver</source>
-        <translation type="unfinished"/>
+        <translation>Jestem płetwonurkiem technicznym</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="59"/>
@@ -3011,12 +3013,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="94"/>
         <source>Please type suggestions (in English) in the following box</source>
-        <translation type="unfinished"/>
+        <translation>Wpisz swoje uwagi i sugestie (po angielsku) w poniższym polu</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="104"/>
         <source>The following information about your system will also be submitted</source>
-        <translation type="unfinished"/>
+        <translation>Zostaną dołączone także następujące informacje o Twoim systemie</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="28"/>
@@ -3057,7 +3059,7 @@ Język: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="96"/>
         <source>Submit user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Wysyłanie ankiety.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="77"/>
@@ -3068,12 +3070,13 @@ Język: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="36"/>
         <source>
 OS CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Architektura OS CPU: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="97"/>
         <source>Subsurface was unable to submit the user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nie był w stanie wysłać ankiety.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="102"/>
@@ -3114,7 +3117,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Web service connection</source>
-        <translation type="unfinished"/>
+        <translation>Połączenie z usługą internetową</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -3177,7 +3180,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="447"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation type="unfinished"/>
+        <translation>Kliknięcie tu usunie balast z listy.</translation>
     </message>
 </context>
 <context>
@@ -3304,17 +3307,17 @@ Maximum</source>
     <message>
         <location filename="../dive.c" line="233"/>
         <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="238"/>
         <source>ft/min</source>
-        <translation type="unfinished"/>
+        <translation>ft/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="240"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>ft/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="259"/>
@@ -3699,27 +3702,27 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="535"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>w oparciu o GFlow = %d i GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Subsurface dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Plan nurkowania Subsurface </translation>
     </message>
     <message>
         <location filename="../planner.c" line="542"/>
         <source>depth</source>
-        <translation type="unfinished"/>
+        <translation>głębokość</translation>
     </message>
     <message>
         <location filename="../planner.c" line="545"/>
         <source>runtime</source>
-        <translation type="unfinished"/>
+        <translation>runtime</translation>
     </message>
     <message>
         <location filename="../planner.c" line="548"/>
         <source>duration</source>
-        <translation type="unfinished"/>
+        <translation>czas trwania</translation>
     </message>
     <message>
         <location filename="../planner.c" line="551"/>
@@ -3729,12 +3732,12 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="585"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
-        <translation type="unfinished"/>
+        <translation>Przejście do %.*f %s w %d:%02d min - runtime %d:%02u z %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="595"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
-        <translation type="unfinished"/>
+        <translation>Pozostań na %.*f %s przez %d:%02d min - runtime %d:%02u z %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="606"/>
@@ -3750,12 +3753,12 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="629"/>
         <source>Switch gas to %s</source>
-        <translation type="unfinished"/>
+        <translation>Zmiana gazu na %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="642"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../planner.c" line="644"/>
@@ -3765,39 +3768,39 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="647"/>
         <source>Gas consumption:</source>
-        <translation type="unfinished"/>
+        <translation>Zużycie gazu:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="667"/>
         <location filename="../planner.c" line="672"/>
         <location filename="../planner.c" line="695"/>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Ostrzeżenie:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="668"/>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation type="unfinished"/>
+        <translation>to więcej gazu niż masz w dostępnych butlach!</translation>
     </message>
     <message>
         <location filename="../planner.c" line="673"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation type="unfinished"/>
+        <translation>brak rezerwy na dzielenie się gazem z partnerem przy wynurzaniu!</translation>
     </message>
     <message>
         <location filename="../planner.c" line="675"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s gazu %s (%.0f%s/%.0f%s podczas wynurzania)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="677"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s podczas wynurzania) gazu %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="692"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>wysoki pO₂ o wartości %.2f w %d:%02u przy użyciu %s na głębokości %.*f %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="990"/>
@@ -4433,17 +4436,17 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>pO₂ Green Warning</source>
-        <translation type="unfinished"/>
+        <translation>Ostrzeżenie: pO₂ zielone</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>pO₂ Ascend Warning</source>
-        <translation type="unfinished"/>
+        <translation>Ostrzeżenie: wynurzanie / pO₂ </translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>pO₂ Ascend Alarm</source>
-        <translation type="unfinished"/>
+        <translation>Alarm: wynurzanie / pO₂</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
@@ -4534,22 +4537,22 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max Depth:</source>
-        <translation type="unfinished"/>
+        <translation>Max głębokość:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. powietrza:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="48"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Temp. wody:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Miejsce:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="54"/>
@@ -4586,17 +4589,17 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularz</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="35"/>
         <source>Rates</source>
-        <translation type="unfinished"/>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="56"/>
         <source>Ascent</source>
-        <translation type="unfinished"/>
+        <translation>Wynurzania</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="77"/>
@@ -4630,17 +4633,17 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="148"/>
         <source>Descent</source>
-        <translation type="unfinished"/>
+        <translation>Zanurzania</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="200"/>
         <source>surface to the bottom</source>
-        <translation type="unfinished"/>
+        <translation>od powierzchni do dna</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="226"/>
         <source>Planning</source>
-        <translation type="unfinished"/>
+        <translation>Planowanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="247"/>
@@ -4655,7 +4658,7 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="281"/>
         <source>Drop to first depth</source>
-        <translation type="unfinished"/>
+        <translation>Spadnij do pierwszej głębokości</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
@@ -4665,12 +4668,12 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="295"/>
         <source>Plan backgas breaks</source>
-        <translation type="unfinished"/>
+        <translation>Przerwy powietrzne</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="318"/>
         <source>Gas options</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia gazu</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="339"/>
@@ -4685,12 +4688,12 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="359"/>
         <source>Bottom pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ przy dnie</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="382"/>
         <source>Deco pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ podczas deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="421"/>
@@ -4700,22 +4703,22 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="445"/>
         <source>Display runtime</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj runtime</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="461"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj czas trwania segmentu</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="474"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj przejścia między przystankami</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="481"/>
         <source>Verbatim diveplan</source>
-        <translation type="unfinished"/>
+        <translation>Plan opisowy</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="366"/>
@@ -4726,17 +4729,17 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj runtime, czyli całkowity czas dla przystanku</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="458"/>
         <source>In dive plan, show duration (relative time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj czas trwania (względny czas) przystanku</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="471"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation type="unfinished"/>
+        <translation>Pokazuj lub ukrywaj listę przejść </translation>
     </message>
 </context>
 </TS>

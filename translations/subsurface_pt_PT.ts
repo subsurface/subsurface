@@ -10,7 +10,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Size</source>
-        <translation>Tamanho</translation>
+        <translation>Capacidade</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Work press.</source>
-        <translation>Press operacional</translation>
+        <translation>Pressão de serviço</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="70"/>
         <source>Switch at</source>
-        <translation>Mudar a</translation>
+        <translation>Mudar aos</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="158"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="366"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Este gás está a ser usado. Apenas podem ser removidas as garrafas que não foram usadas durante o mergulho.</translation>
     </message>
 </context>
 <context>
@@ -232,7 +232,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="42"/>
         <source>Subsurface XML</source>
-        <translation>Subsurface XML</translation>
+        <translation>Ficheiro XML do Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="61"/>
@@ -384,7 +384,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="58"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation>Formato de uso genérico para trocar dados entre uma variedades de programas relacionados com o mergulho.</translation>
+        <translation>Formato de uso genérico para trocar dados entre vários programas relacionados com o mergulho.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="60"/>
@@ -607,7 +607,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="106"/>
         <source>Planned dive time</source>
-        <translation>Tempo de mergulho planeado</translation>
+        <translation>Data e hora </translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="141"/>
@@ -784,7 +784,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1308"/>
         <source>Mins</source>
-        <translation>Mins</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1317"/>
@@ -1185,7 +1185,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="550"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Prof. média</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
@@ -1322,12 +1322,14 @@ remover o computador de mergulho seleccionado?</translation>
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Estes gases podem ser
+obtidos a partir do ar e usando:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>e</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
@@ -1405,7 +1407,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/ocultar visualização das miniaturas das imagens</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1687,12 +1689,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/ocultar gráfico da pO₂ </translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/ocultar gráfico da pN₂ </translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1707,7 +1709,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation>&amp;Editar nomes do dispositivo</translation>
+        <translation>&amp;Editar nomes dos computadores de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>
@@ -1901,7 +1903,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation>Defenições padrão</translation>
+        <translation>Definições padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -2051,7 +2053,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="830"/>
         <source>Host</source>
-        <translation>Host</translation>
+        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="856"/>
@@ -2091,7 +2093,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="186"/>
         <source>Default dive log file</source>
-        <translation>Ficheiro de mergulho por omissão</translation>
+        <translation>Ficheiro de mergulho por defeito</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="207"/>
@@ -2116,7 +2118,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="286"/>
         <source>Default user ID</source>
-        <translation>ID do utilizador por omissão</translation>
+        <translation>ID do utilizador por defeito</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="296"/>
@@ -2284,7 +2286,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="46"/>
         <source>&amp;Preview</source>
-        <translation>%Previsão</translation>
+        <translation>&amp;Previsão</translation>
     </message>
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="43"/>
@@ -2360,12 +2362,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="116"/>
         <source>6 dives per page</source>
-        <translation>6 mergulhos por página</translation>
+        <translation>6 merg. por página</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="132"/>
         <source>2 dives per page</source>
-        <translation>2 mergulhos por página</translation>
+        <translation>2 merg. por página</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="145"/>
@@ -2445,7 +2447,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Etiquetas:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
@@ -2908,7 +2910,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="36"/>
         <source>Subsurface was unable to check for updates.</source>
-        <translation>Subsurface não consegue verificar por actualizações.</translation>
+        <translation>Não foi possível encontrar actualizações para o Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="41"/>
@@ -3067,7 +3069,8 @@ Linguagem: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="36"/>
         <source>
 OS CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Arquitectura do CPU e SO: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="97"/>
@@ -3308,17 +3311,17 @@ Média</translation>
     <message>
         <location filename="../dive.c" line="233"/>
         <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="238"/>
         <source>ft/min</source>
-        <translation type="unfinished"/>
+        <translation>ft/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="240"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>ft/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="259"/>
@@ -3699,7 +3702,7 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="526"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>CLÁUSULA DE DESRESPONSABILIZAÇÃO/AVISO:ESTA É UMA NOVA IMPLEMENTAÇÃO DO ALGORITMO BUHLMANN E DO SEU PLANEADOR DE MERGULHOS DERIVADO AO QUAL  SÓ FORAM REALIZADOS TESTES DE FORMA LIMITADA. RECOMENDAMOS FORTEMENTE PARA NUNCA PLANEAR MERGULHOS BASEADOS SIMPLESMENTE NOS RESULTADOS OBTIDOS AQUI.</translation>
+        <translation>AVISO:ESTA É UMA IMPLEMENTAÇÃO DO ALGORITMO BUEHLMANN PARA PLANIFICAR MERGULHOS. CONTUDO ESTE PLANIFICADOR SÓ FOI TESTADO DE FORMA LIMITADA. RECOMENDAMOS QUE NÃO SE BASEIE UNICAMENTE NOS RESULTADOS OBTIDOS AQUI PARA PLANEAR OS SEUS MERGULHOS.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="535"/>
@@ -3760,7 +3763,7 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="642"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../planner.c" line="644"/>
@@ -3787,7 +3790,7 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="673"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation>não há reserva suficiente de gás de partilha para subir</translation>
+        <translation>a reserva de gás não é suficiente para ser partilhada durante a subida!</translation>
     </message>
     <message>
         <location filename="../planner.c" line="675"/>
@@ -4195,7 +4198,7 @@ EADD: %d%s
     <message>
         <location filename="../statistics.c" line="277"/>
         <source>for selected dive</source>
-        <translation>para mergulho seleccionado</translation>
+        <translation>para o mergulho seleccionado</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="279"/>
@@ -4365,7 +4368,7 @@ O Uemis Zurich está bem ligado?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="622"/>
         <source>semidry</source>
-        <translation>semi-seco</translation>
+        <translation>fato semi-seco</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="622"/>
@@ -4400,7 +4403,7 @@ O Uemis Zurich está bem ligado?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="623"/>
         <source>2 pcs full suit</source>
-        <translation>Fato completo 2 peças</translation>
+        <translation>Fato completo de 2 peças</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="624"/>
@@ -4722,7 +4725,7 @@ O Uemis Zurich está bem ligado?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="481"/>
         <source>Verbatim diveplan</source>
-        <translation>Plano de mergulho verbal</translation>
+        <translation>Plano de mergulho detalhado</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="366"/>

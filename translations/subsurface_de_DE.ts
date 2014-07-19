@@ -55,7 +55,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="366"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Gas wird verwendet. Nur Flaschen die nicht im Tauchgang verwendet werden können entfernt werden.</translation>
     </message>
 </context>
 <context>
@@ -1184,7 +1184,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="550"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Ø Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
@@ -1321,12 +1321,14 @@
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation type="unfinished"/>
+        <translation>Diese Gase können aus Luft und
+den folgenden Gasen gemischt werden:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>und</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="797"/>
@@ -1404,7 +1406,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Miniaturansicht der Bilder ein-/ausschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1686,12 +1688,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ Kurve ein-/ausschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>pN₂ Kurve ein-/ausschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -2444,7 +2446,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Stichworte:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
@@ -2959,7 +2961,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="32"/>
         <source>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</source>
-        <translation>Wir würden gerne mehr über unsere Benutzer erfahren, Ihre Präferenzen und die Art der Benutzung. Bitte nimm dir eine Minute Zeit, um diese Umfrage auszufüllen und sie dem Subsurface Team zu schicken. Bitte wähle alle zutreffenden Auswahlmöglichkeiten.</translation>
+        <translation>Wir würden gerne mehr über unsere Benutzer, ihre Präferenzen und die Art der Benutzung dieser Software erfahren. Bitte nimm Dir eine Minute Zeit, um diese Umfrage auszufüllen und sie dem Subsurface Team zu schicken. Bitte wähle alle zutreffenden Auswahlmöglichkeiten aus.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
@@ -3066,7 +3068,8 @@ Sprache: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="36"/>
         <source>
 OS CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Prozessor Architektur (laut Betriebsystem): %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="97"/>
@@ -3307,17 +3310,17 @@ Durchschnitt</translation>
     <message>
         <location filename="../dive.c" line="233"/>
         <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="238"/>
         <source>ft/min</source>
-        <translation type="unfinished"/>
+        <translation>ft/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="240"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>ft/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="259"/>
@@ -3758,7 +3761,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="642"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CND</translation>
     </message>
     <message>
         <location filename="../planner.c" line="644"/>
