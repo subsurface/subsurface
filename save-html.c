@@ -36,6 +36,7 @@ void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 	put_string(b, "\"events\":[");
 	while (ev) {
 		put_format(b, "{\"name\":\"%s\",", ev->name);
+		put_format(b, "\"value\":\"%d\",", ev->value);
 		put_format(b, "\"time\":\"%d\",},", ev->time.seconds);
 		ev = ev->next;
 	}

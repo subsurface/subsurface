@@ -747,7 +747,7 @@ Return the HTML string for a bookmark entry in the table.
 */
 function get_bookmark_HTML(event)
 {
-	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + int_to_time(event.time) + '</td></tr>';
+	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + int_to_time(event.time) + '</td><td class="Cyl">' + event.value + '</td></tr>';
 }
 
 /**
@@ -758,7 +758,7 @@ function get_bookmarks_HTML(dive)
 	if (dive.events <= 0)
 		return "";
 	var result = "";
-	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td></tr>';
+	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td><td class="words">Value</td></tr>';
 	for (var i in dive.events) {
 		result += get_bookmark_HTML(dive.events[i]);
 	}
