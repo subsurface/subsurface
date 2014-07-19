@@ -792,8 +792,8 @@ function get_dive_HTML(dive)
 */
 function get_status_HTML(dive)
 {
-	return '<h2 class="det_hed">Dive Status</h2><table><tr><td class="words">Sac: </td><td>' + dive.sac +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otu: </td><td>' + dive.otu +
+	return '<h2 class="det_hed">Dive Status</h2><table><tr><td class="words">Sac: </td><td>' + ml_to_litre(dive.sac) +
+	       ' l/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otu: </td><td>' + dive.otu +
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cns: </td><td>' + dive.cns +
 	       '</td></tr></table>';
 };
@@ -848,6 +848,11 @@ function mbar_to_bar(mbar)
 function mm_to_meter(mm)
 {
 	return mm / (1000);
+}
+
+function ml_to_litre(ml)
+{
+	return ml / (1000);
 }
 
 function format_two_digit(n)
