@@ -53,6 +53,8 @@ bool intLessThan(int a, int b)
 }
 void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 {
+	if (!rows.count())
+		return;
 	int firstRow = rowCount() - rows.count();
 	QVector<int> v2 = rows;
 	std::sort(v2.begin(), v2.end(), intLessThan);
