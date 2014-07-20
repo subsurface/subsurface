@@ -1339,7 +1339,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Cyl");
 			break;
 		case NITROX:
-			ret = QString("O%1%").arg(UTF8_SUBSCRIPT_2);
+			ret = tr("Gas");
 			break;
 		case SAC:
 			ret = tr("SAC");
