@@ -1081,3 +1081,7 @@ function switchDives(e)
 		}
 	}
 }
+
+window.onresize = function(event) {
+      plot1.replot( { resetAxes: true } );
+};
