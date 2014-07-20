@@ -1054,7 +1054,7 @@ function unshowDiveDetails(dive)
 
 function nextDetailedDive()
 {
-	if (dive_id < items.length) {
+	if (dive_id < items.length - 1) {
 		showDiveDetails(++dive_id);
 	}
 }
