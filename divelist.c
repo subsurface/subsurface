@@ -434,14 +434,14 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-#define MAX_NITROX_STRING 80
+#define MAX_GAS_STRING 80
 #define UTF8_ELLIPSIS "\xE2\x80\xA6"
 
 /* callers needs to free the string */
-char *get_nitrox_string(struct dive *dive)
+char *get_dive_gas_string(struct dive *dive)
 {
 	int o2, he, o2low;
-	char *buffer = malloc(MAX_NITROX_STRING);
+	char *buffer = malloc(MAX_GAS_STRING);
 
 	if (buffer) {
 		get_dive_gas(dive, &o2, &he, &o2low);
@@ -450,12 +450,12 @@ char *get_nitrox_string(struct dive *dive)
 		o2low = (o2low + 5) / 10;
 
 		if (he)
-			snprintf(buffer, MAX_NITROX_STRING, "%d/%d", o2, he);
+			snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
 		else if (o2)
 			if (o2 == o2low)
-				snprintf(buffer, MAX_NITROX_STRING, "%d", o2);
+				snprintf(buffer, MAX_GAS_STRING, "%d", o2);
 			else
-				snprintf(buffer, MAX_NITROX_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
+				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
 		else
 			strcpy(buffer, translate("gettextFromC", "air"));
 	}

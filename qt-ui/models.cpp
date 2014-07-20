@@ -1147,7 +1147,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = QString(dive->cylinder[0].type.description);
 			break;
 		case GAS:
-			retVal = QString(get_nitrox_string(dive));
+			retVal = QString(get_dive_gas_string(dive));
 			break;
 		case SAC:
 			retVal = displaySac();
