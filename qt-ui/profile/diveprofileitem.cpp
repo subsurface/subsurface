@@ -254,7 +254,7 @@ DiveHeartrateItem::DiveHeartrateItem()
 	pen.setCosmetic(true);
 	pen.setWidth(1);
 	setPen(pen);
-	visible = true;
+	settingsChanged();
 }
 
 void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -335,20 +335,7 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 void DiveHeartrateItem::settingsChanged()
 {
-	QSettings s;
-	s.beginGroup("TecDetails");
-	visible = s.value(visibilityKey).toBool();
-	setVisible(visible);
-}
-
-void DiveHeartrateItem::setVisibilitySettingsKey(const QString &key)
-{
-	visibilityKey = key;
-}
-
-bool DiveHeartrateItem::isVisible()
-{
-	return visible == true;
+	setVisible(prefs.hrgraph);
 }
 
 DiveTemperatureItem::DiveTemperatureItem()
