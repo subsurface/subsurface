@@ -156,7 +156,9 @@ void DiveListView::restoreSelection()
 		return;
 
 	selectionSaved = false;
+	dontEmitDiveChangedSignal = true;
 	unselectDives();
+	dontEmitDiveChangedSignal = false;
 	Q_FOREACH (dive_trip_t *trip, selectedDives.keys()) {
 		QList<int> divesOnTrip = getDivesInTrip(trip);
 		QList<int> selectedDivesOnTrip = selectedDives.values(trip);

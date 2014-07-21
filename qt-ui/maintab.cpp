@@ -761,10 +761,9 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		MainWindow::instance()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
-		MainWindow::instance()->refreshDisplay();
+		MainWindow::instance()->refreshDisplay(false);
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}
-	updateDiveInfo();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->dive_list()->setFocus();
