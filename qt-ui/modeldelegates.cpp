@@ -432,10 +432,10 @@ void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option,
 
 QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
-    QStyleOptionViewItemV4 options = option;
-    initStyleOption(&options, index);
-    QTextDocument doc;
-    doc.setHtml(options.text);
-    doc.setTextWidth(options.rect.width());
-    return QSize(doc.idealWidth(), doc.size().height());
+	QStyleOptionViewItemV4 options = option;
+	initStyleOption(&options, index);
+	QTextDocument doc;
+	doc.setHtml(options.text);
+	doc.setTextWidth(options.rect.width());
+	return QSize(doc.idealWidth(), doc.size().height());
 }
