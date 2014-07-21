@@ -35,7 +35,7 @@ struct preferences {
 	short calcndltts;
 	short gflow;
 	short gfhigh;
-	bool animation;
+	int animation_speed;
 	bool gf_low_at_maxdepth;
 	short display_invalid_dives;
 	short unit_system;

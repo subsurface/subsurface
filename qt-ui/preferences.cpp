@@ -103,7 +103,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.show_average_depth->setChecked(prefs.show_average_depth);
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
-	ui.velocitySlider->setValue(prefs.animation);
+	ui.velocitySlider->setValue(prefs.animation_speed);
 
 	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
 	filterModel->setSourceModel(LanguageModel::instance());
@@ -344,7 +344,7 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 
 	s.beginGroup("Animations");
-	GET_INT("animation_speed", animation);
+	GET_INT("animation_speed", animation_speed);
 	s.endGroup();
 
 	s.beginGroup("Network");

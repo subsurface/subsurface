@@ -386,10 +386,10 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	}
 
 	// special handling for the first time we display things
-	int animSpeedBackup = -1;
+	int animSpeedBackup = 0;
 	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
-		animSpeedBackup = prefs.animation;
-		prefs.animation = 0;
+		animSpeedBackup = prefs.animation_speed;
+		prefs.animation_speed = 0;
 		firstCall = false;
 	}
 
@@ -518,8 +518,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	if ((nr = number_of_computers(&displayed_dive)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
 	diveComputerText->setText(dcText);
-	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != -1) {
-		prefs.animation = animSpeedBackup;
+	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != 0) {
+		prefs.animation_speed = animSpeedBackup;
 	}
 
 	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.
