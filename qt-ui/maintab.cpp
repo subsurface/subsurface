@@ -331,7 +331,7 @@ void MainTab::clearStats()
 
 #define UPDATE_TEXT(d, field)          \
 	if (clear || !d.field)         \
-		ui.field->setText(""); \
+		ui.field->setText(QString()); \
 	else                           \
 		ui.field->setText(d.field)
 
@@ -370,6 +370,16 @@ void MainTab::updateDiveInfo(bool clear)
 	process_all_dives(&displayed_dive, &prevd);
 
 	divePictureModel->updateDivePictures();
+
+	ui.notes->setText(QString());
+	if (!clear) {
+		QString tmp(displayed_dive.notes);
+		if (tmp.indexOf("<table") != -1)
+			ui.notes->setHtml(tmp);
+		else
+			ui.notes->setPlainText(tmp);
+	}
+
 	UPDATE_TEXT(displayed_dive, notes);
 	UPDATE_TEXT(displayed_dive, location);
 	UPDATE_TEXT(displayed_dive, suit);
@@ -1004,7 +1014,10 @@ void MainTab::on_notes_textChanged()
 	if (editMode == IGNORE)
 		return;
 	free(displayed_dive.notes);
-	displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
+	if (ui.notes->toHtml().indexOf("<table") != -1)
+		displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
+	else
+		displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
 	markChangedWidget(ui.notes);
 }
 
