@@ -327,7 +327,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.dcLabel.off.setY(100);
 }
 
-void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue)
+void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
+	DiveCartesianAxis *vAxis, DivePlotDataModel *model,
+	int vData, int hData, int zValue)
 {
 	item->setHorizontalAxis(hAxis);
 	item->setVerticalAxis(vAxis);
