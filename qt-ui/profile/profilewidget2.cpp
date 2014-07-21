@@ -527,6 +527,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
 	}
+	plotPictures();
+
 	// OK, how long did this take us? Anything above the second is way too long,
 	// so if we are calculation TTS / NDL then let's force that off.
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
@@ -1356,11 +1358,12 @@ void ProfileWidget2::keyEscAction()
 
 void ProfileWidget2::plotPictures()
 {
+	qDeleteAll(pictures);
+	pictures.clear();
+
 	if (printMode)
 		return;
 
-	qDeleteAll(pictures);
-	pictures.clear();
 	double x, y, lastX = -1.0, lastY = -1.0;
 	DivePictureModel *m = DivePictureModel::instance();
 	for (int i = 0; i < m->rowCount(); i++) {
