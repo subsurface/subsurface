@@ -160,7 +160,7 @@ function setNumberOfDives(e)
 	var value = e.options[e.selectedIndex].value;
 	sizeofpage = parseInt(value, 10);
 	var end = start + sizeofpage - 1;
-	view_in_range(start, end);
+	viewInPage();
 }
 
 function toggleExpantion(ul)
