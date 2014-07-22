@@ -394,8 +394,8 @@ context menu.
 
 image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
 
-Below is the profile of a dive to 21 m for 31 min and with a switch from air to
-EAN50 at 20m after 31 minutes. In this case the first cylinder in the *Equipment* tab
+Below is the profile of a dive to 20 m for 30 min and with a switch from air to
+EAN50 at 5 m. In this case the first cylinder in the *Equipment* tab
 contained air and the second cylinder contained EAN50.
 
 image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
@@ -1164,7 +1164,7 @@ of the screen:
 - Maps:  Display a map showing the dive location.
 
 After editing and saving a dive location (see *C* above), one needs to upload it to the web
-service, as explained above.
+service, as explained below.
 
 ===== Uploading dive locations
 
