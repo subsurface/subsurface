@@ -321,6 +321,7 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f)
 	ui.progressBar->setFormat("Enter User ID and click Download");
 	ui.progressBar->setRange(0, 1);
 	ui.progressBar->setValue(-1);
+	ui.progressBar->setAlignment(Qt::AlignCenter);
 	ui.saveUidLocal->setChecked(prefs.save_userid_local);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
