@@ -318,7 +318,7 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f)
 		ui.userID->setText(prefs.userid);
 	hidePassword();
 	hideUpload();
-	ui.progressBar->setFormat("Enter User ID and click Download");
+	ui.progressBar->setFormat(tr("Enter User ID and click Download"));
 	ui.progressBar->setRange(0, 1);
 	ui.progressBar->setValue(-1);
 	ui.progressBar->setAlignment(Qt::AlignCenter);
