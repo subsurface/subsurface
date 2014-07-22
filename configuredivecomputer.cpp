@@ -26,10 +26,10 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 
 	readThread = new ReadSettingsThread(this, data);
 	connect(readThread, SIGNAL(finished()),
-		 this, SLOT(readThreadFinished()), Qt::QueuedConnection);
+		this, SLOT(readThreadFinished()), Qt::QueuedConnection);
 	connect(readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
 	connect(readThread, SIGNAL(devicedetails(DeviceDetails*)), this,
-		 SIGNAL(deviceDetailsChanged(DeviceDetails*)));
+		SIGNAL(deviceDetailsChanged(DeviceDetails*)));
 
 	readThread->start();
 }
@@ -43,7 +43,7 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 
 	writeThread = new WriteSettingsThread(this, data);
 	connect(writeThread, SIGNAL(finished()),
-		 this, SLOT(writeThreadFinished()), Qt::QueuedConnection);
+		this, SLOT(writeThreadFinished()), Qt::QueuedConnection);
 	connect(writeThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
 
 	writeThread->setDeviceDetails(details);
@@ -201,225 +201,201 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 
 bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *details, QString errorText)
 {
-	xmlDocPtr doc;
-	xmlNodePtr node;
-	xmlChar *key;
-
-	doc = xmlParseFile(fileName.toUtf8().data());
-
-	if (doc == NULL) {
-		errorText = tr("Could not read the backup file.");
+	QFile file(fileName);
+	if (!file.open(QIODevice::ReadOnly)) {
+		errorText = tr("Could not open backup file: %1").arg(file.errorString());
 		return false;
 	}
 
-	node = xmlDocGetRootElement(doc);
-	if (node == NULL) {
-		errorText = tr("The specified file is invalid.");
-		xmlFreeDoc(doc);
-		return false;
-	}
+	QString xml = file.readAll();
 
-	if (xmlStrcmp(node->name, (const xmlChar *) "DiveComputerSettingsBackup")) {
-		errorText = tr("The specified file does not contain a valid backup.");
-		xmlFreeDoc(doc);
-		return false;
-	}
+	QXmlStreamReader reader(xml);
+	while (!reader.atEnd()) {
+		if (reader.isStartElement()) {
+			QString settingName = reader.name().toString();
+			reader.readNext();
+			QString keyString = reader.text().toString();
 
-	xmlNodePtr child = node->children;
+			if (settingName == "CustomText")
+				details->setCustomText(keyString);
 
-	while (child != NULL) {
-		QString nodeName = (char *)child->name;
-		if (nodeName == "Settings") {
-			xmlNodePtr settingNode = child->children;
-			while (settingNode != NULL) {
-				QString settingName = (char *)settingNode->name;
-				key = xmlNodeListGetString(doc, settingNode->xmlChildrenNode, 1);
-				QString keyString = (char *)key;
-				if (settingName != "text") {
-					if (settingName == "CustomText")
-						details->setCustomText(keyString);
-
-					if (settingName == "Gas1") {
-						QStringList gasData = keyString.split(",");
-						gas gas1;
-						gas1.oxygen = gasData.at(0).toInt();
-						gas1.helium = gasData.at(1).toInt();
-						gas1.type = gasData.at(2).toInt();
-						gas1.depth = gasData.at(3).toInt();
-						details->setGas1(gas1);
-					}
-
-					if (settingName == "Gas2") {
-						QStringList gasData = keyString.split(",");
-						gas gas2;
-						gas2.oxygen = gasData.at(0).toInt();
-						gas2.helium = gasData.at(1).toInt();
-						gas2.type = gasData.at(2).toInt();
-						gas2.depth = gasData.at(3).toInt();
-						details->setGas1(gas2);
-					}
-
-					if (settingName == "Gas3") {
-						QStringList gasData = keyString.split(",");
-						gas gas3;
-						gas3.oxygen = gasData.at(0).toInt();
-						gas3.helium = gasData.at(1).toInt();
-						gas3.type = gasData.at(2).toInt();
-						gas3.depth = gasData.at(3).toInt();
-						details->setGas3(gas3);
-					}
-
-					if (settingName == "Gas4") {
-						QStringList gasData = keyString.split(",");
-						gas gas4;
-						gas4.oxygen = gasData.at(0).toInt();
-						gas4.helium = gasData.at(1).toInt();
-						gas4.type = gasData.at(2).toInt();
-						gas4.depth = gasData.at(3).toInt();
-						details->setGas4(gas4);
-					}
-
-					if (settingName == "Gas5") {
-						QStringList gasData = keyString.split(",");
-						gas gas5;
-						gas5.oxygen = gasData.at(0).toInt();
-						gas5.helium = gasData.at(1).toInt();
-						gas5.type = gasData.at(2).toInt();
-						gas5.depth = gasData.at(3).toInt();
-						details->setGas5(gas5);
-					}
-
-					if (settingName == "Dil1") {
-						QStringList dilData = keyString.split(",");
-						gas dil1;
-						dil1.oxygen = dilData.at(0).toInt();
-						dil1.helium = dilData.at(1).toInt();
-						dil1.type = dilData.at(2).toInt();
-						dil1.depth = dilData.at(3).toInt();
-						details->setDil1(dil1);
-					}
-
-					if (settingName == "Dil2") {
-						QStringList dilData = keyString.split(",");
-						gas dil2;
-						dil2.oxygen = dilData.at(0).toInt();
-						dil2.helium = dilData.at(1).toInt();
-						dil2.type = dilData.at(2).toInt();
-						dil2.depth = dilData.at(3).toInt();
-						details->setDil1(dil2);
-					}
-
-					if (settingName == "Dil3") {
-						QStringList dilData = keyString.split(",");
-						gas dil3;
-						dil3.oxygen = dilData.at(0).toInt();
-						dil3.helium = dilData.at(1).toInt();
-						dil3.type = dilData.at(2).toInt();
-						dil3.depth = dilData.at(3).toInt();
-						details->setDil3(dil3);
-					}
-
-					if (settingName == "Dil4") {
-						QStringList dilData = keyString.split(",");
-						gas dil4;
-						dil4.oxygen = dilData.at(0).toInt();
-						dil4.helium = dilData.at(1).toInt();
-						dil4.type = dilData.at(2).toInt();
-						dil4.depth = dilData.at(3).toInt();
-						details->setDil4(dil4);
-					}
-
-					if (settingName == "Dil5") {
-						QStringList dilData = keyString.split(",");
-						gas dil5;
-						dil5.oxygen = dilData.at(0).toInt();
-						dil5.helium = dilData.at(1).toInt();
-						dil5.type = dilData.at(2).toInt();
-						dil5.depth = dilData.at(3).toInt();
-						details->setDil5(dil5);
-					}
-
-					if (settingName == "SetPoint1") {
-						QStringList spData = keyString.split(",");
-						setpoint sp1;
-						sp1.sp = spData.at(0).toInt();
-						sp1.depth = spData.at(1).toInt();
-						details->setSp1(sp1);
-					}
-
-					if (settingName == "SetPoint2") {
-						QStringList spData = keyString.split(",");
-						setpoint sp2;
-						sp2.sp = spData.at(0).toInt();
-						sp2.depth = spData.at(1).toInt();
-						details->setSp2(sp2);
-					}
-
-					if (settingName == "SetPoint3") {
-						QStringList spData = keyString.split(",");
-						setpoint sp3;
-						sp3.sp = spData.at(0).toInt();
-						sp3.depth = spData.at(1).toInt();
-						details->setSp3(sp3);
-					}
-
-					if (settingName == "SetPoint4") {
-						QStringList spData = keyString.split(",");
-						setpoint sp4;
-						sp4.sp = spData.at(0).toInt();
-						sp4.depth = spData.at(1).toInt();
-						details->setSp4(sp4);
-					}
-
-					if (settingName == "SetPoint5") {
-						QStringList spData = keyString.split(",");
-						setpoint sp5;
-						sp5.sp = spData.at(0).toInt();
-						sp5.depth = spData.at(1).toInt();
-						details->setSp5(sp5);
-					}
-
-					if (settingName == "Saturation")
-						details->setSaturation(keyString.toInt());
-
-					if (settingName == "Desaturation")
-						details->setDesaturation(keyString.toInt());
-
-					if (settingName == "DiveMode")
-						details->setDiveMode(keyString.toInt());
-
-					if (settingName == "LastDeco")
-						details->setLastDeco(keyString.toInt());
-
-					if (settingName == "Brightness")
-						details->setBrightness(keyString.toInt());
-
-					if (settingName == "Units")
-						details->setUnits(keyString.toInt());
-
-					if (settingName == "SamplingRate")
-						details->setSamplingRate(keyString.toInt());
-
-					if (settingName == "Salinity")
-						details->setSalinity(keyString.toInt());
-
-					if (settingName == "DiveModeColour")
-						details->setDiveModeColor(keyString.toInt());
-
-					if (settingName == "Language")
-						details->setLanguage(keyString.toInt());
-
-					if (settingName == "DateFormat")
-						details->setDateFormat(keyString.toInt());
-
-					if (settingName == "CompassGain")
-						details->setCompassGain(keyString.toInt());
-				}
-
-				settingNode = settingNode->next;
+			if (settingName == "Gas1") {
+				QStringList gasData = keyString.split(",");
+				gas gas1;
+				gas1.oxygen = gasData.at(0).toInt();
+				gas1.helium = gasData.at(1).toInt();
+				gas1.type = gasData.at(2).toInt();
+				gas1.depth = gasData.at(3).toInt();
+				details->setGas1(gas1);
 			}
+
+			if (settingName == "Gas2") {
+				QStringList gasData = keyString.split(",");
+				gas gas2;
+				gas2.oxygen = gasData.at(0).toInt();
+				gas2.helium = gasData.at(1).toInt();
+				gas2.type = gasData.at(2).toInt();
+				gas2.depth = gasData.at(3).toInt();
+				details->setGas1(gas2);
+			}
+
+			if (settingName == "Gas3") {
+				QStringList gasData = keyString.split(",");
+				gas gas3;
+				gas3.oxygen = gasData.at(0).toInt();
+				gas3.helium = gasData.at(1).toInt();
+				gas3.type = gasData.at(2).toInt();
+				gas3.depth = gasData.at(3).toInt();
+				details->setGas3(gas3);
+			}
+
+			if (settingName == "Gas4") {
+				QStringList gasData = keyString.split(",");
+				gas gas4;
+				gas4.oxygen = gasData.at(0).toInt();
+				gas4.helium = gasData.at(1).toInt();
+				gas4.type = gasData.at(2).toInt();
+				gas4.depth = gasData.at(3).toInt();
+				details->setGas4(gas4);
+			}
+
+			if (settingName == "Gas5") {
+				QStringList gasData = keyString.split(",");
+				gas gas5;
+				gas5.oxygen = gasData.at(0).toInt();
+				gas5.helium = gasData.at(1).toInt();
+				gas5.type = gasData.at(2).toInt();
+				gas5.depth = gasData.at(3).toInt();
+				details->setGas5(gas5);
+			}
+
+			if (settingName == "Dil1") {
+				QStringList dilData = keyString.split(",");
+				gas dil1;
+				dil1.oxygen = dilData.at(0).toInt();
+				dil1.helium = dilData.at(1).toInt();
+				dil1.type = dilData.at(2).toInt();
+				dil1.depth = dilData.at(3).toInt();
+				details->setDil1(dil1);
+			}
+
+			if (settingName == "Dil2") {
+				QStringList dilData = keyString.split(",");
+				gas dil2;
+				dil2.oxygen = dilData.at(0).toInt();
+				dil2.helium = dilData.at(1).toInt();
+				dil2.type = dilData.at(2).toInt();
+				dil2.depth = dilData.at(3).toInt();
+				details->setDil1(dil2);
+			}
+
+			if (settingName == "Dil3") {
+				QStringList dilData = keyString.split(",");
+				gas dil3;
+				dil3.oxygen = dilData.at(0).toInt();
+				dil3.helium = dilData.at(1).toInt();
+				dil3.type = dilData.at(2).toInt();
+				dil3.depth = dilData.at(3).toInt();
+				details->setDil3(dil3);
+			}
+
+			if (settingName == "Dil4") {
+				QStringList dilData = keyString.split(",");
+				gas dil4;
+				dil4.oxygen = dilData.at(0).toInt();
+				dil4.helium = dilData.at(1).toInt();
+				dil4.type = dilData.at(2).toInt();
+				dil4.depth = dilData.at(3).toInt();
+				details->setDil4(dil4);
+			}
+
+			if (settingName == "Dil5") {
+				QStringList dilData = keyString.split(",");
+				gas dil5;
+				dil5.oxygen = dilData.at(0).toInt();
+				dil5.helium = dilData.at(1).toInt();
+				dil5.type = dilData.at(2).toInt();
+				dil5.depth = dilData.at(3).toInt();
+				details->setDil5(dil5);
+			}
+
+			if (settingName == "SetPoint1") {
+				QStringList spData = keyString.split(",");
+				setpoint sp1;
+				sp1.sp = spData.at(0).toInt();
+				sp1.depth = spData.at(1).toInt();
+				details->setSp1(sp1);
+			}
+
+			if (settingName == "SetPoint2") {
+				QStringList spData = keyString.split(",");
+				setpoint sp2;
+				sp2.sp = spData.at(0).toInt();
+				sp2.depth = spData.at(1).toInt();
+				details->setSp2(sp2);
+			}
+
+			if (settingName == "SetPoint3") {
+				QStringList spData = keyString.split(",");
+				setpoint sp3;
+				sp3.sp = spData.at(0).toInt();
+				sp3.depth = spData.at(1).toInt();
+				details->setSp3(sp3);
+			}
+
+			if (settingName == "SetPoint4") {
+				QStringList spData = keyString.split(",");
+				setpoint sp4;
+				sp4.sp = spData.at(0).toInt();
+				sp4.depth = spData.at(1).toInt();
+				details->setSp4(sp4);
+			}
+
+			if (settingName == "SetPoint5") {
+				QStringList spData = keyString.split(",");
+				setpoint sp5;
+				sp5.sp = spData.at(0).toInt();
+				sp5.depth = spData.at(1).toInt();
+				details->setSp5(sp5);
+			}
+
+			if (settingName == "Saturation")
+				details->setSaturation(keyString.toInt());
+
+			if (settingName == "Desaturation")
+				details->setDesaturation(keyString.toInt());
+
+			if (settingName == "DiveMode")
+				details->setDiveMode(keyString.toInt());
+
+			if (settingName == "LastDeco")
+				details->setLastDeco(keyString.toInt());
+
+			if (settingName == "Brightness")
+				details->setBrightness(keyString.toInt());
+
+			if (settingName == "Units")
+				details->setUnits(keyString.toInt());
+
+			if (settingName == "SamplingRate")
+				details->setSamplingRate(keyString.toInt());
+
+			if (settingName == "Salinity")
+				details->setSalinity(keyString.toInt());
+
+			if (settingName == "DiveModeColour")
+				details->setDiveModeColor(keyString.toInt());
+
+			if (settingName == "Language")
+				details->setLanguage(keyString.toInt());
+
+			if (settingName == "DateFormat")
+				details->setDateFormat(keyString.toInt());
+
+			if (settingName == "CompassGain")
+				details->setCompassGain(keyString.toInt());
 		}
-		child = child->next;
+		reader.readNext();
 	}
 
 	return true;
