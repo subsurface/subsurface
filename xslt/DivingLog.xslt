@@ -157,7 +157,10 @@
       <!-- Trying to detect if depth samples are in Imperial or Metric
            units. This is based on an assumption that maximum depth of
            a dive is recorded in metric and if samples contain bigger
-           values, they must be imperial.
+	   values, they must be imperial. However, we double the depth
+	   for the test in some cases the maximum sample depth might be
+	   a bit more than what is recorded as maximum depth for the
+	   dive.
            -->
 
       <xsl:variable name="max">
@@ -169,7 +172,7 @@
 
       <xsl:variable name="depthUnit">
         <xsl:choose>
-          <xsl:when test="$max &gt; Depth + 1">
+          <xsl:when test="$max &gt; Depth * 2 + 1">
             <xsl:value-of select="'imperial'"/>
           </xsl:when>
           <xsl:otherwise>
