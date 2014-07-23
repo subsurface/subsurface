@@ -260,12 +260,25 @@ function putRating(rating)
 this variables keep the state of
 each col. sorted asc or des
 */
-var number = false;
+var number = true;
 var time = true;
 var date = true;
 var air = true;
 var water = true;
 var locat = true;
+
+/*
+This variable keep the state of the col.
+which is sorted upon it.
+*/
+var sort_based_on = 1; // sorting is based on number by default.
+
+function change_sort_col(sortOn)
+{
+	sort_based_on = sortOn;
+	toggle_sort_state(sortOn);
+	list_sort(sortOn);
+}
 
 function list_sort(sortOn)
 {
@@ -273,56 +286,68 @@ function list_sort(sortOn)
 	case '1': //number
 		if (number) {
 			sort_it(sortOn, cmpNumAsc);
-			number = 1 - number;
 		} else {
 			sort_it(sortOn, cmpNumDes);
-			number = 1 - number;
 		}
 		break;
 	case '2': //date
 		if (date) {
 			sort_it(sortOn, cmpDateAsc);
-			date = 1 - date;
 		} else {
 			sort_it(sortOn, cmpDateDes);
-			date = 1 - date;
 		}
 		break;
 	case '3': //time
 		if (time) {
 			sort_it(sortOn, cmpTimeDes);
-			time = 1 - time;
 		} else {
 			sort_it(sortOn, cmpTimeAsc);
-			time = 1 - time;
 		}
 		break;
 	case '4': //Air temp
 		if (air) {
 			sort_it(sortOn, cmpAtempDes);
-			air = 1 - air;
 		} else {
 			sort_it(sortOn, cmpAtempAsc);
-			air = 1 - air;
 		}
 		break;
 	case '5': //Water temp
 		if (water) {
 			sort_it(sortOn, cmpWtempDes);
-			water = 1 - water;
 		} else {
 			sort_it(sortOn, cmpWtempAsc);
-			water = 1 - water;
 		}
 		break;
-	case '6': //Water temp
+	case '6': //Location
 		if (locat) {
 			sort_it(sortOn, cmpLocationDes);
-			locat = 1 - locat;
 		} else {
 			sort_it(sortOn, cmpLocationAsc);
-			locat = 1 - locat;
 		}
+		break;
+	}
+}
+
+function toggle_sort_state(sortOn)
+{
+	switch (sortOn) {
+	case '1': //number
+		number = 1 - number;
+		break;
+	case '2': //date
+		date = 1 - date;
+		break;
+	case '3': //time
+		time = 1 - time;
+		break;
+	case '4': //Air temp
+		air = 1 - air;
+		break;
+	case '5': //Water temp
+		water = 1 - water;
+		break;
+	case '6': //Location
+		locat = 1 - locat;
 		break;
 	}
 }
@@ -496,6 +521,7 @@ function SearchModules(searchfor, searchOptions)
 		document.getElementById("search_input").style.borderColor = "initial";
 		start = 0;
 		itemsToShow = olditemstoshow;
+		list_sort(sort_based_on);
 		viewInPage();
 		return;
 	}
@@ -548,6 +574,7 @@ function SearchModules(searchfor, searchOptions)
 	document.getElementById("search_input").style.borderColor = "initial";
 	itemsToShow = resultKeys.keys;
 	start = 0;
+	list_sort(sort_based_on);
 	viewInPage();
 }
 ///////////////////////////////////////
