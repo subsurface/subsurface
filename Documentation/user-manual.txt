@@ -1858,17 +1858,17 @@ The HTML dive log contains most of the information and also contains a search
 option to search the dive log. HTML export is specified on the second tab of the
 Export dialog (image *B* above).
 
-** _General Settings_, under the HTML tab, provides the following options:
+* _General Settings_, under the HTML tab, provides the following options:
 
-*** Subsurface Numbers: if this option is checked, the dive(s) are exported with the
+** Subsurface Numbers: if this option is checked, the dive(s) are exported with the
 numbers associated with them in Subsurface, Otherwise the dive(s) will be numbered
 starting from 1.
-*** Minimum Javascript: This will minimize the Javascript produced with the file,
+** Minimum Javascript: This will minimize the Javascript produced with the file,
 some functionality will be lost.
-*** Export List only: a list of dives will only be exported and the detailed dive
+** Export List only: a list of dives will only be exported and the detailed dive
 information will not be available.
 
-** Under _Style Options_ some style-related options are available like font
+* Under _Style Options_ some style-related options are available like font
 size and theme.
 
 Export to other formats can be achieved through third party facilities, for
@@ -2130,28 +2130,24 @@ planning.
 
 === Managing nitrogen, oxygen and gas consumption
 
-- The planning is performed in three stages:
+The planning is performed in three stages:
 
-** *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
+- *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
-used without changing the original specifications in the _Preferences_.
-
-Gradient Factor settings strongly affect the calculated ceilings and their depths.
+used without changing the original specifications in the _Preferences_. Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings about decompression stops early on during the dive.
-For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
+ ** For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
 For more information external to this manual see:
 
- ** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
-
- ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-
- ** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+ *** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 An excellent non-technical review.
 
-** The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
+ ** The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
 for several depth ranges, utilising the average (or mean) depth as a yardstick. The mean depth
 of the dive plan is indicated on the dive profile in the green panel of the dive planner. Ascent rates
 at deeper levels are often in the range of 8-12 m/min, while ascent rates near the surface are
@@ -2160,19 +2156,17 @@ is activated, then the descent phase of the planned dive will be at the maximal 
 in the _Rates_ section of the dive setup.
 
 
-** *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
+- *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
 pressure for oxygen needs to be specified for the
 bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
 The most commonly
 used values are 1.4 bar for the bottom part of the dive and 1.5 bar for any decompression
-stages. Normally, a partial pressure of 1.5 bar is not exceeded.
-
-Po2 settings and the depth at which switching to a gas takes place can also be edited in the
+stages. Normally, a partial pressure of 1.5 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
 _Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
 ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
 
-** *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
+- *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
 cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
