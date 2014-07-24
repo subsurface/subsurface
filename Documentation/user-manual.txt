@@ -365,7 +365,8 @@ image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
 _Modifying the dive profile_: When the cursor is moved around the dive profile,
 its position is indicated by two coloured lines (red and green) as shown below.
 The depth and time
-that the cursor represents are indicated, respectively on the left hand and
+that the cursor represents are indicated at the top of the black information box
+(# and m), as well as respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
 *Preference* settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
@@ -395,8 +396,8 @@ context menu.
 image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
 
 Below is the profile of a dive to 20 m for 30 min and with a switch from air to
-EAN50 at 5 m. In this case the first cylinder in the *Equipment* tab
-contained air and the second cylinder contained EAN50.
+EAN50 at the end of the duration at 20m. In this case the first cylinder in the
+*Equipment* tab contained air and the second cylinder contained EAN50.
 
 image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
 
@@ -411,7 +412,6 @@ are saved in the current logbook. If the _Cancel_ button is clicked, the newly
 entered
 dive data are discarded. When exiting _Subsurface_, the user will be prompted
 once more to save the logbook with the new dive(s).
-
 
 [[S_ImportDiveComputer]]
 === Importing new dive information from a Dive Computer
@@ -805,6 +805,27 @@ with two types of weights: integrated as well as a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
 
+==== Adding Bookmarks to a dive
+
+Many divers wish to annotate their dives with text that indicate particular events
+during the dive, e.g. "Saw dolphins", or "Released surface bouy". This is easily
+done:
+
+ - Right-click at the appropriate point on the dive profile.
+This brings up the dive profile context menu. Select _Add bookmark_. A red flag is
+placed on the dive profile at the point that was initially selected (see *A* below).
+
+ - Right-click on the red flag. This brings up the context menu (see *B* below). Select _Edit name_.
+
+ - A text box is shown. Type the explanatory text for the bookmark (see *C* below). Select _OK_.
+This saves the text associated with the bookmark.
+
+ - If one hovers using the mouse over the red bookmark, the appropriate text is shown at
+the bottom of the information box (see *D* below).
+
+image::images/Bookmarks.jpg["FIGURE: Bookmark dialog",align="center"]
+
+
 ==== Saving the updated dive information
 
 The information entered in the *Dive Notes* tab and the *Equipment* tab can be
@@ -1135,7 +1156,7 @@ locations shown. Now one needs to select the appropriate locations, then select 
 tab in the upper right, after which the locations will be sent to the web service
 and added to the list on the Android device.
 
-===== Lists of dive locations
+===== Dive lists of dive locations
 
 The main screen shows a list of dive locations, each with a name, date and
 time (see *A* below). Some locations may have an arrow-up icon over the selection box to the left
@@ -1371,9 +1392,12 @@ camera and dive computer is, and synchronisation is achieved. The image below sh
 photograph with the face of the dive computer and with the date-time tool set to the
 date-time on image *B* above.
 
+If the timestamp of a photograph is long before or after the dive, it is not placed on
+the dive profile. If the timestamp of the photo is within 30 minutes of the dive, it is shown.
+
 ==== Viewing the photos
 
-In oder to view the photos added to a dive, activate the _show-photos_ button in the tool bar
+In order to view the photos added to a dive, activate the _show-photos_ button in the tool bar
 to the left of the dive profile:
 
 image::images/icons/ShowPhotos.png["FIGURE:Show photos toolbar button",align="left"]
@@ -1692,6 +1716,24 @@ a dive or a group of dives and then right-clicking.
 image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
 
 The context menu is used in many manipulations described below.
+
+==== Customising the information showed in the *Dive List* panel
+
+image::images/DiveListOptions.jpg["Example: Dive list info options",align="left"]
+
+The default information in the *Dive List* includes, for each dive, Dive_number, Date, Rating, Dive_depth,
+Dive_duration and Dive_location. This information can be contolled and changed by right-clicking on the
+header bar of the *Dive List*. For instance, a right-click on the 'Date' header brings up a list of items
+that can be shown in the dive list (see above). Select an item to be shown in the *Dive List* or to be
+deleted from the dive list, and the list is immediately updated accordingly. Preferences for information
+shown in the *Dive List* is saved and used when _Subsurface_ is re-opened.
+
+==== Selecting dives from a particular dive site
+
+Many divers have long dive lists and it may be difficult to locate all the dives at a particular site.
+By pressing _Ctl-F_ on the keyboard, a text box is opened at the top left hand of the *Dive List*.
+Type the name of a dive site in this text box and the *Dive List* is immediately filtered to
+show only the dives for that site.
 
 [[S_Renumber]]
 === Renumbering the dives
