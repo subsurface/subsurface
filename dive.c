@@ -1860,6 +1860,11 @@ static int match_dc_dive(struct divecomputer *a, struct divecomputer *b)
 	return 0;
 }
 
+static bool new_without_trip(struct dive *a)
+{
+	return a->downloaded && !a->divetrip;
+}
+
 /*
  * Do we want to automatically try to merge two dives that
  * look like they are the same dive?
@@ -1893,9 +1898,16 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 {
 	int match, fuzz = 20 * 60;
 
-	/* Don't try to merge dives in different trips */
-	if (a->divetrip && b->divetrip && a->divetrip != b->divetrip)
-		return 0;
+	/* Don't try to merge dives with different trip information */
+	if (a->divetrip != b->divetrip) {
+		/*
+		 * Exception: if the dive is downloaded without any
+		 * explicit trip information, we do want to merge it
+		 * with existing old dives even if they have trips.
+		 */
+		if (!new_without_trip(a) && !new_without_trip(b))
+			return 0;
+	}
 
 	/*
 	 * Do some basic sanity testing of the values we

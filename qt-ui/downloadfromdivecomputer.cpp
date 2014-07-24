@@ -284,6 +284,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 	data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
 	data.force_download = ui.forceDownload->isChecked();
+	data.create_new_trip = ui.createNewTrip->isChecked();
+	data.trip = NULL;
 	data.deviceid = data.diveid = 0;
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
@@ -413,6 +415,7 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 	ui.vendor->setDisabled(true);
 	ui.product->setDisabled(true);
 	ui.forceDownload->setDisabled(true);
+	ui.createNewTrip->setDisabled(true);
 	ui.preferDownloaded->setDisabled(true);
 	ui.ok->setDisabled(true);
 	ui.search->setDisabled(true);
@@ -428,6 +431,7 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.vendor->setDisabled(false);
 	ui.product->setDisabled(false);
 	ui.forceDownload->setDisabled(false);
+	ui.createNewTrip->setDisabled(false);
 	ui.preferDownloaded->setDisabled(false);
 	ui.ok->setDisabled(false);
 	ui.cancel->setDisabled(false);

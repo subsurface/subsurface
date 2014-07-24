@@ -23,8 +23,10 @@ typedef struct device_data_t
 	uint32_t deviceid, diveid;
 	dc_device_t *device;
 	dc_context_t *context;
+	struct dive_trip *trip;
 	int preexisting;
 	bool force_download;
+	bool create_new_trip;
 	bool libdc_log;
 	bool libdc_dump;
 	FILE *libdc_logfile;
