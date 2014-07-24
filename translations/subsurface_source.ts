@@ -629,42 +629,42 @@
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="138"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="135"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="637"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="634"/>
         <source>Final depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="639"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="636"/>
         <source>Run time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="641"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="638"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="643"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="640"/>
         <source>Used gas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="645"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="642"/>
         <source>CC set point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="942"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="938"/>
         <source>Discard the plan?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="943"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="939"/>
         <source>You are about to discard your plan.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -672,17 +672,17 @@
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="257"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="254"/>
         <source>Dive planner points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="261"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="258"/>
         <source>Available gases</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="284"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="281"/>
         <source>Add dive data point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1330,12 +1330,12 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="807"/>
+        <location filename="../qt-ui/maintab.cpp" line="808"/>
         <source>Discard the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="808"/>
+        <location filename="../qt-ui/maintab.cpp" line="809"/>
         <source>You are about to discard your changes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1882,42 +1882,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="453"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="450"/>
         <source>ft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="454"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="451"/>
         <source>Last stop at 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="452"/>
         <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="453"/>
         <source>20ft to surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="458"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
         <source>m/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
         <source>Last stop at 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="457"/>
         <source>50% avg. depth to 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="458"/>
         <source>6m to surface</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2400,21 +2400,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="145"/>
+        <source>1 dive per page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="158"/>
         <source>Table print</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="162"/>
+        <location filename="../qt-ui/printoptions.ui" line="175"/>
         <source>Ordering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="180"/>
+        <location filename="../qt-ui/printoptions.ui" line="193"/>
         <source>Profile on top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="202"/>
+        <location filename="../qt-ui/printoptions.ui" line="215"/>
         <source>Notes on top</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2578,7 +2583,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="213"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="210"/>
         <source>Remove this point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3338,8 +3343,8 @@ Maximum</source>
     <message>
         <location filename="../divelist.c" line="460"/>
         <location filename="../equipment.c" line="79"/>
-        <location filename="../planner.c" line="987"/>
-        <location filename="../planner.c" line="990"/>
+        <location filename="../planner.c" line="988"/>
+        <location filename="../planner.c" line="991"/>
         <location filename="../statistics.c" line="355"/>
         <source>air</source>
         <translation type="unfinished"></translation>
@@ -3673,125 +3678,125 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="762"/>
+        <location filename="../planner.c" line="763"/>
         <source>Can&apos;t find gas %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="346"/>
+        <location filename="../planner.c" line="347"/>
         <source>Too many gas mixes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="527"/>
+        <location filename="../planner.c" line="528"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="536"/>
+        <location filename="../planner.c" line="537"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="539"/>
+        <location filename="../planner.c" line="540"/>
         <source>Subsurface dive plan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="543"/>
+        <location filename="../planner.c" line="544"/>
         <source>depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="546"/>
+        <location filename="../planner.c" line="547"/>
         <source>runtime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="549"/>
+        <location filename="../planner.c" line="550"/>
         <source>duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="552"/>
+        <location filename="../planner.c" line="553"/>
         <source>gas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="586"/>
+        <location filename="../planner.c" line="587"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="596"/>
+        <location filename="../planner.c" line="597"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="607"/>
+        <location filename="../planner.c" line="608"/>
         <source>%3.0f%s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="610"/>
-        <location filename="../planner.c" line="614"/>
+        <location filename="../planner.c" line="611"/>
+        <location filename="../planner.c" line="615"/>
         <source>%3dmin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="630"/>
+        <location filename="../planner.c" line="631"/>
         <source>Switch gas to %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="643"/>
+        <location filename="../planner.c" line="644"/>
         <source>CNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="645"/>
+        <location filename="../planner.c" line="646"/>
         <source>OTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="648"/>
+        <location filename="../planner.c" line="649"/>
         <source>Gas consumption:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="668"/>
-        <location filename="../planner.c" line="673"/>
-        <location filename="../planner.c" line="696"/>
+        <location filename="../planner.c" line="669"/>
+        <location filename="../planner.c" line="674"/>
+        <location filename="../planner.c" line="697"/>
         <source>Warning:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="669"/>
+        <location filename="../planner.c" line="670"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="674"/>
+        <location filename="../planner.c" line="675"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="676"/>
+        <location filename="../planner.c" line="677"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="678"/>
+        <location filename="../planner.c" line="679"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="693"/>
+        <location filename="../planner.c" line="694"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../planner.c" line="991"/>
+        <location filename="../planner.c" line="992"/>
         <source>ean</source>
         <translation type="unfinished"></translation>
     </message>
