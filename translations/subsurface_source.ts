@@ -856,69 +856,69 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="636"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="832"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="637"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="833"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="667"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="668"/>
         <source>Uploading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="698"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="699"/>
         <source>Downloading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="746"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="747"/>
         <source>Downloading %1 dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="790"/>
         <source>Download finished - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="806"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Corrupted download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="808"/>
         <source>The archive could not be opened:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="846"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="847"/>
         <source>Upload failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="849"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="850"/>
         <source>Upload successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="852"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="853"/>
         <source>Login failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="855"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
         <source>Cannot parse response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="866"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="867"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="833"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="834"/>
         <source>Upload finished</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2648,22 +2648,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="520"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
         <source>Invalid response from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="528"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="529"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="574"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="575"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="581"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2828,42 +2828,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="337"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="338"/>
         <source>Webservice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="400"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="401"/>
         <source>Connecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="419"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="420"/>
         <source>Download finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="433"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="434"/>
         <source>Download error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="443"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="444"/>
         <source>Connection error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="452"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
         <source>Download successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="446"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="447"/>
         <source>Invalid user identifier!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="449"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="321"/>
+        <source>Enter User ID and click Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
         <source>Cannot parse response!</source>
         <translation type="unfinished"></translation>
     </message>
