@@ -1,17 +1,13 @@
 
-This is the README file for Subsurface 4.1.91, the second Beta for 4.2
+This is the README file for Subsurface 4.1.92, the third Beta for 4.2
 
-We fixed literally dozens of bugs since the first Beta so this one to me
-is looking a lot better (printing, various corner cases in the planner and
-elsewhere), but there are still a few known and likely a few unknown
-problems...
-
-A lot of the internals of Subsurface changed, and quite a few new features
-got added (see the Releasenotes.txt).
+The second Beta had a rather unpleasant bug where notes text turned into
+HTML. That (and a couple of other bugs) was fixed for Beta 3. We think
+this is reasonably close to being able to be released.
 
 Please be very careful when using it on your real data - while this is
 reasonably well tested by our developers, there's always a risk that this
-could eat your data file in unexpected ways.
+could eat your data file in unexpected ways (as Beta 2 has shown).
 
 Report bugs and issues at http://trac.hohndel.org
 
