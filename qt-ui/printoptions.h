@@ -22,6 +22,7 @@ private
 slots:
 	void radioSixDivesClicked(bool check);
 	void radioTwoDivesClicked(bool check);
+	void radioOneDiveClicked(bool check);
 	void radioTablePrintClicked(bool check);
 	void printInColorClicked(bool check);
 	void printSelectedClicked(bool check);

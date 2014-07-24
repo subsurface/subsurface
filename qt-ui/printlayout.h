@@ -38,7 +38,7 @@ private:
 	void setup();
 	int estimateTotalDives() const;
 	void printProfileDives(int divesPerRow, int divesPerColumn);
-	QTableView *createProfileTable(ProfilePrintModel *model, const int tableW);
+	QTableView *createProfileTable(ProfilePrintModel *model, const int tableW, const qreal fitNotesToHeight = 0.0);
 	void printTable();
 	void addTablePrintDataRow(TablePrintModel *model, int row, struct dive *dive) const;
 	void addTablePrintHeadingRow(TablePrintModel *model, int row) const;

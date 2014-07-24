@@ -23,6 +23,9 @@ void PrintOptions::setup(struct options *printOpt)
 	case options::TWOPERPAGE:
 		ui.radioTwoDives->setChecked(true);
 		break;
+	case options::ONEPERPAGE:
+		ui.radioOneDive->setChecked(true);
+		break;
 	case options::TABLE:
 		ui.radioTablePrint->setChecked(true);
 		break;
@@ -44,6 +47,7 @@ void PrintOptions::setup(struct options *printOpt)
 
 	connect(ui.radioSixDives, SIGNAL(clicked(bool)), this, SLOT(radioSixDivesClicked(bool)));
 	connect(ui.radioTwoDives, SIGNAL(clicked(bool)), this, SLOT(radioTwoDivesClicked(bool)));
+	connect(ui.radioOneDive, SIGNAL(clicked(bool)), this, SLOT(radioOneDiveClicked(bool)));
 	connect(ui.radioTablePrint, SIGNAL(clicked(bool)), this, SLOT(radioTablePrintClicked(bool)));
 
 	connect(ui.printInColor, SIGNAL(clicked(bool)), this, SLOT(printInColorClicked(bool)));
@@ -63,6 +67,11 @@ void PrintOptions::radioSixDivesClicked(bool check)
 void PrintOptions::radioTwoDivesClicked(bool check)
 {
 	printOptions->type = options::TWOPERPAGE;
+}
+
+void PrintOptions::radioOneDiveClicked(bool check)
+{
+	printOptions->type = options::ONEPERPAGE;
 }
 
 void PrintOptions::radioTablePrintClicked(bool check)

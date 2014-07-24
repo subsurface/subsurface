@@ -39,7 +39,8 @@ struct options {
 	enum {
 		PRETTY,
 		TABLE,
-		TWOPERPAGE
+		TWOPERPAGE,
+		ONEPERPAGE
 	} type;
 	int print_selected;
 	int color_selected;

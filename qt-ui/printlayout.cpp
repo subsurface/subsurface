@@ -68,6 +68,9 @@ void PrintLayout::print()
 	case options::PRETTY:
 		printProfileDives(3, 2);
 		break;
+	case options::ONEPERPAGE:
+		printProfileDives(1, 1);
+		break;
 	case options::TWOPERPAGE:
 		printProfileDives(2, 1);
 		break;
@@ -167,7 +170,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	// create a model and table
 	ProfilePrintModel model;
 	model.setFontsize(divesPerColumn == 1 ? 6.5 : 4.5);
-	QPointer<QTableView> table(createProfileTable(&model, scaledW));
+	// if there is only one dive per page row we pass fitNotesToHeight to be almost half the page height
+	QPointer<QTableView> table(createProfileTable(&model, scaledW, (divesPerRow == 1) ? scaledH * 0.45 : 0.0));
 	// profilePrintTableMaxH updates after the table is created
 	const int tableH = profilePrintTableMaxH;
 	// resize the profile widget
@@ -227,7 +231,7 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 }
 
 /* we create a table that has a fixed height, but can stretch to fit certain width */
-QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int tableW)
+QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int tableW, const qreal fitNotesToHeight)
 {
 	// setup a new table
 	QTableView *table = new QTableView();
@@ -266,14 +270,16 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->setSpan(6, 0, 1, 5);
 	table->setSpan(7, 0, 5, 5);
 	/* resize row heights to the 'profilePrintRowHeights' indexes.
-	 * profilePrintTableMaxH will then hold the table height. */
+	 * profilePrintTableMaxH will then hold the table height.
+	 * what fitNotesToHeight does it to expand the notes section to fit a special height */
 	int i;
 	profilePrintTableMaxH = 0;
 	for (i = 0; i < rows; i++) {
-		int h = profilePrintRowHeights.at(i);
+		int h = (i == rows - 1 && fitNotesToHeight != 0.0) ? fitNotesToHeight : profilePrintRowHeights.at(i);
 		profilePrintTableMaxH += h;
 		vHeader->resizeSection(i, h);
 	}
+
 	// resize columns. columns widths are percentages from the table width.
 	int accW = 0;
 	for (i = 0; i < cols; i++) {
