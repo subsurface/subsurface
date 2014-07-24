@@ -798,7 +798,8 @@ dive being described:</p></div>
 <div class="paragraph"><p><em>Modifying the dive profile</em>: When the cursor is moved around the dive profile,
 its position is indicated by two coloured lines (red and green) as shown below.
 The depth and time
-that the cursor represents are indicated, respectively on the left hand and
+that the cursor represents are indicated at the top of the black information box
+(# and m), as well as respectively on the left hand and
 bottom axes. The units (metric/imperial) on the axes are determined by the
 <strong>Preference</strong> settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
@@ -832,8 +833,8 @@ context menu.</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Below is the profile of a dive to 20 m for 30 min and with a switch from air to
-EAN50 at 5 m. In this case the first cylinder in the <strong>Equipment</strong> tab
-contained air and the second cylinder contained EAN50.</p></div>
+EAN50 at the end of the duration at 20m. In this case the first cylinder in the
+<strong>Equipment</strong> tab contained air and the second cylinder contained EAN50.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile4.jpg" alt="FIGURE: Completed dive profile" />
@@ -1320,7 +1321,44 @@ with two types of weights: integrated as well as a weight belt:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_updated_dive_information">3.2.6. Saving the updated dive information</h4>
+<h4 id="_adding_bookmarks_to_a_dive">3.2.6. Adding Bookmarks to a dive</h4>
+<div class="paragraph"><p>Many divers wish to annotate their dives with text that indicate particular events
+during the dive, e.g. "Saw dolphins", or "Released surface bouy". This is easily
+done:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Right-click at the appropriate point on the dive profile.
+This brings up the dive profile context menu. Select <em>Add bookmark</em>. A red flag is
+placed on the dive profile at the point that was initially selected (see <strong>A</strong> below).
+</p>
+</li>
+<li>
+<p>
+Right-click on the red flag. This brings up the context menu (see <strong>B</strong> below). Select <em>Edit name</em>.
+</p>
+</li>
+<li>
+<p>
+A text box is shown. Type the explanatory text for the bookmark (see <strong>C</strong> below). Select <em>OK</em>.
+This saves the text associated with the bookmark.
+</p>
+</li>
+<li>
+<p>
+If one hovers using the mouse over the red bookmark, the appropriate text is shown at
+the bottom of the information box (see <strong>D</strong> below).
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Bookmarks.jpg" alt="FIGURE: Bookmark dialog" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_saving_the_updated_dive_information">3.2.7. Saving the updated dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab and the <strong>Equipment</strong> tab can be
 saved by
 using the
@@ -1736,7 +1774,7 @@ and added to the list on the Android device.
 </ul></div>
 </div>
 <div class="sect4">
-<h5 id="_lists_of_dive_locations">Lists of dive locations</h5>
+<h5 id="_dive_lists_of_dive_locations">Dive lists of dive locations</h5>
 <div class="paragraph"><p>The main screen shows a list of dive locations, each with a name, date and
 time (see <strong>A</strong> below). Some locations may have an arrow-up icon over the selection box to the left
 indicating that they require upload to the server. One
@@ -2051,10 +2089,12 @@ date-time on image <strong>B</strong> above.
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p>If the timestamp of a photograph is long before or after the dive, it is not placed on
+the dive profile. If the timestamp of the photo is within 30 minutes of the dive, it is shown.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_viewing_the_photos">3.5.2. Viewing the photos</h4>
-<div class="paragraph"><p>In oder to view the photos added to a dive, activate the <em>show-photos</em> button in the tool bar
+<div class="paragraph"><p>In order to view the photos added to a dive, activate the <em>show-photos</em> button in the tool bar
 to the left of the dive profile:</p></div>
 <div class="imageblock" style="text-align:left;">
 <div class="content">
@@ -2495,6 +2535,27 @@ a dive or a group of dives and then right-clicking.</p></div>
 </div>
 </div>
 <div class="paragraph"><p>The context menu is used in many manipulations described below.</p></div>
+<div class="sect3">
+<h4 id="_customising_the_information_showed_in_the_strong_dive_list_strong_panel">5.1.1. Customising the information showed in the <strong>Dive List</strong> panel</h4>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/DiveListOptions.jpg" alt="Example: Dive list info options" />
+</div>
+</div>
+<div class="paragraph"><p>The default information in the <strong>Dive List</strong> includes, for each dive, Dive_number, Date, Rating, Dive_depth,
+Dive_duration and Dive_location. This information can be contolled and changed by right-clicking on the
+header bar of the <strong>Dive List</strong>. For instance, a right-click on the <em>Date</em> header brings up a list of items
+that can be shown in the dive list (see above). Select an item to be shown in the <strong>Dive List</strong> or to be
+deleted from the dive list, and the list is immediately updated accordingly. Preferences for information
+shown in the <strong>Dive List</strong> is saved and used when <em>Subsurface</em> is re-opened.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_selecting_dives_from_a_particular_dive_site">5.1.2. Selecting dives from a particular dive site</h4>
+<div class="paragraph"><p>Many divers have long dive lists and it may be difficult to locate all the dives at a particular site.
+By pressing <em>Ctl-F</em> on the keyboard, a text box is opened at the top left hand of the <strong>Dive List</strong>.
+Type the name of a dive site in this text box and the <strong>Dive List</strong> is immediately filtered to
+show only the dives for that site.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Renumber">5.2. Renumbering the dives</h3>
@@ -4202,7 +4263,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-24 07:34:25 PDT
+Last updated 2014-07-24 12:54:14 PDT
 </div>
 </div>
 </body>
