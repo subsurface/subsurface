@@ -69,9 +69,6 @@ void DivePlannerPointsModel::createSimpleDive()
 {
 	struct gasmix gas = { 0 };
 
-	// set the start time of the plan
-	diveplan.when = displayed_dive.when;
-
 	if (isPlanner())
 		// let's use the gas from the first cylinder
 		gas = displayed_dive.cylinder[0].gasmix;
@@ -666,7 +663,6 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
-	startTime = QDateTime::currentDateTimeUtc();
 }
 
 DivePlannerPointsModel *DivePlannerPointsModel::instance()

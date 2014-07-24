@@ -262,6 +262,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	// displayed dive so we can restart
 	reset_cylinders(&displayed_dive, track_gas);
 	dc = &displayed_dive.dc;
+	dc->when = displayed_dive.when = diveplan->when;
 	free(dc->sample);
 	dc->sample = NULL;
 	dc->samples = 0;
