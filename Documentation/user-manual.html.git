@@ -831,8 +831,8 @@ context menu.</p></div>
 <img src="images/DiveProfile3.jpg" alt="FIGURE: Gas composition context menu" />
 </div>
 </div>
-<div class="paragraph"><p>Below is the profile of a dive to 21 m for 31 min and with a switch from air to
-EAN50 at 20m after 31 minutes. In this case the first cylinder in the <strong>Equipment</strong> tab
+<div class="paragraph"><p>Below is the profile of a dive to 20 m for 30 min and with a switch from air to
+EAN50 at 5 m. In this case the first cylinder in the <strong>Equipment</strong> tab
 contained air and the second cylinder contained EAN50.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -1771,7 +1771,7 @@ Maps:  Display a map showing the dive location.
 </li>
 </ul></div>
 <div class="paragraph"><p>After editing and saving a dive location (see <strong>C</strong> above), one needs to upload it to the web
-service, as explained above.</p></div>
+service, as explained below.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_uploading_dive_locations">Uploading dive locations</h5>
@@ -2689,7 +2689,7 @@ The HTML dive log contains most of the information and also contains a search
 option to search the dive log. HTML export is specified on the second tab of the
 Export dialog (image <strong>B</strong> above).
 </p>
-<div class="ulist"><ul>
+</li>
 <li>
 <p>
 <em>General Settings</em>, under the HTML tab, provides the following options:
@@ -2721,8 +2721,6 @@ information will not be available.
 Under <em>Style Options</em> some style-related options are available like font
 size and theme.
 </p>
-</li>
-</ul></div>
 </li>
 </ul></div>
 <div class="paragraph"><p>Export to other formats can be achieved through third party facilities, for
@@ -3129,11 +3127,7 @@ planning.
 </div>
 <div class="sect2">
 <h3 id="_managing_nitrogen_oxygen_and_gas_consumption">9.3. Managing nitrogen, oxygen and gas consumption</h3>
-<div class="ulist"><ul>
-<li>
-<p>
-The planning is performed in three stages:
-</p>
+<div class="paragraph"><p>The planning is performed in three stages:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3142,16 +3136,15 @@ as well as the gradient factors (GFLow and GFHigh) under the headings <em>Rates<
 to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the <em>Preferences</em>
 panel of <em>Subsurface</em> is used. If these are changed within the planner (see <em>Gas Options</em> within
 the planner), the new values are
-used without changing the original specifications in the <em>Preferences</em>.
-</p>
-</li>
-</ul></div>
-</li>
-</ul></div>
-<div class="paragraph"><p>Gradient Factor settings strongly affect the calculated ceilings and their depths.
+used without changing the original specifications in the <em>Preferences</em>. Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings about decompression stops early on during the dive.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
 For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.
-For more information external to this manual see:</p></div>
+For more information external to this manual see:
+</p>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3169,6 +3162,8 @@ For more information external to this manual see:</p></div>
 An excellent non-technical review.
 </p>
 </li>
+</ul></div>
+</li>
 <li>
 <p>
 The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
@@ -3180,6 +3175,8 @@ is activated, then the descent phase of the planned dive will be at the maximal 
 in the <em>Rates</em> section of the dive setup.
 </p>
 </li>
+</ul></div>
+</li>
 <li>
 <p>
 <strong>b) Oxygen management</strong>: In the <strong>Gas Options</strong> part of the dive specification, the maximum partial
@@ -3187,14 +3184,11 @@ pressure for oxygen needs to be specified for the
 bottom part of the dive (<em>bottom po2</em>) as well as for the decompression part of the dive (<em>deco po2</em>).
 The most commonly
 used values are 1.4 bar for the bottom part of the dive and 1.5 bar for any decompression
-stages. Normally, a partial pressure of 1.5 bar is not exceeded.
+stages. Normally, a partial pressure of 1.5 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
+<em>Available Gases</em> dialog. Normally the planner decides on switching to a new gas when, during
+ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 </p>
 </li>
-</ul></div>
-<div class="paragraph"><p>Po2 settings and the depth at which switching to a gas takes place can also be edited in the
-<em>Available Gases</em> dialog. Normally the planner decides on switching to a new gas when, during
-ascent, the partial pressure of the new gas has decreased to 1.6 bar.</p></div>
-<div class="ulist"><ul>
 <li>
 <p>
 <strong>c) Gas management</strong>: One needs keep within the limits of the amount of gas contained in the dive
@@ -3211,7 +3205,7 @@ if one exceeds the total amount of gas available. Good practice demands that one
 the limit of the gas supply but that an appropriate reserve is kept for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 </p>
-<div class="ulist"><ul>
+</li>
 <li>
 <p>
 Now (at last) one can start the detailed time-depth planning of the dive. <em>Subsurface</em> offers a unique
@@ -3260,8 +3254,6 @@ If two or more gases are used, automatic gas switches will be suggested during t
 the surface. However, these changes can be deleted by right-clicking the gas change and by
 manually creating a gas change by right-clicking on the appropriate waypoint.
 </p>
-</li>
-</ul></div>
 </li>
 </ul></div>
 <div class="paragraph"><p>Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
@@ -4210,7 +4202,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-18 10:16:43 PDT
+Last updated 2014-07-24 07:34:25 PDT
 </div>
 </div>
 </body>

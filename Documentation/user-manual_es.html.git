@@ -1107,9 +1107,10 @@ de <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p>La fecha y hora del buceo, la mezcla de gases y, a menudo, la temperatura del
 agua se muestran al haberse obtenido del ordenador de buceo, pero el usuario
 necesita añadir a mano alguna información para tener un registro más completo de
-la inmersión. El mensaje de la barra azul arriba del panel indica que se está
-editando el buceo. Si el usuario pulsa en la pestaña <strong>Notas de la inmersión</strong>, se
-visualizan los siguientes campos:</p></div>
+la inmersión. Si se cambia o edita de alguna manera el contenido de esta pestaña,
+el mensaje de la barra azul arriba del panel indicará que se está editando el
+buceo. Si el usuario pulsa en la pestaña <strong>Notas de la inmersión</strong>, se visualizan
+los siguientes campos:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/AddDive3.jpg" alt="FIGURA: La pestaña Notas de la inmersión" />
@@ -1486,8 +1487,10 @@ pO2:           columna 4</code></pre>
 <div class="paragraph"><p>Hay definiciones preconfiguradas para algunos ordenadores de buceo, p.e. los
 rebreathers APD. Si el ordenador de buceo del usuario está en la lista, hay que
 seleccionarlo utilizando el desplegable etiquetado <em>Importaciones
-preconfiguradas</em>, clicar <em>Aceptar</em> y la inmersión será importada y aparecerá en
-la pestaña <strong>Lista de inmersiones</strong> de <em>Subsurface</em>.</p></div>
+preconfiguradas</em>. Selecciona el botón de abajo a la derecha para indicar si los
+datos están en el Sistema Métrico o Imperial. Finalmente clicar <em>Aceptar</em> y la
+inmersión será importada y aparecerá en la pestaña <strong>Lista de inmersiones</strong> de
+<em>Subsurface</em>.</p></div>
 <div class="paragraph"><p>Si el ordenador de buceo no está en la lista preconfigurada, el usuario ha de
 seleccionar el <em>Separador de campos</em> (tabulador o coma) de su archivo CSV
 utilizando el desplegable apropiado e indicar qué columnas del archivo CSV
@@ -4159,7 +4162,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-17 07:25:55 PDT
+Last updated 2014-07-24 07:35:57 PDT
 </div>
 </div>
 </body>
