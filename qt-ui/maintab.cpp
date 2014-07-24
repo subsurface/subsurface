@@ -646,7 +646,7 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->dive_list()->unselectDives();
 		selected_dive = get_divenr(added_dive);
 		amount_selected = 1;
-	} else 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
 		if (!same_string(displayed_dive.notes, current_dive->divetrip->notes)) {
 			current_dive->divetrip->notes = strdup(displayed_dive.notes);
@@ -750,6 +750,7 @@ void MainTab::acceptChanges()
 		// now let's resort the dive list and make sure the newly added dive is still selected
 		selected_dive = -1;
 		amount_selected = 0;
+		sort_table(&dive_table);
 		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
 		MainWindow::instance()->dive_list()->selectDive(newDiveNr, true);
