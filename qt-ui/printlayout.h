@@ -25,8 +25,7 @@ private:
 	QPrinter *printer;
 	struct options *printOptions;
 
-	int screenDpiX, screenDpiY, printerDpi, scaledPageW, scaledPageH;
-	qreal scaleX, scaleY;
+	int screenDpiX, screenDpiY, printerDpi, pageW, pageH;
 	QRect pageRect;
 
 	QVector<QString> tablePrintColumnNames;

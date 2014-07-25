@@ -89,12 +89,9 @@ void PrintLayout::setup()
 	printerDpi = printer->resolution();
 	pageRect = printer->pageRect();
 
-	scaleX = (qreal)printerDpi / (qreal)screenDpiX;
-	scaleY = (qreal)printerDpi / (qreal)screenDpiY;
-
-	// a printer page scalled to screen DPI
-	scaledPageW = pageRect.width() / scaleX;
-	scaledPageH = pageRect.height() / scaleY;
+	// a printer page in pixels
+	pageW = pageRect.width();
+	pageH = pageRect.height();
 }
 
 // go trought the dive table and find how many dives we are a going to print
@@ -139,7 +136,6 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.begin(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-	painter.scale(scaleX, scaleY);
 
 	QPicture pic;
 	QPainter picPainter;
@@ -163,8 +159,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	const int padW = (divesPerColumn < 2) ? 0 : padDef;
 	const int padH = (divesPerRow < 2) ? 0 : padDef;
 	// estimate dimensions for a single dive
-	const int scaledW = ESTIMATE_DIVE_DIM(scaledPageW, divesPerColumn, padW);
-	const int scaledH = ESTIMATE_DIVE_DIM(scaledPageH, divesPerRow, padH);
+	const int scaledW = ESTIMATE_DIVE_DIM(pageW, divesPerColumn, padW);
+	const int scaledH = ESTIMATE_DIVE_DIM(pageH, divesPerRow, padH);
 	// padding in pixels between profile and table
 	const int padPT = 5;
 	// create a model and table
@@ -328,7 +324,7 @@ void PrintLayout::printTable()
 	table.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	table.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	// fit table to one page initially
-	table.resize(scaledPageW, scaledPageH);
+	table.resize(pageW, pageH);
 
 	// don't show border
 	table.setStyleSheet(
@@ -388,7 +384,7 @@ void PrintLayout::printTable()
 				headings += rowH;
 				isHeading = false;
 			}
-			if (accH > scaledPageH) {
+			if (accH > pageH) {
 				lastAccIndex = i;
 				pageIndexes.append(pageIndexes.last() + (accH - rowH));
 				addTablePrintHeadingRow(&model, i);
@@ -404,13 +400,12 @@ void PrintLayout::printTable()
 	}
 	done = 90;
 	pageIndexes.append(pageIndexes.last() + accH + headings);
-	table.resize(scaledPageW, tableHeight);
+	table.resize(pageW, tableHeight);
 
 	// attach a painter and render pages by using pageIndexes
 	QPainter painter(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-	painter.scale(scaleX, scaleY);
 	total = pageIndexes.size() - 1;
 	progress = 0;
 	for (i = 0; i < total; i++) {
