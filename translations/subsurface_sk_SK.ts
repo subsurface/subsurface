@@ -673,7 +673,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="254"/>
         <source>Dive planner points</source>
-        <translation type="unfinished"/>
+        <translation>Body plánu ponoru</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="258"/>
@@ -950,7 +950,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="324"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Zvoľ meno log súboru pre divecomputer sťahovanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="325"/>
@@ -1352,17 +1352,17 @@ vytvorene zo vzduchu a:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation>Prepnuť na pHe graf</translation>
+        <translation>Prepnúť pHe graf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
         <source>Toggle calculating all tissues</source>
-        <translation>Prepnúť na výpočet všetkých tkanív</translation>
+        <translation>Prepnúť výpočet všetkých tkanív</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="183"/>
         <source>Toggle DC reported ceiling</source>
-        <translation>Prepnúť na zobrazenie stropu podľa počítača</translation>
+        <translation>Prepnúť zobrazenie stropu podľa počítača</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="212"/>
@@ -1382,7 +1382,7 @@ vytvorene zo vzduchu a:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="290"/>
         <source>Toggle heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Prepnúť tepovú frekvenciu</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
@@ -1407,7 +1407,7 @@ vytvorene zo vzduchu a:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Prepnúť zobrazenie obrázkov</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1610,7 +1610,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="394"/>
         <source>Rescale depth axis</source>
-        <translation type="unfinished"/>
+        <translation>Zmeniť škálu hĺbkovej osy</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="799"/>
@@ -1719,17 +1719,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="869"/>
         <source>Auto &amp;group</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automatické zoskupovanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="874"/>
         <source>&amp;Yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ročné štatistiky</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="882"/>
         <source>&amp;Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam &amp;ponorov</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="885"/>
@@ -1789,7 +1789,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="962"/>
         <source>&amp;Import log files</source>
-        <translation type="unfinished"/>
+        <translation>Import z &amp;log súborov</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="965"/>
@@ -1819,7 +1819,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="422"/>
         <source>Print runtime table</source>
-        <translation type="unfinished"/>
+        <translation>Vytlačiť runtime tabuľku</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="522"/>
@@ -1900,7 +1900,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="452"/>
         <source>50% avg. depth to 20ft</source>
-        <translation type="unfinished"/>
+        <translation>50% priemernej hĺbky do 20ft</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="453"/>
@@ -1920,7 +1920,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="457"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>50% priemernej hĺbky do 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="458"/>
@@ -1973,7 +1973,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="198"/>
         <source>Use default</source>
-        <translation type="unfinished"/>
+        <translation>Použiť prednastavenú hodnotu</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="208"/>
@@ -2133,7 +2133,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="217"/>
         <source>Display invalid</source>
-        <translation>Zobraz neplatné</translation>
+        <translation>Zobraziť neplatné</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="234"/>
@@ -2198,7 +2198,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="597"/>
         <source>Show</source>
-        <translation>Zobraz</translation>
+        <translation>Zobraziť</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="766"/>
@@ -2253,7 +2253,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="714"/>
         <source>Show average depth</source>
-        <translation>Zobraziť priemernú hlbku</translation>
+        <translation>Zobraziť priemernú hĺbku</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="732"/>
@@ -2876,7 +2876,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="321"/>
         <source>Enter User ID and click Download</source>
-        <translation type="unfinished"/>
+        <translation>Zadaj ID užívateľa a klikni na Stiahnutie</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
@@ -3138,7 +3138,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
         <source>Status:</source>
-        <translation>Status:</translation>
+        <translation>Stav:</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="32"/>
@@ -4013,13 +4013,15 @@ EADD: %d%s
         <location filename="../profile.c" line="1351"/>
         <source>heartbeat: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>tep srdca: %d
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1353"/>
         <source>bearing: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>smer: %d
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1445"/>
@@ -4641,7 +4643,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="200"/>
         <source>surface to the bottom</source>
-        <translation type="unfinished"/>
+        <translation>z hladiny na dno</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="226"/>
@@ -4661,7 +4663,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="281"/>
         <source>Drop to first depth</source>
-        <translation type="unfinished"/>
+        <translation>Priamy zostup do prvej hĺbky</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
@@ -4696,7 +4698,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="382"/>
         <source>Deco pO₂</source>
-        <translation> pO₂ pri dekompresii</translation>
+        <translation>pO₂ pri dekompresii</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="421"/>
@@ -4716,12 +4718,12 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="474"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť prechody medzi deco zastávkami</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="481"/>
         <source>Verbatim diveplan</source>
-        <translation type="unfinished"/>
+        <translation>Ukecaný plán ponoru</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="366"/>
@@ -4737,7 +4739,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="111"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>50% priemernej hĺbky do 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="128"/>
@@ -4747,7 +4749,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť runtime zastávok (absolútny čas) v pláne ponoru</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="458"/>
@@ -4757,7 +4759,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="471"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť prechody v pláne ponoru alebo ich predpokladať implicitne</translation>
     </message>
 </context>
 </TS>
