@@ -706,7 +706,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="99"/>
         <source>Temperature</source>
-        <translation>Temperatura da água</translation>
+        <translation>Temperatura</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="101"/>
@@ -1210,7 +1210,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="758"/>
         <source>Temperature</source>
-        <translation>Temperatura da água</translation>
+        <translation>Temperatura</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="784"/>

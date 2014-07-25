@@ -655,7 +655,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="642"/>
         <source>CC set point</source>
-        <translation type="unfinished"/>
+        <translation>CC (recycleur) Set Point</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="938"/>
@@ -1387,7 +1387,7 @@ mélangés à partir de l&apos;air avec:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
         <source>Toggle MOD</source>
-        <translation type="unfinished"/>
+        <translation>Afficher la MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="342"/>
@@ -1916,7 +1916,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="457"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>de 50% de la profondeur moyenne à 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="458"/>
@@ -2214,27 +2214,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="548"/>
         <source>Ascent/descent speed denominator</source>
-        <translation type="unfinished"/>
+        <translation>Dénominateur de vitesse de montée/descente</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="608"/>
         <source>Threshold when showing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Seuil d&apos;affichage pour la pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="629"/>
         <source>Threshold when showing pN₂</source>
-        <translation type="unfinished"/>
+        <translation>Seuil d&apos;affichage pour la pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="650"/>
         <source>Threshold when showing pHe</source>
-        <translation type="unfinished"/>
+        <translation>Seuil d&apos;affichage pour la pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="671"/>
         <source>Max pO₂ when showing MOD</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max pour l&apos;affichage de la MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="692"/>
@@ -2707,7 +2707,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="34"/>
         <source>Shift times of image(s) by</source>
-        <translation>Décalé l&apos;heure des images par</translation>
+        <translation>Décaler l&apos;heure des image(s) de</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="95"/>
@@ -2757,7 +2757,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="226"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation>Fichier d&apos;images (</translation>
+        <translation>Fichiers image (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
 </context>
 <context>
@@ -2765,7 +2765,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="23"/>
         <source>Shift selected dive times</source>
-        <translation type="unfinished"/>
+        <translation>Décaler l&apos;heure des plongées sélectionnées</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="49"/>
@@ -2919,7 +2919,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="33"/>
         <source>Check for updates.</source>
-        <translation>Cherche les mises à jours.</translation>
+        <translation>Chercher des mises à jours.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="34"/>
@@ -2976,7 +2976,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="32"/>
         <source>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</source>
-        <translation>Nous désirons en connaître plus sur nos utilisateurs, leurs préférences, et leurs habitudes d&apos;utilisations. Prenez une minute pour remplir ce formulaire et le soumettre à l’équipe de Subsurface. SVP sélectionnez toutes les options qui s&apos;applique à vous.</translation>
+        <translation>Nous désirons en connaître plus sur nos utilisateurs, leurs préférences, et leurs habitudes d&apos;utilisations. Prenez une minute pour remplir ce formulaire et le soumettre à l’équipe de Subsurface. SVP sélectionnez toutes les options qui s&apos;appliquent à vous.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
@@ -3006,7 +3006,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="66"/>
         <source>I am downloading dives from supported dive computer</source>
-        <translation>Je télécharge les plongées depuis un ordinateur de plongé supporté</translation>
+        <translation>Je télécharge les plongées depuis un ordinateur de plongée supporté</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="73"/>
@@ -3038,7 +3038,7 @@ p, li { white-space: pre-wrap; }
         <source>
 Operating System: %1</source>
         <translation>
-Système d&apos;opération: %1</translation>
+Système d&apos;exploitation: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="31"/>
@@ -3062,7 +3062,7 @@ Langue: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="73"/>
         <source>Don&apos;t ask me again</source>
-        <translation>Ne me le demande plus</translation>
+        <translation>Ne me le demandez plus</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="74"/>
@@ -3090,7 +3090,7 @@ Architecture OS CPU: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="95"/>
         <source>Subsurface was unable to submit the user survey.</source>
-        <translation>Subsurface n&apos;a pas pus soumettre le sondage.</translation>
+        <translation>Subsurface n&apos;a pas pu soumettre le sondage.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="100"/>
@@ -3395,13 +3395,13 @@ Moyenne</translation>
         <location filename="../file.c" line="106"/>
         <location filename="../file.c" line="369"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation>Impossible de la lecture « %s »</translation>
+        <translation>Impossible de lire « %s »</translation>
     </message>
     <message>
         <location filename="../file.c" line="409"/>
         <location filename="../file.c" line="494"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
-        <translation>Le nombre maximal de colonnes supporté pour les importations de fichiers CSV est %d.</translation>
+        <translation>Le nombre maximum de colonnes supporté pour les importations de fichiers CSV est %d.</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
@@ -3446,7 +3446,7 @@ Moyenne</translation>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
         <source>bookmark</source>
-        <translation>marque-page</translation>
+        <translation>signet</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
@@ -3462,7 +3462,7 @@ Moyenne</translation>
         <location filename="../libdivecomputer.c" line="146"/>
         <location filename="../libdivecomputer.c" line="149"/>
         <source>gaschange</source>
-        <translation>Changement de gas</translation>
+        <translation>Changement de gaz</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="146"/>
@@ -3646,14 +3646,14 @@ Moyenne</translation>
         <location filename="../parse-xml.c" line="1913"/>
         <source>Database query get_events failed.
 </source>
-        <translation>Échec de la requête.
+        <translation>Échec de la requête get_events.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1920"/>
         <source>Database query get_tags failed.
 </source>
-        <translation>Errur de la requête get_tags.
+        <translation>Échec de la requête get_tags.
 </translation>
     </message>
     <message>
@@ -3675,21 +3675,21 @@ Moyenne</translation>
         <location filename="../parse-xml.c" line="2065"/>
         <source>Database query get_cylinders failed.
 </source>
-        <translation>Erreur de la requête get_cylinders.
+        <translation>Échec de la requête get_cylinders.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2072"/>
         <source>Database query get_changes failed.
 </source>
-        <translation>Erreur de la requête get_changes.
+        <translation>Échec de la requête get_changes.
 </translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2079"/>
         <source>Database query get_profile_sample failed.
 </source>
-        <translation>Erreur de la requête get_profile_sample.
+        <translation>Échec de la requête get_profile_sample.
 </translation>
     </message>
     <message>
@@ -4454,17 +4454,17 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>pO₂ Green Warning</source>
-        <translation type="unfinished"/>
+        <translation>Avertissement  vert pO₂</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>pO₂ Ascend Warning</source>
-        <translation type="unfinished"/>
+        <translation>Avertissement pO₂ de remonté</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>pO₂ Ascend Alarm</source>
-        <translation type="unfinished"/>
+        <translation>Alarme pO₂ de remonté</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
@@ -4622,7 +4622,7 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="77"/>
         <source>below 75% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Sous 75% de la profondeur moyenne</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="84"/>
@@ -4691,7 +4691,7 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="359"/>
         <source>Bottom pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ fond</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="382"/>
@@ -4706,12 +4706,12 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="445"/>
         <source>Display runtime</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le runtime</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="461"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>afficher la duré du segment</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="474"/>
@@ -4732,12 +4732,12 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="94"/>
         <source>75% to 50% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>de 75% à 50% de la profondeur moyenne</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="111"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>de 50% de la profondeur moyenne à 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="128"/>
@@ -4747,17 +4747,17 @@ Est-ce que votre Uemis Zurich est branché correctement ?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Sur la planification, afficher le runtime (durée absolue) des arrêts</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="458"/>
         <source>In dive plan, show duration (relative time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Sur la planification, afficher la durée (durée relative) des arrêts</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="471"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation type="unfinished"/>
+        <translation>Sur la planification, lister les transitions ou traiter les comme implicites</translation>
     </message>
 </context>
 </TS>
