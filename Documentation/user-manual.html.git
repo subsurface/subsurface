@@ -799,8 +799,7 @@ dive being described:</p></div>
 its position is indicated by two coloured lines (red and green) as shown below.
 The depth and time
 that the cursor represents are indicated at the top of the black information box
-(# and m), as well as respectively on the left hand and
-bottom axes. The units (metric/imperial) on the axes are determined by the
+(@ and D). The units (metric/imperial) on the axes are determined by the
 <strong>Preference</strong> settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15 m.
@@ -2811,23 +2810,34 @@ the appropriate information from the Main Menu: <em>File&#8594;Preferences&#8594
 <div class="paragraph"><p>Now the print options should be selected to match the user&#8217;s needs. To do this, user should select <em>File&#8594;Print</em> from
 the Main menu. The following dialogue appears (see the image on the left [A],
 below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PrintDiveLog.jpg" alt="FIGURE: Print dialogue" />
+</div>
+</div>
 <div class="paragraph"><p>Under <em>Print type</em> users need to select one of three options:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Print the Dive List: to do this, <em>Table Print</em> should be selected.
+Print the complete Dive List: to do this, <em>Table Print</em> should be selected.
 </p>
 </li>
 <li>
 <p>
-Print the full dive records (dive profiles and all other information) at 6
+Print the selected dives (dive profiles and all other information) at 6
 dives per printed page: to do this, users should select <em>6 dives per page</em>.
 </p>
 </li>
 <li>
 <p>
-Print the full dive records (dive profiles and all other information) at 2
+Print the selected dives (dive profiles and all other information) at 2
 dives per printed page: to do this, users should select <em>2 dives per page</em>.
+</p>
+</li>
+<li>
+<p>
+Print the selected dives (dive profiles and all other information) at 1
+dive per printed page: to do this, users should select <em>1 dive per page</em>.
 </p>
 </li>
 </ul></div>
@@ -2850,23 +2860,18 @@ Printing in colour, achieved by checking the box with <em>Print in colour</em>.
 The dive profile could be printed at the top of each dive, with the textual
 information underneath, or it could be printed with the textual information at
 the top with the dive profile underneath. Users should select the appropriate option in the
-print dialogue. See the image on the right (<strong>B</strong>), above which has a layout with
-text above the dive profile.</p></div>
+print dialogue. See the image below which has a layout with
+text below the dive profile.</p></div>
 <div class="paragraph"><p>Users can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on the
 dialogue. After preview, changes to the options in the print dialogue can be
 made, resulting in a layout that fits personal taste.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/PrintDiveLog.jpg" alt="FIGURE: Print dialogue" />
-</div>
-</div>
 <div class="paragraph"><p>Next, select the <em>Print</em> button in the dialogue. This activates the regular print
 dialogue used by the user operating system (image [<strong>B</strong>] in the middle, above),
 allowing them to choose a printer and to set its properties (image [<strong>C</strong>] on the right,
 above).
 It is important to set the print resolution of the printer to an appropriate value by
 changing
-the printer properties. Finally, users can print their dives. Below is a (rather small)
+the printer properties. Finally, one can print the dives. Below is a (rather small)
 example of
 the output for one particular page.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3347,6 +3352,14 @@ the transitions are shown separately from the segment durations at a particular 
 <div class="paragraph"><p>Selecting the <em>Print</em> button in the planner allows printing of the  <em>Dive Plan Details</em>
 for wet notes. Alternatively one can cut and paste the <em>Dive Plan Details</em> for
 inclusion in a text file or word processing document.</p></div>
+<div class="paragraph"><p>Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
+After a dive plan has been saved, the dive details and gas calculations are saved in
+the <strong>Dive Notes</strong> tab. While a dive plan is being designed, it can be printed using
+the <em>Print</em> button in the dive planner. This prints the dive details and gas calculations
+in the <em>Dive Plan Details</em> panel of the dive planner. However, after the plan has been saved, it is
+represented in a way very similar to a dive log and the gas calculations cannot be
+accessed in the same way as during the planning process. The only way to print the
+dive plan is to use the <em>File&#8594;Print</em> facility on the main menu in the same way as for dive logs.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_planning_for_repetitive_dives">9.6. Planning for repetitive dives</h3>
@@ -4263,7 +4276,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-24 12:54:14 PDT
+Last updated 2014-07-25 07:30:15 PDT
 </div>
 </div>
 </body>
