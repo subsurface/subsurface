@@ -54,7 +54,6 @@
 #endif
 
 #ifdef __APPLE__
-#include <MacTypes.h>
 #include <CoreServices/CoreServices.h>
 #endif
 
@@ -412,10 +411,18 @@ QString SubsurfaceSysInfo::prettyOsName()
 	case MV_MOUNTAINLION:
 		basename = "OS X Mountain Lion (";
 		break;
+#ifdef MV_MAVERICKS
 	case MV_MAVERICKS:
+#else
+	case 0x000B: // MV_MAVERICKS
+#endif
 		basename = "OS X Mavericks (";
 		break;
+#ifdef MV_YOSEMITE
+	case MV_YOSEMITE:
+#else
 	case 0x000C: // MV_YOSEMITE
+#endif
 		basename = "OS X Yosemite (";
 		break;
 	}
