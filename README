@@ -1,9 +1,11 @@
 
-This is the README file for Subsurface 4.1.92, the third Beta for 4.2
+This is the README file for Subsurface 4.1.93, the fourth Beta for 4.2
 
-The second Beta had a rather unpleasant bug where notes text turned into
-HTML. That (and a couple of other bugs) was fixed for Beta 3. We think
-this is reasonably close to being able to be released.
+We made one more Beta available in order to improve the print subsystem -
+in our testing this improved things quite a bit for most situations, but
+we are still eager to get feedback on where things go badly.
+Also, Beta 4 includes many updates to the translations plus a bunch of
+fixes for the HTML export.
 
 Please be very careful when using it on your real data - while this is
 reasonably well tested by our developers, there's always a risk that this

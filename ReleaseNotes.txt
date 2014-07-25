@@ -1,4 +1,4 @@
-			Subsurface 4.2 Beta 3
+			Subsurface 4.2 Beta 4
 			=====================
 
 Some of the changes since 4.1
@@ -7,8 +7,7 @@ Some of the changes since 4.1
   (we still cannot re-plan a planned dive - this is on the todo list)
 - Pictures can be associated with dives and shown in the profile
   (once a picture was added, we have no UI to delete it - also in the next version)
-- Printing changed - some things got better, but the rasterization of the
-  profile is really annoying. More work to be done there
+- Printing is much improved
 - Data entry for dives is much more intuitive and consistent
 - First steps towards an HTML exporter
 - Support to import dive log files from Seabear dive computers
