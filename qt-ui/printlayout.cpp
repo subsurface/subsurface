@@ -377,6 +377,7 @@ void PrintLayout::printTable()
 	const int passes[] = { 70, 10 };
 	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings;
 	bool isHeading = false;
+	int headingRowH;
 
 	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
 		progress = headings = accH = 0;
@@ -385,6 +386,7 @@ void PrintLayout::printTable()
 			rowH = table.rowHeight(i);
 			accH += rowH;
 			if (isHeading) {
+				headingRowH = rowH;
 				headings += rowH;
 				isHeading = false;
 			}
@@ -418,7 +420,14 @@ void PrintLayout::printTable()
 		QRegion region(0, pageIndexes.at(i) - 1,
 			       table.width(),
 			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
-		table.render(&painter, QPoint(0, 0), region);
+		// vectorize the table first by using QPicture
+		QPicture pic;
+		QPainter picPainter;
+		picPainter.begin(&pic);
+		table.render(&picPainter, QPoint(0, 0), region);
+		picPainter.end();
+		// for page# > 0, we need to offset the target point's Y by twice the heading row height
+		painter.drawPicture(QPoint(0, (i > 0 ? -(headingRowH << 1) : 0)), pic);
 		progress++;
 		emit signalProgress(done + (progress * 10) / total);
 	}
