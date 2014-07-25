@@ -137,9 +137,6 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
-	QPicture pic;
-	QPainter picPainter;
-
 	// setup the profile widget
 	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	const int profileFrameStyle = profile->frameStyle();
@@ -209,6 +206,8 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 		painter.setTransform(origTransform);
 
 		// draw a table
+		QPicture pic;
+		QPainter picPainter;
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetTable);
 		model.setDive(dive);
 		picPainter.begin(&pic);
