@@ -363,11 +363,11 @@ image::images/DiveProfile1.jpg["FIGURA: Perfil de inmersión inicial",align="cen
 _Modificar el perfil de la inmersión_: Cuando se mueve el cursor por el perfil,
 su posición se indica por dos líneas de colores (roja y verde), como se muestra
 a continuación. La profundidad y el tiempo se indican, respectivamente, en los
-ejes lateral izquierdo e inferior. Las unidades (métricas/imperiales) de los
-ejes vienen determinadas por los ajustes de las Preferencias. El perfil de la
-inmersión comprende varios segmentos definidos por puntos de referencia (puntos
-en blanco en el perfil, como los que se muestran arriba). La profundidad por
-defecto es de 15m.
+ejes lateral izquierdo e inferior, y en el cajetín negro de información. Las
+unidades (métricas/imperiales) de los ejes vienen determinadas por los ajustes
+de las Preferencias. El perfil de la inmersión comprende varios segmentos
+definidos por puntos de referencia (puntos en blanco en el perfil, como los que
+se muestran arriba). La profundidad por defecto es de 15m.
 Si la profundidad de la inmersión fue de 21m, el usuario tiene que arrastrar los
 puntos de referencia adecuados hacia abajo hasta que representen los 21m. Para
 añadir un punto hay que hacer doble clic en cualquier segmento. Para borrar un
@@ -392,8 +392,8 @@ en la pestaña *Equipo* aparecen en el menú contextual:
 
 image::images/DiveProfile3.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
-Abajo está el perfil de una inmersión a 21m durante 31 minutos, a la que se ha
-añadido un cambio de aire a EAN50 a 20 m tras los 31 minutos. En este caso, la
+Abajo está el perfil de una inmersión a 20m durante 30 minutos, a la que se ha
+añadido un cambio de aire a EAN50 a 20 m tras los 30 minutos. En este caso, la
 primera botella en la pestaña *Equipo* contenía aire y la segunda contenía
 EAN50.
 
@@ -770,6 +770,28 @@ inmersión con dos tipos de lastre: integrado y cinturón:
 
 image::images/WeightsDataEntry3.jpg["FIGURA: Tabla con información de lastre completada",align="center"]
 
+==== Añadir Marcas a una inmersión
+
+Muchos buceadores desean anotar en sus inmersiones textos que indiquen sucesos
+concretos durante el buceo, p.e. "Avistamos delfines" o "Lanzada boya deco".
+Esto se hace fácilmente:
+
+ - Clic derecho sobre el punto adecuado del perfil de inmersión, se desplegará
+el menú contextual del perfil. Se selecciona _Añadir marca_. Una bandera roja
+aparecerá sobre el perfil en el punto inicialmente seleccionado (ver *A* a
+continuación).
+ - Clic derecho sobre la bandera roja. Se desplegará el menú contextual (ver
+*B* a continuación). Se selecciona _Editar nombre_.
+
+ - Se mostrará una casilla de texto. Se teclea en ella el texto oportuno para la
+marca (ver *C* a continuación). Se selecciona _Aceptar_, con lo que se guarda el
+texto asociado a la marca.
+
+ - Cuando el ratón pase sobre el marcador rojo, el texto guardado se mostrará en
+ la parte de debajo del cajetín de información (ver *D* a continuación).
+
+image::images/Bookmarks.jpg["FIGURA: Diálogo de marcadores",align="center"]
+
 ==== Guardar la información de buceo actualizada
 
 La información introducida en las pestañas Notas de la inmersión y Equipo puede
@@ -1094,7 +1116,7 @@ buceo.
 
 - Maps: Muestra el punto de buceo sobre un mapa.
 
-Tras editar y guardar la posición de buceo (ver *C* arriba), se necesita subirla
+Tras editar y guardar la posición de buceo (ver *C* abajo), se necesita subirla
 al servidor, como se explicará a continuación.
 
 
@@ -1314,9 +1336,12 @@ entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra u
 fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
 y hora de la imagen *B* anterior.
 
+Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
+perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.
+
 === Visualizar las imágenes
 
-Después que las imagenes han sido cargadas aparecen en la pestaña _Fotos_ del
+Después que las imágenes han sido cargadas aparecen en la pestaña _Fotos_ del
 panel *Notas de Inmersión*. También aparecen como pequeños iconos en el perfil
 de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
 fotografía. Ver a continuación:
@@ -1458,9 +1483,9 @@ el área blanca horizontal bajo los dos puntos.
 [icon="images/icons/ShowPhotos.png"]
 [NOTE]
 Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
-seleccionando el botón *Mostrar foto*. La posición de la foto en el perfil
-indica la hora exacta a la que se tomó. Si el botón no está activado, las fotos
-permanecen ocultas
+seleccionando el botón *Mostrar foto* en la barra de herramientas a la izquierda
+del perfil. La posición de la foto en el perfil indica la hora exacta a la que
+se tomó. Si el botón no está activado, las fotos permanecen ocultas.
 
 El perfil de buceo también puede incluir el *techo* registrado por el ordenador
 de buceo (o, más precisamente, la parada deco más profunda que el ordenador de
@@ -1634,6 +1659,28 @@ image::images/ContextMenu.jpg["Figura: Menú contextual",align="center"]
 El menú contextual se usa en muchas de las acciones que se describen a
 continuación.
 
+==== Personalizar la información mostrada en el panel *Lista de inmersiones*
+
+image::images/DiveListOptions.jpg["Ejemplo: Opciones de la Lista de inmersiones",align="left"]
+
+La información por defecto de la *Lista de inmersiones* incluye, para cada buceo,
+Numero de inmersión, Fecha, Calificación, Profundidad, Duración y Ubicación. Esta
+información puede controlarse y cambiarse haciendo clic derecho sobre la barra de
+encabezamiento de la *Lista de inmersiones*. Por ejemplo, un clic derecho sobre
+la cabecera 'Fecha'despliega una lista de valores que pueden mostrarse (ver la
+figura anterior). Si seleccionamos un valor para que se muestre o desaparezca de
+la lista, esta se actualiza inmediatamente. Las preferencias para la información
+que muestre la lista se guardan y reutilizan cada vez que se abre _Subsurface_.
+
+==== Seleccionar inmersiones en una ubicación concreta
+
+Muchos buceadores tienen largas listas de inmersiones, y puede resultar difícil
+localizar todos los buceos en un punto en concreto. Presionando _Ctrl+F_ en el
+teclado se abre una casilla de texto en la parte de arriba a la izquierda de la
+*Lista de inmersiones*. Si se teclea el nombre de una ubicación en esta casilla
+la *Lista de inmersiones* se filtra inmediatamente para mostrar solo los buceos
+en esta ubicación.
+
 [[S_Renumber]]
 === Renumerar las inmersiones
 
@@ -1791,16 +1838,16 @@ registro de inmersiones en HTML contiene la mayor parte de la información y
 dispone de una opción de búsqueda que permite rastrear el diario. La exportación
 a HTML se especifica en la segunda pestaña del diálogo de exportación (imagen
 *B* anterior).
-** _Ajustes generales_, en la pestaña HTML, se proporcionan las siguientes
+* _Ajustes generales_, en la pestaña HTML, se proporcionan las siguientes
 opciones:
-*** Numeración de Subsurface: Si se activa esta opción, las inmersiones se
+** Numeración de Subsurface: Si se activa esta opción, las inmersiones se
 exportan con la misma numeración que tienen asociada en _Subsurface_. De lo
 contrario, los buceos se numerarán a partir de 1.
-*** Javascript mínimo: Esta opción minimizará la cantidad de código javascript
+** Javascript mínimo: Esta opción minimizará la cantidad de código javascript
 producido con el archivo y se perderán algunas funcionalidades.
-*** Solo exportar lista: Solo se exportará una lista de inmersiones. No se
+** Solo exportar lista: Solo se exportará una lista de inmersiones. No se
 dispondrá de información detallada de los buceos.
-** _Opciones de estilo_: Algunas opciones relativas al estilo de visualización
+* _Opciones de estilo_: Algunas opciones relativas al estilo de visualización
 en el navegador, como el tamaño de la letra o el tema aplicado.
 
 [[S_PrintDivelog]]
@@ -2099,28 +2146,25 @@ esta etapa de la planificación.
 
 === Controlar los gases inertes, el oxígeno y el consumo de gas
 
-La planificación se efectua en tres pasos:
+La planificación se efectúa en tres pasos:
 
-** *a) Control de gases inertes*: Esto se consigue especificando las velocidades
+- *a) Control de gases inertes*: Esto se consigue especificando las velocidades
 de descenso y ascenso, así como los factores de gradiente (GF bajo y GF alto)
 bajo los encabezamientos _Velocidades_ y _Planificar_ en la parte inferior de la
 pantalla de planificación. En principio se utilizan los factores de gradiente
 especificados en la pantalla de _Preferencias_ de _Subsurface_. Si se modifican
 en el planificador(ver _Opciones de gases_), se utilizan los nuevos valores sin
-modificar los marcados en las _Preferencias_.
-Los ajustes de los factores de gradiente afectan enormemente a los techos
-calculados y sus profundidades.
+modificar los marcados en las _Preferencias_. Los ajustes de los factores de
+gradiente afectan enormemente a los techos calculados y sus profundidades.
 Un _GF bajo_ muy pequeño produce paradas de descompresión más pronto durante la
 inmersión.
 Para más información externa a este manual ver:
 
-*** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, por Kevin Watts]
+ *** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress, Southend-on-Sea, UK. ISBN 10:1-905492-07-3. Un excelente estudio no técnico.]
 
-*** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, por Kevin Watts]
-
-*** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress, Southend-on-Sea, UK. ISBN 10:1-905492-07-3. Un excelente estudio no técnico.]
-
-*** La velocidad de ascenso es crítica para la desgasificación al final de la
+ ** La velocidad de ascenso es crítica para la desgasificación al final de la
 inmersión y se especifica para varios rangos utilizando la profundidad media
 como vara de medir. La profundidad media del plan se indica en el perfil del
 panel verde del planificador. Las velocidades de ascenso en los niveles más
@@ -2130,14 +2174,17 @@ a 1 m/min. La velocidad de descenso también se especifica. Si activamos la
 opción _Caer a la primera profundidad_ , la fase de descenso se efectuará a la
 máxima velocidad indicada en la sección _Velocidades_ de los ajustes.
 
-** *b) Control del oxígeno*: En las _Opciones de gases_ es necesario
+- *b) Control del oxígeno*: En las _Opciones de gases_ es necesario
 especificar la máxima presión parcial de oxígeno para la parte del fondo
 (_pO2 en fondo_ ) y también para la fase de descompresión (_pO2 en deco_).
 Los valores más comunes son 1.4 bar para el fondo de la inmersión y 1.5 bar
 para las paradas de descompresión. Habitualmente no se excede una presión
-parcial de 1.5 bar de O2.
+parcial de 1.5 bar de O2. Los ajustes de pO2 y la profundidad a la que cambiar
+de gases también pueden editarse en el diálogo _Gases disponibles_. Normalmente
+el planificador decide el cambio a otro gas cuando, durante el ascenso, la
+presión parcial del nuevo gas se sitúa por debajo de 1.6 bar.
 
-** *c) Control del gas*: Es necesario mantenerse en los límites de la cantidad
+- *c) Control del gas*: Es necesario mantenerse en los límites de la cantidad
 de gas de la botella, manteniendo un margen de seguridad apropiado para regresar
 a superficie, posiblemente compartiendo gas con un compañero. En las _Opciones
 de gases_ especifica la mejor (pero conservativa) estimación de tu "consumo de
