@@ -366,8 +366,7 @@ _Modifying the dive profile_: When the cursor is moved around the dive profile,
 its position is indicated by two coloured lines (red and green) as shown below.
 The depth and time
 that the cursor represents are indicated at the top of the black information box
-(# and m), as well as respectively on the left hand and
-bottom axes. The units (metric/imperial) on the axes are determined by the
+(@ and D). The units (metric/imperial) on the axes are determined by the
 *Preference* settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15 m.
@@ -1933,13 +1932,17 @@ Now the print options should be selected to match the user's needs. To do this, 
 the Main menu. The following dialogue appears (see the image on the left [A],
 below).
 
+image::images/PrintDiveLog.jpg["FIGURE: Print dialogue",align="center"]
+
 Under _Print type_ users need to select one of three options:
 
-- Print the Dive List: to do this, _Table Print_ should be selected.
-- Print the full dive records (dive profiles and all other information) at 6
+- Print the complete Dive List: to do this, _Table Print_ should be selected.
+- Print the selected dives (dive profiles and all other information) at 6
 dives per printed page: to do this, users should select _6 dives per page_.
-- Print the full dive records (dive profiles and all other information) at 2
+- Print the selected dives (dive profiles and all other information) at 2
 dives per printed page: to do this, users should select _2 dives per page_.
+- Print the selected dives (dive profiles and all other information) at 1
+dive per printed page: to do this, users should select _1 dive per page_.
 
 Under _Print options_ users need to select:
 
@@ -1952,14 +1955,12 @@ The _Ordering_ affects the layout of the page (or part of it) for each dive.
 The dive profile could be printed at the top of each dive, with the textual
 information underneath, or it could be printed with the textual information at
 the top with the dive profile underneath. Users should select the appropriate option in the
-print dialogue. See the image on the right (*B*), above which has a layout with
-text above the dive profile.
+print dialogue. See the image below which has a layout with
+text below the dive profile.
 
 Users can _Preview_ the printed page by selecting the _Preview_ button on the
 dialogue. After preview, changes to the options in the print dialogue can be
 made, resulting in a layout that fits personal taste.
-
-image::images/PrintDiveLog.jpg["FIGURE: Print dialogue",align="center"]
 
 Next, select the _Print_ button in the dialogue. This activates the regular print
 dialogue used by the user operating system (image [*B*] in the middle, above),
@@ -1967,7 +1968,7 @@ allowing them to choose a printer and to set its properties (image [*C*] on the 
 above).
 It is important to set the print resolution of the printer to an appropriate value by
 changing
-the printer properties. Finally, users can print their dives. Below is a (rather small)
+the printer properties. Finally, one can print the dives. Below is a (rather small)
 example of
 the output for one particular page.
 
@@ -2286,6 +2287,14 @@ Selecting the _Print_ button in the planner allows printing of the  _Dive Plan D
 for wet notes. Alternatively one can cut and paste the _Dive Plan Details_ for
 inclusion in a text file or word processing document.
 
+Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
+After a dive plan has been saved, the dive details and gas calculations are saved in
+the *Dive Notes* tab. While a dive plan is being designed, it can be printed using
+the _Print_ button in the dive planner. This prints the dive details and gas calculations
+in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
+represented in a way very similar to a dive log and the gas calculations cannot be
+accessed in the same way as during the planning process. The only way to print the
+dive plan is to use the _File->Print_ facility on the main menu in the same way as for dive logs.
 
 === Planning for repetitive dives
 
