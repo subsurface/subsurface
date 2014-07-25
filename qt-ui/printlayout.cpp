@@ -191,16 +191,21 @@ void PrintLayout::printProfileDives(int divesPerRow, int divesPerColumn)
 				printer->newPage();
 			}
 		}
-		QTransform origTransform = painter.transform();
-
-		QImage image(scaledW, scaledH - tableH - padPT, QImage::Format_ARGB32);
-		QPainter imgPainter(&image);
 		// draw a profile
+		QTransform origTransform = painter.transform();
 		painter.translate((scaledW + padW) * col, (scaledH + padH) * row + yOffsetProfile);
 		profile->plotDive(dive, true); // make sure the profile is actually redrawn
+#ifdef Q_OS_LINUX // on Linux there is a vector line bug (big lines in PDF), which forces us to render to QImage
+		QImage image(scaledW, scaledH - tableH - padPT, QImage::Format_ARGB32);
+		QPainter imgPainter(&image);
+		imgPainter.setRenderHint(QPainter::Antialiasing);
+		imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
 		profile->render(&imgPainter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
 		imgPainter.end();
 		painter.drawImage(image.rect(),image);
+#else // for other OS we can try rendering the profile as vector
+		profile->render(&painter, QRect(0, 0, scaledW, scaledH - tableH - padPT));
+#endif
 		painter.setTransform(origTransform);
 
 		// draw a table
