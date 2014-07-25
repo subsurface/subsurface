@@ -375,9 +375,8 @@ void PrintLayout::printTable()
 	 * use 10% each, then the sum of passes[] here should be 80%.
 	 * two should be enough! */
 	const int passes[] = { 70, 10 };
-	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings;
+	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings, headingRowHeightD2;
 	bool isHeading = false;
-	int headingRowH;
 
 	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
 		progress = headings = accH = 0;
@@ -386,7 +385,7 @@ void PrintLayout::printTable()
 			rowH = table.rowHeight(i);
 			accH += rowH;
 			if (isHeading) {
-				headingRowH = rowH;
+				headingRowHeightD2 = rowH >> 1;
 				headings += rowH;
 				isHeading = false;
 			}
@@ -408,7 +407,10 @@ void PrintLayout::printTable()
 	pageIndexes.append(pageIndexes.last() + accH + headings);
 	table.resize(pageW, tableHeight);
 
-	// attach a painter and render pages by using pageIndexes
+	/* attach a painter and render pages by using pageIndexes
+	 * there is a weird QPicture dependency here; we need to offset a page
+	 * by headingRowHeightD2, which is half the heading height. the same doesn't
+	 * make sense if we are rendering the table widget directly to the printer-painter. */
 	QPainter painter(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
@@ -417,17 +419,16 @@ void PrintLayout::printTable()
 	for (i = 0; i < total; i++) {
 		if (i > 0)
 			printer->newPage();
-		QRegion region(0, pageIndexes.at(i) - 1,
-			       table.width(),
-			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
+		QRegion region(0, pageIndexes.at(i) + headingRowHeightD2 - 1,
+		               table.width(),
+		               pageIndexes.at(i + 1) - (pageIndexes.at(i) + headingRowHeightD2) + 1);
 		// vectorize the table first by using QPicture
 		QPicture pic;
 		QPainter picPainter;
 		picPainter.begin(&pic);
 		table.render(&picPainter, QPoint(0, 0), region);
 		picPainter.end();
-		// for page# > 0, we need to offset the target point's Y by twice the heading row height
-		painter.drawPicture(QPoint(0, (i > 0 ? -(headingRowH << 1) : 0)), pic);
+		painter.drawPicture(QPoint(0, headingRowHeightD2), pic);
 		progress++;
 		emit signalProgress(done + (progress * 10) / total);
 	}
