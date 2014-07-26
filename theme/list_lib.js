@@ -1038,6 +1038,7 @@ function canvas_draw()
 					 },
 					 y3axis : {
 						padMax : 3.05,
+						max : 50,
 						tickOptions: {
 							showGridline: false,
 							showMark: false,
