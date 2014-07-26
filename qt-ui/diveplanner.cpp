@@ -69,6 +69,9 @@ void DivePlannerPointsModel::createSimpleDive()
 {
 	struct gasmix gas = { 0 };
 
+	// initialize the start time in the plan
+	diveplan.when = displayed_dive.when;
+
 	if (isPlanner())
 		// let's use the gas from the first cylinder
 		gas = displayed_dive.cylinder[0].gasmix;
