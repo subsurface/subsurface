@@ -769,12 +769,25 @@ function get_cylinders_HTML(dive)
 	return result;
 }
 
+function get_event_value(event)
+{
+	if (event.type == 11 || event.type == 25) { // gas change
+		var he = event.value >> 16;
+		var o2 = event.value & 0xffff;
+		return 'He: ' + he + ' - O2: ' + o2;
+	}
+	if (event.type == 23) { // heading
+		event.value;
+	}
+	return '-';
+}
+
 /**
 Return the HTML string for a bookmark entry in the table.
 */
 function get_bookmark_HTML(event)
 {
-	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + int_to_time(event.time) + '</td><td class="Cyl">' + event.value + '</td></tr>';
+	return '<tr><td class="Cyl">' + event.name + '</td><td class="Cyl">' + int_to_time(event.time) + '</td><td class="Cyl">' + get_event_value(event) + '</td></tr>';
 }
 
 /**
