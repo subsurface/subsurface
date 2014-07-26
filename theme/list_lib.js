@@ -949,6 +949,11 @@ function canvas_draw()
 			0
 		]);
 	}
+	if (plot1)
+	{
+		$('chart1').unbind();
+		plot1.destroy();
+	}
 	plot1 = $.jqplot('chart1', [
 					depthData,
 					pressureData,
