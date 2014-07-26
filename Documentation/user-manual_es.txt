@@ -1870,13 +1870,17 @@ Ahora habra que seleccionar las opciones de impresión. Para ello se selecciona
 _Archivo → Imprimir_ desde el menú principal. Aparecerá el siguiente diálogo
 (ver la imagen [A] abajo):
 
-En Tipo de impresión habrá que seleccionar una de las tres opciones
+image::images/PrintDiveLog.jpg["FIGURA: Dialogo de impresión",align="center"]
+
+En Tipo de impresión habrá que seleccionar una de las cuatro opciones
 
 - Imprimir la lista de inmersiones. Para ello se selecciona Impresión de tabla.
 - Imprimir los registros de buceo completos (perfiles y resto de información) a
-6 inmersiones por página. Para ello se selecciona 6 inmersiones por página.
+6 inmersiones por página. Para ello se selecciona _6 inmersiones por página_.
 - Imprimir los registros de buceo completos (perfiles y resto de información) a
-2 inmersiones por página. Para ello se selecciona 2 inmersiones por página.
+2 inmersiones por página. Para ello se selecciona _2 inmersiones por página_.
+- Imprimir los registros de buceo completos (perfiles y resto de información) a
+1 inmersión por página. Para ello se selecciona  _1 inmersión por página_.
 
 En Opciones de impresión habrá que seleccionar:
 
@@ -1889,15 +1893,13 @@ La opción _Ordenar_ afecta a la disposición de la página (o parte de ella) pa
 cada inmersión. El perfil de buceo puede imprimirse en la parte alta de cada
 inmersión con el texto debajo, o puede imprimirse el texto en la parte de arriba
 con el perfil debajo. Seleccionar la opción preferida en el diálogo de
-impresión. Ver la imagen (*B*) arriba a la derecha, la cual presenta el texto
-sobre el perfil.
+impresión. Ver la imagen a continuación la cual presenta el texto sobre el
+perfil.
 
 El usuario puede _Previsualizar_ la página impresa seleccionando el botón
 _Previsualizar_ del diálogo. Después de previsualizar, se pueden hacer cambios
 en las opciones del diálogo de impresión para ajustarlas a los gustos
 personales.
-
-image::images/PrintDiveLog.jpg["FIGURA: Diálogo de impresión",align="center"]
 
 Ahora se selecciona el botón _Imprimir_ del diálogo. Esto lanzará el diálogo de
 impresión habitual usado por el sistema operativo del usuario (imagen [*B*] en
@@ -2271,6 +2273,18 @@ Seleccionar el botón _Imprimir_ permite imprimir los _Detalles del plan de
 buceo_ para unas "wet notes". También se pueden copiar y pegar los _Detalles del
 plan de buceo_ para incluirlos en un archivo de texto o un procesador de
 textos.
+
+Los planes de inmersión tienen muchas características en común con los registros
+de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
+los calculos de gas quedan almacenados en la pestaña *Notas de la inmersión*.
+Mientras se está diseñando un plan, se puede imprimir utilizando el botón
+_Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
+panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
+sido guardado, aparece de una forma muy similar a una anotación en el diario y
+no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
+de planificación. En esta situación, la única manera de imprimir el plan es usar
+_Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
+registro de inmersión.
 
 === Planificar inmersiones sucesivas
 
