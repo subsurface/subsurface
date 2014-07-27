@@ -149,7 +149,7 @@
         </xsl:call-template>
       </xsl:variable>
       <xsl:choose>
-        <xsl:when test="$manual = 1">
+        <xsl:when test="$manual = 0">
           <xsl:value-of select="$second - $first"/>
         </xsl:when>
         <xsl:otherwise>
