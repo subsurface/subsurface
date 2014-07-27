@@ -44,6 +44,27 @@ void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
+static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
+{
+	int i, nr;
+
+	nr = nr_weightsystems(dive);
+
+	put_string(b, "\"Weights\":[");
+
+	for (i = 0; i < nr; i++) {
+		weightsystem_t *ws = dive->weightsystem + i;
+		int grams = ws->weight.grams;
+		const char *description = ws->description;
+
+		put_string(b, "{");
+		put_format(b, "\"weight\":\"%d\",", grams);
+		write_attribute(b, "description", description);
+		put_string(b, "},");
+	}
+	put_string(b, "],");
+}
+
 static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
@@ -199,6 +220,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	if (!list_only) {
 		put_cylinder_HTML(b, dive);
+		put_weightsystem_HTML(b, dive);
 		put_HTML_samples(b, dive);
 		put_HTML_bookmarks(b, dive);
 		write_dive_status(b, dive);

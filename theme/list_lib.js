@@ -736,6 +736,28 @@ function lastNonZero()
 }
 
 /**
+*Return the HTML string for a dive weight entry in the table.
+*/
+function get_weight_HTML(weight)
+{
+	return '<tr><td class="Cyl">' + gram_to_km(weight.weight) + ' kg ' + '</td><td class="Cyl">' + weight.description + '</td></tr>';
+}
+
+/**
+*Return HTML table of weights of a dive.
+*/
+function get_weights_HTML(dive)
+{
+	var result = "";
+	result += '<table><tr><td class="words">Weight</td><td class="words">Type</td></tr>';
+	for (var i in dive.Weights) {
+		result += get_weight_HTML(dive.Weights[i]);
+	}
+	result += '</table>';
+	return result;
+}
+
+/**
 *Return the HTML string for a dive cylinder entry in the table.
 */
 function get_cylinder_HTML(cylinder)
@@ -888,6 +910,11 @@ function mbar_to_bar(mbar)
 function mm_to_meter(mm)
 {
 	return mm / (1000);
+}
+
+function gram_to_km(gram)
+{
+	return gram / 1000;
 }
 
 function ml_to_litre(ml)
@@ -1067,6 +1094,7 @@ function showDiveDetails(dive)
 	//draw the canvas and initialize the view
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
 	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
+	document.getElementById("dive_equipments").innerHTML += get_weights_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML = get_bookmarks_HTML(items[dive_id]);
 	document.getElementById("divestats").innerHTML = get_status_HTML(items[dive_id]);
 	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
