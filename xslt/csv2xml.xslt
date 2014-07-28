@@ -105,6 +105,11 @@
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
+            <xsl:when test="substring-after(substring-after($value, ':'), ':') = ''">
+              <!-- We assume time format m:s -->
+
+              <xsl:value-of select="substring-before($value, ':') * 60 + substring-after($value, ':')" />
+            </xsl:when>
             <xsl:otherwise>
               <!-- We assume time format h:m:s -->
 
