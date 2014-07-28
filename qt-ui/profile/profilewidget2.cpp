@@ -1085,7 +1085,7 @@ void ProfileWidget2::editName()
 	if (ok && !newName.isEmpty()) {
 		if (newName.length() > 22) { //longer names will display as garbage.
 			QMessageBox lengthWarning;
-			lengthWarning.setText("Name is too long!");
+			lengthWarning.setText(tr("Name is too long!"));
 			lengthWarning.exec();
 			return;
 		}
