@@ -777,7 +777,7 @@ function get_event_value(event)
 		return 'He: ' + he + ' - O2: ' + o2;
 	}
 	if (event.type == 23) { // heading
-		event.value;
+		return event.value;
 	}
 	return '-';
 }
