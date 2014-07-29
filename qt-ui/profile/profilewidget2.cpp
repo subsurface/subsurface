@@ -450,7 +450,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	temperatureAxis->setMinimum(pInfo.mintemp);
 	temperatureAxis->setMaximum(pInfo.maxtemp);
 
-
 	if (pInfo.maxhr) {
 		heartBeatAxis->setMinimum(pInfo.minhr);
 		heartBeatAxis->setMaximum(pInfo.maxhr);

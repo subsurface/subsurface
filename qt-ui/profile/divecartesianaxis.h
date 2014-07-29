@@ -83,9 +83,6 @@ protected:
 private
 slots:
 	void settingsChanged();
-
-private:
-	bool showWithPPGraph;
 };
 
 class TimeAxis : public DiveCartesianAxis {

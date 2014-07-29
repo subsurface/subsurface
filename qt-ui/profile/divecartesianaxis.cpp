@@ -308,9 +308,9 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	double retValue = realSize * percent;
 	double adjusted =
 		orientation == LeftToRight ? retValue + m.x1() + p.x() :
-					     orientation == RightToLeft ? retValue + m.x1() + p.x() :
-									  orientation == TopToBottom ? retValue + m.y1() + p.y() :
-												       /* entation == BottomToTop */ retValue + m.y1() + p.y();
+		orientation == RightToLeft ? retValue + m.x1() + p.x() :
+		orientation == TopToBottom ? retValue + m.y1() + p.y() :
+		/* entation == BottomToTop */ retValue + m.y1() + p.y();
 	return adjusted;
 }
 
@@ -365,28 +365,21 @@ static bool isPPGraphEnabled()
 	return prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe;
 }
 
-DepthAxis::DepthAxis() : showWithPPGraph(false)
+DepthAxis::DepthAxis()
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-
-	// force the correct size of the line.
-	showWithPPGraph = !isPPGraphEnabled();
+	changed = true;
 	settingsChanged();
 }
 
 void DepthAxis::settingsChanged()
 {
-	// 	bool ppGraph = isPPGraphEnabled();
-	// 	if ( ppGraph == showWithPPGraph){
-	// 		return;
-	// 	}
-	//
-	// 	if (ppGraph) {
-	// 		animateChangeLine(shrinkedLine);
-	// 	} else {
-	// 		animateChangeLine(expandedLine);
-	// 	}
-	// 	showWithPPGraph = ppGraph;
+	static int unitSystem = prefs.units.length;
+	if ( unitSystem == prefs.units.length )
+		return;
+	changed = true;
+	updateTicks();
+	unitSystem = prefs.units.length;
 }
 
 QColor TimeAxis::colorForValue(double value)
