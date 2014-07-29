@@ -1539,8 +1539,7 @@ en la figura de debajo).
 Si, además, se selecciona el botón *Mostrar el techo calculado con incrementos
 de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
-image::images/Ceilings2.jpg["Figura: Techo con resolución de 3
-metros",align="center"]
+image::images/Ceilings2.jpg["Figura: Techo con resolución de 3 metros",align="center"]
 
 El ajuste de los factores de gradiente afecta mucho a los techos calculados y
 sus profundidades. Para más información acerca de factores de gradiente,
