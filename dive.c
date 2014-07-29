@@ -70,8 +70,13 @@ void remove_event(struct event* event)
 	while (ep && !same_event(*ep, event))
 		ep = &(*ep)->next;
 	if (ep) {
-		*ep = event->next;
-		free(event);
+		/* we can't link directly with event->next
+		 * because 'event' can be a copy from another
+		 * dive (for instance the displayed_dive
+		 * that we use on the interface to show things). */
+		struct event *temp = (*ep)->next;
+		free(*ep);
+		*ep = temp;
 	}
 }
 
