@@ -252,6 +252,12 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 	changed = false;
 }
 
+void DiveCartesianAxis::setLine(const QLineF &line)
+{
+	QGraphicsLineItem::setLine(line);
+	changed = true;
+}
+
 void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)
 {
 	setLine(newLine);

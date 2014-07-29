@@ -45,6 +45,7 @@ public:
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
 	void setLineSize(qreal lineSize);
+	void setLine(const QLineF& line);
 	int unitSystem;
 public
 slots:
