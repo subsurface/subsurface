@@ -897,7 +897,7 @@ accessible through the Import dialogue are also supported, as explained below.
 
 ==== Importing from Mares Dive Organiser V2.1
 
-Since Mares utilise proprietary Microsoft software not compatible with
+Since Mares utilise proprietary Windows software not compatible with
 multi-platform applications, these dive logs cannot be
 directly imported into
 _Subsurface_. Mares dive logs need to be imported using a three-step process,
@@ -2778,7 +2778,7 @@ Backing up Suunto DM4:
 
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
-Mares Dive Organiser is a Microsoft application. The dive log is kept as a
+Mares Dive Organiser is a Windows application. The dive log is kept as a
 Microsoft SQL Compact Edition data base with a '.sdf' filename extension. The
 data base includes all Dive Organiser-registered divers on the particular
 computer and all Mares dive computers used. The safest way to obtain a copy
