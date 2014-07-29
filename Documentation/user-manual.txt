@@ -1915,6 +1915,42 @@ size and theme.
 Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
 
+[[S_Cloud_access]]
+== _Subsurface_ in the Cloud
+
+For each diver, dive log information is highly important. Not only is it a record
+of diving activities for one's own pleasure, but it is important information required
+for admission to further training courses or (sometimes) even diving sites. The
+security of the dive log is therefore critical. In order to have a dive log that is
+resistant to failure of a home computer hard drive, loss or theft of equipment, the
+Cloud is an obvious solution. This also has the added benefit that one can access one's dive
+log from anywhere in the world without having to carry it with oneself. For this
+reason, facilities such as _divelogs.de_ and _Diving Log_ offer facilities to store
+dive log information on the Internet. Although _Subsurface_ does not offer integrated
+Cloud storage of dive logs, it is simple to achieve this using several of the
+existing facilities on the Internet.
+
+For instance
+http://www.dropbox.com/[_Dropbox_]
+offers a free application that allows
+files on the Dropbox servers to be seen as a local folder on one's desktop computer.
+
+image::images/Cloud.jpg["FIGURE: Dropbox folder",align="center"]
+
+Currently there are not costs involved for this service. In this
+case, one can store one's dive log on _Dropbox_ in a totally seamless way: a dive log in
+one's _Dropbox_ folder can be opened and saved directly by _Subsurface_ and it can
+be accessed from any place with Internet access. Dropbox (Windows, Mac
+and Linux) can be installed by accessing the
+http://www.dropbox.com/install[_Install Page on the Dropbox website_]
+. Alternatively one can use _Dropbox_ as a mechanism to backup one's dive log. To
+Store a dive log in the Cloud, select _File->Save as_ from the _Subsurface_ main menu,
+navigate to the _Dropbox_ folder and select the _Save_ button. To access the dive log
+in the Cloud, select _File->Open Logbook_ from the _Subsurface_
+main menu and navigate to the dive log file in the _Dropbox_ folder and select the
+_Open_ button.
+
+
 [[S_PrintDivelog]]
 == Printing a dive log
 
