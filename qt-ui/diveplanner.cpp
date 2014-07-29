@@ -109,6 +109,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
 	struct gasmix gas;
+	diveplan.when = d->when;
 	for (int i = 0; i < d->dc.samples - 1; i++) {
 		const sample &s = d->dc.sample[i];
 		if (s.time.seconds == 0)
