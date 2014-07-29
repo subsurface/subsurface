@@ -390,7 +390,10 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		updateGpsCoordinates(&displayed_dive);
+		// Subsurface always uses "local time" as in "whatever was the local time at the location"
+		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
+		localTime.setTimeSpec(Qt::UTC);
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
@@ -930,7 +933,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
 	if (editMode == IGNORE)
 		return;
-	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when);
+	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
 	displayed_dive.when = dateTime.toTime_t();
@@ -941,7 +944,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
 	if (editMode == IGNORE)
 		return;
-	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when);
+	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
 	displayed_dive.when = dateTime.toTime_t();

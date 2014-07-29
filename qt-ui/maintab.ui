@@ -284,12 +284,18 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="timeSpec">
+           <enum>Qt::UTC</enum>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QDateEdit" name="dateEdit">
           <property name="calendarPopup">
            <bool>true</bool>
+          </property>
+          <property name="timeSpec">
+           <enum>Qt::UTC</enum>
           </property>
          </widget>
         </item>
