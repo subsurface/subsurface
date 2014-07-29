@@ -454,10 +454,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		heartBeatAxis->setMinimum(pInfo.minhr);
 		heartBeatAxis->setMaximum(pInfo.maxhr);
 		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
-		heartBeatAxis->setVisible(true);
-	} else {
-		heartBeatAxis->setVisible(false);
 	}
+	heartBeatAxis->setVisible(prefs.hrgraph && pInfo.maxhr);
 
 	timeAxis->setMaximum(maxtime);
 	int i, incr;
