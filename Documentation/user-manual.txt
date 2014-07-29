@@ -225,10 +225,10 @@ negative value, e.g. -30.22496. Similarly western longitudes are given with a
 *W*, e.g. W07°, or with a negative value, e.g. -7.34323.
 
 Please note that GPS coordinates of a dive site are linked to the Location
-name - so adding coordinates to dives that does not have a location description
+name - so adding coordinates to dives that do not have a location description
 will cause unexpected behaviour (Subsurface will think that all of these
 dives have the same location and try to keep their GPS coordinates the
-same.
+same).
 
 *Divemaster*: The name of the dive master or dive guide for this dive can be
 entered here.
@@ -241,6 +241,8 @@ is offered based on the list of buddies in the current logbook.
 
 *Suit*: The type of diving suit used for the dive can be entered here.
 As with the other items, auto completion of the suit description is available.
+Some dry-suit users may choose to use this field to record what combination of
+suit and thermal protection undersuit was used.
 
 *Rating*: In this field, provide a subjective overall rating of the
 dive on a 5-point scale by clicking the appropriate star on the rating scale.
