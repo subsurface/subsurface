@@ -106,7 +106,7 @@ void GroupedLineEdit::removeAllColors()
 QStringList GroupedLineEdit::getBlockStringList()
 {
 	QStringList retList;
-	foreach (Private::Block block, d->blocks)
+	foreach (const Private::Block &block, d->blocks)
 		retList.append(block.text);
 	return retList;
 }

@@ -1025,18 +1025,16 @@ void MainWindow::removeRecentFile(QStringList failedFiles)
 		}
 	}
 
-	foreach (QString file, failedFiles)
+	foreach (const QString &file, failedFiles)
 		files.removeAll(file);
 
 	for (int c = 1; c <= 4; c++) {
 		QString key = QString("File_%1").arg(c);
 
-		if (files.count() >= c) {
+		if (files.count() >= c)
 			s.setValue(key, files.at(c - 1));
-		} else {
-			if (s.contains(key))
-				s.remove(key);
-		}
+		else if (s.contains(key))
+			s.remove(key);
 	}
 
 	s.endGroup();
