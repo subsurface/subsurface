@@ -265,10 +265,6 @@ void MainWindow::closeCurrentFile()
 	while (dive_table.nr)
 		delete_single_dive(0);
 
-	ui.ListWidget->clearSelection();
-	/* clear the selection and the statistics */
-	selected_dive = -1;
-
 	free((void *)existing_filename);
 	existing_filename = NULL;
 
