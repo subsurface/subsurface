@@ -429,14 +429,14 @@ unificado.
 <li>
 <p>
 ¿Usas más de un sistema operativo? <em>Subsurface</em> es totalmente compatible con
-Mac, Linux y Microsoft permitiéndote acceder a tu registro de buceo de de la
+Mac, Linux y Windows permitiéndote acceder a tu registro de buceo de de la
 misma forma desde cualquiera de estos sistemas operativos.
 </p>
 </li>
 <li>
 <p>
 ¿Utilizas Linux o Mac pero tu ordenador de buceo solo tiene software basado en
-Microsoft para descargar la información de buceo (p.e. Mares)? <em>Subsurface</em> te
+Windows para descargar la información de buceo (p.e. Mares)? <em>Subsurface</em> te
 proporciona una manera de almacenar y analizar las inmersiones en otro sistema
 operativo.
 </p>
@@ -665,7 +665,9 @@ divemasters del diario actual.</p></div>
 separados por comas, que acompañaron al usuario en la inmersión. También se
 ofrece autocompletado basado en la lista de compañeros del diario.</p></div>
 <div class="paragraph"><p><strong>Traje</strong>: Aquí puede introducirse el tipo de traje de buceo que se utilizó para
-la inmersión. Como en los casos anteriores está disponible el autocompletado.</p></div>
+la inmersión. Como en los casos anteriores está disponible el autocompletado.
+Los usuarios de traje seco pueden, por ejemplo, guardar cualquier combinación
+de traje y protección térmica que hayan utilizado.</p></div>
 <div class="paragraph"><p><strong>Valoración</strong>: En este campo se puede proporcionar una calificación subjetiva de
 la inmersión en una escala de 5 puntos, clicando en la estrella correspondiente.</p></div>
 <div class="paragraph"><p><strong>Visibilidad</strong>: Como en el caso anterior, se puede proporcionar una calificación
@@ -2736,7 +2738,50 @@ en el navegador, como el tamaño de la letra o el tema aplicado.
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">8. Imprimir un diario</h2>
+<h2 id="S_Cloud_access">8. <em>Subsurface</em> en la Nube</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Para cualquier buceador, la información contenida en su diario es muy importante.
+No es únicamente un registro de actividades de buceo para su propio placer
+personal, sino que es información importante requerida para su admisión en
+futuros cursos de entrenamiento o (en ocasiones) incluso en puntos de buceo. La
+seguridad del diario es, así pues, crítica. De cara a poseer un diario que pueda
+soportar el fallo del disco duro del ordenador de casa, el robo o la perdida del
+equipo, etc, la <em>nube</em> es una solución obvia. Esto, además, añade el beneficio
+de que se puede acceder al diario, casi, desde cualquier parte del mundo sin
+tener que llevarlo encima. Por este motivo, facilidades como <em>divelogs.de</em> y
+<em>Diving Log</em> ofrecen la posibilidad de guardar dicha información en internet.</p></div>
+<div class="paragraph"><p>Aunque <em>Subsurface</em> no ofrece almacenamiento integrado de diarios en la nube, es
+facil de conseguir utilizando alguno de los varios servicios existentes en
+internet.</p></div>
+<div class="paragraph"><p>Por ejemplo <a href="http://www.dropbox.com/"><em>Dropbox</em></a> ofrece una aplicación gratuita
+que permite que se vean como locales en nuestro ordenador los archivos guardados
+en sus servidores.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Cloud.jpg" alt="FIGURE: Carpeta de Dropbox" />
+</div>
+</div>
+<div class="paragraph"><p>Actualmente el servicio no tiene ningún coste. Se puede guardar el diario de
+buceo en <em>Dropbox</em> de forma muy sencilla: el diario en nuestra carpeta de
+<em>Dropbox</em> puede ser abierto y guardado directamente por <em>Subsurface</em> y se
+puede utilizar desde cualquier sitio con acceso a internet. Dropbox se puede
+instalar accediendo a la <a href="http://www.dropbox.com/install"><em>página de instalación</em></a>
+<em>de Dropbox</em>. Como alternativa, se puede utilizar <em>Dropbox</em> como mecanismo para
+mantener una copia de seguridad del diario.
+Para guardar un diario en la <em>nube</em>, selecciona <em>Archivo&#8594; Guardar como</em> desde
+menú principal de <em>Subsurface</em>, navega a la carpeta Dropbox y selecciona el
+botón <em>Guardar</em>.  Para usar el diario en la nube, selecciona <em>Archivo&#8594;Abrir
+registro</em> desde el menú principal de <em>Subsurface</em>, navega al archivo en la
+carpeta Dropbox y selecciona el botón <em>Abrir</em>.
+Tanto las funciones <em>Abrir</em> como <em>Guardar</em> se efectuan sobre la copia guardada
+en la carpeta de nuestro ordenador, por lo que no es necesaria conexión directa
+a internet. Si se modifica la copia local, p.e. al añadir una inmersión, la
+copia en el servidor <em>Dropbox</em> en la <em>nube</em> se actualizará automáticamente al
+volvernos a conectar a internet.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_PrintDivelog">9. Imprimir un diario</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> proporciona un interfaz simple para imprimir el diario completo o
 solo unas pocas inmersiones seleccionadas, incluyendo los perfiles de buceo y
@@ -2761,7 +2806,12 @@ perfil ? El usuario selecciona la información correcta desde el menú principal
 <div class="paragraph"><p>Ahora habra que seleccionar las opciones de impresión. Para ello se selecciona
 <em>Archivo → Imprimir</em> desde el menú principal. Aparecerá el siguiente diálogo
 (ver la imagen [A] abajo):</p></div>
-<div class="paragraph"><p>En Tipo de impresión habrá que seleccionar una de las tres opciones</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PrintDiveLog.jpg" alt="FIGURA: Dialogo de impresión" />
+</div>
+</div>
+<div class="paragraph"><p>En Tipo de impresión habrá que seleccionar una de las cuatro opciones</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2771,13 +2821,19 @@ Imprimir la lista de inmersiones. Para ello se selecciona Impresión de tabla.
 <li>
 <p>
 Imprimir los registros de buceo completos (perfiles y resto de información) a
-6 inmersiones por página. Para ello se selecciona 6 inmersiones por página.
+6 inmersiones por página. Para ello se selecciona <em>6 inmersiones por página</em>.
 </p>
 </li>
 <li>
 <p>
 Imprimir los registros de buceo completos (perfiles y resto de información) a
-2 inmersiones por página. Para ello se selecciona 2 inmersiones por página.
+2 inmersiones por página. Para ello se selecciona <em>2 inmersiones por página</em>.
+</p>
+</li>
+<li>
+<p>
+Imprimir los registros de buceo completos (perfiles y resto de información) a
+1 inmersión por página. Para ello se selecciona  <em>1 inmersión por página</em>.
 </p>
 </li>
 </ul></div>
@@ -2800,17 +2856,12 @@ Imprimir en color. Para ello se selecciona la opción <em>Impresión en color</e
 cada inmersión. El perfil de buceo puede imprimirse en la parte alta de cada
 inmersión con el texto debajo, o puede imprimirse el texto en la parte de arriba
 con el perfil debajo. Seleccionar la opción preferida en el diálogo de
-impresión. Ver la imagen (<strong>B</strong>) arriba a la derecha, la cual presenta el texto
-sobre el perfil.</p></div>
+impresión. Ver la imagen a continuación la cual presenta el texto sobre el
+perfil.</p></div>
 <div class="paragraph"><p>El usuario puede <em>Previsualizar</em> la página impresa seleccionando el botón
 <em>Previsualizar</em> del diálogo. Después de previsualizar, se pueden hacer cambios
 en las opciones del diálogo de impresión para ajustarlas a los gustos
 personales.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/PrintDiveLog.jpg" alt="FIGURA: Diálogo de impresión" />
-</div>
-</div>
 <div class="paragraph"><p>Ahora se selecciona el botón <em>Imprimir</em> del diálogo. Esto lanzará el diálogo de
 impresión habitual usado por el sistema operativo del usuario (imagen [<strong>B</strong>] en
 el centro, arriba), que le permitirá elegir una impresora y ajustar sus
@@ -2826,7 +2877,7 @@ continuación hay un ejemplo (bastante pequeño) de la salida de una impresión.
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Preferences">9. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
+<h2 id="S_Preferences">10. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Hay varios ajustes en <em>Subsurface</em> que el usuario puede especificar. Se
 encuentran a través de <em>Archivo → Preferencias</em>. Los ajustes se efectúan en
@@ -2837,7 +2888,7 @@ Tras aplicarlos todos se puede salir seleccionando <strong>Aceptar</strong> o <s
 guardar</strong> si
 finalmente decide no hacer los cambios.</p></div>
 <div class="sect2">
-<h3 id="_predeterminados">9.1. Predeterminados</h3>
+<h3 id="_predeterminados">10.1. Predeterminados</h3>
 <div class="paragraph"><p>Hay varios ajustes en el panel <strong>Predeterminados</strong>:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2904,7 +2955,7 @@ se borran todos los ajustes y se reinician con los valores por defecto.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_unidades">9.2. Unidades</h3>
+<h3 id="_unidades">10.2. Unidades</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref2.jpg" alt="FIGURA: Página de preferencias de unidades" />
@@ -2921,7 +2972,7 @@ botella, habitualmente, manejan velocidades en m/min, sin embargo, los apneísta
 ascienden mucho más deprisa por lo que suelen utilizar velocidades en m/s.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_gráfico">9.3. Gráfico</h3>
+<h3 id="_gráfico">10.3. Gráfico</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref3.jpg" alt="FIGURA: Página de Preferencias del gráfico" />
@@ -3008,7 +3059,7 @@ información, ver:
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_lenguaje">9.4. Lenguaje</h3>
+<h3 id="_lenguaje">10.4. Lenguaje</h3>
 <div class="paragraph"><p>Se elige el lenguaje que debe utilizar <em>Subsurface</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -3024,7 +3075,7 @@ lista de traducciones. La casilla de texto <em>Filtro</em> permite listar lengua
 similares. Por ejemplo hay diversas variantes de inglés o francés.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_red">9.5. Red</h3>
+<h3 id="_red">10.5. Red</h3>
 <div class="paragraph"><p>Este panel facilita la comunicación entre <em>Subsurface</em> y las fuentes de datos en
 internet.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3047,7 +3098,7 @@ para acceder a internet.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_DivePlanner">10. El Planificador de <em>Subsurface</em></h2>
+<h2 id="S_DivePlanner">11. El Planificador de <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La planificación de inmersiones es una característica avanzada de <em>Subsurface</em>
 accesible desde <em>Registro &#8594; Planificar Inmersión</em> en el menú principal. Permite
@@ -3105,7 +3156,7 @@ anteriores, no debería utilizar esta capacidad de <em>Subsurface</em>.
 </ul></div>
 </div></div>
 <div class="sect2">
-<h3 id="_la_pantalla_del_planificador_de_em_subsurface_em">10.1. La pantalla del planificador de <em>Subsurface</em></h3>
+<h3 id="_la_pantalla_del_planificador_de_em_subsurface_em">11.1. La pantalla del planificador de <em>Subsurface</em></h3>
 <div class="paragraph"><p>Al igual que el diario de <em>Subsurface</em>, la pantalla del planificador se divide
 en varias secciones (ver imagen a continuación). Los parámetros de ajuste de una
 inmersión se introducen en las diversas secciones a la izquierda de la pantalla.
@@ -3126,7 +3177,7 @@ cualquier mensaje de aviso sobre el plan de buceo.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_iniciar_la_planificación_de_la_inmersión">10.2. Iniciar la planificación de la inmersión</h3>
+<h3 id="_iniciar_la_planificación_de_la_inmersión">11.2. Iniciar la planificación de la inmersión</h3>
 <div class="paragraph"><p>El Planificador comprende dos partes: <strong>construir un plan de buceo</strong> y <strong>evaluar</strong>
 dicho plan. Para llevar a cabo planificación de inmersiones, sigue estos pasos:</p></div>
 <div class="ulist"><ul>
@@ -3168,7 +3219,7 @@ esta etapa de la planificación.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_controlar_los_gases_inertes_el_oxígeno_y_el_consumo_de_gas">10.3. Controlar los gases inertes, el oxígeno y el consumo de gas</h3>
+<h3 id="_controlar_los_gases_inertes_el_oxígeno_y_el_consumo_de_gas">11.3. Controlar los gases inertes, el oxígeno y el consumo de gas</h3>
 <div class="paragraph"><p>La planificación se efectúa en tres pasos:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -3297,7 +3348,7 @@ seguido de un ascenso usando EAN50:</p></div>
 aparecerá en el panel <strong>Lista de Inmersiones</strong>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_los_detalles_del_plan_de_buceo">10.4. Los detalles del plan de buceo</h3>
+<h3 id="_los_detalles_del_plan_de_buceo">11.4. Los detalles del plan de buceo</h3>
 <div class="paragraph"><p>En la parte inferior derecha del planificador, bajo el encabezamiento <em>Detalles
 del plan de buceo</em>, se proporcionan los detalles exactos del plan de inmersión.
 Estos detalles pueden modificarse seleccionando cualquiera de las opciones bajo
@@ -3312,14 +3363,25 @@ embargo, si se selecciona <em>Mostrar transiciones en deco</em>, las transicione
 muestran separadamente de las duraciones de las paradas en cada nivel.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_imprimir_el_plan_de_inmersión">10.5. Imprimir el plan de inmersión</h3>
+<h3 id="_imprimir_el_plan_de_inmersión">11.5. Imprimir el plan de inmersión</h3>
 <div class="paragraph"><p>Seleccionar el botón <em>Imprimir</em> permite imprimir los <em>Detalles del plan de
 buceo</em> para unas "wet notes". También se pueden copiar y pegar los <em>Detalles del
 plan de buceo</em> para incluirlos en un archivo de texto o un procesador de
 textos.</p></div>
+<div class="paragraph"><p>Los planes de inmersión tienen muchas características en común con los registros
+de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
+los calculos de gas quedan almacenados en la pestaña <strong>Notas de la inmersión</strong>.
+Mientras se está diseñando un plan, se puede imprimir utilizando el botón
+<em>Imprimir</em> del planificador. Esto imprimirá los detalles y cálculos de gases del
+panel <em>Detalles del plan de inmersión</em> del planificador. Sin embargo, tras haber
+sido guardado, aparece de una forma muy similar a una anotación en el diario y
+no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
+de planificación. En esta situación, la única manera de imprimir el plan es usar
+<em>Archivo &#8594; Imprimir</em> en el menú principal, igual que haríamos para imprimir un
+registro de inmersión.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_planificar_inmersiones_sucesivas">10.6. Planificar inmersiones sucesivas</h3>
+<h3 id="_planificar_inmersiones_sucesivas">11.6. Planificar inmersiones sucesivas</h3>
 <div class="paragraph"><p>Se pueden planear fácilmente inmersiones sucesivas si la fecha y hora de las
 mismas se especifican correctamente en el campo arriba a la izquierda <em>Hora de
 inicio</em>. <em>SUbsurface</em> calcula las cargas de gases inertes de la primera
@@ -3338,13 +3400,13 @@ en cuenta la configuración de la plantilla seleccionada.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_descripción_de_las_opciones_del_menú_principal_de_em_subsurface_em">11. Descripción de las opciones del menú principal de <em>Subsurface</em></h2>
+<h2 id="_descripción_de_las_opciones_del_menú_principal_de_em_subsurface_em">12. Descripción de las opciones del menú principal de <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Esta sección describe las funciones y manejo de las opciones del menú principal
 de <em>Subsurface</em>. Varias de las opciones que veremos luego son links a secciones
 de este manual que describen las operaciones con más detalle.</p></div>
 <div class="sect2">
-<h3 id="_archivo">11.1. Archivo</h3>
+<h3 id="_archivo">12.1. Archivo</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3399,7 +3461,7 @@ inmersiones seleccionadas en el diario) a algún otro formato.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_importar">11.2. Importar</h3>
+<h3 id="_importar">12.2. Importar</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3428,7 +3490,7 @@ de buceo desde www.divelogs.de.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_registro">11.3. Registro</h3>
+<h3 id="_registro">12.3. Registro</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3463,7 +3525,7 @@ asignados a los ordenadores de buceo.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_vista">11.4. Vista</h3>
+<h3 id="_vista">12.4. Vista</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3512,7 +3574,7 @@ inmersiones efectuadas.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_filtrar">11.5. Filtrar</h3>
+<h3 id="_filtrar">12.5. Filtrar</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3522,7 +3584,7 @@ inmersiones efectuadas.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_ayuda">11.6. Ayuda</h3>
+<h3 id="_ayuda">12.6. Ayuda</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3546,10 +3608,10 @@ versión de <em>Subsurface</em> en la página_web_de__Subsurface_.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo">12. APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.</h2>
+<h2 id="_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo">13. APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_asegúrate_de_que_el_so_tiene_instalados_los_drivers_necesarios">12.1. Asegúrate de que el SO tiene instalados los drivers necesarios</h3>
+<h3 id="_asegúrate_de_que_el_so_tiene_instalados_los_drivers_necesarios">13.1. Asegúrate de que el SO tiene instalados los drivers necesarios</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3588,7 +3650,7 @@ de documentos y software de Silicon Labs</a>.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">12.2. Como encontrar el nombre de dispositivo para conexiones USB y ajustar sus permisos de escritura</h3>
+<h3 id="S_HowFindDeviceName">13.2. Como encontrar el nombre de dispositivo para conexiones USB y ajustar sus permisos de escritura</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3681,7 +3743,7 @@ escritura para el puerto USB, el interface del ordenador de buceo puede
 conectarse y se debería poder importar las inmersiones.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">12.3. Ajustar dispositivos con bluetooth</h3>
+<h3 id="S_HowFindBluetoothDeviceName">13.3. Ajustar dispositivos con bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3787,10 +3849,10 @@ como nombre de dispositivo a utilizar.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apéndice_b_información_específica_por_ordenadores_de_buceo">13. APÉNDICE B: Información específica por ordenadores de buceo.</h2>
+<h2 id="_apéndice_b_información_específica_por_ordenadores_de_buceo">14. APÉNDICE B: Información específica por ordenadores de buceo.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">13.1. Importar desde un Uemis Zurich</h3>
+<h3 id="S_ImportUemis">14.1. Importar desde un Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3825,7 +3887,7 @@ tenga que repetir esta operación más de una vez dependiendo de cuantos buceos
 haya guardados en el ordenador.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingGalileo">13.2. Importar buceos desde el Galileo de Uwatec</h3>
+<h3 id="S_ImportingGalileo">14.2. Importar buceos desde el Galileo de Uwatec</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3853,7 +3915,7 @@ en algunos sitios de internet p.e.
 OSX 10.6 o superior.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">13.3. Importar buceos desde Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">14.3. Importar buceos desde Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3870,7 +3932,7 @@ seguridad, de la calculada por el DR5.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importar_del_shearwater_predator_usando_bluetooth">13.4. Importar del Shearwater Predator usando Bluetooth</h3>
+<h3 id="_importar_del_shearwater_predator_usando_bluetooth">14.4. Importar del Shearwater Predator usando Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3906,7 +3968,7 @@ Apagar Wi-Fi mientras se utiliza bluetooth
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apéndice_c_exportar_información_de_diarios_desde_otros_softwares_externos">14. APÉNDICE C: Exportar información de diarios desde otros softwares externos.</h2>
+<h2 id="_apéndice_c_exportar_información_de_diarios_desde_otros_softwares_externos">15. APÉNDICE C: Exportar información de diarios desde otros softwares externos.</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La importación de datos de diarios de buceos desde softwares externos se
 efectúa, habitualmente, utilizando el dialogo que resulta de seleccionar
@@ -3931,7 +3993,7 @@ Importar el diario accesible a <em>Subsurface</em>.
 diarios desde softwares externos. Los procedimientos a continuación se aplican
 mayormente en Linux y/o Windows.</p></div>
 <div class="sect2">
-<h3 id="S_ImportingDivesSuunto">14.1. Exportar inmersiones desde <strong>Suunto Divemanager (DM3 y DM4)</strong></h3>
+<h3 id="S_ImportingDivesSuunto">15.1. Exportar inmersiones desde <strong>Suunto Divemanager (DM3 y DM4)</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -4103,13 +4165,13 @@ Los buceos se han exportado al archivo DM4.bak
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="Mares_Export">14.2. Exportar desde Mares Dive Organiser V2.1</h3>
+<h3 id="Mares_Export">15.2. Exportar desde Mares Dive Organiser V2.1</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/mareslogo.jpg" alt="Note" />
 </td>
-<td class="content">Mares Dive Organiser es una aplicación de Microsoft. El diario de inmersiones se
+<td class="content">Mares Dive Organiser es una aplicación de Windows. El diario de inmersiones se
 guarda en una base de datos Microsoft SQL Compact Edition con una extensión de
 nombre de archivo <em>.sdf</em>. La base de datos incluye a todos los buceadores
 registrados en el Dive Organiser del PC y a todos los ordenadores Mares usados.
@@ -4140,7 +4202,7 @@ Extrae a tu escritorio el archivo <em>.sdf</em> desde la carpeta comprimida.
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDivinglog">14.3. Exportar inmersiones desde <strong>DivingLog 5.0</strong></h3>
+<h3 id="S_ImportingDivinglog">15.3. Exportar inmersiones desde <strong>DivingLog 5.0</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -4176,10 +4238,10 @@ Hacer clic en el botón de exportar y seleccionar un nombre de archivo.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apendice_d_preguntas_frecuentes">15. APENDICE D: Preguntas Frecuentes.</h2>
+<h2 id="_apendice_d_preguntas_frecuentes">16. APENDICE D: Preguntas Frecuentes.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">15.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
+<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">16.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Pregunta</em>: Buceé con una botella de 12,2 l empezando con 220 bar y terminando
 con 100 bar y yo calculo un CAS distinto al que calcula <em>Subsurface</em> ¿Está
 calculándolo mal <em>Subsurface</em>?</p></div>
@@ -4211,7 +4273,7 @@ altas presiones. A 400 bar realmente no contiene el doble de aire que a 200 bar.
 A presiones más bajas, el aire se comporta bastante como un gas ideal.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_algunos_perfiles_de_inmersión_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">15.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
+<h3 id="_algunos_perfiles_de_inmersión_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">16.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
 <div class="paragraph"><p><em>Subsurface</em> termina por ignorar el tiempo en superficie por varios motivos
 (profundidad media, tiempo de inmersión, CAS, etc).</p></div>
 <div class="paragraph"><p><em>Pregunta</em>: ¿Por qué las duraciones de los buceos en mi ordenador difieren de
@@ -4231,7 +4293,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-25 07:17:40 PDT
+Last updated 2014-07-30 12:29:19 PDT
 </div>
 </div>
 </body>
