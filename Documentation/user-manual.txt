@@ -1397,7 +1397,7 @@ appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows 
 when the photograph has been taken. Now set the date-time dialog to the left of the photo
 so that this tool reflects the date and time of the dive computer in the photo. When the
 date-time tool has been set, _Subsurface_ knows exactly what the time difference between
-camera and dive computer is, and synchronisation is achieved. The image below shows a
+camera and dive computer is, and synchronisation is achieved. There is a
 photograph with the face of the dive computer and with the date-time tool set to the
 date-time on image *B* above.
 
@@ -1449,13 +1449,14 @@ Users should refer to xref:SAC_CALCULATION[Appendix D] for more information.
 === The *Stats* tab (for groups of dives)
 
 The Stats tab gives summary statistics for more than one dive, assuming that
-more than one dive have been selected in the *Dive List* using the standard
+more than one dive has been selected in the *Dive List* using the standard
 Ctrl-click or Shift-click of the mouse. If only one
 dive has been selected, figures pertaining to only that dive are given. This tab
 shows the number of dives selected, the total amount of dive time in these
 dives,
-as well as the minimum, maximum and mean for the dive duration, dive depth,
-water temperature and surface air consumption (SAC).
+as well as the minimum, maximum and mean for the dive duration,
+water temperature and surface air consumption (SAC). It also shows the depth of the
+shallowest and deepest dives of those selected.
 
 [[S_DiveProfile]]
 === The *Dive Profile*
@@ -1791,7 +1792,7 @@ edited information.
 
 ==== Viewing the dives during a particular trip
 
-Once when the dives have been grouped into trips, users can expand one or more
+Once the dives have been grouped into trips, users can expand one or more
 trips by clicking the arrow-head on the left of each trip title. This expands
 the selected trip, revealing the individual dives performed during the trip.
 
@@ -1815,7 +1816,7 @@ top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
 three dives. The resulting context menu allows the user to create a new trip by
 choosing the option *Create new trip above*. The top three dives are then
 grouped
-into a separate trip. The figures bellow shows the selection and context menu
+into a separate trip. The figures below shows the selection and context menu
 on the left (A) and
 the completed action on the right (B):
 
@@ -1868,7 +1869,7 @@ merge these dives onto a single dive by selecting the appropriate dives,
 right-clicking them to bring up the context menu and then selecting *Merge selected
 dives*. It may be necessary to edit the dive information in the *Dive Notes*
 panel to reflect events or conditions that apply to the merged dive. The figure
-below shows the depth profile two such dives that were merged:
+below shows the depth profile of two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
