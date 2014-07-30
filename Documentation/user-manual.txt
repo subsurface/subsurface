@@ -855,7 +855,7 @@ that the new data should be saved.
 If a user has been diving for some time, it is possible that several dives were
 logged using other dive log software. This information does not need retyping
 because these dive logs can probably be
-imported onto _Subsurface_. _Subsurface_ will import dive logs from a range of
+imported into _Subsurface_. _Subsurface_ will import dive logs from a range of
 other
 dive log software. While some software is supported natively, for others the
 user has to
@@ -1139,7 +1139,7 @@ This facilitates synchronisation between _Subsurface_ and the Companion App.
 
 Now one is ready to get a dive position and
 send it to the server. The Android
-display will look like the left hand image (*A*) below, but without any dive.
+display will look like the left hand image (*A*) below, but without any dives.
 
 Touch the "+" icon on the top right to add a new dive site, a menu will be
 showed with 3 options:
@@ -1205,7 +1205,7 @@ top right of the screen.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Users must be careful, as the trash icon on the right means exactly what it should:
+Users must be careful, as the trash icon on the right means exactly what it should;
 it deletes the selected dive location(s).
 
 image::images/Companion_1.jpg["FIGURE: Screen shots (A-B) of companion app",align="center"]
@@ -1227,10 +1227,10 @@ Selecting the _Settings_ menu option results in the right hand image above (*B*)
 obtain it is simply to copy and paste from the confirmation email but, of
 course, users can also type this information.
 
-===== Synchronization
+===== Synchronisation
 
 - _Synchronize on startup._ If selected, dive locations in the Android device and those
-on the web service synchronize each time the app is started.
+on the web service synchronise each time the app is started.
 
 - _Upload new dives._ If selected, each time the user adds a dive location it is
 automatically sent to the server.
