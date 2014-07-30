@@ -606,8 +606,8 @@ It may be necessary to distinguish between different dive computers used to
 upload dive logs to _Subsurface_. For instance if one's partner's dive computer is the
 same make and model as one's own and dive logs are uploaded from both dive computers
 to the same _Subsurface_ computer, then
-one would perhaps like to call one dc "Annie's Suunto D4" and the other one
-"John's Suunto D4". Alternatively, perhaps a technical diver dives with two or more
+one would perhaps like to call one dc "Alice's Suunto D4" and the other one
+"Bob's Suunto D4". Alternatively, perhaps a technical diver dives with two or more
 dive computers of the same model, the logs of both (or all) being uploaded.
 In this case it might be prudent to call one of them
 "Suunto D4 (1)" and another one "Suunto D4 (2)". This is easily done in _Subsurface_.
