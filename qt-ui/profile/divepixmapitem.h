@@ -18,17 +18,18 @@ class DivePictureItem : public DivePixmapItem {
 	Q_OBJECT
 	Q_PROPERTY(qreal scale WRITE setScale READ scale)
 public:
-	DivePictureItem(int row, QObject *parent = 0);
+	DivePictureItem(QObject *parent = 0);
 	void setPixmap(const QPixmap& pix);
 public slots:
 	void settingsChanged();
 	void removePicture();
+	void setFileUrl(const QString& s);
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 private:
-	int rowOnModel;
+	QString fileUrl;
 };
 
 class DiveButtonItem : public DivePixmapItem {

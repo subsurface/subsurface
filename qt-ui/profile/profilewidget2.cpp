@@ -1366,8 +1366,9 @@ void ProfileWidget2::plotPictures()
 		// information area.
 		if (!pic->offset.seconds)
 			continue;
-		DivePictureItem *item = new DivePictureItem(i);
+		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
+		item->setFileUrl(m->index(i,0).data(Qt::DisplayPropertyRole).toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(pic->offset.seconds);

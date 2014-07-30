@@ -45,7 +45,7 @@ void CloseButtonItem::show()
 	DiveButtonItem::show();
 }
 
-DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(parent)
+DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent)
 {
 	setFlag(ItemIgnoresTransformations);
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -53,7 +53,6 @@ DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(paren
 #else
 	setAcceptHoverEvents(true);
 #endif
-	rowOnModel = row;
 	setScale(0.2);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 	setVisible(prefs.show_pictures_in_profile);
@@ -100,6 +99,11 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
 }
 
+void DivePictureItem::setFileUrl(const QString &s)
+{
+	fileUrl = s;
+}
+
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 0.2);
@@ -110,15 +114,7 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	QGraphicsView *view = scene()->views().first();
-	QList<QGraphicsItem*> items = view->items(view->mapFromScene(event->scenePos()));
-	Q_FOREACH(QGraphicsItem *item, items){
-		if (dynamic_cast<CloseButtonItem*>(item)){
-			return;
-		}
-	}
-	QString filePath = DivePictureModel::instance()->index(rowOnModel,0).data(Qt::ToolTipRole).toString();
-	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
 }
 
 void DivePictureItem::removePicture()
