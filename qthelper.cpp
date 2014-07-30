@@ -172,7 +172,7 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 	int latudeg, longudeg;
 	bool ignore;
 	bool *parsed = parsed_out ?: &ignore;
-
+	*parsed = true;
 
 	/* if we have a master and the dive's gps address is different from it,
 	 * don't change the dive */
