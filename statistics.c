@@ -331,33 +331,6 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 	}
 }
 
-#define MAXBUF 80
-/* for the O2/He readings just create a list of them */
-char *get_gaslist(struct dive *dive)
-{
-	int idx, offset = 0;
-	static char buf[MAXBUF];
-
-	buf[0] = '\0';
-	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		cylinder_t *cyl;
-		if (!is_cylinder_used(dive, idx))
-			continue;
-		cyl = &dive->cylinder[idx];
-		if (offset > 0) {
-			strncpy(buf + offset, "\n", MAXBUF - offset);
-			offset = strlen(buf);
-		}
-		strncpy(buf + offset, gasname(&cyl->gasmix), MAXBUF - offset);
-		offset = strlen(buf);
-	}
-	if (*buf == '\0')
-		strncpy(buf, translate("gettextFromC", "air"), MAXBUF);
-
-	buf[MAXBUF - 1] = '\0';
-	return buf;
-}
-
 /* Quite crude reverse-blender-function, but it produces a approx result */
 static void get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup, volume_t *o2, volume_t *he)
 {

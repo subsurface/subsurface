@@ -7,6 +7,7 @@
 #include "gettext.h"
 #include "dive.h"
 #include "libdivecomputer.h"
+#include "device.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -586,13 +587,27 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		duration[0] = dc->duration.seconds;
 		return;
 	}
+	if (!dc->samples)
+		dc = fake_dc(dc);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
-		if (ev && time >= ev->time.seconds) {
+
+		/* Make sure to move the event past 'lasttime' */
+		while (ev && lasttime >= ev->time.seconds) {
 			idx = get_cylinder_index(dive, ev);
 			ev = get_next_event(ev->next, "gaschange");
+		}
+
+		/* Do we need to fake a midway sample at an event? */
+		if (ev && time > ev->time.seconds) {
+			int newtime = ev->time.seconds;
+			int newdepth = interpolate(lastdepth, depth, newtime - lasttime, time - lasttime);
+
+			time = newtime;
+			depth = newdepth;
+			i--;
 		}
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
