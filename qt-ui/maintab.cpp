@@ -33,12 +33,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(CylindersModel::instance()),
 	editMode(NONE),
-	divePictureModel(DivePictureModel::instance())
+	divePictureModel(DivePictureModel::instance()),
+	currentTrip(0)
 {
 	ui.setupUi(this);
 	ui.dateEdit->setDisplayFormat(getDateFormat());
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
+	memset(&displayedTrip, 0, sizeof(displayedTrip));
 
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
@@ -276,8 +278,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
-		displayed_dive.location = copy_string(current_dive->divetrip->location);
-		displayed_dive.notes = copy_string(current_dive->divetrip->notes);
+		currentTrip = current_dive->divetrip;
 		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
 	} else {
@@ -398,6 +399,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 			setTabText(0, tr("Trip notes"));
+			currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			// only use trip relevant fields
 			ui.coordinates->setVisible(false);
 			ui.CoordinatedLabel->setVisible(false);
@@ -418,7 +420,6 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
-			dive_trip_t *currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			ui.LocationLabel->setText(tr("Trip location"));
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
@@ -427,6 +428,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.equipmentTab->setEnabled(false);
 		} else {
 			setTabText(0, tr("Dive notes"));
+			currentTrip = NULL;
 			// make all the fields visible writeable
 			ui.coordinates->setVisible(true);
 			ui.CoordinatedLabel->setVisible(true);
@@ -651,14 +653,15 @@ void MainTab::acceptChanges()
 		amount_selected = 1;
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
-		if (!same_string(displayed_dive.notes, current_dive->divetrip->notes)) {
-			current_dive->divetrip->notes = strdup(displayed_dive.notes);
+		if (!same_string(displayedTrip.notes, currentTrip->notes)) {
+			currentTrip->notes = strdup(displayedTrip.notes);
 			mark_divelist_changed(true);
 		}
-		if (!same_string(displayed_dive.location, current_dive->divetrip->location)) {
-			current_dive->divetrip->location = strdup(displayed_dive.location);
+		if (!same_string(displayedTrip.location, currentTrip->location)) {
+			currentTrip->location = strdup(displayedTrip.location);
 			mark_divelist_changed(true);
 		}
+		currentTrip = NULL;
 		ui.dateEdit->setEnabled(true);
 	} else {
 		struct dive *cd = current_dive;
@@ -978,15 +981,21 @@ void MainTab::on_location_textChanged(const QString &text)
 {
 	if (editMode == IGNORE)
 		return;
-	free(displayed_dive.location);
-	displayed_dive.location = strdup(ui.location->text().toUtf8().data());
+	if (currentTrip) {
+		free(displayedTrip.location);
+		displayedTrip.location = strdup(ui.location->text().toUtf8().data());
+	} else {
+		free(displayed_dive.location);
+		displayed_dive.location = strdup(ui.location->text().toUtf8().data());
+	}
 	markChangedWidget(ui.location);
 }
 
 // If we have GPS data for the location entered, add it.
 void MainTab::on_location_editingFinished()
 {
-	if (!same_string(displayed_dive.location, "") &&
+	if (!currentTrip &&
+	    !same_string(displayed_dive.location, "") &&
 	    ui.coordinates->text().trimmed().isEmpty()) {
 		struct dive *dive;
 		int i = 0;
@@ -1016,11 +1025,16 @@ void MainTab::on_notes_textChanged()
 {
 	if (editMode == IGNORE)
 		return;
-	free(displayed_dive.notes);
-	if (ui.notes->toHtml().indexOf("<table") != -1)
-		displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
-	else
-		displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+	if (currentTrip) {
+		free(displayedTrip.notes);
+		displayedTrip.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+	} else {
+		free(displayed_dive.notes);
+		if (ui.notes->toHtml().indexOf("<table") != -1)
+			displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
+		else
+			displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+	}
 	markChangedWidget(ui.notes);
 }
 

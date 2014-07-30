@@ -104,6 +104,8 @@ private:
 	void saveTags();
 	void updateGpsCoordinates(const struct dive *dive);
 	void markChangedWidget(QWidget *w);
+	dive_trip_t *currentTrip;
+	dive_trip_t displayedTrip;
 };
 
 #endif // MAINTAB_H
