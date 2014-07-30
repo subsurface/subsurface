@@ -21,9 +21,9 @@ Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 [blue]#_Version 4.2,  July 2014_#
 
 
-Welcome as a user of _Subsurface_, an advanced dive logging programme with
+Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organise, interpret and print scuba
-and free dives. _Subsurface_ offers many advantages above other similar
+and free dives. _Subsurface_ offers many advantages over other similar
 software solutions:
 
  - Do you use two different dive computer brands, each with its own proprietary
@@ -33,9 +33,9 @@ software solutions:
    interface for downloading dive logs from all these different pieces of
    equipment and to store and analyse the dive logs within a unified system.
  - Do you use more than one operating system? _Subsurface_ is fully compatible
-   with Mac, Linux and Microsoft, allowing you to access your dive log on each
-   of your operating systems in a unified way.
- - Do you use Linux or Mac and your dive computer has only Microsoft-based software
+   with Mac, Linux and Windows, allowing you to access your dive log on each
+   of your operating systems with a single application.
+ - Do you use Linux or Mac and your dive computer has only Windows-based software
    for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
    storing and analysing your dive logs on other operating systems.
 
