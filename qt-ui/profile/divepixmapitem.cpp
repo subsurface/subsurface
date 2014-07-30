@@ -7,10 +7,42 @@
 #include <QBrush>
 #include <QGraphicsDropShadowEffect>
 #include <QDesktopServices>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
 #include <QUrl>
 
 DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {
+}
+
+DiveButtonItem::DiveButtonItem(QObject *parent): DivePixmapItem(parent)
+{
+}
+
+void DiveButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mousePressEvent(event);
+	emit clicked();
+}
+
+// If we have many many pictures on screen, maybe a shared-pixmap would be better to
+// paint on screen, but for now, this.
+CloseButtonItem::CloseButtonItem(QObject *parent): DiveButtonItem(parent)
+{
+	static QPixmap p = QPixmap(":trash");
+	setPixmap(p);
+	setFlag(ItemIgnoresTransformations);
+}
+
+void CloseButtonItem::hide()
+{
+	DiveButtonItem::hide();
+}
+
+void CloseButtonItem::show()
+{
+	DiveButtonItem::show();
 }
 
 DivePictureItem::DivePictureItem(int row, QObject *parent): DivePixmapItem(parent)
@@ -50,20 +82,50 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 	shadow->setZValue(-2);
 }
 
+CloseButtonItem *button = NULL;
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 1.0);
 	setZValue(5);
+
+	if(!button) {
+		button = new CloseButtonItem();
+		button->setScale(0.2);
+		button->setZValue(7);
+		scene()->addItem(button);
+	}
+	button->setPos(mapToScene(0,0));
+	button->show();
+	button->disconnect();
+	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
 }
 
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
+	if(button)
+		button->hide();
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsView *view = scene()->views().first();
+	QList<QGraphicsItem*> items = view->items(view->mapFromScene(event->scenePos()));
+	Q_FOREACH(QGraphicsItem *item, items){
+		if (dynamic_cast<CloseButtonItem*>(item)){
+			return;
+		}
+	}
 	QString filePath = DivePictureModel::instance()->index(rowOnModel,0).data(Qt::ToolTipRole).toString();
 	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+}
+
+void DivePictureItem::removePicture()
+{
+	/* this is a WIP, it doesn't really *removes* anything, merely hides it.
+	 * good workaround, I still need to figure out how to activelly remove
+	 * it from the model. */
+	button->hide();
+	hide();
 }
