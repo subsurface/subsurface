@@ -244,11 +244,12 @@ As with the other items, auto completion of the suit description is available.
 Some dry-suit users may choose to use this field to record what combination of
 suit and thermal protection undersuit was used.
 
-*Rating*: In this field, provide a subjective overall rating of the
-dive on a 5-point scale by clicking the appropriate star on the rating scale.
+*Rating*: One can provide a subjective overall rating of the dive on a
+5-point scale by clicking the appropriate star on the rating scale.
 
-*Visibility*: As with the previous item, provide a rating of
-visibility during the dive on a 5-point scale by clicking the appropriate star.
+*Visibility*: Similarly, one can provide a rating of visibility during the
+dive on a
+5-point scale by clicking the appropriate star.
 
 *Tags*: Tags that describe the type of dive performed may
 be entered here (separated by commas). Examples of common tags are boat, drift,
@@ -703,6 +704,8 @@ offered.
 
 *Suit*: Here the type of diving suit used for the dive can be entered.
 Auto completion of the suit description is available.
+Some dry-suit users may choose to use this field to record what combination of
+suit and thermal protection undersuit was used.
 
 *Rating*: One can provide a subjective overall rating of the dive on a
 5-point scale by clicking the appropriate star on the rating scale.
