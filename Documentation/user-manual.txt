@@ -160,8 +160,8 @@ depth, the names of your dive buddy and of the dive master or dive guide, and
 some remarks about the dive. _Subsurface_ can store much more information
 than this for each dive. In order to add a dive to a dive log, select _Log
 -> Add Dive_ from the Main Menu. The program then shows three panels to enter
-information for a dive: two tabs in the *Info* panel (*Dive Notes* and
-*Equipment*), as well as the *profile* panel that displays a graphical profile
+information for a dive: two tabs in the *Dive Info* panel (*Dive Notes* and
+*Equipment*), as well as the *Dive Profile* panel that displays a graphical profile
 of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 [red]#C#
 in the figure below. Each of these tabs will now be explained for data entry.
@@ -1780,7 +1780,7 @@ now shows only the titles for the trips.
 
 Normally, in the dive list, minimal information is included in the trip title.
 More information about a trip can be added by selecting its trip title from
-the *Dive list*. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here
+the *Dive List*. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here
 users can add or edit information about the date/time, the trip location and any
 other general comments about the trip as a whole (e.g. the dive company that was
 dived with, the general weather and surface conditions during the trip, etc.).
@@ -1948,7 +1948,7 @@ files on the Dropbox servers to be seen as a local folder on one's desktop compu
 
 image::images/Cloud.jpg["FIGURE: Dropbox folder",align="center"]
 
-Currently there are not costs involved for this service. In this
+Currently there are no costs involved for this service. In this
 case, one can store one's dive log on _Dropbox_ in a totally seamless way: a dive log in
 one's _Dropbox_ folder can be opened and saved directly by _Subsurface_ and it can
 be accessed from any place with Internet access. Dropbox (Windows, Mac
@@ -2032,10 +2032,10 @@ process could be used for the Cloud-based storage of dive logs.
 [[S_Preferences]]
 == Setting user _Preferences_ for _Subsurface_
 
-There are several settings within _Subsurface_ that the users can specify. These
+There are several settings within _Subsurface_ that the user can specify. These
 are found when selecting _File->Preferences_. The settings are performed in
-four groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*. All five sections
-operate on the same principles: the user must specify the settings the are to be changed, then
+five groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*. All five sections
+operate on the same principles: the user must specify the settings that are to be changed, then
 these changes are saved using the *Apply* button. After applying all the new settings users can then
 leave the settings panel by selecting *OK*.
 
@@ -2069,7 +2069,7 @@ by setting this slider
 with faster animation speed to the left, with a 0 value representing no animation
 at all.
 
- ** *Subsurface Webservice*: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
+ ** *Subsurface web service*: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
 long and hard-to-remember userID is issued. This is the place to save that userID. By
 checking the option _Save User ID locally?_, one ensures that a local copy of that userID
 is saved.
@@ -2084,7 +2084,7 @@ Here user can choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
 at the top, users can specify that all units are in the chosen measurement system.
 Alternatively, if one selects the *Personalise* radio button, units can be selected
-independently, with some units in the metric system and other in the imperial.
+independently, with some units in the metric system and others in imperial.
 
 === Graph
 image::images/Pref3.jpg["FIGURE: Preferences Graph page",align="center"]
@@ -2100,17 +2100,19 @@ panel. For each of these graphs users can specify a threshold value on the right
 Preferences panel. If any of the graphs go above this threshold level, the graph is
 highlighted in red, indicating that the threshold has been exceeded.
 
-** _draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
+** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
 Not all dive computers report ceiling values. If the dive computer does report it, it may differ
 from the ceilings calculated by _Subsurface_. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
 dive computer can calculate ceilings during a dive.
 
-** _Show non-used cylinders in Equipment Tab_: This checkbox allows display of information about non-used cylinders when viewing the *Equipment Tab*. Conversely, if this box is un-checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 
-** _show average depth_: Activating this checkbox causes _Subsurface_ to draw a red line across
+** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a red line across
 the dive profile, indicating the mean depth of the dive.
 
-* *Misc*: *Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
+* *Misc*:
+
+** Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
 the gradient factor at depth and GF_High is used just below the surface.
 At intermediate depths gradient factors between GF_Low and GF_High are used.
 Gradient factors add conservatism to the nitrogen exposure during a dive, in a
@@ -2127,7 +2129,7 @@ all depths deeper than the first deco stop. For more information see:
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 === Language
-Choose a language that _Subsurface_ mus use.
+Choose a language that _Subsurface_ will use.
 
 image::images/Pref4.jpg["FIGURE: Preferences Language page",align="center"]
 
@@ -2137,15 +2139,16 @@ language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
 combination from the list of included localizations. The _Filter_ text box allows
 one to list similar languages. For instance there are several system variants of English
-or French.
+or French. This particular preference requires a restart of _Subsurface_ to take
+effect.
 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
 
 image::images/Pref5.jpg["FIGURE: Preferences Network page",align="center"]
 
-This important, for instance, when _Subsurface_ needs to communicate with Internet
-services such as the <<S_Companion,__Subsurface Companion app_>> or data export/import
+This is important, for instance, when _Subsurface_ needs to communicate with Internet
+services such as the <<S_Companion,_Subsurface Companion app_>> or data export/import
 from _Divelogs.de_. These Internet requirements are determined by one's type of
 connection to the Internet and by the Internet Service Provider (ISP) used.
 One's ISP should provide the appropriate information.
@@ -2407,7 +2410,7 @@ from _www.Divelogs.de_.
 panel.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
-- <<S_DeviceNames_,_Edit Device Names_ - Edit the names of dive computers to facilitate your logs.
+- <<S_DeviceNames_,_Edit Device Names_>> - Edit the names of dive computers to facilitate your logs.
 
 === View
 - <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
@@ -2416,8 +2419,8 @@ simmultaneously.
 - <<S_ViewPanels,_Profile_>> - View only the *Dive Profile* panel.
 - <<S_ViewPanels,_Info_>> - View only the *Dive Notes* panel.
 - <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
-- _Yearly Statistics_ - Display summary statistics about dives during the last
-year.
+- _Yearly Statistics_ - Display summary statistics about dives during this and past
+years.
 - _Prev DC_ - Switch to next dive computer.
 - _Next DC_ - Switch to previous dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
@@ -2468,7 +2471,7 @@ _Subsurface_ will either propose a drop down list that contains the
 correct device name (or mount point for the Uemis Zurich), or it will
 disable the device select drop down if no device name is needed at
 all. In the rare cases where this doesn't work, here are some
-instructions on ways to find out what the device name is:
+suggestions of ways to find out what the device name is:
 
 .On Windows:
 
@@ -2563,7 +2566,7 @@ ports listed, use the one saying "Outgoing" instead of "Incoming".
 For downloading to _Subsurface_, the _Subsurface_ drop-down list should contain
 this COM port already. If not, enter it manually.
 
-Note: If there are issues afterwards downloading from the dive computer using
+Note: If there are issues afterwards when downloading from the dive computer using
 other software, remove the existing pairing with the dive computer.
 
 .On MacOS:
