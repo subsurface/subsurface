@@ -89,9 +89,19 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 		switch (role) {
 		case Qt::UserRole:
 			ret = QVariant::fromValue((void *)stringPixmapCache[key].picture);
+		break;
+		case Qt::DisplayRole:
+			ret = key;
 		}
 	}
 	return ret;
+}
+
+void DivePictureModel::removePicture(const QString &fileUrl)
+{
+	dive_remove_picture(stringPixmapCache[fileUrl].picture);
+	copy_dive(current_dive, &displayed_dive);
+	updateDivePictures();
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const

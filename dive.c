@@ -2489,9 +2489,22 @@ void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
 	}
 }
 
-void dive_remove_picture(struct dive *d, struct picture *p)
+static void picture_free( struct picture *p){
+	if (!p)
+		return;
+	free( p->filename );
+	free( p );
+}
+void dive_remove_picture(struct picture *p)
 {
-
+	struct picture **ep = &current_dive->picture_list;
+	while (ep && !same_string((*ep)->filename, p->filename))
+		ep = &(*ep)->next;
+	if (ep) {
+		struct picture *temp = (*ep)->next;
+		picture_free(*ep);
+		*ep = temp;
+	}
 }
 
 /* this always acts on the current divecomputer of the current dive */

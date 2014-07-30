@@ -119,9 +119,7 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DivePictureItem::removePicture()
 {
-	/* this is a WIP, it doesn't really *removes* anything, merely hides it.
-	 * good workaround, I still need to figure out how to activelly remove
-	 * it from the model. */
 	button->hide();
 	hide();
+	DivePictureModel::instance()->removePicture(fileUrl);
 }

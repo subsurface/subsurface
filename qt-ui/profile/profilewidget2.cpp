@@ -1352,7 +1352,9 @@ void ProfileWidget2::keyEscAction()
 
 void ProfileWidget2::plotPictures()
 {
-	qDeleteAll(pictures);
+	Q_FOREACH(DivePictureItem *item, pictures){
+		item->deleteLater();
+	}
 	pictures.clear();
 
 	if (printMode)
@@ -1368,7 +1370,7 @@ void ProfileWidget2::plotPictures()
 			continue;
 		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
-		item->setFileUrl(m->index(i,0).data(Qt::DisplayPropertyRole).toString());
+		item->setFileUrl(m->index(i,1).data().toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(pic->offset.seconds);
