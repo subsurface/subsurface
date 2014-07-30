@@ -1960,7 +1960,11 @@ navigate to the _Dropbox_ folder and select the _Save_ button. To access the div
 in the Cloud, select _File->Open Logbook_ from the _Subsurface_
 main menu and navigate to the dive log file in the _Dropbox_ folder and select the
 _Open_ button.
-
+Both options _Open_ and _Save_ are done on the local copy of the dive log saved
+on one's computer's folder _Dropbox_, so there's no need of direct internet
+conexion. If the local copy is modified, e.g. adding a dive, the copy in the
+_Dropbox_ server in the Cloud will be automatically updated when connecting to
+the internet.
 
 [[S_PrintDivelog]]
 == Printing a dive log
