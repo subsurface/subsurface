@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
-[blue]#_Version 4.2,  July 2014_#
+[blue]#_Version 4.2,  August 2014_#
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
@@ -1927,7 +1927,7 @@ Export to other formats can be achieved through third party facilities, for
 instance _www.divelogs.de_.
 
 [[S_Cloud_access]]
-== _Subsurface_ in the Cloud
+== Keeping a _Subsurface_ dive log in the Cloud
 
 For each diver, dive log information is highly important. Not only is it a record
 of diving activities for one's own pleasure, but it is important information required
@@ -2024,6 +2024,9 @@ example of
 the output for one particular page.
 
 image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
+
+Several paid services exist on the Internet (e.g. Google, Amazon) where the same
+process could be used for the Cloud-based storage of dive logs.
 
 
 [[S_Preferences]]
@@ -2808,6 +2811,7 @@ This creates a zipped file DiveOrganiserxxxxx.dbf.
 DiveOrganiserxxxxx.zip. Inside the zipped directory is a file
 _DiveOrganiser.sdf_.
 3. Extract the _.sdf_ file from the zipped folder to your Desktop.
+4. The password for accessing the .zip file is _mares_.
 
 [[S_ImportingDivinglog]]
 === Exporting dives from *DivingLog 5.0*
