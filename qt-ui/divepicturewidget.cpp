@@ -1,5 +1,6 @@
 #include "divepicturewidget.h"
 #include <dive.h>
+#include <divelist.h>
 #include <QtConcurrentMap>
 #include <QDir>
 #include <QHash>
@@ -102,6 +103,7 @@ void DivePictureModel::removePicture(const QString &fileUrl)
 	dive_remove_picture(stringPixmapCache[fileUrl].picture);
 	copy_dive(current_dive, &displayed_dive);
 	updateDivePictures();
+	mark_divelist_changed(true);
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
