@@ -1328,6 +1328,7 @@ void ProfileWidget2::keyDeleteAction()
 		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 				selectedIndexes.push_back(handles.indexOf(handler));
+				handler->hide();
 			}
 		}
 		plannerModel->removeSelectedPoints(selectedIndexes);
