@@ -32,10 +32,10 @@ _Subsurface_ ofrece una interfaz estándar para descargar diarios de buceo desde
 todas estas piezas de equipo y para almacenarlos y analizarlos en un sistema
 unificado.
 - ¿Usas más de un sistema operativo? _Subsurface_ es totalmente compatible con
-Mac, Linux y Microsoft permitiéndote acceder a tu registro de buceo de de la
+Mac, Linux y Windows permitiéndote acceder a tu registro de buceo de de la
 misma forma desde cualquiera de estos sistemas operativos.
 - ¿Utilizas Linux o Mac pero tu ordenador de buceo solo tiene software basado en
-Microsoft para descargar la información de buceo (p.e. Mares)? _Subsurface_ te
+Windows para descargar la información de buceo (p.e. Mares)? _Subsurface_ te
 proporciona una manera de almacenar y analizar las inmersiones en otro sistema
 operativo.
 
@@ -242,6 +242,8 @@ ofrece autocompletado basado en la lista de compañeros del diario.
 
 *Traje*: Aquí puede introducirse el tipo de traje de buceo que se utilizó para
 la inmersión. Como en los casos anteriores está disponible el autocompletado.
+Los usuarios de traje seco pueden, por ejemplo, guardar cualquier combinación
+de traje y protección térmica que hayan utilizado.
 
 *Valoración*: En este campo se puede proporcionar una calificación subjetiva de
 la inmersión en una escala de 5 puntos, clicando en la estrella correspondiente.
@@ -1539,7 +1541,8 @@ en la figura de debajo).
 Si, además, se selecciona el botón *Mostrar el techo calculado con incrementos
 de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
-image::images/Ceilings2.jpg["Figura: Techo con resolución de 3 metros",align="center"]
+image::images/Ceilings2.jpg["Figura: Techo con resolución de 3
+metros",align="center"]
 
 El ajuste de los factores de gradiente afecta mucho a los techos calculados y
 sus profundidades. Para más información acerca de factores de gradiente,
@@ -1848,6 +1851,48 @@ producido con el archivo y se perderán algunas funcionalidades.
 dispondrá de información detallada de los buceos.
 * _Opciones de estilo_: Algunas opciones relativas al estilo de visualización
 en el navegador, como el tamaño de la letra o el tema aplicado.
+
+[[S_Cloud_access]]
+== _Subsurface_ en la Nube
+
+Para cualquier buceador, la información contenida en su diario es muy importante.
+No es únicamente un registro de actividades de buceo para su propio placer
+personal, sino que es información importante requerida para su admisión en
+futuros cursos de entrenamiento o (en ocasiones) incluso en puntos de buceo. La
+seguridad del diario es, así pues, crítica. De cara a poseer un diario que pueda
+soportar el fallo del disco duro del ordenador de casa, el robo o la perdida del
+equipo, etc, la _nube_ es una solución obvia. Esto, además, añade el beneficio
+de que se puede acceder al diario, casi, desde cualquier parte del mundo sin
+tener que llevarlo encima. Por este motivo, facilidades como _divelogs.de_ y
+_Diving Log_ ofrecen la posibilidad de guardar dicha información en internet.
+
+Aunque _Subsurface_ no ofrece almacenamiento integrado de diarios en la nube, es
+facil de conseguir utilizando alguno de los varios servicios existentes en
+internet.
+
+Por ejemplo http://www.dropbox.com/[_Dropbox_] ofrece una aplicación gratuita
+que permite que se vean como locales en nuestro ordenador los archivos guardados
+en sus servidores.
+
+image::images/Cloud.jpg["FIGURE: Carpeta de Dropbox",align="center"]
+
+Actualmente el servicio no tiene ningún coste. Se puede guardar el diario de
+buceo en _Dropbox_ de forma muy sencilla: el diario en nuestra carpeta de
+_Dropbox_ puede ser abierto y guardado directamente por _Subsurface_ y se
+puede utilizar desde cualquier sitio con acceso a internet. Dropbox se puede
+instalar accediendo a la http://www.dropbox.com/install[_página de instalación_]
+_de Dropbox_. Como alternativa, se puede utilizar _Dropbox_ como mecanismo para
+mantener una copia de seguridad del diario.
+Para guardar un diario en la _nube_, selecciona _Archivo-> Guardar como_ desde
+menú principal de _Subsurface_, navega a la carpeta Dropbox y selecciona el
+botón _Guardar_.  Para usar el diario en la nube, selecciona _Archivo->Abrir
+registro_ desde el menú principal de _Subsurface_, navega al archivo en la
+carpeta Dropbox y selecciona el botón _Abrir_.
+Tanto las funciones _Abrir_ como _Guardar_ se efectuan sobre la copia guardada
+en la carpeta de nuestro ordenador, por lo que no es necesaria conexión directa
+a internet. Si se modifica la copia local, p.e. al añadir una inmersión, la
+copia en el servidor _Dropbox_ en la _nube_ se actualizará automáticamente al
+volvernos a conectar a internet.
 
 [[S_PrintDivelog]]
 == Imprimir un diario
@@ -2340,7 +2385,7 @@ de buceo desde www.divelogs.de.
 === Registro
 - <<S_EnterData,_Añadir inmersión_>> - Añade manualmente una nueva inmersión al
 panel Lista de inmersiones.
-- <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
+- <<_DivePlanner,_Planificar inmersión_>> - Esta característica permite
 planificar inmersiones.
 - <<S_Renumber,_Renumerar_>> - Renumera las inmersiones listadas en el panel
 Lista de inmersiones.
@@ -2732,7 +2777,7 @@ aquí usaremos DM4 con la extensión por defecto .bak
 
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
-Mares Dive Organiser es una aplicación de Microsoft. El diario de inmersiones se
+Mares Dive Organiser es una aplicación de Windows. El diario de inmersiones se
 guarda en una base de datos Microsoft SQL Compact Edition con una extensión de
 nombre de archivo '.sdf'. La base de datos incluye a todos los buceadores
 registrados en el Dive Organiser del PC y a todos los ordenadores Mares usados.
