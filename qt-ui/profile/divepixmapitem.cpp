@@ -94,7 +94,9 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 		scene()->addItem(button);
 	}
 	button->setPos(mapToScene(0,0));
+	button->setOpacity(0);
 	button->show();
+	Animations::show(button);
 	button->disconnect();
 	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
 }
@@ -119,7 +121,7 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DivePictureItem::removePicture()
 {
-	button->hide();
+	Animations::hide(button);
 	hide();
 	DivePictureModel::instance()->removePicture(fileUrl);
 }

@@ -18,6 +18,18 @@ namespace Animations {
 		}
 	}
 
+	void show(QObject *obj)
+	{
+		if (prefs.animation_speed != 0) {
+			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
+			animation->setStartValue(0);
+			animation->setEndValue(1);
+			animation->start(QAbstractAnimation::DeleteWhenStopped);
+		} else {
+			obj->setProperty("opacity", 1);
+		}
+	}
+
 	void animDelete(QObject *obj)
 	{
 		if (prefs.animation_speed != 0) {
