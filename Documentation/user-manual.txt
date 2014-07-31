@@ -147,7 +147,7 @@ be found at:
 link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
-3. Import dive information from another data base or file format. This is
+3. Import dive information from another database or file format. This is
 discussed in more detail below.
 
 [[S_EnterData]]
@@ -922,7 +922,7 @@ account in
 _www.divelogs.de_, log into that web site, then
 select _Import Logbook -> Dive Organiser_ from the menu on the left hand side.
 The instructions must be carefully followed to transfer the dive information
-(in _.sdf_ format) from the Dive Organiser data base to _www.divelogs.de_.
+(in _.sdf_ format) from the Dive Organiser database to _www.divelogs.de_.
 3. Finally,  import the dives
 from _divelogs.de_ to _Subsurface_, using the instructions below.
 
@@ -2800,14 +2800,14 @@ Backing up Suunto DM4:
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
 Mares Dive Organiser is a Windows application. The dive log is kept as a
-Microsoft SQL Compact Edition data base with a '.sdf' filename extension. The
-data base includes all Dive Organiser-registered divers on the particular
+Microsoft SQL Compact Edition database with a '.sdf' filename extension. The
+database includes all Dive Organiser-registered divers on the particular
 computer and all Mares dive computers used. The safest way to obtain a copy
-of the dive data base is to export the information to another compatible format
+of the dive database is to export the information to another compatible format
 which can be imported into _Subsurface_.
 
 1. Within Dive Organiser, select
-_Database -> Backup_ from the main menu and back up the data base to the desk
+_Database -> Backup_ from the main menu and back up the database to the desk
 top.
 This creates a zipped file DiveOrganiserxxxxx.dbf.
 2. Rename the file to
