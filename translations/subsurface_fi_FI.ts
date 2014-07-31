@@ -824,7 +824,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1329"/>
         <source>OTU</source>
-        <translation>Happikertymä</translation>
+        <translation>OTU</translation>
     </message>
 </context>
 <context>
@@ -1190,7 +1190,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
         <source>OTU</source>
-        <translation>Happikertymä</translation>
+        <translation>Happikertymä (OTU)</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="664"/>
@@ -3785,12 +3785,12 @@ Keski</translation>
     <message>
         <location filename="../planner.c" line="644"/>
         <source>CNS</source>
-        <translation>CNS</translation>
+        <translation>Happikertymä (CNS)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="646"/>
         <source>OTU</source>
-        <translation>Happikertymä</translation>
+        <translation>Happikertymä (OTU)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="649"/>

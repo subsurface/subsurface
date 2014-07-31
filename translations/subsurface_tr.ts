@@ -15,7 +15,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>He%</source>
-        <translation type="unfinished"/>
+        <translation>He%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
@@ -25,17 +25,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Work press.</source>
-        <translation type="unfinished"/>
+        <translation>Çalışma basıncı</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Start press.</source>
-        <translation type="unfinished"/>
+        <translation>Başlangıç basıncı</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>End press.</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş basıncı</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="70"/>
@@ -45,12 +45,12 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="158"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation type="unfinished"/>
+        <translation>Buraya tıklayarak bu tüp kaldırılır.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="365"/>
         <source>Cylinder cannot be removed</source>
-        <translation type="unfinished"/>
+        <translation>Tüp kaldırılamaz</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="366"/>
@@ -63,18 +63,19 @@
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="50"/>
         <source>Remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Seçili dalış bilgisayarı kaldırılsın mı ?</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="51"/>
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Seçilenleri dalış bilgisayarından
+kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.ui" line="17"/>
         <source>Edit dive computer nicknames</source>
-        <translation type="unfinished"/>
+        <translation>Dalış bilgisayarı rumuzları düzenle</translation>
     </message>
 </context>
 <context>
@@ -87,37 +88,37 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1421"/>
         <source>Device ID</source>
-        <translation type="unfinished"/>
+        <translation>Cihaz Kimliği</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1421"/>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Rumuz</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1452"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Buraya tıklayarak dalış bilgisayarını kaldır.</translation>
     </message>
 </context>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="101"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="107"/>
         <source>Bailing out to OC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="103"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="109"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="104"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="110"/>
         <source> end</source>
         <comment>Starts with space!</comment>
-        <translation type="unfinished"/>
+        <translation>son</translation>
     </message>
 </context>
 <context>
@@ -133,242 +134,242 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="53"/>
         <source>Show search box</source>
-        <translation type="unfinished"/>
+        <translation>Arama kutusunu göster</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="705"/>
+        <location filename="../qt-ui/divelistview.cpp" line="707"/>
         <source>Expand all</source>
-        <translation type="unfinished"/>
+        <translation>Hepsini aç</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="706"/>
+        <location filename="../qt-ui/divelistview.cpp" line="708"/>
         <source>Collapse all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="707"/>
+        <location filename="../qt-ui/divelistview.cpp" line="709"/>
         <source>Collapse others</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="709"/>
+        <location filename="../qt-ui/divelistview.cpp" line="711"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"/>
+        <translation>Geziden dalış kaldır</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="710"/>
+        <location filename="../qt-ui/divelistview.cpp" line="712"/>
         <source>Create new trip above</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="724"/>
+        <location filename="../qt-ui/divelistview.cpp" line="726"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="726"/>
+        <location filename="../qt-ui/divelistview.cpp" line="728"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="730"/>
+        <location filename="../qt-ui/divelistview.cpp" line="732"/>
         <source>Merge trip with trip above</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="731"/>
+        <location filename="../qt-ui/divelistview.cpp" line="733"/>
         <source>Merge trip with trip below</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="735"/>
+        <location filename="../qt-ui/divelistview.cpp" line="737"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Dalış sil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="737"/>
+        <location filename="../qt-ui/divelistview.cpp" line="739"/>
         <source>Mark dive(s) invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="741"/>
-        <source>Merge selected dives</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/divelistview.cpp" line="743"/>
-        <source>Renumber dive(s)</source>
-        <translation type="unfinished"/>
+        <source>Merge selected dives</source>
+        <translation>Seçili dalışları birleştir</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="744"/>
+        <location filename="../qt-ui/divelistview.cpp" line="745"/>
+        <source>Renumber dive(s)</source>
+        <translation>Dalışları yeniden numaralandır</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelistview.cpp" line="746"/>
         <source>Shift times</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="745"/>
+        <location filename="../qt-ui/divelistview.cpp" line="747"/>
         <source>Load images</source>
-        <translation type="unfinished"/>
+        <translation>Görüntüleri yükle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="766"/>
+        <location filename="../qt-ui/divelistview.cpp" line="768"/>
         <source>Open image files</source>
-        <translation type="unfinished"/>
+        <translation>Görüntü dosyalarını aç</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelistview.cpp" line="766"/>
+        <location filename="../qt-ui/divelistview.cpp" line="768"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation type="unfinished"/>
+        <translation>Görüntü dosyaları (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
 </context>
 <context>
     <name>DiveLogExportDialog</name>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="30"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="35"/>
         <source>Export format</source>
-        <translation type="unfinished"/>
+        <translation>Dışa aktarma biçimi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="42"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="47"/>
         <source>Subsurface XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="61"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="66"/>
         <source>UDDF</source>
-        <translation type="unfinished"/>
+        <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="74"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="79"/>
         <source>divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>divelogs.de</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="84"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="89"/>
         <source>CSV</source>
-        <translation type="unfinished"/>
+        <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="94"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="99"/>
         <source>Worldmap</source>
-        <translation type="unfinished"/>
+        <translation>Dünya haritası</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="107"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="112"/>
         <source>Selection</source>
-        <translation type="unfinished"/>
+        <translation>Seçim</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="116"/>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="203"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="121"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="208"/>
         <source>Selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Seçili dalışlar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="126"/>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="229"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="131"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="234"/>
         <source>All dives</source>
-        <translation type="unfinished"/>
+        <translation>Tüm dalışlar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="178"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="183"/>
         <source>HTML</source>
-        <translation type="unfinished"/>
+        <translation>HTML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="216"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="221"/>
         <source>Minimum Javascript</source>
-        <translation type="unfinished"/>
+        <translation>Minimum Javascript</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="14"/>
         <source>Export dive log files</source>
-        <translation type="unfinished"/>
+        <translation>Dalış kayıt dosyalarını dışarı aktar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="24"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="29"/>
         <source>General export</source>
-        <translation type="unfinished"/>
+        <translation>Genel dışarı aktar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="184"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="189"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Genel ayarlar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="190"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="195"/>
         <source>Subsurface numbers</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface numaraları</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="239"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="244"/>
         <source>Export list only</source>
-        <translation type="unfinished"/>
+        <translation>Sadece listeyi dışarı aktar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="252"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="257"/>
         <source>Style options</source>
-        <translation type="unfinished"/>
+        <translation>Stil seçenekleri</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="264"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="269"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Yazı tipi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="274"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="279"/>
         <source>Font size</source>
         <translation>Yazı tipi boyutu</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="285"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="290"/>
         <source>8</source>
-        <translation type="unfinished"/>
+        <translation>8</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="290"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="295"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="295"/>
-        <source>12</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="300"/>
-        <source>14</source>
-        <translation type="unfinished"/>
+        <source>12</source>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="305"/>
-        <source>16</source>
-        <translation type="unfinished"/>
+        <source>14</source>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="310"/>
-        <source>18</source>
-        <translation type="unfinished"/>
+        <source>16</source>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="315"/>
+        <source>18</source>
+        <translation>18</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="320"/>
         <source>20</source>
-        <translation type="unfinished"/>
+        <translation>20</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="323"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="328"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="334"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="339"/>
         <source>Light</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.ui" line="339"/>
+        <location filename="../qt-ui/divelogexportdialog.ui" line="344"/>
         <source>Sand</source>
-        <translation type="unfinished"/>
+        <translation>kum</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="158"/>
@@ -378,7 +379,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="162"/>
         <source>CSV files (*.csv *.CSV)</source>
-        <translation type="unfinished"/>
+        <translation>CSV dosyaları (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="58"/>
@@ -393,7 +394,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="62"/>
         <source>Send the dive data to divelogs.de website.</source>
-        <translation type="unfinished"/>
+        <translation>Divelogs.de web sitesine dalış verilerini gönder.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="64"/>
@@ -403,43 +404,43 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="66"/>
         <source>Subsurface native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface doğal XML biçimi</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="157"/>
         <source>Export UDDF file as</source>
-        <translation type="unfinished"/>
+        <translation>UDDF dosyası olarak dışarı aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="161"/>
         <source>Export CSV file as</source>
-        <translation type="unfinished"/>
+        <translation>CSV dosyası olarak dışarı aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="166"/>
         <source>Export world map</source>
-        <translation type="unfinished"/>
+        <translation>Dünya haritasını dışarı aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="167"/>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="181"/>
         <source>HTML files (*.html)</source>
-        <translation type="unfinished"/>
+        <translation>HTML dosyaları (*.html)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="171"/>
         <source>Export Subsurface XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface XML dışa aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="172"/>
         <source>XML files (*.xml *.ssrf)</source>
-        <translation type="unfinished"/>
+        <translation>XML dosyaları (*.xml *.ssrf)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="180"/>
         <source>Export HTML files as</source>
-        <translation type="unfinished"/>
+        <translation>HTML dosyası olarak dışarı aktar</translation>
     </message>
 </context>
 <context>
@@ -447,22 +448,22 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="14"/>
         <source>Import dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Dalış kayıt dosyalarını içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="29"/>
         <source>CSV options</source>
-        <translation type="unfinished"/>
+        <translation>CSV seçenekleri</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="243"/>
         <source>Pre-configured imports</source>
-        <translation type="unfinished"/>
+        <translation>Önceden yapılandırılmış içe aktarma</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="74"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="94"/>
@@ -498,12 +499,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="185"/>
         <source>TTS</source>
-        <translation type="unfinished"/>
+        <translation>YZ</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="205"/>
         <source>Cns</source>
-        <translation type="unfinished"/>
+        <translation>Mss</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="231"/>
@@ -515,7 +516,7 @@
         <location filename="../qt-ui/divelogimportdialog.ui" line="259"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="302"/>
         <source>Units</source>
-        <translation type="unfinished"/>
+        <translation>Birimler</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="266"/>
@@ -527,7 +528,7 @@
         <location filename="../qt-ui/divelogimportdialog.ui" line="271"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="314"/>
         <source>Imperial</source>
-        <translation type="unfinished"/>
+        <translation>Emperyal</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="296"/>
@@ -537,7 +538,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="331"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Dalış #</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="365"/>
@@ -552,7 +553,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="518"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Etiketler</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="467"/>
@@ -562,18 +563,18 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="501"/>
         <source>Gps</source>
-        <translation type="unfinished"/>
+        <translation>Gps</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="348"/>
         <source>Max depth</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="35"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="325"/>
         <source>Field configuration</source>
-        <translation type="unfinished"/>
+        <translation>Alan yapılandırma</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="382"/>
@@ -588,12 +589,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="450"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Notlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="484"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlık</translation>
     </message>
 </context>
 <context>
@@ -601,22 +602,22 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="134"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>İrtifa</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="106"/>
         <source>Planned dive time</source>
-        <translation type="unfinished"/>
+        <translation>Planlanan dalış zamanı</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="141"/>
         <source>ATM pressure</source>
-        <translation type="unfinished"/>
+        <translation>Atmosfer basıncı</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="148"/>
         <source>mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="161"/>
@@ -627,42 +628,42 @@
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="137"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="138"/>
         <source>unknown</source>
         <translation>bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="622"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="637"/>
         <source>Final depth</source>
-        <translation type="unfinished"/>
+        <translation>Final derinlik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="624"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="639"/>
         <source>Run time</source>
-        <translation type="unfinished"/>
+        <translation>Çalışma süresi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="626"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="641"/>
         <source>Duration</source>
         <translation>Süre</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="628"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="643"/>
         <source>Used gas</source>
-        <translation type="unfinished"/>
+        <translation>Gaz kullanımı</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="630"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="645"/>
         <source>CC set point</source>
-        <translation type="unfinished"/>
+        <translation>KD set noktası</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="925"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="941"/>
         <source>Discard the plan?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="926"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="942"/>
         <source>You are about to discard your plan.</source>
         <translation type="unfinished"/>
     </message>
@@ -670,19 +671,19 @@
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="255"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="257"/>
         <source>Dive planner points</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="259"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="261"/>
         <source>Available gases</source>
-        <translation type="unfinished"/>
+        <translation>Mevcut gazlar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="282"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="284"/>
         <source>Add dive data point</source>
-        <translation type="unfinished"/>
+        <translation>Dalış veri noktası ekle</translation>
     </message>
 </context>
 <context>
@@ -690,7 +691,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="93"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="95"/>
@@ -710,7 +711,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="101"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Renk</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="107"/>
@@ -720,17 +721,17 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="115"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation>pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="117"/>
         <source>pHe</source>
-        <translation type="unfinished"/>
+        <translation>pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="119"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="109"/>
@@ -740,17 +741,17 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="103"/>
         <source>User entered</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı girdisi</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
         <source>Cylinder index</source>
-        <translation type="unfinished"/>
+        <translation>Tüp indeksi</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
         <source>Ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Tavan</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="113"/>
@@ -778,7 +779,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1305"/>
         <source>ft</source>
-        <translation type="unfinished"/>
+        <translation>fit</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1308"/>
@@ -798,7 +799,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1332"/>
         <source>Max CNS</source>
-        <translation type="unfinished"/>
+        <translation>Azami MSS</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1335"/>
@@ -813,7 +814,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1314"/>
         <source>lbs</source>
-        <translation type="unfinished"/>
+        <translation>libre</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1326"/>
@@ -823,7 +824,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1329"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OZB</translation>
     </message>
 </context>
 <context>
@@ -831,94 +832,95 @@
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="111"/>
         <source>no dives were selected</source>
-        <translation type="unfinished"/>
+        <translation>Hiçbir dalış seçilmedi</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation type="unfinished"/>
+        <translation>yükleme için zip dosyası oluşturma başarısız oldu: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="153"/>
         <source>cannot create temporary file: %s</source>
-        <translation type="unfinished"/>
+        <translation>geçici dosya oluşturulamıyor: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="163"/>
         <source>internal error: %s</source>
-        <translation type="unfinished"/>
+        <translation>iç hata: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="179"/>
         <source>internal error</source>
-        <translation type="unfinished"/>
+        <translation>iç hata</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="636"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="832"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="637"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="833"/>
         <source>Done</source>
         <translation>Bitti</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="667"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="668"/>
         <source>Uploading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Dalış listesi yükleniyor ...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="698"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="699"/>
         <source>Downloading dive list...</source>
-        <translation type="unfinished"/>
+        <translation>Dalış listesi indiriliyor ...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="746"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="747"/>
         <source>Downloading %1 dives...</source>
-        <translation type="unfinished"/>
+        <translation>%1 dalış indiriliyor...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="789"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="790"/>
         <source>Download finished - %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="806"/>
-        <source>Corrupted download</source>
-        <translation type="unfinished"/>
+        <translation>İndirme bitti- %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
+        <source>Corrupted download</source>
+        <translation>İndirme bozuk</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="808"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Arşiv açılamadı:
+%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="846"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="847"/>
         <source>Upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Yükleme başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="849"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="850"/>
         <source>Upload successful</source>
-        <translation type="unfinished"/>
+        <translation>Yükleme başarılı</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="852"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="853"/>
         <source>Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Giriş başarısız</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="855"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
         <source>Cannot parse response</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="866"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="867"/>
         <source>Error: %1</source>
         <translation>Hata: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="833"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="834"/>
         <source>Upload finished</source>
-        <translation type="unfinished"/>
+        <translation>Yükleme bitti</translation>
     </message>
 </context>
 <context>
@@ -938,7 +940,7 @@
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="143"/>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="167"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden dene</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="257"/>
@@ -953,12 +955,12 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="325"/>
         <source>Log files (*.log)</source>
-        <translation type="unfinished"/>
+        <translation>Kayıt dosyaları (*.log)</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="340"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="341"/>
@@ -981,22 +983,22 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="39"/>
         <source>Vendor</source>
-        <translation type="unfinished"/>
+        <translation>Satıcı</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Dalış bilgisayarından indir</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
         <source>Device or mount point</source>
-        <translation type="unfinished"/>
+        <translation>Cihaz veya bağlama noktası</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="46"/>
         <source>Dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Dalış bilgisayarı</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="59"/>
@@ -1008,7 +1010,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Force download of all dives</source>
-        <translation type="unfinished"/>
+        <translation>Tüm dalışları indirmeyi zorla</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
@@ -1041,26 +1043,26 @@
     <message>
         <location filename="../qt-ui/globe.cpp" line="120"/>
         <source>Edit selected dive locations</source>
-        <translation type="unfinished"/>
+        <translation>Seçili dalış konumlarını düzenle</translation>
     </message>
 </context>
 <context>
     <name>MainTab</name>
     <message>
         <location filename="../qt-ui/maintab.ui" line="134"/>
-        <location filename="../qt-ui/maintab.cpp" line="439"/>
+        <location filename="../qt-ui/maintab.cpp" line="450"/>
         <source>Location</source>
         <translation>Konum</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="63"/>
         <source>Coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Koordinatlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="162"/>
         <source>Divemaster</source>
-        <translation type="unfinished"/>
+        <translation>Divemaster(Dalış lideri)</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="148"/>
@@ -1070,17 +1072,17 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="176"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Etiketler</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="223"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Değerlendirme</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="236"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Görünütlük</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="127"/>
@@ -1089,69 +1091,69 @@
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="18"/>
-        <location filename="../qt-ui/maintab.cpp" line="415"/>
+        <location filename="../qt-ui/maintab.cpp" line="426"/>
         <source>Dive notes</source>
-        <translation type="unfinished"/>
+        <translation>Dalış notları</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <location filename="../qt-ui/maintab.ui" line="607"/>
-        <location filename="../qt-ui/maintab.cpp" line="244"/>
+        <location filename="../qt-ui/maintab.cpp" line="245"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Hava sıcaklığı.</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <location filename="../qt-ui/maintab.ui" line="626"/>
-        <location filename="../qt-ui/maintab.cpp" line="245"/>
+        <location filename="../qt-ui/maintab.cpp" line="246"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Su sıcaklığı.</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
-        <location filename="../qt-ui/maintab.cpp" line="440"/>
+        <location filename="../qt-ui/maintab.cpp" line="451"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Notlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="311"/>
         <source>Equipment</source>
-        <translation type="unfinished"/>
+        <translation>Ekipman</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="474"/>
         <source>Gases used</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılan gazlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="493"/>
         <source>Gas consumed</source>
-        <translation type="unfinished"/>
+        <translation>Tüketilen gaz</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="531"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="588"/>
         <source>Air pressure</source>
-        <translation type="unfinished"/>
+        <translation>Hava basıncı</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="645"/>
         <source>Dive time</source>
-        <translation type="unfinished"/>
+        <translation>Dalış süresi</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="816"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Toplam süre</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="874"/>
         <source>Gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Gaz tüketimi</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="299"/>
@@ -1167,7 +1169,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="391"/>
         <source>Dive info</source>
-        <translation type="unfinished"/>
+        <translation>Dalış bilgisi</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="455"/>
@@ -1183,27 +1185,27 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="550"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Ort. derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="569"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OZB</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="664"/>
         <source>Salinity</source>
-        <translation type="unfinished"/>
+        <translation>Tuzluluk</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="701"/>
         <source>Stats</source>
-        <translation type="unfinished"/>
+        <translation>İstatistikler</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="746"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="758"/>
@@ -1218,122 +1220,122 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="835"/>
         <source>Dives</source>
-        <translation type="unfinished"/>
+        <translation>Dalışlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="919"/>
         <source>Photos</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/maintab.cpp" line="88"/>
-        <source>Cylinders</source>
-        <translation type="unfinished"/>
+        <translation>Fotoğraflar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="89"/>
-        <source>Add Cylinder</source>
-        <translation type="unfinished"/>
+        <source>Cylinders</source>
+        <translation>Tüpler</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="92"/>
+        <location filename="../qt-ui/maintab.cpp" line="90"/>
+        <source>Add Cylinder</source>
+        <translation>Tüp ekle</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="93"/>
         <source>Weights</source>
         <translation>Ağırlıklar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="93"/>
+        <location filename="../qt-ui/maintab.cpp" line="94"/>
         <source>Add Weight System</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlık Sistemi Ekle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="48"/>
+        <location filename="../qt-ui/maintab.cpp" line="49"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="52"/>
+        <location filename="../qt-ui/maintab.cpp" line="53"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="241"/>
-        <source>Air temp. [%1]</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/maintab.cpp" line="242"/>
+        <source>Air temp. [%1]</source>
+        <translation>Hava sıcaklığı. [%1]</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="243"/>
         <source>Water temp. [%1]</source>
-        <translation type="unfinished"/>
+        <translation>Su sıcaklığı. [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="277"/>
+        <location filename="../qt-ui/maintab.cpp" line="278"/>
         <source>This trip is being edited.</source>
-        <translation type="unfinished"/>
+        <translation>Bu gezi düzenleniyor.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="284"/>
+        <location filename="../qt-ui/maintab.cpp" line="285"/>
         <source>Multiple dives are being edited.</source>
-        <translation type="unfinished"/>
+        <translation>Çoklu dalış düzenleniyor.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="286"/>
+        <location filename="../qt-ui/maintab.cpp" line="287"/>
         <source>This dive is being edited.</source>
-        <translation type="unfinished"/>
+        <translation>Bu dalış düzenleniyor.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="386"/>
-        <location filename="../qt-ui/maintab.cpp" line="410"/>
+        <location filename="../qt-ui/maintab.cpp" line="397"/>
+        <location filename="../qt-ui/maintab.cpp" line="421"/>
         <source>Trip notes</source>
-        <translation type="unfinished"/>
+        <translation>Gezi notları</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="408"/>
+        <location filename="../qt-ui/maintab.cpp" line="419"/>
         <source>Trip location</source>
-        <translation type="unfinished"/>
+        <translation>Gezi konumu</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="461"/>
-        <location filename="../qt-ui/maintab.cpp" line="469"/>
-        <location filename="../qt-ui/maintab.cpp" line="502"/>
-        <location filename="../qt-ui/maintab.cpp" line="503"/>
-        <location filename="../qt-ui/maintab.cpp" line="504"/>
+        <location filename="../qt-ui/maintab.cpp" line="472"/>
+        <location filename="../qt-ui/maintab.cpp" line="480"/>
+        <location filename="../qt-ui/maintab.cpp" line="513"/>
+        <location filename="../qt-ui/maintab.cpp" line="514"/>
+        <location filename="../qt-ui/maintab.cpp" line="515"/>
         <source>/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="463"/>
+        <location filename="../qt-ui/maintab.cpp" line="474"/>
         <source>unknown</source>
         <translation>bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="500"/>
+        <location filename="../qt-ui/maintab.cpp" line="511"/>
         <source>Deepest dive</source>
-        <translation type="unfinished"/>
+        <translation>Derin dalış</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="501"/>
+        <location filename="../qt-ui/maintab.cpp" line="512"/>
         <source>Shallowest dive</source>
-        <translation type="unfinished"/>
+        <translation>Sığ dalış</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="545"/>
+        <location filename="../qt-ui/maintab.cpp" line="556"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="549"/>
+        <location filename="../qt-ui/maintab.cpp" line="560"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>ve</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="797"/>
+        <location filename="../qt-ui/maintab.cpp" line="808"/>
         <source>Discard the changes?</source>
-        <translation type="unfinished"/>
+        <translation>Değişiklikleri silinsin mi ?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="798"/>
+        <location filename="../qt-ui/maintab.cpp" line="809"/>
         <source>You are about to discard your changes.</source>
         <translation type="unfinished"/>
     </message>
@@ -1348,12 +1350,12 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation type="unfinished"/>
+        <translation>pHe grafik değiştir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
         <source>Toggle calculating all tissues</source>
-        <translation type="unfinished"/>
+        <translation>Tüm doku hesaplamalarını değiştir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="183"/>
@@ -1363,12 +1365,12 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="212"/>
         <source>Toggle calculated ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Hesaplanan tavanı değiştir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="238"/>
         <source>Toggle NDL, TTS</source>
-        <translation type="unfinished"/>
+        <translation>NDL, YZ geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="264"/>
@@ -1378,17 +1380,17 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="290"/>
         <source>Toggle heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Kalp atış hızı geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
         <source>Toggle MOD</source>
-        <translation type="unfinished"/>
+        <translation>MOD değiştir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="342"/>
         <source>Toggle EAD, END, EADD</source>
-        <translation type="unfinished"/>
+        <translation>EHD,  END, EHYD değiştir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
@@ -1398,17 +1400,17 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Toggle ruler</source>
-        <translation type="unfinished"/>
+        <translation>Cetvel geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Küçük resimler gösterilirken geçiş</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dive plan details&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dalış planı detayları&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="609"/>
@@ -1427,12 +1429,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="693"/>
         <source>&amp;Log</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kayıt</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="705"/>
         <source>&amp;View</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Görünüm</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="721"/>
@@ -1442,12 +1444,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="729"/>
         <source>&amp;Import</source>
-        <translation type="unfinished"/>
+        <translation>&amp;İçe Aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="744"/>
         <source>&amp;New logbook</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yeni seyir defteri</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="747"/>
@@ -1462,12 +1464,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="755"/>
         <source>&amp;Open logbook</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Seyir defteri aç</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="758"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Aç</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="761"/>
@@ -1492,7 +1494,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="777"/>
         <source>Sa&amp;ve as</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Farklı kaydet</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="780"/>
@@ -1522,27 +1524,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="807"/>
         <source>P&amp;references</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tercihler</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="837"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Subsurface web hizmetinden GPS verilerini içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="890"/>
         <source>&amp;Profile</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Profil</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="898"/>
         <source>&amp;Info</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Bilgi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="906"/>
         <source>&amp;All</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tümü</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="922"/>
@@ -1552,12 +1554,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="930"/>
         <source>&amp;About Subsurface</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Subsurface Hakkında</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="946"/>
         <source>&amp;Globe</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dünya</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="968"/>
@@ -1567,42 +1569,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="973"/>
         <source>Import &amp;from divelogs.de</source>
-        <translation type="unfinished"/>
+        <translation>&amp;divelogs.de&apos;den içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="981"/>
         <source>&amp;Full screen</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tam ekran</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="984"/>
         <source>Toggle full screen</source>
-        <translation type="unfinished"/>
+        <translation>Tam ekran geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1012"/>
         <source>&amp;Check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Güncellemeler için denetle</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1017"/>
         <source>&amp;Export</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dışa aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1020"/>
         <source>Export Dive Logs</source>
-        <translation type="unfinished"/>
+        <translation>Dalış Kyıtlarını Dışa Aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1023"/>
         <source>Ctrl+E</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="394"/>
         <source>Rescale depth axis</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik eksenini yeniden ölçekle</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="799"/>
@@ -1622,7 +1624,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="829"/>
         <source>Import from &amp;dive computer</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dalış bilgisayarından içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="840"/>
@@ -1637,7 +1639,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="858"/>
         <source>&amp;Renumber</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yeniden numarala</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="861"/>
@@ -1681,12 +1683,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ Grafik Geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>pN₂ Grafik Geçişi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1701,27 +1703,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Cihaz adını düzenle</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>
         <source>&amp;Add dive</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dalış ekle</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="869"/>
         <source>Auto &amp;group</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Otomatik grup</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="874"/>
         <source>&amp;Yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yıllık istatistikler</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="882"/>
         <source>&amp;Dive list</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dalış listesi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="885"/>
@@ -1751,17 +1753,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="917"/>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Sol</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="925"/>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Sağ</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="938"/>
         <source>User &amp;manual</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kullanıcı rehberi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="941"/>
@@ -1776,62 +1778,62 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="954"/>
         <source>P&amp;lan dive</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dalış planı</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="962"/>
         <source>&amp;Import log files</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kayıt dosyalarını içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="965"/>
         <source>Import divelog files from other applications</source>
-        <translation type="unfinished"/>
+        <translation>Diğer uygulamalardan dalış kayıt dosyalarını içe aktar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="987"/>
         <source>F11</source>
-        <translation type="unfinished"/>
+        <translation>F11</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="191"/>
         <source>Open file</source>
-        <translation type="unfinished"/>
+        <translation>Dosya aç</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="283"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="279"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
-        <translation type="unfinished"/>
+        <translation>Dosyayı kapatmadan önce geçerli dalışı düzenle, kaydet veya iptal et.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="390"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="386"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation type="unfinished"/>
+        <translation>Bir dalış eklemeyi denemeden önce geçerli dalışı düzenle, kaydet veya iptal et.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="421"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="418"/>
         <source>Print runtime table</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="516"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="518"/>
         <source>Yearly statistics</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="701"/>
-        <source>Do you want to save the changes that you made in the file %1?</source>
-        <translation type="unfinished"/>
+        <translation>Yıllık istatistikler</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="703"/>
-        <source>Do you want to save the changes that you made in the data file?</source>
-        <translation type="unfinished"/>
+        <source>Do you want to save the changes that you made in the file %1?</source>
+        <translation>%1 dosyasında yapılan değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="708"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="705"/>
+        <source>Do you want to save the changes that you made in the data file?</source>
+        <translation>Veri dosyasında yapılan değişiklikleri kaydetmek istiyor musunuz?</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="710"/>
         <source>Save changes?</source>
-        <translation type="unfinished"/>
+        <translation>Değişiklikler kaydedilsin mi ?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1066"/>
@@ -1841,30 +1843,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1190"/>
         <source>Open dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Dalış kayıt dosyasını aç</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1191"/>
         <source>Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)</source>
-        <translation type="unfinished"/>
+        <translation>Dalış kayıt dosyaları (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML dosyaları (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog dosyaları(*.jlb);;Suunto Files(*.sde *.db);;CSV Dosyaları(*.csv);;Tüm Dosyalar(*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="709"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="711"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="251"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="390"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="386"/>
         <location filename="../qt-ui/mainwindow.cpp" line="1216"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="188"/>
         <location filename="../qt-ui/mainwindow.cpp" line="1050"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen yeni bir dosya açmadan önce geçerli dalışı düzenle, kaydet veya iptal et.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1067"/>
@@ -1880,14 +1882,44 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="444"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="453"/>
+        <source>ft/min</source>
+        <translation>fit/dak</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="454"/>
         <source>Last stop at 20ft</source>
+        <translation>20 fit son durak</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
+        <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="451"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
+        <source>20ft to surface</source>
+        <translation>Yüzeye 20 fit</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="458"/>
+        <source>m/min</source>
+        <translation>m/dak</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
         <source>Last stop at 6m</source>
+        <translation>6m son durak</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
+        <source>50% avg. depth to 6m</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
+        <source>6m to surface</source>
+        <translation>yüzeye 6m</translation>
     </message>
 </context>
 <context>
@@ -1895,17 +1927,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılanlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
         <source>Units</source>
-        <translation type="unfinished"/>
+        <translation>Birimler</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="105"/>
         <source>Graph</source>
-        <translation type="unfinished"/>
+        <translation>Grafik</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="115"/>
@@ -1915,12 +1947,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="125"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Ağ</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="157"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Yazı tipi</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="167"/>
@@ -1930,242 +1962,247 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="180"/>
         <source>Dives</source>
-        <translation type="unfinished"/>
+        <translation>Dalışlar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="198"/>
+        <source>Use default</source>
+        <translation>Varsayılanı kullan</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="208"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="247"/>
+        <location filename="../qt-ui/preferences.ui" line="257"/>
         <source>Animations</source>
-        <translation type="unfinished"/>
+        <translation>Animasyonlar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="253"/>
+        <location filename="../qt-ui/preferences.ui" line="263"/>
         <source>Speed</source>
-        <translation type="unfinished"/>
+        <translation>Hız</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="306"/>
+        <location filename="../qt-ui/preferences.ui" line="316"/>
         <source>Clear all settings</source>
-        <translation type="unfinished"/>
+        <translation>Tüm ayarları temizle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="312"/>
+        <location filename="../qt-ui/preferences.ui" line="322"/>
         <source>Reset all settings to their default value</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan değerler için tüm ayarları sıfırlayın</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="341"/>
+        <location filename="../qt-ui/preferences.ui" line="351"/>
         <source>System</source>
         <translation>Sistem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="348"/>
+        <location filename="../qt-ui/preferences.ui" line="358"/>
         <source>Metric</source>
         <translation>Metrik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="358"/>
-        <source>Imperial</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/preferences.ui" line="368"/>
+        <source>Imperial</source>
+        <translation>Emperyal</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="378"/>
         <source>Personalize</source>
-        <translation type="unfinished"/>
+        <translation>Kişisel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="392"/>
+        <location filename="../qt-ui/preferences.ui" line="402"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/preferences.ui" line="399"/>
-        <source>meter</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="409"/>
-        <source>feet</source>
-        <translation type="unfinished"/>
+        <source>meter</source>
+        <translation>metre</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="426"/>
-        <source>bar</source>
-        <translation type="unfinished"/>
+        <location filename="../qt-ui/preferences.ui" line="419"/>
+        <source>feet</source>
+        <translation>fit</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="436"/>
-        <source>psi</source>
-        <translation type="unfinished"/>
+        <source>bar</source>
+        <translation>bar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="453"/>
-        <source>liter</source>
-        <translation type="unfinished"/>
+        <location filename="../qt-ui/preferences.ui" line="446"/>
+        <source>psi</source>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="463"/>
+        <source>liter</source>
+        <translation>litre</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="473"/>
         <source>cu ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="480"/>
-        <source>celsius</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/preferences.ui" line="490"/>
-        <source>fahrenheit</source>
-        <translation type="unfinished"/>
+        <source>celsius</source>
+        <translation>santigrat</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="507"/>
+        <location filename="../qt-ui/preferences.ui" line="500"/>
+        <source>fahrenheit</source>
+        <translation>fahrenhayt</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="517"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="772"/>
+        <location filename="../qt-ui/preferences.ui" line="782"/>
         <source>System default</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan sistem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="811"/>
+        <location filename="../qt-ui/preferences.ui" line="821"/>
         <source>Proxy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="817"/>
+        <location filename="../qt-ui/preferences.ui" line="827"/>
         <source>Proxy type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="830"/>
+        <location filename="../qt-ui/preferences.ui" line="840"/>
         <source>Host</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="856"/>
+        <location filename="../qt-ui/preferences.ui" line="866"/>
         <source>Port</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="882"/>
+        <location filename="../qt-ui/preferences.ui" line="892"/>
         <source>Requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik doğrulaması gerektirir</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="902"/>
+        <location filename="../qt-ui/preferences.ui" line="912"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="925"/>
+        <location filename="../qt-ui/preferences.ui" line="935"/>
         <source>Password</source>
         <translation>Parola</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="792"/>
+        <location filename="../qt-ui/preferences.ui" line="802"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="419"/>
+        <location filename="../qt-ui/preferences.ui" line="429"/>
         <source>Pressure</source>
         <translation>Basınç</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="151"/>
         <source>Lists and tables</source>
-        <translation type="unfinished"/>
+        <translation>Liste ve tablolar</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="186"/>
         <source>Default dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan dalış kayıt dosyası</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="207"/>
+        <location filename="../qt-ui/preferences.ui" line="217"/>
         <source>Display invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="224"/>
+        <location filename="../qt-ui/preferences.ui" line="234"/>
         <source>Default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan tüp</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="230"/>
+        <location filename="../qt-ui/preferences.ui" line="240"/>
         <source>Use default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan tüpü kullan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="280"/>
+        <location filename="../qt-ui/preferences.ui" line="290"/>
         <source>Subsurface web service</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/preferences.ui" line="286"/>
-        <source>Default user ID</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface web hizmeti</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="296"/>
+        <source>Default user ID</source>
+        <translation>Varsayılan kullanıcı kimliği</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.ui" line="306"/>
         <source>Save user ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Yerel kullanıcı kimliği kaydedilsin mi ?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="446"/>
+        <location filename="../qt-ui/preferences.ui" line="456"/>
         <source>Volume</source>
-        <translation type="unfinished"/>
+        <translation>Hacim</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="473"/>
+        <location filename="../qt-ui/preferences.ui" line="483"/>
         <source>Temperature</source>
         <translation>Sıcaklık</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="500"/>
+        <location filename="../qt-ui/preferences.ui" line="510"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlık</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="517"/>
+        <location filename="../qt-ui/preferences.ui" line="527"/>
         <source>lbs</source>
-        <translation type="unfinished"/>
+        <translation>libre</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="532"/>
+        <location filename="../qt-ui/preferences.ui" line="542"/>
         <source>Time units</source>
-        <translation type="unfinished"/>
+        <translation>Zaman birimleri</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="545"/>
+        <location filename="../qt-ui/preferences.ui" line="555"/>
         <source>Minutes</source>
         <translation>Dakika</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="555"/>
+        <location filename="../qt-ui/preferences.ui" line="565"/>
         <source>Seconds</source>
         <translation>Saniye</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="587"/>
+        <location filename="../qt-ui/preferences.ui" line="597"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="756"/>
+        <location filename="../qt-ui/preferences.ui" line="766"/>
         <source>GFLow at max depth</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlikte EFDüşük</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="716"/>
+        <location filename="../qt-ui/preferences.ui" line="726"/>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>Çeşitli</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="14"/>
@@ -2173,54 +2210,54 @@ p, li { white-space: pre-wrap; }
         <translation>Tercihler</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="538"/>
+        <location filename="../qt-ui/preferences.ui" line="548"/>
         <source>Ascent/descent speed denominator</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="598"/>
+        <location filename="../qt-ui/preferences.ui" line="608"/>
         <source>Threshold when showing pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="619"/>
+        <location filename="../qt-ui/preferences.ui" line="629"/>
         <source>Threshold when showing pN₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="640"/>
+        <location filename="../qt-ui/preferences.ui" line="650"/>
         <source>Threshold when showing pHe</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="661"/>
+        <location filename="../qt-ui/preferences.ui" line="671"/>
         <source>Max pO₂ when showing MOD</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="682"/>
+        <location filename="../qt-ui/preferences.ui" line="692"/>
         <source>Draw dive computer reported ceiling red</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="693"/>
+        <location filename="../qt-ui/preferences.ui" line="703"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Ekipman sekmesinde kullanılmayan tüpleri göster</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="704"/>
+        <location filename="../qt-ui/preferences.ui" line="714"/>
         <source>Show average depth</source>
-        <translation type="unfinished"/>
+        <translation>Ortalama derinliği göster</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="722"/>
+        <location filename="../qt-ui/preferences.ui" line="732"/>
         <source>GFLow</source>
-        <translation type="unfinished"/>
+        <translation>EFDüşük</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="739"/>
+        <location filename="../qt-ui/preferences.ui" line="749"/>
         <source>GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>EFYüksek</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="23"/>
@@ -2243,34 +2280,34 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="245"/>
+        <location filename="../qt-ui/preferences.cpp" line="247"/>
         <source>Restart required</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden başlatma gerekli</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="246"/>
+        <location filename="../qt-ui/preferences.cpp" line="248"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface yeni bir dil yüklemek için yeniden başlatmanız gerekir.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="395"/>
+        <location filename="../qt-ui/preferences.cpp" line="398"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="381"/>
+        <location filename="../qt-ui/preferences.cpp" line="384"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML dosyaları (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="381"/>
+        <location filename="../qt-ui/preferences.cpp" line="384"/>
         <source>Open default log file</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan kayıt dosyasını aç</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="394"/>
+        <location filename="../qt-ui/preferences.cpp" line="397"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2333,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="27"/>
         <source>Dive#</source>
-        <translation type="unfinished"/>
+        <translation>Dalış#</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="28"/>
@@ -2306,7 +2343,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="29"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="30"/>
@@ -2334,12 +2371,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="23"/>
         <source>Print options</source>
-        <translation type="unfinished"/>
+        <translation>Yazdırma seçenekleri</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>Print only selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Sadece seçili dalışları yazdır</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="60"/>
@@ -2349,64 +2386,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="86"/>
         <source>Print type</source>
-        <translation type="unfinished"/>
+        <translation>Baskı türü</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="116"/>
         <source>6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>Sayfa başına 6 dalış</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="132"/>
         <source>2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>Sayfa başına 2 dalış</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="145"/>
+        <source>1 dive per page</source>
+        <translation>Sayfa başına 1 dalış</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="158"/>
         <source>Table print</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="162"/>
+        <location filename="../qt-ui/printoptions.ui" line="175"/>
         <source>Ordering</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="180"/>
+        <location filename="../qt-ui/printoptions.ui" line="193"/>
         <source>Profile on top</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="202"/>
+        <location filename="../qt-ui/printoptions.ui" line="215"/>
         <source>Notes on top</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="219"/>
-        <source>Sizing heights (% of layout)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="256"/>
-        <source>Profile height (43% - 85%)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="278"/>
-        <source>Other data height (8% - 17%)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="338"/>
-        <source>Notes height (0% - 52%)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="354"/>
-        <location filename="../qt-ui/printoptions.ui" line="370"/>
-        <location filename="../qt-ui/printoptions.ui" line="386"/>
-        <source>0</source>
-        <translation>0</translation>
     </message>
 </context>
 <context>
@@ -2419,27 +2434,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1906"/>
         <source>Dive #%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>Dalış #%1 - %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1909"/>
         <source>Max depth: %1 %2</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlik: %1 %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1916"/>
         <source>Duration: %1 min</source>
-        <translation type="unfinished"/>
+        <translation>Süre: %1 dak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1921"/>
         <source>Gas used:</source>
-        <translation type="unfinished"/>
+        <translation>Gaz kullanımı:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Etiketler:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
@@ -2449,17 +2464,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1927"/>
         <source>Weights:</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlıklar:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1932"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Notlar:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1939"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Divemaster(Dalış lideri):</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1941"/>
@@ -2479,85 +2494,90 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1947"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Değerlendirme:</translation>
     </message>
 </context>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="520"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="515"/>
         <source> (#%1 of %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="898"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="895"/>
         <source>Make first divecomputer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="900"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="897"/>
         <source>Delete this divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>Dalış bilgisayarı sil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="907"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="904"/>
         <source>Add gas change</source>
-        <translation type="unfinished"/>
+        <translation>Gaz değişimi ekle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="918"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="915"/>
         <source>Add bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Yerimi ekle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="922"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="919"/>
         <source>Remove event</source>
-        <translation type="unfinished"/>
+        <translation>OLay kaldır</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="927"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="924"/>
         <source>Hide similar events</source>
-        <translation type="unfinished"/>
+        <translation>Benzer olayları gizle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="933"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="930"/>
         <source>Edit name</source>
-        <translation type="unfinished"/>
+        <translation>İsmi düzenle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="947"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="944"/>
         <source>Unhide all events</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="981"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="978"/>
         <source>Hide events</source>
-        <translation type="unfinished"/>
+        <translation>Olayları gizle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="981"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="978"/>
         <source>Hide all %1 events?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1016"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1013"/>
         <source>Remove the selected event?</source>
-        <translation type="unfinished"/>
+        <translation>Seçili olayları kaldırılsın mı ?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1017"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1014"/>
         <source>%1 @ %2:%3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1085"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1082"/>
         <source>Edit name of bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Yeriminde ismi düzenle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1086"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1083"/>
         <source>Custom name:</source>
-        <translation type="unfinished"/>
+        <translation>Özel isim:</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1088"/>
+        <source>Name is too long!</source>
+        <translation>İsim çok uzun!</translation>
     </message>
 </context>
 <context>
@@ -2565,12 +2585,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="39"/>
         <source>AIR</source>
-        <translation type="unfinished"/>
+        <translation>HAVA</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="212"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="213"/>
         <source>Remove this point</source>
-        <translation type="unfinished"/>
+        <translation>Bu noktayı kaldır</translation>
     </message>
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="58"/>
@@ -2605,12 +2625,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="473"/>
         <source>lbs</source>
-        <translation type="unfinished"/>
+        <translation>libre</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="497"/>
         <source>ft</source>
-        <translation type="unfinished"/>
+        <translation>fit</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="498"/>
@@ -2620,12 +2640,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="521"/>
         <source>psi</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="522"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="546"/>
@@ -2635,25 +2655,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="547"/>
         <source>cuft</source>
-        <translation type="unfinished"/>
+        <translation>fitküp</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="520"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
         <source>Invalid response from server</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan geçersiz yanıt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="528"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="529"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="574"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="575"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="581"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2663,18 +2683,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/renumber.ui" line="17"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden numarala</translation>
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
         <location filename="../qt-ui/simplewidgets.cpp" line="128"/>
         <source>New starting number</source>
-        <translation type="unfinished"/>
+        <translation>Yeni başlama numarası</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="126"/>
         <source>New number</source>
-        <translation type="unfinished"/>
+        <translation>Yeni numara</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2715,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="95"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>s:dd</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="23"/>
@@ -2735,12 +2755,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="224"/>
         <source>Open image file</source>
-        <translation type="unfinished"/>
+        <translation>Görüntü dosyası aç</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="226"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation type="unfinished"/>
+        <translation>Görüntü dosyaları (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
 </context>
 <context>
@@ -2763,18 +2783,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="79"/>
         <source>Current time:</source>
-        <translation type="unfinished"/>
+        <translation>Mevcut zaman:</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="86"/>
         <location filename="../qt-ui/shifttimes.ui" line="93"/>
         <source>0:0</source>
-        <translation type="unfinished"/>
+        <translation>0:0</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="126"/>
         <source>h:mm</source>
-        <translation type="unfinished"/>
+        <translation>s:dd</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="136"/>
@@ -2818,44 +2838,49 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="337"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="338"/>
         <source>Webservice</source>
-        <translation type="unfinished"/>
+        <translation>Webservisi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="400"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="401"/>
         <source>Connecting...</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanıyor...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="419"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="420"/>
         <source>Download finished</source>
-        <translation type="unfinished"/>
+        <translation>İndirme bitti</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="433"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="434"/>
         <source>Download error: %1</source>
-        <translation type="unfinished"/>
+        <translation>İndirme hatası: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="443"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="444"/>
         <source>Connection error: </source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı hatası: </translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="452"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
         <source>Download successful</source>
-        <translation type="unfinished"/>
+        <translation>İndirme başarılı</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="446"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="447"/>
         <source>Invalid user identifier!</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz kullanıcı tanımlayıcı!</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="449"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="321"/>
+        <source>Enter User ID and click Download</source>
+        <translation>Kullanıcı kimliğini gir ve indir tıkla</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
         <source>Cannot parse response!</source>
-        <translation type="unfinished"/>
+        <translation>Yanıt ayrıştırılamaz!</translation>
     </message>
 </context>
 <context>
@@ -2863,7 +2888,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/tableview.cpp" line="23"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Tüp ekle</translation>
     </message>
 </context>
 <context>
@@ -2871,7 +2896,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="863"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlama</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="863"/>
@@ -2881,7 +2906,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="863"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>
@@ -2889,50 +2914,50 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/divetooltipitem.cpp" line="129"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Bilgilendirme</translation>
     </message>
 </context>
 <context>
     <name>UpdateManager</name>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="35"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="33"/>
         <source>Check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Güncellemeler için denetle</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="36"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="34"/>
         <source>Subsurface was unable to check for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface güncellemeleri kontrol edemedi.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="41"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="39"/>
         <source>The following error occurred:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="42"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="40"/>
         <source>Please check your internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen internet bağlantınızı kontrol edin.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/updatemanager.cpp" line="49"/>
+        <source>You are using the latest version of subsurface.</source>
+        <translation>Subsurface programının son sürümünü kullanıyorsunuz.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="51"/>
-        <source>You are using the latest version of subsurface.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="53"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="56"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="54"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Subsurface yeni bir sürümü mevcut.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="59"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>Güncellemeleri kontrol etmeye çalışırken bir hata oluştu.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -2940,13 +2965,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="55"/>
         <source>User Manual</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı Rehberi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usermanual.cpp" line="70"/>
-        <location filename="../qt-ui/usermanual.cpp" line="76"/>
+        <location filename="../qt-ui/usermanual.cpp" line="72"/>
+        <location filename="../qt-ui/usermanual.cpp" line="78"/>
         <source>Cannot find the Subsurface manual</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface kılavuzu bulunamadı</translation>
     </message>
 </context>
 <context>
@@ -2959,12 +2984,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User Survey</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı Anketi</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="25"/>
         <source>Subsurface user survey</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface kullanıcı anketi</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="52"/>
@@ -2974,7 +2999,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="45"/>
         <source>Technical diver</source>
-        <translation type="unfinished"/>
+        <translation>Teknik dalgıç</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="59"/>
@@ -2984,17 +3009,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="66"/>
         <source>I am downloading dives from supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Dalışları desteklenen dalış bilgisayarından indiriyorum</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="73"/>
         <source>I am importing dives from other software / sources</source>
-        <translation type="unfinished"/>
+        <translation>Dalışları diğer yazılım / kaynaklardan içeriye aktarıyorum</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="80"/>
         <source>I am manually entering dives</source>
-        <translation type="unfinished"/>
+        <translation>Dalışları el ile giriyorum</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="87"/>
@@ -3015,44 +3040,47 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/usersurvey.cpp" line="28"/>
         <source>
 Operating System: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+İşletim Sistemi: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="31"/>
         <source>
 CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+İşlemci Mimarisi: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="40"/>
         <source>
 Language: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Lisan: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="74"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="72"/>
         <source>Should we ask you later?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="75"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="73"/>
         <source>Don&apos;t ask me again</source>
-        <translation type="unfinished"/>
+        <translation>Bana tekrar sorma</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="76"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="74"/>
         <source>Ask later</source>
-        <translation type="unfinished"/>
+        <translation>Daha sonra sor</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="96"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="94"/>
         <source>Submit user survey.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="77"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="75"/>
         <source>Ask again?</source>
-        <translation type="unfinished"/>
+        <translation>Tekrar soruyorum ?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="36"/>
@@ -3061,29 +3089,29 @@ OS CPU Architecture: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="97"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="95"/>
         <source>Subsurface was unable to submit the user survey.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="102"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="100"/>
         <source>The following error occurred:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="103"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="101"/>
         <source>Please check your internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen internet bağlantınızı kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="112"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="110"/>
         <source>Survey successfully submitted.</source>
-        <translation type="unfinished"/>
+        <translation>Anket başarıyla gönderildi.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="117"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="115"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>Güncellemeleri kontrol etmeye çalışırken bir hata oluştu.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -3091,7 +3119,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="734"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlama</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="734"/>
@@ -3104,7 +3132,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Web service connection</source>
-        <translation type="unfinished"/>
+        <translation>Web servis bağlantısı</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -3114,22 +3142,22 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="32"/>
         <source>Enter your ID here</source>
-        <translation type="unfinished"/>
+        <translation>Buraya kimliğinizi girin</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="44"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>İndir</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="68"/>
         <source>User ID</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı kimliği</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save user ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Yerel kullanıcı kimliği kaydedilsin mi ?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3139,17 +3167,17 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="106"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Yükle</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="256"/>
         <source>Operation timed out</source>
-        <translation type="unfinished"/>
+        <translation>İşlem zaman aşımı</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="277"/>
         <source>Transfering data...</source>
-        <translation type="unfinished"/>
+        <translation>Veri aktarımı...</translation>
     </message>
 </context>
 <context>
@@ -3162,12 +3190,12 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="387"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlık</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="447"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation type="unfinished"/>
+        <translation>Ağırlık sistemi buraya tıklayarak kaldırılır.</translation>
     </message>
 </context>
 <context>
@@ -3176,7 +3204,8 @@ OS CPU Architecture: %1</source>
         <location filename="../qt-ui/models.cpp" line="1647"/>
         <source>Year 
  &gt; Month / Trip</source>
-        <translation type="unfinished"/>
+        <translation>Yıl 
+ &gt; Ay / Seyahat</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1650"/>
@@ -3187,7 +3216,8 @@ OS CPU Architecture: %1</source>
         <location filename="../qt-ui/models.cpp" line="1653"/>
         <source>Duration 
  Total</source>
-        <translation type="unfinished"/>
+        <translation>Süre 
+ Toplam</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1656"/>
@@ -3200,19 +3230,22 @@ Ortalama</translation>
         <location filename="../qt-ui/models.cpp" line="1659"/>
         <source>
 Shortest</source>
-        <translation type="unfinished"/>
+        <translation>
+Kısa</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1662"/>
         <source>
 Longest</source>
-        <translation type="unfinished"/>
+        <translation>
+Uzun</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1665"/>
         <source>Depth (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik (%1)
+ Ortalama</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1668"/>
@@ -3242,126 +3275,127 @@ Azami</translation>
         <location filename="../qt-ui/models.cpp" line="1683"/>
         <source>Temp. (%1)
  Average</source>
-        <translation type="unfinished"/>
+        <translation>Sıcaklık (%1)
+Ortalama</translation>
     </message>
 </context>
 <context>
     <name>gettextFromC</name>
     <message>
-        <location filename="../dive.c" line="123"/>
-        <source>pascal</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../dive.c" line="128"/>
-        <location filename="../qt-gui.cpp" line="323"/>
+        <source>pascal</source>
+        <translation>paskal</translation>
+    </message>
+    <message>
+        <location filename="../dive.c" line="133"/>
+        <location filename="../qt-gui.cpp" line="329"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="132"/>
-        <location filename="../qt-gui.cpp" line="326"/>
+        <location filename="../dive.c" line="137"/>
+        <location filename="../qt-gui.cpp" line="332"/>
         <source>psi</source>
-        <translation type="unfinished"/>
+        <translation>psi</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="174"/>
+        <location filename="../dive.c" line="179"/>
         <source>cuft</source>
-        <translation type="unfinished"/>
+        <translation>fitküp</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="203"/>
-        <location filename="../qt-gui.cpp" line="205"/>
-        <location filename="../qt-gui.cpp" line="220"/>
+        <location filename="../dive.c" line="208"/>
+        <location filename="../qt-gui.cpp" line="211"/>
+        <location filename="../qt-gui.cpp" line="226"/>
         <location filename="../worldmap-save.c" line="44"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="208"/>
-        <location filename="../qt-gui.cpp" line="208"/>
-        <location filename="../qt-gui.cpp" line="222"/>
+        <location filename="../dive.c" line="213"/>
+        <location filename="../qt-gui.cpp" line="214"/>
+        <location filename="../qt-gui.cpp" line="228"/>
         <source>ft</source>
-        <translation type="unfinished"/>
+        <translation>fit</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="231"/>
+        <location filename="../dive.c" line="236"/>
         <source>m/min</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../dive.c" line="233"/>
-        <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/dak</translation>
     </message>
     <message>
         <location filename="../dive.c" line="238"/>
+        <source>m/s</source>
+        <translation>m/san</translation>
+    </message>
+    <message>
+        <location filename="../dive.c" line="243"/>
         <source>ft/min</source>
-        <translation type="unfinished"/>
+        <translation>fit/dak</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="240"/>
+        <location filename="../dive.c" line="245"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>fit/san</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="259"/>
-        <location filename="../qt-gui.cpp" line="231"/>
-        <location filename="../qt-gui.cpp" line="241"/>
+        <location filename="../dive.c" line="264"/>
+        <location filename="../qt-gui.cpp" line="237"/>
+        <location filename="../qt-gui.cpp" line="247"/>
         <source>lbs</source>
-        <translation type="unfinished"/>
+        <translation>libre</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="263"/>
-        <location filename="../qt-gui.cpp" line="229"/>
-        <location filename="../qt-gui.cpp" line="239"/>
+        <location filename="../dive.c" line="268"/>
+        <location filename="../qt-gui.cpp" line="235"/>
+        <location filename="../qt-gui.cpp" line="245"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1279"/>
+        <location filename="../dive.c" line="1284"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) veya (%s)</translation>
     </message>
     <message>
-        <location filename="../divelist.c" line="467"/>
-        <location filename="../equipment.c" line="104"/>
-        <location filename="../planner.c" line="986"/>
-        <location filename="../planner.c" line="989"/>
+        <location filename="../divelist.c" line="460"/>
+        <location filename="../equipment.c" line="79"/>
+        <location filename="../planner.c" line="988"/>
+        <location filename="../planner.c" line="991"/>
         <location filename="../statistics.c" line="355"/>
         <source>air</source>
-        <translation type="unfinished"/>
+        <translation>hava</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="210"/>
+        <location filename="../equipment.c" line="185"/>
         <source>integrated</source>
-        <translation type="unfinished"/>
+        <translation>entegre</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="211"/>
+        <location filename="../equipment.c" line="186"/>
         <source>belt</source>
-        <translation type="unfinished"/>
+        <translation>kemer</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="212"/>
+        <location filename="../equipment.c" line="187"/>
         <source>ankle</source>
-        <translation type="unfinished"/>
+        <translation>ayak bileği</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="213"/>
+        <location filename="../equipment.c" line="188"/>
         <source>backplate weight</source>
-        <translation type="unfinished"/>
+        <translation>arka plaka ağırlığı</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="214"/>
+        <location filename="../equipment.c" line="189"/>
         <source>clip-on</source>
-        <translation type="unfinished"/>
+        <translation>klipsli</translation>
     </message>
     <message>
         <location filename="../file.c" line="106"/>
         <location filename="../file.c" line="369"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%s&apos; okunamadı</translation>
     </message>
     <message>
         <location filename="../file.c" line="409"/>
@@ -3372,7 +3406,7 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>none</source>
-        <translation type="unfinished"/>
+        <translation>hiçbiri</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
@@ -3382,22 +3416,22 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>rbt</source>
-        <translation type="unfinished"/>
+        <translation>kdz</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>ascent</source>
-        <translation type="unfinished"/>
+        <translation>çıkış</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>ceiling</source>
-        <translation type="unfinished"/>
+        <translation>tavan</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="144"/>
         <source>workload</source>
-        <translation type="unfinished"/>
+        <translation>iş yükü</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
@@ -3412,33 +3446,33 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
         <source>bookmark</source>
-        <translation type="unfinished"/>
+        <translation>yerimi</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
         <source>surface</source>
-        <translation type="unfinished"/>
+        <translation>yüzey</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="145"/>
         <source>safety stop</source>
-        <translation type="unfinished"/>
+        <translation>güvenlik durağı</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="146"/>
         <location filename="../libdivecomputer.c" line="149"/>
         <source>gaschange</source>
-        <translation type="unfinished"/>
+        <translation>gazdeğişimi</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="146"/>
         <source>safety stop (voluntary)</source>
-        <translation type="unfinished"/>
+        <translation>güvenlik durağı (gönüllü)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="146"/>
         <source>safety stop (mandatory)</source>
-        <translation type="unfinished"/>
+        <translation>güvenlik durağı (zorunlu)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="147"/>
@@ -3448,12 +3482,12 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="147"/>
         <source>ceiling (safety stop)</source>
-        <translation type="unfinished"/>
+        <translation>Tavan (güvenlik durağı)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="147"/>
         <source>divetime</source>
-        <translation type="unfinished"/>
+        <translation>dalış zamanı</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="147"/>
@@ -3464,12 +3498,12 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="148"/>
         <source>maxdepth</source>
-        <translation type="unfinished"/>
+        <translation>azamiderinlik</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="148"/>
         <source>OLF</source>
-        <translation type="unfinished"/>
+        <translation>OLB</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="148"/>
@@ -3484,7 +3518,7 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="148"/>
         <source>rgbm</source>
-        <translation type="unfinished"/>
+        <translation>igbm</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="148"/>
@@ -3494,7 +3528,7 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="149"/>
         <source>tissue level warning</source>
-        <translation type="unfinished"/>
+        <translation>doku seviye uyarısı</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="149"/>
@@ -3504,7 +3538,7 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="166"/>
         <source>invalid event number</source>
-        <translation type="unfinished"/>
+        <translation>geçersiz olay numarası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="408"/>
@@ -3514,12 +3548,12 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="414"/>
         <source>Error registering the data</source>
-        <translation type="unfinished"/>
+        <translation>Veri kaydedilirken hata</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="422"/>
         <source>Error parsing the datetime</source>
-        <translation type="unfinished"/>
+        <translation>Tarih saat ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="438"/>
@@ -3529,52 +3563,52 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="443"/>
         <source>Error parsing the divetime</source>
-        <translation type="unfinished"/>
+        <translation>Dalış zamanı ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="452"/>
         <source>Error parsing the maxdepth</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlik ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="461"/>
         <source>Error parsing the gas mix count</source>
-        <translation type="unfinished"/>
+        <translation>Gaz karışım sayısını ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="473"/>
         <source>Error obtaining water salinity</source>
-        <translation type="unfinished"/>
+        <translation>Su tuzluluğu edinme hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="481"/>
         <source>Error obtaining surface pressure</source>
-        <translation type="unfinished"/>
+        <translation>Yüzey basıncı edinme hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="489"/>
         <source>Error parsing the gas mix</source>
-        <translation type="unfinished"/>
+        <translation>Gaz karışımı ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="496"/>
         <source>Error parsing the samples</source>
-        <translation type="unfinished"/>
+        <translation>Örnekleri ayrıştırma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="626"/>
         <source>Event: waiting for user action</source>
-        <translation type="unfinished"/>
+        <translation>Olay: kullanıcı eylemi bekleniyor</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="634"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation type="unfinished"/>
+        <translation>model=%u (0x%08x), firmware=%u (0x%08x), seri=%u (0x%08x)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="694"/>
         <source>Error registering the event handler.</source>
-        <translation type="unfinished"/>
+        <translation>Olay işleyicisi kayıt hatası.</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="699"/>
@@ -3584,7 +3618,7 @@ Azami</translation>
     <message>
         <location filename="../libdivecomputer.c" line="720"/>
         <source>Dive data import error</source>
-        <translation type="unfinished"/>
+        <translation>Dalış verisi içe aktarma hatası</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="759"/>
@@ -3623,14 +3657,16 @@ Azami</translation>
         <location filename="../file.c" line="166"/>
         <source>Database connection failed '%s'.
 </source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı bağlantı başarısız &apos;%s&apos;.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1954"/>
         <location filename="../parse-xml.c" line="2101"/>
         <source>Database query failed '%s'.
 </source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı sorgusu başarısız &apos;%s&apos;.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2065"/>
@@ -3656,131 +3692,130 @@ Azami</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../equipment.c" line="106"/>
+        <location filename="../equipment.c" line="81"/>
         <source>EAN%d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="159"/>
-        <location filename="../planner.c" line="761"/>
+        <location filename="../planner.c" line="763"/>
         <source>Can&apos;t find gas %s</source>
-        <translation type="unfinished"/>
+        <translation>%s gaz bulunamıyor</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="345"/>
+        <location filename="../planner.c" line="347"/>
         <source>Too many gas mixes</source>
-        <translation type="unfinished"/>
+        <translation>Çok fazla gaz karışımı</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="526"/>
+        <location filename="../planner.c" line="528"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="535"/>
+        <location filename="../planner.c" line="537"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="538"/>
+        <location filename="../planner.c" line="540"/>
         <source>Subsurface dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface dalış planı</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="542"/>
+        <location filename="../planner.c" line="544"/>
         <source>depth</source>
-        <translation type="unfinished"/>
+        <translation>derinlik</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="545"/>
+        <location filename="../planner.c" line="547"/>
         <source>runtime</source>
-        <translation type="unfinished"/>
+        <translation>çalışma süresi</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="548"/>
+        <location filename="../planner.c" line="550"/>
         <source>duration</source>
-        <translation type="unfinished"/>
+        <translation>süre</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="551"/>
+        <location filename="../planner.c" line="553"/>
         <source>gas</source>
-        <translation type="unfinished"/>
+        <translation>gaz</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="585"/>
+        <location filename="../planner.c" line="587"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="595"/>
+        <location filename="../planner.c" line="597"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="606"/>
+        <location filename="../planner.c" line="608"/>
         <source>%3.0f%s</source>
-        <translation type="unfinished"/>
+        <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="609"/>
-        <location filename="../planner.c" line="613"/>
+        <location filename="../planner.c" line="611"/>
+        <location filename="../planner.c" line="615"/>
         <source>%3dmin</source>
-        <translation type="unfinished"/>
+        <translation>%3ddak</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="629"/>
+        <location filename="../planner.c" line="631"/>
         <source>Switch gas to %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="642"/>
-        <source>CNS</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../planner.c" line="644"/>
+        <source>CNS</source>
+        <translation>MSS</translation>
+    </message>
+    <message>
+        <location filename="../planner.c" line="646"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OZB</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="647"/>
+        <location filename="../planner.c" line="649"/>
         <source>Gas consumption:</source>
-        <translation type="unfinished"/>
+        <translation>Gaz tüketimi:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="667"/>
-        <location filename="../planner.c" line="672"/>
-        <location filename="../planner.c" line="695"/>
+        <location filename="../planner.c" line="669"/>
+        <location filename="../planner.c" line="674"/>
+        <location filename="../planner.c" line="697"/>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="668"/>
+        <location filename="../planner.c" line="670"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="673"/>
+        <location filename="../planner.c" line="675"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="675"/>
+        <location filename="../planner.c" line="677"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="677"/>
+        <location filename="../planner.c" line="679"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="692"/>
+        <location filename="../planner.c" line="694"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="990"/>
+        <location filename="../planner.c" line="992"/>
         <source>ean</source>
         <translation type="unfinished"/>
     </message>
@@ -3819,45 +3854,54 @@ D: %.1f%s
         <location filename="../profile.c" line="1268"/>
         <source>CNS: %u%%
 </source>
-        <translation type="unfinished"/>
+        <translation>MSS: %u%%
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1270"/>
         <source>pO%s: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pO%s: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1272"/>
         <source>pN%s: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pN%s: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1274"/>
         <source>pHe: %.2fbar
 </source>
-        <translation type="unfinished"/>
+        <translation>pHe: %.2fbar
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1277"/>
         <source>MOD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>MOD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1284"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EHD: %d%s
+EHYD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1288"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EHYD: %d%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1300"/>
@@ -3875,13 +3919,15 @@ EADD: %d%s
         <location filename="../profile.c" line="1308"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Deco: %udak @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1311"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Deco: bilinmeyen zaman @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1315"/>
@@ -3899,7 +3945,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1320"/>
         <source>TTS: %umin
 </source>
-        <translation type="unfinished"/>
+        <translation>YZ: %udak
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1323"/>
@@ -3923,7 +3970,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1336"/>
         <source>TTS: %umin (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>YZ: %udak (hesap)
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1339"/>
@@ -3984,34 +4032,34 @@ EADD: %d%s
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="281"/>
+        <location filename="../qt-gui.cpp" line="287"/>
         <source>C</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="284"/>
+        <location filename="../qt-gui.cpp" line="290"/>
         <source>F</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="417"/>
+        <location filename="../qt-gui.cpp" line="427"/>
         <source>%1 %2 (%3 dives)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="422"/>
+        <location filename="../qt-gui.cpp" line="432"/>
         <source>%1 %2 (1 dive)</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../dive.c" line="19"/>
         <source>boat</source>
-        <translation type="unfinished"/>
+        <translation>tekne</translation>
     </message>
     <message>
         <location filename="../dive.c" line="19"/>
         <source>shore</source>
-        <translation type="unfinished"/>
+        <translation>sahil</translation>
     </message>
     <message>
         <location filename="../dive.c" line="19"/>
@@ -4031,12 +4079,12 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="20"/>
         <source>ice</source>
-        <translation type="unfinished"/>
+        <translation>buz</translation>
     </message>
     <message>
         <location filename="../dive.c" line="21"/>
         <source>wreck</source>
-        <translation type="unfinished"/>
+        <translation>enkaz</translation>
     </message>
     <message>
         <location filename="../dive.c" line="21"/>
@@ -4046,22 +4094,22 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="21"/>
         <source>altitude</source>
-        <translation type="unfinished"/>
+        <translation>irtifa</translation>
     </message>
     <message>
         <location filename="../dive.c" line="22"/>
         <source>pool</source>
-        <translation type="unfinished"/>
+        <translation>gölet</translation>
     </message>
     <message>
         <location filename="../dive.c" line="22"/>
         <source>lake</source>
-        <translation type="unfinished"/>
+        <translation>göl</translation>
     </message>
     <message>
         <location filename="../dive.c" line="22"/>
         <source>river</source>
-        <translation type="unfinished"/>
+        <translation>nehir</translation>
     </message>
     <message>
         <location filename="../dive.c" line="23"/>
@@ -4076,170 +4124,170 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="23"/>
         <source>student</source>
-        <translation type="unfinished"/>
+        <translation>stajer</translation>
     </message>
     <message>
         <location filename="../dive.c" line="24"/>
         <source>photo</source>
-        <translation type="unfinished"/>
+        <translation>fotoğraf</translation>
     </message>
     <message>
         <location filename="../dive.c" line="24"/>
         <source>video</source>
-        <translation type="unfinished"/>
+        <translation>video</translation>
     </message>
     <message>
         <location filename="../dive.c" line="24"/>
         <source>instructor</source>
-        <translation type="unfinished"/>
+        <translation>Eğitmen</translation>
     </message>
     <message>
         <location filename="../dive.c" line="25"/>
         <source>deco</source>
-        <translation type="unfinished"/>
+        <translation>deco</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="169"/>
+        <location filename="../dive.c" line="174"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="214"/>
         <source>more than %d days</source>
-        <translation type="unfinished"/>
+        <translation>%d günden fazla</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="220"/>
         <source>%dd %dh %dmin</source>
-        <translation type="unfinished"/>
+        <translation>%dg %ds %ddak</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="222"/>
         <source>%dh %dmin</source>
-        <translation type="unfinished"/>
+        <translation>%ds %ddak</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="234"/>
         <source>for dives #</source>
-        <translation type="unfinished"/>
+        <translation>dalışlar için #</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="240"/>
         <source>for selected dives</source>
-        <translation type="unfinished"/>
+        <translation>seçilen dalışlar için</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="275"/>
         <source>for dive #%d</source>
-        <translation type="unfinished"/>
+        <translation>dalış için #%d</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="277"/>
         <source>for selected dive</source>
-        <translation type="unfinished"/>
+        <translation>seçili dalışlar için</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="279"/>
         <source>for all dives</source>
-        <translation type="unfinished"/>
+        <translation>tüm dalışlar için</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="281"/>
         <source>(no dives)</source>
-        <translation type="unfinished"/>
+        <translation>(dalış yok)</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Sun</source>
         <translation>Pazar</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Mon</source>
         <translation>Pazartesi</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Tue</source>
         <translation>Salı</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Wed</source>
         <translation>Çarşamba</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Thu</source>
         <translation>Perşembe</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Fri</source>
         <translation>Cuma</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="77"/>
+        <location filename="../subsurfacestartup.c" line="79"/>
         <source>Sat</source>
         <translation>Cumartesi</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>Jan</source>
         <translation>Ocak</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>Feb</source>
         <translation>Şubat</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>Mar</source>
         <translation>Mart</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>Apr</source>
         <translation>Nisan</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>May</source>
         <translation>Mayıs</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="86"/>
+        <location filename="../subsurfacestartup.c" line="88"/>
         <source>Jun</source>
         <translation>Haziran</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Jul</source>
         <translation>Temmuz</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Aug</source>
         <translation>Ağustos</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Sep</source>
         <translation>Eylül</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Oct</source>
         <translation>Ekim</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Nov</source>
         <translation>Kasım</translation>
     </message>
     <message>
-        <location filename="../subsurfacestartup.c" line="87"/>
+        <location filename="../subsurfacestartup.c" line="89"/>
         <source>Dec</source>
         <translation>Aralık</translation>
     </message>
@@ -4271,7 +4319,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="383"/>
         <source>Reading %s %s</source>
-        <translation type="unfinished"/>
+        <translation>%s %s okunuyor</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="403"/>
@@ -4296,12 +4344,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="622"/>
         <source>wetsuit</source>
-        <translation type="unfinished"/>
+        <translation>dalış kıyafeti</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="622"/>
         <source>semidry</source>
-        <translation type="unfinished"/>
+        <translation>yarı kuru</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="622"/>
@@ -4326,7 +4374,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="623"/>
         <source>jacket</source>
-        <translation type="unfinished"/>
+        <translation>ceket</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="623"/>
@@ -4356,7 +4404,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis-downloader.c" line="836"/>
         <source>Start download</source>
-        <translation type="unfinished"/>
+        <translation>İndirmeyi başlat</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="196"/>
@@ -4366,12 +4414,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="198"/>
         <source>Speed Alarm</source>
-        <translation type="unfinished"/>
+        <translation>Hız Alarmı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>
         <source>Speed Warning</source>
-        <translation type="unfinished"/>
+        <translation>Hız Uyarı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="203"/>
@@ -4391,42 +4439,42 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="212"/>
         <source>Tank Pressure Info</source>
-        <translation type="unfinished"/>
+        <translation>Tank Basınç Bilgisi</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="214"/>
         <source>RGT Warning</source>
-        <translation type="unfinished"/>
+        <translation>KGS Uyarı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="216"/>
         <source>RGT Alert</source>
-        <translation type="unfinished"/>
+        <translation>KGS Alarm</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="218"/>
         <source>Tank Change Suggested</source>
-        <translation type="unfinished"/>
+        <translation>Tank Değişimi Öneriliyor</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="220"/>
         <source>Depth Limit Exceeded</source>
-        <translation type="unfinished"/>
+        <translation>Derinlik Sınırı Aşıldı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Max Deco Time Warning</source>
-        <translation type="unfinished"/>
+        <translation>Azami Deco Zaman Uyarısı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive Time Info</source>
-        <translation type="unfinished"/>
+        <translation>Dalış Zaman Bilgisi</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>
         <source>Dive Time Alert</source>
-        <translation type="unfinished"/>
+        <translation>Dalış Zaman Alarmı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="228"/>
@@ -4436,38 +4484,38 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="230"/>
         <source>No Tank Data</source>
-        <translation type="unfinished"/>
+        <translation>Tank verisi yok</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="232"/>
         <source>Low Battery Warning</source>
-        <translation type="unfinished"/>
+        <translation>Düşük Pil Uyarısı</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="234"/>
         <source>Low Battery Alert</source>
-        <translation type="unfinished"/>
+        <translation>Düşük Pil Uyarısı</translation>
     </message>
     <message>
-        <location filename="../save-html.c" line="293"/>
+        <location filename="../save-html.c" line="296"/>
         <location filename="../worldmap-save.c" line="106"/>
         <source>Can&apos;t open file %s</source>
-        <translation type="unfinished"/>
+        <translation>%s dosyası açılamıyor</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="36"/>
         <source>Date:</source>
-        <translation type="unfinished"/>
+        <translation>Tarih:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="38"/>
         <source>Time:</source>
-        <translation type="unfinished"/>
+        <translation>Zaman:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="40"/>
         <source>Duration:</source>
-        <translation type="unfinished"/>
+        <translation>Süre:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="41"/>
@@ -4477,51 +4525,51 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max Depth:</source>
-        <translation type="unfinished"/>
+        <translation>Azami Derinlik:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Hava Sıcaklığı:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="48"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Su Sıcaklığı:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Konum:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="54"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Notlar:</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="46"/>
         <location filename="../qthelper.cpp" line="73"/>
         <source>N</source>
-        <translation type="unfinished"/>
+        <translation>K</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="46"/>
         <location filename="../qthelper.cpp" line="74"/>
         <source>S</source>
-        <translation type="unfinished"/>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="47"/>
         <location filename="../qthelper.cpp" line="75"/>
         <source>E</source>
-        <translation type="unfinished"/>
+        <translation>D</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="47"/>
         <location filename="../qthelper.cpp" line="76"/>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
 </context>
 <context>
@@ -4539,7 +4587,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="56"/>
         <source>Ascent</source>
-        <translation type="unfinished"/>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="77"/>
@@ -4553,22 +4601,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../qt-ui/plannerSettings.ui" line="135"/>
         <location filename="../qt-ui/plannerSettings.ui" line="181"/>
         <source>m/min</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="94"/>
-        <source>75%-50% avg. depth</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="111"/>
-        <source>50% avg. depth - 6m/20ft</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="128"/>
-        <source>6m/20ft to surface</source>
-        <translation type="unfinished"/>
+        <translation>m/dak</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="148"/>
@@ -4588,12 +4621,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="247"/>
         <source>GF low</source>
-        <translation type="unfinished"/>
+        <translation>EF düşük</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="264"/>
         <source>GF high</source>
-        <translation type="unfinished"/>
+        <translation>EF yüksek</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="281"/>
@@ -4602,8 +4635,8 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
-        <source>Last Stop at 6m/20ft</source>
-        <translation type="unfinished"/>
+        <source>Last stop at 6m</source>
+        <translation>6m son durak</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="295"/>
@@ -4613,7 +4646,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="318"/>
         <source>Gas options</source>
-        <translation type="unfinished"/>
+        <translation>Gaz seçenekleri</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="339"/>
@@ -4638,7 +4671,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="421"/>
         <source>Dive notes</source>
-        <translation type="unfinished"/>
+        <translation>Dalış notları</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="445"/>
@@ -4664,7 +4697,22 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../qt-ui/plannerSettings.ui" line="366"/>
         <location filename="../qt-ui/plannerSettings.ui" line="389"/>
         <source>bar</source>
+        <translation>bar</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/plannerSettings.ui" line="94"/>
+        <source>75% to 50% avg. depth</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/plannerSettings.ui" line="111"/>
+        <source>50% avg. depth to 6m</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/plannerSettings.ui" line="128"/>
+        <source>6m to surface</source>
+        <translation>yüzeye 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
