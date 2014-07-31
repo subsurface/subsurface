@@ -15,6 +15,7 @@ class UserSurvey : public QDialog {
 public:
 	explicit UserSurvey(QWidget *parent = 0);
 	~UserSurvey();
+	static QString getVersion();
 
 private
 slots:

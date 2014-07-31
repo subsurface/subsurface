@@ -43,6 +43,7 @@ protected:
 	QTimer timeout;
 	QByteArray downloadedData;
 	QString defaultApplyText;
+	QString userAgent;
 };
 
 class SubsurfaceWebServices : public WebServices {

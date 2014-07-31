@@ -1,4 +1,5 @@
 #include "updatemanager.h"
+#include "usersurvey.h"
 #include <QtNetwork>
 #include <QMessageBox>
 #include "subsurfacewebservices.h"
@@ -24,7 +25,12 @@ void UpdateManager::checkForUpdates()
 
 	QString version = VERSION_STRING;
 	QString url = QString("http://subsurface.hohndel.org/updatecheck.html?os=%1&ver=%2").arg(os, version);
-	connect(SubsurfaceWebServices::manager()->get(QNetworkRequest(QUrl(url))), SIGNAL(finished()), this, SLOT(requestReceived()));
+	QNetworkRequest request;
+	request.setUrl(url);
+	request.setRawHeader("Accept", "text/xml");
+	QString userAgent = UserSurvey::getVersion().replace("\n", " ");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
+	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()));
 }
 
 void UpdateManager::requestReceived()

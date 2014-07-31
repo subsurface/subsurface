@@ -1,6 +1,7 @@
 #include "subsurfacewebservices.h"
 #include "webservice.h"
 #include "mainwindow.h"
+#include "usersurvey.h"
 #include <libxml/parser.h>
 #include <zip.h>
 #include <errno.h>
@@ -219,6 +220,7 @@ WebServices::WebServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	timeout.setSingleShot(true);
 	defaultApplyText = ui.buttonBox->button(QDialogButtonBox::Apply)->text();
+	userAgent = UserSurvey::getVersion().replace("\n", " ");
 }
 
 void WebServices::hidePassword()
@@ -397,6 +399,7 @@ void SubsurfaceWebServices::startDownload()
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	reply = manager()->get(request);
 	ui.status->setText(tr("Connecting..."));
 	ui.progressBar->setEnabled(true);
@@ -674,6 +677,7 @@ void DivelogsDeWebServices::startUpload()
 	QNetworkRequest request;
 	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
 	request.setRawHeader("Accept", "text/xml, application/xml");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
 
 	QHttpPart part;
 	part.setRawHeader("Content-Disposition", "form-data; name=\"user\"");
@@ -705,6 +709,7 @@ void DivelogsDeWebServices::startDownload()
 	QNetworkRequest request;
 	request.setUrl(QUrl("https://divelogs.de/xml_available_dives.php"));
 	request.setRawHeader("Accept", "text/xml, application/xml");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -749,6 +754,7 @@ void DivelogsDeWebServices::listDownloadFinished()
 	QNetworkRequest request;
 	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectExport.php"));
 	request.setRawHeader("Accept", "application/zip, */*");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -923,6 +929,7 @@ QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 	QNetworkRequest request;
 	request.setUrl(QString("http://subsurface.hohndel.org/survey?%1").arg(values));
 	request.setRawHeader("Accept", "text/xml");
+	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	reply = manager()->get(request);
 	return reply;
 }

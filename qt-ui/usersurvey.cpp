@@ -14,7 +14,6 @@
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
 {
-	QString osArch, arch;
 	ui->setupUi(this);
 	this->adjustSize();
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -22,24 +21,30 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
 
-	// fill in the system data
-	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
 	os = QString("ssrfVers=%1").arg(VERSION_STRING);
-	sysInfo.append(tr("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
 	os.append(QString("&prettyOsName=%1").arg(SubsurfaceSysInfo::prettyOsName()));
-	arch = SubsurfaceSysInfo::cpuArchitecture();
-	sysInfo.append(tr("\nCPU Architecture: %1").arg(arch));
+	QString arch = SubsurfaceSysInfo::cpuArchitecture();
 	os.append(QString("&appCpuArch=%1").arg(arch));
 	if (arch == "i386") {
-		osArch = SubsurfaceSysInfo::osArch();
-		if (!osArch.isEmpty()) {
-			sysInfo.append(tr("\nOS CPU Architecture: %1").arg(osArch));
-			os.append(QString("&osCpuArch=%1").arg(osArch));
-		}
+		QString osArch = SubsurfaceSysInfo::osArch();
+		os.append(QString("&osCpuArch=%1").arg(osArch));
 	}
-	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
 	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
-	ui->system->setPlainText(sysInfo);
+	ui->system->setPlainText(getVersion());
+}
+
+QString UserSurvey::getVersion()
+{
+	QString arch;
+	// fill in the system data
+	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
+	sysInfo.append(tr("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
+	arch = SubsurfaceSysInfo::cpuArchitecture();
+	sysInfo.append(tr("\nCPU Architecture: %1").arg(arch));
+	if (arch == "i386")
+		sysInfo.append(tr("\nOS CPU Architecture: %1").arg(SubsurfaceSysInfo::osArch()));
+	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
+	return sysInfo;
 }
 
 UserSurvey::~UserSurvey()
