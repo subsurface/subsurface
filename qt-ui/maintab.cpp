@@ -664,6 +664,11 @@ void MainTab::acceptChanges()
 		currentTrip = NULL;
 		ui.dateEdit->setEnabled(true);
 	} else {
+		if (editMode == MANUALLY_ADDED_DIVE) {
+			// preserve any changes to the profile
+			free(current_dive->dc.sample);
+			copy_samples(&displayed_dive.dc, &current_dive->dc);
+		}
 		struct dive *cd = current_dive;
 		//Reset coordinates field, in case it contains garbage.
 		updateGpsCoordinates(&displayed_dive);
