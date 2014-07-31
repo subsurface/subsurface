@@ -32,9 +32,9 @@ public:
 	device_data_t *m_data;
 	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
-	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data, QString errorText);
-	bool restoreXMLBackup(QString fileName, DeviceDetails *details, QString errorText);
-	void startFirmwareUpdate(QString fileName, device_data_t *data, QString errorText);
+	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data);
+	bool restoreXMLBackup(QString fileName, DeviceDetails *details);
+	void startFirmwareUpdate(QString fileName, device_data_t *data);
 signals:
 	void message(QString msg);
 	void error(QString err);

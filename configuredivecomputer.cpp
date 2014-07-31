@@ -50,7 +50,7 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 	writeThread->start();
 }
 
-bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data, QString errorText)
+bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data)
 {
 	QString xml = "";
 	QString vendor = data->vendor;
@@ -187,7 +187,7 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeEndDocument();
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly)) {
-		errorText = tr("Could not save the backup file %1. Error Message: %2")
+		lastError = tr("Could not save the backup file %1. Error Message: %2")
 				.arg(fileName, file.errorString());
 		return false;
 	}
@@ -199,11 +199,11 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	return true;
 }
 
-bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *details, QString errorText)
+bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *details)
 {
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly)) {
-		errorText = tr("Could not open backup file: %1").arg(file.errorString());
+		lastError = tr("Could not open backup file: %1").arg(file.errorString());
 		return false;
 	}
 
@@ -401,7 +401,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 	return true;
 }
 
-void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data, QString errorText)
+void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data)
 {
 
 }

@@ -396,11 +396,10 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
 		getDeviceData();
-		QString errorText = "";
-		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data, errorText)) {
+		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data)) {
 			QMessageBox::critical(this, tr("XML Backup Error"),
 					      tr("An error occurred while saving the backup file.\n%1")
-					      .arg(errorText)
+					      .arg(config->lastError)
 					      );
 		} else {
 			QMessageBox::information(this, tr("Backup succeeded"),
@@ -420,11 +419,10 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 							   filename, tr("Backup files (*.xml)")
 							   );
 	if (!restorePath.isEmpty()) {
-		QString errorText = "";
-		if (!config->restoreXMLBackup(restorePath, deviceDetails, errorText)) {
+		if (!config->restoreXMLBackup(restorePath, deviceDetails)) {
 			QMessageBox::critical(this, tr("XML Restore Error"),
 					      tr("An error occurred while restoring the backup file.\n%1")
-					      .arg(errorText)
+					      .arg(config->lastError)
 					      );
 		} else {
 			reloadValues();
@@ -447,8 +445,7 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 							  );
 	if (!firmwarePath.isEmpty()) {
 		getDeviceData();
-		QString errText;
-		config->startFirmwareUpdate(firmwarePath, &device_data, errText);
+		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
 }
 
