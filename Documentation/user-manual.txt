@@ -1423,8 +1423,11 @@ is shown of the appropriate photo. See the image below:
 
 image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
 
-If one clicks on the thumbnail, then a full size
-photo is shown overlaid onto the _Subsurface_ window. This allows good viewing of
+Note that the thumbnail has a small dustbin icon in the top left hand corner (see above).
+If one selects the dustbin, the image is removed from the dive. Therefore some care
+is required when clicking on a thumbnail. Clicking on any other
+part of the thumbnail brings up a full size
+photo overlaid on the _Subsurface_ window. This allows good viewing of
 the photographs that have been added. See below:
 
 image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
@@ -1949,6 +1952,14 @@ files on the Dropbox servers to be seen as a local folder on one's desktop compu
 
 image::images/Cloud.jpg["FIGURE: Dropbox folder",align="center"]
 
+The _Dropbox_ program creates a copy of the _Dropbox_ Internet Cloud content on one's
+desktop computer. When the computer is connected to the Internet, the Internet
+content is automatically updated. Therefore both the _Open_ and _Save_ of dive logs are done
+using the local copy of the dive log in the local _Dropbox_ folder, so there's no need
+for a direct internet connection. If the local copy is modified, e.g. by adding a dive,
+the remote copy in the _Dropbox_ server in the Cloud will be automatically updated whenever
+Internet access is available.
+
 Currently there are no costs involved for this service. In this
 case, one can store one's dive log on _Dropbox_ in a totally seamless way: a dive log in
 one's _Dropbox_ folder can be opened and saved directly by _Subsurface_ and it can
@@ -1961,11 +1972,6 @@ navigate to the _Dropbox_ folder and select the _Save_ button. To access the div
 in the Cloud, select _File->Open Logbook_ from the _Subsurface_
 main menu and navigate to the dive log file in the _Dropbox_ folder and select the
 _Open_ button.
-Both options _Open_ and _Save_ are done on the local copy of the dive log saved
-on one's computer's folder _Dropbox_, so there's no need of direct internet
-conexion. If the local copy is modified, e.g. adding a dive, the copy in the
-_Dropbox_ server in the Cloud will be automatically updated when connecting to
-the internet.
 
 [[S_PrintDivelog]]
 == Printing a dive log
