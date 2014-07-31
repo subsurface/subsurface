@@ -147,8 +147,9 @@ be found at:
 link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
-3. Import dive information from another database or file format. This is
-discussed in more detail below.
+3. Import dive information from another database or file format. If you
+have kept your dive logs with other log software, these logs can often
+be imported to subsurface. This is discussed in more detail below.
 
 [[S_EnterData]]
 === Entering dive information by hand
