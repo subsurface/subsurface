@@ -246,6 +246,7 @@ void ConfigureDiveComputerDialog::configMessage(QString msg)
 
 void ConfigureDiveComputerDialog::configError(QString err)
 {
+	ui->statusLabel->setText("");
 	ui->errorLabel->setText(err);
 }
 
