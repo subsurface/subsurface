@@ -171,6 +171,8 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
 								tr("XML files (*.xml *.ssrf)"));
 			if (!filename.isNull() && !filename.isEmpty()) {
+				if (!filename.contains('.'))
+					filename.append(".ssrf");
 				QByteArray bt = QFile::encodeName(filename);
 				save_dives_logic(bt.data(), ui->exportSelected->isChecked());
 			}
