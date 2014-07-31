@@ -1960,10 +1960,10 @@ for a direct internet connection. If the local copy is modified, e.g. by adding 
 the remote copy in the _Dropbox_ server in the Cloud will be automatically updated whenever
 Internet access is available.
 
-Currently there are no costs involved for this service. In this
-case, one can store one's dive log on _Dropbox_ in a totally seamless way: a dive log in
-one's _Dropbox_ folder can be opened and saved directly by _Subsurface_ and it can
-be accessed from any place with Internet access. Dropbox (Windows, Mac
+In this way a dive log in
+one's _Dropbox_ folder can be accessed seamlessly from the Internet and can
+be accessed from any place with Internet access. Currently there are no costs
+involved for this service. Dropbox (Windows, Mac
 and Linux) can be installed by accessing the
 http://www.dropbox.com/install[_Install Page on the Dropbox website_]
 . Alternatively one can use _Dropbox_ as a mechanism to backup one's dive log. To
@@ -1972,6 +1972,10 @@ navigate to the _Dropbox_ folder and select the _Save_ button. To access the div
 in the Cloud, select _File->Open Logbook_ from the _Subsurface_
 main menu and navigate to the dive log file in the _Dropbox_ folder and select the
 _Open_ button.
+
+Several paid services exist on the Internet (e.g. Google, Amazon) where the same
+process could be used for the Cloud-based storage of dive logs.
+
 
 [[S_PrintDivelog]]
 == Printing a dive log
@@ -2031,9 +2035,6 @@ example of
 the output for one particular page.
 
 image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
-
-Several paid services exist on the Internet (e.g. Google, Amazon) where the same
-process could be used for the Cloud-based storage of dive logs.
 
 
 [[S_Preferences]]
