@@ -419,6 +419,13 @@ void PrintLayout::printTable()
 	for (i = 0; i < total; i++) {
 		if (i > 0)
 			printer->newPage();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+		(void)headingRowHeightD2;
+		QRegion region(0, pageIndexes.at(i) - 1,
+		               table.width(),
+		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
+		table.render(&painter, QPoint(0, 0), region);
+#else
 		QRegion region(0, pageIndexes.at(i) + headingRowHeightD2 - 1,
 		               table.width(),
 		               pageIndexes.at(i + 1) - (pageIndexes.at(i) + headingRowHeightD2) + 1);
@@ -429,6 +436,7 @@ void PrintLayout::printTable()
 		table.render(&picPainter, QPoint(0, 0), region);
 		picPainter.end();
 		painter.drawPicture(QPoint(0, headingRowHeightD2), pic);
+#endif
 		progress++;
 		emit signalProgress(done + (progress * 10) / total);
 	}
