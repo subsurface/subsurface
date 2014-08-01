@@ -372,7 +372,7 @@ QString getSubsurfaceDataPath(QString folderToFind)
 	return QString("");
 }
 
-int gettimezoneoffset(time_t when)
+int gettimezoneoffset(timestamp_t when)
 {
 	QDateTime dt1, dt2;
 	if (when == 0)
@@ -408,14 +408,14 @@ int parseTemperatureToMkelvin(const QString &text)
 QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
-	ts.setMSecsSinceEpoch(when * 1000);
+	ts.setMSecsSinceEpoch(when * 1000L);
 	return loc.toString(ts.toUTC(), dateFormat + " " + timeFormat);
 }
 
 QString get_short_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
-	ts.setMSecsSinceEpoch(when * 1000);
+	ts.setMSecsSinceEpoch(when * 1000L);
 	return loc.toString(ts.toUTC(), shortDateFormat + " " + timeFormat);
 }
 
