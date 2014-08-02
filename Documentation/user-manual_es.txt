@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Autores*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
-[BLUE]#_Versión 4.2, Julio 2014_#
+[BLUE]#_Versión 4.2, Agosto 2014_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -154,7 +154,8 @@ soportados por _Subsurface_ puede encontrarse en:
 link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[Ordenadores soportados].
 
 3. Importar información de inmersiones de otra base de datos o formato de
-archivo. Esto se comentará con más detalle más adelante.
+archivo. Si se tienen diarios guardados con otro software, a menudo podrán
+importarse a _Subsurface_.Esto se comentará con detalle más adelante.
 
 [[S_EnterData]]
 === Introducir información de buceo a mano
@@ -167,11 +168,11 @@ buceo o el dive master o el guía, y algunas anotaciones acerca de la inmersión
 _Subsurface_ puede conservar mucha más información por cada inmersión. Para
 añadir una inmersión a un registro de buceo, selecciona _Registro → Añadir
 Inmersión_ en el menú principal. El programa muestra entonces tres paneles para
-introducir información: Dos pestañas en el panel Info (Notas de la inmersión y
-Equipo), así como el panel perfil que muestra un perfil gráfico de cada buceo.
-Estos paneles estan marcados respectivamente como [red]#A#, [red]#B# y [red]#C#
-en la figura de abajo. Ahora veremos cada una de las pestañas usadas para
-introducir la información.
+introducir información: Dos pestañas en el panel *Información de la Inmersión*
+(*Notas de la inmersión* y *Equipo*), así como el panel perfil que muestra un
+perfil gráfico de cada buceo. Estos paneles estan marcados respectivamente como
+[red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
+las pestañas usadas para introducir la información.
 
 image::images/AddDive1.jpg["FIGURA: Añadir inmersión",align="center"]
 
@@ -587,7 +588,7 @@ Es posible que sea necesario distinguir entre diferentes ordenadores de buceo
 usados para cargar inmersiones en _Subsurface_. Por ejemplo, si el ordenador del
 compañero es de la misma marca y modelo que el del usuario y los diarios de
 ambos se cargan en el mismo PC con _Subsurface_, puede que se quiera llamar a
-uno "Suunto D4 de María" y al otro "Suunto D4 de Juan". Por otro lado, puede que
+uno "Suunto D4 de Alice" y al otro "Suunto D4 de Bob". Por otro lado, puede que
 un buceador técnico utilice dos o más ordenadores de buceo del mismo modelo,
 este caso podría ser prudente llamar a uno "Suunto D4 (1)" y al otro "Suunto D4
 (2)".
@@ -671,7 +672,9 @@ inmersión, separados por comas. También se ofrece autocompletado basada en la
 lista de compañeros del registro.
 
 *Traje*: Introducir el tipo de traje de buceo que utilizaste para la inmersión.
-Como en los casos anteriores está disponible el autocompletado.
+Como en los casos anteriores está disponible el autocompletado. Los usuarios de
+traje seco pueden utilizar este campo para registrar que combinación de traje y
+protección térmica utilizaron.
 
 *Valoración*: Aquí se puede proporcionar una calificación subjetiva de la
 inmersión en una escala de 5 puntos, clicando en la estrella correspondiente.
@@ -1355,6 +1358,10 @@ de la foto. Ver imagen a continuación:
 
 image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
 
+Cada imagen reducida tiene una pequeña papelera en su esquina superior
+izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
+borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
+sobre las imagenes.
 Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
 completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
 fotos que han sido importadas. Ver a continuación:
@@ -1387,7 +1394,9 @@ con los estándares "Ctrl+clic" o "Shift+clic" del ratón. Si solo se ha
 seleccionado una los cálculos se efectuarán solo para esa inmersión. Esta
 pestaña muestra el número de inmersiones seleccionadas, el tiempo total de buceo
 para estas inmersiones, así como los máximos, mínimos y medios para la duración,
-profundidad, temperatura en agua y superficie y CAS.
+profundidad, temperatura en agua y superficie y CAS. También muestra la
+profundidad máxima de las inmersiones más profunda y más superficial de las
+seleccionadas.
 
 [[S_DiveProfile]]
 === El Perfil de inmersión
@@ -1853,7 +1862,7 @@ dispondrá de información detallada de los buceos.
 en el navegador, como el tamaño de la letra o el tema aplicado.
 
 [[S_Cloud_access]]
-== _Subsurface_ en la Nube
+== Guardar un diario de _Subsurface_ en la Nube
 
 Para cualquier buceador, la información contenida en su diario es muy importante.
 No es únicamente un registro de actividades de buceo para su propio placer
@@ -1876,23 +1885,31 @@ en sus servidores.
 
 image::images/Cloud.jpg["FIGURE: Carpeta de Dropbox",align="center"]
 
-Actualmente el servicio no tiene ningún coste. Se puede guardar el diario de
-buceo en _Dropbox_ de forma muy sencilla: el diario en nuestra carpeta de
-_Dropbox_ puede ser abierto y guardado directamente por _Subsurface_ y se
-puede utilizar desde cualquier sitio con acceso a internet. Dropbox se puede
-instalar accediendo a la http://www.dropbox.com/install[_página de instalación_]
-_de Dropbox_. Como alternativa, se puede utilizar _Dropbox_ como mecanismo para
-mantener una copia de seguridad del diario.
+El programa _Dropbox_ crea una copia del contenido de _Dropbox_ en la nube, en
+una carpeta de nuestro ordenador. Cuando el ordenador se conecta a internet, el
+contenido de nuestra carpeta y la nube se sincronizan. Así pues, las operaciones
+_Abrir_ y _Guardar_ de los diarios se efectúan sobre la copia local de la carpeta
+_Dropbox_, no siendo necesario disponer de conexión a internet al realizar estas
+operaciones.  Si se modifica la copia local, p.e. al añadir una inmersión, la
+copia en el servidor _Dropbox_ en la _nube_ se actualizará automáticamente al
+volvernos a conectar a internet.
+
+Actualmente el servicio no tiene ningún coste. Dropbox (Windows, Mac y Linux)
+se puede instalar accediendo a la http://www.dropbox.com/install[_página de instalación_]
+_de Dropbox_.
+
+Como alternativa, se puede utilizar _Dropbox_ como mecanismo para mantener una
+copia de seguridad del diario.
+
 Para guardar un diario en la _nube_, selecciona _Archivo-> Guardar como_ desde
 menú principal de _Subsurface_, navega a la carpeta Dropbox y selecciona el
 botón _Guardar_.  Para usar el diario en la nube, selecciona _Archivo->Abrir
 registro_ desde el menú principal de _Subsurface_, navega al archivo en la
 carpeta Dropbox y selecciona el botón _Abrir_.
-Tanto las funciones _Abrir_ como _Guardar_ se efectuan sobre la copia guardada
-en la carpeta de nuestro ordenador, por lo que no es necesaria conexión directa
-a internet. Si se modifica la copia local, p.e. al añadir una inmersión, la
-copia en el servidor _Dropbox_ en la _nube_ se actualizará automáticamente al
-volvernos a conectar a internet.
+
+Existen varios servicios de pago en Internet (Google, Amazon ...) con los que
+se puede seguir el mismo proceso para tener los diarios de buceo almacenados en
+la nube.
 
 [[S_PrintDivelog]]
 == Imprimir un diario
@@ -2059,7 +2076,9 @@ aunque siguen estando guardadas.
 trace una línea roja a través del perfil, indicando la profundidad media del
 buceo.
 
-* *Varios*: *Factores de gradiente*: Aquí los usuarios puede fijar los _factores
+* *Varios*:
+
+** Factores de gradiente*: Aquí los usuarios puede fijar los _factores
 de gradiente_ usados en la inmersión. El GF_bajo es el factor de gradiente a
 mayores profundidades y el GF_alto se usa justo debajo de la superficie. A
 profundidades intermedias se usan factores entre GF_bajo y GF_alto. Los factores
@@ -2403,7 +2422,7 @@ inmersiones.
 - <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas de la inmersión.
 - <<S_ViewPanels,_Globo_>> - Se presenta solo el panel Mapamundi.
 _Estadísticas anuales_ - Muestra estadísticas anuales resumidas sobre las
-inmersiones efectuadas.
+inmersiones efectuadas en este año y los pasados.
 - _Anterior ordenador_ - Cambia al siguiente ordenador de buceo.
 - _Siguiente ordenador_ - Cambia al anterior ordenador de buceo.
 - _Pantalla completa_ - Activa el modo de pantalla completa.
@@ -2791,6 +2810,7 @@ archivo comprimido DiveOrganiserxxxxx.dbf
 2. Cambia el nombre del archivo a DiveOrganiserxxxxx.zip. Dentro de una carpeta
 comprimida en el archivo .zip, hay otro archivo llamado _DiveOrganiser.sdf_.
 3. Extrae a tu escritorio el archivo _.sdf_ desde la carpeta comprimida.
+4. La password para acceder al archivo .zip es _mares_.
 
 [[S_ImportingDivinglog]]
 === Exportar inmersiones desde *DivingLog 5.0*
