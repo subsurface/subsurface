@@ -1,4 +1,4 @@
-// Subsurface 4.1 User Manual
+// Subsurface 4.2 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
@@ -55,6 +55,17 @@ included with the source code.
 
 *Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
 Divers
+
+After using _Subsurface_ for a week or so, a one-box survey will pop up when
+you launch the program. The survey is entirely optional, you control what, if
+any, data is sent to the _Subsurface_ team. Any data that you choose to send
+will be very welcome, and will only be used to steer future development
+effort and direction. If you carry out the survey, or click the option not to
+be asked again, that should be the last time you'll be bothered by the pop-up,
+but if your diving and/or subsurface habbits change and you wish to provide
+another survey you can do this by launching _Subsurface_ with --survey on the
+command line.
+
 
 toc::[]
 
