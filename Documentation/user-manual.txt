@@ -184,13 +184,13 @@ the date, a calendar is displayed from which
 one can choose the correct date. Press ESC to escape from the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by overtyping the
-information displayed.
+information displayed. The default date is today and the time is set one hour to the future.
 
 *Air and water temperatures*: the air and water temperatures during the
 dive can be typed directly on the fields to the right of the Start time.
 Temperature units are not needed, as they will be automatically supplied by
 _Subsurface_. Only the numerical value must be
-typed by the user (The units selected in the 'Preferences'
+typed by the user (the units selected in the 'Preferences'
 will determine whether metric or imperial units are used).
 
 *Location*: Here the name of the dive site can be entered, e.g. "Tihany, Lake
