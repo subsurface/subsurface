@@ -970,7 +970,7 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 	}
 
 	foreach (const QString &file, newFiles) {
-		int index = files.indexOf(file);
+		int index = files.indexOf(QDir::toNativeSeparators(file));
 
 		if (index >= 0) {
 			files.removeAt(index);
@@ -979,7 +979,7 @@ void MainWindow::addRecentFile(const QStringList &newFiles)
 
 	foreach (const QString &file, newFiles) {
 		if (QFile::exists(file)) {
-			files.prepend(file);
+			files.prepend(QDir::toNativeSeparators(file));
 		}
 	}
 
