@@ -4,10 +4,6 @@
 # This installer creator needs to be run with:
 # makensis subsurface.nsi
 #
-# It assumes that packaging/windows/dll is a symlink to
-# the directory in which the required Windows DLLs are installed
-# (in my case that's /usr/i686-w64-mingw32/sys-root/mingw/bin)
-#
 
 #--------------------------------
 # Include Modern UI

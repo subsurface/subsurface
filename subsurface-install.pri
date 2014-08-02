@@ -4,10 +4,10 @@ theme.files = $$THEME_FILES
 translation.files = $$replace(TRANSLATIONS, .ts, .qm)
 exists($$[QT_INSTALL_TRANSLATIONS]) {
         qt_translation_dir = $$[QT_INSTALL_TRANSLATIONS]
-} else: exists(/usr/share/qt4/translations) {
+} else: exists(/usr/share/qt5/translations) {
 	# On some cross-compilation environments, the translations are either missing or not
 	# where they're expected to be. In such cases, try copying from the system.
-	qt_translation_dir = /usr/share/qt4/translations
+	qt_translation_dir = /usr/share/qt5/translations
 }
 
 # Prepend the Qt translation dir so we can actually find the files

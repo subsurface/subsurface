@@ -3,7 +3,12 @@ use strict;
 my %deploy;
 my $objdump = $ENV{objdump} ? $ENV{objdump} : "objdump";
 my @searchdirs;
-my @systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|^/c/windows|i, qr|^/c/winnt|);
+my @systemdirs;
+if ($ENV{PATH} =~ "x86_64") {
+	@systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|^/c/windows|i, qr|^/c/winnt|, qr|^/usr/i686|);
+} else {
+	@systemdirs = (qr|^c:/windows|i, qr|^c:/winnt|i, qr|^/c/windows|i, qr|^/c/winnt|);
+}
 
 sub addDependenciesFor($) {
 	open OBJDUMP, "-|", $objdump, "-p", $_[0] or die;
