@@ -56,18 +56,23 @@ included with the source code.
 *Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
 Divers
 
-After using _Subsurface_ for a week or so, a one-box survey will pop up when
-you launch the program. The survey is entirely optional, you control what, if
-any, data is sent to the _Subsurface_ team. Any data that you choose to send
-will be very welcome, and will only be used to steer future development
-effort and direction. If you carry out the survey, or click the option not to
-be asked again, that should be the last time you'll be bothered by the pop-up,
-but if your diving and/or subsurface habbits change and you wish to provide
-another survey you can do this by launching _Subsurface_ with --survey on the
-command line.
-
-
 toc::[]
+
+[[S_UserSurvey]]
+
+The user survey
+---------------
+In order to develop _Subsurface_ in a way that serves it users in the best possible way,
+it is important to have some information about these users. Upon launching _Subsurface_
+after using this software for a week or so, a one-box user survey pops up. It is entirely
+optional and the user controls what, if any, data are sent to the _Subsurface_ development
+team. Any data that the user chooses to send is extremely useful, and will only be
+used to steer future development and to customise the software to fit the needs of
+the _Subsurface_ users. If one completes the survey, or clicks the option not to
+be asked again, that should be the last communication of this nature one receives.
+However, if one's diving and/or subsurface habits change and one wishes to provide
+another survey, this can be done by launching _Subsurface_ with the _--survey_ option on the
+command line.
 
 [[S_StartUsing]]
 Start Using the Program
