@@ -169,12 +169,22 @@ in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
+When you click on a field in Dive notes or Equipment panels, you enter *Editing mode*.  This is
+indicated by the message in the blue box at the top of the _Dive notes_ panel. The same message is
+displayed in all the panels under Dive notes, Equipment and so forth when in editing mode.
+
+////
+Not displaying the edit bar as the Save and Cancel buttons are on reverse order when comparing to
+the full screenshot.
+
+image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
+////
+
 ==== Dive Notes
 
 This panel contains the date, time and place information for a particular dive,
 environmental conditions, co-divers and buddies, as well as some descriptive
-information. The message in a blue box at the top of the panel indicates that
-the dive is being edited. If one clicks on the *Dive Notes* tab, the following
+information. If one clicks on the *Dive Notes* tab, the following
 fields are visible:
 
 image::images/AddDive2.jpg["FIGURE: The Dive Notes tab",align="center"]
@@ -270,13 +280,7 @@ image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="
 ==== Equipment
 
 The Equipment tab allows the user to enter information about the type of
-cylinder and gas used, as well as the weights used for a dive. The message in a
-blue
-box at the top of the panel:
-
-image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
-
-indicates that the dive is being edited. This is a highly interactive part of
+cylinder and gas used, as well as the weights used for a dive. This is a highly interactive part of
 _Subsurface_ and the information on
 cylinders and gases (entered here) affects the behaviour of the dive profile
 (top right-hand panel).
