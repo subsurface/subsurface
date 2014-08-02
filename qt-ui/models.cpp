@@ -235,13 +235,13 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	case START:
-		if (CHANGED()) {
+		if (CHANGED() && (!cyl->end.mbar || string_to_pressure(vString.toUtf8().data()).mbar >= cyl->end.mbar)) {
 			cyl->start = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case END:
-		if (CHANGED()) {
+		if (CHANGED() && (!cyl->start.mbar || string_to_pressure(vString.toUtf8().data()).mbar <= cyl->start.mbar)) {
 			cyl->end = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
