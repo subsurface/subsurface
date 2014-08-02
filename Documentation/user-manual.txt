@@ -294,7 +294,9 @@ image::images/CylinderDataEntry1.jpg["FIGURE:Initial cylinder dialogue",align="c
 The + button at the top right allows the user to add more cylinders for this
 dive.
 The dark dustbin icon on the left allows one to delete information for a
-particular cylinder.
+particular cylinder. Note that it is not possible to delete a cylinder if it is used during the
+dive. One cylinder is implicitly used in the dive, even without a gas change event. Thus the first
+cylinder cannot be deleted until another cylinder is created.
 
 Start by selecting a cylinder type on the left-hand side of the
 table.  To select a cylinder, click in the *Type* box.
