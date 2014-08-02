@@ -564,7 +564,8 @@ Upload mode?
 must be charged or replaced.
 
  - Is the connecting cable faulty? Does the cable work perfectly using other
-software? Has it worked before, or is this the first time the cable is being used?
+software? Has it worked before, or is this the first time the cable is being used? Are the contacts
+on the dive computer and the cable clean?
 
  - Consult
 xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
@@ -655,8 +656,10 @@ information displayed.
 *Air/water temperatures*: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
 temperature information and this field may therefore not require further
-editing. If
-editing is required, only a value is required, the units of temperature will be
+editing. If air temperature is not provided by the dive computer, the first temperature reading
+might be used for the air temperature. Generally this is close enough to the real air temperature as
+the change in the temperature sensor reading is quite slow to follow the changes in the environment.
+If editing is required, only a value is required, the units of temperature will be
 automatically supplied by
 _Subsurface_ (according to the _Preferences_, metric or imperial units will
 be used).
@@ -664,7 +667,7 @@ be used).
 *Location*: In this field one should type in text that describes the site
 where the dive was performed, e.g. "Tihany, Lake Balaton, Hungary".
 Auto completion of location names will
-make this easier when a user frequently dives at the same sites.
+make this easier if one frequently dives at the same sites.
 
 *Coordinates*: The geographic coordinates of the dive site should be entered
 here. These can come from three sources:
@@ -761,6 +764,8 @@ In most cases _Subsurface_ obtains the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen) in the table. The + button
 at the top right allows the user to add more cylinders for this dive. The dark
 dustbin icon on the left allows the deletion of information for a cylinder.
+Note that it is not possible to delete a cylinder if it is used during the
+dive. A cylinder might be implicitly used in the dive, even without a gas change event.
 
 The user should start by selecting a cylinder type on the left-hand side of the
 table.  To select a cylinder, the *cylinder type* box should be clicked. This
@@ -869,7 +874,7 @@ user has to
 export the logbook(s) to an intermediate format so that they can then be imported
 by _Subsurface_.
 Currently, _Subsurface_ supports importing CSV log files from several sources.
-APD LogViewer, XP5 and Sensus files are
+APD LogViewer, XP5, Sensus and Seabear files are
 preconfigured, but because the import is flexible, users can configure their own
 imports.
 Manually kept log files (e.g. in spreadsheet) can also be imported by
@@ -881,6 +886,10 @@ import the logbooks first into a webservice like _divelogs.de_ and then import
 them from there with
 _Subsurface_, as divelogs.de supports a few additional logbook formats that
 _Subsurface_ currently cannot parse.
+
+If other software's log format is support natively on Subsurface, it should be sufficient to select
+the log file on the import dialog or just use open log on it. We do support e.g. the import Suunto
+Dive Manager and Shearwater SQL databases directly.
 
 When importing dives, _Subsurface_ tries to detect multiple records for
 the same dive and merges the information as best as it can. If
