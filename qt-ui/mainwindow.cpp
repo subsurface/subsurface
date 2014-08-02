@@ -394,6 +394,7 @@ void MainWindow::planCanceled()
 	showProfile();
 	refreshDisplay(false);
 	ui.newProfile->plotDive(get_dive(selected_dive));
+	DivePictureModel::instance()->updateDivePictures();
 }
 
 void MainWindow::planCreated()
@@ -453,6 +454,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
+	DivePictureModel::instance()->updateDivePictures();
 
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
 	ui.globePane->setCurrentIndex(1);

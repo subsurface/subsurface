@@ -838,6 +838,7 @@ void MainTab::rejectChanges()
 	else
 		clear_dive(&displayed_dive);
 	updateDiveInfo(selected_dive < 0);
+	DivePictureModel::instance()->updateDivePictures();
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 	MainWindow::instance()->globe()->centerOnCurrentDive();
