@@ -18,6 +18,8 @@ Documentation/user-manual.html
 Documentation/user-manual.pdf
 Documentation/user-manual.text
 Documentation/user-manual_es.html
+Documentation/user-manual_es.pdf
+Documentation/user-manual_es.text
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
 *.kdev4
