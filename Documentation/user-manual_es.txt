@@ -2404,7 +2404,7 @@ de buceo desde www.divelogs.de.
 === Registro
 - <<S_EnterData,_Añadir inmersión_>> - Añade manualmente una nueva inmersión al
 panel Lista de inmersiones.
-- <<_DivePlanner,_Planificar inmersión_>> - Esta característica permite
+- <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
 planificar inmersiones.
 - <<S_Renumber,_Renumerar_>> - Renumera las inmersiones listadas en el panel
 Lista de inmersiones.
