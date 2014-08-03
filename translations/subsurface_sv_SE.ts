@@ -423,7 +423,7 @@ radera den valda dykdatorn?</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="167"/>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="181"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="183"/>
         <source>HTML files (*.html)</source>
         <translation>HTMLfiler (*.html)</translation>
     </message>
@@ -438,7 +438,7 @@ radera den valda dykdatorn?</translation>
         <translation>XML filer (*.xml *.ssrf)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="180"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="182"/>
         <source>Export HTML files as</source>
         <translation>Exportera HTML filer son</translation>
     </message>
@@ -628,42 +628,42 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="138"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="139"/>
         <source>unknown</source>
         <translation>okänd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="637"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="638"/>
         <source>Final depth</source>
         <translation>Slutdjup</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="639"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="640"/>
         <source>Run time</source>
         <translation>Löptid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="641"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="642"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="643"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="644"/>
         <source>Used gas</source>
         <translation>Använd gas</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="645"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="646"/>
         <source>CC set point</source>
         <translation>CC set point</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="941"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="942"/>
         <source>Discard the plan?</source>
         <translation>Kassera plan?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="942"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="943"/>
         <source>You are about to discard your plan.</source>
         <translation>Du kommer kassera din plan</translation>
     </message>
@@ -671,17 +671,17 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="257"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="258"/>
         <source>Dive planner points</source>
         <translation>Dykplaneringspunkter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="261"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="262"/>
         <source>Available gases</source>
         <translation>Tillgänglig gas</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="284"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="285"/>
         <source>Add dive data point</source>
         <translation>lägg till dykdatapunkt</translation>
     </message>
@@ -830,95 +830,95 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="111"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="112"/>
         <source>no dives were selected</source>
         <translation>inga dyk var markerade</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="130"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="131"/>
         <source>failed to create zip file for upload: %s</source>
         <translation>misslyckades med att skapa zipfilen för uppladdning: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="153"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
         <source>cannot create temporary file: %s</source>
         <translation>kunde inte skapa temporär fil: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="163"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
         <source>internal error: %s</source>
         <translation>internt fel: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="179"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
         <source>internal error</source>
         <translation>internt fel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="637"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="833"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="640"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="839"/>
         <source>Done</source>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="668"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="671"/>
         <source>Uploading dive list...</source>
         <translation>Laddar upp dyklista...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="699"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="703"/>
         <source>Downloading dive list...</source>
         <translation>Laddar ner dyklista...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="747"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="752"/>
         <source>Downloading %1 dives...</source>
         <translation>Laddar ner %1 dyk...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="790"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="796"/>
         <source>Download finished - %1</source>
         <translation>Nedladdning klar - %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="813"/>
         <source>Corrupted download</source>
         <translation>Misslyckad nedladdning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="808"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="814"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Arkivet kunde inte öppnas:
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="847"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="853"/>
         <source>Upload failed</source>
         <translation>Uppladdning misslyckades</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="850"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
         <source>Upload successful</source>
         <translation>Uppladdningen lyckades</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="853"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="859"/>
         <source>Login failed</source>
         <translation>Inloggning misslyckades</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
         <source>Cannot parse response</source>
         <translation>Kan inte tolka respons</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="867"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="873"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="834"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="840"/>
         <source>Upload finished</source>
         <translation>Uppladdning klar</translation>
     </message>
@@ -1050,7 +1050,7 @@ radera den valda dykdatorn?</translation>
     <name>MainTab</name>
     <message>
         <location filename="../qt-ui/maintab.ui" line="134"/>
-        <location filename="../qt-ui/maintab.cpp" line="450"/>
+        <location filename="../qt-ui/maintab.cpp" line="455"/>
         <source>Location</source>
         <translation>Plats</translation>
     </message>
@@ -1091,73 +1091,73 @@ radera den valda dykdatorn?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="18"/>
-        <location filename="../qt-ui/maintab.cpp" line="426"/>
+        <location filename="../qt-ui/maintab.cpp" line="430"/>
         <source>Dive notes</source>
         <translation>Dykanteckningar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
-        <location filename="../qt-ui/maintab.ui" line="607"/>
-        <location filename="../qt-ui/maintab.cpp" line="245"/>
+        <location filename="../qt-ui/maintab.ui" line="613"/>
+        <location filename="../qt-ui/maintab.cpp" line="247"/>
         <source>Air temp.</source>
         <translation>Lufttemp</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
-        <location filename="../qt-ui/maintab.ui" line="626"/>
-        <location filename="../qt-ui/maintab.cpp" line="246"/>
+        <location filename="../qt-ui/maintab.ui" line="632"/>
+        <location filename="../qt-ui/maintab.cpp" line="248"/>
         <source>Water temp.</source>
         <translation>Vattentemperatur</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
-        <location filename="../qt-ui/maintab.cpp" line="451"/>
+        <location filename="../qt-ui/maintab.cpp" line="456"/>
         <source>Notes</source>
         <translation>Anteckningar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="311"/>
+        <location filename="../qt-ui/maintab.ui" line="317"/>
         <source>Equipment</source>
         <translation>Utrustning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="474"/>
+        <location filename="../qt-ui/maintab.ui" line="480"/>
         <source>Gases used</source>
         <translation>Gasanvändning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="493"/>
+        <location filename="../qt-ui/maintab.ui" line="499"/>
         <source>Gas consumed</source>
         <translation>Gasanvändning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="531"/>
+        <location filename="../qt-ui/maintab.ui" line="537"/>
         <source>Max. depth</source>
         <translation>Maxdjup</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="588"/>
+        <location filename="../qt-ui/maintab.ui" line="594"/>
         <source>Air pressure</source>
         <translation>Lufttryck</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="645"/>
+        <location filename="../qt-ui/maintab.ui" line="651"/>
         <source>Dive time</source>
         <translation>Dyktid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="816"/>
+        <location filename="../qt-ui/maintab.ui" line="822"/>
         <source>Total time</source>
         <translation>Total tid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="874"/>
+        <location filename="../qt-ui/maintab.ui" line="880"/>
         <source>Gas consumption</source>
         <translation>Gasförbrukning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="299"/>
-        <location filename="../qt-ui/maintab.ui" line="436"/>
+        <location filename="../qt-ui/maintab.ui" line="305"/>
+        <location filename="../qt-ui/maintab.ui" line="442"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
@@ -1167,158 +1167,158 @@ radera den valda dykdatorn?</translation>
         <translation>Tid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="391"/>
+        <location filename="../qt-ui/maintab.ui" line="397"/>
         <source>Dive info</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="455"/>
+        <location filename="../qt-ui/maintab.ui" line="461"/>
         <source>Interval</source>
         <translation>Intervall</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="512"/>
-        <location filename="../qt-ui/maintab.ui" line="770"/>
+        <location filename="../qt-ui/maintab.ui" line="518"/>
+        <location filename="../qt-ui/maintab.ui" line="776"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="550"/>
+        <location filename="../qt-ui/maintab.ui" line="556"/>
         <source>Avg. depth</source>
         <translation>Medeldjup</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="569"/>
+        <location filename="../qt-ui/maintab.ui" line="575"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="664"/>
+        <location filename="../qt-ui/maintab.ui" line="670"/>
         <source>Salinity</source>
         <translation>Salthalt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="701"/>
+        <location filename="../qt-ui/maintab.ui" line="707"/>
         <source>Stats</source>
         <translation>Statistik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="746"/>
+        <location filename="../qt-ui/maintab.ui" line="752"/>
         <source>Depth</source>
         <translation>Djup</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="758"/>
+        <location filename="../qt-ui/maintab.ui" line="764"/>
         <source>Temperature</source>
         <translation>Temperatur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="784"/>
+        <location filename="../qt-ui/maintab.ui" line="790"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="835"/>
+        <location filename="../qt-ui/maintab.ui" line="841"/>
         <source>Dives</source>
         <translation>Dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="919"/>
+        <location filename="../qt-ui/maintab.ui" line="925"/>
         <source>Photos</source>
         <translation>Bilder</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="89"/>
+        <location filename="../qt-ui/maintab.cpp" line="91"/>
         <source>Cylinders</source>
         <translation>Flaskor</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="90"/>
+        <location filename="../qt-ui/maintab.cpp" line="92"/>
         <source>Add Cylinder</source>
         <translation>Lägg till flaska</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="93"/>
+        <location filename="../qt-ui/maintab.cpp" line="95"/>
         <source>Weights</source>
         <translation>Vikter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="94"/>
+        <location filename="../qt-ui/maintab.cpp" line="96"/>
         <source>Add Weight System</source>
         <translation>Lägg till Viktsystem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="49"/>
+        <location filename="../qt-ui/maintab.cpp" line="51"/>
         <source>Save</source>
         <translation>Spara</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="53"/>
+        <location filename="../qt-ui/maintab.cpp" line="55"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="242"/>
+        <location filename="../qt-ui/maintab.cpp" line="244"/>
         <source>Air temp. [%1]</source>
         <translation>Lufttemperatur [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="243"/>
+        <location filename="../qt-ui/maintab.cpp" line="245"/>
         <source>Water temp. [%1]</source>
         <translation>Vattentemperatur [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="278"/>
+        <location filename="../qt-ui/maintab.cpp" line="280"/>
         <source>This trip is being edited.</source>
         <translation>Detta resmål håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="285"/>
+        <location filename="../qt-ui/maintab.cpp" line="286"/>
         <source>Multiple dives are being edited.</source>
         <translation>Flera dyk håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="287"/>
+        <location filename="../qt-ui/maintab.cpp" line="288"/>
         <source>This dive is being edited.</source>
         <translation>Detta dyk håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="397"/>
-        <location filename="../qt-ui/maintab.cpp" line="421"/>
+        <location filename="../qt-ui/maintab.cpp" line="401"/>
+        <location filename="../qt-ui/maintab.cpp" line="425"/>
         <source>Trip notes</source>
         <translation>Resmålsanteckningar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="419"/>
+        <location filename="../qt-ui/maintab.cpp" line="423"/>
         <source>Trip location</source>
         <translation>Resmål</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="472"/>
-        <location filename="../qt-ui/maintab.cpp" line="480"/>
-        <location filename="../qt-ui/maintab.cpp" line="513"/>
-        <location filename="../qt-ui/maintab.cpp" line="514"/>
-        <location filename="../qt-ui/maintab.cpp" line="515"/>
+        <location filename="../qt-ui/maintab.cpp" line="477"/>
+        <location filename="../qt-ui/maintab.cpp" line="485"/>
+        <location filename="../qt-ui/maintab.cpp" line="518"/>
+        <location filename="../qt-ui/maintab.cpp" line="519"/>
+        <location filename="../qt-ui/maintab.cpp" line="520"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="474"/>
+        <location filename="../qt-ui/maintab.cpp" line="479"/>
         <source>unknown</source>
         <translation>okänd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="511"/>
+        <location filename="../qt-ui/maintab.cpp" line="516"/>
         <source>Deepest dive</source>
         <translation>Djupaste dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="512"/>
+        <location filename="../qt-ui/maintab.cpp" line="517"/>
         <source>Shallowest dive</source>
         <translation>Grundaste dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="556"/>
+        <location filename="../qt-ui/maintab.cpp" line="561"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -1327,17 +1327,17 @@ mixas av luft och:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="560"/>
+        <location filename="../qt-ui/maintab.cpp" line="565"/>
         <source> and </source>
         <translation>och</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="808"/>
+        <location filename="../qt-ui/maintab.cpp" line="819"/>
         <source>Discard the changes?</source>
         <translation>Kassera ändringarna?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="809"/>
+        <location filename="../qt-ui/maintab.cpp" line="820"/>
         <source>You are about to discard your changes.</source>
         <translation>Du är påväg att kasta bort dina förändringar</translation>
     </message>
@@ -1817,70 +1817,70 @@ p, li { white-space: pre-wrap; }
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker lägga till ett dyk.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="418"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="419"/>
         <source>Print runtime table</source>
         <translation>Skriv ut körtidstabell</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="518"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="520"/>
         <source>Yearly statistics</source>
         <translation>Årsstatistik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="703"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="705"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Vill du spara ändringarna som du gjort i filen %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="705"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="707"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Vill du spara ändringarna som du gjort i filen?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="710"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="712"/>
         <source>Save changes?</source>
         <translation>Spara ändringar?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1066"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1068"/>
         <source>Save file as</source>
         <translation>Spara fil som</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1190"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1192"/>
         <source>Open dive log file</source>
         <translation>Öppna dyklogg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1191"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1193"/>
         <source>Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;All Files(*)</source>
         <translation>Dykloggfiler (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;XML filer (*.xml);;UDDF/UDCF filer(*.uddf *.udcf);;JDiveLog filer(*.jlb);;Suunto filer(*.sde *.db);;CSV Files(*.csv);;Alla filer(*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="711"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="713"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Ändringar förloras om du inte sparar dom.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="251"/>
         <location filename="../qt-ui/mainwindow.cpp" line="386"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1216"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1218"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="188"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1050"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1052"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker öppna en ny fil.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1067"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1069"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML filer (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1216"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1218"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Först avsluta den aktuella ändringen innan du försöker göra en annan.</translation>
     </message>
@@ -1888,42 +1888,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="453"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="454"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="454"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
         <source>Last stop at 20ft</source>
         <translation>Sista stoppet på 20ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% av snittdjup till 20ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="457"/>
         <source>20ft to surface</source>
         <translation>20ft till ytan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="458"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
         <source>Last stop at 6m</source>
         <translation>Sista stoppet på 6m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% av snittdjup till 6m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="462"/>
         <source>6m to surface</source>
         <translation>6m till ytan</translation>
     </message>
@@ -2506,82 +2506,82 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="515"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="512"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 av %2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="895"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="892"/>
         <source>Make first divecomputer</source>
         <translation>Gör till första dykdator</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="897"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="894"/>
         <source>Delete this divecomputer</source>
         <translation>Ta bort den här dykdatorn</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="904"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="901"/>
         <source>Add gas change</source>
         <translation>Lägg till gasbyte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="915"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="912"/>
         <source>Add bookmark</source>
         <translation>Lägg till bokmärke</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="919"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="916"/>
         <source>Remove event</source>
         <translation>Ta bort händelse</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="924"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="921"/>
         <source>Hide similar events</source>
         <translation>Göm liknande händelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="930"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="927"/>
         <source>Edit name</source>
         <translation>Ändra namn</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="944"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="941"/>
         <source>Unhide all events</source>
         <translation>Visa alla händelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="978"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="975"/>
         <source>Hide events</source>
         <translation>Göm händelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="978"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="975"/>
         <source>Hide all %1 events?</source>
         <translation>Göm alla %1händelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1013"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1010"/>
         <source>Remove the selected event?</source>
         <translation>Ta bort markerad händelse</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1014"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1011"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1082"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1079"/>
         <source>Edit name of bookmark</source>
         <translation>Ändra namnet på bokmärket</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1083"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1080"/>
         <source>Custom name:</source>
         <translation>Valt namn:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1088"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1085"/>
         <source>Name is too long!</source>
         <translation>Namnet är för långt!</translation>
     </message>
@@ -2594,7 +2594,7 @@ p, li { white-space: pre-wrap; }
         <translation>LUFT</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="213"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="214"/>
         <source>Remove this point</source>
         <translation>Ta bort denna punkt</translation>
     </message>
@@ -2664,22 +2664,22 @@ p, li { white-space: pre-wrap; }
         <translation>ft³</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="524"/>
         <source>Invalid response from server</source>
         <translation>Ogiltigt svar från server</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="529"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="532"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Förväntade XML tag &apos;DiveDateReader&apos; men fick istället &apos;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="575"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="578"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Förväntad XML tagg &apos;DiveDates&apos; gick ej att finna</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="582"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="585"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Felformaterat XML svar. Rad %1: %2</translation>
     </message>
@@ -2844,47 +2844,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="338"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="340"/>
         <source>Webservice</source>
         <translation>Webbtjänst</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="401"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="404"/>
         <source>Connecting...</source>
         <translation>Ansluter...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="420"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="423"/>
         <source>Download finished</source>
         <translation>Nedladdning klar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="434"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="437"/>
         <source>Download error: %1</source>
         <translation>Nedladdningsfel: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="444"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="447"/>
         <source>Connection error: </source>
         <translation>Kontaktfel:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="456"/>
         <source>Download successful</source>
         <translation>Nedladdningen lyckades</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="447"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
         <source>Invalid user identifier!</source>
         <translation>Ogiltigt användarid!</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="321"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="323"/>
         <source>Enter User ID and click Download</source>
         <translation>Mata in användarid och klicka på nerladdning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
         <source>Cannot parse response!</source>
         <translation>Kan inte tolka respons</translation>
     </message>
@@ -2926,42 +2926,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>UpdateManager</name>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="33"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="39"/>
         <source>Check for updates.</source>
         <translation>Sök efter uppdateringar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="34"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="40"/>
         <source>Subsurface was unable to check for updates.</source>
         <translation>Subsurface kunde inte kolla efter uppdateringar.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="39"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="45"/>
         <source>The following error occurred:</source>
         <translation>Följande fel inträffade:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="40"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="46"/>
         <source>Please check your internet connection.</source>
         <translation>Verifiera att du har en fungerande uppkoppling till internet.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="49"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="55"/>
         <source>You are using the latest version of subsurface.</source>
         <translation>Du använder den senaste versionen av Subsurface.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="51"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="57"/>
         <source>A new version of subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
         <translation>Det finns en ny version av Subsurface tillgänglig.&lt;br/&gt;Klicka på:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; för att ladda ner den.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="54"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="60"/>
         <source>&lt;b&gt;A new version of subsurface is available.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</source>
         <translation>&lt;b&gt;Det finns en ny version av Subsurface tillgänglig.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="57"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="63"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
         <translation>Ett fel uppstod vid sökningen efter uppdateringar.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
@@ -3043,77 +3043,77 @@ p, li { white-space: pre-wrap; }
         <translation>Följande information om din dator kommer också att skickas</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="28"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="41"/>
         <source>
 Operating System: %1</source>
         <translation>Operativsystem: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="31"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="43"/>
         <source>
 CPU Architecture: %1</source>
         <translation>CPU Arkitektur: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="40"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="46"/>
         <source>
 Language: %1</source>
         <translation>Språk: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="72"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="77"/>
         <source>Should we ask you later?</source>
         <translation>Ska vi fråga dig senare?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="73"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="78"/>
         <source>Don&apos;t ask me again</source>
         <translation>Fråga inte mig igen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="74"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="79"/>
         <source>Ask later</source>
         <translation>Fråga senare</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="94"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="99"/>
         <source>Submit user survey.</source>
         <translation>Skicka in användarundersökningen.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="75"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="80"/>
         <source>Ask again?</source>
         <translation>Fråga igen?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="36"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="45"/>
         <source>
 OS CPU Architecture: %1</source>
         <translation>
 OS CPU Arkitektur: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="95"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="100"/>
         <source>Subsurface was unable to submit the user survey.</source>
         <translation>Subsurface kunde inte skicka in användarundersökningen.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="100"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="105"/>
         <source>The following error occurred:</source>
         <translation>Följande fel inträffade:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="101"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="106"/>
         <source>Please check your internet connection.</source>
         <translation>Verifiera att du har en fungerande uppkoppling till internet.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="110"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="115"/>
         <source>Survey successfully submitted.</source>
         <translation>Undersökningen har blivit inskickad.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="115"/>
+        <location filename="../qt-ui/usersurvey.cpp" line="120"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
         <translation>Ett fel uppstod vid sökningen efter uppdateringar.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
@@ -3174,12 +3174,12 @@ OS CPU Arkitektur: %1</translation>
         <translation>Ladda upp</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="256"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>
         <source>Operation timed out</source>
         <translation>Begäran tog för lång tid</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="277"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="279"/>
         <source>Transfering data...</source>
         <translation>Överför data...</translation>
     </message>
@@ -3559,76 +3559,76 @@ Medel</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="438"/>
-        <source>Dive %d: %s %d %04d</source>
-        <translation>Dyk #%d: %s %d %04d</translation>
+        <source>Dive %d: %s</source>
+        <translation>Dyk #%d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="443"/>
+        <location filename="../libdivecomputer.c" line="442"/>
         <source>Error parsing the divetime</source>
         <translation>Kunde inte tolka dyktid</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="452"/>
+        <location filename="../libdivecomputer.c" line="451"/>
         <source>Error parsing the maxdepth</source>
         <translation>Kunde inte tolka maxdjup</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="461"/>
+        <location filename="../libdivecomputer.c" line="460"/>
         <source>Error parsing the gas mix count</source>
         <translation>Kunde inte tolka antal gasblandningar</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="473"/>
+        <location filename="../libdivecomputer.c" line="472"/>
         <source>Error obtaining water salinity</source>
         <translation>Kunde inte ladda vattnets salthalt</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="481"/>
+        <location filename="../libdivecomputer.c" line="480"/>
         <source>Error obtaining surface pressure</source>
         <translation>Kunde inte få tag i tyck vid ytan</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="489"/>
+        <location filename="../libdivecomputer.c" line="488"/>
         <source>Error parsing the gas mix</source>
         <translation>Kunde inte tolka gasblandning</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="496"/>
+        <location filename="../libdivecomputer.c" line="495"/>
         <source>Error parsing the samples</source>
         <translation>Kunde inte tolka sampel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="626"/>
+        <location filename="../libdivecomputer.c" line="625"/>
         <source>Event: waiting for user action</source>
         <translation>Händelse: väntar på användaren</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="634"/>
+        <location filename="../libdivecomputer.c" line="633"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="694"/>
+        <location filename="../libdivecomputer.c" line="693"/>
         <source>Error registering the event handler.</source>
         <translation>Kunde inte registrera event-funktion</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="699"/>
+        <location filename="../libdivecomputer.c" line="698"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Kunde inte registrera avbrytningsrutin</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="720"/>
+        <location filename="../libdivecomputer.c" line="719"/>
         <source>Dive data import error</source>
         <translation>Lyckades inte importera dykdata</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="759"/>
+        <location filename="../libdivecomputer.c" line="758"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Kan inte skapa libdivecomputer context</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="766"/>
+        <location filename="../libdivecomputer.c" line="765"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Kunde inte öppna fil %s %s (%s)</translation>
     </message>
@@ -4068,12 +4068,12 @@ EADD: %d%s
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="427"/>
+        <location filename="../qt-gui.cpp" line="433"/>
         <source>%1 %2 (%3 dives)</source>
         <translation>%1 %2 (%3 dyk)</translation>
     </message>
     <message>
-        <location filename="../qt-gui.cpp" line="432"/>
+        <location filename="../qt-gui.cpp" line="438"/>
         <source>%1 %2 (1 dive)</source>
         <translation>%1 %2 (1 dyk)</translation>
     </message>
