@@ -67,6 +67,7 @@ slots:
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int ghflow);
 	void setSurfacePressure(int pressure);
+	int getSurfacePressure();
 	void setBottomSac(int sac);
 	void setDecoSac(int sac);
 	void setStartTime(const QTime &t);

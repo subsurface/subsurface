@@ -323,6 +323,9 @@ void DivePlannerWidget::settingsChanged()
 	} else {
 		ui.atmHeight->setSuffix(("m"));
 	}
+	ui.atmHeight->blockSignals(true);
+	ui.atmHeight->setValue((int) get_depth_units((int) (log(1013.0 / plannerModel->getSurfacePressure()) * 7800000), NULL,NULL));
+	ui.atmHeight->blockSignals(false);
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
@@ -334,7 +337,7 @@ void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
 	plannerModel->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int)(log(1013.0 / pressure) * 7800000), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) (log(1013.0 / pressure) * 7800000), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
 }
 
@@ -710,6 +713,11 @@ void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+int DivePlannerPointsModel::getSurfacePressure()
+{
+	return diveplan.surface_pressure;
 }
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
