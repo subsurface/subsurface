@@ -2469,7 +2469,7 @@ inmersiones efectuadas en este año y los pasados.
 - _Acerca de Subsurface_ - Muestra un panel con el número de versión de
 _Subsurface_ e información de la licencia.
 - _Comprobar si hay actualizaciones_ - Encuentra si hay disponible una nueva
-versión de _Subsurface_ en la página_web_de__Subsurface_.
+versión de _Subsurface_ en la  http://subsurface.hohndel.org/[página web de _Subsurface_].
 - _Manual de usuario_ - Abre una ventana que muestra este manual.
 
 == APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.
