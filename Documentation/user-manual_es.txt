@@ -1,10 +1,10 @@
-// _Subsurface_ 4.1 User Manual
+// _Subsurface_ 4.2 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat
 // :revnumber: 4.2
-// :revdate: July 2014
+// :revdate: August 2014
 :icons:
 :toc:
 :toc-placement: manual
@@ -56,6 +56,24 @@ consulta el archivo INSTALL incluido con el código fuente.
 Buceadores profesionales.
 
 toc::[]
+
+[[S_UserSurvey]]
+
+La Encuesta de Usuarios
+-----------------------
+Para poder desarrollar _Subsurface_ de una forma que sirva a sus usuarios de la
+mejor manera posible, es importante tener alguna información sobre estos
+usuarios.  Al abrir _Subsurface_ tras haberlo usado una semana más o menos,
+se desplegará una encuesta al usuario. Es completamente opcional y el usuario
+controla que datos se enviarán al equipo de desarrollo de _Subsurface_, si es
+que se envía alguno. Cualquier dato que el usuario decida enviar será
+extremadamente útil, y solo se usará para dirigir el desarrollo futuro y
+personalizar el software a medida de los usuarios de _Subsurface_. Si se
+completa la encuesta o se hace clic en la opción "No preguntarme de nuevo, será
+la última comunicación de esta naturaleza que se reciba. Sin embargo, si cambian
+nuestros hábitos o los de  _Subsurface_ y se desea volver a enviar la encuesta,
+se puede hacer lanzando _Subsurface_ desde la línea de comandos con la opción
+--survey.
 
 [[S_StartUsing]]
 Empezar a usar el programa
@@ -176,20 +194,28 @@ las pestañas usadas para introducir la información.
 
 image::images/AddDive1.jpg["FIGURA: Añadir inmersión",align="center"]
 
+Al hacer clic en un campo de los paneles _Notas de la Inmersión_ o _Equipo_, se
+entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
+en la parte de arriba del panel _Notas de la Inmersión_. El mismo mensaje se
+muestra en todos los paneles dependientes de _Notas de la Inmersión_ miesntras
+se esté en modo de edición.
+
+image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
+
 ==== Notas de la inmersión
 
 Este panel contiene la información de fecha, hora y lugar de un buceo concreto,
-condiciones ambientales, compañeros así como alguna información descriptiva. El
-mensaje en un rectángulo azul arriba del panel indica que la inmersión está
-siendo editada. Si pulsas en la pestaña *Notas de la inmersión*, los siguientes
-campos aparecen visibles:
+condiciones ambientales, compañeros así como alguna información descriptiva. Si
+pulsas en la pestaña *Notas de la inmersión*, los siguientes campos aparecen
+visibles:
 
 image::images/AddDive2.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
 
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
 salir del calendario. La hora y los minutos también pueden editarse clicando en
-cada uno de ellos y sobreescribiendo la información mostrada.
+cada uno de ellos y sobreescribiendo la información mostrada. La fecha por
+defecto es la de hoy y la hora, una hora más.
 
 *Temperaturas de aire y agua*: Las temperaturas de aire y agua durante la
 inmersión pueden teclearse en estos campos situados a la derecha de la Hora de
@@ -274,15 +300,10 @@ image::images/CompletedDiveInfo.jpg["FIGURA: Una pestaña de Notas de la Inmersi
 ==== Equipo
 
 La pestaña Equipo permite al usuario introducir información acerca del tipo de
-botella y gas utilizado, así como el lastre utilizado en una inmersión. El
-mensaje en azul arriba del panel
-
-image::images/BlueEditBar.jpg["Barra azul de edición",align="center"]
-
-indica que la inmersión está siendo editada. Esta parte de _Subsurface_ es
-altamente interactiva y la información de botellas y gases que se introduzca
-determinará el comportamiento del perfil de la inmersión (panel de arriba a la
-derecha).
+botella y gas utilizado, así como el lastre utilizado en una inmersión. Esta
+parte de _Subsurface_ es altamente interactiva y la información de botellas y
+gases que se introduzca determinará el comportamiento del perfil de la inmersión
+(panel de arriba a la derecha).
 
 [[S_CylinderData]]
 *Botellas*: La información de las botellas se introduce con un dialogo como
@@ -292,7 +313,10 @@ image::images/CylinderDataEntry1.jpg["FIGURA: Dialogo de botellas inicial",align
 
 El botón + arriba a la derecha permite al usuario añadir más botellas para esta
 inmersión. El icono oscuro de papelera de la izquierda permite borrar la
-información de una botella en concreto.
+información de una botella en concreto. Nótese que no es posible borrar una
+botella si se usa durante la inmersión. Implícitamente se utiliza una botella
+durante el buceo, incluso sin que haya un evento de cambio de gas, así que la
+primera botella no puede borrarse a menos que se cree otra antes.
 
 Se empieza por seleccionar un tipo de botella en el lado izquierdo de la tabla.
 Para seleccionar una botella hay que hacer clic en la casilla Tipo. Esto
@@ -541,7 +565,8 @@ Comprueba lo siguiente:
 cargarse o ser reemplazada.
 
 - ¿ Falla el cable ? ¿ Funciona bien el cable usando otro software ? ¿ Ha
-funcionado antes o es la primera vez que se usa ?
+funcionado antes o es la primera vez que se usa ? ¿ Están limpios los contactos
+entre el cable y el ordenador de buceo ?
 
 - Consultar el
 xref:_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
@@ -629,9 +654,13 @@ cada uno de ellos y sobreescribiendo la información mostrada.
 *Temperaturas Aire/Agua*: Las temperaturas de aire y agua durante la inmersión
 se muestran en estos campos a la derecha de la Hora de Inicio. Muchos
 ordenadores de buceo suministran información sobre la temperatura del agua y
-este campo puede que no necesite editarse. Si fuera necesario, no hay que
-teclear las unidades de temperatura: _Subsurface_ las suministra automáticamente
-de acuerdo con las _Preferencias_ (métricas o imperiales).
+este campo puede que no necesite editarse. Si no se proporciona la temperatura
+del aire, puede utilizarse la primera lectura del ordenados. En general, suele
+estar bastante cerca de la temperatura real del aire ya que el cambio en la
+lectura del sensor de temperatura es bastante lento para seguir los cambios en
+el entorno. Si fuera necesario, no hay que teclear las unidades de temperatura:
+_Subsurface_ las suministra automáticamente de acuerdo con las _Preferencias_
+(métricas o imperiales).
 
 *Ubicación*: Se teclea aquí el texto que describa el lugar donde se hizo la
 inmersión, p.e. "Tihany, Lake Balaton, Hungary". El autocompletado de los
@@ -721,7 +750,9 @@ En la mayoría de los casos _Subsurface_ obtiene el gas usado del ordenador de
 buceo e inserta automáticamente la composición (% oxigeno) en la tabla. El botón
 + arriba a la derecha permite al usuario añadir más botellas para esta
 inmersión. El icono oscuro de papelera le permitirá borrar la información de una
-botella.
+botella. Nótese que no se puede borrar una botella si se usa durante el buceo.
+Una botella puede estar usándose implícitamente, incluso sin un evento de cambio
+de gas.
 
 Se empieza por seleccionar un tipo de botella. Para ello hay que hacer clic en
 la casilla *Tipo de botella*. Esto hará aparecer un botón que puede usarse para
@@ -817,16 +848,21 @@ otros softwares de registro. Mientras que algún software se soporta nativamente
 en otros casos el usuario debe exportar el(los) diario(s) a un
 formato intermedio para que pueda ser importado a _Subsurface_.
 Actualmente, _Subsurface_ soporta importar archivos CSV de diferentes origenes.
-Los archivos de APD LogViewer, XP5 y Sensus están preconfigurados, pero dado que
-es flexible, los usuarios pueden configurar sus propias importaciones. Diarios
-creados manualmente (p.e. en hojas de cálculo) también pueden importarse
-configurando manualmente el CSV. _Subsurface_ también puede importar archivos
-UDDF y UDCF, usados por algún software y algunos ordenadores de buceo como el
-H&amp;W DR5 o el XDeep Black BT. Finalmente, para algunos programas de registro
-como el Mares Dive Organiser, se sugiere exportar los diarios primero a un
-servicio web como _divelogs.de_ e importarlos desde allí a _Subsurface_, ya que
-_divelogs.de_ soporta algunos pocos formatos que _Subsurface_ no puede leer en
-la actualidad.
+Los archivos de APD LogViewer, XP5, Sensus y Seabear están preconfigurados,
+pero dado que es flexible, los usuarios pueden configurar sus propias
+importaciones. Diarios creados manualmente (p.e. en hojas de cálculo) también
+pueden importarse configurando manualmente el CSV. _Subsurface_ también puede
+importar archivos UDDF y UDCF, usados por algún software y algunos ordenadores
+de buceo como el H&W DR5 o el XDeep Black BT. Finalmente, para algunos programas
+de registro como el Mares Dive Organiser, se sugiere exportar los diarios primero
+a un servicio web como _divelogs.de_ e importarlos desde allí a _Subsurface_, ya
+que _divelogs.de_ soporta algunos pocos formatos que _Subsurface_ no puede leer
+en la actualidad.
+
+Si el formato de diarios del otro software está soportado nativamente en
+_Subsurface, debería ser suficiente con seleccionar el archivo en el diálogo de
+importación. Se soportan directamente, por ejemplo, la importación de Suunto
+Dive Manager y las bases de datos SQL de Shearwater.
 
 Al importar inmersiones, _Subsurface_ intenta detectar múltiples registros del
 mismo buceo y mezcla la información lo mejor que puede. Si no existen problemas
@@ -853,7 +889,7 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
  - Diarios en formato UDCF
  - JDiveLog
  - Suunto Dive Manager (DM3 y DM4)
- - Diarios en formtao CSV (basados en texto o en hojas de cálculo).
+ - Diarios en formato CSV (basados en texto o en hojas de cálculo).
 
 Seleccionar el archivo correspondiente en la lista del diálogo abre el archivo
 importado directamente en la *Lista de Inmersiones* de _Subsurface_. También
