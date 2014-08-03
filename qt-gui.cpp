@@ -419,6 +419,12 @@ QString get_short_dive_date_string(timestamp_t when)
 	return loc.toString(ts.toUTC(), shortDateFormat + " " + timeFormat);
 }
 
+const char *get_dive_date_c_string(timestamp_t when)
+{
+	QString text = get_dive_date_string(when);
+	return strdup(text.toUtf8().data());
+}
+
 QString get_trip_date_string(timestamp_t when, int nr)
 {
 	struct tm tm;

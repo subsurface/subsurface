@@ -435,8 +435,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->when = dive->dc.when = utc_mktime(&tm);
 
 	// Parse the divetime.
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s %d %04d"), import_dive_number,
-		 monthname(tm.tm_mon), tm.tm_mday, year(tm.tm_year));
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, get_dive_date_c_string(dive->when));
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
