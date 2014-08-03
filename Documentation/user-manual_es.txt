@@ -834,8 +834,8 @@ con las zonas horarias (u otras razones que hagan que la hora de comienzo de las
 inmersiones sean significativamente diferentes) _Subsurface_ no creará entradas
 duplicadas.
 
-==== Utilizar el diálogo de importación universal
 [[Unified_import]]
+==== Utilizar el diálogo de importación universal
 
 El importar buceos desde otros programas se hace a través de una interfaz
 universal que se activa seleccionando Importar desde el menú principal y
@@ -1550,8 +1550,7 @@ en la figura de debajo).
 Si, además, se selecciona el botón *Mostrar el techo calculado con incrementos
 de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
-image::images/Ceilings2.jpg["Figura: Techo con resolución de 3
-metros",align="center"]
+image::images/Ceilings2.jpg["Figura: Techo con resolución de 3 metros",align="center"]
 
 El ajuste de los factores de gradiente afecta mucho a los techos calculados y
 sus profundidades. Para más información acerca de factores de gradiente,
@@ -2040,11 +2039,11 @@ velocidades de ascenso/descenso se muestren en m/s o en m/min. Los buzos con
 botella, habitualmente, manejan velocidades en m/min, sin embargo, los apneístas
 ascienden mucho más deprisa por lo que suelen utilizar velocidades en m/s.
 
+[[S_GradientFactors]]
 === Gráfico
 
 image::images/Pref3.jpg["FIGURA: Página de Preferencias del gráfico",align="center"]
 
-[[S_GradientFactors]]
 Este panel permite dos tipos de selecciones:
 
 * *Mostrar*: Aquí los usuarios eligen la cantidad de información que se muestra
