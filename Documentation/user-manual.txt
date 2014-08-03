@@ -2449,7 +2449,7 @@ from _www.Divelogs.de_.
 panel.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
-- <<S_DeviceNames_,_Edit Device Names_>> - Edit the names of dive computers to facilitate your logs.
+- <<S_DeviceNames,_Edit Device Names_>> - Edit the names of dive computers to facilitate your logs.
 
 === View
 - <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
