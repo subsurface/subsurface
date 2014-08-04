@@ -2019,7 +2019,7 @@ Before printing, two decisions are required:
 - Should the whole dive log be printed or only part of it? If only part of the
 dive log is required, then the user must select the required dives from the *Dive List* panel.
 - What gas partial pressure information is required on the dive profile? Users should select
-the appropriate information from the Main Menu: _File->Preferences->Graph_.
+the appropriate toggle-buttons on the button bar to the left of the Dive Profile panel.
 
 Now the print options should be selected to match the user's needs. To do this, user should select _File->Print_ from
 the Main menu. The following dialogue appears (see the image on the left [A],
@@ -2310,7 +2310,7 @@ cylinder(s), allowing for an appropriate margin for safe return to the surface, 
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
 determined by the settings of the _Preferences_ tab of _Subsurface_.  Specify the SAC during the
-bottom part of the dive (_bottom SA_) as well as during the decompression or safety stops of the
+bottom part of the dive (_bottom SAC_) as well as during the decompression or safety stops of the
 dive (_deco SAC_). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
 is not sufficient and one needs to
 monitor one's gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
@@ -2423,8 +2423,7 @@ clear all dive information.
 - _Open logbook_ - This opens the file manager in order to select a dive
 logbook to open.
 - _Save_ - Save the dive logbook that is currently open.
-- _Save as_: - Save the current logbook or the currently selected dives within
-the present logbook under a different file name.
+- _Save as_ - Save the current logbook under a different file name.
 - _Close_ -  Close the dive logbook that is currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
 the selected dives in the logbook) to one of several formats.
@@ -2738,7 +2737,7 @@ for every dive.
 Mark all the dives you'd like to import or open.
 Note: The DR5 does not seem to store gradient factors nor deco information, so
 for _Subsurface_ it is not possible to display them. Adjust the gradient
-factors in the _Tec Settings_ in _Subsurface_ to generate a deco overlay in the
+factors in the _Graph Settings_ in _Subsurface_ to generate a deco overlay in the
 _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the DR5.
 
