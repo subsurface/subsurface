@@ -1205,5 +1205,6 @@ function switchDives(e)
 }
 
 window.onresize = function(event) {
-      plot1.replot( { resetAxes: true } );
+      if (plot1)
+	      plot1.replot( { resetAxes: true } );
 };
