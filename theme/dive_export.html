@@ -121,6 +121,9 @@ window.onload=function(){
 	showAllDives();
 	document.getElementById("divePanel").style.display='none';
 	document.getElementById("diveStat").style.display='none';
+	if (divestat.length <= 0)
+		document.getElementById("stats_button").style.display='none';
+
 	document.body.style.visibility='visible';
 
 	document.onkeydown = switchDives;

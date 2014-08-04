@@ -93,6 +93,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 
 	exportHTMLsettings(json_settings);
 	exportHTMLstatistics(stat_file);
+
 	export_HTML(json_dive_data.toUtf8().data(), photos_directory.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
 
 	QString searchPath = getSubsurfaceDataPath("theme");
@@ -140,25 +141,27 @@ void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
 	QTextStream out(&file);
 	int i = 0;
 	out << "divestat=[";
-	while (stats_yearly != NULL && stats_yearly[i].period) {
-		out << "{";
-		out << "\"YEAR\":\"" << stats_yearly[i].period << "\",";
-		out << "\"DIVES\":\"" << stats_yearly[i].selection_size << "\",";
-		out << "\"TOTAL_TIME\":\"" << get_time_string(stats_yearly[i].total_time.seconds, 0) << "\",";
-		out << "\"AVERAGE_TIME\":\"" << get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size) << "\",";
-		out << "\"SHORTEST_TIME\":\"" << get_minutes(stats_yearly[i].shortest_time.seconds) << "\",";
-		out << "\"LONGEST_TIME\":\"" << get_minutes(stats_yearly[i].longest_time.seconds) << "\",";
-		out << "\"AVG_DEPTH\":\"" << get_depth_string(stats_yearly[i].avg_depth) << "\",";
-		out << "\"MIN_DEPTH\":\"" << get_depth_string(stats_yearly[i].min_depth) << "\",";
-		out << "\"MAX_DEPTH\":\"" << get_depth_string(stats_yearly[i].max_depth) << "\",";
-		out << "\"AVG_SAC\":\"" << get_volume_string(stats_yearly[i].avg_sac) << "\",";
-		out << "\"MIN_SAC\":\"" << get_volume_string(stats_yearly[i].min_sac) << "\",";
-		out << "\"MAX_SAC\":\"" << get_volume_string(stats_yearly[i].max_sac) << "\",";
-		out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
-		out << "\"MIN_TEMP\":\"" << get_temp_units(stats_yearly[i].min_temp, NULL) << "\",";
-		out << "\"MAX_TEMP\":\"" << get_temp_units(stats_yearly[i].max_temp, NULL) << "\",";
-		out << "},";
-		i++;
+	if (ui->exportStatistics->isChecked()) {
+		while (stats_yearly != NULL && stats_yearly[i].period) {
+			out << "{";
+			out << "\"YEAR\":\"" << stats_yearly[i].period << "\",";
+			out << "\"DIVES\":\"" << stats_yearly[i].selection_size << "\",";
+			out << "\"TOTAL_TIME\":\"" << get_time_string(stats_yearly[i].total_time.seconds, 0) << "\",";
+			out << "\"AVERAGE_TIME\":\"" << get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size) << "\",";
+			out << "\"SHORTEST_TIME\":\"" << get_minutes(stats_yearly[i].shortest_time.seconds) << "\",";
+			out << "\"LONGEST_TIME\":\"" << get_minutes(stats_yearly[i].longest_time.seconds) << "\",";
+			out << "\"AVG_DEPTH\":\"" << get_depth_string(stats_yearly[i].avg_depth) << "\",";
+			out << "\"MIN_DEPTH\":\"" << get_depth_string(stats_yearly[i].min_depth) << "\",";
+			out << "\"MAX_DEPTH\":\"" << get_depth_string(stats_yearly[i].max_depth) << "\",";
+			out << "\"AVG_SAC\":\"" << get_volume_string(stats_yearly[i].avg_sac) << "\",";
+			out << "\"MIN_SAC\":\"" << get_volume_string(stats_yearly[i].min_sac) << "\",";
+			out << "\"MAX_SAC\":\"" << get_volume_string(stats_yearly[i].max_sac) << "\",";
+			out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
+			out << "\"MIN_TEMP\":\"" << get_temp_units(stats_yearly[i].min_temp, NULL) << "\",";
+			out << "\"MAX_TEMP\":\"" << get_temp_units(stats_yearly[i].max_temp, NULL) << "\",";
+			out << "},";
+			i++;
+		}
 	}
 	out << "]";
 	file.close();

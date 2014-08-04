@@ -216,9 +216,9 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QCheckBox" name="checkBox_2">
+           <widget class="QCheckBox" name="exportStatistics">
             <property name="text">
-             <string>Minimum Javascript</string>
+             <string>Export Yearly Statistics</string>
             </property>
            </widget>
           </item>
