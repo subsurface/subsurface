@@ -1530,7 +1530,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="807"/>
         <source>P&amp;references</source>
-        <translation>Предпочтения</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="837"/>
@@ -1709,7 +1709,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation>Мои дайвкомпьютеры</translation>
+        <translation>Мои дайв-компьютеры</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>

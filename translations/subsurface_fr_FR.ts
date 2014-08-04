@@ -746,7 +746,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
         <source>Cylinder index</source>
-        <translation>index de la bouteille</translation>
+        <translation>index du bloc</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
@@ -3807,7 +3807,7 @@ Moyenne</translation>
     <message>
         <location filename="../planner.c" line="670"/>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation>C&apos;est plus de gaz que ce qui n&apos;est disponible dans la bouteille spécifiée</translation>
+        <translation>C&apos;est plus de gaz que ce qui est disponible dans le bloc spécifié!</translation>
     </message>
     <message>
         <location filename="../planner.c" line="675"/>
