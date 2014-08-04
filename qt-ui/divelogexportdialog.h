@@ -25,6 +25,7 @@ private:
 	void showExplanation();
 	void exportHtmlInit(const QString &filename);
 	void exportHTMLsettings(const QString &filename);
+	void exportHTMLstatistics(const QString &filename);
 	void copy_and_overwrite(const QString &fileName, const QString &newName);
 };
 
