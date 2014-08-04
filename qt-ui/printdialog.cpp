@@ -11,6 +11,8 @@
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 #include <QShortcut>
+#include <QPrinterInfo>
+#include <QMessageBox>
 
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
@@ -65,8 +67,24 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
+bool PrintDialog::checkForAvailablePrinters(void)
+{
+	QList<QPrinterInfo> list = QPrinterInfo::availablePrinters();
+	if (!list.length()) {
+		QMessageBox msgBox;
+		msgBox.setIcon(QMessageBox::Critical);
+		msgBox.setText(tr("Subsurface cannot find installed printers on this system!"));
+		msgBox.setWindowIcon(QIcon(":subsurface-icon"));
+		msgBox.exec();
+		return false;
+	}
+	return true;
+}
+
 void PrintDialog::previewClicked(void)
 {
+	if (!checkForAvailablePrinters())
+		return;
 	QPrintPreviewDialog previewDialog(&printer, this);
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
@@ -74,6 +92,8 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
+	if (!checkForAvailablePrinters())
+		return;
 	QPrintDialog printDialog(&printer, this);
 	if (printDialog.exec() == QDialog::Accepted){
 		printLayout->print();

@@ -18,6 +18,7 @@ public:
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private:
+	bool checkForAvailablePrinters(void);
 	PrintOptions *optionsWidget;
 	PrintLayout *printLayout;
 	QProgressBar *progressBar;
