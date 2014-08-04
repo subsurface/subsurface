@@ -53,7 +53,7 @@ function load_scripts()
 var advanced_shown=false;
 function showdiv(){
 	var search = document.getElementById("advanced_search");
-	if(advanced_shown==false){
+	if(advanced_shown===false){
 		search.style.display='block';
 		advanced_shown=true;
 	}
@@ -63,7 +63,7 @@ function showdiv(){
 	}
 }
 function hideAdvanced(){
-	if(advanced_shown==false) return;
+	if(advanced_shown===false) return;
 	var search = document.getElementById("advanced_search");
 	search.style.display='none';
 	advanced_shown=false;
