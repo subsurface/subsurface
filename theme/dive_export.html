@@ -35,6 +35,10 @@ function load_scripts()
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
+	fileref.setAttribute("src", location.pathname + "_files/stat.json");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+	fileref=document.createElement('script');
 	fileref.setAttribute("src", location.pathname + "_files/settings.json");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
@@ -116,6 +120,7 @@ window.onload=function(){
 	sizeofpage=10;
 	showAllDives();
 	document.getElementById("divePanel").style.display='none';
+	document.getElementById("diveStat").style.display='none';
 	document.body.style.visibility='visible';
 
 	document.onkeydown = switchDives;
@@ -155,6 +160,7 @@ function changeAdvSearch(e){
 		<button onClick="expandAll()"> Expand All </button>
 		<button onClick="collapseAll()"> Collapse All </button>
 		<button id="trip_button" onclick="toggleTrips();">trips</button>
+		<button id="stats_button" onclick="toggleStats();">Stats</button>
 		</div>
 	</div>
 		<div id="header">
@@ -211,6 +217,13 @@ function changeAdvSearch(e){
 			</div>
 			<button onclick="next_photo()" style="width:7%;margin:1%;float:left">-&gt;</button>
 		</div>
+		</div>
+	</div>
+	<div id="diveStat">
+	<center>
+	<button onClick="toggleStats()">Back to List</button>
+	</center>
+		<div id="diveStatsData">
 		</div>
 	</div>
 </body>

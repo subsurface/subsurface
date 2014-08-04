@@ -144,6 +144,30 @@ input[type=checkbox]{
 	box-shadow: 10px 10px 5px #888888;
 }
 
+#diveStat{
+	padding:5px;
+	width:90%;
+	margin:0% 5% 0% 5%;
+	margin-bottom:50px;
+	background-color: rgba(88,121,139,0.3);
+	box-shadow: 10px 10px 5px #888888;
+}
+
+#diveStatsData{
+	overflow:scroll;
+	overflow-y:hidden;
+}
+
+.statscell{
+	min-width:100px;
+	margin:0px;
+}
+
+#stats_header{
+	background-color:#5f7f8f;
+}
+
+
 button,#no_dives_selector{
 	font-size:13px;
 	min-width:55px;

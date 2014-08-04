@@ -128,7 +128,6 @@ input[type=checkbox]{
 	font-weight:bold;
 }
 
-
 #controller{
 	min-width:200px;
 	padding:10px;
@@ -141,6 +140,25 @@ input[type=checkbox]{
 	margin-bottom:50px;
 	background-color:rgba(253, 195, 141, 0.43);
 	box-shadow: 7px 7px 5px rgba(215, 107, 27, 0.43);
+}
+
+#diveStat{
+	padding:5px;
+	width:90%;
+	margin:0% 5% 0% 5%;
+	margin-bottom:50px;
+	background-color: rgba(88,121,139,0.3);
+	box-shadow: 10px 10px 5px #888888;
+}
+
+#diveStatsData{
+	overflow:scroll;
+	overflow-y:hidden;
+}
+.statscell{
+	border-style:solid;
+	padding-right:100px;
+	margin:0px;
 }
 
 button,#no_dives_selector{

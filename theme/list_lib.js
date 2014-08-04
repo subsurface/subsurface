@@ -646,6 +646,54 @@ function searchin(value, node)
 	return null;
 }
 
+//stats
+
+var statsShows;
+
+/**
+*This is the main function called to show/hide trips
+*/
+function toggleStats()
+{
+	var stats_button = document.getElementById('stats_button');
+	if (statsShows) {
+		statsShows = false;
+		stats_button.style.backgroundColor = "#dfdfdf";
+		document.getElementById('diveListPanel').style.display='block';
+		document.getElementById('diveStat').style.display='none';
+	} else {
+		document.getElementById('diveListPanel').style.display='none';
+		document.getElementById('diveStat').style.display='block';
+		stats_button.style.backgroundColor = "#5f7f8f";
+		statsShows = true;
+		showStats();
+	}
+}
+
+function showStats()
+{
+	document.getElementById('diveStatsData').innerHTML = '';
+	document.getElementById('diveStatsData').innerHTML += getDiveStats();
+}
+
+function getDiveStats(){
+	var res = "";
+	res += '<table><tr id="stats_header">';
+	res += '<td class="statscell">Year</td><td class="statscell">#</td><td class="statscell">Total Time</td><td class="statscell">Avarage Time</td><td class="statscell">Shortest Time</td><td class="statscell">Longest Time</td><td class="statscell">Avarage Depth</td><td class="statscell">Min Depth</td><td class="statscell">Max Depth</td><td class="statscell">Average SAC</td><td class="statscell">Min SAC</td><td class="statscell">Max SAC</td><td class="statscell">Average Temp</td><td class="statscell">Min Temp</td><td class="statscell">Max Temp</td>';
+	res += '</tr>';
+	res += getStatsRows();
+	res += '</table>';
+	return res;
+}
+
+function getStatsRows(){
+	var res = "";
+	for(var i = 0; i < divestat.length ; i++) {
+	res += '<tr><td class="statscell">'+divestat[i].YEAR+'</td><td class="statscell">'+divestat[i].DIVES+'</td><td class="statscell">'+divestat[i].TOTAL_TIME+'</td><td class="statscell">'+divestat[i].AVERAGE_TIME+'</td><td class="statscell">'+divestat[i].SHORTEST_TIME+'</td><td class="statscell">'+divestat[i].LONGEST_TIME+'</td><td class="statscell">'+divestat[i].AVG_DEPTH+'</td><td class="statscell">'+divestat[i].MIN_DEPTH+'</td><td class="statscell">'+divestat[i].MAX_DEPTH+'</td><td class="statscell">'+divestat[i].AVG_SAC+'</td><td class="statscell">'+divestat[i].MIN_SAC+'</td><td class="statscell">'+divestat[i].MAX_SAC+'</td><td class="statscell">'+divestat[i].AVG_TEMP+'</td><td class="statscell">'+divestat[i].MIN_TEMP+'</td><td class="statscell">'+divestat[i].MAX_TEMP+'</td></tr>';
+	}
+	return res;
+}
+
 //trips
 
 var tripsShown;
