@@ -395,14 +395,14 @@ that the cursor represents are indicated at the top of the black information box
 *Preference* settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15 m.
-If the dive depth was 21 m then the user needs to drag the appropriate waypoints
-downwards to represent 21 m. To add a waypoint, double-click on
+If the dive depth was 20 m then the user needs to drag the appropriate waypoints
+downwards to represent 20 m. To add a waypoint, double-click on
 any line segment. To move an additional waypoint, drag it.
 To remove this waypoint, right-click on it and choose "Remove this point" from the
 context menu. The user needs to drag the waypoints to represent an
 accurate
 time duration for the dive. Below is a dive profile that represents a dive
-to 21 m for 31 min, followed by a 5 minute safety stop at 5 m.
+to 20 m for 30 min, followed by a 5 minute safety stop at 5 m.
 
 image::images/DiveProfile2.jpg["FIGURE: Edited dive profile",align="center"]
 
