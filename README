@@ -1,11 +1,22 @@
 
-This is the README file for Subsurface 4.1.93, the fourth Beta for 4.2
+This is the README file for Subsurface 4.1.94, the fifth Beta for 4.2
 
-We made one more Beta available in order to improve the print subsystem -
-in our testing this improved things quite a bit for most situations, but
-we are still eager to get feedback on where things go badly.
-Also, Beta 4 includes many updates to the translations plus a bunch of
-fixes for the HTML export.
+It turns out a number of problems were caused by us still relying on Qt4
+for the Windows (and Mac) binaries. In part that was because Qt5 32bit
+installer for Windows were failing in strange ways.
+
+To work around this issues we made a rather drastic decision - there's now
+a 64bit Windows installer that includes Qt5 (and the Mac binaries have
+been moved over to Qt5 as well).
+
+While redoing the supporting cast we also switched to a newer Marble build
+and a newer libdivecomputer for the Mac and Windows installers.
+
+This (plus a bunch of patches) seems to have fixed a respectable number of
+bugs in Beta 4. Let's see how Beta 5 goes...
+
+Another new feature is a Russian translation of the manual, in addition to
+English and Spanish.
 
 Please be very careful when using it on your real data - while this is
 reasonably well tested by our developers, there's always a risk that this
