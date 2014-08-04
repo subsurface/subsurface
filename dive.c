@@ -542,7 +542,7 @@ static void update_temperature(temperature_t *temperature, int new)
  *
  * This ignores any surface time in the middle of the dive.
  */
-static void fixup_dc_duration(struct divecomputer *dc)
+void fixup_dc_duration(struct divecomputer *dc)
 {
 	int duration, i;
 	int lasttime, lastdepth, depthtime;

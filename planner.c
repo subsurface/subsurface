@@ -924,10 +924,13 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		}
 	}
 
-	/* We made it to the surface */
+	/* We made it to the surface
+	 * Create the final dive, add the plan to the notes and fixup some internal
+	 * data that we need to be there when plotting the dive */
 	plan_add_segment(diveplan, clock - previous_point_time, 0, gas, po2, false);
 	create_dive_from_plan(diveplan, is_planner);
 	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer);
+	fixup_dc_duration(&displayed_dive.dc);
 
 	free(stoplevels);
 	free(gaschanges);

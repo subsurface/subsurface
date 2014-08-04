@@ -614,6 +614,7 @@ extern bool has_hr_data(struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
+extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID(struct dive *d);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern unsigned int dc_watertemp(struct divecomputer *dc);
