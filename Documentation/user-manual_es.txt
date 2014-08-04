@@ -395,13 +395,13 @@ unidades (métricas/imperiales) de los ejes vienen determinadas por los ajustes
 de las Preferencias. El perfil de la inmersión comprende varios segmentos
 definidos por puntos de referencia (puntos en blanco en el perfil, como los que
 se muestran arriba). La profundidad por defecto es de 15m.
-Si la profundidad de la inmersión fue de 21m, el usuario tiene que arrastrar los
-puntos de referencia adecuados hacia abajo hasta que representen los 21m. Para
+Si la profundidad de la inmersión fue de 20m, el usuario tiene que arrastrar los
+puntos de referencia adecuados hacia abajo hasta que representen los 20m. Para
 añadir un punto hay que hacer doble clic en cualquier segmento. Para borrar un
 punto de referencia, hacer clic-derecho sobre él y seleccionar "Borrar este
 punto" del menú contextual. También se necesitará arrastrar los puntos para
 representar una duración adecuada del buceo. A continuación hay un perfil de
-inmersión que representa un buceo a 21m durante 31 minutos, seguido de una
+inmersión que representa un buceo a 20m durante 30 minutos, seguido de una
 parada de seguridad de 5 minutos a 5m.
 
 image::images/DiveProfile2.jpg["FIGURA: Perfil de buceo editado",align="center"]
@@ -1707,7 +1707,7 @@ continuación.
 
 ==== Personalizar la información mostrada en el panel *Lista de inmersiones*
 
-image::images/DiveListOptions.jpg["Ejemplo: Opciones de la Lista de inmersiones",align="left"]
+image::images/DiveListOptions.jpg["Ejemplo: Opciones de la Lista de inmersiones",align="center"]
 
 La información por defecto de la *Lista de inmersiones* incluye, para cada buceo,
 Numero de inmersión, Fecha, Calificación, Profundidad, Duración y Ubicación. Esta
@@ -1959,8 +1959,8 @@ Antes de imprimir, se deben tomar dos decisiones:
 parte del registro, entonces el usuario selecciona los buceos deseados en el
 panel *Lista de inmersiones*.
 - ¿ Que información sobre presiones parciales de los gases se desea tener en el
-perfil ? El usuario selecciona la información correcta desde el menú principal:
-_Archivo → Preferencias → Gráfico_.
+perfil ? El usuario activaría los botones apropiados de la barra de la izquierda
+del perfil.
 
 Ahora habra que seleccionar las opciones de impresión. Para ello se selecciona
 _Archivo → Imprimir_ desde el menú principal. Aparecerá el siguiente diálogo
@@ -2416,8 +2416,7 @@ y limpia toda la información.
 - _Abrir Registro_ - Abre el navegador de archivos para seleccionar un archivo
 de registro que abrir.
 - _Guardar_ - Guarda el diario abierto en estos momentos.
-- _Guardar como_ - Guarda el registro actual o las inmersiones seleccionadas del
-diario actual con un nombre de archivo diferente.
+- _Guardar como_ - Guarda el diario actual con un nombre de archivo diferente.
 - _Cerrar_ - Cierra el registro de inmersiones abierto en estos momentos.
 - <<S_ExportLog,_Exportar_>> - Exporta el diario abierto actualmente (o las
 inmersiones seleccionadas en el diario) a algún otro formato.
