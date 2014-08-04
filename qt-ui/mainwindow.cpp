@@ -1286,3 +1286,13 @@ void MainWindow::on_actionExport_triggered()
 	DiveLogExportDialog diveLogExport;
 	diveLogExport.exec();
 }
+
+void MainWindow::setEnabledToolbar(bool arg1)
+{
+	 QList<QToolButton*> toolBar; toolBar << ui.profCalcAllTissues << ui.profCalcCeiling
+		<< ui.profDcCeiling << ui.profEad << ui.profHR << ui.profIncrement3m
+		<< ui.profMod << ui.profNdl_tts << ui.profNdl_tts << ui.profPhe << ui.profPn2
+		<< ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled << ui.profTogglePicture;
+	Q_FOREACH(QToolButton *b, toolBar)
+		b->setEnabled(arg1);
+}

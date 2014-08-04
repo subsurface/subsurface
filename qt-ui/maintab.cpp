@@ -270,6 +270,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 		return;
 	}
 	MainWindow::instance()->dive_list()->setEnabled(false);
+	MainWindow::instance()->setEnabledToolbar(false);
 
 	// only setup the globe for editing if we are editing exactly one existing dive
 	if (amount_selected == 1 && newEditMode != ADD)
@@ -781,6 +782,7 @@ void MainTab::acceptChanges()
 	MainWindow::instance()->dive_list()->setFocus();
 	cylindersModel->changed = false;
 	weightModel->changed = false;
+	MainWindow::instance()->setEnabledToolbar(true);
 }
 
 void MainTab::resetPallete()
@@ -845,6 +847,7 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->globe()->reload();
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();
+	MainWindow::instance()->setEnabledToolbar(true);
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	cylindersModel->updateDive();

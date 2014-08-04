@@ -156,6 +156,7 @@ slots:
 	void editCurrentDive();
 	void planCanceled();
 	void planCreated();
+	void setEnabledToolbar(bool arg1);
 
 private:
 	Ui::MainWindow ui;
