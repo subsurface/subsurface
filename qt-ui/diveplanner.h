@@ -65,7 +65,9 @@ slots:
 	int addStop(int millimeters = 0, int seconds = 0, struct gasmix *gas = 0, int ccpoint = 0, bool entered = true);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
+	void triggerGFHigh();
 	void setGFLow(const int ghflow);
+	void triggerGFLow();
 	void setSurfacePressure(int pressure);
 	int getSurfacePressure();
 	void setBottomSac(int sac);
@@ -103,6 +105,8 @@ private:
 	QVector<sample> backupSamples; // For editing added dives.
 	QVector<QPair<int, int> > oldGases;
 	QDateTime startTime;
+	int tempGFHigh;
+	int tempGFLow;
 };
 
 class DiveHandler : public QObject, public QGraphicsEllipseItem {

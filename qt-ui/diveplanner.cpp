@@ -412,6 +412,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
+	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
+	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 
 	ui.bottomSAC->setValue(prefs.bottomsac / 1000.0);
@@ -667,7 +669,10 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 	return divepoints.count();
 }
 
-DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent), mode(NOTHING)
+DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
+	mode(NOTHING),
+	tempGFHigh(100),
+	tempGFLow(100)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 }
@@ -699,14 +704,33 @@ void DivePlannerPointsModel::setDecoSac(int sac)
 
 void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 {
-	diveplan.gfhigh = gfhigh;
-	plannerModel->emitDataChanged();
+	tempGFHigh = gfhigh;
+	// GFHigh <= 34 can cause infinite deco at 6m - don't trigger a recalculation
+	// for smaller GFHigh unless the user explicitly leaves the field
+	if (tempGFHigh > 34)
+		triggerGFHigh();
+}
+
+void DivePlannerPointsModel::triggerGFHigh()
+{
+	if (diveplan.gfhigh != tempGFHigh) {
+		diveplan.gfhigh = tempGFHigh;
+		plannerModel->emitDataChanged();
+	}
 }
 
 void DivePlannerPointsModel::setGFLow(const int ghflow)
 {
-	diveplan.gflow = ghflow;
-	plannerModel->emitDataChanged();
+	tempGFLow = ghflow;
+	triggerGFLow();
+}
+
+void DivePlannerPointsModel::triggerGFLow()
+{
+	if (diveplan.gflow != tempGFLow) {
+		diveplan.gflow = tempGFLow;
+		plannerModel->emitDataChanged();
+	}
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
