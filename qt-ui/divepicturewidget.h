@@ -5,10 +5,9 @@
 #include <QListView>
 #include <QThread>
 
-struct picture;
 struct PhotoHelper {
 	QImage image;
-	struct picture *picture;
+	int offsetSeconds;
 };
 
 class DivePictureModel : public QAbstractTableModel {

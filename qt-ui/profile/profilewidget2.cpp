@@ -1360,17 +1360,17 @@ void ProfileWidget2::plotPictures()
 	double x, y, lastX = -1.0, lastY = -1.0;
 	DivePictureModel *m = DivePictureModel::instance();
 	for (int i = 0; i < m->rowCount(); i++) {
-		struct picture *pic  = (struct picture*) m->index(i,1).data(Qt::UserRole).value<void*>();
+		int offsetSeconds = m->index(i,1).data(Qt::UserRole).value<int>();
 		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
 		// information area.
-		if (!pic->offset.seconds)
+		if (!offsetSeconds)
 			continue;
 		DivePictureItem *item = new DivePictureItem();
 		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
 		item->setFileUrl(m->index(i,1).data().toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(pic->offset.seconds);
+		x = timeAxis->posAtValue(offsetSeconds);
 		if (i == 0)
 			y = 10;
 		else if (fabs(x - lastX) < 4)

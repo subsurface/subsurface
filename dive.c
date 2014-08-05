@@ -2495,10 +2495,10 @@ static void picture_free( struct picture *p){
 	free( p->filename );
 	free( p );
 }
-void dive_remove_picture(struct picture *p)
+void dive_remove_picture(char *filename)
 {
 	struct picture **ep = &current_dive->picture_list;
-	while (ep && !same_string((*ep)->filename, p->filename))
+	while (ep && !same_string((*ep)->filename, filename))
 		ep = &(*ep)->next;
 	if (ep) {
 		struct picture *temp = (*ep)->next;

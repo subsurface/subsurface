@@ -49,7 +49,7 @@ void DivePictureModel::updateDivePictures()
 	stringPixmapCache.clear();
 	QStringList pictures;
 	FOR_EACH_PICTURE (&displayed_dive) {
-		stringPixmapCache[QString(picture->filename)].picture = picture;
+		stringPixmapCache[QString(picture->filename)].offsetSeconds = picture->offset.seconds;
 		pictures.push_back(QString(picture->filename));
 	}
 
@@ -89,7 +89,7 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	} else if (index.column() == 1) {
 		switch (role) {
 		case Qt::UserRole:
-			ret = QVariant::fromValue((void *)stringPixmapCache[key].picture);
+			ret = QVariant::fromValue((int)stringPixmapCache[key].offsetSeconds);
 		break;
 		case Qt::DisplayRole:
 			ret = key;
@@ -100,7 +100,7 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 
 void DivePictureModel::removePicture(const QString &fileUrl)
 {
-	dive_remove_picture(stringPixmapCache[fileUrl].picture);
+	dive_remove_picture(fileUrl.toUtf8().data());
 	copy_dive(current_dive, &displayed_dive);
 	updateDivePictures();
 	mark_divelist_changed(true);
