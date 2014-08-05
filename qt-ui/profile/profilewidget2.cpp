@@ -1107,10 +1107,6 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
 
-	disconnect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
-	disconnect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
-	disconnect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
-
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
 		action->setShortcutContext(Qt::WidgetShortcut);
