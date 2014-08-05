@@ -7,16 +7,26 @@ cd staging
 
 echo -- signing Qt frameworks
 
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/4/QtCore
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtDeclarative.framework/Versions/4/QtDeclarative
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/4/QtGui
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/4/QtScript
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/4/QtSql
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/4/QtSvg
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/4/QtWebkit
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/4/QtXml
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/4/QtXmlPatterns
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtConcurrent.framework/Versions/5/QtConcurrent
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/5/QtCore
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/5/QtGui
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtMultimedia.framework/Versions/5/QtMultimedia
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtMultimediaWidgets.framework/Versions/5/QtMultimediaWidgets
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/5/QtNetwork
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtOpenGL.framework/Versions/5/QtOpenGL
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtPositioning.framework/Versions/5/QtPositioning
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtPrintSupport.framework/Versions/5/QtPrintSupport
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtQml.framework/Versions/5/QtQml
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtQuick.framework/Versions/5/QtQuick
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/5/QtScript
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSensors.framework/Versions/5/QtSensors
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/5/QtSql
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/5/QtSvg
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/5/QtWebKit
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtWidgets.framework/Versions/5/QtWidgets
+codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/5/QtXMLPatterns
+
 
 echo -- signing plugins
 find ./Subsurface.app/Contents/PlugIns -name \*.dylib | xargs codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk

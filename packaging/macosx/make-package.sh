@@ -23,6 +23,7 @@ VERSION=$(./scripts/get-version linux)
 sudo rm -rf ./Subsurface.app
 make
 sudo make mac-deploy
+sudo install_name_tool -change /Users/hohndel/src/marble/install/libmarblewidget.0.18.20.dylib @executable_path/../Frameworks/libmarblewidget.0.18.20.dylib Subsurface.app/Contents/MacOS/Subsurface
 
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
