@@ -5,6 +5,7 @@
 #include <libxml/parser.h>
 #include <zip.h>
 #include <errno.h>
+#include <stdio.h>
 
 #include <QDir>
 #include <QHttpMultiPart>
@@ -149,7 +150,10 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		 */
 		if (selected && !dive->selected)
 			continue;
-		f = tmpfile();
+		QString innerTmpFile = tempfile;
+		QString tmpSuffix = QString::number(qrand() % 9999) + ".tmp";
+		innerTmpFile.replace(".dld", tmpSuffix);
+		f = fopen(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)), "w+");
 		if (!f) {
 			report_error(tr("cannot create temporary file: %s").toUtf8(), qt_error_string().toUtf8().data());
 			goto error_close_zip;
@@ -168,7 +172,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		}
 		membuf[streamsize] = 0;
 		fclose(f);
-
+		unlink(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)));
 		/*
 		 * Parse the memory buffer into XML document and
 		 * transform it to divelogs.de format, finally dumping
