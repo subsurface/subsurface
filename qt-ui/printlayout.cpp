@@ -384,7 +384,7 @@ void PrintLayout::printTable()
 	 * use 10% each, then the sum of passes[] here should be 80%.
 	 * two should be enough! */
 	const int passes[] = { 70, 10 };
-	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings, headingRowHeightD2;
+	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings, headingRowHeightD2, headingRowHeight;
 	bool isHeading = false;
 
 	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
@@ -392,9 +392,14 @@ void PrintLayout::printTable()
 		total = model.rows - lastAccIndex;
 		for (i = lastAccIndex; i < model.rows; i++) {
 			rowH = table.rowHeight(i);
+			if (i == 0) { // first row is always a heading. it's height is constant.
+				headingRowHeight = rowH;
+				headingRowHeightD2 = rowH / 2;
+			}
+			if (rowH > pageH - headingRowHeight) // skip huge rows. we don't support row spanning on multiple pages.
+				continue;
 			accH += rowH;
 			if (isHeading) {
-				headingRowHeightD2 = rowH >> 1;
 				headings += rowH;
 				isHeading = false;
 			}
