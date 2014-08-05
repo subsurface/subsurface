@@ -948,6 +948,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 	free(stoplevels);
 	free(gaschanges);
+	return error;
 }
 
 /*
