@@ -582,6 +582,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.visibility->setCurrentStars(0);
 	}
 	editMode = NONE;
+	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
 }
 
 void MainTab::addCylinder_clicked()
