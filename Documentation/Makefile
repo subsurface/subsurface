@@ -27,7 +27,7 @@ $(OUT)%.text: %.txt
 	$(A2X) -f text $<
 
 $(OUT)%.pdf: %.txt
-	$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf $<
+	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf $<
 
 $(OUT)%.html: %.txt
 	@echo "if asciidoc isn't found the html file included in the sources is copied"
