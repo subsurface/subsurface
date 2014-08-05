@@ -172,6 +172,11 @@ struct tank_info_t tank_info[100] = {
 	{ "D7 300 bar", .ml = 14000, .bar = 300 },
 	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
 	{ "D12 232 bar", .ml = 24000, .bar = 232 },
+	{ "D13 232 bar", .ml = 26000, .bar = 232 },
+	{ "D15 232 bar", .ml = 30000, .bar = 232 },
+	{ "D16 232 bar", .ml = 32000, .bar = 232 },
+	{ "D18 232 bar", .ml = 36000, .bar = 232 },
+	{ "D20 232 bar", .ml = 40000, .bar = 232 },
 
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
