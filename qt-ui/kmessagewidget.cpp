@@ -101,9 +101,10 @@ void KMessageWidgetPrivate::createLayout()
 			button->show();
 			buttonLayout->addButton(button, QDialogButtonBox::QDialogButtonBox::AcceptRole);
 		}
-		//buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
+		buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
 		layout->addWidget(buttonLayout, 1, 0, 1, 2, Qt::AlignHCenter | Qt::AlignTop);
 	} else {
+		bool closeButtonVisible = closeButton->isVisible();
 		QHBoxLayout *layout = new QHBoxLayout(content);
 		layout->addWidget(iconLabel);
 		layout->addWidget(textLabel);
@@ -113,9 +114,9 @@ void KMessageWidgetPrivate::createLayout()
 			buttonLayout->addButton(button, QDialogButtonBox::QDialogButtonBox::AcceptRole);
 		}
 
-		//buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
+		buttonLayout->addButton(closeButton, QDialogButtonBox::RejectRole);
 		// Something gets changed when added to the buttonLayout
-		//closeButton->setVisible(closeButtonVisible);
+		closeButton->setVisible(closeButtonVisible);
 		layout->addWidget(buttonLayout);
 	};
 
