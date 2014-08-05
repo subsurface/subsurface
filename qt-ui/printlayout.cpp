@@ -385,7 +385,7 @@ void PrintLayout::printTable()
 	 * two should be enough! */
 	const int passes[] = { 70, 10 };
 	int tableHeight = 0, lastAccIndex = 0, rowH, accH, headings, headingRowHeightD2, headingRowHeight;
-	bool isHeading = false;
+	bool newHeading = false;
 
 	for (unsigned int pass = 0; pass < sizeof(passes) / sizeof(passes[0]); pass++) {
 		progress = headings = accH = 0;
@@ -399,15 +399,15 @@ void PrintLayout::printTable()
 			if (rowH > pageH - headingRowHeight) // skip huge rows. we don't support row spanning on multiple pages.
 				continue;
 			accH += rowH;
-			if (isHeading) {
+			if (newHeading) {
 				headings += rowH;
-				isHeading = false;
+				newHeading = false;
 			}
 			if (accH > pageH) {
 				lastAccIndex = i;
 				pageIndexes.append(pageIndexes.last() + (accH - rowH));
 				addTablePrintHeadingRow(&model, i);
-				isHeading = true;
+				newHeading = true;
 				accH = 0;
 				i--;
 			}
