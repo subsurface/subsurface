@@ -162,8 +162,10 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem->destNode());
 	scene()->addItem(mouseFollowerHorizontal);
 	scene()->addItem(mouseFollowerVertical);
-	mouseFollowerHorizontal->setPen(QPen(QColor(Qt::red).lighter()));
-	mouseFollowerVertical->setPen(QPen(QColor(Qt::red).lighter()));
+	QPen pen(QColor(Qt::red).lighter());
+	pen.setWidth(0);
+	mouseFollowerHorizontal->setPen(pen);
+	mouseFollowerVertical->setPen(pen);
 	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
