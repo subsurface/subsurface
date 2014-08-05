@@ -161,6 +161,8 @@ private:
 	PartialPressureGasItem *po2GasItem;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
+	DiveLineItem *mouseFollowerVertical;
+	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
 	bool isGrayscale;
 	bool printMode;

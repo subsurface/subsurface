@@ -86,6 +86,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	po2GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
+	mouseFollowerHorizontal(new DiveLineItem()),
+	mouseFollowerVertical(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 	isGrayscale(false),
 	printMode(false),
@@ -158,6 +160,10 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
+	scene()->addItem(mouseFollowerHorizontal);
+	scene()->addItem(mouseFollowerVertical);
+	mouseFollowerHorizontal->setPen(QPen(QColor(Qt::red).lighter()));
+	mouseFollowerVertical->setPen(QPen(QColor(Qt::red).lighter()));
 	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
@@ -665,6 +671,20 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 		scrollViewTo(event->pos());
 		toolTipItem->setPos(mapToScene(toolTipPos));
 	}
+
+	QPointF pos = mapToScene(event->pos());
+	qreal vValue = profileYAxis->valueAt(pos);
+	qreal hValue = timeAxis->valueAt(pos);
+	if ( profileYAxis->maximum() >= vValue
+		&& profileYAxis->minimum() <= vValue){
+		mouseFollowerHorizontal->setPos(timeAxis->pos().x(), pos.y());
+	}
+	if ( timeAxis->maximum() >= hValue
+		&& timeAxis->minimum() <= hValue){
+		mouseFollowerVertical->setPos(pos.x(), profileYAxis->line().y1());
+	}
+
+
 }
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
@@ -706,6 +726,8 @@ void ProfileWidget2::setEmptyState()
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
+	mouseFollowerHorizontal->setVisible(false);
+	mouseFollowerVertical->setVisible(false);
 
 	#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
@@ -788,6 +810,10 @@ void ProfileWidget2::setProfileState()
 	HIDE_ALL(DiveHandler, handles);
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 	#undef HIDE_ALL
+	mouseFollowerHorizontal->setVisible(true);
+	mouseFollowerVertical->setVisible(true);
+	mouseFollowerHorizontal->setLine(timeAxis->line());
+	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 }
 
 void ProfileWidget2::setAddState()
@@ -1055,6 +1081,8 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
 	isGrayscale = mode ? grayscale : false;
+	mouseFollowerHorizontal->setVisible( !mode );
+	mouseFollowerVertical->setVisible( !mode );
 }
 
 void ProfileWidget2::setFontPrintScale(double scale)
