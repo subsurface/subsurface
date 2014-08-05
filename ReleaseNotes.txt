@@ -17,7 +17,10 @@ Some of the changes since 4.1
 - Data entry for dives is much more intuitive and consistent
 - First steps towards an HTML exporter
 - Support to import dive log files from Seabear dive computers
-- user survey added to learn more about the needs of out users
+- User survey added to learn more about the needs of out users
+- Subsurface no longer pretends to be Mozilla 5 when connecting to web
+  services
+- User manual is now in English, Spanish and Russian
 
 (I'm sure there are more things I am missing)
 
