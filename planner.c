@@ -517,7 +517,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 	return stoplevels;
 }
 
-static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer)
+static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	char buffer[20000], temp[1000];
 	int len, lastdepth = 0, lasttime = 0;
@@ -532,6 +532,15 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 	if (!dp)
 		return;
+
+	if (error) {
+		snprintf(temp, sizeof(temp),
+			 translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
+		snprintf(buffer, sizeof(buffer), "<span style='color: red;'>%s </span> %s<br>",
+				translate("gettextFromC", "Warning:"), temp);
+		dive->notes = strdup(buffer);
+		return;
+	}
 
 	len = show_disclaimer ? snprintf(buffer, sizeof(buffer), "<div><b>%s<b></div><br>", disclaimer) : 0;
 	snprintf(temp, sizeof(temp), translate("gettextFromC", "based on GFlow = %d and GFhigh = %d"),
@@ -724,7 +733,7 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
+int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
 {
 	struct sample *sample;
 	int po2;
@@ -747,6 +756,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int o2time = 0;
 	int breaktime = -1;
 	int breakcylinder;
+	int error = 0;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -772,9 +782,8 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, gas, po2, false);
 		create_dive_from_plan(diveplan, is_planner);
-		return;
+		return(error);
 	}
-
 	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
 
 #if DEBUG_PLAN & 4
@@ -889,6 +898,11 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						       DECOTIMESTEP, po2, &displayed_dive);
 			cache_deco_state(tissue_tolerance, &trial_cache);
 			clock += DECOTIMESTEP;
+			/* Finish infinite deco */
+			if(clock >= 48 * 3600 && depth >= 6000) {
+				error = LONGDECO;
+				break;
+			}
 			if (prefs.doo2breaks) {
 				if (get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000) {
 					o2time += DECOTIMESTEP;
@@ -929,7 +943,7 @@ void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	 * data that we need to be there when plotting the dive */
 	plan_add_segment(diveplan, clock - previous_point_time, 0, gas, po2, false);
 	create_dive_from_plan(diveplan, is_planner);
-	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer);
+	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer, error);
 	fixup_dc_duration(&displayed_dive.dc);
 
 	free(stoplevels);

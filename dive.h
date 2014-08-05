@@ -711,7 +711,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
-void plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
+int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, char *name);

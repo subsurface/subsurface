@@ -1,6 +1,7 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
+#define LONGDECO 1
 
 #ifdef __cplusplus
 extern "C" {
