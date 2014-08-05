@@ -372,73 +372,73 @@
         <translation>Пясък</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="158"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="192"/>
         <source>UDDF files (*.uddf *.UDDF)</source>
         <translation>UDDF файлове (*.uddf *.UDDF)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="162"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="196"/>
         <source>CSV files (*.csv *.CSV)</source>
         <translation>CSV файлове (*.csv *.CSV)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="58"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="59"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
         <translation>Общ формат, който се използва за обмен на данни между различни видове програми.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="60"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="61"/>
         <source>Comma separated values that include the most relevant information of the dive profile.</source>
         <translation>Стойности разделени с запетая, които съдържат най-важната информация относно гмуркаческия профил.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="62"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="63"/>
         <source>Send the dive data to divelogs.de website.</source>
         <translation>Изпрати данните от гмуркането към сайта divelogs.de.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="64"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="65"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
         <translation>HTML експорт на местонахождения, визуализирани на световната карта.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="66"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="67"/>
         <source>Subsurface native XML format.</source>
         <translation>Subsurface XML формат</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="157"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="191"/>
         <source>Export UDDF file as</source>
         <translation>Експорт на като UDDF файл</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="161"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="195"/>
         <source>Export CSV file as</source>
         <translation>Експорт на СSV файл като</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="166"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="200"/>
         <source>Export world map</source>
         <translation>Експорт на световна карта</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="167"/>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="183"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="201"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="217"/>
         <source>HTML files (*.html)</source>
         <translation>HTML файлове (*.html)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="171"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="205"/>
         <source>Export Subsurface XML</source>
         <translation>Експорт на Subsurface XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="172"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="206"/>
         <source>XML files (*.xml *.ssrf)</source>
         <translation>XML файлове (*.xml *.ssrf)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="182"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="216"/>
         <source>Export HTML files as</source>
         <translation>Експортирай HTML файлове като</translation>
     </message>
@@ -633,37 +633,37 @@
         <translation>неизвестно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="638"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="643"/>
         <source>Final depth</source>
         <translation>Финална дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="640"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="645"/>
         <source>Run time</source>
         <translation>Teчащо време</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="642"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="647"/>
         <source>Duration</source>
         <translation>Продълж. (мин.)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="644"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="649"/>
         <source>Used gas</source>
         <translation>Използван газ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="646"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="651"/>
         <source>CC set point</source>
         <translation>CC поставена точка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="942"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="974"/>
         <source>Discard the plan?</source>
         <translation>Изтрий плана?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="943"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="975"/>
         <source>You are about to discard your plan.</source>
         <translation>Вие ще изтриете плана.</translation>
     </message>
@@ -840,85 +840,85 @@
         <translation>не може да бъде създаден ZIP файл за качване: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="154"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="157"/>
         <source>cannot create temporary file: %s</source>
         <translation>не може да бъде създаден временен файл: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="164"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="167"/>
         <source>internal error: %s</source>
         <translation>вътрешна грешка: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="180"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
         <source>internal error</source>
         <translation>вътрешна грешка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="640"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="839"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="643"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="842"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="671"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="674"/>
         <source>Uploading dive list...</source>
         <translation>Обновяване на списъка от гмуркания...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="703"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="706"/>
         <source>Downloading dive list...</source>
         <translation>Изтегляне на списък от гмуркания...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="752"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="755"/>
         <source>Downloading %1 dives...</source>
         <translation>Изтегляне на %1 гмуркания...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="796"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="799"/>
         <source>Download finished - %1</source>
         <translation>Изтеглянето приключи - %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="813"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="816"/>
         <source>Corrupted download</source>
         <translation>Неправилно изтегляне</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="814"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="817"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Архива не може да бъде отворен:
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="853"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
         <source>Upload failed</source>
         <translation>Грешка при качването</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="856"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="859"/>
         <source>Upload successful</source>
         <translation>Успешно качване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="859"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
         <source>Login failed</source>
         <translation>Грешка при логин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="865"/>
         <source>Cannot parse response</source>
         <translation>Не може да бъде направен разбор на отговора</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="873"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
         <source>Error: %1</source>
         <translation>Грешка: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="840"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="843"/>
         <source>Upload finished</source>
         <translation>Качването приключи</translation>
     </message>
@@ -1050,7 +1050,7 @@
     <name>MainTab</name>
     <message>
         <location filename="../qt-ui/maintab.ui" line="134"/>
-        <location filename="../qt-ui/maintab.cpp" line="455"/>
+        <location filename="../qt-ui/maintab.cpp" line="460"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
@@ -1091,27 +1091,27 @@
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="18"/>
-        <location filename="../qt-ui/maintab.cpp" line="430"/>
+        <location filename="../qt-ui/maintab.cpp" line="435"/>
         <source>Dive notes</source>
         <translation>Бележки</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <location filename="../qt-ui/maintab.ui" line="613"/>
-        <location filename="../qt-ui/maintab.cpp" line="247"/>
+        <location filename="../qt-ui/maintab.cpp" line="251"/>
         <source>Air temp.</source>
         <translation>Темп. на въздух</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <location filename="../qt-ui/maintab.ui" line="632"/>
-        <location filename="../qt-ui/maintab.cpp" line="248"/>
+        <location filename="../qt-ui/maintab.cpp" line="252"/>
         <source>Water temp.</source>
         <translation>Темп. на водата</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
-        <location filename="../qt-ui/maintab.cpp" line="456"/>
+        <location filename="../qt-ui/maintab.cpp" line="461"/>
         <source>Notes</source>
         <translation>Бележки</translation>
     </message>
@@ -1258,67 +1258,67 @@
         <translation>Отмяна</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="244"/>
+        <location filename="../qt-ui/maintab.cpp" line="248"/>
         <source>Air temp. [%1]</source>
         <translation>Tемп. на въздуха [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="245"/>
+        <location filename="../qt-ui/maintab.cpp" line="249"/>
         <source>Water temp. [%1]</source>
         <translation>Темп. на водата [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="280"/>
+        <location filename="../qt-ui/maintab.cpp" line="285"/>
         <source>This trip is being edited.</source>
         <translation>Това пътуване се редактира.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="286"/>
+        <location filename="../qt-ui/maintab.cpp" line="291"/>
         <source>Multiple dives are being edited.</source>
         <translation>Редактира се повече от едно гмуркане.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="288"/>
+        <location filename="../qt-ui/maintab.cpp" line="293"/>
         <source>This dive is being edited.</source>
         <translation>Това гмуркане се редактира.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="401"/>
-        <location filename="../qt-ui/maintab.cpp" line="425"/>
+        <location filename="../qt-ui/maintab.cpp" line="406"/>
+        <location filename="../qt-ui/maintab.cpp" line="430"/>
         <source>Trip notes</source>
         <translation>Бележки за пътуване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="423"/>
+        <location filename="../qt-ui/maintab.cpp" line="428"/>
         <source>Trip location</source>
         <translation>Местонахождение на пътуване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="477"/>
-        <location filename="../qt-ui/maintab.cpp" line="485"/>
-        <location filename="../qt-ui/maintab.cpp" line="518"/>
-        <location filename="../qt-ui/maintab.cpp" line="519"/>
-        <location filename="../qt-ui/maintab.cpp" line="520"/>
+        <location filename="../qt-ui/maintab.cpp" line="482"/>
+        <location filename="../qt-ui/maintab.cpp" line="490"/>
+        <location filename="../qt-ui/maintab.cpp" line="523"/>
+        <location filename="../qt-ui/maintab.cpp" line="524"/>
+        <location filename="../qt-ui/maintab.cpp" line="525"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="479"/>
+        <location filename="../qt-ui/maintab.cpp" line="484"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="516"/>
+        <location filename="../qt-ui/maintab.cpp" line="521"/>
         <source>Deepest dive</source>
         <translation>Най-дълбоко гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="517"/>
+        <location filename="../qt-ui/maintab.cpp" line="522"/>
         <source>Shallowest dive</source>
         <translation>Най-плитко гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="561"/>
+        <location filename="../qt-ui/maintab.cpp" line="566"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -1327,17 +1327,17 @@ mixed from Air and using:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="565"/>
+        <location filename="../qt-ui/maintab.cpp" line="570"/>
         <source> and </source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="819"/>
+        <location filename="../qt-ui/maintab.cpp" line="825"/>
         <source>Discard the changes?</source>
         <translation>Изтрий промените?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="820"/>
+        <location filename="../qt-ui/maintab.cpp" line="826"/>
         <source>You are about to discard your changes.</source>
         <translation>Вие ще изтриете промените.</translation>
     </message>
@@ -1888,42 +1888,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="454"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
         <source>ft/min</source>
         <translation>фута/мин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="455"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
         <source>Last stop at 20ft</source>
         <translation>Последен стоп на 20фута</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="456"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% средна дълбочина до 20фута</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="457"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="462"/>
         <source>20ft to surface</source>
         <translation>20фута то повърхността</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="459"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="464"/>
         <source>m/min</source>
         <translation>м/мин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="460"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="465"/>
         <source>Last stop at 6m</source>
         <translation>Последен стоп на 6 метра</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="461"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="466"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% средна дълбочина до 6м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/diveplanner.cpp" line="462"/>
+        <location filename="../qt-ui/diveplanner.cpp" line="467"/>
         <source>6m to surface</source>
         <translation>6м до повърхността</translation>
     </message>
@@ -2319,19 +2319,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrintDialog</name>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="46"/>
+        <location filename="../qt-ui/printdialog.cpp" line="48"/>
         <source>&amp;Preview</source>
         <translation>&amp;Преглед</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="43"/>
+        <location filename="../qt-ui/printdialog.cpp" line="45"/>
         <source>P&amp;rint</source>
         <translation>Пе&amp;чатане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="59"/>
+        <location filename="../qt-ui/printdialog.cpp" line="60"/>
         <source>Print</source>
         <translation>Напечатай</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/printdialog.cpp" line="75"/>
+        <source>Subsurface cannot find installed printers on this system!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2375,59 +2380,59 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrintOptions</name>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="23"/>
+        <location filename="../qt-ui/printoptions.ui" line="41"/>
+        <source>&amp;6 dives per page</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="57"/>
+        <source>&amp;1 dive per page</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="70"/>
+        <source>&amp;2 dives per page</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="83"/>
+        <source>&amp;Table print</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="106"/>
         <source>Print options</source>
         <translation>Настройки на принтиране</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="41"/>
+        <location filename="../qt-ui/printoptions.ui" line="118"/>
         <source>Print only selected dives</source>
         <translation>Напечатай само избраните гмуркания</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="60"/>
+        <location filename="../qt-ui/printoptions.ui" line="131"/>
         <source>Print in color</source>
         <translation>Печатай в цвят</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="86"/>
+        <location filename="../qt-ui/printoptions.ui" line="153"/>
+        <source>Prof&amp;ile on top</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="169"/>
+        <source>&amp;Notes on top</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.ui" line="29"/>
         <source>Print type</source>
         <translation>Тип на печата</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printoptions.ui" line="116"/>
-        <source>6 dives per page</source>
-        <translation>6 гмуркания на стр.</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="132"/>
-        <source>2 dives per page</source>
-        <translation>2 гмуркания на стр.</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="145"/>
-        <source>1 dive per page</source>
-        <translation>1 гмуркане на стр.</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="158"/>
-        <source>Table print</source>
-        <translation>Печат на таблица</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="175"/>
+        <location filename="../qt-ui/printoptions.ui" line="141"/>
         <source>Ordering</source>
         <translation>Подредба</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="193"/>
-        <source>Profile on top</source>
-        <translation>Профил от горе</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/printoptions.ui" line="215"/>
-        <source>Notes on top</source>
-        <translation>Бележки от горе</translation>
     </message>
 </context>
 <context>
@@ -2664,22 +2669,22 @@ p, li { white-space: pre-wrap; }
         <translation>кб.фута</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="524"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="527"/>
         <source>Invalid response from server</source>
         <translation>Грешен отговор от сървъра</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="532"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="535"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Очакван XML таг &apos;DiveDateReader&apos;, вместо това получен &apos;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="578"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="581"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Очакван XML таг &apos;DiveDates&apos; не беше намерен</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="585"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="588"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Грешен XML отговор. Ред %1: %2</translation>
     </message>
@@ -2844,47 +2849,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="340"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="343"/>
         <source>Webservice</source>
         <translation>Уеб услуга</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="404"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="407"/>
         <source>Connecting...</source>
         <translation>Свръзване...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="423"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="426"/>
         <source>Download finished</source>
         <translation>Изтеглянето приключи</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="437"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="440"/>
         <source>Download error: %1</source>
         <translation>Грешка при изтеглянето: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="447"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
         <source>Connection error: </source>
         <translation>Грешка при връзка: </translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="456"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="459"/>
         <source>Download successful</source>
         <translation>Успешно изтегляне</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="450"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
         <source>Invalid user identifier!</source>
         <translation>Грешен потребителски ключ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="323"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="326"/>
         <source>Enter User ID and click Download</source>
         <translation>Въведете потребителски ID и натиснете &quot;Изтегли&quot;</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="453"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="456"/>
         <source>Cannot parse response!</source>
         <translation>Не може да бъде напревен разряд!</translation>
     </message>
@@ -3177,12 +3182,12 @@ OS CPU архитектура %1</translation>
         <translation>Качи</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="258"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="261"/>
         <source>Operation timed out</source>
         <translation>Времето за операцията изтече</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="279"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="282"/>
         <source>Transfering data...</source>
         <translation>Трансфер на данни...</translation>
     </message>
@@ -3368,34 +3373,34 @@ Maximum</source>
     <message>
         <location filename="../divelist.c" line="460"/>
         <location filename="../equipment.c" line="79"/>
-        <location filename="../planner.c" line="988"/>
-        <location filename="../planner.c" line="991"/>
+        <location filename="../planner.c" line="1005"/>
+        <location filename="../planner.c" line="1008"/>
         <location filename="../statistics.c" line="355"/>
         <source>air</source>
         <translation>въздух</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="185"/>
+        <location filename="../equipment.c" line="190"/>
         <source>integrated</source>
         <translation>вградена</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="186"/>
+        <location filename="../equipment.c" line="191"/>
         <source>belt</source>
         <translation>колан</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="187"/>
+        <location filename="../equipment.c" line="192"/>
         <source>ankle</source>
         <translation>глезен</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="188"/>
+        <location filename="../equipment.c" line="193"/>
         <source>backplate weight</source>
         <translation>нагръбна</translation>
     </message>
     <message>
-        <location filename="../equipment.c" line="189"/>
+        <location filename="../equipment.c" line="194"/>
         <source>clip-on</source>
         <translation>щипка</translation>
     </message>
@@ -3711,7 +3716,7 @@ Maximum</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="763"/>
+        <location filename="../planner.c" line="773"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Не може да бъде намерен газ %s</translation>
     </message>
@@ -3726,110 +3731,116 @@ Maximum</source>
         <translation>ВНИМАНИЕ: ТОВА Е НОВО ИЗПЪЛНЕНИЕ НА АГЛОРИТЪМА НА БУЛМАН И НА ПЛАНОВИКА, КОИТО НЕ СА ТЕСТВАНИ ДОСТАТЪЧНО. МОЛЯ НЕ ПЛАНУВАЙТЕ ИЗТИНСКИ ГМУРКАНИЯ БАЗИРАНИ НА ДАННИТЕ ТУК!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="537"/>
+        <location filename="../planner.c" line="538"/>
+        <source>Decompression calculation aborted due to excessive time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../planner.c" line="546"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
         <translation>базирано на GFlow = %d и GFHigh = %d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="540"/>
+        <location filename="../planner.c" line="549"/>
         <source>Subsurface dive plan</source>
         <translation>Subsurface гмуркачески план</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="544"/>
+        <location filename="../planner.c" line="553"/>
         <source>depth</source>
         <translation>дълбочина</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="547"/>
+        <location filename="../planner.c" line="556"/>
         <source>runtime</source>
         <translation>времетраене</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="550"/>
+        <location filename="../planner.c" line="559"/>
         <source>duration</source>
         <translation>продължителност</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="553"/>
+        <location filename="../planner.c" line="562"/>
         <source>gas</source>
         <translation>газ</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="587"/>
+        <location filename="../planner.c" line="596"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Преход към %.*f %s за %d:%02d мин - времетраене %d:%02u на %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="597"/>
+        <location filename="../planner.c" line="606"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Остани на %.*f %s за %d:%02d мин - времетраене %d:%02u на %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="608"/>
+        <location filename="../planner.c" line="617"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="611"/>
-        <location filename="../planner.c" line="615"/>
+        <location filename="../planner.c" line="620"/>
+        <location filename="../planner.c" line="624"/>
         <source>%3dmin</source>
         <translation>%3dмин</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="631"/>
+        <location filename="../planner.c" line="640"/>
         <source>Switch gas to %s</source>
         <translation>Превключи газ на %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="644"/>
+        <location filename="../planner.c" line="653"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="646"/>
+        <location filename="../planner.c" line="655"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="649"/>
+        <location filename="../planner.c" line="658"/>
         <source>Gas consumption:</source>
         <translation>Консумация на газ:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="669"/>
-        <location filename="../planner.c" line="674"/>
-        <location filename="../planner.c" line="697"/>
+        <location filename="../planner.c" line="540"/>
+        <location filename="../planner.c" line="678"/>
+        <location filename="../planner.c" line="683"/>
+        <location filename="../planner.c" line="706"/>
         <source>Warning:</source>
         <translation>Предупреждение:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="670"/>
+        <location filename="../planner.c" line="679"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>има повече газ от този на разположение в избраната бултилка</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="675"/>
+        <location filename="../planner.c" line="684"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>няма достатъчно резерв за газово споделяне при изкачване!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="677"/>
+        <location filename="../planner.c" line="686"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s от %s (%.0f%s/%.0f%s в планирано покачване)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="679"/>
+        <location filename="../planner.c" line="688"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s по време на плануваното изкачване) на %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="694"/>
+        <location filename="../planner.c" line="703"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>висока pO₂ стойност %.2f при %d:%02u с газ %s на дълбочина %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="992"/>
+        <location filename="../planner.c" line="1009"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -4536,7 +4547,7 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Тревога: слаба батерия</translation>
     </message>
     <message>
-        <location filename="../save-html.c" line="296"/>
+        <location filename="../save-html.c" line="319"/>
         <location filename="../worldmap-save.c" line="106"/>
         <source>Can&apos;t open file %s</source>
         <translation>Не може да бъде отворен файл %s</translation>
@@ -4619,152 +4630,152 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="35"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="56"/>
         <source>Rates</source>
         <translation>Рейтинг</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="56"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="77"/>
         <source>Ascent</source>
         <translation>Изкачване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="77"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="98"/>
         <source>below 75% avg. depth</source>
         <translation>Под 75% средна дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="84"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="101"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="118"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="135"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="181"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="105"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="122"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="139"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="156"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="202"/>
         <source>m/min</source>
         <translation>м/мин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="148"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="169"/>
         <source>Descent</source>
         <translation>Спускане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="200"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="221"/>
         <source>surface to the bottom</source>
         <translation>Повърхност до дъно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="226"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="247"/>
         <source>Planning</source>
         <translation>Планиране</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="247"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>GF low</source>
         <translation>GF low</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="264"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="285"/>
         <source>GF high</source>
         <translation>GF high</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="281"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="302"/>
         <source>Drop to first depth</source>
         <translation>Спускане до първа дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="288"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="309"/>
         <source>Last stop at 6m</source>
         <translation>Последен стоп на 6 метра</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="295"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="316"/>
         <source>Plan backgas breaks</source>
         <translation>Планирай &quot;бекгас брейкс&quot;</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="318"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="339"/>
         <source>Gas options</source>
         <translation>Газ настройки</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="339"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="360"/>
         <source>Bottom SAC</source>
         <translation>Долен SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="349"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="370"/>
         <source>Deco SAC</source>
         <translation>Деко SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="359"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="380"/>
         <source>Bottom pO₂</source>
         <translation>Долен pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="382"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="403"/>
         <source>Deco pO₂</source>
         <translation>Деко pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="421"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="442"/>
         <source>Dive notes</source>
         <translation>Бележки</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="445"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="466"/>
         <source>Display runtime</source>
         <translation>Покажи времетраене</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="461"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="482"/>
         <source>Display segment duration</source>
         <translation>Покажи времетраене на сегментацията</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="474"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="495"/>
         <source>Display transitions in deco</source>
         <translation>Покажи транзиции в декомпресията</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="481"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="502"/>
         <source>Verbatim diveplan</source>
         <translation>Дословен гмуркачески план</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="366"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="389"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="387"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="410"/>
         <source>bar</source>
         <translation>бара</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="94"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="115"/>
         <source>75% to 50% avg. depth</source>
         <translation>75% до 50% средна дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="111"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="132"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% средна дълбочина до 6м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="128"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="149"/>
         <source>6m to surface</source>
         <translation>6м до повърхността</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="442"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="463"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
         <translation>Покажи времетраене (абсолютно време) на стоповете в гмуркаческия план</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="458"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="479"/>
         <source>In dive plan, show duration (relative time) of stops</source>
         <translation>Покажи времетраене (oтносително време) на стоповете в гмуркаческия план</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="471"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
         <translation>Покажи преводи или ги третирай като косвени в гмуркаческия план</translation>
     </message>
