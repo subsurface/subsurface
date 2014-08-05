@@ -61,7 +61,7 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
 	closeButton = new QToolButton(content);
 	closeButton->setAutoRaise(true);
 	closeButton->setDefaultAction(closeAction);
-
+	closeButton->setVisible(false);
 	q->setMessageType(KMessageWidget::Information);
 }
 

@@ -227,6 +227,10 @@ void MainTab::closeMessage()
 
 void MainTab::displayMessage(QString str)
 {
+	ui.diveNotesMessage->setCloseButtonVisible(false);
+	ui.diveEquipmentMessage->setCloseButtonVisible(false);
+	ui.diveInfoMessage->setCloseButtonVisible(false);
+	ui.diveStatisticsMessage->setCloseButtonVisible(false);
 	ui.diveNotesMessage->setText(str);
 	ui.diveNotesMessage->animatedShow();
 	ui.diveEquipmentMessage->setText(str);
