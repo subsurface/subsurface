@@ -454,7 +454,7 @@
 
           <xsl:if test="cns|u:cns|u1:cns &gt; 0">
             <xsl:attribute name="cns">
-              <xsl:value-of select="concat(cns|u:cns|u1:cns, ' C')"/>
+              <xsl:value-of select="cns|u:cns|u1:cns"/>
             </xsl:attribute>
           </xsl:if>
 
