@@ -5,7 +5,6 @@
 #include <libxml/parser.h>
 #include <zip.h>
 #include <errno.h>
-#include <stdio.h>
 
 #include <QDir>
 #include <QHttpMultiPart>
@@ -153,7 +152,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		QString innerTmpFile = tempfile;
 		QString tmpSuffix = QString::number(qrand() % 9999) + ".tmp";
 		innerTmpFile.replace(".dld", tmpSuffix);
-		f = fopen(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)), "w+");
+		f = subsurface_fopen(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)), "w+");
 		if (!f) {
 			report_error(tr("cannot create temporary file: %s").toUtf8(), qt_error_string().toUtf8().data());
 			goto error_close_zip;
