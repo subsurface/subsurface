@@ -7,6 +7,7 @@
 #include <QHeaderView>
 #include <QPointer>
 #include <QPicture>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "../dive.h"
@@ -64,6 +65,14 @@ void PrintLayout::print()
 {
 	// we call setup each time to check if the printer properties have changed
 	setup();
+	if (pageW == 0 || pageH == 0) {
+		QMessageBox msgBox;
+		msgBox.setIcon(QMessageBox::Critical);
+		msgBox.setText(tr("Subsurface cannot find a usable printer on this system!"));
+		msgBox.setWindowIcon(QIcon(":subsurface-icon"));
+		msgBox.exec();
+		return;
+	}
 	switch (printOptions->type) {
 	case options::PRETTY:
 		printProfileDives(3, 2);
@@ -422,13 +431,13 @@ void PrintLayout::printTable()
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 		(void)headingRowHeightD2;
 		QRegion region(0, pageIndexes.at(i) - 1,
-		               table.width(),
-		               pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
+			       table.width(),
+			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
 		table.render(&painter, QPoint(0, 0), region);
 #else
 		QRegion region(0, pageIndexes.at(i) + headingRowHeightD2 - 1,
-		               table.width(),
-		               pageIndexes.at(i + 1) - (pageIndexes.at(i) + headingRowHeightD2) + 1);
+			       table.width(),
+			       pageIndexes.at(i + 1) - (pageIndexes.at(i) + headingRowHeightD2) + 1);
 		// vectorize the table first by using QPicture
 		QPicture pic;
 		QPainter picPainter;
