@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1089</width>
-        <height>404</height>
+        <width>1078</width>
+        <height>418</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -271,6 +271,9 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="gflow">
+            <property name="suffix">
+             <string>%</string>
+            </property>
             <property name="minimum">
              <number>1</number>
             </property>
@@ -288,6 +291,9 @@
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="gfhigh">
+            <property name="suffix">
+             <string>%</string>
+            </property>
             <property name="minimum">
              <number>1</number>
             </property>
@@ -362,7 +368,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="bottomSAC"/>
+           <widget class="QSpinBox" name="bottomSAC">
+            <property name="suffix">
+             <string>ℓ/min</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_14">
@@ -372,7 +382,11 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="decoStopSAC"/>
+           <widget class="QSpinBox" name="decoStopSAC">
+            <property name="suffix">
+             <string>ℓ/min</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_6">

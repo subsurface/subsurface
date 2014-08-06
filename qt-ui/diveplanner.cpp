@@ -416,8 +416,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 
-	ui.bottomSAC->setValue(prefs.bottomsac / 1000.0);
-	ui.decoStopSAC->setValue(prefs.decosac / 1000.0);
+	ui.bottomSAC->setValue(rint(get_volume_units(prefs.bottomsac, NULL, NULL)));
+	ui.decoStopSAC->setValue(rint(get_volume_units(prefs.decosac, NULL, NULL)));
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 
@@ -465,6 +465,21 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.lastStop->setText(tr("Last stop at 6m"));
 		ui.asc50to6->setText(tr("50% avg. depth to 6m"));
 		ui.asc6toSurf->setText(tr("6m to surface"));
+	}
+	if(get_units()->volume == units::CUFT) {
+		ui.bottomSAC->setSuffix(tr("cuft/min"));
+		ui.decoStopSAC->setSuffix(tr("cuft/min"));
+		ui.bottomSAC->setPrefix(".");
+		ui.decoStopSAC->setPrefix(".");
+		ui.bottomSAC->setValue(rint(ml_to_cuft(prefs.bottomsac) * 100.0));
+		ui.decoStopSAC->setValue(rint(ml_to_cuft(prefs.decosac) * 100.0));
+	} else {
+		ui.bottomSAC->setSuffix(tr("ℓ/min"));
+		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
+		ui.bottomSAC->setPrefix("");
+		ui.decoStopSAC->setPrefix("");
+		ui.bottomSAC->setValue(rint((double) prefs.bottomsac / 1000.0));
+		ui.decoStopSAC->setValue(rint((double) prefs.decosac / 1000.0));
 	}
 	updateUnitsUI();
 	ui.ascRate75->setSuffix(vs);
@@ -690,14 +705,17 @@ void DivePlannerPointsModel::emitDataChanged()
 
 void DivePlannerPointsModel::setBottomSac(int sac)
 {
-	diveplan.bottomsac = sac * 1000;
+	volume_t newSAC;
+	newSAC.mliter = units_to_sac(sac);
+	diveplan.bottomsac = newSAC.mliter;
 	prefs.bottomsac = diveplan.bottomsac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDecoSac(int sac)
 {
-	diveplan.decosac = sac * 1000;
+	volume_t newSAC;
+	diveplan.decosac = units_to_sac(sac);
 	prefs.decosac = diveplan.decosac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }

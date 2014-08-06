@@ -188,6 +188,17 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	return vol;
 }
 
+int units_to_sac(int volume)
+{
+	if(get_units()->volume == CUFT)
+		if (volume < 10)
+			return cuft_to_l(volume) * 100;
+		else
+			return cuft_to_l(volume) * 10;
+	else
+		return volume * 1000;
+}
+
 unsigned int units_to_depth(double depth)
 {
 	if (get_units()->length == METERS)

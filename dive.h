@@ -99,6 +99,7 @@ extern double get_weight_units(unsigned int grams, int *frac, const char **units
 extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
 
 extern unsigned int units_to_depth(double depth);
+extern int units_to_sac(int volume);
 
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
