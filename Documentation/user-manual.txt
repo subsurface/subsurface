@@ -210,7 +210,7 @@ the date, a calendar is displayed from which
 one can choose the correct date. Press ESC to escape from the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by overtyping the
-information displayed. The default date is the present data and the default time is
+information displayed. The default date is the present date and the default time is
 an hour in advance of the present time.
 
 *Air and water temperatures*: the air and water temperatures during the
