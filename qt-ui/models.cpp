@@ -95,6 +95,21 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 	switch (role) {
+	case Qt::BackgroundRole: {
+		switch (index.column()) {
+		// mark the cylinder start / end pressure in red if the values
+		// seem implausible
+		case START:
+		case END:
+			if ((cyl->start.mbar && !cyl->end.mbar) ||
+			    (cyl->end.mbar && cyl->start.mbar <= cyl->end.mbar))
+				ret = REDORANGE1_HIGH_TRANS;
+			else
+				ret = WHITE1;
+			break;
+		}
+		break;
+	}
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
 		switch (index.column()) {
@@ -235,13 +250,14 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	case START:
-		if (CHANGED() && (!cyl->end.mbar || string_to_pressure(vString.toUtf8().data()).mbar >= cyl->end.mbar)) {
+		if (CHANGED()) {
 			cyl->start = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
 		break;
 	case END:
-		if (CHANGED() && (!cyl->start.mbar || string_to_pressure(vString.toUtf8().data()).mbar <= cyl->start.mbar)) {
+		if (CHANGED()) {
+			//&& (!cyl->start.mbar || string_to_pressure(vString.toUtf8().data()).mbar <= cyl->start.mbar)) {
 			cyl->end = string_to_pressure(vString.toUtf8().data());
 			changed = true;
 		}
