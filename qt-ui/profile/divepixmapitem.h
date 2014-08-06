@@ -19,6 +19,7 @@ class DivePictureItem : public DivePixmapItem {
 	Q_PROPERTY(qreal scale WRITE setScale READ scale)
 public:
 	DivePictureItem(QObject *parent = 0);
+	virtual ~DivePictureItem();
 	void setPixmap(const QPixmap& pix);
 public slots:
 	void settingsChanged();

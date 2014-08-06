@@ -114,6 +114,11 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 		button->hide();
 }
 
+DivePictureItem::~DivePictureItem(){
+	if(button)
+		Animations::hide(button);
+}
+
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
@@ -121,7 +126,5 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DivePictureItem::removePicture()
 {
-	Animations::hide(button);
-	hide();
 	DivePictureModel::instance()->removePicture(fileUrl);
 }

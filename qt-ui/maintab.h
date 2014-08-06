@@ -86,7 +86,7 @@ slots:
 	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
 	void photoDoubleClicked(const QString filePath);
-
+	void removeSelectedPhotos();
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;

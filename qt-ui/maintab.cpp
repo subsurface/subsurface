@@ -167,6 +167,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		ui.cylinders->view()->setColumnHidden(i, checked);
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
 	}
+
+	QAction *deletePhoto = new QAction(this);
+	deletePhoto->setShortcut(Qt::Key_Delete);
+	deletePhoto->setShortcutContext(Qt::WidgetShortcut);
+	ui.photosView->addAction(deletePhoto);
+	ui.photosView->setSelectionMode(QAbstractItemView::SingleSelection);
+	connect(deletePhoto, SIGNAL(triggered(bool)), this, SLOT(removeSelectedPhotos()));
 }
 
 MainTab::~MainTab()
@@ -1152,4 +1159,14 @@ void MainTab::escDetected()
 void MainTab::photoDoubleClicked(const QString filePath)
 {
 	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+}
+
+void MainTab::removeSelectedPhotos()
+{
+	if (!ui.photosView->selectionModel()->hasSelection())
+		return;
+
+	QModelIndex photoIndex = ui.photosView->selectionModel()->selectedIndexes().first();
+	QString fileUrl = photoIndex.data(Qt::DisplayPropertyRole).toString();
+	DivePictureModel::instance()->removePicture(fileUrl);
 }
