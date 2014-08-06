@@ -2308,8 +2308,8 @@ ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 - *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
 cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
-of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
-determined by the settings of the _Preferences_ tab of _Subsurface_.  Specify the SAC during the
+of your surface-equivalent air consumption (SAC, also termed RMV) in
+litres/min (for the time being, only SI units are supported).  Specify the SAC during the
 bottom part of the dive (_bottom SAC_) as well as during the decompression or safety stops of the
 dive (_deco SAC_). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
 is not sufficient and one needs to
