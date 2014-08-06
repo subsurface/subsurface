@@ -99,7 +99,7 @@ QString uiLanguage(QLocale *callerLoc)
 	dateFormat = loc.dateFormat(QLocale::LongFormat);
 	dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
 	timeFormat = loc.timeFormat();
-	timeFormat.replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H");
+	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H");
 	return uiLang;
 }
 
