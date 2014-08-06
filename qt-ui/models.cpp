@@ -1968,6 +1968,8 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 				int added = 0;
 				QString gas, gases;
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
+					if (!is_cylinder_used(dive, i))
+						continue;
 					gas = dive->cylinder[i].type.description;
 					gas += QString(!gas.isEmpty() ? " " : "") + gasname(&dive->cylinder[i].gasmix);
 					// if has a description and if such gas is not already present
