@@ -62,8 +62,8 @@ toc::[]
 
 The user survey
 ---------------
-In order to develop _Subsurface_ in a way that serves it users in the best possible way,
-it is important to have some information about these users. Upon launching _Subsurface_
+In order to develop _Subsurface_ in a way that serves its users in the best possible way,
+it is important to have some user information. Upon launching _Subsurface_
 after using this software for a week or so, a one-box user survey pops up. It is entirely
 optional and the user controls what, if any, data are sent to the _Subsurface_ development
 team. Any data that the user chooses to send is extremely useful, and will only be
@@ -185,9 +185,9 @@ in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
 
-When you click on a field in Dive notes or Equipment panels, you enter *Editing mode*.  This is
-indicated by the message in the blue box at the top of the _Dive notes_ panel. The same message is
-displayed in all the panels under Dive notes, Equipment and so forth when in editing mode.
+When one edits a field in Dive notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
+indicated by the message in the blue box at the top of the _Dive Notes_ panel. This message is
+displayed in all the panels under Dive notes and Equipment when in *Editing Mode*.
 
 ////
 Not displaying the edit bar as the Save and Cancel buttons are on reverse order when comparing to
@@ -210,7 +210,8 @@ the date, a calendar is displayed from which
 one can choose the correct date. Press ESC to escape from the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by overtyping the
-information displayed. The default date is today and the time is set one hour to the future.
+information displayed. The default date is the present data and the default time is
+an hour in advance of the present time.
 
 *Air and water temperatures*: the air and water temperatures during the
 dive can be typed directly on the fields to the right of the Start time.
@@ -305,7 +306,7 @@ cylinders and gases (entered here) affects the behaviour of the dive profile
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
-image::images/CylinderDataEntry1.jpg["FIGURE:Initial cylinder dialogue",align="center"]
+image::images/Gas_dialogue1.jpg["FIGURE:Initial cylinder dialogue",align="center"]
 
 The + button at the top right allows the user to add more cylinders for this
 dive.
@@ -319,7 +320,7 @@ table.  To select a cylinder, click in the *Type* box.
 This brings up a button that can be used to display a dropdown list of
 cylinders:
 
-image::images/CylinderDataEntry2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
+image::images/Gas_dialogue2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
 The drop-down list can be used to select the cylinder type used
 for the dive or the user may start typing in the box which shows the
@@ -656,7 +657,7 @@ The date and time of the dive, gas mixture and (often) water temperature is
 shown as obtained from the dive computer, but the user needs to add some
 additional information by hand in order to have a more complete dive record.
 If the contents of this tab is changed or edited in any way, the message in a blue box at
-the top of the panel indicates that the dive is being edited. If the user
+the top of the panel indicates that the dive is being edited. If one
 clicks on the *Dive Notes* tab, the following fields are
 visible:
 
@@ -774,7 +775,7 @@ cylinders and gases (entered here) determines the behaviour of the dive profile
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
-image::images/CylinderDataEntry1.jpg["FIGURE: Initial cylinder dialogue",align="center"]
+image::images/DC_gas_dialogue1.jpg["FIGURE: Initial cylinder dialogue",align="center"]
 
 In most cases _Subsurface_ obtains the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen) in the table. The + button
@@ -788,7 +789,7 @@ table.  To select a cylinder, the *cylinder type* box should be clicked. This
 brings up a list button that can be used to display a dropdown list of
 cylinders:
 
-image::images/CylinderDataEntry2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
+image::images/DC_gas_dialogue2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
 The drop-down list can then be used to select the cylinder type that was used
 for this dive or the user may start typing in the box which shows the available
@@ -800,7 +801,7 @@ Next one must indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the _Preferences_.
 
-Finally, the user must provide the gas mixture used. If air was used, the
+Finally, provide the gas mixture used. If air was used, the
 value of 21%  can be entered  or this field can be left blank. If nitrox or
 trimix were used, their percentages of oxygen and/or helium should be entered.
 Any inappropriate fields should be left empty. After typing the
@@ -903,11 +904,10 @@ them from there with
 _Subsurface_, as divelogs.de supports a few additional logbook formats that
 _Subsurface_ currently cannot parse.
 
-If other software's log format is support natively on Subsurface, it should be sufficient to select
-the log file on the import dialog or just use open log on it. We do support e.g. the import Suunto
-Dive Manager and Shearwater SQL databases directly.
-
-When importing dives, _Subsurface_ tries to detect multiple records for
+If the format of other software is supported natively on Subsurface, it should be sufficient to select
+either _Import->Import log files_ or _File->Open log file_. _Subsurface_ supports the data formats
+of many dive computers, including Suunto and Shearwater. When importing dives, _Subsurface_
+tries to detect multiple records for
 the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) _Subsurface_
