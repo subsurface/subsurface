@@ -366,11 +366,6 @@ QColor DepthAxis::colorForValue(double value)
 	return QColor(Qt::red);
 }
 
-static bool isPPGraphEnabled()
-{
-	return prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe;
-}
-
 DepthAxis::DepthAxis()
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
