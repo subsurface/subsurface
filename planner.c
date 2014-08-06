@@ -755,7 +755,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	struct gasmix gas;
 	int o2time = 0;
 	int breaktime = -1;
-	int breakcylinder;
+	int breakcylinder = 0;
 	int error = 0;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
