@@ -477,7 +477,7 @@ void MainTab::updateDiveInfo(bool clear)
 		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
 		volume_t sac;
 		QString SACs;
-		if (mean[0] && duration[0]) {
+		if (mean[0] && duration[0] && gases[0].mliter) {
 			sac.mliter = gases[0].mliter / (depth_to_atm(mean[0], &displayed_dive) * duration[0] / 60.0);
 			SACs = get_volume_string(sac, true).append(tr("/min"));
 		} else {
@@ -485,7 +485,7 @@ void MainTab::updateDiveInfo(bool clear)
 		}
 		for (int i = 1; i < MAX_CYLINDERS && gases[i].mliter != 0; i++) {
 			volumes.append("\n" + get_volume_string(gases[i], true));
-			if (duration[i]) {
+			if (duration[i] && gases[i].mliter) {
 				sac.mliter = gases[i].mliter / (depth_to_atm(mean[i], &displayed_dive) * duration[i] / 60);
 				SACs.append("\n" + get_volume_string(sac, true).append(tr("/min")));
 			} else {
@@ -520,9 +520,18 @@ void MainTab::updateDiveInfo(bool clear)
 		// ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
 		ui.depthLimits->overrideMaxToolTipText(tr("Deepest dive"));
 		ui.depthLimits->overrideMinToolTipText(tr("Shallowest dive"));
-		ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
-		ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
-		ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, true).append(tr("/min")));
+		if (stats_selection.max_sac.mliter)
+			ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
+		else
+			ui.sacLimits->setMaximum("");
+		if (stats_selection.min_sac.mliter)
+			ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
+		else
+			ui.sacLimits->setMinimum("");
+		if (stats_selection.avg_sac.mliter)
+			ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, true).append(tr("/min")));
+		else
+			ui.sacLimits->setAverage("");
 		ui.divesAllText->setText(QString::number(stats_selection.selection_size));
 		temp.mkelvin = stats_selection.max_temp;
 		ui.tempLimits->setMaximum(get_temperature_string(temp, true));

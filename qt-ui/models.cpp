@@ -1263,10 +1263,13 @@ QString DiveItem::displaySac() const
 {
 	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	const char *unit;
-	int decimal;
-	double value = get_volume_units(dive->sac, &decimal, &unit);
-	return QString::number(value, 'f', decimal).append(unit).append(tr("/min"));
+	if (dive->sac) {
+		const char *unit;
+		int decimal;
+		double value = get_volume_units(dive->sac, &decimal, &unit);
+		return QString::number(value, 'f', decimal).append(unit).append(tr("/min"));
+	}
+	return QString("");
 }
 
 QString DiveItem::displayWeight() const
