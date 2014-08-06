@@ -613,6 +613,8 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 	if (currentState == EMPTY)
 		return;
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
+	if(event->buttons() == Qt::LeftButton)
+		return;
 	if (event->delta() > 0 && zoomLevel < 20) {
 		scale(zoomFactor, zoomFactor);
 		zoomLevel++;
