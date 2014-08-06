@@ -814,10 +814,8 @@ void ProfileWidget2::setProfileState()
 	HIDE_ALL(DiveHandler, handles);
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 	#undef HIDE_ALL
-	mouseFollowerHorizontal->setVisible(true);
-	mouseFollowerVertical->setVisible(true);
-	mouseFollowerHorizontal->setLine(timeAxis->line());
-	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
+	mouseFollowerHorizontal->setVisible(false);
+	mouseFollowerVertical->setVisible(false);
 }
 
 void ProfileWidget2::setAddState()
@@ -826,6 +824,10 @@ void ProfileWidget2::setAddState()
 		return;
 
 	setProfileState();
+	mouseFollowerHorizontal->setVisible(true);
+	mouseFollowerVertical->setVisible(true);
+	mouseFollowerHorizontal->setLine(timeAxis->line());
+	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	//TODO: Move this method to another place, shouldn't be on mainwindow.
 	MainWindow::instance()->disableDcShortcuts();
@@ -855,6 +857,10 @@ void ProfileWidget2::setPlanState()
 		return;
 
 	setProfileState();
+	mouseFollowerHorizontal->setVisible(true);
+	mouseFollowerVertical->setVisible(true);
+	mouseFollowerHorizontal->setLine(timeAxis->line());
+	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	//TODO: Move this method to another place, shouldn't be on mainwindow.
 	MainWindow::instance()->disableDcShortcuts();
