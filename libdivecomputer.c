@@ -98,6 +98,7 @@ static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cyli
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
 			  const unsigned char *data)
 {
+	static bool shown_warning = false;
 	int i;
 
 	for (i = 0; i < ngases; i++) {
@@ -117,11 +118,17 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 
 		/* Ignore bogus data - libdivecomputer does some crazy stuff */
 		if (o2 + he <= O2_IN_AIR || o2 > 1000) {
-			report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			if (!shown_warning) {
+				shown_warning = true;
+				report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			}
 			o2 = 0;
 		}
 		if (he < 0 || o2 + he > 1000) {
-			report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			if (!shown_warning) {
+				shown_warning = true;
+				report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			}
 			he = 0;
 		}
 		dive->cylinder[i].gasmix.o2.permille = o2;
