@@ -534,7 +534,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		return;
 
 	if (error) {
-		snprintf(temp, sizeof(temp),
+		snprintf(temp, sizeof(temp), "%s",
 			 translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
 		snprintf(buffer, sizeof(buffer), "<span style='color: red;'>%s </span> %s<br>",
 				translate("gettextFromC", "Warning:"), temp);
