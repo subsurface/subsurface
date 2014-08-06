@@ -98,8 +98,11 @@ QString uiLanguage(QLocale *callerLoc)
 	shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
 	dateFormat = loc.dateFormat(QLocale::LongFormat);
 	dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
+	// special hack for Swedish as our switching from long weekday names to short weekday names
+	// messes things up there
+	dateFormat.replace("'en' 'den' d:'e'", " d");
 	timeFormat = loc.timeFormat();
-	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H");
+	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 	return uiLang;
 }
 
