@@ -797,7 +797,7 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		MainWindow::instance()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
-		MainWindow::instance()->refreshDisplay(false);
+		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
