@@ -44,20 +44,28 @@ Some of the changes since 4.1
 - There is still a deprecated 32bit installer including Qt4, but that has
   several known issues (among others, printing has a number of bugs that
   were fixed in Qt5).
-- The Mac installer has already been updated to Qt5
+- The Mac installer has also been updated to Qt5
 - A current development version of libdivecomputer is used for the Windows
   and Mac builds.
-- Dive Planner got added again, using the graphical profile editor
-  (we still cannot re-plan a planned dive - this is on the todo list)
-  print of the dive plan (without graphic profile) possible
+- A Dive Planner got added again, using the graphical profile editor; it
+  supports different ascent speeds, backgas breaks during deco and many
+  other interesting features; it allows the user to print just the dive
+  plan (without graphic profile); one shortcoming is that currently one
+  cannot re-plan a planned dive, i.e., once you save a dive plan, you can
+  no longer edit / change the plan; you have to start from scratch again.
+  This is on the todo list.
 - Pictures can be associated with dives and shown in the profile
-- Printing is much improved (but see above)
+- Printing is much improved (but see above), including a "1 dive per page"
+  mode and better rendering of dives an (in our mind) better data
+  presented per dive.
 - Data entry for dives is much more intuitive and consistent
-- Further work on the HTML exporter
-- Support to import dive log files from Seabear dive computers
-- user survey added to learn more about the needs of out users
-- new user manuals in Spanish and Russian
+- We have a reasonably functional HTML exporter for the dive log (it's
+  still work in progress but already quite powerful).
+- Support to import dive log files from Seabear dive computers.
+- We added a user survey to learn more about the interests and needs of
+  out users
 - improved and extended user manuals
+- new translated user manuals in Spanish and Russian
 
 Known issues:
 
@@ -70,11 +78,9 @@ Known issues:
   e.g. Calibri.
 
 - (Windows specific) When upgrading from Subsurface 4.1, after saving of a
-  logfile the logfiles name may be listed a second time in the files menua
+  logfile the logfiles name may be listed a second time in the files menue
   because of a change in the representation of logfiles filename in the
   Windows registry.
-
-Known bugs:
 
 - There are a number of small inconsistencies in the UI when editing
   multiple dives. For example, if multiple dives are edited and some of
@@ -88,8 +94,10 @@ Known bugs:
 - When using the globe / map widget to edit dive locations, double clicks
   some times fail to set the correct position.
 
-- Sometimes Marble will show the same pane several times. Try to zoom in
-  or out of the location.
+- Sometimes the globe will show the same pane several times. Try to zoom
+  in or out of the location and give the system time to download the map
+  tiles in the background - on slower network connections this can take a
+  while.
 
 
 New in version 4.1 (compared to Subsurface 4.0.3):
