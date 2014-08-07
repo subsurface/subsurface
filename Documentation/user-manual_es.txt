@@ -62,8 +62,8 @@ toc::[]
 La Encuesta de Usuarios
 -----------------------
 Para poder desarrollar _Subsurface_ de una forma que sirva a sus usuarios de la
-mejor manera posible, es importante tener alguna información sobre estos
-usuarios.  Al abrir _Subsurface_ tras haberlo usado una semana más o menos,
+mejor manera posible, es importante tener alguna información de los mismos.  Al
+abrir _Subsurface_ tras haberlo usado una semana más o menos,
 se desplegará una encuesta al usuario. Es completamente opcional y el usuario
 controla que datos se enviarán al equipo de desarrollo de _Subsurface_, si es
 que se envía alguno. Cualquier dato que el usuario decida enviar será
@@ -194,10 +194,10 @@ las pestañas usadas para introducir la información.
 
 image::images/AddDive1.jpg["FIGURA: Añadir inmersión",align="center"]
 
-Al hacer clic en un campo de los paneles _Notas de la Inmersión_ o _Equipo_, se
+Al editar un campo de los paneles _Notas de la Inmersión_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
-en la parte de arriba del panel _Notas de la Inmersión_. El mismo mensaje se
-muestra en todos los paneles dependientes de _Notas de la Inmersión_ miesntras
+en la parte de arriba del panel _Notas de la Inmersión_. Este mensaje se
+muestra en todos los paneles dependientes de _Notas de la Inmersión_ mientras
 se esté en modo de edición.
 
 image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
@@ -215,7 +215,7 @@ El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha s
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
 salir del calendario. La hora y los minutos también pueden editarse clicando en
 cada uno de ellos y sobreescribiendo la información mostrada. La fecha por
-defecto es la de hoy y la hora, una hora más.
+defecto es la de hoy y la hora, una hora más adelante.
 
 *Temperaturas de aire y agua*: Las temperaturas de aire y agua durante la
 inmersión pueden teclearse en estos campos situados a la derecha de la Hora de
@@ -309,7 +309,7 @@ gases que se introduzca determinará el comportamiento del perfil de la inmersi�
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
-image::images/CylinderDataEntry1.jpg["FIGURA: Dialogo de botellas inicial",align="center"]
+image::images/Gas_dialogue1.jpg["FIGURA: Dialogo de botellas inicial",align="center"]
 
 El botón + arriba a la derecha permite al usuario añadir más botellas para esta
 inmersión. El icono oscuro de papelera de la izquierda permite borrar la
@@ -322,7 +322,7 @@ Se empieza por seleccionar un tipo de botella en el lado izquierdo de la tabla.
 Para seleccionar una botella hay que hacer clic en la casilla Tipo. Esto
 mostrará un botón que puede usarse para desplegar una lista de botellas:
 
-image::images/CylinderDataEntry2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
+image::images/Gas_dialogue2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
 
 La lista desplegable puede utilizarse para seleccionar el tipo de botella que se
 usó en esta inmersión, o el usuario puede escribir en la casilla, con lo que se
@@ -641,8 +641,8 @@ agua se muestran al haberse obtenido del ordenador de buceo, pero el usuario
 necesita añadir a mano alguna información para tener un registro más completo de
 la inmersión. Si se cambia o edita de alguna manera el contenido de esta pestaña,
 el mensaje de la barra azul arriba del panel indicará que se está editando el
-buceo. Si el usuario pulsa en la pestaña *Notas de la inmersión*, se visualizan
-los siguientes campos:
+buceo. Si se pulsa en la pestaña *Notas de la inmersión*, se visualizan los
+siguientes campos:
 
 image::images/AddDive3.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
 
@@ -744,7 +744,7 @@ derecha).
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
-image::images/CylinderDataEntry1.jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
+image::images/DC_gas_dialogue1.jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
 
 En la mayoría de los casos _Subsurface_ obtiene el gas usado del ordenador de
 buceo e inserta automáticamente la composición (% oxigeno) en la tabla. El botón
@@ -758,7 +758,7 @@ Se empieza por seleccionar un tipo de botella. Para ello hay que hacer clic en
 la casilla *Tipo de botella*. Esto hará aparecer un botón que puede usarse para
 mostrar una lista desplegable de botellas.
 
-image::images/CylinderDataEntry2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
+image::images/DC_gas_dialogue2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
 
 La lista desplegable puede usarse para seleccionar el tipo de botella que
 utilizó en esta inmersión, o el usuario puede empezar a teclear en la casilla,
@@ -859,10 +859,11 @@ a un servicio web como _divelogs.de_ e importarlos desde allí a _Subsurface_, y
 que _divelogs.de_ soporta algunos pocos formatos que _Subsurface_ no puede leer
 en la actualidad.
 
-Si el formato de diarios del otro software está soportado nativamente en
-_Subsurface, debería ser suficiente con seleccionar el archivo en el diálogo de
-importación. Se soportan directamente, por ejemplo, la importación de Suunto
-Dive Manager y las bases de datos SQL de Shearwater.
+Si el formato del otro software está soportado nativamente en _Subsurface,
+debería ser suficiente con seleccionar bien _Importar->Importar archivos de
+registro_, bien _Archivo->Abrir registro_ . _Subsurface_ soporta directamente
+los formatos de datos de muchos ordenadores de buceo, incluyendo Suunto y
+Shearwater.
 
 Al importar inmersiones, _Subsurface_ intenta detectar múltiples registros del
 mismo buceo y mezcla la información lo mejor que puede. Si no existen problemas
@@ -2289,10 +2290,10 @@ de gas de la botella, manteniendo un margen de seguridad apropiado para regresar
 a superficie, posiblemente compartiendo gas con un compañero. En las _Opciones
 de gases_ especifica la mejor (pero conservativa) estimación de tu "consumo de
 aire equivalente a superficie" (CAS, del inglés SAC, también llamado RMV) en
-litros/minuto (o pies cúbicos/minuto dependiendo del sistema de medidas elegido
-en las _Preferencias_). Se especifica el CAS para el fondo (_CAS en fondo_) y
-también para la fase de descompresión (_CAS en deco_). Son comunes valores de 20
-a 30 l/min. Para hacer una buena gestión del gas, una regla del pulgar no es
+litros/minuto (en estos momentos solo están soportadas las unidades del Sistema
+Internacional). Se especifica el CAS para el fondo (_CAS en fondo_) y también
+para la fase de descompresión (_CAS en deco_). Son comunes valores de 20 a
+30 l/min. Para hacer una buena gestión del gas, una regla del pulgar no es
 suficiente y se necesita monitorizar el consumo regularmente, dependiendo de
 diferentes condiciones ambientales y de equipo. El planificador calculará el
 volumen total de gas a utilizar durante la inmersión y emitirá un aviso si se
@@ -2300,7 +2301,6 @@ excede la cantidad total de gas disponible. Las buenas prácticas exigen que no
 se bucee al límite del gas disponible, sino que se mantenga una reserva de gas
 apropiada para atender circunstancias imprevistas. En el caso del buceo técnico,
 esta reserva puede ser, fácilmente, del 66% del gas disponible.
-
 
 Ahora, por fin, se puede empezar la planificación detallada de tiempos y
 profundidades. _Subsurface_ ofrece una interfaz gráfica única para llevar a cabo
