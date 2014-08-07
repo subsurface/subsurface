@@ -93,7 +93,9 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 		button->setZValue(7);
 		scene()->addItem(button);
 	}
-	button->setPos(mapToScene(0,0));
+	button->setParentItem(this);
+	button->setPos(boundingRect().width() - button->boundingRect().width() * 0.2,
+				   boundingRect().height() - button->boundingRect().height() * 0.2);
 	button->setOpacity(0);
 	button->show();
 	Animations::show(button);
@@ -110,13 +112,17 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
-	if(button)
-		button->hide();
+	if(button){
+		button->setParentItem(NULL);
+		Animations::hide(button);
+	}
 }
 
 DivePictureItem::~DivePictureItem(){
-	if(button)
+	if(button){
+		button->setParentItem(NULL);
 		Animations::hide(button);
+	}
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
