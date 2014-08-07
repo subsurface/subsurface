@@ -209,6 +209,8 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	write_attribute(b, "location", dive->location);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
+	put_format(b, "\"dive_duration\":\"%u:%02u min\",",
+		   FRACTION(dive->duration.seconds, 60));
 	put_string(b, "\"temperature\":{");
 	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
 	put_HTML_watertemp(b, dive, "\"water\":\"", "\",");

@@ -212,7 +212,8 @@ function getExpanded(dive)
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
-		  '</td></tr></table><table><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
+		  '</td></tr></table><table><tr><td class="words">Duration: </td><td>' + dive.dive_duration +
+		  '</td></tr><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
 		  '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
 		  '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
 		  '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
@@ -890,7 +891,8 @@ function get_dive_HTML(dive)
 	       '</td></tr></table>' +
 	       '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
-	       '</td></tr></table><table><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
+	       '</td></tr></table><table><tr><td class="words">Duration: </td><td>' + dive.dive_duration +
+	       '</td></tr><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
 	       '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
 	       '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
 	       '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
