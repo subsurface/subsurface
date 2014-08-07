@@ -2,11 +2,17 @@
 #define DIVELOGEXPORTDIALOG_H
 
 #include <QDialog>
+#include <QTextStream>
+#include "helpers.h"
+#include "statistics.h"
+
 class QAbstractButton;
 
 namespace Ui {
 	class DiveLogExportDialog;
 }
+
+void exportHTMLstatisticsTotal(QTextStream &out, stats_t *total_stats);
 
 class DiveLogExportDialog : public QDialog {
 	Q_OBJECT

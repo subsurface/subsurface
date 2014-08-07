@@ -139,6 +139,12 @@ void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
 	QFile file(filename);
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
+
+	stats_t total_stats;
+
+	total_stats.selection_size = 0;
+	total_stats.total_time.seconds = 0;
+
 	int i = 0;
 	out << "divestat=[";
 	if (ui->exportStatistics->isChecked()) {
@@ -160,11 +166,35 @@ void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
 			out << "\"MIN_TEMP\":\"" << get_temp_units(stats_yearly[i].min_temp, NULL) << "\",";
 			out << "\"MAX_TEMP\":\"" << get_temp_units(stats_yearly[i].max_temp, NULL) << "\",";
 			out << "},";
+			total_stats.selection_size += stats_yearly[i].selection_size;
+			total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
 			i++;
 		}
 	}
+	exportHTMLstatisticsTotal(out, &total_stats);
 	out << "]";
 	file.close();
+}
+
+void exportHTMLstatisticsTotal(QTextStream &out, stats_t *total_stats)
+{
+	out << "{";
+	out << "\"YEAR\":\"Total\",";
+	out << "\"DIVES\":\"" << total_stats->selection_size << "\",";
+	out << "\"TOTAL_TIME\":\"" << get_time_string(total_stats->total_time.seconds, 0) << "\",";
+	out << "\"AVERAGE_TIME\":\"--\",";
+	out << "\"SHORTEST_TIME\":\"--\",";
+	out << "\"LONGEST_TIME\":\"--\",";
+	out << "\"AVG_DEPTH\":\"--\",";
+	out << "\"MIN_DEPTH\":\"--\",";
+	out << "\"MAX_DEPTH\":\"--\",";
+	out << "\"AVG_SAC\":\"--\",";
+	out << "\"MIN_SAC\":\"--\",";
+	out << "\"MAX_SAC\":\"--\",";
+	out << "\"AVG_TEMP\":\"--\",";
+	out << "\"MIN_TEMP\":\"--\",";
+	out << "\"MAX_TEMP\":\"--\",";
+	out << "},";
 }
 
 void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
