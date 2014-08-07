@@ -1459,9 +1459,34 @@ If one selects the dustbin, the image is removed from the dive. Therefore some c
 is required when clicking on a thumbnail. Clicking on any other
 part of the thumbnail brings up a full size
 photo overlaid on the _Subsurface_ window. This allows good viewing of
-the photographs that have been added. See below:
+the photographs that have been added. See the image below. Alternatively a photo
+can be deleted from the _Photos_ tab (se text below).
 
 image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
+
+==== The _Photos_ tab
+
+Photographs associated with a dive are shown as thumbnails in the _Photos_ tab of the _Dive Notes_
+panel. Photos taken in rapid succession during a dive (therefore sometimes with large
+overlap on the dive profile) can easily be accessed in the _Photos_ tab. This tab serves as
+a tool for individually accessing the photos of a dive, while the stubs on the dive profile
+give an indication of when during a dive a photo was taken. By single-clicking on a thumbnail in
+the _Photos_ panel, a photo is selected. By double-clicking a thumbnail, the full-sized image is
+shown, overlaying the _Subsurface_ window. A photo can be deleted from the _Photos_ panel by selecting
+it (single-click) and then by pressing the _Del_ key on the keyboard. This removes the photo both
+from the _Photos_ tab as well as the dive profile.
+
+==== Photos on an external hard disk
+
+Most underwater photographers store their photos on an external drive. If such a drive can be mapped
+(almost always the case) the photos can be directly accessed by _Subsurface_. This facilitates the interaction
+between _Subsurface_ and an external repository of photos. When associating a dive profile with photos from an
+external drive, the normal procedure of selection and synchronisation (see text above) is used.
+However, after the external drive has been disconnected, _Subsurface_ cannot access these photos any more.
+If the display of photos is activated (using the toolbox to the left of the _Dive Profile_), the
+program only shows a small white dot where each photo should be on the dive profile.
+In addition the _Photos_ tab only shows the file names of the photos. This is normal behaviour.
+If, later, the external drive with the photos is connected again, the photos can be seen in the normal way.
 
 
 == Obtaining more information about dives entered into the logbook
