@@ -218,7 +218,7 @@ function getExpanded(dive)
 		  '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
 		  '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
 	if (settings.listOnly === '0') {
-		res += '<center><a onclick="showDiveDetails(' + dive.number + ')">show more details</a></center>';
+		res += '<center><a onclick="showDiveDetails(' + dive.number + ')">Show more details</a></center>';
 	}
 	return res;
 };
@@ -271,7 +271,7 @@ var locat = true;
 This variable keep the state of the col.
 which is sorted upon it.
 */
-var sort_based_on = 1; // sorting is based on number by default.
+var sort_based_on = '1'; // sorting is based on number by default.
 
 function change_sort_col(sortOn)
 {
@@ -679,7 +679,7 @@ function showStats()
 function getDiveStats(){
 	var res = "";
 	res += '<table><tr id="stats_header">';
-	res += '<td class="statscell">Year</td><td class="statscell">#</td><td class="statscell">Total Time</td><td class="statscell">Avarage Time</td><td class="statscell">Shortest Time</td><td class="statscell">Longest Time</td><td class="statscell">Avarage Depth</td><td class="statscell">Min Depth</td><td class="statscell">Max Depth</td><td class="statscell">Average SAC</td><td class="statscell">Min SAC</td><td class="statscell">Max SAC</td><td class="statscell">Average Temp</td><td class="statscell">Min Temp</td><td class="statscell">Max Temp</td>';
+	res += '<td class="statscell">Year</td><td class="statscell">#</td><td class="statscell">Total Time</td><td class="statscell">Average Time</td><td class="statscell">Shortest Time</td><td class="statscell">Longest Time</td><td class="statscell">Average Depth</td><td class="statscell">Min Depth</td><td class="statscell">Max Depth</td><td class="statscell">Average SAC</td><td class="statscell">Min SAC</td><td class="statscell">Max SAC</td><td class="statscell">Average Temp</td><td class="statscell">Min Temp</td><td class="statscell">Max Temp</td>';
 	res += '</tr>';
 	res += getStatsRows();
 	res += '</table>';
