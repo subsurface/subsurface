@@ -2,7 +2,7 @@
 <!-- Copyright 2014 Pedro Neves <nevesdiver@gmail.com> -->
 <application>
  <id type="desktop">subsurface.desktop</id>
- <licence>CC-BY-SA</licence>
+ <metadata_license>CC-BY-SA</metadata_license>
  <name>Subsurface</name>
  <summary>Manage and display dive computer data</summary>
  <description>
