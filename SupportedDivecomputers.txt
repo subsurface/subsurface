@@ -1,21 +1,22 @@
-Aeris: Atmos 2, A300 AI, Atmos AI, Atmos AI 2, Compumask, Elite, Elite T3, Elite T3, Epic, Epic, F10, Manta, XR-2
+Aeris: A300, A300 AI, Atmos 2, Atmos AI, Atmos AI 2, Compumask, Elite, Elite T3, Elite T3, Epic, Epic, F10, Manta, XR-1 NX, XR-2
 Apeks: Quantum X
-Atomic Aquatics: Cobalt
-Cressi: Edy, Leonardo
-DiveRite: NiTek Trio
+Atomic Aquatics: Cobalt, Cobalt 2
+Beuchat: Voyager 2G
+Cressi: Edy, Giotto, Leonardo
+Dive Rite: NiTek Q, NiTek Trio
 Genesis: React Pro, React Pro White
-Heinrichs Weikamp: DR5, Frog, OSTC, OSTC 2N, OSTC 3, OSTC Mk2
-Hollis: DG03
+Heinrichs Weikamp: Frog, OSTC, OSTC 2C, OSTC 2N, OSTC 3, OSTC Mk2
+Hollis: DG03, TX1
 Mares: Darwin, Darwin Air, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck Air, Puck Pro
-Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, Geo, Geo 2.0, OC1, OC1, OC1, OCi, OCS, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Versa Pro, VT 4.1, VT Pro, VT3, VT4
+Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, Geo, Geo 2.0, OC1, OC1, OC1, OCS, OCi, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, VT 4.1, VT Pro, VT3, VT4, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Versa Pro
 Reefnet: Sensus, Sensus Pro, Sensus Ultra
+Scubapro: Meridian, XTender 5
 Seemann: XP5
 Shearwater: Petrel, Predator
 Sherwood: Amphos, Insight, Insight 2, Wisdom, Wisdom 2, Wisdom 3
 Subgear: XP Air, XP-10
 Suunto: Cobra, Cobra 2, Cobra 3, D3, D4, D4i, D6, D6i, D9, D9tx, DX, Eon, Gekko, HelO2, Mosquito, Solution, Solution Alpha, Solution Nitrox, Spyder, Stinger, Vyper, Vyper 2, Vyper Air, Vytec, Zoop
 Tusa: Element II (IQ-750), Zen (IQ-900), Zen Air (IQ-950)
-Uemis: Zürich
+Uemis: Zürich SDA
 Uwatec: Aladin 2G, Aladin 2G, Aladin Air Twin, Aladin Air Z, Aladin Air Z Nitrox, Aladin Air Z O2, Aladin Prime, Aladin Pro, Aladin Pro Ultra, Aladin Sport Plus, Aladin Tec, Aladin Tec 2G, Galileo Luna, Galileo Sol, Galileo Terra, Galileo Trimix, Memomouse, Smart Com, Smart Pro, Smart Tec, Smart Z
-xDeep: Black
 Zeagle: N2iTiON3
