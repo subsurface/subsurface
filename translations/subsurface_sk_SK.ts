@@ -2336,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nevie nájsť žiadnu nainštalovanú tlačiareň</translation>
     </message>
 </context>
 <context>
@@ -2382,22 +2382,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>&amp;6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;6 ponorov na stranu</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <source>&amp;1 dive per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;1 ponor na stranu</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="70"/>
         <source>&amp;2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;2 ponory na stranu</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tlač tabuľky</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>
@@ -2417,12 +2417,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="153"/>
         <source>Prof&amp;ile on top</source>
-        <translation type="unfinished"/>
+        <translation>Prof&amp;il na vrchu</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="169"/>
         <source>&amp;Notes on top</source>
-        <translation type="unfinished"/>
+        <translation>P&amp;oznámky na vrchu</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -3729,7 +3729,7 @@ Maximum</translation>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation type="unfinished"/>
+        <translation>Výpočet dekompresie zrušený z dôvodu píliš dlhého času</translation>
     </message>
     <message>
         <location filename="../planner.c" line="546"/>
@@ -4689,7 +4689,7 @@ Je Uemis Zurich korektne pripojený?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="316"/>
         <source>Plan backgas breaks</source>
-        <translation type="unfinished"/>
+        <translation>Plánovanie back gas zastávok</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="339"/>

@@ -1093,7 +1093,7 @@
         <location filename="../qt-ui/maintab.ui" line="18"/>
         <location filename="../qt-ui/maintab.cpp" line="435"/>
         <source>Dive notes</source>
-        <translation>Заметки погружения</translation>
+        <translation>Погружение</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
@@ -2336,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface не может найти принтеры в вашей системе!</translation>
     </message>
 </context>
 <context>
@@ -2382,22 +2382,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>&amp;6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>6 на стр.</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <source>&amp;1 dive per page</source>
-        <translation type="unfinished"/>
+        <translation>1 на стр.</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="70"/>
         <source>&amp;2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>2 на стр.</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation type="unfinished"/>
+        <translation>Таблица</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>
@@ -2417,12 +2417,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="153"/>
         <source>Prof&amp;ile on top</source>
-        <translation type="unfinished"/>
+        <translation>Профиль вверху</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="169"/>
         <source>&amp;Notes on top</source>
-        <translation type="unfinished"/>
+        <translation>Заметки вверху</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -3733,7 +3733,7 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation type="unfinished"/>
+        <translation>Расчет деко прекращен из-за большой длительности</translation>
     </message>
     <message>
         <location filename="../planner.c" line="546"/>
@@ -4719,7 +4719,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
         <source>Dive notes</source>
-        <translation>Заметки погружения</translation>
+        <translation>План погружения</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="466"/>

@@ -25,17 +25,17 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Work press.</source>
-        <translation>Töörõhk.</translation>
+        <translation>Töörõhk</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>Start press.</source>
-        <translation>Algusrõhk.</translation>
+        <translation>Algusrõhk</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="69"/>
         <source>End press.</source>
-        <translation>Lõpurõhk.</translation>
+        <translation>Lõpurõhk</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="70"/>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1452"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation>Siin klõpsates eemaldate selle sukeldumiskompuutri.</translation>
+        <translation>Siin klikates eemaldate selle sukeldumiskompuutri.</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="708"/>
         <source>Collapse all</source>
-        <translation>Vajuta kõik kokku</translation>
+        <translation>Ahenda kõik kokku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="709"/>
@@ -384,12 +384,12 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="59"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation>Geneeriline formaat mida kasutatakse andmevahetuseks erinevate sukeldumisega seotud tarkvarade vahel.</translation>
+        <translation>Geneeriline formaat, mida kasutatakse andmevahetuseks erinevate sukeldumisega seotud tarkvarade vahel.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="61"/>
         <source>Comma separated values that include the most relevant information of the dive profile.</source>
-        <translation>Komaga eraldatud väärtused mis sisaldavad kõige olulisemat sukeldumise profiili infot.</translation>
+        <translation>Eraldajaga (koma, tab, vms) eraldatud väärtused mis sisaldavad kõige olulisemat sukeldumise profiili infot.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="63"/>
@@ -1351,62 +1351,62 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation>Kuva pHe graaf</translation>
+        <translation>pHe graaf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
         <source>Toggle calculating all tissues</source>
-        <translation>Kuva kõikide kudede arvutamine</translation>
+        <translation>Kõik koed</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="183"/>
         <source>Toggle DC reported ceiling</source>
-        <translation>Kuva sukeldumiskompuutri poolt antud lage</translation>
+        <translation>Sukeldumiskompuutri poolt antud lagi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="212"/>
         <source>Toggle calculated ceiling</source>
-        <translation>Kuva arvutatud lagi</translation>
+        <translation>Arvutatud lagi</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="238"/>
         <source>Toggle NDL, TTS</source>
-        <translation>Kuva NDL, TTS</translation>
+        <translation>NDL, TTS</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="264"/>
         <source>Toggle calculated ceiling with 3m increments</source>
-        <translation>Kuva arvuttaud lagi 3m intervalliga</translation>
+        <translation>Arvutatud lagi 3m intervalliga</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="290"/>
         <source>Toggle heart rate</source>
-        <translation>Kuva südame pulss</translation>
+        <translation>Südame pulss</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
         <source>Toggle MOD</source>
-        <translation>Kuva MOD</translation>
+        <translation>MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="342"/>
         <source>Toggle EAD, END, EADD</source>
-        <translation>Kuva EAD, END, EADD</translation>
+        <translation>EAD, END, EADD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
         <source>Toggle SAC rate</source>
-        <translation>Kuva SAC määr</translation>
+        <translation>SAC määr</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Toggle ruler</source>
-        <translation>Kuva joonlaud</translation>
+        <translation>Joonlaud</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation>Vaheta pildid pisipildiks</translation>
+        <translation>Vaheta pildid pisipiltideks</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1688,12 +1688,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation>Kuva pO₂ graaf</translation>
+        <translation>pO₂ graaf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation>Kuva pN₂ graaf</translation>
+        <translation>pN₂ graaf</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1708,7 +1708,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation>Toimeta sukeldumiskompuutrite nimesid</translation>
+        <translation>Toimeta sukeldumiskompuutrite hüüdnimesid</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>
@@ -1932,7 +1932,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation>Vaikeväärtused</translation>
+        <translation>Vaike-
+väärtused</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -2335,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface ei suuda leida süsteemi printereid!</translation>
     </message>
 </context>
 <context>
@@ -2381,22 +2382,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>&amp;6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;6 sukeldumist lehel</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <source>&amp;1 dive per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;1 sukeldumine lehel</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="70"/>
         <source>&amp;2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;2 sukeldumist lehel</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tabel</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>
@@ -2416,12 +2417,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="153"/>
         <source>Prof&amp;ile on top</source>
-        <translation type="unfinished"/>
+        <translation>Prof&amp;iil ülal</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="169"/>
         <source>&amp;Notes on top</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Märkmed ülal</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -2745,7 +2746,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="148"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Sukeldumiskompuutri ja kaamera kellade näidu vahe arvutamiseks pildista kompuutri kellaajaga ekraani. Lae see pilt arvutisse ja vajuta sellele klahvikle.</translation>
+        <translation>Sukeldumiskompuutri ja kaamera kellade näidu vahe arvutamiseks pildista kompuutri kellaajaga ekraani. Lae see pilt arvutisse ja vajuta sellele klahvile.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="158"/>
@@ -3265,7 +3266,7 @@ keskmine</translation>
         <source>
 Minimum</source>
         <translation>
-Miinimum</translation>
+Min</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1671"/>
@@ -3274,7 +3275,7 @@ Miinimum</translation>
         <source>
 Maximum</source>
         <translation>
-Maksimum</translation>
+Max</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1674"/>
@@ -3732,7 +3733,7 @@ Maksimum</translation>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation type="unfinished"/>
+        <translation>Dekompressiooni arvutamine katkestatud liigse ajakulu tõttu</translation>
     </message>
     <message>
         <location filename="../planner.c" line="546"/>
