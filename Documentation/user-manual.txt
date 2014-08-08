@@ -1443,9 +1443,11 @@ to the left of the dive profile:
 
 image::images/icons/ShowPhotos.png["FIGURE:Show photos toolbar button",align="left"]
 
-After the images have been loaded, they also appear in the _Photos_ tab of the *Dive Notes* panel.
-They also appear as tiny icons on the dive profile at the appropriate
-positions reflecting the time each photograph was taken. See below:
+After the images have been loaded, they appear in two places:
+
+ - the _Photos_ tab of the *Dive Notes* panel.
+ - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
+   each photograph was taken. See below:
 
 image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
 
@@ -1454,13 +1456,13 @@ is shown of the appropriate photo. See the image below:
 
 image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
 
-Note that the thumbnail has a small dustbin icon in the top left hand corner (see above).
-If one selects the dustbin, the image is removed from the dive. Therefore some care
-is required when clicking on a thumbnail. Clicking on any other
-part of the thumbnail brings up a full size
+Clicking on the thumbnail brings up a full size
 photo overlaid on the _Subsurface_ window. This allows good viewing of
-the photographs that have been added. See the image below. Alternatively a photo
-can be deleted from the _Photos_ tab (se text below).
+the photographs that have been added (see the image below). Note that the thumbnail
+has a small dustbin icon in the bottom right hand corner (see image above). If one selects
+the dustbin, the image is removed from the dive. Therefore some care
+is required when clicking on a thumbnail. Images
+can also be deleted using the _Photos_ tab (see text below).
 
 image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
 
