@@ -56,11 +56,12 @@ Some of the changes since 4.1
   This is on the todo list.
 - Pictures can be associated with dives and shown in the profile
 - Printing is much improved (but see above), including a "1 dive per page"
-  mode and better rendering of dives an (in our mind) better data
+  mode, better rendering of dives (in our mind) and better data
   presented per dive.
 - Data entry for dives is much more intuitive and consistent
 - We have a reasonably functional HTML exporter for the dive log (it's
-  still work in progress but already quite powerful).
+  still work in progress but already quite powerful, even though lacking
+  localization support).
 - Support to import dive log files from Seabear dive computers.
 - We added a user survey to learn more about the interests and needs of
   out users
@@ -78,7 +79,7 @@ Known issues:
   e.g. Calibri.
 
 - (Windows specific) When upgrading from Subsurface 4.1, after saving of a
-  logfile the logfiles name may be listed a second time in the files menue
+  logfile the logfile's name may be listed a second time in the files menu
   because of a change in the representation of logfiles filename in the
   Windows registry.
 
