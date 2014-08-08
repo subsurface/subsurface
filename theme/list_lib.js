@@ -690,9 +690,17 @@ function getDiveStats(){
 function getStatsRows(){
 	var res = "";
 	for(var i = 0; i < divestat.length ; i++) {
-	res += '<tr><td class="statscell">'+divestat[i].YEAR+'</td><td class="statscell">'+divestat[i].DIVES+'</td><td class="statscell">'+divestat[i].TOTAL_TIME+'</td><td class="statscell">'+divestat[i].AVERAGE_TIME+'</td><td class="statscell">'+divestat[i].SHORTEST_TIME+'</td><td class="statscell">'+divestat[i].LONGEST_TIME+'</td><td class="statscell">'+divestat[i].AVG_DEPTH+'</td><td class="statscell">'+divestat[i].MIN_DEPTH+'</td><td class="statscell">'+divestat[i].MAX_DEPTH+'</td><td class="statscell">'+divestat[i].AVG_SAC+'</td><td class="statscell">'+divestat[i].MIN_SAC+'</td><td class="statscell">'+divestat[i].MAX_SAC+'</td><td class="statscell">'+divestat[i].AVG_TEMP+'</td><td class="statscell">'+divestat[i].MIN_TEMP+'</td><td class="statscell">'+divestat[i].MAX_TEMP+'</td></tr>';
+	res += '<tr onmouseout="stats_row_unhighlight(this)" onmouseover="stats_row_highlight(this)" class="stats_row"><td class="statscell">'+divestat[i].YEAR+'</td><td class="statscell">'+divestat[i].DIVES+'</td><td class="statscell">'+divestat[i].TOTAL_TIME+'</td><td class="statscell">'+divestat[i].AVERAGE_TIME+'</td><td class="statscell">'+divestat[i].SHORTEST_TIME+'</td><td class="statscell">'+divestat[i].LONGEST_TIME+'</td><td class="statscell">'+divestat[i].AVG_DEPTH+'</td><td class="statscell">'+divestat[i].MIN_DEPTH+'</td><td class="statscell">'+divestat[i].MAX_DEPTH+'</td><td class="statscell">'+divestat[i].AVG_SAC+'</td><td class="statscell">'+divestat[i].MIN_SAC+'</td><td class="statscell">'+divestat[i].MAX_SAC+'</td><td class="statscell">'+divestat[i].AVG_TEMP+'</td><td class="statscell">'+divestat[i].MIN_TEMP+'</td><td class="statscell">'+divestat[i].MAX_TEMP+'</td></tr>';
 	}
 	return res;
+}
+
+function stats_row_highlight(row){
+	row.style.backgroundColor = "rgba(125,125,125,0.7)";
+}
+
+function stats_row_unhighlight(row){
+	row.style.backgroundColor = "rgba(125,125,125,0.3)";
 }
 
 //trips

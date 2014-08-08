@@ -147,7 +147,7 @@ input[type=checkbox]{
 	width:90%;
 	margin:0% 5% 0% 5%;
 	margin-bottom:50px;
-	background-color: rgba(88,121,139,0.3);
+	background-color: rgba(253, 195, 141,0.3);
 	box-shadow: 10px 10px 5px #888888;
 }
 
@@ -156,9 +156,18 @@ input[type=checkbox]{
 	overflow-y:hidden;
 }
 .statscell{
-	border-style:solid;
-	padding-right:100px;
+	min-width:120px;
+	height: 25px;
 	margin:0px;
+	text-align:center;
+}
+
+.stats_row{
+	background-color:rgba(125,125,125,0.3);
+}
+
+#stats_header{
+	background-color:#EFC15F;
 }
 
 button,#no_dives_selector{

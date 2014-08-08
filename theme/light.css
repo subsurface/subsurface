@@ -129,7 +129,6 @@ input[type=checkbox]{
 	font-weight:bold;
 }
 
-
 #controller{
 	min-width:200px;
 	padding:10px;
@@ -159,8 +158,14 @@ input[type=checkbox]{
 }
 
 .statscell{
-	min-width:100px;
+	min-width:120px;
+	height: 25px;
 	margin:0px;
+	text-align:center;
+}
+
+.stats_row{
+	background-color:rgba(125,125,125,0.3);
 }
 
 #stats_header{
