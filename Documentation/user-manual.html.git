@@ -460,7 +460,23 @@ Divers</p></div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
 </div>
 <div class="sect1">
-<h2 id="S_StartUsing">1. Start Using the Program</h2>
+<h2 id="S_UserSurvey">1. The user survey</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In order to develop <em>Subsurface</em> in a way that serves its users in the best possible way,
+it is important to have some user information. Upon launching <em>Subsurface</em>
+after using this software for a week or so, a one-box user survey pops up. It is entirely
+optional and the user controls what, if any, data are sent to the <em>Subsurface</em> development
+team. Any data that the user chooses to send is extremely useful, and will only be
+used to steer future development and to customise the software to fit the needs of
+the <em>Subsurface</em> users. If one completes the survey, or clicks the option not to
+be asked again, that should be the last communication of this nature one receives.
+However, if one&#8217;s diving and/or subsurface habits change and one wishes to provide
+another survey, this can be done by launching <em>Subsurface</em> with the <em>--survey</em> option on the
+command line.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_StartUsing">2. Start Using the Program</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
 Menu</strong> (File Import Log View Filter Help) at the top of the window (for Windows
@@ -532,7 +548,7 @@ following sections, the procedures to create a new logbook will be described.</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_NewLogbook">2. Creating a new logbook</h2>
+<h2 id="S_NewLogbook">3. Creating a new logbook</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Select <em>File &#8594; New Logbook</em> from the main menu. All existing dive data are
 cleared so that new information can be added. If there are unsaved data in an
@@ -541,7 +557,7 @@ saved before a new logbook is created.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_GetInformation">3. How to store dive information in the user&#8217;s logbook</h2>
+<h2 id="S_GetInformation">4. How to store dive information in the user&#8217;s logbook</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>There are several ways in which dive information can be added to a logbook:</p></div>
 <div class="olist arabic"><ol class="arabic">
@@ -562,13 +578,14 @@ Supported dive computers</a>.
 </li>
 <li>
 <p>
-Import dive information from another data base or file format. This is
-discussed in more detail below.
+Import dive information from another database or file format. If you
+have kept your dive logs with other log software, these logs can often
+be imported to subsurface. This is discussed in more detail below.
 </p>
 </li>
 </ol></div>
 <div class="sect2">
-<h3 id="S_EnterData">3.1. Entering dive information by hand</h3>
+<h3 id="S_EnterData">4.1. Entering dive information by hand</h3>
 <div class="paragraph"><p>This is usually the approach for dives without a dive computer. The basic record
 of information within <em>Subsurface</em> is a dive. The most important information
 in a simple dive logbook usually includes dive type, date, time, duration,
@@ -586,12 +603,14 @@ in the figure below. Each of these tabs will now be explained for data entry.</p
 <img src="images/AddDive1.jpg" alt="FIGURE: Add dive" />
 </div>
 </div>
+<div class="paragraph"><p>When one edits a field in Dive notes or Equipment panels, <em>Subsurface</em> enters <strong>Editing Mode</strong>,
+indicated by the message in the blue box at the top of the <em>Dive Notes</em> panel. This message is
+displayed in all the panels under Dive notes and Equipment when in <strong>Editing Mode</strong>.</p></div>
 <div class="sect3">
-<h4 id="_dive_notes">3.1.1. Dive Notes</h4>
+<h4 id="_dive_notes">4.1.1. Dive Notes</h4>
 <div class="paragraph"><p>This panel contains the date, time and place information for a particular dive,
 environmental conditions, co-divers and buddies, as well as some descriptive
-information. The message in a blue box at the top of the panel indicates that
-the dive is being edited. If one clicks on the <strong>Dive Notes</strong> tab, the following
+information. If one clicks on the <strong>Dive Notes</strong> tab, the following
 fields are visible:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -603,12 +622,13 @@ the date, a calendar is displayed from which
 one can choose the correct date. Press ESC to escape from the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by overtyping the
-information displayed.</p></div>
+information displayed. The default date is the present date and the default time is
+an hour in advance of the present time.</p></div>
 <div class="paragraph"><p><strong>Air and water temperatures</strong>: the air and water temperatures during the
 dive can be typed directly on the fields to the right of the Start time.
 Temperature units are not needed, as they will be automatically supplied by
 <em>Subsurface</em>. Only the numerical value must be
-typed by the user (The units selected in the <em>Preferences</em>
+typed by the user (the units selected in the <em>Preferences</em>
 will determine whether metric or imperial units are used).</p></div>
 <div class="paragraph"><p><strong>Location</strong>: Here the name of the dive site can be entered, e.g. "Tihany, Lake
 Balaton,
@@ -690,17 +710,9 @@ Dive Notes panel:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_equipment">3.1.2. Equipment</h4>
+<h4 id="_equipment">4.1.2. Equipment</h4>
 <div class="paragraph"><p>The Equipment tab allows the user to enter information about the type of
-cylinder and gas used, as well as the weights used for a dive. The message in a
-blue
-box at the top of the panel:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/BlueEditBar.jpg" alt="Blue edit bar" />
-</div>
-</div>
-<div class="paragraph"><p>indicates that the dive is being edited. This is a highly interactive part of
+cylinder and gas used, as well as the weights used for a dive. This is a highly interactive part of
 <em>Subsurface</em> and the information on
 cylinders and gases (entered here) affects the behaviour of the dive profile
 (top right-hand panel).</p></div>
@@ -708,20 +720,22 @@ cylinders and gases (entered here) affects the behaviour of the dive profile
 like this:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CylinderDataEntry1.jpg" alt="FIGURE:Initial cylinder dialogue" />
+<img src="images/Gas_dialogue1.jpg" alt="FIGURE:Initial cylinder dialogue" />
 </div>
 </div>
 <div class="paragraph"><p>The + button at the top right allows the user to add more cylinders for this
 dive.
 The dark dustbin icon on the left allows one to delete information for a
-particular cylinder.</p></div>
+particular cylinder. Note that it is not possible to delete a cylinder if it is used during the
+dive. One cylinder is implicitly used in the dive, even without a gas change event. Thus the first
+cylinder cannot be deleted until another cylinder is created.</p></div>
 <div class="paragraph"><p>Start by selecting a cylinder type on the left-hand side of the
 table.  To select a cylinder, click in the <strong>Type</strong> box.
 This brings up a button that can be used to display a dropdown list of
 cylinders:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CylinderDataEntry2.jpg" alt="FIGURE:The cylinder drop-down list button" />
+<img src="images/Gas_dialogue2.jpg" alt="FIGURE:The cylinder drop-down list button" />
 </div>
 </div>
 <div class="paragraph"><p>The drop-down list can be used to select the cylinder type used
@@ -786,7 +800,7 @@ with two types of weights: integrated and a weight belt:</p></div>
 profile has been completed.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_CreateProfile">3.1.3. Creating a Dive Profile</h4>
+<h4 id="S_CreateProfile">4.1.3. Creating a Dive Profile</h4>
 <div class="paragraph"><p>The <strong>Dive Profile</strong> (a graphical representation of the depth of the dive as a
 function of time) is indicated in the panel on the top right hand of the
 <em>Subsurface</em> window. When a dive is manually added to a logbook, <em>Subsurface</em>
@@ -805,14 +819,14 @@ that the cursor represents are indicated at the top of the black information box
 <strong>Preference</strong> settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15 m.
-If the dive depth was 21 m then the user needs to drag the appropriate waypoints
-downwards to represent 21 m. To add a waypoint, double-click on
+If the dive depth was 20 m then the user needs to drag the appropriate waypoints
+downwards to represent 20 m. To add a waypoint, double-click on
 any line segment. To move an additional waypoint, drag it.
 To remove this waypoint, right-click on it and choose "Remove this point" from the
 context menu. The user needs to drag the waypoints to represent an
 accurate
 time duration for the dive. Below is a dive profile that represents a dive
-to 21 m for 31 min, followed by a 5 minute safety stop at 5 m.</p></div>
+to 20 m for 30 min, followed by a 5 minute safety stop at 5 m.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile2.jpg" alt="FIGURE: Edited dive profile" />
@@ -843,7 +857,7 @@ EAN50 at the end of the duration at 20m. In this case the first cylinder in the
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_hand_entered_dive_information">3.1.4. Saving the hand-entered dive information</h4>
+<h4 id="_saving_the_hand_entered_dive_information">4.1.4. Saving the hand-entered dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab, the <strong>Equipment</strong> tab as well as
 the <strong>Dive Profile</strong> can now be saved in the user&#8217;s logbook by using the two
 buttons
@@ -856,9 +870,9 @@ once more to save the logbook with the new dive(s).</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportDiveComputer">3.2. Importing new dive information from a Dive Computer</h3>
+<h3 id="S_ImportDiveComputer">4.2. Importing new dive information from a Dive Computer</h3>
 <div class="sect3">
-<h4 id="_connecting_and_importing_data_from_a_dive_computer">3.2.1. Connecting and importing data from a dive computer.</h4>
+<h4 id="_connecting_and_importing_data_from_a_dive_computer">4.2.1. Connecting and importing data from a dive computer.</h4>
 <div class="paragraph"><p>The use of dive computers allows the collection of a large amount of
 information about
 each dive, e.g. a detailed record of depth, duration, rates of ascent/descent
@@ -1048,7 +1062,8 @@ must be charged or replaced.
 <li>
 <p>
 Is the connecting cable faulty? Does the cable work perfectly using other
-software? Has it worked before, or is this the first time the cable is being used?
+software? Has it worked before, or is this the first time the cable is being used? Are the contacts
+on the dive computer and the cable clean?
 </p>
 </li>
 <li>
@@ -1100,7 +1115,7 @@ as well as contextual information about the dives recorded on the dive computer.
 </div></div>
 </div>
 <div class="sect3">
-<h4 id="S_DeviceNames">3.2.2. Changing the name of a dive computer</h4>
+<h4 id="S_DeviceNames">4.2.2. Changing the name of a dive computer</h4>
 <div class="paragraph"><p>It may be necessary to distinguish between different dive computers used to
 upload dive logs to <em>Subsurface</em>. For instance if one&#8217;s partner&#8217;s dive computer is the
 same make and model as one&#8217;s own and dive logs are uploaded from both dive computers
@@ -1117,7 +1132,7 @@ show the nickname for that particular device instead of the model name,
 allowing easy identification of devices.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_EditDiveInfo">3.2.3. Updating the dive information imported from the dive computer.</h4>
+<h4 id="S_EditDiveInfo">4.2.3. Updating the dive information imported from the dive computer.</h4>
 <div class="paragraph"><p>The information from the dive computer is not complete and more
 details must be added in order to have a fuller record of the dives. To
 do this,
@@ -1125,12 +1140,12 @@ the <strong>Dive Notes</strong> and the <strong>Equipment</strong> tabs on the t
 <em>Subsurface</em> window should be used.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_dive_notes_2">3.2.4. Dive Notes</h4>
+<h4 id="_dive_notes_2">4.2.4. Dive Notes</h4>
 <div class="paragraph"><p>The date and time of the dive, gas mixture and (often) water temperature is
 shown as obtained from the dive computer, but the user needs to add some
 additional information by hand in order to have a more complete dive record.
 If the contents of this tab is changed or edited in any way, the message in a blue box at
-the top of the panel indicates that the dive is being edited. If the user
+the top of the panel indicates that the dive is being edited. If one
 clicks on the <strong>Dive Notes</strong> tab, the following fields are
 visible:</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -1147,15 +1162,17 @@ information displayed.</p></div>
 <div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
 temperature information and this field may therefore not require further
-editing. If
-editing is required, only a value is required, the units of temperature will be
+editing. If air temperature is not provided by the dive computer, the first temperature reading
+might be used for the air temperature. Generally this is close enough to the real air temperature as
+the change in the temperature sensor reading is quite slow to follow the changes in the environment.
+If editing is required, only a value is required, the units of temperature will be
 automatically supplied by
 <em>Subsurface</em> (according to the <em>Preferences</em>, metric or imperial units will
 be used).</p></div>
 <div class="paragraph"><p><strong>Location</strong>: In this field one should type in text that describes the site
 where the dive was performed, e.g. "Tihany, Lake Balaton, Hungary".
 Auto completion of location names will
-make this easier when a user frequently dives at the same sites.</p></div>
+make this easier if one frequently dives at the same sites.</p></div>
 <div class="paragraph"><p><strong>Coordinates</strong>: The geographic coordinates of the dive site should be entered
 here. These can come from three sources:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
@@ -1236,7 +1253,7 @@ Dive Notes panel:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_equipment_2">3.2.5. Equipment</h4>
+<h4 id="_equipment_2">4.2.5. Equipment</h4>
 <div class="paragraph"><p>The Equipment tab allows one to enter information about the type of
 cylinder and gas used as well as the weights used for the dive. The
 message in a blue box at the top of the panel:</p></div>
@@ -1253,20 +1270,22 @@ cylinders and gases (entered here) determines the behaviour of the dive profile
 like this:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CylinderDataEntry1.jpg" alt="FIGURE: Initial cylinder dialogue" />
+<img src="images/DC_gas_dialogue1.jpg" alt="FIGURE: Initial cylinder dialogue" />
 </div>
 </div>
 <div class="paragraph"><p>In most cases <em>Subsurface</em> obtains the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen) in the table. The + button
 at the top right allows the user to add more cylinders for this dive. The dark
-dustbin icon on the left allows the deletion of information for a cylinder.</p></div>
+dustbin icon on the left allows the deletion of information for a cylinder.
+Note that it is not possible to delete a cylinder if it is used during the
+dive. A cylinder might be implicitly used in the dive, even without a gas change event.</p></div>
 <div class="paragraph"><p>The user should start by selecting a cylinder type on the left-hand side of the
 table.  To select a cylinder, the <strong>cylinder type</strong> box should be clicked. This
 brings up a list button that can be used to display a dropdown list of
 cylinders:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CylinderDataEntry2.jpg" alt="FIGURE: The cylinder drop-down list button" />
+<img src="images/DC_gas_dialogue2.jpg" alt="FIGURE: The cylinder drop-down list button" />
 </div>
 </div>
 <div class="paragraph"><p>The drop-down list can then be used to select the cylinder type that was used
@@ -1277,7 +1296,7 @@ automatically be shown in the dialogue.</p></div>
 <div class="paragraph"><p>Next one must indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the <em>Preferences</em>.</p></div>
-<div class="paragraph"><p>Finally, the user must provide the gas mixture used. If air was used, the
+<div class="paragraph"><p>Finally, provide the gas mixture used. If air was used, the
 value of 21%  can be entered  or this field can be left blank. If nitrox or
 trimix were used, their percentages of oxygen and/or helium should be entered.
 Any inappropriate fields should be left empty. After typing the
@@ -1329,7 +1348,7 @@ with two types of weights: integrated as well as a weight belt:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_adding_bookmarks_to_a_dive">3.2.6. Adding Bookmarks to a dive</h4>
+<h4 id="_adding_bookmarks_to_a_dive">4.2.6. Adding Bookmarks to a dive</h4>
 <div class="paragraph"><p>Many divers wish to annotate their dives with text that indicate particular events
 during the dive, e.g. "Saw dolphins", or "Released surface bouy". This is easily
 done:</p></div>
@@ -1366,7 +1385,7 @@ the bottom of the information box (see <strong>D</strong> below).
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_updated_dive_information">3.2.7. Saving the updated dive information</h4>
+<h4 id="_saving_the_updated_dive_information">4.2.7. Saving the updated dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab and the <strong>Equipment</strong> tab can be
 saved by
 using the
@@ -1380,7 +1399,7 @@ that the new data should be saved.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data_formats">3.3. Importing dive information from other digital data sources or other data formats</h3>
+<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data_formats">4.3. Importing dive information from other digital data sources or other data formats</h3>
 <div class="paragraph" id="S_ImportingAlienDiveLogs"><p>If a user has been diving for some time, it is possible that several dives were
 logged using other dive log software. This information does not need retyping
 because these dive logs can probably be
@@ -1391,7 +1410,7 @@ user has to
 export the logbook(s) to an intermediate format so that they can then be imported
 by <em>Subsurface</em>.
 Currently, <em>Subsurface</em> supports importing CSV log files from several sources.
-APD LogViewer, XP5 and Sensus files are
+APD LogViewer, XP5, Sensus and Seabear files are
 preconfigured, but because the import is flexible, users can configure their own
 imports.
 Manually kept log files (e.g. in spreadsheet) can also be imported by
@@ -1403,13 +1422,16 @@ import the logbooks first into a webservice like <em>divelogs.de</em> and then i
 them from there with
 <em>Subsurface</em>, as divelogs.de supports a few additional logbook formats that
 <em>Subsurface</em> currently cannot parse.</p></div>
-<div class="paragraph"><p>When importing dives, <em>Subsurface</em> tries to detect multiple records for
+<div class="paragraph"><p>If the format of other software is supported natively on Subsurface, it should be sufficient to select
+either <em>Import&#8594;Import log files</em> or <em>File&#8594;Open log file</em>. <em>Subsurface</em> supports the data formats
+of many dive computers, including Suunto and Shearwater. When importing dives, <em>Subsurface</em>
+tries to detect multiple records for
 the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) <em>Subsurface</em>
 will not create duplicate entries.</p></div>
 <div class="sect3">
-<h4 id="_using_the_universal_import_dialogue">3.3.1. Using the universal import dialogue</h4>
+<h4 id="_using_the_universal_import_dialogue">4.3.1. Using the universal import dialogue</h4>
 <div class="paragraph" id="Unified_import"><p>Importing dives from other software is performed through a universal interface
 that is activated by selecting <em>Import</em> from the Main Menu, then clicking on
 <em>Import Log Files</em>. This brings up the dialogue <strong>A</strong> below.</p></div>
@@ -1458,7 +1480,7 @@ the imported dive log in the <em>Subsurface</em> <strong>Dive List</strong>. Som
 accessible through the Import dialogue are also supported, as explained below.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_mares_dive_organiser_v2_1">3.3.2. Importing from Mares Dive Organiser V2.1</h4>
+<h4 id="_importing_from_mares_dive_organiser_v2_1">4.3.2. Importing from Mares Dive Organiser V2.1</h4>
 <div class="paragraph"><p>Since Mares utilise proprietary Windows software not compatible with
 multi-platform applications, these dive logs cannot be
 directly imported into
@@ -1480,7 +1502,7 @@ account in
 <em>www.divelogs.de</em>, log into that web site, then
 select <em>Import Logbook &#8594; Dive Organiser</em> from the menu on the left hand side.
 The instructions must be carefully followed to transfer the dive information
-(in <em>.sdf</em> format) from the Dive Organiser data base to <em>www.divelogs.de</em>.
+(in <em>.sdf</em> format) from the Dive Organiser database to <em>www.divelogs.de</em>.
 </p>
 </li>
 <li>
@@ -1492,7 +1514,7 @@ from <em>divelogs.de</em> to <em>Subsurface</em>, using the instructions below.
 </ol></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">3.3.3. Importing dives from <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">4.3.3. Importing dives from <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. The <em>Import&#8594;Import form Divelogs.de</em> option should be selected
 from the Main Menu. This
@@ -1511,7 +1533,7 @@ success status is indicated (see figure on the right [<strong>B</strong>], below
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSV">3.3.4. Importing dives in CSV format</h4>
+<h4 id="S_ImportingCSV">4.3.4. Importing dives in CSV format</h4>
 <div class="paragraph"><p>Sometimes dive computers export dive information as files with
 <em>comma-separated values</em> (.CSV). For example, the APD Inspiration and Evolution
 closed circuit rebreather (CCR) systems export dive information in a CSV
@@ -1604,7 +1626,7 @@ the image. After completing the column specification, select the <em>OK</em> but
 and the dive will be imported and listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingManualCSV">3.3.5. Importing dives from manually kept CSV file</h4>
+<h4 id="S_ImportingManualCSV">4.3.5. Importing dives from manually kept CSV file</h4>
 <div class="paragraph"><p>If one keeps dive logs in a spreadsheet, there is an option to import
 those dives as well. Spreadsheet data, exported as a CSV file, can
 be imported to <em>Subsurface</em>. When importing manually
@@ -1670,7 +1692,7 @@ appear in the <strong>Dive List</strong> area of <em>Subsurface</em>.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Companion">3.4. Importing GPS coordinates with the <em>Subsurface Companion App</em> for mobile phones</h3>
+<h3 id="S_Companion">4.4. Importing GPS coordinates with the <em>Subsurface Companion App</em> for mobile phones</h3>
 <div class="paragraph"><p>Using the <strong>Subsurface Companion App</strong> on an Android device with a GPS, the coordinates
 for the diving
 location can be automatically passed to the <em>Subsurface</em>
@@ -1679,7 +1701,7 @@ a dedicated Internet-based file server. <em>Subsurface</em>, in turn, can collec
 the localities from the file server.</p></div>
 <div class="paragraph"><p>To do this:</p></div>
 <div class="sect3">
-<h4 id="_create_a_companion_app_account">3.4.1. Create a Companion App account</h4>
+<h4 id="_create_a_companion_app_account">4.4.1. Create a Companion App account</h4>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1699,7 +1721,7 @@ or from
 </ul></div>
 </div>
 <div class="sect3">
-<h4 id="_using_the_subsurface_companion_app_on_a_smartphone">3.4.2. Using the Subsurface companion app on a smartphone</h4>
+<h4 id="_using_the_subsurface_companion_app_on_a_smartphone">4.4.2. Using the Subsurface companion app on a smartphone</h4>
 <div class="paragraph"><p>On first use the app has three options:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1963,7 +1985,7 @@ of another registered diver.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_downloading_dive_locations_to_the_em_subsurface_em_divelog">3.4.3. Downloading dive locations to the <em>Subsurface</em> divelog</h4>
+<h4 id="_downloading_dive_locations_to_the_em_subsurface_em_divelog">4.4.3. Downloading dive locations to the <em>Subsurface</em> divelog</h4>
 <div class="paragraph"><p>Download dive(s) from a dive computer or enter them manually into
 <em>Subsurface</em> before obtaining the GPS coordinates from the server. The download
 dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main Menu <em>Import
@@ -2025,13 +2047,13 @@ especially on a dive trip with many dives and dive locations.
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_LoadImage">3.5. Adding photographs to dives</h3>
+<h3 id="S_LoadImage">4.5. Adding photographs to dives</h3>
 <div class="paragraph"><p>Many (if not most) divers take a camera with them and take photographs
 during a dive. One would like to associate each photograph with a specific
 dive. <em>Subsurface</em> allows one to load photos into a dive. Photos are superimposed
 on the dive profile, from where they can be viewed.</p></div>
 <div class="sect3">
-<h4 id="_loading_photos_and_getting_synchronisation_between_dive_computer_and_camera">3.5.1. Loading photos and getting synchronisation between dive computer and camera</h4>
+<h4 id="_loading_photos_and_getting_synchronisation_between_dive_computer_and_camera">4.5.1. Loading photos and getting synchronisation between dive computer and camera</h4>
 <div class="paragraph"><p>Left-lick on a dive or on a group of dives on the dive list. Then right-click on this
 dive or group of dives and choose the option <em>Load Images</em>:</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2101,7 +2123,7 @@ date-time on image <strong>B</strong> above.
 the dive profile. If the timestamp of the photo is within 30 minutes of the dive, it is shown.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_viewing_the_photos">3.5.2. Viewing the photos</h4>
+<h4 id="_viewing_the_photos">4.5.2. Viewing the photos</h4>
 <div class="paragraph"><p>In order to view the photos added to a dive, activate the <em>show-photos</em> button in the tool bar
 to the left of the dive profile:</p></div>
 <div class="imageblock" style="text-align:left;">
@@ -2109,9 +2131,20 @@ to the left of the dive profile:</p></div>
 <img src="images/icons/ShowPhotos.png" alt="FIGURE:Show photos toolbar button" />
 </div>
 </div>
-<div class="paragraph"><p>After the images have been loaded, they also appear in the <em>Photos</em> tab of the <strong>Dive Notes</strong> panel.
-They also appear as tiny icons on the dive profile at the appropriate
-positions reflecting the time each photograph was taken. See below:</p></div>
+<div class="paragraph"><p>After the images have been loaded, they appear in two places:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the <em>Photos</em> tab of the <strong>Dive Notes</strong> panel.
+</p>
+</li>
+<li>
+<p>
+as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
+   each photograph was taken. See below:
+</p>
+</li>
+</ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage4.jpg" alt="FIGURE: Photos on dive profile" />
@@ -2124,23 +2157,51 @@ is shown of the appropriate photo. See the image below:</p></div>
 <img src="images/LoadImage5.jpg" alt="FIGURE:Thumbnail photo on dive profile" />
 </div>
 </div>
-<div class="paragraph"><p>If one clicks on the thumbnail, then a full size
-photo is shown overlaid onto the <em>Subsurface</em> window. This allows good viewing of
-the photographs that have been added. See below:</p></div>
+<div class="paragraph"><p>Clicking on the thumbnail brings up a full size
+photo overlaid on the <em>Subsurface</em> window. This allows good viewing of
+the photographs that have been added (see the image below). Note that the thumbnail
+has a small dustbin icon in the bottom right hand corner (see image above). If one selects
+the dustbin, the image is removed from the dive. Therefore some care
+is required when clicking on a thumbnail. Images
+can also be deleted using the <em>Photos</em> tab (see text below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage6.jpg" alt="FIGURE: Full-screen photo on dive profile" />
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_the_em_photos_em_tab">4.5.3. The <em>Photos</em> tab</h4>
+<div class="paragraph"><p>Photographs associated with a dive are shown as thumbnails in the <em>Photos</em> tab of the <em>Dive Notes</em>
+panel. Photos taken in rapid succession during a dive (therefore sometimes with large
+overlap on the dive profile) can easily be accessed in the <em>Photos</em> tab. This tab serves as
+a tool for individually accessing the photos of a dive, while the stubs on the dive profile
+give an indication of when during a dive a photo was taken. By single-clicking on a thumbnail in
+the <em>Photos</em> panel, a photo is selected. By double-clicking a thumbnail, the full-sized image is
+shown, overlaying the <em>Subsurface</em> window. A photo can be deleted from the <em>Photos</em> panel by selecting
+it (single-click) and then by pressing the <em>Del</em> key on the keyboard. This removes the photo both
+from the <em>Photos</em> tab as well as the dive profile.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_photos_on_an_external_hard_disk">4.5.4. Photos on an external hard disk</h4>
+<div class="paragraph"><p>Most underwater photographers store their photos on an external drive. If such a drive can be mapped
+(almost always the case) the photos can be directly accessed by <em>Subsurface</em>. This facilitates the interaction
+between <em>Subsurface</em> and an external repository of photos. When associating a dive profile with photos from an
+external drive, the normal procedure of selection and synchronisation (see text above) is used.
+However, after the external drive has been disconnected, <em>Subsurface</em> cannot access these photos any more.
+If the display of photos is activated (using the toolbox to the left of the <em>Dive Profile</em>), the
+program only shows a small white dot where each photo should be on the dive profile.
+In addition the <em>Photos</em> tab only shows the file names of the photos. This is normal behaviour.
+If, later, the external drive with the photos is connected again, the photos can be seen in the normal way.</p></div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">4. Obtaining more information about dives entered into the logbook</h2>
+<h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">5. Obtaining more information about dives entered into the logbook</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_the_strong_dive_info_strong_tab_for_individual_dives">4.1. The <strong>Dive Info</strong> tab (for individual dives)</h3>
+<h3 id="_the_strong_dive_info_strong_tab_for_individual_dives">5.1. The <strong>Dive Info</strong> tab (for individual dives)</h3>
 <div class="paragraph"><p>The Dive Info tab gives some summary information about a particular dive that
 has been selected in the <strong>Dive List</strong>. Useful information here includes the
 surface interval before the dive, the maximum and mean depths of the dive, the
@@ -2159,7 +2220,7 @@ Users should refer to <a href="#SAC_CALCULATION">Appendix D</a> for more informa
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_strong_stats_strong_tab_for_groups_of_dives">4.2. The <strong>Stats</strong> tab (for groups of dives)</h3>
+<h3 id="_the_strong_stats_strong_tab_for_groups_of_dives">5.2. The <strong>Stats</strong> tab (for groups of dives)</h3>
 <div class="paragraph"><p>The Stats tab gives summary statistics for more than one dive, assuming that
 more than one dive has been selected in the <strong>Dive List</strong> using the standard
 Ctrl-click or Shift-click of the mouse. If only one
@@ -2171,7 +2232,7 @@ water temperature and surface air consumption (SAC). It also shows the depth of 
 shallowest and deepest dives of those selected.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">4.3. The <strong>Dive Profile</strong></h3>
+<h3 id="S_DiveProfile">5.3. The <strong>Dive Profile</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Typical dive profile" />
@@ -2421,7 +2482,7 @@ during the dive. For more information external to this manual see:</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_the_dive_profile_context_menu">4.4. The Dive Profile context menu</h3>
+<h3 id="_the_dive_profile_context_menu">5.4. The Dive Profile context menu</h3>
 <div class="paragraph"><p>The context menu for the Dive Profile is accessed by right-clicking while the
 mouse cursor is over the Dive Profile panel. The menu allows the creation of
 Bookmarks or Gas Change Event markers other than the ones that might have been
@@ -2435,7 +2496,7 @@ marker or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_the_strong_information_box_strong">4.5. The <strong>Information Box</strong></h3>
+<h3 id="_the_strong_information_box_strong">5.5. The <strong>Information Box</strong></h3>
 <div class="paragraph"><p>The Information box displays a large range of information pertaining to the dive
 profile. Normally the Information Box is located to the top left of the <strong>Dive
 Profile</strong> panel. If the mouse points outside of the <strong>Dive Profile</strong> panel, then
@@ -2531,10 +2592,10 @@ air diving at a depth equalling the END.</td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_organising_the_logbook_manipulating_groups_of_dives">5. Organising the logbook (Manipulating groups of dives)</h2>
+<h2 id="_organising_the_logbook_manipulating_groups_of_dives">6. Organising the logbook (Manipulating groups of dives)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_the_dive_list_context_menu">5.1. The Dive List context menu</h3>
+<h3 id="_the_dive_list_context_menu">6.1. The Dive List context menu</h3>
 <div class="paragraph"><p>Many actions within <em>Subsurface</em> are dependent on a context menu used
 mostly to manipulate  groups of dives. The context menu is found by selecting
 a dive or a group of dives and then right-clicking.</p></div>
@@ -2545,7 +2606,7 @@ a dive or a group of dives and then right-clicking.</p></div>
 </div>
 <div class="paragraph"><p>The context menu is used in many manipulations described below.</p></div>
 <div class="sect3">
-<h4 id="_customising_the_information_showed_in_the_strong_dive_list_strong_panel">5.1.1. Customising the information showed in the <strong>Dive List</strong> panel</h4>
+<h4 id="_customising_the_information_showed_in_the_strong_dive_list_strong_panel">6.1.1. Customising the information showed in the <strong>Dive List</strong> panel</h4>
 <div class="imageblock" style="text-align:left;">
 <div class="content">
 <img src="images/DiveListOptions.jpg" alt="Example: Dive list info options" />
@@ -2559,7 +2620,7 @@ deleted from the dive list, and the list is immediately updated accordingly. Pre
 shown in the <strong>Dive List</strong> is saved and used when <em>Subsurface</em> is re-opened.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_selecting_dives_from_a_particular_dive_site">5.1.2. Selecting dives from a particular dive site</h4>
+<h4 id="_selecting_dives_from_a_particular_dive_site">6.1.2. Selecting dives from a particular dive site</h4>
 <div class="paragraph"><p>Many divers have long dive lists and it may be difficult to locate all the dives at a particular site.
 By pressing <em>Ctl-F</em> on the keyboard, a text box is opened at the top left hand of the <strong>Dive List</strong>.
 Type the name of a dive site in this text box and the <strong>Dive List</strong> is immediately filtered to
@@ -2567,7 +2628,7 @@ show only the dives for that site.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Renumber">5.2. Renumbering the dives</h3>
+<h3 id="S_Renumber">6.2. Renumbering the dives</h3>
 <div class="paragraph"><p>Dives are normally numbered incrementally from non-recent dives (low sequence
 numbers) to recent dives (having the highest sequence numbers). The numbering
 of the dives is not always consistent. For instance, when non-recent dives are
@@ -2580,7 +2641,7 @@ Completing this operation results in new sequence numbers (based on date/time)
 for the dives in the <strong>Dive List</strong> panel.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Group">5.3. Grouping dives into trips and manipulating trips</h3>
+<h3 id="S_Group">6.3. Grouping dives into trips and manipulating trips</h3>
 <div class="paragraph"><p>For regular divers, the dive list can rapidly become very long. <em>Subsurface</em>
 can group dives into <em>trips</em>. It performs this by grouping dives that have
 date/times that are not separated in time by more than two days, thus creating
@@ -2597,7 +2658,7 @@ having to scan a long lists of dives. In order to group the dives in a dive list
 (from the Main Menu) users must select <em>Log &#8594; Autogroup</em>. The <strong>Dive List</strong> panel
 now shows only the titles for the trips.</p></div>
 <div class="sect3">
-<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">5.3.1. Editing the title and associated information for a particular trip</h4>
+<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">6.3.1. Editing the title and associated information for a particular trip</h4>
 <div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip title.
 More information about a trip can be added by selecting its trip title from
 the <strong>Dive List</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Dive Notes</strong> panel. Here
@@ -2611,26 +2672,26 @@ tab. The trip title in the <strong>Dive List</strong> panel should now reflect s
 edited information.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_viewing_the_dives_during_a_particular_trip">5.3.2. Viewing the dives during a particular trip</h4>
+<h4 id="_viewing_the_dives_during_a_particular_trip">6.3.2. Viewing the dives during a particular trip</h4>
 <div class="paragraph"><p>Once the dives have been grouped into trips, users can expand one or more
 trips by clicking the arrow-head on the left of each trip title. This expands
 the selected trip, revealing the individual dives performed during the trip.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_collapsing_or_expanding_dive_information_for_different_trips">5.3.3. Collapsing or expanding dive information for different trips</h4>
+<h4 id="_collapsing_or_expanding_dive_information_for_different_trips">6.3.3. Collapsing or expanding dive information for different trips</h4>
 <div class="paragraph"><p>If a user right-clicks after selecting a particular trip in the dive list, the
 resulting context menu allows several possibilities to expand or collapse dives
 within trips. This includes expanding all trips, collapsing all trips and
 collapsing all trips except the selected one.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">5.3.4. Merging dives from more than one trip into a single trip</h4>
+<h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">6.3.4. Merging dives from more than one trip into a single trip</h4>
 <div class="paragraph"><p>By right-clicking on a selected trip title in the <strong>Dive List</strong> panel, a
 context menu shows up that allows the merging of trips by either merging of the selected trip
 with the trip below or with the trip above.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_splitting_a_single_trip_into_more_than_one_trip">5.3.5. Splitting a single trip into more than one trip</h4>
+<h4 id="_splitting_a_single_trip_into_more_than_one_trip">6.3.5. Splitting a single trip into more than one trip</h4>
 <div class="paragraph"><p>If a trip includes five dives, the user can split this trip into two trips (trip 1:
 top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
 three dives. The resulting context menu allows the user to create a new trip by
@@ -2647,9 +2708,9 @@ the completed action on the right (B):</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manipulating_single_dives">5.4. Manipulating single dives</h3>
+<h3 id="_manipulating_single_dives">6.4. Manipulating single dives</h3>
 <div class="sect3">
-<h4 id="_delete_a_dive_from_the_dive_log">5.4.1. Delete a dive from the dive log</h4>
+<h4 id="_delete_a_dive_from_the_dive_log">6.4.1. Delete a dive from the dive log</h4>
 <div class="paragraph"><p>Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, and then selecting <strong>Delete
 dive(s)</strong>. Typically this would apply to a case where a user wishes to delete
@@ -2657,7 +2718,7 @@ workshop
 calibration dives of the dive computer or dives of extremely short duration.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_unlink_a_dive_from_a_trip">5.4.2. Unlink a dive from a trip</h4>
+<h4 id="_unlink_a_dive_from_a_trip">6.4.2. Unlink a dive from a trip</h4>
 <div class="paragraph"><p>Users can unlink dives from the trip to which they belong. In order to do this,
 select and right-click
 the relevant dives to bring up the context menu. Then select the option <strong>Remove dive(s)
@@ -2665,7 +2726,7 @@ from trip</strong>. The dive(s) now appear immediately above the trip to
 which they belonged.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_add_a_dive_to_the_trip_immediately_above">5.4.3. Add a dive to the trip immediately above</h4>
+<h4 id="_add_a_dive_to_the_trip_immediately_above">6.4.3. Add a dive to the trip immediately above</h4>
 <div class="paragraph"><p>Selected dives can be moved from the trip to which they belong and placed within
 the trip immediately above the currently active trip. To do this, select
 and right-click
@@ -2673,7 +2734,7 @@ the dive(s) to bring up the context menu, and then select <strong>Add dive(s) to
 immediately above</strong>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_shift_the_start_time_of_dive_s">5.4.4. Shift the start time of dive(s)</h4>
+<h4 id="_shift_the_start_time_of_dive_s">6.4.4. Shift the start time of dive(s)</h4>
 <div class="paragraph"><p>Sometimes it is necessary to adjust the start time of a dive. This may apply to
 situations where dives are performed in different time zones or when the dive
 computer has an erroneous time. In order to do this, user must select and right-click
@@ -2685,7 +2746,7 @@ time
 option indicating whether the time adjustment should be forwards or backwards.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_merge_dives_into_a_single_dive">5.4.5. Merge dives into a single dive</h4>
+<h4 id="_merge_dives_into_a_single_dive">6.4.5. Merge dives into a single dive</h4>
 <div class="paragraph"><p>Sometimes a dive is briefly interrupted, e.g. if a diver returns to the surface
 for a few minutes, resulting in two or more dives being recorded by the dive
 computer and appearing as different dives in the <strong>Dive List</strong> panel. Users can
@@ -2704,7 +2765,7 @@ below shows the depth profile of two such dives that were merged:</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_ExportLog">6. Exporting the dive log or parts of the dive log</h2>
+<h2 id="S_ExportLog">7. Exporting the dive log or parts of the dive log</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The export function can be reached by selecting <em>File &#8594; Export</em>, which brings up
 the Export dialog. This dialog always gives two options: save ALL dives, or save only
@@ -2798,7 +2859,7 @@ instance <em>www.divelogs.de</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Cloud_access">7. Keeping a <em>Subsurface</em> dive log in the Cloud</h2>
+<h2 id="S_Cloud_access">8. Keeping a <em>Subsurface</em> dive log in the Cloud</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>For each diver, dive log information is highly important. Not only is it a record
 of diving activities for one&#8217;s own pleasure, but it is important information required
@@ -2820,10 +2881,17 @@ files on the Dropbox servers to be seen as a local folder on one&#8217;s desktop
 <img src="images/Cloud.jpg" alt="FIGURE: Dropbox folder" />
 </div>
 </div>
-<div class="paragraph"><p>Currently there are no costs involved for this service. In this
-case, one can store one&#8217;s dive log on <em>Dropbox</em> in a totally seamless way: a dive log in
-one&#8217;s <em>Dropbox</em> folder can be opened and saved directly by <em>Subsurface</em> and it can
-be accessed from any place with Internet access. Dropbox (Windows, Mac
+<div class="paragraph"><p>The <em>Dropbox</em> program creates a copy of the <em>Dropbox</em> Internet Cloud content on one&#8217;s
+desktop computer. When the computer is connected to the Internet, the Internet
+content is automatically updated. Therefore both the <em>Open</em> and <em>Save</em> of dive logs are done
+using the local copy of the dive log in the local <em>Dropbox</em> folder, so there&#8217;s no need
+for a direct internet connection. If the local copy is modified, e.g. by adding a dive,
+the remote copy in the <em>Dropbox</em> server in the Cloud will be automatically updated whenever
+Internet access is available.</p></div>
+<div class="paragraph"><p>In this way a dive log in
+one&#8217;s <em>Dropbox</em> folder can be accessed seamlessly from the Internet and can
+be accessed from any place with Internet access. Currently there are no costs
+involved for this service. Dropbox (Windows, Mac
 and Linux) can be installed by accessing the
 <a href="http://www.dropbox.com/install"><em>Install Page on the Dropbox website</em></a>
 . Alternatively one can use <em>Dropbox</em> as a mechanism to backup one&#8217;s dive log. To
@@ -2831,16 +2899,13 @@ Store a dive log in the Cloud, select <em>File&#8594;Save as</em> from the <em>S
 navigate to the <em>Dropbox</em> folder and select the <em>Save</em> button. To access the dive log
 in the Cloud, select <em>File&#8594;Open Logbook</em> from the <em>Subsurface</em>
 main menu and navigate to the dive log file in the <em>Dropbox</em> folder and select the
-<em>Open</em> button.
-Both options <em>Open</em> and <em>Save</em> are done on the local copy of the dive log saved
-on one&#8217;s computer&#8217;s folder <em>Dropbox</em>, so there&#8217;s no need of direct internet
-conexion. If the local copy is modified, e.g. adding a dive, the copy in the
-<em>Dropbox</em> server in the Cloud will be automatically updated when connecting to
-the internet.</p></div>
+<em>Open</em> button.</p></div>
+<div class="paragraph"><p>Several paid services exist on the Internet (e.g. Google, Amazon) where the same
+process could be used for the Cloud-based storage of dive logs.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">8. Printing a dive log</h2>
+<h2 id="S_PrintDivelog">9. Printing a dive log</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print a whole dive log or only a
 few selected dives, including dive profiles and other contextual information.</p></div>
@@ -2855,7 +2920,7 @@ dive log is required, then the user must select the required dives from the <str
 <li>
 <p>
 What gas partial pressure information is required on the dive profile? Users should select
-the appropriate information from the Main Menu: <em>File&#8594;Preferences&#8594;Graph</em>.
+the appropriate toggle-buttons on the button bar to the left of the Dive Profile panel.
 </p>
 </li>
 </ul></div>
@@ -2931,12 +2996,10 @@ the output for one particular page.</p></div>
 <img src="images/Printpreview.jpg" alt="FIGURE: Print preview page" />
 </div>
 </div>
-<div class="paragraph"><p>Several paid services exist on the Internet (e.g. Google, Amazon) where the same
-process could be used for the Cloud-based storage of dive logs.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Preferences">9. Setting user <em>Preferences</em> for <em>Subsurface</em></h2>
+<h2 id="S_Preferences">10. Setting user <em>Preferences</em> for <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>There are several settings within <em>Subsurface</em> that the user can specify. These
 are found when selecting <em>File&#8594;Preferences</em>. The settings are performed in
@@ -2945,7 +3008,7 @@ operate on the same principles: the user must specify the settings that are to b
 these changes are saved using the <strong>Apply</strong> button. After applying all the new settings users can then
 leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <div class="sect2">
-<h3 id="_defaults">9.1. Defaults</h3>
+<h3 id="_defaults">10.1. Defaults</h3>
 <div class="paragraph"><p>There are several settings in the <strong>Defaults</strong> panel:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -3009,7 +3072,7 @@ cleared and set to default values.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_units">9.2. Units</h3>
+<h3 id="_units">10.2. Units</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref2.jpg" alt="FIGURE: Preferences Units page" />
@@ -3022,7 +3085,7 @@ Alternatively, if one selects the <strong>Personalise</strong> radio button, uni
 independently, with some units in the metric system and others in imperial.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_graph">9.3. Graph</h3>
+<h3 id="_graph">10.3. Graph</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref3.jpg" alt="FIGURE: Preferences Graph page" />
@@ -3101,7 +3164,7 @@ all depths deeper than the first deco stop. For more information see:
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_language">9.4. Language</h3>
+<h3 id="_language">10.4. Language</h3>
 <div class="paragraph"><p>Choose a language that <em>Subsurface</em> will use.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -3118,7 +3181,7 @@ or French. This particular preference requires a restart of <em>Subsurface</em> 
 effect.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_network">9.5. Network</h3>
+<h3 id="_network">10.5. Network</h3>
 <div class="paragraph"><p>This panel facilitates communication between <em>Subsurface</em> and data sources on the Internet.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -3140,7 +3203,7 @@ through the proxy server to access the Internet.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_DivePlanner">10. The <em>Subsurface</em> dive planner</h2>
+<h2 id="S_DivePlanner">11. The <em>Subsurface</em> dive planner</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Dive planning is an advanced feature of <em>Subsurface</em>, accessible by selecting <em>Log &#8594; Plan Dive</em> from the main menu. It allows calculation of
 nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition of gradient factors as
@@ -3195,7 +3258,7 @@ this feature.
 </ul></div>
 </div></div>
 <div class="sect2">
-<h3 id="_the_em_subsurface_em_dive_planner_screen">10.1. The <em>Subsurface</em> dive planner screen</h3>
+<h3 id="_the_em_subsurface_em_dive_planner_screen">11.1. The <em>Subsurface</em> dive planner screen</h3>
 <div class="paragraph"><p>Like the <em>Subsurface</em> dive log, the planner screen is divided into several sections (see image below). The <strong>setup</strong>
 parameters for a dive are entered into the several sections on the left hand side of the screen.
 The setup is divided into several sections: Available Gases, Rates, Planning, Gas Options and Dive Notes.</p></div>
@@ -3212,7 +3275,7 @@ any warning messages about the dive plan are printed.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_initiating_dive_planning">10.2. Initiating dive planning</h3>
+<h3 id="_initiating_dive_planning">11.2. Initiating dive planning</h3>
 <div class="paragraph"><p>The dive planner comprises two parts: <strong>constructing a dive plan</strong> and <strong>evaluating</strong>
 that dive plan. To perform dive planning, perform these steps:</p></div>
 <div class="ulist"><ul>
@@ -3252,7 +3315,7 @@ planning.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_managing_nitrogen_oxygen_and_gas_consumption">10.3. Managing nitrogen, oxygen and gas consumption</h3>
+<h3 id="_managing_nitrogen_oxygen_and_gas_consumption">11.3. Managing nitrogen, oxygen and gas consumption</h3>
 <div class="paragraph"><p>The planning is performed in three stages:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -3309,8 +3372,8 @@ in the <em>Rates</em> section of the dive setup.
 pressure for oxygen needs to be specified for the
 bottom part of the dive (<em>bottom po2</em>) as well as for the decompression part of the dive (<em>deco po2</em>).
 The most commonly
-used values are 1.4 bar for the bottom part of the dive and 1.5 bar for any decompression
-stages. Normally, a partial pressure of 1.5 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
+used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
+stages. Normally, a partial pressure of 1.6 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
 <em>Available Gases</em> dialog. Normally the planner decides on switching to a new gas when, during
 ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 </p>
@@ -3320,9 +3383,9 @@ ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 <strong>c) Gas management</strong>: One needs keep within the limits of the amount of gas contained in the dive
 cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
 sharing with a buddy. Under the <em>Gas Options</em> heading, specify the best (but conservative) estimate
-of your surface-equivalent air consumption (SAC, also termed RMV) in litres/min (or cft/min,
-determined by the settings of the <em>Preferences</em> tab of <em>Subsurface</em>.  Specify the SAC during the
-bottom part of the dive (<em>bottom SA</em>) as well as during the decompression or safety stops of the
+of your surface-equivalent air consumption (SAC, also termed RMV) in
+litres/min (for the time being, only SI units are supported).  Specify the SAC during the
+bottom part of the dive (<em>bottom SAC</em>) as well as during the decompression or safety stops of the
 dive (<em>deco SAC</em>). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
 is not sufficient and one needs to
 monitor one&#8217;s gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
@@ -3394,7 +3457,7 @@ towards the bottom left of the green design panel. The saved dive plan will appe
 in the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_the_dive_plan_details">10.4. The dive plan details</h3>
+<h3 id="_the_dive_plan_details">11.4. The dive plan details</h3>
 <div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the exact details
 of the dive plan are provided. These details may be modified by checking any of the
 options under the <em>Dive Notes</em> section of the dive planner, immediately to the left
@@ -3408,7 +3471,7 @@ time to get to that level. However, if the <em>Display transition in deco</em> o
 the transitions are shown separately from the segment durations at a particular level.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_printing_the_dive_plan">10.5. Printing the dive plan</h3>
+<h3 id="_printing_the_dive_plan">11.5. Printing the dive plan</h3>
 <div class="paragraph"><p>Selecting the <em>Print</em> button in the planner allows printing of the  <em>Dive Plan Details</em>
 for wet notes. Alternatively one can cut and paste the <em>Dive Plan Details</em> for
 inclusion in a text file or word processing document.</p></div>
@@ -3422,7 +3485,7 @@ accessed in the same way as during the planning process. The only way to print t
 dive plan is to use the <em>File&#8594;Print</em> facility on the main menu in the same way as for dive logs.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_planning_for_repetitive_dives">10.6. Planning for repetitive dives</h3>
+<h3 id="_planning_for_repetitive_dives">11.6. Planning for repetitive dives</h3>
 <div class="paragraph"><p>Repetitive dives can easily be planned if the dates and start times of the
 repetitive dive set
 is specified appropriately in the top left-hand <em>Start Time</em> field. <em>Subsurface</em>
@@ -3441,13 +3504,13 @@ planner: the planner takes into account the configuration in the highlighted div
 </div>
 </div>
 <div class="sect1">
-<h2 id="_description_of_the_subsurface_main_menu_items">11. Description of the Subsurface Main Menu items</h2>
+<h2 id="_description_of_the_subsurface_main_menu_items">12. Description of the Subsurface Main Menu items</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>This section describes the functions and operation of the items in the Main Menu
 of Subsurface. Several of the items below are links to sections of this manual
 dealing with the appropriate operations.</p></div>
 <div class="sect2">
-<h3 id="_file">11.1. File</h3>
+<h3 id="_file">12.1. File</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3468,8 +3531,7 @@ logbook to open.
 </li>
 <li>
 <p>
-<em>Save as</em>: - Save the current logbook or the currently selected dives within
-the present logbook under a different file name.
+<em>Save as</em> - Save the current logbook under a different file name.
 </p>
 </li>
 <li>
@@ -3501,7 +3563,7 @@ the selected dives in the logbook) to one of several formats.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_import">11.2. Import</h3>
+<h3 id="_import">12.2. Import</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3530,7 +3592,7 @@ from <em>www.Divelogs.de</em>.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_log">11.3. Log</h3>
+<h3 id="_log">12.3. Log</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3556,13 +3618,13 @@ trips.
 </li>
 <li>
 <p>
-<a href="#S_DeviceNames_"><em>Edit Device Names</em></a> - Edit the names of dive computers to facilitate your logs.
+<a href="#S_DeviceNames"><em>Edit Device Names</em></a> - Edit the names of dive computers to facilitate your logs.
 </p>
 </li>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_view">11.4. View</h3>
+<h3 id="_view">12.4. View</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3614,7 +3676,7 @@ years.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_filter">11.5. Filter</h3>
+<h3 id="_filter">12.5. Filter</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3624,7 +3686,7 @@ years.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_help">11.6. Help</h3>
+<h3 id="_help">12.6. Help</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3648,10 +3710,10 @@ on the <a href="http://subsurface.hohndel.org/"><em>Subsurface</em> web site</a>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">12. APPENDIX A: Operating system specific information for importing dive information from a dive computer.</h2>
+<h2 id="_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">13. APPENDIX A: Operating system specific information for importing dive information from a dive computer.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_make_sure_that_the_os_has_the_required_drivers_installed">12.1. Make sure that the OS has the required drivers installed</h3>
+<h3 id="_make_sure_that_the_os_has_the_required_drivers_installed">13.1. Make sure that the OS has the required drivers installed</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3692,7 +3754,7 @@ On a Mac users sometimes have to manually hunt for the correct
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">12.2. How to Find the Device Name for USB devices and set its write permission</h3>
+<h3 id="S_HowFindDeviceName">13.2. How to Find the Device Name for USB devices and set its write permission</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3790,7 +3852,7 @@ port, the dive computer interface can connect and one should be able to import
 dives.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">12.3. Setting up bluetooth enabled devices</h3>
+<h3 id="S_HowFindBluetoothDeviceName">13.3. Setting up bluetooth enabled devices</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3892,10 +3954,10 @@ address in the last step above, e.g. <em>/dev/rfcomm0</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">13. APPENDIX B: Dive Computer specific information for importing dive information.</h2>
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">14. APPENDIX B: Dive Computer specific information for importing dive information.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">13.1. Import from a Uemis Zurich</h3>
+<h3 id="S_ImportUemis">14.1. Import from a Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3933,7 +3995,7 @@ may have to do this more than once, depending on how many dives are
 stored on the dive computer.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingGalileo">13.2. Importing dives from the Uwatec Galileo</h3>
+<h3 id="S_ImportingGalileo">14.2. Importing dives from the Uwatec Galileo</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3963,7 +4025,7 @@ available from some Internet web sites e.g.
 available for OSX 10.6 or higher.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">13.3. Importing dives from Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">14.3. Importing dives from Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3974,14 +4036,14 @@ for every dive.
 Mark all the dives you&#8217;d like to import or open.
 Note: The DR5 does not seem to store gradient factors nor deco information, so
 for <em>Subsurface</em> it is not possible to display them. Adjust the gradient
-factors in the <em>Tec Settings</em> in <em>Subsurface</em> to generate a deco overlay in the
+factors in the <em>Graph Settings</em> in <em>Subsurface</em> to generate a deco overlay in the
 <em>Subsurface</em> <strong>Dive Profile</strong> panel but please note that the deco calculated by
 <em>Subsurface</em> will most likely differ from the one displayed on the DR5.</td>
 </tr></table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import_from_shearwater_predator_using_bluetooth">13.4. Import from Shearwater Predator using Bluetooth</h3>
+<h3 id="_import_from_shearwater_predator_using_bluetooth">14.4. Import from Shearwater Predator using Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -4017,7 +4079,7 @@ switch off WiFi while using Bluetooth
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">14. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
+<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">15. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The import of dive log data from external dive log software is mostly performed
 using
@@ -4043,7 +4105,7 @@ Import the accessible dive log data into <em>Subsurface</em>.
 data from foreign
 dive log software. The procedures below mostly apply to Linux and/or Windows.</p></div>
 <div class="sect2">
-<h3 id="S_ImportingDivesSuunto">14.1. Exporting dives from <strong>Suunto Divemanager (DM3 and DM4)</strong></h3>
+<h3 id="S_ImportingDivesSuunto">15.1. Exporting dives from <strong>Suunto Divemanager (DM3 and DM4)</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -4211,17 +4273,17 @@ The dives are now exported to the file DM4.bak
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_mares_dive_organiser_v2_1">14.2. Exporting from Mares Dive Organiser V2.1</h3>
+<h3 id="_exporting_from_mares_dive_organiser_v2_1">15.2. Exporting from Mares Dive Organiser V2.1</h3>
 <div class="admonitionblock" id="Mares_Export">
 <table><tr>
 <td class="icon">
 <img src="images/icons/mareslogo.jpg" alt="Note" />
 </td>
 <td class="content">Mares Dive Organiser is a Windows application. The dive log is kept as a
-Microsoft SQL Compact Edition data base with a <em>.sdf</em> filename extension. The
-data base includes all Dive Organiser-registered divers on the particular
+Microsoft SQL Compact Edition database with a <em>.sdf</em> filename extension. The
+database includes all Dive Organiser-registered divers on the particular
 computer and all Mares dive computers used. The safest way to obtain a copy
-of the dive data base is to export the information to another compatible format
+of the dive database is to export the information to another compatible format
 which can be imported into <em>Subsurface</em>.</td>
 </tr></table>
 </div>
@@ -4229,7 +4291,7 @@ which can be imported into <em>Subsurface</em>.</td>
 <li>
 <p>
 Within Dive Organiser, select
-<em>Database &#8594; Backup</em> from the main menu and back up the data base to the desk
+<em>Database &#8594; Backup</em> from the main menu and back up the database to the desk
 top.
 This creates a zipped file DiveOrganiserxxxxx.dbf.
 </p>
@@ -4254,7 +4316,7 @@ The password for accessing the .zip file is <em>mares</em>.
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDivinglog">14.3. Exporting dives from <strong>DivingLog 5.0</strong></h3>
+<h3 id="S_ImportingDivinglog">15.3. Exporting dives from <strong>DivingLog 5.0</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -4290,10 +4352,10 @@ Click on the export button and select the filename
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_d_faqs">15. APPENDIX D: FAQs.</h2>
+<h2 id="_appendix_d_faqs">16. APPENDIX D: FAQs.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_subsurface_appears_to_miscalculate_gas_consumption_and_sac">15.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
+<h3 id="_subsurface_appears_to_miscalculate_gas_consumption_and_sac">16.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em> calculates. Is <em>Subsurface</em>
 miscalculating?</p></div>
 <div class="paragraph"><p><em>Answer</em>: Not really. What happens is that <em>Subsurface</em> actually calculates gas
@@ -4324,7 +4386,7 @@ starts becoming much more noticeable at high pressure. A 400 bar really does not
 contain twice as much air as a 200 bar one. At lower pressures, air acts pretty much like an ideal gas.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">15.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
+<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">16.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
 <div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth, divetime, SAC, etc).
 <em>Question</em>:  Why do dive durations in my dive computer differ from that given by <em>Subsurface</em>?</p></div>
 <div class="paragraph"><p><em>Answer</em>: For example, if you end up doing a weight check (deep enough to trigger the "dive started")
@@ -4341,7 +4403,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-07-30 14:27:24 PDT
+Last updated 2014-08-07 23:54:22 PDT
 </div>
 </div>
 </body>

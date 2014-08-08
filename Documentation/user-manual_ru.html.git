@@ -1,0 +1,4039 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<title></title>
+<style type="text/css">
+/*
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
+ * Licence: Public Domain
+ *
+ * Usage: asciidoc -a theme=compact_subsurface ...
+ */
+
+*   { padding: 0;  margin: 0; }
+img { border: 0; }
+
+/*** Layout ***/
+
+body                        { margin: 10px 20px; }
+#header br                  { display: none; }
+#revnumber                  { display: block; }
+#toc                        { margin: 1em 0; }
+.toclevel2                  { margin-left: 1em; }
+.toclevel3		    { margin-left: 2em; }
+#footer                     { margin-top: 2em; }
+
+#preamble .sectionbody,
+h2,
+h3,
+h4,
+h5                          { margin: 1em 0 0 0; }
+
+.admonitionblock,
+.listingblock,
+.sidebarblock,
+.exampleblock,
+.tableblock,
+.literalblock               { margin: 1em 0; }
+.admonitionblock td.icon    { padding-right: 0.5em; }
+.admonitionblock td.content { padding-left:  0.5em; }
+.listingblock .content      { padding: 0.5em; }
+.sidebarblock > .content    { padding: 0.5em; }
+.exampleblock > .content    { padding: 0 0.5em; }
+.tableblock caption         { padding: 0 0 0.5em 0; }
+.tableblock thead th,
+.tableblock tbody td,
+.tableblock tfoot td        { padding: 0 0.5em; }
+.quoteblock                 { padding: 0 2.0em; }
+
+.paragraph                  { margin: 1em 0 0 0; }
+.sidebarblock .paragraph:first-child,
+.exampleblock .paragraph:first-child,
+.admonitionblock .paragraph:first-child  { margin: 0; }
+
+   .ulist,    .olist,    .dlist,    .hdlist,    .qlist   { margin: 1em 0; }
+li .ulist, li .olist, li .dlist, li .hdlist, li .qlist,
+dd .ulist, dd .olist, dd .dlist, dd .hdlist, dd .qlist   { margin: 0; }
+ul                          { margin-left: 1.5em; }
+ol                          { margin-left: 2em; }
+dd                          { margin-left: 3em; }
+td.hdlist1                  { padding-right: 1em; }
+
+/*** Fonts ***/
+
+body                        { font-family: Verdana, sans-serif; }
+#header                     { font-family: Arial,   sans-serif; }
+#header h1                  { font-family: Arial,   sans-serif; }
+#footer                     { font-family: Georgia, serif;      }
+#email                      { font-size: 0.85em; }
+#revnumber                  { font-size: 0.75em; }
+#toc                        { font-size: 0.9em;  }
+#toctitle                   { font-weight: bold; }
+#footer                     { font-size: 0.8em; }
+
+h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
+h2                          { font-size: 1.5em; }
+.sectionbody                { font-size: 0.85em; }
+.sectionbody .sectionbody   { font-size: inherit; }
+h3                          { font-size: 159%; } /* 1.35em */
+h4                          { font-size: 141%; } /* 1.2em */
+h5                          { font-size: 118%; } /* 1em */
+.title                      { font-size: 106%;   /* 0.9em */
+			      font-weight: bold;
+			    }
+
+tt, .monospaced             { font-family: monospace; font-size: 106%; } /* 0.9em */
+dt, td.hdlist1, .qlist em   { font-family: Times New Roman, serif;
+			      font-size: 118%;   /* 1em */
+			      font-style: italic;
+			    }
+.tableblock tfoot td        { font-weight: bold; }
+
+/*** Colors and Backgrounds ***/
+
+h1                          { color: #527bbd; border-bottom: 2px solid silver; }
+#footer                     {                 border-top:    2px solid silver; }
+
+h2                          { color: #527bbd; border-bottom: 2px solid silver; }
+h3                          { color: #5D7EAE; border-bottom: 2px solid silver; }
+h3                          { display: inline-block; }
+h4,h5                       { color: #5D7EAE; }
+
+.admonitionblock td.content { border-left: 2px solid silver; }
+.listingblock .content      { background: #f4f4f4;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.sidebarblock > .content    { background: #ffffee;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.exampleblock > .content    {                   border-left: 2px solid silver; }
+.quoteblock                 {                   border-left: 5px solid #e0e0e0; }
+.tableblock table {
+    border-collapse: collapse;
+    border-width: 3px;
+    border-color: #527bbd;
+}
+.tableblock table[frame=hsides] { border-style: solid none; }
+.tableblock table[frame=border] { border-style: solid;      }
+.tableblock table[frame=void]   { border-style: none;       }
+.tableblock table[frame=vsides] { border-style: none solid; }
+.tableblock table[rules=all] tbody tr *,
+.tableblock table[rules=rows] tbody tr * {
+    border-top: 1px solid #527bbd;
+}
+.tableblock table[rules=all] tr *,
+.tableblock table[rules=cols] tr * {
+    border-left: 1px solid #527bbd;
+}
+.tableblock table tbody tr:first-child * {
+    border-top: 1px solid white; /* none don't work here... %-[] */
+}
+.tableblock table tr *:first-child {
+    border-left: none;
+}
+.tableblock table[frame] thead tr *,
+.tableblock table[frame] thead tr * {
+    border-top: 1px solid white;
+    border-bottom: 2px solid #527bbd;
+}
+.tableblock table tr td p.table,
+.tableblock table tr td p.table * {
+    border: 0px;
+}
+
+tt, .monospaced             { color: navy; }
+
+li                          { color: #a0a0a0; }
+li > *                      { color: black; }
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+/*** Misc ***/
+
+.admonitionblock td.icon    { vertical-align: top; }
+.attribution                { text-align: right; }
+
+ul                          { list-style-type: disc; }
+ol.arabic                   { list-style-type: decimal; }
+ol.loweralpha               { list-style-type: lower-alpha; }
+ol.upperalpha               { list-style-type: upper-alpha; }
+ol.lowerroman               { list-style-type: lower-roman; }
+ol.upperroman               { list-style-type: upper-roman; }
+.hdlist td                  { vertical-align: top; }
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Subsurface4Banner.png" alt="Banner" />
+</div>
+</div>
+<div class="paragraph"><p><span class="big">Руководство пользователя</span></p></div>
+<div class="paragraph"><p><strong>Авторы документа</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat</p></div>
+<div class="paragraph"><p><span class="blue"><em>Версия 4.2, Август 2014</em></span></p></div>
+<div class="paragraph"><p>Вас приветствует <em>Subsurface</em>, современная программа для ведения журнала
+погружений с возможностями организации, документирования, анализа и печати
+погружений для SCUBA и фридайверов. <em>Subsurface</em> предлагает множество
+преимуществ по сравнению с другими решениями:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Вы используете два дайв-компьютера различных производителей, каждый со
+   своим программным обеспечением, для загрузки профилей? Вы наряете с
+   ребризером и на открытом цикле? Используете Reefnet Sensus боттом-таймер
+   совместно с дайв-компьютером? <em>Subsurface</em> предоставляет общий
+   унифицированный интерфейс для загрузки журналов со всех этих устройств,
+   хранения и анализа профилей.
+</p>
+</li>
+<li>
+<p>
+Вы используете более одной операционной системы? <em>Subsurface</em> полностью
+   совместим с Mac, Linux и Windows, позволяя вам получить доступ к журналу
+   на любой операционной системе одинаковым способом.
+</p>
+</li>
+<li>
+<p>
+Вы используете Linux или Mac, а для вашего дайв-компьютер есть программное
+   обеспечение только для Windows (например, Mares)? <em>Subsurface</em> дает вам
+   возможность работать с профилями погружения на других операционных системах.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Установочные образы <em>Subsurface</em> доступны для Windows PC (Win XP и позже),
+Intel Mac (OS/X) и множества дистрибутивов Linux. <em>Subsurface</em> может быть
+также скомпилирован на множестве других платформ, где доступны Qt и
+libdivecomputer.</p></div>
+<div class="paragraph"><p>Этот документ описывает использование программы <em>Subsurface</em>. Для установки
+обратитесь к странице <em>Downloads</em> на <a href="http://subsurface.hohndel.org/">веб-сайте
+<em>Subsurface</em></a>.  Вы можете обсудить эту программу, отправив email на адрес
+<a href="mailto:subsurface@hohndel.org">списка рассылки</a> и сообщить об ошибках на сайте
+<a href="http://trac.hohndel.org">треккера ошибок</a>. Инструкции по самостоятельной сборке
+и, если необходимо, зависимостей, описаны в файле INSTALL, распространяемом
+вместе с исходными текстами.</p></div>
+<div class="paragraph"><p><strong>Аудитория</strong>: Рекреационные, технические и коммерческие дайверы, фридайверы</p></div>
+<div id="toc">
+  <div id="toctitle">Содержание</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+<div class="sect1">
+<h2 id="S_UserSurvey">1. Опрос пользователей</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>После нескольких дней использования <em>Subsurface</em> предложит вам заполнить
+опросник. Для разработчиков важно знать своих пользователей и их потребности,
+эта информация помогает развивать проект в правильном направлении.
+Вы можете сами выбрать какую информацию отправлять или вовсе отказаться от
+участия в опросе. Если в будущем ваши привычки или пожелания изменятся,
+вы можете вызвать опросник, запустив <em>Subsurface</em> с параметром
+командной строки <em>--survey</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_StartUsing">2. Начало работы с программой</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Окно <em>Subsurface</em> обычно разделено на четыре панели с <strong>Главным меню</strong> (Файл
+Импорт Журнал Вид Помощь) в верхней части окна (Windows и Linux) или в верхней
+части экрана (Mac и Ubuntu Unity).  Эти четыре панели:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<strong>Список погружений</strong> в левой нижней части, в котором отображаются все
+погружения из журнала. Погружение можно выбрать и подсветить нажав на нем
+мышкой. В большинстве случаев между погружениями можно перемещаться клавишами
+вверх/вниз. Список погружений - важный инструмент управления журналом.
+</p>
+</li>
+<li>
+<p>
+<strong>Карта погружений</strong> в правой нижней части. В ней показываются места
+погружений на карте мира. Карта отцентрирована по местоположению последнего
+выбранного погружения в <strong>Списке погружений</strong>
+</p>
+</li>
+<li>
+<p>
+<strong>Информация о погружении</strong> в левой верхней части. Предоставляет наиболее
+полную информацию о дайве, выбранном в <strong>Списке погружений</strong>, включая статистику
+одного или всех выбранных погружений.
+</p>
+</li>
+<li>
+<p>
+<strong>Профиль погружения</strong> в правой верхней части. Показывает графический профиль
+выбранного погружения.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>Разделители панелей можно двигать с тем, чтобы изменить их размер.
+<em>Subsurface</em> запоминает положение разделителей так, что при следующем запуске
+программы размер панелей будет таким же, как и в предыдущий раз.</p></div>
+<div class="paragraph"><p>Если в <strong>Списке погружений</strong> выбран дайв, то в соответствующих панелях
+отображается местоположение, подробная информация и профиль этого погружения.
+Если же подсвечено более одного погружения, то последнее подсвеченное
+считается выбранным, но на вкладке <strong>Статистика</strong> информационной панели
+показывается сводная информация _всех подсвеченных_ дайвов (минимальная,
+максимальная и средняя глубина, длительность, температура воды и SAC;
+общее время на дне и количество погружений).</p></div>
+<div class="imageblock" id="S_ViewPanels" style="text-align:center;">
+<div class="content">
+<img src="images/main_window.jpg" alt="Главное окно" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете выбрать какие из панелей показывать на главном экране.  Для этого
+перейдите в пункт меню <strong>Вид</strong> и выберите один из вариантов отображения:</p></div>
+<div class="paragraph"><p><strong>Все</strong>: показываются все четыре панели, как на картинке выше.</p></div>
+<div class="paragraph"><p><strong>Список</strong>: показать только список погружений.</p></div>
+<div class="paragraph"><p><strong>Профиль</strong>: отобразить только профиль выбранного погружения.</p></div>
+<div class="paragraph"><p><strong>Информация</strong>: показать только информацию о выбранном дайве и статистику по
+подсвеченным погружениям.</p></div>
+<div class="paragraph"><p><strong>Карта</strong>: показать карту, отцентрированную по последнему выбранному погружению.</p></div>
+<div class="paragraph"><p>Как и большинство других функций, доступных из главного меню, вид главного
+экрана  можно переключать комбинацией клавиш. Эти комбинации указаны рядом с
+соответствующими пунктами меню. В зависимости от операционной системы и
+выбранного языка интерфейса эти комбинации могут различаться, поэтому они не
+перечислены в данном руководстве.</p></div>
+<div class="paragraph"><p>При первом запуске программы главное окно не отображает вообще никакой
+информации. Дело в том, что в этот момент еще нет данных о погружениях. В
+следующих главах будут описаны шаги по созданию нового журнала погружений.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_NewLogbook">3. Создание нового журнала</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>В главном меню выберите <em>Файл &#8594; Новый журнал</em>. Все существующие данные
+очищаются чтобы можно было добавлять новую информацию. Если в открытом журнале
+были сделаны изменения, вам будет предложено сохранить данные перед
+созданием нового журнала.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_GetInformation">4. Добавление новых погружений в журнал</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Существует несколько способов добавить информацию о новых погружениях:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Ввод данных о дайве вручную. Это может оказаться полезным, если вы не
+используете дайв-компьютер и погружения были записаны в бумажном журнале.
+</p>
+</li>
+<li>
+<p>
+Импорт данных из дайв-компьютера (при условии, что он поддерживается
+<em>Subsurface</em>).  На веб-сайте вы можете просмотреть актуальный
+<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+список моделей компьютеров</a>, поддерживаемых <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Импорт данных о погружениях из другой базы или файла. Этот метод подробно
+описывается далее.
+</p>
+</li>
+</ol></div>
+<div class="sect2">
+<h3 id="S_EnterData">4.1. Ввод данных о погружении вручную</h3>
+<div class="paragraph"><p>Этот способ обычно используется для погружений без дайв-компьютера. Основная
+учетная запись в <em>Subsurface</em> - это дайв. В простом журнале погружений обычно
+фиксируется только наиболее важная информация: тип дайва, дата, время,
+длительность, глубина, имена напарников, дайв-мастера или гида, возможно
+некоторые заметки о погружении. <em>Subsurface</em> может хранить гораздо больше
+информации о каждом отдельном дайве. Чтобы добавить новый дайв в журнал
+выберите в главном меню <em>Журнал &#8594; Добавить погружение</em>. Программа при этом
+покажет три области, доступных для ввода данных: две вкладки на информационной
+панели (<strong>Погружение</strong> и <strong>Снаряжение</strong>) и панель <strong>Профиль</strong> с графиком погружения.
+Эти области отмечены соответственно как <span class="red">A</span>, <span class="red">B</span> и <span class="red">C</span> на
+картинке ниже. Далее будет пояснено как вводить данные.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive1.jpg" alt="Рисунок: Добавление погружения" />
+</div>
+</div>
+<div class="paragraph"><p>Когда вы щелкаете мышью в одном из полей указанных панелей, вы переходите в
+режим редактирования. Об этом свидетельствует сообщение на синем фоне в
+верхней части.</p></div>
+<div class="sect3">
+<h4 id="_погружение">4.1.1. Погружение</h4>
+<div class="paragraph"><p>Эта вкладка содержит дату, время и местоположение отдельно взятого дайва,
+природные условия, список партнеров, а также заметки к погружению.
+Рассмотрим подробнее поля ввода, доступные на вкладке <strong>Погружение</strong>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive2.jpg" alt="Рисунок: Вкладка  Погружение" />
+</div>
+</div>
+<div class="paragraph"><p>Поля <strong>Дата</strong> и <strong>Время</strong> соответствуют дате и времени дайва.  При нажатии мышкой
+на поле даты отображается выпадающий календарь, в котором можно выбрать
+необходимую дату.  Нажмите ESC чтобы закрыть календарь. Значение времени (часы
+и минуты) можно также непосредственно поменять, для чего необходимо нажать
+мышкой в нужном месте текстового поля и ввести цифры. По умолчанию выбрана
+текущая дата и время на час больше текущего.</p></div>
+<div class="paragraph"><p><strong>Температура воды и воздуха</strong> во время дайва. Значения можно вводить прямо в
+поля. Единицы измерения заполнять не нужно, они будут автоматически
+подставлены программой (единицы, выбранные в *Настройках* указывают будет ли
+использоваться метрическая или имперская система мер).</p></div>
+<div class="paragraph"><p><strong>Местоположение</strong>: В этом поле можно указать название дайв-сайта, например,
+«Эль-Мина рэк, Хургада, Египет». Если вы часто погружаетесь в одном месте,
+автодополнение поможет вам быстро ввести название сайта.</p></div>
+<div class="paragraph"><p><strong>Координаты</strong>: В этом поле можно указать географические координаты дайв-сайта.
+Их можно получить тремя способами:</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+Выбрать на карте, которая находится в правой нижней части окна
+<em>Subsurface</em>. На карте отображается зеленая полоса с надписью «Выберите место
+на карте двойным щелчком мыши». При двойном нажатии в соответствующем месте
+карты, зеленая полоса исчезнет и координаты точки будут заполнены в поле.
+</p>
+</li>
+<li>
+<p>
+Координаты могут быть получены с помощью вспомогательного приложения
+<em>Subsurface</em>, если у вас есть устройство Android с GPS-датчиком и координаты
+дайв-сайта были сохранены в этом устройстве.  <a href="#S_Companion">Нажмите, чтобы
+узнать больше</a>
+</p>
+</li>
+<li>
+<p>
+Если вам известны координаты, их можно ввести вручную в одном из четырех
+форматов, сначала широта, потом долгота:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>ISO 6709 Приложение D, например 30°13'28.9"Ю 30°49'1.5"В
+Градусы и десятичные минуты, например, Ю30° 13.49760' , В30° 49.30788'
+Градусы минуты секунды, например, Ю30° 13' 29.8" , В30° 49' 1.5"
+Десятичные градусы, например, 30.22496 , 30.821798</code></pre>
+</div></div>
+</li>
+</ol></div>
+<div class="paragraph"><p>Широта южного полушария указывается с буквой <strong>Ю</strong>, например, Ю30°, или со
+знаком минус, например, -30.22496. Аналогично, долгота западного полушария
+указывается с буквой <strong>З</strong>, например, З07°, или со знаком минус, например,-7.34323.</p></div>
+<div class="paragraph"><p>Важно отметить, что координаты GPS привязаны к названию дайв-сайта, поэтому
+указание координат для погружений, у которых не указано местоположение, может
+привести к непредсказуемым результатам (<em>Subsurface</em> будет предлагать, что все
+эти погружения были в одном месте и имеют одинаковые координаты).</p></div>
+<div class="paragraph"><p><strong>Инструктор</strong>: Имя гида или дайв-мастера, с которым производилось это
+погружение. Это поле также производит автодополнение на основании списка всех
+инструкторов в текущем журнале.</p></div>
+<div class="paragraph"><p><strong>Партнер</strong>: Имя buddy или имена партнеров (разделенные запятой), с которыми
+выполнялось данное погружение. Это поле делает автодополнение на основании
+списка всех партнеров в текущем журнале.</p></div>
+<div class="paragraph"><p><strong>Костюм</strong>: Тип костюма в котором осуществлялось погружение. Как и с другими
+полями, для него доступно автодополнение. Если вы ныряете в сухом костюме, то
+можете также указать тип утеплителя и его теплозащиту.</p></div>
+<div class="paragraph"><p><strong>Оценка</strong>: Ваша субъективная оценка этого погружения по 5-ти бальной шкале.
+Укажите рейтинг, нажав на соответствующей звездочке.</p></div>
+<div class="paragraph"><p><strong>Видимость</strong>: Видимость под водой, как и в предыдущем случае, оценивается по
+5-ти бальной шкале.</p></div>
+<div class="paragraph"><p><strong>Метки</strong>: Набор меток (разделенных запятой), описывающих это погружение,
+например: ночное, пещера, течение и т. п. <em>Subsurface</em> предоставляет также
+набор встроенных меток. Автодополнение доступно для этого поля. Например,
+набрав <code>cav</code>, вам предложат на выбор метки <strong>cave</strong> и <strong>cavern</strong>.</p></div>
+<div class="paragraph"><p><strong>Примечания</strong>: В это поле можно ввести любую дополнительную информацию.</p></div>
+<div class="paragraph"><p>Кнопки <strong>Сохранить</strong> и <strong>Отмена</strong> используются для сохранения информации на всех
+вкладках информационной панели и профиля погружения, поэтому нет необходимости
+нажимать их до тех пор, пока вы не заполнили ВСЮ информацию. Ниже приведен
+пример полностью заполненной информационной панели:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CompletedDiveInfo.jpg" alt="Рисунок: Заполненная вкладка Погружение" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_снаряжение">4.1.2. Снаряжение</h4>
+<div class="paragraph"><p>Вкладка Снаряжение позволяет ввести информацию об используемых баллонах и
+газах, а также грузовых системах. Информация о баллонах и смесях влияет на
+поведение профиля погружения (верхняя правая панель).</p></div>
+<div class="paragraph" id="S_CylinderData"><p><strong>Баллоны</strong>: Ввод информации о баллонах осуществляется с помощью диалога,
+изображенного на следующей картинке:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Gas_dialogue1.jpg" alt="Рисунок: Начальный вид диалога редактирования баллонов" />
+</div>
+</div>
+<div class="paragraph"><p>Кнопка + в правом верхнем углу добавляет новый баллон к текущему погружению.
+Темная иконка с изображением мусорной корзины удаляет выбранный баллон, однако
+только в том случае, если этот баллон уже не используется в погружении. Всегда
+существует как минимум один баллон, даже если вы не создавали события замены
+смеси, и его нельзя удалить прежде чем будет добавлен другой.</p></div>
+<div class="paragraph"><p>Начните с выбора типа баллона из выпадающего списка в левой части таблицы. Для
+этого нажмите на ячейке в колонке <strong>Тип</strong>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Gas_dialogue2.jpg" alt="Рисунок: Список типов баллонов" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете использовать выпадающий список для выбора типа баллона для
+погружения, а можете начать вводить название типа с помощью клавиатуры. В этом
+случае вам будут предложены совпадающие типы. Поля <strong>Объем</strong> и <strong>Рабочее
+давление</strong> будут заполнены автоматически. Если баллон отсутствует в списке,
+укажите его название и описание в поле <strong>Тип</strong></p></div>
+<div class="paragraph"><p>Далее укажите начальное и конечное давление газа в баллоне. Единицы измерения
+давления (метрическая/имперская система мер) будут взяты из <em>Настроек</em>.</p></div>
+<div class="paragraph"><p>Наконец, укажите состав используемой смеси в поле <strong>O₂%</strong>. Если используется
+воздух, то можно указать значение 21% или вовсе оставить это поле пустым. В
+случае использования нитрокса или тримикса, необходимо указать процентное
+содержание кислорода и гелия в соответствующих полях.
+Прочие ненужные поля следует оставить незаполненными. После ввода всей
+необходимой информации нажмите клавишу <em>ENTER</em> либо щелкните курсором мыши вне
+ячейки, в которой находится курсор. Информация о дополнительных баллонах может
+быть добавлена нажатием на кнопку + в правом верхнем углу. Ниже приведен
+пример погружения с двумя баллонами (воздух и EAN50):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry3.jpg" alt="Рисунок: заполненная таблица баллонов" />
+</div>
+</div>
+<div class="paragraph"><p><strong>Грузы</strong>: Информация о грузовых системах, используемых во время погружения,
+вводится таким же образом, как и информация о баллонах. Если нажать на кнопку
++ в правом верхнем углу, таблица будет выглядеть приблизительно так:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry1.jpg" alt="Рисунок: Редактирование грузовых систем" />
+</div>
+</div>
+<div class="paragraph"><p>При нажатии мышкой в поле <strong>Тип</strong>, выпадающий список можно вызвать, нажав
+клавишу вниз:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry2.jpg" alt="Рисунок: Список типов грузов" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете использовать выпадающий список для выбора типа груза, либо начать
+вводить название с помощью клавиатуры. В этом случае вам будут предложены
+совпадающие типы. После выбора типа груза, укажите его вес в поле <strong>Вес</strong>.
+Нажмите клавишу <em>ENTER</em> либо щелкните курсором мыши вне ячейки, в которой
+находится курсор. Если вам нужно добавить дополнительную грузовую систему,
+нажмите на кнопке + в правом верхнем углу. Чтобы удалить груз, нажмите на
+иконку с изображением мусорной корзины.
+Вот пример заполненной таблицы с двумя грузовыми системами: интегрированная и
+пояс:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry3.jpg" alt="Рисунок: Заполненная таблица грузов" />
+</div>
+</div>
+<div class="paragraph"><p>Не нужно нажимать кнопку <em>Сохранить</em> до тех пор, пока вы не закончили
+редактирование профиля погружения.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_CreateProfile">4.1.3. Создание профиля погружения</h4>
+<div class="paragraph"><p><strong>Профиль погружения</strong> (графическое представление глубины дайва как функции
+от времени) отображается в правой верхней панели окна <em>Subsurface</em>. В случае
+ручного добавления погружения в журнал, <em>Subsurface</em> предлагает начальный
+профиль дайва, который необходимо изменить, чтобы он соответствовал реальному
+погружению:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile1.jpg" alt="Рисунок: Начальный профиль погружения" />
+</div>
+</div>
+<div class="paragraph"><p><em>Изменение профиля погружения</em>: при перемещении курсора по профилю погружения,
+его положение показывается двумя цветными линиями (красной и зеленой). Глубина
+и время, соответствующие положению курсора, отображаются на координатных осях
+слева и внизу. Единицы измерения (имперская или метрическая система мер)
+берутся из <em>Настроек</em> приложения. Профиль дайва состоит из нескольких
+сегментов, определенных путевыми точками (белые точки, как показано на рисунке
+выше). Глубина по умолчанию составляет 15м. Если погружение было совершено на
+глубину 21м, вам необходимо передвинуть соответствующие точки вниз к нужной
+глубине. Для добавления новой точки, дважды щелкните на линии любого сегмента.
+Чтобы переместить точку, нажмите на нее мышкой и перетаскивайте. Для удаления
+путевой точки, нажмите на ней правой кнопкой мыши и во всплывающем меню
+выберите пункт "Удалить эту точку". Добавляйте и перемещайте точки до тех пор,
+пока профиль не будет соответствовать реальному погружению (глубина и время).
+Ниже приведен пример погружения на 20м в течение 30 минут с последующей
+остановкой безопасности на 5м на 5 минут.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile2.jpg" alt="Рисунок: Отредактированный профиль погружения" />
+</div>
+</div>
+<div class="paragraph"><p><em>Редактирование газовой смеси:</em>  Название используемой газовой смеси
+отображается на профиле рядом с каждым сегментом погружения. По умолчанию
+используется первая смесь из списка газов, указанных на вкладке
+<strong>Снаряжение</strong>. В предыдущем примере это воздух. Чтобы изменить газ для отдельно
+взятого сегмента, нажмите правой кнопкой мыши на путевой точке и выберите
+смесь из выпадающего контекстного меню. Изменение газа в путевой точке
+изменяет сегмент <em>слева</em> от этой точки. Обратите также внимание, что в
+контекстном меню доступны только газы, определенные на вкладке <strong>Снаряжение</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile3.jpg" alt="Рисунок: Меню выбора газовой смеси" />
+</div>
+</div>
+<div class="paragraph"><p>Ниже в качестве примера показан профиль погружения на 20м в течение 30 минут и
+переходом на EAN50 на 5 метрах. В этом случае на вкладке <strong>Снаряжение</strong> было
+добавлено два баллона: первый с воздухом и второй с EAN50.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveProfile4.jpg" alt="Рисунок: Окончательный профиль погружения" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сохранение_погружения_введенного_вручную">4.1.4. Сохранение погружения, введенного вручную</h4>
+<div class="paragraph"><p>После того, как вы ввели все необходимую информацию на вкладках <strong>Погружение</strong>,
+<strong>Снаряжение</strong>, а также отредактировали профиль, необходимо сохранить данные
+погружения в журнале. В правой верхней части вкладки <strong>Погружение</strong> находятся
+две кнопки на голубом фоне. Обратите внимание, что сохранение дайва в журнале
+не сохраняет сам журнал. При выходе из <em>Subsurface</em> вам будет предложено
+сохранить сам журнал.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportDiveComputer">4.2. Импорт новых погружений из дайв-компьютера</h3>
+<div class="sect3">
+<h4 id="_подсоединение_дайв_компьютера_и_импорт_данных">4.2.1. Подсоединение дайв-компьютера и импорт данных</h4>
+<div class="paragraph"><p>Использование дайв-компьютеров позволяет получить большое количество подробной
+информации о погружении, например, точные значения глубин, длительности,
+скорости погружения и всплытия, парциального давления газов. <em>Subsurface</em>
+поддерживает множество моделей дайв-компьютеров,
+<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+актуальный список</a> доступен на веб-сайте.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Внимание" />
+</td>
+<td class="content">Некоторые модели дайв-компьютеров потребляют значительное количество энергии,
+будучи переведенным в режим обмена данными с компьютером. <strong>Это может привести
+к быстрому разряду батареи</strong>. Поэтому мы рекомендуем предварительно проверить
+уровень заряда батареи перед подключением к USB-порту вашего персонального
+компьютера. Так, некоторые модели Suunto и Mares не заряжаются, будучи
+подключенными к ПК. Советуем вам обратиться к руководству по использованию
+вашего дайв-компьютера, чтобы выяснить, заряжается ли его батарея при
+подключении к USB-порту.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Для переноса данных из дайв-компьютера в ваш ПК необходимо установить
+соединение между ними. Для этого вам нужно выяснить порт или точку
+монтирования и сообщить эту информацию <em>Subsurface</em>. В
+<a href="#APPENDIX_A">Приложении А</a> приведена техническая информация,
+специфичная для различных операционных систем, а в
+<a href="#APPENDIX_B">Приложении Б</a> для отдельных моделей дайв-компьютеров.</p></div>
+<div class="paragraph"><p>Когда у вас есть необходимая информация, можно подключить дайв-компьютер к ПК,
+выполнив следующие шаги:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Интерфейсный кабель должен быть подключен к свободному USB-порту
+   (подключение через ИК-порт и Bluetooth рассматривается далее)
+</p>
+</li>
+<li>
+<p>
+Дайв-компьютер должен быть переведен в режим передачи данных
+   (Обратитесь к руководству пользователя вашего дайв-компьютера)
+</p>
+</li>
+<li>
+<p>
+В главном меню <em>Subsurface</em> выберите <em>Импорт &#8594; Импорт из дайв-компьютера</em>.
+   Вам будет представлено следующее диалоговое окно <strong>A</strong>:
+</p>
+</li>
+</ol></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/ImportFromDC1.jpg" alt="Рисунок: Загрузка из дайв-компьютера 1" />
+</div>
+</div>
+<div class="paragraph"><p>Дайв-компьютеры обычно хранят в своей памяти информацию о нескольких последних
+погружениях, даже не смотря на то, что они уже были загружены в <em>Subsurface</em>.
+По этой причине <em>Subsurface</em> импортирует только те дайвы, которые еще не были
+загружены ранее. Это значительно ускоряет процесс импорта из большинства
+дайв-компьютеров, а также предохраняет батарею от разряда (если конечно ваш
+дайв-компьютер не заряжается, будучи подключенным к USB-порту). Если же по
+какой-то причине вам необходимо загрузить все погружения из памяти
+дайв-компьютера, даже если они уже есть в журнале, поставьте галочку в поле
+<em>Принудительная загрузка всех погружения</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+В диалоговом окне присутствуют два выпадающих списка: <strong>Производитель</strong> и
+  <strong>Модель</strong>. Сначала выберите производителя, например, Suunto, Oceanic, Uwatec
+  или Mares. Затем в списке <strong>Модель</strong> выберите марку вашего дайв-компьютера,
+  например, D4 (Suunto), Veo200 (Oceanic) или Puck (Mares).
+</p>
+</li>
+<li>
+<p>
+Поле <strong>Устройство или точка монтирования</strong> содержит список USB или Bluetooth
+  портов, необходимых для связи <em>Subsurface</em> с вашим дайв-компьютером. Вы
+  должны выбрать порт, соответствующий вашему устройству. Обратитесь к
+  <a href="#APPENDIX_A">Приложению А</a> и
+  <a href="#APPENDIX_B">Приложению Б</a> для получения технической информации о том,
+  как выяснить название порта связи для определенного дайв-компьютера,
+  а в некоторых случаях, как настроить операционную систему ПК, на котором
+  запущен <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Если необходимо загрузить все дайвы, поставьте галочку в поле
+  <em>Принудительная загрузка всех погружения</em>. Обычно <em>Subsurface</em> импортирует
+  только погружения новее самого последнего в вашем журнале. Эта функция вам
+  также может понадобиться, если вы случайно удалили погружения из журнала.
+  Некоторые модели дайв-компьютеров (например, Mares Puck) не предоставляют
+  список погружения в своей памяти перед импортом, поэтому <em>Subsurface</em> не
+  может определить какие из дайвов являются новыми и загружает все погружения
+  не зависимо от состояния этого поля.
+</p>
+</li>
+<li>
+<p>
+Если в поле <strong>Предпочтение загруженным</strong> стоит галочка,и во время импорта
+  будут существовать погружения с одинаковой датой в журнале и в
+  дайв-компьютере, <em>Subsurface</em> перезапишет данные такого дайва данными из
+  дайв-компьютера.
+</p>
+</li>
+<li>
+<p>
+<strong>Не выбирайте</strong> поля <em>Сохранить журнал libdivecomputer</em> и <em>Сохранить
+  дамп-файл libdivecomputer</em>. Они используются для диагностики в случае
+  возникновения проблем с импортом из дайв-компьютера (см. ниже).
+</p>
+</li>
+<li>
+<p>
+Нажмите кнопку <em>ОК</em>. Вам будет представлено диалоговое окно <strong>B</strong>.
+</p>
+</li>
+<li>
+<p>
+При установленном соединении вы можете наблюдать как загружаются данные из
+  дайв-компьютера. В зависимости от модели компьютера и количества погружений
+  в памяти последнего, импорт может занять довольно долгое время, будьте
+  терпеливы. Бегущая полоса, показывающая процесс загрузки, может не совсем
+  точно отражать скорость загрузки, так как зачастую <em>Subsurface</em> не знает
+  точно сколько погружений будет загружено до тех пор, пока импорт не
+  завершен. После окончания загрузки все импортированные погружения будут
+  показаны в списке погружений, отсортированные по дате и времени. Отключите
+  дайв-компьютер и выключите его для экономии заряда батареи.
+</p>
+</li>
+<li>
+<p>
+В случае возникновения проблем связи с дайв-компьютером показывается
+  информационное сообщение вида "Невозможно открыть /dev/ttyUSB0 Mares (Puck
+  Pro)". Внимательно прочитайте следующую главу.
+</p>
+</li>
+</ul></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><p><strong>Проблемы импорта из дайв-компьютера</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Важно" />
+</td>
+<td class="content">Проверьте следующее:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Дайв-компьютер все еще находится в режиме передачи данных?
+</p>
+</li>
+<li>
+<p>
+Полностью ли заряжена батарея дайв-компьютера? Если нет, то следует ее
+   зарядить или заменить.
+</p>
+</li>
+<li>
+<p>
+Рабочий ли интерфейсный кабель? Работает ли этот кабель при использовании
+   других программ? Работал ли этот кабель ранее или вы используете его в
+   первый раз?
+</p>
+</li>
+<li>
+<p>
+Обратитесь к
+   <a href="#APPENDIX_A">Приложению А</a> и убедитесь что правильно указано устройство
+   или точка монтирования (см. выше).
+</p>
+</li>
+<li>
+<p>
+На Unix-подобных операционных системах убедитесь что у вас есть права на
+   открытие порта USB. Если нет, прочитайте
+   <a href="#APPENDIX_A">Приложение А</a>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Если <em>Subsurface</em> не распознает USB адаптер, не показывая при правильное
+название устройства в поле <em>Устройство или точка монтирования</em>, велика
+вероятность, что кабель нерабочий. Это наиболее часто встречающаяся причина
+ошибок при импорте. Также существует вероятность того, что <em>Subsurface</em> не может
+распознать данные, полученные с дайв-компьютера. В этом случае выполните
+необходимо выполнить диагностическую загрузку, пометив галочками следующие два
+поля:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Сохранить журнал libdivecomputer
+Сохранить дамп-файл libdivecomputer</code></pre>
+</div></div>
+<div class="paragraph"><p><strong>Важно</strong>: эти поля используются только для диагностики ошибок, возникших при
+импорте данных из дайв-компьютера, в обычной ситуации галочки в этих полях
+должны быть сняты. Когда они выбраны, вам при импорте будет предложено выбрать
+папку для сохранения диагностической информации. По умолчанию используется
+папка, в которой хранится журнал погружений.</p></div>
+<div class="paragraph"><p><strong>Важно</strong>: При импорте в диагностическом режиме, погружения в журнал не
+добавляются. Вместо этого в указанной вами папке будут созданы два файла:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>subsurface.log
+subsurface.bin</code></pre>
+</div></div>
+<div class="paragraph"><p>Эти файлы следует отправить разработчикам в <a href="mailto:subsurface@hohndel.org">
+список рассылки</a> с просьбой проанализировать проблему. Необходимо указать
+производителя и модель дайв-компьютера и дать словесное описание загружаемых
+погружений.</p></div>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="S_DeviceNames">4.2.2. Изменение названия дайв-компьютера</h4>
+<div class="paragraph"><p>Может возникнуть ситуация, когда вам будет необходимо каким-то образом
+различать дайв-компьютеры, используемые совместно с <em>Subsurface</em>. Например,
+если у вас с напарником одинаковые дайв-компьютеры и вы их используете для
+импорта данных на одном ПК, то вы возможно захотите назвать один из
+компьютеров как "Suunto D4 Ивана", а другой как "Suunto D4 Петра". Или же
+вы технический дайвер и используете два или более дайв-компьютеров одной
+модели. В этом случае мы можете назвать их "Suunto D4 (1)" и "Suunto D4 (2)".
+<em>Subsurface</em> позволяет вам легко это сделать. В <strong>Главном меню</strong> выберите
+<em>Журнал &#8594; Мои дайв-компьютеры</em>. В открывшемся окне вам будет представлен
+список всех компьютеров, использовавшихся для импорта погружений.
+Отредактируйте название соответствующего устройства. После сохранения
+в журнале будет отображаться это название вместо его модели.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_EditDiveInfo">4.2.3. Редактирование погружения, загруженного из компьютера</h4>
+<div class="paragraph"><p>Информация из дайв-компьютера может быть неполной и вам потребуется ее
+отредактировать. Для этого вам предоставляется две вкладки <strong>Погружение</strong> и
+<strong>Снаряжение</strong> в верхней левой панели <em>Subsurface</em>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_погружение_2">4.2.4. Погружение</h4>
+<div class="paragraph"><p>Дата и время погружения, газовая смесь и (обычно) температура присутствуют в
+импортированных дайвах, но вам может понадобиться дополнить
+информацию вручную. Если вы начнете менять какие-то данные на этой вкладке,
+сообщение на голубом фоне в верхней части окна будет уведомлять вас, что
+погружение редактируется. На вкладке <strong>Погружения</strong> вам доступны следующие поля
+для редактирования:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/AddDive3.jpg" alt="Рисунок: Вкладка Погружение" />
+</div>
+</div>
+<div class="paragraph"><p>Поля <strong>Дата</strong> и <strong>Время</strong> соответствуют дате и времени дайва.  При нажатии мышкой
+на поле даты отображается выпадающий календарь, в котором можно выбрать
+необходимую дату.  Нажмите ESC чтобы закрыть календарь. Значение времени (часы
+и минуты) можно также непосредственно поменять, для чего необходимо нажать
+мышкой в нужном месте текстового поля и ввести цифры.</p></div>
+<div class="paragraph"><p><strong>Температура воды и воздуха</strong> во время дайва. Зачастую дайв-компьютеры
+записывают эту информацию и вам не нужно ее редактировать. Если же вы решите
+их заполнить вручную,единицы измерения заполнять не нужно, они будут автоматически
+подставлены программой (единицы, выбранные в *Настройках* указывают будет ли
+использоваться метрическая или имперская система мер).</p></div>
+<div class="paragraph"><p><strong>Местоположение</strong>: В этом поле можно указать название дайв-сайта, например,
+«Эль-Мина рэк, Хургада, Египет». Если вы часто погружаетесь в одном месте,
+автодополнение поможет вам быстро ввести название сайта.</p></div>
+<div class="paragraph"><p><strong>Координаты</strong>: В этом поле можно указать географические координаты дайв-сайта. Их можно получить тремя способами:</p></div>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+Выбрать на карте, которая находится в правой нижней части окна
+<em>Subsurface</em>. На карте отображается зеленая полоса с надписью «Выберите место
+на карте двойным щелчком мыши». При двойном нажатии в соответствующем месте
+карты, зеленая полоса исчезнет и координаты точки будут заполнены в поле.
+</p>
+</li>
+<li>
+<p>
+Координаты могут быть получены с помощью вспомогательного приложения
+<em>Subsurface</em>, если у вас есть устройство Android с GPS-датчиком и координаты
+дайв-сайта были сохранены в этом устройстве.  <a href="#S_Companion">Нажмите, чтобы
+узнать больше</a>
+</p>
+</li>
+<li>
+<p>
+Если вам известны координаты, их можно ввести вручную в одном из четырех
+форматов, сначала широта, потом долгота:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><code>ISO 6709 Приложение D, например 30°13'28.9"Ю 30°49'1.5"В
+Градусы и десятичные минуты, например, Ю30° 13.49760' , В30° 49.30788'
+Градусы минуты секунды, например, Ю30° 13' 29.8" , В30° 49' 1.5"
+Десятичные градусы, например, 30.22496 , 30.821798</code></pre>
+</div></div>
+</li>
+</ol></div>
+<div class="paragraph"><p>Широта южного полушария указывается с буквой <strong>Ю</strong>, например, Ю30°, или со
+знаком минус, например, -30.22496. Аналогично, долгота западного полушария
+указывается с буквой <strong>З</strong>, например, З07°, или со знаком минус, например,-7.34323.</p></div>
+<div class="paragraph"><p>Заметьте, что координаты GPS привязаны к названию дайв-сайта, поэтому
+указание координат для погружений, у которых не указано местоположение, может
+привести к непредсказуемым результатам (<em>Subsurface</em> будет предлагать, что все
+эти погружения были в одном месте и имеют одинаковые координаты).</p></div>
+<div class="paragraph"><p><strong>Инструктор</strong>: Имя гида или дайв-мастера, с которым производилось это
+погружение. Это поле также производит автодополнение на основании списка всех
+инструкторов в текущем журнале.</p></div>
+<div class="paragraph"><p><strong>Партнер</strong>: Имя buddy или имена партнеров (разделенные запятой), с которыми
+выполнялось данное погружение. Это поле делает автодополнение на основании
+списка всех партнеров в текущем журнале.</p></div>
+<div class="paragraph"><p><strong>Костюм</strong>: Тип костюма в котором осуществлялось погружение. Как и с другими
+полями, для него доступно автодополнение.  Если вы ныряете в сухом костюме, то
+можете также указать тип утеплителя и его теплозащиту.</p></div>
+<div class="paragraph"><p><strong>Оценка</strong>: Ваша субъективная оценка этого погружения по 5-ти бальной шкале.
+Укажите рейтинг, нажав на соответствующей звездочке.</p></div>
+<div class="paragraph"><p><strong>Видимость</strong>: Видимость под водой, как и в предыдущем случае, оценивается по
+5-ти бальной шкале.</p></div>
+<div class="paragraph"><p><strong>Метки</strong>: Набор меток (разделенных запятой), описывающих это погружение,
+например: ночное, пещера, течение и т. п. <em>Subsurface</em> предоставляет также
+набор встроенных меток. Автодополнение доступно для этого поля. Например,
+набрав <code>cav</code>, вам предложат на выбор метки <strong>cave</strong> и <strong>cavern</strong>.</p></div>
+<div class="paragraph"><p><strong>Примечания</strong>: В это поле можно ввести любую дополнительную информацию.</p></div>
+<div class="paragraph"><p>Кнопки <strong>Сохранить</strong> и <strong>Отмена</strong> используются для сохранения информации на всех
+вкладках информационной панели и профиля погружения, поэтому нет необходимости
+нажимать их до тех пор, пока вы не заполнили ВСЮ информацию. Ниже приведен
+пример полностью заполненной информационной панели:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CompletedDiveInfo.jpg" alt="Рисунок: Заполненная вкладка Погружение" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_снаряжение_2">4.2.5. Снаряжение</h4>
+<div class="paragraph"><p>Вкладка Снаряжение позволяет ввести информацию об используемых баллонах и
+газах, а также грузовых системах. Голубая полоса в верхней части панели с
+сообщением:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/BlueEditBar.jpg" alt="Голубая полоса редактирования" />
+</div>
+</div>
+<div class="paragraph"><p>информирует о том, что в данный момент вы редактируете погружение. Эта часть
+<em>Subsurface</em>  очень интерактивная и информация о баллонах и смесях влияет на
+поведение профиля погружения (верхняя правая панель).</p></div>
+<div class="paragraph"><p><strong>Баллоны</strong>: Ввод информации о баллонах осуществляется с помощью диалога,
+изображенного на следующей картинке:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DC_gas_dialogue1.jpg" alt="Рисунок: Начальный вид диалога редактирования баллонов" />
+</div>
+</div>
+<div class="paragraph"><p>В большинстве случаев <em>Subsurface</em> получает информацию о смесях из
+дайв-компьютера и подставляет ее в таблицу. Кнопка + в правом верхнем углу
+позволяет добавить новый баллон к текущему погружению. Темная иконка с
+изображением мусорной корзины удаляет выбранный баллон, однако
+только в том случае, если этот баллон уже не используется в погружении.
+Баллон может неявно использоваться даже в отсутствие событий смены газа.</p></div>
+<div class="paragraph"><p>Начните с выбора типа баллона из выпадающего списка в левой части таблицы. Для
+этого нажмите на ячейке в колонке <strong>Тип</strong>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DC_gas_dialogue2.jpg" alt="Рисунок: Список типов баллонов" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете использовать выпадающий список для выбора типа баллона для
+погружения, а можете начать вводить название типа с помощью клавиатуры. В этом
+случае вам будут предложены совпадающие типы. Поля <strong>Объем</strong> и <strong>Рабочее
+давление</strong> будут заполнены автоматически. Если баллон отсутствует в списке,
+укажите его название и описание в поле <strong>Тип</strong></p></div>
+<div class="paragraph"><p>Далее укажите начальное и конечное давление газа в баллоне. Единицы измерения
+давления (метрическая/имперская система мер) будут взяты из <em>Настроек</em>.</p></div>
+<div class="paragraph"><p>Наконец, укажите состав используемой смеси в поле <strong>O₂%</strong>. Если используется
+воздух, то можно указать значение 21% или вовсе оставить это поле пустым. В
+случае использования нитрокса или тримикса, необходимо указать процентное
+содержание кислорода и гелия в соответствующих полях.
+Прочие ненужные поля следует оставить незаполненными. После ввода всей
+необходимой информации нажмите клавишу <em>ENTER</em> либо щелкните курсором мыши вне
+ячейки, в которой находится курсор. Информация о дополнительных баллонах может
+быть добавлена нажатием на кнопку + в правом верхнем углу. Ниже приведен
+пример погружения с двумя баллонами (воздух и EAN50):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CylinderDataEntry3.jpg" alt="Рисунок: заполненная таблица баллонов" />
+</div>
+</div>
+<div class="paragraph"><p><strong>Грузы</strong>: Информация о грузовых системах, используемых во время погружения,
+вводится таким же образом, как и информация о баллонах. Если нажать на кнопку
++ в правом верхнем углу, таблица будет выглядеть приблизительно так:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry1.jpg" alt="Рисунок: Редактирование грузовых систем" />
+</div>
+</div>
+<div class="paragraph"><p>При нажатии мышкой в поле <strong>Тип</strong>, выпадающий список можно вызвать, нажав
+клавишу вниз:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry2.jpg" alt="Рисунок: Список типов грузов" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете использовать выпадающий список для выбора типа груза, либо начать
+вводить название с помощью клавиатуры. В этом случае вам будут предложены
+совпадающие типы. После выбора типа груза, укажите его вес в поле <strong>Вес</strong>.
+Нажмите клавишу <em>ENTER</em> либо щелкните курсором мыши вне ячейки, в которой
+находится курсор. Если вам нужно добавить дополнительную грузовую систему,
+нажмите на кнопке + в правом верхнем углу. Чтобы удалить груз, нажмите на
+иконку с изображением мусорной корзины.
+Вот пример заполненной таблицы с двумя грузовыми системами: интегрированная и
+пояс:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/WeightsDataEntry3.jpg" alt="Рисунок: Заполненная таблица грузов" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_добавление_закладок_к_погружению">4.2.6. Добавление закладок к погружению</h4>
+<div class="paragraph"><p>Многие дайверы комментируют свои погружения, добавляя закладки, отмечающие
+какие-то события по время дайва, например: "Встретили дельфинов", "Выпустили
+буй". Это легко сделать в <em>Subsurface</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Нажмите правой кнопкой мыши в нужной точке профиля погружения. В появившемся
+контекстном меню выберите пункт <em>Добавить закладку</em>. На профиле в указанной
+точке времени появится иконка с изображением дайв-флага (рисунок <strong>А</strong> ниже).
+</p>
+</li>
+<li>
+<p>
+Нажмите правой кнопкой мыши на флаге. В появившемся контекстном меню
+(рисунок <strong>В</strong>) выберите <em>Изменить закладку</em>.
+</p>
+</li>
+<li>
+<p>
+В появившемся окне введите название закладки (рисунок <strong>С</strong>) и нажмите <em>ОК</em>
+чтобы сохранить изменения.
+</p>
+</li>
+<li>
+<p>
+При наведении курсора мыши на изображение флага, в нижней части
+информационного окна будет отображаться название закладки (рисунок <strong>D</strong> ниже).
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Bookmarks.jpg" alt="Рисунок: Добавление закладки" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сохранение_измененного_погружения">4.2.7. Сохранение измененного погружения</h4>
+<div class="paragraph"><p>Вы можете сохранить информацию со вкладок <strong>Погружение</strong> и <strong>Снаряжение</strong>, нажав
+кнопку <em>Сохранить</em>. При нажатии кнопки <em>Отмена</em>, введенные вами данные будут
+утеряны, но информация, загруженная из дайв-компьютера, будет сохранена.
+При закрытии <em>Subsurface</em> вам будет предложено сохранить данные журнала.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_импорт_данных_из_других_источников_и_файлов">4.2.8. Импорт данных из других источников и файлов</h4>
+<div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Если вы ныряете уже достаточно долго, вероятно ваши погружения уже сохранены в
+какой-то другой программе для ведения журнала погружений. Вам не потребуется
+вводить ее заново, потому что с большой долей вероятности <em>Subsurface</em> сможет
+импортировать эти данные. <em>Subsurface</em> поддерживает множество форматов данных.
+Некоторые форматы поддерживаются непосредственно, для других программ может
+понадобиться сделать экспорт в промежуточный формат, для последующего импорта
+в <em>Subsurface</em>.
+В настоящий момент <em>Subsurface</em> поддерживает импорт из CSV-файлов нескольких
+форматов. Для файлов APD LogViewer, XP5 и Sensus подготовлены шаблоны, но вы
+можете создать и свой шаблон импорта.
+Файлы журнала погружений, которые вы ведете вручную (в электронной таблице)
+также могут быть загружены с помощью CSV-импорта.
+<em>Subsurface</em> также поддерживает импорт файлов с расширением UDDF и UDCF,
+которые используются некоторыми дайв-компьютерами, такими, как Heinrichs &amp;
+Weikamp DR5. Наконец, для некоторых сторонних программ, например, Mares Dive
+Organiser, мы рекомендуем сначала экспортировать журнал в сторонний веб-сервис
+типа <em>divelogs.de</em>, а затем импортировать в <em>Subsurface</em>, так как
+<em>divelogs.de</em> поддерживает еще несколько других форматов, которые <em>Subsurface</em>
+в данный момент не распознает.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> поддерживает импорт с сторонних SQL баз данных Suunto Dive
+Manager и Shearwater. Импорт этих файлов выполняется либо прямым открытием,
+либо через диалог импорта.</p></div>
+<div class="paragraph"><p>При импорте <em>Subsurface</em> пытается определить множественные записи относящиеся
+к одному погружению и объединить их. Если не обнаружено проблем (разница во
+временной зоне или значительная разница во времени), <em>Subsurface</em> не создает
+дубликатов погружений.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_использование_универсального_импорта">4.2.9. Использование универсального импорта</h4>
+<div class="paragraph" id="Unified_import"><p>Импорт погружений из сторонних форматов выполняется с помощью универсального
+диалога, который вы можете вызвать из Главного меню <em>Импорт &#8594; Импорт
+журналов</em>. Вам будет представлено диалоговое окно <strong>А</strong>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Import1.jpg" alt="Рисунок: Импорт журналов: шаг 1" />
+</div>
+</div>
+<div class="paragraph"><p>В нижней части окна находится выпадающий список типов файлов (как показано на
+рисунке В):</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+XML-файлы журналов ((Divinglog 5.0, MacDive и другие программы)
+</p>
+</li>
+<li>
+<p>
+UDDF журналы (например, Kenozoooid)
+</p>
+</li>
+<li>
+<p>
+UDCF журналы
+</p>
+</li>
+<li>
+<p>
+JDiveLog
+</p>
+</li>
+<li>
+<p>
+Suunnto Dive Manager (DM3 и DM4)
+</p>
+</li>
+<li>
+<p>
+CSV файлы (текстовые файлы и электронные таблицы)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Выберите необходимый файл в списке и погружения будут добавлены в текущий
+журнал. Прочие форматы, которые не поддерживаются <em>Subsurface</em>, можно
+импортировать другим способом, который описан ниже.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_импорт_из_mares_dive_organiser_v2_1">4.2.10. Импорт из Mares Dive Organiser V2.1</h4>
+<div class="paragraph"><p>Так как Mares использует несвободное программное обеспечение для Microsoft,
+эти журналы не могут быть импортированы в <em>Subsurface</em> напрямую. Вместо этого
+вам придется выполнить процедуру, состоящую из трех шагов, и использовать
+веб-сайт <em>www.divelogs.de</em> для извлечения информации о погружениях.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Данные журнала необходимо экспортировать на ваш ПК в файл с расширением
+<em>.sdf</em>. Подробнее об этом написано в <a href="#Mares_Export">Приложении В</a>
+</p>
+</li>
+<li>
+<p>
+Выгрузить данные на веб-сайт <em>www.divelogs.de</em>. Вам будет необходимо
+создать учетную запись на сайте и войти под ней. После этого выберите
+<em>Import Logbook &#8594; Mares Dive Organizer</em>. Внимательно следуйте инструкциям
+и выгрузите файл с расширением <em>.sdf</em> в на сайт.
+</p>
+</li>
+<li>
+<p>
+Наконец, импортируйте журнал с веб-сайта <em>divelogs.de</em> в <em>Subsurface</em>
+используя следующие инструкции.
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingDivelogsDe">4.2.11. Импорт с веб-сайта <strong>divelogs.de</strong></h4>
+<div class="paragraph"><p>Импорт журнала с сайта <em>divelogs.de</em> очень простой и использует одно
+диалоговое окно. Для начала в Главном меню выберите <em>Импорт &#8594; Импорт с сайта
+divelogs.de). В появившемся окне (рисунок <strong>А</strong> слева ниже) введите свои имя
+пользователя и пароль для сайта _divelogs.de</em> и нажмите кнопку <em>Загрузить</em>.
+После нажатия кнопки в окне будет отображаться прогресс импорта, а в случае
+успешного окончания будет показано уведомление (рисунок <strong>В</strong> справа ниже). Вам
+необходимо нажать кнопку <em>Применить</em>, чтобы загруженные погружения появились в
+<strong>Списке погружений</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Divelogs1.jpg" alt="Рисунок:Импорт с сайта Divelogs.de" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingCSV">4.2.12. Импорт погружений в формате CSV</h4>
+<div class="paragraph"><p>Некоторые дайв-компьютеры экспортируют информацию о погружения в файлах CSV
+(значения, разделенные запятой). Например, ребризеры замкнутого типа APD
+Inspiration и Evolution экспортируют информацию в CSV-формате только для
+одного погружения. Эти файлы могут быть импортированы в <em>Subsurface</em>.
+Данные в CSV-файле обычно организованы следующим образом: одна строка
+заголовка и затем строки данных, по одной на каждую запись. Ниже приведен
+упрощенный и укороченный пример CSV-файла для ребризера APD:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Dive Time (s)   Depth (m)       pO₂ - Setpoint (Bar)  pO₂ - C1 Cell 1 (Bar) Ambient temp. (Celsius)
+0       0.0     0.70    0.81    13.1
+0       1.2     0.70    0.71    13.1
+0       0.0     0.70    0.71    13.1
+0       1.2     0.70    0.71    13.2
+0       1.2     0.70    0.71    13.1
+10      1.6     0.70    0.72    12.7
+20      1.6     0.70    0.71    12.6
+30      1.7     0.70    0.71    12.6
+40      1.8     0.70    0.68    12.5
+50      1.6     0.70    0.68    12.5
+60      2.4     0.70    0.69    12.5
+70      3.5     0.70    0.69    12.4
+80      4.2     0.70    0.72    12.5
+90      4.0     0.70    0.71    12.4</code></pre>
+</div></div>
+<div class="paragraph"><p>Отметим, что каждый заголовок может состоять более, чем из одного слова,
+например, <em>Dive Time (s)</em> в примере выше. Прежде чем пытаться импортировать
+данные в <em>Subsurface</em>, вы должны выяснить:</p></div>
+<div class="paragraph"><p>а. Какой символ служит разделителем колонок в отдельно взятой строке данных?
+Этот разделитель может быть либо запятой (,) или табуляцией (TAB). Вы можете
+определить это, открыв файл с помощью текстового редактора. Если в качестве
+разделителя используется запятая, то вы увидите эти символы между значениями.
+Если же вы не наблюдаете запятых в тексте, но данных организованы в виде
+колонок, то вероятнее всего в качестве разделителя используется символ
+табуляции (как в примере выше).</p></div>
+<div class="paragraph"><p>б. Какие колонки данных должны быть импортированы в <em>Subsurface</em>? Поля времени
+и глубины нужны всегда. Откройте файл с помощью текстового редактора и
+обратите внимание на название колонок в первой строке и их позицию. Для
+примера, приведенного выше:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Время: колонка 1
+Depth: колонка 2
+Темп.: колонка 5
+pO₂  : колонка 4</code></pre>
+</div></div>
+<div class="paragraph"><p>Вооружившись этой информацией, импорт данных в <em>Subsurface</em> не будет для вас
+проблемой. В Главном меню выберите <em>Импорт &#8594; Импорт журналов</em>. В окне выбора
+файлов выберите <em>CSV файлы</em>, после чего вам будет представлено окно импорта
+файлов CSV:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Import_CSV1.jpg" alt="Рисунок: Импорт файлов CSV" />
+</div>
+</div>
+<div class="paragraph"><p>В нем представлено несколько шаблонов для некоторых дайв-компьютеров, например
+для ребризеров APD. Выберите ваш дайв-компьютер из списка <em>Шаблоны</em>, укажите
+систему мер и нажмите кнопку <em>ОК</em>. Погружения будут импортированы и показаны в
+<strong>Списке погружений</strong> <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>Если шаблон для вашего дайв-компюьтера отсутствует, укажите разделитель полей
+(табуляция или запятая). Также необходимо указать какие данные находятся в той
+или иной колонке. Так, картинка выше соответствует формату CSV-файла, что
+находится выше ее. Нажмите кнопку <em>ОК</em> чтобы импортировать данные.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingManualCSV">4.2.13. Импорт погружений из журналов, заполненных вручную</h4>
+<div class="paragraph"><p>Если вы ведете журнал руками, например в электронной таблице, его также можно
+импортировать в <em>Subsurface</em>. Главное отличие состоит в том, что такой журнал
+не содержит данных профиля погружения, а только основную информацию о дайвах.</p></div>
+<div class="paragraph"><p>Аналогично импорту погружений из CSV-файлов (описано выше), вы необходимо
+знать внутренний формат этого файла:</p></div>
+<div class="paragraph"><p>а. Какой символ служит разделителем колонок в отдельно взятой строке данных?
+Этим разделитель может быть запятая (,) точка с запятой (;) или табуляция
+(TAB). Вы можете определить это, открыв файл с помощью текстового редактора.
+Если в качестве разделителя используется запятая, то вы увидите эти символы
+между значениями.  Если же вы не наблюдаете запятых в тексте, но данных
+организованы в виде колонок, то вероятнее всего в качестве разделителя
+используется символ табуляции. При экспорте из электронной таблицы в CSV-файл
+в качестве разделителя рекомендуется использовать табуляцию, так как запятая
+может быть в значении одного из полей.</p></div>
+<div class="paragraph"><p>б. Какие колонки данных должны быть импортированы в <em>Subsurface</em>? В этом
+случае нет обязательных полей, но некоторые, например длительность, важны,
+чтобы журнал имел хоть какой-то смысл. Возможные значение показаны на рисунке
+ниже. Вы должны указывать поля, которые доступны и в вашем файле и в
+<em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>в. Единицы измерения глубины, веса и температуры. <em>Subsurface</em> поддерживает
+метры или футы в качестве единиц глубины, вес в килограммах или фунтах,
+температуру в градусах Цельсия или Фаренгейта. Используемая система мер может
+быть также указана в _Настройках_ приложения. Не допускается смешивать разные
+системы мер для разных полей.</p></div>
+<div class="paragraph"><p>Импорт журналов, заполненных вручную, достаточно прост, но в них может быть
+много полей и можно легко ошибиться в нумерации полей. Проверьте данные прежде
+чем пытаться загрузить их.</p></div>
+<div class="paragraph"><p>Чтобы импортировать погружения, выберите в меню <em>Импорт &#8594; Импорт журналов</em>. В
+окне выбора файлов выберите тип CSV и сам файл. В открывшемся окне выберите
+вкладку <em>Погружения, введенные вручную</em>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Import_CSV2.jpg" alt="Рисунок: Импорт CSV-файлов, заполненных вручную" />
+</div>
+</div>
+<div class="paragraph"><p>Укажите необходимые для импорта поля и их позицию в исходном файле и нажмите
+кноаку <em>ОК</em>. Новые погружения должны появиться в <strong>Списке погружений</strong>
+<em>Subsurface</em>.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_Companion">4.3. Импорт GPS координат из <em>вспомогательного приложения Subsurface</em> для мобильных телефонов</h3>
+<div class="paragraph"><p>Используя <strong>вспомогательное приложение Subsurface</strong> на устройствах Android с GPS
+датчиком, координаты дайв-сайтов могут быть автоматически переданы в журнал
+<em>Subsurface</em>. Вспомогательное приложение сохраняет координаты на выделенном
+сервере в Интернет. <em>Subsurface</em> в свою очередь умеет подгружать координаты
+погружений с этого сервера.</p></div>
+<div class="paragraph"><p>Чтобы воспользоваться этой функциональностью, вам необходимо:</p></div>
+<div class="sect3">
+<h4 id="_создать_учетную_запись_для_вспомогательного_приложения">4.3.1. Создать учетную запись для вспомогательного приложения</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Зарегистрируйтесь на <a href="http://api.hohndel.org/login/">странице вспомогательного
+  приложения</a>. Вым будет прислано письмо-подтверждение с вашим персональным
+  <strong>КЛЮЧОМ</strong>. Этот ключ используется для авторизации на сервере и работы приложения.
+</p>
+</li>
+<li>
+<p>
+Загрузите вспомогательное приложение с сайта
+  <a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play
+  Store</a> или с сайта
+  <a href="http://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_использование_приложения_на_смартфоне">4.3.2. Использование приложения на смартфоне</h4>
+<div class="paragraph"><p>При первом запуске приложения у вас есть три возможности:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Создать учетную запись.</em> Это эквивалентно созданию учетной записи с помощью
+  интернет-броузера. Вы можете запросить <strong>КЛЮЧ</strong>, который будет прислан на вашу
+  электронную почту, но затем вам будет нужно активировать учетную запись на
+  <a href="http://api.hohndel.org/login/">странице вспомогательного приложения</a>.
+</p>
+</li>
+<li>
+<p>
+<em>Получить учетную запись.</em> С помощью этого варианта вы можете восстановить
+  забытый ключ.
+</p>
+</li>
+<li>
+<p>
+<em>Использовать учетную запись</em>. Вам нужно ввести ваш персональный ключ.
+  Приложение сохранит ключ и больше не будет его запрашивать, если только вы
+  не выберите в меню пункт <em>Отключиться</em>.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Важно" />
+</td>
+<td class="content">В программе <em>Subsurface</em> нужно также ввести ваш персональный <strong>КЛЮЧ</strong> в
+настройках приложения. Для этого выберите в меню <em>Файл &#8594; Настройки</em> и на
+вкладке <em>Общие</em> введите <strong>КЛЮЧ</strong> в поле <em>ID пользователя</em> веб-сервиса
+<em>Subsurface</em>. Это обеспечит синхронизацию между приложениями.</td>
+</tr></table>
+</div>
+<div class="sect4">
+<h5 id="_создание_нового_места_погружения">Создание нового места погружения</h5>
+<div class="paragraph"><p>Теперь вы готовы получить координаты места погружения и отправить их на
+сервер. Экран смартфона выглядит как на левой картинке (<strong>А</strong>) ниже, но без
+погружений.</p></div>
+<div class="paragraph"><p>Нажмите на значок со знаком "+" в правом верхнем углу, чтобы добавить новый
+дайв-сайт. Отобразится выпадающее меню с тремя вариантами:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Текущее положение: вам будет предложено ввести название места (и возможно
+  потребуется включить GPS, если он был выключен), после чего текущее
+  положение будет сохранено.
+</p>
+</li>
+<li>
+<p>
+Выбрать на карте: этот вариант позволяет выбрать интересующее вас
+  местоположение на карте (см. рисунок <strong>В</strong>). Выбор точки осуществляется долгим
+  нажатием на сенсорном экране. Если место выбрано неправильно, выберите
+  другое, после чего нажмите на галочку в правом верхнем углу экрана. Укажите
+  название точки и дату и время погружения (рисунок <strong>С</strong>). Для корректного
+  импорта местоположения в <em>Subsurfce</em> мы рекомендуем, чтобы время совпадало
+  со временем дайва.
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_5.jpg" alt="Рисунок: Добавление погружения" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Импорт GPX-файла: Ваше Android-устройство просканирует карту памяти и
+  покажет найденные GPX-файлы. Нажмите на выбранном файле, выберите
+  необходимые точки погружений и нажмите на галочку в правом верхнем углу
+  экрана. После этого выбранные места погружений будут отправлены на сервер в
+  Интернете и добавлены к списку дайвов в вашем смартфоне.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_список_мест_погружений">4.3.3. Список мест погружений</h4>
+<div class="paragraph"><p>На главном экране приложения отображается список мест погружений с
+названиями, датой и временем. Слева от названия над полем выбора может
+показываться значок с изображением стрелки, указывающей вверх, означающий, что
+этот дайв ожидает отправки на сервер. Вы можете выбрать одно или несколько
+погружений, проставив галочки в поле рядом с названием. Групповые операции
+(<em>Отправить</em> и <em>Удалить</em>) применяются к выбранным погружениям.</p></div>
+<div class="paragraph"><p>Погружения можно просматривать двумя способами: текстовый список и карта.
+Режим отображения переключается нажатием на на текстовом поле <em>Погружения</em> в
+левой верхней части экрана (см. рисунок <strong>А</strong> ниже). Находясь в режиме карты, вы
+также можете нажать на текстовом поле <em>Карта</em> в левом верхнем углу (рисунок
+<strong>В</strong>) и выбрать другой режим. При выборе погружения на карте или в списке, вам
+будет представлен экран редактирования места дайва (рисунок <strong>С</strong>), на котором
+вы можете поменять название точки и прочие детали.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_4.jpg" alt="Рисунок: Просмотр и редактирование мест погружений" />
+</div>
+</div>
+<div class="paragraph"><p>На экране редактирование вам доступно два инструмента (в правом верхнем углу
+экрана):</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Редактировать (карандаш): для изменения названия и прочих параметров
+</p>
+</li>
+<li>
+<p>
+Карта: отобразить положение дайва на карте
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>После редактирования и сохранения (рисунок <strong>С</strong>) вам необходимо отправить
+погружение на сервер, как объясняется ниже.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_отправка_погружения_на_сервер">4.3.4. Отправка погружения на сервер</h4>
+<div class="paragraph"><p>Существует несколько способов выгрузки координат на сервер. Самый простой
+- отметить погружения в списке и нажать на кнопку с изображением стрелки в
+правом верхнем углу экрана.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Важно" />
+</td>
+<td class="content">Будьте внимательны: находящаяся рядом кнопка с изображением мусорной корзины
+удаляет точки погружений.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Companion_1.jpg" alt="Рисунок: Вспомогательное приложение Subsurface" />
+</div>
+</div>
+<div class="paragraph"><p>После вашей поездки с использованием вспомогательного приложения,
+все погружения могут быть загружены в <em>Subsurface</em> (см. ниже).</p></div>
+<div class="sect4">
+<h5 id="_дополнительные_функции_вспомогательного_приложения">Дополнительные функции вспомогательного приложения</h5>
+<div class="paragraph"><p>В зависимости от размера экрана вашего Android-устройства дополнительные
+возможности приложения доступны вам только после нажатия кнопки <em>Меню</em>.
+Вам будет предложено на выбор 5 пунктов (рисунок <strong>В</strong> выше):</p></div>
+</div>
+<div class="sect4">
+<h5 id="_поиск">Поиск</h5>
+<div class="paragraph"><p>Позволяет вам найти места погружений по названию и указанном временном
+интервале.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_запуск_фоновой_службы">Запуск фоновой службы</h5>
+<div class="paragraph"><p>Вместо ручного ввода мест погружений, вы можете запустить фоновую службы
+записи координат, которая автоматически будет сохранять места ваших дайвов.</p></div>
+<div class="paragraph"><p>Следующие <em>Настройки</em> (см. ниже) влияют на работу этой службы:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Минимальный интервал</em> в минутах. Приложение будет пытаться определить и
+  записать координаты местоположения каждые Х минут.
+</p>
+</li>
+<li>
+<p>
+<em>Минимальное расстояние</em> в метрах. Минимальное расстояние в метрах между
+  двумя последовательными точками фиксации координат.
+</p>
+</li>
+<li>
+<p>
+<em>Шаблон названия</em>. Название автоматически создаваемых точек погружения.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/info.jpg" alt="Подсказка" />
+</td>
+<td class="content"><em>Как работает фоновая служба?</em> Предположим вы установили временной интервал в
+5мин и минимальное расстояние равное 50 метрам. Приложение будет записывать
+координаты каждые 5 минут <strong>или</strong> если вы переместитесь более чем на 50 метров
+от предыдущей точки. Если же новая точка находится в радиусе 50м от
+предыдущей, то она не будет сохранена. Если вы не двигаетесь, то будут
+сохранены только координаты первой точки.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_отправить_все_местоположения">Отправить все местоположения</h5>
+<div class="paragraph"><p>Отправляет на сервер все местоположения, которые не были выгружены ранее.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_отключиться">Отключиться</h5>
+<div class="paragraph"><p>Не самое удачное название. Эта функция удаляет сохраненные <strong>КЛЮЧ</strong>, который вы
+вводили при первом старте. Может пригодиться в том случае, если другой дайвер
+пользовался вашим смартфоном для записи координат погружений.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_настройки">Настройки</h5>
+<div class="paragraph"><p>В _Настройках_ приложения вам доступны следующие параметры:</p></div>
+</div>
+<div class="sect4">
+<h5 id="_сервер_и_учетная_запись">Сервер и учетная запись</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>URL веб-сервиса</em>. По умолчанию используется <a href="http://api.hohndel.org/">http://api.hohndel.org/</a>
+</p>
+</li>
+<li>
+<p>
+<em>ID пользователя</em>. Ваш персональный ключ, полученный по email после
+  регистрации на сайте. Вы можете скопировать его из письма и вставить сюда,
+  либо ввести вручную.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_синхронизация">Синхронизация</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Синхронизация при старте</em>. Если выбран этот параметр, при каждом старте
+приложения погружения на вашем Android-устройстве и веб-сервисе будут
+синхронизироваться.
+</p>
+</li>
+<li>
+<p>
+<em>Отправлять новые</em>. Если этот параметр установлен, добавленные точки будут
+  автоматически отправляться на сервер.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_фоновая_служба">Фоновая служба</h5>
+<div class="paragraph"><p>Параметры фоновой службы уже были описаны выше.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_разное">Разное</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Список рассылки</em>. Отсюда вы можете отправить письмо разработчикам
+  <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<em>Веб-сайт</em>. Ссылка на веб-сайт <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<em>Версия</em>. Текущая версия вспомогательного приложения.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_загрузка_координат_погружений_в_журнал_em_subsurface_em">4.3.5. Загрузка координат погружений в журнал <em>Subsurface</em></h4>
+<div class="paragraph"><p>Перед получением GPS-кородинат с сервера, погружения должны быть загружены в
+журнал из дайв-компьютера или введены вручную. Для загрузки координат выберите
+в главном меню <em>Импорт &#8594; Импорт координат</em> или нажмите комбинацию клавиш
+Ctrl-G. Вам будет представлено окно, как показано на рисунке <strong>А</strong> ниже. При
+первом импорте необходимо указать ключ, после чего нажмите кнопку <em>Загрузить</em>.
+Окно примет следующий вид (рисунок <strong>В</strong>):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DownloadGPS.jpg" alt="Рисунок: Импорт координат погружений" />
+</div>
+</div>
+<div class="paragraph"><p>Обратите внимание, что теперь кнопка <em>Применить</em> доступна. Нажатие на нее обновит
+названия мест и координаты недавно загруженных или введенных вручную погружений, у
+которых дата и время совпадают с временем фиксации на смартфоне. Если вы уже
+указали название дайв-сайта перед импортом координат, <em>Subsurface</em> отдаст
+предпочтение этим данных и не будет их перезаписывать.</p></div>
+<div class="paragraph"><p>Важно, чтобы часы на вашем смартфоне и дайв-компьютере были синхронизированы,
+так как <em>Subsurface</em> сопоставляет погружения именно по дате-времени, хотя и
+допускает некоторую погрешность. В случае большого разбега в показаниях
+времени координаты не будут обновлены.</p></div>
+<div class="paragraph"><p>Сопоставление по дате-времени может не сработать и по другим причинам
+например, из-за часовых поясов, или в случае нескольких повторных погружений в
+одном месте (в этом случае координаты будут сопоставлены только с первым
+погружением в серии). Для обхода этой проблемы мы рекомендуем вручную изменить
+дату-время погружения <strong>перед</strong> загрузкой GPS-координат и вернуть в начальное
+значение <strong>после</strong> импорта.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/info.jpg" alt="Замечание" />
+</td>
+<td class="content">Полезные советы:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Фоновая служба</em>, будучи хорошим подспорьем, может тем не менее заполнить весь
+список точками, не имеющими никакого отношения к погружениям, а отражающими
+путь судна. И в настоящий момент удаление этих точек с сервера довольно
+проблематично. Поэтому очень желательно удалить ненужные точки перед отправкой
+их на сервер. Это необходимо, если вы хотите видеть на карте только точки погружений.
+</p>
+</li>
+<li>
+<p>
+Желательно для погружений указывать информативные названия, и как минимум
+задать вразумительное название шаблона для автоматически добавляемых
+погружений.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_LoadImage">4.4. Добавление фотографий к погружениям</h3>
+<div class="paragraph"><p>Многие (если не все) дайверы берут с собой на погружение камеру, чтобы сделать
+несколько запоминающихся фото. <em>Subsurface</em> позволяет прикрепить эти
+фотографии к конкретному погружению и просматривать их на профиле погружения
+и на вкладке <em>Фотографии</em>.</p></div>
+<div class="sect3">
+<h4 id="_загрузка_фотографий_и_синхронизация_времени_между_фотоаппаратом_и_дайв_компьютером">4.4.1. Загрузка фотографий и синхронизация времени между фотоаппаратом и дайв-компьютером</h4>
+<div class="paragraph"><p>Нажмите левой кнопкой мыши на погружении в списке, чтобы выбрать его, а затем
+правой кнопкой мыши и выберите из контекстного меню пункт <em>Загрузить фото</em>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage1.jpg" alt="Рисунок: Меню загрузки фотографий" />
+</div>
+</div>
+<div class="paragraph"><p>В системном диалоге выбора файлов выберите фотографии для загрузки в
+<em>Subsurface</em> и нажмите клавишу <em>Открыть</em>:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage2.jpg" alt="Рисунок: Выбор фотографий для загрузки" />
+</div>
+</div>
+<div class="paragraph"><p>Вам будет представлен диалог, показанный ниже. Проблема состоит в том, что
+зачастую время на дайв-компьютере и камере, используемых при погружении,
+не совпадают. Разница может составлять несколько минут. Если <em>Subsurface</em>
+сможет синхронизировать время между этими двумя устройствами, то сможет и
+правильно расположить фотографии на профиле погружения.</p></div>
+<div class="paragraph"><p>Добиться такой синхронизации в <em>Subsurface</em> можно двумя способами:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Вручную</strong>: Если вы записали точное время камеры в самом начале погружения,
+то вы можете вычислить смещение по времени. Если вы не меняли установки
+даты-времени на своих устройствах, то вы можете это сделать в конце дня после
+серии дайвов. После этого вы можете указать этот смещение в поле  <em>Сдвинуть
+время изображений</em> , как показано на рисунке <strong>А</strong>. Если часы камеры спешат на
+7 минут от показаний часов дайв-компьютера, укажите значение смещения 00:07,
+выберите в переключателе <em>Раньше - Позже</em> значение <em>Раньше</em> (поскольку часы
+камеры спешат, нужно сдвинуть время на 7 минут раньше) и нажмите кнопку
+<em>ОК</em>.
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage3b.jpg" alt="Рисунок: Диалог синхронизации" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>По фотографии</strong>: <em>Subsurface</em> предлагает другой хитрый способ для синхронизации
+времени. Если вы сделаете фотографию экрана дайв-компьютера с показаниями
+часов, <em>Subsurface</em> сможет получить точное время камеры из информации,
+сохраняемой в каждой сделанной фотографии. Для этого используйте нижнюю часть
+диалогового окна <em>Сдвинуть время изображений</em>. При этом значения сдвига
+в верхней части окна игнорируются.
+Нажмите на горизонтально вытянутой кнопке <em>Выбрать изображения отображающие
+время на дайв-компьютере</em>. В окне выбора файлов укажите фото вашего
+дайв-компьютера и нажмите <em>Открыть</em>. <em>Subsurface</em> отобразит это фото в правой
+нижней части окна и к этому моменту будет знать время, когда эта фотография
+была сделана. Теперь вам только осталось в поле слева от фотографии указать
+дату-время компьютера, как указано на фото. Основываясь на этой информации,
+<em>Subsurface</em> может вычислить разницу во времени между камерой и
+дайв-компьютером. На рисунке <strong>В</strong> выше  показано загруженное изображение компьютера
+и дата-время у него, перенесенные в поле слева.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Если фотография была сделана задолго до или после погружения, она не будет
+показываться на профиле. <em>Subsurface</em> допускает интервал равный 30 минутам.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_просмотр_фотографий">4.4.2. Просмотр фотографий</h4>
+<div class="paragraph"><p>Для просмотра добавленных фотографий на профиле погружений, активируйте
+переключатель <em>Миниатюры фотографий</em> на панели слева от профиля погружения:</p></div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/icons/ShowPhotos.png" alt="Рисунок: Переключатель Миниатюры фотографий" />
+</div>
+</div>
+<div class="paragraph"><p>После загрузки фотографии отображаются на вкладке <em>Фотографии</em> информационной
+панели, а также в в виде маленьких иконок на профиле погружения в соответствии
+со временем фото:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage4.jpg" alt="Рисунок: Фотографии на профиле" />
+</div>
+</div>
+<div class="paragraph"><p>При наведении мышкой на иконку фото на профиле, будет показана миниатюрная
+фотография:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage5.jpg" alt="Рисунок:Миниатюрное фото на профиле" />
+</div>
+</div>
+<div class="paragraph"><p>Обратите внимание, что в левом верхнем углу миниатюры есть изображение
+мусорной корзины, при нажатии на которое картинка будет удалена. Поэтому
+будьте внимательны, кожа щелкаете мышкой на картинке. При нажатии мышкой на
+миниатюрное фото (в профиле или на вкладке _Фотографии), полноразмерная
+фотография откроется во внешней программе для просмотра изображений:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage6.jpg" alt="Рисунок: Просмотр полноразмерных фотографий" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_вкладка_em_фотографии_em">4.4.3. Вкладка <em>Фотографии</em></h4>
+<div class="paragraph"><p>Фотографии, добавленные к погружению, отображаются миниатюными картинками на
+вкладке <em>Фотографии</em> в <em>Информационной ппнели</em>. Снимки, сделанные в серии и
+имеющие короткий временной интервал, могут перекрывать друг друга на профиле,
+но легко различимы на этой вкладке. Одиночный щелчок мышью на фотографии
+выделяет ее, двойной щелчок мышью открывает окно просмотра фото во внешней
+программе. Фотографию можно удалить на вкладке <em>Фотографии</em>, выбрав ее щелчком
+мыши и нажатием клавиши <em>Del</em>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_фотографии_на_внешнем_жестком_диске">4.4.4. Фотографии на внешнем жестком диске</h4>
+<div class="paragraph"><p>Многие фотографы хранят свои снимки на внешнем накопителе. Если внещний диск
+подключен, то <em>Subsurface</em> в большинстве случаев увидит его, и таким образом
+будет обеспечен доступ к внешнему хранилищу фотографий. При этом вы добавлете
+фото с внешнего диска так, как описанj выше. Однако после того, как внешний
+накопитель отключен, у <em>Subsurface</em> не будет доступа к фотографиям. Если на
+панели кнопок-переключателей (слева от профиля) нажата кнопка <em>Миниатюры
+фотографий</em>, то вместо картинок на профиле буду показываться белые точки, а на
+вкладке <em>Фотографии</em> только имена файлов вместо миниатюр. После подключения
+внешнего накопителя вы снова сможете увидеть фотографии.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_подробная_информация_о_погружениях_в_журнале">5. Подробная информация о погружениях в журнале</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_вкладка_strong_информация_strong_для_одиночного_погружения">5.1. Вкладка <strong>Информация</strong> (для одиночного погружения)</h3>
+<div class="paragraph"><p>Вкладка <em>Информация</em> предоставляет суммарную информацию по погружению,
+выбранному в <strong>Списке погружений</strong>. Здесь отображается такая полезная
+информация, как поверхностный интервал перед погружением, максимальная и
+средняя глубина дайва, объемный расход газов, расход воздуха на поверхности
+(SAC) и единицы кислородного отравления (OTU).</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/info.jpg" alt="Замечание" />
+</td>
+<td class="content">Вычисление SAC и расхода газов:
+<em>Subsurface</em> очень точно вычисляет SAC и расход газов принимая во внимание
+несжимаемость газов, что особенно важно при давлении в баллоне свыше 200 бар.
+Более подробно об этом описано в <a href="#SAC_CALCULATION">Приложение Г</a>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_вкладка_strong_статистика_strong_для_нескольких_погружений">5.2. Вкладка <strong>Статистика</strong> (для нескольких погружений)</h3>
+<div class="paragraph"><p>Вкладка <em>Статистика</em> предоставляет суммарную статистику для нескольких
+погружений, предполагая, что вы выбрали несколько дайвов в <strong>Списке погружений</strong>
+(используйте клавиши Ctrl и Shift при выборе погружений мышкой). На вкладке
+отображается следующая полезная информация: количество выбранных погружений и их
+суммарное время, минимальные, максимальные и средние значения длительности,
+температуры воздуха и воды, SAC. Тут также отображается глубины самого
+глубокого и самого мелкого погружений среди выбранных.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_DiveProfile">5.3. Профиль погружения</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Profile2.jpg" alt="Рисунок: Пример профиля погружения" />
+</div>
+</div>
+<div class="paragraph"><p>Из всех панелей <em>Subsurface</em>, профиль предоставляет наиболее детальную
+информацию о погружении. Слева от профиля находится панель переключателей,
+позволяющая выбрать несколько вариантов отображения. Функции этих
+переключателей описаны ниже. Главным элементов профиля является график глубины
+как функция времени. В дополнение к информации о глубине, график также
+показывает скорость спуска/подъема относительно рекомендованной скорости. Эта
+информация закодирована разными цветами:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Цвет</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Скорость спуска (м/мин)</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Скорость подъема (м/мин)</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Красный</p></td>
+<td align="left" valign="top"><p class="table">&gt; 30</p></td>
+<td align="left" valign="top"><p class="table">&gt;18</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Оранжевый</p></td>
+<td align="left" valign="top"><p class="table">18 - 30</p></td>
+<td align="left" valign="top"><p class="table">9 - 18</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Желтый</p></td>
+<td align="left" valign="top"><p class="table">9 - 18</p></td>
+<td align="left" valign="top"><p class="table">4 - 9</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Светло-зеленый</p></td>
+<td align="left" valign="top"><p class="table">1.5 - 9</p></td>
+<td align="left" valign="top"><p class="table">1.5 - 4</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">Темно-зеленый</p></td>
+<td align="left" valign="top"><p class="table">&lt; 1.5</p></td>
+<td align="left" valign="top"><p class="table">&lt; 1.5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>Профиль также отображает глубины пиков и провалов на графике. Средняя глубина
+показана красной горизонтальной линией.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/scale.jpg" alt="Замечание" />
+</td>
+<td class="content">В некоторых случаях профиль занимает по ширине не всю панель <strong>Профиль
+погружения</strong> Нажмите на переключатель <strong>Альтернативный масштаб</strong>, чтобы более
+эффективно использовать пространство экрана.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p><strong>Температура воды</strong> отображается синей линией со указанием значений температуры
+в местах значительного изменения.</p></div>
+<div class="paragraph"><p>Профиль погружения может отображать графики парциальных давлений O₂, N₂ и He,
+расчетный потолок декомпрессии и потолок, посчитанный дайв-компьютером (виден
+только для глубоких, долгих или повторных погружений). Графики парциальных
+давлений показываются в нижней части профиля, каждый своим цветом для
+отдельного газа: кислород - зеленым, азот - черным, гелий - темно-красным.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/O2.jpg" alt="Замечание" />
+</td>
+<td class="content">Переключатель отображения графика парциального давления <strong>кислорода</strong>.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/N2.jpg" alt="Замечание" />
+</td>
+<td class="content">Переключатель отображения графика парциального давления <strong>азота</strong>.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/He.jpg" alt="Замечание" />
+</td>
+<td class="content">Переключатель отображения графика парциального давления <strong>гелия</strong>. Актуально
+только для дайверов, использующих Trimix, Helitrox или схожие дыхательные смеси.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>График <strong>расхода газа</strong> показывает давление в баллоне и его изменение во время
+погружения. Этот график принимает во внимание глубину, поэтому даже если вы
+вручную ввели начальное и конечное давление в баллоне, линия никогда не будет
+прямой. Аналогично графику глубины, график давления визуально предоставляет
+информацию о моментальном расходе газа (SAC) при использовании дайв-компьютера
+с интегрированным датчиком давления. Однако в этом случае цветовое кодирование
+осуществляется безотносительно какой-то абсолютной величины, а относительно
+усредненного расхода за время погружения. Таким образом, области красного
+или оранжевого цвета указывают на повышенный расход газа, в то время, как
+области темно-зеленого цвета говорят о расходе ниже среднего.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/Heartbutton.png" alt="Замечание" />
+</td>
+<td class="content">Нажатие на кнопку с изображение ритма сердца показывает информацию о частоте
+сердцебиения если дайв-компьютер оборудован датчиком пульса.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Вы можете менять масштаб профиля с помощью колеса мыши или соответствующего
+жеста на сенсорной панели. По умолчанию <em>Subsurface</em> масштабирует панель
+профиля, так чтобы помещалось 30-минутное погружение на 30 метров. Понятно,
+что для фридайверов это не имеет смысла.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MeasuringBar.png" alt="Рисунок: Рулетка" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ruler.jpg" alt="Замечание" />
+</td>
+<td class="content">С помощью рулетки вы можете измерять разницу <strong>глубины и времени</strong> между двумя
+точками погружения. Измерение производится путем перетаскиванию мышью двух
+красных точек. Результаты измерения отображаются в горизонтальной белой
+области ниже линии рулетки.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ShowPhotos.png" alt="Замечание" />
+</td>
+<td class="content">Добавленные к погружению фотографии могут быть отображены нажатием на
+переключатель <strong>Миниатюры фотографий</strong>. Положение фотографии на профиле
+соответствуют времени когда она была сделана. Если этот переключатель
+неактивен, фотографии не показываются.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Профиле может показывать <strong>потолок</strong>, рассчитанный дайв-компьютером (а
+точнее, глубочайшая деко-остановка в данный момент времени). Он отображается
+полупрозрачной красной областью. Потолок появляется, когда при прямом подъеме
+на поверхность возникает риск возникновения декомпрессионной болезни (ДКБ) и в
+этом случае необходимо либо снизить скорость всплытия, либо выполнить
+несколько деко-остановок перед всплытием на поверхность. Не все
+дайв-компьютеры записывают эту информацию и делают ее доступной для загрузки;
+например, ни один из компьютеров Suunto не предоставляет этой информации.
+<em>Subsurface</em> независимо рассчитывает потолок и отображает его на профиле
+закрашенной областью зеленого цвета.
+Из-за разницы в алгоритмах, количества доступных данных и других факторов,
+доступных в момент расчета, расчетный потолок <em>Subsurface</em> и дайв-компьютера
+могут не совпадать, несмотря даже на то, что <em>градиент-факторы</em> могут
+совпадать (см. ниже).
+Зачастую <em>Subsurface</em> рассчитывает потолок для бездекомпрессионных погружений,
+в то время как компьютер не оставался в бездекомпрессионном режиме во все
+время дайва (представлен <span class="green">темно-зеленой</span> областью на профиле в начале
+этой главы). Это вызвано тем, что <em>Subsurface</em> рассчитывает деко-обязательства
+в каждый момент погружения, в то время, как дайв-компьютеры обычно принимают
+во внимание и время всплытия. Во время всплытия происходит рассыщение азота (и
+возможно гелия), поэтому даже технически "заработав" потолок на дне,
+обязательная деко-остановка не требуется. Это позволяет дайв-компьютерам
+рассчитывать большее время на дне.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/cceiling.jpg" alt="Замечание" />
+</td>
+<td class="content">Если дайв-компьютер умеет рассчитывать потолок и делает эту информацию
+доступной для <em>Subsurface</em> во время импорта, вы можете отображать этот
+потолок, нажать на переключатель <strong>Потолок компьютера</strong>.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling1.jpg" alt="Замечание" />
+</td>
+<td class="content">Если переключатель <strong>Расчетный потолок</strong> нажат, потолок, если он существует,
+рассчитанный <em>Subsurface</em> будет показан на профиле зеленым цветом (рисунок <strong>А</strong>
+ниже). Вы можете далее поменять его отображение следующим образом:</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling2.jpg" alt="Замечание" />
+</td>
+<td class="content">Если нажат переключатель <strong>Расчет всех тканей</strong>, показывается потолок для всех
+типов тканей согласно модели Бюльмана  (рисунок <strong>В</strong> ниже)</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/ceiling3.jpg" alt="Замечание" />
+</td>
+<td class="content">Если нажат переключатель <strong>3м шаг для расчетного потолка</strong>, потолок отображается
+ступеньками с шагом 3 метра.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Ceilings2.jpg" alt="Рисунок: Потолок с 3м шагом" />
+</div>
+</div>
+<div class="paragraph"><p>Установки градиент-фактора непосредственно влияют на расчетный потолок и его
+глубину. Подробнее см. главу <a href="#S_GradientFactors">Установки
+градиент-фактора</a>. Текущие установки градиент-фактора (например, GF 35/75)
+указываются в верхней части профиля погружения.
+<strong>Обратите внимание:</strong> значение градиент-фактора на профиле - это НЕ значение,
+используемое дайв-компьютером, а установка, использующаяся самим <em>Subsurface</em>
+для расчета деко-обязательств. Более подробная информация по этой теме можно
+прочитать во внешних источниках:
+    <strong> <a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
+        </strong> <a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a></p></div>
+</div>
+<div class="sect2">
+<h3 id="_контекстное_меню_профиля_погружения">5.4. Контекстное меню профиля погружения</h3>
+<div class="paragraph"><p>Доступ к контекстному меню профиля погружения осуществляется нажатием правой
+кнопки мыши в любом месте графика. Меню позволяет добавлять закладки и события
+замены смеси в дополнение к тем, что были импортированы из дайв-компьютера.
+Маркеры помещаются на профиле в точках, соответствующих времени на
+горизонтальной оси в момент нажатия правой кнопкой мыши. При выборе события
+замены газа, вы далее должны выбрать смесь из списка доступных, как задано на
+вкладке Снаряжение. При щелчке правой кнопкой мыши на уже существующем
+маркере, меню будет расширено, позволяя вам удалить маркер и скрыть все
+маркеры данного типа. Чтобы восстановить скрытые маркеры, выберите в
+контекстном меню пункт <strong>Показывать все события</strong>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_информационное_окно">5.5. Информационное окно</h3>
+<div class="paragraph"><p>Информационное окно отображает подробную информацию, относящуюся к конкретной
+точке профиля погружения (рисунок <strong>В</strong>). Обычно это окно расположено в левой
+верхней части панели, но вы можете его перетащить в любое другое место, при
+этом позиция будет сохранена и не будет меняться при переключении между
+погружениями. Если мышка находится вне панели, информационное окно отображает
+только заголовок (рисунок <strong>А</strong>)</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
+</div>
+</div>
+<div class="paragraph"><p>В момент наведения мышкой на профиль погружения, информационное окно
+распахивается и отображает различную информацию, относящуюся к той временной
+точке, где находится курсор мыши (рисунок *В). Таким образом, передвигая
+курсор мыши по горизонтальной оси времени, вы можете получить информацию о
+любом моменте погружения.
+В информационном окне представлены следующие данные: время погружения (@),
+глубина (Г), давление в баллоне (Д), температура (Т), скорость спуска/подъема
+(С), расход воздуха (SAC), парциальное давление кислорода, максимальная
+рабочая глубина (MOD), эквивалентная глубина по воздуху (EAD), эквивалентная
+наркозная глубина (END), эквивалентная глубина по плотности воздуха (EADD),
+декомпрессионные обязательства в данный момент времени (Деко), время до
+поверхности (TTS), расчетный потолок наряду с потолком для отдельных тканей по
+Бюльману.</p></div>
+<div class="paragraph"><p>Вы можете контролировать отображение некоторых из этих значений,
+воспользовавшись четырьмя переключателями на левой панели кнопок:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MOD.jpg" alt="Замечание" />
+</td>
+<td class="content">Если этот переключатель нажат, информационное окно показывает <strong>максимальную
+рабочую глубину (MOD)</strong> для используемого газа. Значение MOD зависит от
+процентного содержания кислорода в смеси. Для воздуха (21% кислорода) это
+значение составляет около 57 метров. Погружения ниже MOD чреваты рисками,
+связанными с токсичностью кислорода.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/NDL.jpg" alt="Замечание" />
+</td>
+<td class="content">Если этот переключатель нажат, информационное окно показывает
+<strong>бездекомпрессионный предел (NDL)</strong> или <strong>время до поверхности (TTS)</strong>. NDL
+указывает время, которое дайвер может оставаться на текущей глубине, без
+возникновения декомпрессинных обязательств (т.е. пока не появится потолок).
+Как только NDL превышен и появляются декомпрессионные обязательства, TTS
+указывает время до всплытия на поверхность, включая время всплытия и
+декомпрессии.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/SAC.jpg" alt="Замечание" />
+</td>
+<td class="content">Если этот переключатель нажат, информационное окно показывает <strong>расход воздуха
+на поверхности (SAC)</strong>. SAC - объем дыхания, нормализованный для поверхности.
+Значение SAC меньше чем реальный расход газа, потому что на глубине 10м дайвер
+потребляет в два раза больше газа, чем на поверхности. Значение SAC не зависит
+от глубины и измеряются в литрах/мин или куб.футах/мин.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/EAD.jpg" alt="Замечание" />
+</td>
+<td class="content">Если этот переключатель нажат, информационное окно показывает <strong>эквивалентную
+глубину по воздуху (EAD)</strong> для погружений на нитроксе и <strong>эквивалентную
+наркозную глубину (END)</strong> для тримикса. Эти значения важны для дайверов,
+погружающихся на смесях, отличных от воздуха. Значение этих величин зависят от
+состава газа. EAD - глубина гипотетического погружения на воздухе, в котором
+парциальное значение азота такое же, как и в текущем погружении на нитроксе.
+Дайв на нитроксе влечет такие же декомпрессионные обязательства, как и
+погружение на воздухе на глубину EAD. END - глубина гипотетического погружения
+на воздухе, в котором сумма парциальных давлений наркотических азота и
+кислорода такая же, как и в текущем погружении на тримиксе. Тримиксный дайвер
+может ожидать такого же наркотического эффекта, погружайся он на воздухе на
+глубину END.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>На рисунке <strong>В</strong> выше показано информационное окно практически со всей доступной
+информацией.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ведение_журнала_работа_с_группами_погружений">6. Ведение журнала (работа с группами погружений)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_контекстное_меню_списка_погружений">6.1. Контекстное меню списка погружений</h3>
+<div class="paragraph"><p>Многие действия <em>Subsurface</em>, связанные с группами погружений, находятся в
+контекстном меню, которое вы можете вызвать, нажав правой кнопкой мыши на
+дайве или группе погружений.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/ContextMenu.jpg" alt="Рисунок: Контекстное меню" />
+</div>
+</div>
+<div class="paragraph"><p>Это меню используется во многих сценариях, которые описаны ниже:</p></div>
+<div class="sect3">
+<h4 id="_выбор_колонок_списка_погружений">6.1.1. Выбор колонок списка погружений</h4>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/DiveListOptions.jpg" alt="Пример: Возможные колонки списка погружений" />
+</div>
+</div>
+<div class="paragraph"><p>По умолчанию в таблице <strong>списка погружений</strong> показывается следующая информация:
+номер, дата, рейтинг, глубина, длительность и местоположение. Вы можете
+изменить набор колонок, нажав правой кнопкой мыши на заголовке таблицы. Ниже
+приведен пример контекстного меню при нажатии правой кнопкой на заголовке
+<em>Дата</em>. Поставьте или удалите галочки чтобы показать или скрыть поля. <em>Subsurface</em>
+запоминает ваши предпочтения, так что при следующим запуске набор полей останется прежним.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_выбор_дайвов_по_месту_погружения">6.1.2. Выбор дайвов по месту погружения</h4>
+<div class="paragraph"><p>Журнал может быть достаточно большим, что может затруднять поиск погружений по
+их местоположению. Нажмите <em>Ctrl-F</em> - в левом верхнем углу таблицы появится
+поле поиска. Список погружений будет мгновенно отфильтрован по мере ввода в
+это поле.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_Renumber">6.2. Перенумерация погружений</h3>
+<div class="paragraph"><p>Погружения обычно пронумерованы последовательно от более старых к более новым.
+Однако эта нумерация может быть нарушена. Например, при добавлении давних
+погружений, нумерация не будет последовательной, потому что существуют более
+поздние дайвы, нежели только что добавленные ранние погружения. В связи с этим
+вам может понадобиться перенумеровать погружения, для чего в главном меню
+выберите <em>Журнал &#8594; Перенумеровать</em>. Вам будет предоставлена возможность
+указать начальный номер, после чего погружения будут перенумерованы в
+соответствии с хронологическим порядком.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_Group">6.3. Группировка погружений и работа с поездками</h3>
+<div class="paragraph"><p>Если вы регулярно ныряете, журнал может очень быстро распухнуть. <em>Subsurface</em>
+позволяет группировать погружения в <em>поездки</em>. Это выполняется для погружений,
+у которых разрыв по времени не превышает двух дней. При этом для всех таких
+дайвов создается один заголовок в журнале. Ниже представлен несгруппированный
+список погружений (рисунок <strong>А</strong> слева) и тот же список,
+сгруппированный в пять поездок (рисунок <strong>В</strong> справа):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Group2.jpg" alt="Рисунок: Группировка погружений" />
+</div>
+</div>
+<div class="paragraph"><p>Группировка в поездки обеспечивает более быстрый доступ к отдельному
+погружения без необходимости просматривать длинный список. Для группировки
+погружений в главном меню выберите <em>Журнал &#8594; Авто-группировка</em>. Теперь список
+показывает только заголовки поездок.</p></div>
+<div class="sect3">
+<h4 id="_редактирование_поездки">6.3.1. Редактирование поездки</h4>
+<div class="paragraph"><p>Обычно в списке погружения для поездки показывается только ее название. Чтобы
+расширить эту информацию, выберите поездку в списке. после чеге перейдите на
+вкладку <strong>Поездка</strong> в информационной панели. Здесь вы можете добавить информацию,
+касающуюся поездки в целом: дату и время, местоположение, название дайв-центра,
+погодные условия и т.п. Сохраните данные, нажав на кнопку <strong>Сохранить</strong> (на
+голубом фоне в верхней части панели).</p></div>
+</div>
+<div class="sect3">
+<h4 id="_просмотр_погружений_из_поездки">6.3.2. Просмотр погружений из поездки</h4>
+<div class="paragraph"><p>Чтобы получить доступ к индивидуальным погружения в группе, распахните поездку
+нажатием кнопки мыши на значок слева от названия поездки.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_сворачивание_разворачивание_поездок">6.3.3. Сворачивание/разворачивание поездок</h4>
+<div class="paragraph"><p>При щелчке правой кнопкой мыши на поездке, контекстное меню предлагает
+несколько вариантов просмотра поездок: свернуть все, развернуть все, свернуть
+остальные кроме выбранной.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_объединение_погружений_из_нескольких_поездок_в_одну">6.3.4. Объединение погружений из нескольких поездок в одну</h4>
+<div class="paragraph"><p>При щелчке правой кнопкой мыши на поездке, контекстное меню предлагает два
+варианта объединения поездок: объединить с поездкой выше или с поездкой ниже по
+списку.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_разбиение_одной_поездки_на_несколько">6.3.5. Разбиение одной поездки на несколько</h4>
+<div class="paragraph"><p>Если, к примеру, поездка включает пять погружений, вы можете разбить ее на две
+(поездка 1: первые три дайва, поездка 2: последние 2 дайва), выделив первые
+три погружения в поездке и вызвав контекстное меню правой кнопкой мыши. В меню
+выберите пункт <strong>Создать поездку выше</strong>. Выбранные три погружения будут
+объединены в отдельную поездку.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/SplitDive3a.jpg" alt="Рисунок: Разбиение поездки на две" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_работа_с_индивидуальными_погружениями">6.4. Работа с индивидуальными погружениями</h3>
+<div class="sect3">
+<h4 id="_удаление_погружения_из_журнала">6.4.1. Удаление погружения из журнала</h4>
+<div class="paragraph"><p>Вы можете навсегда удалить погружение из журнала, вызвав контекстное меню
+этого дайва и выбрав пункт <strong>Удалить</strong>. Вам может потребоваться это для удаления
+неверных погружений (калибровка дайв-компьютера, подбор грузов и т.п.)</p></div>
+</div>
+<div class="sect3">
+<h4 id="_удаление_погружения_из_поездки">6.4.2. Удаление погружения из поездки</h4>
+<div class="paragraph"><p>Чтобы удалить погружение из поездки, вызовите контекстное меню погружения
+щелчком правой кнопки мыши и выберите пункт <strong>Удалить из поездки</strong>. В списке это
+погружение окажется над поездкой из которой оно было удалено.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_добавление_погружения_к_существующей_поездке">6.4.3. Добавление погружения к существующей поездке</h4>
+<div class="paragraph"><p>Несгруппированные погружения могут быть добавлены к уже существующим поездкам.
+В контекстном меню погружения(-й) выберите пункт <strong>Добавить к поездке
+сверху/снизу</strong>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_сдвиг_времени_начала_погружения">6.4.4. Сдвиг времени начала погружения</h4>
+<div class="paragraph"><p>Иногда вам может понадобиться изменить время начала погружения по причине
+разницы во времени между часовыми поясами или неверных установок часов
+дайв-компьютера. Для этого выделите одно или несколько погружений и в
+контекстном меню выберите пункт <strong>Сдвиг времени</strong>. В диалоговом окне вам
+необходимо указать величину сдвига в часах и минутах и направление.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_объединение_нескольких_погружений_в_одно">6.4.5. Объединение нескольких погружений в одно</h4>
+<div class="paragraph"><p>Бывают ситуации, когда вы вынуждены прервать дайв и всплыть на поверхность на
+короткое время. Дайв-компьютер в этом случае может зарегистрировать это как
+два разных погружения. Вы можете объединить такие дайвы, выделив их и выбрав в
+контекстном меню пункт <strong>Объединить выбранные</strong>. После этого вам вероятнее все
+придется отредактировать данные объединенного погружения. Ниже приведен пример
+профиля такого объединенного погружения?</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MergedDive.png" alt="Рисунок: Объединенное погружение" />
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_ExportLog">7. Экспорт всего или части журнала</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Функция экспорта доступна через главное меню <em>Файл &#8594; Экспорт</em>. Диалог
+экспорта предлагает два варианта: все погружения или только те, что выбраны в
+<strong>Списке погружений</strong>. Выберите соответствующий пункт (см. рисунок ниже):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Export.jpg" alt="Рисунок: Диалог экспорта" />
+</div>
+</div>
+<div class="paragraph"><p>Журнал или его часть могут быть сохранены в одном из трех форматов:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Внутренний формат <em>Subsurface</em> XML
+</p>
+</li>
+<li>
+<p>
+Универсальный формат данных погружений (<em>UDDF</em>). Более полную информацию
+можно найти на сайте <em>http://uddf.org</em>. UDDF используется для обмена данными
+между дайв-компьютерами и программами.
+</p>
+</li>
+<li>
+<p>
+<em>Divelogs.de</em>, интернет-сервис для ведения журнала погружений. Вам
+необходимо зарегистрироваться на сайте и получить логин и пароль, чтобы
+воспользоваться этим сервисом.
+</p>
+</li>
+<li>
+<p>
+Формат <em>CSV</em>, который включает только наиболее важную информацию о
+погружении: номер, дату, время, длительность, глубину, температуру и давление.
+</p>
+</li>
+<li>
+<p>
+<em>Карта мира</em>. Это HTML файл, погружения отображаются на карте мира с
+минимальной информацией о погружении. Этот формат нельзя отредактировать.
+</p>
+</li>
+<li>
+<p>
+<em>HTML</em> формат. Журнал хранится в HTML-файлах, которые можно просмотреть с
+помощью интернет-броузера. Поддерживаются большинство современных броузеров,
+но обязательно должна быть включена поддержка Javascript. Предполагается, что
+вы не будете редактировать эти файлы.
+HTML-журнал содержит максимум информации и позволяет выполнять поиск в
+журнале. Этот вариант экспорта доступен на вкладке HTML (см. рисунок <strong>В</strong>
+выше).
+</p>
+</li>
+<li>
+<p>
+<em>Общие настройки</em> на вкладке HTML позволяет указать:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Нумерация Subsurface: если выбран этот параметр, то номера погружений будут
+выбираться из <em>Subsurface</em>, иначе дайвы будут пронумерованы начиная с 1.
+</p>
+</li>
+<li>
+<p>
+Минимальный Javascript: уменьшает размер HTML-файла, но при этом будет
+потеряна часть функциональности.
+</p>
+</li>
+<li>
+<p>
+Только список: будет экспортирован только список погружений, а
+дополнительная информация не будет доступна.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Группа <em>Настройки стиля</em> позволяют настроить внешнее оформление экспорта:
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Экспорт в другие форматы можно выполнить с помощью сторонних сервисов, таких
+как <em>www.divelogs.de</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_Cloud_access">8. Хранение журнала <em>Subsurface</em> в облаке</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Журнал погружений важен для каждого дайвера. Вы ведете учет погружений не
+только для своего удовольствия, он необходим для дальнейшего прохождения
+курсов, а иногда в некоторых дайв-центрах. Поэтому вы должны обеспечить
+сохранность журнала. На случай выхода из строя жесткого диска вашего
+компьютера, кражи и утери оборудования, хранение в облаке - первое что
+приходит в голову. Еще один плюс - вы можете получить доступ к журналу в любой
+точке мира и вам не нужно иметь его с собой. Именно поэтому сервиса типа
+<em>divelogs.de</em> и <em>Diving Log</em> предлагают хранение журнала в Интернете. И хотя
+<em>Subsurface</em> не имеет интегрированной поддержки хранения журнала в облаке, это
+можно легко сделать, воспользовавшись некоторыми существующими сервисами.</p></div>
+<div class="paragraph"><p>Например, <a href="http://www.dropbox.com/"><em>Dropbox</em></a> предлагает приложение, которое
+позволяет видеть файлы на серверах Dropbox как локальные папки на вашем
+домашнем компьютере.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Cloud.jpg" alt="Рисунок: Папка Dropbox" />
+</div>
+</div>
+<div class="paragraph"><p>Программа <em>Dropbox</em> позволяет получить копию облачного интернет-хранилица на
+вашем компьютере. Когда компьютер подключен к Интернет, ваша локальная копия
+автоматически синхронизируется с облаком. При работе <em>Subsurface</em> операции
+открытия и сохранения выполняются с локальной копией и доступ в Интернет не
+нужен. Если локальная копия была изменена, например, вы добавили погружения,
+файлы в облаке будут автоматически обновлены как только появится соединение с
+Интернет.</p></div>
+<div class="paragraph"><p>Таким образом, журнал будет доступен из любой точки с доступом в
+Интернет. В настоящий момент эту услуга бесплатна. Программное обеспечение
+для Windows, Mac и Linux может быть загружено со
+<a href="http://www.dropbox.com/install"><em>страницы установки Dropbox</em></a>.
+Аналогично вы можете использовать <em>Dropbox</em> для хранения резервной копии
+журнала. Для этого в главном меню выберите <em>Файл &#8594; Сохранить как</em> и сохраните
+копию журнала в папку <em>Dropbox</em>. Чтобы открыть копию журнала, хранящегося в
+облаке, выберите в главном меню <em>Файл &#8594; Открыть журнал</em>, перейдите в папку
+<em>Dropbox</em> и укажите необходимый файл.</p></div>
+<div class="paragraph"><p>Существуют и другие платные и бесплатные схожие сервисы (Google, Amazon),
+которые вы можете использовать для хранения журнала в облаке.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_PrintDivelog">9. Печать журнала погружений</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface</em> предоставляет простой интерфейс для печати всего журнала или
+только выбранных погружений, включая профиль и сопутствующую информацию.</p></div>
+<div class="paragraph"><p>Перед печатью вам нужно определиться с двумя вещами:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Нужно ли печатать весь журнал или только его часть? Если нужно распечатать
+только часть погружений, выделите эти дайвы с списке.
+</p>
+</li>
+<li>
+<p>
+Для каких газов нужно печатать графики парциального давления? Выберите
+соответствующие переключатели на панели слева от профиля.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Теперь укажите параметры печати. Для этого в главном меню выберите <em>Файл &#8594;
+Print</em>. Вам будет представлено диалоговое окно (см. рисунок <strong>А</strong> ниже):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PrintDiveLog.jpg" alt="Рисунок: Диалог печати" />
+</div>
+</div>
+<div class="paragraph"><p>Выберите один из пунктов в настройках печати:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Чтобы распечатать список погружений, выберите вариант <em>Таблица</em>
+</p>
+</li>
+<li>
+<p>
+Печать 6 погружений на странице (включая профиль и прочую информацию)
+</p>
+</li>
+<li>
+<p>
+Печать 2 погружений на странице (включая профиль и прочую информацию)
+</p>
+</li>
+<li>
+<p>
+Печать одного погружения на странице (включая профиль и прочую информацию)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>В параметрах печати выберите:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Печать выбранных погружений. Если галочка в этом поле не указана, будет
+распечатан весь журнал
+</p>
+</li>
+<li>
+<p>
+Цветная печать
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Макет страницы регулирует будет ли профиль погружения напечатан над текстовой
+информацией или под ней. Выберите подходящий вам вариант.</p></div>
+<div class="paragraph"><p>Перед печатью вы можете предварительно посмотреть результат печати на экране,
+и, при необходимости внести изменения в настройки печати.</p></div>
+<div class="paragraph"><p>Далее, нажмите кнопку <em>Печать</em>. Это вызовет стандартный диалог печати вашей
+операционной системы (см. рисунок <strong>В</strong> выше), где вы можете выбрать принтер и
+его параметры (рисунок <strong>С</strong>).</p></div>
+<div class="paragraph"><p>Возможно вам понадобится указать правильное разрешение принтера.</p></div>
+<div class="paragraph"><p>Ниже приведен пример печати:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Printpreview.jpg" alt="Риснок: Предварительный просмотр печати" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_Preferences">10. Настройки пользователя <em>Subsurface</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Вы можете настроить <em>Subsurface</em> для своих нужд, используя пункт главного меню
+<em>Файл &#8594; Настройки</em>. Настройки программы разделены на пять групп: <strong>Общие</strong>.
+<strong>Единицы</strong>, <strong>Профиль</strong>, <strong>Язык</strong> и <strong>Сеть</strong>. Выберите соответствующий раздел в левой
+части, внесите необходимые изменения и нажмите кнопку <strong>Применить</strong>, чтобы
+сохранить настройки. Чтобы закрыть диалог настроек, нажмите кнопку <strong>ОК</strong>.</p></div>
+<div class="sect2">
+<h3 id="_общие">10.1. Общие</h3>
+<div class="paragraph"><p>В этой группе доступны следующие настройки:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref1.jpg" alt="Рисунок: Общие настройки" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Списки и таблицы</strong>: тут вы можете указать шрифт и его размер для списка
+погружений. Уменьшите размер шрифта, чтобы в списке помещалось больше дайвов.
+</p>
+</li>
+<li>
+<p>
+<strong>Погружения</strong>: укажите папку и имя файла с расширением .xml. При запуске
+  <em>Subsurface</em> будет автоматически открывать этот журнал.
+</p>
+</li>
+<li>
+<p>
+<strong>Показывать ошибочные</strong>: Некоторые погружения могут быть помечены как
+  ошибочные, например погружения в бассейне, но при этом вы не хотите удалять
+  их из журнала. Этот параметр позволяет убрать такие дайва и списка.
+</p>
+</li>
+<li>
+<p>
+<strong>Баллон по умолчанию</strong>: укажите баллон, который будет использоваться по
+  умолчанию на вкладке <strong>Снаряжение</strong>.
+</p>
+</li>
+<li>
+<p>
+<strong>Анимация</strong>: скорость анимации профиля при переключении между
+  погружениями. Чем меньше значение, тем быстрее скорость. Значение 0
+  полностью отключает анимацию.
+</p>
+</li>
+<li>
+<p>
+<strong>Веб-сервис <em>Subsurface</em></strong>: после регистрации на сайте
+<a href="#S_Companion">вспомогательного приложения Subsruface</a> вам будет прислан
+уникальный ключ. Скопируйте ваш ключ в это поле и установите флажок
+<em>Сохранять ID пользователя</em>, чтобы запомнить его и не вводить каждый раз.
+</p>
+</li>
+<li>
+<p>
+<strong>Сбросить все настройки</strong>: как следует из названия, эта кнопка сбрасывает
+все настройки в значение по умолчанию.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_единицы">10.2. Единицы</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref2.jpg" alt="Рисунок: Настройки системы мер" />
+</div>
+</div>
+<div class="paragraph"><p>Здесь вы можете выбрать между имперской или метрической системой мер для
+единиц глубины, давления, объема, температуры и массы. Переключателями в
+верхней части вы выбираете системы мер для всех единиц сразу, либо выберите
+<strong>Настроить</strong> и укажите единицы для каждой величины по отдельности.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_профиль">10.3. Профиль</h3>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref3.jpg" alt="Рисунок: настройки профиля" />
+</div>
+</div>
+<div class="paragraph" id="S_GradientFactors"><p>В этой панели доступно две группы настроек:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Показывать</strong>: тут вы можете выбрать набор данных, отображаемых в профиле
+погружений:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Пороговые значения</em>: <em>Subsurface</em> отображает на профиле погружения
+парциальные давления азота, кислорода и гелия. Вы можете включить их
+отображение с помощью кнопок-переключателей на слева от панели профиля.
+Для каждого их этих графиков вы можете указать пороговые значения, при
+превышении которых линия будет нарисована красным цветом.
+</p>
+</li>
+<li>
+<p>
+<em>Показывать потолок дайв-компьютера красным цветом</em>: Если дайв-компьютер
+записывает данные потолка, то вам может быть удобным различать его значения от
+тех, что посчитаны <em>Subsurface</em>. Зачастую эти значения различаются из-за
+разницы в алгоритмах, установках градиент-фактора и динамики расчет потолка.
+</p>
+</li>
+<li>
+<p>
+<em>Неиспользуемые баллоны</em>: следует ли отображать неиспользуемые баллоны в
+списке на вкладке Снаряжение.
+</p>
+</li>
+<li>
+<p>
+<em>Показывать среднюю глубину</em>: Если в этом поле стоит галочка, <em>Subsurface</em>
+будет отображать среднюю глубину погружения красной линией на профиле.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<strong>Разное</strong>:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Градиент фактор</em>: Значения GF Low для глубины и GF High для поверхности.
+Эти значения задают консерватизм азотной экспозиции во время погружения, так
+же, как вы настраиваете консерватизм вашего дайв-компьютера. Меньше значения
+градиент-фактора, тем консервативнее вычисления относительно азотного
+насыщения и тем глубже потолок всплытия. Установки 20/60 считаются достаточно
+консервативными, а значения 60/90 достаточно суровы. Если в поле <strong>GF Low на
+макс. глубине</strong> стоит галочка, значение нижнего градиент-фактора будет
+использоваться на максимальной глубине. В противном случае GF Low будет
+использоваться на всех глубинах ниже первой деко-остановки. Больше информации
+вы можете найти по ссылкам:
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a>
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_язык">10.4. Язык</h3>
+<div class="paragraph"><p>Тут вы можете выбрать язык интерфейса <em>Subsurface</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref4.jpg" alt="Рисунок: Настройки языка интерфейса" />
+</div>
+</div>
+<div class="paragraph"><p>Вы можете использовать системные настройки языка, что в большинстве случаев
+использует тот же язык, что и ваша операционная система. Если по какой-то
+причине вас это не устраивает, снимите галочку и выберите подходящий язык из
+списка. Вы можете использовать фильтр чтобы быстро найти нужный вам язык в
+списке. Смена языка требует перезапуска <em>Subsurface</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_сеть">10.5. Сеть</h3>
+<div class="paragraph"><p>Эти настройки обеспечивают связь <em>Subsurface</em> с Интернет.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref5.jpg" alt="Рисунок: Настройки сети" />
+</div>
+</div>
+<div class="paragraph"><p>Соединение с Интернет нужно для импорта GPS-координат из
+<a href="#S_Companion">веб-сервиса Subsurface</a>, импорта с сайта <em>Divelogs.de</em> и для
+отображения карты. В некоторых случаях, например в офисе, для выхода в
+интернет может использоваться прокси-сервер. В этом случае вам необходимо в
+списке выбрать тип сервера и при необходимости указать имя пользователя и
+пароль.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_DivePlanner">11. Планировщик <em>Subsurface</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Планировщик погружений <em>Subsurface</em> доступен из главного меню <em>Журнал &#8594;
+Планировщик</em>. Расчеты азотного насыщения осуществляются по алгоритму Бюльмана
+ZH-L16 с добавлением градиент-факторов за авторством Эрика Бейкера.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Внимание" />
+</td>
+<td class="content">Планировщик <em>Subsurface</em> является экспериментальным и предполагает, что вы
+знакомы с пользовательским интерфейсом программы. Вы можете использовать
+планировщик только при условиях:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Вы обучены планировать погружения и делали это ранее.
+</p>
+</li>
+<li>
+<p>
+План погружения находится в пределах ваших сертификатов.
+</p>
+</li>
+<li>
+<p>
+Планировщик делает расчеты для усредненного человека и не принимает во
+внимание ваши индивидуальные психологическое и физическое состояние и образ
+жизни.
+</p>
+</li>
+<li>
+<p>
+Безопасность плана очень зависит от того, как вы используете планировщик.
+</p>
+</li>
+<li>
+<p>
+Вы знакомы с пользовательским интерфейсом <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Если вы не уверены в выше исложенном, вам не следует
+использовать планировщик.
+</p>
+</li>
+</ul></div>
+</div></div>
+<div class="sect2">
+<h3 id="_экран_планировщика">11.1. Экран планировщика</h3>
+<div class="paragraph"><p>Как и журнал <em>Subsurface</em>, экран планировщика разделен на несколько областей
+(см. рисунок ниже). Установочные параметры плана задаются в левой части
+экрана. Эти параметры разделены на несколько групп: Доступные газы, Скорости, Планирование, Газы, Погружение.</p></div>
+<div class="paragraph"><p>В правой верхней части экрана находится профиль планируемого погружения,
+который можно менять только с помощью мыши. Это делает использование
+планировщика очень простым.</p></div>
+<div class="paragraph"><p>В правой нижней части экрана находится текстовая область <em>Детальный план
+погружения</em>. В ней показываются все детали плана и предупреждения.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/PlannerWindow1.jpg" alt="Рисунок: Начальные экран планировщика" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_начало_планирования">11.2. Начало планирования</h3>
+<div class="paragraph"><p>Работа с планировщиком состоит из двух фаз: <strong>составление</strong> и <strong>оценка</strong> этого
+плана. Чтобы спланировать погружение, выполните следующие шаги:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Очистите текущий журнал и создайте новый журнал планирования. Для этого в
+  главном меню выберите <em>Файл &#8594; Новый журнал</em>. Таким образом планы
+  будут храниться отдельно отдельно от уже выполненных погружений.
+</p>
+</li>
+<li>
+<p>
+Удостоверьтесь, что начальные параметры погружения в верхней левой части
+экрана введены правильно. Они включают: начальные дата и время погружения,
+атмосферное давление в точке погружения. Давление может быть задано как
+высота в метрах над уровнем моря, считая атмосферное давление равным 1.013 бар.
+</p>
+</li>
+<li>
+<p>
+В таблице, озаглавленной <em>Доступные газы</em>, добавьте информацию об
+используемых баллонах и составах смесей. Сделать это можно таким же образом,
+как и в случае <a href="#S_CylinderData">добавления баллонов к погружению</a>. Выберите
+тип баллона из выпадающего списка, укажите рабочее давление, Если поле
+процентного содержания кислорода (O₂%) пустое, то эта смесь считается
+воздухом. В противном случае введите концентрацию кислорода/гелия.
+Дополнительные баллоны можно добавить нажатием на значок "+".
+</p>
+</li>
+<li>
+<p>
+Таблица "Путевые точки" обычно не используется в этой фазе.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_управление_азотом_кислородом_и_расходом_газа">11.3. Управление азотом, кислородом и расходом газа</h3>
+<div class="paragraph"><p>Планирование газов состоит из трех фаз:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>а) Управление азотом</strong>: включает в себя указание скоростей спуска и
+всплытия, а также градиент-факторов (GFLow и GFHigh) в секциях <em>Скорость</em> и
+<em>Планирование</em> в левой нижней части экрана. Изначально значения GFLow и
+GFHigh берутся из настроек <em>Subsurface</em>, однако, если вы их поменяли в
+планировщике, значения по умолчанию в настройках не затрагиваются. Значения
+градиент-фактора влияют на расчет потолка и его глубину. Слишком низкие
+значения ведут к ранним и более глубоким деко-остановкам.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Подробнее читайте в <a href="#S_GradientFactors">настройках градиент-фактора</a> и
+ внешних источниках:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1403932320&amp;sr=1-1&amp;keywords=deco+for+divers"><em>Deco for Divers</em>, by Mark Powell (2008). Aquapress</a> Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Скорость всплытия важна в фазе рассыщения в конце дайва и указывается для
+нескольких диапазонов глубины, принимая во внимание среднюю глубину как точку
+отсчета. Средняя глубина отображается на профиле красной горизонтальной линией.
+Скорость всплытия на больших глубинах находится обычно в пределах 8-12 м/мин,
+в то время, как возле поверхности она обычно составляет 4-9 м/мин. Скорость
+спуска также указывается. Если установлен флажок <em>Падение к первой глубине</em>,
+то в фазе спуска будет использоваться максимальная скорость, указанная в
+секции <em>Скорости</em>.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<strong>б) Управление кислородом</strong>: в секции <em>Газы</em> необходимо указать максимальное
+парциальное давление кислорода в донной фазе (<em>pO₂ на дне</em>) и во время
+декомпрессионных остановок (<em>pO₂ на деко</em>). Обычно используются значения
+1.4 и 1.6 бар соответственно, и парциальное давление 1.6 бар является
+максимально допустимым. Настройки pO₂ и глубина замены смеси могут быть также
+отредактированы в секции <em>Доступные смеси</em>. Обычно планировщик принимает
+решение о переключении на новую смесь, когда при подъеме парциальное давление
+кислорода в этой смеси опускается ниже значения 1.6 бар.
+</p>
+</li>
+<li>
+<p>
+<strong>в) Управление расходом газов:</strong> Вам необходимо контролировать и учитывать
+объем доступных газов, чтобы безопасно вернуться на поверхность,и , возможно,
+поделиться с напарником. В секции <em>Газы</em> укажите ваш лучший (но при этом
+достаточно консервативный) поверхностный расход воздуха (SAC, иногда именуемый
+RMV) в л/мин (в настоящий момент используется только метрическая система). Укажите
+SAC отдельно для донной фазы (<em>SAC на дне</em>) и для остановок декомпрессии (<em>SAC
+на деко</em>). Обычно это значения находятся в пределах 20-30 л/мин. Для более
+точного управления расходом газов не нужно строить догадки, регулярно
+контролируйте свой SAC, погружаясь в разных условиях и с разным снаряжением.
+Планировщик рассчитывает общий расход газов за все время погружения и выдаст
+предупреждение если расход превысит доступный объем газов. Для вашей
+безопасности всегда оставляйте резерв газов на случай непредвиденных
+обстоятельств. В техническом дайвинге такой резерв может составлять до 66% от
+общего объема газов.
+</p>
+</li>
+<li>
+<p>
+И, наконец, вы можете приступить к планированию времени и глубины
+погружения. Для этого <em>Subsurface</em> предоставляет уникальный графический
+интерфейс. Принцип его работы такой же, как при ручном добавлении погружения в
+журнал. После активации планировщика вам будет предложен начальный профиль
+погружения на 15 м в течение 40 минут. Путевый точки можно перетаскивать
+мышью или с помощью стрелок клавиатуры, Для создания новой точки, дважды
+щелкните на линии сегмента. При превышении какого-либо предела (парциальное
+давление, объем), <em>Subsurface</em> изменит цвет фона профиля с
+ГОЛУБОГО на КРАСНЫЙ.
+</p>
+</li>
+<li>
+<p>
+Каждая путевая точка на профиле создает запись в таблице <em>Путевые точки
+плана</em> в левой части экрана. Проверьте, чтобы значение в колонке <em>Используемый
+газ</em> соответствовало одной из смесей, указанных в таблице <em>Доступные смеси</em>.
+Добавьте необходимые путевые точки с тем, чтобы профиль соответствовал вашему
+плану, т.е. присутствовал донная фаза, глубокие остановки (если планируются).
+Путевые точки всплытия <em>Subsurface</em> расставит сам с учетом декомпрессионных
+обязательств.
+</p>
+</li>
+<li>
+<p>
+Путевые точки можно двигать с помощью мыши или стрелок на клавиатуре.
+</p>
+</li>
+<li>
+<p>
+Точки можно редактировать и создавать непосредственно в таблице
+<em>Путевые точки плана</em>. На самом деле, вы можете спланировать погружение
+пользуясь только этой таблицей.
+</p>
+</li>
+<li>
+<p>
+Укажите замену баллонов/смесей так же, как это делается в случае
+<a href="#S_CreateProfile">ручного создания профиля погружения</a>. События замены смесей
+должны соответствовать баллонам и смесям из таблицы <em>Доступные смеси</em>. При
+наличии нескольких смесей, <em>Subsurface</em> будет автоматически предлагать замену,
+однако вы можете удалить и добавить событие самостоятельно, вызвав контекстное
+меню точки правым щелчком мыши.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Ниже на рисунке приведен пример плана погружения на 45м с использованием EAN26
+и всплытием на EAN50, используя настройки, описанные выше:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DivePlanner2.jpg" alt="Рисунок: Планирование погружения: настройки" />
+</div>
+</div>
+<div class="paragraph"><p>После окончания планирование, вы можете сохранить план, нажав на кнопку
+<em>Сохранить</em>. План появится в списке погружений.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_детальный_план_погружения">11.4. Детальный план погружения</h3>
+<div class="paragraph"><p>В правой нижней части экрана планировщика находится текстовая область с
+подробным словесным описанием плана погружения. Вы можете изменить его
+детализацию с помощью нескольких параметров в секции <em>Заметки погружения</em>.
+Если выбран пункт <em>Подробный план</em>, описание будет достаточно многословным.
+При превышении каких-либо пределов в нижней части будет выведено
+предупреждение.</p></div>
+<div class="paragraph"><p>При выборе пункта <em>Показать время сегмента</em>, план будет отображать время на
+каждой отдельно взятой глубине. Время сегмента ВКЛЮЧАЕТ время, необходимое чтобы
+перейти к заданной глубине. Однако, если выбран параметр <em>Показать переходы в
+деко</em>, то время переходом показывается отдельно от времени сегментов.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_печать_плана_погружения">11.5. Печать плана погружения</h3>
+<div class="paragraph"><p>Вы можете распечатать план нажатием на кнопку <em>Печать</em>. Либо можете
+скопировать текст плана и вставить его в любой текстовый редактор.</p></div>
+<div class="paragraph"><p>План погружения имеет много общего с обычным погружением из журнала (профиль,
+заметки и т.д). После сохранения плана его описание и расчет газов сохраняются
+в Примечаниях. После сохранения план можно распечатать так же, как и обычные
+погружения.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_планирование_повторных_погружений">11.6. Планирование повторных погружений</h3>
+<div class="paragraph"><p><em>Subsurface</em> позволяет планировать повторные погружения при условии, что вы
+корректно укажете дату и время начала. При этом учитывается остаточное
+насыщение после предыдущего погружения.</p></div>
+<div class="paragraph"><p>Если вы только закончили долгое/глубокое погружение и планируете новое,
+выберите последний дайв в списке погружение и активируйте планировщик
+<em>Subsurface</em>. В зависимости от времени начала планируемого дайва, остаточное
+насыщение предыдущего погружения будет принято во внимание и план будет
+построен с учетом этих ограничений.</p></div>
+<div class="paragraph"><p>Если вы используете одну стандартную конфигурацию (например, как в GUE), то
+можно создать шаблонное погружение. Чтобы спланировать погружение с этой
+конфигурацией, выберите шаблонное погружение в списке и активируйте планировщик:
+для нового плана будет использоваться конфигурация из шаблона.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_пункты_главного_меню_subsurface">12. Пункты главного меню Subsurface</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>В этой главе описываются пункты главного меню и их функции. Некоторые пункты
+ссылаются на соответствующие главы данного руководства для быстрой навигации.</p></div>
+<div class="sect2">
+<h3 id="_файл">12.1. Файл</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_NewLogbook"><em>Новый журнал</em></a> - Закрывает текущий открытый журнал и
+  создает новый.
+</p>
+</li>
+<li>
+<p>
+<em>Открыть журнал</em> - Вызывает диалог выбора файла для открытия журнала.
+</p>
+</li>
+<li>
+<p>
+<em>Сохранить</em> - Сохраняет текущий открытый журнал.
+</p>
+</li>
+<li>
+<p>
+<em>Сохранить как</em> - Сохраняет текущий журнал в файл с новым именем
+</p>
+</li>
+<li>
+<p>
+<em>Закрыть</em> - Закрывает текущий журнал.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ExportLog"><em>Экспорт</em></a> - экспортирует текущий журнал или выбранные
+  погружения в один из форматов.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_PrintDivelog"><em>Печать</em></a> - печать журнала или выбранных погружений.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Preferences"><em>Настройки</em></a> - настройка параметров <em>Subsurface</em>
+</p>
+</li>
+<li>
+<p>
+<em>Выход</em> - Выйти из <em>Subsurface</em>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_импорт">12.2. Импорт</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_ImportDiveComputer"><em>Импорт из дайв-компьютера</em></a> - импорт погружений
+  из дайв-компьютера
+</p>
+</li>
+<li>
+<p>
+<a href="#Unified_import"><em>Импорт журналов</em></a> - импорт погружений из сторонних
+  форматов
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Companion"><em>Импорт координат</em></a> - загрузка координат погружений из
+  мобильного помощника <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ImportingDivelogsDe"><em>Импорт с сайта divelogs.de</em></a> - импорт погружений
+  из интернет-сервиса <em>www.Divelogs.de</em>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_журнал">12.3. Журнал</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_EnterData"><em>Добавить погружение</em></a> - ручное добавление погружения.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_DivePlanner"><em>Планировщик</em></a> - запускает планировщик погружений.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Renumber"><em>Перенумеровать</em></a> - перенумерация списка погружений.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Group"><em>Авто-группировка</em></a> - автоматическая группировка погружений в
+  поездки.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_DeviceNames"><em>Мои дайв-компьютеры</em></a> - редактирование названий
+  дайв-компьютеров.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_вид">12.4. Вид</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Все</em></a> - показать все четыре панели <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Список</em></a> - показать только список погружений.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Профиль</em></a> - показать только профиль погружения.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Информация</em></a> - показать только информационную панель.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_ViewPanels"><em>Карта</em></a> - показать только карту.
+</p>
+</li>
+<li>
+<p>
+<em>Статистика по годам</em> - показать статистику журнала погружений по годам и
+  месяцам.
+</p>
+</li>
+<li>
+<p>
+<em>Предыдущий компьютер</em> - переключиться на предыдущий компьютер.
+</p>
+</li>
+<li>
+<p>
+<em>Следующий компьютер</em> - переключиться на следующий компьютер.
+</p>
+</li>
+<li>
+<p>
+<em>Полный экран</em> - переключение полноэкранного режима.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_помощь">12.5. Помощь</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>О программе</em> - показывает информационное окно с указанием версии
+  <em>Subsurface</em>
+</p>
+</li>
+<li>
+<p>
+<em>Проверить обновления</em> - проверяет доступность новой версии на
+  <a href="http://subsurface.hohndel.org/">_веб-сайте Subsurface</a>.
+</p>
+</li>
+<li>
+<p>
+<em>Руководство пользователя</em> - открывает этот документ в новом окне.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="APPENDIX_A">13. ПРИЛОЖЕНИЕ А: Настройка ОС для импорта из дайв-компьютера</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_удостоверьтесь_что_установлены_необходимые_драйверы">13.1. Удостоверьтесь, что установлены необходимые драйверы</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/drivers.jpg" alt="Замечание" />
+</td>
+<td class="content">Операционной системе вашего настольного компьютера необходим соответствующий
+драйвер для с связи с дайв-компьютером в зависимости от того, каким образом
+дайв-компьютер подключен (Bluetooth, USB, инфракрасный порт).</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+В Linux вам может понадобиться загрузить соответствующий модуль ядра.
+          Большинство дистрибутивов делают это автоматически, так что вам не нужно
+          предпринимать каких-то действий. Однако в некоторых случаях, например
+          для ИК-устройств, вам придется загрузить дополнительный драйвер.
+</p>
+</li>
+<li>
+<p>
+В случае Windows OC сама предложит загрузить корректный драйвер сразу
+          после подключения дайв-компьютера к USB-порту.
+</p>
+</li>
+<li>
+<p>
+Пользователям MAC возможно придется самим найти соответствующий драйвер.
+          Например, для Mares Puck и других дайв-компьютеров, использующих
+          интерфейс USB-последовательный порт на основе чипа Silicon Labs CP2101,
+          необходимый драйвер с именем <em>Mac_OSX_VCP_Driver.zip</em> можно взять на
+          сайте <a href="http://www.silabs.com/support/pages/document-library.aspx?p=Interface&amp;f=USB%20Bridges&amp;pn=CP2101">Silicon Labs document and software repository</a>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="S_HowFindDeviceName">13.2. Как определить имя USB-устройства и получить права доступа</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/usb.jpg" alt="Замечание" />
+</td>
+<td class="content">Когда вы подключаете дайв-компьютер с помощью USB-кабеля, обычно <em>Subsurface</em>
+предлагает либо список устройств (точек монтирования в случае Uemis Zurich),
+либо делает список недоступным, если имя устройства не требуется вовсе. В
+редких случаях, если это не работает, попробуй следовать этим инструкциям,
+чтобы определить имя устройства самостоятельно:</td>
+</tr></table>
+</div>
+<div class="paragraph"><div class="title">Windows</div><p>Простым перебором попробуйте COM1, COM2 и т.д. Список содержит все
+подключенные COM-устройства.</p></div>
+<div class="paragraph"><div class="title">Mac OS</div><p>Список должен содержать все подключенные устройства.</p></div>
+<div class="paragraph"><div class="title">Linux</div><p>Наиболее точный способ определить название порта:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Отсоедините USB-кабель от дайв-компьютера
+</p>
+</li>
+<li>
+<p>
+Откройте терминал
+</p>
+</li>
+<li>
+<p>
+Введите команду <em>dmesg</em> и нажмите Enter
+</p>
+</li>
+<li>
+<p>
+Подсоедините USB-кабель к дайв-компьютеру
+</p>
+</li>
+<li>
+<p>
+Введите команду <em>dmesg</em> и нажмите Enter
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Вы должны увидеть схожие сообщения:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>usb 2-1.1: new full speed USB device number 14 using ehci_hcd
+usbcore: registered new interface driver usbserial
+USB Serial support registered for generic
+usbcore: registered new interface driver usbserial_generic
+usbserial: USB Serial Driver core
+USB Serial support registered for FTDI USB Serial Device
+ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
+usb 2-1.1: Detected FT232BM
+usb 2-1.1: Number of endpoints 2
+usb 2-1.1: Endpoint 1 MaxPacketSize 64
+usb 2-1.1: Endpoint 2 MaxPacketSize 64
+usb 2-1.1: Setting MaxPacketSize 64
+usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB3
+usbcore: registered new interface driver ftdi_sio
+ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver</code></pre>
+</div></div>
+<div class="paragraph"><p>Третья строчка снизу показывает, что FTDI USB-адаптер обнаружен и подключен
+как устройство <code>ttyUSB3</code>. Для импорта в <em>Subsurface</em> используйте имя
+<code>/dev/ttyUSB3</code>.</p></div>
+<div class="paragraph"><p>Убедитесь, что у вас есть права на запись в устройство:</p></div>
+<div class="paragraph"><p>В Unix-подобных операционных системах доступ к USB-портам разрешен только
+пользователям, которые являются членами группы <code>dialout</code>. Если пользователь не
+root, то он возможно не входит в эту группу и не сможет использовать USB-порт.
+Допустим, что имя пользователя <em>johnb</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Под пользователем root выполните команду <code>usermod -a -G dialout johnb</code> (для
+   пользователей Ubuntu: <code>sudo usermod -a -G dialout johnb</code>)
+</p>
+</li>
+<li>
+<p>
+Выполните команду <code>id johnb</code>. Она отображает список всех групп, к которым
+   принадлежит указанный пользователь. Убедитесь, что в списке групп
+   присутствует группа <code>dialout</code>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Зная название устройства (например, <code>dev/ttyUSB3</code>) и имея права на доступ к
+USB-порту, у вас должно получиться импортировать погружения из
+дайв-компьютера.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_HowFindBluetoothDeviceName">13.3. Настройка Bluetooth-устройств</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/bluetooth.jpg" alt="Замечание" />
+</td>
+<td class="content">Для дайв-компьютеров с Bluetooth-интерфейсом (например, Heinrichs Weikamp Frog
+или Shearwater Predator и Petrel), процедура получения имени устройства
+отличается от той, что описана выше:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>После включения Bluetooth на дайв-компьютере, убедитесь что он находится в режиме выгрузки.</strong>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>По вопросам сопряжения дайв-компьютера обратитесь к документации
+производителя. В случае Shearwater Predator/Petrel выберите <em>Dive Log &#8594;
+Upload Log</em> и ожидайте сообщения <em>Wait PC</em>.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Сопряжение настольного и дайв-коспьютера</strong>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><div class="title">Windows</div><p>Bluetooth вероятнее всего уже включен. Для сопряжения устройств перейдите в
+<em>Панель управления&#8594;Устройства Bluetooth&#8594;Добавить беспроводное устройство</em>.
+Вам будет представлено окно, в котором должен показываться ваш дайв-компьютер.
+Нажмите на нем правой кнопкой мыши и из контекстного меню выберите
+<em>Свойства&#8594;COM порты</em>, чтобы определить название порта. Если вам показываются
+несколько портов, выберите тот, который помечен как "Исходящий".</p></div>
+<div class="paragraph"><p>Для импорта в <em>Subsurface</em> этот порт уже должен быть в списке. Если его там
+нет, то введите имя порта вручную.</p></div>
+<div class="paragraph"><p>Примечание: Если у вас возникают проблемы с загрузкой из дайв-компьютера после
+использования других программ, попробуйте удалить существующее сопряжение.</p></div>
+<div class="paragraph"><div class="title">MacOS</div><p>Нажмите на значке Bluetooth в строке меню и выберите <em>Настроить устройство
+Bluetooth&#8230;</em>. Дайв-компьютер должен появиться в списке устройств. Выберите
+его и выполните процедуру сопряжения. Этот шаг потребуется выполнить один
+раз.</p></div>
+<div class="paragraph"><p>После завершения сопряжения, устройство должно показываться в <em>Subsurface</em> в
+списке <em>Устройство или точка монтирования</em> в диалоге импорта.</p></div>
+<div class="paragraph"><div class="title">Linux</div><p>Удостоверьтесь, что Bluetooth включен на вашем настольном компьютере. Процесс
+сопряжения в этом случае достаточно прост. Например, в Gnome3 в правом верхнем
+углу рабочего стола должен быть значок Bluetooth. Выберите <em>Настроить новое
+устройство</em>. В появившемся окне выберите дайв-компьютер и выполните
+сопряжение. Если у вас запросят PIN-код, попробуйте ввести <em>0000</em>.</p></div>
+<div class="paragraph"><p>В редких случаях, когда вышесказанное не подходит для вашей системе, вам
+возможно придется загрузить дополнительные модули. Помимо этого, если ваша
+система использует <code>systemd</code>, необходиму вручную выполнить команду <code>systemctl
+start bluetooth.service</code>. Для систем, использующих <code>initd</code>, надо выполнить
+что-то вида <code>rc.config start bluetoothd</code> или <code>/etc/init.d/bluetooth start</code>.</p></div>
+<div class="paragraph"><p>Можно также попробовать настроить соединение вручную использую команды:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>hciconfig</code> показывает Bluetooth устройства, доступные на вашем компьютере
+   (не дайв-компьютер). Наиболее вероятно что-то вида hci0. Если вы не видите
+   устройств, попробуйте выполнить <code>hcitool -a</code>, чтобы увидеть неактивные
+   устройства и выполните <code>sudo hciconfig hci0 up</code> чтобы активировать их.
+</p>
+</li>
+<li>
+<p>
+<code>hcitool scanning</code> возвращает список доступных клиентских устройств. Найдите
+   в нем дайв-компьютер и запомните его MAC-адрес.
+</p>
+</li>
+<li>
+<p>
+<code>bluez-simple-agent hci0 10:00:E8:C4:BE:C4</code> сопрягает вам настольный ПК и
+   дайв-компьютер. Подставьте MAC-адрес дайв-компьютера из вывода команды
+   <em>hcitool scanning</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>К сожалению в Linux связывание коммуникационного устройства необходимо
+делать вручную:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4</code> связывает дайв-компьютер с
+   коммуникационным устройством. Если rfcomm0 уже занят, попробуйте rfcomm1 и
+   далее. ВАЖНО: Подставьте MAC-адрес дайв-компьютера из вывода команды
+   <em>hcitool scanning</em>. Приведенный в качестве примера адрес не будет работать.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Для импорта погружений в <em>Subsurface</em> используйте имя устройства, связанное с
+MAC-адресом дайв-компьютера, т.е. <em>/dev/rfcomm0</em> из примера выше.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="APPENDIX_B">14. ПРИЛОЖЕНИЕ Б: Настройка дайв-компьютеров для импорта</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="S_ImportUemis">14.1. Импорт погружений из Uemis Zurich</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/iumis.jpg" alt="Замечание" />
+</td>
+<td class="content"><em>Subsurface</em> импортирует информацию, хранящуюся в SDA (внутренняя файловая
+система Uemis), включая данные о точках погружения и снаряжении. Информация о
+напарниках в данный момент недоступна. Сопряжение схоже с USB-компьютерами (и
+при этом Uemis заряжается от USB-порта). Главное отличие состоит в том, что
+вам нужно указывать не имя порта, а точку монтирования файловой системы
+UEMISSDA. В Windows это буква диска (зачастую E: или F:), в Mac это
+<em>/Volumes/UEMISSDA</em>, а в Linux это зависит от дистрибутива. Например, в Fedora
+это <em>/var/run/media/&lt;имя<em>пользователя&gt;/UEMISSDA</em>. В любом случае _Subsurface</em>
+предложить вам варианты в выпадающем списке на диалоге импорта.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>После того, как вы указали точку монтирования, выполните загрузку. Uemis
+Zurich имеет одно ограничение (это ограничение прошивки дайв-компьютера, а не
+<em>Subsurface</em>) - невозможно загрузить более 40-50 погружений за один раз,
+происходит переполнение SDA. Обычно это происходит при первой загрузке. Если
+вы импортируете погружения ежедневно или даже после поездки, емкости SDA
+вполне достаточно.
+Если <em>Subsurface</em> показывает сообщение о переполнении памяти дайв-компьютера,
+решение достаточно простое: отключите SDA, выключите и включите
+дайв-компьютер, и подключите заново. Начните импорт заново и <em>Subsurface</em>
+продолжит загрузку с того места где она прервалась. Возможно вам придется
+повторить процедуру несколько раз в зависимости от того, сколько погружений
+записано в памяти Uemis Zurich.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingGalileo">14.2. Импорт погружений из Uwatec Galileo</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/Galileo.jpg" alt="Замечание" />
+</td>
+<td class="content">Компьютеры Uwatec Galileo используют беспроводной инфракрасный канал
+связи (IrDA). Со стороны настолько ПК используется USB-брелок с поддержкой
+протокола последовательного обмена через IrDA (SIR) на контроллере MSC7780
+производства компании MosChip.
+В Linux ядро изначально поддерживает протокол последовательного обмена через
+IrDA, однако вам придется дополнительно загрузить драйвер для коммуникации с
+дайв-компьютером. Самый простой путь: установить пакет irda-tools,
+предварительно загрузив его с сайта
+<a href="http://irda.sourceforge.net/docs/startirda.html">Linux IrDA Project</a>. После
+установки, пользователем <strong>root</strong> выполните в консоли команду <code>irattach irda0</code>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>После этого <em>Subsurface</em> распознает дайв-компьютер и вы можете выполнить
+импорт.</p></div>
+<div class="paragraph"><p>С Windows ситуация схожая. Драйвера для контроллера MCS7780 доступны на
+нескольких интернет-сайтах, например на
+<a href="http://www.drivers-download.com/Drv/MosChip/MCS7780/">www.drivers-download.com</a>.</p></div>
+<div class="paragraph"><p>Для Apple Mac, коммуникации через MCS7780 невозможны для версий OSX 10.6 и
+выше.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDR5">14.3. Импорт погружений из Heinrichs Weikamp DR5</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/HW_DR5.jpg" alt="Замечание" />
+</td>
+<td class="content">Когда этот дайв-компьютер подключен как USB-диск, он сохраняет отдельный
+UDDF-файл для каждого погружения. Выделите все файл погружения для импорта или
+открытия.
+Примечание: DR5 не сохраняет ни градиент-факторы, ни информацию а
+деко-обязательствах, поэтому <em>Subsurface</em> не может отобразить ее.
+Отрегулируйте значения градиент-фактора в <em>Настройках_ _Subsurface</em>, чтобы
+увидеть деко-обязательства на профиле, но учтите, что они вероятнее всего
+будут отличаться от тех, что показывает DR5.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_импорт_погружений_из_shearwater_predator_используя_bluetooth">14.4. Импорт погружений из Shearwater Predator используя Bluetooth</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/predator.jpg" alt="Замечание" />
+</td>
+<td class="content">Используя Shearwater Predator, вы возможно успешно свяжете устройство с ПК,
+но можете при импорте столкнуться с ошибками вида: <em>Slip RX: unexp. SLIP END</em>.
+Они также могут возникнуть при использовании других программ и операционных
+систем, отличных от Linux. У разработчиков пока нет мыслей, что может вызывать
+эти ошибки, но некоторым пользователям следующие шаги помогли решить эти
+проблемы:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+используйте USB-брелок который шел вместе с вашим Shearwater Predator
+   вместо того, что установлен в вашем персональном компьютере
+</p>
+</li>
+<li>
+<p>
+попробуйте поменять драйвера вашего Bluetooth оборудования на другие
+</p>
+</li>
+<li>
+<p>
+отключите WiFi перед использованием Bluetooth
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="APPENDIX_C">15. ПРИЛОЖЕНИЕ В: Экспорт журнала погружений из сторонних программ</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Импорт погружений из сторонних программ ведения журналов достаточно прост и
+выполняется с помощью универсального импорта, доступного из главного
+меню <em>Импорт &#8594; Импорт журнала</em>. Подробнее эта функциональность описана в
+<a href="#Unified_import">отдельной главе</a>.
+Однако в некоторых случаях может потребоваться два шага:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Экспорт "чужого" журнала в формат, который может быть разобран
+<em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Импорт этого файла в <em>Subsurface</em>.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>В этом приложении мы попытаемся рассказать как экспортировать погружения из
+сторонних программ. В большей части это касается Linux и Windows.</p></div>
+<div class="sect2">
+<h3 id="S_ImportingDivesSuunto">15.1. Экспорт погружений из <strong>Suunto Divemanager (DM3 и DM4)</strong></h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/suuntologo.jpg" alt="Замечание" />
+</td>
+<td class="content">Divemanager 3 (DM3) - старая версия журнала погружений. Современные
+дайв-компьютеры Suunti используют Divemanager 4 (DM4). Эти две версии
+используют разные подходы и имена файлов для экспорта погружений.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p><strong>Divemanager 3 (DM3):</strong></p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Запустите <em>Suunto Divemanager 3</em> и войдите под пользователем, для которого
+есть погружения в журнале.
+</p>
+</li>
+<li>
+<p>
+Не запускайте импорт погружений из дайв-компьютера.
+</p>
+</li>
+<li>
+<p>
+В навигационной панели в левой части окна программы выберите погружения.
+</p>
+</li>
+<li>
+<p>
+Используйте мышь и клавиши Ctrl и Shift для выбора одиночных и нескольких
+погружений.
+</p>
+</li>
+<li>
+<p>
+Для выбранных погружений используйте пункт меню <em>File &#8594; Export</em>
+</p>
+</li>
+<li>
+<p>
+Во всплывающем окне есть одно единственное поле <em>Export Path</em>
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Нажмите кнопку Обзор рядом в этим полем
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+вам будет представлено окно файлового проводника
+</p>
+</li>
+<li>
+<p>
+перейдите в директорию для сохранения файла Divelog.SDE
+</p>
+</li>
+<li>
+<p>
+при желании измените имя файла
+</p>
+</li>
+<li>
+<p>
+нажмите <em>Сохранить</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Вернувшись во всплывающее окно экспорта, нажмите кнопку <em>Export</em>
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Погружения экспортированы в файл Divelog.SDE.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p><strong>Divemanager 4 (DM4):</strong></p></div>
+<div class="paragraph"><p>Чтобы экспортировать данные журнала <em>Suunto DM4</em>, вам необходимо узнать
+местоположение базы данных, в которой хранятся погружения. Вы можете
+использовать как основную, так и резервную копию базы. Ниже описаны оба варианта:</p></div>
+<div class="paragraph"><p>Местонахождение базы данных Suunto DM4:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Запустите Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Выберите в меню <em>Help &#8594; About</em>
+</p>
+</li>
+<li>
+<p>
+Нажмите <em>Copy</em> после текста <em>Copy log folder path to clipboard</em>
+</p>
+</li>
+<li>
+<p>
+Запустите проводник Windows
+</p>
+</li>
+<li>
+<p>
+Вставьте текст из буфера обмена в строку навигации проводника
+</p>
+</li>
+<li>
+<p>
+Файл базы данных называется DM4.db
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>Создание резервной копии Suunto DM4:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Запустите Suunto DM4
+</p>
+</li>
+<li>
+<p>
+Выберите в меню <em>File - Create backup</em>
+</p>
+</li>
+<li>
+<p>
+В диалоге выбора файла укажите путь и название резервной копии, в этом
+примере мы используем расширение .bak по умолчанию
+</p>
+</li>
+<li>
+<p>
+Нажмите <em>Save</em>
+</p>
+</li>
+<li>
+<p>
+Погружения сохранены в файл DM4.bak
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2">
+<h3 id="_экспорт_погружений_из_mares_dive_organiser_v2_1">15.2. Экспорт погружений из Mares Dive Organiser V2.1</h3>
+<div class="admonitionblock" id="Mares_Export">
+<table><tr>
+<td class="icon">
+<img src="images/icons/mareslogo.jpg" alt="Замечание" />
+</td>
+<td class="content">Mares Dive Organiser работает исключительно под управлением ОС Windows. Журнал
+погружений хранится в фрмате SQL Compact Edition database в файле с
+расширением <em>.sdf</em>. База данных содержит данные о всех зарегистрированных
+дайверах на данном ПК и о всех используемых дайв-компьютерах Mares. На
+сегодняшний день самы безопасный способ получить копию журнала -
+экспортировать погружения в другой формат, распознаваемый <em>Subsurface</em>.</td>
+</tr></table>
+</div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Находясь в Dive Organiser, выберите в главном меню <em>Database &#8594; Backup</em> и
+создайте резервную копию базы данных на рабочем столе. Это создаст ZIP-архив с
+именем DiveOrganiserxxxxx.dbf.
+</p>
+</li>
+<li>
+<p>
+Переименуйте файл в DiveOrganiserxxxxx.zip. Внутри ZIP-архива находится
+файл <em>DiveOrganiser.sdf</em>.
+</p>
+</li>
+<li>
+<p>
+Извлеките файл с расширением <em>.sdf</em> на рабочий стол вашего ПК.
+</p>
+</li>
+<li>
+<p>
+Пароль для доступа к ZIP-архиву <em>mares</em>.
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2">
+<h3 id="S_ImportingDivinglog">15.3. Экспорт погружений из <strong>DivingLog 5.0</strong></h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/divingloglogo.jpg" alt="Замечание" />
+</td>
+<td class="content">К сожалению XML-файлы DivingLog не дают нам никакой информации о том, в какой
+системе мер они сохранены. Поэтому для успешного импорта в <em>Subsurface</em> вам
+необходимо изменить настройки DivingLog так, чтобы использовалась метрическая
+система мер (в главном меню выберите <em>File &#8594; Preferences &#8594; Units and
+Language</em> и нажмите кнопку <em>Metric</em>). Затем выполните следующие шаги:</td>
+</tr></table>
+</div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+В главном меню выберите <em>File &#8594; Export &#8594; XML</em>
+</p>
+</li>
+<li>
+<p>
+Выберите какие погружения нужно экспортировать
+</p>
+</li>
+<li>
+<p>
+Нажмите кнопку Экспорт и укажите имя файла
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_приложение_г_частые_вопросы_и_ответы">16. ПРИЛОЖЕНИЕ Г: Частые вопросы и ответы</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_похоже_что_em_subsurface_em_неправильно_считает_расход_газов_и_sac">16.1. Похоже, что <em>Subsurface</em> неправильно считает расход газов и SAC</h3>
+<div class="paragraph" id="SAC_CALCULATION"><p><em>Вопрос</em>: Я погружался с баллоном 12.2л, начальное давление 220бар, конечное -
+100 бар. Мои расчеты SAC не совпадают со значением в <em>Subsurface</em>. Возможно
+ли, что <em>Subsurface</em> считает неверно?</p></div>
+<div class="paragraph"><p><em>Ответ</em>: Нет. <em>Subsurface</em> рассчитывает расход газа иначе, и даже лучше, чем вы
+ожидаете. В частности, мы принимаем во внимание несжимаемость газа.
+Традиционно, расход и SAC считаются по формуле:
+<code>расход = объем баллона x (начальное давление - конечное давление)</code></p></div>
+<div class="paragraph"><p>и это правильно для идеального газа, и это то, чему вас учили в теории. Но
+"идеального газа" не существует, а реальные газы сжимаются нелинейно с ростом
+давления. Также вы упускаете тот факт, что давление одной атмосферы не
+равняется одному бар. Поэтому <strong>реальная</strong> формула будет:</p></div>
+<div class="paragraph"><p><code>расход = (объем_воздуха_в_начале - объем_воздуха_в_конце)</code></p></div>
+<div class="paragraph"><p>где объем воздуха это <strong>не</strong> просто "произведение объема на давление". Это
+комбинация из: "примем во внимание сжимаемость газа" (что в принципе не играет
+роли до 220 бар, это становится существенным для баллонов с давлением 300
+бар), и "переведем бар в атмосферы" (это основная причина несоответствия).
+Напомним: одна атмосфера равняется ~1.013 бар, так что даже без сжимаемости
+ваш расход газа составит:</p></div>
+<div class="paragraph"><p><code>12.2*((220-100)/1.013)</code></p></div>
+<div class="paragraph"><p>что будет около 1445, а не 1464. Т.е. в ваших расчета было лишних 19 литров
+из-за разницы между 1 бар и 1 АТМ. Сжимаемость начинает играть свою роль при
+давлениях свыше 200 бар и уменьшит расход еще приблизительно на 8 литров, т.о.
+вы расходовали около 1437 л при давлении на поверхности.</p></div>
+<div class="paragraph"><p>Поэтому радуйтесь: ваш SAC лучше, чем вы считали. Либо огорчайтесь: у вас в
+баллоне меньше воздуха, чем вы думали. И как ужде упоминалось, "меньше чем
+думали" начинает работать при довольно высоком давлении. Баллон при 400 бар не
+содержит в два раза больше воздуха чем при 200 бар. При низких же давлениях
+воздух ведет себя почти как идеальный газ.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_на_некоторых_профилях_наблюдаются_различия_во_времени_с_данных_дайв_компьютера_8230">16.2. На некоторых профилях наблюдаются различия во времени с данных дайв-компьютера&#8230;</h3>
+<div class="paragraph"><p><em>Subsurface</em> игнорирует поверхностное время при различных расчетах (средняя
+глубина, время дайва, SAC и т.д)</p></div>
+<div class="paragraph"><p><em>Вопрос</em>: почему время погружения на дайв-компьютере и в <em>Subsurface</em> различаются?</p></div>
+<div class="paragraph"><p><em>Ответ</em>: Например, вы решили выполнить проверку плавучести (достаточно
+глубокую, чтобы компьютер посчитал это началом погружения), после чего всплыли
+на поверхность и еще 5 минут прождали своего напарника. Ваш дайв-компьютер
+может посчитать длительность этого погружения 50 минут, потому что компьютер
+находится в режиме погружения, а <em>Subsurface</em> посчитает длительность этого
+дайва равной 45 минутам, потому что вы действительно погружались 45 минут.
+Особенно это заметно, если вы обучаете новичков OW, вы долгое время находитесь
+в воде, но основное время проводите на поверхности. И это нельзя считать
+долгим погружением.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Последнее обновление 2014-08-07 11:22:48 PDT
+</div>
+</div>
+</body>
+</html>
