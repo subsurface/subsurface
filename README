@@ -17,12 +17,12 @@ git clone git://subsurface.hohndel.org/subsurface.git .
 You can also browse the sources via gitweb at git.hohndel.org
 
 If you want the latest release (instead of the bleeding edge
-development version) you can either get this via
+development version) you can either get this via git or the release tar
+ball. After cloning run the following command:
 
 git checkout v4.2  (or whatever the last release is)
 
-if you have already cloned the git repository as shown above or you
-can get a tar ball from
+or download a tar ball from:
 
 http://subsurface.hohndel.org/downloads/Subsurface-4.2.tgz
 
@@ -54,11 +54,13 @@ dive computer you have (and where it is connected if you need to), and
 hit "OK".
 
 The latest list of supported dive computers can be found in the file
-SupportedDivecomputers.txt
+SupportedDivecomputers.txt.
 
 Much more detailed end user instructions can be found from inside
 Subsurface by selecting Help (typically F1). When building from source
-this is also available as Documentation/user-manual.html
+this is also available as Documentation/user-manual.html. The
+documentation for the latest release is also available on-line
+http://subsurface.hohndel.org/documentation/
 
 
 Contributing:
