@@ -38,12 +38,12 @@ QString UserSurvey::getVersion()
 	QString arch;
 	// fill in the system data
 	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
-	sysInfo.append(QString("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
+	sysInfo.append(tr("\nOperating System: %1").arg(SubsurfaceSysInfo::prettyOsName()));
 	arch = SubsurfaceSysInfo::cpuArchitecture();
-	sysInfo.append(QString("\nCPU Architecture: %1").arg(arch));
+	sysInfo.append(tr("\nCPU Architecture: %1").arg(arch));
 	if (arch == "i386")
-		sysInfo.append(QString("\nOS CPU Architecture: %1").arg(SubsurfaceSysInfo::osArch()));
-	sysInfo.append(QString("\nLanguage: %1").arg(uiLanguage(NULL)));
+		sysInfo.append(tr("\nOS CPU Architecture: %1").arg(SubsurfaceSysInfo::osArch()));
+	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
 	return sysInfo;
 }
 
