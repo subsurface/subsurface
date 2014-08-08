@@ -1398,12 +1398,44 @@ image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",
 Cada imagen reducida tiene una pequeña papelera en su esquina superior
 izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
 borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
-sobre las imagenes.
+sobre las imágenes. Las imágenes  también puede borrase desde la pestaña _Fotos_
+(ver en el siguiente punto).
 Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
 completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
-fotos que han sido importadas. Ver a continuación:
+fotos que han sido importadas. Ver imagen a continuación.
 
 image::images/LoadImage6.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
+
+==== La pestaña _Fotos_
+
+Las fotografías asociadas a una inmersión se muestran como miniaturas en la
+pestaña _Fotos_ del _Panel de inmersión_. Se puede acceder con facilidad a las
+fotos hechas en rápida sucesión durante la inmersión, desde la pestaña _Fotos_.
+Esta pestaña es una herramienta para acceder individualmente a las fotos de un
+buceo, mientras que las "chinchetas" en el perfil de inmersión proporcionan una
+indicación de cuando se tomó la foto. Clicando una sola vez sobre una de la
+miniaturas de la pestaña _Fotos_, seleccionamos una foto. Haciendo doble-clic
+sobre una miniatura, se muestra la imagen a tamaño completo superpuesta a la
+ventana de _Subsurface_. Podemos borrar una foto desde la pestaña _Fotos_
+seleccionándola (un solo clic) y pulsando a continuación la tecla _Supr_ en el
+teclado. Esto eliminará la foto tanto de la pestaña _Fotos_ como del _Perfil de
+la inmersión_.
+
+==== Fotos en disco duro externo
+
+La mayoría de fotosubs guardan sus fotografías en un disco duro externo. Si este
+disco puede mapearse (como es casi siempre el caso) _Subsurface_ puede acceder
+directamente a las fotos. Esto facilita la interacción entre _Subsurface_ y un
+repositorio externo de fotos. Cuando se asocia un perfil de inmersión con fotos
+de un disco externo se utiliza el procedimiento normal de selección
+y sincronización (ver en el texto anterior). Sin embargo, después de que el
+disco externo haya sido desconectado, _Subsurface ya no podrá acceder a las
+fotos. Si se ha activado la visualización de fotos sobre el perfil (utilizando
+la barra de herramientas a la izquierda del perfil), el programa solo mostrará
+unos pequeños puntos blancos donde deberían mostrarse las fotos. Además, la
+pestaña _Fotos_ solo mostrará los nombres de los archivos de las imágenes. Este
+es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
+se vuelve a conectar, las fotos se visualizarán normalmente.
 
 == Obtener más información sobre inmersiones guardadas en el diario
 
