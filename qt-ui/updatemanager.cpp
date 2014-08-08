@@ -47,7 +47,11 @@ void UpdateManager::requestReceived()
 	} else {
 		//No network error
 		QString response(reply->readAll());
-		QString responseBody = response.split("\"").at(1);
+		QString responseBody;
+		if (response.contains('"'))
+			responseBody = response.split("\"").at(1);
+		else
+			responseBody = response;
 
 		msgbox.setIcon(QMessageBox::Information);
 
