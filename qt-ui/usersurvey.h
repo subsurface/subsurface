@@ -16,6 +16,7 @@ public:
 	explicit UserSurvey(QWidget *parent = 0);
 	~UserSurvey();
 	static QString getVersion();
+	static QString getUserAgent();
 
 private
 slots:

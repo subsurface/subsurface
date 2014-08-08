@@ -28,7 +28,7 @@ void UpdateManager::checkForUpdates()
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
-	QString userAgent = UserSurvey::getVersion().replace("\n", " ");
+	QString userAgent = UserSurvey::getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()));
 }

@@ -223,7 +223,7 @@ WebServices::WebServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	timeout.setSingleShot(true);
 	defaultApplyText = ui.buttonBox->button(QDialogButtonBox::Apply)->text();
-	userAgent = UserSurvey::getVersion().replace("\n", " ");
+	userAgent = UserSurvey::getUserAgent();
 }
 
 void WebServices::hidePassword()
