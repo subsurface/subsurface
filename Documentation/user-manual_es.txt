@@ -1383,10 +1383,11 @@ perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.
 
 === Visualizar las imágenes
 
-Después que las imágenes han sido cargadas aparecen en la pestaña _Fotos_ del
-panel *Notas de Inmersión*. También aparecen como pequeños iconos en el perfil
-de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
-fotografía. Ver a continuación:
+Después que las imágenes han sido cargadas aparecen en dos lugares:
+
+ - La pestaña _Fotos_ del panel _Notas de la inmersión_.
+ - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
+ que relejan la hora en que se tomó cada fotografía. Ver a continuación:
 
 image::images/LoadImage4.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
 
@@ -1395,14 +1396,14 @@ de la foto. Ver imagen a continuación:
 
 image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
 
+Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
+completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
+fotos que han sido importadas. Ver imagen a continuación.
 Cada imagen reducida tiene una pequeña papelera en su esquina superior
 izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
 borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
 sobre las imágenes. Las imágenes  también puede borrase desde la pestaña _Fotos_
 (ver en el siguiente punto).
-Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
-fotos que han sido importadas. Ver imagen a continuación.
 
 image::images/LoadImage6.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
 
