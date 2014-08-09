@@ -36,12 +36,12 @@ foreach (@sortedDescriptors) {
 			printf(", %s", $mod);
 		} else {
 			if ($lastVend lt "Uemis" && $vend gt "Uemis") {
-				printf("</li>\n\t</ul>\n    </dd>\n    <dt>Uemis</dt><dd>\n\t<ul>\n\t    <li>Zürich SDA");
+				printf("</li></ul>\n    </dd>\n    <dt>Uemis</dt><dd><ul>\n\t    <li>Zürich SDA");
 			}
 			if ($lastVend eq "") {
-				printf("<dl><dt>%s</dt><dd>\n\t<ul>\n\t    <li>%s", $vend, $mod);
+				printf("<dl><dt>%s</dt><dd><ul>\n\t    <li>%s", $vend, $mod);
 			} else {
-				printf("</li>\n\t</ul>\n    </dd>\n    <dt>%s</dt><dd>\n\t<ul>\n\t    <li>%s", $vend, $mod);
+				printf("</li></ul>\n    </dd>\n    <dt>%s</dt><dd><ul>\n\t    <li>%s", $vend, $mod);
 			}
 		}
 	} else {
