@@ -672,8 +672,8 @@ information displayed.
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
-temperature information and this field may therefore not require further
-editing. If air temperature is not provided by the dive computer, the first temperature reading
+temperature information and this field may therefore contain information obtained from the dive computer.
+If air temperature is not provided by the dive computer, the first temperature reading
 might be used for the air temperature. Generally this is close enough to the real air temperature as
 the change in the temperature sensor reading is quite slow to follow the changes in the environment.
 If editing is required, only a value is required, the units of temperature will be
@@ -697,7 +697,7 @@ at the appropriate place, the green bar disappears and the coordinates are
 stored.
 
 b. The user can obtain the coordinates from the _Subsurface_ Companion app if
-an Android device with GPS was used and the if the coordinates of the dive site
+an Android device with GPS was used and if the coordinates of the dive site
 were stored using that device.
 xref:S_Companion[Click here for more information]
 
@@ -842,6 +842,32 @@ the dustbin icon on the left hand. Here is an example of information for a dive
 with two types of weights: integrated as well as a weight belt:
 
 image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
+
+==== Editing several selected dives simultaneously
+
+After uploading dives from
+a dive computer, the dive profiles of the uploaded dives are shown in the *Dive profile* tab, as well
+as a few items of information
+in the *Dive Notes* tab (e.g. water temperature) and in the *Equipment* tab (e.g. gas pressures
+and gas composition). However the other fields remain empty.
+It may be useful to simultaneously edit some of the
+fields in the *Dive Notes* and *Equipment* tabs.  For instance, it is possible
+that a diver performed several dives during a single day, using identical equipment while diving at the same
+dive site or with the same dive master and/or buddy or tags. Instead of completing the information for each
+of these dives separately, one can select all the dives for that day in the *Dive List* and
+insert the same information in the *Dive Notes* and *Equipment* fields that need
+identical information. This is achieved by editing the dive notes or the equipment for any one
+of the selected dives.
+
+The simultaneous editing only works with fields that do not already contain information.
+This means that, if some fields have been edited for a particular dive among the selected dives,
+these are not changed while
+editing the dives simultaneously. Technically, the rule for editing several dives simultaneously is:
+if the data field being edited contains _exactly the same information_ for all the dives that have been
+selected, the new, edited information is substituted for all the selected dives, otherwise only the
+edited dive is
+changed, even though several dives have been selected in the *Dive List*. This greatly speeds
+up the completion of the dive log after several similar dives.
 
 ==== Adding Bookmarks to a dive
 
