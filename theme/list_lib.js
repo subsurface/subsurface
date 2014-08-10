@@ -126,7 +126,7 @@ function next_page()
 function view_pagging(start, end)
 {
 	var page = document.getElementById("pagging");
-	page.innerHTML = (start + 1) + ' to ' + (end + 1) + ' of ' + (itemsToShow.length) + ' dives';
+	page.innerHTML = (start + 1) + ' to ' + (end + 1) + ' of ' + (itemsToShow.length) + '' + translate.dives;
 }
 
 /**
@@ -134,12 +134,14 @@ function view_pagging(start, end)
 */
 function expandAll()
 {
+	console.time('expnadAll');
 	for (var i = start; i < start + sizeofpage; i++) {
 		if (i >= itemsToShow.length)
 			break;
 		unexpand(document.getElementById(itemsToShow[i]));
 		items[itemsToShow[i]].expanded = false;
 	}
+	console.timeEnd('expnadAll');
 }
 
 /**
@@ -204,22 +206,22 @@ function getlimited(dive)
 
 function getExpanded(dive)
 {
-	var res = '<table><tr><td class="words">Date: </td><td>' + dive.date +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
-		  '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
+	var res = '<table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
-		  '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
-		  '</td></tr></table><table><tr><td class="words">Duration: </td><td>' + dive.dive_duration +
-		  '</td></tr><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
-		  '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
-		  '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
-		  '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
-		  '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
+		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
+		  '</td></tr><tr><td class="words">' + translate.DiveMaster + ': </td><td>' + dive.divemaster +
+		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
+		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
+		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
+		  '</td></tr></table><div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
 	if (settings.listOnly === '0') {
-		res += '<center><a onclick="showDiveDetails(' + dive.number + ')">Show more details</a></center>';
+		res += '<center><a onclick="showDiveDetails(' + dive.number + ')">' + translate.Show_more_details + '</a></center>';
 	}
 	return res;
 };
@@ -660,11 +662,11 @@ function toggleStats()
 	if (statsShows) {
 		statsShows = false;
 		stats_button.style.backgroundColor = "#dfdfdf";
-		document.getElementById('diveListPanel').style.display='block';
-		document.getElementById('diveStat').style.display='none';
+		document.getElementById('diveListPanel').style.display = 'block';
+		document.getElementById('diveStat').style.display = 'none';
 	} else {
-		document.getElementById('diveListPanel').style.display='none';
-		document.getElementById('diveStat').style.display='block';
+		document.getElementById('diveListPanel').style.display = 'none';
+		document.getElementById('diveStat').style.display = 'block';
 		stats_button.style.backgroundColor = "#5f7f8f";
 		statsShows = true;
 		showStats();
@@ -677,29 +679,33 @@ function showStats()
 	document.getElementById('diveStatsData').innerHTML += getDiveStats();
 }
 
-function getDiveStats(){
+function getDiveStats()
+{
 	var res = "";
 	res += '<table><tr id="stats_header">';
-	res += '<td class="statscell">Year</td><td class="statscell">#</td><td class="statscell">Total Time</td><td class="statscell">Average Time</td><td class="statscell">Shortest Time</td><td class="statscell">Longest Time</td><td class="statscell">Average Depth</td><td class="statscell">Min Depth</td><td class="statscell">Max Depth</td><td class="statscell">Average SAC</td><td class="statscell">Min SAC</td><td class="statscell">Max SAC</td><td class="statscell">Average Temp</td><td class="statscell">Min Temp</td><td class="statscell">Max Temp</td>';
+	res += '<td class="statscell">' + translate.Year + '</td><td class="statscell">#</td><td class="statscell">' + translate.Total_Time + '</td><td class="statscell">' + translate.Average_Time + '</td><td class="statscell">' + translate.Shortest_Time + '</td><td class="statscell">' + translate.Longest_Time + '</td><td class="statscell">' + translate.Average_Depth + '</td><td class="statscell">' + translate.Min_Depth + '</td><td class="statscell">' + translate.Max_Depth + '</td><td class="statscell">' + translate.Average_SAC + '</td><td class="statscell">' + translate.Min_SAC + '</td><td class="statscell">' + translate.Max_SAC + '</td><td class="statscell">' + translate.Average_Temp + '</td><td class="statscell">' + translate.Min_Temp + '</td><td class="statscell">' + translate.Max_Temp + '</td>';
 	res += '</tr>';
 	res += getStatsRows();
 	res += '</table>';
 	return res;
 }
 
-function getStatsRows(){
+function getStatsRows()
+{
 	var res = "";
-	for(var i = 0; i < divestat.length ; i++) {
-	res += '<tr onmouseout="stats_row_unhighlight(this)" onmouseover="stats_row_highlight(this)" class="stats_row"><td class="statscell">'+divestat[i].YEAR+'</td><td class="statscell">'+divestat[i].DIVES+'</td><td class="statscell">'+divestat[i].TOTAL_TIME+'</td><td class="statscell">'+divestat[i].AVERAGE_TIME+'</td><td class="statscell">'+divestat[i].SHORTEST_TIME+'</td><td class="statscell">'+divestat[i].LONGEST_TIME+'</td><td class="statscell">'+divestat[i].AVG_DEPTH+'</td><td class="statscell">'+divestat[i].MIN_DEPTH+'</td><td class="statscell">'+divestat[i].MAX_DEPTH+'</td><td class="statscell">'+divestat[i].AVG_SAC+'</td><td class="statscell">'+divestat[i].MIN_SAC+'</td><td class="statscell">'+divestat[i].MAX_SAC+'</td><td class="statscell">'+divestat[i].AVG_TEMP+'</td><td class="statscell">'+divestat[i].MIN_TEMP+'</td><td class="statscell">'+divestat[i].MAX_TEMP+'</td></tr>';
+	for (var i = 0; i < divestat.length; i++) {
+		res += '<tr onmouseout="stats_row_unhighlight(this)" onmouseover="stats_row_highlight(this)" class="stats_row"><td class="statscell">' + divestat[i].YEAR + '</td><td class="statscell">' + divestat[i].DIVES + '</td><td class="statscell">' + divestat[i].TOTAL_TIME + '</td><td class="statscell">' + divestat[i].AVERAGE_TIME + '</td><td class="statscell">' + divestat[i].SHORTEST_TIME + '</td><td class="statscell">' + divestat[i].LONGEST_TIME + '</td><td class="statscell">' + divestat[i].AVG_DEPTH + '</td><td class="statscell">' + divestat[i].MIN_DEPTH + '</td><td class="statscell">' + divestat[i].MAX_DEPTH + '</td><td class="statscell">' + divestat[i].AVG_SAC + '</td><td class="statscell">' + divestat[i].MIN_SAC + '</td><td class="statscell">' + divestat[i].MAX_SAC + '</td><td class="statscell">' + divestat[i].AVG_TEMP + '</td><td class="statscell">' + divestat[i].MIN_TEMP + '</td><td class="statscell">' + divestat[i].MAX_TEMP + '</td></tr>';
 	}
 	return res;
 }
 
-function stats_row_highlight(row){
+function stats_row_highlight(row)
+{
 	row.style.backgroundColor = "rgba(125,125,125,0.7)";
 }
 
-function stats_row_unhighlight(row){
+function stats_row_unhighlight(row)
+{
 	row.style.backgroundColor = "rgba(125,125,125,0.3)";
 }
 
@@ -806,7 +812,7 @@ function get_weight_HTML(weight)
 function get_weights_HTML(dive)
 {
 	var result = "";
-	result += '<table><tr><td class="words">Weight</td><td class="words">Type</td></tr>';
+	result += '<table><tr><td class="words">' + translate.Weight + '</td><td class="words">' + translate.Type + '</td></tr>';
 	for (var i in dive.Weights) {
 		result += get_weight_HTML(dive.Weights[i]);
 	}
@@ -840,7 +846,7 @@ function get_cylinder_HTML(cylinder)
 function get_cylinders_HTML(dive)
 {
 	var result = "";
-	result += '<h2 class="det_hed">Dive equipments</h2><table><tr><td class="words">Type</td><td class="words">Size</td><td class="words">Work Pressure</td><td class="words">Start Pressure</td><td class="words">End Pressure</td><td class="words">O2</td></tr>';
+	result += '<h2 class="det_hed">' + translate.Dive_equipments + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">O2</td></tr>';
 	for (var i in dive.Cylinders) {
 		result += get_cylinder_HTML(dive.Cylinders[i]);
 	}
@@ -877,7 +883,7 @@ function get_bookmarks_HTML(dive)
 	if (dive.events <= 0)
 		return "";
 	var result = "";
-	result += '<h2 class="det_hed">Events</h2><table><tr><td class="words">Name</td><td class="words">Time</td><td class="words">Value</td></tr>';
+	result += '<h2 class="det_hed">' + translate.Events + '</h2><table><tr><td class="words">' + translate.Name + '</td><td class="words">' + translate.Time + '</td><td class="words">' + translate.Value + '</td></tr>';
 	for (var i in dive.events) {
 		result += get_bookmark_HTML(dive.events[i]);
 	}
@@ -890,21 +896,21 @@ function get_bookmarks_HTML(dive)
 */
 function get_dive_HTML(dive)
 {
-	return '<h2 class="det_hed">Dive Information</h2><table><tr><td class="words">Date: </td><td>' + dive.date +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: </td><td>' + dive.time +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' +
-	       dive.location + '</a>' +
-	       '</td></tr></table><table><tr><td class="words">Rating:</td><td>' + putRating(dive.rating) +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;Visibilty:</td><td>' + putRating(dive.visibility) +
-	       '</td></tr></table>' +
-	       '<table><tr><td class="words">Air temp: </td><td>' + dive.temperature.air +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;Water temp: </td><td>' + dive.temperature.water +
-	       '</td></tr></table><table><tr><td class="words">Duration: </td><td>' + dive.dive_duration +
-	       '</td></tr><tr><td class="words">DiveMaster: </td><td>' + dive.divemaster +
-	       '</td></tr><tr><td class="words"><p>Buddy: </p></td><td>' + dive.buddy +
-	       '</td></tr><tr><td class="words">Suit: </td><td>' + dive.suit +
-	       '</td></tr><tr><td class="words">Tags: </td><td>' + putTags(dive.tags) +
-	       '</td></tr></table><div style="margin:10px;"><p class="words">Notes: </p>' + dive.notes + '</div>';
+	var res = '<h2 class="det_hed">' + translate.Dive_information + '</h2><table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
+		  '</td></tr></table>' +
+		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
+		  '</td></tr><tr><td class="words">' + translate.DiveMaster + ': </td><td>' + dive.divemaster +
+		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
+		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
+		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
+		  '</td></tr></table><div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
+	return res;
 };
 
 /**
@@ -912,10 +918,9 @@ function get_dive_HTML(dive)
 */
 function get_status_HTML(dive)
 {
-	return '<h2 class="det_hed">Dive Status</h2><table><tr><td class="words">Sac: </td><td>' + ml_to_litre(dive.sac) +
+	return '<h2 class="det_hed">' + translate.Dive_Status + '</h2><table><tr><td class="words">Sac: </td><td>' + ml_to_litre(dive.sac) +
 	       ' l/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otu: </td><td>' + dive.otu +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cns: </td><td>' + dive.cns +
-	       '</td></tr></table>';
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cns: </td><td>' + dive.cns + '</td></tr></table>';
 };
 
 function get_dive_photos(dive)
@@ -927,8 +932,8 @@ function get_dive_photos(dive)
 	var slider = "";
 	document.getElementById("divephotos").style.display = 'block';
 	for (var i = 0; i < dive.photos.length; i++) {
-		slider += '<img src="'+location.pathname +
-			'_files/photos/'+dive.photos[i].filename+'" alt="" height="240" width="240">';
+		slider += '<img src="' + location.pathname +
+			  '_files/photos/' + dive.photos[i].filename + '" alt="" height="240" width="240">';
 	}
 	return slider;
 }
@@ -1034,8 +1039,7 @@ function canvas_draw()
 			0
 		]);
 	}
-	if (plot1)
-	{
+	if (plot1) {
 		$('chart1').unbind();
 		plot1.destroy();
 	}
@@ -1166,7 +1170,7 @@ function showDiveDetails(dive)
 
 function setDiveTitle(dive)
 {
-	document.getElementById("dive_no").innerHTML = "Dive No. " + (settings.subsurfaceNumbers === '0' ?
+	document.getElementById("dive_no").innerHTML = translate.Dive_No + (settings.subsurfaceNumbers === '0' ?
 		dive.number + 1 : dive.subsurface_number);
 	document.getElementById("dive_location").innerHTML = dive.location;
 }
@@ -1214,7 +1218,28 @@ function switchDives(e)
 	}
 }
 
-window.onresize = function(event) {
-      if (plot1)
-	      plot1.replot( { resetAxes: true } );
+window.onresize = function(event)
+{
+	if (plot1)
+		plot1.replot({
+			resetAxes : true
+		});
 };
+
+function translate_page()
+{
+	document.getElementById("number_header").innerHTML = translate.Number;
+	document.getElementById("date_header").innerHTML = translate.Date;
+	document.getElementById("time_header").innerHTML = translate.Time;
+	document.getElementById("location_header").innerHTML = translate.Locaiton;
+	document.getElementById("air_temp_header").innerHTML = translate.Air_Temp;
+	document.getElementById("water_temp_header").innerHTML = translate.Water_Temp;
+	document.getElementById("adv_srch_sp").innerHTML = translate.Advanced_Search;
+	document.getElementById("expnd_all_btn").innerHTML = translate.Expand_All;
+	document.getElementById("claps_all_btn").innerHTML = translate.Collapse_All;
+	document.getElementById("trip_button").innerHTML = translate.trips;
+	document.getElementById("stats_button").innerHTML = translate.Statistics;
+	document.getElementById("div_profil_lbl").innerHTML = translate.Dive_profile;
+	document.getElementById("bk_to_ls_lbl").innerHTML = translate.Back_to_List;
+	document.getElementById("bk_to_ls_lbl2").innerHTML = translate.Back_to_List;
+}

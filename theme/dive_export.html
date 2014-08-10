@@ -39,6 +39,10 @@ function load_scripts()
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
+	fileref.setAttribute("src", location.pathname + "_files/translation.json");
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+	fileref=document.createElement('script');
 	fileref.setAttribute("src", location.pathname + "_files/settings.json");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
@@ -127,6 +131,9 @@ window.onload=function(){
 	document.body.style.visibility='visible';
 
 	document.onkeydown = switchDives;
+
+	//translate Page
+	translate_page();
 }
 
 function changeAdvSearch(e){
@@ -145,7 +152,8 @@ function changeAdvSearch(e){
 	</center>
 	<div id="diveListPanel">
 	<div id="controlbox">
-		<input id="search_input" oninput="SearchModules(this.value, null)" placeholder="search"/><a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
+		<input id="search_input" oninput="SearchModules(this.value, null)" placeholder="search"/>
+		<a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
 		<div id="advanced_search">
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="location" checked>Location<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="divemaster" checked>Divemaster<br>
@@ -160,19 +168,19 @@ function changeAdvSearch(e){
 			<option>50</option>
 			<option>100</option>
 		</select>
-		<button onClick="expandAll()"> Expand All </button>
-		<button onClick="collapseAll()"> Collapse All </button>
+		<button id="expnd_all_btn" onClick="expandAll()"> Expand All </button>
+		<button id="claps_all_btn" onClick="collapseAll()"> Collapse All </button>
 		<button id="trip_button" onclick="toggleTrips();">trips</button>
 		<button id="stats_button" onclick="toggleStats();">Stats</button>
 		</div>
 	</div>
 		<div id="header">
-		<div onClick="change_sort_col('1')" class="item">Number</div>
-		<div onClick="change_sort_col('2')" class="item">Date</div>
-		<div onClick="change_sort_col('3')" class="item">Time</div>
-		<div onClick="change_sort_col('6')" class="item_large">Location</div>
-		<div onClick="change_sort_col('4')" class="item">Air Temp</div>
-		<div onClick="change_sort_col('5')" class="item">Water Temp</div>
+		<div id="number_header" onClick="change_sort_col('1')" class="item">Number</div>
+		<div id="date_header" onClick="change_sort_col('2')" class="item">Date</div>
+		<div id="time_header" onClick="change_sort_col('3')" class="item">Time</div>
+		<div id="location_header" onClick="change_sort_col('6')" class="item_large">Location</div>
+		<div id="air_temp_header" onClick="change_sort_col('4')" class="item">Air Temp</div>
+		<div id="water_temp_header" onClick="change_sort_col('5')" class="item">Water Temp</div>
 	</div>
 	<div id="diveslist">
 	</div>
@@ -188,7 +196,7 @@ function changeAdvSearch(e){
 	<center>
 	<div id="but">
 		<button onClick="prevDetailedDive()">&lt;-</button>
-		<button onClick="unshowDiveDetails()">Back to List</button>
+		<button id="bk_to_ls_lbl" onClick="unshowDiveDetails()">Back to List</button>
 		<button onClick="nextDetailedDive()">-&gt;</button>
 	</div>
 	</center>
@@ -197,7 +205,7 @@ function changeAdvSearch(e){
 		<h2 id="dive_no"></h2>
 		<h3 id="dive_location"></h3>
 		</center>
-		<h2 class="det_hed">Dive profile</h2>
+		<h2 id="div_profil_lbl" class="det_hed">Dive profile</h2>
 		<div style="width:100%" id="chart1"></div>
 		</div>
 		<div id="diveinfo">
@@ -224,7 +232,7 @@ function changeAdvSearch(e){
 	</div>
 	<div id="diveStat">
 	<center>
-	<button onClick="toggleStats()">Back to List</button>
+	<button id="bk_to_ls_lbl2" onClick="toggleStats()">Back to List</button>
 	</center>
 		<div id="diveStatsData">
 		</div>
