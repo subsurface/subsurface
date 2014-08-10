@@ -324,3 +324,84 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 	free_buffer(&buf);
 	fclose(f);
 }
+
+void export_translation(const char *file_name){
+	FILE *f;
+
+	struct membuffer buf = { 0 };
+	struct membuffer *b = &buf;
+
+	//export translated words here
+	put_format(b, "translate={");
+
+	//Dive list view
+	write_attribute(b, "Number", translate("gettextFromC", "Number"));
+	write_attribute(b, "Date", translate("gettextFromC", "Date"));
+	write_attribute(b, "Time", translate("gettextFromC", "Time"));
+	write_attribute(b, "Locaiton", translate("gettextFromC", "Locaiton"));
+	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air Temp"));
+	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water Temp"));
+	write_attribute(b, "dives", translate("gettextFromC", "dives"));
+	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand All"));
+	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse All"));
+	write_attribute(b, "trips", translate("gettextFromC", "trips"));
+	write_attribute(b, "Statistics", translate("gettextFromC", "Statistics"));
+	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced Search"));
+
+	//Dive expanded view
+	write_attribute(b, "Rating", translate("gettextFromC", "Rating"));
+	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"));
+	write_attribute(b, "Duration", translate("gettextFromC", "Duration"));
+	write_attribute(b, "DiveMaster", translate("gettextFromC", "DiveMaster"));
+	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"));
+	write_attribute(b, "Suit", translate("gettextFromC", "Suit"));
+	write_attribute(b, "Tags", translate("gettextFromC", "Tags"));
+	write_attribute(b, "Notes", translate("gettextFromC", "Notes"));
+	write_attribute(b, "Show_more_details", translate("gettextFromC", "Show more details"));
+
+	//Yearly statistics view
+	write_attribute(b, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"));
+	write_attribute(b, "Year", translate("gettextFromC", "Year"));
+	write_attribute(b, "Total_Time", translate("gettextFromC", "Total Time"));
+	write_attribute(b, "Average_Time", translate("gettextFromC", "Average Time"));
+	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest Time"));
+	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest Time"));
+	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average Depth"));
+	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min Depth"));
+	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max Depth"));
+	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"));
+	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min SAC"));
+	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max SAC"));
+	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average Temp"));
+	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min Temp"));
+	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max Temp"));
+	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to List"));
+
+	//dive detailed view
+	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive No."));
+	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"));
+	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"));
+	write_attribute(b, "Dive_equipments", translate("gettextFromC", "Dive equipments"));
+	write_attribute(b, "Type", translate("gettextFromC", "Type"));
+	write_attribute(b, "Size", translate("gettextFromC", "Size"));
+	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work Pressure"));
+	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start Pressure"));
+	write_attribute(b, "End_Pressure", translate("gettextFromC", "End Pressure"));
+	write_attribute(b, "Weight", translate("gettextFromC", "Weight"));
+	write_attribute(b, "Type", translate("gettextFromC", "Type"));
+	write_attribute(b, "Events", translate("gettextFromC", "Events"));
+	write_attribute(b, "Name", translate("gettextFromC", "Name"));
+	write_attribute(b, "Value", translate("gettextFromC", "Value"));
+
+	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive Status"));
+
+	put_format(b, "}");
+
+	f = subsurface_fopen(file_name, "w+");
+	if (!f)
+		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
+
+	flush_buffer(&buf, f); /*check for writing errors? */
+	free_buffer(&buf);
+	fclose(f);
+}

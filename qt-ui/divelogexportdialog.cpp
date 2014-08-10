@@ -95,6 +95,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 
 	QString json_dive_data = exportFiles + QDir::separator() + "file.json";
 	QString json_settings = exportFiles + QDir::separator() + "settings.json";
+	QString translation = exportFiles + QDir::separator() + "translation.json";
 	QString stat_file = exportFiles + QDir::separator() + "stat.json";
 	QString photos_directory = exportFiles + QDir::separator() + "photos" + QDir::separator();
 	mainDir.mkdir(photos_directory);
@@ -102,6 +103,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 
 	exportHTMLsettings(json_settings);
 	exportHTMLstatistics(stat_file);
+	export_translation(translation.toUtf8().data());
 
 	export_HTML(json_dive_data.toUtf8().data(), photos_directory.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
 
