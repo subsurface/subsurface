@@ -338,7 +338,7 @@ void export_translation(const char *file_name){
 	write_attribute(b, "Number", translate("gettextFromC", "Number"));
 	write_attribute(b, "Date", translate("gettextFromC", "Date"));
 	write_attribute(b, "Time", translate("gettextFromC", "Time"));
-	write_attribute(b, "Locaiton", translate("gettextFromC", "Locaiton"));
+	write_attribute(b, "Location", translate("gettextFromC", "Location"));
 	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air Temp"));
 	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water Temp"));
 	write_attribute(b, "dives", translate("gettextFromC", "dives"));

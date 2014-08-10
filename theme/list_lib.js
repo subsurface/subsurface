@@ -208,7 +208,7 @@ function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
@@ -898,7 +898,7 @@ function get_dive_HTML(dive)
 {
 	var res = '<h2 class="det_hed">' + translate.Dive_information + '</h2><table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
@@ -1231,7 +1231,7 @@ function translate_page()
 	document.getElementById("number_header").innerHTML = translate.Number;
 	document.getElementById("date_header").innerHTML = translate.Date;
 	document.getElementById("time_header").innerHTML = translate.Time;
-	document.getElementById("location_header").innerHTML = translate.Locaiton;
+	document.getElementById("location_header").innerHTML = translate.Location;
 	document.getElementById("air_temp_header").innerHTML = translate.Air_Temp;
 	document.getElementById("water_temp_header").innerHTML = translate.Water_Temp;
 	document.getElementById("adv_srch_sp").innerHTML = translate.Advanced_Search;
