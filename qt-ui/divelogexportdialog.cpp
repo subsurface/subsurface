@@ -45,6 +45,15 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	if (settings.contains("themeSelection")) {
 		ui->themeSelection->setCurrentIndex(settings.value("themeSelection").toInt());
 	}
+	if (settings.contains("subsurfaceNumbers")) {
+		ui->exportSubsurfaceNumber->setChecked(settings.value("subsurfaceNumbers").toBool());
+	}
+	if (settings.contains("yearlyStatistics")) {
+		ui->exportStatistics->setChecked(settings.value("yearlyStatistics").toBool());
+	}
+	if (settings.contains("listOnly")) {
+		ui->exportListOnly->setChecked(settings.value("listOnly").toBool());
+	}
 	settings.endGroup();
 }
 
@@ -122,6 +131,9 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	settings.setValue("fontSelection", ui->fontSelection->currentIndex());
 	settings.setValue("fontSizeSelection", ui->fontSizeSelection->currentIndex());
 	settings.setValue("themeSelection", ui->themeSelection->currentIndex());
+	settings.setValue("subsurfaceNumbers", ui->exportSubsurfaceNumber->isChecked());
+	settings.setValue("yearlyStatistics", ui->exportStatistics->isChecked());
+	settings.setValue("listOnly", ui->exportListOnly->isChecked());
 	settings.endGroup();
 
 	QString fontSize = ui->fontSizeSelection->currentText();
