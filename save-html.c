@@ -325,7 +325,8 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 	fclose(f);
 }
 
-void export_translation(const char *file_name){
+void export_translation(const char *file_name)
+{
 	FILE *f;
 
 	struct membuffer buf = { 0 };

@@ -19,7 +19,7 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 void export_translation(const char *file_name);
 
 extern void copy_image_and_overwrite(const char *cfileName, const char *cnewName);
-extern const char* get_file_name(const char *fileName);
+extern const char *get_file_name(const char *fileName);
 #ifdef __cplusplus
 }
 #endif
