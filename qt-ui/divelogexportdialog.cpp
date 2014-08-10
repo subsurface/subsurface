@@ -182,8 +182,8 @@ void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
 			total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
 			i++;
 		}
+		exportHTMLstatisticsTotal(out, &total_stats);
 	}
-	exportHTMLstatisticsTotal(out, &total_stats);
 	out << "]";
 	file.close();
 }
