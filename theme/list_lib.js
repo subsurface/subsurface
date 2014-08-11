@@ -1222,7 +1222,7 @@ window.onresize = function(event)
 {
 	if (plot1)
 		plot1.replot({
-			resetAxes : true
+			resetAxes : false
 		});
 };
 
