@@ -401,22 +401,22 @@ function cmpDateDes(j, iSmaller)
 
 function cmpAtempAsc(j, iSmaller)
 {
-	return parseInt(items[j].temperature.air, 10) < parseInt(items[iSmaller].temperature.air, 10);
+	return parseFloat(items[j].temperature.air, 10) < parseFloat(items[iSmaller].temperature.air, 10);
 }
 
 function cmpAtempDes(j, iSmaller)
 {
-	return parseInt(items[j].temperature.air, 10) > parseInt(items[iSmaller].temperature.air, 10);
+	return parseFloat(items[j].temperature.air, 10) > parseFloat(items[iSmaller].temperature.air, 10);
 }
 
 function cmpWtempAsc(j, iSmaller)
 {
-	return parseInt(items[j].temperature.water, 10) < parseInt(items[iSmaller].temperature.water, 10);
+	return parseFloat(items[j].temperature.water, 10) < parseFloat(items[iSmaller].temperature.water, 10);
 }
 
 function cmpWtempDes(j, iSmaller)
 {
-	return parseInt(items[j].temperature.water, 10) > parseInt(items[iSmaller].temperature.water, 10);
+	return parseFloat(items[j].temperature.water, 10) > parseFloat(items[iSmaller].temperature.water, 10);
 }
 
 function sort_it(sortOn, function_)
