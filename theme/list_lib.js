@@ -1166,6 +1166,7 @@ function showDiveDetails(dive)
 	document.getElementById("diveListPanel").style.display = 'none';
 	document.getElementById("divePanel").style.display = 'block';
 	canvas_draw();
+	scrollToTheTop();
 }
 
 function setDiveTitle(dive)
@@ -1216,6 +1217,11 @@ function switchDives(e)
 			nextDetailedDive();
 		}
 	}
+}
+
+function scrollToTheTop()
+{
+	window.scrollTo(0, 0);
 }
 
 window.onresize = function(event)
