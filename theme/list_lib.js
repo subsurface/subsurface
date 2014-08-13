@@ -1182,7 +1182,6 @@ function setDiveTitle(dive)
 */
 function unshowDiveDetails(dive)
 {
-	start = dive_id;
 	viewInPage();
 	plot1 = null;
 	document.getElementById("diveListPanel").style.display = 'block';
