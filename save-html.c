@@ -232,7 +232,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	(*dive_no)++;
 }
 
-void write_no_trip(struct membuffer *b, int *dive_no, const char *photos_dir, const bool list_only)
+void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only)
 {
 	int i;
 	struct dive *dive;
@@ -242,25 +242,36 @@ void write_no_trip(struct membuffer *b, int *dive_no, const char *photos_dir, co
 	put_format(b, "\"dives\":[");
 
 	for_each_dive (i, dive) {
-		if (!dive->divetrip)
+		// write dive if it doesn't belong to any trip and the dive is selected
+		// or we are in exporting all dives mode.
+		if (!dive->divetrip && (dive->selected || !selected_only))
 			write_one_dive(b, dive, photos_dir, dive_no, list_only);
 	}
 	put_format(b, "]},\n\n");
 }
 
-void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, const char *photos_dir, const bool list_only)
+void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only)
 {
 	struct dive *dive;
-
-	put_format(b, "{");
-	put_format(b, "\"name\":\"%s\",", trip->location);
-	put_format(b, "\"dives\":[");
+	bool found_sel_dive = 0;
 
 	for (dive = trip->dives; dive != NULL; dive = dive->next) {
+		if (!dive->selected && selected_only)
+			continue;
+
+		// save trip if found at least one selected dive.
+		if (!found_sel_dive) {
+			found_sel_dive = 1;
+			put_format(b, "{");
+			put_format(b, "\"name\":\"%s\",", trip->location);
+			put_format(b, "\"dives\":[");
+		}
 		write_one_dive(b, dive, photos_dir, dive_no, list_only);
 	}
 
-	put_format(b, "]},\n\n");
+	// close the trip object if contain dives.
+	if (found_sel_dive)
+		put_format(b, "]},\n\n");
 }
 
 void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
@@ -272,34 +283,20 @@ void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
 
-	if (selected_only) {
-		put_format(b, "{");
-		put_format(b, "\"name\":\"Other\",");
-		put_format(b, "\"dives\":[");
+	for_each_dive (i, dive) {
+		trip = dive->divetrip;
 
-		for_each_dive (i, dive) {
-			if (!dive->selected)
-				continue;
-			write_one_dive(b, dive, photos_dir, &dive_no, list_only);
-		}
-		put_format(b, "]},\n\n");
-	} else {
+		/*Continue if the dive have no trips or we have seen this trip before*/
+		if (!trip || trip->index)
+			continue;
 
-		for_each_dive (i, dive) {
-			trip = dive->divetrip;
-
-			/*Continue if the dive have no trips or we have seen this trip before*/
-			if (!trip || trip->index)
-				continue;
-
-			/* We haven't seen this trip before - save it and all dives */
-			trip->index = 1;
-			write_trip(b, trip, &dive_no, photos_dir, list_only);
-		}
-
-		/*Save all remaining trips into Others*/
-		write_no_trip(b, &dive_no, photos_dir, list_only);
+		/* We haven't seen this trip before - save it and all dives */
+		trip->index = 1;
+		write_trip(b, trip, &dive_no, selected_only, photos_dir, list_only);
 	}
+
+	/*Save all remaining trips into Others*/
+	write_no_trip(b, &dive_no, selected_only, photos_dir, list_only);
 }
 
 void export_list(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
