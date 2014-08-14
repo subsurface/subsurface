@@ -374,9 +374,14 @@ function cmpNumAsc(j, iSmaller)
 	return items[j].subsurface_number < items[iSmaller].subsurface_number;
 }
 
+function cmpNumAsc(j, iSmaller)
+{
+	return settings.subsurfaceNumbers === '0' ? items[j].number < items[iSmaller].number : items[j].subsurface_number < items[iSmaller].subsurface_number;
+}
+
 function cmpNumDes(j, iSmaller)
 {
-	return items[j].subsurface_number > items[iSmaller].subsurface_number;
+	return settings.subsurfaceNumbers === '0' ? items[j].number > items[iSmaller].number : items[j].subsurface_number > items[iSmaller].subsurface_number;
 }
 
 function cmpTimeAsc(j, iSmaller)
