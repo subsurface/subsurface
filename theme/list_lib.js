@@ -208,7 +208,7 @@ function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' + getDiveCoor(dive) +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
@@ -499,7 +499,7 @@ Set.prototype.intersect = function(another_set)
 	}
 	var result = new Array();
 	for (var i = 0; i < another_set.keys.length; i++) {
-		if(this.contains(another_set.keys[i])) {
+		if (this.contains(another_set.keys[i])) {
 			result.push(another_set.keys[i]);
 		}
 	};
@@ -896,6 +896,21 @@ function get_bookmarks_HTML(dive)
 	return result;
 }
 
+function getDiveCoorString(coordinates){
+	res = "";
+	lat = coordinates.lat;
+	lon = coordinates.lon;
+	res += float_to_deg(lat) + ' , ' + float_to_deg(lon);
+	return res;
+}
+
+function getDiveCoor(dive)
+{
+	if (!dive.coordinates)
+		return "";
+	return '<td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Coordinates + ': </td><td>' + '<a href="http://www.google.com/maps/@' + dive.coordinates.lat + ',' + dive.coordinates.lon + ',13z" target="_blank">' + getDiveCoorString(dive.coordinates) + '</a></td>';
+}
+
 /**
 *Return HTML main data of a dive
 */
@@ -903,8 +918,8 @@ function get_dive_HTML(dive)
 {
 	var res = '<h2 class="det_hed">' + translate.Dive_information + '</h2><table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' +
-		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a></td>' + getDiveCoor(dive) +
+		  '</tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
@@ -998,6 +1013,14 @@ function format_two_digit(n)
 function int_to_time(n)
 {
 	return Math.floor((n) / 60) + ":" + format_two_digit((n) % (60)) + " min";
+}
+
+function float_to_deg(flt){
+	var deg = 0 | flt;
+	flt = (flt < 0 ? flt =- flt : flt);
+        var min = 0 | flt % 1 * 60;
+        var sec = (0 | flt * 60 % 1 * 6000) / 100;
+        return deg + "&deg; " + min + "' " + sec + "\"";
 }
 
 /**

@@ -122,6 +122,21 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
+void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
+{
+	degrees_t latitude = dive->latitude;
+	degrees_t longitude = dive->longitude;
+
+	//don't put coordinates if in (0,0)
+	if (!latitude.udeg && !longitude.udeg)
+		return;
+
+	put_string(b, "\"coordinates\":{");
+	put_degrees(b, latitude, "\"lat\":\"", "\",");
+	put_degrees(b, longitude, "\"lon\":\"", "\",");
+	put_string(b, "},");
+}
+
 void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	struct tm tm;
@@ -207,6 +222,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	put_HTML_date(b, dive, "\"date\":\"", "\",");
 	put_HTML_time(b, dive, "\"time\":\"", "\",");
 	write_attribute(b, "location", dive->location);
+	put_HTML_coordinates(b, dive);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
 	put_format(b, "\"dive_duration\":\"%u:%02u min\",",
@@ -390,7 +406,7 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Events", translate("gettextFromC", "Events"));
 	write_attribute(b, "Name", translate("gettextFromC", "Name"));
 	write_attribute(b, "Value", translate("gettextFromC", "Value"));
-
+	write_attribute(b, "Coordinates", translate("gettextFromC", "Coordinates"));
 	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive Status"));
 
 	put_format(b, "}");
