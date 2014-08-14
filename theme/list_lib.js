@@ -208,7 +208,7 @@ function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' + getDiveCoor(dive) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' + getDiveCoor(dive) +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
@@ -918,7 +918,7 @@ function get_dive_HTML(dive)
 {
 	var res = '<h2 class="det_hed">' + translate.Dive_information + '</h2><table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Locaiton + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a></td>' + getDiveCoor(dive) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, divemaster:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a></td>' + getDiveCoor(dive) +
 		  '</tr></table><table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;' + translate.Visibility + ':</td><td>' + putRating(dive.visibility) +
 		  '</td></tr></table>' +
