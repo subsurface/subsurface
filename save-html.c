@@ -254,18 +254,23 @@ void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const 
 {
 	int i;
 	struct dive *dive;
-
-	put_format(b, "{");
-	put_format(b, "\"name\":\"Other\",");
-	put_format(b, "\"dives\":[");
+	bool found_sel_dive = 0;
 
 	for_each_dive (i, dive) {
 		// write dive if it doesn't belong to any trip and the dive is selected
 		// or we are in exporting all dives mode.
-		if (!dive->divetrip && (dive->selected || !selected_only))
+		if (!dive->divetrip && (dive->selected || !selected_only)) {
+			if (!found_sel_dive) {
+				put_format(b, "{");
+				put_format(b, "\"name\":\"Other\",");
+				put_format(b, "\"dives\":[");
+				found_sel_dive = 1;
+			}
 			write_one_dive(b, dive, photos_dir, dive_no, list_only);
+		}
 	}
-	put_format(b, "]},\n\n");
+	if (found_sel_dive)
+		put_format(b, "]},\n\n");
 }
 
 void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only)
