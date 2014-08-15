@@ -944,9 +944,9 @@ function get_dive_HTML(dive)
 */
 function get_status_HTML(dive)
 {
-	return '<h2 class="det_hed">' + translate.Dive_Status + '</h2><table><tr><td class="words">Sac: </td><td>' + ml_to_litre(dive.sac) +
-	       ' l/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Otu: </td><td>' + dive.otu +
-	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cns: </td><td>' + dive.cns + '</td></tr></table>';
+	return '<h2 class="det_hed">' + translate.Dive_Status + '</h2><table><tr><td class="words">SAC: </td><td>' + ml_to_litre(dive.sac) +
+	       ' l/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTU: </td><td>' + dive.otu +
+	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CNS: </td><td>' + dive.cns + '</td></tr></table>';
 };
 
 function get_dive_photos(dive)
