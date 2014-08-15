@@ -40,6 +40,7 @@ class DiveCalculatedTissue;
 class PartialPressureGasItem;
 class PartialGasPressureAxis;
 class AbstractProfilePolygonItem;
+class TankItem;
 class DiveHandler;
 class QGraphicsSimpleTextItem;
 class QModelIndex;
@@ -164,6 +165,7 @@ private:
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
+	TankItem *tankItem;
 	bool isGrayscale;
 	bool printMode;
 

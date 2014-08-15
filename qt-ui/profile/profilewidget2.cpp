@@ -13,6 +13,7 @@
 #include "planner.h"
 #include "device.h"
 #include "ruleritem.h"
+#include "tankitem.h"
 #include "dive.h"
 #include "pref.h"
 #include <libdivecomputer/parser.h>
@@ -89,6 +90,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
+	tankItem(new TankItem()),
 	isGrayscale(false),
 	printMode(false),
 	shouldCalculateMaxTime(true),
@@ -160,6 +162,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
+	scene()->addItem(tankItem);
 	scene()->addItem(mouseFollowerHorizontal);
 	scene()->addItem(mouseFollowerVertical);
 	QPen pen(QColor(Qt::red).lighter());
@@ -177,6 +180,7 @@ void ProfileWidget2::setupItemOnScene()
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(timeAxis);
 	rulerItem->setZValue(9997);
+	tankItem->setZValue(100);
 
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
@@ -219,6 +223,7 @@ void ProfileWidget2::setupItemOnScene()
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 
 	rulerItem->setAxis(timeAxis, profileYAxis);
+	tankItem->setHorizontalAxis(timeAxis);
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
@@ -409,6 +414,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
+	tankItem->setVisible(true);
 
 	if (currentState == EMPTY)
 		setProfileState();
@@ -487,6 +493,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
 
 	rulerItem->setPlotInfo(pInfo);
+	tankItem->setData(dataModel, &pInfo, &displayed_dive);
 	meanDepth->setVisible(prefs.show_average_depth);
 	meanDepth->setMeanDepth(pInfo.meandepth);
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(currentdc->duration.seconds), 0);
@@ -727,6 +734,7 @@ void ProfileWidget2::setEmptyState()
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
 	rulerItem->setVisible(false);
+	tankItem->setVisible(false);
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
@@ -809,6 +817,7 @@ void ProfileWidget2::setProfileState()
 		}
 	}
 	rulerItem->setVisible(prefs.rulergraph);
+	tankItem->setVisible(true);
 	#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 	HIDE_ALL(DiveHandler, handles);

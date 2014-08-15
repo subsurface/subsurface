@@ -83,6 +83,7 @@ HEADERS = \
 	qt-ui/profile/diveeventitem.h \
 	qt-ui/profile/divetooltipitem.h \
 	qt-ui/profile/ruleritem.h \
+	qt-ui/profile/tankitem.h \
 	qt-ui/updatemanager.h \
 	qt-ui/divelogexportdialog.h \
 	qt-ui/usersurvey.h \
@@ -162,6 +163,7 @@ SOURCES =  \
 	qt-ui/profile/diveeventitem.cpp \
 	qt-ui/profile/divetooltipitem.cpp \
 	qt-ui/profile/ruleritem.cpp \
+	qt-ui/profile/tankitem.cpp \
 	qt-ui/updatemanager.cpp \
 	qt-ui/divelogexportdialog.cpp \
 	qt-ui/usersurvey.cpp \
