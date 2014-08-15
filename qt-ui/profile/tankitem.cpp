@@ -11,19 +11,18 @@ TankItem::TankItem(QObject *parent) :
 	dive(0),
 	pInfo(0)
 {
-	yPos = 92;
 	height = 3;
 	QColor red(PERSIANRED1);
 	QColor blue(AIR_BLUE);
 	QColor yellow(NITROX_YELLOW);
 	QColor green(NITROX_GREEN);
-	QLinearGradient nitroxGradient(QPointF(0, yPos), QPointF(0, yPos + height));
+	QLinearGradient nitroxGradient(QPointF(0, 0), QPointF(0, height));
 	nitroxGradient.setColorAt(0.0, green);
 	nitroxGradient.setColorAt(0.49, green);
 	nitroxGradient.setColorAt(0.5, yellow);
 	nitroxGradient.setColorAt(1.0, yellow);
 	nitrox = nitroxGradient;
-	QLinearGradient trimixGradient(QPointF(0, yPos), QPointF(0, yPos + height));
+	QLinearGradient trimixGradient(QPointF(0, 0), QPointF(0, height));
 	trimixGradient.setColorAt(0.0, green);
 	trimixGradient.setColorAt(0.49, green);
 	trimixGradient.setColorAt(0.5, red);
@@ -44,7 +43,7 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 {
 	// pick the right gradient, size, position and text
-	QGraphicsRectItem *rect = new QGraphicsRectItem(x, yPos, w, height, this);
+	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height, this);
 	if (gasmix_is_air(gas))
 		rect->setBrush(air);
 	else if (gas->he.permille)
@@ -55,7 +54,7 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 	DiveTextItem *label = new DiveTextItem(rect);
 	label->setText(gasname(gas));
 	label->setBrush(Qt::black);
-	label->setPos(x, yPos);
+	label->setPos(x + 1, 0);
 	label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
 	label->setZValue(101);
 }

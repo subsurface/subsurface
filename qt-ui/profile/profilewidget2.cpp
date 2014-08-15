@@ -53,6 +53,7 @@ static struct _ItemPos {
 	};
 	_Pos background;
 	_Pos dcLabel;
+	_Pos tankBar;
 	_Axis depth;
 	_Axis partialPressure;
 	_Axis time;
@@ -336,6 +337,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.dcLabel.on.setY(100);
 	itemPos.dcLabel.off.setX(-10);
 	itemPos.dcLabel.off.setY(100);
+
+	itemPos.tankBar.on.setX(0);
+	itemPos.tankBar.on.setY(92);
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
@@ -818,6 +822,8 @@ void ProfileWidget2::setProfileState()
 	}
 	rulerItem->setVisible(prefs.rulergraph);
 	tankItem->setVisible(true);
+	tankItem->setPos(itemPos.tankBar.on);
+
 	#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 	HIDE_ALL(DiveHandler, handles);
