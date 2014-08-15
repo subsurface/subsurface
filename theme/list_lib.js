@@ -816,6 +816,9 @@ function get_weight_HTML(weight)
 */
 function get_weights_HTML(dive)
 {
+	if (!dive.Weights.length)
+		return "";
+
 	var result = "";
 	result += '<table><tr><td class="words">' + translate.Weight + '</td><td class="words">' + translate.Type + '</td></tr>';
 	for (var i in dive.Weights) {
@@ -850,6 +853,9 @@ function get_cylinder_HTML(cylinder)
 */
 function get_cylinders_HTML(dive)
 {
+	if (!dive.Cylinders.length)
+		return "";
+
 	var result = "";
 	result += '<h2 class="det_hed">' + translate.Dive_equipments + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">O2</td></tr>';
 	for (var i in dive.Cylinders) {
