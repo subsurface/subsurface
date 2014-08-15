@@ -141,6 +141,7 @@ slots:
 	void on_profSAC_clicked(bool triggered);
 	void on_profScaled_clicked(bool triggered);
 	void on_profTogglePicture_clicked(bool triggered);
+	void on_profTankbar_clicked(bool triggered);
 	void on_actionExport_triggered();
 
 protected:

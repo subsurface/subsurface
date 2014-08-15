@@ -46,6 +46,7 @@ struct preferences {
 	short zoomed_plot;
 	short hrgraph;
 	short rulergraph;
+	short tankbar;
 	short save_userid_local;
 	char *userid;
 	int ascrate75;

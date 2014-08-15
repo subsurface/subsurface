@@ -44,7 +44,8 @@ struct preferences default_prefs = {
 	.drop_stone_mode = false,
 	.bottomsac = 20000,
 	.decosac = 17000,
-	.show_pictures_in_profile = true
+	.show_pictures_in_profile = true,
+	.tankbar = false
 };
 
 int run_survey;

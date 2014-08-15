@@ -242,6 +242,7 @@ void MainWindow::setToolButtonsEnabled(bool enabled)
 	ui.profScaled->setEnabled(enabled);
 	ui.profHR->setEnabled(enabled);
 	ui.profTogglePicture->setEnabled(enabled);
+	ui.profTankbar->setEnabled(enabled);
 }
 
 bool MainWindow::okToClose(QString message)
@@ -796,6 +797,7 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(rulergraph, rulergraph, profRuler);
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 	TOOLBOX_PREF_BUTTON(show_pictures_in_profile, show_pictures_in_profile, profTogglePicture);
+	TOOLBOX_PREF_BUTTON(tankbar, tankbar, profTankbar);
 	s.endGroup();
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
@@ -1270,6 +1272,7 @@ TOOLBOX_PREF_PROFILE(profRuler, rulergraph, rulergraph);
 TOOLBOX_PREF_PROFILE(profSAC, show_sac, show_sac);
 TOOLBOX_PREF_PROFILE(profScaled, zoomed_plot, zoomed_plot);
 TOOLBOX_PREF_PROFILE(profTogglePicture, show_pictures_in_profile, show_pictures_in_profile);
+TOOLBOX_PREF_PROFILE(profTankbar, tankbar, tankbar);
 
 void MainWindow::turnOffNdlTts()
 {
@@ -1289,10 +1292,11 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::setEnabledToolbar(bool arg1)
 {
-	 QList<QToolButton*> toolBar; toolBar << ui.profCalcAllTissues << ui.profCalcCeiling
-		<< ui.profDcCeiling << ui.profEad << ui.profHR << ui.profIncrement3m
-		<< ui.profMod << ui.profNdl_tts << ui.profNdl_tts << ui.profPhe << ui.profPn2
-		<< ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled << ui.profTogglePicture;
+	 QList<QToolButton*> toolBar;
+	 toolBar << ui.profCalcAllTissues << ui.profCalcCeiling << ui.profDcCeiling << ui.profEad <<
+		    ui.profHR << ui.profIncrement3m << ui.profMod << ui.profNdl_tts << ui.profNdl_tts <<
+		    ui.profPhe << ui.profPn2 << ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled <<
+		    ui.profTogglePicture << ui.profTankbar;
 	Q_FOREACH(QToolButton *b, toolBar)
 		b->setEnabled(arg1);
 }

@@ -56,6 +56,7 @@ static struct _ItemPos {
 	_Pos tankBar;
 	_Axis depth;
 	_Axis partialPressure;
+	_Axis partialPressureWithTankBar;
 	_Axis time;
 	_Axis cylinder;
 	_Axis temperature;
@@ -306,7 +307,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
-	itemPos.partialPressure.expanded.setP2(QPointF(0, 27));
+	itemPos.partialPressure.expanded.setP2(QPointF(0, 30));
+	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
+	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 27));
 
 	// cylinder axis config
 	itemPos.cylinder.pos.on.setX(3);
@@ -418,7 +421,14 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
-	tankItem->setVisible(true);
+	tankItem->setVisible(prefs.tankbar);
+	if (prefs.tankbar) {
+		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
+		gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
+	} else {
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		gasYAxis->setLine(itemPos.partialPressure.expanded);
+	}
 
 	if (currentState == EMPTY)
 		setProfileState();
@@ -562,6 +572,13 @@ void ProfileWidget2::settingsChanged()
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
+	}
+	if (prefs.tankbar) {
+		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded);
+	} else {
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
 	}
 	if (prefs.zoomed_plot != isPlotZoomed) {
 		isPlotZoomed = prefs.zoomed_plot;
@@ -796,9 +813,13 @@ void ProfileWidget2::setProfileState()
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
-	gasYAxis->setPos(itemPos.partialPressure.pos.on);
-	gasYAxis->setLine(itemPos.partialPressure.expanded);
-
+	if (prefs.tankbar) {
+		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
+		gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
+	} else {
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		gasYAxis->setLine(itemPos.partialPressure.expanded);
+	}
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
 
@@ -821,7 +842,7 @@ void ProfileWidget2::setProfileState()
 		}
 	}
 	rulerItem->setVisible(prefs.rulergraph);
-	tankItem->setVisible(true);
+	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);
 
 	#define HIDE_ALL(TYPE, CONTAINER) \
