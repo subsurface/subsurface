@@ -305,7 +305,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
-	itemPos.partialPressure.expanded.setP2(QPointF(0, 30));
+	itemPos.partialPressure.expanded.setP2(QPointF(0, 27));
 
 	// cylinder axis config
 	itemPos.cylinder.pos.on.setX(3);

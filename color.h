@@ -20,6 +20,7 @@
 #define RIOGRANDE1 QColor::fromRgbF(0.8, 0.8, 0.0, 1)
 #define EARLSGREEN1 QColor::fromRgbF(0.8, 0.8, 0.2, 1)
 #define FORESTGREEN1 QColor::fromRgbF(0.1, 0.5, 0.1, 1)
+#define NITROX_GREEN QColor::fromRgbF(0, 0.54, 0.375, 1)
 
 // Reds
 #define PERSIANRED1 QColor::fromRgbF(0.8, 0.2, 0.2, 1)
@@ -49,6 +50,7 @@
 #define GOVERNORBAY1_MED_TRANS QColor::fromRgbF(0.2, 0.2, 0.8, 0.5)
 #define ROYALBLUE2 QColor::fromRgbF(0.2, 0.2, 0.9, 1)
 #define ROYALBLUE2_LOW_TRANS QColor::fromRgbF(0.2, 0.2, 0.9, 0.75)
+#define AIR_BLUE QColor::fromRgbF(0.25, 0.75, 1.0, 1)
 
 // Yellows / BROWNS
 #define SPRINGWOOD1 QColor::fromRgbF(0.95, 0.95, 0.9, 1)
@@ -56,6 +58,8 @@
 #define BROOM1_LOWER_TRANS QColor::fromRgbF(1.0, 1.0, 0.1, 0.9)
 #define PEANUT QColor::fromRgbF(0.5, 0.2, 0.1, 1.0)
 #define PEANUT_MED_TRANS QColor::fromRgbF(0.5, 0.2, 0.1, 0.5)
+#define NITROX_YELLOW QColor::fromRgbF(0.98, 0.89, 0.07, 1.0)
+
 // Magentas
 #define MEDIUMREDVIOLET1_HIGHER_TRANS QColor::fromRgbF(0.7, 0.2, 0.7, 0.1)
 

@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QModelIndex>
+#include <QBrush>
 #include "divelineitem.h"
 #include "divecartesianaxis.h"
 #include "dive.h"
@@ -23,11 +24,14 @@ public slots:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 
 private:
+	void createBar(qreal x, qreal w, struct gasmix *gas);
 	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
 	int hDataColumn;
 	struct dive *dive;
 	struct plot_info *pInfo;
+	qreal yPos, height;
+	QBrush air, nitrox, trimix;
 	QList<QGraphicsRectItem *> rects;
 };
 
