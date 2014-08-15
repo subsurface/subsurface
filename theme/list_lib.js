@@ -1095,7 +1095,7 @@ function canvas_draw()
 						if(seriesIndex===2)
 						return items[dive_id].events[pointIndex].name;
 						else
-						return str;
+						return str.replace(",", " : ");
 					 }
 				 },
 				 seriesDefaults : {
@@ -1138,7 +1138,7 @@ function canvas_draw()
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
 							 showGridline : false,
-							 formatString : '%i'
+							 formatString : '%is'
 						 },
 						 label:'Time (min)'
 					 },
