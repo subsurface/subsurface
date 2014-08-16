@@ -863,7 +863,7 @@ function get_cylinders_HTML(dive)
 		return "";
 
 	var result = "";
-	result += '<h2 class="det_hed">' + translate.Dive_equipments + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">O2</td></tr>';
+	result += '<h2 class="det_hed">' + translate.Dive_equipments + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">'+translate.Gas+'</td></tr>';
 	for (var i in dive.Cylinders) {
 		result += get_cylinder_HTML(dive.Cylinders[i]);
 	}

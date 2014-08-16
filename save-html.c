@@ -101,7 +101,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		if (cylinder->gasmix.o2.permille) {
 			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
 		} else {
-			write_attribute(b, "O2", "--");
+			write_attribute(b, "O2", "Air");
 		}
 		put_string(b, "},");
 	}
@@ -408,6 +408,7 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work Pressure"));
 	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start Pressure"));
 	write_attribute(b, "End_Pressure", translate("gettextFromC", "End Pressure"));
+	write_attribute(b, "Gas", translate("gettextFromC", "Gas"));
 	write_attribute(b, "Weight", translate("gettextFromC", "Weight"));
 	write_attribute(b, "Type", translate("gettextFromC", "Type"));
 	write_attribute(b, "Events", translate("gettextFromC", "Events"));
