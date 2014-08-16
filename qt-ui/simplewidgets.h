@@ -11,6 +11,7 @@ class QAbstractButton;
 #include "ui_renumber.h"
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
+#include "ui_divecomponentselection.h"
 #include "exif.h"
 
 class MinMaxAvgWidget : public QWidget {
@@ -110,6 +111,19 @@ signals:
 private:
 	QDate mDate;
 	QCalendarWidget *calendarWidget;
+};
+
+class DiveComponentSelection : public QDialog {
+	Q_OBJECT
+public:
+	explicit DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what);
+private
+slots:
+	void buttonClicked(QAbstractButton *button);
+private:
+	Ui::DiveComponentSelectionDialog ui;
+	struct dive *targetDive;
+	struct dive_components *what;
 };
 
 bool isGnome3Session();

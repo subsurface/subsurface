@@ -143,6 +143,8 @@ slots:
 	void on_profTogglePicture_clicked(bool triggered);
 	void on_profTankbar_clicked(bool triggered);
 	void on_actionExport_triggered();
+	void on_copy_triggered();
+	void on_paste_triggered();
 
 protected:
 	void closeEvent(QCloseEvent *);
@@ -185,6 +187,8 @@ private:
 	bool plannerStateClean();
 	void setupForAddAndPlan(const char *model);
 	QDialog *survey;
+	struct dive copyPasteDive;
+	struct dive_components what;
 };
 
 #endif // MAINWINDOW_H

@@ -114,6 +114,8 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_PRINTING
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
+	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
+	memset(&what, 0, sizeof(what));
 }
 
 MainWindow::~MainWindow()
@@ -1299,4 +1301,17 @@ void MainWindow::setEnabledToolbar(bool arg1)
 		    ui.profTogglePicture << ui.profTankbar;
 	Q_FOREACH(QToolButton *b, toolBar)
 		b->setEnabled(arg1);
+}
+
+void MainWindow::on_copy_triggered()
+{
+	// open dialog to select what gets copied
+	// copy the displayed dive
+	DiveComponentSelection dialog(this, &copyPasteDive, &what);
+	dialog.exec();
+}
+
+void MainWindow::on_paste_triggered()
+{
+	// take the data in our copyPasteDive and apply it to selected dives
 }

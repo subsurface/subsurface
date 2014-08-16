@@ -411,3 +411,45 @@ void DateWidget::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 	}
 }
+
+#define COMPONENT_FROM_UI(_component) what->_component = ui._component->isChecked()
+#define UI_FROM_COMPONENT(_component) ui._component->setChecked(what->_component)
+
+DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what):
+	targetDive(target)
+{
+	ui.setupUi(this);
+	what = _what;
+	UI_FROM_COMPONENT(location);
+	UI_FROM_COMPONENT(gps);
+	UI_FROM_COMPONENT(divemaster);
+	UI_FROM_COMPONENT(buddy);
+	UI_FROM_COMPONENT(rating);
+	UI_FROM_COMPONENT(visibility);
+	UI_FROM_COMPONENT(notes);
+	UI_FROM_COMPONENT(suit);
+	UI_FROM_COMPONENT(cylinders);
+	UI_FROM_COMPONENT(weights);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+}
+
+void DiveComponentSelection::buttonClicked(QAbstractButton *button)
+{
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		COMPONENT_FROM_UI(location);
+		COMPONENT_FROM_UI(gps);
+		COMPONENT_FROM_UI(divemaster);
+		COMPONENT_FROM_UI(buddy);
+		COMPONENT_FROM_UI(rating);
+		COMPONENT_FROM_UI(visibility);
+		COMPONENT_FROM_UI(notes);
+		COMPONENT_FROM_UI(suit);
+		COMPONENT_FROM_UI(cylinders);
+		COMPONENT_FROM_UI(weights);
+		selective_copy_dive(&displayed_dive, targetDive, *what);
+	}
+}

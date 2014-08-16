@@ -720,6 +720,8 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionAddDive"/>
     <addaction name="actionDivePlanner"/>
+    <addaction name="copy"/>
+    <addaction name="paste"/>
     <addaction name="separator"/>
     <addaction name="actionRenumber"/>
     <addaction name="actionAutoGroup"/>
@@ -877,6 +879,22 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="copy">
+   <property name="text">
+    <string>&amp;Copy dive components</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="paste">
+   <property name="text">
+    <string>&amp;Paste dive components</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
   <action name="actionRenumber">

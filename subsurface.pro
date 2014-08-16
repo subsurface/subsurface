@@ -198,7 +198,8 @@ FORMS = \
 	qt-ui/searchbar.ui \
 	qt-ui/divelogexportdialog.ui \
 	qt-ui/plannerSettings.ui \
-	qt-ui/usersurvey.ui
+	qt-ui/usersurvey.ui \
+	qt-ui/divecomponentselection.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui
