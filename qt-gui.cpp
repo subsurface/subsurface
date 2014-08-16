@@ -103,6 +103,7 @@ QString uiLanguage(QLocale *callerLoc)
 	dateFormat.replace("'en' 'den' d:'e'", " d");
 	timeFormat = loc.timeFormat();
 	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
+	timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
 	return uiLang;
 }
 
