@@ -1026,9 +1026,12 @@ void MainTab::on_location_textChanged(const QString &text)
 // If we have GPS data for the location entered, add it.
 void MainTab::on_location_editingFinished()
 {
+	// if we have a location and no GPS data, look up the GPS data;
+	// but if the GPS data was intentionally cleared then don't
 	if (!currentTrip &&
 	    !same_string(displayed_dive.location, "") &&
-	    ui.coordinates->text().trimmed().isEmpty()) {
+	    ui.coordinates->text().trimmed().isEmpty() &&
+	    !(editMode == DIVE && dive_has_gps_location(current_dive))) {
 		struct dive *dive;
 		int i = 0;
 		for_each_dive (i, dive) {
