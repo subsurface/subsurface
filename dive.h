@@ -295,6 +295,21 @@ struct dive {
 	struct picture *picture_list;
 };
 
+/* when selectively copying dive information, which parts should be copied? */
+struct dive_components {
+	unsigned int location : 1;
+	unsigned int notes : 1;
+	unsigned int divemaster : 1;
+	unsigned int buddy : 1;
+	unsigned int suit : 1;
+	unsigned int rating : 1;
+	unsigned int visibility : 1;
+	unsigned int gps : 1;
+	unsigned int tags : 1;
+	unsigned int cylinders : 1;
+	unsigned int weights : 1;
+};
+
 /* picture list and methods related to dive picture handling */
 struct picture {
 	char *filename;
@@ -606,6 +621,7 @@ extern struct dive *alloc_dive(void);
 extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(struct dive *s, struct dive *d);
+extern void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what);
 extern struct dive *clone_dive(struct dive *s);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);

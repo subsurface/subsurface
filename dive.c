@@ -421,6 +421,37 @@ struct dive *clone_dive(struct dive *s)
 	return dive;
 }
 
+#define CONDITIONAL_COPY_STRING(_component) \
+	if (what._component)                \
+		d->_component = copy_string(s->_component)
+
+// copy elements, depending on bits in what that are set
+void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what)
+{
+	clear_dive(d);
+	CONDITIONAL_COPY_STRING(location);
+	CONDITIONAL_COPY_STRING(notes);
+	CONDITIONAL_COPY_STRING(divemaster);
+	CONDITIONAL_COPY_STRING(buddy);
+	CONDITIONAL_COPY_STRING(suit);
+	if (what.rating)
+		d->rating = s->rating;
+	if (what.visibility)
+		d->visibility = s->visibility;
+	if (what.gps) {
+		d->longitude = s->longitude;
+		d->latitude = s->latitude;
+	}
+	if (what.tags)
+		STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+	if (what.cylinders)
+		copy_cylinders(s, d, false);
+	if (what.weights)
+		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+			d->weightsystem[i] = s->weightsystem[i];
+}
+#undef CONDITIONAL_COPY_STRING
+
 /* only copies events from the first dive computer */
 void copy_events(struct divecomputer *s, struct divecomputer *d)
 {
@@ -459,16 +490,20 @@ int nr_weightsystems(struct dive *dive)
 	return nr;
 }
 
+/* copy the equipment data part of the cylinders */
 void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 {
 	int i;
 	if (!s || !d)
 		return;
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		if (!used_only || is_cylinder_used(s, i))
-			d->cylinder[i] = s->cylinder[i];
-		else
-			memset(&d->cylinder[i], 0, sizeof(cylinder_t));
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
+		if (!used_only || is_cylinder_used(s, i)) {
+			d->cylinder[i].type = s->cylinder[i].type;
+			d->cylinder[i].gasmix = s->cylinder[i].gasmix;
+			d->cylinder[i].depth = s->cylinder[i].depth;
+		}
+	}
 }
 
 void copy_samples(struct divecomputer *s, struct divecomputer *d)
