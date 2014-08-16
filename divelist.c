@@ -453,9 +453,9 @@ char *get_dive_gas_string(struct dive *dive)
 			snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
 		else if (o2)
 			if (o2 == o2low)
-				snprintf(buffer, MAX_GAS_STRING, "%d", o2);
+				snprintf(buffer, MAX_GAS_STRING, "%d%%", o2);
 			else
-				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d", o2low, o2);
+				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d%%", o2low, o2);
 		else
 			strcpy(buffer, translate("gettextFromC", "air"));
 	}
