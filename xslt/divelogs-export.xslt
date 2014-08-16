@@ -69,8 +69,22 @@
     <CYLINDERDESCRIPTION>
       <xsl:value-of select="cylinder[position() = $cylinder]/@description"/>
     </CYLINDERDESCRIPTION>
+
+    <xsl:variable name="double">
+      <xsl:choose>
+        <xsl:when test="substring(cylinder[position() = $cylinder]/@description, 1, 1) = 'D' and substring-before(substring(cylinder[position() = $cylinder]/@description, 2), ' ') * 2 = substring-before(cylinder[position() = $cylinder]/@size, ' ')">
+          <xsl:value-of select="'2'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'1'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <DBLTANK>
+      <xsl:value-of select="$double - 1"/>
+    </DBLTANK>
     <CYLINDERSIZE>
-      <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@size, ' ')"/>
+      <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@size, ' ') div $double"/>
     </CYLINDERSIZE>
     <CYLINDERSTARTPRESSURE>
       <xsl:choose>
