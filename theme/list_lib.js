@@ -666,13 +666,11 @@ function toggleStats()
 	var stats_button = document.getElementById('stats_button');
 	if (statsShows) {
 		statsShows = false;
-		stats_button.style.backgroundColor = "#dfdfdf";
 		document.getElementById('diveListPanel').style.display = 'block';
 		document.getElementById('diveStat').style.display = 'none';
 	} else {
 		document.getElementById('diveListPanel').style.display = 'none';
 		document.getElementById('diveStat').style.display = 'block';
-		stats_button.style.backgroundColor = "#5f7f8f";
 		statsShows = true;
 		showStats();
 	}
@@ -717,7 +715,15 @@ function stats_row_unhighlight(row)
 //trips
 
 var tripsShown;
+var HEADER_COLOR;
+var BACKGROUND_COLOR;
 
+function getDefaultColor(){
+	var header = document.getElementById('header');
+	var button = document.getElementById('no_dives_selector');
+	HEADER_COLOR = document.defaultView.getComputedStyle(header).getPropertyValue('background-color');
+	BACKGROUND_COLOR = document.defaultView.getComputedStyle(button).getPropertyValue('background-color');
+}
 
 /**
 *This is the main function called to show/hide trips
@@ -727,11 +733,11 @@ function toggleTrips()
 	var trip_button = document.getElementById('trip_button');
 	if (tripsShown) {
 		tripsShown = false;
-		trip_button.style.backgroundColor = "#dfdfdf";
+		trip_button.style.backgroundColor = BACKGROUND_COLOR;
 		viewInPage();
 	} else {
 		showtrips();
-		trip_button.style.backgroundColor = "#5f7f8f";
+		trip_button.style.backgroundColor = HEADER_COLOR;
 		tripsShown = true;
 	}
 }
