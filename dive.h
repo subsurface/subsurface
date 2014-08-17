@@ -85,11 +85,29 @@ typedef struct
 struct event {
 	struct event *next;
 	duration_t time;
-	int type, flags, value;
+	int type;
+	/* This is the annoying libdivecomputer format. */
+	int flags, value;
+	/* .. and this is our "extended" data for some event types */
+	union {
+		/*
+		 * Currently only for gas switch events.
+		 *
+		 * NOTE! The index may be -1, which means "unknown". In that
+		 * case, the get_cylinder_index() function will give the best
+		 * match with the cylinders in the dive based on gasmix.
+		 */
+		struct {
+			int index;
+			struct gasmix mix;
+		} gas;
+	};
 	bool deleted;
 	char name[];
 };
 
+extern int event_is_gaschange(struct event *ev);
+extern int event_gasmix_redundant(struct event *ev);
 
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
@@ -651,7 +669,7 @@ extern void copy_samples(struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(struct dive *dive, int idx);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
-extern void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
+extern struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
 extern void update_event_name(struct dive *d, struct event* event, char *name);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);

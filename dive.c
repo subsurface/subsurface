@@ -26,7 +26,31 @@ static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "deco")
 };
 
-void add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
+int event_is_gaschange(struct event *ev)
+{
+	return ev->type == SAMPLE_EVENT_GASCHANGE ||
+		ev->type == SAMPLE_EVENT_GASCHANGE2;
+}
+
+/*
+ * Does the gas mix data match the legacy
+ * libdivecomputer event format? If so,
+ * we can skip saving it, in order to maintain
+ * the old save formats. We'll re-generate the
+ * gas mix when loading.
+ */
+int event_gasmix_redundant(struct event *ev)
+{
+	int value = ev->value;
+	int o2, he;
+
+	o2 = (value & 0xffff) * 10;
+	he = (value >> 16) * 10;
+	return	o2 == ev->gas.mix.o2.permille &&
+		he == ev->gas.mix.he.permille;
+}
+
+struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev, **p;
 	unsigned int size, len = strlen(name);
@@ -34,13 +58,29 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 	size = sizeof(*ev) + len + 1;
 	ev = malloc(size);
 	if (!ev)
-		return;
+		return NULL;
 	memset(ev, 0, size);
 	memcpy(ev->name, name, len);
 	ev->time.seconds = time;
 	ev->type = type;
 	ev->flags = flags;
 	ev->value = value;
+
+	/*
+	 * Expand the events into a sane format. Currently
+	 * just gas switches
+	 */
+	switch (type) {
+	case SAMPLE_EVENT_GASCHANGE2:
+		/* High 16 bits are He percentage */
+		ev->gas.mix.he.permille = (value >> 16) * 10;
+	/* Fallthrough */
+	case SAMPLE_EVENT_GASCHANGE:
+		/* Low 16 bits are O2 percentage */
+		ev->gas.mix.o2.permille = (value & 0xffff) * 10;
+		ev->gas.index = -1;
+		break;
+	}
 
 	p = &dc->events;
 
@@ -50,6 +90,7 @@ void add_event(struct divecomputer *dc, int time, int type, int flags, int value
 	ev->next = *p;
 	*p = ev;
 	remember_event(name);
+	return ev;
 }
 
 static int same_event(struct event *a, struct event *b)
@@ -107,14 +148,11 @@ void update_event_name(struct dive *d, struct event *event, char *name)
 /* this returns a pointer to static variable - so use it right away after calling */
 struct gasmix *get_gasmix_from_event(struct event *ev)
 {
-	static struct gasmix g;
-	g.o2.permille = g.he.permille = 0;
-	if (ev && (ev->type == SAMPLE_EVENT_GASCHANGE || ev->type == SAMPLE_EVENT_GASCHANGE2)) {
-		g.o2.permille = 10 * ev->value & 0xffff;
-		if (ev->type == SAMPLE_EVENT_GASCHANGE2)
-			g.he.permille = 10 * (ev->value >> 16);
-	}
-	return &g;
+	static struct gasmix dummy;
+	if (ev && event_is_gaschange(ev))
+		return &ev->gas.mix;
+
+	return &dummy;
 }
 
 int get_pressure_units(int mb, const char **units)
@@ -1543,6 +1581,7 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
 {
 	int i;
+	struct event *ev;
 
 	/* Did the first gas get remapped? Add gas switch event */
 	if (mapping[0] > 0)
@@ -1558,6 +1597,15 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 		sensor = mapping[s->sensor];
 		if (sensor >= 0)
 			s->sensor = sensor;
+	}
+
+	/* Remap the gas change indexes */
+	for (ev = dc->events; ev; ev = ev->next) {
+		if (!event_is_gaschange(ev))
+			continue;
+		if (ev->gas.index < 0)
+			continue;
+		ev->gas.index = mapping[ev->gas.index];
 	}
 }
 

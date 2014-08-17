@@ -66,10 +66,10 @@ void DiveEventItem::setupPixmap()
 		setPixmap(EVENT_PIXMAP(":flag"));
 	} else if (strcmp(internalEvent->name, "heading") == 0) {
 		setPixmap(EVENT_PIXMAP(":flag"));
-	} else if (internalEvent->type == SAMPLE_EVENT_GASCHANGE || internalEvent->type == SAMPLE_EVENT_GASCHANGE2) {
-		if (internalEvent->value >> 16)
+	} else if (event_is_gaschange(internalEvent)) {
+		if (internalEvent->gas.mix.he.permille)
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
-		else if (internalEvent->value == 0)
+		else if (gasmix_is_air(&internalEvent->gas.mix))
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
 		else
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
@@ -86,7 +86,7 @@ void DiveEventItem::setupToolTipString()
 	int value = internalEvent->value;
 	int type = internalEvent->type;
 	if (value) {
-		if (type == SAMPLE_EVENT_GASCHANGE || type == SAMPLE_EVENT_GASCHANGE2) {
+		if (event_is_gaschange(internalEvent)) {
 			QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds);
 			if (result.isEmpty()) {
 				Q_ASSERT("can't find a spot in the dataModel");

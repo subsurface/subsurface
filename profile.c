@@ -289,6 +289,14 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 	return pi;
 }
 
+/*
+ * If the event has an explicit cylinder index,
+ * we return that. If it doesn't, we return the best
+ * match based on the gasmix.
+ *
+ * Some dive computers give cylinder indexes, some
+ * give just the gas mix.
+ */
 int get_cylinder_index(struct dive *dive, struct event *ev)
 {
 	int i;
@@ -296,10 +304,9 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	int target_o2, target_he;
 	struct gasmix *g;
 
-	/*
-	 * Crazy gas change events give us odd encoded o2/he in percent.
-	 * Decode into our internal permille format.
-	 */
+	if (ev->gas.index >= 0)
+		return ev->gas.index;
+
 	g = get_gasmix_from_event(ev);
 	target_o2 = get_o2(g);
 	target_he = get_he(g);
@@ -318,13 +325,8 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 		delta_o2 = get_o2(&cyl->gasmix) - target_o2;
 		delta_he = get_he(&cyl->gasmix) - target_he;
 		distance = delta_o2 * delta_o2;
+		distance += delta_he * delta_he;
 
-		/* Check the event type to figure out if we should care about the he part.
-		 * SAMPLE_EVENT_GASCHANGE, aka without he
-		 * SAMPLE_EVENT_GASCHANGE2, aka with he
-		 */
-		if (ev->type == SAMPLE_EVENT_GASCHANGE2)
-			distance += delta_he * delta_he;
 		if (distance >= score)
 			continue;
 		score = distance;

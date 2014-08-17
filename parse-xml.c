@@ -95,17 +95,17 @@ const struct units IMPERIAL_units = IMPERIAL_UNITS;
 /*
  * Dive info as it is being built up..
  */
+#define MAX_EVENT_NAME 128
 static struct divecomputer *cur_dc;
 static struct dive *cur_dive;
 static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
 static struct picture *cur_picture;
-static struct {
-	int active;
-	duration_t time;
-	int type, flags, value;
-	const char *name;
-} cur_event;
+static union {
+	struct event event;
+	char allocation[sizeof(struct event)+MAX_EVENT_NAME];
+} event_allocation = { .event.deleted = 1 };
+#define cur_event event_allocation.event
 static struct {
 	struct {
 		const char *model;
@@ -527,6 +527,15 @@ static void utf8_string(char *buffer, void *_res)
 		*res = strdup(buffer);
 }
 
+static void event_name(char *buffer, char *name)
+{
+	int size = trimspace(buffer);
+	if (size >= MAX_EVENT_NAME)
+		size = MAX_EVENT_NAME-1;
+	memcpy(name, buffer, size);
+	name[size] = 0;
+}
+
 /* Extract the dive computer type from the xml text buffer */
 static void get_dc_type(char *buffer, enum dive_comp_type *i)
 {
@@ -704,16 +713,22 @@ static void try_to_match_autogroup(const char *name, char *buf)
 
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
-	/* The gas switch event format is insane. It will be fixed, I think */
-	int o2 = get_o2(&dive->cylinder[idx].gasmix);
-	int he = get_he(&dive->cylinder[idx].gasmix);
+	/* The gas switch event format is insane for historical reasons */
+	struct gasmix *mix = &dive->cylinder[idx].gasmix;
+	int o2 = get_o2(mix);
+	int he = get_he(mix);
+	struct event *ev;
 	int value;
 
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
 	value = o2 + (he << 16);
 
-	add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	ev = add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	if (ev) {
+		ev->gas.index = idx;
+		ev->gas.mix = *mix;
+	}
 }
 
 static void get_cylinderindex(char *buffer, uint8_t *i)
@@ -751,9 +766,9 @@ static void try_to_fill_dc_settings(const char *name, char *buf)
 static void try_to_fill_event(const char *name, char *buf)
 {
 	start_match("event", name, buf);
-	if (MATCH("event", utf8_string, &cur_event.name))
+	if (MATCH("event", event_name, cur_event.name))
 		return;
-	if (MATCH("name", utf8_string, &cur_event.name))
+	if (MATCH("name", event_name, cur_event.name))
 		return;
 	if (MATCH("time", eventtime, &cur_event.time))
 		return;
@@ -762,6 +777,15 @@ static void try_to_fill_event(const char *name, char *buf)
 	if (MATCH("flags", get_index, &cur_event.flags))
 		return;
 	if (MATCH("value", get_index, &cur_event.value))
+		return;
+	if (MATCH("cylinder", get_index, &cur_event.gas.index)) {
+		/* We add one to indicate that we got an actual cylinder index value */
+		cur_event.gas.index++;
+		return;
+	}
+	if (MATCH("o2", percent, &cur_event.gas.mix.o2))
+		return;
+	if (MATCH("he", percent, &cur_event.gas.mix.he))
 		return;
 	nonmatch("event", name, buf);
 }
@@ -1332,36 +1356,38 @@ static void trip_end(void)
 static void event_start(void)
 {
 	memset(&cur_event, 0, sizeof(cur_event));
-	cur_event.active = 1;
+	cur_event.deleted = 0;	/* Active */
 }
 
 static void event_end(void)
 {
 	struct divecomputer *dc = get_dc();
-	if (cur_event.name) {
-		if (strcmp(cur_event.name, "surface") != 0) {
-			/* 123 is a magic event that we used for a while to encode images in dives */
-			if (cur_event.type == 123) {
-				struct picture *pic = alloc_picture();
-				pic->filename = strdup(cur_event.name);
-				/* theoretically this could fail - but we didn't support multi year offsets */
-				pic->offset.seconds = cur_event.time.seconds;
-				dive_add_picture(cur_dive, pic);
-			} else {
-				/* At some point gas change events did not have any type. Thus we need to add
-				 * one on import, if we encounter the type one missing.
-				 */
-				if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
-					cur_event.type = cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
-
-				add_event(dc, cur_event.time.seconds,
-					  cur_event.type, cur_event.flags,
-					  cur_event.value, cur_event.name);
+	if (strcmp(cur_event.name, "surface") != 0) {			/* 123 is a magic event that we used for a while to encode images in dives */
+		if (cur_event.type == 123) {
+			struct picture *pic = alloc_picture();
+			pic->filename = strdup(cur_event.name);
+			/* theoretically this could fail - but we didn't support multi year offsets */
+			pic->offset.seconds = cur_event.time.seconds;
+			dive_add_picture(cur_dive, pic);
+		} else {
+			struct event *ev;
+			/* At some point gas change events did not have any type. Thus we need to add
+			 * one on import, if we encounter the type one missing.
+			 */
+			if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
+				cur_event.type = cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
+			ev = add_event(dc, cur_event.time.seconds,
+				       cur_event.type, cur_event.flags,
+				       cur_event.value, cur_event.name);
+			if (ev && event_is_gaschange(ev)) {
+				/* See try_to_fill_event() on why the filled-in index is one too big */
+				ev->gas.index = cur_event.gas.index-1;
+				if (cur_event.gas.mix.o2.permille || cur_event.gas.mix.he.permille)
+					ev->gas.mix = cur_event.gas.mix;
 			}
 		}
-		free((void *)cur_event.name);
 	}
-	cur_event.active = 0;
+	cur_event.deleted = 1;	/* No longer active */
 }
 
 static void picture_start(void)
@@ -1472,7 +1498,7 @@ static void entry(const char *name, char *buf)
 		try_to_match_autogroup(name, buf);
 		return;
 	}
-	if (cur_event.active) {
+	if (!cur_event.deleted) {
 		try_to_fill_event(name, buf);
 		return;
 	}
@@ -1722,71 +1748,71 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 		switch (atoi(data[2])) {
 		case 1:
 			/* 1 Mandatory Safety Stop */
-			cur_event.name = strdup("safety stop (mandatory)");
+			strcpy(cur_event.name, "safety stop (mandatory)");
 			break;
 		case 3:
 			/* 3 Deco */
 			/* What is Subsurface's term for going to
 				 * deco? */
-			cur_event.name = strdup("deco");
+			strcpy(cur_event.name, "deco");
 			break;
 		case 4:
 			/* 4 Ascent warning */
-			cur_event.name = strdup("ascent");
+			strcpy(cur_event.name, "ascent");
 			break;
 		case 5:
 			/* 5 Ceiling broken */
-			cur_event.name = strdup("violation");
+			strcpy(cur_event.name, "violation");
 			break;
 		case 6:
 			/* 6 Mandatory safety stop ceiling error */
-			cur_event.name = strdup("violation");
+			strcpy(cur_event.name, "violation");
 			break;
 		case 7:
 			/* 7 Below deco floor */
-			cur_event.name = strdup("below floor");
+			strcpy(cur_event.name, "below floor");
 			break;
 		case 8:
 			/* 8 Dive time alarm */
-			cur_event.name = strdup("divetime");
+			strcpy(cur_event.name, "divetime");
 			break;
 		case 9:
 			/* 9 Depth alarm */
-			cur_event.name = strdup("maxdepth");
+			strcpy(cur_event.name, "maxdepth");
 			break;
 		case 10:
 		/* 10 OLF 80% */
 		case 11:
 			/* 11 OLF 100% */
-			cur_event.name = strdup("OLF");
+			strcpy(cur_event.name, "OLF");
 			break;
 		case 12:
 			/* 12 High pO₂ */
-			cur_event.name = strdup("PO2");
+			strcpy(cur_event.name, "PO2");
 			break;
 		case 13:
 			/* 13 Air time */
-			cur_event.name = strdup("airtime");
+			strcpy(cur_event.name, "airtime");
 			break;
 		case 17:
 			/* 17 Ascent warning */
-			cur_event.name = strdup("ascent");
+			strcpy(cur_event.name, "ascent");
 			break;
 		case 18:
 			/* 18 Ceiling error */
-			cur_event.name = strdup("ceiling");
+			strcpy(cur_event.name, "ceiling");
 			break;
 		case 19:
 			/* 19 Surfaced */
-			cur_event.name = strdup("surface");
+			strcpy(cur_event.name, "surface");
 			break;
 		case 20:
 			/* 20 Deco */
-			cur_event.name = strdup("deco");
+			strcpy(cur_event.name, "deco");
 			break;
 		case 22:
 			/* 22 Mandatory safety stop violation */
-			cur_event.name = strdup("violation");
+			strcpy(cur_event.name, "violation");
 			break;
 		case 257:
 			/* 257 Dive active */
@@ -1796,14 +1822,14 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 		case 258:
 			/* 258 Bookmark */
 			if (data[3]) {
-				cur_event.name = strdup("heading");
+				strcpy(cur_event.name, "heading");
 				cur_event.value = atoi(data[3]);
 			} else {
-				cur_event.name = strdup("bookmark");
+				strcpy(cur_event.name, "bookmark");
 			}
 			break;
 		default:
-			cur_event.name = strdup("unknown");
+			strcpy(cur_event.name, "unknown");
 			cur_event.value = atoi(data[2]);
 			break;
 		}
@@ -1986,7 +2012,7 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 	if (data[0])
 		cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
-		cur_event.name = strdup("gaschange");
+		strcpy(cur_event.name, "gaschange");
 		cur_event.value = atof(data[1]) * 100;
 	}
 	event_end();

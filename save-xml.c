@@ -148,6 +148,18 @@ static void save_overview(struct membuffer *b, struct dive *dive)
 	show_utf8(b, dive->suit, "  <suit>", "</suit>\n", 0);
 }
 
+static void put_gasmix(struct membuffer *b, struct gasmix *mix)
+{
+	int o2 = mix->o2.permille;
+	int he = mix->he.permille;
+
+	if (o2) {
+		put_format(b, " o2='%u.%u%%'", FRACTION(o2, 10));
+		if (he)
+			put_format(b, " he='%u.%u%%'", FRACTION(he, 10));
+	}
+}
+
 static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
@@ -158,19 +170,13 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		cylinder_t *cylinder = dive->cylinder + i;
 		int volume = cylinder->type.size.mliter;
 		const char *description = cylinder->type.description;
-		int o2 = cylinder->gasmix.o2.permille;
-		int he = cylinder->gasmix.he.permille;
 
 		put_format(b, "  <cylinder");
 		if (volume)
 			put_milli(b, " size='", volume, " l'");
 		put_pressure(b, cylinder->type.workingpressure, " workpressure='", " bar'");
 		show_utf8(b, description, " description='", "'", 1);
-		if (o2) {
-			put_format(b, " o2='%u.%u%%'", FRACTION(o2, 10));
-			if (he)
-				put_format(b, " he='%u.%u%%'", FRACTION(he, 10));
-		}
+		put_gasmix(b, &cylinder->gasmix);
 		put_pressure(b, cylinder->start, " start='", " bar'");
 		put_pressure(b, cylinder->end, " end='", " bar'");
 		put_format(b, " />\n");
@@ -261,6 +267,13 @@ static void save_one_event(struct membuffer *b, struct event *ev)
 	show_index(b, ev->flags, "flags='", "'");
 	show_index(b, ev->value, "value='", "'");
 	show_utf8(b, ev->name, " name='", "'", 1);
+	if (event_is_gaschange(ev)) {
+		if (ev->gas.index >= 0) {
+			show_index(b, ev->gas.index, "cylinder='", "'");
+			put_gasmix(b, &ev->gas.mix);
+		} else if (!event_gasmix_redundant(ev))
+			put_gasmix(b, &ev->gas.mix);
+	}
 	put_format(b, " />\n");
 }
 

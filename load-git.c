@@ -529,6 +529,13 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 		event->value = val;
 	} else if (!strcmp(key, "name")) {
 		/* We get the name from the string handling */
+	} else if (!strcmp(key, "cylinder")) {
+		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
+		event->gas.index = 1+get_index(value);
+	} else if (!strcmp(key, "o2")) {
+		event->gas.mix.o2 = get_fraction(value);
+	} else if (!strcmp(key, "he")) {
+		event->gas.mix.he = get_fraction(value);
 	} else
 		report_error("Unexpected event key/value pair (%s/%s)", key, value);
 }
@@ -538,7 +545,7 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	int m, s = 0;
 	const char *name;
 	struct divecomputer *dc = _dc;
-	struct event event = { 0 };
+	struct event event = { 0 }, *ev;
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
@@ -557,7 +564,17 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	name = "";
 	if (str->len)
 		name = mb_cstring(str);
-	add_event(dc, event.time.seconds, event.type, event.flags, event.value, name);
+	ev = add_event(dc, event.time.seconds, event.type, event.flags, event.value, name);
+	if (ev && event_is_gaschange(ev)) {
+		/*
+		 * We subtract one here because "0" is "no index",
+		 * and the parsing will add one for actual cylinder
+		 * index data (see parse_event_keyvalue)
+		 */
+		ev->gas.index = event.gas.index-1;
+		if (event.gas.mix.o2.permille || event.gas.mix.he.permille)
+			ev->gas.mix = event.gas.mix;
+	}
 }
 
 static void parse_trip_date(char *line, struct membuffer *str, void *_trip)
