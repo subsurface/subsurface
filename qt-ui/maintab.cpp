@@ -1173,3 +1173,43 @@ void MainTab::removeSelectedPhotos()
 	QString fileUrl = photoIndex.data(Qt::DisplayPropertyRole).toString();
 	DivePictureModel::instance()->removePicture(fileUrl);
 }
+
+#define SHOW_SELECTIVE(_component) \
+	if (what._component)       \
+		ui._component->setText(displayed_dive._component);
+
+void MainTab::showAndTriggerEditSelective(struct dive_components what)
+{
+	// take the data in our copyPasteDive and apply it to selected dives
+	enableEdition();
+	SHOW_SELECTIVE(location);
+	SHOW_SELECTIVE(buddy);
+	SHOW_SELECTIVE(divemaster);
+	SHOW_SELECTIVE(suit);
+	if (what.notes) {
+		QString tmp(displayed_dive.notes);
+		if (tmp.contains("<table"))
+			ui.notes->setHtml(tmp);
+		else
+			ui.notes->setPlainText(tmp);
+	}
+	if (what.rating)
+		ui.rating->setCurrentStars(displayed_dive.rating);
+	if (what.visibility)
+		ui.visibility->setCurrentStars(displayed_dive.visibility);
+	if (what.gps)
+		updateGpsCoordinates(&displayed_dive);
+	if (what.tags) {
+		char buf[1024];
+		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
+		ui.tagWidget->setText(QString(buf));
+	}
+	if (what.cylinders) {
+		cylindersModel->updateDive();
+		cylindersModel->changed = true;
+	}
+	if (what.weights) {
+		weightModel->updateDive();
+		weightModel->changed = true;
+	}
+}

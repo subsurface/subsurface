@@ -49,6 +49,8 @@ public:
 	bool isEditing();
 	void updateCoordinatesText(qreal lat, qreal lon);
 	void nextInputField(QKeyEvent *event);
+	void showAndTriggerEditSelective(struct dive_components what);
+
 signals:
 	void addDiveFinished();
 
