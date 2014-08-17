@@ -843,12 +843,12 @@ function get_cylinder_HTML(cylinder)
 	var cEPressure = cylinder.EPressure;
 
 	if (cSPressure === "--") {
-		cSPressure = mbar_to_bar(items[dive_id].samples[0][2]) + " bar";
+		cSPressure = Math.round(mbar_to_bar(items[dive_id].samples[0][2])).toFixed(1) + " bar";
 	}
 
 	if (cEPressure === "--") {
 		var nonZeroCEPressure = lastNonZero();
-		cEPressure = mbar_to_bar(nonZeroCEPressure) + " bar";
+		cEPressure = Math.round(mbar_to_bar(nonZeroCEPressure)).toFixed(1) + " bar";
 	}
 
 	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' + '<td class="Cyl">' + cSPressure + '</td><td class="Cyl">' + cEPressure + '</td><td class="Cyl">' + cylinder.O2 + '</td></tr>';
@@ -1009,7 +1009,7 @@ function mm_to_meter(mm)
 
 function gram_to_km(gram)
 {
-	return gram / 1000;
+	return (gram / 1000).toFixed(1);
 }
 
 function ml_to_litre(ml)
