@@ -340,6 +340,11 @@ static bool next_file(int max)
 	return true;
 }
 
+/* try and do a quick decode - without trying to get to fancy in case the data
+ * straddles a block boundary...
+ * we are parsing something that looks like this:
+ * object_id{int{2{date{ts{2011-04-05T12:38:04{duration{float{12.000...
+ */
 static char *first_object_id_val(char *buf)
 {
 	char *object, *bufend;
@@ -349,7 +354,7 @@ static char *first_object_id_val(char *buf)
 	object = strstr(buf, "object_id");
 	if (object && object + 14 < bufend) {
 		/* get the value */
-		char tmp[10];
+		char tmp[36];
 		char *p = object + 14;
 		char *t = tmp;
 
@@ -362,6 +367,18 @@ static char *first_object_id_val(char *buf)
 		while (p < bufend && *p != '{' && t < tmp + 9)
 			*t++ = *p++;
 		if (*p == '{') {
+			/* found the object_id - let's quickly look for the date */
+			if (strncmp(p, "{date{ts{", 9) == 0 && strstr(p, "{duration{") != NULL) {
+				/* cool - that was easy */
+				*t++ = ',';
+				*t++ = ' ';
+				/* skip the 9 characters we just found and take the date, ignoring the seconds
+				 * and replace the silly 'T' in the middle with a space */
+				strncpy(t, p + 9, 16);
+				if (*(t + 10) == 'T')
+					*(t + 10) = ' ';
+				t += 16;
+			}
 			*t = '\0';
 			return strdup(tmp);
 		}
@@ -378,9 +395,9 @@ static void show_progress(char *buf, const char *what)
 	if (val) {
 /* let the user know what we are working on */
 #if UEMIS_DEBUG & 2
-		fprintf(debugfile, "reading %s %s\n", what, val);
+		fprintf(stderr, "reading %s %s %s\n", what, val, buf);
 #endif
-		uemis_info(translate("gettextFromC", "Reading %s %s"), what, val);
+		uemis_info(translate("gettextFromC", "%s %s"), what, val);
 		free(val);
 	}
 }
@@ -421,11 +438,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		answer_in_mbuf = true;
 		str_append_with_delim(sb, "");
 		if (!strcmp(request, "getDivelogs"))
-			what = translate("gettextFromC", "divelog entry id");
+			what = translate("gettextFromC", "divelog #");
 		else if (!strcmp(request, "getDivespot"))
-			what = translate("gettextFromC", "divespot data id");
+			what = translate("gettextFromC", "divespot #");
 		else if (!strcmp(request, "getDive"))
-			what = translate("gettextFromC", "more data dive id");
+			what = translate("gettextFromC", "details for #");
 	}
 	str_append_with_delim(sb, "");
 	file_length = strlen(sb);
