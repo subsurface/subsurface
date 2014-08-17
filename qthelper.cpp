@@ -284,19 +284,17 @@ picture_load_exit:
 	return;
 }
 
-extern "C" const char* get_file_name(const char *fileName)
+extern "C" char *get_file_name(const char *fileName)
 {
-	QFile file(fileName);
-	QFileInfo fileInfo(file.fileName());
-	QString filename(fileInfo.fileName());
-	return filename.toStdString().c_str();
+	QFileInfo fileInfo(fileName);
+	return strdup(fileInfo.fileName().toUtf8());
 }
 
 extern "C" void copy_image_and_overwrite(const char *cfileName, const char *cnewName)
 {
 	QString fileName = QString::fromUtf8(cfileName);
 	QString newName = QString::fromUtf8(cnewName);
-	newName += get_file_name(cfileName);
+	newName += QFileInfo(cfileName).fileName();
 	QFile file(newName);
 	if (file.exists())
 		file.remove();

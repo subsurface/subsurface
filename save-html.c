@@ -16,7 +16,9 @@ void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 	struct picture *pic = dive->picture_list;
 	put_string(b, "\"photos\":[");
 	while (pic) {
-		put_format(b, "{\"filename\":\"%s\"},", get_file_name(pic->filename));
+		char *fname = get_file_name(pic->filename);
+		put_format(b, "{\"filename\":\"%s\"},", fname);
+		free(fname);
 		copy_image_and_overwrite(pic->filename, photos_dir);
 		pic = pic->next;
 	}
