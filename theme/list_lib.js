@@ -1144,7 +1144,7 @@ function canvas_draw()
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
 							 showGridline : false,
-							 formatString : '%is'
+							 formatString : '%imin'
 						 },
 						 label:'Time (min)'
 					 },
