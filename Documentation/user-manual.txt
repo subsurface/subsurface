@@ -2003,8 +2003,8 @@ Export dialog (image *B* above).
 ** Subsurface Numbers: if this option is checked, the dive(s) are exported with the
 numbers associated with them in Subsurface, Otherwise the dive(s) will be numbered
 starting from 1.
-** Minimum Javascript: This will minimize the Javascript produced with the file,
-some functionality will be lost.
+** Export Yearly Statistics: if this option is checked, a yearly statistics table will
+be attached with the HTML exports.
 ** Export List only: a list of dives will only be exported and the detailed dive
 information will not be available.
 
