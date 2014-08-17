@@ -450,6 +450,6 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		COMPONENT_FROM_UI(suit);
 		COMPONENT_FROM_UI(cylinders);
 		COMPONENT_FROM_UI(weights);
-		selective_copy_dive(&displayed_dive, targetDive, *what);
+		selective_copy_dive(&displayed_dive, targetDive, *what, true);
 	}
 }

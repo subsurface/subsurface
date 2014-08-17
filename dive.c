@@ -426,9 +426,10 @@ struct dive *clone_dive(struct dive *s)
 		d->_component = copy_string(s->_component)
 
 // copy elements, depending on bits in what that are set
-void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what)
+void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
-	clear_dive(d);
+	if (clear)
+		clear_dive(d);
 	CONDITIONAL_COPY_STRING(location);
 	CONDITIONAL_COPY_STRING(notes);
 	CONDITIONAL_COPY_STRING(divemaster);
@@ -502,6 +503,7 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 			d->cylinder[i].type = s->cylinder[i].type;
 			d->cylinder[i].gasmix = s->cylinder[i].gasmix;
 			d->cylinder[i].depth = s->cylinder[i].depth;
+			d->cylinder[i].manually_added = true;
 		}
 	}
 }
