@@ -119,6 +119,7 @@ void GlobeGPS::contextMenuEvent(QContextMenuEvent *ev)
 	QMenu m;
 	QAction *a = m.addAction(tr("Edit selected dive locations"), this, SLOT(prepareForGetDiveCoordinates()));
 	a->setData(QVariant::fromValue<void *>(&m));
+	a->setEnabled(current_dive);
 	m.exec(ev->globalPos());
 }
 
