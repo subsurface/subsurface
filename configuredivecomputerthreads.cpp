@@ -289,8 +289,7 @@ void ReadSettingsThread::run()
 			if (rc == DC_STATUS_SUCCESS) {
 				int serial = fData[0] + (fData[1] << 8);
 				m_deviceDetails->setSerialNo(QString::number(serial));
-				int fw = (fData[2] << 8) + fData[3];
-				m_deviceDetails->setFirmwareVersion(QString::number(fw));
+				m_deviceDetails->setFirmwareVersion(QString::number(fData[2]) + "." + QString::number(fData[3]));
 				QByteArray ar((char *)fData + 4, 60);
 				m_deviceDetails->setCustomText(ar.trimmed());
 			}
