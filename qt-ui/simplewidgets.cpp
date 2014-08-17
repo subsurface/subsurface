@@ -428,6 +428,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 	UI_FROM_COMPONENT(visibility);
 	UI_FROM_COMPONENT(notes);
 	UI_FROM_COMPONENT(suit);
+	UI_FROM_COMPONENT(tags);
 	UI_FROM_COMPONENT(cylinders);
 	UI_FROM_COMPONENT(weights);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -448,6 +449,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		COMPONENT_FROM_UI(visibility);
 		COMPONENT_FROM_UI(notes);
 		COMPONENT_FROM_UI(suit);
+		COMPONENT_FROM_UI(tags);
 		COMPONENT_FROM_UI(cylinders);
 		COMPONENT_FROM_UI(weights);
 		selective_copy_dive(&displayed_dive, targetDive, *what, true);
