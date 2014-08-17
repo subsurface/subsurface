@@ -58,6 +58,7 @@ void ReadSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
+#if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
 			m_deviceDetails->setBrightness(0);
@@ -296,7 +297,7 @@ void ReadSettingsThread::run()
 
 			emit devicedetails(m_deviceDetails);
 			break;
-
+#endif	// divecomputer 0.5.0
 		}
 		dc_device_close(m_data->device);
 
@@ -328,6 +329,7 @@ void WriteSettingsThread::run()
 	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
+#if DC_VERSION_CHECK(0,5,0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
 			//write gas values
@@ -493,7 +495,7 @@ void WriteSettingsThread::run()
 			}
 
 			break;
-
+#endif	// divecomputer 0.5.0
 		}
 		dc_device_close(m_data->device);
 
@@ -522,10 +524,12 @@ void FirmwareUpdateThread::run()
 	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
+#if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
 			//hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
+#endif	// divecomputer 0.5.0
 		}
 		dc_device_close(m_data->device);
 
