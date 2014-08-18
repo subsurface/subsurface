@@ -612,6 +612,9 @@
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
                </widget>
               </item>
              </layout>
@@ -632,6 +635,9 @@
                <widget class="QDoubleSpinBox" name="pn2Threshold">
                 <property name="enabled">
                  <bool>true</bool>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
                 </property>
                </widget>
               </item>
@@ -654,6 +660,9 @@
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
                </widget>
               </item>
              </layout>
@@ -674,6 +683,9 @@
                <widget class="QDoubleSpinBox" name="maxpo2">
                 <property name="enabled">
                  <bool>true</bool>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
                 </property>
                </widget>
               </item>
