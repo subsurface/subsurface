@@ -402,6 +402,12 @@ void MainWindow::planCanceled()
 
 void MainWindow::planCreated()
 {
+	// get the new dive selected and assign a number if reasonable
+	dive_list()->unselectDives();
+	select_dive(dive_table.nr - 1);
+	dive_list()->selectDive(selected_dive);
+	set_dive_nr_for_current_dive();
+
 	showProfile();
 	refreshDisplay();
 }

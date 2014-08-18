@@ -37,6 +37,7 @@ extern void find_new_trip_start_time(dive_trip_t *trip);
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern bool is_trip_before_after(struct dive *dive, bool before);
+extern void set_dive_nr_for_current_dive();
 
 #ifdef DEBUG_TRIP
 extern void dump_selection(void);

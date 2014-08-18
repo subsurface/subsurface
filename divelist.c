@@ -1040,3 +1040,11 @@ void process_dives(bool is_imported, bool prefer_imported)
 			mark_divelist_changed(true);
 	}
 }
+
+void set_dive_nr_for_current_dive()
+{
+	if (dive_table.nr == 1)
+		current_dive->number = 1;
+	else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
+		current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
+}

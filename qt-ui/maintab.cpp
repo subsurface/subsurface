@@ -771,10 +771,7 @@ void MainTab::acceptChanges()
 	}
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		fixup_dive(current_dive);
-		if (dive_table.nr == 1)
-			current_dive->number = 1;
-		else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
-			current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
+		set_dive_nr_for_current_dive();
 		MainWindow::instance()->showProfile();
 		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
