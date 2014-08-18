@@ -4,6 +4,7 @@
 #include "profile.h"
 #include <QGradient>
 #include <QDebug>
+#include <QPen>
 
 TankItem::TankItem(QObject *parent) :
 	QGraphicsRectItem(),
@@ -50,6 +51,7 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 		rect->setBrush(trimix);
 	else
 		rect->setBrush(nitrox);
+	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
 	DiveTextItem *label = new DiveTextItem(rect);
 	label->setText(gasname(gas));
