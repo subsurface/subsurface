@@ -350,12 +350,12 @@ void DivePlannerWidget::heightChanged(const int height)
 	plannerModel->setSurfacePressure(pressure);
 }
 
-void PlannerSettingsWidget::bottomSacChanged(const int bottomSac)
+void PlannerSettingsWidget::bottomSacChanged(const double bottomSac)
 {
 	plannerModel->setBottomSac(bottomSac);
 }
 
-void PlannerSettingsWidget::decoSacChanged(const int decosac)
+void PlannerSettingsWidget::decoSacChanged(const double decosac)
 {
 	plannerModel->setDecoSac(decosac);
 }
@@ -408,16 +408,14 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
-	connect(ui.bottomSAC, SIGNAL(valueChanged(int)), this, SLOT(bottomSacChanged(int)));
-	connect(ui.decoStopSAC, SIGNAL(valueChanged(int)), this, SLOT(decoSacChanged(int)));
+	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), this, SLOT(bottomSacChanged(double)));
+	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), this, SLOT(decoSacChanged(double)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
-
-	ui.bottomSAC->setValue(rint(get_volume_units(prefs.bottomsac, NULL, NULL)));
-	ui.decoStopSAC->setValue(rint(get_volume_units(prefs.decosac, NULL, NULL)));
+	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 
@@ -455,6 +453,9 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 void PlannerSettingsWidget::settingsChanged()
 {
 	QString vs;
+	// don't recurse into setting the value from the ui when setting the ui from the value
+	ui.bottomSAC->blockSignals(true);
+	ui.decoStopSAC->blockSignals(true);
 	if (get_units()->length == units::FEET) {
 		vs.append(tr("ft/min"));
 		ui.lastStop->setText(tr("Last stop at 20ft"));
@@ -469,18 +470,24 @@ void PlannerSettingsWidget::settingsChanged()
 	if(get_units()->volume == units::CUFT) {
 		ui.bottomSAC->setSuffix(tr("cuft/min"));
 		ui.decoStopSAC->setSuffix(tr("cuft/min"));
-		ui.bottomSAC->setPrefix(".");
-		ui.decoStopSAC->setPrefix(".");
-		ui.bottomSAC->setValue(rint(ml_to_cuft(prefs.bottomsac) * 100.0));
-		ui.decoStopSAC->setValue(rint(ml_to_cuft(prefs.decosac) * 100.0));
+		ui.bottomSAC->setDecimals(2);
+		ui.bottomSAC->setSingleStep(0.1);
+		ui.decoStopSAC->setDecimals(2);
+		ui.decoStopSAC->setSingleStep(0.1);
+		ui.bottomSAC->setValue(ml_to_cuft(prefs.bottomsac));
+		ui.decoStopSAC->setValue(ml_to_cuft(prefs.decosac));
 	} else {
 		ui.bottomSAC->setSuffix(tr("ℓ/min"));
 		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
-		ui.bottomSAC->setPrefix("");
-		ui.decoStopSAC->setPrefix("");
-		ui.bottomSAC->setValue(rint((double) prefs.bottomsac / 1000.0));
-		ui.decoStopSAC->setValue(rint((double) prefs.decosac / 1000.0));
+		ui.bottomSAC->setDecimals(0);
+		ui.bottomSAC->setSingleStep(1);
+		ui.decoStopSAC->setDecimals(0);
+		ui.decoStopSAC->setSingleStep(1);
+		ui.bottomSAC->setValue((double) prefs.bottomsac / 1000.0);
+		ui.decoStopSAC->setValue((double) prefs.decosac / 1000.0);
 	}
+	ui.bottomSAC->blockSignals(false);
+	ui.decoStopSAC->blockSignals(false);
 	updateUnitsUI();
 	ui.ascRate75->setSuffix(vs);
 	ui.ascRate50->setSuffix(vs);
@@ -703,18 +710,15 @@ void DivePlannerPointsModel::emitDataChanged()
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
-void DivePlannerPointsModel::setBottomSac(int sac)
+void DivePlannerPointsModel::setBottomSac(double sac)
 {
-	volume_t newSAC;
-	newSAC.mliter = units_to_sac(sac);
-	diveplan.bottomsac = newSAC.mliter;
+	diveplan.bottomsac = units_to_sac(sac);
 	prefs.bottomsac = diveplan.bottomsac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
-void DivePlannerPointsModel::setDecoSac(int sac)
+void DivePlannerPointsModel::setDecoSac(double sac)
 {
-	volume_t newSAC;
 	diveplan.decosac = units_to_sac(sac);
 	prefs.decosac = diveplan.decosac;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));

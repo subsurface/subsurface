@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1078</width>
-        <height>418</height>
+        <width>1084</width>
+        <height>424</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -367,24 +367,10 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="bottomSAC">
-            <property name="suffix">
-             <string>ℓ/min</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_14">
             <property name="text">
              <string>Deco SAC</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="decoStopSAC">
-            <property name="suffix">
-             <string>ℓ/min</string>
             </property>
            </widget>
           </item>
@@ -446,6 +432,32 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="bottomSAC">
+            <property name="suffix">
+             <string>ℓ/min</string>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="decoStopSAC">
+            <property name="suffix">
+             <string>ℓ/min</string>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

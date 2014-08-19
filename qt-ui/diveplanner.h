@@ -70,8 +70,8 @@ slots:
 	void triggerGFLow();
 	void setSurfacePressure(int pressure);
 	int getSurfacePressure();
-	void setBottomSac(int sac);
-	void setDecoSac(int sac);
+	void setBottomSac(double sac);
+	void setDecoSac(double sac);
 	void setStartTime(const QTime &t);
 	void setStartDate(const QDate &date);
 	void setLastStop6m(bool value);
@@ -160,8 +160,8 @@ public
 slots:
 	void settingsChanged();
 	void atmPressureChanged(const QString &pressure);
-	void bottomSacChanged(const int bottomSac);
-	void decoSacChanged(const int decosac);
+	void bottomSacChanged(const double bottomSac);
+	void decoSacChanged(const double decosac);
 	void printDecoPlan();
 	void setAscRate75(int rate);
 	void setAscRate50(int rate);
