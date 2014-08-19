@@ -375,24 +375,6 @@ struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, 
 	return dp;
 }
 
-struct divedatapoint *get_nth_dp(struct diveplan *diveplan, int idx)
-{
-	struct divedatapoint **ldpp, *dp = diveplan->dp;
-	int i = 0;
-	struct gasmix air = { };
-	ldpp = &diveplan->dp;
-
-	while (dp && i++ < idx) {
-		ldpp = &dp->next;
-		dp = dp->next;
-	}
-	while (i++ <= idx) {
-		*ldpp = dp = create_dp(0, 0, air, 0);
-		ldpp = &((*ldpp)->next);
-	}
-	return dp;
-}
-
 void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 {
 	struct divedatapoint **lastdp = &diveplan->dp;
