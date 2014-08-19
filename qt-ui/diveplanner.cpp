@@ -1000,7 +1000,7 @@ void DivePlannerPointsModel::cancelPlan()
 		}
 	}
 	setPlanMode(NOTHING);
-	diveplan.dp = NULL;
+	free_dps(&diveplan);
 
 	emit planCanceled();
 }
@@ -1089,7 +1089,7 @@ void DivePlannerPointsModel::clear()
 void DivePlannerPointsModel::createTemporaryPlan()
 {
 	// Get the user-input and calculate the dive info
-	diveplan.dp = NULL;
+	free_dps(&diveplan);
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
 		divedatapoint p = at(i);
@@ -1137,17 +1137,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 
 void DivePlannerPointsModel::deleteTemporaryPlan()
 {
-	deleteTemporaryPlan(diveplan.dp);
-	diveplan.dp = NULL;
-}
-
-void DivePlannerPointsModel::deleteTemporaryPlan(struct divedatapoint *dp)
-{
-	if (!dp)
-		return;
-
-	deleteTemporaryPlan(dp->next);
-	free(dp);
+	free_dps(&diveplan);
 }
 
 void DivePlannerPointsModel::createPlan()
@@ -1166,7 +1156,7 @@ void DivePlannerPointsModel::createPlan()
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
-	diveplan.dp = NULL;
+	free_dps(&diveplan);
 	setPlanMode(NOTHING);
 	planCreated();
 }

@@ -101,7 +101,6 @@ private:
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
-	void deleteTemporaryPlan(struct divedatapoint *dp);
 	QVector<sample> backupSamples; // For editing added dives.
 	QVector<QPair<int, int> > oldGases;
 	QDateTime startTime;

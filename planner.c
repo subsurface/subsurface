@@ -348,13 +348,17 @@ gas_error_exit:
 	return;
 }
 
-void free_dps(struct divedatapoint *dp)
+void free_dps(struct diveplan *diveplan)
 {
+	if (!diveplan)
+		return;
+	struct divedatapoint *dp = diveplan->dp;
 	while (dp) {
 		struct divedatapoint *ndp = dp->next;
 		free(dp);
 		dp = ndp;
 	}
+	diveplan->dp = NULL;
 }
 
 struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, int po2)
