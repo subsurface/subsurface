@@ -1155,7 +1155,9 @@ void DivePlannerPointsModel::createPlan()
 
 	//TODO: C-based function here?
 	plan(&diveplan, &cache, isPlanner(), true);
-	record_dive(clone_dive(&displayed_dive));
+	if (!current_dive || displayed_dive.id != current_dive->id)
+		// we were planning a new dive, not re-planning an existing on
+		record_dive(clone_dive(&displayed_dive));
 	mark_divelist_changed(true);
 
 	// Remove and clean the diveplan, so we don't delete

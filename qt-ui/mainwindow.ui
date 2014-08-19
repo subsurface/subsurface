@@ -722,6 +722,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionAddDive"/>
     <addaction name="actionDivePlanner"/>
+    <addaction name="actionReplanDive"/>
     <addaction name="copy"/>
     <addaction name="paste"/>
     <addaction name="separator"/>
@@ -1072,6 +1073,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionConfigure_Dive_Computer">
    <property name="text">
     <string>Configure Dive Computer</string>
+   </property>
+  </action>
+  <action name="actionReplanDive">
+   <property name="text">
+    <string>Re-plan dive</string>
    </property>
   </action>
  </widget>

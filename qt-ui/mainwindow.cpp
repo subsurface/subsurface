@@ -404,11 +404,13 @@ void MainWindow::planCanceled()
 void MainWindow::planCreated()
 {
 	// get the new dive selected and assign a number if reasonable
-	dive_list()->unselectDives();
-	select_dive(dive_table.nr - 1);
-	dive_list()->selectDive(selected_dive);
-	set_dive_nr_for_current_dive();
-
+	if (displayed_dive.id == 0) {
+		// we might have added a new dive (so displayed_dive was cleared out by clone_dive()
+		dive_list()->unselectDives();
+		select_dive(dive_table.nr - 1);
+		dive_list()->selectDive(selected_dive);
+		set_dive_nr_for_current_dive();
+	}
 	showProfile();
 	refreshDisplay();
 }
@@ -448,9 +450,32 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	DivePlannerPointsModel::instance()->setupCylinders();
 }
 
+void MainWindow::on_actionReplanDive_triggered()
+{
+	if (!plannerStateClean())
+		return;
+	if (!current_dive || strcmp(current_dive->dc.model, "planned dive")) {
+		qDebug() << current_dive->dc.model;
+		return;
+	}
+	ui.ListWidget->endSearch();
+	// put us in PLAN mode
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+
+	ui.newProfile->setPlanState();
+	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
+	reset_cylinders(&displayed_dive, true);
+	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
+	ui.globePane->setCurrentIndex(1);
+#ifdef NO_MARBLE
+	ui.globePane->show();
+#endif
+}
+
 void MainWindow::on_actionDivePlanner_triggered()
 {
-	if(!plannerStateClean())
+	if (!plannerStateClean())
 		return;
 
 	ui.ListWidget->endSearch();
