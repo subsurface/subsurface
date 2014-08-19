@@ -146,6 +146,8 @@ slots:
 	void on_copy_triggered();
 	void on_paste_triggered();
 
+	void on_actionConfigure_Dive_Computer_triggered();
+
 protected:
 	void closeEvent(QCloseEvent *);
 

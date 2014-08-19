@@ -88,7 +88,11 @@ HEADERS = \
 	qt-ui/updatemanager.h \
 	qt-ui/divelogexportdialog.h \
 	qt-ui/usersurvey.h \
-	subsurfacesysinfo.h
+	subsurfacesysinfo.h \
+	qt-ui/configuredivecomputerdialog.h \
+	configuredivecomputer.h \
+	configuredivecomputerthreads.h \
+	devicedetails.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -168,7 +172,11 @@ SOURCES =  \
 	qt-ui/updatemanager.cpp \
 	qt-ui/divelogexportdialog.cpp \
 	qt-ui/usersurvey.cpp \
-	subsurfacesysinfo.cpp
+	subsurfacesysinfo.cpp \
+	qt-ui/configuredivecomputerdialog.cpp \
+	configuredivecomputer.cpp \
+	configuredivecomputerthreads.cpp \
+	devicedetails.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c
@@ -200,7 +208,8 @@ FORMS = \
 	qt-ui/divelogexportdialog.ui \
 	qt-ui/plannerSettings.ui \
 	qt-ui/usersurvey.ui \
-	qt-ui/divecomponentselection.ui
+	qt-ui/divecomponentselection.ui \
+	qt-ui/configuredivecomputerdialog.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui
