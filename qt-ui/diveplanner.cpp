@@ -106,6 +106,8 @@ void DivePlannerPointsModel::setupStartTime()
 
 void DivePlannerPointsModel::loadFromDive(dive *d)
 {
+	bool oldRec = recalc;
+	recalc = false;
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
 	struct gasmix gas;
@@ -118,6 +120,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
 		lasttime = s.time;
 	}
+	recalc = oldRec;
+	emitDataChanged();
 }
 
 // copy the tanks from the current dive, or the default cylinder
