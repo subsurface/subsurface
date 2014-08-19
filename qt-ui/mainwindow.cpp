@@ -460,6 +460,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	}
 	ui.ListWidget->endSearch();
 	// put us in PLAN mode
+	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
 	ui.newProfile->setPlanState();
