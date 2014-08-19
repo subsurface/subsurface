@@ -395,7 +395,10 @@ bool MainWindow::plannerStateClean()
 
 void MainWindow::planCanceled()
 {
+	// while planning we might have modified the displayed_dive
+	// let's refresh what's shown on the profile
 	showProfile();
+	ui.newProfile->replot();
 	refreshDisplay(false);
 	ui.newProfile->plotDive(get_dive(selected_dive));
 	DivePictureModel::instance()->updateDivePictures();
