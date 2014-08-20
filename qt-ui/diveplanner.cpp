@@ -587,7 +587,7 @@ bool DivePlannerPointsModel::recalcQ()
 
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 {
-	return COLUMNS;
+	return COLUMNS - 1; // don't show CCSETPOINT until we can plan CC dives
 }
 
 QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
