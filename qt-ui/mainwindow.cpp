@@ -468,6 +468,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
 	ui.newProfile->setPlanState();
+	ui.newProfile->clearHandlers();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);

@@ -870,7 +870,6 @@ void ProfileWidget2::setAddState()
 		return;
 
 	setProfileState();
-	clearHandlers();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	mouseFollowerHorizontal->setLine(timeAxis->line());
@@ -904,7 +903,6 @@ void ProfileWidget2::setPlanState()
 		return;
 
 	setProfileState();
-	clearHandlers();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	mouseFollowerHorizontal->setLine(timeAxis->line());
