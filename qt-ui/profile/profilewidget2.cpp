@@ -854,12 +854,23 @@ void ProfileWidget2::setProfileState()
 	mouseFollowerVertical->setVisible(false);
 }
 
+void ProfileWidget2::clearHandlers()
+{
+	if (handles.count()) {
+		foreach (DiveHandler *handle, handles) {
+			scene()->removeItem(handle);
+		}
+		handles.clear();
+	}
+}
+
 void ProfileWidget2::setAddState()
 {
 	if (currentState == ADD)
 		return;
 
 	setProfileState();
+	clearHandlers();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	mouseFollowerHorizontal->setLine(timeAxis->line());
@@ -893,6 +904,7 @@ void ProfileWidget2::setPlanState()
 		return;
 
 	setProfileState();
+	clearHandlers();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	mouseFollowerHorizontal->setLine(timeAxis->line());

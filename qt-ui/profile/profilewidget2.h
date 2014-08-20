@@ -175,6 +175,7 @@ private:
 	QList<DivePictureItem*> pictures;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
+	void clearHandlers();
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMaxTime;
