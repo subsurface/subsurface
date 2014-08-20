@@ -832,6 +832,7 @@ void DivePlannerPointsModel::setStartDate(const QDate &date)
 {
 	startTime.setDate(date);
 	diveplan.when = startTime.toTime_t();
+	displayed_dive.when = diveplan.when;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
@@ -839,6 +840,7 @@ void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	startTime.setTime(t);
 	diveplan.when = startTime.toTime_t();
+	displayed_dive.when = diveplan.when;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
