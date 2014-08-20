@@ -407,6 +407,7 @@ void MainWindow::planCanceled()
 void MainWindow::planCreated()
 {
 	// get the new dive selected and assign a number if reasonable
+	ui.newProfile->setProfileState();
 	if (displayed_dive.id == 0) {
 		// we might have added a new dive (so displayed_dive was cleared out by clone_dive()
 		dive_list()->unselectDives();
