@@ -247,22 +247,26 @@ TRANSLATIONS = \
 QTTRANSLATIONS = \
 	qt_da.qm \
 	qt_de.qm \
-	qtbase_de.qm \
 	qt_es.qm \
 	qt_fi.qm \
-	qtbase_fi.qm \
 	qt_fr.qm \
 	qt_he.qm \
 	qt_hu.qm \
-	qtbase_hu.qm \
 	qt_pl.qm \
 	qt_pt.qm \
 	qt_ru.qm \
-	qtbase_ru.qm \
 	qt_sk.qm \
-	qtbase_sk.qm \
 	qt_sv.qm \
 	qt_zh_TW.qm
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+QTRANSLATIONS += \
+	qtbase_de.qm \
+	qtbase_fi.qm \
+	qtbase_hu.qm \
+	qtbase_ru.qm \
+	qtbase_sk.qm
+}
 
 USERMANUALS = \
 	user-manual.html \
