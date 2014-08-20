@@ -477,6 +477,29 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
+
+          <xsl:if test="decostop|u:decostop|u1:decostop">
+            <xsl:attribute name="stoptime">
+              <xsl:call-template name="timeConvert">
+                <xsl:with-param name="timeSec">
+                  <xsl:value-of select="decostop/@duration|u:decostop/@duration|u1:decostop/@duration"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="stopdepth">
+              <xsl:value-of select="decostop/@decodepth|u:decostop/@decodepth|u1:decostop/@decodepth"/>
+            </xsl:attribute>
+            <xsl:attribute name="in_deco">
+              <xsl:choose>
+                <xsl:when test="decostop/@kind|u:decostop/@kind|u1:decostop/@kind != 'mandatory'">
+                  <xsl:value-of select="0"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="1"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </xsl:if>
         </sample>
       </xsl:for-each>
     </dive>
