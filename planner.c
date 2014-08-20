@@ -278,6 +278,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	sample->po2.mbar = dp->po2;
 	if (track_gas && cyl->type.workingpressure.mbar)
 		sample->cylinderpressure.mbar = cyl->end.mbar;
+	sample->manually_entered = true;
 	finish_sample(dc);
 	while (dp) {
 		struct gasmix gasmix = dp->gasmix;
@@ -316,6 +317,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			sample[-1].po2.mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
+			sample->manually_entered = dp->entered;
 			if (track_gas && cyl->type.workingpressure.mbar)
 				sample->cylinderpressure.mbar = cyl->sample_end.mbar;
 			finish_sample(dc);
@@ -329,6 +331,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample->po2.mbar = po2;
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
+		sample->manually_entered = dp->entered;
 		if (track_gas) {
 			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);

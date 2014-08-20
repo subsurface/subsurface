@@ -111,10 +111,16 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
 	struct gasmix gas;
+	free_dps(&diveplan);
 	diveplan.when = d->when;
+	// is this a "new" dive where we marked manually entered samples?
+	// if yes then the first sample should be marked
+	// if it is we only add the manually entered samples as waypoints to the diveplan
+	// otherwise we have to add all of them
+	bool hasMarkedSamples = d->dc.sample[0].manually_entered;
 	for (int i = 0; i < d->dc.samples - 1; i++) {
 		const sample &s = d->dc.sample[i];
-		if (s.time.seconds == 0)
+		if (s.time.seconds == 0 || (hasMarkedSamples && !s.manually_entered))
 			continue;
 		get_gas_at_time(d, &d->dc, lasttime, &gas);
 		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
