@@ -467,6 +467,16 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
+
+          <xsl:if test="nodecotime|u:nodecotime|u1:nodecotime &gt; 0">
+            <xsl:attribute name="ndl">
+              <xsl:call-template name="timeConvert">
+                <xsl:with-param name="timeSec">
+                  <xsl:value-of select="nodecotime|u:nodecotime|u1:nodecotime"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
         </sample>
       </xsl:for-each>
     </dive>
