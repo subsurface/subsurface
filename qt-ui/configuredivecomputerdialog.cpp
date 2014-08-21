@@ -404,7 +404,7 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 		} else {
 			QMessageBox::information(this, tr("Backup succeeded"),
 						 tr("Your settings have been saved to: %1")
-						 .arg(filename)
+						 .arg(backupPath)
 						 );
 		}
 	}
