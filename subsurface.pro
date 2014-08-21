@@ -352,3 +352,8 @@ include(subsurface-install.pri)
 # to build debuggable binaries on Windows, you need something like this
 #QMAKE_CFLAGS_RELEASE=$$QMAKE_CFLAGS_DEBUG -O0 -g
 #QMAKE_CXXFLAGS_RELEASE=$$QMAKE_CXXFLAGS_DEBUG -O0 -g
+
+QMAKE_CXXFLAGS += $$(CXXFLAGS)
+QMAKE_CFLAGS += $$(CFLAGS)
+QMAKE_LFLAGS += $$(LDFLAGS)
+QMAKE_CPPFLAGS += $$(CPPFLAGS)
