@@ -7,4 +7,5 @@ Icon=subsurface-icon
 Exec=subsurface
 Terminal=false
 Categories=Utility;
+Keywords=dive;log;divelog;divecomputer;dives;computer
 
