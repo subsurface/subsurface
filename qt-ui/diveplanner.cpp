@@ -985,6 +985,8 @@ divedatapoint DivePlannerPointsModel::at(int row)
 
 void DivePlannerPointsModel::remove(const QModelIndex &index)
 {
+	int i;
+	int rows = rowCount();
 	if (index.column() != REMOVE || rowCount() == 1)
 		return;
 
@@ -992,8 +994,14 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	if (!dp.entered)
 		return;
 
-	beginRemoveRows(QModelIndex(), index.row(), index.row());
-	divepoints.remove(index.row());
+	if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+		beginRemoveRows(QModelIndex(), index.row(), rows - 1);
+		for (i = rows - 1; i >= index.row(); i--)
+			divepoints.remove(i);
+	} else {
+		beginRemoveRows(QModelIndex(), index.row(), index.row());
+		divepoints.remove(index.row());
+	}
 	endRemoveRows();
 }
 
