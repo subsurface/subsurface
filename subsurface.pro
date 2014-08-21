@@ -16,6 +16,8 @@ DEPENDPATH += qt-ui
 mac: TARGET = Subsurface
 else: TARGET = subsurface
 
+QMAKE_CLEAN += $$TARGET
+
 VERSION = 4.2
 
 HEADERS = \
