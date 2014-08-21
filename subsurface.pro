@@ -250,7 +250,6 @@ QTTRANSLATIONS = \
 	qt_da.qm \
 	qt_de.qm \
 	qt_es.qm \
-	qt_fi.qm \
 	qt_fr.qm \
 	qt_he.qm \
 	qt_hu.qm \
@@ -264,6 +263,7 @@ QTTRANSLATIONS = \
 greaterThan(QT_MAJOR_VERSION, 4) {
 QTRANSLATIONS += \
 	qtbase_de.qm \
+	qt_fi.qm \
 	qtbase_fi.qm \
 	qtbase_hu.qm \
 	qtbase_ru.qm \
