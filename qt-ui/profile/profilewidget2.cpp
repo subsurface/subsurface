@@ -580,6 +580,7 @@ void ProfileWidget2::settingsChanged()
 		gasYAxis->setPos(itemPos.partialPressure.pos.on);
 		gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
 	}
+	tankItem->setVisible(prefs.tankbar);
 	if (prefs.zoomed_plot != isPlotZoomed) {
 		isPlotZoomed = prefs.zoomed_plot;
 		needReplot = true;
