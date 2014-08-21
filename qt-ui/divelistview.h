@@ -79,7 +79,7 @@ private:
 	void updateLastUsedImageDir(const QString &s);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
-	void addToTrip(bool);
+	void addToTrip(int delta);
 };
 
 #endif // DIVELISTVIEW_H

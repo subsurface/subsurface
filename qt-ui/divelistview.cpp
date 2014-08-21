@@ -572,43 +572,31 @@ void DiveListView::newTripAbove()
 
 void DiveListView::addToTripBelow()
 {
-	addToTrip(true);
+	addToTrip(1);
 }
 
 void DiveListView::addToTripAbove()
 {
-	addToTrip(false);
+	addToTrip(-1);
 }
 
-void DiveListView::addToTrip(bool below)
+void DiveListView::addToTrip(int delta)
 {
-	int delta = (currentOrder == Qt::AscendingOrder) ? -1 : +1;
+	// if there is a trip above / below, then it's a sibling at the same
+	// level as this dive. So let's take a look
 	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	QModelIndex t = contextMenuIndex.sibling(contextMenuIndex.row() + delta, 0);
+	dive_trip_t *trip = (dive_trip_t *)t.data(DiveTripModel::TRIP_ROLE).value<void *>();
+
+	if (!trip || !d)
+		// no dive, no trip? get me out of here
+		return;
+
 	rememberSelection();
 
-	//TODO: This part should be moved to C-code.
-	int idx;
-	dive_trip_t *trip = NULL;
-	struct dive *pd = NULL;
-	if (below) // Should we add to the trip below instead?
-		delta *= -1;
-
-	if (d->selected) { // we are right-clicking on one of possibly many selected dive(s)
-		// find the top selected dive, depending on the list order
-		if (delta == 1)
-			d = last_selected_dive();
-		else
-			d = first_selected_dive();
-	}
-	// now find the trip "above" in the dive list
-	if ((pd = get_dive(get_divenr(d) + delta)) != NULL) {
-		trip = pd->divetrip;
-	}
-	if (!pd || !trip)
-		// previous dive wasn't in a trip, so something is wrong
-		return;
 	add_dive_to_trip(d, trip);
 	if (d->selected) { // there are possibly other selected dives that we should add
+		int idx;
 		for_each_dive (idx, d) {
 			if (d->selected)
 				add_dive_to_trip(d, trip);
@@ -616,7 +604,7 @@ void DiveListView::addToTrip(bool below)
 	}
 	trip->expanded = 1;
 	mark_divelist_changed(true);
-	//This part stays at C++ code.
+
 	reload(currentLayout, false);
 	restoreSelection();
 	fixMessyQtModelBehaviour();
