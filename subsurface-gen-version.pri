@@ -23,4 +23,5 @@ exists(.git/HEAD): {
 	# This is probably a package
 	FULL_VERSION = $$VERSION
 	system(echo \\$${LITERAL_HASH}define VERSION_STRING \\\"$$VERSION\\\" > $$VERSION_FILE)
+	QMAKE_CLEAN += $$VERSION_FILE
 }
