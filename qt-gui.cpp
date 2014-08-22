@@ -215,7 +215,7 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? translate("gettextFromC", "m") : "");
 	} else {
 		double feet = mm_to_feet(mm);
-		return QString("%1%2").arg(feet, 0, 'f', showdecimal ? 1 : 0).arg(showunit ? translate("gettextFromC", "ft") : "");
+		return QString("%1%2").arg(feet, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "ft") : "");
 	}
 }
 
