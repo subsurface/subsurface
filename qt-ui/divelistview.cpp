@@ -73,6 +73,7 @@ DiveListView::~DiveListView()
 	settings.endGroup();
 }
 
+static int defaultWidth[] = { 70, 130, 100, 50, 50, 50, 50, 70, 50, 50, 70, 50, 50, 500 };
 void DiveListView::setupUi()
 {
 	QSettings settings;
@@ -90,7 +91,7 @@ void DiveListView::setupUi()
 		if (width.isValid())
 			setColumnWidth(i, width.toInt());
 		else
-			setColumnWidth(i, 100);
+			setColumnWidth(i, defaultWidth[i]);
 	}
 	settings.endGroup();
 	if (firstRun)
