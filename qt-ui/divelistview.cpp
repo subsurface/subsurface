@@ -189,13 +189,19 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 
 void DiveListView::unselectDives()
 {
+	// make sure we don't try to redraw the dives during the selection change
+	selected_dive = -1;
+	amount_selected = 0;
+	// clear the Qt selection
 	selectionModel()->clearSelection();
 	// clearSelection should emit selectionChanged() but sometimes that
 	// appears not to happen
+	// since we are unselecting all dives there is no need to use deselect_dive() - that
+	// would only cause pointless churn
 	int i;
 	struct dive *dive;
 	for_each_dive(i, dive) {
-		deselect_dive(i);
+		dive->selected = false;
 	}
 }
 

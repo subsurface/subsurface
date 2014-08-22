@@ -671,7 +671,10 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		// unselect everything as far as the UI is concerned - we'll fix that below
+		// unselect everything as far as the UI is concerned and select the new
+		// dive - we'll have to undo/redo this later after we resort the dive_table
+		// but we need the dive selected for the middle part of this function - this
+		// way we can reuse the code used for editing dives
 		MainWindow::instance()->dive_list()->unselectDives();
 		selected_dive = get_divenr(added_dive);
 		amount_selected = 1;
@@ -779,12 +782,12 @@ void MainTab::acceptChanges()
 	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
-		// now let's resort the dive list and make sure the newly added dive is still selected
-		selected_dive = -1;
-		amount_selected = 0;
+		// since a newly added dive could be in the middle of the dive_table we need
+		// to resort the dive list and make sure the newly added dive gets selected again
 		sort_table(&dive_table);
 		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
+		MainWindow::instance()->dive_list()->unselectDives();
 		MainWindow::instance()->dive_list()->selectDive(newDiveNr, true);
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
