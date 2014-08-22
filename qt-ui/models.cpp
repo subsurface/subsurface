@@ -1267,7 +1267,7 @@ QString DiveItem::displaySac() const
 		const char *unit;
 		int decimal;
 		double value = get_volume_units(dive->sac, &decimal, &unit);
-		return QString::number(value, 'f', decimal).append(unit).append(tr("/min"));
+		return QString::number(value, 'f', decimal);
 	}
 	return QString("");
 }
@@ -1318,19 +1318,19 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Date");
 			break;
 		case RATING:
-			ret = UTF8_BLACKSTAR;
+			ret = tr("Rating");
 			break;
 		case DEPTH:
-			ret = (get_units()->length == units::METERS) ? tr("m") : tr("ft");
+			ret = tr("Depth(%1)").arg((get_units()->length == units::METERS) ? tr("m") : tr("ft"));
 			break;
 		case DURATION:
-			ret = tr("Mins");
+			ret = tr("Duration");
 			break;
 		case TEMPERATURE:
-			ret = QString("%1%2").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			ret = tr("Temp(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 			break;
 		case TOTALWEIGHT:
-			ret = (get_units()->weight == units::KG) ? tr("kg") : tr("lbs");
+			ret = tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
 			break;
 		case SUIT:
 			ret = tr("Suit");
@@ -1342,7 +1342,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Gas");
 			break;
 		case SAC:
-			ret = tr("SAC");
+			const char *unit;
+			get_volume_units(0, NULL, &unit);
+			ret = tr("SAC(%1)").arg(QString(unit).append(tr("/min")));
 			break;
 		case OTU:
 			ret = tr("OTU");
