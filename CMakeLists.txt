@@ -108,6 +108,9 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	divecomputer.cpp
 	exif.cpp
 	subsurfacesysinfo.cpp
+	devicedetails.cpp
+	configuredivecomputer.cpp
+	configuredivecomputerthreads.cpp
 )
 
 #the interface, in C++
@@ -141,7 +144,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/divelogexportdialog.cpp
 	qt-ui/divepicturewidget.cpp
 	qt-ui/usersurvey.cpp
-
+	qt-ui/configuredivecomputerdialog.cpp
 )
 
 #the profile widget
@@ -158,6 +161,7 @@ SET(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/diveeventitem.cpp
 	qt-ui/profile/divetooltipitem.cpp
 	qt-ui/profile/ruleritem.cpp
+	qt-ui/profile/tankitem.cpp
 )
 
 #the main app.
