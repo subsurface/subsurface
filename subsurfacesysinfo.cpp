@@ -479,3 +479,11 @@ QString SubsurfaceSysInfo::osArch()
 #endif
 	return res;
 }
+
+extern "C" {
+bool isWin7Or8()
+{
+	QString os = SubsurfaceSysInfo::prettyOsName();
+	return os == "Windows 7" || os.startsWith("Windows 8");
+}
+}

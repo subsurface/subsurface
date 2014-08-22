@@ -79,9 +79,10 @@ extern struct preferences prefs, default_prefs;
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
-extern const char system_divelist_default_font[];
+extern const char *system_divelist_default_font;
 extern const int system_divelist_default_font_size;
 extern const char *system_default_filename();
+extern void subsurface_OS_pref_setup();
 
 #ifdef __cplusplus
 }

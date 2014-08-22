@@ -28,8 +28,14 @@ void subsurface_user_info(struct user_info *info)
 #define ICON_NAME "Subsurface.icns"
 #define UI_FONT "Arial 12"
 
-const char system_divelist_default_font[] = "Arial";
+const char mac_system_divelist_default_font[] = "Arial";
+const char *system_divelist_default_font = mac_system_divelist_default_font;
 const int system_divelist_default_font_size = 10;
+
+void subsurface_OS_pref_setup(void)
+{
+	// nothing
+}
 
 const char *system_default_filename(void)
 {

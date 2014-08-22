@@ -12,11 +12,21 @@
 #include <dirent.h>
 #include <zip.h>
 
-const char system_divelist_default_font[] = "Calibri";
-const int system_divelist_default_font_size = 8;
+const char non_standard_system_divelist_default_font[] = "Calibri";
+const char current_system_divelist_default_font[] = "Segoe UI";
+const char *system_divelist_default_font = non_standard_system_divelist_default_font;
+const int system_divelist_default_font_size = 9;
 
 void subsurface_user(struct user_info *user)
 { /* Encourage use of at least libgit2-0.20 */ }
+
+extern bool isWin7Or8();
+
+void subsurface_OS_pref_setup(void)
+{
+	if (isWin7Or8())
+		system_divelist_default_font = current_system_divelist_default_font;
+}
 
 const char *system_default_filename(void)
 {

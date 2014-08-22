@@ -12,8 +12,14 @@
 #include <unistd.h>
 #include <pwd.h>
 
-const char system_divelist_default_font[] = "Sans";
+const char linux_system_divelist_default_font[] = "Sans";
+const char *system_divelist_default_font = linux_system_divelist_default_font;
 const int system_divelist_default_font_size = 8;
+
+void subsurface_OS_pref_setup(void)
+{
+	// nothing
+}
 
 void subsurface_user_info(struct user_info *user)
 {
