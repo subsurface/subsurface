@@ -294,6 +294,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
 	} else {
+		ui.dateEdit->setEnabled(true);
 		if (amount_selected > 1) {
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
@@ -662,6 +663,7 @@ void MainTab::acceptChanges()
 	struct dive *d;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
+	ui.dateEdit->setEnabled(true);
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	on_location_editingFinished(); // complete coordinates *before* saving
@@ -847,6 +849,7 @@ void MainTab::rejectChanges()
 			return;
 		}
 	}
+	ui.dateEdit->setEnabled(true);
 	editMode = NONE;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
