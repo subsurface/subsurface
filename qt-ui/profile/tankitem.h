@@ -28,8 +28,9 @@ private:
 	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
 	int hDataColumn;
-	struct dive *dive;
-	struct plot_info *pInfo;
+	struct dive diveCylinderStore;
+	struct plot_data *pInfoEntry;
+	int pInfoNr;
 	qreal yPos, height;
 	QBrush air, nitrox, trimix;
 	QList<QGraphicsRectItem *> rects;

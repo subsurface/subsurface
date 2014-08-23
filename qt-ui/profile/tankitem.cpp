@@ -9,8 +9,8 @@
 TankItem::TankItem(QObject *parent) :
 	QGraphicsRectItem(),
 	dataModel(0),
-	dive(0),
-	pInfo(0)
+	pInfoEntry(0),
+	pInfoNr(0)
 {
 	height = 3;
 	QColor red(PERSIANRED1);
@@ -30,12 +30,19 @@ TankItem::TankItem(QObject *parent) :
 	trimixGradient.setColorAt(1.0, red);
 	trimix = trimixGradient;
 	air = blue;
+	memset(&diveCylinderStore, 0, sizeof(diveCylinderStore));
 }
 
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
 {
-	pInfo = plotInfo;
-	dive = d;
+	free(pInfoEntry);
+	// the plotInfo and dive structures passed in could become invalid before we stop using them,
+	// so copy the data that we need
+	int size = plotInfo->nr * sizeof(plotInfo->entry[0]);
+	pInfoEntry = (struct plot_data *)malloc(size);
+	pInfoNr = plotInfo->nr;
+	memcpy(pInfoEntry, plotInfo->entry, size);
+	copy_cylinders(d, &diveCylinderStore, false);
 	dataModel = model;
 	connect(dataModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)));
 	modelDataChanged();
@@ -65,7 +72,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 {
 	// We don't have enougth data to calculate things, quit.
 
-	if (!dive || !dataModel || !pInfo || !pInfo->nr)
+	if (!dataModel || !pInfoEntry || !pInfoNr)
 		return;
 
 	// remove the old rectangles
@@ -75,21 +82,21 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 	rects.clear();
 
 	// walk the list and figure out which tanks go where
-	struct plot_data *entry = pInfo->entry;
+	struct plot_data *entry = pInfoEntry;
 	int cylIdx = entry->cylinderindex;
 	int i = -1;
 	int startTime = 0;
-	struct gasmix *gas = &dive->cylinder[cylIdx].gasmix;
+	struct gasmix *gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
 	qreal width, left;
-	while (++i < pInfo->nr) {
-		entry = &pInfo->entry[i];
+	while (++i < pInfoNr) {
+		entry = &pInfoEntry[i];
 		if (entry->cylinderindex == cylIdx)
 			continue;
 		width = hAxis->posAtValue(entry->sec) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
 		createBar(left, width, gas);
 		cylIdx = entry->cylinderindex;
-		gas = &dive->cylinder[cylIdx].gasmix;
+		gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
 		startTime = entry->sec;
 	}
 	width = hAxis->posAtValue(entry->sec) - hAxis->posAtValue(startTime);
