@@ -941,9 +941,28 @@ function get_dive_HTML(dive)
 		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
 		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
 		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
-		  '</td></tr></table><div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
+		  '</td></tr></table>'+ put_divecomputer_details(dive.divecomputers) +'<div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
 	return res;
 };
+
+function put_divecomputer_details(dc)
+{
+	if (dc.length <= 0)
+		return;
+
+	var res = '';
+	res += '<p style="margin:10px;" class="words">Divecomputer:</p>';
+	for (var i =0; i < dc.length; i++) {
+		res += '<table>';
+		res += '<tr><td>Model : </td><td>' + dc[i].model + '</td></tr>';
+		if (dc[i].deviceid)
+			res += '<tr><td>Device ID : </td><td>' + dc[i].deviceid + '</td></tr>';
+		if (dc[i].diveid)
+			res += '<tr><td>Dive ID : </td><td>' + dc[i].diveid + '</td></tr>';
+		res += '</table><br>';
+	}
+	return res;
+}
 
 /**
 *Return HTML dive status data

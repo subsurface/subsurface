@@ -25,6 +25,22 @@ void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 	put_string(b, "],");
 }
 
+void write_divecomputers(struct membuffer *b, struct dive *dive)
+{
+	put_string(b, "\"divecomputers\":[");
+	struct divecomputer *dc;
+	for_each_dc(dive, dc) {
+		put_format(b, "{");
+		write_attribute(b, "model", dc->model);
+		if (dc->deviceid)
+			put_format(b, "\"deviceid\":\"%08x\",", dc->deviceid);
+		if (dc->diveid)
+			put_format(b, "\"diveid\":\"%08x\",", dc->diveid);
+		put_format(b, "},");
+	}
+	put_string(b, "],");
+}
+
 void write_dive_status(struct membuffer *b, struct dive *dive)
 {
 	put_format(b, "\"sac\":\"%d\",", dive->sac);
@@ -245,6 +261,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 		put_HTML_bookmarks(b, dive);
 		write_dive_status(b, dive);
 		save_photos(b, photos_dir, dive);
+		write_divecomputers(b, dive);
 	}
 	put_string(b, "},\n");
 	(*dive_no)++;
