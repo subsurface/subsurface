@@ -169,7 +169,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="728"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation>Ajouter la(les) plongée(s) au voyage immédiatement au dessous</translation>
+        <translation>Ajouter la (les) plongée(s) au voyage immédiatement ci-dessous</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="732"/>
@@ -1164,7 +1164,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="275"/>
         <source>Time</source>
-        <translation>Temps</translation>
+        <translation>Heure</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="397"/>
@@ -1339,7 +1339,7 @@ mélangés à partir de l&apos;air avec:
     <message>
         <location filename="../qt-ui/maintab.cpp" line="826"/>
         <source>You are about to discard your changes.</source>
-        <translation>Vous allez perdre les modifications non enregistrées</translation>
+        <translation>Vous perdrez les modifications non enregistrées.</translation>
     </message>
 </context>
 <context>
@@ -1352,7 +1352,7 @@ mélangés à partir de l&apos;air avec:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation>basculer l&apos;affichage du graphique pHe</translation>
+        <translation>Basculer l&apos;affichage du graphique pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
@@ -1407,7 +1407,7 @@ mélangés à partir de l&apos;air avec:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation>Activer l&apos;affichage des image en miniature</translation>
+        <translation>Activer l&apos;affichage des images en miniature</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1500,7 +1500,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="777"/>
         <source>Sa&amp;ve as</source>
-        <translation>Sau&amp;vegarder sous</translation>
+        <translation>Enre&amp;gistrer sous</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="780"/>
@@ -1590,7 +1590,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1012"/>
         <source>&amp;Check for updates</source>
-        <translation>$Vérifier les mises à jour</translation>
+        <translation>&amp;Vérifier les mises à jour</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1017"/>
@@ -1709,12 +1709,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation>&amp;Éditer le nom de l&apos;ordinateur de plongée</translation>
+        <translation>&amp;Éditer les noms des ordinateurs de plongée</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>
         <source>&amp;Add dive</source>
-        <translation>$Ajouter une plongée</translation>
+        <translation>&amp;Ajouter une plongée</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="869"/>
@@ -2397,7 +2397,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation>Impression $tableau</translation>
+        <translation>Impression &amp;tableau</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>

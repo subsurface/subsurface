@@ -1973,7 +1973,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="198"/>
         <source>Use default</source>
-        <translation type="unfinished"/>
+        <translation>Brug standard</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="208"/>
@@ -2336,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface kan ikke finde installerede printere på denne computer</translation>
     </message>
 </context>
 <context>
@@ -2828,12 +2828,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/about.ui" line="80"/>
         <source>&amp;License</source>
-        <translation>%Licens</translation>
+        <translation>&amp;Licens</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.ui" line="87"/>
         <source>&amp;Website</source>
-        <translation>%Hjemmeside</translation>
+        <translation>&amp;Hjemmeside</translation>
     </message>
     <message>
         <location filename="../qt-ui/about.ui" line="94"/>
