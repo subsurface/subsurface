@@ -740,7 +740,7 @@ void ProfileWidget2::setEmptyState()
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
 	currentState = EMPTY;
-	MainWindow::instance()->setToolButtonsEnabled(false);
+	MainWindow::instance()->setEnabledToolbar(false);
 
 	fixBackgroundPos();
 	background->setVisible(true);
@@ -788,7 +788,7 @@ void ProfileWidget2::setProfileState()
 	MainWindow::instance()->enableDcShortcuts();
 
 	currentState = PROFILE;
-	MainWindow::instance()->setToolButtonsEnabled(true);
+	MainWindow::instance()->setEnabledToolbar(true);
 	toolTipItem->readPos();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 

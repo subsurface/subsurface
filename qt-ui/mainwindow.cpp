@@ -20,6 +20,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QShortcut>
+#include <QToolBar>
 #include <fcntl.h>
 #include "divelistview.h"
 #include "starwidget.h"
@@ -69,6 +70,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
 	ui.setupUi(this);
+	profileToolbarActions << ui.profCalcAllTissues << ui.profCalcCeiling << ui.profDcCeiling << ui.profEad <<
+		    ui.profHR << ui.profIncrement3m << ui.profMod << ui.profNdl_tts << ui.profNdl_tts <<
+		    ui.profPhe << ui.profPn2 << ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled <<
+		    ui.profTogglePicture << ui.profTankbar;
 	setWindowIcon(QIcon(":subsurface-icon"));
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
@@ -117,6 +122,19 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
+
+	QToolBar *toolBar = new QToolBar();
+	Q_FOREACH(QAction *a, profileToolbarActions)
+		toolBar->addAction(a);
+	toolBar->setOrientation(Qt::Vertical);
+
+	// since I'm adding the toolBar by hand, because designer
+	// has no concept of "toolbar" for a non-mainwindow widget (...)
+	// I need to take the current item that's in the toolbar Position
+	// and reposition it alongside the grid layout.
+	QLayoutItem *p = ui.gridLayout->takeAt(0);
+	ui.gridLayout->addWidget(toolBar,0,0);
+	ui.gridLayout->addItem(p, 0, 1);
 }
 
 MainWindow::~MainWindow()
@@ -226,26 +244,6 @@ void MainWindow::cleanUpEmpty()
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableDcShortcuts();
-}
-
-void MainWindow::setToolButtonsEnabled(bool enabled)
-{
-	ui.profPO2->setEnabled(enabled);
-	ui.profPn2->setEnabled(enabled);
-	ui.profPhe->setEnabled(enabled);
-	ui.profDcCeiling->setEnabled(enabled);
-	ui.profCalcCeiling->setEnabled(enabled);
-	ui.profCalcAllTissues->setEnabled(enabled);
-	ui.profIncrement3m->setEnabled(enabled);
-	ui.profMod->setEnabled(enabled);
-	ui.profEad->setEnabled(enabled);
-	ui.profNdl_tts->setEnabled(enabled);
-	ui.profSAC->setEnabled(enabled);
-	ui.profRuler->setEnabled(enabled);
-	ui.profScaled->setEnabled(enabled);
-	ui.profHR->setEnabled(enabled);
-	ui.profTogglePicture->setEnabled(enabled);
-	ui.profTankbar->setEnabled(enabled);
 }
 
 bool MainWindow::okToClose(QString message)
@@ -1291,7 +1289,7 @@ void MainWindow::editCurrentDive()
 	PreferencesDialog::instance()->emitSettingsChanged();
 
 #define TOOLBOX_PREF_PROFILE(METHOD, INTERNAL_PREFS, QT_PREFS)    \
-void MainWindow::on_ ## METHOD ##_clicked(bool triggered) \
+void MainWindow::on_ ## METHOD ##_triggered(bool triggered) \
 { \
     prefs. INTERNAL_PREFS = triggered;\
 	PREF_PROFILE(QT_PREFS); \
@@ -1338,12 +1336,7 @@ void MainWindow::on_actionConfigure_Dive_Computer_triggered()
 
 void MainWindow::setEnabledToolbar(bool arg1)
 {
-	 QList<QToolButton*> toolBar;
-	 toolBar << ui.profCalcAllTissues << ui.profCalcCeiling << ui.profDcCeiling << ui.profEad <<
-		    ui.profHR << ui.profIncrement3m << ui.profMod << ui.profNdl_tts << ui.profNdl_tts <<
-		    ui.profPhe << ui.profPn2 << ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled <<
-		    ui.profTogglePicture << ui.profTankbar;
-	Q_FOREACH(QToolButton *b, toolBar)
+	Q_FOREACH(QAction *b, profileToolbarActions)
 		b->setEnabled(arg1);
 }
 

@@ -127,22 +127,22 @@ slots:
 	void on_actionImportDiveLog_triggered();
 
 	/* TODO: Move those slots below to it's own class */
-	void on_profCalcAllTissues_clicked(bool triggered);
-	void on_profCalcCeiling_clicked(bool triggered);
-	void on_profDcCeiling_clicked(bool triggered);
-	void on_profEad_clicked(bool triggered);
-	void on_profIncrement3m_clicked(bool triggered);
-	void on_profMod_clicked(bool triggered);
-	void on_profNdl_tts_clicked(bool triggered);
-	void on_profPO2_clicked(bool triggered);
-	void on_profPhe_clicked(bool triggered);
-	void on_profPn2_clicked(bool triggered);
-	void on_profHR_clicked(bool triggered);
-	void on_profRuler_clicked(bool triggered);
-	void on_profSAC_clicked(bool triggered);
-	void on_profScaled_clicked(bool triggered);
-	void on_profTogglePicture_clicked(bool triggered);
-	void on_profTankbar_clicked(bool triggered);
+	void on_profCalcAllTissues_triggered(bool triggered);
+	void on_profCalcCeiling_triggered(bool triggered);
+	void on_profDcCeiling_triggered(bool triggered);
+	void on_profEad_triggered(bool triggered);
+	void on_profIncrement3m_triggered(bool triggered);
+	void on_profMod_triggered(bool triggered);
+	void on_profNdl_tts_triggered(bool triggered);
+	void on_profPO2_triggered(bool triggered);
+	void on_profPhe_triggered(bool triggered);
+	void on_profPn2_triggered(bool triggered);
+	void on_profHR_triggered(bool triggered);
+	void on_profRuler_triggered(bool triggered);
+	void on_profSAC_triggered(bool triggered);
+	void on_profScaled_triggered(bool triggered);
+	void on_profTogglePicture_triggered(bool triggered);
+	void on_profTankbar_triggered(bool triggered);
 	void on_actionExport_triggered();
 	void on_copy_triggered();
 	void on_paste_triggered();
@@ -192,6 +192,7 @@ private:
 	QDialog *survey;
 	struct dive copyPasteDive;
 	struct dive_components what;
+	QList<QAction*> profileToolbarActions;
 };
 
 #endif // MAINWINDOW_H
