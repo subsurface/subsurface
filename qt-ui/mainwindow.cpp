@@ -903,10 +903,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
+#ifndef NO_USERMANUAL
 	if (helpView && helpView->isVisible()) {
 		helpView->close();
 		helpView->deleteLater();
 	}
+#endif
 
 	if (yearlyStats && yearlyStats->isVisible()) {
 		yearlyStats->close();
