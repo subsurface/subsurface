@@ -11,8 +11,14 @@
 
 extern "C" {
 
-const char system_divelist_default_font[] = "Roboto";
+const char android_system_divelist_default_font[] = "Roboto";
+const char *system_divelist_default_font = android_system_divelist_default_font;
 const int system_divelist_default_font_size = 8;
+
+void subsurface_OS_pref_setup(void)
+{
+	// nothing
+}
 
 const char *system_default_filename(void)
 {
