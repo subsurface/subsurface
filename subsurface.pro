@@ -38,6 +38,7 @@ HEADERS = \
 	worldmap-options.h \
 	pref.h \
 	profile.h \
+	gaspressures.h \
 	qt-gui.h \
 	qthelper.h \
 	units.h \
@@ -117,6 +118,7 @@ SOURCES =  \
 	parse-xml.c \
 	planner.c \
 	profile.c \
+	gaspressures.c \
 	divecomputer.cpp \
 	worldmap-save.c \
 	save-html.c \
