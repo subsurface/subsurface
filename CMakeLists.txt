@@ -164,6 +164,14 @@ SET(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/tankitem.cpp
 )
 
+#the yearly statistics widget.
+SET(SUBSURFACE_STATISTICS_LIB_SRCS
+	qt-ui/statistics/statisticswidget.cpp
+	qt-ui/statistics/yearstatistics.cpp
+	qt-ui/statistics/statisticsbar.cpp
+	qt-ui/statistics/monthstatistics.cpp
+)
+
 #the main app.
 SET(SUBSURFACE_APP
 	main.cpp
@@ -182,6 +190,7 @@ ENDIF()
 
 ADD_LIBRARY(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
 ADD_LIBRARY(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
+ADD_LIBRARY(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
 ADD_LIBRARY(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
 ADD_LIBRARY(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
 ADD_EXECUTABLE(subsurface ${SUBSURFACE_APP} ${SUBSURFACE_QRC_HRDS} )
@@ -190,6 +199,7 @@ target_link_libraries( subsurface
   subsurface_generated_ui
   subsurface_interface
   subsurface_profile
+  subsurface_statistics
   subsurface_corelib
   ${QT_LIBRARIES}
   ${MARBLE_LIBRARIES}
@@ -198,6 +208,7 @@ target_link_libraries( subsurface
   -lzip
 )
 
+ADD_DEPENDENCIES(subsurface_statistics subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_profile subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_interface subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_generated_ui version)

@@ -95,7 +95,11 @@ HEADERS = \
 	qt-ui/configuredivecomputerdialog.h \
 	configuredivecomputer.h \
 	configuredivecomputerthreads.h \
-	devicedetails.h
+	devicedetails.h \
+	qt-ui/statistics/monthstatistics.h \
+	qt-ui/statistics/statisticswidget.h \
+	qt-ui/statistics/statisticsbar.h \
+	qt-ui/statistics/yearstatistics.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -180,7 +184,11 @@ SOURCES =  \
 	qt-ui/configuredivecomputerdialog.cpp \
 	configuredivecomputer.cpp \
 	configuredivecomputerthreads.cpp \
-	devicedetails.cpp
+	devicedetails.cpp \
+	qt-ui/statistics/statisticswidget.cpp \
+	qt-ui/statistics/yearstatistics.cpp \
+	qt-ui/statistics/statisticsbar.cpp \
+	qt-ui/statistics/monthstatistics.cpp
 
 android: SOURCES += android.cpp
 else: linux*: SOURCES += linux.c
