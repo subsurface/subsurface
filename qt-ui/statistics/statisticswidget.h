@@ -11,6 +11,8 @@ class YearlyStatisticsWidget : public QGraphicsView {
 public:
 	YearlyStatisticsWidget(QWidget *parent = 0);
 	void setModel(YearlyStatisticsModel *m);
+protected:
+	virtual void resizeEvent(QResizeEvent *event);
 public slots:
 	void modelRowsInserted(const QModelIndex& index, int first, int last);
 	void modelRowsRemoved(const QModelIndex& index, int first, int last);

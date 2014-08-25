@@ -34,3 +34,9 @@ void YearlyStatisticsWidget::modelDataChanged(const QModelIndex &topLeft, const 
 {
 	// stub
 }
+
+void YearlyStatisticsWidget::resizeEvent(QResizeEvent *event)
+{
+	QGraphicsView::resizeEvent(event);
+	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
+}
