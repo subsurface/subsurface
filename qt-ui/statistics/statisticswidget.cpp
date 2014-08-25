@@ -26,7 +26,10 @@ void YearlyStatisticsWidget::modelRowsInserted(const QModelIndex &index, int fir
 
 void YearlyStatisticsWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex& bottomRight)
 {
-	// stub
+	Q_UNUSED(topLeft);
+	Q_UNUSED(bottomRight);
+	scene()->clear();
+	modelRowsInserted(QModelIndex(),0,m_model->rowCount()-1);
 }
 
 void YearlyStatisticsWidget::resizeEvent(QResizeEvent *event)
