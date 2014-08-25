@@ -545,12 +545,13 @@ void MainWindow::on_actionAutoGroup_triggered()
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
 	QDialog d;
-	YearlyStatisticsWidget *s = new YearlyStatisticsWidget();
+	YearlyStatisticsWidget *newView = new YearlyStatisticsWidget();
 	QVBoxLayout *l = new QVBoxLayout(&d);
-	l->addWidget(s);
+	l->addWidget(newView);
 	YearlyStatisticsModel *m = new YearlyStatisticsModel();
 	QTreeView *view = new QTreeView();
 	view->setModel(m);
+	newView->setModel(m);
 	l->addWidget(view);
 	d.exec();
 }
