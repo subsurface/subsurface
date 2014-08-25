@@ -9,23 +9,18 @@
  *  populate_pressure_information() -> calc_pressure_time()
  *                                  -> fill_missing_tank_pressures() -> fill_missing_segment_pressures()
  *                                                                   -> get_pr_interpolate_data()
+ *
+ *  The pr_track_t related functions below implement a linked list that is used by
+ *  the majority of the functions below. The linked list covers a part of the dive profile
+ *  for which there are no cylinder pressure data. Each element in the linked list
+ *  represents a segment between two consecutive points on the dive profile.
+ *  pr_track_t is defined in gaspressures.h
  */
-
-#include "gettext.h"
-#include <limits.h>
-#include <string.h>
 
 #include "dive.h"
 #include "display.h"
-#include "divelist.h"
-
 #include "profile.h"
 #include "gaspressures.h"
-#include "deco.h"
-#include "libdivecomputer/parser.h"
-#include "libdivecomputer/version.h"
-#include "membuffer.h"
-
 
 static pr_track_t *pr_track_alloc(int start, int t_start)
 {
@@ -102,7 +97,7 @@ static void dump_pr_track(pr_track_t **track_pr)
  * segments according to how big of a time_pressure area
  * they have.
  */
-void fill_missing_segment_pressures(pr_track_t *list)
+static void fill_missing_segment_pressures(pr_track_t *list)
 {
 	while (list) {
 		int start = list->start, end;
@@ -160,7 +155,7 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 #endif
 
 
-struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur)
+static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur)
 {
 	struct pr_interpolate_struct interpolate;
 	int i;
@@ -211,7 +206,7 @@ struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct
 	return interpolate;
 }
 
-void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr)
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr)
 {
 	int cyl, i;
 	struct plot_data *entry;
@@ -284,7 +279,7 @@ void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_tra
  * scale pressures, so it ends up being a unitless scaling
  * factor.
  */
-inline int calc_pressure_time(struct dive *dive, struct divecomputer *dc, struct plot_data *a, struct plot_data *b)
+static inline int calc_pressure_time(struct dive *dive, struct divecomputer *dc, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth) / 2;
