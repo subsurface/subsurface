@@ -11,7 +11,7 @@ void YearlyStatisticsWidget::setModel(YearlyStatisticsModel *m)
 	m_model = m;
 	connect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
 			this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
-	connect(m, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+	connect(m, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
 			this, SLOT(modelRowsRemoved(QModelIndex,int,int)));
 	connect(m, SIGNAL(rowsInserted(QModelIndex,int,int)),
 			this, SLOT(modelRowsInserted(QModelIndex,int,int)));
