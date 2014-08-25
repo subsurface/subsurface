@@ -169,8 +169,6 @@ private:
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	UserManual *helpView;
-	QTreeView *yearlyStats;
-	QAbstractItemModel *yearlyStatsModel;
 	CurrentState state;
 	QString filter();
 	static MainWindow *m_Instance;

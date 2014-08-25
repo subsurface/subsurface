@@ -43,6 +43,7 @@
 #include "updatemanager.h"
 #include "planner.h"
 #include "configuredivecomputerdialog.h"
+#include "statistics/statisticswidget.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
@@ -61,8 +62,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),
 	actionPreviousDive(0),
 	helpView(0),
-	yearlyStats(0),
-	yearlyStatsModel(0),
 	state(VIEWALL),
 	updateManager(0),
 	survey(0)
@@ -174,12 +173,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	ui.ListWidget->setEnabled(true);
 	ui.ListWidget->setFocus();
 	WSInfoModel::instance()->updateInfo();
-	// refresh the yearly stats if the window has an instance
-	if (yearlyStats) {
-		delete yearlyStatsModel;
-		yearlyStatsModel = new YearlyStatisticsModel();
-		yearlyStats->setModel(yearlyStatsModel);
-	}
 	if (amount_selected == 0)
 		cleanUpEmpty();
 }
@@ -551,28 +544,11 @@ void MainWindow::on_actionAutoGroup_triggered()
 
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
-	// create the widget only once
-	if (!yearlyStats) {
-		yearlyStats = new QTreeView();
-		yearlyStats->setWindowModality(Qt::NonModal);
-		yearlyStats->setMinimumWidth(600);
-		yearlyStats->setWindowTitle(tr("Yearly statistics"));
-		yearlyStats->setWindowIcon(QIcon(":subsurface-icon"));
-		QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), yearlyStats, 0, 0, Qt::WidgetShortcut);
-		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
-		closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), yearlyStats, 0, 0, Qt::WidgetShortcut);
-		connect(closeKey, SIGNAL(activated()), yearlyStats, SLOT(close()));
-		QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), yearlyStats, 0, 0, Qt::WidgetShortcut);
-		connect(quitKey, SIGNAL(activated()), this, SLOT(close()));
-	}
-	/* problem here is that without more MainWindow variables or a separate YearlyStatistics
-	 * class the user needs to close the window/widget and re-open it for it to update.
-	 */
-	delete yearlyStatsModel;
-	yearlyStatsModel = new YearlyStatisticsModel();
-	yearlyStats->setModel(yearlyStatsModel);
-	yearlyStats->raise();
-	yearlyStats->show();
+	QDialog d;
+	YearlyStatisticsWidget *s = new YearlyStatisticsWidget();
+	QVBoxLayout *l = new QVBoxLayout(&d);
+	l->addWidget(s);
+	d.exec();
 }
 
 #define BEHAVIOR QList<int>()
@@ -909,12 +885,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		helpView->deleteLater();
 	}
 #endif
-
-	if (yearlyStats && yearlyStats->isVisible()) {
-		yearlyStats->close();
-		yearlyStats->deleteLater();
-		yearlyStatsModel->deleteLater();
-	}
 
 	if (unsaved_changes() && (askSaveChanges() == false)) {
 		event->ignore();
