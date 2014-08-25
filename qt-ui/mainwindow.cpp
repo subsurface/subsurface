@@ -548,6 +548,10 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	YearlyStatisticsWidget *s = new YearlyStatisticsWidget();
 	QVBoxLayout *l = new QVBoxLayout(&d);
 	l->addWidget(s);
+	YearlyStatisticsModel *m = new YearlyStatisticsModel();
+	QTreeView *view = new QTreeView();
+	view->setModel(m);
+	l->addWidget(view);
 	d.exec();
 }
 
