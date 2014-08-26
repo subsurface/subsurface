@@ -61,9 +61,18 @@ void UpdateManager::requestReceived()
 			msgText = tr("A new version of subsurface is available.<br/>Click on:<br/><a href=\"%1\">%1</a><br/> to download it.")
 					.arg(responseBody);
 		} else if (responseBody.startsWith("Latest version")) {
-			msgText = tr("<b>A new version of subsurface is available.</b><br/><br/>%1")
+			// the webservice backend doesn't localize - but it's easy enough to just replace the
+			// strings that it is likely to send back
+			responseBody.replace("Latest version is ", "");
+			responseBody.replace(". please check with your OS vendor for updates.", "");
+			msgText = QString("<b>") + tr("A new version of subsurface is available.") + QString("</b><br/><br/>") +
+					tr("Latest version is %1, please check with your OS vendor for updates.")
 					.arg(responseBody);
 		} else {
+			// the webservice backend doesn't localize - but it's easy enough to just replace the
+			// strings that it is likely to send back
+			if (responseBody.contains("Newest release version is "))
+				responseBody.replace("Newest release version is ", tr("Newest release version is "));
 			msgText = tr("There was an error while trying to check for updates.<br/><br/>%1").arg(responseBody);
 			msgbox.setIcon(QMessageBox::Warning);
 		}
