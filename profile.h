@@ -20,9 +20,12 @@ struct plot_data {
 	unsigned int in_deco : 1;
 	int cylinderindex;
 	int sec;
-	/* pressure[0] is sensor pressure
+	/* pressure[0] is sensor pressure [when CCR, the pressure of the oxygen cylinder]
 	 * pressure[1] is interpolated pressure */
 	int pressure[2];
+	/* diluentpressure[0] is diluent pressure [CCR]
+	 * diluentpressure[1] is interpolated diluent pressure [CCR] */
+	int diluentpressure[2];
 	int temperature;
 	/* Depth info */
 	int depth;
@@ -36,6 +39,7 @@ struct plot_data {
 	int smoothed;
 	int sac;
 	double po2, pn2, phe;
+	double o2setpoint, o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
 	double mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
@@ -81,10 +85,13 @@ int get_maxtime(struct plot_info *pi);
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
 
+#define DILUENT_CYLINDER 1
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
+#define DILUENT_PRESSURE(_entry) (_entry)->diluentpressure[SENSOR_PR]
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
+#define INTERPOLATED_DILUENT_PRESSURE(_entry) (_entry)->diluentpressure[INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
 #define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */
 
