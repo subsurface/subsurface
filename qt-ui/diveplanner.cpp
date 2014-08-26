@@ -392,6 +392,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
 	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
 	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
+	plannerModel->getDiveplan().bottomsac = prefs.bottomsac;
+	plannerModel->getDiveplan().decosac = prefs.decosac;
 	s.endGroup();
 
 	updateUnitsUI();
