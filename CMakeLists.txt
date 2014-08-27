@@ -89,6 +89,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	parse-xml.c
 	planner.c
 	profile.c
+	gaspressures.c
 	worldmap-save.c
 	save-git.c
 	save-xml.c
