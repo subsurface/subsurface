@@ -794,12 +794,8 @@ void MainWindow::readSettings()
 {
 	static bool firstRun = true;
 	QSettings s;
-	s.beginGroup("Display");
-	QFont defaultFont = QFont(default_prefs.divelist_font);
-	defaultFont = s.value("divelist_font", defaultFont).value<QFont>();
-	defaultFont.setPointSizeF(s.value("font_size", default_prefs.font_size).toFloat());
-	qApp->setFont(defaultFont);
-	s.endGroup();
+	// the static object for preferences already reads in the settings
+	// and sets up the font, so just get what we need for the toolbox and other widgets here
 
 	s.beginGroup("TecDetails");
 	TOOLBOX_PREF_BUTTON(calcalltissues, calcalltissues, profCalcAllTissues);
