@@ -2,26 +2,32 @@
 #include "gettext.h"
 #include "stdio.h"
 
-void write_attribute(struct membuffer *b, const char *att_name, const char *value)
+void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
 {
 	if (!value)
 		value = "--";
 	put_format(b, "\"%s\":\"", att_name);
 	put_HTML_quoted(b, value);
-	put_string(b, "\",");
+	put_format(b, "\"%s", separator);
 }
 
 void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 {
 	struct picture *pic = dive->picture_list;
-	put_string(b, "\"photos\":[");
-	while (pic) {
+
+	if (!pic)
+		return;
+
+	char *separator = "\"photos\":[";
+	do {
+		put_string(b, separator);
+		separator = ", ";
 		char *fname = get_file_name(pic->filename);
-		put_format(b, "{\"filename\":\"%s\"},", fname);
+		put_format(b, "{\"filename\":\"%s\"}", fname);
 		free(fname);
 		copy_image_and_overwrite(pic->filename, photos_dir);
 		pic = pic->next;
-	}
+	} while (pic);
 	put_string(b, "],");
 }
 
@@ -29,14 +35,21 @@ void write_divecomputers(struct membuffer *b, struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
 	struct divecomputer *dc;
-	for_each_dc(dive, dc) {
+	char *separator = "";
+	for_each_dc (dive, dc) {
+		put_string(b, separator);
+		separator = ", ";
 		put_format(b, "{");
-		write_attribute(b, "model", dc->model);
+		write_attribute(b, "model", dc->model, ", ");
 		if (dc->deviceid)
-			put_format(b, "\"deviceid\":\"%08x\",", dc->deviceid);
+			put_format(b, "\"deviceid\":\"%08x\", ", dc->deviceid);
+		else
+			put_string(b, "\"deviceid\":\"--\", ");
 		if (dc->diveid)
-			put_format(b, "\"diveid\":\"%08x\",", dc->diveid);
-		put_format(b, "},");
+			put_format(b, "\"diveid\":\"%08x\" ", dc->diveid);
+		else
+			put_string(b, "\"diveid\":\"--\" ");
+		put_format(b, "}");
 	}
 	put_string(b, "],");
 }
@@ -51,14 +64,20 @@ void write_dive_status(struct membuffer *b, struct dive *dive)
 void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 {
 	struct event *ev = dive->dc.events;
-	put_string(b, "\"events\":[");
-	while (ev) {
+
+	if (!ev)
+		return;
+
+	char *separator = "\"events\":[";
+	do {
+		put_string(b, separator);
+		separator = ", ";
 		put_format(b, "{\"name\":\"%s\",", ev->name);
 		put_format(b, "\"value\":\"%d\",", ev->value);
 		put_format(b, "\"type\":\"%d\",", ev->type);
-		put_format(b, "\"time\":\"%d\",},", ev->time.seconds);
+		put_format(b, "\"time\":\"%d\"}", ev->time.seconds);
 		ev = ev->next;
-	}
+	} while (ev);
 	put_string(b, "],");
 }
 
@@ -70,15 +89,19 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 
 	put_string(b, "\"Weights\":[");
 
+	char *separator = "";
+
 	for (i = 0; i < nr; i++) {
 		weightsystem_t *ws = dive->weightsystem + i;
 		int grams = ws->weight.grams;
 		const char *description = ws->description;
 
+		put_string(b, separator);
+		separator = ", ";
 		put_string(b, "{");
 		put_format(b, "\"weight\":\"%d\",", grams);
-		write_attribute(b, "description", description);
-		put_string(b, "},");
+		write_attribute(b, "description", description, " ");
+		put_string(b, "}");
 	}
 	put_string(b, "],");
 }
@@ -86,40 +109,42 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
-
+	char *separator = "\"Cylinders\":[";
 	nr = nr_cylinders(dive);
 
-	put_string(b, "\"Cylinders\":[");
+	if (!nr)
+		put_string(b, separator);
 
 	for (i = 0; i < nr; i++) {
 		cylinder_t *cylinder = dive->cylinder + i;
-		put_string(b, "{");
-		write_attribute(b, "Type", cylinder->type.description);
+		put_format(b, "%s{", separator);
+		separator = ", ";
+		write_attribute(b, "Type", cylinder->type.description, ", ");
 		if (cylinder->type.size.mliter) {
-			put_milli(b, "\"Size\":\"", cylinder->type.size.mliter, " l\",");
+			put_milli(b, "\"Size\":\"", cylinder->type.size.mliter, " l\", ");
 		} else {
-			write_attribute(b, "Size", "--");
+			write_attribute(b, "Size", "--", ", ");
 		}
-		put_pressure(b, cylinder->type.workingpressure, "\"WPressure\":\"", " bar\",");
+		put_pressure(b, cylinder->type.workingpressure, "\"WPressure\":\"", " bar\", ");
 
 		if (cylinder->start.mbar) {
-			put_milli(b, "\"SPressure\":\"", cylinder->start.mbar, " bar\",");
+			put_milli(b, "\"SPressure\":\"", cylinder->start.mbar, " bar\", ");
 		} else {
-			write_attribute(b, "SPressure", "--");
+			write_attribute(b, "SPressure", "--", ", ");
 		}
 
 		if (cylinder->end.mbar) {
-			put_milli(b, "\"EPressure\":\"", cylinder->end.mbar, " bar\",");
+			put_milli(b, "\"EPressure\":\"", cylinder->end.mbar, " bar\", ");
 		} else {
-			write_attribute(b, "EPressure", "--");
+			write_attribute(b, "EPressure", "--", ", ");
 		}
 
 		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"O2\":\"%u.%u%%\"", FRACTION(cylinder->gasmix.o2.permille, 10));
 		} else {
-			write_attribute(b, "O2", "Air");
+			write_attribute(b, "O2", "Air", "");
 		}
-		put_string(b, "},");
+		put_string(b, "}");
 	}
 
 	put_string(b, "],");
@@ -131,10 +156,15 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	int i;
 	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
 	put_format(b, "\"duration\":%d,", dive->dc.duration.seconds);
-	put_string(b, "\"samples\":\[");
 	struct sample *s = dive->dc.sample;
+
+	if (!dive->dc.samples)
+		return;
+
+	char *separator = "\"samples\":[";
 	for (i = 0; i < dive->dc.samples; i++) {
-		put_format(b, "[%d,%d,%d,%d],", s->time.seconds, s->depth.mm, s->cylinderpressure.mbar, s->temperature.mkelvin);
+		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->cylinderpressure.mbar, s->temperature.mkelvin);
+		separator = ", ";
 		s++;
 	}
 	put_string(b, "],");
@@ -151,7 +181,7 @@ void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
 
 	put_string(b, "\"coordinates\":{");
 	put_degrees(b, latitude, "\"lat\":\"", "\",");
-	put_degrees(b, longitude, "\"lon\":\"", "\",");
+	put_degrees(b, longitude, "\"lon\":\"", "\"");
 	put_string(b, "},");
 }
 
@@ -215,16 +245,17 @@ void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre,
 void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
-	put_string(b, "[");
 	struct tag_entry *tag = dive->tag_list;
 
 	if (!tag)
-		put_string(b, "\"--\",");
+		put_string(b, "[\"--\"");
 
+	char *separator = "[";
 	while (tag) {
-		put_string(b, "\"");
+		put_format(b, "%s\"", separator);
+		separator = ", ";
 		put_HTML_quoted(b, tag->tag->name);
-		put_string(b, "\",");
+		put_string(b, "\"");
 		tag = tag->next;
 	}
 	put_string(b, "]");
@@ -239,7 +270,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	put_format(b, "\"subsurface_number\":%d,", dive->number);
 	put_HTML_date(b, dive, "\"date\":\"", "\",");
 	put_HTML_time(b, dive, "\"time\":\"", "\",");
-	write_attribute(b, "location", dive->location);
+	write_attribute(b, "location", dive->location, ", ");
 	put_HTML_coordinates(b, dive);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
@@ -247,13 +278,12 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 		   FRACTION(dive->duration.seconds, 60));
 	put_string(b, "\"temperature\":{");
 	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
-	put_HTML_watertemp(b, dive, "\"water\":\"", "\",");
+	put_HTML_watertemp(b, dive, "\"water\":\"", "\"");
 	put_string(b, "	},");
-	write_attribute(b, "buddy", dive->buddy);
-	write_attribute(b, "divemaster", dive->divemaster);
-	write_attribute(b, "suit", dive->suit);
+	write_attribute(b, "buddy", dive->buddy, ", ");
+	write_attribute(b, "divemaster", dive->divemaster, ", ");
+	write_attribute(b, "suit", dive->suit, ", ");
 	put_HTML_tags(b, dive, "\"tags\":", ",");
-	put_HTML_notes(b, dive, "\"notes\":\"", "\",");
 	if (!list_only) {
 		put_cylinder_HTML(b, dive);
 		put_weightsystem_HTML(b, dive);
@@ -263,14 +293,16 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 		save_photos(b, photos_dir, dive);
 		write_divecomputers(b, dive);
 	}
-	put_string(b, "},\n");
+	put_HTML_notes(b, dive, "\"notes\":\"", "\"");
+	put_string(b, "}\n");
 	(*dive_no)++;
 }
 
-void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only)
+void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	int i;
 	struct dive *dive;
+	char *separator = "";
 	bool found_sel_dive = 0;
 
 	for_each_dive (i, dive) {
@@ -278,21 +310,25 @@ void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const 
 		// or we are in exporting all dives mode.
 		if (!dive->divetrip && (dive->selected || !selected_only)) {
 			if (!found_sel_dive) {
-				put_format(b, "{");
+				put_format(b, "%c{", *sep);
+				(*sep) = ',';
 				put_format(b, "\"name\":\"Other\",");
 				put_format(b, "\"dives\":[");
 				found_sel_dive = 1;
 			}
+			put_string(b, separator);
+			separator = ", ";
 			write_one_dive(b, dive, photos_dir, dive_no, list_only);
 		}
 	}
 	if (found_sel_dive)
-		put_format(b, "]},\n\n");
+		put_format(b, "]}\n\n");
 }
 
-void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only)
+void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	struct dive *dive;
+	char *separator = "";
 	bool found_sel_dive = 0;
 
 	for (dive = trip->dives; dive != NULL; dive = dive->next) {
@@ -302,16 +338,19 @@ void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selec
 		// save trip if found at least one selected dive.
 		if (!found_sel_dive) {
 			found_sel_dive = 1;
-			put_format(b, "{");
+			put_format(b, "%c {", *sep);
+			(*sep) = ',';
 			put_format(b, "\"name\":\"%s\",", trip->location);
 			put_format(b, "\"dives\":[");
 		}
+		put_string(b, separator);
+		separator = ", ";
 		write_one_dive(b, dive, photos_dir, dive_no, list_only);
 	}
 
 	// close the trip object if contain dives.
 	if (found_sel_dive)
-		put_format(b, "]},\n\n");
+		put_format(b, "]}\n\n");
 }
 
 void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
@@ -319,6 +358,8 @@ void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only
 	int i, dive_no = 0;
 	struct dive *dive;
 	dive_trip_t *trip;
+	char sep_ = ' ';
+	char *sep = &sep_;
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
@@ -332,11 +373,11 @@ void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only
 
 		/* We haven't seen this trip before - save it and all dives */
 		trip->index = 1;
-		write_trip(b, trip, &dive_no, selected_only, photos_dir, list_only);
+		write_trip(b, trip, &dive_no, selected_only, photos_dir, list_only, sep);
 	}
 
 	/*Save all remaining trips into Others*/
-	write_no_trip(b, &dive_no, selected_only, photos_dir, list_only);
+	write_no_trip(b, &dive_no, selected_only, photos_dir, list_only, sep);
 }
 
 void export_list(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
@@ -373,66 +414,66 @@ void export_translation(const char *file_name)
 	put_format(b, "translate={");
 
 	//Dive list view
-	write_attribute(b, "Number", translate("gettextFromC", "Number"));
-	write_attribute(b, "Date", translate("gettextFromC", "Date"));
-	write_attribute(b, "Time", translate("gettextFromC", "Time"));
-	write_attribute(b, "Location", translate("gettextFromC", "Location"));
-	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air Temp"));
-	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water Temp"));
-	write_attribute(b, "dives", translate("gettextFromC", "dives"));
-	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand All"));
-	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse All"));
-	write_attribute(b, "trips", translate("gettextFromC", "trips"));
-	write_attribute(b, "Statistics", translate("gettextFromC", "Statistics"));
-	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced Search"));
+	write_attribute(b, "Number", translate("gettextFromC", "Number"), ", ");
+	write_attribute(b, "Date", translate("gettextFromC", "Date"), ", ");
+	write_attribute(b, "Time", translate("gettextFromC", "Time"), ", ");
+	write_attribute(b, "Location", translate("gettextFromC", "Location"), ", ");
+	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air Temp"), ", ");
+	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water Temp"), ", ");
+	write_attribute(b, "dives", translate("gettextFromC", "dives"), ", ");
+	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand All"), ", ");
+	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse All"), ", ");
+	write_attribute(b, "trips", translate("gettextFromC", "trips"), ", ");
+	write_attribute(b, "Statistics", translate("gettextFromC", "Statistics"), ", ");
+	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced Search"), ", ");
 
 	//Dive expanded view
-	write_attribute(b, "Rating", translate("gettextFromC", "Rating"));
-	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"));
-	write_attribute(b, "Duration", translate("gettextFromC", "Duration"));
-	write_attribute(b, "DiveMaster", translate("gettextFromC", "DiveMaster"));
-	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"));
-	write_attribute(b, "Suit", translate("gettextFromC", "Suit"));
-	write_attribute(b, "Tags", translate("gettextFromC", "Tags"));
-	write_attribute(b, "Notes", translate("gettextFromC", "Notes"));
-	write_attribute(b, "Show_more_details", translate("gettextFromC", "Show more details"));
+	write_attribute(b, "Rating", translate("gettextFromC", "Rating"), ", ");
+	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"), ", ");
+	write_attribute(b, "Duration", translate("gettextFromC", "Duration"), ", ");
+	write_attribute(b, "DiveMaster", translate("gettextFromC", "DiveMaster"), ", ");
+	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"), ", ");
+	write_attribute(b, "Suit", translate("gettextFromC", "Suit"), ", ");
+	write_attribute(b, "Tags", translate("gettextFromC", "Tags"), ", ");
+	write_attribute(b, "Notes", translate("gettextFromC", "Notes"), ", ");
+	write_attribute(b, "Show_more_details", translate("gettextFromC", "Show more details"), ", ");
 
 	//Yearly statistics view
-	write_attribute(b, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"));
-	write_attribute(b, "Year", translate("gettextFromC", "Year"));
-	write_attribute(b, "Total_Time", translate("gettextFromC", "Total Time"));
-	write_attribute(b, "Average_Time", translate("gettextFromC", "Average Time"));
-	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest Time"));
-	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest Time"));
-	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average Depth"));
-	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min Depth"));
-	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max Depth"));
-	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"));
-	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min SAC"));
-	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max SAC"));
-	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average Temp"));
-	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min Temp"));
-	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max Temp"));
-	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to List"));
+	write_attribute(b, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"), ", ");
+	write_attribute(b, "Year", translate("gettextFromC", "Year"), ", ");
+	write_attribute(b, "Total_Time", translate("gettextFromC", "Total Time"), ", ");
+	write_attribute(b, "Average_Time", translate("gettextFromC", "Average Time"), ", ");
+	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest Time"), ", ");
+	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest Time"), ", ");
+	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average Depth"), ", ");
+	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min Depth"), ", ");
+	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max Depth"), ", ");
+	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"), ", ");
+	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min SAC"), ", ");
+	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max SAC"), ", ");
+	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average Temp"), ", ");
+	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min Temp"), ", ");
+	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max Temp"), ", ");
+	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to List"), ", ");
 
 	//dive detailed view
-	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive No."));
-	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"));
-	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"));
-	write_attribute(b, "Dive_equipments", translate("gettextFromC", "Dive equipments"));
-	write_attribute(b, "Type", translate("gettextFromC", "Type"));
-	write_attribute(b, "Size", translate("gettextFromC", "Size"));
-	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work Pressure"));
-	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start Pressure"));
-	write_attribute(b, "End_Pressure", translate("gettextFromC", "End Pressure"));
-	write_attribute(b, "Gas", translate("gettextFromC", "Gas"));
-	write_attribute(b, "Weight", translate("gettextFromC", "Weight"));
-	write_attribute(b, "Type", translate("gettextFromC", "Type"));
-	write_attribute(b, "Events", translate("gettextFromC", "Events"));
-	write_attribute(b, "Name", translate("gettextFromC", "Name"));
-	write_attribute(b, "Value", translate("gettextFromC", "Value"));
-	write_attribute(b, "Coordinates", translate("gettextFromC", "Coordinates"));
-	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive Status"));
+	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive No."), ", ");
+	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"), ", ");
+	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"), ", ");
+	write_attribute(b, "Dive_equipments", translate("gettextFromC", "Dive equipments"), ", ");
+	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
+	write_attribute(b, "Size", translate("gettextFromC", "Size"), ", ");
+	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work Pressure"), ", ");
+	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start Pressure"), ", ");
+	write_attribute(b, "End_Pressure", translate("gettextFromC", "End Pressure"), ", ");
+	write_attribute(b, "Gas", translate("gettextFromC", "Gas"), ", ");
+	write_attribute(b, "Weight", translate("gettextFromC", "Weight"), ", ");
+	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
+	write_attribute(b, "Events", translate("gettextFromC", "Events"), ", ");
+	write_attribute(b, "Name", translate("gettextFromC", "Name"), ", ");
+	write_attribute(b, "Value", translate("gettextFromC", "Value"), ", ");
+	write_attribute(b, "Coordinates", translate("gettextFromC", "Coordinates"), ", ");
+	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive Status"), " ");
 
 	put_format(b, "}");
 

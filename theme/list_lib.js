@@ -897,7 +897,7 @@ function get_bookmark_HTML(event)
 */
 function get_bookmarks_HTML(dive)
 {
-	if (dive.events <= 0)
+	if (!dive.events || dive.events <= 0)
 		return "";
 	var result = "";
 	result += '<h2 class="det_hed">' + translate.Events + '</h2><table><tr><td class="words">' + translate.Name + '</td><td class="words">' + translate.Time + '</td><td class="words">' + translate.Value + '</td></tr>';
@@ -976,7 +976,7 @@ function get_status_HTML(dive)
 
 function get_dive_photos(dive)
 {
-	if (dive.photos.length <= 0) {
+	if (!dive.photos || dive.photos.length <= 0) {
 		document.getElementById("divephotos").style.display = 'none';
 		return "";
 	}
@@ -1092,11 +1092,13 @@ function canvas_draw()
 			}
 		}
 	}
-	for (var i = 0; i < items[dive_id].events.length; i++) {
-		eventsData.push([
-			items[dive_id].events[i].time / 60,
-			0
-		]);
+	if (items[dive_id].events) {
+		for (var i = 0; i < items[dive_id].events.length; i++) {
+			eventsData.push([
+				items[dive_id].events[i].time / 60,
+				0
+			]);
+		}
 	}
 	if (plot1) {
 		$('chart1').unbind();
