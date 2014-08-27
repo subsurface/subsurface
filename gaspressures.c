@@ -155,11 +155,12 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 #endif
 
 
-static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur)
-{
+static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur, int diluent_flag)
+{	// cur = index to pi->entry corresponding to t_end of segment; diluent_flag=1 indicates diluent cylinder
 	struct pr_interpolate_struct interpolate;
 	int i;
 	struct plot_data *entry;
+	int pressure;
 
 	interpolate.start = segment->start;
 	interpolate.end = segment->end;
@@ -168,6 +169,11 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 
 	for (i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
+		if (diluent_flag)
+			pressure = DILUENT_PRESSURE(entry);
+		else
+			pressure = SENSOR_PRESSURE(entry);
+
 		if (entry->sec < segment->t_start)
 			continue;
 		if (entry->sec >= segment->t_end) {
@@ -177,13 +183,13 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 		if (entry->sec == segment->t_start) {
 			interpolate.acc_pressure_time = 0;
 			interpolate.pressure_time = 0;
-			if (SENSOR_PRESSURE(entry))
-				interpolate.start = SENSOR_PRESSURE(entry);
+			if (pressure)
+				interpolate.start = pressure;
 			continue;
 		}
 		if (i < cur) {
-			if (SENSOR_PRESSURE(entry)) {
-				interpolate.start = SENSOR_PRESSURE(entry);
+			if (pressure) {
+				interpolate.start = pressure;
 				interpolate.acc_pressure_time = 0;
 				interpolate.pressure_time = 0;
 			} else {
@@ -198,8 +204,8 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 			continue;
 		}
 		interpolate.pressure_time += entry->pressure_time;
-		if (SENSOR_PRESSURE(entry)) {
-			interpolate.end = SENSOR_PRESSURE(entry);
+		if (pressure) {
+			interpolate.end = pressure;
 			break;
 		}
 	}
@@ -211,6 +217,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	int cyl, i;
 	struct plot_data *entry;
 	int cur_pr[MAX_CYLINDERS];
+	int diluent_flag = 0;
 
 #ifdef DEBUG_PR_TRACK
 	/* another great debugging tool */
@@ -252,7 +259,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			continue;
 		}
 
-		interpolate = get_pr_interpolate_data(segment, pi, i);
+		interpolate = get_pr_interpolate_data(segment, pi, i, diluent_flag);
 #ifdef DEBUG_PR_INTERPOLATE
 		dump_pr_interpolate(i, interpolate);
 #endif
