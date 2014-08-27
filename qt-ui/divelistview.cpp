@@ -61,19 +61,27 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 }
 
+//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
+static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
+
 DiveListView::~DiveListView()
 {
 	QSettings settings;
 	settings.beginGroup("ListWidget");
-	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++) {
+	// don't set a width for the last column - location is supposed to be "the rest"
+	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS - 1; i++) {
 		if (isColumnHidden(i))
 			continue;
-		settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
+		// we used to hardcode them all to 100 - so that might still be in the settings
+		if (columnWidth(i) == 100 || columnWidth(i) == defaultWidth[i])
+			settings.remove(QString("colwidth%1").arg(i));
+		else
+			settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
 	}
+	settings.remove(QString("colwidth%1").arg(DiveTripModel::COLUMNS - 1));
 	settings.endGroup();
 }
 
-static int defaultWidth[] = { 70, 130, 100, 50, 50, 50, 50, 70, 50, 50, 70, 50, 50, 500 };
 void DiveListView::setupUi()
 {
 	QSettings settings;
