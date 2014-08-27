@@ -29,8 +29,22 @@ TableView::~TableView()
 {
 	QSettings s;
 	s.beginGroup(objectName());
-	for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
-		s.setValue(QString("colwidth%1").arg(i), ui.tableView->columnWidth(i));
+	// remove the old default
+	bool oldDefault = (ui.tableView->columnWidth(0) == 30);
+	for (int i = 1; oldDefault && i < ui.tableView->model()->columnCount(); i++) {
+		if (ui.tableView->columnWidth(i) != 80)
+			oldDefault = false;
+	}
+	if (oldDefault) {
+		s.remove("");
+	} else {
+		for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
+			if ((i == CylindersModel::REMOVE && ui.tableView->columnWidth(i) == 30) ||
+			    ui.tableView->columnWidth(i) == 70)
+				s.remove(QString("colwidth%1").arg(i));
+			else
+				s.setValue(QString("colwidth%1").arg(i), ui.tableView->columnWidth(i));
+		}
 	}
 	s.endGroup();
 }
@@ -54,7 +68,7 @@ void TableView::setModel(QAbstractItemModel *model)
 	s.beginGroup(objectName());
 	const int columnCount = ui.tableView->model()->columnCount();
 	for (int i = 0; i < columnCount; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 80);
+		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 70);
 		ui.tableView->setColumnWidth(i, width.toInt());
 	}
 	s.endGroup();
