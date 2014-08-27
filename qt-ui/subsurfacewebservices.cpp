@@ -29,6 +29,10 @@
 #include <QUrlQuery>
 #endif
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 struct dive_table gps_location_table;
 static bool merge_locations_into_dives(void);
 
