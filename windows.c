@@ -15,7 +15,7 @@
 const char non_standard_system_divelist_default_font[] = "Calibri";
 const char current_system_divelist_default_font[] = "Segoe UI";
 const char *system_divelist_default_font = non_standard_system_divelist_default_font;
-const int system_divelist_default_font_size = 9;
+double system_divelist_default_font_size = -1;
 
 void subsurface_user(struct user_info *user)
 { /* Encourage use of at least libgit2-0.20 */ }
@@ -26,6 +26,15 @@ void subsurface_OS_pref_setup(void)
 {
 	if (isWin7Or8())
 		system_divelist_default_font = current_system_divelist_default_font;
+}
+
+bool subsurface_ignore_font(const char *font)
+{
+	// if this is running on a recent enough version of Windows and the font
+	// passed in is the pre 4.3 default font, ignore it
+	if (isWin7Or8() && strcmp(font, non_standard_system_divelist_default_font) == 0)
+		return true;
+	return false;
 }
 
 const char *system_default_filename(void)

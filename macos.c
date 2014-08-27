@@ -30,11 +30,17 @@ void subsurface_user_info(struct user_info *info)
 
 const char mac_system_divelist_default_font[] = "Arial";
 const char *system_divelist_default_font = mac_system_divelist_default_font;
-const int system_divelist_default_font_size = 10;
+double system_divelist_default_font_size = -1.0;
 
 void subsurface_OS_pref_setup(void)
 {
 	// nothing
+}
+
+bool subsurface_ignore_font(const char *font)
+{
+	// there are no old default fonts to ignore
+	return false;
 }
 
 const char *system_default_filename(void)

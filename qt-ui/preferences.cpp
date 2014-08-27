@@ -333,14 +333,26 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 
 	s.beginGroup("Display");
-	QFont defaultFont = s.value("divelist_font", qApp->font()).value<QFont>();
-	defaultFont.setPointSizeF(s.value("font_size", qApp->font().pointSizeF()).toFloat());
+	// get the font from the settings or our defaults
+	// respect the system default font size if none is explicitly set
+	QFont defaultFont = s.value("divelist_font", prefs.divelist_font).value<QFont>();
+	if (IS_FP_SAME(system_divelist_default_font_size, -1.0)) {
+		prefs.font_size = qApp->font().pointSizeF();
+		system_divelist_default_font_size = prefs.font_size; // this way we don't save it on exit
+	}
+	prefs.font_size = s.value("font_size", prefs.font_size).toFloat();
+	// painful effort to ignore previous default fonts on Windows - ridiculous
+	QString fontName = defaultFont.toString();
+	if (fontName.contains(","))
+		fontName = fontName.left(fontName.indexOf(","));
+	if (subsurface_ignore_font(fontName.toUtf8().constData())) {
+		defaultFont = QFont(prefs.divelist_font);
+	} else {
+		free((void *)prefs.divelist_font);
+		prefs.divelist_font = strdup(fontName.toUtf8().constData());
+	}
+	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
-
-	GET_TXT("divelist_font", divelist_font);
-	GET_INT("font_size", font_size);
-	if (prefs.font_size < 0)
-		prefs.font_size = defaultFont.pointSizeF();
 	GET_INT("displayinvalid", display_invalid_dives);
 	s.endGroup();
 
