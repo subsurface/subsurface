@@ -191,6 +191,19 @@ void PreferencesDialog::rememberPrefs()
 	else                                                             \
 		prefs.field = default_prefs.field
 
+#define SAVE_OR_REMOVE_SPECIAL(_setting, _default, _compare, _value)     \
+	if (_compare != _default)                                        \
+		s.setValue(_setting, _value);                            \
+	else                                                             \
+		s.remove(_setting)
+
+#define SAVE_OR_REMOVE(_setting, _default, _value)                       \
+	qDebug() << _setting << _default << _value;\
+	if (_value != _default)                                          \
+		s.setValue(_setting, _value);                            \
+	else                                                             \
+		s.remove(_setting)
+
 void PreferencesDialog::syncSettings()
 {
 	QSettings s;
@@ -200,22 +213,23 @@ void PreferencesDialog::syncSettings()
 
 	// Graph
 	s.beginGroup("TecDetails");
-	s.setValue("phethreshold", ui.pheThreshold->value());
-	s.setValue("po2threshold", ui.po2Threshold->value());
-	s.setValue("pn2threshold", ui.pn2Threshold->value());
-	s.setValue("modpO2", ui.maxpo2->value());
-	SB("redceiling", ui.red_ceiling);
-	s.setValue("gflow", ui.gflow->value());
-	s.setValue("gfhigh", ui.gfhigh->value());
-	SB("gf_low_at_maxdepth", ui.gf_low_at_maxdepth);
-	SB("display_unused_tanks", ui.display_unused_tanks);
-	SB("show_average_depth", ui.show_average_depth);
+	SAVE_OR_REMOVE("phethreshold", default_prefs.pp_graphs.phe_threshold, ui.pheThreshold->value());
+	SAVE_OR_REMOVE("po2threshold", default_prefs.pp_graphs.po2_threshold, ui.po2Threshold->value());
+	SAVE_OR_REMOVE("pn2threshold", default_prefs.pp_graphs.pn2_threshold, ui.pn2Threshold->value());
+	SAVE_OR_REMOVE("modpO2", default_prefs.modpO2, ui.maxpo2->value());
+	SAVE_OR_REMOVE("redceiling", default_prefs.redceiling, ui.red_ceiling->isChecked());
+	SAVE_OR_REMOVE("gflow", default_prefs.gflow, ui.gflow->value());
+	SAVE_OR_REMOVE("gfhigh", default_prefs.gfhigh, ui.gfhigh->value());
+	SAVE_OR_REMOVE("gf_low_at_maxdepth", default_prefs.gf_low_at_maxdepth, ui.gf_low_at_maxdepth->isChecked());
+	SAVE_OR_REMOVE("display_unused_tanks", default_prefs.display_unused_tanks, ui.display_unused_tanks->isChecked());
+	SAVE_OR_REMOVE("show_average_depth", default_prefs.show_average_depth, ui.show_average_depth->isChecked());
 	s.endGroup();
 
 	// Units
 	s.beginGroup("Units");
-	QString unitSystem = ui.metric->isChecked() ? "metric" : (ui.imperial->isChecked() ? "imperial" : "personal");
-	s.setValue("unit_system", unitSystem);
+	QString unitSystem[] = {"metric", "imperial", "personal"};
+	short unitValue = ui.metric->isChecked() ? METRIC : (ui.imperial->isChecked() ? IMPERIAL : PERSONALIZE);
+	SAVE_OR_REMOVE_SPECIAL("unit_system", default_prefs.unit_system, unitValue, unitSystem[unitValue]);
 	s.setValue("temperature", ui.fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
 	s.setValue("length", ui.feet->isChecked() ? units::FEET : units::METERS);
 	s.setValue("pressure", ui.psi->isChecked() ? units::PSI : units::BAR);
@@ -232,8 +246,8 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 
 	s.beginGroup("Display");
-	s.setValue("divelist_font", ui.font->currentFont());
-	s.setValue("font_size", ui.fontsize->value());
+	SAVE_OR_REMOVE_SPECIAL("divelist_font", system_divelist_default_font, ui.font->currentFont().toString(), ui.font->currentFont());
+	SAVE_OR_REMOVE("font_size", system_divelist_default_font_size, ui.fontsize->value());
 	s.setValue("displayinvalid", ui.displayinvalid->isChecked());
 	s.endGroup();
 	s.sync();
