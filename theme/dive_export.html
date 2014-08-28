@@ -31,19 +31,19 @@ function load_scripts()
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname + "_files/file.json");
+	fileref.setAttribute("src", location.pathname + "_files/file.js");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname + "_files/stat.json");
+	fileref.setAttribute("src", location.pathname + "_files/stat.js");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname + "_files/translation.json");
+	fileref.setAttribute("src", location.pathname + "_files/translation.js");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	fileref=document.createElement('script');
-	fileref.setAttribute("src", location.pathname + "_files/settings.json");
+	fileref.setAttribute("src", location.pathname + "_files/settings.js");
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	load_script_sync("list_lib.js");
