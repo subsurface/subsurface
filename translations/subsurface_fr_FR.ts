@@ -219,7 +219,7 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="768"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
-        <translation>Fichier d&apos;images (</translation>
+        <translation>Fichier image (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
 </context>
 <context>

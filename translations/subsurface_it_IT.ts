@@ -45,7 +45,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="158"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation>Facendo click qui si rimuove la bombola.</translation>
+        <translation>Cliccando qui si rimuove la bombola.</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="365"/>
@@ -574,7 +574,7 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogimportdialog.ui" line="35"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="325"/>
         <source>Field configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione dei campi</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="382"/>
@@ -655,7 +655,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="651"/>
         <source>CC set point</source>
-        <translation type="unfinished"/>
+        <translation>CC set point</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="974"/>
@@ -673,7 +673,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="258"/>
         <source>Dive planner points</source>
-        <translation type="unfinished"/>
+        <translation>Punti del pianificatore di immersione</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="262"/>
@@ -683,7 +683,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="285"/>
         <source>Add dive data point</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi punto del profilo di immersione</translation>
     </message>
 </context>
 <context>
@@ -741,12 +741,12 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="103"/>
         <source>User entered</source>
-        <translation type="unfinished"/>
+        <translation>Inserito dall&apos;utente</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="105"/>
         <source>Cylinder index</source>
-        <translation type="unfinished"/>
+        <translation>Indice della bombola</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
@@ -784,7 +784,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1308"/>
         <source>Mins</source>
-        <translation type="unfinished"/>
+        <translation>Durata</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1317"/>
@@ -799,7 +799,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1332"/>
         <source>Max CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS massimo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1335"/>
@@ -988,7 +988,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
         <source>Download from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Scarica dal computer</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="25"/>
@@ -1352,62 +1352,62 @@ mixati con aria e usando:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="128"/>
         <source>Toggle pHe graph</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il grafico pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="154"/>
         <source>Toggle calculating all tissues</source>
-        <translation type="unfinished"/>
+        <translation>Abilita il calcolo su tutti i tessuti</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="183"/>
         <source>Toggle DC reported ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il ceiling calcolato dal computer subacqueo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="212"/>
         <source>Toggle calculated ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il ceiling calcolato</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="238"/>
         <source>Toggle NDL, TTS</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza NDL, TTS</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="264"/>
         <source>Toggle calculated ceiling with 3m increments</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il ceiling calcolato con incrementi di 3m</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="290"/>
         <source>Toggle heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il battito cardiaco</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="316"/>
         <source>Toggle MOD</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza la MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="342"/>
         <source>Toggle EAD, END, EADD</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza EAD, END, EADD</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="368"/>
         <source>Toggle SAC rate</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il consumo equivalente di superficie</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="420"/>
         <source>Toggle ruler</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il righello</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="501"/>
         <source>Toggle viewing picture thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Abilita la visualizzazione delle miniature delle immagini</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="593"/>
@@ -1555,7 +1555,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="922"/>
         <source>&amp;Next DC</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Prossimo computer</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="930"/>
@@ -1565,7 +1565,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="946"/>
         <source>&amp;Globe</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Globo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="968"/>
@@ -1585,7 +1585,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="984"/>
         <source>Toggle full screen</source>
-        <translation type="unfinished"/>
+        <translation>Abilita Modalità Tutto Schermo</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="1012"/>
@@ -1689,12 +1689,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="446"/>
         <source>Toggle pO₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il grafico della pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="475"/>
         <source>Toggle pN₂ Graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il grafico della pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="821"/>
@@ -1709,7 +1709,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="845"/>
         <source>&amp;Edit device names</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Modifica il nome della periferica</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="850"/>
@@ -1754,7 +1754,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="914"/>
         <source>P&amp;revious DC</source>
-        <translation type="unfinished"/>
+        <translation>Computer precedente</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="917"/>
@@ -1819,7 +1819,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="419"/>
         <source>Print runtime table</source>
-        <translation type="unfinished"/>
+        <translation>Stampa la tabella con il runtime</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="520"/>
@@ -1900,7 +1900,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="461"/>
         <source>50% avg. depth to 20ft</source>
-        <translation type="unfinished"/>
+        <translation>Dal 50% della prof. media a 20ft</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="462"/>
@@ -1920,7 +1920,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="466"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>Dal 50% della prof. media a 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="467"/>
@@ -1933,7 +1933,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation>Defaults</translation>
+        <translation>Default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -1998,7 +1998,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="322"/>
         <source>Reset all settings to their default value</source>
-        <translation>Reimposta le impostazioni ai valori iniziali</translation>
+        <translation>Riporta tutte le impostazioni ai valori iniziali</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="351"/>
@@ -2073,22 +2073,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="782"/>
         <source>System default</source>
-        <translation type="unfinished"/>
+        <translation>Impostazione di sistema predefinita</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="821"/>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="827"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo di proxy</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="840"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="866"/>
@@ -2103,7 +2103,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="912"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="935"/>
@@ -2123,42 +2123,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="151"/>
         <source>Lists and tables</source>
-        <translation type="unfinished"/>
+        <translation>Liste e tabelle</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="186"/>
         <source>Default dive log file</source>
-        <translation type="unfinished"/>
+        <translation>File del log delle immersioni di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="217"/>
         <source>Display invalid</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza le non valide</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="234"/>
         <source>Default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Bombola di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="240"/>
         <source>Use default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Usa la bombola di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="290"/>
         <source>Subsurface web service</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface web service</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="296"/>
         <source>Default user ID</source>
-        <translation type="unfinished"/>
+        <translation>ID utente di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="306"/>
         <source>Save user ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Salvare ID utente localmente?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="456"/>
@@ -2218,42 +2218,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="548"/>
         <source>Ascent/descent speed denominator</source>
-        <translation type="unfinished"/>
+        <translation>Denominatore della risalita/discesa </translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="608"/>
         <source>Threshold when showing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Soglia quando è visibile la pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="629"/>
         <source>Threshold when showing pN₂</source>
-        <translation type="unfinished"/>
+        <translation>Soglia quando è visibile la pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="650"/>
         <source>Threshold when showing pHe</source>
-        <translation type="unfinished"/>
+        <translation>Soglia quando è visibile la pHe</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="671"/>
         <source>Max pO₂ when showing MOD</source>
-        <translation type="unfinished"/>
+        <translation>Massima pO₂ a cui mostrare la MOD</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="692"/>
         <source>Draw dive computer reported ceiling red</source>
-        <translation type="unfinished"/>
+        <translation>Colora di rosso il ceiling riportato dal computer</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="703"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Mostra bombole non utilizzate nel pannello dell&apos;attrezzatura</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="714"/>
         <source>Show average depth</source>
-        <translation type="unfinished"/>
+        <translation>Mostra profondità media</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="732"/>
@@ -2268,22 +2268,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="23"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Nessun proxy</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="24"/>
         <source>System proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy di sistema</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="25"/>
         <source>HTTP proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="26"/>
         <source>SOCKS proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="247"/>
@@ -2298,7 +2298,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="398"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Se clicchi OK, tutte le impostazionei di Subsurface verranno riportate ai loro valori di default. La modifica sarà immediata.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="384"/>
@@ -2308,7 +2308,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.cpp" line="384"/>
         <source>Open default log file</source>
-        <translation type="unfinished"/>
+        <translation>Apri il log delle immersioni di default</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="397"/>
@@ -2336,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface non trova nessuna stampante su questo computer!</translation>
     </message>
 </context>
 <context>
@@ -2382,22 +2382,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>&amp;6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;6 immersioni per pagina</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <source>&amp;1 dive per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;1 immersioni per pagina</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="70"/>
         <source>&amp;2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;2 immersioni per pagina</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Stampa tabella</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>
@@ -2417,12 +2417,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="153"/>
         <source>Prof&amp;ile on top</source>
-        <translation type="unfinished"/>
+        <translation>Profilo in alto</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="169"/>
         <source>&amp;Notes on top</source>
-        <translation type="unfinished"/>
+        <translation>Note in alto</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -2460,12 +2460,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1921"/>
         <source>Gas used:</source>
-        <translation type="unfinished"/>
+        <translation>Gas usato:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1923"/>
         <source>Tags:</source>
-        <translation type="unfinished"/>
+        <translation>Tags:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1925"/>
@@ -2518,27 +2518,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="892"/>
         <source>Make first divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>Rendilo computer principale</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="894"/>
         <source>Delete this divecomputer</source>
-        <translation type="unfinished"/>
+        <translation>Cancella questo computer subacqueo</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="901"/>
         <source>Add gas change</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi un cambio gas</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="912"/>
         <source>Add bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi un segnalibro</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="916"/>
         <source>Remove event</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi evento</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="921"/>
@@ -2588,7 +2588,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1085"/>
         <source>Name is too long!</source>
-        <translation type="unfinished"/>
+        <translation>Il nome è troppo lungo</translation>
     </message>
 </context>
 <context>
@@ -2705,7 +2705,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="126"/>
         <source>New number</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo numero</translation>
     </message>
 </context>
 <context>
@@ -2713,7 +2713,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/searchbar.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
 </context>
 <context>
@@ -2731,17 +2731,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="23"/>
         <source>Shift selected image times</source>
-        <translation type="unfinished"/>
+        <translation>Cambia l&apos;orario delle immagini selezionate</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="105"/>
         <source>Earlier</source>
-        <translation type="unfinished"/>
+        <translation>Prima</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="112"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Dopo</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="148"/>
@@ -2766,7 +2766,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="224"/>
         <source>Open image file</source>
-        <translation type="unfinished"/>
+        <translation>Apri il file dell&apos;immagine</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="226"/>
@@ -2779,7 +2779,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="23"/>
         <source>Shift selected dive times</source>
-        <translation type="unfinished"/>
+        <translation>Cambia l&apos;orario delle immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="49"/>
@@ -2810,12 +2810,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="136"/>
         <source>Earlier</source>
-        <translation type="unfinished"/>
+        <translation>Prima</translation>
     </message>
     <message>
         <location filename="../qt-ui/shifttimes.ui" line="143"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Dopo</translation>
     </message>
 </context>
 <context>
@@ -2886,7 +2886,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="326"/>
         <source>Enter User ID and click Download</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci la User ID e click Download</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="456"/>
@@ -2990,17 +2990,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="32"/>
         <source>We would love to learn more about our users, their preferences and their usage habits. Please take a minute to fill out this form and submit it to the Subsurface team. Please select all options that apply to you.</source>
-        <translation type="unfinished"/>
+        <translation>Ci piacerebbe saperne di più dei nostri utenti, le loro preferenze e le loro abitudini d&apos;uso del programma. Per favore dedicaci un minuto per compilare il questionario e inviarlo al team di Subsurface. Seleziona tutte le opzioni che ti riguardano.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User Survey</source>
-        <translation type="unfinished"/>
+        <translation>Sondaggio</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="25"/>
         <source>Subsurface user survey</source>
-        <translation type="unfinished"/>
+        <translation>Sondaggio degli utenti di Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="52"/>
@@ -3015,17 +3015,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="59"/>
         <source>Interested in dive planning</source>
-        <translation type="unfinished"/>
+        <translation>Interessato alla pianificazione di immersioni</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="66"/>
         <source>I am downloading dives from supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Scarico immersioni da un computer supportato</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="73"/>
         <source>I am importing dives from other software / sources</source>
-        <translation type="unfinished"/>
+        <translation>Importo immersioni da altri programmi / fonti</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="80"/>
@@ -3040,12 +3040,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="94"/>
         <source>Please type suggestions (in English) in the following box</source>
-        <translation type="unfinished"/>
+        <translation>Per favore scrivi dei suggerimenti (in Inglese) nella casella di testo che segue</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="104"/>
         <source>The following information about your system will also be submitted</source>
-        <translation type="unfinished"/>
+        <translation>Oltre al sondaggio, verranno inviate anche le seguenti informazioni sul tuo computer</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="41"/>
@@ -3071,38 +3071,39 @@ Lingua: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="77"/>
         <source>Should we ask you later?</source>
-        <translation type="unfinished"/>
+        <translation>Possiamo richiedertelo in seguito?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="78"/>
         <source>Don&apos;t ask me again</source>
-        <translation type="unfinished"/>
+        <translation>Non chiedermelo di nuovo</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="79"/>
         <source>Ask later</source>
-        <translation type="unfinished"/>
+        <translation>Chiedi in seguto</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="99"/>
         <source>Submit user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Invia il sondaggio.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="80"/>
         <source>Ask again?</source>
-        <translation type="unfinished"/>
+        <translation>Chiedo di nuovo?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="45"/>
         <source>
 OS CPU Architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+OS Architettura CPU: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="100"/>
         <source>Subsurface was unable to submit the user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface non è stato in grado di inviare il sondaggio.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="105"/>
@@ -3117,7 +3118,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="115"/>
         <source>Survey successfully submitted.</source>
-        <translation type="unfinished"/>
+        <translation>Sondaggio inviato con successo.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="120"/>
@@ -3143,7 +3144,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="14"/>
         <source>Web service connection</source>
-        <translation type="unfinished"/>
+        <translation>Connessione al web service</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="25"/>
@@ -3168,7 +3169,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save user ID locally?</source>
-        <translation type="unfinished"/>
+        <translation>Salvare ID utente localmente?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -3206,7 +3207,7 @@ OS CPU Architecture: %1</source>
     <message>
         <location filename="../qt-ui/models.cpp" line="447"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation type="unfinished"/>
+        <translation>Cliccando qui verrà rimossa la zavorra.</translation>
     </message>
 </context>
 <context>
@@ -3338,7 +3339,7 @@ Media</translation>
     <message>
         <location filename="../dive.c" line="238"/>
         <source>m/s</source>
-        <translation type="unfinished"/>
+        <translation>m/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="243"/>
@@ -3348,7 +3349,7 @@ Media</translation>
     <message>
         <location filename="../dive.c" line="245"/>
         <source>ft/s</source>
-        <translation type="unfinished"/>
+        <translation>ft/s</translation>
     </message>
     <message>
         <location filename="../dive.c" line="264"/>
@@ -3719,7 +3720,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="773"/>
         <source>Can&apos;t find gas %s</source>
-        <translation type="unfinished"/>
+        <translation>Non trovo il gas %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="347"/>
@@ -3734,17 +3735,17 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation type="unfinished"/>
+        <translation>Calcolo della decompressione annullato per tempo eccessivo</translation>
     </message>
     <message>
         <location filename="../planner.c" line="546"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>basato su GFlow = %d e GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="549"/>
         <source>Subsurface dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Piano di immersione di Subsurface </translation>
     </message>
     <message>
         <location filename="../planner.c" line="553"/>
@@ -3754,7 +3755,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="556"/>
         <source>runtime</source>
-        <translation type="unfinished"/>
+        <translation>runtime</translation>
     </message>
     <message>
         <location filename="../planner.c" line="559"/>
@@ -3764,38 +3765,38 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="562"/>
         <source>gas</source>
-        <translation type="unfinished"/>
+        <translation>gas</translation>
     </message>
     <message>
         <location filename="../planner.c" line="596"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
-        <translation type="unfinished"/>
+        <translation>Passaggio a %.*f %s al %d:%02d min - runtime %d:%02u con %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="606"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
-        <translation type="unfinished"/>
+        <translation>Rimani a %.*f %s per %d:%02d min - runtime %d:%02u con %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="617"/>
         <source>%3.0f%s</source>
-        <translation type="unfinished"/>
+        <translation>%3.0f%s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="620"/>
         <location filename="../planner.c" line="624"/>
         <source>%3dmin</source>
-        <translation type="unfinished"/>
+        <translation>%3dmin</translation>
     </message>
     <message>
         <location filename="../planner.c" line="640"/>
         <source>Switch gas to %s</source>
-        <translation type="unfinished"/>
+        <translation>Passa al gas %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="653"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../planner.c" line="655"/>
@@ -3805,7 +3806,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="658"/>
         <source>Gas consumption:</source>
-        <translation type="unfinished"/>
+        <translation>Consumo gas:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="540"/>
@@ -3813,32 +3814,32 @@ Media</translation>
         <location filename="../planner.c" line="683"/>
         <location filename="../planner.c" line="706"/>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Avviso</translation>
     </message>
     <message>
         <location filename="../planner.c" line="679"/>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation type="unfinished"/>
+        <translation>il gas necessario è superiore a quello disponibile nella bombola</translation>
     </message>
     <message>
         <location filename="../planner.c" line="684"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation type="unfinished"/>
+        <translation>riserva di gas non sufficiente per la condivisione in risalita</translation>
     </message>
     <message>
         <location filename="../planner.c" line="686"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s nella risalita pianificata)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="688"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s durante la risalita pianificata) di %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="703"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="1009"/>
@@ -3879,7 +3880,8 @@ D:%.1f%s
         <location filename="../profile.c" line="1266"/>
         <source>SAC: %.*f%s/min
 </source>
-        <translation type="unfinished"/>
+        <translation>SAC: %.*f%s/min
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1268"/>
@@ -4471,17 +4473,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>pO₂ Green Warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso PO2 Verde</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>pO₂ Ascend Warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso Incremento pO₂</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>pO₂ Ascend Alarm</source>
-        <translation type="unfinished"/>
+        <translation>Allarme Incremento pO₂</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
@@ -4572,7 +4574,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max Depth:</source>
-        <translation type="unfinished"/>
+        <translation>Profondità Massima:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
@@ -4624,22 +4626,22 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="56"/>
         <source>Rates</source>
-        <translation type="unfinished"/>
+        <translation>Velocità</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="77"/>
         <source>Ascent</source>
-        <translation type="unfinished"/>
+        <translation>Risalita</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="98"/>
         <source>below 75% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Meno del 75% della prof. media</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="105"/>
@@ -4653,32 +4655,32 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="169"/>
         <source>Descent</source>
-        <translation type="unfinished"/>
+        <translation>Discesa</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="221"/>
         <source>surface to the bottom</source>
-        <translation type="unfinished"/>
+        <translation>Dalla superficie al fondo</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="247"/>
         <source>Planning</source>
-        <translation type="unfinished"/>
+        <translation>Pianificazione</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>GF low</source>
-        <translation type="unfinished"/>
+        <translation>GF low</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="285"/>
         <source>GF high</source>
-        <translation type="unfinished"/>
+        <translation>GF high</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="302"/>
         <source>Drop to first depth</source>
-        <translation type="unfinished"/>
+        <translation>Discesa immediata</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="309"/>
@@ -4688,12 +4690,12 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="316"/>
         <source>Plan backgas breaks</source>
-        <translation type="unfinished"/>
+        <translation>Pianifica i break in backgas</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="339"/>
         <source>Gas options</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni gas</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="360"/>
@@ -4703,17 +4705,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="370"/>
         <source>Deco SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC in deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="380"/>
         <source>Bottom pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ sul fondo</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="403"/>
         <source>Deco pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ in deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="442"/>
@@ -4723,22 +4725,22 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="466"/>
         <source>Display runtime</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il runtime</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="482"/>
         <source>Display segment duration</source>
-        <translation type="unfinished"/>
+        <translation>Mostra la durata del segmento</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="495"/>
         <source>Display transitions in deco</source>
-        <translation type="unfinished"/>
+        <translation>Mostra i cambi tappa in deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="502"/>
         <source>Verbatim diveplan</source>
-        <translation type="unfinished"/>
+        <translation>Piano di immersione dettagliato</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="387"/>
@@ -4749,12 +4751,12 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="115"/>
         <source>75% to 50% avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Dal 75% al 50% della prof. media</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="132"/>
         <source>50% avg. depth to 6m</source>
-        <translation type="unfinished"/>
+        <translation>Dal 50% della prof. media a 6m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="149"/>
@@ -4764,17 +4766,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="463"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Nel piano di immersione, mostra il runtime (tempo assoluto) delle soste</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="479"/>
         <source>In dive plan, show duration (relative time) of stops</source>
-        <translation type="unfinished"/>
+        <translation>Nel piano di immersione, mostra la durata (tempo relativo) delle soste</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation type="unfinished"/>
+        <translation>Nel piano di immersione, elenca i cambi tappa o trattali come impliciti</translation>
     </message>
 </context>
 </TS>
