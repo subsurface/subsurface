@@ -247,11 +247,8 @@ TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoM
 
 void TankInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (
-#if !defined __APPLE__
-		hint == QAbstractItemDelegate::NoHint ||
-#endif
-		hint == QAbstractItemDelegate::RevertModelCache) {
+	if (hint == QAbstractItemDelegate::NoHint ||
+	    hint == QAbstractItemDelegate::RevertModelCache) {
 		CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
 		mymodel->setData(IDX(CylindersModel::TYPE), currCylinderData.type, Qt::EditRole);
 		mymodel->passInData(IDX(CylindersModel::WORKINGPRESS), currCylinderData.pressure);
@@ -279,11 +276,8 @@ struct RevertWeightData {
 
 void WSInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
-	if (
-#if !defined __APPLE__
-		hint == QAbstractItemDelegate::NoHint ||
-#endif
-		hint == QAbstractItemDelegate::RevertModelCache) {
+	if (hint == QAbstractItemDelegate::NoHint ||
+	    hint == QAbstractItemDelegate::RevertModelCache) {
 		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 		mymodel->setData(IDX(WeightModel::TYPE), currWeight.type, Qt::EditRole);
 		mymodel->passInData(IDX(WeightModel::WEIGHT), currWeight.weight);
