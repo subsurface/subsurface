@@ -2,11 +2,11 @@ CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 include(subsurface-configure.pri)
 
-QT = core gui network svg concurrent
+QT = core gui network svg
 lessThan(QT_MAJOR_VERSION, 5) {
 	QT += webkit
 } else {
-	QT += printsupport
+	QT += printsupport concurrent
 	!android: QT += webkitwidgets webkit
 	android: QT += androidextras
 }
