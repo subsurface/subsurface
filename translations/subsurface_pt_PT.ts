@@ -2336,7 +2336,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printdialog.cpp" line="75"/>
         <source>Subsurface cannot find installed printers on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Não foram encontradas impressoras instaladas neste computador!</translation>
     </message>
 </context>
 <context>
@@ -2382,22 +2382,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <source>&amp;6 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;6mergulhos por página</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <source>&amp;1 dive per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;1 mergulho por página</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="70"/>
         <source>&amp;2 dives per page</source>
-        <translation type="unfinished"/>
+        <translation>&amp;2 mergulhos por página</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="83"/>
         <source>&amp;Table print</source>
-        <translation type="unfinished"/>
+        <translation>Impressão em &amp;Tabela</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="106"/>
@@ -2417,12 +2417,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/printoptions.ui" line="153"/>
         <source>Prof&amp;ile on top</source>
-        <translation type="unfinished"/>
+        <translation>Per&amp;fil no topo</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="169"/>
         <source>&amp;Notes on top</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Notas no topo</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -2588,7 +2588,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1085"/>
         <source>Name is too long!</source>
-        <translation type="unfinished"/>
+        <translation>O nome é demasiado comprido!</translation>
     </message>
 </context>
 <context>
@@ -3734,7 +3734,7 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="538"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation type="unfinished"/>
+        <translation>O cálculo da descompressão foi terminado por esta ser demasiado longa</translation>
     </message>
     <message>
         <location filename="../planner.c" line="546"/>
