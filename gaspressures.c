@@ -316,19 +316,46 @@ static inline int calc_pressure_time(struct dive *dive, struct divecomputer *dc,
 	return depth_to_mbar(depth, dive) * time;
 }
 
-void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+#ifdef PRINT_PRESSURES_DEBUG
+// A CCR debugging tool that prints the gas pressures in cylinder 0 and in the diluent cylinder, used in populate_pressure_information():
+static void debug_print_pressures(struct plot_info *pi)
 {
-	int i, cylinderindex;
-	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
-	pr_track_t *current;
-	bool missing_pr = false;
-
-	cylinderindex = -1;
-	current = NULL;
+	int i;
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		int pressure = SENSOR_PRESSURE(entry);
+		printf("%5d |%9d | %9d || %9d | %9d |\n", i, SENSOR_PRESSURE(entry), INTERPOLATED_PRESSURE(entry), DILUENT_PRESSURE(entry), INTERPOLATED_DILUENT_PRESSURE(entry));
+	}
+}
+#endif
 
+/* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or DILUENT_PRESSURE(entry),
+ * of structure plot_info for the dive profile where each item in the list corresponds to one point (node) of the
+ * profile. It finds values for which there are no tank pressures (pressure==0). For each missing item (node) of
+ * tank pressure it creates a pr_track_alloc structure that represents a segment on the dive profile and that
+ * contains tank pressures. There is a linked list of pr_track_alloc structures for each cylinder. These pr_track_alloc
+ * structures ultimately allow for filling the missing tank pressure values on the dive profile using the depth_pressure
+ * of the dive. To do this, it calculates the summed pressure-time value for the duration of the dive and stores these
+ * in the pr_track_alloc structures. If diluent_flag = 1, then DILUENT_PRESSURE(entry) is used instead of SENSOR_PRESSURE.
+ * This function is called by create_plot_info_new() in profile.c
+ */
+void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int diluent_flag)
+{
+	int i, cylinderid, cylinderindex = -1;
+	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
+	pr_track_t *current = NULL;
+	bool missing_pr = false;
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+		unsigned pressure;
+		if (diluent_flag) { // if this is a diluent cylinder:
+			pressure = DILUENT_PRESSURE(entry);
+			cylinderid = DILUENT_CYLINDER;
+		} else {
+			pressure = SENSOR_PRESSURE(entry);
+			cylinderid = entry->cylinderindex;
+		}
+		/* If track_pr structure already exists, then update it: */
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {
 			entry->pressure_time = calc_pressure_time(dive, dc, entry - 1, entry);
@@ -336,9 +363,13 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 			current->t_end = entry->sec;
 		}
 
+		/* If 1st record or different cylinder: Create a new track_pr structure: */
 		/* track the segments per cylinder and their pressure/time integral */
-		if (entry->cylinderindex != cylinderindex) {
-			cylinderindex = entry->cylinderindex;
+		if (cylinderid != cylinderindex) {
+			if (diluent_flag)			  // For CCR dives:
+				cylinderindex = DILUENT_CYLINDER; // indicate diluent cylinder
+			else
+				cylinderindex = entry->cylinderindex;
 			current = pr_track_alloc(pressure, entry->sec);
 			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 			continue;
@@ -348,21 +379,27 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 			missing_pr = 1;
 			continue;
 		}
-
 		current->end = pressure;
 
 		/* Was it continuous? */
-		if (SENSOR_PRESSURE(entry - 1))
+		if ((diluent_flag) && (DILUENT_PRESSURE(entry - 1))) // in the case of CCR diluent pressure
+			continue;
+		else if (SENSOR_PRESSURE(entry - 1)) // for all other cylinders
 			continue;
 
-		/* transmitter changed its working status */
+		/* transmitter stopped transmitting cylinder pressure data */
 		current = pr_track_alloc(pressure, entry->sec);
 		track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 	}
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(dive, pi, track_pr, 0);
+		fill_missing_tank_pressures(dive, pi, track_pr, diluent_flag);
 	}
+
+#ifdef PRINT_PRESSURES_DEBUG
+	debug_print_pressures(pi);
+#endif
+
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		list_free(track_pr[i]);
 }

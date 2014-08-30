@@ -21,10 +21,10 @@ unsigned int dc_number = 0;
 
 static struct plot_data *last_pi_entry_new = NULL;
 
-void fill_missing_segment_pressures(pr_track_t*);
-struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t*, struct plot_info*, int);
-void fill_missing_tank_pressures(struct dive*, struct plot_info*, pr_track_t**);
-void populate_pressure_information(struct dive*, struct divecomputer*, struct plot_info*);
+void fill_missing_segment_pressures(pr_track_t *);
+struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *, struct plot_info *, int);
+void fill_missing_tank_pressures(struct dive *, struct plot_info *, pr_track_t **, int);
+void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
@@ -554,6 +554,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
+		DILUENT_PRESSURE(entry) = sample->diluentpressure.mbar;
 		if (sample->temperature.mkelvin)
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
 		else
@@ -839,15 +840,15 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		 * so there is no difference in calculating between OC and CC
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
-		pressure_t modpO2 = { .mbar = (int) (prefs.modpO2 * 1000) };
-		entry->mod = (double) gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2, 1).mm;
+		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
+		entry->mod = (double)gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
-				  (entry->po2 / amb_pressure * O2_DENSITY + entry->pn2 / amb_pressure *
-										N2_DENSITY +
-				   entry->phe / amb_pressure * HE_DENSITY) /
-				  (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
+				      (entry->po2 / amb_pressure * O2_DENSITY +
+				       entry->pn2 / amb_pressure * N2_DENSITY +
+				       entry->phe / amb_pressure * HE_DENSITY) /
+				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
@@ -858,6 +859,31 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 			entry->eadd = 0;
 	}
 }
+
+#ifdef DEBUG_GAS
+/* A CCR debug function that writes the cylinder pressure and the oxygen values to the file debug_print_profiledata.dat:
+ * Called in create_plot_info_new()
+ */
+static void debug_print_profiledata(struct plot_info *pi)
+{
+	FILE *f1;
+	struct plot_data *entry;
+	int i;
+	if (!(f1 = fopen("debug_print_profiledata.dat", "w")))
+		printf("File open error for: debug_print_profiledata.dat\n");
+	else {
+		fprintf(f1, "id t1 gas gasint t2 t3 dil dilint t4 t5 setpoint sensor1 sensor2 sensor3 t6 po2 fo2\n");
+		for (i = 0; i < pi->nr; i++) {
+			entry = pi->entry + i;
+			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %f %f %f %f PO2= %f\n", i, SENSOR_PRESSURE(entry),
+				INTERPOLATED_PRESSURE(entry), DILUENT_PRESSURE(entry), INTERPOLATED_DILUENT_PRESSURE(entry),
+				entry->o2setpoint, entry->o2sensor[0], entry->o2sensor[1], entry->o2sensor[2], entry->po2);
+		}
+		fclose(f1);
+	}
+}
+#endif
+
 /*
  * Create a plot-info with smoothing and ranged min/max
  *
@@ -867,10 +893,13 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
  */
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	int o2, he, o2low;
+	FILE *f1;
+	int i, o2, he, o2low;
+	struct plot_data *entry;
 	init_decompression(dive);
 	/* Create the new plot data */
 	free((void *)last_pi_entry_new);
+
 	get_dive_gas(dive, &o2, &he, &o2low);
 	if (he > 0) {
 		pi->dive_type = TRIMIX;
@@ -881,12 +910,23 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 			pi->dive_type = AIR;
 	}
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
-	check_gas_change_events(dive, dc, pi);       /* Populate the gas index from the gas change events */
-	setup_gas_sensor_pressure(dive, dc, pi);     /* Try to populate our gas pressure knowledge */
-	populate_pressure_information(dive, dc, pi); /* .. calculate missing pressure entries */
-	calculate_sac(dive, pi);		     /* Calculate sac */
+
+	check_gas_change_events(dive, dc, pi);			 /* Populate the gas index from the gas change events */
+	setup_gas_sensor_pressure(dive, dc, pi);		 /* Try to populate our gas pressure knowledge */
+	populate_pressure_information(dive, dc, pi, NONDILUENT); /* .. calculate missing pressure entries for all gasses except diluent */
+	if (dc->dctype == CCR) {				 /* For CCR dives.. */
+		printf("REBREATHER; %d O2 sensors\n", dc->no_o2sensors);
+		populate_pressure_information(dive, dc, pi, DILUENT); /* .. calculate missing diluent gas pressure entries */
+//		fill_o2_values(dc, pi);				 /* .. and insert the O2 sensor data having 0 values. */
+	}
+	calculate_sac(dive, pi); /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false);
 	calculate_gas_information_new(dive, pi); /* And finaly calculate gas partial pressures */
+
+#ifdef DEBUG_GAS
+	debug_print_profiledata(pi);
+#endif
+
 	pi->meandepth = dive->dc.meandepth.mm;
 	analyze_plot_info(pi);
 }
