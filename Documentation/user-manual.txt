@@ -845,7 +845,7 @@ image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information tab
 
 ==== Editing several selected dives simultaneously
 
-After uploading dives from
+_METHOD 1_: After uploading dives from
 a dive computer, the dive profiles of the uploaded dives are shown in the *Dive profile* tab, as well
 as a few items of information
 in the *Dive Notes* tab (e.g. water temperature) and in the *Equipment* tab (e.g. gas pressures
@@ -868,6 +868,14 @@ selected, the new, edited information is substituted for all the selected dives,
 edited dive is
 changed, even though several dives have been selected in the *Dive List*. This greatly speeds
 up the completion of the dive log after several similar dives.
+
+[[S_CopyComponents]]
+_METHOD 2_:There is a different way of achieving the same goal. Select a dive with all the appropriate information
+typed into the *Dive Notes* and *Equipment* tabs. Then, from the main menu, select _Log -> Copy dive components_.
+A box is presented with a selection of check boxes for most of the fields in the *Dive Notes* and *Equipment* tabs.
+Select the fields to be copied from the currently selected dive, then select _OK_. Now, in the *Dive List*,
+select the dives
+into which this information is to be pasted. Then, from the main menu, select _Log -> Paste dive components_. All the selected dives now contain the data initially selected in the original source dive log.
 
 ==== Adding Bookmarks to a dive
 
@@ -2430,20 +2438,14 @@ level is indicated in the _Dive Plan Details_. This duration INCLUDES the transi
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
 
-=== Printing the dive plan
+[[S_Replan]]
+=== Modifying an existing dive plan
 
-Selecting the _Print_ button in the planner allows printing of the  _Dive Plan Details_
-for wet notes. Alternatively one can cut and paste the _Dive Plan Details_ for
-inclusion in a text file or word processing document.
-
-Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
-After a dive plan has been saved, the dive details and gas calculations are saved in
-the *Dive Notes* tab. While a dive plan is being designed, it can be printed using
-the _Print_ button in the dive planner. This prints the dive details and gas calculations
-in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
-represented in a way very similar to a dive log and the gas calculations cannot be
-accessed in the same way as during the planning process. The only way to print the
-dive plan is to use the _File->Print_ facility on the main menu in the same way as for dive logs.
+Normally, when a dive plan has been saved, it is accessible from the *Dive List*, like any
+other dive log. Within the *Dive List* there is not a way to change a saved dive plan.
+To perform changes to a dive plan, select it on the *Dive List*. Then, in the main menu,
+select _Log -> Re-plan dive_. This will open the selected dive plan within the dive planner,
+allowing changes to be made and saved as usual.
 
 === Planning for repetitive dives
 
@@ -2464,6 +2466,21 @@ be created conforming to one of the configurations. If one now wishes to plan a 
 this configuration, just highlight the template dive in the *Dive List* and activate the
 planner: the planner takes into account the configuration in the highlighted dive.
 
+=== Printing the dive plan
+
+Selecting the _Print_ button in the planner allows printing of the  _Dive Plan Details_
+for wet notes. Alternatively one can cut and paste the _Dive Plan Details_ for
+inclusion in a text file or word processing document.
+
+Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
+After a dive plan has been saved, the dive details and gas calculations are saved in
+the *Dive Notes* tab. While a dive plan is being designed, it can be printed using
+the _Print_ button in the dive planner. This prints the dive details and gas calculations
+in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
+represented in a way very similar to a dive log and the gas calculations cannot be
+accessed in the same way as during the planning process. The only way to print the
+dive plan is to use the _File->Print_ facility on the main menu in the same way as for dive logs.
+
 == Description of the Subsurface Main Menu items
 
 This section describes the functions and operation of the items in the Main Menu
@@ -2483,6 +2500,7 @@ the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - _Quit_ - Quit _Subsurface_.
+- _Configure dive computer_ - This option is currently experimental and under development.
 
 === Import
 - <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information
@@ -2497,6 +2515,11 @@ from _www.Divelogs.de_.
 === Log
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
 - <<S_DivePlanner,_Plan Dive_>> - This feature allows the planning of dives.
+- <<S_Replan,_Re-plan dive_>> - Edit a dive plan that has been saved into the *Dive List*.
+- <<S_CopyComponents,_Copy dive components_>> - By selecting this option, one can copy information
+  from several fields of a dive log onto the clipboard.
+- _Paste dive components_ - Paste, into the selected dives in the *Dive List*,
+   the information copied using the _Copy dive components_ option.
 - <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List*
 panel.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
