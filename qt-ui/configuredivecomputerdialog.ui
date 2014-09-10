@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Configure Dive Computer</string>
+   <string>Configure dive computer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Device or Mount Point</string>
+        <string>Device or mount point</string>
        </property>
        <property name="buddy">
         <cstring>device</cstring>
@@ -51,14 +51,14 @@
      <item>
       <widget class="QPushButton" name="retrieveDetails">
        <property name="text">
-        <string>Retrieve available details:</string>
+        <string>Retrieve available details</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="saveSettingsPushButton">
        <property name="text">
-        <string>Save Changes to Device</string>
+        <string>Save changes to device</string>
        </property>
       </widget>
      </item>
@@ -85,14 +85,14 @@
      <item>
       <widget class="QPushButton" name="restoreBackupButton">
        <property name="text">
-        <string>Restore Backup</string>
+        <string>Restore backup</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="updateFirmwareButton">
        <property name="text">
-        <string>Update Firmware</string>
+        <string>Update firmware</string>
        </property>
       </widget>
      </item>
@@ -171,7 +171,7 @@
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
-            <string>Basic Settings</string>
+            <string>Basic settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
@@ -194,7 +194,7 @@
             <item row="0" column="3">
              <widget class="QLabel" name="label_8">
               <property name="text">
-               <string>Firmware Version:</string>
+               <string>Firmware version</string>
               </property>
               <property name="buddy">
                <cstring>firmwareVersionLineEdit</cstring>
@@ -211,7 +211,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>Custom Text:</string>
+               <string>Custom text</string>
               </property>
               <property name="buddy">
                <cstring>customTextLlineEdit</cstring>
@@ -231,7 +231,7 @@
             <item row="1" column="3">
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>Language:</string>
+               <string>Language</string>
               </property>
               <property name="buddy">
                <cstring>languageComboBox</cstring>
@@ -265,7 +265,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>Dive Mode:</string>
+               <string>Dive mode</string>
               </property>
               <property name="buddy">
                <cstring>diveModeComboBox</cstring>
@@ -299,7 +299,7 @@
             <item row="2" column="3">
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Date Format:</string>
+               <string>Date format</string>
               </property>
               <property name="buddy">
                <cstring>dateFormatComboBox</cstring>
@@ -328,7 +328,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Saturation:</string>
+               <string>Saturation</string>
               </property>
               <property name="buddy">
                <cstring>saturationSpinBox</cstring>
@@ -345,7 +345,7 @@
             <item row="3" column="3">
              <widget class="QLabel" name="label_16">
               <property name="text">
-               <string>Desaturation:</string>
+               <string>Desaturation</string>
               </property>
               <property name="buddy">
                <cstring>desaturationSpinBox</cstring>
@@ -362,7 +362,7 @@
             <item row="4" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>Last Deco:</string>
+               <string>Last deco</string>
               </property>
               <property name="buddy">
                <cstring>lastDecoSpinBox</cstring>
@@ -379,7 +379,7 @@
             <item row="4" column="3">
              <widget class="QLabel" name="label_4">
               <property name="text">
-               <string>Brightness:</string>
+               <string>Brightness</string>
               </property>
               <property name="buddy">
                <cstring>brightnessComboBox</cstring>
@@ -408,7 +408,7 @@
             <item row="5" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Sampling Rate:</string>
+               <string>Sampling rate</string>
               </property>
               <property name="buddy">
                <cstring>samplingRateComboBox</cstring>
@@ -432,7 +432,7 @@
             <item row="5" column="3">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>Units:</string>
+               <string>Units</string>
               </property>
               <property name="buddy">
                <cstring>unitsComboBox</cstring>
@@ -456,7 +456,7 @@
             <item row="6" column="0">
              <widget class="QLabel" name="label_14">
               <property name="text">
-               <string>Dive Mode Colour:</string>
+               <string>Dive mode colour</string>
               </property>
               <property name="buddy">
                <cstring>diveModeColour</cstring>
@@ -490,7 +490,7 @@
             <item row="6" column="3">
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>Salinity (0-5%):</string>
+               <string>Salinity (0-5%)</string>
               </property>
               <property name="buddy">
                <cstring>salinitySpinBox</cstring>
@@ -517,7 +517,7 @@
             <item row="7" column="3">
              <widget class="QLabel" name="label_15">
               <property name="text">
-               <string>Compass Gain:</string>
+               <string>Compass gain</string>
               </property>
               <property name="buddy">
                <cstring>compassGainComboBox</cstring>
@@ -591,7 +591,7 @@
           </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
-            <string>Gas Settings</string>
+            <string>Gas settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">
@@ -649,7 +649,7 @@
               </column>
               <column>
                <property name="text">
-                <string>Change Depth</string>
+                <string>Change depth</string>
                </property>
               </column>
               <item row="0" column="0">
@@ -734,7 +734,7 @@
               </column>
               <column>
                <property name="text">
-                <string>Change Depth</string>
+                <string>Change depth</string>
                </property>
               </column>
               <item row="0" column="0">
@@ -804,12 +804,12 @@
               </column>
               <column>
                <property name="text">
-                <string>Set Point [cbar]</string>
+                <string>Set point [cbar]</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Change Depth [m]</string>
+                <string>Change depth [m]</string>
                </property>
               </column>
               <item row="0" column="0">

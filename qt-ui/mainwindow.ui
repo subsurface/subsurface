@@ -637,7 +637,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionConfigure_Dive_Computer">
    <property name="text">
-    <string>Configure &amp;Dive Computer</string>
+    <string>Configure &amp;dive computer</string>
    </property>
   </action>
   <action name="actionReplanDive">
