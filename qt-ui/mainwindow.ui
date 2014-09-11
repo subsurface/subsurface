@@ -666,7 +666,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
    </property>
    <property name="text">
-    <string>Show Pn2</string>
+    <string>Show PN2</string>
    </property>
   </action>
   <action name="profPhe">
@@ -678,7 +678,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_he</normaloff>:/icon_he</iconset>
    </property>
    <property name="text">
-    <string>Show Ph2</string>
+    <string>Show PH2</string>
    </property>
   </action>
   <action name="profDcCeiling">
@@ -774,7 +774,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
    </property>
    <property name="text">
-    <string>Show NTL TTS</string>
+    <string>Show NDL TTS</string>
    </property>
   </action>
   <action name="profSAC">
