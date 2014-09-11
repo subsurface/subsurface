@@ -221,7 +221,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="exportStatistics">
             <property name="text">
-             <string>Export Yearly Statistics</string>
+             <string>Export yearly statistics</string>
             </property>
             <property name="checked">
              <bool>true</bool>

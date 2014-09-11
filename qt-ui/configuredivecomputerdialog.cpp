@@ -390,14 +390,14 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
-	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup Dive Computer Settings"),
+	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
 							  filename, tr("Backup files (*.xml)")
 							  );
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
 		getDeviceData();
 		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data)) {
-			QMessageBox::critical(this, tr("XML Backup Error"),
+			QMessageBox::critical(this, tr("XML backup error"),
 					      tr("An error occurred while saving the backup file.\n%1")
 					      .arg(config->lastError)
 					      );
@@ -415,12 +415,12 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
-	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore Dive Computer Settings"),
+	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
 							   filename, tr("Backup files (*.xml)")
 							   );
 	if (!restorePath.isEmpty()) {
 		if (!config->restoreXMLBackup(restorePath, deviceDetails)) {
-			QMessageBox::critical(this, tr("XML Restore Error"),
+			QMessageBox::critical(this, tr("XML restore error"),
 					      tr("An error occurred while restoring the backup file.\n%1")
 					      .arg(config->lastError)
 					      );

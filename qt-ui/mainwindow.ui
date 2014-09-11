@@ -812,7 +812,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/scale</normaloff>:/scale</iconset>
    </property>
    <property name="text">
-    <string>Scale Graph</string>
+    <string>Scale graph</string>
    </property>
   </action>
   <action name="profTogglePicture">
@@ -824,7 +824,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/pictures</normaloff>:/pictures</iconset>
    </property>
    <property name="text">
-    <string>Toggle Pictures</string>
+    <string>Toggle pictures</string>
    </property>
   </action>
   <action name="profTankbar">
@@ -836,7 +836,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/gaschange</normaloff>:/gaschange</iconset>
    </property>
    <property name="text">
-    <string>Toggle Tank Bar</string>
+    <string>Toggle tank bar</string>
    </property>
   </action>
   <action name="actionFilterTags">
