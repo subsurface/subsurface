@@ -654,7 +654,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
    </property>
    <property name="text">
-    <string>Show PO2</string>
+    <string>Toggle pO2 Graph</string>
    </property>
   </action>
   <action name="profPn2">
@@ -666,7 +666,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
    </property>
    <property name="text">
-    <string>Show PN2</string>
+    <string>Toggle pN2 Graph</string>
    </property>
   </action>
   <action name="profPhe">
@@ -678,7 +678,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_he</normaloff>:/icon_he</iconset>
    </property>
    <property name="text">
-    <string>Show PH2</string>
+    <string>Toggle pHe graph</string>
    </property>
   </action>
   <action name="profDcCeiling">
@@ -690,7 +690,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_ceiling_dc</normaloff>:/icon_ceiling_dc</iconset>
    </property>
    <property name="text">
-    <string>Show Dc Ceiling</string>
+    <string>Toggle DC reported ceiling</string>
    </property>
   </action>
   <action name="profCalcCeiling">
@@ -702,7 +702,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_ceiling_calculated</normaloff>:/icon_ceiling_calculated</iconset>
    </property>
    <property name="text">
-    <string>Calculate Ceiling</string>
+    <string>Toggle calculated ceiling</string>
    </property>
   </action>
   <action name="profCalcAllTissues">
@@ -714,7 +714,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_ceiling_alltissues</normaloff>:/icon_ceiling_alltissues</iconset>
    </property>
    <property name="text">
-    <string>Calculate All Tissues</string>
+    <string>Toggle calculating all tissues</string>
    </property>
   </action>
   <action name="profIncrement3m">
@@ -726,7 +726,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_ceiling_3m</normaloff>:/icon_ceiling_3m</iconset>
    </property>
    <property name="text">
-    <string>3m Increments</string>
+    <string>Toggle calculated ceiling with 3m increments</string>
    </property>
   </action>
   <action name="profHR">
@@ -738,7 +738,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_HR</normaloff>:/icon_HR</iconset>
    </property>
    <property name="text">
-    <string>Heart Rate</string>
+    <string>Toggle heart rate</string>
    </property>
   </action>
   <action name="profMod">
@@ -750,7 +750,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_mod</normaloff>:/icon_mod</iconset>
    </property>
    <property name="text">
-    <string>Show Mod</string>
+    <string>Toggle MOD</string>
    </property>
   </action>
   <action name="profEad">
@@ -762,7 +762,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_ead</normaloff>:/icon_ead</iconset>
    </property>
    <property name="text">
-    <string>Show EAD</string>
+    <string>Toggle EAD, END, EADD</string>
    </property>
   </action>
   <action name="profNdl_tts">
@@ -774,7 +774,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
    </property>
    <property name="text">
-    <string>Show NDL TTS</string>
+    <string>Toggle NDL, TTS</string>
    </property>
   </action>
   <action name="profSAC">
@@ -786,7 +786,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_lung</normaloff>:/icon_lung</iconset>
    </property>
    <property name="text">
-    <string>Show SAC</string>
+    <string>Toggle SAC rate</string>
    </property>
   </action>
   <action name="profRuler">
@@ -798,7 +798,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/ruler</normaloff>:/ruler</iconset>
    </property>
    <property name="text">
-    <string>Show Ruler</string>
+    <string>Toggle ruler</string>
    </property>
   </action>
   <action name="profScaled">
@@ -834,7 +834,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/gaschange</normaloff>:/gaschange</iconset>
    </property>
    <property name="text">
-    <string>Show Tank Bar</string>
+    <string>Toggle Tank Bar</string>
    </property>
   </action>
  </widget>
