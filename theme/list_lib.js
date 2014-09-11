@@ -863,7 +863,7 @@ function get_cylinders_HTML(dive)
 		return "";
 
 	var result = "";
-	result += '<h2 class="det_hed">' + translate.Dive_equipments + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">'+translate.Gas+'</td></tr>';
+	result += '<h2 class="det_hed">' + translate.Dive_equipment + '</h2><table><tr><td class="words">' + translate.Type + '</td><td class="words">' + translate.Size + '</td><td class="words">' + translate.Work_Pressure + '</td><td class="words">' + translate.Start_Pressure + '</td><td class="words">' + translate.End_Pressure + '</td><td class="words">'+translate.Gas+'</td></tr>';
 	for (var i in dive.Cylinders) {
 		result += get_cylinder_HTML(dive.Cylinders[i]);
 	}
@@ -1216,8 +1216,8 @@ function showDiveDetails(dive)
 
 	//draw the canvas and initialize the view
 	document.getElementById("diveinfo").innerHTML = get_dive_HTML(items[dive_id]);
-	document.getElementById("dive_equipments").innerHTML = get_cylinders_HTML(items[dive_id]);
-	document.getElementById("dive_equipments").innerHTML += get_weights_HTML(items[dive_id]);
+	document.getElementById("dive_equipment").innerHTML = get_cylinders_HTML(items[dive_id]);
+	document.getElementById("dive_equipment").innerHTML += get_weights_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML = get_bookmarks_HTML(items[dive_id]);
 	document.getElementById("divestats").innerHTML = get_status_HTML(items[dive_id]);
 	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);

@@ -154,7 +154,7 @@ function changeAdvSearch(e){
 	<div id="diveListPanel">
 	<div id="controlbox">
 		<input id="search_input" oninput="SearchModules(this.value, null)" placeholder="search"/>
-		<a id="adv_srch_sp" onClick="showdiv()" >Advanced Search</a>
+		<a id="adv_srch_sp" onClick="showdiv()" >Advanced search</a>
 		<div id="advanced_search">
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="location" checked>Location<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" value="divemaster" checked>Divemaster<br>
@@ -169,9 +169,9 @@ function changeAdvSearch(e){
 			<option>50</option>
 			<option>100</option>
 		</select>
-		<button id="expnd_all_btn" onClick="expandAll()"> Expand All </button>
-		<button id="claps_all_btn" onClick="collapseAll()"> Collapse All </button>
-		<button id="trip_button" onclick="toggleTrips();">trips</button>
+		<button id="expnd_all_btn" onClick="expandAll()"> Expand all </button>
+		<button id="claps_all_btn" onClick="collapseAll()"> Collapse all </button>
+		<button id="trip_button" onclick="toggleTrips();">Trips</button>
 		<button id="stats_button" onclick="toggleStats();">Stats</button>
 		</div>
 	</div>
@@ -180,8 +180,8 @@ function changeAdvSearch(e){
 		<div id="date_header" onClick="change_sort_col('2')" class="item">Date</div>
 		<div id="time_header" onClick="change_sort_col('3')" class="item">Time</div>
 		<div id="location_header" onClick="change_sort_col('6')" class="item_large">Location</div>
-		<div id="air_temp_header" onClick="change_sort_col('4')" class="item">Air Temp</div>
-		<div id="water_temp_header" onClick="change_sort_col('5')" class="item">Water Temp</div>
+		<div id="air_temp_header" onClick="change_sort_col('4')" class="item">Air temp</div>
+		<div id="water_temp_header" onClick="change_sort_col('5')" class="item">Water temp</div>
 	</div>
 	<div id="diveslist">
 	</div>
@@ -212,8 +212,8 @@ function changeAdvSearch(e){
 		<div id="diveinfo">
 		<h2 class="det_hed">Dive Information</h2>
 		</div>
-		<div id="dive_equipments">
-		<h2 class="det_hed">Dive equipments</h2>
+		<div id="dive_equipment">
+		<h2 class="det_hed">Dive equipment</h2>
 		</div>
 		<div id="bookmarks">
 		<h2 class="det_hed">Events</h2>
@@ -222,7 +222,7 @@ function changeAdvSearch(e){
 		<h2 class="det_hed">Dive stats</h2>
 		</div>
 		<div id="divephotos">
-		<h2 class="det_hed">Dive Photos</h2>
+		<h2 class="det_hed">Dive photos</h2>
 		<div id="slider_container">
 			<button onclick="prev_photo()" style="width:7%;margin:1%;float:left;">&lt;-</button>
 			<div id="slider">
@@ -233,7 +233,7 @@ function changeAdvSearch(e){
 	</div>
 	<div id="diveStat">
 	<center>
-	<button id="bk_to_ls_lbl2" onClick="toggleStats()">Back to List</button>
+	<button id="bk_to_ls_lbl2" onClick="toggleStats()">Back to list</button>
 	</center>
 		<div id="diveStatsData">
 		</div>

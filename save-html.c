@@ -418,20 +418,20 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Date", translate("gettextFromC", "Date"), ", ");
 	write_attribute(b, "Time", translate("gettextFromC", "Time"), ", ");
 	write_attribute(b, "Location", translate("gettextFromC", "Location"), ", ");
-	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air Temp"), ", ");
-	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water Temp"), ", ");
-	write_attribute(b, "dives", translate("gettextFromC", "dives"), ", ");
-	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand All"), ", ");
-	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse All"), ", ");
-	write_attribute(b, "trips", translate("gettextFromC", "trips"), ", ");
+	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air temp"), ", ");
+	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water temp"), ", ");
+	write_attribute(b, "dives", translate("gettextFromC", "Dives"), ", ");
+	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand all"), ", ");
+	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse all"), ", ");
+	write_attribute(b, "trips", translate("gettextFromC", "Trips"), ", ");
 	write_attribute(b, "Statistics", translate("gettextFromC", "Statistics"), ", ");
-	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced Search"), ", ");
+	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced search"), ", ");
 
 	//Dive expanded view
 	write_attribute(b, "Rating", translate("gettextFromC", "Rating"), ", ");
 	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"), ", ");
 	write_attribute(b, "Duration", translate("gettextFromC", "Duration"), ", ");
-	write_attribute(b, "DiveMaster", translate("gettextFromC", "DiveMaster"), ", ");
+	write_attribute(b, "DiveMaster", translate("gettextFromC", "Divemaster"), ", ");
 	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"), ", ");
 	write_attribute(b, "Suit", translate("gettextFromC", "Suit"), ", ");
 	write_attribute(b, "Tags", translate("gettextFromC", "Tags"), ", ");
@@ -441,31 +441,31 @@ void export_translation(const char *file_name)
 	//Yearly statistics view
 	write_attribute(b, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"), ", ");
 	write_attribute(b, "Year", translate("gettextFromC", "Year"), ", ");
-	write_attribute(b, "Total_Time", translate("gettextFromC", "Total Time"), ", ");
-	write_attribute(b, "Average_Time", translate("gettextFromC", "Average Time"), ", ");
-	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest Time"), ", ");
-	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest Time"), ", ");
-	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average Depth"), ", ");
-	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min Depth"), ", ");
-	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max Depth"), ", ");
+	write_attribute(b, "Total_Time", translate("gettextFromC", "Total time"), ", ");
+	write_attribute(b, "Average_Time", translate("gettextFromC", "Average time"), ", ");
+	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest time"), ", ");
+	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest time"), ", ");
+	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average depth"), ", ");
+	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min depth"), ", ");
+	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max depth"), ", ");
 	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"), ", ");
 	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min SAC"), ", ");
 	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max SAC"), ", ");
-	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average Temp"), ", ");
-	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min Temp"), ", ");
-	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max Temp"), ", ");
-	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to List"), ", ");
+	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average temp"), ", ");
+	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min temp"), ", ");
+	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max temp"), ", ");
+	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to list"), ", ");
 
 	//dive detailed view
 	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive No."), ", ");
 	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"), ", ");
 	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"), ", ");
-	write_attribute(b, "Dive_equipments", translate("gettextFromC", "Dive equipments"), ", ");
+	write_attribute(b, "Dive_equipment", translate("gettextFromC", "Dive equipment"), ", ");
 	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
 	write_attribute(b, "Size", translate("gettextFromC", "Size"), ", ");
-	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work Pressure"), ", ");
-	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start Pressure"), ", ");
-	write_attribute(b, "End_Pressure", translate("gettextFromC", "End Pressure"), ", ");
+	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work pressure"), ", ");
+	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start pressure"), ", ");
+	write_attribute(b, "End_Pressure", translate("gettextFromC", "End pressure"), ", ");
 	write_attribute(b, "Gas", translate("gettextFromC", "Gas"), ", ");
 	write_attribute(b, "Weight", translate("gettextFromC", "Weight"), ", ");
 	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
@@ -473,7 +473,7 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Name", translate("gettextFromC", "Name"), ", ");
 	write_attribute(b, "Value", translate("gettextFromC", "Value"), ", ");
 	write_attribute(b, "Coordinates", translate("gettextFromC", "Coordinates"), ", ");
-	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive Status"), " ");
+	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive status"), " ");
 
 	put_format(b, "}");
 
