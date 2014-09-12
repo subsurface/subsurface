@@ -319,6 +319,7 @@ void MainTab::clearInfo()
 {
 	ui.sacText->clear();
 	ui.otuText->clear();
+	ui.maxcnsText->clear();
 	ui.oxygenHeliumText->clear();
 	ui.gasUsedText->clear();
 	ui.dateText->clear();
@@ -475,6 +476,7 @@ void MainTab::updateDiveInfo(bool clear)
 		}
 		ui.maximumDepthText->setText(get_depth_string(displayed_dive.maxdepth, true));
 		ui.averageDepthText->setText(get_depth_string(displayed_dive.meandepth, true));
+		ui.maxcnsText->setText(QString("%1\%").arg(displayed_dive.maxcns));
 		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
 		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
 		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));

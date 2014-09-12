@@ -532,13 +532,13 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QGroupBox" name="groupBox_6">
+         <widget class="QGroupBox" name="groupBox_15">
           <property name="title">
-           <string>Max. depth</string>
+           <string>CNS</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <layout class="QHBoxLayout" name="horizontalLayout_14">
            <item>
-            <widget class="QLabel" name="maximumDepthText">
+            <widget class="QLabel" name="maxcnsText">
              <property name="text">
               <string/>
              </property>
@@ -551,25 +551,6 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QGroupBox" name="groupBox_7">
-          <property name="title">
-           <string>Avg. depth</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QLabel" name="averageDepthText">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="2">
          <widget class="QGroupBox" name="groupBox_2">
           <property name="title">
            <string>OTU</string>
@@ -588,7 +569,45 @@
           </layout>
          </widget>
         </item>
+        <item row="2" column="2">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Max. depth</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="maximumDepthText">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
         <item row="3" column="0">
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>Avg. depth</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLabel" name="averageDepthText">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="1">
          <widget class="QGroupBox" name="groupBox_10">
           <property name="title">
            <string>Air pressure</string>
@@ -607,7 +626,7 @@
           </layout>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="3" column="2">
          <widget class="QGroupBox" name="groupBox_9">
           <property name="title">
            <string>Air temp.</string>
@@ -626,7 +645,7 @@
           </layout>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="4" column="0">
          <widget class="QGroupBox" name="groupBox_8">
           <property name="title">
            <string>Water temp.</string>
@@ -664,7 +683,7 @@
           </layout>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="4" column="1">
          <widget class="QGroupBox" name="groupBox_1">
           <property name="title">
            <string>Salinity</string>
