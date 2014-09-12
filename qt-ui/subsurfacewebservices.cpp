@@ -283,7 +283,7 @@ void WebServices::updateProgress(qint64 current, qint64 total)
 	}
 	ui.progressBar->setRange(0, total);
 	ui.progressBar->setValue(current);
-	ui.status->setText(tr("Transfering data..."));
+	ui.status->setText(tr("Transferring data..."));
 
 	// reset the timer: 30 seconds after we last got any data
 	timeout.start();
