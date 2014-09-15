@@ -1,8 +1,8 @@
 #include "divetooltipitem.h"
 #include "divecartesianaxis.h"
 #include "profilewidget2.h"
-#include "profile.h"
 #include "dive.h"
+#include "profile.h"
 #include "membuffer.h"
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>

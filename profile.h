@@ -38,7 +38,7 @@ struct plot_data {
 	int cns;
 	int smoothed;
 	int sac;
-	double po2, pn2, phe;
+	struct gas_pressures pressures;
 	double o2setpoint, o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
 	double mod, ead, end, eadd;
 	velocity_t velocity;

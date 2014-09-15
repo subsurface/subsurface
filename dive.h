@@ -115,6 +115,11 @@ static inline int get_he(const struct gasmix *mix)
 	return mix->he.permille;
 }
 
+struct gas_pressures {
+	double o2, n2, he;
+};
+
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const enum dive_comp_type type);
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
 extern struct gasmix *get_gasmix_from_event(struct event *ev);

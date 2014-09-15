@@ -44,8 +44,8 @@ static void dump_pi(struct plot_info *pi)
 		       entry->pressure[0], entry->pressure[1],
 		       entry->sec / 60, entry->sec % 60,
 		       entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
-		       entry->po2, entry->phe, entry->pn2,
-		       entry->po2 + entry->phe + entry->pn2);
+		       entry->pressures.o2, entry->pressures.he, entry->pressures.n2,
+		       entry->pressures.o2 + entry->pressures.he + entry->pressures.n2);
 	}
 	printf("   }\n");
 }
@@ -550,7 +550,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		pi->has_ndl |= sample->ndl.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
-		entry->po2 = sample->po2.mbar / 1000.0;
+		entry->pressures.o2 = sample->po2.mbar / 1000.0;
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
@@ -703,7 +703,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
 			tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
-						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->pressures.o2 * 1000, dive);
 		}
 		/* we don't need to calculate anything else */
 		return;
@@ -715,7 +715,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
 		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->po2 * 1000, dive);
+					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->pressures.o2 * 1000, dive);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
 	}
 	ascent_depth = next_stop;
@@ -733,13 +733,13 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 
 		entry->tts_calc += time_stepsize;
 		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+					       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->pressures.o2 * 1000, dive);
 
 		if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->po2 * 1000, dive);
+					    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->pressures.o2 * 1000, dive);
 			ascent_depth = next_stop;
 			next_stop -= deco_stepsize;
 		}
@@ -764,7 +764,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->po2 * 1000, dive);
+							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->pressures.o2 * 1000, dive);
 			tissue_tolerance = min_pressure;
 			if (j - t0 < time_stepsize)
 				time_stepsize = j - t0;
@@ -808,6 +808,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 {
 	int i;
 	double amb_pressure;
+	struct gas_pressures pressures;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fo2, fhe;
@@ -818,23 +819,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 
-		if (entry->po2) {
-			/* we have an O₂ partial pressure in the sample - so this
-			 * is likely a CC dive... use that instead of the value
-			 * from the cylinder info */
-			if (entry->po2 >= amb_pressure || fo2 == 1000) {
-				entry->po2 = amb_pressure;
-				entry->phe = 0;
-				entry->pn2 = 0;
-			} else {
-				entry->phe = (amb_pressure - entry->po2) * (double)fhe / (1000 - fo2);
-				entry->pn2 = amb_pressure - entry->po2 - entry->phe;
-			}
-		} else {
-			entry->po2 = fo2 / 1000.0 * amb_pressure;
-			entry->phe = fhe / 1000.0 * amb_pressure;
-			entry->pn2 = (1000 - fo2 - fhe) / 1000.0 * amb_pressure;
-		}
+		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, dive->dc.dctype);
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
@@ -845,9 +830,9 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
-				      (entry->po2 / amb_pressure * O2_DENSITY +
-				       entry->pn2 / amb_pressure * N2_DENSITY +
-				       entry->phe / amb_pressure * HE_DENSITY) /
+				      (entry->pressures.o2 / amb_pressure * O2_DENSITY +
+				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
+				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
 		if (entry->mod < 0)
 			entry->mod = 0;
@@ -877,7 +862,7 @@ static void debug_print_profiledata(struct plot_info *pi)
 			entry = pi->entry + i;
 			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %f %f %f %f PO2= %f\n", i, SENSOR_PRESSURE(entry),
 				INTERPOLATED_PRESSURE(entry), DILUENT_PRESSURE(entry), INTERPOLATED_DILUENT_PRESSURE(entry),
-				entry->o2setpoint, entry->o2sensor[0], entry->o2sensor[1], entry->o2sensor[2], entry->po2);
+				entry->o2setpoint, entry->o2sensor[0], entry->o2sensor[1], entry->o2sensor[2], entry->pressures.o2);
 		}
 		fclose(f1);
 	}
@@ -972,11 +957,11 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (entry->cns)
 		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2)
-		put_format(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->po2);
+		put_format(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.o2);
 	if (prefs.pp_graphs.pn2)
-		put_format(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pn2);
+		put_format(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.n2);
 	if (prefs.pp_graphs.phe)
-		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->phe);
+		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
 	if (prefs.mod) {
 		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
 		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);

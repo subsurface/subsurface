@@ -47,11 +47,11 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 		case SAC:
 			return item.sac;
 		case PN2:
-			return item.pn2;
+			return item.pressures.n2;
 		case PHE:
-			return item.phe;
+			return item.pressures.he;
 		case PO2:
-			return item.po2;
+			return item.pressures.o2;
 		case HEARTBEAT:
 			return item.heartbeat;
 		}
@@ -156,15 +156,15 @@ unsigned int DivePlotDataModel::dcShown() const
 	{                                                             \
 		double ret = -1;                                      \
 		for (int i = 0, count = rowCount(); i < count; i++) { \
-			if (pInfo.entry[i].GAS > ret)                 \
-				ret = pInfo.entry[i].GAS;             \
+			if (pInfo.entry[i].pressures.GAS > ret)                 \
+				ret = pInfo.entry[i].pressures.GAS;             \
 		}                                                     \
 		return ret;                                           \
 	}
 
-MAX_PPGAS_FUNC(phe, pheMax);
-MAX_PPGAS_FUNC(pn2, pn2Max);
-MAX_PPGAS_FUNC(po2, po2Max);
+MAX_PPGAS_FUNC(he, pheMax);
+MAX_PPGAS_FUNC(n2, pn2Max);
+MAX_PPGAS_FUNC(o2, po2Max);
 
 void DivePlotDataModel::emitDataChanged()
 {

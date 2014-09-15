@@ -1454,6 +1454,29 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 	return delta_he + delta_o2;
 }
 
+/* Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be extended to PSCT */
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const enum dive_comp_type type)
+{
+	if (po2) {
+		/* we have an O₂ partial pressure in the sample - so this
+		 * is likely a CC dive... use that instead of the value
+		 * from the cylinder info */
+		if (po2 >= amb_pressure || get_o2(mix) == 1000) {
+			pressures->o2 = amb_pressure;
+			pressures->he = 0;
+			pressures->n2 = 0;
+		} else {
+			pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+			pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+		}
+	} else {
+		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure;
+		pressures->he = get_he(mix) / 1000.0 * amb_pressure;
+		pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
+	}
+
+}
+
 static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int used)
 {
 	int i;
