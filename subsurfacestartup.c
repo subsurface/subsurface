@@ -19,6 +19,7 @@ struct preferences default_prefs = {
 	.modpO2 = 1.6,
 	.ead = false,
 	.hrgraph = true,
+	.percentagegraph = true,
 	.dcceiling = true,
 	.redceiling = false,
 	.calcceiling = false,

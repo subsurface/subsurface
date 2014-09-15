@@ -107,6 +107,39 @@ private:
 	QString visibilityKey;
 };
 
+class DivePercentageItem : public AbstractProfilePolygonItem {
+	Q_OBJECT
+public:
+	DivePercentageItem(int i);
+	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	virtual void settingsChanged();
+private:
+	QString visibilityKey;
+};
+
+class DiveAmbPressureItem : public AbstractProfilePolygonItem {
+	Q_OBJECT
+public:
+	DiveAmbPressureItem();
+	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	virtual void settingsChanged();
+private:
+	QString visibilityKey;
+};
+
+class DiveGFLineItem : public AbstractProfilePolygonItem {
+	Q_OBJECT
+public:
+	DiveGFLineItem();
+	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	virtual void settingsChanged();
+private:
+	QString visibilityKey;
+};
+
 class DiveGasPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 

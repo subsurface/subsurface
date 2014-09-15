@@ -759,6 +759,10 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		struct plot_data *entry = pi->entry + i;
 		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
 		int time_stepsize = 20;
+
+		entry->ambpressure = (double) depth_to_mbar(entry->depth, dive) / 1000.0;
+		entry->gfline = MAX((double) prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
+				(prefs.gflow - prefs.gfhigh) + prefs.gfhigh) * (100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
 		if (t0 != t1 && t1 - t0 < time_stepsize)
 			time_stepsize = t1 - t0;
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
@@ -773,8 +777,13 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			entry->ceiling = (entry - 1)->ceiling;
 		else
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calcceiling3m);
-		for (j = 0; j < 16; j++)
+		for (j = 0; j < 16; j++) {
+			double m_value = buehlmann_inertgas_a[j] +  entry->ambpressure / buehlmann_inertgas_b[j];
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
+			entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
+							tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE:
+							AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE);
+		}
 
 		/* should we do more calculations?
 		 * We don't for print-mode because this info doesn't show up there */

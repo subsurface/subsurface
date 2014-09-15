@@ -31,6 +31,7 @@ struct plot_data {
 	int depth;
 	int ceiling;
 	int ceilings[16];
+	int percentages[16];
 	int ndl;
 	int tts;
 	int stoptime;
@@ -55,6 +56,8 @@ struct plot_data {
 	int pressure_time;
 	int heartbeat;
 	int bearing;
+	double ambpressure;
+	double gfline;
 };
 
 struct ev_select {

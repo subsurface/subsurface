@@ -256,7 +256,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1682</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -842,6 +842,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionFilterTags">
    <property name="text">
     <string>Filter by Tags</string>
+   </property>
+  </action>
+  <action name="profTissues">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../subsurface.qrc">
+     <normaloff>:/icon_tissue</normaloff>:/icon_tissue</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle Tissue Graph</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle Tissue Graph</string>
    </property>
   </action>
  </widget>

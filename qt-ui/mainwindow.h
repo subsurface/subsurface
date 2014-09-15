@@ -143,6 +143,7 @@ slots:
 	void on_profScaled_triggered(bool triggered);
 	void on_profTogglePicture_triggered(bool triggered);
 	void on_profTankbar_triggered(bool triggered);
+	void on_profTissues_triggered(bool triggered);
 	void on_actionExport_triggered();
 	void on_copy_triggered();
 	void on_paste_triggered();

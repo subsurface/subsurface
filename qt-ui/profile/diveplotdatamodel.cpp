@@ -54,11 +54,19 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.pressures.o2;
 		case HEARTBEAT:
 			return item.heartbeat;
+		case AMBPRESSURE:
+			return AMB_PERCENTAGE;
+		case GFLINE:
+			return item.gfline;
 		}
 	}
 
 	if (role == Qt::DisplayRole && index.column() >= TISSUE_1 && index.column() <= TISSUE_16) {
 		return item.ceilings[index.column() - TISSUE_1];
+	}
+
+	if (role == Qt::DisplayRole && index.column() >= PERCENTAGE_1 && index.column() <= PERCENTAGE_16) {
+		return item.percentages[index.column() - PERCENTAGE_1];
 	}
 
 	if (role == Qt::BackgroundRole) {
@@ -117,9 +125,14 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("pHe");
 	case PO2:
 		return tr("pO₂");
+	case AMBPRESSURE:
+		return tr("Ambient pressure");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);
+	}
+	if (role == Qt::DisplayRole && section >= PERCENTAGE_1 && section <= PERCENTAGE_16) {
+		return QString("Tissue: %1").arg(section - PERCENTAGE_1);
 	}
 	return QVariant();
 }

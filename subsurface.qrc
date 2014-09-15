@@ -58,6 +58,7 @@
         <file alias="icon_ceiling_dc">icons/pc.png</file>
         <file alias="icon_ead">icons/ead.png</file>
         <file alias="icon_HR">icons/icon-HR.png</file>
+        <file alias="icon_tissue">icons/petrel.png</file>
         <file alias="calendar">icons/calendarbg.png</file>
         <file alias="pictures">icons/pictures.png</file>
         <file>icons/subsurface/index.theme</file>

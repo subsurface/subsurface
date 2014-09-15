@@ -57,6 +57,7 @@ static struct _ItemPos {
 	_Axis depth;
 	_Axis partialPressure;
 	_Axis partialPressureWithTankBar;
+	_Axis percentage;
 	_Axis time;
 	_Axis cylinder;
 	_Axis temperature;
@@ -89,6 +90,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	po2GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
+	percentageAxis(new DiveCartesianAxis()),
+	ambPressureItem(new DiveAmbPressureItem()),
+	gflineItem(new DiveGFLineItem()),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -159,6 +163,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
+	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(heartBeatItem);
 	scene()->addItem(rulerItem);
@@ -174,6 +179,11 @@ void ProfileWidget2::addItemsToScene()
 	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
+	Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
+		scene()->addItem(percentage);
+	}
+	scene()->addItem(ambPressureItem);
+	scene()->addItem(gflineItem);
 }
 
 void ProfileWidget2::setupItemOnScene()
@@ -207,6 +217,12 @@ void ProfileWidget2::setupItemOnScene()
 	heartBeatAxis->setFontLabelScale(0.7);
 	heartBeatAxis->setLineSize(96);
 
+	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
+	percentageAxis->setTickSize(0.2);
+	percentageAxis->setTickInterval(10);
+	percentageAxis->setFontLabelScale(0.7);
+	percentageAxis->setLineSize(96);
+
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setTickSize(2);
 	temperatureAxis->setTickInterval(300);
@@ -233,10 +249,15 @@ void ProfileWidget2::setupItemOnScene()
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
 		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allTissues.append(tissueItem);
+		DivePercentageItem *percentageItem = new DivePercentageItem(i);
+		setupItem(percentageItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::PERCENTAGE_1 + i, DivePlotDataModel::TIME, 1 + i);
+		allPercentages.append(percentageItem);
 	}
 	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
+	setupItem(ambPressureItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
+	setupItem(gflineItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
@@ -261,6 +282,8 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
+	percentageAxis->setTextVisible(true);
+	percentageAxis->setLinesVisible(true);
 }
 
 void ProfileWidget2::replot()
@@ -307,7 +330,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
-	itemPos.partialPressure.expanded.setP2(QPointF(0, 30));
+	itemPos.partialPressure.expanded.setP2(QPointF(0, 20));
 	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
 	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 27));
 
@@ -334,7 +357,12 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.heartBeat.pos.on.setX(3);
 	itemPos.heartBeat.pos.on.setY(60);
 	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
-	itemPos.heartBeat.expanded.setP2(QPointF(0, 20));
+	itemPos.heartBeat.expanded.setP2(QPointF(0, 15));
+
+	itemPos.percentage.pos.on.setX(3);
+	itemPos.percentage.pos.on.setY(85); // was 80
+	itemPos.percentage.expanded.setP1(QPointF(0, 0));
+	itemPos.percentage.expanded.setP2(QPointF(0, 15)); // was 20
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
@@ -484,6 +512,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
 	}
 	heartBeatAxis->setVisible(prefs.hrgraph && pInfo.maxhr);
+
+	percentageAxis->setMinimum(0);
+	percentageAxis->setMaximum(100);
+	percentageAxis->setVisible(false);
+	percentageAxis->updateTicks(HR_AXIS);
 
 	timeAxis->setMaximum(maxtime);
 	int i, incr;
@@ -760,12 +793,15 @@ void ProfileWidget2::setEmptyState()
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
+	ambPressureItem->setVisible(false);
+	gflineItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 
 	#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 	HIDE_ALL(DiveCalculatedTissue, allTissues);
+	HIDE_ALL(DivePercentageItem, allPercentages);
 	HIDE_ALL(DiveEventItem, eventItems);
 	HIDE_ALL(DiveHandler, handles);
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
@@ -842,6 +878,16 @@ void ProfileWidget2::setProfileState()
 			tissue->setVisible(true);
 		}
 	}
+	percentageAxis->setPos(itemPos.percentage.pos.on);
+	percentageAxis->setLine(itemPos.percentage.expanded);
+	if (prefs.percentagegraph) {
+		Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
+			percentage->setVisible(true);
+		}
+
+		ambPressureItem->setVisible(true);
+	}	gflineItem->setVisible(true);
+
 	rulerItem->setVisible(prefs.rulergraph);
 	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);

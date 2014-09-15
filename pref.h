@@ -45,6 +45,7 @@ struct preferences {
 	short show_average_depth;
 	short zoomed_plot;
 	short hrgraph;
+	short percentagegraph;
 	short rulergraph;
 	short tankbar;
 	short save_userid_local;

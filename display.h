@@ -66,6 +66,8 @@ extern const char *default_dive_computer_vendor;
 extern const char *default_dive_computer_product;
 extern const char *default_dive_computer_device;
 
+#define AMB_PERCENTAGE 50.0
+
 #ifdef __cplusplus
 }
 #endif

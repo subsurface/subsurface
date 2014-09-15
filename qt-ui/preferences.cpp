@@ -330,6 +330,7 @@ void PreferencesDialog::loadSettings()
 	GET_BOOL("calcalltissues", calcalltissues);
 	GET_BOOL("hrgraph", hrgraph);
 	GET_BOOL("tankbar", tankbar);
+	GET_BOOL("percentagegraph", percentagegraph);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);

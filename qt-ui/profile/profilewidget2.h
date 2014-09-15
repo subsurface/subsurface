@@ -15,6 +15,7 @@
 //  */
 #include "graphicsview-common.h"
 #include "divelineitem.h"
+#include "diveprofileitem.h"
 
 class RulerItem2;
 struct dive;
@@ -34,6 +35,7 @@ class DiveProfileItem;
 class TimeAxis;
 class DiveTemperatureItem;
 class DiveHeartrateItem;
+class PercentageItem;
 class DiveGasPressureItem;
 class DiveCalculatedCeiling;
 class DiveCalculatedTissue;
@@ -163,6 +165,10 @@ private:
 	PartialPressureGasItem *po2GasItem;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
+	DiveCartesianAxis *percentageAxis;
+	QList<DivePercentageItem *> allPercentages;
+	DiveAmbPressureItem *ambPressureItem;
+	DiveGFLineItem *gflineItem;
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;

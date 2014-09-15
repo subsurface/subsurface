@@ -338,6 +338,155 @@ void DiveHeartrateItem::settingsChanged()
 	setVisible(prefs.hrgraph);
 }
 
+DivePercentageItem::DivePercentageItem(int i)
+{
+	QPen pen;
+	QColor color;
+	color.setHsl(100 + 10 * i, 200, 100);
+	pen.setBrush(QBrush(color));
+	pen.setCosmetic(true);
+	pen.setWidth(1);
+	setPen(pen);
+	settingsChanged();
+}
+
+void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	int last = -300, last_printed_hr = 0, sec = 0;
+
+	// We don't have enougth data to calculate things, quit.
+	if (!shouldCalculateStuff(topLeft, bottomRight))
+		return;
+
+	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	QPolygonF poly;
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+		int hr = dataModel->index(i, vDataColumn).data().toInt();
+		if (!hr)
+			continue;
+		sec = dataModel->index(i, hDataColumn).data().toInt();
+		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(hr));
+		poly.append(point);
+	}
+	setPolygon(poly);
+
+	if (texts.count())
+		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+}
+
+void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	if (polygon().isEmpty())
+		return;
+	painter->save();
+	painter->setPen(pen());
+	painter->drawPolyline(polygon());
+	painter->restore();
+}
+
+void DivePercentageItem::settingsChanged()
+{
+	setVisible(prefs.percentagegraph);
+}
+
+DiveAmbPressureItem::DiveAmbPressureItem()
+{
+	QPen pen;
+	pen.setBrush(QBrush(getColor(::AMB_PRESSURE_LINE)));
+	pen.setCosmetic(true);
+	pen.setWidth(2);
+	setPen(pen);
+	settingsChanged();
+}
+
+void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	int last = -300, last_printed_hr = 0, sec = 0;
+
+	// We don't have enougth data to calculate things, quit.
+	if (!shouldCalculateStuff(topLeft, bottomRight))
+		return;
+
+	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	QPolygonF poly;
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+		int hr = dataModel->index(i, vDataColumn).data().toInt();
+		if (!hr)
+			continue;
+		sec = dataModel->index(i, hDataColumn).data().toInt();
+		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(hr));
+		poly.append(point);
+	}
+	setPolygon(poly);
+
+	if (texts.count())
+		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+}
+
+void DiveAmbPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	if (polygon().isEmpty())
+		return;
+	painter->save();
+	painter->setPen(pen());
+	painter->drawPolyline(polygon());
+	painter->restore();
+}
+
+void DiveAmbPressureItem::settingsChanged()
+{
+	setVisible(prefs.percentagegraph);
+}
+
+DiveGFLineItem::DiveGFLineItem()
+{
+	QPen pen;
+	pen.setBrush(QBrush(getColor(::GF_LINE)));
+	pen.setCosmetic(true);
+	pen.setWidth(2);
+	setPen(pen);
+	settingsChanged();
+}
+
+void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	int last = -300, last_printed_hr = 0, sec = 0;
+
+	// We don't have enougth data to calculate things, quit.
+	if (!shouldCalculateStuff(topLeft, bottomRight))
+		return;
+
+	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	QPolygonF poly;
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+		int hr = dataModel->index(i, vDataColumn).data().toInt();
+		if (!hr)
+			continue;
+		sec = dataModel->index(i, hDataColumn).data().toInt();
+		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(hr));
+		poly.append(point);
+	}
+	setPolygon(poly);
+
+	if (texts.count())
+		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+}
+
+void DiveGFLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	if (polygon().isEmpty())
+		return;
+	painter->save();
+	painter->setPen(pen());
+	painter->drawPolyline(polygon());
+	painter->restore();
+}
+
+void DiveGFLineItem::settingsChanged()
+{
+	setVisible(prefs.percentagegraph);
+}
+
 DiveTemperatureItem::DiveTemperatureItem()
 {
 	QPen pen;

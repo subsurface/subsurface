@@ -85,12 +85,12 @@ double gf_low_pressure_this_dive;
 #define TISSUE_ARRAY_SZ sizeof(tissue_n2_sat)
 
 double tolerated_by_tissue[16];
-
+double tissue_inertgas_saturation[16];
+double buehlmann_inertgas_a[16], buehlmann_inertgas_b[16];
 
 static double tissue_tolerance_calc(const struct dive *dive)
 {
 	int ci = -1;
-	double tissue_inertgas_saturation[16], buehlmann_inertgas_a[16], buehlmann_inertgas_b[16];
 	double ret_tolerance_limit_ambient_pressure = 0.0;
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
