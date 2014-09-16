@@ -362,7 +362,7 @@ static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
+static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
 {
 	double specific_weight;
 	int mbar = surface_pressure.mbar;
@@ -376,7 +376,7 @@ inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int s
 	return mbar;
 }
 
-inline int depth_to_mbar(int depth, struct dive *dive)
+static inline int depth_to_mbar(int depth, struct dive *dive)
 {
 	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
 }
