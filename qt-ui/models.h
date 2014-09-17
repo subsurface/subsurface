@@ -382,7 +382,6 @@ class ProfilePrintModel : public QAbstractTableModel {
 private:
 	int diveId;
 	double fontSize;
-	QString truncateString(char *str, const int maxlen) const;
 
 public:
 	ProfilePrintModel(QObject *parent = 0);
