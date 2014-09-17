@@ -2162,8 +2162,14 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive* d = (struct dive* ) diveVariant.value<void*>();
-	if(!d)
+
+	if (!d) { // It's a trip, only show the ones that have dives to be shown.
+		for(int i = 0; i < sourceModel()->rowCount(index0); i++){
+			if (filterAcceptsRow(i, index0))
+				return true;
+		}
 		return false;
+	}
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
