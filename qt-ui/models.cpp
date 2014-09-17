@@ -2136,10 +2136,12 @@ void TagFilterModel::repopulate()
 		list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
 	}
+	list << tr("Empty Tags");
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];
 	memset(checkState, false, list.count());
+	checkState[list.count()-1] = true;
 }
 
 bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -2173,18 +2175,16 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
-	if (!head){ // doesn't have tags, only show if no tags are selected.
-		for(int i = 0; i < TagFilterModel::instance()->stringList().count(); i++){
-			if (TagFilterModel::instance()->checkState[i])
-				return false;
-		}
-		return true;
+	if (!head){ // last tag means "Show empty tags";
+		return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount()-1];
 	}
 
 	// have at least one tag.
+	QStringList tagList = TagFilterModel::instance()->stringList();
+	tagList.removeLast(); // remove the "Show Empty Tags";
 	while(head) {
 		QString tagName(head->tag->name);
-		int index = TagFilterModel::instance()->stringList().indexOf(tagName);
+		int index = tagList.indexOf(tagName);
 		if (TagFilterModel::instance()->checkState[index])
 			return true;
 		head = head->next;
