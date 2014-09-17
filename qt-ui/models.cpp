@@ -2146,6 +2146,7 @@ bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, in
 {
 	if(role == Qt::CheckStateRole){
 		checkState[index.row()] = value.toBool();
+		dataChanged(index,index);
 		return true;
 	}
 	return false;
@@ -2153,7 +2154,7 @@ bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, in
 
 TagFilterSortModel::TagFilterSortModel(QObject *parent): QSortFilterProxyModel(parent)
 {
-
+	connect(TagFilterModel::instance(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(invalidate()));
 }
 
 bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
@@ -2162,16 +2163,25 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive* d = (struct dive* ) diveVariant.value<void*>();
 	if(!d)
-		return false; // it's a trip.
-
+		return false;
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
+	if (!head){ // doesn't have tags, only show if no tags are selected.
+		for(int i = 0; i < TagFilterModel::instance()->stringList().count(); i++){
+			if (TagFilterModel::instance()->checkState[i])
+				return false;
+		}
+		return true;
+	}
+
+	// have at least one tag.
 	while(head) {
 		QString tagName(head->tag->name);
 		int index = TagFilterModel::instance()->stringList().indexOf(tagName);
-		if (TagFilterModel::instance()->checkState[index] == false )
+		if (TagFilterModel::instance()->checkState[index])
 			return true;
+		head = head->next;
 	}
 	return false;
 }

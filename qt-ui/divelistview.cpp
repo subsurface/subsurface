@@ -34,7 +34,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate(this));
-	QSortFilterProxyModel *model = new QSortFilterProxyModel(this);
+	TagFilterSortModel *model = new TagFilterSortModel(this);
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -57,8 +57,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	searchBox.installEventFilter(this);
 	searchBox.hide();
-	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
-	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
+//	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
+//	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 }
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
