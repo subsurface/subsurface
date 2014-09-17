@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QShortcut>
 #include <QCalendarWidget>
+#include <QSortFilterProxyModel>
 #include "exif.h"
 #include "dive.h"
 #include "file.h"
@@ -459,4 +460,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 TagFilter::TagFilter(QWidget *parent): QWidget(parent)
 {
 	ui.setupUi(this);
+	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
+	filter->setSourceModel(TagFilterModel::instance());
+	connect(ui.filterTag, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	ui.tagView->setModel(filter);
 }

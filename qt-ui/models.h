@@ -417,4 +417,18 @@ private:
 
 	QStringList languages;
 };
+
+class TagFilterModel : public QStringListModel {
+	Q_OBJECT
+public:
+	static TagFilterModel *instance();
+	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+public slots:
+	void repopulate();
+private:
+	explicit TagFilterModel(QObject *parent = 0);
+	bool *checkState;
+};
 #endif // MODELS_H

@@ -2099,3 +2099,54 @@ int LanguageModel::rowCount(const QModelIndex &parent) const
 {
 	return languages.count();
 }
+
+
+TagFilterModel::TagFilterModel(QObject *parent): QStringListModel(parent), checkState(NULL)
+{
+}
+
+TagFilterModel *TagFilterModel::instance()
+{
+	static TagFilterModel *self = new TagFilterModel();
+	return self;
+}
+
+QVariant TagFilterModel::data(const QModelIndex &index, int role) const
+{
+	if(role == Qt::CheckStateRole){
+		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
+	} else if (role == Qt::DisplayRole) {
+		return stringList()[index.row()];
+	}
+	return QVariant();
+}
+
+Qt::ItemFlags TagFilterModel::flags(const QModelIndex &index) const
+{
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
+void TagFilterModel::repopulate()
+{
+	if (g_tag_list == NULL)
+		return;
+	QStringList list;
+	struct tag_entry *current_tag_entry = g_tag_list->next;
+	while (current_tag_entry != NULL) {
+		list.append(QString(current_tag_entry->tag->name));
+		current_tag_entry = current_tag_entry->next;
+	}
+	setStringList(list);
+	delete[] checkState;
+	checkState = new bool[list.count()];
+	memset(checkState, false, list.count());
+}
+
+bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if(role == Qt::CheckStateRole){
+		checkState[index.row()] = value.toBool();
+		return true;
+	}
+	return false;
+}
