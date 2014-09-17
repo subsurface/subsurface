@@ -210,7 +210,7 @@ table.jqplot-cursor-tooltip {
     border: 1px solid #cccccc;
     font-size: 0.75em;
     white-space: nowrap;
-    background: rgba(208,208,208,0.5);
+    background: rgba(208,208,208,0.9);
     padding: 1px;
 }
 

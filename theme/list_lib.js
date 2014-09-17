@@ -1118,6 +1118,7 @@ function canvas_draw()
 				 },
 				 highlighter : {
 					 show : true,
+					 tooltipLocation: null,
 					 tooltipContentEditor: function(str, seriesIndex, pointIndex, jqPlot) {
 						if(seriesIndex===2)
 						return items[dive_id].events[pointIndex].name;
@@ -1132,8 +1133,8 @@ function canvas_draw()
 				 },
 				 series :[
 					 {
-						 color : 'rgba(35,58,58,.6)',
-						 negativeColor : 'rgba(35,58,58,.6)',
+						 color : 'rgba(75,98,98,.6)',
+						 negativeColor : 'rgba(75,98,98,.6)',
 						 showMarker : true,
 						 showLine : true,
 						 fill : true,
