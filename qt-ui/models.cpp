@@ -2140,7 +2140,7 @@ void TagFilterModel::repopulate()
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];
-	memset(checkState, false, list.count());
+	memset(checkState, true, list.count());
 	checkState[list.count()-1] = true;
 }
 
