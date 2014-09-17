@@ -11,6 +11,7 @@
 #include <QCoreApplication>
 #include <QStringList>
 #include <QStringListModel>
+#include <QSortFilterProxyModel>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -217,7 +218,6 @@ struct TripItem;
 
 class TreeModel : public QAbstractItemModel {
 	Q_OBJECT
-
 public:
 	TreeModel(QObject *parent = 0);
 	virtual ~TreeModel();
@@ -425,10 +425,17 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+	bool *checkState;
 public slots:
 	void repopulate();
 private:
 	explicit TagFilterModel(QObject *parent = 0);
-	bool *checkState;
+};
+
+class TagFilterSortModel : public QSortFilterProxyModel {
+	Q_OBJECT
+public:
+	TagFilterSortModel(QObject *parent = 0);
+	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 };
 #endif // MODELS_H

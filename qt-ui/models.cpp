@@ -2150,3 +2150,28 @@ bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, in
 	}
 	return false;
 }
+
+TagFilterSortModel::TagFilterSortModel(QObject *parent): QSortFilterProxyModel(parent)
+{
+
+}
+
+bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive* d = (struct dive* ) diveVariant.value<void*>();
+	if(!d)
+		return false; // it's a trip.
+
+	// Checked means 'Show', Unchecked means 'Hide'.
+	struct tag_entry *head = d->tag_list;
+
+	while(head) {
+		QString tagName(head->tag->name);
+		int index = TagFilterModel::instance()->stringList().indexOf(tagName);
+		if (TagFilterModel::instance()->checkState[index] == false )
+			return true;
+	}
+	return false;
+}
