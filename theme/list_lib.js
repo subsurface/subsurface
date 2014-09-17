@@ -126,7 +126,7 @@ function next_page()
 function view_pagging(start, end)
 {
 	var page = document.getElementById("pagging");
-	page.innerHTML = (start + 1) + ' to ' + (end + 1) + ' of ' + (itemsToShow.length) + '' + translate.dives;
+	page.innerHTML = (start + 1) + ' to ' + (end + 1) + ' of ' + (itemsToShow.length) + ' ' + translate.dives;
 }
 
 /**
