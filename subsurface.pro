@@ -221,7 +221,8 @@ FORMS = \
 	qt-ui/plannerSettings.ui \
 	qt-ui/usersurvey.ui \
 	qt-ui/divecomponentselection.ui \
-	qt-ui/configuredivecomputerdialog.ui
+	qt-ui/configuredivecomputerdialog.ui \
+	qt-ui/tagfilter.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui

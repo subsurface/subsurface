@@ -12,6 +12,7 @@ class QAbstractButton;
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
 #include "ui_divecomponentselection.h"
+#include "ui_tagfilter.h"
 #include "exif.h"
 
 class MinMaxAvgWidget : public QWidget {
@@ -124,6 +125,12 @@ private:
 	Ui::DiveComponentSelectionDialog ui;
 	struct dive *targetDive;
 	struct dive_components *what;
+};
+
+class TagFilter : public QWidget {
+	Q_OBJECT
+public:
+	TagFilter(QWidget *parent);
 };
 
 bool isGnome3Session();
