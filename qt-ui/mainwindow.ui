@@ -145,6 +145,7 @@
         </widget>
         <widget class="PlannerSettingsWidget" name="plannerSettingsWidget"/>
        </widget>
+       <widget class="TagFilter" name="tagFilter" native="true"/>
        <widget class="QStackedWidget" name="globePane">
         <property name="currentIndex">
          <number>0</number>
@@ -162,7 +163,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page_5">
+	<widget class="QWidget" name="page_5">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -877,6 +878,12 @@ p, li { white-space: pre-wrap; }
    <class>PlannerSettingsWidget</class>
    <extends>QWidget</extends>
    <header>diveplanner.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TagFilter</class>
+   <extends>QWidget</extends>
+   <header>simplewidgets.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

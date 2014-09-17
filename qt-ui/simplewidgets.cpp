@@ -455,3 +455,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		selective_copy_dive(&displayed_dive, targetDive, *what, true);
 	}
 }
+
+TagFilter::TagFilter(QWidget *parent): QWidget(parent)
+{
+	ui.setupUi(this);
+}

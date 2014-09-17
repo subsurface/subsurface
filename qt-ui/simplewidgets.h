@@ -129,7 +129,9 @@ private:
 class TagFilter : public QWidget {
 	Q_OBJECT
 public:
-	TagFilter(QWidget *parent);
+	TagFilter(QWidget *parent = 0);
+private:
+	Ui::TagFilter ui;
 };
 
 bool isGnome3Session();
