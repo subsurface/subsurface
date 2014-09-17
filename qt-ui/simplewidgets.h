@@ -77,7 +77,6 @@ public:
 	explicit ShiftImageTimesDialog(QWidget *parent);
 	time_t amount() const;
 	void setOffset(time_t offset);
-	time_t epochFromExiv(EXIFInfo *exif);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
