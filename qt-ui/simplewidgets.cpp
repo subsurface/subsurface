@@ -296,7 +296,7 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 	calendarWidget(new QCalendarWidget())
 {
 	setDate(QDate::currentDate());
-	setMinimumSize(QSize(80,64));
+	setMinimumSize(QSize(80, 64));
 	setFocusPolicy(Qt::StrongFocus);
 	calendarWidget->setWindowFlags(Qt::FramelessWindowHint);
 	calendarWidget->setFirstDayOfWeek(getLocale().firstDayOfWeek());
@@ -311,13 +311,13 @@ DateWidget::DateWidget(QWidget *parent) : QWidget(parent),
 
 bool DateWidget::eventFilter(QObject *object, QEvent *event)
 {
-	if(event->type() == QEvent::FocusOut){
+	if (event->type() == QEvent::FocusOut) {
 		calendarWidget->hide();
 		return true;
 	}
-	if(event->type() == QEvent::KeyPress){
-		QKeyEvent *ev = static_cast<QKeyEvent*>(event);
-		if(ev->key() == Qt::Key_Escape){
+	if (event->type() == QEvent::KeyPress) {
+		QKeyEvent *ev = static_cast<QKeyEvent *>(event);
+		if (ev->key() == Qt::Key_Escape) {
 			calendarWidget->hide();
 		}
 	}
@@ -325,7 +325,7 @@ bool DateWidget::eventFilter(QObject *object, QEvent *event)
 }
 
 
-void DateWidget::setDate(const QDate& date)
+void DateWidget::setDate(const QDate &date)
 {
 	mDate = date;
 	update();
@@ -339,7 +339,7 @@ QDate DateWidget::date() const
 
 void DateWidget::changeEvent(QEvent *event)
 {
-	if(event->type() == QEvent::EnabledChange){
+	if (event->type() == QEvent::EnabledChange) {
 		update();
 	}
 }
@@ -347,11 +347,11 @@ void DateWidget::changeEvent(QEvent *event)
 #define DATEWIDGETWIDTH 80
 void DateWidget::paintEvent(QPaintEvent *event)
 {
-	static QPixmap pix = QPixmap(":/calendar").scaled(DATEWIDGETWIDTH,64);
+	static QPixmap pix = QPixmap(":/calendar").scaled(DATEWIDGETWIDTH, 64);
 
 	QPainter painter(this);
 
-	painter.drawPixmap(QPoint(0,0), isEnabled() ? pix : QPixmap::fromImage(grayImage(pix.toImage())));
+	painter.drawPixmap(QPoint(0, 0), isEnabled() ? pix : QPixmap::fromImage(grayImage(pix.toImage())));
 
 	QString month = mDate.toString("MMM");
 	QString year = mDate.toString("yyyy");
@@ -367,7 +367,7 @@ void DateWidget::paintEvent(QPaintEvent *event)
 
 	font.setPointSize(14);
 	metrics = QFontMetrics(font);
-	painter.setPen(QPen(QBrush(Qt::black),0));
+	painter.setPen(QPen(QBrush(Qt::black), 0));
 	painter.setBrush(Qt::black);
 	painter.setFont(font);
 	painter.drawText(QPoint(DATEWIDGETWIDTH / 2 - metrics.width(day) / 2, 45), day);
@@ -402,13 +402,13 @@ void DateWidget::focusOutEvent(QFocusEvent *event)
 
 void DateWidget::keyPressEvent(QKeyEvent *event)
 {
-	if ( event->key() == Qt::Key_Return ||
-		 event->key() == Qt::Key_Enter ||
-		 event->key() == Qt::Key_Space){
-		calendarWidget->move(mapToGlobal(QPoint(0,64)));
+	if (event->key() == Qt::Key_Return ||
+	    event->key() == Qt::Key_Enter ||
+	    event->key() == Qt::Key_Space) {
+		calendarWidget->move(mapToGlobal(QPoint(0, 64)));
 		calendarWidget->show();
 		event->setAccepted(true);
-	}else{
+	} else {
 		QWidget::keyPressEvent(event);
 	}
 }
@@ -416,8 +416,7 @@ void DateWidget::keyPressEvent(QKeyEvent *event)
 #define COMPONENT_FROM_UI(_component) what->_component = ui._component->isChecked()
 #define UI_FROM_COMPONENT(_component) ui._component->setChecked(what->_component)
 
-DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what):
-	targetDive(target)
+DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what) : targetDive(target)
 {
 	ui.setupUi(this);
 	what = _what;
@@ -457,7 +456,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
-TagFilter::TagFilter(QWidget *parent): QWidget(parent)
+TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();

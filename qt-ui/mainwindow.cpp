@@ -124,7 +124,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	memset(&what, 0, sizeof(what));
 
 	QToolBar *toolBar = new QToolBar();
-	Q_FOREACH(QAction *a, profileToolbarActions)
+	Q_FOREACH (QAction *a, profileToolbarActions)
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
 
@@ -133,7 +133,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	// I need to take the current item that's in the toolbar Position
 	// and reposition it alongside the grid layout.
 	QLayoutItem *p = ui.gridLayout->takeAt(0);
-	ui.gridLayout->addWidget(toolBar,0,0);
+	ui.gridLayout->addWidget(toolBar, 0, 0);
 	ui.gridLayout->addItem(p, 0, 1);
 }
 
@@ -499,10 +499,10 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 void MainWindow::on_actionAddDive_triggered()
 {
-	if(!plannerStateClean())
+	if (!plannerStateClean())
 		return;
 
-	if (dive_list()->selectedTrips().count() >= 1){
+	if (dive_list()->selectedTrips().count() >= 1) {
 		dive_list()->rememberSelection();
 		dive_list()->clearSelection();
 	}
@@ -1257,18 +1257,18 @@ void MainWindow::editCurrentDive()
 	}
 }
 
-#define PREF_PROFILE(QT_PREFS) \
-	QSettings s;                   \
-	s.beginGroup("TecDetails");    \
+#define PREF_PROFILE(QT_PREFS)            \
+	QSettings s;                      \
+	s.beginGroup("TecDetails");       \
 	s.setValue(#QT_PREFS, triggered); \
 	PreferencesDialog::instance()->emitSettingsChanged();
 
-#define TOOLBOX_PREF_PROFILE(METHOD, INTERNAL_PREFS, QT_PREFS)    \
-void MainWindow::on_ ## METHOD ##_triggered(bool triggered) \
-{ \
-    prefs. INTERNAL_PREFS = triggered;\
-	PREF_PROFILE(QT_PREFS); \
-}
+#define TOOLBOX_PREF_PROFILE(METHOD, INTERNAL_PREFS, QT_PREFS)   \
+	void MainWindow::on_##METHOD##_triggered(bool triggered) \
+	{                                                        \
+		prefs.INTERNAL_PREFS = triggered;                \
+		PREF_PROFILE(QT_PREFS);                          \
+	}
 
 TOOLBOX_PREF_PROFILE(profCalcAllTissues, calcalltissues, calcalltissues);
 TOOLBOX_PREF_PROFILE(profCalcCeiling, calcceiling, calcceiling);
@@ -1311,7 +1311,7 @@ void MainWindow::on_actionConfigure_Dive_Computer_triggered()
 
 void MainWindow::setEnabledToolbar(bool arg1)
 {
-	Q_FOREACH(QAction *b, profileToolbarActions)
+	Q_FOREACH (QAction *b, profileToolbarActions)
 		b->setEnabled(arg1);
 }
 

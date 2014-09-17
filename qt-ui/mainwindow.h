@@ -190,7 +190,7 @@ private:
 	QDialog *survey;
 	struct dive copyPasteDive;
 	struct dive_components what;
-	QList<QAction*> profileToolbarActions;
+	QList<QAction *> profileToolbarActions;
 };
 
 #endif // MAINWINDOW_H

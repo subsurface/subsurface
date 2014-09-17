@@ -209,7 +209,7 @@ void DiveListView::unselectDives()
 	// would only cause pointless churn
 	int i;
 	struct dive *dive;
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		dive->selected = false;
 	}
 }
@@ -486,7 +486,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-	if(!dontEmitDiveChangedSignal)
+	if (!dontEmitDiveChangedSignal)
 		Q_EMIT currentDiveChanged(selected_dive);
 }
 
@@ -784,7 +784,7 @@ void DiveListView::loadImages()
 	shiftDialog.exec();
 	updateLastImageTimeOffset(shiftDialog.amount());
 
-	Q_FOREACH(const QString& fileName, fileNames) {
+	Q_FOREACH (const QString &fileName, fileNames) {
 		int j = 0;
 		struct dive *dive;
 		for_each_dive (j, dive) {

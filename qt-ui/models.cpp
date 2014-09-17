@@ -267,7 +267,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&cyl->gasmix, modpO2, M_OR_FT(3,10));
+			cyl->depth = gas_mod(&cyl->gasmix, modpO2, M_OR_FT(3, 10));
 			changed = true;
 		}
 		break;
@@ -378,8 +378,8 @@ void CylindersModel::remove(const QModelIndex &index)
 	     (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
 	      (cyl->manually_added || is_cylinder_used(&displayed_dive, index.row()))))) {
 		QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(
-									tr("Cylinder cannot be removed"),
-									tr("This gas is in use. Only cylinders that are not used in the dive can be removed.")),
+								     tr("Cylinder cannot be removed"),
+								     tr("This gas is in use. Only cylinders that are not used in the dive can be removed.")),
 				     QMessageBox::Ok);
 		return;
 	}
@@ -2101,7 +2101,7 @@ int LanguageModel::rowCount(const QModelIndex &parent) const
 }
 
 
-TagFilterModel::TagFilterModel(QObject *parent): QStringListModel(parent), checkState(NULL)
+TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
 {
 }
 
@@ -2113,7 +2113,7 @@ TagFilterModel *TagFilterModel::instance()
 
 QVariant TagFilterModel::data(const QModelIndex &index, int role) const
 {
-	if(role == Qt::CheckStateRole){
+	if (role == Qt::CheckStateRole) {
 		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
 		return stringList()[index.row()];
@@ -2141,32 +2141,32 @@ void TagFilterModel::repopulate()
 	delete[] checkState;
 	checkState = new bool[list.count()];
 	memset(checkState, true, list.count());
-	checkState[list.count()-1] = true;
+	checkState[list.count() - 1] = true;
 }
 
 bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if(role == Qt::CheckStateRole){
+	if (role == Qt::CheckStateRole) {
 		checkState[index.row()] = value.toBool();
-		dataChanged(index,index);
+		dataChanged(index, index);
 		return true;
 	}
 	return false;
 }
 
-TagFilterSortModel::TagFilterSortModel(QObject *parent): QSortFilterProxyModel(parent)
+TagFilterSortModel::TagFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	connect(TagFilterModel::instance(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(invalidate()));
+	connect(TagFilterModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(invalidate()));
 }
 
 bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive* d = (struct dive* ) diveVariant.value<void*>();
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
 	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for(int i = 0; i < sourceModel()->rowCount(index0); i++){
+		for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
 			if (filterAcceptsRow(i, index0))
 				return true;
 		}
@@ -2175,14 +2175,14 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
-	if (!head){ // last tag means "Show empty tags";
-		return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount()-1];
+	if (!head) { // last tag means "Show empty tags";
+		return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount() - 1];
 	}
 
 	// have at least one tag.
 	QStringList tagList = TagFilterModel::instance()->stringList();
 	tagList.removeLast(); // remove the "Show Empty Tags";
-	while(head) {
+	while (head) {
 		QString tagName(head->tag->name);
 		int index = tagList.indexOf(tagName);
 		if (TagFilterModel::instance()->checkState[index])

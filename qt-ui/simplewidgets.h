@@ -96,8 +96,10 @@ class DateWidget : public QWidget {
 public:
 	DateWidget(QWidget *parent = 0);
 	QDate date() const;
-public slots:
-	void setDate(const QDate& date);
+public
+slots:
+	void setDate(const QDate &date);
+
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent(QMouseEvent *event);
@@ -107,7 +109,8 @@ protected:
 	void changeEvent(QEvent *);
 	bool eventFilter(QObject *, QEvent *);
 signals:
-	void dateChanged(const QDate& date);
+	void dateChanged(const QDate &date);
+
 private:
 	QDate mDate;
 	QCalendarWidget *calendarWidget;
@@ -120,6 +123,7 @@ public:
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
+
 private:
 	Ui::DiveComponentSelectionDialog ui;
 	struct dive *targetDive;
@@ -130,11 +134,12 @@ class TagFilter : public QWidget {
 	Q_OBJECT
 public:
 	TagFilter(QWidget *parent = 0);
+
 private:
 	Ui::TagFilter ui;
 };
 
 bool isGnome3Session();
-QImage grayImage(const QImage& coloredImg);
+QImage grayImage(const QImage &coloredImg);
 
 #endif // SIMPLEWIDGETS_H
