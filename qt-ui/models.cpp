@@ -2176,18 +2176,23 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	struct tag_entry *head = d->tag_list;
 
 	if (!head) { // last tag means "Show empty tags";
-		return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount() - 1];
+		if (TagFilterModel::instance()->rowCount() > 0)
+			return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount() - 1];
+		else
+			return true;
 	}
 
 	// have at least one tag.
 	QStringList tagList = TagFilterModel::instance()->stringList();
-	tagList.removeLast(); // remove the "Show Empty Tags";
-	while (head) {
-		QString tagName(head->tag->name);
-		int index = tagList.indexOf(tagName);
-		if (TagFilterModel::instance()->checkState[index])
-			return true;
-		head = head->next;
+	if (!tagList.isEmpty()) {
+		tagList.removeLast(); // remove the "Show Empty Tags";
+		while (head) {
+			QString tagName(head->tag->name);
+			int index = tagList.indexOf(tagName);
+			if (TagFilterModel::instance()->checkState[index])
+				return true;
+			head = head->next;
+		}
 	}
 	return false;
 }
