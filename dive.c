@@ -1466,6 +1466,7 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 			pressures->he = 0;
 			pressures->n2 = 0;
 		} else {
+			pressures->o2 = po2;
 			pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
 			pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
 		}
