@@ -1053,7 +1053,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	strip_mb(b);
 }
 
-void get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
+struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
 {
 	struct plot_data *entry = NULL;
 	int i;
@@ -1065,6 +1065,7 @@ void get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
 	}
 	if (entry)
 		plot_string(pi, entry, mb, pi->has_ndl);
+	return (entry);
 }
 
 /* Compare two plot_data entries and writes the results into a string */

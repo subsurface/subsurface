@@ -360,9 +360,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.heartBeat.expanded.setP2(QPointF(0, 15));
 
 	itemPos.percentage.pos.on.setX(3);
-	itemPos.percentage.pos.on.setY(85); // was 80
+	itemPos.percentage.pos.on.setY(85);
 	itemPos.percentage.expanded.setP1(QPointF(0, 0));
-	itemPos.percentage.expanded.setP2(QPointF(0, 15)); // was 20
+	itemPos.percentage.expanded.setP2(QPointF(0, 15));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
