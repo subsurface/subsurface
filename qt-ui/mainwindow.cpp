@@ -815,7 +815,7 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
 	TOOLBOX_PREF_BUTTON(show_pictures_in_profile, show_pictures_in_profile, profTogglePicture);
 	TOOLBOX_PREF_BUTTON(tankbar, tankbar, profTankbar);
-	TOOLBOX_PREF_BUTTON(percentagegraph, precentagegraph, profTissues);
+	TOOLBOX_PREF_BUTTON(percentagegraph, percentagegraph, profTissues);
 	s.endGroup();
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
