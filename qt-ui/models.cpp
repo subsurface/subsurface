@@ -2171,14 +2171,22 @@ void TagFilterModel::repopulate()
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];
-	memset(checkState, true, list.count());
-	checkState[list.count() - 1] = true;
+	memset(checkState, false, list.count());
+	checkState[list.count() - 1] = false;
+	anyChecked = false;
 }
 
 bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (role == Qt::CheckStateRole) {
 		checkState[index.row()] = value.toBool();
+		anyChecked = false;
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] == true) {
+				anyChecked = true;
+				break;
+			}
+		}
 		dataChanged(index, index);
 		return true;
 	}
@@ -2192,6 +2200,11 @@ TagFilterSortModel::TagFilterSortModel(QObject *parent) : QSortFilterProxyModel(
 
 bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
+	// If there's nothing checked, this should show everythin.
+	if (!TagFilterModel::instance()->anyChecked) {
+		return true;
+	}
+
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
