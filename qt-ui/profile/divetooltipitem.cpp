@@ -235,23 +235,25 @@ void ToolTipItem::refresh(const QPointF &pos)
 	struct membuffer mb = { 0 };
 
 	entry = get_plot_details_new(&pInfo, time, &mb);
-	tissues->fill();
-	painter->setPen(QColor(0, 0, 0, 0));
-	painter->setBrush(QColor(LIMENADE1));
-	painter->drawRect(0, 10 + (100 - AMB_PERCENTAGE) / 2, 16, AMB_PERCENTAGE / 2);
-	painter->setBrush(QColor(SPRINGWOOD1));
-	painter->drawRect(0, 10, 16, (100 - AMB_PERCENTAGE) / 2);
-	painter->setBrush(QColor("Red"));
-	painter->drawRect(0,0,16,10);
-	painter->setPen(QColor(0, 0, 0, 255));
-	painter->drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
-	painter->drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
-			  16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
-	painter->setPen(QColor(0, 0, 0, 127));
-	for (i=0; i<16; i++) {
-		painter->drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
+	if (entry) {
+		tissues->fill();
+		painter->setPen(QColor(0, 0, 0, 0));
+		painter->setBrush(QColor(LIMENADE1));
+		painter->drawRect(0, 10 + (100 - AMB_PERCENTAGE) / 2, 16, AMB_PERCENTAGE / 2);
+		painter->setBrush(QColor(SPRINGWOOD1));
+		painter->drawRect(0, 10, 16, (100 - AMB_PERCENTAGE) / 2);
+		painter->setBrush(QColor("Red"));
+		painter->drawRect(0,0,16,10);
+		painter->setPen(QColor(0, 0, 0, 255));
+		painter->drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
+		painter->drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
+				16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
+		painter->setPen(QColor(0, 0, 0, 127));
+		for (i=0; i<16; i++) {
+			painter->drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
+		}
+		addToolTip(QString::fromUtf8(mb.buffer, mb.len),QIcon(), tissues);
 	}
-	addToolTip(QString::fromUtf8(mb.buffer, mb.len),QIcon(), tissues);
 	free_buffer(&mb);
 
 	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemShape
