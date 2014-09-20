@@ -654,13 +654,13 @@ cada uno de ellos y sobreescribiendo la información mostrada.
 *Temperaturas Aire/Agua*: Las temperaturas de aire y agua durante la inmersión
 se muestran en estos campos a la derecha de la Hora de Inicio. Muchos
 ordenadores de buceo suministran información sobre la temperatura del agua y
-este campo puede que no necesite editarse. Si no se proporciona la temperatura
-del aire, puede utilizarse la primera lectura del ordenados. En general, suele
-estar bastante cerca de la temperatura real del aire ya que el cambio en la
-lectura del sensor de temperatura es bastante lento para seguir los cambios en
-el entorno. Si fuera necesario, no hay que teclear las unidades de temperatura:
-_Subsurface_ las suministra automáticamente de acuerdo con las _Preferencias_
-(métricas o imperiales).
+este campo puede que ya contenga información obtenida del mismo. Si no se
+proporciona la temperatura del aire, puede utilizarse la primera lectura del
+ordenador. En general, suele estar bastante cerca de la temperatura real del
+aire ya que el cambio en la lectura del sensor de temperatura es bastante lento
+para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
+las unidades de temperatura: _Subsurface_ las suministra automáticamente de
+acuerdo con las _Preferencias_ (métricas o imperiales).
 
 *Ubicación*: Se teclea aquí el texto que describa el lugar donde se hizo la
 inmersión, p.e. "Tihany, Lake Balaton, Hungary". El autocompletado de los
@@ -805,6 +805,46 @@ papelera de la izquierda. A continuación, un ejemplo de información para una
 inmersión con dos tipos de lastre: integrado y cinturón:
 
 image::images/WeightsDataEntry3.jpg["FIGURA: Tabla con información de lastre completada",align="center"]
+
+==== Editar simultáneamente varias inmersiones seleccionadas
+
+_METODO 1_: Tras descargar inmersiones de un ordenador de buceo, los perfiles
+de los buceos descargados se mostrarán en el panel "Perfil de la inmersión",
+así como algunas otras informaciones en las pestañas "Notas de la Inmersión" y
+"Equipo". Sin embargo, otros campos permanecerán vacíos.
+
+Puede resultar útil editar simultáneamente algunos de los campos de las "Notas
+de la Inmersión" o del "Equipo". Por ejemplo, es posible que un buceador
+efectuara varias inmersiones en un solo día utilizando el mismo equipo, o en el
+mismo punto de buceo o con el mismo guía o compañero. En lugar de completar la
+información de las inmersiones una por una, se pueden seleccionar todos los
+buceos deseados en la "Lista de Inmersiones" e insertar la información común en
+las "Notas de Inmersión" y "Equipo".
+
+La edición simultánea solo funciona con campos que no contienen aún ninguna
+información. Esto significa que si, para una inmersión en concreto, uno de los
+campos ya ha sido rellenado, no será modificado por la edición simultánea en
+ese buceo en concreto. Técnicamente, la regla para editar varias inmersiones a
+la vez es: "si el campo que estamos editando contiene _exactamente la misma
+información_ en todas las inmersiones que hemos seleccionado, la nueva
+información introducida se sustituye en todas las inmersiones seleccionadas, de
+lo contrario solo se cambia la inmersión que estemos editando aunque haya
+varias seleccionadas.
+
+Esto acelera notablemente el rellenado del divelog después de haber efectuado
+varios buceos similares.
+
+[[S_CopyComponents]]
+_METODO 2_: Hay una forma diferente de hacer lo mismo. Seleccionamos un buceo
+que contenga toda la información apropiada  en las pestañas *Notas de la
+Inmersión* y *Equipo*. Entonces, desde el menú principal, seleccionamos
+_Registro -> Copiar componentes_. Aparecerá una ventana con casillas
+seleccionables para la mayoría de campos de las pestañas *Notas de la inmersión*
+y *Equipo*.  Selecciona los campos a copiar desde la inmersión seleccionada,
+luego pulsa _Aceptar_. Ahora selecciona en la *Lista de Inmersiones* los buceos
+a los que pegar esta información. Desde el menú principal, selecciona _Registro
+ -> Pegar componentes_. Tras esto, todas las inmersiones seleccionadas
+ contendrán los datos seleccionados previamente de la anterior inmersión.
 
 ==== Añadir Marcas a una inmersión
 
@@ -1923,8 +1963,8 @@ opciones:
 ** Numeración de Subsurface: Si se activa esta opción, las inmersiones se
 exportan con la misma numeración que tienen asociada en _Subsurface_. De lo
 contrario, los buceos se numerarán a partir de 1.
-** Javascript mínimo: Esta opción minimizará la cantidad de código javascript
-producido con el archivo y se perderán algunas funcionalidades.
+** Exportar estadísticas anuales: Si se selecciona esta opción, se anexará una
+tabla con estadísticas anuales a los datos exportados a HTML.
 ** Solo exportar lista: Solo se exportará una lista de inmersiones. No se
 dispondrá de información detallada de los buceos.
 * _Opciones de estilo_: Algunas opciones relativas al estilo de visualización
@@ -2368,7 +2408,7 @@ Indica cualquier cambio de gas, tal como se explicaba en la sección
 <<S_CreateProfile,Crear a mano un perfil de inmersión>>. Estos cambios deberían
 reflejar las botellas y composiciones de gas definidas en la table _Gases
 disponibles_. Si se usan dos o más gases, se sugerirán automáticamente cambios
-de gas durante la fase de aascenso a superficie. Sin embargo, estos cambios
+de gas durante la fase de ascenso a superficie. Sin embargo, estos cambios
 pueden borrarse haciendo clic-derecho en el cambio de gas, o pueden crearse
 manualmente de la misma forma, haciendo clic-derecho en el punto de paso
 adecuado.
@@ -2398,24 +2438,16 @@ Esta duración INCLUYE el tiempo de transición hasta llegar al nivel. Sin
 embargo, si se selecciona _Mostrar transiciones en deco_, las transiciones se
 muestran separadamente de las duraciones de las paradas en cada nivel.
 
-=== Imprimir el plan de inmersión
+[[S_Replan]]
+=== Modificar un plan de inmersión existente
 
-Seleccionar el botón _Imprimir_ permite imprimir los _Detalles del plan de
-buceo_ para unas "wet notes". También se pueden copiar y pegar los _Detalles del
-plan de buceo_ para incluirlos en un archivo de texto o un procesador de
-textos.
-
-Los planes de inmersión tienen muchas características en común con los registros
-de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
-los calculos de gas quedan almacenados en la pestaña *Notas de la inmersión*.
-Mientras se está diseñando un plan, se puede imprimir utilizando el botón
-_Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
-panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
-sido guardado, aparece de una forma muy similar a una anotación en el diario y
-no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
-de planificación. En esta situación, la única manera de imprimir el plan es usar
-_Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
-registro de inmersión.
+Normalmente, cuando se ha guardado un plan de inmersión, se encuentra disponible
+desde la *Lista de Inmersiones* como cualquier buceo. Desde la *Lista de
+Inmersiones* no hay forma de cambiar un plan. Para efectuar cambios a un plan de
+buceo, selecciónalo en la *Lista de Inmersiones*, luego, desde el menú principal
+selecciona _Registro -> Re-planificar inmersión_, con ello se abrirá el plan en
+el planificador, permitiendo hacer las modificaciones oportunas  y guardarlas de
+la forma habitual.
 
 === Planificar inmersiones sucesivas
 
@@ -2435,6 +2467,25 @@ plantilla de acuerdo con una de las configuraciones. Si ahora se desea planear
 una inmersión usando esta configuración, simplemente se selecciona la plantilla
 de la *Lista de inmersiones* y se activa el planificador: el planificador tendrá
 en cuenta la configuración de la plantilla seleccionada.
+
+=== Imprimir el plan de inmersión
+
+Seleccionar el botón _Imprimir_ permite imprimir los _Detalles del plan de
+buceo_ para unas "wet notes". También se pueden copiar y pegar los _Detalles del
+plan de buceo_ para incluirlos en un archivo de texto o un procesador de
+textos.
+
+Los planes de inmersión tienen muchas características en común con los registros
+de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
+los calculos de gas quedan almacenados en la pestaña *Notas de la inmersión*.
+Mientras se está diseñando un plan, se puede imprimir utilizando el botón
+_Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
+panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
+sido guardado, aparece de una forma muy similar a una anotación en el diario y
+no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
+de planificación. En esta situación, la única manera de imprimir el plan es usar
+_Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
+registro de inmersión.
 
 == Descripción de las opciones del menú principal de _Subsurface_
 
@@ -2457,6 +2508,8 @@ inmersiones seleccionadas en el diario) a algún otro formato.
 - <<S_Preferences, _Preferencias_>> - Fija las preferencias del usuario de
 _Subsurface_.
 - _Salir_ - Sale de _Subsurface_.
+- _Configure dive computer_ - Esta opción está en fase experimental y en
+desarrollo.
 
 === Importar
 - <<S_ImportDiveComputer,_Importar del ordenador de buceo_>> - Descarga
@@ -2473,6 +2526,13 @@ de buceo desde www.divelogs.de.
 panel Lista de inmersiones.
 - <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
 planificar inmersiones.
+- <<S_Replan,_Re-planificar inmersión_>> - Edita un plan de buceo que se ha
+guardado en la *Lista de Inmersiones*.
+- <<S_CopyComponents,_Copiar componentes_>> - Al seleccionar esta opción se
+se puede copiar información de varios campos de una inmersión al portapapeles.
+- _Pegar componentes_ - Pega, en las inmersiones previamente seleccionadas de
+la *Lista de Inmersiones*, la información copiada previamente usando la opción
+_Copiar componentes_.
 - <<S_Renumber,_Renumerar_>> - Renumera las inmersiones listadas en el panel
 Lista de inmersiones.
 - <<S_Group,_Auto agrupar_>> - Agrupa automáticamente los buceos de la Lista de
