@@ -99,7 +99,8 @@ HEADERS = \
 	qt-ui/statistics/monthstatistics.h \
 	qt-ui/statistics/statisticswidget.h \
 	qt-ui/statistics/statisticsbar.h \
-	qt-ui/statistics/yearstatistics.h
+	qt-ui/statistics/yearstatistics.h \
+	qt-ui/diveshareexportdialog.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -188,7 +189,8 @@ SOURCES =  \
 	qt-ui/statistics/statisticswidget.cpp \
 	qt-ui/statistics/yearstatistics.cpp \
 	qt-ui/statistics/statisticsbar.cpp \
-	qt-ui/statistics/monthstatistics.cpp
+	qt-ui/statistics/monthstatistics.cpp \
+	qt-ui/diveshareexportdialog.cpp
 
 android: SOURCES += android.cpp
 else: win32: SOURCES += windows.c
@@ -222,7 +224,8 @@ FORMS = \
 	qt-ui/usersurvey.ui \
 	qt-ui/divecomponentselection.ui \
 	qt-ui/configuredivecomputerdialog.ui \
-	qt-ui/tagfilter.ui
+	qt-ui/tagfilter.ui \
+	qt-ui/diveshareexportdialog.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui

@@ -9,6 +9,7 @@
 
 #include "mainwindow.h"
 #include "divelogexportdialog.h"
+#include "diveshareexportdialog.h"
 #include "ui_divelogexportdialog.h"
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
@@ -70,6 +71,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Comma separated values that include the most relevant information of the dive profile."));
 	} else if (ui->exportDivelogs->isChecked()) {
 		ui->description->setText(tr("Send the dive data to divelogs.de website."));
+	} else if (ui->exportDiveshare->isChecked()) {
+		ui->description->setText(tr("Send the dive data to dive-share.appspot.com website"));
 	} else if (ui->exportWorldMap->isChecked()) {
 		ui->description->setText(tr("HTML export of the dive locations, visualized on a world map."));
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
@@ -245,6 +248,8 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 								tr("CSV files (*.csv *.CSV)"));
 		} else if (ui->exportDivelogs->isChecked()) {
 			DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
+		} else if (ui->exportDiveshare->isChecked()) {
+			DiveShareExportDialog::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
 		} else if (ui->exportWorldMap->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export world map"), lastDir,
 								tr("HTML files (*.html)"));

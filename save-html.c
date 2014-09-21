@@ -290,7 +290,8 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 		put_HTML_samples(b, dive);
 		put_HTML_bookmarks(b, dive);
 		write_dive_status(b, dive);
-		save_photos(b, photos_dir, dive);
+		if (photos_dir)
+			save_photos(b, photos_dir, dive);
 		write_divecomputers(b, dive);
 	}
 	put_HTML_notes(b, dive, "\"notes\":\"", "\"");

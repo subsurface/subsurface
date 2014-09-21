@@ -16,6 +16,8 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, con
 void put_HTML_quoted(struct membuffer *b, const char *text);
 
 void export_HTML(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only);
+void export_list(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only);
+
 void export_translation(const char *file_name);
 
 extern void copy_image_and_overwrite(const char *cfileName, const char *cnewName);
