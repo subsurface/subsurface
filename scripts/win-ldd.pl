@@ -51,7 +51,7 @@ for (@ARGV) {
 	next if /^-/;
 	if (-d $_) {
 		push @searchdirs, $_;
-	} elsif (-f $_) {
+	} elsif (-f $_ && ! /\.a$/) {
 		# Add $_'s path to the search list too
 		my $dirname = $_;
 		$dirname =~ s,/[^/]+$,,;
