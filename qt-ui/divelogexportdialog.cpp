@@ -74,6 +74,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("HTML export of the dive locations, visualized on a world map."));
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
 		ui->description->setText(tr("Subsurface native XML format."));
+	} else if (ui->exportImageDepths->isChecked()) {
+		ui->description->setText(tr("Write depths of images to file."));
 	}
 }
 
@@ -257,6 +259,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				QByteArray bt = QFile::encodeName(filename);
 				save_dives_logic(bt.data(), ui->exportSelected->isChecked());
 			}
+		} else if (ui->exportImageDepths->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
+			if (!filename.isNull() && !filename.isEmpty())
+				export_depths(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
@@ -277,4 +283,40 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		if (!stylesheet.isEmpty())
 			export_dives_xslt(filename.toUtf8(), ui->exportSelected->isChecked(), stylesheet.toUtf8());
 	}
+}
+
+void DiveLogExportDialog::export_depths(const char *filename, const bool selected_only)
+{
+	FILE *f;
+	struct dive *dive;
+	depth_t depth;
+	int i;
+	const char **unit;
+
+	struct membuffer buf = { 0 };
+
+	for_each_dive (i, dive) {
+		if (selected_only && !dive->selected)
+			continue;
+
+		FOR_EACH_PICTURE (dive) {
+			int n = dive->dc.samples;
+			struct sample *s = dive->dc.sample;
+			depth.mm = 0;
+			while (--n >= 0 && s->time.seconds <= picture->offset.seconds) {
+				depth.mm = s->depth.mm;
+				s++;
+			}
+			put_format(&buf, "%s\t%.1f%s\n", picture->filename, get_depth_units(depth.mm, NULL, unit), *unit);
+		}
+	}
+
+	f = subsurface_fopen(filename, "w+");
+	if (!f) {
+		report_error(tr("Can't open file %s").toUtf8().data(), filename);
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
+	free_buffer(&buf);
 }
