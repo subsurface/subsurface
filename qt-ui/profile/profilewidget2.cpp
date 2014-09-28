@@ -50,18 +50,22 @@ static struct _ItemPos {
 		_Pos pos;
 		QLineF shrinked;
 		QLineF expanded;
+		QLineF intermediate;
 	};
 	_Pos background;
 	_Pos dcLabel;
 	_Pos tankBar;
 	_Axis depth;
 	_Axis partialPressure;
+	_Axis partialPressureTissue;
 	_Axis partialPressureWithTankBar;
 	_Axis percentage;
+	_Axis percentageWithTankBar;
 	_Axis time;
 	_Axis cylinder;
 	_Axis temperature;
 	_Axis heartBeat;
+	_Axis heartBeatAll;
 } itemPos;
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
@@ -312,9 +316,11 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.depth.pos.off.setX(-2);
 	itemPos.depth.pos.off.setY(3);
 	itemPos.depth.expanded.setP1(QPointF(0, 0));
-	itemPos.depth.expanded.setP2(QPointF(0, 86));
+	itemPos.depth.expanded.setP2(QPointF(0, 85));
 	itemPos.depth.shrinked.setP1(QPointF(0, 0));
-	itemPos.depth.shrinked.setP2(QPointF(0, 60));
+	itemPos.depth.shrinked.setP2(QPointF(0, 65));
+	itemPos.depth.intermediate.setP1(QPointF(0, 0));
+	itemPos.depth.intermediate.setP2(QPointF(0, 75));
 
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
@@ -326,13 +332,17 @@ void ProfileWidget2::setupItemSizes()
 
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
-	itemPos.partialPressure.pos.on.setY(65);
+	itemPos.partialPressure.pos.on.setY(75);
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
 	itemPos.partialPressure.expanded.setP2(QPointF(0, 20));
 	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
-	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 27));
+	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
+	itemPos.partialPressureTissue = itemPos.partialPressure;
+	itemPos.partialPressureTissue.pos.on.setX(97);
+	itemPos.partialPressureTissue.pos.on.setY(62);
+	itemPos.partialPressureTissue.expanded.setP2(QPointF(0, 17));
 
 	// cylinder axis config
 	itemPos.cylinder.pos.on.setX(3);
@@ -343,6 +353,8 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.cylinder.expanded.setP2(QPointF(0, 50));
 	itemPos.cylinder.shrinked.setP1(QPointF(0, 0));
 	itemPos.cylinder.shrinked.setP2(QPointF(0, 20));
+	itemPos.cylinder.intermediate.setP1(QPointF(0, 0));
+	itemPos.cylinder.intermediate.setP2(QPointF(0, 20));
 
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
@@ -353,16 +365,26 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.expanded.setP2(QPointF(0, 50));
 	itemPos.temperature.shrinked.setP1(QPointF(0, 5));
 	itemPos.temperature.shrinked.setP2(QPointF(0, 15));
+	itemPos.temperature.intermediate.setP1(QPointF(0, 5));
+	itemPos.temperature.intermediate.setP2(QPointF(0, 15));
 
+	// Heartbeat axis config
 	itemPos.heartBeat.pos.on.setX(3);
-	itemPos.heartBeat.pos.on.setY(60);
+	itemPos.heartBeat.pos.on.setY(65);
 	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
-	itemPos.heartBeat.expanded.setP2(QPointF(0, 15));
+	itemPos.heartBeat.expanded.setP2(QPointF(0, 10));
+	itemPos.heartBeatAll = itemPos.heartBeat;
+	itemPos.heartBeatAll.pos.on.setX(3);
+	itemPos.heartBeatAll.pos.on.setY(55);
+	itemPos.heartBeatAll.expanded.setP2(QPointF(0, 7));
 
+	// Percentage axis config
 	itemPos.percentage.pos.on.setX(3);
-	itemPos.percentage.pos.on.setY(85);
+	itemPos.percentage.pos.on.setY(80);
 	itemPos.percentage.expanded.setP1(QPointF(0, 0));
 	itemPos.percentage.expanded.setP2(QPointF(0, 15));
+	itemPos.percentageWithTankBar = itemPos.percentage;
+	itemPos.percentageWithTankBar.expanded.setP2(QPointF(0, 12));
 
 	itemPos.dcLabel.on.setX(3);
 	itemPos.dcLabel.on.setY(100);
@@ -370,7 +392,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.dcLabel.off.setY(100);
 
 	itemPos.tankBar.on.setX(0);
-	itemPos.tankBar.on.setY(92);
+	itemPos.tankBar.on.setY(91.5);
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
@@ -449,14 +471,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode);
-	tankItem->setVisible(prefs.tankbar);
-	if (prefs.tankbar) {
-		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
-		gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
-	} else {
-		gasYAxis->setPos(itemPos.partialPressure.pos.on);
-		gasYAxis->setLine(itemPos.partialPressure.expanded);
-	}
 
 	if (currentState == EMPTY)
 		setProfileState();
@@ -597,22 +611,51 @@ void ProfileWidget2::settingsChanged()
 	// if we are showing calculated ceilings then we have to replot()
 	// because the GF could have changed; otherwise we try to avoid replot()
 	bool needReplot = prefs.calcceiling;
-	if (PP_GRAPHS_ENABLED || prefs.hrgraph) {
+	if (prefs.percentagegraph && PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
+
+		if (prefs.tankbar) {
+			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+		} else {
+			percentageAxis->setPos(itemPos.percentage.pos.on);
+			percentageAxis->setLine(itemPos.percentage.expanded);
+		}
+		gasYAxis->setPos(itemPos.partialPressureTissue.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded);
+		if (prefs.hrgraph) {
+			heartBeatAxis->setPos(itemPos.heartBeatAll.pos.on);
+			heartBeatAxis->setLine(itemPos.heartBeatAll.expanded);
+		}
+	}else if (PP_GRAPHS_ENABLED || prefs.hrgraph || prefs.percentagegraph) {
+		profileYAxis->animateChangeLine(itemPos.depth.intermediate);
+		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate);
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
+		percentageAxis->setPos(itemPos.percentage.pos.on);
+		percentageAxis->setLine(itemPos.percentage.expanded);
+		heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
+		heartBeatAxis->setLine(itemPos.heartBeat.expanded);
+		if (prefs.tankbar) {
+			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+			gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
+			gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
+		}else {
+			gasYAxis->setPos(itemPos.partialPressure.pos.on);
+			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
+			percentageAxis->setPos(itemPos.percentage.pos.on);
+			percentageAxis->setLine(itemPos.percentage.expanded);
+		}
 	} else {
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
-	if (prefs.tankbar) {
-		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
-		gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded);
-	} else {
-		gasYAxis->setPos(itemPos.partialPressure.pos.on);
-		gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
-	}
+
 	tankItem->setVisible(prefs.tankbar);
 	if (prefs.zoomed_plot != isPlotZoomed) {
 		isPlotZoomed = prefs.zoomed_plot;
@@ -837,33 +880,59 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setVisible(true);
 
 	profileYAxis->setPos(itemPos.depth.pos.on);
-	if (prefs.pp_graphs.phe || prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.hrgraph) {
-		profileYAxis->setLine(itemPos.depth.shrinked);
-		temperatureAxis->setLine(itemPos.temperature.shrinked);
-		cylinderPressureAxis->setLine(itemPos.cylinder.shrinked);
+	if (prefs.percentagegraph && PP_GRAPHS_ENABLED) {
+		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
+		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
+
+		if (prefs.tankbar) {
+			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+		} else {
+			percentageAxis->setPos(itemPos.percentage.pos.on);
+			percentageAxis->setLine(itemPos.percentage.expanded);
+		}
+		gasYAxis->setPos(itemPos.partialPressureTissue.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded);
+		if (prefs.hrgraph) {
+			heartBeatAxis->setPos(itemPos.heartBeatAll.pos.on);
+			heartBeatAxis->setLine(itemPos.heartBeatAll.expanded);
+		}
+	}else if (PP_GRAPHS_ENABLED || prefs.hrgraph || prefs.percentagegraph) {
+		profileYAxis->animateChangeLine(itemPos.depth.intermediate);
+		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate);
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
+		percentageAxis->setPos(itemPos.percentage.pos.on);
+		percentageAxis->setLine(itemPos.percentage.expanded);
+		heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
+		heartBeatAxis->setLine(itemPos.heartBeat.expanded);
+		if (prefs.tankbar) {
+			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+			gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
+			gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
+		}else {
+			gasYAxis->setPos(itemPos.partialPressure.pos.on);
+			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
+			percentageAxis->setPos(itemPos.percentage.pos.on);
+			percentageAxis->setLine(itemPos.percentage.expanded);
+		}
 	} else {
-		profileYAxis->setLine(itemPos.depth.expanded);
-		temperatureAxis->setLine(itemPos.temperature.expanded);
-		cylinderPressureAxis->setLine(itemPos.cylinder.expanded);
+		profileYAxis->animateChangeLine(itemPos.depth.expanded);
+		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
-	if (prefs.tankbar) {
-		gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
-		gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
-	} else {
-		gasYAxis->setPos(itemPos.partialPressure.pos.on);
-		gasYAxis->setLine(itemPos.partialPressure.expanded);
-	}
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	temperatureAxis->setPos(itemPos.temperature.pos.on);
-	heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
-	heartBeatAxis->setLine(itemPos.heartBeat.expanded);
 	heartBeatItem->setVisible(prefs.hrgraph);
 	meanDepth->setVisible(true);
 
@@ -878,15 +947,15 @@ void ProfileWidget2::setProfileState()
 			tissue->setVisible(true);
 		}
 	}
-	percentageAxis->setPos(itemPos.percentage.pos.on);
-	percentageAxis->setLine(itemPos.percentage.expanded);
+
 	if (prefs.percentagegraph) {
 		Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
 			percentage->setVisible(true);
 		}
 
 		ambPressureItem->setVisible(true);
-	}	gflineItem->setVisible(true);
+		gflineItem->setVisible(true);
+	}
 
 	rulerItem->setVisible(prefs.rulergraph);
 	tankItem->setVisible(prefs.tankbar);
