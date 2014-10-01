@@ -464,3 +464,15 @@ TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 	connect(ui.filterTag, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.tagView->setModel(filter);
 }
+
+void TagFilter::showEvent(QShowEvent *event)
+{
+	TagFilterSortModel::instance()->addFilterModel(TagFilterModel::instance());
+	QWidget::showEvent(event);
+}
+
+void TagFilter::hideEvent(QHideEvent *event)
+{
+	TagFilterSortModel::instance()->removeFilterModel(TagFilterModel::instance());
+	QWidget::hideEvent(event);
+}

@@ -2193,25 +2193,20 @@ bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, in
 	return false;
 }
 
-TagFilterSortModel::TagFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
-{
-	connect(TagFilterModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(invalidate()));
-}
-
-bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
 {
 	// If there's nothing checked, this should show everythin.
-	if (!TagFilterModel::instance()->anyChecked) {
+	if (!anyChecked) {
 		return true;
 	}
 
-	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
+	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
 	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
-			if (filterAcceptsRow(i, index0))
+		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
+			if (filterRow(i, index0, sourceModel))
 				return true;
 		}
 		return false;
@@ -2220,23 +2215,69 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	struct tag_entry *head = d->tag_list;
 
 	if (!head) { // last tag means "Show empty tags";
-		if (TagFilterModel::instance()->rowCount() > 0)
-			return TagFilterModel::instance()->checkState[TagFilterModel::instance()->rowCount() - 1];
+		if (rowCount() > 0)
+			return checkState[rowCount() - 1];
 		else
 			return true;
 	}
 
 	// have at least one tag.
-	QStringList tagList = TagFilterModel::instance()->stringList();
+	QStringList tagList = stringList();
 	if (!tagList.isEmpty()) {
 		tagList.removeLast(); // remove the "Show Empty Tags";
 		while (head) {
 			QString tagName(head->tag->name);
 			int index = tagList.indexOf(tagName);
-			if (TagFilterModel::instance()->checkState[index])
+			if (checkState[index])
 				return true;
 			head = head->next;
 		}
 	}
 	return false;
+}
+
+TagFilterSortModel *TagFilterSortModel::instance()
+{
+	static TagFilterSortModel *self = new TagFilterSortModel();
+	return self;
+}
+
+TagFilterSortModel::TagFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
+{
+}
+
+bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+	if (models.isEmpty()) {
+		return true;
+	}
+
+	Q_FOREACH (MultiFilterInterface *model, models) {
+		if (model->filterRow(source_row, source_parent, sourceModel())) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void TagFilterSortModel::myInvalidate()
+{
+	invalidate();
+}
+
+void TagFilterSortModel::addFilterModel(MultiFilterInterface *model)
+{
+	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
+	Q_ASSERT(itemModel);
+	models.append(model);
+	connect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
+}
+
+void TagFilterSortModel::removeFilterModel(MultiFilterInterface *model)
+{
+	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
+	Q_ASSERT(itemModel);
+	models.removeAll(model);
+	disconnect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }

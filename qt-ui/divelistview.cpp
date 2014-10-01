@@ -34,7 +34,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate(this));
-	TagFilterSortModel *model = new TagFilterSortModel(this);
+	TagFilterSortModel *model = TagFilterSortModel::instance();
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	model->setFilterCaseSensitivity(Qt::CaseInsensitive);

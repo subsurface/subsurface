@@ -417,13 +417,19 @@ private:
 	QStringList languages;
 };
 
-class TagFilterModel : public QStringListModel {
+class MultiFilterInterface {
+public:
+	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const = 0;
+};
+
+class TagFilterModel : public QStringListModel, public MultiFilterInterface{
 	Q_OBJECT
 public:
 	static TagFilterModel *instance();
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
 	bool *checkState;
 	bool anyChecked;
 public
@@ -437,7 +443,14 @@ private:
 class TagFilterSortModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
-	TagFilterSortModel(QObject *parent = 0);
+	static TagFilterSortModel *instance();
 	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+	void addFilterModel(MultiFilterInterface *model);
+	void removeFilterModel(MultiFilterInterface *model);
+public slots:
+	void myInvalidate();
+private:
+	TagFilterSortModel(QObject *parent = 0);
+	QList<MultiFilterInterface*> models;
 };
 #endif // MODELS_H

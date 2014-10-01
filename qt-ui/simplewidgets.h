@@ -134,7 +134,8 @@ class TagFilter : public QWidget {
 	Q_OBJECT
 public:
 	TagFilter(QWidget *parent = 0);
-
+	virtual void showEvent(QShowEvent *);
+	virtual void hideEvent(QHideEvent *);
 private:
 	Ui::TagFilter ui;
 };
