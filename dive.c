@@ -1046,7 +1046,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int maxdepth = dc->maxdepth.mm;
 	int mintemp = 0;
 	int lastdepth = 0;
-	int lasttemp = 0, lastpressure = 0;
+	int lasttemp = 0, lastpressure = 0, lastdiluentpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 
 	/* Fixup duration and mean depth */
@@ -1059,12 +1059,15 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		int depth = sample->depth.mm;
 		int temp = sample->temperature.mkelvin;
 		int pressure = sample->cylinderpressure.mbar;
+		int diluent_pressure = sample->diluentpressure.mbar;
 		int index = sample->sensor;
 
 		if (index == lastindex) {
 			/* Remove duplicate redundant pressure information */
 			if (pressure == lastpressure)
 				sample->cylinderpressure.mbar = 0;
+			if (diluent_pressure == lastdiluentpressure)
+				sample->diluentpressure.mbar = 0;
 			/* check for simply linear data in the samples
 			   +INT_MAX means uninitialized, -INT_MAX means not linear */
 			if (pressure_delta[index] != -INT_MAX && lastpressure) {
@@ -1082,6 +1085,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		}
 		lastindex = index;
 		lastpressure = pressure;
+		lastdiluentpressure = diluent_pressure;
 
 		if (depth > SURFACE_THRESHOLD) {
 			if (depth > maxdepth)
