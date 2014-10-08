@@ -1811,6 +1811,67 @@ air diving at a depth equalling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of data.
 
+==== The Gas Pressure Bar Graph
+
+On the left of the *Information Box* is a vertical bar graph indicating the
+pressures of the nitrogen (and other inert gases, e.g. helium, if applicable) that the diver
+was inhaling _at a particular instant during the dive_, indicated by the position
+of the cursor on the *Dive Profile*. The drawing on the left below indicates the
+meaning of the different parts of the Gas Pressure Bar Graph.
+
+image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="center"]
+
+- The light green area indicates the total gas, with the top margin of the light green
+area indicating the total gas pressure inhaled by the diver and measured from the bottom
+of the graph to the top of the light green area. This pressure has a _relative_ value in the graph
+and does not indicate absolute pressure.
+
+- The horizontal black line underneath the light green margin indicates the equilibrium pressure
+of the inert gases inhaled by the diver, usually nitrogen. In
+the case of trimix, it is the pressures of nitrogen and helium combined. In this example,
+the user is diving with EAN32, so the inert gas pressure is 68% of the distance from the
+bottom of the graph to the total gas pressure value.
+
+- The dark green area at the bottom of the graph represents the pressures of inert gas in each
+of the 16 tissue compartments, following the Bühlmann algorithm, the fast tissues being on the
+left hand side.
+
+- The top black horizontal line indicates the the gradient factor that applies to the depth of
+the diver at the particular point on the *Dive Profile*. The appropriate gradient factor is an
+interpolation between the FGLow and GFHigh values specified in the Graph tab of the *Preferences
+Panel* of *Subsurface*.
+
+- The bottom margin of the red area in the graph indicates the Bühlman-derived M-value, that is the
+pressure value of inert gases at which bubble formation is expected to be severe, resulting
+in decompression sickness.
+
+These five values are indicated on the left in the graph above. The way the Gas Pressure Bar Graph changes
+during a dive is indicated on the right hand side of the above figure for a diver using EAN32.
+
+- Graph *A* indicates the situation at the start of a dive with diver at the surface. The pressures in all
+the tissue compartments are still at the quilibrium pressure because no diving has taken place.
+
+- Graph *B* indicates the situation after a descent to 30 meters. Few of the tissue compartments have had
+time to respond to the descent, their gas pressures being far below the equilibrium gas pressure.
+
+- Graph *C* represents the pressures after 30 minutes at 30 m. The fast compartments have attained
+equilibrium (i.e. they have reached the hight of the black line indicating the equilibrium pressure). The
+slower compartments (towards the right) have not reached equilibrium and are in the process of slowly
+increasing in pressure.
+
+- Graph *D* shows the pressures after ascent to a depth of 4.5 meters. Since, during ascent, the total
+inhaled gas pressure has decreased strongly from 4 bar to 1.45 bar, the pressures in the different tissue
+compartments now exceed that of the total gas pressure and approaches the gradient factor value (i.e.
+the top black horizontal line). Further ascent will result in exceeding the gradient
+factor value (GFHigh), endangering the diver.
+
+- Graph *E* indicates the situation after remaining at 4.5 meters for 10 minutes. The fast compartments
+have decreased in pressure. As expected, the pressures in the slow compartments have not changed much.
+The pressures in the fast compartments do not approach the GFHigh value any more and the diver is safer
+than in the situation indicated in graph *D*.
+
+
+
 == Organising the logbook (Manipulating groups of dives)
 
 === The Dive List context menu
