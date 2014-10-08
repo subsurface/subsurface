@@ -2486,9 +2486,11 @@ void set_save_userid_local(short value)
 
 void set_userid(char *rUserId)
 {
-	prefs.userid = (char *) malloc(MAX_USERID_SIZE);
-	if (prefs.userid && rUserId)
-		strcpy(prefs.userid, rUserId);
+	prefs.userid = (char *) malloc(MAX_USERID_SIZE + 1);
+	if (prefs.userid && rUserId) {
+		strncpy(prefs.userid, rUserId, MAX_USERID_SIZE);
+		prefs.userid[MAX_USERID_SIZE] = 0;
+	}
 }
 #undef MAX_USERID_SIZE
 
