@@ -228,6 +228,12 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 
 	sp5.sp = ui->ostc3SetPointTable->item(4, 1)->text().toInt();
 	sp5.depth = ui->ostc3SetPointTable->item(4, 2)->text().toInt();
+
+	deviceDetails->setSp1(sp1);
+	deviceDetails->setSp2(sp2);
+	deviceDetails->setSp3(sp3);
+	deviceDetails->setSp4(sp4);
+	deviceDetails->setSp5(sp5);
 }
 
 void ConfigureDiveComputerDialog::readSettings()
