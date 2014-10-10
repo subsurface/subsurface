@@ -237,6 +237,11 @@ void ReadSettingsThread::run()
 				sp5.depth = dilData[1];
 			}
 
+			m_deviceDetails->setSp1(sp1);
+			m_deviceDetails->setSp2(sp2);
+			m_deviceDetails->setSp3(sp3);
+			m_deviceDetails->setSp4(sp4);
+			m_deviceDetails->setSp5(sp5);
 
 			//Read other settings
 			unsigned char uData[1] = {0};
