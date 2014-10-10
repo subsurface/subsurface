@@ -6,15 +6,15 @@
 #include "libdivecomputer.h"
 
 struct gas {
-	int oxygen;
-	int helium;
-	int type;
-	int depth;
+	unsigned char oxygen;
+	unsigned char helium;
+	unsigned char type;
+	unsigned char depth;
 };
 
 struct setpoint {
-	int sp;
-	int depth;
+	unsigned char sp;
+	unsigned char depth;
 };
 
 class DeviceDetails : public QObject
