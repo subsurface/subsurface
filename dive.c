@@ -1039,19 +1039,19 @@ static void fixup_dc_events(struct divecomputer *dc)
 
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
-	int i, j;
+	int i, j, o2val;
 	double depthtime = 0;
 	int lasttime = 0;
 	int lastindex = -1;
 	int maxdepth = dc->maxdepth.mm;
 	int mintemp = 0;
 	int lastdepth = 0;
+	int lasto2val[3] = { 0, 0, 0 }, lasto2setpoint = 0;
 	int lasttemp = 0, lastpressure = 0, lastdiluentpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
-
 	update_min_max_temperatures(dive, dc->watertemp);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
@@ -1108,6 +1108,27 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
+
+		// If there are consecutive identical O2 sensor readings, throw away the redundant ones.
+		for (j = 0; j < dc->no_o2sensors; j++) {  // for CCR oxygen sensor data:
+			o2val = sample->o2sensor[j].mbar;
+			if (o2val) {
+				if (lasto2val[j] == o2val)
+					sample->o2sensor[j].mbar = 0;
+				else
+					lasto2val[j] = o2val;
+			}
+		}
+
+		// If there are consecutive identical CCR O2 setpoint readings, throw away the redundant ones.
+		o2val = sample->o2setpoint.mbar;
+		if (o2val) {
+			if (lasto2setpoint == o2val)
+				sample->o2setpoint.mbar = 0;
+			else
+				lasto2setpoint = o2val;
+		}
+
 		update_min_max_temperatures(dive, sample->temperature);
 
 		depthtime += (time - lasttime) * (lastdepth + depth) / 2;

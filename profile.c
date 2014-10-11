@@ -551,6 +551,11 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		entry->pressures.o2 = sample->po2.mbar / 1000.0;
+		entry->o2setpoint = sample->o2setpoint.mbar / 1000.0;   // for rebreathers
+		entry->o2sensor[0] = sample->o2sensor[0].mbar / 1000.0; // for up to three rebreather O2 sensors
+		entry->o2sensor[1] = sample->o2sensor[1].mbar / 1000.0;
+		entry->o2sensor[2] = sample->o2sensor[2].mbar / 1000.0;
+
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
@@ -909,7 +914,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	setup_gas_sensor_pressure(dive, dc, pi);		 /* Try to populate our gas pressure knowledge */
 	populate_pressure_information(dive, dc, pi, NONDILUENT); /* .. calculate missing pressure entries for all gasses except diluent */
 	if (dc->dctype == CCR) {				 /* For CCR dives.. */
-		printf("REBREATHER; %d O2 sensors\n", dc->no_o2sensors);
+		printf("CCR DIVE: %s (%d O2 sensors)\n", dc->model, dc->no_o2sensors);
 		populate_pressure_information(dive, dc, pi, DILUENT); /* .. calculate missing diluent gas pressure entries */
 //		fill_o2_values(dc, pi);				 /* .. and insert the O2 sensor data having 0 values. */
 	}

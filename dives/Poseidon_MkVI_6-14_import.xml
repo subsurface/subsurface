@@ -1,9 +1,6 @@
 <divelog program="subsurface-import" version="2">
   <dives>
-    <dive tags="rebreather" date="2011-06-14" time="11:20">
-      <cylinder size='3.0 l' workpressure='200.0 bar' description='3l Mk6' o2='100.0%' start='184 bar' end='141.0 bar'/>
-      <cylinder size='3.0 l' workpressure='200.0 bar' description='3l Mk6' o2='21.0%' start='181 bar' end='137.0 bar'/>
-      <divecomputer model="Poseidon MkVI Discovery" dctype="CCR" no_o2sensors="2">
+    <dive tags="CCR" date="2011-06-14" time="11:20">
       <notes>
 MkVI_Config v1.08
 Dive started at            : 2011-06-14 11:20:36
@@ -47,6 +44,9 @@ Helium tension 8           : 0.0000
 Helium tension 9           : 0.0000
 ---
 	  </notes>
+      <cylinder size='3.0 l' workpressure='200.0 bar' description='3l Mk6' o2='100.0%' start='184 bar' end='141.0 bar'/>
+      <cylinder size='3.0 l' workpressure='200.0 bar' description='3l Mk6' o2='21.0%' start='181 bar' end='137.0 bar'/>
+      <divecomputer model="Poseidon MkVI Discovery" dctype="CCR" no_o2sensors="2">
       <sample time="0:00" depth="1 m" battery="" sensor1="0.34 bar" sensor2="NaN bar" pressure=" bar" pdiluent=" bar" setpoint="0.41 bar" temp="NaN C"/>
       <sample time="0:01" depth="1 m" battery="" sensor1="0.35 bar" sensor2="0.32 bar" pressure=" bar" pdiluent=" bar" setpoint="0.41 bar" temp="NaN C"/>
       <sample time="0:02" depth="0.5 m" battery="" sensor1="0.36 bar" sensor2="0.32 bar" pressure=" bar" pdiluent=" bar" setpoint="0.41 bar" temp="NaN C"/>

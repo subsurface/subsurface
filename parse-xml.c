@@ -865,6 +865,14 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("cns.sample", get_uint8, &sample->cns))
 		return;
+	if (MATCH("sensor1.sample", double_to_o2pressure, &sample->o2sensor[0])) // CCR O2 sensor data
+		return;
+	if (MATCH("sensor2.sample", double_to_o2pressure, &sample->o2sensor[1]))
+		return;
+	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2])) // up to 3 CCR sensors
+		return;
+	if (MATCH("setpoint.sample", double_to_o2pressure, &sample->o2setpoint))
+		return;
 	if (MATCH("po2.sample", double_to_o2pressure, &sample->po2))
 		return;
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
