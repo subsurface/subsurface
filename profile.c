@@ -107,7 +107,7 @@ int evn_allocated;
 int evn_used;
 
 #if WE_DONT_USE_THIS /* we need to implement event filters in Qt */
-int evn_foreach(void (*callback)(const char *, bool *, void *), void *data) {
+int evn_foreach (void (*callback)(const char *, bool *, void *), void *data) {
 	int i;
 
 	for (i = 0; i < evn_used; i++) {
@@ -783,10 +783,10 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		else
 			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calcceiling3m);
 		for (j = 0; j < 16; j++) {
-			double m_value = buehlmann_inertgas_a[j] +  entry->ambpressure / buehlmann_inertgas_b[j];
+			double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
 			entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
-							tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE:
+							tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE :
 							AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE);
 		}
 

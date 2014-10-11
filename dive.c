@@ -65,7 +65,7 @@ static int same_event(struct event *a, struct event *b)
 	return !strcmp(a->name, b->name);
 }
 
-void remove_event(struct event* event)
+void remove_event(struct event *event)
 {
 	struct event **ep = &current_dc->events;
 	while (ep && !same_event(*ep, event))
@@ -85,7 +85,7 @@ void remove_event(struct event* event)
  * have to actually remove the existing event and replace it with a new one.
  * WARNING, WARNING... this may end up freeing event in case that event is indeed
  * WARNING, WARNING... part of this divecomputer on this dive! */
-void update_event_name(struct dive *d, struct event* event, char *name)
+void update_event_name(struct dive *d, struct event *event, char *name)
 {
 	if (!d || !event)
 		return;
@@ -190,7 +190,7 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 
 int units_to_sac(double volume)
 {
-	if(get_units()->volume == CUFT)
+	if (get_units()->volume == CUFT)
 		return rint(cuft_to_l(volume) * 1000.0);
 	else
 		return rint(volume * 1000);
@@ -341,24 +341,27 @@ static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 
 /* Clear everything but the first element;
  * this works for taglist, picturelist, even dive computers */
-#define STRUCTURED_LIST_FREE(_type, _start, _free) {\
-	_type *_ptr = _start;                      \
-	while(_ptr) {                              \
-		_type *_next = _ptr->next;         \
-		_free(_ptr);                       \
-		_ptr = _next;                      \
-	}}
+#define STRUCTURED_LIST_FREE(_type, _start, _free) \
+	{                                          \
+		_type *_ptr = _start;              \
+		while (_ptr) {                     \
+			_type *_next = _ptr->next; \
+			_free(_ptr);               \
+			_ptr = _next;              \
+		}                                  \
+	}
 
-#define STRUCTURED_LIST_COPY(_type, _first, _dest, _cpy) {\
-	_type *_sptr = _first;                      \
-	_type **_dptr = &_dest;                     \
-	while(_sptr) {                              \
-		*_dptr = malloc(sizeof(_type));     \
-		_cpy(_sptr, *_dptr);                 \
-		_sptr = _sptr->next;                \
-		_dptr = &(*_dptr)->next;            \
-	}                                           \
-	*_dptr = 0;                                 \
+#define STRUCTURED_LIST_COPY(_type, _first, _dest, _cpy) \
+	{                                                \
+		_type *_sptr = _first;                   \
+		_type **_dptr = &_dest;                  \
+		while (_sptr) {                          \
+			*_dptr = malloc(sizeof(_type));  \
+			_cpy(_sptr, *_dptr);             \
+			_sptr = _sptr->next;             \
+			_dptr = &(*_dptr)->next;         \
+		}                                        \
+		*_dptr = 0;                              \
 	}
 
 /* copy_dive makes duplicates of many components of a dive;
@@ -413,7 +416,7 @@ void copy_dive(struct dive *s, struct dive *d)
 struct dive *clone_dive(struct dive *s)
 {
 	struct dive *dive = alloc_dive();
-	*dive = *s; // so all the pointers in dive point to the things s pointed to
+	*dive = *s;			   // so all the pointers in dive point to the things s pointed to
 	memset(s, 0, sizeof(struct dive)); // and now the pointers in s are gone
 	return dive;
 }
@@ -885,7 +888,7 @@ static void fixup_surface_pressure(struct dive *dive)
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc(dive, dc) {
+	for_each_dc (dive, dc) {
 		if (dc->surface_pressure.mbar) {
 			sum += dc->surface_pressure.mbar;
 			nr++;
@@ -900,7 +903,7 @@ static void fixup_water_salinity(struct dive *dive)
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc(dive, dc) {
+	for_each_dc (dive, dc) {
 		if (dc->salinity) {
 			sum += dc->salinity;
 			nr++;
@@ -915,7 +918,7 @@ static void fixup_meandepth(struct dive *dive)
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc(dive, dc) {
+	for_each_dc (dive, dc) {
 		if (dc->meandepth.mm) {
 			sum += dc->meandepth.mm;
 			nr++;
@@ -930,7 +933,7 @@ static void fixup_duration(struct dive *dive)
 	struct divecomputer *dc;
 	unsigned int duration = 0;
 
-	for_each_dc(dive, dc)
+	for_each_dc (dive, dc)
 		duration = MAX(duration, dc->duration.seconds);
 
 	dive->duration.seconds = duration;
@@ -1110,7 +1113,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		}
 
 		// If there are consecutive identical O2 sensor readings, throw away the redundant ones.
-		for (j = 0; j < dc->no_o2sensors; j++) {  // for CCR oxygen sensor data:
+		for (j = 0; j < dc->no_o2sensors; j++) { // for CCR oxygen sensor data:
 			o2val = sample->o2sensor[j].mbar;
 			if (o2val) {
 				if (lasto2val[j] == o2val)
@@ -1181,7 +1184,7 @@ struct dive *fixup_dive(struct dive *dive)
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
 
-	for_each_dc(dive, dc)
+	for_each_dc (dive, dc)
 		fixup_dive_dc(dive, dc);
 
 	fixup_water_salinity(dive);
@@ -1500,7 +1503,6 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 		pressures->he = get_he(mix) / 1000.0 * amb_pressure;
 		pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
 	}
-
 }
 
 static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int used)
@@ -1570,7 +1572,7 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 static void cylinder_renumber(struct dive *dive, int mapping[])
 {
 	struct divecomputer *dc;
-	for_each_dc(dive, dc)
+	for_each_dc (dive, dc)
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
@@ -2246,7 +2248,7 @@ static void join_dive_computers(struct divecomputer *res, struct divecomputer *a
 
 static bool tag_seen_before(struct tag_entry *start, struct tag_entry *before)
 {
-	while(start && start != before) {
+	while (start && start != before) {
 		if (same_string(start->tag->name, before->tag->name))
 			return true;
 		start = start->next;
@@ -2452,7 +2454,7 @@ struct dive *find_dive_including(timestamp_t when)
 	/* binary search, anyone? Too lazy for now;
 	 * also we always use the duration from the first divecomputer
 	 *     could this ever be a problem? */
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (dive->when <= when && when <= dive->when + dive->duration.seconds)
 			return dive;
 	}
@@ -2471,7 +2473,7 @@ struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset)
 	int i, j = 0;
 	struct dive *dive;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (dive_within_time_range(dive, when, offset))
 			if (++j == n)
 				return dive;
@@ -2484,7 +2486,7 @@ void shift_times(const timestamp_t amount)
 	int i;
 	struct dive *dive;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (!dive->selected)
 			continue;
 		dive->when += amount;
@@ -2496,7 +2498,7 @@ timestamp_t get_times()
 	int i;
 	struct dive *dive;
 
-	for_each_dive(i, dive) {
+	for_each_dive (i, dive) {
 		if (dive->selected)
 			break;
 	}
@@ -2511,7 +2513,7 @@ void set_save_userid_local(short value)
 
 void set_userid(char *rUserId)
 {
-	prefs.userid = (char *) malloc(MAX_USERID_SIZE + 1);
+	prefs.userid = (char *)malloc(MAX_USERID_SIZE + 1);
 	if (prefs.userid && rUserId) {
 		strncpy(prefs.userid, rUserId, MAX_USERID_SIZE);
 		prefs.userid[MAX_USERID_SIZE] = 0;
@@ -2555,7 +2557,7 @@ struct picture *alloc_picture()
 
 static bool new_picture_for_dive(struct dive *d, char *filename)
 {
-	FOR_EACH_PICTURE(d) {
+	FOR_EACH_PICTURE (d) {
 		if (same_string(picture->filename, filename))
 			return false;
 	}
@@ -2589,7 +2591,7 @@ void dive_add_picture(struct dive *d, struct picture *newpic)
 {
 	struct picture **pic_ptr = &d->picture_list;
 	/* let's keep the list sorted by time */
-	while( *pic_ptr && (*pic_ptr)->offset.seconds < newpic->offset.seconds )
+	while (*pic_ptr && (*pic_ptr)->offset.seconds < newpic->offset.seconds)
 		pic_ptr = &(*pic_ptr)->next;
 	newpic->next = *pic_ptr;
 	*pic_ptr = newpic;
@@ -2599,7 +2601,7 @@ void dive_add_picture(struct dive *d, struct picture *newpic)
 unsigned int dive_get_picture_count(struct dive *d)
 {
 	unsigned int i = 0;
-	FOR_EACH_PICTURE( d )
+	FOR_EACH_PICTURE (d)
 		i++;
 	return i;
 }
@@ -2612,11 +2614,12 @@ void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
 	}
 }
 
-static void picture_free( struct picture *p){
+static void picture_free(struct picture *p)
+{
 	if (!p)
 		return;
-	free( p->filename );
-	free( p );
+	free(p->filename);
+	free(p);
 }
 void dive_remove_picture(char *filename)
 {
