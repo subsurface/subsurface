@@ -2505,7 +2505,6 @@ timestamp_t get_times()
 	return dive->when;
 }
 
-#define MAX_USERID_SIZE 32
 void set_save_userid_local(short value)
 {
 	prefs.save_userid_local = value;
@@ -2513,13 +2512,8 @@ void set_save_userid_local(short value)
 
 void set_userid(char *rUserId)
 {
-	prefs.userid = (char *)malloc(MAX_USERID_SIZE + 1);
-	if (prefs.userid && rUserId) {
-		strncpy(prefs.userid, rUserId, MAX_USERID_SIZE);
-		prefs.userid[MAX_USERID_SIZE] = 0;
-	}
+	prefs.userid = strdup(rUserId);
 }
-#undef MAX_USERID_SIZE
 
 int average_depth(struct diveplan *dive)
 {
