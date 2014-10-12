@@ -107,6 +107,49 @@
       </xsl:choose>
     </CYLINDERENDPRESSURE>
 
+    <ADDITIONALTANKS>
+      <xsl:for-each select="cylinder[position() != $cylinder]">
+          <xsl:variable name="cur_cyl">
+            <xsl:value-of select="position()"/>
+          </xsl:variable>
+
+          <TANK>
+            <CYLINDERDESCRIPTION>
+              <xsl:value-of select="@description"/>
+            </CYLINDERDESCRIPTION>
+
+            <xsl:variable name="dbl">
+              <xsl:choose>
+                <xsl:when test="substring(@description, 1, 1) = 'D' and substring-before(substring(@description, 2), ' ') * 2 = substring-before(@size, ' ')">
+                  <xsl:value-of select="'2'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="'1'"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <DBLTANK>
+              <xsl:value-of select="$dbl - 1"/>
+            </DBLTANK>
+            <CYLINDERSIZE>
+              <xsl:value-of select="substring-before(@size, ' ') div $dbl"/>
+            </CYLINDERSIZE>
+            <CYLINDERSTARTPRESSURE>
+              <xsl:value-of select="@start"/>
+            </CYLINDERSTARTPRESSURE>
+            <CYLINDERENDPRESSURE>
+              <xsl:value-of select="@end"/>
+            </CYLINDERENDPRESSURE>
+            <O2PCT>
+              <xsl:value-of select="substring-before(@o2, '%')"/>
+            </O2PCT>
+            <HEPCT>
+              <xsl:value-of select="substring-before(@he, '%')"/>
+            </HEPCT>
+          </TANK>
+      </xsl:for-each>
+    </ADDITIONALTANKS>
+
     <WEIGHT>
       <xsl:call-template name="sum">
         <xsl:with-param name="values" select="weightsystem/@weight"/>
@@ -115,6 +158,9 @@
     <O2PCT>
       <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@o2, '%')"/>
     </O2PCT>
+    <HEPCT>
+      <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@he, '%')"/>
+    </HEPCT>
     <LOGNOTES>
       <xsl:value-of select="notes"/>
     </LOGNOTES>
