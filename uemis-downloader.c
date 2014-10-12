@@ -120,6 +120,17 @@ static struct dive *uemis_start_dive(uint32_t deviceid)
 	return dive;
 }
 
+static void record_uemis_dive(device_data_t *devdata, struct dive *dive)
+{
+	if (devdata->create_new_trip) {
+		if (!devdata->trip)
+			devdata->trip = create_and_hookup_trip_from_dive(dive);
+		else
+			add_dive_to_trip(dive, devdata->trip);
+	}
+	record_dive(dive);
+}
+
 /* send text to the importer progress bar */
 static void uemis_info(const char *fmt, ...)
 {
@@ -681,7 +692,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the adresses of those fields for every dive that references the divespot. */
-static bool process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr, bool keep_number, int *for_dive)
+static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, bool keep_number, int *for_dive)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -784,14 +795,14 @@ static bool process_raw_buffer(uint32_t deviceid, char *inbuf, char **max_divenr
 		 * be a short read because of some error */
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = false;
-			record_dive(dive);
+			record_uemis_dive(devdata, dive);
 			mark_divelist_changed(true);
 			dive = uemis_start_dive(deviceid);
 		}
 	}
 	if (log) {
 		if (dive->dc.diveid) {
-			record_dive(dive);
+			record_uemis_dive(devdata, dive);
 			mark_divelist_changed(true);
 		} else { /* partial dive */
 			free(dive);
@@ -875,7 +886,7 @@ const char *do_uemis_import(device_data_t *data)
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		/* process the buffer we have assembled */
 		if (mbuf)
-			if (!process_raw_buffer(deviceidnr, mbuf, &newmax, keep_number, NULL)) {
+			if (!process_raw_buffer(data, deviceidnr, mbuf, &newmax, keep_number, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
 				if (end == -2)
 					end = start - 1;
@@ -930,7 +941,7 @@ const char *do_uemis_import(device_data_t *data)
 		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
 		if (mbuf) {
 			int divenr;
-			(void)process_raw_buffer(deviceidnr, mbuf, &newmax, false, &divenr);
+			(void)process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, &divenr);
 #if UEMIS_DEBUG & 2
 			fprintf(debugfile, "got dive %d, looking for dive %d\n", divenr, i);
 #endif
