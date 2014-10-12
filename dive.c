@@ -491,18 +491,23 @@ void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components 
 }
 #undef CONDITIONAL_COPY_STRING
 
-/* only copies events from the first dive computer */
+/* copies all events in this dive computer */
 void copy_events(struct divecomputer *s, struct divecomputer *d)
 {
-	struct event *ev;
+	struct event *ev, **pev;
 	if (!s || !d)
 		return;
 	ev = s->events;
-	d->events = NULL;
+	pev = &d->events;
 	while (ev != NULL) {
-		add_event(d, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
+		int size = sizeof(*ev) + strlen(ev->name) + 1;
+		struct event *new_ev = malloc(size);
+		memcpy(new_ev, ev, size);
+		*pev = new_ev;
+		pev = &new_ev->next;
 		ev = ev->next;
 	}
+	*pev = NULL;
 }
 
 int nr_cylinders(struct dive *dive)
