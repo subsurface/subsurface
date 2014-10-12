@@ -75,11 +75,15 @@
         <xsl:value-of select="PARTNER"/>
       </buddy>
 
-      <!-- Helium? -->
       <cylinder>
         <xsl:attribute name="o2">
           <xsl:value-of select="O2PCT"/>
         </xsl:attribute>
+        <xsl:if test="HEPCT != ''">
+          <xsl:attribute name="he">
+            <xsl:value-of select="HEPCT"/>
+          </xsl:attribute>
+        </xsl:if>
         <xsl:attribute name="start">
           <xsl:value-of select="CYLINDERSTARTPRESSURE"/>
         </xsl:attribute>
@@ -100,6 +104,38 @@
           <xsl:value-of select="CYLINDERDESCRIPTION"/>
         </xsl:attribute>
       </cylinder>
+
+      <xsl:for-each select="ADDITIONALTANKS/TANK">
+        <cylinder>
+          <xsl:attribute name="o2">
+            <xsl:value-of select="O2PCT"/>
+          </xsl:attribute>
+          <xsl:if test="HEPCT != ''">
+            <xsl:attribute name="he">
+              <xsl:value-of select="HEPCT"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:attribute name="start">
+            <xsl:value-of select="CYLINDERSTARTPRESSURE"/>
+          </xsl:attribute>
+          <xsl:attribute name="end">
+            <xsl:value-of select="CYLINDERENDPRESSURE"/>
+          </xsl:attribute>
+          <xsl:if test="CYLINDERSIZE != ''">
+            <xsl:attribute name="size">
+              <xsl:value-of select="format-number(CYLINDERSIZE + CYLINDERSIZE * DBLTANK, '#.##')"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="WORKINGPRESSURE &gt; 0">
+            <xsl:attribute name="workpressure">
+              <xsl:value-of select="WORKINGPRESSURE"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:attribute name="description">
+            <xsl:value-of select="CYLINDERDESCRIPTION"/>
+          </xsl:attribute>
+        </cylinder>
+      </xsl:for-each>
 
       <xsl:if test="WEIGHT != ''">
         <weightsystem>
