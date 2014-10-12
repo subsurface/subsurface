@@ -477,7 +477,7 @@ void DownloadThread::run()
 	const char *errorText;
 	import_thread_cancelled = false;
 	if (!strcmp(data->vendor, "Uemis"))
-		errorText = do_uemis_import(data->devname, data->force_download);
+		errorText = do_uemis_import(data);
 	else
 		errorText = do_libdivecomputer_import(data);
 	if (errorText)

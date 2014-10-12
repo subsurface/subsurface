@@ -33,7 +33,7 @@ typedef struct device_data_t
 } device_data_t;
 
 const char *do_libdivecomputer_import(device_data_t *data);
-const char *do_uemis_import(const char *mountpath, short force_download);
+const char *do_uemis_import(device_data_t *data);
 
 extern int import_thread_cancelled;
 extern const char *progress_bar_text;

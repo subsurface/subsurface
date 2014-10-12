@@ -824,8 +824,10 @@ static char *uemis_get_divenr(char *deviceidstr)
 	return strdup(divenr);
 }
 
-const char *do_uemis_import(const char *mountpath, short force_download)
+const char *do_uemis_import(device_data_t *data)
 {
+	const char *mountpath = data->devname;
+	short force_download = data->force_download;
 	char *newmax = NULL;
 	int start, end = -2, i, offset;
 	uint32_t deviceidnr;
