@@ -1521,7 +1521,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 }
 
 /* Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be extended to PSCT */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const enum dive_comp_type type)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const struct divecomputer *dc)
 {
 	if (po2) {
 		/* we have an O₂ partial pressure in the sample - so this

@@ -834,7 +834,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 
-		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, dive->dc.dctype);
+		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, &(dive->dc));
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
@@ -857,6 +857,47 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 			entry->end = 0;
 		if (entry->eadd < 0)
 			entry->eadd = 0;
+	}
+}
+
+void fill_o2_values(struct divecomputer *dc, struct plot_info *pi)
+/* For CCR:
+ * In the samples from each dive computer, any duplicate values for the
+ * oxygen sensors were removed (i.e. set to 0) in order to conserve
+ * storage space (see function fuxup_dive_dc). But for drawing the prodile
+ * a complete series of valid o2 pressure values is required. This function
+ * takes the oxygen sensor data and setpoint values from the structures
+ * of plotinfo and re-inserts the duplicate values set to 0 so
+ * that the oxygen sensor data are complete and ready for plotting.
+ * The original sequence of oxygen values are recreated without attempting
+ * any interpolations for values set to zero, recreating the raw data from
+ * the CCR dive log. This function called by: create_plot_info_new()    */
+{
+	int i, j;
+	double last_setpoint;
+	double last_sensor[3];
+
+	for (i = 0; i < pi->nr; i++) {
+		struct plot_data *entry = pi->entry + i;
+
+		// For 1st iteration, initialise the last_ values
+		if (i == 0) {
+			last_setpoint = pi->entry->o2setpoint;
+			for (j = 0; j < dc->no_o2sensors; j++)
+				last_sensor[j] = pi->entry->o2sensor[j];
+		} else {
+			// Now re-insert the missing oxygen pressure values
+			if (entry->o2setpoint)
+				last_setpoint = entry->o2setpoint;
+			else
+				entry->o2setpoint = last_setpoint;
+
+			for (j = 0; j < dc->no_o2sensors; j++)
+				if (entry->o2sensor[j])
+					last_sensor[j] = entry->o2sensor[j];
+				else
+					entry->o2sensor[j] = last_sensor[j];
+		}
 	}
 }
 
@@ -915,7 +956,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	if (dc->dctype == CCR) {				 /* For CCR dives.. */
 		printf("CCR DIVE: %s (%d O2 sensors)\n", dc->model, dc->no_o2sensors);
 		populate_pressure_information(dive, dc, pi, DILUENT); /* .. calculate missing diluent gas pressure entries */
-//		fill_o2_values(dc, pi);				 /* .. and insert the O2 sensor data having 0 values. */
+		fill_o2_values(dc, pi);				      /* .. and insert the O2 sensor data having 0 values. */
 	}
 	calculate_sac(dive, pi); /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false);
