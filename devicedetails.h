@@ -35,6 +35,9 @@ public:
 	QString customText() const;
 	void setCustomText(const QString &customText);
 
+	QString model() const;
+	void setModel(const QString &model);
+
 	int brightness() const;
 	void setBrightness(int brightness);
 
@@ -152,11 +155,48 @@ public:
 	int pressureSensorOffset() const;
 	void setPressureSensorOffset(int pressureSensorOffset);
 
+	int maxDepth() const;
+	void setMaxDepth(int maxDepth);
+
+	int totalTime() const;
+	void setTotalTime(int totalTime);
+
+	int numberOfDives() const;
+	void setNumberOfDives(int numberOfDives);
+
+	int altitude() const;
+	void setAltitude(int altitude);
+
+	int personalSafety() const;
+	void setPersonalSafety(int personalSafety);
+
+	int timeFormat() const;
+	void setTimeFormat(int timeFormat);
+
+	bool lightEnabled() const;
+	void setLightEnabled(bool lightEnabled);
+
+	int light() const;
+	void setLight(int light);
+
+	bool alarmTimeEnabled() const;
+	void setAlarmTimeEnabled(bool alarmTimeEnabled);
+
+	int alarmTime() const;
+	void setAlarmTime(int alarmTime);
+
+	bool alarmDepthEnabled() const;
+	void setAlarmDepthEnabled(bool alarmDepthEnabled);
+
+	int alarmDepth() const;
+	void setAlarmDepth(int alarmDepth);
+
 private:
 	device_data_t *m_data;
 	QString m_serialNo;
 	QString m_firmwareVersion;
 	QString m_customText;
+	QString m_model;
 	bool m_syncTime;
 	gas m_gas1;
 	gas m_gas2;
@@ -196,6 +236,18 @@ private:
 	int m_dateFormat;
 	int m_compassGain;
 	int m_pressureSensorOffset;
+	int m_maxDepth;
+	int m_totalTime;
+	int m_numberOfDives;
+	int m_altitude;
+	int m_personalSafety;
+	int m_timeFormat;
+	bool m_lightEnabled;
+	int m_light;
+	bool m_alarmTimeEnabled;
+	int m_alarmTime;
+	bool m_alarmDepthEnabled;
+	int m_alarmDepth;
 };
 
 

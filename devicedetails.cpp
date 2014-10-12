@@ -10,6 +10,7 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	m_serialNo(""),
 	m_firmwareVersion(""),
 	m_customText(""),
+	m_model(""),
 	m_syncTime(false),
 	m_gas1(zero_gas),
 	m_gas2(zero_gas),
@@ -48,7 +49,19 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	m_language(0),
 	m_dateFormat(0),
 	m_compassGain(0),
-	m_pressureSensorOffset(0)
+	m_pressureSensorOffset(0),
+	m_maxDepth(0),
+	m_totalTime(0),
+	m_numberOfDives(0),
+	m_altitude(0),
+	m_personalSafety(0),
+	m_timeFormat(0),
+	m_lightEnabled(false),
+	m_light(0),
+	m_alarmTimeEnabled(false),
+	m_alarmTime(0),
+	m_alarmDepthEnabled(false),
+	m_alarmDepth(0)
 {
 }
 
@@ -90,6 +103,16 @@ QString DeviceDetails::customText() const
 void DeviceDetails::setCustomText(const QString &customText)
 {
 	m_customText = customText;
+}
+
+QString DeviceDetails::model() const
+{
+	return m_model;
+}
+
+void DeviceDetails::setModel(const QString &model)
+{
+	m_model = model;
 }
 
 int DeviceDetails::brightness() const
@@ -480,4 +503,124 @@ int DeviceDetails::pressureSensorOffset() const
 void DeviceDetails::setPressureSensorOffset(int pressureSensorOffset)
 {
 	m_pressureSensorOffset = pressureSensorOffset;
+}
+
+int DeviceDetails::maxDepth() const
+{
+	return m_maxDepth;
+}
+
+void DeviceDetails::setMaxDepth(int maxDepth)
+{
+	m_maxDepth = maxDepth;
+}
+
+int DeviceDetails::totalTime() const
+{
+	return m_totalTime;
+}
+
+void DeviceDetails::setTotalTime(int totalTime)
+{
+	m_totalTime = totalTime;
+}
+
+int DeviceDetails::numberOfDives() const
+{
+	return m_numberOfDives;
+}
+
+void DeviceDetails::setNumberOfDives(int numberOfDives)
+{
+	m_numberOfDives = numberOfDives;
+}
+
+int DeviceDetails::altitude() const
+{
+	return m_altitude;
+}
+
+void DeviceDetails::setAltitude(int altitude)
+{
+	m_altitude = altitude;
+}
+
+int DeviceDetails::personalSafety() const
+{
+	return m_personalSafety;
+}
+
+void DeviceDetails::setPersonalSafety(int personalSafety)
+{
+	m_personalSafety = personalSafety;
+}
+
+int DeviceDetails::timeFormat() const
+{
+	return m_timeFormat;
+}
+
+void DeviceDetails::setTimeFormat(int timeFormat)
+{
+	m_timeFormat = timeFormat;
+}
+
+bool DeviceDetails::lightEnabled() const
+{
+	return m_lightEnabled;
+}
+
+void DeviceDetails::setLightEnabled(bool lightEnabled)
+{
+	m_lightEnabled = lightEnabled;
+}
+
+int DeviceDetails::light() const
+{
+	return m_light;
+}
+
+void DeviceDetails::setLight(int light)
+{
+	m_light = light;
+}
+
+bool DeviceDetails::alarmTimeEnabled() const
+{
+	return m_alarmTimeEnabled;
+}
+
+void DeviceDetails::setAlarmTimeEnabled(bool alarmTimeEnabled)
+{
+	m_alarmTimeEnabled = alarmTimeEnabled;
+}
+
+int DeviceDetails::alarmTime() const
+{
+	return m_alarmTime;
+}
+
+void DeviceDetails::setAlarmTime(int alarmTime)
+{
+	m_alarmTime = alarmTime;
+}
+
+bool DeviceDetails::alarmDepthEnabled() const
+{
+	return m_alarmDepthEnabled;
+}
+
+void DeviceDetails::setAlarmDepthEnabled(bool alarmDepthEnabled)
+{
+	m_alarmDepthEnabled = alarmDepthEnabled;
+}
+
+int DeviceDetails::alarmDepth() const
+{
+	return m_alarmDepth;
+}
+
+void DeviceDetails::setAlarmDepth(int alarmDepth)
+{
+	m_alarmDepth = alarmDepth;
 }
