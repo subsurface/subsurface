@@ -1525,23 +1525,105 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 	return delta_he + delta_o2;
 }
 
-/* Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be extended to PSCT */
+/* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be
+ *  extended to PSCT. This function does the calculations of gass pressures applicable to a single point on the dive profile.
+ * The structure "pressures" is used to obtain data and to return calculated gas pressures to the calling software.
+ * Call parameters:	po2 = po2 value applicable to the record in calling function
+ *			amb_pressure = ambient pressure applicable to the record in calling function
+ *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
+ *			*mix = structure containing cylinder gas mixture information.
+			*dc = pointer to divecomputer structure.
+ * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
+ */
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const struct divecomputer *dc)
 {
-	if (po2) {
-		/* we have an O₂ partial pressure in the sample - so this
-		 * is likely a CC dive... use that instead of the value
-		 * from the cylinder info */
-		if (po2 >= amb_pressure || get_o2(mix) == 1000) {
-			pressures->o2 = amb_pressure;
-			pressures->he = 0;
-			pressures->n2 = 0;
-		} else {
-			pressures->o2 = po2;
-			pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
-			pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+	double sensor_j, sump, midp, minp, maxp;
+	double diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
+	int num_of_diffs;	 // The number of unacceptable differences among the ogygen sensor partial pressure measurements
+	int i, j, np;
+	bool maxdif = false, mindif = false;
+
+	if (dc->dctype == CCR) { // for CCR rebreathers..
+		// Estimate the most reliable PO2, given the different oxygen partial pressure values from the O2 sensors
+		switch (dc->no_o2sensors) {
+		case 2: { // For 2 sensors: take the mean value of the two partial pressure sensors.
+			np = 0;
+			sump = 0;		  // This calculation allows that for some samples (especially at start of dive) with
+			for (j = 0; j < 2; j++) { // an inactive sensor, the sensor(s) with zero values are not used.
+				sensor_j = pressures->sensor[j];
+				if (sensor_j) {
+					np++;
+					sump = sump + sensor_j;
+				}
+			}
+			if (np > 0)			   // if there is at least one sensor value
+				pressures->o2 = sump / np; // then calculate the mean, else
+//			else pressures->o2 = po2; // if there are no valid sensor values, the use the po2 parameter.
+			break;
 		}
-	} else {
+		case 3: { /* For 3 sensors: diff_limit is the critical limit indicating unacceptable difference (default = 100 mbar).
+			   * a) If all three readings are within a range of diff_limit, then take the mean value. This
+			   *     includes the case where reading 1 is within diff_limit of reading 2; and reading 2 is
+			   *     within diff_limit of reading 3, but readings 1 and 3 differ by more than diff_limit.
+			   * b) If one sensor differs by more than diff-limit from the other two, then take the mean
+			   *     of the closer two sensors and disregard the 3rd sensor, considered as an outlier.
+			   * c) If all 3 sensors differ by more than diff_limit then take the mean of the 3 readings. */
+			for (minp = 9999999999, maxp = -1, sump = 0, j = 0; j < 3; j++) {
+				sensor_j = pressures->sensor[j];
+				if (sensor_j < minp)
+					minp = sensor_j;
+				if (sensor_j > maxp)
+					maxp = sensor_j;
+				sump = sump + sensor_j; // Find min, max and mid of p-values
+			}
+			midp = sump - minp - maxp;
+			num_of_diffs = 0;
+			if ((maxp - midp) > diff_limit) {
+				num_of_diffs++;
+				maxdif = true;
+			}
+			if ((midp - minp) > diff_limit) {
+				num_of_diffs++;
+				mindif = true; // Find no of unacceptable differences
+			}
+			switch (num_of_diffs) {
+			case 0:
+				;
+			case 2: {
+				pressures->o2 = sump / 3; // 0 or 2 unacceptable differences: find mean of three values.
+				break;
+			}
+			case 1: {
+				if (maxdif) // 1 unacceptable difference: find mean of two closer values
+					pressures->o2 = (minp + midp) / 2;
+				if (mindif)
+					pressures->o2 = (maxp + midp) / 2;
+				break;
+			}
+			} //switch no_of_diffs
+		}
+		default: { // if # of sensors is 1 or unknown, simply take the value of the first sensor
+			if (pressures->sensor[0])
+				pressures->o2 = pressures->sensor[0];
+			else
+				pressures->o2 = po2; // if no sensor value found, then go to next section, esimating PO2 using depth.
+		}
+		} // switch dc->n0_o2_sensors
+
+		pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+		pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+
+
+	} // if dc->type == CCR;   Now pressures->o2 should be defined, based on direct measurements.
+
+	if (po2) {						// If we had a CCR dive (above) then pressures->o2 is defined, therefore this option is a fallback,
+		if (po2 >= amb_pressure || get_o2(mix) == 1000) // dependent on the po2 parameter in the call to this
+			pressures->o2 = amb_pressure;		// function and applicable to non-CCR dives.
+		else
+			pressures->o2 = po2;
+		pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+		pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+	} else if (!pressures->o2) { // Open circuit dives: no gas pressure values available, they need to be calculated
 		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure;
 		pressures->he = get_he(mix) / 1000.0 * amb_pressure;
 		pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;

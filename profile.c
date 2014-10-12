@@ -553,10 +553,10 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		entry->pressures.o2 = sample->po2.mbar / 1000.0;
-		entry->o2setpoint = sample->o2setpoint.mbar / 1000.0;   // for rebreathers
-		entry->o2sensor[0] = sample->o2sensor[0].mbar / 1000.0; // for up to three rebreather O2 sensors
-		entry->o2sensor[1] = sample->o2sensor[1].mbar / 1000.0;
-		entry->o2sensor[2] = sample->o2sensor[2].mbar / 1000.0;
+		entry->pressures.setpoint = sample->o2setpoint.mbar / 1000.0;   // for rebreathers
+		entry->pressures.sensor[0] = sample->o2sensor[0].mbar / 1000.0; // for up to three rebreather O2 sensors
+		entry->pressures.sensor[1] = sample->o2sensor[1].mbar / 1000.0;
+		entry->pressures.sensor[2] = sample->o2sensor[2].mbar / 1000.0;
 
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
@@ -882,21 +882,21 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi)
 
 		// For 1st iteration, initialise the last_ values
 		if (i == 0) {
-			last_setpoint = pi->entry->o2setpoint;
+			last_setpoint = pi->entry->pressures.setpoint;
 			for (j = 0; j < dc->no_o2sensors; j++)
-				last_sensor[j] = pi->entry->o2sensor[j];
+				last_sensor[j] = pi->entry->pressures.sensor[j];
 		} else {
 			// Now re-insert the missing oxygen pressure values
-			if (entry->o2setpoint)
-				last_setpoint = entry->o2setpoint;
+			if (entry->pressures.setpoint)
+				last_setpoint = entry->pressures.setpoint;
 			else
-				entry->o2setpoint = last_setpoint;
+				entry->pressures.setpoint = last_setpoint;
 
 			for (j = 0; j < dc->no_o2sensors; j++)
-				if (entry->o2sensor[j])
-					last_sensor[j] = entry->o2sensor[j];
+				if (entry->pressures.sensor[j])
+					last_sensor[j] = entry->pressures.sensor[j];
 				else
-					entry->o2sensor[j] = last_sensor[j];
+					entry->pressures.sensor[j] = last_sensor[j];
 		}
 	}
 }
@@ -918,7 +918,7 @@ static void debug_print_profiledata(struct plot_info *pi)
 			entry = pi->entry + i;
 			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %f %f %f %f PO2= %f\n", i, SENSOR_PRESSURE(entry),
 				INTERPOLATED_PRESSURE(entry), DILUENT_PRESSURE(entry), INTERPOLATED_DILUENT_PRESSURE(entry),
-				entry->o2setpoint, entry->o2sensor[0], entry->o2sensor[1], entry->o2sensor[2], entry->pressures.o2);
+				entry->o2setpoint, entry->pressures->sensor[0], entry->pressures->sensor[1], entry->pressures->sensor[2], entry->pressures.o2);
 		}
 		fclose(f1);
 	}

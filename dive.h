@@ -135,6 +135,8 @@ static inline int get_he(const struct gasmix *mix)
 
 struct gas_pressures {
 	double o2, n2, he;
+	double sensor[3];
+	double setpoint;
 };
 
 extern void sanitize_gasmix(struct gasmix *mix);
