@@ -54,7 +54,7 @@ void ReadSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 #if DC_VERSION_CHECK(0, 5, 0)
@@ -328,7 +328,7 @@ void WriteSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 #if DC_VERSION_CHECK(0,5,0)
 		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
@@ -520,7 +520,7 @@ void FirmwareUpdateThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-	rc = rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 #if DC_VERSION_CHECK(0, 5, 0)
 		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
