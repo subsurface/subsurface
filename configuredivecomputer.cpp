@@ -181,6 +181,26 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("DateFormat", QString::number(details->dateFormat()));
 	writer.writeTextElement("CompassGain", QString::number(details->compassGain()));
 
+	// Suunto vyper settings.
+	writer.writeTextElement("Altitude", QString::number(details->altitude()));
+	writer.writeTextElement("PersonalSafety", QString::number(details->personalSafety()));
+	writer.writeTextElement("TimeFormat", QString::number(details->timeFormat()));
+
+	writer.writeStartElement("Light");
+	writer.writeAttribute("enabled", QString::number(details->lightEnabled()));
+	writer.writeCharacters(QString::number(details->light()));
+	writer.writeEndElement();
+
+	writer.writeStartElement("AlarmTime");
+	writer.writeAttribute("enabled", QString::number(details->alarmTimeEnabled()));
+	writer.writeCharacters(QString::number(details->alarmTime()));
+	writer.writeEndElement();
+
+	writer.writeStartElement("AlarmDepth");
+	writer.writeAttribute("enabled", QString::number(details->alarmDepthEnabled()));
+	writer.writeCharacters(QString::number(details->alarmDepth()));
+	writer.writeEndElement();
+
 	writer.writeEndElement();
 	writer.writeEndElement();
 
@@ -213,6 +233,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 	while (!reader.atEnd()) {
 		if (reader.isStartElement()) {
 			QString settingName = reader.name().toString();
+			QXmlStreamAttributes attributes = reader.attributes();
 			reader.readNext();
 			QString keyString = reader.text().toString();
 
@@ -394,6 +415,33 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 
 			if (settingName == "CompassGain")
 				details->setCompassGain(keyString.toInt());
+
+			if (settingName == "Altitude")
+				details->setAltitude(keyString.toInt());
+
+			if (settingName == "PersonalSafety")
+				details->setPersonalSafety(keyString.toInt());
+
+			if (settingName == "TimeFormat")
+				details->setTimeFormat(keyString.toInt());
+
+			if (settingName == "Light") {
+				if (attributes.hasAttribute("enabled"))
+					details->setLightEnabled(attributes.value("enabled").toString().toInt());
+				details->setLight(keyString.toInt());
+			}
+
+			if (settingName == "AlarmDepth") {
+				if (attributes.hasAttribute("enabled"))
+					details->setAlarmDepthEnabled(attributes.value("enabled").toString().toInt());
+				details->setAlarmDepth(keyString.toInt());
+			}
+
+			if (settingName == "AlarmTime") {
+				if (attributes.hasAttribute("enabled"))
+					details->setAlarmTimeEnabled(attributes.value("enabled").toString().toInt());
+				details->setAlarmTime(keyString.toInt());
+			}
 		}
 		reader.readNext();
 	}
