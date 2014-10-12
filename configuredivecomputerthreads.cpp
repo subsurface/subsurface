@@ -44,6 +44,25 @@
 #define OSTC3_PRESSURE_SENSOR_OFFSET	0x35
 #define OSTC3_SAFETY_STOP		0x36
 
+#define SUUNTO_VYPER_MAXDEPTH             0x1e
+#define SUUNTO_VYPER_TOTAL_TIME           0x20
+#define SUUNTO_VYPER_NUMBEROFDIVES        0x22
+#define SUUNTO_VYPER_COMPUTER_TYPE        0x24
+#define SUUNTO_VYPER_FIRMWARE             0x25
+#define SUUNTO_VYPER_SERIALNUMBER         0x26
+#define SUUNTO_VYPER_CUSTOM_TEXT          0x2c
+#define SUUNTO_VYPER_SAMPLING_RATE        0x53
+#define SUUNTO_VYPER_ALTITUDE_SAFETY      0x54
+#define SUUNTO_VYPER_TIMEFORMAT           0x60
+#define SUUNTO_VYPER_UNITS                0x62
+#define SUUNTO_VYPER_MODEL                0x63
+#define SUUNTO_VYPER_LIGHT                0x64
+#define SUUNTO_VYPER_ALARM_DEPTH_TIME     0x65
+#define SUUNTO_VYPER_ALARM_TIME           0x66
+#define SUUNTO_VYPER_ALARM_DEPTH          0x68
+#define SUUNTO_VYPER_CUSTOM_TEXT_LENGHT   30
+
+
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 	: QThread(parent), m_data(data)
 {
@@ -57,8 +76,112 @@ void ReadSettingsThread::run()
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_SUUNTO_VYPER:
+			supported = true;
+			unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_MAXDEPTH, data, 2);
+			if (rc == DC_STATUS_SUCCESS) {
+				// in ft * 128.0
+				int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+				m_deviceDetails->setMaxDepth(depth);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
+			if (rc == DC_STATUS_SUCCESS) {
+				int total_time = data[0] << 8 ^ data[1];
+				m_deviceDetails->setTotalTime(total_time);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_NUMBEROFDIVES, data, 2);
+			if (rc == DC_STATUS_SUCCESS) {
+				int number_of_dives = data[0] << 8 ^ data[1];
+				m_deviceDetails->setNumberOfDives(number_of_dives);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				const char *model;
+				switch(data[0]) {
+				case 0x03:
+					model = "Stinger";
+					break;
+				case 0x04:
+					model = "Mosquito";
+					break;
+				case 0x0A:
+					model = "new Vyper";
+					break;
+				case 0x0C:
+					model = "Vyper or Cobra";
+					break;
+				case 0x0B:
+					model = "Vytec";
+					break;
+				case 0x0D:
+					model = "Gekko";
+					break;
+				default:
+					model = "UNKNOWN";
+				}
+				m_deviceDetails->setModel(model);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_FIRMWARE, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setFirmwareVersion(QString::number(data[0]) + ".0.0");
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_SERIALNUMBER, data, 4);
+			if (rc == DC_STATUS_SUCCESS) {
+				int serial_number = data[0] * 1000000 + data[1] * 10000 + data[2] * 100 + data[3];
+				m_deviceDetails->setSerialNo(QString::number(serial_number));
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+			if (rc == DC_STATUS_SUCCESS) {
+				data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
+				m_deviceDetails->setCustomText((const char*) data);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setSamplingRate((int) data[0]);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setAltitude(data[0] & 0x03);
+				m_deviceDetails->setPersonalSafety(data[0] >> 2 & 0x03);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_TIMEFORMAT, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setTimeFormat(data[0] & 0x01);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_UNITS, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setUnits(data[0] & 0x01);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_MODEL, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setDiveMode(data[0] & 0x03);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_LIGHT, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setLightEnabled(data[0] >> 7);
+				m_deviceDetails->setLight(data[0] & 0x7F);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_DEPTH_TIME, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setAlarmTimeEnabled(data[0] & 0x01);
+				m_deviceDetails->setAlarmDepthEnabled(data[0] >> 1 & 0x01);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_TIME, data, 2);
+			if (rc == DC_STATUS_SUCCESS) {
+				m_deviceDetails->setAlarmTime(data[0] << 8 ^ data[1]);
+			}
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
+			if (rc == DC_STATUS_SUCCESS) {
+				int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+				m_deviceDetails->setAlarmDepth(depth);
+			}
+			emit devicedetails(m_deviceDetails);
+            break;
 #if DC_VERSION_CHECK(0, 5, 0)
-		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
+		case DC_FAMILY_HW_OSTC3:
+		{
 			supported = true;
 			m_deviceDetails->setBrightness(0);
 			m_deviceDetails->setCustomText("");
@@ -300,7 +423,12 @@ void ReadSettingsThread::run()
 
 			emit devicedetails(m_deviceDetails);
 		}
+		break;
 #endif	// divecomputer 0.5.0
+		default:
+			supported = false;
+			break;
+		}
 		dc_device_close(m_data->device);
 
 		if (!supported) {
@@ -330,8 +458,39 @@ void WriteSettingsThread::run()
 	dc_status_t rc;
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_SUUNTO_VYPER:
+			supported = true;
+			unsigned char data;
+			unsigned char data2[2];
+			dc_device_write(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT,
+					// Convert the customText to a 30 char wide padded with " "
+					(const unsigned char *) QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
+					SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+			data = m_deviceDetails->samplingRate();
+			dc_device_write(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
+			data = m_deviceDetails->personalSafety() << 2 ^ m_deviceDetails->altitude();
+			dc_device_write(m_data->device, SUUNTO_VYPER_ALTITUDE_SAFETY, &data, 1);
+			data = m_deviceDetails->timeFormat();
+			dc_device_write(m_data->device, SUUNTO_VYPER_TIMEFORMAT, &data, 1);
+			data = m_deviceDetails->units();
+			dc_device_write(m_data->device, SUUNTO_VYPER_UNITS, &data, 1);
+			data = m_deviceDetails->diveMode();
+			dc_device_write(m_data->device, SUUNTO_VYPER_MODEL, &data, 1);
+			data = m_deviceDetails->lightEnabled() << 7 ^ (m_deviceDetails->light() & 0x7F);
+			dc_device_write(m_data->device, SUUNTO_VYPER_LIGHT, &data, 1);
+			data = m_deviceDetails->alarmDepthEnabled() << 1 ^ m_deviceDetails->alarmTimeEnabled();
+			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
+			data2[0] = m_deviceDetails->alarmTime() >> 8;
+			data2[1] = m_deviceDetails->alarmTime() & 0xFF;
+			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_TIME, data2, 2);
+			data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) >> 8;
+			data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
+			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
+			break;
 #if DC_VERSION_CHECK(0,5,0)
-		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
+		case DC_FAMILY_HW_OSTC3:
+		{
 			supported = true;
 			//write gas values
 			unsigned char gas1Data[4] = {m_deviceDetails->gas1().oxygen,
@@ -496,6 +655,10 @@ void WriteSettingsThread::run()
 			}
 		}
 #endif	// divecomputer 0.5.0
+		default:
+			supported = false;
+			break;
+		}
 		dc_device_close(m_data->device);
 
 		if (!supported) {
