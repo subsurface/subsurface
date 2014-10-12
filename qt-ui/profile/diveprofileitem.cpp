@@ -352,7 +352,7 @@ DivePercentageItem::DivePercentageItem(int i)
 
 void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	int last = -300, last_printed_hr = 0, sec = 0;
+	int sec = 0;
 
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
@@ -401,7 +401,7 @@ DiveAmbPressureItem::DiveAmbPressureItem()
 
 void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	int last = -300, last_printed_hr = 0, sec = 0;
+	int sec = 0;
 
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
@@ -450,7 +450,7 @@ DiveGFLineItem::DiveGFLineItem()
 
 void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	int last = -300, last_printed_hr = 0, sec = 0;
+	int sec = 0;
 
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))

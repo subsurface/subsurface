@@ -824,7 +824,6 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 {
 	int i;
 	double amb_pressure;
-	struct gas_pressures pressures;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fo2, fhe;
@@ -894,9 +893,7 @@ static void debug_print_profiledata(struct plot_info *pi)
  */
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	FILE *f1;
-	int i, o2, he, o2low;
-	struct plot_data *entry;
+	int o2, he, o2low;
 	init_decompression(dive);
 	/* Create the new plot data */
 	free((void *)last_pi_entry_new);
