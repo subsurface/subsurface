@@ -116,6 +116,18 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
+	switch(ui->dcStackedWidget->currentIndex()) {
+	case 0:
+		populateDeviceDetailsOSTC3();
+		break;
+	case 1:
+		populateDeviceDetailsSuuntoVyper();
+		break;
+	}
+}
+
+void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
+{
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
 	deviceDetails->setDiveMode(ui->diveModeComboBox->currentIndex());
 	deviceDetails->setSaturation(ui->saturationSpinBox->value());
@@ -236,6 +248,23 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	deviceDetails->setSp5(sp5);
 }
 
+void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
+{
+	deviceDetails->setCustomText(ui->customTextLlineEdit_1->text());
+	deviceDetails->setSamplingRate(ui->samplingRateComboBox_1->currentIndex() == 3 ? 60 : (ui->samplingRateComboBox_1->currentIndex() + 1) * 10);
+	deviceDetails->setAltitude(ui->altitudeRangeComboBox->currentIndex());
+	deviceDetails->setPersonalSafety(ui->personalSafetyComboBox->currentIndex());
+	deviceDetails->setTimeFormat(ui->timeFormatComboBox->currentIndex());
+	deviceDetails->setUnits(ui->unitsComboBox_1->currentIndex());
+	deviceDetails->setDiveMode(ui->diveModeComboBox_1->currentIndex());
+	deviceDetails->setLightEnabled(ui->lightCheckBox->isChecked());
+	deviceDetails->setLight(ui->lightSpinBox->value());
+	deviceDetails->setAlarmDepthEnabled(ui->alarmDepthCheckBox->isChecked());
+	deviceDetails->setAlarmDepth(units_to_depth(ui->alarmDepthDoubleSpinBox->value()));
+	deviceDetails->setAlarmTimeEnabled(ui->alarmTimeCheckBox->isChecked());
+	deviceDetails->setAlarmTime(ui->alarmTimeSpinBox->value());
+}
+
 void ConfigureDiveComputerDialog::readSettings()
 {
 	ui->statusLabel->clear();
@@ -292,6 +321,18 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails *newDevice
 }
 
 void ConfigureDiveComputerDialog::reloadValues()
+{
+	switch(ui->dcStackedWidget->currentIndex()) {
+	case 0:
+		reloadValuesOSTC3();
+		break;
+	case 1:
+		reloadValuesSuuntoVyper();
+		break;
+	}
+}
+
+void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 {
 	ui->serialNoLineEdit->setText(deviceDetails->serialNo());
 	ui->firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
@@ -390,6 +431,31 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui->ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
 }
 
+void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
+{
+	const char *depth_unit;
+	ui->maxDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->maxDepth(), NULL, &depth_unit));
+	ui->maxDepthDoubleSpinBox->setSuffix(depth_unit);
+	ui->totalTimeSpinBox->setValue(deviceDetails->totalTime());
+	ui->numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives());
+	ui->modelLineEdit->setText(deviceDetails->model());
+	ui->firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion());
+	ui->serialNoLineEdit_1->setText(deviceDetails->serialNo());
+	ui->customTextLlineEdit_1->setText(deviceDetails->customText());
+	ui->samplingRateComboBox_1->setCurrentIndex(deviceDetails->samplingRate() == 60 ? 3 : (deviceDetails->samplingRate() / 10) - 1);
+	ui->altitudeRangeComboBox->setCurrentIndex(deviceDetails->altitude());
+	ui->personalSafetyComboBox->setCurrentIndex(deviceDetails->personalSafety());
+	ui->timeFormatComboBox->setCurrentIndex(deviceDetails->timeFormat());
+	ui->unitsComboBox_1->setCurrentIndex(deviceDetails->units());
+	ui->diveModeComboBox_1->setCurrentIndex(deviceDetails->diveMode());
+	ui->lightCheckBox->setChecked(deviceDetails->lightEnabled());
+	ui->lightSpinBox->setValue(deviceDetails->light());
+	ui->alarmDepthCheckBox->setChecked(deviceDetails->alarmDepthEnabled());
+	ui->alarmDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->alarmDepth(), NULL, &depth_unit));
+	ui->alarmDepthDoubleSpinBox->setSuffix(depth_unit);
+	ui->alarmTimeCheckBox->setChecked(deviceDetails->alarmTimeEnabled());
+	ui->alarmTimeSpinBox->setValue(deviceDetails->alarmTime());
+}
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
 {

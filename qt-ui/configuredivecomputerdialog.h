@@ -52,6 +52,10 @@ private:
 
 	DeviceDetails *deviceDetails;
 	void populateDeviceDetails();
+	void populateDeviceDetailsOSTC3();
+	void populateDeviceDetailsSuuntoVyper();
+	void reloadValuesOSTC3();
+	void reloadValuesSuuntoVyper();
 
 	QString selected_vendor;
 	QString selected_product;
