@@ -462,6 +462,13 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 3";
 		break;
+	case 1:
+		selected_vendor = "Suunto";
+		selected_product = "Vyper";
+		break;
+	default:
+		/* Not Supported */
+		return;
 	}
 
 	int dcType = DC_TYPE_SERIAL;
