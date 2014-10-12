@@ -1,9 +1,55 @@
 #include "devicedetails.h"
 
-DeviceDetails::DeviceDetails(QObject *parent) :
-	QObject(parent)
-{
+// This can probably be done better by someone with better c++-FU
+const struct gas zero_gas = {0};
+const struct setpoint zero_setpoint = {0};
 
+DeviceDetails::DeviceDetails(QObject *parent) :
+	QObject(parent),
+	m_data(0),
+	m_serialNo(""),
+	m_firmwareVersion(""),
+	m_customText(""),
+	m_syncTime(false),
+	m_gas1(zero_gas),
+	m_gas2(zero_gas),
+	m_gas3(zero_gas),
+	m_gas4(zero_gas),
+	m_gas5(zero_gas),
+	m_dil1(zero_gas),
+	m_dil2(zero_gas),
+	m_dil3(zero_gas),
+	m_dil4(zero_gas),
+	m_dil5(zero_gas),
+	m_sp1(zero_setpoint),
+	m_sp2(zero_setpoint),
+	m_sp3(zero_setpoint),
+	m_sp4(zero_setpoint),
+	m_sp5(zero_setpoint),
+	m_ccrMode(0),
+	m_diveMode(0),
+	m_decoType(0),
+	m_pp02Max(0),
+	m_pp02Min(0),
+	m_futureTTS(0),
+	m_gfLow(0),
+	m_gfHigh(0),
+	m_aGFLow(0),
+	m_aGFHigh(0),
+	m_aGFSelectable(0),
+	m_saturation(0),
+	m_desaturation(0),
+	m_lastDeco(0),
+	m_brightness(0),
+	m_units(0),
+	m_samplingRate(0),
+	m_salinity(0),
+	m_diveModeColor(0),
+	m_language(0),
+	m_dateFormat(0),
+	m_compassGain(0),
+	m_pressureSensorOffset(0)
+{
 }
 
 device_data_t *DeviceDetails::data() const
