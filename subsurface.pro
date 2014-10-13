@@ -191,9 +191,9 @@ SOURCES =  \
 	qt-ui/statistics/monthstatistics.cpp
 
 android: SOURCES += android.cpp
-else: linux*: SOURCES += linux.c
-mac: SOURCES += macos.c
-win32: SOURCES += windows.c
+else: win32: SOURCES += windows.c
+else: mac: SOURCES += macos.c
+else: SOURCES += linux.c        # All other Unix, really
 
 android: SOURCES -= \
 	qt-ui/usermanual.cpp \
