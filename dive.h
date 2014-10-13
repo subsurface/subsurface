@@ -123,6 +123,7 @@ extern int units_to_sac(double volume);
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
 extern int wet_volume(double cuft, pressure_t p);
 
+
 static inline int get_o2(const struct gasmix *mix)
 {
 	return mix->o2.permille ?: O2_IN_AIR;
@@ -135,9 +136,9 @@ static inline int get_he(const struct gasmix *mix)
 
 struct gas_pressures {
 	double o2, n2, he;
-	double sensor[3];
-	double setpoint;
 };
+
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2);
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
@@ -260,10 +261,6 @@ struct divecomputer {
 	struct event *events;
 	struct divecomputer *next;
 };
-
-
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, const struct divecomputer *dc);
-
 
 #define MAX_CYLINDERS (8)
 #define MAX_WEIGHTSYSTEMS (6)
