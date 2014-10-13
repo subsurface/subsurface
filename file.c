@@ -89,6 +89,9 @@ static int try_to_open_zip(const char *filename, struct memblock *mem)
 			struct zip_file *file = zip_fopen_index(zip, index, 0);
 			if (!file)
 				break;
+			/* skip parsing the divelogs.de pictures */
+			if (strstr(zip_get_name(zip, index, 0), "pictures/"))
+				continue;
 			zip_read(file, filename);
 			zip_fclose(file);
 			success++;
