@@ -78,8 +78,51 @@ void ReadSettingsThread::run()
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
-			supported = true;
 			unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
+			rc = dc_device_read(m_data->device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
+			if (rc == DC_STATUS_SUCCESS) {
+				const char *model;
+				// FIXME: grab this info from libdivecomputer descriptor
+				// instead of hard coded here
+				switch(data[0]) {
+				case 0x03:
+					model = "Stinger";
+					break;
+				case 0x04:
+					model = "Mosquito";
+					break;
+				case 0x05:
+					model = "D3";
+					break;
+				case 0x0A:
+					model = "Vyper";
+					break;
+				case 0x0B:
+					model = "Vytec";
+					break;
+				case 0x0C:
+					model = "Cobra";
+					break;
+				case 0x0D:
+					model = "Gekko";
+					break;
+				case 0x16:
+					model = "Zoop";
+					break;
+				case 20:
+				case 30:
+				case 60:
+					// Suunto Spyder have there sample interval at this position
+					// Fallthrough
+				default:
+					supported  = false;
+					goto unsupported_dc_error;
+				}
+				// We found a supported device
+				// we can safely proceed with reading/writing to this device.
+				supported = true;
+				m_deviceDetails->setModel(model);
+			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_MAXDEPTH, data, 2);
 			if (rc == DC_STATUS_SUCCESS) {
 				// in ft * 128.0
@@ -95,33 +138,6 @@ void ReadSettingsThread::run()
 			if (rc == DC_STATUS_SUCCESS) {
 				int number_of_dives = data[0] << 8 ^ data[1];
 				m_deviceDetails->setNumberOfDives(number_of_dives);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				const char *model;
-				switch(data[0]) {
-				case 0x03:
-					model = "Stinger";
-					break;
-				case 0x04:
-					model = "Mosquito";
-					break;
-				case 0x0A:
-					model = "new Vyper";
-					break;
-				case 0x0C:
-					model = "Vyper or Cobra";
-					break;
-				case 0x0B:
-					model = "Vytec";
-					break;
-				case 0x0D:
-					model = "Gekko";
-					break;
-				default:
-					model = "UNKNOWN";
-				}
-				m_deviceDetails->setModel(model);
 			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_FIRMWARE, data, 1);
 			if (rc == DC_STATUS_SUCCESS) {
@@ -429,6 +445,7 @@ void ReadSettingsThread::run()
 			supported = false;
 			break;
 		}
+unsupported_dc_error:
 		dc_device_close(m_data->device);
 
 		if (!supported) {
@@ -460,9 +477,15 @@ void WriteSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
-			supported = true;
 			unsigned char data;
 			unsigned char data2[2];
+			// Maybee we should read the model from the device to sanity check it here too..
+			// For now we just check that we actually read a device before writing to one.
+			if (m_deviceDetails->model() == "")
+				break;
+			else
+				supported = true;
+
 			dc_device_write(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT,
 					// Convert the customText to a 30 char wide padded with " "
 					(const unsigned char *) QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
