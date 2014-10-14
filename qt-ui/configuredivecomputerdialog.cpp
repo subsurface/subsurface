@@ -126,6 +126,8 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	}
 }
 
+#define GET_INT_FROM(_field, _default) ((_field) != NULL) ? (_field)->text().toInt() : (_default)
+
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 {
 	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
@@ -150,30 +152,30 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	gas gas4;
 	gas gas5;
 
-	gas1.oxygen = ui->ostc3GasTable->item(0, 1)->text().toInt();
-	gas1.helium = ui->ostc3GasTable->item(0, 2)->text().toInt();
-	gas1.type = ui->ostc3GasTable->item(0, 3)->text().toInt();
-	gas1.depth = ui->ostc3GasTable->item(0, 4)->text().toInt();
+	gas1.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(0, 1), 21);
+	gas1.helium = GET_INT_FROM(ui->ostc3GasTable->item(0, 2), 0);
+	gas1.type = GET_INT_FROM(ui->ostc3GasTable->item(0, 3), 0);
+	gas1.depth = GET_INT_FROM(ui->ostc3GasTable->item(0, 4), 0);
 
-	gas2.oxygen = ui->ostc3GasTable->item(1, 1)->text().toInt();
-	gas2.helium = ui->ostc3GasTable->item(1, 2)->text().toInt();
-	gas2.type = ui->ostc3GasTable->item(1, 3)->text().toInt();
-	gas2.depth = ui->ostc3GasTable->item(1, 4)->text().toInt();
+	gas2.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(1, 1), 21);
+	gas2.helium = GET_INT_FROM(ui->ostc3GasTable->item(1, 2), 0);
+	gas2.type = GET_INT_FROM(ui->ostc3GasTable->item(1, 3), 0);
+	gas2.depth = GET_INT_FROM(ui->ostc3GasTable->item(1, 4), 0);
 
-	gas3.oxygen = ui->ostc3GasTable->item(2, 1)->text().toInt();
-	gas3.helium = ui->ostc3GasTable->item(2, 2)->text().toInt();
-	gas3.type = ui->ostc3GasTable->item(2, 3)->text().toInt();
-	gas3.depth = ui->ostc3GasTable->item(2, 4)->text().toInt();
+	gas3.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(2, 1), 21);
+	gas3.helium = GET_INT_FROM(ui->ostc3GasTable->item(2, 2), 0);
+	gas3.type = GET_INT_FROM(ui->ostc3GasTable->item(2, 3), 0);
+	gas3.depth = GET_INT_FROM(ui->ostc3GasTable->item(2, 4), 0);
 
-	gas4.oxygen = ui->ostc3GasTable->item(3, 1)->text().toInt();
-	gas4.helium = ui->ostc3GasTable->item(3, 2)->text().toInt();
-	gas4.type = ui->ostc3GasTable->item(3, 3)->text().toInt();
-	gas4.depth = ui->ostc3GasTable->item(3, 4)->text().toInt();
+	gas4.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(3, 1), 21);
+	gas4.helium = GET_INT_FROM(ui->ostc3GasTable->item(3, 2), 0);
+	gas4.type = GET_INT_FROM(ui->ostc3GasTable->item(3, 3), 0);
+	gas4.depth = GET_INT_FROM(ui->ostc3GasTable->item(3, 4), 0);
 
-	gas5.oxygen = ui->ostc3GasTable->item(4, 1)->text().toInt();
-	gas5.helium = ui->ostc3GasTable->item(4, 2)->text().toInt();
-	gas5.type = ui->ostc3GasTable->item(4, 3)->text().toInt();
-	gas5.depth = ui->ostc3GasTable->item(4, 4)->text().toInt();
+	gas5.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(4, 1), 21);
+	gas5.helium = GET_INT_FROM(ui->ostc3GasTable->item(4, 2), 0);
+	gas5.type = GET_INT_FROM(ui->ostc3GasTable->item(4, 3), 0);
+	gas5.depth = GET_INT_FROM(ui->ostc3GasTable->item(4, 4), 0);
 
 	deviceDetails->setGas1(gas1);
 	deviceDetails->setGas2(gas2);
@@ -188,30 +190,30 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	gas dil4;
 	gas dil5;
 
-	dil1.oxygen = ui->ostc3DilTable->item(0, 1)->text().toInt();
-	dil1.helium = ui->ostc3DilTable->item(0, 2)->text().toInt();
-	dil1.type = ui->ostc3DilTable->item(0, 3)->text().toInt();
-	dil1.depth = ui->ostc3DilTable->item(0, 4)->text().toInt();
+	dil1.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(0, 1), 21);
+	dil1.helium = GET_INT_FROM(ui->ostc3DilTable->item(0, 2), 0);
+	dil1.type = GET_INT_FROM(ui->ostc3DilTable->item(0, 3), 0);
+	dil1.depth = GET_INT_FROM(ui->ostc3DilTable->item(0, 4), 0);
 
-	dil2.oxygen = ui->ostc3DilTable->item(1, 1)->text().toInt();
-	dil2.helium = ui->ostc3DilTable->item(1, 2)->text().toInt();
-	dil2.type = ui->ostc3DilTable->item(1, 3)->text().toInt();
-	dil2.depth = ui->ostc3DilTable->item(1, 4)->text().toInt();
+	dil2.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(1, 1), 21);
+	dil2.helium = GET_INT_FROM(ui->ostc3DilTable->item(1, 2), 0);
+	dil2.type = GET_INT_FROM(ui->ostc3DilTable->item(1, 3), 0);
+	dil2.depth = GET_INT_FROM(ui->ostc3DilTable->item(1, 4),0);
 
-	dil3.oxygen = ui->ostc3DilTable->item(2, 1)->text().toInt();
-	dil3.helium = ui->ostc3DilTable->item(2, 2)->text().toInt();
-	dil3.type = ui->ostc3DilTable->item(2, 3)->text().toInt();
-	dil3.depth = ui->ostc3DilTable->item(2, 4)->text().toInt();
+	dil3.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(2, 1), 21);
+	dil3.helium = GET_INT_FROM(ui->ostc3DilTable->item(2, 2), 0);
+	dil3.type = GET_INT_FROM(ui->ostc3DilTable->item(2, 3), 0);
+	dil3.depth = GET_INT_FROM(ui->ostc3DilTable->item(2, 4), 0);
 
-	dil4.oxygen = ui->ostc3DilTable->item(3, 1)->text().toInt();
-	dil4.helium = ui->ostc3DilTable->item(3, 2)->text().toInt();
-	dil4.type = ui->ostc3DilTable->item(3, 3)->text().toInt();
-	dil4.depth = ui->ostc3DilTable->item(3, 4)->text().toInt();
+	dil4.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(3, 1), 21);
+	dil4.helium = GET_INT_FROM(ui->ostc3DilTable->item(3, 2), 0);
+	dil4.type = GET_INT_FROM(ui->ostc3DilTable->item(3, 3), 0);
+	dil4.depth = GET_INT_FROM(ui->ostc3DilTable->item(3, 4), 0);
 
-	dil5.oxygen = ui->ostc3DilTable->item(4, 1)->text().toInt();
-	dil5.helium = ui->ostc3DilTable->item(4, 2)->text().toInt();
-	dil5.type = ui->ostc3DilTable->item(4, 3)->text().toInt();
-	dil5.depth = ui->ostc3DilTable->item(4, 4)->text().toInt();
+	dil5.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(4, 1), 21);
+	dil5.helium = GET_INT_FROM(ui->ostc3DilTable->item(4, 2), 0);
+	dil5.type = GET_INT_FROM(ui->ostc3DilTable->item(4, 3), 0);
+	dil5.depth = GET_INT_FROM(ui->ostc3DilTable->item(4, 4), 0);
 
 	deviceDetails->setDil1(dil1);
 	deviceDetails->setDil2(dil2);
@@ -226,20 +228,20 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	setpoint sp4;
 	setpoint sp5;
 
-	sp1.sp = ui->ostc3SetPointTable->item(0, 1)->text().toInt();
-	sp1.depth = ui->ostc3SetPointTable->item(0, 2)->text().toInt();
+	sp1.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(0, 1), 70);
+	sp1.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(0, 2), 0);
 
-	sp2.sp = ui->ostc3SetPointTable->item(1, 1)->text().toInt();
-	sp2.depth = ui->ostc3SetPointTable->item(1, 2)->text().toInt();
+	sp2.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(1, 1), 90);
+	sp2.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(1, 2), 20);
 
-	sp3.sp = ui->ostc3SetPointTable->item(2, 1)->text().toInt();
-	sp3.depth = ui->ostc3SetPointTable->item(2, 2)->text().toInt();
+	sp3.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(2, 1), 100);
+	sp3.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(2, 2), 33);
 
-	sp4.sp = ui->ostc3SetPointTable->item(3, 1)->text().toInt();
-	sp4.depth = ui->ostc3SetPointTable->item(3, 2)->text().toInt();
+	sp4.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(3, 1), 120);
+	sp4.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(3, 2), 50);
 
-	sp5.sp = ui->ostc3SetPointTable->item(4, 1)->text().toInt();
-	sp5.depth = ui->ostc3SetPointTable->item(4, 2)->text().toInt();
+	sp5.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(4, 1), 140);
+	sp5.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(4, 2), 70);
 
 	deviceDetails->setSp1(sp1);
 	deviceDetails->setSp2(sp2);
