@@ -946,12 +946,13 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 						last_sensor[j] = entry->o2sensor[j];
 					else
 						entry->o2sensor[j] = last_sensor[j];
-			}
+			}			// having initialised the empty o2 sensor values for this point on the profile,
+			amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
+			o2pressure = calculate_ccr_po2(entry,dc);	// ...calculate the po2 based on the sensor data
+			entry->pressures.o2 = MIN(o2pressure, amb_pressure);
+		} else {
+			entry->pressures.o2 = 0.0;  // initialise po2 to zero for dctype = OC
 		}
-		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		o2pressure = calculate_ccr_po2(entry,dc);
-		if (o2pressure > amb_pressure) o2pressure = amb_pressure;
-		entry->pressures.o2 = o2pressure;
 	}
 }
 
