@@ -1537,12 +1537,14 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2)
 {
 	if (po2) {	// This is probably a CCR dive where pressures->o2 is defined
-		if (po2 >= amb_pressure || get_o2(mix) == 1000)
+		if (po2 >= amb_pressure || get_o2(mix) == 1000) {
 			pressures->o2 = amb_pressure;
-		else
+			pressures->n2 = pressures->he = 0.0;
+		} else {
 			pressures->o2 = po2;
-		pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
-		pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+			pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+			pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+		}
 	} else {
 		// Open circuit dives: no gas pressure values available, they need to be calculated
 		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..

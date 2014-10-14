@@ -4,6 +4,7 @@
 #include "gettext.h"
 #include <limits.h>
 #include <string.h>
+#include <assert.h>
 
 #include "dive.h"
 #include "display.h"
@@ -832,76 +833,40 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
  * there are and the differences among the readings from these sensors.
  */
 double calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc) {
-	double sensor_j, sump, midp, minp, maxp;
+	double sump = 0.0, midp, minp = 999.9, maxp = -999.9;
 	double diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
-	int num_of_diffs;	 // The number of unacceptable differences among the ogygen sensor partial pressure measurements
-	int i, j, np;
-	bool maxdif = false, mindif = false;
-	struct gas_pressures *pressures = &(entry->pressures);
+	int i, j, np = 0;
 
-	// Estimate the most reliable PO2, given the different oxygen partial pressure values from the O2 sensors
-	switch (dc->no_o2sensors) {
-		case 2: { // For 2 sensors: take the mean value of the two partial pressure sensors.
-			for (np = 0, sump = 0, j = 0; j < 2; j++) { // This calculation allows that for some samples
-				if (entry->o2sensor[j]) {	// (especially at start of dive) with an inactive sensor,the
-					np++; 			// sensor(s) with zero values are not used.
-					sump = sump + entry->o2sensor[j];
-				}
-			}
-			if (np > 0)			// if there is at least one sensor value
-				return (sump / np);	// then calculate the mean, else
+	for (i=0; i < dc->no_o2sensors; i++)
+		if (entry->o2sensor[i]) { // Valid reading
+			++np;
+			sump += entry->o2sensor[i];
+			minp = MIN(minp, entry->o2sensor[i]);
+			maxp = MAX(maxp, entry->o2sensor[i]);
+		}
+	switch (np) {
+	case 0: // Uhoh
+		return entry->o2setpoint;
+	case 1: // Return what we have
+		return sump;
+	case 2: // Take the average
+		return sump / 2;
+	case 3: // Voting logic
+		if (2 * maxp - sump + minp < diff_limit) { // Upper difference acceptable...
+			if (2 * minp - sump + maxp)        // ...and lower difference acceptable
+				return sump / 3;
 			else
-				return 0; // if there are no valid sensor values, calculate po2 on the basis of depth.
-			break;
-		}
-		case 3: { /* For 3 sensors: diff_limit is the critical limit indicating unacceptable difference (default = 100 mbar).
-			   * a) If all three readings are within a range of diff_limit, then take the mean value. This
-			   *     includes the case where reading 1 is within diff_limit of reading 2; and reading 2 is
-			   *     within diff_limit of reading 3, but readings 1 and 3 differ by more than diff_limit.
-			   * b) If one sensor differs by more than diff-limit from the other two, then take the mean
-			   *     of the closer two sensors and disregard the 3rd sensor, considered as an outlier.
-			   * c) If all 3 sensors differ by more than diff_limit then take the mean of the 3 readings. */
-			for (minp = 9999999999, maxp = -1, sump = 0, j = 0; j < 3; j++) {
-				sensor_j = entry->o2sensor[j];
-				if (sensor_j < minp)
-					minp = sensor_j;
-				if (sensor_j > maxp)
-					maxp = sensor_j;
-				sump = sump + sensor_j; // Find min, max and mid of p-values
-			}
-			midp = sump - minp - maxp;
-			num_of_diffs = 0;
-			if ((maxp - midp) > diff_limit) {
-				num_of_diffs++;
-				maxdif = true;
-			}
-			if ((midp - minp) > diff_limit) {
-				num_of_diffs++;
-				mindif = true; // Find no of unacceptable differences
-			}
-			switch (num_of_diffs) {
-			case 0:
-				;
-			case 2: {
-				return (sump / 3); // 0 or 2 unacceptable differences: find mean of three values.
-				break;
-			}
-			case 1: {
-				if (maxdif) // 1 unacceptable difference: find mean of two closer values
-					return ((minp + midp) / 2);
-				 else if (mindif)
-					return ((maxp + midp) / 2);
-				break;
-			}
-			} //switch no_of_diffs
-		}
-		default: { // if # of sensors is 1 or unknown, simply take the value of the first sensor
-			if (entry->o2sensor[0])
-				return (entry->o2sensor[0]);
+				return (sump - minp) / 2;
+		} else {
+			if (2 * minp - sump + maxp)        // ...but lower difference acceptable
+				return (sump - maxp) / 2;
 			else
-				return 0; // if no sensor value found, then go to next section, esimating PO2 using depth.
+				return sump / 3;
 		}
-	} // switch
+	default: // This should not happen
+		assert(np <= 3);
+		return 0.0;
+	}
 }
 
 static void calculate_gas_information_new(struct dive *dive, struct plot_info *pi)
