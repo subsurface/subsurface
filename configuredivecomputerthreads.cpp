@@ -392,6 +392,10 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SATURATION, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setSaturation(uData[0]);
+			//Desaturation
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DESATURATION, uData, sizeof(uData));
+			if (rc == DC_STATUS_SUCCESS)
+				m_deviceDetails->setDesaturation(uData[0]);
 			//LastDeco
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_LAST_DECO, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
@@ -627,6 +631,10 @@ void WriteSettingsThread::run()
 			//saturation
 			data[0] = m_deviceDetails->saturation();
 			hw_ostc3_device_config_write(m_data->device, OSTC3_SATURATION, data, sizeof(data));
+
+			//desaturation
+			data[0] = m_deviceDetails->desaturation();
+			hw_ostc3_device_config_write(m_data->device, OSTC3_DESATURATION, data, sizeof(data));
 
 			//last deco
 			data[0] = m_deviceDetails->lastDeco();
