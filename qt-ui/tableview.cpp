@@ -16,10 +16,8 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 	QFontMetrics fm(defaultModelFont());
 	int text_ht = fm.height();
 	int text_em = fm.width('m');
-	// set icon and button size from the default icon size
-	metrics.icon_size = defaultIconSize(text_ht);
-	metrics.btn_size = metrics.icon_size + metrics.icon_size/2;
-	metrics.btn_gap = metrics.icon_size/8;
+
+	metrics.icon = &defaultIconMetrics();
 
 	metrics.col_width = 7*text_em;
 	metrics.rm_col_width = 3*text_em;
@@ -35,7 +33,7 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 	plusBtn = new QPushButton(plusIcon, QString(), ui.groupBox);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add cylinder"));
-	plusBtn->setIconSize(QSize(metrics.icon_size, metrics.icon_size));
+	plusBtn->setIconSize(QSize(metrics.icon->sz_small, metrics.icon->sz_small));
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
@@ -91,9 +89,10 @@ void TableView::setModel(QAbstractItemModel *model)
 
 void TableView::fixPlusPosition()
 {
-	int x = ui.groupBox->contentsRect().width() - 2*metrics.icon_size + metrics.btn_gap;
-	int y = metrics.btn_gap;
-	plusBtn->setGeometry(x, y, metrics.btn_size, metrics.btn_size);
+	int x = ui.groupBox->contentsRect().width() - 2*metrics.icon->sz_small + metrics.icon->spacing;
+	int y = metrics.icon->spacing;
+	int sz = metrics.icon->sz_med;
+	plusBtn->setGeometry(x, y, sz, sz);
 }
 
 // We need to manually position the 'plus' on cylinder and weight.

@@ -7,11 +7,6 @@ enum StarConfig {
 	TOTALSTARS = 5
 };
 
-struct StarMetrics {
-	int size;
-	int spacing;
-};
-
 class StarWidget : public QWidget {
 	Q_OBJECT
 public:
@@ -22,7 +17,6 @@ public:
 
 	static const QImage& starActive();
 	static const QImage& starInactive();
-	static const StarMetrics& metrics();
 
 signals:
 	void valueChanged(int stars);
@@ -45,7 +39,6 @@ private:
 
 	static QImage activeStar;
 	static QImage inactiveStar;
-	static StarMetrics imgMetrics;
 };
 
 #endif // STARWIDGET_H

@@ -28,13 +28,6 @@ public:
 		EXPANDED
 	};
 
-	struct IconMetrics {
-		int small;
-		int medium;
-		int big;
-		int spacing;
-	};
-
 	explicit ToolTipItem(QGraphicsItem *parent = 0);
 	virtual ~ToolTipItem();
 
@@ -68,8 +61,6 @@ private:
 	int lastTime;
 
 	QList<QGraphicsItem*> oldSelection;
-
-	static IconMetrics iconMetrics;
 };
 
 #endif // DIVETOOLTIPITEM_H

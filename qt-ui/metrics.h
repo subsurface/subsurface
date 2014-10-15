@@ -10,12 +10,23 @@
 
 #include <QFont>
 #include <QFontMetrics>
+#include <QSize>
 
 QFont defaultModelFont();
 QFontMetrics defaultModelFontMetrics();
 
-// return the default icon size, computed as the multiple of 16 closest to
-// the given height (that defaults to the default font height)
-int defaultIconSize(int height = defaultModelFontMetrics().height());
+// Collection of icon/picture sizes and other metrics, resolution independent
+struct IconMetrics {
+	// icon sizes
+	int sz_small; // ex 16px
+	int sz_med; // ex 24px
+	int sz_big; // ex 32px
+	// picture size
+	int sz_pic; // ex 128px
+	// icon spacing
+	int spacing; // ex 2px
+};
+
+const IconMetrics & defaultIconMetrics();
 
 #endif // METRICS_H

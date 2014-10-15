@@ -9,6 +9,8 @@
 
 #include "ui_tableview.h"
 
+#include "metrics.h"
+
 class QPushButton;
 class QAbstractItemModel;
 class QModelIndex;
@@ -18,9 +20,7 @@ class TableView : public QWidget {
 	Q_OBJECT
 
 	struct TableMetrics {
-		int icon_size; // icon size
-		int btn_size; // button size
-		int btn_gap; // button gap
+		const IconMetrics* icon; // icon metrics
 		int col_width; // generic column width
 		int rm_col_width; // column width of REMOVE column
 		int header_ht; // height of the header

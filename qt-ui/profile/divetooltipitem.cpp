@@ -19,17 +19,17 @@
 #include "display.h"
 #endif
 
-ToolTipItem::IconMetrics ToolTipItem::iconMetrics = { -1, -1, -1, -1 };
-
 void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap *pixmap)
 {
+	const IconMetrics& iconMetrics = defaultIconMetrics();
+
 	QGraphicsPixmapItem *iconItem = 0, *pixmapItem = 0;
 	double yValue = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (ToolTip t, toolTips) {
 		yValue += t.second->boundingRect().height();
 	}
 	if (!icon.isNull()) {
-		iconItem = new QGraphicsPixmapItem(icon.pixmap(iconMetrics.small, iconMetrics.small), this);
+		iconItem = new QGraphicsPixmapItem(icon.pixmap(iconMetrics.sz_small, iconMetrics.sz_small), this);
 		iconItem->setPos(iconMetrics.spacing, yValue);
 	} else {
 		if (pixmap && !pixmap->isNull()) {
@@ -39,7 +39,7 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QP
 	}
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
-	textItem->setPos(iconMetrics.spacing + iconMetrics.small + iconMetrics.spacing, yValue);
+	textItem->setPos(iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
 	toolTips.push_back(qMakePair(iconItem, textItem));
@@ -89,10 +89,12 @@ void ToolTipItem::setRect(const QRectF &r)
 
 void ToolTipItem::collapse()
 {
+	int dim = defaultIconMetrics().sz_small;
+
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 	animation->setDuration(100);
 	animation->setStartValue(nextRectangle);
-	animation->setEndValue(QRect(0, 0, iconMetrics.small, iconMetrics.small));
+	animation->setEndValue(QRect(0, 0, dim, dim));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 	clear();
 
@@ -104,6 +106,8 @@ void ToolTipItem::expand()
 	if (!title)
 		return;
 
+	const IconMetrics& iconMetrics = defaultIconMetrics();
+
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
@@ -111,13 +115,13 @@ void ToolTipItem::expand()
 		height += t.second->boundingRect().height();
 	}
 	/*       Left padding, Icon Size,   space, right padding */
-	width += iconMetrics.spacing + iconMetrics.small + iconMetrics.spacing + iconMetrics.spacing;
+	width += iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing + iconMetrics.spacing;
 
 	if (width < title->boundingRect().width() + iconMetrics.spacing * 2)
 		width = title->boundingRect().width() + iconMetrics.spacing * 2;
 
-	if (height < iconMetrics.small)
-		height = iconMetrics.small;
+	if (height < iconMetrics.sz_small)
+		height = iconMetrics.sz_small;
 
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
@@ -139,14 +143,6 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	timeAxis(0),
 	lastTime(-1)
 {
-	// set icon sizes and spacing from the default icon size
-	if (iconMetrics.small == -1) {
-		iconMetrics.small = defaultIconSize();
-		iconMetrics.medium = iconMetrics.small + iconMetrics.small/2;
-		iconMetrics.big = iconMetrics.small*2;
-		iconMetrics.spacing = iconMetrics.small/4;
-	}
-
 	memset(&pInfo, 0, sizeof(pInfo));
 
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
@@ -161,10 +157,11 @@ ToolTipItem::~ToolTipItem()
 
 void ToolTipItem::updateTitlePosition()
 {
+	const IconMetrics& iconMetrics = defaultIconMetrics();
 	if (rectangle.width() < title->boundingRect().width() + iconMetrics.spacing * 4) {
 		QRectF newRect = rectangle;
 		newRect.setWidth(title->boundingRect().width() + iconMetrics.spacing * 4);
-		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : iconMetrics.small);
+		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : iconMetrics.sz_small);
 		setRect(newRect);
 	}
 

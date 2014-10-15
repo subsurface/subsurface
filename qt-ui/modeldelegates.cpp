@@ -32,8 +32,8 @@ static bool keyboardFinished = false;
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget *parent) : QStyledItemDelegate(parent),
 	parentWidget(parent)
 {
-	const StarMetrics& metrics = StarWidget::metrics();
-	minStarSize = QSize(metrics.size * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.size);
+	const IconMetrics& metrics = defaultIconMetrics();
+	minStarSize = QSize(metrics.sz_small * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.sz_small);
 }
 
 void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -52,12 +52,12 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	const QPixmap active = QPixmap::fromImage(StarWidget::starActive());
 	const QPixmap inactive = QPixmap::fromImage(StarWidget::starInactive());
-	const StarMetrics& metrics = StarWidget::metrics();
+	const IconMetrics& metrics = defaultIconMetrics();
 
 	for (int i = 0; i < rating; i++)
-		painter->drawPixmap(option.rect.x() + i * metrics.size + metrics.spacing, option.rect.y() + deltaY, active);
+		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing, option.rect.y() + deltaY, active);
 	for (int i = rating; i < TOTALSTARS; i++)
-		painter->drawPixmap(option.rect.x() + i * metrics.size + metrics.spacing, option.rect.y() + deltaY, inactive);
+		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing, option.rect.y() + deltaY, inactive);
 	painter->restore();
 }
 
