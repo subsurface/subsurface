@@ -4,6 +4,7 @@
 #include "dive.h"
 #include "profile.h"
 #include "membuffer.h"
+#include "metrics.h"
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QPen>
@@ -138,15 +139,9 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	timeAxis(0),
 	lastTime(-1)
 {
-	// compute icon size, by rounding the font height to the nearest multiple of
-	// 16 (small), and setting medium, big and spacing proportionally
+	// set icon sizes and spacing from the default icon size
 	if (iconMetrics.small == -1) {
-		int height = QFontMetrics(title->font()).height();
-		iconMetrics.small = (height + 8)/16;
-		iconMetrics.small *= 16;
-		// enforce a minimum small
-		if (iconMetrics.small < 16)
-			iconMetrics.small = 16;
+		iconMetrics.small = defaultIconSize();
 		iconMetrics.medium = iconMetrics.small + iconMetrics.small/2;
 		iconMetrics.big = iconMetrics.small*2;
 		iconMetrics.spacing = iconMetrics.small/4;

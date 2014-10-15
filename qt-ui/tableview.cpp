@@ -16,12 +16,8 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 	QFontMetrics fm(defaultModelFont());
 	int text_ht = fm.height();
 	int text_em = fm.width('m');
-	// icon size is the closest multiple of 16 to the font height
-	metrics.icon_size = (text_ht + 8)/16;
-	metrics.icon_size *= 16;
-	// enforce a minimum size
-	if (metrics.icon_size < 16)
-		metrics.icon_size = 16;
+	// set icon and button size from the default icon size
+	metrics.icon_size = defaultIconSize(text_ht);
 	metrics.btn_size = metrics.icon_size + metrics.icon_size/2;
 	metrics.btn_gap = metrics.icon_size/8;
 

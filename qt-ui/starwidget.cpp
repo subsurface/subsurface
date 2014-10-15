@@ -1,4 +1,5 @@
 #include "starwidget.h"
+#include "metrics.h"
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPaintEvent>
@@ -83,14 +84,9 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	current(0),
 	readOnly(false)
 {
-	// compute image size, by rounding the font height to the nearest multiple of 16
+	// set image size and spacing from the default icon size
 	if (imgMetrics.size == -1) {
-		int height = QFontMetrics(parent->font()).height();
-		imgMetrics.size = (height + 8)/16;
-		imgMetrics.size *= 16;
-		// enforce a minimum size
-		if (imgMetrics.size < 16)
-			imgMetrics.size = 16;
+		imgMetrics.size = defaultIconSize();
 		imgMetrics.spacing = imgMetrics.size/8;
 	}
 
