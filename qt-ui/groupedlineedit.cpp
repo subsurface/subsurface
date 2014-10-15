@@ -28,7 +28,6 @@
 
 #include "groupedlineedit.h"
 
-#include <QFontMetrics>
 #include <QStyleOptionFrameV3>
 #include <QFontMetrics>
 #include <QApplication>
