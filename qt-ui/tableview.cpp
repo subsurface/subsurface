@@ -12,16 +12,34 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.tableView->setItemDelegate(new DiveListDelegate(this));
+
+	QFontMetrics fm(defaultModelFont());
+	int text_ht = fm.height();
+	int text_em = fm.width('m');
+	// icon size is the closest multiple of 16 to the font height
+	metrics.icon_size = (text_ht + 8)/16;
+	metrics.icon_size *= 16;
+	// enforce a minimum size
+	if (metrics.icon_size < 16)
+		metrics.icon_size = 16;
+	metrics.btn_size = metrics.icon_size + metrics.icon_size/2;
+	metrics.btn_gap = metrics.icon_size/8;
+
+	metrics.col_width = 7*text_em;
+	metrics.rm_col_width = 3*text_em;
+	metrics.header_ht = text_ht + 10; // TODO DPI
+
 	/* There`s mostly a need for a Mac fix here too. */
 	if (qApp->style()->objectName() == "gtk+")
 		ui.groupBox->layout()->setContentsMargins(0, 9, 0, 0);
 	else
 		ui.groupBox->layout()->setContentsMargins(0, 0, 0, 0);
+
 	QIcon plusIcon(":plus");
 	plusBtn = new QPushButton(plusIcon, QString(), ui.groupBox);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add cylinder"));
-	plusBtn->setIconSize(QSize(16, 16));
+	plusBtn->setIconSize(QSize(metrics.icon_size, metrics.icon_size));
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
@@ -39,8 +57,7 @@ TableView::~TableView()
 		s.remove("");
 	} else {
 		for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
-			if ((i == CylindersModel::REMOVE && ui.tableView->columnWidth(i) == 30) ||
-			    ui.tableView->columnWidth(i) == 70)
+			if (ui.tableView->columnWidth(i) == defaultColumnWidth(i))
 				s.remove(QString("colwidth%1").arg(i));
 			else
 				s.setValue(QString("colwidth%1").arg(i), ui.tableView->columnWidth(i));
@@ -68,18 +85,19 @@ void TableView::setModel(QAbstractItemModel *model)
 	s.beginGroup(objectName());
 	const int columnCount = ui.tableView->model()->columnCount();
 	for (int i = 0; i < columnCount; i++) {
-		QVariant width = s.value(QString("colwidth%1").arg(i), i == CylindersModel::REMOVE ? 30 : 70);
+		QVariant width = s.value(QString("colwidth%1").arg(i), defaultColumnWidth(i));
 		ui.tableView->setColumnWidth(i, width.toInt());
 	}
 	s.endGroup();
 
-	QFontMetrics metrics(defaultModelFont());
-	ui.tableView->horizontalHeader()->setMinimumHeight(metrics.height() + 10);
+	ui.tableView->horizontalHeader()->setMinimumHeight(metrics.header_ht);
 }
 
 void TableView::fixPlusPosition()
 {
-	plusBtn->setGeometry(ui.groupBox->contentsRect().width() - 30, 2, 24, 24);
+	int x = ui.groupBox->contentsRect().width() - 2*metrics.icon_size + metrics.btn_gap;
+	int y = metrics.btn_gap;
+	plusBtn->setGeometry(x, y, metrics.btn_size, metrics.btn_size);
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
@@ -98,6 +116,11 @@ void TableView::showEvent(QShowEvent *event)
 void TableView::edit(const QModelIndex &index)
 {
 	ui.tableView->edit(index);
+}
+
+int TableView::defaultColumnWidth(int col)
+{
+	return col == CylindersModel::REMOVE ? metrics.rm_col_width : metrics.col_width;
 }
 
 QTableView *TableView::view()

@@ -16,6 +16,15 @@ class QTableView;
 
 class TableView : public QWidget {
 	Q_OBJECT
+
+	struct TableMetrics {
+		int icon_size; // icon size
+		int btn_size; // button size
+		int btn_gap; // button gap
+		int col_width; // generic column width
+		int rm_col_width; // column width of REMOVE column
+		int header_ht; // height of the header
+	};
 public:
 	TableView(QWidget *parent = 0);
 	virtual ~TableView();
@@ -28,6 +37,7 @@ public:
 	void setBtnToolTip(const QString &tooltip);
 	void fixPlusPosition();
 	void edit(const QModelIndex &index);
+	int  defaultColumnWidth(int col); // default column width for column col
 	QTableView *view();
 
 protected:
@@ -40,6 +50,7 @@ signals:
 private:
 	Ui::TableView ui;
 	QPushButton *plusBtn;
+	TableMetrics metrics;
 };
 
 #endif // TABLEVIEW_H
