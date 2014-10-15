@@ -344,36 +344,36 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP1, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				sp1.sp = dilData[0];
-				sp1.depth = dilData[1];
+				sp1.sp = spData[0];
+				sp1.depth = spData[1];
 			}
 			//Sp 2
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP2, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				sp2.sp = dilData[0];
-				sp2.depth = dilData[1];
+				sp2.sp = spData[0];
+				sp2.depth = spData[1];
 			}
 			//Sp 3
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP3, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				sp3.sp = dilData[0];
-				sp3.depth = dilData[1];
+				sp3.sp = spData[0];
+				sp3.depth = spData[1];
 			}
 			//Sp 4
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP4, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				sp4.sp = dilData[0];
-				sp4.depth = dilData[1];
+				sp4.sp = spData[0];
+				sp4.depth = spData[1];
 			}
 			//Sp 5
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP5, spData, sizeof(spData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				sp5.sp = dilData[0];
-				sp5.depth = dilData[1];
+				sp5.sp = spData[0];
+				sp5.depth = spData[1];
 			}
 
 			m_deviceDetails->setSp1(sp1);
