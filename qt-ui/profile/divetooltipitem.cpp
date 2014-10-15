@@ -18,25 +18,27 @@
 #include "display.h"
 #endif
 
+ToolTipItem::IconMetrics ToolTipItem::iconMetrics = { -1, -1, -1, -1 };
+
 void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap *pixmap)
 {
 	QGraphicsPixmapItem *iconItem = 0, *pixmapItem = 0;
-	double yValue = title->boundingRect().height() + SPACING;
+	double yValue = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (ToolTip t, toolTips) {
 		yValue += t.second->boundingRect().height();
 	}
 	if (!icon.isNull()) {
-		iconItem = new QGraphicsPixmapItem(icon.pixmap(ICON_SMALL, ICON_SMALL), this);
-		iconItem->setPos(SPACING, yValue);
+		iconItem = new QGraphicsPixmapItem(icon.pixmap(iconMetrics.small, iconMetrics.small), this);
+		iconItem->setPos(iconMetrics.spacing, yValue);
 	} else {
 		if (pixmap && !pixmap->isNull()) {
 			pixmapItem = new QGraphicsPixmapItem(*pixmap, this);
-			pixmapItem->setPos(SPACING, yValue);
+			pixmapItem->setPos(iconMetrics.spacing, yValue);
 		}
 	}
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
-	textItem->setPos(SPACING + ICON_SMALL + SPACING, yValue);
+	textItem->setPos(iconMetrics.spacing + iconMetrics.small + iconMetrics.spacing, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
 	toolTips.push_back(qMakePair(iconItem, textItem));
@@ -89,7 +91,7 @@ void ToolTipItem::collapse()
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 	animation->setDuration(100);
 	animation->setStartValue(nextRectangle);
-	animation->setEndValue(QRect(0, 0, ICON_SMALL, ICON_SMALL));
+	animation->setEndValue(QRect(0, 0, iconMetrics.small, iconMetrics.small));
 	animation->start(QAbstractAnimation::DeleteWhenStopped);
 	clear();
 
@@ -101,20 +103,20 @@ void ToolTipItem::expand()
 	if (!title)
 		return;
 
-	double width = 0, height = title->boundingRect().height() + SPACING;
+	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (ToolTip t, toolTips) {
 		if (t.second->boundingRect().width() > width)
 			width = t.second->boundingRect().width();
 		height += t.second->boundingRect().height();
 	}
 	/*       Left padding, Icon Size,   space, right padding */
-	width += SPACING + ICON_SMALL + SPACING + SPACING;
+	width += iconMetrics.spacing + iconMetrics.small + iconMetrics.spacing + iconMetrics.spacing;
 
-	if (width < title->boundingRect().width() + SPACING * 2)
-		width = title->boundingRect().width() + SPACING * 2;
+	if (width < title->boundingRect().width() + iconMetrics.spacing * 2)
+		width = title->boundingRect().width() + iconMetrics.spacing * 2;
 
-	if (height < ICON_SMALL)
-		height = ICON_SMALL;
+	if (height < iconMetrics.small)
+		height = iconMetrics.small;
 
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
@@ -136,6 +138,20 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	timeAxis(0),
 	lastTime(-1)
 {
+	// compute icon size, by rounding the font height to the nearest multiple of
+	// 16 (small), and setting medium, big and spacing proportionally
+	if (iconMetrics.small == -1) {
+		int height = QFontMetrics(title->font()).height();
+		iconMetrics.small = (height + 8)/16;
+		iconMetrics.small *= 16;
+		// enforce a minimum small
+		if (iconMetrics.small < 16)
+			iconMetrics.small = 16;
+		iconMetrics.medium = iconMetrics.small + iconMetrics.small/2;
+		iconMetrics.big = iconMetrics.small*2;
+		iconMetrics.spacing = iconMetrics.small/4;
+	}
+
 	memset(&pInfo, 0, sizeof(pInfo));
 
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
@@ -150,10 +166,10 @@ ToolTipItem::~ToolTipItem()
 
 void ToolTipItem::updateTitlePosition()
 {
-	if (rectangle.width() < title->boundingRect().width() + SPACING * 4) {
+	if (rectangle.width() < title->boundingRect().width() + iconMetrics.spacing * 4) {
 		QRectF newRect = rectangle;
-		newRect.setWidth(title->boundingRect().width() + SPACING * 4);
-		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : ICON_SMALL);
+		newRect.setWidth(title->boundingRect().width() + iconMetrics.spacing * 4);
+		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : iconMetrics.small);
 		setRect(newRect);
 	}
 
@@ -164,7 +180,7 @@ void ToolTipItem::updateTitlePosition()
 
 	if (toolTips.size() > 0) {
 		double x1 = 3;
-		double y1 = title->pos().y() + SPACING / 2 + title->boundingRect().height();
+		double y1 = title->pos().y() + iconMetrics.spacing / 2 + title->boundingRect().height();
 		double x2 = boundingRect().width() - 10;
 		double y2 = y1;
 

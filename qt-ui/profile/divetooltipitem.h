@@ -27,11 +27,12 @@ public:
 		COLLAPSED,
 		EXPANDED
 	};
-	enum {
-		ICON_SMALL = 16,
-		ICON_MEDIUM = 24,
-		ICON_BIG = 32,
-		SPACING = 4
+
+	struct IconMetrics {
+		int small;
+		int medium;
+		int big;
+		int spacing;
 	};
 
 	explicit ToolTipItem(QGraphicsItem *parent = 0);
@@ -67,6 +68,8 @@ private:
 	int lastTime;
 
 	QList<QGraphicsItem*> oldSelection;
+
+	static IconMetrics iconMetrics;
 };
 
 #endif // DIVETOOLTIPITEM_H
