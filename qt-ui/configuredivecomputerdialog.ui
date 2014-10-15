@@ -766,12 +766,12 @@
               </column>
               <column>
                <property name="text">
-                <string>%He</string>
+                <string>%O2</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>%O2</string>
+                <string>%He</string>
                </property>
               </column>
               <column>
