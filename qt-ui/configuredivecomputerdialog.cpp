@@ -8,6 +8,7 @@
 #include "configuredivecomputer.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
@@ -50,10 +51,50 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
+
+	QSettings settings;
+	settings.beginGroup("ConfigureDiveComputerDialog");
+	settings.beginGroup("ostc3GasTable");
+	for (int i = 0; i < ui.ostc3GasTable->columnCount(); i++) {
+        QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc3GasTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.beginGroup("ostc3DilTable");
+	for (int i = 0; i < ui.ostc3DilTable->columnCount(); i++) {
+        QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc3DilTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.beginGroup("ostc3SetPointTable");
+	for (int i = 0; i < ui.ostc3SetPointTable->columnCount(); i++) {
+        QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc3SetPointTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.endGroup();
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 {
+	QSettings settings;
+	settings.beginGroup("ConfigureDiveComputerDialog");
+	settings.beginGroup("ostc3GasTable");
+	for (int i = 0; i < ui.ostc3GasTable->columnCount(); i++)
+		settings.setValue(QString("colwidth%1").arg(i), ui.ostc3GasTable->columnWidth(i));
+	settings.endGroup();
+	settings.beginGroup("ostc3DilTable");
+	for (int i = 0; i < ui.ostc3DilTable->columnCount(); i++)
+		settings.setValue(QString("colwidth%1").arg(i), ui.ostc3DilTable->columnWidth(i));
+	settings.endGroup();
+	settings.beginGroup("ostc3SetPointTable");
+	for (int i = 0; i < ui.ostc3SetPointTable->columnCount(); i++)
+		settings.setValue(QString("colwidth%1").arg(i), ui.ostc3SetPointTable->columnWidth(i));
+	settings.endGroup();
+	settings.endGroup();
 }
 
 
