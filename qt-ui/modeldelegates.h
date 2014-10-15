@@ -20,9 +20,11 @@ public:
 	explicit StarWidgetsDelegate(QWidget *parent = 0);
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	const QSize& starSize() const;
 
 private:
 	QWidget *parentWidget;
+	QSize minStarSize;
 };
 
 class ComboBoxDelegate : public QStyledItemDelegate {

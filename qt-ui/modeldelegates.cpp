@@ -32,6 +32,8 @@ static bool keyboardFinished = false;
 StarWidgetsDelegate::StarWidgetsDelegate(QWidget *parent) : QStyledItemDelegate(parent),
 	parentWidget(parent)
 {
+	const StarMetrics& metrics = StarWidget::metrics();
+	minStarSize = QSize(metrics.size * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.size);
 }
 
 void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -61,8 +63,12 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	const StarMetrics& metrics = StarWidget::metrics();
-	return QSize(metrics.size * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.size);
+	return minStarSize;
+}
+
+const QSize& StarWidgetsDelegate::starSize() const
+{
+	return minStarSize;
 }
 
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent) : QStyledItemDelegate(parent), model(model)

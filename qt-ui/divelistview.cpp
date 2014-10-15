@@ -28,6 +28,9 @@
 #include <iostream>
 #include "../qthelper.h"
 
+//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
+static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
+
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
 	currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false), selectionSaved(false)
 {
@@ -44,11 +47,58 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
-#ifdef Q_OS_MAC
-	// Fixes for the layout needed for mac
+
 	const QFontMetrics metrics(defaultModelFont());
-	header()->setMinimumHeight(metrics.height() + 10);
+	int ht = metrics.height();
+	int em = metrics.width('m');
+	int zw = metrics.width('0');
+
+	// Fixes for the layout needed for mac
+#ifdef Q_OS_MAC
+	header()->setMinimumHeight(ht + 10);
 #endif
+
+	// TODO FIXME we need this to get the header names
+	// can we find a smarter way?
+	DiveTripModel *tripModel = new DiveTripModel(this);
+
+	// set the default width as a minimum between the hard-coded defaults,
+	// the header text width and the (assumed) content width, calculated
+	// based on type
+	for (int col = DiveTripModel::NR; col < DiveTripModel::COLUMNS; ++col) {
+		QString header_txt = tripModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+		int width = metrics.width(header_txt);
+		int sw = 0;
+		switch (col) {
+		case DiveTripModel::NR:
+		case DiveTripModel::DURATION:
+			sw = 8*zw;
+			break;
+		case DiveTripModel::DATE:
+			sw = 14*em;
+			break;
+		case DiveTripModel::RATING:
+			sw = static_cast<StarWidgetsDelegate*>(itemDelegateForColumn(col))->starSize().width();
+			break;
+		case DiveTripModel::SUIT:
+		case DiveTripModel::SAC:
+			sw = 7*em;
+			break;
+		case DiveTripModel::LOCATION:
+			sw = 50*em;
+			break;
+		default:
+			sw = 5*em;
+		}
+		if (sw > width)
+			width = sw;
+		width += zw; // small padding
+		if (width > defaultWidth[col])
+			defaultWidth[col] = width;
+	}
+	delete tripModel;
+
+
 	header()->setStretchLastSection(true);
 	QAction *showSearchBox = new QAction(tr("Show search box"), this);
 	showSearchBox->setShortcut(Qt::CTRL + Qt::Key_F);
@@ -60,9 +110,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 //	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
 //	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 }
-
-//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
-static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
 
 DiveListView::~DiveListView()
 {
