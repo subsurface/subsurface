@@ -916,7 +916,7 @@
                <bool>true</bool>
               </property>
               <property name="maximum">
-               <number>200</number>
+               <double>200.000000000000000</double>
               </property>
              </widget>
             </item>
