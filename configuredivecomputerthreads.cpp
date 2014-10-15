@@ -684,6 +684,7 @@ void WriteSettingsThread::run()
 				time.second = timeToSet.time().second();
 				hw_ostc3_device_clock(m_data->device, &time);
 			}
+			break;
 		}
 #endif	// divecomputer 0.5.0
 		default:
