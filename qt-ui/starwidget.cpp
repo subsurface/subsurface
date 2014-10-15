@@ -11,6 +11,7 @@
 
 QImage StarWidget::activeStar;
 QImage StarWidget::inactiveStar;
+StarMetrics StarWidget::imgMetrics = { -1, -1 };
 
 const QImage& StarWidget::starActive()
 {
@@ -20,6 +21,11 @@ const QImage& StarWidget::starActive()
 const QImage& StarWidget::starInactive()
 {
 	return inactiveStar;
+}
+
+const StarMetrics& StarWidget::metrics()
+{
+	return imgMetrics;
 }
 
 int StarWidget::currentStars() const
@@ -33,7 +39,7 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 		return;
 	}
 
-	int starClicked = event->pos().x() / IMG_SIZE + 1;
+	int starClicked = event->pos().x() / imgMetrics.size + 1;
 	if (starClicked > TOTALSTARS)
 		starClicked = TOTALSTARS;
 
@@ -53,10 +59,10 @@ void StarWidget::paintEvent(QPaintEvent *event)
 	QPixmap inactive = QPixmap::fromImage(starInactive());
 
 	for (int i = 0; i < current; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, active);
+		p.drawPixmap(i * imgMetrics.size + imgMetrics.spacing, 0, active);
 
 	for (int i = current; i < TOTALSTARS; i++)
-		p.drawPixmap(i * IMG_SIZE + SPACING, 0, inactive);
+		p.drawPixmap(i * imgMetrics.size + imgMetrics.spacing, 0, inactive);
 
 	if (hasFocus()) {
 		QStyleOptionFocusRect option;
@@ -77,14 +83,25 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	current(0),
 	readOnly(false)
 {
+	// compute image size, by rounding the font height to the nearest multiple of 16
+	if (imgMetrics.size == -1) {
+		int height = QFontMetrics(parent->font()).height();
+		imgMetrics.size = (height + 8)/16;
+		imgMetrics.size *= 16;
+		// enforce a minimum size
+		if (imgMetrics.size < 16)
+			imgMetrics.size = 16;
+		imgMetrics.spacing = imgMetrics.size/8;
+	}
+
 	if (activeStar.isNull()) {
 		QSvgRenderer render(QString(":star"));
-		QPixmap renderedStar(IMG_SIZE, IMG_SIZE);
+		QPixmap renderedStar(imgMetrics.size, imgMetrics.size);
 
 		renderedStar.fill(Qt::transparent);
 		QPainter painter(&renderedStar);
 
-		render.render(&painter, QRectF(0, 0, IMG_SIZE, IMG_SIZE));
+		render.render(&painter, QRectF(0, 0, imgMetrics.size, imgMetrics.size));
 		activeStar = renderedStar.toImage();
 	}
 	if (inactiveStar.isNull()) {
@@ -113,7 +130,7 @@ QImage grayImage(const QImage& coloredImg)
 
 QSize StarWidget::sizeHint() const
 {
-	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS - 1), IMG_SIZE);
+	return QSize(imgMetrics.size * TOTALSTARS + imgMetrics.spacing * (TOTALSTARS - 1), imgMetrics.size);
 }
 
 void StarWidget::setReadOnly(bool r)

@@ -50,17 +50,19 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	const QPixmap active = QPixmap::fromImage(StarWidget::starActive());
 	const QPixmap inactive = QPixmap::fromImage(StarWidget::starInactive());
+	const StarMetrics& metrics = StarWidget::metrics();
 
 	for (int i = 0; i < rating; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, active);
+		painter->drawPixmap(option.rect.x() + i * metrics.size + metrics.spacing, option.rect.y() + deltaY, active);
 	for (int i = rating; i < TOTALSTARS; i++)
-		painter->drawPixmap(option.rect.x() + i * IMG_SIZE + SPACING, option.rect.y() + deltaY, inactive);
+		painter->drawPixmap(option.rect.x() + i * metrics.size + metrics.spacing, option.rect.y() + deltaY, inactive);
 	painter->restore();
 }
 
 QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	return QSize(IMG_SIZE * TOTALSTARS + SPACING * (TOTALSTARS - 1), IMG_SIZE);
+	const StarMetrics& metrics = StarWidget::metrics();
+	return QSize(metrics.size * TOTALSTARS + metrics.spacing * (TOTALSTARS - 1), metrics.size);
 }
 
 ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent) : QStyledItemDelegate(parent), model(model)
