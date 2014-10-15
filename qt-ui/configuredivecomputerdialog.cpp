@@ -1,5 +1,4 @@
 #include "configuredivecomputerdialog.h"
-#include "ui_configuredivecomputerdialog.h"
 
 #include "../divecomputer.h"
 #include "../libdivecomputer.h"
@@ -30,11 +29,10 @@ struct mydescriptor {
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::ConfigureDiveComputerDialog),
 	config(0),
 	deviceDetails(0)
 {
-	ui->setupUi(this);
+	ui.setupUi(this);
 
 	deviceDetails = new DeviceDetails(this);
 	config = new ConfigureDiveComputer(this);
@@ -43,20 +41,19 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	connect(config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
 	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
 		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
-	connect(ui->retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
+	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
 	if (default_dive_computer_device)
-		ui->device->setEditText(default_dive_computer_device);
+		ui.device->setEditText(default_dive_computer_device);
 
-	ui->DiveComputerList->setCurrentRow(0);
+	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 {
-	delete ui;
 }
 
 
@@ -69,10 +66,10 @@ static void fillDeviceList(const char *name, void *data)
 void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
 {
 	int deviceIndex;
-	ui->device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui->device, dc_type);
+	ui.device->clear();
+	deviceIndex = enumerate_devices(fillDeviceList, ui.device, dc_type);
 	if (deviceIndex >= 0)
-		ui->device->setCurrentIndex(deviceIndex);
+		ui.device->setCurrentIndex(deviceIndex);
 }
 
 void ConfigureDiveComputerDialog::fill_computer_list()
@@ -116,7 +113,7 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
-	switch(ui->dcStackedWidget->currentIndex()) {
+	switch(ui.dcStackedWidget->currentIndex()) {
 	case 0:
 		populateDeviceDetailsOSTC3();
 		break;
@@ -130,20 +127,20 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 {
-	deviceDetails->setCustomText(ui->customTextLlineEdit->text());
-	deviceDetails->setDiveMode(ui->diveModeComboBox->currentIndex());
-	deviceDetails->setSaturation(ui->saturationSpinBox->value());
-	deviceDetails->setDesaturation(ui->desaturationSpinBox->value());
-	deviceDetails->setLastDeco(ui->lastDecoSpinBox->value());
-	deviceDetails->setBrightness(ui->brightnessComboBox->currentIndex());
-	deviceDetails->setUnits(ui->unitsComboBox->currentIndex());
-	deviceDetails->setSamplingRate(ui->samplingRateComboBox->currentIndex());
-	deviceDetails->setSalinity(ui->salinitySpinBox->value());
-	deviceDetails->setDiveModeColor(ui->diveModeColour->currentIndex());
-	deviceDetails->setLanguage(ui->languageComboBox->currentIndex());
-	deviceDetails->setDateFormat(ui->dateFormatComboBox->currentIndex());
-	deviceDetails->setCompassGain(ui->compassGainComboBox->currentIndex());
-	deviceDetails->setSyncTime(ui->dateTimeSyncCheckBox->isChecked());
+	deviceDetails->setCustomText(ui.customTextLlineEdit->text());
+	deviceDetails->setDiveMode(ui.diveModeComboBox->currentIndex());
+	deviceDetails->setSaturation(ui.saturationSpinBox->value());
+	deviceDetails->setDesaturation(ui.desaturationSpinBox->value());
+	deviceDetails->setLastDeco(ui.lastDecoSpinBox->value());
+	deviceDetails->setBrightness(ui.brightnessComboBox->currentIndex());
+	deviceDetails->setUnits(ui.unitsComboBox->currentIndex());
+	deviceDetails->setSamplingRate(ui.samplingRateComboBox->currentIndex());
+	deviceDetails->setSalinity(ui.salinitySpinBox->value());
+	deviceDetails->setDiveModeColor(ui.diveModeColour->currentIndex());
+	deviceDetails->setLanguage(ui.languageComboBox->currentIndex());
+	deviceDetails->setDateFormat(ui.dateFormatComboBox->currentIndex());
+	deviceDetails->setCompassGain(ui.compassGainComboBox->currentIndex());
+	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox->isChecked());
 
 	//set gas values
 	gas gas1;
@@ -152,30 +149,30 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	gas gas4;
 	gas gas5;
 
-	gas1.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(0, 1), 21);
-	gas1.helium = GET_INT_FROM(ui->ostc3GasTable->item(0, 2), 0);
-	gas1.type = GET_INT_FROM(ui->ostc3GasTable->item(0, 3), 0);
-	gas1.depth = GET_INT_FROM(ui->ostc3GasTable->item(0, 4), 0);
+	gas1.oxygen = GET_INT_FROM(ui.ostc3GasTable->item(0, 1), 21);
+	gas1.helium = GET_INT_FROM(ui.ostc3GasTable->item(0, 2), 0);
+	gas1.type = GET_INT_FROM(ui.ostc3GasTable->item(0, 3), 0);
+	gas1.depth = GET_INT_FROM(ui.ostc3GasTable->item(0, 4), 0);
 
-	gas2.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(1, 1), 21);
-	gas2.helium = GET_INT_FROM(ui->ostc3GasTable->item(1, 2), 0);
-	gas2.type = GET_INT_FROM(ui->ostc3GasTable->item(1, 3), 0);
-	gas2.depth = GET_INT_FROM(ui->ostc3GasTable->item(1, 4), 0);
+	gas2.oxygen = GET_INT_FROM(ui.ostc3GasTable->item(1, 1), 21);
+	gas2.helium = GET_INT_FROM(ui.ostc3GasTable->item(1, 2), 0);
+	gas2.type = GET_INT_FROM(ui.ostc3GasTable->item(1, 3), 0);
+	gas2.depth = GET_INT_FROM(ui.ostc3GasTable->item(1, 4), 0);
 
-	gas3.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(2, 1), 21);
-	gas3.helium = GET_INT_FROM(ui->ostc3GasTable->item(2, 2), 0);
-	gas3.type = GET_INT_FROM(ui->ostc3GasTable->item(2, 3), 0);
-	gas3.depth = GET_INT_FROM(ui->ostc3GasTable->item(2, 4), 0);
+	gas3.oxygen = GET_INT_FROM(ui.ostc3GasTable->item(2, 1), 21);
+	gas3.helium = GET_INT_FROM(ui.ostc3GasTable->item(2, 2), 0);
+	gas3.type = GET_INT_FROM(ui.ostc3GasTable->item(2, 3), 0);
+	gas3.depth = GET_INT_FROM(ui.ostc3GasTable->item(2, 4), 0);
 
-	gas4.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(3, 1), 21);
-	gas4.helium = GET_INT_FROM(ui->ostc3GasTable->item(3, 2), 0);
-	gas4.type = GET_INT_FROM(ui->ostc3GasTable->item(3, 3), 0);
-	gas4.depth = GET_INT_FROM(ui->ostc3GasTable->item(3, 4), 0);
+	gas4.oxygen = GET_INT_FROM(ui.ostc3GasTable->item(3, 1), 21);
+	gas4.helium = GET_INT_FROM(ui.ostc3GasTable->item(3, 2), 0);
+	gas4.type = GET_INT_FROM(ui.ostc3GasTable->item(3, 3), 0);
+	gas4.depth = GET_INT_FROM(ui.ostc3GasTable->item(3, 4), 0);
 
-	gas5.oxygen = GET_INT_FROM(ui->ostc3GasTable->item(4, 1), 21);
-	gas5.helium = GET_INT_FROM(ui->ostc3GasTable->item(4, 2), 0);
-	gas5.type = GET_INT_FROM(ui->ostc3GasTable->item(4, 3), 0);
-	gas5.depth = GET_INT_FROM(ui->ostc3GasTable->item(4, 4), 0);
+	gas5.oxygen = GET_INT_FROM(ui.ostc3GasTable->item(4, 1), 21);
+	gas5.helium = GET_INT_FROM(ui.ostc3GasTable->item(4, 2), 0);
+	gas5.type = GET_INT_FROM(ui.ostc3GasTable->item(4, 3), 0);
+	gas5.depth = GET_INT_FROM(ui.ostc3GasTable->item(4, 4), 0);
 
 	deviceDetails->setGas1(gas1);
 	deviceDetails->setGas2(gas2);
@@ -190,30 +187,30 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	gas dil4;
 	gas dil5;
 
-	dil1.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(0, 1), 21);
-	dil1.helium = GET_INT_FROM(ui->ostc3DilTable->item(0, 2), 0);
-	dil1.type = GET_INT_FROM(ui->ostc3DilTable->item(0, 3), 0);
-	dil1.depth = GET_INT_FROM(ui->ostc3DilTable->item(0, 4), 0);
+	dil1.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(0, 1), 21);
+	dil1.helium = GET_INT_FROM(ui.ostc3DilTable->item(0, 2), 0);
+	dil1.type = GET_INT_FROM(ui.ostc3DilTable->item(0, 3), 0);
+	dil1.depth = GET_INT_FROM(ui.ostc3DilTable->item(0, 4), 0);
 
-	dil2.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(1, 1), 21);
-	dil2.helium = GET_INT_FROM(ui->ostc3DilTable->item(1, 2), 0);
-	dil2.type = GET_INT_FROM(ui->ostc3DilTable->item(1, 3), 0);
-	dil2.depth = GET_INT_FROM(ui->ostc3DilTable->item(1, 4),0);
+	dil2.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(1, 1), 21);
+	dil2.helium = GET_INT_FROM(ui.ostc3DilTable->item(1, 2), 0);
+	dil2.type = GET_INT_FROM(ui.ostc3DilTable->item(1, 3), 0);
+	dil2.depth = GET_INT_FROM(ui.ostc3DilTable->item(1, 4),0);
 
-	dil3.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(2, 1), 21);
-	dil3.helium = GET_INT_FROM(ui->ostc3DilTable->item(2, 2), 0);
-	dil3.type = GET_INT_FROM(ui->ostc3DilTable->item(2, 3), 0);
-	dil3.depth = GET_INT_FROM(ui->ostc3DilTable->item(2, 4), 0);
+	dil3.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(2, 1), 21);
+	dil3.helium = GET_INT_FROM(ui.ostc3DilTable->item(2, 2), 0);
+	dil3.type = GET_INT_FROM(ui.ostc3DilTable->item(2, 3), 0);
+	dil3.depth = GET_INT_FROM(ui.ostc3DilTable->item(2, 4), 0);
 
-	dil4.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(3, 1), 21);
-	dil4.helium = GET_INT_FROM(ui->ostc3DilTable->item(3, 2), 0);
-	dil4.type = GET_INT_FROM(ui->ostc3DilTable->item(3, 3), 0);
-	dil4.depth = GET_INT_FROM(ui->ostc3DilTable->item(3, 4), 0);
+	dil4.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(3, 1), 21);
+	dil4.helium = GET_INT_FROM(ui.ostc3DilTable->item(3, 2), 0);
+	dil4.type = GET_INT_FROM(ui.ostc3DilTable->item(3, 3), 0);
+	dil4.depth = GET_INT_FROM(ui.ostc3DilTable->item(3, 4), 0);
 
-	dil5.oxygen = GET_INT_FROM(ui->ostc3DilTable->item(4, 1), 21);
-	dil5.helium = GET_INT_FROM(ui->ostc3DilTable->item(4, 2), 0);
-	dil5.type = GET_INT_FROM(ui->ostc3DilTable->item(4, 3), 0);
-	dil5.depth = GET_INT_FROM(ui->ostc3DilTable->item(4, 4), 0);
+	dil5.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(4, 1), 21);
+	dil5.helium = GET_INT_FROM(ui.ostc3DilTable->item(4, 2), 0);
+	dil5.type = GET_INT_FROM(ui.ostc3DilTable->item(4, 3), 0);
+	dil5.depth = GET_INT_FROM(ui.ostc3DilTable->item(4, 4), 0);
 
 	deviceDetails->setDil1(dil1);
 	deviceDetails->setDil2(dil2);
@@ -228,20 +225,20 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	setpoint sp4;
 	setpoint sp5;
 
-	sp1.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(0, 1), 70);
-	sp1.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(0, 2), 0);
+	sp1.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(0, 1), 70);
+	sp1.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(0, 2), 0);
 
-	sp2.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(1, 1), 90);
-	sp2.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(1, 2), 20);
+	sp2.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(1, 1), 90);
+	sp2.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(1, 2), 20);
 
-	sp3.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(2, 1), 100);
-	sp3.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(2, 2), 33);
+	sp3.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(2, 1), 100);
+	sp3.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(2, 2), 33);
 
-	sp4.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(3, 1), 120);
-	sp4.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(3, 2), 50);
+	sp4.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(3, 1), 120);
+	sp4.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(3, 2), 50);
 
-	sp5.sp = GET_INT_FROM(ui->ostc3SetPointTable->item(4, 1), 140);
-	sp5.depth = GET_INT_FROM(ui->ostc3SetPointTable->item(4, 2), 70);
+	sp5.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(4, 1), 140);
+	sp5.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(4, 2), 70);
 
 	deviceDetails->setSp1(sp1);
 	deviceDetails->setSp2(sp2);
@@ -252,25 +249,25 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 {
-	deviceDetails->setCustomText(ui->customTextLlineEdit_1->text());
-	deviceDetails->setSamplingRate(ui->samplingRateComboBox_1->currentIndex() == 3 ? 60 : (ui->samplingRateComboBox_1->currentIndex() + 1) * 10);
-	deviceDetails->setAltitude(ui->altitudeRangeComboBox->currentIndex());
-	deviceDetails->setPersonalSafety(ui->personalSafetyComboBox->currentIndex());
-	deviceDetails->setTimeFormat(ui->timeFormatComboBox->currentIndex());
-	deviceDetails->setUnits(ui->unitsComboBox_1->currentIndex());
-	deviceDetails->setDiveMode(ui->diveModeComboBox_1->currentIndex());
-	deviceDetails->setLightEnabled(ui->lightCheckBox->isChecked());
-	deviceDetails->setLight(ui->lightSpinBox->value());
-	deviceDetails->setAlarmDepthEnabled(ui->alarmDepthCheckBox->isChecked());
-	deviceDetails->setAlarmDepth(units_to_depth(ui->alarmDepthDoubleSpinBox->value()));
-	deviceDetails->setAlarmTimeEnabled(ui->alarmTimeCheckBox->isChecked());
-	deviceDetails->setAlarmTime(ui->alarmTimeSpinBox->value());
+	deviceDetails->setCustomText(ui.customTextLlineEdit_1->text());
+	deviceDetails->setSamplingRate(ui.samplingRateComboBox_1->currentIndex() == 3 ? 60 : (ui.samplingRateComboBox_1->currentIndex() + 1) * 10);
+	deviceDetails->setAltitude(ui.altitudeRangeComboBox->currentIndex());
+	deviceDetails->setPersonalSafety(ui.personalSafetyComboBox->currentIndex());
+	deviceDetails->setTimeFormat(ui.timeFormatComboBox->currentIndex());
+	deviceDetails->setUnits(ui.unitsComboBox_1->currentIndex());
+	deviceDetails->setDiveMode(ui.diveModeComboBox_1->currentIndex());
+	deviceDetails->setLightEnabled(ui.lightCheckBox->isChecked());
+	deviceDetails->setLight(ui.lightSpinBox->value());
+	deviceDetails->setAlarmDepthEnabled(ui.alarmDepthCheckBox->isChecked());
+	deviceDetails->setAlarmDepth(units_to_depth(ui.alarmDepthDoubleSpinBox->value()));
+	deviceDetails->setAlarmTimeEnabled(ui.alarmTimeCheckBox->isChecked());
+	deviceDetails->setAlarmTime(ui.alarmTimeSpinBox->value());
 }
 
 void ConfigureDiveComputerDialog::readSettings()
 {
-	ui->statusLabel->clear();
-	ui->errorLabel->clear();
+	ui.statusLabel->clear();
+	ui.errorLabel->clear();
 
 	getDeviceData();
 	config->readSettings(&device_data);
@@ -278,18 +275,18 @@ void ConfigureDiveComputerDialog::readSettings()
 
 void ConfigureDiveComputerDialog::configMessage(QString msg)
 {
-	ui->statusLabel->setText(msg);
+	ui.statusLabel->setText(msg);
 }
 
 void ConfigureDiveComputerDialog::configError(QString err)
 {
-	ui->statusLabel->setText("");
-	ui->errorLabel->setText(err);
+	ui.statusLabel->setText("");
+	ui.errorLabel->setText(err);
 }
 
 void ConfigureDiveComputerDialog::getDeviceData()
 {
-	device_data.devname = strdup(ui->device->currentText().toUtf8().data());
+	device_data.devname = strdup(ui.device->currentText().toUtf8().data());
 	device_data.vendor = strdup(selected_vendor.toUtf8().data());
 	device_data.product = strdup(selected_product.toUtf8().data());
 
@@ -306,7 +303,7 @@ void ConfigureDiveComputerDialog::on_cancel_clicked()
 
 void ConfigureDiveComputerDialog::deviceReadFinished()
 {
-	ui->statusLabel->setText(tr("Dive computer details read successfully."));
+	ui.statusLabel->setText(tr("Dive computer details read successfully."));
 }
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
@@ -325,10 +322,10 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails *newDevice
 void ConfigureDiveComputerDialog::reloadValues()
 {
 	// Enable the buttons to do operations on this data
-	ui->saveSettingsPushButton->setEnabled(true);
-	ui->backupButton->setEnabled(true);
+	ui.saveSettingsPushButton->setEnabled(true);
+	ui.backupButton->setEnabled(true);
 
-	switch(ui->dcStackedWidget->currentIndex()) {
+	switch(ui.dcStackedWidget->currentIndex()) {
 	case 0:
 		reloadValuesOSTC3();
 		break;
@@ -340,127 +337,127 @@ void ConfigureDiveComputerDialog::reloadValues()
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 {
-	ui->serialNoLineEdit->setText(deviceDetails->serialNo());
-	ui->firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
-	ui->customTextLlineEdit->setText(deviceDetails->customText());
-	ui->diveModeComboBox->setCurrentIndex(deviceDetails->diveMode());
-	ui->saturationSpinBox->setValue(deviceDetails->saturation());
-	ui->desaturationSpinBox->setValue(deviceDetails->desaturation());
-	ui->lastDecoSpinBox->setValue(deviceDetails->lastDeco());
-	ui->brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
-	ui->unitsComboBox->setCurrentIndex(deviceDetails->units());
-	ui->samplingRateComboBox->setCurrentIndex(deviceDetails->samplingRate());
-	ui->salinitySpinBox->setValue(deviceDetails->salinity());
-	ui->diveModeColour->setCurrentIndex(deviceDetails->diveModeColor());
-	ui->languageComboBox->setCurrentIndex(deviceDetails->language());
-	ui->dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
-	ui->compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
+	ui.serialNoLineEdit->setText(deviceDetails->serialNo());
+	ui.firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
+	ui.customTextLlineEdit->setText(deviceDetails->customText());
+	ui.diveModeComboBox->setCurrentIndex(deviceDetails->diveMode());
+	ui.saturationSpinBox->setValue(deviceDetails->saturation());
+	ui.desaturationSpinBox->setValue(deviceDetails->desaturation());
+	ui.lastDecoSpinBox->setValue(deviceDetails->lastDeco());
+	ui.brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
+	ui.unitsComboBox->setCurrentIndex(deviceDetails->units());
+	ui.samplingRateComboBox->setCurrentIndex(deviceDetails->samplingRate());
+	ui.salinitySpinBox->setValue(deviceDetails->salinity());
+	ui.diveModeColour->setCurrentIndex(deviceDetails->diveModeColor());
+	ui.languageComboBox->setCurrentIndex(deviceDetails->language());
+	ui.dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
+	ui.compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
 
 	//load gas 1 values
-	ui->ostc3GasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
-	ui->ostc3GasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
-	ui->ostc3GasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
-	ui->ostc3GasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+	ui.ostc3GasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
+	ui.ostc3GasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
+	ui.ostc3GasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
+	ui.ostc3GasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
 
 	//load gas 2 values
-	ui->ostc3GasTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
-	ui->ostc3GasTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
-	ui->ostc3GasTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
-	ui->ostc3GasTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+	ui.ostc3GasTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
+	ui.ostc3GasTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
+	ui.ostc3GasTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
+	ui.ostc3GasTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
 
 	//load gas 3 values
-	ui->ostc3GasTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
-	ui->ostc3GasTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
-	ui->ostc3GasTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
-	ui->ostc3GasTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+	ui.ostc3GasTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
+	ui.ostc3GasTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
+	ui.ostc3GasTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
+	ui.ostc3GasTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
 
 	//load gas 4 values
-	ui->ostc3GasTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
-	ui->ostc3GasTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
-	ui->ostc3GasTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
-	ui->ostc3GasTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+	ui.ostc3GasTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
+	ui.ostc3GasTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
+	ui.ostc3GasTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
+	ui.ostc3GasTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
 
 	//load gas 5 values
-	ui->ostc3GasTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
-	ui->ostc3GasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
-	ui->ostc3GasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
-	ui->ostc3GasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+	ui.ostc3GasTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
+	ui.ostc3GasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
+	ui.ostc3GasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
+	ui.ostc3GasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
 
 	//load dil 1 values
-	ui->ostc3DilTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
-	ui->ostc3DilTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
-	ui->ostc3DilTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
-	ui->ostc3DilTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+	ui.ostc3DilTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
+	ui.ostc3DilTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
+	ui.ostc3DilTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
+	ui.ostc3DilTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
 
 	//load dil 2 values
-	ui->ostc3DilTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
-	ui->ostc3DilTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
-	ui->ostc3DilTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
-	ui->ostc3DilTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+	ui.ostc3DilTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
+	ui.ostc3DilTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
+	ui.ostc3DilTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
+	ui.ostc3DilTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
 
 	//load dil 3 values
-	ui->ostc3DilTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
-	ui->ostc3DilTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
-	ui->ostc3DilTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
-	ui->ostc3DilTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+	ui.ostc3DilTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
+	ui.ostc3DilTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
+	ui.ostc3DilTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
+	ui.ostc3DilTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
 
 	//load dil 4 values
-	ui->ostc3DilTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
-	ui->ostc3DilTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
-	ui->ostc3DilTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
-	ui->ostc3DilTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+	ui.ostc3DilTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
+	ui.ostc3DilTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
+	ui.ostc3DilTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
+	ui.ostc3DilTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
 
 	//load dil 5 values
-	ui->ostc3DilTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
-	ui->ostc3DilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
-	ui->ostc3DilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
-	ui->ostc3DilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+	ui.ostc3DilTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
+	ui.ostc3DilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
+	ui.ostc3DilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
+	ui.ostc3DilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
 
 	//load set point 1 values
-	ui->ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
-	ui->ostc3SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1().depth)));
+	ui.ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
+	ui.ostc3SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1().depth)));
 
 	//load set point 2 values
-	ui->ostc3SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2().sp)));
-	ui->ostc3SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2().depth)));
+	ui.ostc3SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2().sp)));
+	ui.ostc3SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2().depth)));
 
 	//load set point 3 values
-	ui->ostc3SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3().sp)));
-	ui->ostc3SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3().depth)));
+	ui.ostc3SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3().sp)));
+	ui.ostc3SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3().depth)));
 
 	//load set point 4 values
-	ui->ostc3SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4().sp)));
-	ui->ostc3SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4().depth)));
+	ui.ostc3SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4().sp)));
+	ui.ostc3SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4().depth)));
 
 	//load set point 5 values
-	ui->ostc3SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5().sp)));
-	ui->ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
+	ui.ostc3SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5().sp)));
+	ui.ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
 }
 
 void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
 {
 	const char *depth_unit;
-	ui->maxDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->maxDepth(), NULL, &depth_unit));
-	ui->maxDepthDoubleSpinBox->setSuffix(depth_unit);
-	ui->totalTimeSpinBox->setValue(deviceDetails->totalTime());
-	ui->numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives());
-	ui->modelLineEdit->setText(deviceDetails->model());
-	ui->firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion());
-	ui->serialNoLineEdit_1->setText(deviceDetails->serialNo());
-	ui->customTextLlineEdit_1->setText(deviceDetails->customText());
-	ui->samplingRateComboBox_1->setCurrentIndex(deviceDetails->samplingRate() == 60 ? 3 : (deviceDetails->samplingRate() / 10) - 1);
-	ui->altitudeRangeComboBox->setCurrentIndex(deviceDetails->altitude());
-	ui->personalSafetyComboBox->setCurrentIndex(deviceDetails->personalSafety());
-	ui->timeFormatComboBox->setCurrentIndex(deviceDetails->timeFormat());
-	ui->unitsComboBox_1->setCurrentIndex(deviceDetails->units());
-	ui->diveModeComboBox_1->setCurrentIndex(deviceDetails->diveMode());
-	ui->lightCheckBox->setChecked(deviceDetails->lightEnabled());
-	ui->lightSpinBox->setValue(deviceDetails->light());
-	ui->alarmDepthCheckBox->setChecked(deviceDetails->alarmDepthEnabled());
-	ui->alarmDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->alarmDepth(), NULL, &depth_unit));
-	ui->alarmDepthDoubleSpinBox->setSuffix(depth_unit);
-	ui->alarmTimeCheckBox->setChecked(deviceDetails->alarmTimeEnabled());
-	ui->alarmTimeSpinBox->setValue(deviceDetails->alarmTime());
+	ui.maxDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->maxDepth(), NULL, &depth_unit));
+	ui.maxDepthDoubleSpinBox->setSuffix(depth_unit);
+	ui.totalTimeSpinBox->setValue(deviceDetails->totalTime());
+	ui.numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives());
+	ui.modelLineEdit->setText(deviceDetails->model());
+	ui.firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion());
+	ui.serialNoLineEdit_1->setText(deviceDetails->serialNo());
+	ui.customTextLlineEdit_1->setText(deviceDetails->customText());
+	ui.samplingRateComboBox_1->setCurrentIndex(deviceDetails->samplingRate() == 60 ? 3 : (deviceDetails->samplingRate() / 10) - 1);
+	ui.altitudeRangeComboBox->setCurrentIndex(deviceDetails->altitude());
+	ui.personalSafetyComboBox->setCurrentIndex(deviceDetails->personalSafety());
+	ui.timeFormatComboBox->setCurrentIndex(deviceDetails->timeFormat());
+	ui.unitsComboBox_1->setCurrentIndex(deviceDetails->units());
+	ui.diveModeComboBox_1->setCurrentIndex(deviceDetails->diveMode());
+	ui.lightCheckBox->setChecked(deviceDetails->lightEnabled());
+	ui.lightSpinBox->setValue(deviceDetails->light());
+	ui.alarmDepthCheckBox->setChecked(deviceDetails->alarmDepthEnabled());
+	ui.alarmDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->alarmDepth(), NULL, &depth_unit));
+	ui.alarmDepthDoubleSpinBox->setSuffix(depth_unit);
+	ui.alarmTimeCheckBox->setChecked(deviceDetails->alarmTimeEnabled());
+	ui.alarmTimeSpinBox->setValue(deviceDetails->alarmTime());
 }
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
@@ -530,19 +527,19 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
 {
 	// Disable the buttons to do operations on this data
-	ui->saveSettingsPushButton->setEnabled(false);
-	ui->backupButton->setEnabled(false);
+	ui.saveSettingsPushButton->setEnabled(false);
+	ui.backupButton->setEnabled(false);
 
 	switch (currentRow) {
 	case 0:
 		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 3";
-		ui->updateFirmwareButton->setEnabled(true);
+		ui.updateFirmwareButton->setEnabled(true);
 		break;
 	case 1:
 		selected_vendor = "Suunto";
 		selected_product = "Vyper";
-		ui->updateFirmwareButton->setEnabled(false);
+		ui.updateFirmwareButton->setEnabled(false);
 		break;
 	default:
 		/* Not Supported */

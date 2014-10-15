@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QStringListModel>
+#include "ui_configuredivecomputerdialog.h"
 #include "../libdivecomputer.h"
 #include "configuredivecomputer.h"
 
@@ -37,7 +38,7 @@ private slots:
 	void on_DiveComputerList_currentRowChanged(int currentRow);
 
 private:
-	Ui::ConfigureDiveComputerDialog *ui;
+	Ui::ConfigureDiveComputerDialog ui;
 
 	QStringList vendorList;
 	QHash<QString, QStringList> productList;
