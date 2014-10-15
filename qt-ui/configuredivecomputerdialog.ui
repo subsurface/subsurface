@@ -354,6 +354,9 @@
               <property name="suffix">
                <string>%</string>
               </property>
+              <property name="maximum">
+               <number>255</number>
+              </property>
              </widget>
             </item>
             <item row="3" column="3">
@@ -370,6 +373,9 @@
              <widget class="QSpinBox" name="desaturationSpinBox">
               <property name="suffix">
                <string>%</string>
+              </property>
+              <property name="maximum">
+               <number>255</number>
               </property>
              </widget>
             </item>
