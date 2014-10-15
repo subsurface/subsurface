@@ -324,6 +324,10 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails *newDevice
 
 void ConfigureDiveComputerDialog::reloadValues()
 {
+	// Enable the buttons to do operations on this data
+	ui->saveSettingsPushButton->setEnabled(true);
+	ui->backupButton->setEnabled(true);
+
 	switch(ui->dcStackedWidget->currentIndex()) {
 	case 0:
 		reloadValuesOSTC3();
@@ -525,6 +529,10 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
 {
+	// Disable the buttons to do operations on this data
+	ui->saveSettingsPushButton->setEnabled(false);
+	ui->backupButton->setEnabled(false);
+
 	switch (currentRow) {
 	case 0:
 		selected_vendor = "Heinrichs Weikamp";
