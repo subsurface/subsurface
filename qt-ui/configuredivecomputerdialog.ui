@@ -354,8 +354,14 @@
               <property name="suffix">
                <string>%</string>
               </property>
+              <property name="minimum">
+               <number>100</number>
+              </property>
               <property name="maximum">
-               <number>255</number>
+               <number>140</number>
+              </property>
+              <property name="value">
+               <number>110</number>
               </property>
              </widget>
             </item>
@@ -374,8 +380,14 @@
               <property name="suffix">
                <string>%</string>
               </property>
+              <property name="minimum">
+               <number>60</number>
+              </property>
               <property name="maximum">
-               <number>255</number>
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>90</number>
               </property>
              </widget>
             </item>
