@@ -13,11 +13,11 @@
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
 
+#include "metrics.h"
+
 #include "../dive.h"
 #include "../divelist.h"
 #include "../divecomputer.h"
-
-QFont defaultModelFont();
 
 // Encapsulates Boilerplate.
 class CleanerTableModel : public QAbstractTableModel {

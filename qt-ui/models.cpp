@@ -25,13 +25,6 @@
 #include <QMessageBox>
 #include <QStringListModel>
 
-QFont defaultModelFont()
-{
-	QFont font;
-//	font.setPointSizeF(font.pointSizeF() * 0.8);
-	return font;
-}
-
 CleanerTableModel::CleanerTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
 }
