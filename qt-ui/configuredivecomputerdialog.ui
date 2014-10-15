@@ -103,6 +103,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="updateFirmwareButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Update firmware</string>
        </property>
