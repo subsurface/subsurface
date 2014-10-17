@@ -110,11 +110,11 @@ public:
 	int decoType() const;
 	void setDecoType(int decoType);
 
-	int pp02Max() const;
-	void setPp02Max(int pp02Max);
+	int ppO2Max() const;
+	void setPpO2Max(int ppO2Max);
 
-	int pp02Min() const;
-	void setPp02Min(int pp02Min);
+	int ppO2Min() const;
+	void setPpO2Min(int ppO2Min);
 
 	int futureTTS() const;
 	void setFutureTTS(int futureTTS);
@@ -216,8 +216,8 @@ private:
 	int m_ccrMode;
 	int m_diveMode;
 	int m_decoType;
-	int m_pp02Max;
-	int m_pp02Min;
+	int m_ppO2Max;
+	int m_ppO2Min;
 	int m_futureTTS;
 	int m_gfLow;
 	int m_gfHigh;

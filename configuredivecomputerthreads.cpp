@@ -22,8 +22,8 @@
 #define OSTC3_CCR_MODE			0x1F
 #define OSTC3_DIVE_MODE			0x20
 #define OSTC3_DECO_TYPE			0x21
-#define OSTC3_PP02_MAX			0x22
-#define OSTC3_PP02_MIN			0x23
+#define OSTC3_PPO2_MAX			0x22
+#define OSTC3_PPO2_MIN			0x23
 #define OSTC3_FUTURE_TTS		0x24
 #define OSTC3_GF_LOW			0x25
 #define OSTC3_GF_HIGH			0x26

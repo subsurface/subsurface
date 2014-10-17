@@ -30,8 +30,8 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	m_ccrMode(0),
 	m_diveMode(0),
 	m_decoType(0),
-	m_pp02Max(0),
-	m_pp02Min(0),
+	m_ppO2Max(0),
+	m_ppO2Min(0),
 	m_futureTTS(0),
 	m_gfLow(0),
 	m_gfHigh(0),
@@ -355,24 +355,24 @@ void DeviceDetails::setDecoType(int decoType)
 	m_decoType = decoType;
 }
 
-int DeviceDetails::pp02Max() const
+int DeviceDetails::ppO2Max() const
 {
-	return m_pp02Max;
+	return m_ppO2Max;
 }
 
-void DeviceDetails::setPp02Max(int pp02Max)
+void DeviceDetails::setPpO2Max(int ppO2Max)
 {
-	m_pp02Max = pp02Max;
+	m_ppO2Max = ppO2Max;
 }
 
-int DeviceDetails::pp02Min() const
+int DeviceDetails::ppO2Min() const
 {
-	return m_pp02Min;
+	return m_ppO2Min;
 }
 
-void DeviceDetails::setPp02Min(int pp02Min)
+void DeviceDetails::setPpO2Min(int ppO2Min)
 {
-	m_pp02Min = pp02Min;
+	m_ppO2Min = ppO2Min;
 }
 
 int DeviceDetails::futureTTS() const
