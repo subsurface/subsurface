@@ -428,6 +428,10 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DATE_FORMAT, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS)
 				m_deviceDetails->setDateFormat(uData[0]);
+			//Compass gain
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_COMPASS_GAIN, data, sizeof(data));
+			if (rc == DC_STATUS_SUCCESS)
+				m_deviceDetails->setCompassGain(uData[0]);
 
 
 			//read firmware settings
