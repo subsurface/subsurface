@@ -641,7 +641,7 @@
             <string>Gas settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_1">
-            <item row="0" column="0">
+            <item row="0" column="0" colspan="2">
              <widget class="QTableWidget" name="ostc3GasTable">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -726,7 +726,7 @@
               </item>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="0" column="2" colspan="2">
              <widget class="QTableWidget" name="ostc3DilTable">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -811,7 +811,7 @@
               </item>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="2" column="0" rowspan="5" colspan="2">
              <widget class="QTableWidget" name="ostc3SetPointTable">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -884,6 +884,112 @@
                 <string>SP 5</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="label_35">
+              <property name="text">
+               <string>O2 in calibration gas</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QSpinBox" name="calibrationGasSpinBox">
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="minimum">
+               <number>21</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>21</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QComboBox" name="ccrModeComboBox">
+              <item>
+               <property name="text">
+                <string>Fixed setpoint</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Sensor</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QCheckBox" name="setPointFallbackCheckBox">
+              <property name="text">
+               <string>Setpoint fallback</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="2">
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="4" column="3">
+             <widget class="QSpinBox" name="ppO2MaxSpinBox">
+              <property name="suffix">
+               <string> cbar</string>
+              </property>
+              <property name="minimum">
+               <number>120</number>
+              </property>
+              <property name="maximum">
+               <number>160</number>
+              </property>
+              <property name="value">
+               <number>160</number>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="3">
+             <widget class="QSpinBox" name="ppO2MinSpinBox">
+              <property name="suffix">
+               <string> cbar</string>
+              </property>
+              <property name="minimum">
+               <number>16</number>
+              </property>
+              <property name="maximum">
+               <number>19</number>
+              </property>
+              <property name="value">
+               <number>19</number>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>ppO2 max</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2">
+             <widget class="QLabel" name="label_30">
+              <property name="text">
+               <string>ppO2 min</string>
+              </property>
              </widget>
             </item>
            </layout>
