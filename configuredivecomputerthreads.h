@@ -55,4 +55,19 @@ private:
 	QString m_fileName;
 };
 
+class ResetSettingsThread : public QThread
+{
+	Q_OBJECT
+public:
+	ResetSettingsThread(QObject *parent, device_data_t *data);
+	virtual void run();
+	QString lastError;
+signals:
+	void progress(int percent);
+	void message(QString msg);
+	void error(QString err);
+private:
+	device_data_t *m_data;
+};
+
 #endif // CONFIGUREDIVECOMPUTERTHREADS_H

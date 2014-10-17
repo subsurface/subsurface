@@ -43,6 +43,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
 		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
 	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
+	connect(ui.resetButton, SIGNAL(clicked()), this, SLOT(resetSettings()));
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
@@ -327,6 +328,15 @@ void ConfigureDiveComputerDialog::readSettings()
 
 	getDeviceData();
 	config->readSettings(&device_data);
+}
+
+void ConfigureDiveComputerDialog::resetSettings()
+{
+	ui.statusLabel->clear();
+	ui.errorLabel->clear();
+
+	getDeviceData();
+	config->resetSettings(&device_data);
 }
 
 void ConfigureDiveComputerDialog::configMessage(QString msg)

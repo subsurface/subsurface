@@ -21,6 +21,7 @@ public:
 
 private slots:
 	void readSettings();
+	void resetSettings();
 	void configMessage(QString msg);
 	void configError(QString err);
 	void on_cancel_clicked();

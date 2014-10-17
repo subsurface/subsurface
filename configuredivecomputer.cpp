@@ -12,7 +12,8 @@
 ConfigureDiveComputer::ConfigureDiveComputer(QObject *parent) :
 	QObject(parent),
 	readThread(0),
-	writeThread(0)
+	writeThread(0),
+	resetThread(0)
 {
 	setState(INITIAL);
 }
@@ -514,6 +515,21 @@ void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t 
 
 }
 
+void ConfigureDiveComputer::resetSettings(device_data_t *data)
+{
+	setState(RESETTING);
+
+	if (resetThread)
+		resetThread->deleteLater();
+
+	resetThread = new ResetSettingsThread(this, data);
+	connect(resetThread, SIGNAL(finished()),
+		this, SLOT(resetThreadFinished()), Qt::QueuedConnection);
+	connect(resetThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
+
+	resetThread->start();
+}
+
 void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 {
 	currentState = newState;
@@ -538,5 +554,14 @@ void ConfigureDiveComputer::writeThreadFinished()
 	if (writeThread->lastError.isEmpty()) {
 		//No error
 		emit message(tr("Setting successfully written to device"));
+	}
+}
+
+void ConfigureDiveComputer::resetThreadFinished()
+{
+	setState(DONE);
+	if (resetThread->lastError.isEmpty()) {
+		//No error
+		emit message(tr("Device settings successfully resetted"));
 	}
 }

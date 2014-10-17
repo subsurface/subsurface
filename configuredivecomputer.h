@@ -21,6 +21,7 @@ public:
 			INITIAL,
 			READING,
 			WRITING,
+			RESETTING,
 			CANCELLING,
 			CANCELLED,
 			ERROR,
@@ -35,6 +36,7 @@ public:
 	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data);
 	bool restoreXMLBackup(QString fileName, DeviceDetails *details);
 	void startFirmwareUpdate(QString fileName, device_data_t *data);
+	void resetSettings(device_data_t *data);
 signals:
 	void message(QString msg);
 	void error(QString err);
@@ -46,10 +48,12 @@ signals:
 private:
 	ReadSettingsThread *readThread;
 	WriteSettingsThread *writeThread;
+	ResetSettingsThread *resetThread;
 	void setState(states newState);
 private slots:
 	void readThreadFinished();
 	void writeThreadFinished();
+	void resetThreadFinished();
 	void setError(QString err);
 };
 

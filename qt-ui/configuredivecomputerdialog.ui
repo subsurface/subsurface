@@ -572,6 +572,16 @@
               </property>
              </widget>
             </item>
+            <item row="10" column="3" colspan="2">
+             <widget class="QPushButton" name="resetButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>Reset device to default settings</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="advancedSettings">
