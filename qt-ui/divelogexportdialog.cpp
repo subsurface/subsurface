@@ -17,6 +17,13 @@
 #include "helpers.h"
 #include "statistics.h"
 
+#define GET_UNIT(name, field, f, t)                   \
+	v = settings.value(QString(name));            \
+	if (v.isValid())                              \
+		field = (v.toInt() == 0) ? (t) : (f); \
+	else                                          \
+		field = default_prefs.units.field
+
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	ui(new Ui::DiveLogExportDialog)
 {
@@ -149,7 +156,26 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
 	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""
-	    << ui->exportListOnly->isChecked() << "\",\"subsurfaceNumbers\":\"" << ui->exportSubsurfaceNumber->isChecked() << "\",}";
+	    << ui->exportListOnly->isChecked() << "\",\"subsurfaceNumbers\":\"" << ui->exportSubsurfaceNumber->isChecked() << "\",";
+	//save units preferences
+	settings.beginGroup("Units");
+	if (settings.value("unit_system").toString() == "metric") {
+		out << "\"unit_system\":\"Meteric\"";
+	} else if (settings.value("unit_system").toString() == "imperial") {
+		out << "\"unit_system\":\"Imperial\"";
+	} else {
+		QVariant v;
+		QString length, pressure, volume, temperature, weight;
+		GET_UNIT("length", length, "FEET", "METER");
+		GET_UNIT("pressure", pressure, "PSI", "BAR");
+		GET_UNIT("volume", volume, "CUFT", "LITER");
+		GET_UNIT("temperature", temperature, "FAHRENHEIT", "CELSIUS");
+		GET_UNIT("weight", weight, "LBS", "KG");
+		out << "\"unit_system\":\"Personalize\",";
+		out << "\"units\":{\"depth\":\"" << length << "\",\"pressure\":\"" << pressure << "\",\"volume\":\"" << volume << "\",\"temperature\":\"" << temperature << "\",\"weight\":\"" << weight << "\"}";
+	}
+	out << "}";
+	settings.endGroup();
 	file.close();
 }
 
