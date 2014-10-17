@@ -27,7 +27,9 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	m_sp3(zero_setpoint),
 	m_sp4(zero_setpoint),
 	m_sp5(zero_setpoint),
+	m_setPointFallback(0),
 	m_ccrMode(0),
+	m_calibrationGas(0),
 	m_diveMode(0),
 	m_decoType(0),
 	m_ppO2Max(0),
@@ -50,6 +52,8 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	m_dateFormat(0),
 	m_compassGain(0),
 	m_pressureSensorOffset(0),
+	m_flipScreen(0),
+	m_safetyStop(0),
 	m_maxDepth(0),
 	m_totalTime(0),
 	m_numberOfDives(0),
@@ -325,6 +329,16 @@ void DeviceDetails::setSp5(const setpoint &sp5)
 	m_sp5 = sp5;
 }
 
+bool DeviceDetails::setPointFallback() const
+{
+	return m_setPointFallback;
+}
+
+void DeviceDetails::setSetPointFallback(bool setSetPointFallback)
+{
+	m_setPointFallback = setSetPointFallback;
+}
+
 int DeviceDetails::ccrMode() const
 {
 	return m_ccrMode;
@@ -333,6 +347,16 @@ int DeviceDetails::ccrMode() const
 void DeviceDetails::setCcrMode(int ccrMode)
 {
 	m_ccrMode = ccrMode;
+}
+
+int DeviceDetails::calibrationGas() const
+{
+	return m_calibrationGas;
+}
+
+void DeviceDetails::setCalibrationGas(int calibrationGas)
+{
+	m_calibrationGas = calibrationGas;
 }
 
 int DeviceDetails::diveMode() const
@@ -503,6 +527,26 @@ int DeviceDetails::pressureSensorOffset() const
 void DeviceDetails::setPressureSensorOffset(int pressureSensorOffset)
 {
 	m_pressureSensorOffset = pressureSensorOffset;
+}
+
+bool DeviceDetails::flipScreen() const
+{
+	return m_flipScreen;
+}
+
+void DeviceDetails::setFlipScreen(bool flipScreen)
+{
+	m_flipScreen = flipScreen;
+}
+
+bool DeviceDetails::safetyStop() const
+{
+	return m_safetyStop;
+}
+
+void DeviceDetails::setSafetyStop(bool safetyStop)
+{
+	m_safetyStop = safetyStop;
 }
 
 int DeviceDetails::maxDepth() const

@@ -101,8 +101,14 @@ public:
 	setpoint sp5() const;
 	void setSp5(const setpoint &sp5);
 
+	bool setPointFallback() const;
+	void setSetPointFallback(bool setSetPointFallback);
+
 	int ccrMode() const;
 	void setCcrMode(int ccrMode);
+
+	int calibrationGas() const;
+	void setCalibrationGas(int calibrationGas);
 
 	int diveMode() const;
 	void setDiveMode(int diveMode);
@@ -154,6 +160,12 @@ public:
 
 	int pressureSensorOffset() const;
 	void setPressureSensorOffset(int pressureSensorOffset);
+
+	bool flipScreen() const;
+	void setFlipScreen(bool flipScreen);
+
+	bool safetyStop() const;
+	void setSafetyStop(bool safetyStop);
 
 	int maxDepth() const;
 	void setMaxDepth(int maxDepth);
@@ -213,7 +225,9 @@ private:
 	setpoint m_sp3;
 	setpoint m_sp4;
 	setpoint m_sp5;
+	bool m_setPointFallback;
 	int m_ccrMode;
+	int m_calibrationGas;
 	int m_diveMode;
 	int m_decoType;
 	int m_ppO2Max;
@@ -236,6 +250,8 @@ private:
 	int m_dateFormat;
 	int m_compassGain;
 	int m_pressureSensorOffset;
+	bool m_flipScreen;
+	bool m_safetyStop;
 	int m_maxDepth;
 	int m_totalTime;
 	int m_numberOfDives;
