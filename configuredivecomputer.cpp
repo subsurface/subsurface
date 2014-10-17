@@ -257,7 +257,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas2.helium = gasData.at(1).toInt();
 				gas2.type = gasData.at(2).toInt();
 				gas2.depth = gasData.at(3).toInt();
-				details->setGas1(gas2);
+				details->setGas2(gas2);
 			}
 
 			if (settingName == "Gas3") {
