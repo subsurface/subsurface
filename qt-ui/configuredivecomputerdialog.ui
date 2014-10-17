@@ -183,7 +183,7 @@
      </widget>
      <widget class="QStackedWidget" name="dcStackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_ostc3">
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -192,7 +192,7 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab">
+          <widget class="QWidget" name="basicSettings">
            <attribute name="title">
             <string>Basic settings</string>
            </attribute>
@@ -354,75 +354,6 @@
               </item>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Saturation</string>
-              </property>
-              <property name="buddy">
-               <cstring>saturationSpinBox</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QSpinBox" name="saturationSpinBox">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>100</number>
-              </property>
-              <property name="maximum">
-               <number>140</number>
-              </property>
-              <property name="value">
-               <number>110</number>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="3">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>Desaturation</string>
-              </property>
-              <property name="buddy">
-               <cstring>desaturationSpinBox</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="4">
-             <widget class="QSpinBox" name="desaturationSpinBox">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>60</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>90</number>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Last deco</string>
-              </property>
-              <property name="buddy">
-               <cstring>lastDecoSpinBox</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QSpinBox" name="lastDecoSpinBox">
-              <property name="suffix">
-               <string> m</string>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="3">
              <widget class="QLabel" name="label_10">
               <property name="text">
@@ -452,30 +383,6 @@
               </item>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Sampling rate</string>
-              </property>
-              <property name="buddy">
-               <cstring>samplingRateComboBox</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QComboBox" name="samplingRateComboBox">
-              <item>
-               <property name="text">
-                <string>2s</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>10s</string>
-               </property>
-              </item>
-             </widget>
-            </item>
             <item row="5" column="3">
              <widget class="QLabel" name="label_12">
               <property name="text">
@@ -500,40 +407,6 @@
               </item>
              </widget>
             </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>Dive mode color</string>
-              </property>
-              <property name="buddy">
-               <cstring>diveModeColour</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
-             <widget class="QComboBox" name="diveModeColour">
-              <item>
-               <property name="text">
-                <string>Standard</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Red</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Green</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Blue</string>
-               </property>
-              </item>
-             </widget>
-            </item>
             <item row="6" column="3">
              <widget class="QLabel" name="label_14">
               <property name="text">
@@ -551,13 +424,6 @@
               </property>
               <property name="maximum">
                <number>5</number>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0" colspan="3">
-             <widget class="QCheckBox" name="dateTimeSyncCheckBox">
-              <property name="text">
-               <string>Sync dive computer time with PC</string>
               </property>
              </widget>
             </item>
@@ -634,9 +500,163 @@
               </property>
              </spacer>
             </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Sampling rate</string>
+              </property>
+              <property name="buddy">
+               <cstring>samplingRateComboBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QComboBox" name="samplingRateComboBox">
+              <item>
+               <property name="text">
+                <string>2s</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>10s</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Dive mode color</string>
+              </property>
+              <property name="buddy">
+               <cstring>diveModeColour</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QComboBox" name="diveModeColour">
+              <item>
+               <property name="text">
+                <string>Standard</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blue</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="6" column="0" colspan="3">
+             <widget class="QCheckBox" name="dateTimeSyncCheckBox">
+              <property name="text">
+               <string>Sync dive computer time with PC</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_2">
+          <widget class="QWidget" name="advancedSettings">
+           <attribute name="title">
+            <string>Advanced Settings</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_1">
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Saturation</string>
+              </property>
+              <property name="buddy">
+               <cstring>saturationSpinBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="saturationSpinBox">
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="minimum">
+               <number>100</number>
+              </property>
+              <property name="maximum">
+               <number>140</number>
+              </property>
+              <property name="value">
+               <number>110</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Desaturation</string>
+              </property>
+              <property name="buddy">
+               <cstring>desaturationSpinBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="4">
+             <widget class="QSpinBox" name="desaturationSpinBox">
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="minimum">
+               <number>60</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>90</number>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Last deco</string>
+              </property>
+              <property name="buddy">
+               <cstring>lastDecoSpinBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QSpinBox" name="lastDecoSpinBox">
+              <property name="suffix">
+               <string> m</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="gasSettings">
            <attribute name="title">
             <string>Gas settings</string>
            </attribute>
