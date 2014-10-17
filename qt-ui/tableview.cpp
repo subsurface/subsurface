@@ -7,8 +7,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QSettings>
+#include <QStyle>
 
-TableView::TableView(QWidget *parent) : QWidget(parent)
+TableView::TableView(QWidget *parent) : QGroupBox(parent)
 {
 	ui.setupUi(this);
 	ui.tableView->setItemDelegate(new DiveListDelegate(this));
@@ -25,15 +26,15 @@ TableView::TableView(QWidget *parent) : QWidget(parent)
 
 	/* There`s mostly a need for a Mac fix here too. */
 	if (qApp->style()->objectName() == "gtk+")
-		ui.groupBox->layout()->setContentsMargins(0, 9, 0, 0);
+		layout()->setContentsMargins(0, 9, 0, 0);
 	else
-		ui.groupBox->layout()->setContentsMargins(0, 0, 0, 0);
-
+		layout()->setContentsMargins(0, 0, 0, 0);
 	QIcon plusIcon(":plus");
-	plusBtn = new QPushButton(plusIcon, QString(), ui.groupBox);
+	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add cylinder"));
 	plusBtn->setIconSize(QSize(metrics.icon->sz_small, metrics.icon->sz_small));
+	plusBtn->resize(metrics.icon->sz_med, metrics.icon->sz_med);
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
@@ -65,11 +66,6 @@ void TableView::setBtnToolTip(const QString &tooltip)
 	plusBtn->setToolTip(tooltip);
 }
 
-void TableView::setTitle(const QString &title)
-{
-	ui.groupBox->setTitle(title);
-}
-
 void TableView::setModel(QAbstractItemModel *model)
 {
 	ui.tableView->setModel(model);
@@ -89,10 +85,11 @@ void TableView::setModel(QAbstractItemModel *model)
 
 void TableView::fixPlusPosition()
 {
-	int x = ui.groupBox->contentsRect().width() - 2*metrics.icon->sz_small + metrics.icon->spacing;
-	int y = metrics.icon->spacing;
-	int sz = metrics.icon->sz_med;
-	plusBtn->setGeometry(x, y, sz, sz);
+	QStyleOptionGroupBox option;
+	initStyleOption(&option);
+	QRect labelRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::SC_GroupBoxLabel, this);
+	QRect contentsRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::QStyle::SC_GroupBoxFrame, this);
+	plusBtn->setGeometry( contentsRect.width() - plusBtn->width(), labelRect.y(), plusBtn->width(), labelRect.height());
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
