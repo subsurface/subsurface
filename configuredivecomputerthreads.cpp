@@ -387,55 +387,26 @@ void ReadSettingsThread::run()
 
 			//Read other settings
 			unsigned char uData[1] = {0};
-			//DiveMode
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIVE_MODE, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setDiveMode(uData[0]);
-			//Saturation
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SATURATION, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setSaturation(uData[0]);
-			//Desaturation
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DESATURATION, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setDesaturation(uData[0]);
-			//LastDeco
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_LAST_DECO, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setLastDeco(uData[0]);
-			//Brightness
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_BRIGHTNESS, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setBrightness(uData[0]);
-			//Units
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_UNITS, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setUnits(uData[0]);
-			//Sampling Rate
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SAMPLING_RATE, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setSamplingRate(uData[0]);
-			//Salinity
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SALINITY, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setSalinity(uData[0]);
-			//Dive mode colour
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIVEMODE_COLOR, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setDiveModeColor(uData[0]);
-			//Language
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_LANGUAGE, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setLanguage(uData[0]);
-			//Date Format
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DATE_FORMAT, uData, sizeof(uData));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setDateFormat(uData[0]);
-			//Compass gain
-			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_COMPASS_GAIN, data, sizeof(data));
-			if (rc == DC_STATUS_SUCCESS)
-				m_deviceDetails->setCompassGain(uData[0]);
 
+#define READ_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL) \
+			rc = hw_ostc3_device_config_read(m_data->device, _OSTC3_SETTING, uData, sizeof(uData)); \
+			if (rc == DC_STATUS_SUCCESS) \
+				m_deviceDetails->_DEVICE_DETAIL(uData[0]);
+
+			READ_SETTING(OSTC3_DIVE_MODE, setDiveMode)
+			READ_SETTING(OSTC3_SATURATION, setSaturation)
+			READ_SETTING(OSTC3_DESATURATION, setDesaturation)
+			READ_SETTING(OSTC3_LAST_DECO, setLastDeco)
+			READ_SETTING(OSTC3_BRIGHTNESS, setBrightness)
+			READ_SETTING(OSTC3_UNITS, setUnits)
+			READ_SETTING(OSTC3_SAMPLING_RATE,setSamplingRate)
+			READ_SETTING(OSTC3_SALINITY, setSalinity)
+			READ_SETTING(OSTC3_DIVEMODE_COLOR,setDiveModeColor)
+			READ_SETTING(OSTC3_LANGUAGE, setLanguage)
+			READ_SETTING(OSTC3_DATE_FORMAT, setDateFormat)
+			READ_SETTING(OSTC3_COMPASS_GAIN, setCompassGain)
+
+#undef READ_SETTING
 
 			//read firmware settings
 			unsigned char fData[64] = {0};
@@ -629,55 +600,26 @@ void WriteSettingsThread::run()
 			//write general settings
 			//custom text
 			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
+
 			unsigned char data[1] = {0};
+#define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL) \
+			data[0] = m_deviceDetails->_DEVICE_DETAIL(); \
+			hw_ostc3_device_config_write(m_data->device, _OSTC3_SETTING, data, sizeof(data));
 
-			//dive mode
-			data[0] = m_deviceDetails->diveMode();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIVE_MODE, data, sizeof(data));
+			WRITE_SETTING(OSTC3_DIVE_MODE, diveMode)
+			WRITE_SETTING(OSTC3_SATURATION, saturation)
+			WRITE_SETTING(OSTC3_DESATURATION, desaturation)
+			WRITE_SETTING(OSTC3_LAST_DECO, lastDeco)
+			WRITE_SETTING(OSTC3_BRIGHTNESS, brightness)
+			WRITE_SETTING(OSTC3_UNITS, units)
+			WRITE_SETTING(OSTC3_SAMPLING_RATE, samplingRate)
+			WRITE_SETTING(OSTC3_SALINITY, salinity)
+			WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor)
+			WRITE_SETTING(OSTC3_LANGUAGE, language)
+			WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat)
+			WRITE_SETTING(OSTC3_COMPASS_GAIN, compassGain)
 
-			//saturation
-			data[0] = m_deviceDetails->saturation();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SATURATION, data, sizeof(data));
-
-			//desaturation
-			data[0] = m_deviceDetails->desaturation();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DESATURATION, data, sizeof(data));
-
-			//last deco
-			data[0] = m_deviceDetails->lastDeco();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_LAST_DECO, data, sizeof(data));
-
-			//brightness
-			data[0] = m_deviceDetails->brightness();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_BRIGHTNESS, data, sizeof(data));
-
-			//units
-			data[0] = m_deviceDetails->units();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_UNITS, data, sizeof(data));
-
-			//sampling rate
-			data[0] = m_deviceDetails->samplingRate();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SAMPLING_RATE, data, sizeof(data));
-
-			//salinity
-			data[0] = m_deviceDetails->salinity();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SALINITY, data, sizeof(data));
-
-			//dive mode colour
-			data[0] = m_deviceDetails->diveModeColor();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIVEMODE_COLOR, data, sizeof(data));
-
-			//language
-			data[0] = m_deviceDetails->language();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_LANGUAGE, data, sizeof(data));
-
-			//date format
-			data[0] = m_deviceDetails->dateFormat();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DATE_FORMAT, data, sizeof(data));
-
-			//compass gain
-			data[0] = m_deviceDetails->compassGain();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_COMPASS_GAIN, data, sizeof(data));
+#undef WRITE_SETTING
 
 			//sync date and time
 			if (m_deviceDetails->syncTime()) {
