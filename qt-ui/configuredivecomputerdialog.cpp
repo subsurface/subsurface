@@ -182,6 +182,21 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->setDateFormat(ui.dateFormatComboBox->currentIndex());
 	deviceDetails->setCompassGain(ui.compassGainComboBox->currentIndex());
 	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox->isChecked());
+	deviceDetails->setSafetyStop(ui.safetyStopCheckBox->isChecked());
+	deviceDetails->setGfHigh(ui.gfHighSpinBox->value());
+	deviceDetails->setGfLow(ui.gfLowSpinBox->value());
+	deviceDetails->setPressureSensorOffset(ui.pressureSensorOffsetSpinBox->value());
+	deviceDetails->setPpO2Min(ui.ppO2MinSpinBox->value());
+	deviceDetails->setPpO2Max(ui.ppO2MaxSpinBox->value());
+	deviceDetails->setFutureTTS(ui.futureTTSSpinBox->value());
+	deviceDetails->setCcrMode(ui.ccrModeComboBox->currentIndex());
+	deviceDetails->setDecoType(ui.decoTypeComboBox->currentIndex());
+	deviceDetails->setAGFSelectable(ui.aGFSelectableCheckBox->isChecked());
+	deviceDetails->setAGFHigh(ui.aGFHighSpinBox->value());
+	deviceDetails->setAGFLow(ui.aGFLowSpinBox->value());
+	deviceDetails->setCalibrationGas(ui.calibrationGasSpinBox->value());
+	deviceDetails->setFlipScreen(ui.flipScreenCheckBox->isChecked());
+	deviceDetails->setSetPointFallback(ui.setPointFallbackCheckBox->isChecked());
 
 	//set gas values
 	gas gas1;
@@ -393,6 +408,21 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.languageComboBox->setCurrentIndex(deviceDetails->language());
 	ui.dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
 	ui.compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
+	ui.safetyStopCheckBox->setChecked(deviceDetails->safetyStop());
+	ui.gfHighSpinBox->setValue(deviceDetails->gfHigh());
+	ui.gfLowSpinBox->setValue(deviceDetails->gfLow());
+	ui.pressureSensorOffsetSpinBox->setValue(deviceDetails->pressureSensorOffset());
+	ui.ppO2MinSpinBox->setValue(deviceDetails->ppO2Min());
+	ui.ppO2MaxSpinBox->setValue(deviceDetails->ppO2Max());
+	ui.futureTTSSpinBox->setValue(deviceDetails->futureTTS());
+	ui.ccrModeComboBox->setCurrentIndex(deviceDetails->ccrMode());
+	ui.decoTypeComboBox->setCurrentIndex(deviceDetails->decoType());
+	ui.aGFSelectableCheckBox->setChecked(deviceDetails->aGFSelectable());
+	ui.aGFHighSpinBox->setValue(deviceDetails->aGFHigh());
+	ui.aGFLowSpinBox->setValue(deviceDetails->aGFLow());
+	ui.calibrationGasSpinBox->setValue(deviceDetails->calibrationGas());
+	ui.flipScreenCheckBox->setChecked(deviceDetails->flipScreen());
+	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback());
 
 	//load gas 1 values
 	ui.ostc3GasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
