@@ -180,6 +180,21 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("Language", QString::number(details->language()));
 	writer.writeTextElement("DateFormat", QString::number(details->dateFormat()));
 	writer.writeTextElement("CompassGain", QString::number(details->compassGain()));
+	writer.writeTextElement("SafetyStop", QString::number(details->safetyStop()));
+	writer.writeTextElement("GfHigh", QString::number(details->gfHigh()));
+	writer.writeTextElement("GfLow", QString::number(details->gfLow()));
+	writer.writeTextElement("PressureSensorOffset", QString::number(details->pressureSensorOffset()));
+	writer.writeTextElement("PpO2Min", QString::number(details->ppO2Min()));
+	writer.writeTextElement("PpO2Max", QString::number(details->ppO2Max()));
+	writer.writeTextElement("FutureTTS", QString::number(details->futureTTS()));
+	writer.writeTextElement("CcrMode", QString::number(details->ccrMode()));
+	writer.writeTextElement("DecoType", QString::number(details->decoType()));
+	writer.writeTextElement("AGFSelectable", QString::number(details->aGFSelectable()));
+	writer.writeTextElement("AGFHigh", QString::number(details->aGFHigh()));
+	writer.writeTextElement("AGFLow", QString::number(details->aGFLow()));
+	writer.writeTextElement("CalibrationGas", QString::number(details->calibrationGas()));
+	writer.writeTextElement("FlipScreen", QString::number(details->flipScreen()));
+	writer.writeTextElement("SetPointFallback", QString::number(details->setPointFallback()));
 
 	// Suunto vyper settings.
 	writer.writeTextElement("Altitude", QString::number(details->altitude()));
@@ -415,6 +430,51 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 
 			if (settingName == "CompassGain")
 				details->setCompassGain(keyString.toInt());
+
+			if (settingName == "SafetyStop")
+				details->setSafetyStop(keyString.toInt());
+
+			if (settingName == "GfHigh")
+				details->setGfHigh(keyString.toInt());
+
+			if (settingName == "GfLow")
+				details->setGfLow(keyString.toInt());
+
+			if (settingName == "PressureSensorOffset")
+				details->setPressureSensorOffset(keyString.toInt());
+
+			if (settingName == "PpO2Min")
+				details->setPpO2Min(keyString.toInt());
+
+			if (settingName == "PpO2Max")
+				details->setPpO2Max(keyString.toInt());
+
+			if (settingName == "FutureTTS")
+				details->setFutureTTS(keyString.toInt());
+
+			if (settingName == "CcrMode")
+				details->setCcrMode(keyString.toInt());
+
+			if (settingName == "DecoType")
+				details->setDecoType(keyString.toInt());
+
+			if (settingName == "AGFSelectable")
+				details->setAGFSelectable(keyString.toInt());
+
+			if (settingName == "AGFHigh")
+				details->setAGFHigh(keyString.toInt());
+
+			if (settingName == "AGFLow")
+				details->setAGFLow(keyString.toInt());
+
+			if (settingName == "CalibrationGas")
+				details->setCalibrationGas(keyString.toInt());
+
+			if (settingName == "FlipScreen")
+				details->setFlipScreen(keyString.toInt());
+
+			if (settingName == "SetPointFallback")
+				details->setSetPointFallback(keyString.toInt());
 
 			if (settingName == "Altitude")
 				details->setAltitude(keyString.toInt());
