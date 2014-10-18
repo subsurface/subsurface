@@ -1225,7 +1225,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db);;"
+		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can);;"
 			"XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;"
 			"Suunto Files(*.sde *.db);;CSV Files(*.csv);;MkVI Files(*.txt);;All Files(*)"));
 

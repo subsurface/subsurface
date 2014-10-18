@@ -77,6 +77,7 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
 
 # compile the core library, in C.
 SET(SUBSURFACE_CORE_LIB_SRCS
+	cochran.c
 	deco.c
 	device.c
 	dive.c

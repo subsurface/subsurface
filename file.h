@@ -6,9 +6,7 @@ struct memblock {
 	size_t size;
 };
 
-#if 0
-extern int try_to_open_cochran(const char *filename, struct memblock *mem, GError **error);
-#endif
+extern int try_to_open_cochran(const char *filename, struct memblock *mem);
 
 #ifdef __cplusplus
 extern "C" {
