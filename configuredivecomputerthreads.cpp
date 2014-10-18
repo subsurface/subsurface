@@ -408,7 +408,6 @@ void ReadSettingsThread::run()
 			READ_SETTING(OSTC3_SAFETY_STOP, setSafetyStop)
 			READ_SETTING(OSTC3_GF_HIGH, setGfHigh)
 			READ_SETTING(OSTC3_GF_LOW, setGfLow)
-			READ_SETTING(OSTC3_PRESSURE_SENSOR_OFFSET, setPressureSensorOffset)
 			READ_SETTING(OSTC3_PPO2_MIN, setPpO2Min)
 			READ_SETTING(OSTC3_PPO2_MAX, setPpO2Max)
 			READ_SETTING(OSTC3_FUTURE_TTS, setFutureTTS)
@@ -422,6 +421,12 @@ void ReadSettingsThread::run()
 			READ_SETTING(OSTC3_SETPOINT_FALLBACK, setSetPointFallback)
 
 #undef READ_SETTING
+
+			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_PRESSURE_SENSOR_OFFSET, uData, sizeof(uData));
+			if (rc == DC_STATUS_SUCCESS) {
+				// OSTC3 stores the pressureSensorOffset in two-complement
+				m_deviceDetails->setPressureSensorOffset((signed char) uData[0]);
+			}
 
 			//read firmware settings
 			unsigned char fData[64] = {0};
@@ -636,7 +641,6 @@ void WriteSettingsThread::run()
 			WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop)
 			WRITE_SETTING(OSTC3_GF_HIGH, gfHigh)
 			WRITE_SETTING(OSTC3_GF_LOW, gfLow)
-			WRITE_SETTING(OSTC3_PRESSURE_SENSOR_OFFSET, pressureSensorOffset)
 			WRITE_SETTING(OSTC3_PPO2_MIN, ppO2Min)
 			WRITE_SETTING(OSTC3_PPO2_MAX, ppO2Max)
 			WRITE_SETTING(OSTC3_FUTURE_TTS, futureTTS)
@@ -650,6 +654,10 @@ void WriteSettingsThread::run()
 			WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback)
 
 #undef WRITE_SETTING
+
+			// OSTC3 stores the pressureSensorOffset in two-complement
+			data[0] = (unsigned char) m_deviceDetails->pressureSensorOffset();
+			hw_ostc3_device_config_write(m_data->device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
 
 			//sync date and time
 			if (m_deviceDetails->syncTime()) {
