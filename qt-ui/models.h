@@ -89,6 +89,9 @@ private:
 	QString biggerEntry;
 };
 
+/* Retrieve the trash icon pixmap, common to most table models */
+const QPixmap &trashIcon();
+
 /* Encapsulation of the Cylinder Model, that presents the
  * Current cylinders that are used on a dive. */
 class CylindersModel : public CleanerTableModel {

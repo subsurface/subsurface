@@ -56,16 +56,31 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList &newHeaders)
 	headers = newHeaders;
 }
 
+static QPixmap *trashIconPixmap;
+
+// initialize the trash icon if necessary
+static void initTrashIcon() {
+	if (!trashIconPixmap)
+		trashIconPixmap = new QPixmap(QIcon(":trash").pixmap(defaultIconMetrics().sz_small));
+}
+
+const QPixmap &trashIcon() {
+	return *trashIconPixmap;
+}
+
 CylindersModel::CylindersModel(QObject *parent) : rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
 					   << tr("Switch at")
 			     );
+
+	initTrashIcon();
 }
 
 CylindersModel *CylindersModel::instance()
 {
+
 	static QScopedPointer<CylindersModel> self(new CylindersModel());
 	return self.data();
 }
@@ -158,7 +173,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		break;
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
-			ret = QIcon(":trash");
+			ret = trashIcon();
+		break;
+	case Qt::SizeHintRole:
+		if (index.column() == REMOVE)
+			ret = trashIcon().size();
 		break;
 
 	case Qt::ToolTipRole:
@@ -394,6 +413,8 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent), rows(0)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
+
+	initTrashIcon();
 }
 
 weightsystem_t *WeightModel::weightSystemAt(const QModelIndex &index)
@@ -449,7 +470,11 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 		break;
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
-			ret = QIcon(":trash");
+			ret = trashIcon();
+		break;
+	case Qt::SizeHintRole:
+		if (index.column() == REMOVE)
+			ret = trashIcon().size();
 		break;
 	case Qt::ToolTipRole:
 		if (index.column() == REMOVE)
@@ -1466,6 +1491,8 @@ DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
 	dcWorkingMap = dcMap;
 	numRows = 0;
+
+	initTrashIcon();
 }
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
@@ -1491,7 +1518,10 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 	if (index.column() == REMOVE) {
 		switch (role) {
 		case Qt::DecorationRole:
-			ret = QIcon(":trash");
+			ret = trashIcon();
+			break;
+		case Qt::SizeHintRole:
+			ret = trashIcon().size();
 			break;
 		case Qt::ToolTipRole:
 			ret = tr("Clicking here will remove this dive computer.");

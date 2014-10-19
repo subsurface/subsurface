@@ -21,7 +21,7 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	metrics.icon = &defaultIconMetrics();
 
 	metrics.col_width = 7*text_em;
-	metrics.rm_col_width = 3*text_em;
+	metrics.rm_col_width = metrics.icon->sz_small + 2*metrics.icon->spacing;
 	metrics.header_ht = text_ht + 10; // TODO DPI
 
 	/* There`s mostly a need for a Mac fix here too. */
