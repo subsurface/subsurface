@@ -589,7 +589,7 @@ bool DivePlannerPointsModel::recalcQ()
 
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 {
-	return COLUMNS - 1; // don't show CCSETPOINT until we can plan CC dives
+	return COLUMNS; // to disable CCSETPOINT subtract one
 }
 
 QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
@@ -598,7 +598,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
 		case CCSETPOINT:
-			return (double)p.po2 / 1000;
+			return (double)p.setpoint / 1000;
 		case DEPTH:
 			return (int) rint(get_depth_units(p.depth, NULL, NULL));
 		case RUNTIME:
@@ -656,7 +656,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			int po2 = 0;
 			QByteArray gasv = value.toByteArray();
 			if (validate_po2(gasv.data(), &po2))
-				p.po2 = po2;
+				p.setpoint = po2;
 		} break;
 		case GAS:
 			QByteArray gasv = value.toByteArray();
@@ -911,7 +911,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 		milimeters = t.depth;
 		seconds = t.time + 600; // 10 minutes.
 		gas = t.gasmix;
-		ccpoint = t.po2;
+		ccpoint = t.setpoint;
 	} else if (seconds == 0 && milimeters == 0 && row == 0) {
 		milimeters = M_OR_FT(5, 15); // 5m / 15ft
 		seconds = 600;		     // 10 min
@@ -959,7 +959,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 	point.depth = milimeters;
 	point.time = seconds;
 	point.gasmix = gas;
-	point.po2 = ccpoint;
+	point.setpoint = ccpoint;
 	point.entered = entered;
 	point.next = NULL;
 	divepoints.append(point);
@@ -1119,11 +1119,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && prefs.drop_stone_mode) {
 			/* Okay, we add a fist segment where we go down to depth */
-			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.gasmix, p.po2, false);
+			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.gasmix, p.setpoint, true);
 			deltaT -= p.depth / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.po2, true);
+			plan_add_segment(&diveplan, deltaT, p.depth, p.gasmix, p.setpoint, true);
 	}
 
 	// what does the cache do???
@@ -1134,8 +1134,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		if (cyl->depth.mm) {
 			dp = create_dp(0, cyl->depth.mm, cyl->gasmix, 0);
 			if (diveplan.dp) {
-				dp->next = diveplan.dp->next;
-				diveplan.dp->next = dp;
+				dp->next = diveplan.dp;
+				diveplan.dp = dp;
 			} else {
 				dp->next = NULL;
 				diveplan.dp = dp;

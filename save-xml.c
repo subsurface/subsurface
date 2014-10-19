@@ -251,9 +251,9 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->cns = sample->cns;
 	}
 
-	if (sample->po2.mbar != old->po2.mbar) {
-		put_milli(b, " po2='", sample->po2.mbar, " bar'");
-		old->po2 = sample->po2;
+	if (sample->setpoint.mbar != old->setpoint.mbar) {
+		put_milli(b, " po2='", sample->setpoint.mbar, " bar'");
+		old->setpoint = sample->setpoint;
 	}
 	show_index(b, sample->heartbeat, "heartbeat='", "'");
 	show_index(b, sample->bearing.degrees, "bearing='", "'");

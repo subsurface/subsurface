@@ -180,8 +180,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature
 	pressure_t cylinderpressure;   // int32_t    4    mbar   (0-2 Mbar)   main cylinder pressure
 	pressure_t diluentpressure;    // int32_t    4    mbar   (0-2 Mbar)   CCR diluent pressure (rebreather)
-	o2pressure_t po2;              // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure
-	o2pressure_t o2setpoint;       // uint16_t   2    mbar   (0-65 bar)   CCR O2 setpoint (rebreather)
+	o2pressure_t setpoint;         // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
 	uint8_t sensor;                // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
@@ -735,7 +734,7 @@ struct divedatapoint {
 	int time;
 	unsigned int depth;
 	struct gasmix gasmix;
-	int po2;
+	int setpoint;
 	bool entered;
 	struct divedatapoint *next;
 };

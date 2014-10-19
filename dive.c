@@ -1167,10 +1167,10 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		}
 
 		// If there are consecutive identical CCR O2 setpoint readings, throw away the redundant ones.
-		o2val = sample->o2setpoint.mbar;
+		o2val = sample->setpoint.mbar;
 		if (o2val) {
 			if (lasto2setpoint == o2val)
-				sample->o2setpoint.mbar = 0;
+				sample->setpoint.mbar = 0;
 			else
 				lasto2setpoint = o2val;
 		}
@@ -1378,8 +1378,8 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 			sample.sensor = as->sensor;
 		if (as->cns)
 			sample.cns = as->cns;
-		if (as->po2.mbar)
-			sample.po2 = as->po2;
+		if (as->setpoint.mbar)
+			sample.setpoint = as->setpoint;
 		if (as->ndl.seconds)
 			sample.ndl = as->ndl;
 		if (as->stoptime.seconds)

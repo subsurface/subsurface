@@ -558,12 +558,12 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		if (dc->dctype == CCR) {
-			entry->o2setpoint = sample->o2setpoint.mbar / 1000.0;   // for rebreathers
+			entry->o2setpoint = sample->setpoint.mbar / 1000.0;   // for rebreathers
 			entry->o2sensor[0] = sample->o2sensor[0].mbar / 1000.0; // for up to three rebreather O2 sensors
 			entry->o2sensor[1] = sample->o2sensor[1].mbar / 1000.0;
 			entry->o2sensor[2] = sample->o2sensor[2].mbar / 1000.0;
 		} else {
-			entry->pressures.o2 = sample->po2.mbar / 1000.0;
+			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
 		/* FIXME! sensor index -> cylinder index translation! */
 		entry->cylinderindex = sample->sensor;
@@ -913,7 +913,7 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 /* For CCR:
  * In the samples from each dive computer, any duplicate values for the
  * oxygen sensors were removed (i.e. set to 0) in order to conserve
- * storage space (see function fuxup_dive_dc). But for drawing the prodile
+ * storage space (see function fixup_dive_dc). But for drawing the profile
  * a complete series of valid o2 pressure values is required. This function
  * takes the oxygen sensor data and setpoint values from the structures
  * of plotinfo and re-inserts the duplicate values set to 0 so
@@ -1008,10 +1008,9 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	check_gas_change_events(dive, dc, pi);			 /* Populate the gas index from the gas change events */
 	setup_gas_sensor_pressure(dive, dc, pi);		 /* Try to populate our gas pressure knowledge */
 	populate_pressure_information(dive, dc, pi, NONDILUENT); /* .. calculate missing pressure entries for all gasses except diluent */
-	if (dc->dctype == CCR) {				 /* For CCR dives.. */
-		printf("CCR DIVE: %s (%d O2 sensors)\n", dc->model, dc->no_o2sensors);
+	if (dc->dctype == CCR)					 /* For CCR dives.. */
 		populate_pressure_information(dive, dc, pi, DILUENT); /* .. calculate missing diluent gas pressure entries */
-	}
+
 	fill_o2_values(dc, pi, dive);				      /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, pi); /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */

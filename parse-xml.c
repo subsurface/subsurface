@@ -895,9 +895,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2])) // up to 3 CCR sensors
 		return;
-	if (MATCH("setpoint.sample", double_to_o2pressure, &sample->o2setpoint))
-		return;
-	if (MATCH("po2.sample", double_to_o2pressure, &sample->po2))
+	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint))
 		return;
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
 		return;
@@ -1427,7 +1425,7 @@ static void sample_start(void)
 	cur_sample->stoptime.seconds = laststoptime;
 	cur_sample->stopdepth.mm = laststopdepth;
 	cur_sample->cns = lastcns;
-	cur_sample->po2.mbar = lastpo2;
+	cur_sample->setpoint.mbar = lastpo2;
 	cur_sample->sensor = lastsensor;
 }
 
@@ -1442,7 +1440,7 @@ static void sample_end(void)
 	laststoptime = cur_sample->stoptime.seconds;
 	laststopdepth = cur_sample->stopdepth.mm;
 	lastcns = cur_sample->cns;
-	lastpo2 = cur_sample->po2.mbar;
+	lastpo2 = cur_sample->setpoint.mbar;
 	cur_sample = NULL;
 }
 
@@ -2030,7 +2028,7 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	if (data[2])
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
 	if (data[3])
-		cur_sample->po2.mbar = atof(data[3]) * 1000;
+		cur_sample->setpoint.mbar = atof(data[3]) * 1000;
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])

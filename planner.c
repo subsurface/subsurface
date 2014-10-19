@@ -161,7 +161,7 @@ double tissue_at_end(struct dive *dive, char **cached_datap)
 		get_gas_at_time(dive, dc, t0, &gas);
 		if (i > 0)
 			lastdepth = psample->depth;
-		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, sample->po2);
+		tissue_tolerance = interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, sample->setpoint);
 		psample = sample;
 		t0 = t1;
 	}
@@ -251,6 +251,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	int oldpo2 = 0;
 	int lasttime = 0;
 	int lastdepth = 0;
+	enum dive_comp_type type = OC;
 
 	if (!diveplan || !diveplan->dp)
 		return;
@@ -275,14 +276,17 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	cyl = &displayed_dive.cylinder[0];
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
-	sample->po2.mbar = dp->po2;
+	sample->setpoint.mbar = dp->setpoint;
+	oldpo2 = dp->setpoint;
 	if (track_gas && cyl->type.workingpressure.mbar)
 		sample->cylinderpressure.mbar = cyl->end.mbar;
 	sample->manually_entered = true;
 	finish_sample(dc);
 	while (dp) {
 		struct gasmix gasmix = dp->gasmix;
-		int po2 = dp->po2;
+		int po2 = dp->setpoint;
+		if (dp->setpoint)
+			type = CCR;
 		int time = dp->time;
 		int depth = dp->depth;
 
@@ -314,7 +318,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			add_gas_switch_event(&displayed_dive, dc, lasttime + 1, idx);
 			cyl = &displayed_dive.cylinder[idx];
 			sample = prepare_sample(dc);
-			sample[-1].po2.mbar = po2;
+			sample[-1].setpoint.mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
 			sample->manually_entered = dp->entered;
@@ -327,8 +331,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
 		/* and keep it valid for last sample - where it likely doesn't matter */
-		sample[-1].po2.mbar = po2;
-		sample->po2.mbar = po2;
+		sample->setpoint.mbar = po2;
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		sample->manually_entered = dp->entered;
@@ -341,6 +344,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		finish_sample(dc);
 		dp = dp->next;
 	}
+	dc->dctype = type;
 #if DEBUG_PLAN & 32
 	save_dive(stdout, &displayed_dive);
 #endif
@@ -372,7 +376,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, 
 	dp->time = time_incr;
 	dp->depth = depth;
 	dp->gasmix = gasmix;
-	dp->po2 = po2;
+	dp->setpoint = po2;
 	dp->entered = false;
 	dp->next = NULL;
 	return dp;
@@ -556,12 +560,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		double depthvalue;
 		int decimals;
 
+		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
 		gasmix = dp->gasmix;
 		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
-		nextdp = dp->next;
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp)
@@ -757,7 +761,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 	get_gas_at_time(&displayed_dive, &displayed_dive.dc, sample->time, &gas);
 
-	po2 = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].po2.mbar;
+	po2 = sample->setpoint.mbar;
 	if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 		report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 		current_cylinder = 0;
@@ -802,6 +806,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 		current_cylinder = best_first_ascend_cylinder;
 		gas = displayed_dive.cylinder[current_cylinder].gasmix;
+
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
 		       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);

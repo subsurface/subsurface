@@ -379,7 +379,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	}
 	if (!strcmp(key, "po2")) {
 		pressure_t p = get_pressure(value);
-		sample->po2.mbar = p.mbar;
+		sample->setpoint.mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
