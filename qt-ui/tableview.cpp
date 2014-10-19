@@ -24,11 +24,31 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	metrics.rm_col_width = metrics.icon->sz_small + 2*metrics.icon->spacing;
 	metrics.header_ht = text_ht + 10; // TODO DPI
 
-	/* There`s mostly a need for a Mac fix here too. */
-	if (qApp->style()->objectName() == "gtk+")
-		layout()->setContentsMargins(0, 9, 0, 0);
-	else
-		layout()->setContentsMargins(0, 0, 0, 0);
+	/* We want to get rid of the margin around the table, but
+	 * we must be careful with some styles (e.g. GTK+) where the top
+	 * margin is actually used to hold the label. We thus check the
+	 * rectangles for the label and contents to make sure they do not
+	 * overlap, and adjust the top contentsMargin accordingly
+	 */
+
+	// start by setting all the margins at zero
+	QMargins margins;
+
+	// grab the label and contents dimensions and positions
+	QStyleOptionGroupBox option;
+	initStyleOption(&option);
+	QRect labelRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::SC_GroupBoxLabel, this);
+	QRect contentsRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::SC_GroupBoxContents, this);
+
+	/* we need to ensure that the bottom of the label is higher
+	 * than the top of the contents */
+	int delta = contentsRect.top() - labelRect.bottom();
+	const int min_gap = metrics.icon->spacing;
+	if (delta <= min_gap) {
+		margins.setTop(min_gap - delta);
+	}
+	layout()->setContentsMargins(margins);
+
 	QIcon plusIcon(":plus");
 	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
