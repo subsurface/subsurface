@@ -99,7 +99,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 		put_string(b, separator);
 		separator = ", ";
 		put_string(b, "{");
-		put_format(b, "\"weight\":\"%d\",", grams);
+		put_HTML_weight_units(b, grams, "\"weight\":\"", "\",");
 		write_attribute(b, "description", description, " ");
 		put_string(b, "}");
 	}
@@ -121,20 +121,20 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		separator = ", ";
 		write_attribute(b, "Type", cylinder->type.description, ", ");
 		if (cylinder->type.size.mliter) {
-			put_milli(b, "\"Size\":\"", cylinder->type.size.mliter, " l\", ");
+			put_HTML_volume_units(b, cylinder->type.size.mliter, "\"Size\":\"", " \", ");
 		} else {
 			write_attribute(b, "Size", "--", ", ");
 		}
-		put_pressure(b, cylinder->type.workingpressure, "\"WPressure\":\"", " bar\", ");
+		put_HTML_pressure_units(b, cylinder->type.workingpressure, "\"WPressure\":\"", " \", ");
 
 		if (cylinder->start.mbar) {
-			put_milli(b, "\"SPressure\":\"", cylinder->start.mbar, " bar\", ");
+			put_HTML_pressure_units(b, cylinder->start, "\"SPressure\":\"", " \", ");
 		} else {
 			write_attribute(b, "SPressure", "--", ", ");
 		}
 
 		if (cylinder->end.mbar) {
-			put_milli(b, "\"EPressure\":\"", cylinder->end.mbar, " bar\", ");
+			put_HTML_pressure_units(b, cylinder->end, "\"EPressure\":\"", " \", ");
 		} else {
 			write_attribute(b, "EPressure", "--", ", ");
 		}
@@ -207,6 +207,40 @@ void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, con
 		put_string(b, "--");
 	}
 	put_string(b, post);
+}
+
+void put_HTML_pressure_units(struct membuffer *b, pressure_t pressure, const char *pre, const char *post)
+{
+	const char *unit;
+	double value;
+
+	if (!pressure.mbar) {
+		put_format(b, "%s%s", pre, post);
+		return;
+	}
+
+	value = get_pressure_units(pressure.mbar, &unit);
+	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
+}
+
+void put_HTML_volume_units(struct membuffer *b, unsigned int ml, const char *pre, const char *post)
+{
+	const char *unit;
+	double value;
+	int frac;
+
+	value = get_volume_units(ml, &frac, &unit);
+	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
+}
+
+void put_HTML_weight_units(struct membuffer *b, unsigned int grams, const char *pre, const char *post)
+{
+	const char *unit;
+	double value;
+	int frac;
+
+	value = get_weight_units(grams, &frac, &unit);
+	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
 void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
