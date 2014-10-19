@@ -1,4 +1,6 @@
 #include "divepicturewidget.h"
+#include "metrics.h"
+
 #include <dive.h>
 #include <divelist.h>
 #include <QtConcurrentMap>
@@ -26,7 +28,8 @@ SPixmap scaleImages(const QString &s)
 	if (cache.contains(s)) {
 		ret.second = cache.value(s);
 	} else {
-		QImage p = QImage(s).scaled(128, 128, Qt::KeepAspectRatio);
+		int dim = defaultIconMetrics().sz_pic;
+		QImage p = QImage(s).scaled(dim, dim, Qt::KeepAspectRatio);
 		cache.insert(s, p);
 		ret.second = p;
 	}
