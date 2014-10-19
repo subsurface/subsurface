@@ -8,6 +8,7 @@
 #include "profile.h"
 #include <QDebug>
 #include "gettextfromc.h"
+#include "metrics.h"
 
 extern struct ev_select *ev_namelist;
 extern int evn_used;
@@ -58,8 +59,12 @@ void DiveEventItem::setEvent(struct event *ev)
 
 void DiveEventItem::setupPixmap()
 {
-#define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(40, 38, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+	const IconMetrics& metrics = defaultIconMetrics();
+	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
+	int sz_pix = sz_bigger/2; // ex 20px
+
+#define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (!internalEvent->name) {
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
