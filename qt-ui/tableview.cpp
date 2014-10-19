@@ -53,8 +53,19 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
 	plusBtn->setToolTip(tr("Add cylinder"));
-	plusBtn->setIconSize(QSize(metrics.icon->sz_small, metrics.icon->sz_small));
-	plusBtn->resize(metrics.icon->sz_med, metrics.icon->sz_med);
+
+	/* now determine the icon and button size. Since the button will be
+	 * placed in the label, make sure that we do not overflow, as it might
+	 * get clipped
+	 */
+	int iconSize = metrics.icon->sz_small;
+	int btnSize = iconSize + 2*min_gap;
+	if (btnSize > labelRect.height()) {
+		btnSize = labelRect.height();
+		iconSize = btnSize - 2*min_gap;
+	}
+	plusBtn->setIconSize(QSize(iconSize, iconSize));
+	plusBtn->resize(btnSize, btnSize);
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
 }
 
