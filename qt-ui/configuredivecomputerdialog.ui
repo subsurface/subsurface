@@ -151,7 +151,7 @@
      <widget class="QListWidget" name="DiveComputerList">
       <property name="maximumSize">
        <size>
-        <width>200</width>
+        <width>240</width>
         <height>16777215</height>
        </size>
       </property>
@@ -178,6 +178,10 @@
       <item>
        <property name="text">
         <string>Suunto Vyper Family</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../subsurface.qrc">
+         <normaloff>:/icons/suunto_vyper.png</normaloff>:/icons/suunto_vyper.png</iconset>
        </property>
       </item>
      </widget>

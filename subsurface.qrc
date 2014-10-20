@@ -66,5 +66,6 @@
         <file>icons/subsurface/32x32/actions/go-up.png</file>
         <file>icons/subsurface/32x32/actions/window-close.png</file>
         <file>icons/ostc3.png</file>
+        <file>icons/suunto_vyper.png</file>
     </qresource>
 </RCC>
