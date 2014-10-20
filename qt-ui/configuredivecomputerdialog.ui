@@ -61,7 +61,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Read settnings from backup file or from device before writing to the device</string>
+        <string>Read settings from backup file or from device before writing to the device</string>
        </property>
        <property name="text">
         <string>Save changes to device</string>
@@ -87,7 +87,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Read settnings from backup file or from device before writing to a backup file</string>
+        <string>Read settings from backup file or from device before writing to a backup file</string>
        </property>
        <property name="text">
         <string>Backup</string>
