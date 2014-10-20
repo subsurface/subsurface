@@ -13,7 +13,8 @@ ConfigureDiveComputer::ConfigureDiveComputer(QObject *parent) :
 	QObject(parent),
 	readThread(0),
 	writeThread(0),
-	resetThread(0)
+	resetThread(0),
+	firmwareThread(0)
 {
 	setState(INITIAL);
 }
@@ -512,7 +513,17 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 
 void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data)
 {
+	setState(FWUPDATE);
 
+	if (firmwareThread)
+		firmwareThread->deleteLater();
+
+	firmwareThread = new FirmwareUpdateThread(this, data, fileName);
+	connect(firmwareThread, SIGNAL(finished()),
+		this, SLOT(firmwareThreadFinished()), Qt::QueuedConnection);
+	connect(firmwareThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
+
+	firmwareThread->start();
 }
 
 void ConfigureDiveComputer::resetSettings(device_data_t *data)
@@ -554,6 +565,15 @@ void ConfigureDiveComputer::writeThreadFinished()
 	if (writeThread->lastError.isEmpty()) {
 		//No error
 		emit message(tr("Setting successfully written to device"));
+	}
+}
+
+void ConfigureDiveComputer::firmwareThreadFinished()
+{
+	setState(DONE);
+	if (resetThread->lastError.isEmpty()) {
+		//No error
+		emit message(tr("Device firmware successfully updated"));
 	}
 }
 

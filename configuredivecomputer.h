@@ -22,6 +22,7 @@ public:
 			READING,
 			WRITING,
 			RESETTING,
+			FWUPDATE,
 			CANCELLING,
 			CANCELLED,
 			ERROR,
@@ -49,11 +50,13 @@ private:
 	ReadSettingsThread *readThread;
 	WriteSettingsThread *writeThread;
 	ResetSettingsThread *resetThread;
+	FirmwareUpdateThread *firmwareThread;
 	void setState(states newState);
 private slots:
 	void readThreadFinished();
 	void writeThreadFinished();
 	void resetThreadFinished();
+	void firmwareThreadFinished();
 	void setError(QString err);
 };
 
