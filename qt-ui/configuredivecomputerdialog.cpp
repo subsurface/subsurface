@@ -622,6 +622,11 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		selected_product = "Vyper";
 		ui.updateFirmwareButton->setEnabled(false);
 		break;
+	case 2:
+		selected_vendor = "Heinrichs Weikamp";
+		selected_product = "OSTC 2N";
+		ui.updateFirmwareButton->setEnabled(true);
+		break;
 	default:
 		/* Not Supported */
 		return;

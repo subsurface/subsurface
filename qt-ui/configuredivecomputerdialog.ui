@@ -184,6 +184,11 @@
          <normaloff>:/icons/suunto_vyper.png</normaloff>:/icons/suunto_vyper.png</iconset>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>OSTC, Mk.2/2N/2C</string>
+       </property>
+      </item>
      </widget>
      <widget class="QStackedWidget" name="dcStackedWidget">
       <property name="currentIndex">
@@ -1589,6 +1594,22 @@
              </widget>
             </item>
            </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_ostc">
+       <layout class="QVBoxLayout">
+        <item>
+         <widget class="QTabWidget" name="tabWidget3">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="basicSettings3">
+           <attribute name="title">
+            <string>Basic settings</string>
+           </attribute>
           </widget>
          </widget>
         </item>

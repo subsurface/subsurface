@@ -690,12 +690,22 @@ void FirmwareUpdateThread::run()
 	dc_status_t rc;
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
+		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
-		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
-			supported = true;
+		case DC_FAMILY_HW_OSTC3:
+			//Not Yet supported
+			//supported = true;
 			//hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
-		}
+			break;
 #endif	// divecomputer 0.5.0
+		case DC_FAMILY_HW_OSTC:
+			supported = true;
+			hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+			break;
+		default:
+			supported = false;
+			break;
+		}
 		dc_device_close(m_data->device);
 
 		if (!supported) {
