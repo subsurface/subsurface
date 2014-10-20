@@ -814,7 +814,7 @@ function lastNonZero()
 */
 function get_weight_HTML(weight)
 {
-	return '<tr><td class="Cyl">' + gram_to_km(weight.weight) + ' kg ' + '</td><td class="Cyl">' + weight.description + '</td></tr>';
+	return '<tr><td class="Cyl">' + weight.weight + '</td><td class="Cyl">' + weight.description + '</td></tr>';
 }
 
 /**
@@ -843,12 +843,12 @@ function get_cylinder_HTML(cylinder)
 	var cEPressure = cylinder.EPressure;
 
 	if (cSPressure === "--") {
-		cSPressure = Math.round(mbar_to_bar(items[dive_id].samples[0][2])).toFixed(1) + " bar";
+		cSPressure = Math.round(put_pressure_unit(items[dive_id].samples[0][2])).toFixed(1) + " " + pressure_unit;
 	}
 
 	if (cEPressure === "--") {
 		var nonZeroCEPressure = lastNonZero();
-		cEPressure = Math.round(mbar_to_bar(nonZeroCEPressure)).toFixed(1) + " bar";
+		cEPressure = Math.round(put_pressure_unit(nonZeroCEPressure)).toFixed(1) + " " + pressure_unit;
 	}
 
 	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' + '<td class="Cyl">' + cSPressure + '</td><td class="Cyl">' + cEPressure + '</td><td class="Cyl">' + cylinder.O2 + '</td></tr>';
@@ -969,8 +969,8 @@ function put_divecomputer_details(dc)
 */
 function get_status_HTML(dive)
 {
-	return '<h2 class="det_hed">' + translate.Dive_Status + '</h2><table><tr><td class="words">SAC: </td><td>' + ml_to_litre(dive.sac) +
-	       ' l/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTU: </td><td>' + dive.otu +
+	return '<h2 class="det_hed">' + translate.Dive_Status + '</h2><table><tr><td class="words">SAC: </td><td>' + put_volume_unit(dive.sac).toFixed(2) + ' ' + volume_unit +
+	       '/min' + '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTU: </td><td>' + dive.otu +
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CNS: </td><td>' + dive.cns + '</td></tr></table>';
 };
 
@@ -1016,14 +1016,29 @@ function mkelvin_to_C(mkelvin)
 	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
 }
 
+function mkelvin_to_F(mkelvin)
+{
+	return mkelvin * 9 / 5000.0 - 459.670;
+}
+
 function mbar_to_bar(mbar)
 {
 	return mbar / 1000;
 }
 
+function mbar_to_psi(mbar)
+{
+	return (mbar * 0.0145037738);
+}
+
 function mm_to_meter(mm)
 {
 	return mm / (1000);
+}
+
+function mm_to_feet(mm)
+{
+	return mm * 0.00328084;
 }
 
 function gram_to_km(gram)
@@ -1034,6 +1049,11 @@ function gram_to_km(gram)
 function ml_to_litre(ml)
 {
 	return ml / (1000);
+}
+
+function ml_to_cuft(ml)
+{
+	return ml / 28316.8466;
 }
 
 function format_two_digit(n)
@@ -1054,6 +1074,11 @@ function float_to_deg(flt){
         return deg + "&deg; " + min + "' " + sec + "\"";
 }
 
+var depth_unit = "m";
+var temperature_unit = "C";
+var pressure_unit = "bar";
+var volume_unit = "l";
+
 /**
 *Main canvas draw function
 *this calls the axis and grid initialization functions.
@@ -1069,25 +1094,25 @@ function canvas_draw()
 	for (var i = 0; i < items[dive_id].samples.length; i++) {
 		depthData.push([
 			items[dive_id].samples[i][0] / 60,
-			-1 * mm_to_meter(items[dive_id].samples[i][1])
+			-1 * put_depth_unit(items[dive_id].samples[i][1])
 		]);
 		if (items[dive_id].samples[i][2] !== 0) {
 			pressureData.push([
 				items[dive_id].samples[i][0] / 60,
-				mbar_to_bar(items[dive_id].samples[i][2])
+				put_pressure_unit(items[dive_id].samples[i][2])
 			]);
 		}
 		if (items[dive_id].samples[i][3] !== 0) {
 			temperatureData.push([
 				items[dive_id].samples[i][0] / 60,
-				mkelvin_to_C(items[dive_id].samples[i][3])
+				put_temperature_unit(items[dive_id].samples[i][3])
 			]);
 			last = items[dive_id].samples[i][3];
 		} else {
 			if (last !== 0) {
 				temperatureData.push([
 					items[dive_id].samples[i][0] / 60,
-					mkelvin_to_C(last)
+					put_temperature_unit(last)
 				]);
 			}
 		}
@@ -1174,7 +1199,7 @@ function canvas_draw()
 						 max : 0,
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
-						 formatter: function(format, value) { return -1 * value + "m"; },
+						 formatter: function(format, value) { return -1 * value + " " + depth_unit;},
 							 formatString : '%.2fm'
 						 },
 						 pad : 2.05
@@ -1183,7 +1208,7 @@ function canvas_draw()
 						 min : 0,
 						 tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 						 tickOptions : {
-							 formatString : '%ibar'
+							 formatString : '%i '+pressure_unit
 						 },
 						 pad : 3.05
 					 },
@@ -1195,7 +1220,7 @@ function canvas_draw()
 							showMark: false,
 							showLabel: false,
 							shadow: false,
-							formatString : '%i C'
+							formatString : '%i ' + temperature_unit
 						}
 					 }
 				 }
@@ -1309,4 +1334,70 @@ function translate_page()
 	document.getElementById("div_profil_lbl").innerHTML = translate.Dive_profile;
 	document.getElementById("bk_to_ls_lbl").innerHTML = translate.Back_to_List;
 	document.getElementById("bk_to_ls_lbl2").innerHTML = translate.Back_to_List;
+}
+
+function set_units()
+{
+	if (settings.unit_system == "Imperial") {
+		depth_unit = "ft";
+		temperature_unit = "F";
+		pressure_unit = "psi";
+		volume_unit = "cuft";
+	} else if (settings.unit_system == "Meteric") {
+		depth_unit = "m";
+		temperature_unit = "C";
+		pressure_unit = "bar";
+		volume_unit = "l";
+	} else if (settings.unit_system == "Personalize") {
+		depth_unit = settings.units.depth == "METER"?"m":"ft";
+		pressure_unit = settings.units.pressure == "BAR"?"bar":"psi";
+		temperature_unit = settings.units.temperature == "CELSIUS"?"C":"F";
+		volume_unit = settings.units.volume == "CUFT"?"cuft":"l";
+	}
+	// meteric by default
+}
+
+function put_volume_unit(ml)
+{
+	if (settings.unit_system == "Imperial")
+		return ml_to_cuft(ml);
+	else if (settings.unit_system == "Personalize" && settings.units.volume == "CUFT")
+		return ml_to_cuft(ml);
+	return ml_to_litre(ml);
+}
+
+function put_weight_unit(grams)
+{
+	if (settings.unit_system == "Imperial")
+		return grams_to_lbs(ml);
+	else if (settings.unit_system == "Personalize" && settings.units.weight == "LBS")
+		return grams_to_lbs(ml);
+	return grams_to_kgs(ml);
+}
+
+function put_temperature_unit(mkelvin)
+{
+	if (settings.unit_system == "Imperial")
+		return mkelvin_to_F(mkelvin);
+	else if (settings.unit_system == "Personalize" && settings.units.temperature == "FAHRENHEIT")
+		return mkelvin_to_F(mkelvin);
+	return mkelvin_to_C(mkelvin);
+}
+
+function put_depth_unit(mm)
+{
+	if (settings.unit_system == "Imperial")
+		return mm_to_feet(mm).toFixed(1);
+	else if (settings.unit_system == "Personalize" && settings.units.depth == "FEET")
+		return mm_to_feet(mm).toFixed(1);
+	return mm_to_meter(mm);
+}
+
+function put_pressure_unit(mbar)
+{
+	if (settings.unit_system == "Imperial")
+		return mbar_to_psi(mbar);
+	else if (settings.unit_system == "Personalize" && settings.units.pressure == "PSI")
+		return mbar_to_psi(mbar);
+	return mbar_to_bar(mbar);
 }
