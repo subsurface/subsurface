@@ -80,7 +80,7 @@ void ReadSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
-		case DC_FAMILY_SUUNTO_VYPER:
+		case DC_FAMILY_SUUNTO_VYPER: {
 			unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
 			if (rc == DC_STATUS_SUCCESS) {
@@ -118,7 +118,7 @@ void ReadSettingsThread::run()
 					// Suunto Spyder have there sample interval at this position
 					// Fallthrough
 				default:
-					supported  = false;
+					supported = false;
 					goto unsupported_dc_error;
 				}
 				// We found a supported device
@@ -198,25 +198,11 @@ void ReadSettingsThread::run()
 			}
 			emit devicedetails(m_deviceDetails);
             break;
+		}
 #if DC_VERSION_CHECK(0, 5, 0)
-		case DC_FAMILY_HW_OSTC3:
-		{
+		case DC_FAMILY_HW_OSTC3: {
 			supported = true;
-			m_deviceDetails->setBrightness(0);
-			m_deviceDetails->setCustomText("");
-			m_deviceDetails->setDateFormat(0);
-			m_deviceDetails->setDiveModeColor(0);
-			m_deviceDetails->setFirmwareVersion("");
-			m_deviceDetails->setLanguage(0);
-			m_deviceDetails->setLastDeco(0);
-			m_deviceDetails->setSerialNo("");
-			m_deviceDetails->setCompassGain(0);
-			m_deviceDetails->setSalinity(0);
-			m_deviceDetails->setSamplingRate(0);
-			m_deviceDetails->setUnits(0);
-
-
-			//Gread gas mixes
+			//Read gas mixes
 			gas gas1;
 			gas gas2;
 			gas gas3;
@@ -227,46 +213,46 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS1, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
-				gas1.depth = gasData[3];
 				gas1.oxygen = gasData[0];
 				gas1.helium = gasData[1];
 				gas1.type = gasData[2];
+				gas1.depth = gasData[3];
 			}
 			//Gas 2
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS2, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
-				gas2.depth = gasData[3];
 				gas2.oxygen = gasData[0];
 				gas2.helium = gasData[1];
 				gas2.type = gasData[2];
+				gas2.depth = gasData[3];
 			}
 			//Gas 3
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS3, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
-				gas3.depth = gasData[3];
 				gas3.oxygen = gasData[0];
 				gas3.helium = gasData[1];
 				gas3.type = gasData[2];
+				gas3.depth = gasData[3];
 			}
 			//Gas 4
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS4, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
-				gas4.depth = gasData[3];
 				gas4.oxygen = gasData[0];
 				gas4.helium = gasData[1];
 				gas4.type = gasData[2];
+				gas4.depth = gasData[3];
 			}
 			//Gas 5
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS5, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
-				gas5.depth = gasData[3];
 				gas5.oxygen = gasData[0];
 				gas5.helium = gasData[1];
 				gas5.type = gasData[2];
+				gas5.depth = gasData[3];
 			}
 
 			m_deviceDetails->setGas1(gas1);
@@ -286,46 +272,46 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL1, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				dil1.depth = dilData[3];
 				dil1.oxygen = dilData[0];
 				dil1.helium = dilData[1];
 				dil1.type = dilData[2];
+				dil1.depth = dilData[3];
 			}
 			//Dil 2
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL2, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				dil2.depth = dilData[3];
 				dil2.oxygen = dilData[0];
 				dil2.helium = dilData[1];
 				dil2.type = dilData[2];
+				dil2.depth = dilData[3];
 			}
 			//Dil 3
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL3, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				dil3.depth = dilData[3];
 				dil3.oxygen = dilData[0];
 				dil3.helium = dilData[1];
 				dil3.type = dilData[2];
+				dil3.depth = dilData[3];
 			}
 			//Dil 4
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL4, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				dil4.depth = dilData[3];
 				dil4.oxygen = dilData[0];
 				dil4.helium = dilData[1];
 				dil4.type = dilData[2];
+				dil4.depth = dilData[3];
 			}
 			//Dil 5
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL5, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
-				dil5.depth = dilData[3];
 				dil5.oxygen = dilData[0];
 				dil5.helium = dilData[1];
 				dil5.type = dilData[2];
+				dil5.depth = dilData[3];
 			}
 
 			m_deviceDetails->setDil1(dil1);
@@ -440,8 +426,8 @@ void ReadSettingsThread::run()
 			}
 
 			emit devicedetails(m_deviceDetails);
+			break;
 		}
-		break;
 #endif	// divecomputer 0.5.0
 		default:
 			supported = false;

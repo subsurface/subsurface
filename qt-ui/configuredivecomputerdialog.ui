@@ -1221,7 +1221,7 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="basic_settings">
+          <widget class="QWidget" name="basicSettings2">
            <attribute name="title">
             <string>Basic settings</string>
            </attribute>
