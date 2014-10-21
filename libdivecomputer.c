@@ -185,6 +185,7 @@ void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
 	int i;
+	unsigned int mm;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
 
@@ -203,6 +204,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 	switch (type) {
 	case DC_SAMPLE_TIME:
+		mm = 0;
 		if (sample) {
 			sample->in_deco = in_deco;
 			sample->ndl.seconds = ndl;
@@ -210,9 +212,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->stopdepth.mm = stopdepth;
 			sample->setpoint.mbar = po2;
 			sample->cns = cns;
+			mm = sample->depth.mm;
 		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
+		sample->depth.mm = mm;
 		finish_sample(dc);
 		break;
 	case DC_SAMPLE_DEPTH:
