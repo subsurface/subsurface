@@ -571,7 +571,7 @@ void ConfigureDiveComputer::writeThreadFinished()
 void ConfigureDiveComputer::firmwareThreadFinished()
 {
 	setState(DONE);
-	if (resetThread->lastError.isEmpty()) {
+	if (firmwareThread->lastError.isEmpty()) {
 		//No error
 		emit message(tr("Device firmware successfully updated"));
 	}
