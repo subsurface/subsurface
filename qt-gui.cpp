@@ -200,9 +200,8 @@ void set_filename(const char *filename, bool force)
 const QString get_dc_nickname(const char *model, uint32_t deviceid)
 {
 	const DiveComputerNode *existNode = dcList.getExact(model, deviceid);
-	if (!existNode)
-		return QString();
-	else if (!existNode->nickName.isEmpty())
+
+	if (existNode && !existNode->nickName.isEmpty())
 		return existNode->nickName;
 	else
 		return model;
