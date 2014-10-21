@@ -695,11 +695,11 @@ void FirmwareUpdateThread::run()
 		case DC_FAMILY_HW_OSTC3:
 			//Not Yet supported
 			//supported = true;
-			//hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+			//rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
-			hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+			rc = hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
 #endif	// divecomputer 0.5.0
 		default:
@@ -711,6 +711,8 @@ void FirmwareUpdateThread::run()
 		if (!supported) {
 			lastError = tr("This feature is not yet available for the selected dive computer.");
 			emit error(lastError);
+		} else if (rc != DC_STATUS_SUCCESS) {
+			lastError = tr("Firmware update failed!");
 		}
 	}
 	else {
