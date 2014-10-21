@@ -973,22 +973,22 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
 	if (editMode == IGNORE)
 		return;
+	markChangedWidget(ui.dateEdit);
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
-	displayed_dive.when = dateTime.toTime_t();
-	markChangedWidget(ui.dateEdit);
+	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
 }
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
 	if (editMode == IGNORE)
 		return;
+	markChangedWidget(ui.timeEdit);
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
-	displayed_dive.when = dateTime.toTime_t();
-	markChangedWidget(ui.timeEdit);
+	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
 }
 
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
