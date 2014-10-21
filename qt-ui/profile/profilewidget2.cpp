@@ -1349,7 +1349,6 @@ void ProfileWidget2::repositionDiveHandlers()
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	// Re-position the user generated dive handlers
-	int last = 0;
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		struct divedatapoint datapoint = plannerModel->at(i);
 		if (datapoint.time == 0) // those are the magic entries for tanks
@@ -1357,14 +1356,25 @@ void ProfileWidget2::repositionDiveHandlers()
 		DiveHandler *h = handles.at(i);
 		h->setVisible(datapoint.entered);
 		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth));
-		QPointF p1 = (last == i) ? QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0)) : handles[last]->pos();
+		QPointF p1;
+		if (i == 0) {
+			if (prefs.drop_stone_mode)
+				// place the text on the straight line from the drop to stone position
+				p1 = QPointF(timeAxis->posAtValue(datapoint.depth / prefs.descrate),
+					     profileYAxis->posAtValue(datapoint.depth));
+			else
+				// place the text on the straight line from the origin to the first position
+				p1 = QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0));
+		} else {
+			// place the text on the line from the last position
+			p1 = handles[i - 1]->pos();
+		}
 		QPointF p2 = handles[i]->pos();
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
 		gases[i]->setVisible(datapoint.entered);
 		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
-		last = i;
 	}
 }
 
