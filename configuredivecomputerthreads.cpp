@@ -697,11 +697,11 @@ void FirmwareUpdateThread::run()
 			//supported = true;
 			//hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
-#endif	// divecomputer 0.5.0
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
 			hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
+#endif	// divecomputer 0.5.0
 		default:
 			supported = false;
 			break;
