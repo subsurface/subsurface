@@ -11,6 +11,7 @@
 #include "helpers.h"
 #include "diveplanner.h"
 #include "libdivecomputer/parser.h"
+#include "mainwindow.h"
 
 #include <QPen>
 #include <QPainter>
@@ -675,6 +676,7 @@ DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientF
 	gradientFactor->setY(0);
 	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
 	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+	connect(MainWindow::instance()->information(), SIGNAL(dateTimeChanged()), this, SLOT(recalc()));
 	settingsChanged();
 }
 
@@ -757,11 +759,16 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	setBrush(pat);
 }
 
+void DiveCalculatedCeiling::recalc()
+{
+	dataModel->calculateDecompression();
+}
+
 void DiveCalculatedCeiling::settingsChanged()
 {
 	if (dataModel && is3mIncrement != prefs.calcceiling3m) {
 		// recalculate that part.
-		dataModel->calculateDecompression();
+		recalc();
 	}
 	is3mIncrement = prefs.calcceiling3m;
 	setVisible(prefs.calcceiling);

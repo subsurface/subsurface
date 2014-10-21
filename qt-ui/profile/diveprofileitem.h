@@ -162,6 +162,10 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void settingsChanged();
 
+public
+slots:
+	void recalc();
+
 private:
 	bool is3mIncrement;
 	DiveTextItem *gradientFactor;

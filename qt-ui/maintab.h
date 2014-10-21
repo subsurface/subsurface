@@ -53,6 +53,7 @@ public:
 
 signals:
 	void addDiveFinished();
+	void dateTimeChanged();
 
 public
 slots:

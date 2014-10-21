@@ -978,6 +978,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
 	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
+	emit dateTimeChanged();
 }
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
@@ -989,6 +990,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
 	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
+	emit dateTimeChanged();
 }
 
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
