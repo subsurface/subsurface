@@ -895,8 +895,10 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2])) // up to 3 CCR sensors
 		return;
-	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint))
+	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint)) {
+		cur_dive->dc.dctype = CCR;
 		return;
+	}
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
 		return;
 	if (MATCH("bearing", get_bearing, &sample->bearing))
@@ -2027,8 +2029,10 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 		cur_sample->depth.mm = metric ? atof(data[1]) * 1000 : feet_to_mm(atof(data[1]));
 	if (data[2])
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
-	if (data[3])
+	if (data[3]) {
 		cur_sample->setpoint.mbar = atof(data[3]) * 1000;
+		cur_dive->dc.dctype = CCR;
+	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])
