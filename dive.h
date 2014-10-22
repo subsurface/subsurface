@@ -261,7 +261,7 @@ struct divecomputer {
 	enum dive_comp_type dctype;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors;		// rebreathers: number of O2 sensors used
 	int salinity; 			// kg per 10000 l
-	const char *model;
+	const char *model, *serial, *fw_version;
 	uint32_t deviceid, diveid;
 	int samples, alloc_samples;
 	struct sample *sample;

@@ -397,6 +397,39 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 	return csum[0];
 }
 
+static uint32_t calculate_string_hash(const char *str)
+{
+	return calculate_diveid(str, strlen(str));
+}
+
+#ifdef DC_FIELD_STRING
+static void parse_string_field(struct dive *dive, dc_field_string_t *str)
+{
+	// Our dive ID is the string hash of the "Dive ID" string
+	if (!strcmp(str->desc, "Dive ID")) {
+		if (!dive->dc.diveid)
+			dive->dc.diveid = calculate_string_hash(str->value);
+		return;
+	}
+
+	if (!strcmp(str->desc, "Serial")) {
+		if (!dive->dc.serial)
+			dive->dc.serial = strdup(str->value);
+		if (!dive->dc.deviceid)
+			dive->dc.deviceid = calculate_string_hash(str->value);
+		return;
+	}
+
+	if (!strcmp(str->desc, "FW Version")) {
+		if (!dive->dc.fw_version)
+			dive->dc.fw_version = strdup(str->value);
+		return;
+	}
+
+	add_extra_data(&dive->dc, str->desc, str->value);
+}
+#endif
+
 /* returns true if we want libdivecomputer's dc_device_foreach() to continue,
  *  false otherwise */
 static int dive_cb(const unsigned char *data, unsigned int size,
@@ -492,6 +525,20 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		goto error_exit;
 	}
 	dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
+#endif
+
+#ifdef DC_FIELD_STRING
+	// The dive parsing may give us more device information
+	int idx;
+	for (idx = 0; idx < 100; idx++) {
+		dc_field_string_t str = { NULL };
+		rc = dc_parser_get_field(parser, DC_FIELD_STRING, idx, &str);
+		if (rc != DC_STATUS_SUCCESS)
+			break;
+		if (!str.desc || !str.value)
+			break;
+		parse_string_field(dive, &str);
+	}
 #endif
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);

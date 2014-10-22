@@ -1129,6 +1129,10 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 	int first_cylinder;
 
+	/* Add device information to table */
+	if (dc->deviceid && (dc->serial || dc->fw_version))
+		create_device_node(dc->model, dc->deviceid, dc->serial, dc->fw_version, "");
+
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
 	update_min_max_temperatures(dive, dc->watertemp);
