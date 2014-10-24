@@ -335,7 +335,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		sample->manually_entered = dp->entered;
-		if (track_gas) {
+		if (track_gas && !sample->setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
 			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
 			if (cyl->type.workingpressure.mbar)
@@ -648,7 +648,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "OTU"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "<br>%s: %i</div>", temp, dive->otu);
 
-	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
+	if (dive->dc.dctype == CCR)
+		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption (CCR legs excluded):"));
+	else
+		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "<div><br>%s<br>", temp);
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure;
