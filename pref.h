@@ -67,6 +67,8 @@ struct preferences {
 	bool drop_stone_mode;
 	int bottomsac;
 	int decosac;
+	int o2consumption; // ml per min
+	int pscr_ratio; // dump ratio times 1000
 	bool show_pictures_in_profile;
 	bool use_default_file;
 };

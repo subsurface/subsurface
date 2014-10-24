@@ -322,7 +322,7 @@ static void add_dive_to_deco(struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			(void)add_segment(depth_to_mbar(depth, dive) / 1000.0,
-					  &dive->cylinder[sample->sensor].gasmix, 1, sample->setpoint.mbar, dive);
+					  &dive->cylinder[sample->sensor].gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
 		}
 	}
 }
@@ -396,7 +396,7 @@ double init_decompression(struct dive *dive)
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
 			lasttime = pdive->when + pdive->duration.seconds;
-			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
+			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time, 60));
 			dump_tissues();
@@ -407,7 +407,7 @@ double init_decompression(struct dive *dive)
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
 		surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
-		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive);
+		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time, 60));
 		dump_tissues();

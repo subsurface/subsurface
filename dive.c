@@ -1549,8 +1549,13 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			*mix = structure containing cylinder gas mixture information.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type dctype, int sac)
 {
+	if (!sac) {
+		/* The SAC has not yet been computer, so use the default *
+		 * We might try harder...                                */
+		sac = prefs.bottomsac;
+	}
 	if (po2) {	// This is probably a CCR dive where pressures->o2 is defined
 		if (po2 >= amb_pressure) {
 			pressures->o2 = amb_pressure;

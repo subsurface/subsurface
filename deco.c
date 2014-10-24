@@ -18,6 +18,7 @@
 #include <math.h>
 #include <string.h>
 #include "dive.h"
+#include <assert.h>
 
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
@@ -184,12 +185,12 @@ double he_factor(int period_in_seconds, int ci)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
+double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
 	int ci;
 	struct gas_pressures pressures;
 
-	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0);
+	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0, ccpo2 ? CCR : OC, sac);
 
 	if (buehlmann_config.gf_low_at_maxdepth && pressure > gf_low_pressure_this_dive)
 		gf_low_pressure_this_dive = pressure;

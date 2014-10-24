@@ -127,7 +127,7 @@ double interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, d
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
-		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2.mbar, dive);
+		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2.mbar, dive, prefs.bottomsac);
 	}
 	return tissue_tolerance;
 }
@@ -831,7 +831,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 			tissue_tolerance = add_segment(depth_to_mbar(depth, &displayed_dive) / 1000.0,
 						       &displayed_dive.cylinder[current_cylinder].gasmix,
-						       TIMESTEP, po2, &displayed_dive);
+						       TIMESTEP, po2, &displayed_dive, prefs.decosac);
 			clock += TIMESTEP;
 			depth -= deltad;
 		} while (depth > stoplevels[stopidx]);
@@ -869,7 +869,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 					deltad = trial_depth;
 				tissue_tolerance = add_segment(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0,
 							       &displayed_dive.cylinder[current_cylinder].gasmix,
-							       TIMESTEP, po2, &displayed_dive);
+							       TIMESTEP, po2, &displayed_dive, prefs.decosac);
 				if (deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000.0, &displayed_dive, 1) > trial_depth - deltad) {
 					/* We should have stopped */
 					clear_to_ascend = false;
@@ -892,7 +892,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 			}
 			tissue_tolerance = add_segment(depth_to_mbar(depth, &displayed_dive) / 1000.0,
 						       &displayed_dive.cylinder[current_cylinder].gasmix,
-						       DECOTIMESTEP, po2, &displayed_dive);
+						       DECOTIMESTEP, po2, &displayed_dive, prefs.decosac);
 			cache_deco_state(tissue_tolerance, &trial_cache);
 			clock += DECOTIMESTEP;
 			/* Finish infinite deco */

@@ -45,6 +45,8 @@ struct preferences default_prefs = {
 	.drop_stone_mode = false,
 	.bottomsac = 20000,
 	.decosac = 17000,
+	.o2consumption = 1000,
+	.pscr_ratio = 100,
 	.show_pictures_in_profile = true,
 	.tankbar = false
 };

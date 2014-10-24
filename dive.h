@@ -47,7 +47,7 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-enum dive_comp_type {OC, CCR};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum dive_comp_type {OC, CCR, PSCR};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {oxygen, diluent, bailout}; // The different uses for cylinders in CCR dives
 
 struct gasmix {
@@ -140,7 +140,7 @@ struct gas_pressures {
 	double o2, n2, he;
 };
 
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2);
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type dctype, int sac);
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
@@ -731,7 +731,7 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 
-extern double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive);
+extern double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
