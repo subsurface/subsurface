@@ -451,7 +451,7 @@ void MainWindow::on_actionReplanDive_triggered()
 {
 	if (!plannerStateClean())
 		return;
-	if (!current_dive || strcmp(current_dive->dc.model, "planned dive")) {
+	if (!current_dive || !current_dive->dc.model || strcmp(current_dive->dc.model, "planned dive")) {
 		qDebug() << current_dive->dc.model;
 		return;
 	}
