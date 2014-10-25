@@ -833,9 +833,9 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
  * there are and the differences among the readings from these sensors.
  */
 double calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc) {
-	double sump = 0.0, midp, minp = 999.9, maxp = -999.9;
+	double sump = 0.0, minp = 999.9, maxp = -999.9;
 	double diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
-	int i, j, np = 0;
+	int i, np = 0;
 
 	for (i=0; i < dc->no_o2sensors; i++)
 		if (entry->o2sensor[i]) { // Valid reading
