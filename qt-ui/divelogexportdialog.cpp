@@ -322,7 +322,7 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 	struct dive *dive;
 	depth_t depth;
 	int i;
-	const char **unit;
+	const char **unit = NULL;
 
 	struct membuffer buf = { 0 };
 
