@@ -49,12 +49,12 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	const QFontMetrics metrics(defaultModelFont());
-	int ht = metrics.height();
 	int em = metrics.width('m');
 	int zw = metrics.width('0');
 
 	// Fixes for the layout needed for mac
 #ifdef Q_OS_MAC
+	int ht = metrics.height();
 	header()->setMinimumHeight(ht + 10);
 #endif
 
