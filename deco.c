@@ -187,7 +187,6 @@ double he_factor(int period_in_seconds, int ci)
 double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive)
 {
 	int ci;
-	int fo2 = get_o2(gasmix), fhe = get_he(gasmix);
 	struct gas_pressures pressures;
 
 	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0);
