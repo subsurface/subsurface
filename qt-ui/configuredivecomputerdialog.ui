@@ -865,7 +865,7 @@
            <attribute name="title">
             <string>Gas settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_1">
+           <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0" colspan="2">
              <widget class="QTableWidget" name="ostc3GasTable">
               <property name="sizePolicy">
@@ -1234,7 +1234,7 @@
            <attribute name="title">
             <string>Basic settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_2">
+           <layout class="QGridLayout" name="gridLayout_3">
             <item row="1" column="1" colspan="2">
              <widget class="QDoubleSpinBox" name="maxDepthDoubleSpinBox">
               <property name="sizePolicy">
