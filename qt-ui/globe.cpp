@@ -366,6 +366,7 @@ void GlobeGPS::centerOnCurrentDive()
 }
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 {
+	return QObject::eventFilter(obj, ev);
 }
 void GlobeGPS::prepareForGetDiveCoordinates()
 {
