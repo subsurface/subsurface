@@ -924,11 +924,9 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 {
 	int i, j;
 	double last_setpoint, last_sensor[3], o2pressure, amb_pressure;
-	struct gas_pressures *pressures;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		pressures = &(entry->pressures);
 		// For 1st iteration, initialise the last_ values
 		if (dc->dctype == CCR) {
 			if (i == 0) {
