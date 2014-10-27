@@ -492,7 +492,9 @@ void ReadSettingsThread::run()
 		case DC_FAMILY_HW_OSTC: {
 			supported = true;
 			unsigned char data[256] = {};
+#ifdef DEBUG_OSTC_CF
 			unsigned char max_CF = 0;
+#endif
 			rc = hw_ostc_device_eeprom_read(m_data->device, 0, data, sizeof(data));
 			if (rc == DC_STATUS_SUCCESS) {
 				m_deviceDetails->setSerialNo(QString::number(data[1] << 8 ^ data[0]));
@@ -641,7 +643,9 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setDateFormat(data[91]);
 				// Byte93:
 				// Total number of CF used in installed firmware
+#ifdef DEBUG_OSTC_CF
 				max_CF = data[92];
+#endif
 				// Byte94:
 				// Last selected view for customview area in surface mode
 				// Byte95:
@@ -726,6 +730,11 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setSamplingRate(read_ostc_cf(data, 20));
 				// CF29: Depth of last decompression stop
 				m_deviceDetails->setLastDeco(read_ostc_cf(data, 29));
+
+#ifdef DEBUG_OSTC_CF
+				for(int cf = 0; cf <= 31 && cf <= max_CF; cf++)
+					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 0, data, sizeof(data));
 #endif
@@ -753,6 +762,10 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setGfHigh(read_ostc_cf(data, 33));
 				// CF58: Future time to surface setFutureTTS
 				m_deviceDetails->setFutureTTS(read_ostc_cf(data, 58));
+#ifdef DEBUG_OSTC_CF
+				for(int cf = 32; cf <= 63 && cf <= max_CF; cf++)
+					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 1, data, sizeof(data));
 #endif
@@ -775,6 +788,10 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setAGFHigh(read_ostc_cf(data, 68));
 				// CF69: Allow Gradient Factor change
 				m_deviceDetails->setAGFSelectable(read_ostc_cf(data, 69));
+#ifdef DEBUG_OSTC_CF
+				for(int cf = 64; cf <= 95 && cf <= max_CF; cf++)
+					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 2, data, sizeof(data));
 #endif
