@@ -450,8 +450,8 @@ int parse_txt_file(const char *filename, const char *csv)
 	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
 		int d, m, y;
 		int hh = 0, mm = 0, ss = 0;
-		int prev_depth = 0, cur_sampletime = 0;
-		bool has_depth = false;
+		int prev_depth = 0, cur_sampletime = 0, prev_setpoint;
+		bool has_depth = false, has_setpoint = false;
 		char *lineptr;
 
 		struct dive *dive;
@@ -522,6 +522,7 @@ int parse_txt_file(const char *filename, const char *csv)
 			sscanf(lineptr, "%d,%d,%d", &cur_sampletime, &type, &value);
 
 			has_depth = false;
+			has_setpoint = false;
 			sample = prepare_sample(dc);
 			sample->time.seconds = cur_sampletime;
 
@@ -548,6 +549,8 @@ int parse_txt_file(const char *filename, const char *csv)
 						add_sample_data(sample, POSEIDON_DILUENT, value);
 						break;
 					case 20:
+						has_setpoint = true;
+						prev_setpoint = value;
 						add_sample_data(sample, POSEIDON_SETPOINT, value);
 						break;
 					case 39:
@@ -575,6 +578,8 @@ int parse_txt_file(const char *filename, const char *csv)
 
 			if (!has_depth)
 				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
+			if (!has_setpoint)
+				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
 			finish_sample(dc);
 
 			if (!lineptr || !*lineptr)
