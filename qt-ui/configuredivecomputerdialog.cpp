@@ -345,34 +345,23 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 {
 	deviceDetails->setCustomText(ui.customTextLlineEdit_3->text());
-	deviceDetails->setDiveMode(ui.diveModeComboBox_3->currentIndex());
 	deviceDetails->setSaturation(ui.saturationSpinBox_3->value());
 	deviceDetails->setDesaturation(ui.desaturationSpinBox_3->value());
 	deviceDetails->setLastDeco(ui.lastDecoSpinBox_3->value());
-	deviceDetails->setBrightness(ui.brightnessComboBox_3->currentIndex());
-	deviceDetails->setUnits(ui.unitsComboBox_3->currentIndex());
-	deviceDetails->setSamplingRate(ui.samplingRateComboBox_3->currentIndex());
+	deviceDetails->setSamplingRate(ui.samplingRateSpinBox_3->value());
 	deviceDetails->setSalinity(ui.salinitySpinBox_3->value());
-	deviceDetails->setDiveModeColor(ui.diveModeColour_3->currentIndex());
-	deviceDetails->setLanguage(ui.languageComboBox_3->currentIndex());
 	deviceDetails->setDateFormat(ui.dateFormatComboBox_3->currentIndex());
-	deviceDetails->setCompassGain(ui.compassGainComboBox_3->currentIndex());
 	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox_3->isChecked());
 	deviceDetails->setSafetyStop(ui.safetyStopCheckBox_3->isChecked());
 	deviceDetails->setGfHigh(ui.gfHighSpinBox_3->value());
 	deviceDetails->setGfLow(ui.gfLowSpinBox_3->value());
-	deviceDetails->setPressureSensorOffset(ui.pressureSensorOffsetSpinBox_3->value());
 	deviceDetails->setPpO2Min(ui.ppO2MinSpinBox_3->value());
 	deviceDetails->setPpO2Max(ui.ppO2MaxSpinBox_3->value());
 	deviceDetails->setFutureTTS(ui.futureTTSSpinBox_3->value());
-	deviceDetails->setCcrMode(ui.ccrModeComboBox_3->currentIndex());
 	deviceDetails->setDecoType(ui.decoTypeComboBox_3->currentIndex());
 	deviceDetails->setAGFSelectable(ui.aGFSelectableCheckBox_3->isChecked());
 	deviceDetails->setAGFHigh(ui.aGFHighSpinBox_3->value());
 	deviceDetails->setAGFLow(ui.aGFLowSpinBox_3->value());
-	deviceDetails->setCalibrationGas(ui.calibrationGasSpinBox_3->value());
-	deviceDetails->setFlipScreen(ui.flipScreenCheckBox_3->isChecked());
-	deviceDetails->setSetPointFallback(ui.setPointFallbackCheckBox_3->isChecked());
 
 	//set gas values
 	gas gas1;
@@ -695,36 +684,42 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC()
 {
+/*
+# Not in OSTC
+setBrightness
+setCalibrationGas
+setCompassGain
+setDiveMode - Bult into setDecoType
+setDiveModeColor - Lots of different colors
+setFlipScreen
+setLanguage
+setPressureSensorOffset
+setUnits
+setSetPointFallback
+setCcrMode
+# Not in OSTC3
+setNumberOfDives
+*/
 	ui.serialNoLineEdit_3->setText(deviceDetails->serialNo());
 	ui.firmwareVersionLineEdit_3->setText(deviceDetails->firmwareVersion());
 	ui.customTextLlineEdit_3->setText(deviceDetails->customText());
-	ui.diveModeComboBox_3->setCurrentIndex(deviceDetails->diveMode());
 	ui.saturationSpinBox_3->setValue(deviceDetails->saturation());
 	ui.desaturationSpinBox_3->setValue(deviceDetails->desaturation());
 	ui.lastDecoSpinBox_3->setValue(deviceDetails->lastDeco());
-	ui.brightnessComboBox_3->setCurrentIndex(deviceDetails->brightness());
-	ui.unitsComboBox_3->setCurrentIndex(deviceDetails->units());
-	ui.samplingRateComboBox_3->setCurrentIndex(deviceDetails->samplingRate());
+	ui.samplingRateSpinBox_3->setValue(deviceDetails->samplingRate());
 	ui.salinitySpinBox_3->setValue(deviceDetails->salinity());
-	ui.diveModeColour_3->setCurrentIndex(deviceDetails->diveModeColor());
-	ui.languageComboBox_3->setCurrentIndex(deviceDetails->language());
 	ui.dateFormatComboBox_3->setCurrentIndex(deviceDetails->dateFormat());
-	ui.compassGainComboBox_3->setCurrentIndex(deviceDetails->compassGain());
 	ui.safetyStopCheckBox_3->setChecked(deviceDetails->safetyStop());
 	ui.gfHighSpinBox_3->setValue(deviceDetails->gfHigh());
 	ui.gfLowSpinBox_3->setValue(deviceDetails->gfLow());
-	ui.pressureSensorOffsetSpinBox_3->setValue(deviceDetails->pressureSensorOffset());
 	ui.ppO2MinSpinBox_3->setValue(deviceDetails->ppO2Min());
 	ui.ppO2MaxSpinBox_3->setValue(deviceDetails->ppO2Max());
 	ui.futureTTSSpinBox_3->setValue(deviceDetails->futureTTS());
-	ui.ccrModeComboBox_3->setCurrentIndex(deviceDetails->ccrMode());
 	ui.decoTypeComboBox_3->setCurrentIndex(deviceDetails->decoType());
 	ui.aGFSelectableCheckBox_3->setChecked(deviceDetails->aGFSelectable());
 	ui.aGFHighSpinBox_3->setValue(deviceDetails->aGFHigh());
 	ui.aGFLowSpinBox_3->setValue(deviceDetails->aGFLow());
-	ui.calibrationGasSpinBox_3->setValue(deviceDetails->calibrationGas());
-	ui.flipScreenCheckBox_3->setChecked(deviceDetails->flipScreen());
-	ui.setPointFallbackCheckBox_3->setChecked(deviceDetails->setPointFallback());
+	ui.numberOfDivesSpinBox_3->setValue(deviceDetails->numberOfDives());
 
 	//load gas 1 values
 	ui.ostcGasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
