@@ -197,7 +197,7 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setAlarmDepth(depth);
 			}
 			emit devicedetails(m_deviceDetails);
-            break;
+			break;
 		}
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3: {
@@ -433,16 +433,15 @@ void ReadSettingsThread::run()
 			supported = false;
 			break;
 		}
-unsupported_dc_error:
-		dc_device_close(m_data->device);
-
-		if (!supported) {
-			lastError = tr("This feature is not yet available for the selected dive computer.");
-			emit error(lastError);
-		}
-	}
-	else {
+	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
+		emit error(lastError);
+	}
+unsupported_dc_error:
+	dc_device_close(m_data->device);
+
+	if (!supported) {
+		lastError = tr("This feature is not yet available for the selected dive computer.");
 		emit error(lastError);
 	}
 }
@@ -500,8 +499,7 @@ void WriteSettingsThread::run()
 			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
 			break;
 #if DC_VERSION_CHECK(0,5,0)
-		case DC_FAMILY_HW_OSTC3:
-		{
+		case DC_FAMILY_HW_OSTC3: {
 			supported = true;
 			//write gas values
 			unsigned char gas1Data[4] = {m_deviceDetails->gas1().oxygen,
