@@ -137,7 +137,7 @@ static enum import_source {
 	UDDF,
 } import_source;
 
-static void divedate(char *buffer, timestamp_t *when)
+static void divedate(const char *buffer, timestamp_t *when)
 {
 	int d, m, y;
 	int hh, mm, ss;
@@ -163,7 +163,7 @@ static void divedate(char *buffer, timestamp_t *when)
 	*when = utc_mktime(&cur_tm);
 }
 
-static void divetime(char *buffer, timestamp_t *when)
+static void divetime(const char *buffer, timestamp_t *when)
 {
 	int h, m, s = 0;
 
