@@ -65,6 +65,46 @@
 #define SUUNTO_VYPER_ALARM_DEPTH          0x68
 #define SUUNTO_VYPER_CUSTOM_TEXT_LENGHT   30
 
+#ifdef DEBUG_OSTC
+// Fake io to ostc memory banks
+#define hw_ostc_device_eeprom_read local_hw_ostc_device_eeprom_read
+#define hw_ostc_device_eeprom_write local_hw_ostc_device_eeprom_write
+#define hw_ostc_device_clock local_hw_ostc_device_clock
+#define OSTC_FILE "../OSTC-data-dump.bin"
+
+static dc_status_t local_hw_ostc_device_eeprom_read(void *ignored, unsigned char bank, unsigned char data[], unsigned int data_size)
+{
+	FILE *f;
+	if ((f = fopen(OSTC_FILE, "r")) == NULL)
+		return DC_STATUS_NODEVICE;
+	fseek(f, bank * 256, SEEK_SET);
+	if (fread(data, sizeof(unsigned char), data_size, f) != data_size) {
+		fclose(f);
+		return DC_STATUS_IO;
+	}
+	fclose(f);
+
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t local_hw_ostc_device_eeprom_write(void *ignored, unsigned char bank, unsigned char data[], unsigned int data_size)
+{
+	FILE *f;
+	if ((f = fopen(OSTC_FILE, "r+")) == NULL)
+		f = fopen(OSTC_FILE, "w");
+	fseek(f, bank * 256, SEEK_SET);
+	fwrite(data, sizeof(unsigned char), data_size, f);
+	fclose(f);
+
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t local_hw_ostc_device_clock(void *ignored, dc_datetime_t *time)
+{
+	qDebug() << "Setting OSTC time";
+	return DC_STATUS_SUCCESS;
+}
+#endif
 
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 	: QThread(parent), m_data(data)
@@ -76,6 +116,11 @@ void ReadSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
+#ifdef DEBUG_OSTC
+	if (strcmp(m_data->vendor, "Heinrichs Weikamp") == 0 && strcmp(m_data->product, "OSTC 2N") == 0)
+		rc = DC_STATUS_SUCCESS;
+	else
+#endif
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
@@ -426,6 +471,32 @@ void ReadSettingsThread::run()
 			}
 
 			emit devicedetails(m_deviceDetails);
+			break;
+		}
+#ifdef DEBUG_OSTC
+		case DC_FAMILY_NULL:
+#endif
+		case DC_FAMILY_HW_OSTC: {
+			supported = true;
+			unsigned char data[256] = {};
+			rc = hw_ostc_device_eeprom_read(m_data->device, 0, data, sizeof(data));
+			if (rc == DC_STATUS_SUCCESS) {
+#ifdef DEBUG_OSTC
+				local_hw_ostc_device_eeprom_write(m_data->device, 0, data, sizeof(data));
+#endif
+			}
+			rc = hw_ostc_device_eeprom_read(m_data->device, 1, data, sizeof(data));
+			if (rc == DC_STATUS_SUCCESS) {
+#ifdef DEBUG_OSTC
+				local_hw_ostc_device_eeprom_write(m_data->device, 1, data, sizeof(data));
+#endif
+			}
+			rc = hw_ostc_device_eeprom_read(m_data->device, 2, data, sizeof(data));
+			if (rc == DC_STATUS_SUCCESS) {
+#ifdef DEBUG_OSTC
+				local_hw_ostc_device_eeprom_write(m_data->device, 2, data, sizeof(data));
+#endif
+			}
 			break;
 		}
 #endif	// divecomputer 0.5.0
