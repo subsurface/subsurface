@@ -408,6 +408,8 @@ void MainWindow::planCreated()
 		dive_list()->selectDive(selected_dive);
 		set_dive_nr_for_current_dive();
 	}
+	// make sure our UI is in a consistent state
+	ui.InfoWidget->updateDiveInfo();
 	showProfile();
 	refreshDisplay();
 }
@@ -452,7 +454,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	if (!plannerStateClean())
 		return;
 	if (!current_dive || !current_dive->dc.model || strcmp(current_dive->dc.model, "planned dive")) {
-		qDebug() << current_dive->dc.model;
+		qDebug() << "trying to replan a dive that's not a planned dive:" << current_dive->dc.model;
 		return;
 	}
 	ui.ListWidget->endSearch();
