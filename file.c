@@ -450,14 +450,13 @@ int parse_txt_file(const char *filename, const char *csv)
 	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
 		int d, m, y;
 		int hh = 0, mm = 0, ss = 0;
-		int prev_depth = 0, cur_sampletime = 0, prev_setpoint;
+		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
 		char *lineptr;
 
 		struct dive *dive;
 		struct divecomputer *dc;
 		struct tm cur_tm;
-		timestamp_t date;
 
 		if (sscanf(parse_mkvi_value(memtxt.buffer, "Dive started at"), "%d-%d-%d %d:%d:%d",
 					&y, &m, &d, &hh, &mm, &ss) != 6) {
@@ -511,8 +510,6 @@ int parse_txt_file(const char *filename, const char *csv)
 		}
 		lineptr = memcsv.buffer;
 		for (;;) {
-			char *end;
-			double val;
 			struct sample *sample;
 			int type;
 			int value;
