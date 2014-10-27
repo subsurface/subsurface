@@ -1621,7 +1621,7 @@
             <item row="5" column="3">
              <widget class="QLabel" name="label_45">
               <property name="text">
-               <string>Salinity (0-5%)</string>
+               <string>Salinity</string>
               </property>
               <property name="buddy">
                <cstring>salinitySpinBox</cstring>
@@ -1692,12 +1692,15 @@
              </widget>
             </item>
             <item row="5" column="4">
-             <widget class="QSpinBox" name="salinitySpinBox_3">
+             <widget class="QDoubleSpinBox" name="salinityDoubleSpinBox_3">
               <property name="suffix">
-               <string>%</string>
+               <string>kg/l</string>
+              </property>
+              <property name="minimum">
+               <double>1.000000000000000</double>
               </property>
               <property name="maximum">
-               <number>5</number>
+               <double>1.040000000000000</double>
               </property>
               <property name="singleStep">
                <double>0.010000000000000</double>

@@ -349,7 +349,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails->setDesaturation(ui.desaturationSpinBox_3->value());
 	deviceDetails->setLastDeco(ui.lastDecoSpinBox_3->value());
 	deviceDetails->setSamplingRate(ui.samplingRateSpinBox_3->value());
-	deviceDetails->setSalinity(ui.salinitySpinBox_3->value());
+	deviceDetails->setSalinity(ui.salinityDoubleSpinBox_3->value() * 100);
 	deviceDetails->setDateFormat(ui.dateFormatComboBox_3->currentIndex());
 	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox_3->isChecked());
 	deviceDetails->setSafetyStop(ui.safetyStopCheckBox_3->isChecked());
@@ -707,7 +707,7 @@ setNumberOfDives
 	ui.desaturationSpinBox_3->setValue(deviceDetails->desaturation());
 	ui.lastDecoSpinBox_3->setValue(deviceDetails->lastDeco());
 	ui.samplingRateSpinBox_3->setValue(deviceDetails->samplingRate());
-	ui.salinitySpinBox_3->setValue(deviceDetails->salinity());
+	ui.salinityDoubleSpinBox_3->setValue((double) deviceDetails->salinity() / 100.0);
 	ui.dateFormatComboBox_3->setCurrentIndex(deviceDetails->dateFormat());
 	ui.safetyStopCheckBox_3->setChecked(deviceDetails->safetyStop());
 	ui.gfHighSpinBox_3->setValue(deviceDetails->gfHigh());
