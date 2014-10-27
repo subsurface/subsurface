@@ -7,10 +7,6 @@
 #include "../libdivecomputer.h"
 #include "configuredivecomputer.h"
 
-namespace Ui {
-class ConfigureDiveComputerDialog;
-}
-
 class ConfigureDiveComputerDialog : public QDialog
 {
 	Q_OBJECT
