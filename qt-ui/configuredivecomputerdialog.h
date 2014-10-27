@@ -8,6 +8,26 @@
 #include "configuredivecomputer.h"
 #include <QStyledItemDelegate>
 
+class GasSpinBoxItemDelegate : public QStyledItemDelegate
+{
+	Q_OBJECT
+
+public:
+	enum column_type {
+		PERCENT,
+		DEPTH,
+	};
+
+	GasSpinBoxItemDelegate(QObject *parent = 0, column_type type = PERCENT);
+	~GasSpinBoxItemDelegate();
+
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
+	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+private:
+	column_type type;
+};
+
 class GasTypeComboBoxItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

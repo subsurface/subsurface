@@ -28,6 +28,42 @@ struct mydescriptor {
 	unsigned int model;
 };
 
+GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type) { }
+GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate() { }
+
+QWidget* GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	// Create the spinbox and give it it's settings
+	QSpinBox *sb = new QSpinBox(parent);
+	if (type == PERCENT) {
+		sb->setMinimum(0);
+		sb->setMaximum(100);
+		sb->setSuffix("%");
+	} else if (type == DEPTH) {
+		sb->setMinimum(0);
+		sb->setMaximum(255);
+		sb->setSuffix("m");
+	}
+	return sb;
+}
+
+void GasSpinBoxItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+	if(QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
+		sb->setValue(index.data(Qt::EditRole).toInt());
+	else
+		QStyledItemDelegate::setEditorData(editor, index);
+}
+
+
+void GasSpinBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	if(QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
+		model->setData(index, sb->value(), Qt::EditRole);
+	else
+		QStyledItemDelegate::setModelData(editor, model, index);
+}
+
 GasTypeComboBoxItemDelegate::GasTypeComboBoxItemDelegate(QObject *parent, computer_type type) : QStyledItemDelegate(parent), type(type) { }
 GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate() { }
 
@@ -89,10 +125,18 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
 
+	ui.ostc3GasTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
+	ui.ostc3GasTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
 	ui.ostc3GasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostc3GasTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostc3DilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostc3DilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostcGasTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
+	ui.ostcGasTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
 	ui.ostcGasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
+	ui.ostcGasTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostcDilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
+	ui.ostcDilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");
