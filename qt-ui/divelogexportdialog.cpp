@@ -334,7 +334,7 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 			int n = dive->dc.samples;
 			struct sample *s = dive->dc.sample;
 			depth.mm = 0;
-			while (--n >= 0 && s->time.seconds <= picture->offset.seconds) {
+			while (--n >= 0 && (int32_t)s->time.seconds <= picture->offset.seconds) {
 				depth.mm = s->depth.mm;
 				s++;
 			}
