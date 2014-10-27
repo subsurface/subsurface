@@ -641,6 +641,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Configure &amp;dive computer</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
   </action>
   <action name="actionReplanDive">
    <property name="text">
