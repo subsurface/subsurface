@@ -112,6 +112,19 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 
 }
 
+static int read_ostc_cf(unsigned char data[], unsigned char cf) {
+	return data[128 + (cf % 32) * 4 + 3] << 8 ^ data[128 + (cf % 32) * 4 + 2];
+}
+
+static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char max_CF, unsigned int value) {
+	// Only write settings supported by this firmware.
+	if (cf > max_CF)
+		return;
+
+	data[128 + (cf % 32) * 4 + 3] = (value & 0xff00) >> 8;
+	data[128 + (cf % 32) * 4 + 2] = (value & 0x00ff);
+}
+
 void ReadSettingsThread::run()
 {
 	bool supported = false;
@@ -699,10 +712,20 @@ void ReadSettingsThread::run()
 				// not used/reserved
 				// Byte129-256:
 				// 32 custom Functions (CF0-CF31)
-				// The custom functions are stored in the internal EEPROM after 0x080
-				// Any custom function occupies 4 byte:
-				// 2 byte (low:high) store the default value, reset from menu "reset" (Will be overwritten by hard-coded defaults if reset in the unit!)
-				// 2 byte (low:high) store the actual value
+
+				// Decode the relevant ones
+				// CF11: Factor for saturation processes
+				m_deviceDetails->setSaturation(read_ostc_cf(data, 11));
+				// CF12: Factor for desaturation processes
+				m_deviceDetails->setDesaturation(read_ostc_cf(data, 12));
+				// CF17: Lower threshold for ppO2 warning
+				m_deviceDetails->setPpO2Min(read_ostc_cf(data, 17));
+				// CF18: Upper threshold for ppO2 warning
+				m_deviceDetails->setPpO2Max(read_ostc_cf(data, 18));
+				// CF20: Depth sampling rate for Profile storage
+				m_deviceDetails->setSamplingRate(read_ostc_cf(data, 20));
+				// CF29: Depth of last decompression stop
+				m_deviceDetails->setLastDeco(read_ostc_cf(data, 29));
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 0, data, sizeof(data));
 #endif
@@ -722,10 +745,14 @@ void ReadSettingsThread::run()
 				// not used/reserved
 				// Byte129-256:
 				// 32 custom Functions (CF 32-63)
-				// The custom functions are stored in the internal EEPROM after 0x180
-				// Any custom function occupies 4 byte:
-				// 2 byte (low:high) store the default value, reset from menu "reset" (Will be overwritten by hard-coded defaults if reset in the unit!)
-				// 2 byte (low:high) store the actual value
+
+				// Decode the relevant ones
+				// CF32: Gradient Factor low
+				m_deviceDetails->setGfLow(read_ostc_cf(data, 32));
+				// CF33: Gradient Factor high
+				m_deviceDetails->setGfHigh(read_ostc_cf(data, 33));
+				// CF58: Future time to surface setFutureTTS
+				m_deviceDetails->setFutureTTS(read_ostc_cf(data, 58));
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 1, data, sizeof(data));
 #endif
@@ -738,10 +765,16 @@ void ReadSettingsThread::run()
 				// not used/reserved
 				// Byte129-256:
 				// 32 custom Functions (CF 64-95)
-				// The custom functions are stored in the internal EEPROM after 0x280
-				// Any custom function occupies 4 byte:
-				// 2 byte (low:high) store the default value, reset from menu "reset" (Will be overwritten by hard-coded defaults if reset in the unit!)
-				// 2 byte (low:high) store the actual value
+
+				// Decode the relevant ones
+				// CF65: Show safety stop
+				m_deviceDetails->setSafetyStop(read_ostc_cf(data, 65));
+				// CF67: Alternaitve Gradient Factor low
+				m_deviceDetails->setAGFLow(read_ostc_cf(data, 67));
+				// CF68: Alternative Gradient Factor high
+				m_deviceDetails->setAGFHigh(read_ostc_cf(data, 68));
+				// CF69: Allow Gradient Factor change
+				m_deviceDetails->setAGFSelectable(read_ostc_cf(data, 69));
 #ifdef DEBUG_OSTC
 				local_hw_ostc_device_eeprom_write(m_data->device, 2, data, sizeof(data));
 #endif
