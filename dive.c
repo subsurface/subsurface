@@ -1092,7 +1092,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int maxdepth = dc->maxdepth.mm;
 	int mintemp = 0;
 	int lastdepth = 0;
-	int lasto2val[3] = { 0, 0, 0 }, lasto2setpoint = 0;
+	int lasto2val[3] = { 0, 0, 0 };
 	int lasttemp = 0, lastpressure = 0, lastdiluentpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 
@@ -1164,15 +1164,6 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 				else
 					lasto2val[j] = o2val;
 			}
-		}
-
-		// If there are consecutive identical CCR O2 setpoint readings, throw away the redundant ones.
-		o2val = sample->setpoint.mbar;
-		if (o2val) {
-			if (lasto2setpoint == o2val)
-				sample->setpoint.mbar = 0;
-			else
-				lasto2setpoint = o2val;
 		}
 
 		update_min_max_temperatures(dive, sample->temperature);
