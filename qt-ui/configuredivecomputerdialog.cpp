@@ -28,6 +28,42 @@ struct mydescriptor {
 	unsigned int model;
 };
 
+GasTypeComboBoxItemDelegate::GasTypeComboBoxItemDelegate(QObject *parent, computer_type type) : QStyledItemDelegate(parent), type(type) { }
+GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate() { }
+
+QWidget* GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	// Create the combobox and populate it
+	QComboBox *cb = new QComboBox(parent);
+	cb->addItem(QString("Disabled"));
+	if (type == OSTC3) {
+		cb->addItem(QString("Fist"));
+		cb->addItem(QString("Travel"));
+		cb->addItem(QString("Deco"));
+	} else if (type == OSTC) {
+		cb->addItem(QString("Active"));
+		cb->addItem(QString("Fist"));
+	}
+	return cb;
+}
+
+void GasTypeComboBoxItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+	if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
+		cb->setCurrentIndex(index.data(Qt::EditRole).toInt());
+	else
+		QStyledItemDelegate::setEditorData(editor, index);
+}
+
+
+void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
+		model->setData(index, cb->currentIndex(), Qt::EditRole);
+	else
+		QStyledItemDelegate::setModelData(editor, model, index);
+}
+
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	QDialog(parent),
 	config(0),
@@ -52,6 +88,11 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
+
+	ui.ostc3GasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostc3DilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostcGasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
+	ui.ostcDilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
 
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");

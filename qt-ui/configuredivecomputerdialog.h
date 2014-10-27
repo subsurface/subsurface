@@ -6,6 +6,27 @@
 #include "ui_configuredivecomputerdialog.h"
 #include "../libdivecomputer.h"
 #include "configuredivecomputer.h"
+#include <QStyledItemDelegate>
+
+class GasTypeComboBoxItemDelegate : public QStyledItemDelegate
+{
+	Q_OBJECT
+
+public:
+	enum computer_type {
+		OSTC3,
+		OSTC,
+	};
+
+	GasTypeComboBoxItemDelegate(QObject *parent = 0, computer_type type = OSTC3);
+	~GasTypeComboBoxItemDelegate();
+
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
+	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+private:
+	computer_type type;
+};
 
 class ConfigureDiveComputerDialog : public QDialog
 {
