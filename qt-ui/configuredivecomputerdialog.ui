@@ -188,6 +188,10 @@
        <property name="text">
         <string>OSTC, Mk.2/2N/2C</string>
        </property>
+       <property name="icon">
+        <iconset resource="../subsurface.qrc">
+         <normaloff>:/icons/ostc2n.png</normaloff>:/icons/ostc2n.png</iconset>
+       </property>
       </item>
      </widget>
      <widget class="QStackedWidget" name="dcStackedWidget">
