@@ -45,11 +45,11 @@ struct config {
 
 
 // Convert 4 bytes into an INT
-#define array_uint16_le(p) ( (unsigned int) (p)[0] \
-							+ ((p)[1]<<8) )
-#define array_uint32_le(p) ( (unsigned int) (p)[0] \
-							+ ((p)[1]<<8) + ((p)[2]<<16) \
-							+ ((p)[3]<<24) )
+#define array_uint16_le(p) ((unsigned int) (p)[0] \
+                            + ((p)[1]<<8) )
+#define array_uint32_le(p) ((unsigned int) (p)[0] \
+                            + ((p)[1]<<8) + ((p)[2]<<16) \
+                            + ((p)[3]<<24))
 
 /*
  * The Cochran file format is designed to be annoying to read. It's roughly:
@@ -79,8 +79,8 @@ struct config {
  *
  */
 static unsigned int partial_decode(unsigned int start, unsigned int end,
-			   const unsigned char *decode, unsigned offset, unsigned mod,
-			   const unsigned char *buf, unsigned int size, unsigned char *dst)
+                                   const unsigned char *decode, unsigned offset, unsigned mod,
+                                   const unsigned char *buf, unsigned int size, unsigned char *dst)
 {
 	unsigned i, sum = 0;
 
@@ -103,7 +103,7 @@ static unsigned int partial_decode(unsigned int start, unsigned int end,
 #define hexchar(n) ("0123456789abcdef"[(n) & 15])
 
 static int show_line(unsigned offset, const unsigned char *data,
-				unsigned size, int show_empty)
+                     unsigned size, int show_empty)
 {
 	unsigned char bits;
 	int i, off;
@@ -143,19 +143,15 @@ static void cochran_debug_write(const unsigned char *data, unsigned size)
 	return;
 
 	int show = 1,  i;
-
-
 	for (i = 0; i < size; i += 16)
 		show = show_line(i, data + i, size - i, show);
 }
 
-static void cochran_debug_sample(const char * s, unsigned int seconds)
+static void cochran_debug_sample(const char *s, unsigned int seconds)
 {
-	switch (config.type)
-	{
+	switch (config.type) {
 	case TYPE_GEMINI:
-		switch (seconds % 4)
-		{
+		switch (seconds % 4) {
 		case 0:
 			printf("Hex: %02x %02x          ", s[0], s[1]);
 			break;
@@ -171,8 +167,7 @@ static void cochran_debug_sample(const char * s, unsigned int seconds)
 		}
 		break;
 	case TYPE_COMMANDER:
-		switch (seconds % 2)
-		{
+		switch (seconds % 2) {
 		case 0:
 			printf("Hex: %02x %02x    ", s[0], s[1]);
 			break;
@@ -182,8 +177,7 @@ static void cochran_debug_sample(const char * s, unsigned int seconds)
 		}
 		break;
 	case TYPE_EMC:
-		switch (seconds % 2)
-		{
+		switch (seconds % 2) {
 		case 0:
 			printf("Hex: %02x %02x    %02x ", s[0], s[1], s[2]);
 			break;
@@ -195,14 +189,13 @@ static void cochran_debug_sample(const char * s, unsigned int seconds)
 	}
 
 	printf ("%02dh %02dm %02ds: Depth: %-5.2f, ", seconds / 3660,
-			(seconds % 3660) / 60, seconds % 60, depth);
+		(seconds % 3660) / 60, seconds % 60, depth);
 }
 
 #endif  // COCHRAN_DEBUG
 
-static void cochran_parse_header(
-				 const unsigned char *decode, unsigned mod,
-				 const unsigned char *in, unsigned size)
+static void cochran_parse_header(const unsigned char *decode, unsigned mod,
+                                 const unsigned char *in, unsigned size)
 {
 	unsigned char *buf = malloc(size);
 
@@ -223,8 +216,7 @@ static void cochran_parse_header(
 	partial_decode(0x5414,  size, decode, 0, mod, in, size, buf);
 
 	// Detect log type
-	switch (buf[0x133])
-	{
+	switch (buf[0x133]) {
 	case '2':	// Cochran Commander, version II log format
 		config.logbook_size = 256;
 		if (buf[0x132] == 0x10) {
@@ -254,207 +246,192 @@ static void cochran_parse_header(
 	free(buf);
 }
 
-
 /*
 * Bytes expected after a pre-dive event code
 */
-
-static int cochran_predive_event_bytes (unsigned char code)
+static int cochran_predive_event_bytes(unsigned char code)
 {
-
 	int x = 0;
+	int gem_event_bytes[15][2] =  {{0x00, 10}, {0x02, 17}, {0x08, 18},
+	                               {0x09, 18}, {0x0c, 18}, {0x0d, 18},
+	                               {0x0e, 18},
+	                               {-1,  0}};
+	int cmdr_event_bytes[15][2] = {{0x00, 16}, {0x01, 20}, {0x02, 17},
+	                               {0x03, 16}, {0x06, 18}, {0x07, 18},
+	                               {0x08, 18}, {0x09, 18}, {0x0a, 18},
+	                               {0x0b, 20}, {0x0c, 18}, {0x0d, 18},
+	                               {0x0e, 18}, {0x10, 20},
+	                               {-1,  0}};
+	int emc_event_bytes[15][2] =  {{0x00, 18}, {0x01, 22}, {0x02, 19},
+	                               {0x03, 18}, {0x06, 20}, {0x07, 20},
+	                               {0x0a, 20}, {0x0b, 20}, {0x0f, 18},
+	                               {0x10, 20},
+	                               {-1,  0}};
 
-	int gem_event_bytes[15][2] = {	{0x00, 10}, {0x02, 17}, {0x08, 18},
-									{0x09, 18}, {0x0c, 18}, {0x0d, 18},
-									{0x0e, 18},
-									{  -1,  0} };
-	int cmdr_event_bytes[15][2] = {	{0x00, 16}, {0x01, 20}, {0x02, 17},
-									{0x03, 16}, {0x06, 18}, {0x07, 18},
-									{0x08, 18}, {0x09, 18}, {0x0a, 18},
-									{0x0b, 20}, {0x0c, 18}, {0x0d, 18},
-					{0x0e, 18}, {0x10, 20},
-									{  -1,  0} };
-	int emc_event_bytes[15][2] = {	{0x00, 18}, {0x01, 22}, {0x02, 19},
-									{0x03, 18}, {0x06, 20}, {0x07, 20},
-									{0x0a, 20}, {0x0b, 20}, {0x0f, 18},
-									{0x10, 20},
-									{  -1,  0} };
-
-	switch (config.type)
-	{
+	switch (config.type) {
 	case TYPE_GEMINI:
 		while (gem_event_bytes[x][0] != code && gem_event_bytes[x][0] != -1)
 			x++;
-
 		return gem_event_bytes[x][1];
 		break;
 	case TYPE_COMMANDER:
 		while (cmdr_event_bytes[x][0] != code && cmdr_event_bytes[x][0] != -1)
 			x++;
-
 		return cmdr_event_bytes[x][1];
 		break;
 	case TYPE_EMC:
 		while (emc_event_bytes[x][0] != code && emc_event_bytes[x][0] != -1)
 			x++;
-
 		return emc_event_bytes[x][1];
 		break;
 	}
-
 }
 
 int cochran_dive_event_bytes(unsigned char event)
 {
-	if (event == 0xAD || event == 0xAB)
-		return 4;
-	else
-		return 0;
+	return (event == 0xAD || event == 0xAB) ? 4 : 0;
 }
 
 static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
-			unsigned int seconds, unsigned int *in_deco,
-			unsigned int *deco_ceiling, unsigned int *deco_time)
+                               unsigned int seconds, unsigned int *in_deco,
+                               unsigned int *deco_ceiling, unsigned int *deco_time)
 {
-	switch (s[0])
-		{
-		case 0xC5:	// Deco obligation begins
-			*in_deco = 1;
-			add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
-			break;
-		case 0xDB:	// Deco obligation ends
-			*in_deco = 0;
-			add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
-					SAMPLE_FLAGS_END, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
-			break;
-		case 0xAD:	// Raise deco ceiling 10 ft
-			*deco_ceiling -= 10; // ft
-			*deco_time = (array_uint16_le(s + 3) + 1) * 60;
-			break;
-		case 0xAB:	// Lower deco ceiling 10 ft
-			*deco_ceiling += 10;	// ft
-			*deco_time = (array_uint16_le(s + 3) + 1) * 60;
-			break;
-		case 0xA8:	// Entered Post Dive interval mode (surfaced)
-			break;
-		case 0xA9:	// Exited PDI mode (re-submierged)
-			break;
-		case 0xBD:	// Switched to normal PO2 setting
-			break;
-		case 0xC0:	// Switched to FO2 21% mode (generally upon surface)
-			break;
-		case 0xC1:	// "Ascent rate alarm
-			add_event(dc, seconds, SAMPLE_EVENT_ASCENT,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
-			break;
-		case 0xC2:	// Low battery warning
+	switch (s[0]) {
+	case 0xC5:	// Deco obligation begins
+		*in_deco = 1;
+		add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
+		break;
+	case 0xDB:	// Deco obligation ends
+		*in_deco = 0;
+		add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
+			SAMPLE_FLAGS_END, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
+		break;
+	case 0xAD:	// Raise deco ceiling 10 ft
+		*deco_ceiling -= 10; // ft
+		*deco_time = (array_uint16_le(s + 3) + 1) * 60;
+		break;
+	case 0xAB:	// Lower deco ceiling 10 ft
+		*deco_ceiling += 10;	// ft
+		*deco_time = (array_uint16_le(s + 3) + 1) * 60;
+		break;
+	case 0xA8:	// Entered Post Dive interval mode (surfaced)
+		break;
+	case 0xA9:	// Exited PDI mode (re-submierged)
+		break;
+	case 0xBD:	// Switched to normal PO2 setting
+		break;
+	case 0xC0:	// Switched to FO2 21% mode (generally upon surface)
+		break;
+	case 0xC1:	// "Ascent rate alarm
+		add_event(dc, seconds, SAMPLE_EVENT_ASCENT,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
+		break;
+	case 0xC2:	// Low battery warning
 #ifdef SAMPLE_EVENT_BATTERY
-			add_event(dc, seconds, SAMPLE_EVENT_BATTERY,
-					SAMPLE_FLAGS_NONE, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "battery"));
+		add_event(dc, seconds, SAMPLE_EVENT_BATTERY,
+			SAMPLE_FLAGS_NONE, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "battery"));
 #endif
-			break;
-		case 0xC3:	// CNS warning
-			add_event(dc, seconds, SAMPLE_EVENT_OLF,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "OLF"));
-			break;
-		case 0xC4:	// Depth alarm begin
-			add_event(dc, seconds, SAMPLE_EVENT_MAXDEPTH,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"));
-			break;
-		case 0xC8:	// PPO2 alarm begin
-			add_event(dc, seconds, SAMPLE_EVENT_PO2,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
-			break;
-		case 0xCC:	// Low cylinder 1 pressure";
-			break;
-		case 0xCD:	// Switch to deco blend setting
-			add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
-					SAMPLE_FLAGS_NONE, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
-			break;
-		case 0xCE:	// NDL alarm begin
-			add_event(dc, seconds, SAMPLE_EVENT_RBT,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
-			break;
-		case 0xD0:	// Breathing rate alarm begin
-			break;
-		case 0xD3:	// Low gas 1 flow rate alarm begin";
-			break;
-		case 0xD6:	// Ceiling alarm begin
-			add_event(dc, seconds, SAMPLE_EVENT_CEILING,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
-			break;
-		case 0xD8:	// End decompression mode
-			*in_deco = 0;
-			add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
-					SAMPLE_FLAGS_END, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
-			break;
-		case 0xE1:	// Ascent alarm end
-			add_event(dc, seconds, SAMPLE_EVENT_ASCENT,
-					SAMPLE_FLAGS_END, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
-				break;
-		case 0xE2:	// Low transmitter battery alarm
-			add_event(dc, seconds, SAMPLE_EVENT_TRANSMITTER,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "transmitter"));
-			break;
-		case 0xE3:	// Switch to FO2 mode
-			break;
-		case 0xE5:	// Switched to PO2 mode
-			break;
-		case 0xE8:	// PO2 too low alarm
-			add_event(dc, seconds, SAMPLE_EVENT_PO2,
-					SAMPLE_FLAGS_BEGIN, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
-			break;
-		case 0xEE:	// NDL alarm end
-			add_event(dc, seconds, SAMPLE_EVENT_RBT,
-					SAMPLE_FLAGS_END, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
-			break;
-		case 0xEF:	// Switch to blend 2
-			add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
-					SAMPLE_FLAGS_NONE, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
-			break;
-		case 0xF0:	// Breathing rate alarm end
-			break;
-		case 0xF3:	// Switch to blend 1 (often at dive start)
-			add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
-					SAMPLE_FLAGS_NONE, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
-			break;
-		case 0xF6:	// Ceiling alarm end
-			add_event(dc, seconds, SAMPLE_EVENT_CEILING,
-					SAMPLE_FLAGS_END, 0,
-					QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
-			break;
-		default:
-			break;
-		}
+		break;
+	case 0xC3:	// CNS warning
+		add_event(dc, seconds, SAMPLE_EVENT_OLF,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "OLF"));
+		break;
+	case 0xC4:	// Depth alarm begin
+		add_event(dc, seconds, SAMPLE_EVENT_MAXDEPTH,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"));
+		break;
+	case 0xC8:	// PPO2 alarm begin
+		add_event(dc, seconds, SAMPLE_EVENT_PO2,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
+		break;
+	case 0xCC:	// Low cylinder 1 pressure";
+		break;
+	case 0xCD:	// Switch to deco blend setting
+		add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
+			SAMPLE_FLAGS_NONE, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
+		break;
+	case 0xCE:	// NDL alarm begin
+		add_event(dc, seconds, SAMPLE_EVENT_RBT,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
+		break;
+	case 0xD0:	// Breathing rate alarm begin
+		break;
+	case 0xD3:	// Low gas 1 flow rate alarm begin";
+		break;
+	case 0xD6:	// Ceiling alarm begin
+		add_event(dc, seconds, SAMPLE_EVENT_CEILING,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
+		break;
+	case 0xD8:	// End decompression mode
+		*in_deco = 0;
+		add_event(dc, seconds, SAMPLE_EVENT_DECOSTOP,
+			SAMPLE_FLAGS_END, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "deco stop"));
+		break;
+	case 0xE1:	// Ascent alarm end
+		add_event(dc, seconds, SAMPLE_EVENT_ASCENT,
+			SAMPLE_FLAGS_END, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
+		break;
+	case 0xE2:	// Low transmitter battery alarm
+		add_event(dc, seconds, SAMPLE_EVENT_TRANSMITTER,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "transmitter"));
+		break;
+	case 0xE3:	// Switch to FO2 mode
+		break;
+	case 0xE5:	// Switched to PO2 mode
+		break;
+	case 0xE8:	// PO2 too low alarm
+		add_event(dc, seconds, SAMPLE_EVENT_PO2,
+			SAMPLE_FLAGS_BEGIN, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
+		break;
+	case 0xEE:	// NDL alarm end
+		add_event(dc, seconds, SAMPLE_EVENT_RBT,
+			SAMPLE_FLAGS_END, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
+		break;
+	case 0xEF:	// Switch to blend 2
+		add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
+			SAMPLE_FLAGS_NONE, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
+		break;
+	case 0xF0:	// Breathing rate alarm end
+		break;
+	case 0xF3:	// Switch to blend 1 (often at dive start)
+		add_event(dc, seconds, SAMPLE_EVENT_GASCHANGE,
+			SAMPLE_FLAGS_NONE, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
+		break;
+	case 0xF6:	// Ceiling alarm end
+		add_event(dc, seconds, SAMPLE_EVENT_CEILING,
+			SAMPLE_FLAGS_END, 0,
+			QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
+		break;
+	default:
+		break;
+	}
 }
-
 
 /*
 * Parse sample data, extract events and build a dive
 */
-
 static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
-					const unsigned char *samples, int size,
-					unsigned int *duration, double *max_depth,
-					double *avg_depth, double *min_temp)
+                                  const unsigned char *samples, int size,
+                                  unsigned int *duration, double *max_depth,
+                                  double *avg_depth, double *min_temp)
 {
 	const unsigned char *s;
 	unsigned int offset = 0, seconds = 0;
@@ -473,24 +450,22 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	*max_depth = 0, *avg_depth = 0, *min_temp = 0xFF;
 
 	// Get starting depth and temp (tank PSI???)
-	switch (config.type)
-	{
+	switch (config.type) {
 	case TYPE_GEMINI:
-		depth = (float) (log_cmdr->start_depth[0]
-						+ log_cmdr->start_depth[1] * 256) / 4;
+		depth = (float)(log_cmdr->start_depth[0]
+			+ log_cmdr->start_depth[1] * 256) / 4;
 		psi = log_cmdr->start_psi[0] + log_cmdr->start_psi[1] * 256;
-		sgc_rate = (float) (log_cmdr->start_sgc[0]
-						+ log_cmdr->start_sgc[1] * 256) / 2;
+		sgc_rate = (float)(log_cmdr->start_sgc[0]
+			+ log_cmdr->start_sgc[1] * 256) / 2;
 		break;
-
 	case TYPE_COMMANDER:
-		depth = (float) (log_cmdr->start_depth[0]
-						+ log_cmdr->start_depth[1] * 256) / 4;
+		depth = (float)(log_cmdr->start_depth[0]
+			+ log_cmdr->start_depth[1] * 256) / 4;
 		break;
 
 	case TYPE_EMC:
-		depth = (float) log_emc->start_depth[0] / 256
-						+ log_emc->start_depth[1];
+		depth = (float)log_emc->start_depth[0] / 256
+			+ log_emc->start_depth[1];
 		temp = log_emc->start_temperature;
 		break;
 	}
@@ -499,11 +474,11 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	unsigned int x = 0;
 	if (samples[x] != 0x40) {
 		unsigned int c;
-		while ( (samples[x] & 0x80) == 0 && samples[x] != 0x40 && x < size) {
+		while ((samples[x] & 0x80) == 0 && samples[x] != 0x40 && x < size) {
 			c = cochran_predive_event_bytes(samples[x]) + 1;
 #ifdef COCHRAN_DEBUG
-			printf ("Predive event: ", samples[x]);
-			for (int y = 0; y < c; y++) printf ("%02x ", samples[x + y]);
+			printf("Predive event: ", samples[x]);
+			for (int y = 0; y < c; y++) printf("%02x ", samples[x + y]);
 			putchar('\n');
 #endif
 			x += c;
@@ -527,18 +502,16 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		}
 
 		// Depth is in every sample
-		depth_sample = (float) (s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
+		depth_sample = (float)(s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
 		depth += depth_sample;
 
 #ifdef COCHRAN_DEBUG
 		cochran_debug_sample(s, seconds);
 #endif
 
-		switch (config.type)
-		{
+		switch (config.type) {
 		case TYPE_COMMANDER:
-			switch (seconds % 2)
-			{
+			switch (seconds % 2) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
@@ -549,35 +522,32 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			break;
 		case TYPE_GEMINI:
 			// Gemini with tank pressure and SAC rate.
-			switch (seconds % 4)
-			{
+			switch (seconds % 4) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1);
 				break;
 			case 2:	// PSI change
-				psi -= (float) (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
+				psi -= (float)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
 				break;
 			case 1:	// SGC rate
-				sgc_rate -= (float) (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 2;
+				sgc_rate -= (float)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 2;
 				break;
 			case 3:	// Temperature
-				temp = (float) s[1] / 2 + 20;
+				temp = (float)s[1] / 2 + 20;
 				break;
 			}
 			break;
 		case TYPE_EMC:
-			switch (seconds % 2)
-			{
+			switch (seconds % 2) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
 			case 1:	// Temperature
-				temp = (float) s[1] / 2 + 20;
+				temp = (float)s[1] / 2 + 20;
 				break;
 			}
 			// Get NDL and deco information
-			switch (seconds % 24)
-			{
+			switch (seconds % 24) {
 			case 20:
 				if (in_deco) {
 					// Fist stop time
@@ -623,9 +593,8 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		*duration = seconds - 1;
 }
 
-
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
-			       const unsigned char *in, unsigned size)
+                               const unsigned char *in, unsigned size)
 {
 	unsigned char *buf = malloc(size);
 	struct dive *dive;
@@ -659,14 +628,14 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	 */
 	// Decode log entry (512 bytes + random prefix)
 	partial_decode(0x48ff, 0x4914 + config.logbook_size, decode,
-					0, mod, in, size, buf);
+		0, mod, in, size, buf);
 
 	unsigned int sample_size = size - 0x4914 - config.logbook_size;
 	int g;
 
 	// Decode sample data
 	partial_decode(0x4914 + config.logbook_size, size, decode,
-					0, mod, in, size, buf);
+		0, mod, in, size, buf);
 
 #ifdef COCHRAN_DEBUG
 	// Display pre-logbook data
@@ -687,8 +656,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	struct cochran_cmdr_log_t *cmdr_log = (struct cochran_cmdr_log_t *) (buf + 0x4914);
 	struct cochran_emc_log_t *emc_log = (struct cochran_emc_log_t *) (buf + 0x4914);
 
-	switch (config.type)
-	{
+	switch (config.type) {
 	case TYPE_GEMINI:
 	case TYPE_COMMANDER:
 		if (config.type == TYPE_GEMINI) {
@@ -722,12 +690,12 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = (cmdr_log->bt[0] + cmdr_log->bt[1] * 256) * 60;
 		dc->surfacetime.seconds = (cmdr_log->sit[0] + cmdr_log->sit[1] * 256) * 60;
 		dc->maxdepth.mm = (cmdr_log->max_depth[0] +
-							cmdr_log->max_depth[1] * 256) / 4 * FEET * 1000;
+			cmdr_log->max_depth[1] * 256) / 4 * FEET * 1000;
 		dc->meandepth.mm = (cmdr_log->avg_depth[0] +
-							cmdr_log->avg_depth[1] * 256) / 4 * FEET * 1000;
+			cmdr_log->avg_depth[1] * 256) / 4 * FEET * 1000;
 		dc->watertemp.mkelvin = C_to_mkelvin((cmdr_log->temp / 32) - 1.8);
 		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-					* (double) cmdr_log->altitude * 250 * FEET, 5.25588) * 1000;
+			* (double) cmdr_log->altitude * 250 * FEET, 5.25588) * 1000;
 		dc->salinity = 10000 + 150 * emc_log->water_conductivity;
 
 		SHA1(cmdr_log->number, 2, (unsigned char *)csum);
@@ -756,18 +724,17 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		tm.tm_sec = emc_log->seconds;
 		tm.tm_isdst = -1;
 
-
 		dive->when = dc->when = utc_mktime(&tm);
 		dive->number = emc_log->number[0] + emc_log->number[1] * 256 + 1;
 		dc->duration.seconds = (emc_log->bt[0] + emc_log->bt[1] * 256) * 60;
 		dc->surfacetime.seconds = (emc_log->sit[0] + emc_log->sit[1] * 256) * 60;
 		dc->maxdepth.mm = (emc_log->max_depth[0] +
-							emc_log->max_depth[1] * 256) / 4 * FEET * 1000;
+			emc_log->max_depth[1] * 256) / 4 * FEET * 1000;
 		dc->meandepth.mm = (emc_log->avg_depth[0] +
-							emc_log->avg_depth[1] * 256) / 4 * FEET * 1000;
+			emc_log->avg_depth[1] * 256) / 4 * FEET * 1000;
 		dc->watertemp.mkelvin = C_to_mkelvin((emc_log->temp - 32) / 1.8);
 		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-				* (double) emc_log->altitude * 250 * FEET, 5.25588) * 1000;
+			* (double) emc_log->altitude * 250 * FEET, 5.25588) * 1000;
 		dc->salinity = 10000 + 150 * emc_log->water_conductivity;
 
 		SHA1(emc_log->number, 2, (unsigned char *)csum);
@@ -780,8 +747,8 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	}
 
 	cochran_parse_samples(dive, buf + 0x4914, buf + 0x4914
-					+ config.logbook_size, sample_size,
-					&duration, &max_depth, &avg_depth, &min_temp);
+		+ config.logbook_size, sample_size,
+		&duration, &max_depth, &avg_depth, &min_temp);
 
 	// Check for corrupt dive
 	if (corrupt_dive) {
@@ -816,7 +783,6 @@ int try_to_open_cochran(const char *filename, struct memblock *mem)
 		return 0;
 
 	mod = decode[0x100] + 1;
-
 	cochran_parse_header(decode, mod, mem->buffer + 0x40000, dive1 - 0x40000);
 
 	// Decode each dive
