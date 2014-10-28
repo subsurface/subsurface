@@ -704,7 +704,7 @@ QString MainWindow::filter()
 	QString f;
 	f += "ALL ( *.ssrf *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
 	f += "*.sde *.SDE *.dld *.DLD ";
-	f += "*.db";
+	f += "*.db *.can";
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
@@ -715,7 +715,8 @@ QString MainWindow::filter()
 
 	f += "SDE (*.sde *.SDE);;";
 	f += "DLD (*.dld *.DLD);;";
-	f += "DB (*.db)";
+	f += "DB (*.db);;";
+	f += "CAN (*.can)";
 
 	return f;
 }
