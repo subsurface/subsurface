@@ -715,14 +715,14 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 
 	/* Determine NL (new line) character and the start of CSV data */
 	ptr = mem.buffer;
-	while (ptr = strstr(ptr, "\r\n\r\n")) {
+	while ((ptr = strstr(ptr, "\r\n\r\n")) != NULL) {
 		ptr_old = ptr;
 		ptr += 1;
 		NL = "\r\n";
 	}
 
 	if (!ptr_old) {
-		while (ptr = strstr(ptr, "\n\n")) {
+		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
 			ptr += 1;
 		}
