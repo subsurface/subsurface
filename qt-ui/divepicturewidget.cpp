@@ -51,7 +51,7 @@ void DivePictureModel::updateDivePictures()
 
 	stringPixmapCache.clear();
 	QStringList pictures;
-	FOR_EACH_PICTURE (&displayed_dive) {
+	FOR_EACH_PICTURE_NON_PTR(displayed_dive) {
 		stringPixmapCache[QString(picture->filename)].offsetSeconds = picture->offset.seconds;
 		pictures.push_back(QString(picture->filename));
 	}
