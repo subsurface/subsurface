@@ -588,6 +588,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		offset += config.sample_size;
 		seconds++;
 	}
+	(void)ascent_rate; // mark the variable as unused
 
 	if (seconds > 0)
 		*duration = seconds - 1;
