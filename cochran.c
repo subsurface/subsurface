@@ -285,6 +285,8 @@ static int cochran_predive_event_bytes(unsigned char code)
 		return emc_event_bytes[x][1];
 		break;
 	}
+
+	return 0;
 }
 
 int cochran_dive_event_bytes(unsigned char event)
