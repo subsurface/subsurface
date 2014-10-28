@@ -1526,10 +1526,11 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 	int levels = 2;
 	char *p = buf;
 
-	if (!node || !node->name)
+	if (node->type != XML_CDATA_SECTION_NODE && (!node || !node->name)) {
 		return "root";
+	}
 
-	if (node->parent && !strcmp(node->name, "text"))
+	if (node->type == XML_CDATA_SECTION_NODE || (node->parent && !strcmp(node->name, "text")))
 		node = node->parent;
 
 	/* Make sure it's always NUL-terminated */
