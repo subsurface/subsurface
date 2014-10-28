@@ -1234,9 +1234,10 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!csv|?!txt)", Qt::CaseInsensitive));
+	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!(csv|txt))", Qt::CaseInsensitive));
 	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
 	QStringList txtFiles = fileNames.filter(".txt", Qt::CaseInsensitive);
+
 	if (logFiles.size()) {
 		importFiles(logFiles);
 	}
