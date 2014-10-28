@@ -131,7 +131,7 @@ bool DiveEventItem::shouldBeHidden()
 	 * Don't bother showing those
 	 */
 	struct sample *first_sample = &get_dive_dc(&displayed_dive, dc_number)->sample[0];
-	if (!strcmp(event->name, "gaschange") && (event->time.seconds < 30 || event->time.seconds == first_sample->time.seconds))
+	if (!strcmp(event->name, "gaschange") && event->time.seconds == first_sample->time.seconds)
 		return true;
 
 	for (int i = 0; i < evn_used; i++) {
