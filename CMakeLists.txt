@@ -123,6 +123,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/divecomputermanagementdialog.cpp
 	qt-ui/divelistview.cpp
 	qt-ui/diveplanner.cpp
+	qt-ui/diveshareexportdialog.cpp
 	qt-ui/downloadfromdivecomputer.cpp
 	qt-ui/globe.cpp
 	qt-ui/graphicsview-common.cpp
@@ -131,6 +132,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/mainwindow.cpp
 	qt-ui/modeldelegates.cpp
 	qt-ui/models.cpp
+	qt-ui/metrics.cpp
 	qt-ui/preferences.cpp
 	qt-ui/printdialog.cpp
 	qt-ui/printlayout.cpp
