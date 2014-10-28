@@ -603,6 +603,7 @@ extern int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char 
 
 extern int parse_file(const char *filename);
 extern int parse_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int units);
+extern int parse_seabear_csv_file(const char *filename, int time, int depth, int temp, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int units);
 extern int parse_txt_file(const char *filename, const char *csv);
 extern int parse_manual_file(const char *filename, int separator_index, int units, int number, int date, int time, int duration, int location, int gps, int maxdepth, int meandepth, int buddy, int notes, int weight, int tags);
 

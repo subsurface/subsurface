@@ -69,7 +69,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	if (ui->tabWidget->currentIndex() == 0) {
 		for (int i = 0; i < fileNames.size(); ++i) {
-			parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
+			if (ui->knownImports->currentText() == QString("Seabear CSV")) {
+				parse_seabear_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
 				       ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
 				       VALUE_IF_CHECKED(CSVpo2),
 				       VALUE_IF_CHECKED(CSVcns),
@@ -80,6 +81,26 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				       ui->CSVSeparator->currentIndex(),
 				       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 				       ui->CSVUnits->currentIndex());
+
+				/* Seabear CSV stores NDL and TTS in Minutes, not seconds */
+				struct dive *dive = dive_table.dives[dive_table.nr - 1];
+				for(int s_nr = 0 ; s_nr <= dive->dc.samples ; s_nr++) {
+					struct sample *sample = dive->dc.sample + s_nr;
+					sample->ndl.seconds *= 60;
+					sample->tts.seconds *= 60;
+				}
+			} else
+				parse_csv_file(fileNames[i].toUtf8().data(), ui->CSVTime->value() - 1,
+						ui->CSVDepth->value() - 1, VALUE_IF_CHECKED(CSVTemperature),
+						VALUE_IF_CHECKED(CSVpo2),
+						VALUE_IF_CHECKED(CSVcns),
+						VALUE_IF_CHECKED(CSVndl),
+						VALUE_IF_CHECKED(CSVtts),
+						VALUE_IF_CHECKED(CSVstopdepth),
+						VALUE_IF_CHECKED(CSVpressure),
+						ui->CSVSeparator->currentIndex(),
+						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+						ui->CSVUnits->currentIndex());
 		}
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
@@ -94,29 +115,6 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					  VALUE_IF_CHECKED(Notes), VALUE_IF_CHECKED(Weight),
 					  VALUE_IF_CHECKED(Tags));
 		}
-	}
-	if (ui->knownImports->currentText() == QString("Seabear CSV")) {
-		/* Seabear CSV stores NDL and TTS in Minutes, not seconds */
-		struct dive *dive = dive_table.dives[dive_table.nr - 1];
-		for(int s_nr = 0 ; s_nr <= dive->dc.samples ; s_nr++) {
-			struct sample *sample = dive->dc.sample + s_nr;
-			sample->ndl.seconds *= 60;
-			sample->tts.seconds *= 60;
-		}
-
-		/* And the two first samples are "settings" from there software */
-		memmove(dive->dc.sample, dive->dc.sample + 2, sizeof(dive->dc.sample) * dive->dc.samples - 2);
-		dive->dc.samples -= 2;
-		memset(dive->dc.sample + dive->dc.samples, 0, sizeof(dive->dc.sample) * 2);
-
-		/* And fix dammanged temperature from the initial samples */
-		dive->mintemp.mkelvin = 0;
-		dive->maxtemp.mkelvin = 0;
-		dive->watertemp.mkelvin = 0;
-		dive->dc.watertemp.mkelvin = 0;
-		dive->cylinder[0].start.mbar = 0;
-		dive->cylinder[0].sample_start.mbar = 0;
-		fixup_dive(dive);
 	}
 
 	process_dives(true, false);

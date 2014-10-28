@@ -105,7 +105,7 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 {
 	char *buf;
 
-	if (readfile(filename, mem) < 0)
+	if (mem->size == 0 && readfile(filename, mem) < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/* Surround the CSV file content with XML tags to enable XSLT
@@ -589,29 +589,11 @@ int parse_txt_file(const char *filename, const char *csv)
 
 #define MAXCOLDIGITS 3
 #define MAXCOLS 100
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+#define DATESTR 9
+#define TIMESTR 6
+void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *tempbuf, char *po2buf, char *cnsbuf, char *ndlbuf, char *ttsbuf, char *stopdepthbuf, char *pressurebuf, char *unitbuf, char *separator_index, time_t *now, struct tm *timep, char *curdate, char *curtime, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
 {
-	struct memblock mem;
 	int pnr = 0;
-	char *params[27];
-	char timebuf[MAXCOLDIGITS];
-	char depthbuf[MAXCOLDIGITS];
-	char tempbuf[MAXCOLDIGITS];
-	char po2buf[MAXCOLDIGITS];
-	char cnsbuf[MAXCOLDIGITS];
-	char ndlbuf[MAXCOLDIGITS];
-	char ttsbuf[MAXCOLDIGITS];
-	char stopdepthbuf[MAXCOLDIGITS];
-	char pressurebuf[MAXCOLDIGITS];
-	char unitbuf[MAXCOLDIGITS];
-	char separator_index[MAXCOLDIGITS];
-	time_t now;
-	struct tm *timep;
-	char curdate[9];
-	char curtime[6];
-
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
-		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
 	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
 	snprintf(depthbuf, MAXCOLDIGITS, "%d", depthf);
@@ -624,13 +606,13 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	snprintf(pressurebuf, MAXCOLDIGITS, "%d", pressuref);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unitbuf, MAXCOLDIGITS, "%d", unitidx);
-	time(&now);
-	timep = localtime(&now);
-	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
+	time(now);
+	timep = localtime(now);
+	strftime(curdate, DATESTR, "%Y%m%d", timep);
 
 	/* As the parameter is numeric, we need to ensure that the leading zero
 	* is not discarded during the transform, thus prepend time with 1 */
-	strftime(curtime, sizeof(curtime), "1%H%M", timep);
+	strftime(curtime, TIMESTR, "1%H%M", timep);
 
 	params[pnr++] = "timeField";
 	params[pnr++] = timebuf;
@@ -659,9 +641,124 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	params[pnr++] = "separatorIndex";
 	params[pnr++] = separator_index;
 	params[pnr++] = NULL;
+}
+
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+{
+	struct memblock mem;
+	char *params[27];
+	char timebuf[MAXCOLDIGITS];
+	char depthbuf[MAXCOLDIGITS];
+	char tempbuf[MAXCOLDIGITS];
+	char po2buf[MAXCOLDIGITS];
+	char cnsbuf[MAXCOLDIGITS];
+	char ndlbuf[MAXCOLDIGITS];
+	char ttsbuf[MAXCOLDIGITS];
+	char stopdepthbuf[MAXCOLDIGITS];
+	char pressurebuf[MAXCOLDIGITS];
+	char unitbuf[MAXCOLDIGITS];
+	char separator_index[MAXCOLDIGITS];
+	time_t now;
+	struct tm *timep;
+	char curdate[DATESTR];
+	char curtime[TIMESTR];
+
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
+		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
+
+	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, cnsbuf,ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, cnsf, ndlf, ttsf, stopdepthf, pressuref, sepidx, csvtemplate, unitidx);
 
 	if (filename == NULL)
 		return report_error("No CSV filename");
+
+	mem.size = 0;
+	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
+		return -1;
+
+	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
+	free(mem.buffer);
+	return 0;
+}
+
+int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+{
+	struct memblock mem, mem_data;
+	char *params[27];
+	char timebuf[MAXCOLDIGITS];
+	char depthbuf[MAXCOLDIGITS];
+	char tempbuf[MAXCOLDIGITS];
+	char po2buf[MAXCOLDIGITS];
+	char cnsbuf[MAXCOLDIGITS];
+	char ndlbuf[MAXCOLDIGITS];
+	char ttsbuf[MAXCOLDIGITS];
+	char stopdepthbuf[MAXCOLDIGITS];
+	char pressurebuf[MAXCOLDIGITS];
+	char unitbuf[MAXCOLDIGITS];
+	char separator_index[MAXCOLDIGITS];
+	time_t now;
+	struct tm *timep;
+	char curdate[DATESTR];
+	char curtime[TIMESTR];
+	char *ptr, *ptr_old = NULL;
+	char *NL;
+
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
+		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
+
+	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, cnsbuf,ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, cnsf, ndlf, ttsf, stopdepthf, pressuref, sepidx, csvtemplate, unitidx);
+
+	if (filename == NULL)
+		return report_error("No CSV filename");
+
+	if (readfile(filename, &mem) < 0)
+		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+
+	/* Determine NL (new line) character and the start of CSV data */
+	ptr = mem.buffer;
+	while (ptr = strstr(ptr, "\r\n\r\n")) {
+		ptr_old = ptr;
+		ptr += 1;
+		NL = "\r\n";
+	}
+
+	if (!ptr_old) {
+		while (ptr = strstr(ptr, "\n\n")) {
+			ptr_old = ptr;
+			ptr += 1;
+		}
+		ptr_old += 2;
+		NL = "\n";
+	} else
+		ptr_old += 4;
+
+	/*
+	 * On my current sample of Seabear DC log file, the date is
+	 * without any identifier. Thus we must search for the previous
+	 * line and step through from there.
+	 */
+	ptr = strstr(mem.buffer, "Serial number:");
+	if (ptr)
+		ptr = strstr(ptr, NL);
+
+	/* Write date and time values to params array */
+	if (ptr) {
+		ptr += strlen(NL) + 2;
+		memcpy(params[19], ptr, 4);
+		memcpy(params[19] + 4, ptr + 5, 2);
+		memcpy(params[19] + 6, ptr + 8, 2);
+		params[19][8] = 0;
+
+		params[21][0] = '1';
+		memcpy(params[21] + 1, ptr + 11, 2);
+		memcpy(params[21] + 3, ptr + 14, 2);
+		params[21][5] = 0;
+	}
+
+	/* Move the CSV data to the start of mem buffer */
+	mem_data.size = (int)mem.size - (ptr_old - (char*)mem.buffer);
+	mem_data.buffer = ptr_old;
+	memmove(mem.buffer, ptr_old, mem.size - (ptr_old - (char*)mem.buffer));
+	mem.size = (int)mem.size - (ptr_old - (char*)mem.buffer);
 
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
@@ -714,11 +811,11 @@ int parse_manual_file(const char *filename, int sepidx, int units, int numberf, 
 	snprintf(unit, MAXCOLDIGITS, "%d", units);
 	time(&now);
 	timep = localtime(&now);
-	strftime(curdate, sizeof(curdate), "%Y%m%d", timep);
+	strftime(curdate, DATESTR, "%Y%m%d", timep);
 
 	/* As the parameter is numeric, we need to ensure that the leading zero
 	* is not discarded during the transform, thus prepend time with 1 */
-	strftime(curtime, sizeof(curtime), "1%H%M", timep);
+	strftime(curtime, TIMESTR, "1%H%M", timep);
 
 	params[pnr++] = "numberField";
 	params[pnr++] = numberbuf;
@@ -757,6 +854,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int numberf, 
 	if (filename == NULL)
 		return report_error("No manual CSV filename");
 
+	mem.size = 0;
 	if (try_to_xslt_open_csv(filename, &mem, "manualCSV"))
 		return -1;
 
