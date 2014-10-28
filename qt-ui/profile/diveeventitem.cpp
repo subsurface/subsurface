@@ -127,16 +127,13 @@ bool DiveEventItem::shouldBeHidden()
 	struct event *event = internalEvent;
 
 	/*
-	 * Gas change events - particularly at the beginning of a dive - are
-	 * special. It's just the dive computer specifying the initial gas.
-	 *
-	 * Don't bother showing them if they match the first gas already
+	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
+	 * Don't bother showing those
 	 */
-	if (!strcmp(event->name, "gaschange") && event->time.seconds <= 30) {
-		struct dive *dive = &displayed_dive;
-		if (dive && get_cylinder_index(dive, event) == 0)
-			return true;
-	}
+	struct sample *first_sample = &get_dive_dc(&displayed_dive, dc_number)->sample[0];
+	if (!strcmp(event->name, "gaschange") && (event->time.seconds < 30 || event->time.seconds == first_sample->time.seconds))
+		return true;
+
 	for (int i = 0; i < evn_used; i++) {
 		if (!strcmp(event->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
 			return true;

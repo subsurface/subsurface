@@ -782,6 +782,19 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 	return abs(a.mbar - b.mbar) <= 500;
 }
 
+/* Some dive computers (Cobalt) don't start the dive with cylinder 0 but explicitly
+ * tell us what the first gas is with a gas change event in the first sample.
+ * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
+ * first cylinder - in which case cylinder 0 is indeed the first cylinder */
+int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
+{
+	struct event *ev = get_next_event(dc->events, "gaschange");
+	if (ev && ev->time.seconds == dc->sample[0].time.seconds)
+		return get_cylinder_index(dive, ev);
+	else
+		return 0;
+}
+
 void sanitize_gasmix(struct gasmix *mix)
 {
 	unsigned int o2, he;
@@ -1095,10 +1108,14 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int lasto2val[3] = { 0, 0, 0 };
 	int lasttemp = 0, lastpressure = 0, lastdiluentpressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
+	int first_cylinder;
 
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
 	update_min_max_temperatures(dive, dc->watertemp);
+
+	/* make sure we know for which tank the pressure values are intended */
+	first_cylinder = explicit_first_cylinder(dive, dc);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
@@ -1106,7 +1123,13 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		int temp = sample->temperature.mkelvin;
 		int pressure = sample->cylinderpressure.mbar;
 		int diluent_pressure = sample->diluentpressure.mbar;
-		int index = sample->sensor;
+		int index;
+
+		/* if we have an explicit first cylinder */
+		if (sample->sensor == 0 && first_cylinder != 0)
+			sample->sensor = first_cylinder;
+
+		index = sample->sensor;
 
 		if (index == lastindex) {
 			/* Remove duplicate redundant pressure information */

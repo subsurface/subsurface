@@ -360,6 +360,7 @@ extern unsigned int dive_get_picture_count(struct dive *d);
 extern void picture_load_exif_data(struct picture *p, timestamp_t *timestamp);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
+extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
 
 static inline int dive_has_gps_location(struct dive *dive)
 {

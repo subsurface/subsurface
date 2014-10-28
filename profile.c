@@ -378,6 +378,19 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, un
 	return i;
 }
 
+/* normally the first cylinder has index 0... if not, we need to fix this up here */
+static int set_first_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
+{
+	while (i < pi->nr) {
+		struct plot_data *entry = pi->entry + i;
+		if (entry->sec > end)
+			break;
+		entry->cylinderindex = cylinderindex;
+		i++;
+	}
+	return i;
+}
+
 static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i = 0, cylinderindex = 0;
@@ -385,6 +398,11 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 
 	if (!ev)
 		return;
+
+	// for dive computers that tell us their first gas as an event on the first sample
+	// we need to make sure things are setup correctly
+	if ((cylinderindex = explicit_first_cylinder(dive, dc)) != 0)
+		set_first_cylinder_index(pi, 0, cylinderindex, ~0u);
 
 	do {
 		i = set_cylinder_index(pi, i, cylinderindex, ev->time.seconds);

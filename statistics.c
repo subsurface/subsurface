@@ -302,7 +302,7 @@ bool is_cylinder_used(struct dive *dive, int idx)
 	for_each_dc(dive, dc) {
 		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
-			if (event->time.seconds < 30)
+			if (event->time.seconds < 30 || event->time.seconds == dc->sample[0].time.seconds)
 				firstGasExplicit = true;
 			if (get_cylinder_index(dive, event) == idx)
 				return true;
