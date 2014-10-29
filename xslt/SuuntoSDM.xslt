@@ -40,7 +40,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <temperature air="{concat(AIRTEMP, ' C')}" water="{concat(WATERTEMPATEND, ' C')}"/>
+      <temperature air="{concat(AIRTEMP, ' C')}" water="{concat(WATERTEMPMAXDEPTH, ' C')}"/>
       <xsl:if test="SURFACETIME != '0'">
         <surfacetime>
           <xsl:call-template name="timeConvert">
