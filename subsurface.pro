@@ -334,9 +334,9 @@ DEPLOYMENT_PLUGIN += iconengines/qsvgicon
 #DEPLOYMENT_PLUGIN += sqldrivers/qsqlite
 
 # This information will go into the Windows .rc file and linked into the .exe
-QMAKE_TARGET_COMPANY = subsurface team
-QMAKE_TARGET_DESCRIPTION = subsurface dive log
-QMAKE_TARGET_COPYRIGHT = Linus Torvalds, Dirk Hohndel and others
+QMAKE_TARGET_COMPANY = Subsurface Team
+QMAKE_TARGET_DESCRIPTION = Subsurface Dive Log
+QMAKE_TARGET_COPYRIGHT = Linus Torvalds, Dirk Hohndel, Tomaz Canabrava and others
 
 # And this is the Mac Info.plist file
 # qmake automatically generates sed rules to replace:
