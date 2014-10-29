@@ -136,6 +136,12 @@ void init_ui(void)
 	QFile::setDecodingFunction(decodeUtf8);
 	QFile::setEncodingFunction(encodeUtf8);
 #endif
+#else
+	// for Win32 and Qt5 we try to set the locale codec to UTF-8.
+	// this makes QFile::encodeName() work.
+#ifdef Q_OS_WIN
+	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
+#endif
 #endif
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
