@@ -84,6 +84,19 @@
 # Default installer section
 
 Section
+    !include x64.nsh
+    ${If} 64BITBUILDTOKEN
+        ${IfNot} ${RunningX64}
+            Abort "You cannot install the 64bit version of Subsurface on a 32bit version of Windows"
+        ${EndIf}
+    ${Else}
+        ${If} ${RunningX64}
+            MessageBox MB_YESNO "Do you really want to install the 32bit version of Subsurface on your 64bit version of Windows?" IDYES goforit
+                Abort "Please download the 64bit version of the Subsurface installer"
+            goforit:
+        ${EndIf}
+    ${Endif}
+
     SetShellVarContext all
 
     # Installation path
