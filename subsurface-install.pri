@@ -118,7 +118,11 @@ mac {
 		dlls.depends += $(DESTDIR_TARGET)
 
 		nsis.commands += $(CHK_DIR_EXISTS) $$WINDOWSSTAGING;
-		nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/\' > $$NSIFILE
+		win64target {
+			nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/;s/64BITBUILDTOKEN/1 == 1/\' > $$NSIFILE
+		} else {
+			nsis.commands += cat $$NSIINPUTFILE | sed -e \'s/VERSIONTOKEN/$$VERSION_STRING/;s/PRODVTOKEN/$${PRODVERSION_STRING}/;s/64BITBUILDTOKEN/1 == 0/\' > $$NSIFILE
+		}
 		nsis.depends += $$NSIINPUTFILE
 		nsis.target = $$NSISFILE
 		installer.commands += $$MAKENSIS $$NSIFILE
