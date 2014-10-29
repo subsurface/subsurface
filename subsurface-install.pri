@@ -125,6 +125,12 @@ mac {
 		}
 		nsis.depends += $$NSIINPUTFILE
 		nsis.target = $$NSISFILE
+		#
+		# FIXME HACK HACK FIXME  -- this is needed to create working daily builds...
+		#
+		brokenQt532win {
+			installer.commands += cp Qt531/*.dll staging;
+		}
 		installer.commands += $$MAKENSIS $$NSIFILE
 		installer.target = installer
 		installer.depends = nsis install
