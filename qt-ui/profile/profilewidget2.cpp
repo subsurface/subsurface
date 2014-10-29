@@ -1102,7 +1102,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	int rowCount = model->rowCount();
 	for (int i = 0; i < rowCount; i++) {
 		QAction *action = new QAction(&m);
-		action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
+		action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 		action->setData(event->globalPos());
 		gasChange->addAction(action);
@@ -1228,12 +1228,22 @@ void ProfileWidget2::changeGas()
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	QString gas = action->text();
+	gas.remove(QRegExp(" \\(.*\\)"));
+
 	// backup the things on the dataModel, since we will clear that out.
 	struct gasmix gasmix;
 	int seconds = timeAxis->valueAt(scenePos);
 
 	validate_gas(gas.toUtf8().constData(), &gasmix);
-	add_gas_switch_event(&displayed_dive, current_dc, seconds, get_gasidx(&displayed_dive, &gasmix));
+	QRegExp rx("\\(\\D*(\\d+)");
+	int tank;
+	if (rx.indexIn(action->text()) > -1) {
+		tank = rx.cap(1).toInt() - 1; // we display the tank 1 based
+	} else {
+		qDebug() << "failed to parse tank number";
+		tank = get_gasidx(&displayed_dive, &gasmix);
+	}
+	add_gas_switch_event(&displayed_dive, current_dc, seconds, tank);
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(&displayed_dive);
 
