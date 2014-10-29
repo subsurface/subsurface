@@ -34,6 +34,7 @@ if [[ $1 == "Qt5-64" ]] ; then
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		QMAKE_LIBDIR+=../openssl \
 		CONFIG+=win64target \
+		CONFIG+=brokenQt532win \
 		$BASEDIR/../../subsurface.pro
 
 elif [[ $1 == "Qt5" ]] ; then
