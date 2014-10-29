@@ -21,8 +21,7 @@ QMAKE_CLEAN += $$TARGET
 VERSION = 4.2
 
 HEADERS = \
-	cochran_cmdr.h \
-	cochran_emc.h \
+	cochran.h \
 	color.h \
 	deco.h \
 	device.h \

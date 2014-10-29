@@ -10,8 +10,7 @@
 #include "file.h"
 #include "units.h"
 #include "gettext.h"
-#include "cochran_emc.h"
-#include "cochran_cmdr.h"
+#include "cochran.h"
 #include "divelist.h"
 
 #include <libdivecomputer/parser.h>
@@ -445,30 +444,29 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	struct divecomputer *dc = &dive->dc;
 	struct sample *sample;
 
-	const struct cochran_cmdr_log_t *log_cmdr = (struct cochran_cmdr_log_t *) log;
-	const struct cochran_emc_log_t *log_emc = (struct cochran_emc_log_t *) log;
-
 	// Initialize stat variables
 	*max_depth = 0, *avg_depth = 0, *min_temp = 0xFF;
 
 	// Get starting depth and temp (tank PSI???)
 	switch (config.type) {
 	case TYPE_GEMINI:
-		depth = (float)(log_cmdr->start_depth[0]
-			+ log_cmdr->start_depth[1] * 256) / 4;
-		psi = log_cmdr->start_psi[0] + log_cmdr->start_psi[1] * 256;
-		sgc_rate = (float)(log_cmdr->start_sgc[0]
-			+ log_cmdr->start_sgc[1] * 256) / 2;
+		depth = (float) (log[CMD_START_DEPTH]
+			+ log[CMD_START_DEPTH + 1] * 256) / 4;
+		temp = log[CMD_START_TEMP];
+		psi = log[CMD_START_PSI] + log[CMD_START_PSI + 1] * 256;
+		sgc_rate = (float)(log[CMD_START_SGC]
+			+ log[CMD_START_SGC + 1] * 256) / 2;
 		break;
 	case TYPE_COMMANDER:
-		depth = (float)(log_cmdr->start_depth[0]
-			+ log_cmdr->start_depth[1] * 256) / 4;
+		depth = (float) (log[CMD_START_DEPTH]
+			+ log[CMD_START_DEPTH + 1] * 256) / 4;
+		temp = log[CMD_START_TEMP];
 		break;
 
 	case TYPE_EMC:
-		depth = (float)log_emc->start_depth[0] / 256
-			+ log_emc->start_depth[1];
-		temp = log_emc->start_temperature;
+		depth = (float) log [EMC_START_DEPTH] / 256
+			+ log[EMC_START_DEPTH + 1];
+		temp = log[EMC_START_TEMP];
 		break;
 	}
 
@@ -656,8 +654,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	dive = alloc_dive();
 	dc = &dive->dc;
 
-	struct cochran_cmdr_log_t *cmdr_log = (struct cochran_cmdr_log_t *) (buf + 0x4914);
-	struct cochran_emc_log_t *emc_log = (struct cochran_emc_log_t *) (buf + 0x4914);
+	unsigned char *log = (buf + 0x4914);
 
 	switch (config.type) {
 	case TYPE_GEMINI:
@@ -666,45 +663,45 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			dc->model = "Gemini";
 			dc->deviceid = buf[0x18c] * 256 + buf[0x18d];	// serial no
 			fill_default_cylinder(&dive->cylinder[0]);
-			dive->cylinder[0].gasmix.o2.permille = (cmdr_log->o2_percent[0][0] / 256
-				+ cmdr_log->o2_percent[0][1]) * 10;
+			dive->cylinder[0].gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
+				+ log[CMD_O2_PERCENT + 1]) * 10;
 			dive->cylinder[0].gasmix.he.permille = 0;
 		} else {
 			dc->model = "Commander";
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 			for (g = 0; g < 2; g++) {
 				fill_default_cylinder(&dive->cylinder[g]);
-				dive->cylinder[g].gasmix.o2.permille = (cmdr_log->o2_percent[g][0] / 256
-					+ cmdr_log->o2_percent[g][1]) * 10;
+				dive->cylinder[g].gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
+					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				dive->cylinder[g].gasmix.he.permille = 0;
 			}
 		}
 
-		tm.tm_year = cmdr_log->year;
-		tm.tm_mon = cmdr_log->month - 1;
-		tm.tm_mday = cmdr_log->day;
-		tm.tm_hour = cmdr_log->hour;
-		tm.tm_min = cmdr_log->minutes;
-		tm.tm_sec = cmdr_log->seconds;
+		tm.tm_year = log[CMD_YEAR];
+		tm.tm_mon = log[CMD_MON] - 1;
+		tm.tm_mday = log[CMD_DAY];
+		tm.tm_hour = log[CMD_HOUR];
+		tm.tm_min = log[CMD_MIN];
+		tm.tm_sec = log[CMD_SEC];
 		tm.tm_isdst = -1;
 
 		dive->when = dc->when = utc_mktime(&tm);
-		dive->number = cmdr_log->number[0] + cmdr_log->number[1] * 256 + 1;
-		dc->duration.seconds = (cmdr_log->bt[0] + cmdr_log->bt[1] * 256) * 60;
-		dc->surfacetime.seconds = (cmdr_log->sit[0] + cmdr_log->sit[1] * 256) * 60;
-		dc->maxdepth.mm = (cmdr_log->max_depth[0] +
-			cmdr_log->max_depth[1] * 256) / 4 * FEET * 1000;
-		dc->meandepth.mm = (cmdr_log->avg_depth[0] +
-			cmdr_log->avg_depth[1] * 256) / 4 * FEET * 1000;
-		dc->watertemp.mkelvin = C_to_mkelvin((cmdr_log->temp / 32) - 1.8);
+		dive->number = log[CMD_NUMBER] + log[CMD_NUMBER + 1] * 256 + 1;
+		dc->duration.seconds = (log[CMD_BT] + log[CMD_BT + 1] * 256) * 60;
+		dc->surfacetime.seconds = (log[CMD_SIT] + log[CMD_SIT + 1] * 256) * 60;
+		dc->maxdepth.mm = (log[CMD_MAX_DEPTH] +
+			log[CMD_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->meandepth.mm = (log[CMD_AVG_DEPTH] +
+			log[CMD_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->watertemp.mkelvin = C_to_mkelvin((log[CMD_MIN_TEMP] / 32) - 1.8);
 		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-			* (double) cmdr_log->altitude * 250 * FEET, 5.25588) * 1000;
-		dc->salinity = 10000 + 150 * emc_log->water_conductivity;
+			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000;
+		dc->salinity = 10000 + 150 * log[CMD_WATER_CONDUCTIVITY];
 
-		SHA1(cmdr_log->number, 2, (unsigned char *)csum);
+		SHA1(log + CMD_NUMBER, 2, (unsigned char *)csum);
 		dc->diveid = csum[0];
 
-		if (cmdr_log->max_depth[0] == 0xff && cmdr_log->max_depth[1] == 0xff)
+		if (log[CMD_MAX_DEPTH] == 0xff && log[CMD_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
 
 		break;
@@ -713,37 +710,39 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 		for (g = 0; g < 4; g++) {
 			fill_default_cylinder(&dive->cylinder[g]);
-			dive->cylinder[g].gasmix.o2.permille = (emc_log->o2_percent[g][0] / 256
-				+ emc_log->o2_percent[g][1]) * 10;
-			dive->cylinder[g].gasmix.he.permille = (emc_log->he_percent[g][0] / 256
-				+ emc_log->he_percent[g][1]) * 10;
+			dive->cylinder[g].gasmix.o2.permille =
+				(log[EMC_O2_PERCENT + g * 2] / 256
+				+ log[EMC_O2_PERCENT + g * 2 + 1]) * 10;
+			dive->cylinder[g].gasmix.he.permille =
+				(log[EMC_HE_PERCENT + g * 2] / 256
+				+ log[EMC_HE_PERCENT + g * 2 + 1]) * 10;
 		}
 
-		tm.tm_year = emc_log->year;
-		tm.tm_mon = emc_log->month - 1;
-		tm.tm_mday = emc_log->day;
-		tm.tm_hour = emc_log->hour;
-		tm.tm_min = emc_log->minutes;
-		tm.tm_sec = emc_log->seconds;
+		tm.tm_year = log[EMC_YEAR];
+		tm.tm_mon = log[EMC_MON] - 1;
+		tm.tm_mday = log[EMC_DAY];
+		tm.tm_hour = log[EMC_HOUR];
+		tm.tm_min = log[EMC_MIN];
+		tm.tm_sec = log[EMC_SEC];
 		tm.tm_isdst = -1;
 
 		dive->when = dc->when = utc_mktime(&tm);
-		dive->number = emc_log->number[0] + emc_log->number[1] * 256 + 1;
-		dc->duration.seconds = (emc_log->bt[0] + emc_log->bt[1] * 256) * 60;
-		dc->surfacetime.seconds = (emc_log->sit[0] + emc_log->sit[1] * 256) * 60;
-		dc->maxdepth.mm = (emc_log->max_depth[0] +
-			emc_log->max_depth[1] * 256) / 4 * FEET * 1000;
-		dc->meandepth.mm = (emc_log->avg_depth[0] +
-			emc_log->avg_depth[1] * 256) / 4 * FEET * 1000;
-		dc->watertemp.mkelvin = C_to_mkelvin((emc_log->temp - 32) / 1.8);
+		dive->number = log[EMC_NUMBER] + log[EMC_NUMBER + 1] * 256 + 1;
+		dc->duration.seconds = (log[EMC_BT] + log[EMC_BT + 1] * 256) * 60;
+		dc->surfacetime.seconds = (log[EMC_SIT] + log[EMC_SIT + 1] * 256) * 60;
+		dc->maxdepth.mm = (log[EMC_MAX_DEPTH] +
+			log[EMC_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->meandepth.mm = (log[EMC_AVG_DEPTH] +
+			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->watertemp.mkelvin = C_to_mkelvin((log[EMC_MIN_TEMP] - 32) / 1.8);
 		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-			* (double) emc_log->altitude * 250 * FEET, 5.25588) * 1000;
-		dc->salinity = 10000 + 150 * emc_log->water_conductivity;
+			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000;
+		dc->salinity = 10000 + 150 * (log[EMC_WATER_CONDUCTIVITY] & 0x3);
 
-		SHA1(emc_log->number, 2, (unsigned char *)csum);
+		SHA1(log + EMC_NUMBER, 2, (unsigned char *)csum);
 		dc->diveid = csum[0];
 
-		if (emc_log->max_depth[0] == 0xff && emc_log->max_depth[1] == 0xff)
+		if (log[EMC_MAX_DEPTH] == 0xff && log[EMC_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
 
 		break;
