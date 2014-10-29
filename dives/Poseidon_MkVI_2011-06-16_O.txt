@@ -1,0 +1,46 @@
+MkVI_Config v1.08
+
+ FF FF 00 00 CF AB 8C 15 F0 05 5B 05 29 20 18 12 04 00 00 00 01 13 00 63 2C 54 07 54 07 00 00 00 00 4F 48 63 0F 0D 00 B7 02 AB 65 CE 41 FD 65 CE 41 1B 0A D0 41 B8 FA DB 41 CC 0D E4 41 CA 5A E5
+ 41 42 09 E4 41 9B 1A E0 41 DD 48 DE 41 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+Dive started at            : 2011-06-16 13:55:59
+Starting O2 Pressure(Bar)  : 152.0
+Starting Dil Pressure(Bar) : 137.1
+Starting PO2 Sensor 1 (Bar): 0.41
+Starting PO2 Sensor 2 (Bar): 0.32
+Starting PO2 Sensor 1 (mV) : 24
+Starting PO2 Sensor 2 (mV) : 18
+Starting Depth (m)         : 0.4
+Depth offset (m)           : 0.0
+Mouthpiece Position        : Closed Circuit (1)
+Version number of logger   : 19
+Assumed FO2 of oxygen      : 99
+Software version           : 44
+Battery Serial number      : 0754
+Rig Serial number          : 0754
+Helium percentage          : 0
+Nitrogen percentage        : 79
+Battery SoC (%)            : 72
+Battery millivoltage       : 3939
+Battery cycles             : 13
+Cumulative OTUs            : 695
+Nitrogen tension 1         : 25.7996
+Nitrogen tension 2         : 25.7998
+Nitrogen tension 3         : 26.0049
+Nitrogen tension 4         : 27.4974
+Nitrogen tension 5         : 28.5067
+Nitrogen tension 6         : 28.6693
+Nitrogen tension 7         : 28.5045
+Nitrogen tension 8         : 28.0130
+Nitrogen tension 9         : 27.7856
+Helium tension 1           : 0.0000
+Helium tension 2           : 0.0000
+Helium tension 3           : 0.0000
+Helium tension 4           : 0.0000
+Helium tension 5           : 0.0000
+Helium tension 6           : 0.0000
+Helium tension 7           : 0.0000
+Helium tension 8           : 0.0000
+Helium tension 9           : 0.0000
