@@ -1081,7 +1081,7 @@ static int nitrox_sort_value(struct dive *dive)
 	return he * 1000 + o2;
 }
 
-static QVariant dive_table_alignment(int column, bool isHeader)
+static QVariant dive_table_alignment(int column)
 {
 	QVariant retVal;
 	switch (column) {
@@ -1093,7 +1093,7 @@ static QVariant dive_table_alignment(int column, bool isHeader)
 	case DiveTripModel::OTU:
 	case DiveTripModel::MAXCNS:
 		// Right align numeric columns
-		retVal = int((isHeader ? Qt::AlignLeft : Qt::AlignRight) | Qt::AlignVCenter);
+		retVal = int(Qt::AlignRight | Qt::AlignVCenter);
 		break;
 	// NR needs to be left aligned becase its the indent marker for trips too
 	case DiveTripModel::NR:
@@ -1116,7 +1116,7 @@ QVariant DiveItem::data(int column, int role) const
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
-		retVal = dive_table_alignment(column, false);
+		retVal = dive_table_alignment(column);
 		break;
 	case DiveTripModel::SORT_ROLE:
 		Q_ASSERT(dive != NULL);
@@ -1399,7 +1399,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
-		ret = dive_table_alignment(section, true);
+		ret = dive_table_alignment(section);
 		break;
 	case Qt::FontRole:
 		ret = defaultModelFont();
