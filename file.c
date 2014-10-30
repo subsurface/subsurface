@@ -471,6 +471,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
 		dive->dc.deviceid = atoi(parse_mkvi_value(memtxt.buffer, "Rig Serial number"));
 		dive->dc.dctype = CCR;
+		dive->dc.no_o2sensors = 2;
 
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
