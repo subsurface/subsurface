@@ -997,6 +997,8 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 void MainTab::saveTags()
 {
 	struct dive *cd = current_dive;
+	taglist_free(displayed_dive.tag_list);
+	displayed_dive.tag_list = NULL;
 	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&displayed_dive.tag_list, tag.toUtf8().data());
 	taglist_cleanup(&displayed_dive.tag_list);
