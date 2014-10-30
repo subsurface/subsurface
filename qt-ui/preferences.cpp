@@ -198,7 +198,6 @@ void PreferencesDialog::rememberPrefs()
 		s.remove(_setting)
 
 #define SAVE_OR_REMOVE(_setting, _default, _value)                       \
-	qDebug() << _setting << _default << _value;\
 	if (_value != _default)                                          \
 		s.setValue(_setting, _value);                            \
 	else                                                             \
