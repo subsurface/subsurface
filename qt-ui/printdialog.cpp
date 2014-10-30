@@ -68,7 +68,10 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 
 void PrintDialog::previewClicked(void)
 {
-	QPrintPreviewDialog previewDialog(&printer, this);
+	QPrintPreviewDialog previewDialog(&printer, this, Qt::Window
+		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
+		| Qt::WindowTitleHint);
+
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
 }
