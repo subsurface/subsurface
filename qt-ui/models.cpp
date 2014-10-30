@@ -1324,19 +1324,17 @@ QString DiveItem::displayDepthWithUnit() const
 
 QString DiveItem::displayDuration() const
 {
-	int hrs, mins, secs;
+	int hrs, mins;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	secs = dive->duration.seconds % 60;
-	mins = dive->duration.seconds / 60;
+	mins = (dive->duration.seconds+59) / 60;
 	hrs = mins / 60;
 	mins -= hrs * 60;
 
 	QString displayTime;
 	if (hrs)
-		displayTime = QString("%1:%2:").arg(hrs).arg(mins, 2, 10, QChar('0'));
+		displayTime = QString("%1:%2").arg(hrs).arg(mins, 2, 10, QChar('0'));
 	else
-		displayTime = QString("%1:").arg(mins);
-	displayTime += QString("%1").arg(secs, 2, 10, QChar('0'));
+		displayTime = QString("%1").arg(mins);
 	return displayTime;
 }
 
