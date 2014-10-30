@@ -1718,6 +1718,13 @@ during the dive. For more information external to this manual see:
 
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
+[icon="images/tissues.jpg"]
+[NOTE]
+Display inert gas tissue pressures relative to ambient pressure (horizontal grey line.)
+Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from green (faster tissues) to blue (slower tissues).
+The black line, graphed above the ambient pressure, is the maximum allowable tissue supersaturation which includes the gradient factors specified in Preferences.
+
+image::images/tissuesGraph.jpg["Figure: Inert gas tissue pressure graph",align="center"]
 
 === The Dive Profile context menu
 
