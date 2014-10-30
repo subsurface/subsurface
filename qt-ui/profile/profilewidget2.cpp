@@ -1243,7 +1243,9 @@ void ProfileWidget2::changeGas()
 		qDebug() << "failed to parse tank number";
 		tank = get_gasidx(&displayed_dive, &gasmix);
 	}
-	add_gas_switch_event(&displayed_dive, current_dc, seconds, tank);
+	// add this both to the displayed dive and the current dive
+	add_gas_switch_event(current_dive, current_dc, seconds, tank);
+	add_gas_switch_event(&displayed_dive, get_dive_dc(&displayed_dive, dc_number), seconds, tank);
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(&displayed_dive);
 
