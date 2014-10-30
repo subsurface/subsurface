@@ -1209,6 +1209,54 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		}
 		break;
+	case Qt::ToolTipRole:
+		switch (column) {
+		case NR:
+			retVal = tr("#");
+			break;
+		case DATE:
+			retVal = tr("Date");
+			break;
+		case RATING:
+			retVal = tr("Rating");
+			break;
+		case DEPTH:
+			retVal = tr("Depth(%1)").arg((get_units()->length == units::METERS) ? tr("m") : tr("ft"));
+			break;
+		case DURATION:
+			retVal = tr("Duration");
+			break;
+		case TEMPERATURE:
+			retVal = tr("Temp(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			break;
+		case TOTALWEIGHT:
+			retVal = tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
+			break;
+		case SUIT:
+			retVal = tr("Suit");
+			break;
+		case CYLINDER:
+			retVal = tr("Cyl");
+			break;
+		case GAS:
+			retVal = tr("Gas");
+			break;
+		case SAC:
+			const char *unit;
+			get_volume_units(0, NULL, &unit);
+			retVal = tr("SAC(%1)").arg(QString(unit).append(tr("/min")));
+			break;
+		case OTU:
+			retVal = tr("OTU");
+			break;
+		case MAXCNS:
+			retVal = tr("Max CNS");
+			break;
+		case LOCATION:
+			retVal = tr("Location");
+			break;
+		}
+		break;
 	}
 
 	if (role == DiveTripModel::STAR_ROLE) {
@@ -1359,6 +1407,52 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		ret = defaultModelFont();
 		break;
 	case Qt::DisplayRole:
+		switch (section) {
+		case NR:
+			ret = tr("#");
+			break;
+		case DATE:
+			ret = tr("Date");
+			break;
+		case RATING:
+			ret = tr("Rating");
+			break;
+		case DEPTH:
+			ret = tr("Depth");
+			break;
+		case DURATION:
+			ret = tr("Duration");
+			break;
+		case TEMPERATURE:
+			ret = tr("Temp");
+			break;
+		case TOTALWEIGHT:
+			ret = tr("Weight");
+			break;
+		case SUIT:
+			ret = tr("Suit");
+			break;
+		case CYLINDER:
+			ret = tr("Cyl");
+			break;
+		case GAS:
+			ret = tr("Gas");
+			break;
+		case SAC:
+			ret = tr("SAC");
+			break;
+		case OTU:
+			ret = tr("OTU");
+			break;
+		case MAXCNS:
+			ret = tr("Max CNS");
+			break;
+		case LOCATION:
+			ret = tr("Location");
+			break;
+		}
+		break;
+	case Qt::ToolTipRole:
 		switch (section) {
 		case NR:
 			ret = tr("#");
