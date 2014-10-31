@@ -136,6 +136,7 @@ public:
 	TagFilter(QWidget *parent = 0);
 	virtual void showEvent(QShowEvent *);
 	virtual void hideEvent(QHideEvent *);
+
 private:
 	Ui::FilterWidget ui;
 };
@@ -146,6 +147,7 @@ public:
 	BuddyFilter(QWidget *parent = 0);
 	virtual void showEvent(QShowEvent *);
 	virtual void hideEvent(QHideEvent *);
+
 private:
 	Ui::FilterWidget ui;
 };
@@ -156,6 +158,7 @@ public:
 	LocationFilter(QWidget *parent = 0);
 	virtual void showEvent(QShowEvent *);
 	virtual void hideEvent(QHideEvent *);
+
 private:
 	Ui::FilterWidget ui;
 };

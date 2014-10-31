@@ -531,7 +531,7 @@ void LocationFilter::hideEvent(QHideEvent *event)
 	MultiFilterSortModel::instance()->removeFilterModel(LocationFilterModel::instance());
 	QWidget::hideEvent(event);
 }
-MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
+MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 {
 	QWidget *w = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
@@ -540,7 +540,7 @@ MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
 	l->addWidget(new BuddyFilter());
 	l->addWidget(new LocationFilter());
 
-	l->setContentsMargins(0,0,0,0);
+	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(1);
 	w->setLayout(l);
 	w->setMinimumSize(l->count() * 150, 200);

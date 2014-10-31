@@ -59,12 +59,14 @@ void CleanerTableModel::setHeaderDataStrings(const QStringList &newHeaders)
 static QPixmap *trashIconPixmap;
 
 // initialize the trash icon if necessary
-static void initTrashIcon() {
+static void initTrashIcon()
+{
 	if (!trashIconPixmap)
 		trashIconPixmap = new QPixmap(QIcon(":trash").pixmap(defaultIconMetrics().sz_small));
 }
 
-const QPixmap &trashIcon() {
+const QPixmap &trashIcon()
+{
 	return *trashIconPixmap;
 }
 
@@ -72,8 +74,7 @@ CylindersModel::CylindersModel(QObject *parent) : rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
-					   << tr("Switch at")
-			     );
+					   << tr("Switch at"));
 
 	initTrashIcon();
 }
@@ -1326,7 +1327,7 @@ QString DiveItem::displayDuration() const
 {
 	int hrs, mins;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	mins = (dive->duration.seconds+59) / 60;
+	mins = (dive->duration.seconds + 59) / 60;
 	hrs = mins / 60;
 	mins -= hrs * 60;
 
@@ -2354,7 +2355,6 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
 {
-
 }
 
 BuddyFilterModel *BuddyFilterModel::instance()
@@ -2397,8 +2397,8 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	QStringList buddyList = stringList();
 	if (!buddyList.isEmpty()) {
 		buddyList.removeLast(); // remove the "Show Empty Tags";
-		for(int i = 0; i < rowCount(); i++){
-			if(checkState[i] && (diveBuddy.indexOf(stringList()[i]) != -1 || divemaster.indexOf(stringList()[i]) != -1 )){
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] && (diveBuddy.indexOf(stringList()[i]) != -1 || divemaster.indexOf(stringList()[i]) != -1)) {
 				return true;
 			}
 		}
@@ -2416,14 +2416,13 @@ void BuddyFilterModel::repopulate()
 	QStringList list;
 	struct dive *dive;
 	int i = 0;
-	for_each_dive (i, dive)
-	{
+	for_each_dive (i, dive) {
 		QString buddy(dive->buddy);
 		QString divemaster(dive->divemaster);
 		if (!buddy.isEmpty() && !list.contains(buddy)) {
 			list.append(buddy);
 		}
-		if(!divemaster.isEmpty() && !list.contains(divemaster)){
+		if (!divemaster.isEmpty() && !list.contains(divemaster)) {
 			list.append(divemaster);
 		}
 	}
@@ -2465,9 +2464,8 @@ bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
-LocationFilterModel::LocationFilterModel(QObject *parent): QStringListModel(parent), checkState(NULL)
+LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
 {
-
 }
 
 QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
@@ -2514,8 +2512,8 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 	QStringList locationList = stringList();
 	if (!locationList.isEmpty()) {
 		locationList.removeLast(); // remove the "Show Empty Tags";
-		for(int i = 0; i < rowCount(); i++){
-			if(checkState[i] && (location.indexOf(stringList()[i]) != -1)){
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] && (location.indexOf(stringList()[i]) != -1)) {
 				return true;
 			}
 		}
@@ -2539,8 +2537,7 @@ void LocationFilterModel::repopulate()
 	QStringList list;
 	struct dive *dive;
 	int i = 0;
-	for_each_dive (i, dive)
-	{
+	for_each_dive (i, dive) {
 		QString location(dive->location);
 		if (!location.isEmpty() && !list.contains(location)) {
 			list.append(location);
