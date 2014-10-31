@@ -484,7 +484,8 @@ MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
 	QHBoxLayout *l = new QHBoxLayout();
 
 	l->addWidget(new TagFilter());
-
+	l->setContentsMargins(0,0,0,0);
+	l->setSpacing(1);
 	w->setLayout(l);
 	w->setMinimumSize(l->count() * 150, 200);
 	setWidget(w);
