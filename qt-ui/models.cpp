@@ -2351,7 +2351,7 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 	return false;
 }
 
-BuddyFilterModel::BuddyFilterModel(QObject *parent)
+BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
 {
 
 }
