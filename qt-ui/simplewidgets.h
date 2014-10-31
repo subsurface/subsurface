@@ -150,6 +150,17 @@ private:
 	Ui::FilterWidget ui;
 };
 
+class LocationFilter : public QWidget {
+	Q_OBJECT
+public:
+	LocationFilter(QWidget *parent = 0);
+	virtual void showEvent(QShowEvent *);
+	virtual void hideEvent(QHideEvent *);
+private:
+	Ui::FilterWidget ui;
+};
+
+
 class MultiFilter : public QScrollArea {
 	Q_OBJECT
 public:

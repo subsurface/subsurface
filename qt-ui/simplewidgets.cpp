@@ -507,6 +507,30 @@ void BuddyFilter::hideEvent(QHideEvent *event)
 	QWidget::hideEvent(event);
 }
 
+LocationFilter::LocationFilter(QWidget *parent) : QWidget(parent)
+{
+	ui.setupUi(this);
+	ui.label->setText(tr("Location: "));
+#if QT_VERSION >= 0x050000
+	ui.filterInternalList->setClearButtonEnabled(true);
+#endif
+	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
+	filter->setSourceModel(BuddyFilterModel::instance());
+	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	ui.filterList->setModel(filter);
+}
+
+void LocationFilter::showEvent(QShowEvent *event)
+{
+	MultiFilterSortModel::instance()->addFilterModel(LocationFilterModel::instance());
+	QWidget::showEvent(event);
+}
+
+void LocationFilter::hideEvent(QHideEvent *event)
+{
+	MultiFilterSortModel::instance()->removeFilterModel(LocationFilterModel::instance());
+	QWidget::hideEvent(event);
+}
 MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
 {
 	QWidget *w = new QWidget();
