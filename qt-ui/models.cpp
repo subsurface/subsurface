@@ -2369,7 +2369,7 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 
 Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
 {
-	return QStringListModel::flags(index);
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 void BuddyFilterModel::repopulate()
