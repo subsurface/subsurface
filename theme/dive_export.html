@@ -139,8 +139,40 @@ window.onload=function(){
 	getDefaultColor();
 }
 
+var user_search_preference = {
+	location : true,
+	divemaster : true,
+	buddy : true,
+	notes : true,
+	tags : true
+};
+
+function set_search_dropdown(search_preference)
+{
+	console.log(search_preference);
+	searchingModules["location"].enabled = search_preference.location;
+	document.getElementById("search_item_location").checked = search_preference.location;
+
+	searchingModules["divemaster"].enabled = search_preference.divemaster;
+	document.getElementById("search_item_divemaster").checked = search_preference.divemaster;
+
+	searchingModules["buddy"].enabled = search_preference.buddy;
+	document.getElementById("search_item_Buddy").checked = search_preference.buddy;
+
+	searchingModules["notes"].enabled = search_preference.notes;
+	document.getElementById("search_item_Notes").checked = search_preference.notes;
+
+	searchingModules["tags"].enabled = search_preference.tags;
+	document.getElementById("search_item_Tags").checked = search_preference.tags;
+}
+
 function changeAdvSearch(e){
-	searchingModules[e.value].enabled=e.checked;
+	// change user searching preference
+	user_search_preference[e.value] = e.checked;
+
+	//set search preference dropdown
+	set_search_dropdown(user_search_preference);
+
 	SearchModules(document.getElementById("search_input").value, null);
 }
 
@@ -158,11 +190,11 @@ function changeAdvSearch(e){
 		<input id="search_input" oninput="SearchModules(this.value, null)" placeholder="search"/>
 		<a id="adv_srch_sp" onClick="showdiv()" >Advanced search</a>
 		<div id="advanced_search">
-		<input type="checkbox" onchange="changeAdvSearch(this)" value="location" checked>Location<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" value="divemaster" checked>Divemaster<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" value="buddy" checked>Buddy<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" value="notes" checked>Notes<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" value="tags" checked>Tags<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_location" value="location" checked>Location<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_divemaster" value="divemaster" checked>Divemaster<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Buddy" value="buddy" checked>Buddy<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Notes" value="notes" checked>Notes<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Tags" value="tags" checked>Tags<br>
 		</div>
 		<div id="toolbox">
 		<select id="no_dives_selector" onChange="setNumberOfDives(this)">

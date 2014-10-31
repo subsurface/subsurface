@@ -516,6 +516,7 @@ function Node(value)
 function Search_list_Modules(searchfor, searchOptions)
 {
 	document.getElementById("search_input").value = searchfor;
+	set_search_dropdown(searchOptions);
 	SearchModules(searchfor, searchOptions);
 }
 
@@ -531,6 +532,7 @@ function SearchModules(searchfor, searchOptions)
 		itemsToShow = olditemstoshow;
 		list_sort(sort_based_on);
 		viewInPage();
+		set_search_dropdown(user_search_preference);
 		return;
 	}
 
