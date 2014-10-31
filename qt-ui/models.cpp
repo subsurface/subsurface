@@ -2472,7 +2472,12 @@ LocationFilterModel::LocationFilterModel(QObject *parent): QStringListModel(pare
 
 QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
 {
-	return QStringListModel::data(index, role);
+	if (role == Qt::CheckStateRole) {
+		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
+	} else if (role == Qt::DisplayRole) {
+		return stringList()[index.row()];
+	}
+	return QVariant();
 }
 
 bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
