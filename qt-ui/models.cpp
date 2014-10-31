@@ -2282,6 +2282,7 @@ void TagFilterModel::repopulate()
 		list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
 	}
+	qSort(list);
 	list << tr("Empty Tags");
 	setStringList(list);
 	delete[] checkState;
@@ -2383,9 +2384,9 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString diveBuddy(d->buddy);
-
+	QString divemaster(d->divemaster);
 	// only show empty buddie dives if the user checked that.
-	if (diveBuddy.isEmpty()) {
+	if (diveBuddy.isEmpty() && divemaster.isEmpty()) {
 		if (rowCount() > 0)
 			return checkState[rowCount() - 1];
 		else
@@ -2397,7 +2398,7 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	if (!buddyList.isEmpty()) {
 		buddyList.removeLast(); // remove the "Show Empty Tags";
 		for(int i = 0; i < rowCount(); i++){
-			if(checkState[i] && diveBuddy.indexOf(stringList()[i]) != -1){
+			if(checkState[i] && (diveBuddy.indexOf(stringList()[i]) != -1 || divemaster.indexOf(stringList()[i]) != -1 )){
 				return true;
 			}
 		}
@@ -2418,11 +2419,15 @@ void BuddyFilterModel::repopulate()
 	for_each_dive (i, dive)
 	{
 		QString buddy(dive->buddy);
-		if (!list.contains(buddy)) {
+		QString divemaster(dive->divemaster);
+		if (!buddy.isEmpty() && !list.contains(buddy)) {
 			list.append(buddy);
 		}
+		if(!divemaster.isEmpty() && !list.contains(divemaster)){
+			list.append(divemaster);
+		}
 	}
-	setStringList(list);
+	qSort(list);
 	list << tr("No Buddies");
 	setStringList(list);
 	delete[] checkState;

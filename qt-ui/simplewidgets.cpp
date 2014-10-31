@@ -484,7 +484,8 @@ void TagFilter::hideEvent(QHideEvent *event)
 BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
-	ui.label->setText(tr("Buddies: "));
+	ui.label->setText(tr("Person: "));
+	ui.label->setToolTip(tr("Searches for Buddies and Divemasters"));
 #if QT_VERSION >= 0x050000
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
