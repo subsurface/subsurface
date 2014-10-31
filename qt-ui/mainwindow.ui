@@ -123,29 +123,18 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="DiveListView" name="ListWidget">
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-         <property name="rootIsDecorated">
-          <bool>true</bool>
-         </property>
-         <property name="sortingEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="animated">
-          <bool>true</bool>
-         </property>
-         <property name="allColumnsShowFocus">
-          <bool>true</bool>
-         </property>
+        <widget class="QWidget" name="page_3">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="TagFilter" name="tagFilter" native="true"/>
+          </item>
+          <item>
+           <widget class="DiveListView" name="ListWidget"/>
+          </item>
+         </layout>
         </widget>
         <widget class="PlannerSettingsWidget" name="plannerSettingsWidget"/>
        </widget>
-       <widget class="TagFilter" name="tagFilter" native="true"/>
        <widget class="QStackedWidget" name="globePane">
         <property name="currentIndex">
          <number>0</number>
@@ -256,7 +245,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1682</width>
-     <height>22</height>
+     <height>36</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -844,7 +833,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionFilterTags">
    <property name="text">
-    <string>Filter by Tags</string>
+    <string>&amp;Filter by Tags</string>
    </property>
   </action>
   <action name="profTissues">
