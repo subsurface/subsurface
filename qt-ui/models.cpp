@@ -2487,7 +2487,7 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 
 Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
 {
-	return QStringListModel::flags(index);
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 LocationFilterModel *LocationFilterModel::instance()
