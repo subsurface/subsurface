@@ -476,3 +476,15 @@ void TagFilter::hideEvent(QHideEvent *event)
 	TagFilterSortModel::instance()->removeFilterModel(TagFilterModel::instance());
 	QWidget::hideEvent(event);
 }
+
+MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
+{
+	QWidget *w = new QWidget();
+	QHBoxLayout *l = new QHBoxLayout();
+
+	l->addWidget(new TagFilter());
+
+	w->setLayout(l);
+	w->setMinimumSize(l->count() * 150, 200);
+	setWidget(w);
+}

@@ -126,7 +126,7 @@
         <widget class="QWidget" name="page_3">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="TagFilter" name="tagFilter" native="true"/>
+           <widget class="MultiFilter" name="multiFilter" native="true"/>
           </item>
           <item>
            <widget class="DiveListView" name="ListWidget"/>
@@ -897,7 +897,7 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>TagFilter</class>
+   <class>MultiFilter</class>
    <extends>QWidget</extends>
    <header>simplewidgets.h</header>
    <container>1</container>

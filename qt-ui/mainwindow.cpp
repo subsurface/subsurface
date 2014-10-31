@@ -69,7 +69,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
 	ui.setupUi(this);
-	ui.tagFilter->hide();
+	ui.multiFilter->hide();
 	profileToolbarActions << ui.profCalcAllTissues << ui.profCalcCeiling << ui.profDcCeiling << ui.profEad <<
 		    ui.profHR << ui.profIncrement3m << ui.profMod << ui.profNdl_tts << ui.profNdl_tts <<
 		    ui.profPhe << ui.profPn2 << ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled <<
@@ -1379,5 +1379,5 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	ui.tagFilter->setVisible(!ui.tagFilter->isVisible());
+	ui.multiFilter->setVisible(!ui.multiFilter->isVisible());
 }

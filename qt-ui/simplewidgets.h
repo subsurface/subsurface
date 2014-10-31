@@ -140,6 +140,12 @@ private:
 	Ui::TagFilter ui;
 };
 
+class MultiFilter : public QScrollArea {
+	Q_OBJECT
+public:
+	MultiFilter(QWidget *parent);
+};
+
 bool isGnome3Session();
 QImage grayImage(const QImage &coloredImg);
 
