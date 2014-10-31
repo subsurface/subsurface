@@ -2351,6 +2351,42 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 	return false;
 }
 
+BuddyFilterModel::BuddyFilterModel(QObject *parent)
+{
+
+}
+
+BuddyFilterModel *BuddyFilterModel::instance()
+{
+
+}
+
+bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+{
+
+}
+
+Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
+{
+	return QStringListModel::flags(index);
+}
+
+void BuddyFilterModel::repopulate()
+{
+
+}
+
+QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
+{
+	return QStringListModel::data(index, role);
+}
+
+
+bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	return QStringListModel::setData(index, value, role);
+}
+
 MultiFilterSortModel *MultiFilterSortModel::instance()
 {
 	static MultiFilterSortModel *self = new MultiFilterSortModel();
