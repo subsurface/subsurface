@@ -129,7 +129,11 @@
            <widget class="MultiFilter" name="multiFilter" native="true"/>
           </item>
           <item>
-           <widget class="DiveListView" name="ListWidget"/>
+           <widget class="DiveListView" name="ListWidget">
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
