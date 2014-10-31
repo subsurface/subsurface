@@ -183,6 +183,7 @@ void MainWindow::recreateDiveList()
 	ui.ListWidget->reload(DiveTripModel::CURRENT);
 	TagFilterModel::instance()->repopulate();
 	BuddyFilterModel::instance()->repopulate();
+	LocationFilterModel::instance()->repopulate();
 }
 
 void MainWindow::current_dive_changed(int divenr)
