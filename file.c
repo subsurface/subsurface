@@ -444,7 +444,7 @@ int parse_txt_file(const char *filename, const char *csv)
 	 * make sure the input .txt looks like proper MkVI file, then start parsing the .csv.
 	 */
 	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
-		int d, m, y;
+		int d, m, y, he;
 		int hh = 0, mm = 0, ss = 0;
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
@@ -476,11 +476,15 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
 		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
+		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = 1000;
 		cur_cylinder_index++;
 
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
 		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
+		he = atoi(parse_mkvi_value(memtxt.buffer, "Helium percentage"));
+		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = (100 - atoi(parse_mkvi_value(memtxt.buffer, "Nitrogen percentage")) - he) * 10;
+		dive->cylinder[cur_cylinder_index].gasmix.he.permille = he * 10;
 		cur_cylinder_index++;
 
 		dc = &dive->dc;
