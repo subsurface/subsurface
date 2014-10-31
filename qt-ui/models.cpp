@@ -2397,7 +2397,7 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	if (!buddyList.isEmpty()) {
 		buddyList.removeLast(); // remove the "Show Empty Tags";
 		for(int i = 0; i < rowCount(); i++){
-			if(checkState[i] && stringList()[i].indexOf(diveBuddy) != -1){
+			if(checkState[i] && diveBuddy.indexOf(stringList()[i]) != -1){
 				return true;
 			}
 		}
@@ -2476,13 +2476,14 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		return true;
 	}
 
+	bool shouldShow = true;
 	Q_FOREACH (MultiFilterInterface *model, models) {
-		if (model->filterRow(source_row, source_parent, sourceModel())) {
-			return true;
+		if (!model->filterRow(source_row, source_parent, sourceModel())) {
+			shouldShow = false;
 		}
 	}
 
-	return false;
+	return shouldShow;
 }
 
 void MultiFilterSortModel::myInvalidate()
