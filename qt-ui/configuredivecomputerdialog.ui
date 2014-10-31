@@ -1617,7 +1617,7 @@
            <attribute name="title">
             <string>Basic settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_3">
+           <layout class="QGridLayout" name="gridLayout_4">
             <item row="5" column="3">
              <widget class="QLabel" name="label_45">
               <property name="text">
@@ -1812,7 +1812,7 @@
            <attribute name="title">
             <string>Advanced Settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_4">
+           <layout class="QGridLayout" name="gridLayout_5">
             <item row="3" column="0" colspan="2">
              <widget class="QCheckBox" name="aGFSelectableCheckBox_3">
               <property name="text">
@@ -2078,7 +2078,7 @@
            <attribute name="title">
             <string>Gas settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_5">
+           <layout class="QGridLayout" name="gridLayout_6">
             <item row="0" column="0" colspan="2">
              <widget class="QTableWidget" name="ostcGasTable">
               <property name="sizePolicy">
