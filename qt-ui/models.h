@@ -443,17 +443,17 @@ private:
 	explicit TagFilterModel(QObject *parent = 0);
 };
 
-class TagFilterSortModel : public QSortFilterProxyModel {
+class MultiFilterSortModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
-	static TagFilterSortModel *instance();
+	static MultiFilterSortModel *instance();
 	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 	void addFilterModel(MultiFilterInterface *model);
 	void removeFilterModel(MultiFilterInterface *model);
 public slots:
 	void myInvalidate();
 private:
-	TagFilterSortModel(QObject *parent = 0);
+	MultiFilterSortModel(QObject *parent = 0);
 	QList<MultiFilterInterface*> models;
 };
 #endif // MODELS_H

@@ -467,13 +467,13 @@ TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 
 void TagFilter::showEvent(QShowEvent *event)
 {
-	TagFilterSortModel::instance()->addFilterModel(TagFilterModel::instance());
+	MultiFilterSortModel::instance()->addFilterModel(TagFilterModel::instance());
 	QWidget::showEvent(event);
 }
 
 void TagFilter::hideEvent(QHideEvent *event)
 {
-	TagFilterSortModel::instance()->removeFilterModel(TagFilterModel::instance());
+	MultiFilterSortModel::instance()->removeFilterModel(TagFilterModel::instance());
 	QWidget::hideEvent(event);
 }
 

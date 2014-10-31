@@ -2351,17 +2351,17 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 	return false;
 }
 
-TagFilterSortModel *TagFilterSortModel::instance()
+MultiFilterSortModel *MultiFilterSortModel::instance()
 {
-	static TagFilterSortModel *self = new TagFilterSortModel();
+	static MultiFilterSortModel *self = new MultiFilterSortModel();
 	return self;
 }
 
-TagFilterSortModel::TagFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
+MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 }
 
-bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 	if (models.isEmpty()) {
 		return true;
@@ -2376,12 +2376,12 @@ bool TagFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &sou
 	return false;
 }
 
-void TagFilterSortModel::myInvalidate()
+void MultiFilterSortModel::myInvalidate()
 {
 	invalidate();
 }
 
-void TagFilterSortModel::addFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
@@ -2389,7 +2389,7 @@ void TagFilterSortModel::addFilterModel(MultiFilterInterface *model)
 	connect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }
 
-void TagFilterSortModel::removeFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
