@@ -2375,6 +2375,24 @@ Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
 void BuddyFilterModel::repopulate()
 {
 
+	QStringList list;
+	struct dive *dive;
+	int i = 0;
+	for_each_dive (i, dive)
+	{
+		QString buddy(dive->buddy);
+		if (!list.contains(buddy)) {
+			list.append(buddy);
+		}
+	}
+	setStringList(list);
+	list << tr("No Buddies");
+	setStringList(list);
+	delete[] checkState;
+	checkState = new bool[list.count()];
+	memset(checkState, false, list.count());
+	checkState[list.count() - 1] = false;
+	anyChecked = false;
 }
 
 QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
