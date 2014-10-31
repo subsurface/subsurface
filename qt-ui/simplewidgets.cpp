@@ -515,7 +515,7 @@ LocationFilter::LocationFilter(QWidget *parent) : QWidget(parent)
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
-	filter->setSourceModel(BuddyFilterModel::instance());
+	filter->setSourceModel(LocationFilterModel::instance());
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 }
@@ -538,6 +538,7 @@ MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
 
 	l->addWidget(new TagFilter());
 	l->addWidget(new BuddyFilter());
+	l->addWidget(new LocationFilter());
 
 	l->setContentsMargins(0,0,0,0);
 	l->setSpacing(1);
