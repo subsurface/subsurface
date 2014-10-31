@@ -2465,6 +2465,41 @@ bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
+LocationFilterModel::LocationFilterModel(QObject *parent): QStringListModel(parent)
+{
+
+}
+
+QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
+{
+	return QStringListModel::data(index, role);
+}
+
+bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+{
+
+}
+
+Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
+{
+	return QStringListModel::flags(index);
+}
+
+LocationFilterModel *LocationFilterModel::instance()
+{
+
+}
+
+void LocationFilterModel::repopulate()
+{
+
+}
+
+bool LocationFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	return QStringListModel::setData(index, value, role);
+}
+
 MultiFilterSortModel *MultiFilterSortModel::instance()
 {
 	static MultiFilterSortModel *self = new MultiFilterSortModel();
