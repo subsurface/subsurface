@@ -2487,7 +2487,8 @@ Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
 
 LocationFilterModel *LocationFilterModel::instance()
 {
-
+	static LocationFilterModel *self = new LocationFilterModel();
+	return self;
 }
 
 void LocationFilterModel::repopulate()
