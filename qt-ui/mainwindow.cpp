@@ -1382,5 +1382,5 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	ui.tagFilter->show();
+	ui.tagFilter->setVisible(!ui.tagFilter->isVisible());
 }
