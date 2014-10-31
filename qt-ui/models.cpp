@@ -2390,7 +2390,19 @@ QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
 
 bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	return QStringListModel::setData(index, value, role);
+	if (role == Qt::CheckStateRole) {
+		checkState[index.row()] = value.toBool();
+		anyChecked = false;
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] == true) {
+				anyChecked = true;
+				break;
+			}
+		}
+		dataChanged(index, index);
+		return true;
+	}
+	return false;
 }
 
 MultiFilterSortModel *MultiFilterSortModel::instance()
