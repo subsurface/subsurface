@@ -487,6 +487,9 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive->cylinder[cur_cylinder_index].gasmix.he.permille = he * 10;
 		cur_cylinder_index++;
 
+		lineptr = strstr(memtxt.buffer, "Dive started at");
+		if (lineptr)
+			dive->notes = strdup(lineptr);
 		dc = &dive->dc;
 
 		/*
