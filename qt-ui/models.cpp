@@ -2358,7 +2358,8 @@ BuddyFilterModel::BuddyFilterModel(QObject *parent)
 
 BuddyFilterModel *BuddyFilterModel::instance()
 {
-
+	static BuddyFilterModel *self = new BuddyFilterModel();
+	return self;
 }
 
 bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
