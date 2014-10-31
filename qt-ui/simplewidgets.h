@@ -140,6 +140,16 @@ private:
 	Ui::FilterWidget ui;
 };
 
+class BuddyFilter : public QWidget {
+	Q_OBJECT
+public:
+	BuddyFilter(QWidget *parent = 0);
+	virtual void showEvent(QShowEvent *);
+	virtual void hideEvent(QHideEvent *);
+private:
+	Ui::FilterWidget ui;
+};
+
 class MultiFilter : public QScrollArea {
 	Q_OBJECT
 public:

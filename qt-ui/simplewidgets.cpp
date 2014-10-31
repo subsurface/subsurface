@@ -481,12 +481,39 @@ void TagFilter::hideEvent(QHideEvent *event)
 	QWidget::hideEvent(event);
 }
 
+BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
+{
+	ui.setupUi(this);
+	ui.label->setText(tr("Buddies: "));
+#if QT_VERSION >= 0x050000
+	ui.filterInternalList->setClearButtonEnabled(true);
+#endif
+	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
+	filter->setSourceModel(BuddyFilterModel::instance());
+	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	ui.filterList->setModel(filter);
+}
+
+void BuddyFilter::showEvent(QShowEvent *event)
+{
+	MultiFilterSortModel::instance()->addFilterModel(BuddyFilterModel::instance());
+	QWidget::showEvent(event);
+}
+
+void BuddyFilter::hideEvent(QHideEvent *event)
+{
+	MultiFilterSortModel::instance()->removeFilterModel(BuddyFilterModel::instance());
+	QWidget::hideEvent(event);
+}
+
 MultiFilter::MultiFilter(QWidget *parent): QScrollArea(parent)
 {
 	QWidget *w = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
 
 	l->addWidget(new TagFilter());
+	l->addWidget(new BuddyFilter());
+
 	l->setContentsMargins(0,0,0,0);
 	l->setSpacing(1);
 	w->setLayout(l);

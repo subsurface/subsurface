@@ -2412,7 +2412,6 @@ Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
 
 void BuddyFilterModel::repopulate()
 {
-
 	QStringList list;
 	struct dive *dive;
 	int i = 0;
