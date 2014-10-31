@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TagFilter</class>
- <widget class="QWidget" name="TagFilter">
+ <class>FilterWidget</class>
+ <widget class="QWidget" name="FilterWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,17 +15,28 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="filterInternalList">
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>Filter this list</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="filterTag"/>
-   </item>
-   <item>
-    <widget class="QListView" name="tagView"/>
+    <widget class="QListView" name="filterList"/>
    </item>
   </layout>
  </widget>

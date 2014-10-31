@@ -12,7 +12,7 @@ class QAbstractButton;
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
 #include "ui_divecomponentselection.h"
-#include "ui_tagfilter.h"
+#include "ui_listfilter.h"
 #include "exif.h"
 
 class MinMaxAvgWidget : public QWidget {

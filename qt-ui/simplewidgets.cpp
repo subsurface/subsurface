@@ -460,6 +460,9 @@ TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.label->setText(tr("Tags: "));
+#if QT_VERSION >= 0x050000
+	ui.filterInternalList->setClearButtonEnabled(true);
+#endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(TagFilterModel::instance());
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
