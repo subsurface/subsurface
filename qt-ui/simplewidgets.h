@@ -137,7 +137,7 @@ public:
 	virtual void showEvent(QShowEvent *);
 	virtual void hideEvent(QHideEvent *);
 private:
-	Ui::TagFilter ui;
+	Ui::FilterWidget ui;
 };
 
 class MultiFilter : public QScrollArea {

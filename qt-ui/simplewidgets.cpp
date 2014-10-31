@@ -459,10 +459,11 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
+	ui.label->setText(tr("Tags: "));
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(TagFilterModel::instance());
-	connect(ui.filterTag, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
-	ui.tagView->setModel(filter);
+	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	ui.filterList->setModel(filter);
 }
 
 void TagFilter::showEvent(QShowEvent *event)
