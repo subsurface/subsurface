@@ -2465,7 +2465,7 @@ bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
-LocationFilterModel::LocationFilterModel(QObject *parent): QStringListModel(parent)
+LocationFilterModel::LocationFilterModel(QObject *parent): QStringListModel(parent), checkState(NULL)
 {
 
 }
