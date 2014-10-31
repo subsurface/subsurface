@@ -457,7 +457,6 @@ void MainWindow::on_actionReplanDive_triggered()
 		qDebug() << "trying to replan a dive that's not a planned dive:" << current_dive->dc.model;
 		return;
 	}
-	ui.ListWidget->endSearch();
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
@@ -479,7 +478,6 @@ void MainWindow::on_actionDivePlanner_triggered()
 	if (!plannerStateClean())
 		return;
 
-	ui.ListWidget->endSearch();
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
@@ -509,7 +507,6 @@ void MainWindow::on_actionAddDive_triggered()
 		dive_list()->clearSelection();
 	}
 
-	ui.ListWidget->endSearch();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	// setup things so we can later create our starting dive

@@ -835,6 +835,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>&amp;Filter by Tags</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
   </action>
   <action name="profTissues">
    <property name="checkable">

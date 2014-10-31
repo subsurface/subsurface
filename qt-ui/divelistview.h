@@ -36,7 +36,6 @@ slots:
 	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
 	void headerClicked(int);
-	void showSearchEdit();
 	void removeFromTrip();
 	void deleteDive();
 	void markDiveInvalid();
@@ -52,7 +51,6 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	static QString lastUsedImageDir();
-	void endSearch();
 
 signals:
 	void currentDiveChanged(int divenr);
@@ -63,7 +61,6 @@ private:
 	int sortColumn;
 	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
-	QLineEdit searchBox;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
 	bool selectionSaved;

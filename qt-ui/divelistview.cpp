@@ -32,7 +32,7 @@
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
-	currentOrder(Qt::DescendingOrder), searchBox(this), dontEmitDiveChangedSignal(false), selectionSaved(false)
+	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false)
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -100,15 +100,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 
 	header()->setStretchLastSection(true);
-	QAction *showSearchBox = new QAction(tr("Show search box"), this);
-	showSearchBox->setShortcut(Qt::CTRL + Qt::Key_F);
-	showSearchBox->setShortcutContext(Qt::WindowShortcut);
-	addAction(showSearchBox);
-
-	searchBox.installEventFilter(this);
-	searchBox.hide();
-//	connect(showSearchBox, SIGNAL(triggered(bool)), this, SLOT(showSearchEdit()));
-//	connect(&searchBox, SIGNAL(textChanged(QString)), model, SLOT(setFilterFixedString(QString)));
 }
 
 DiveListView::~DiveListView()
@@ -322,12 +313,6 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	return;
 }
 
-void DiveListView::showSearchEdit()
-{
-	searchBox.show();
-	searchBox.setFocus();
-}
-
 bool DiveListView::eventFilter(QObject *, QEvent *event)
 {
 	if (event->type() != QEvent::KeyPress)
@@ -335,11 +320,6 @@ bool DiveListView::eventFilter(QObject *, QEvent *event)
 	QKeyEvent *keyEv = static_cast<QKeyEvent *>(event);
 	if (keyEv->key() != Qt::Key_Escape)
 		return false;
-
-	searchBox.clear();
-	searchBox.hide();
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	m->setFilterFixedString(QString());
 	return true;
 }
 
@@ -881,10 +861,4 @@ void DiveListView::updateLastImageTimeOffset(const int offset)
 	QSettings s;
 	s.beginGroup("MainWindow");
 	s.setValue("LastImageTimeOffset", offset);
-}
-
-void DiveListView::endSearch()
-{
-	searchBox.clear();
-	searchBox.hide();
 }
