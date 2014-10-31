@@ -2498,7 +2498,24 @@ LocationFilterModel *LocationFilterModel::instance()
 
 void LocationFilterModel::repopulate()
 {
-
+	QStringList list;
+	struct dive *dive;
+	int i = 0;
+	for_each_dive (i, dive)
+	{
+		QString location(dive->location);
+		if (!location.isEmpty() && !list.contains(location)) {
+			list.append(location);
+		}
+	}
+	qSort(list);
+	list << tr("No Location set");
+	setStringList(list);
+	delete[] checkState;
+	checkState = new bool[list.count()];
+	memset(checkState, false, list.count());
+	checkState[list.count() - 1] = false;
+	anyChecked = false;
 }
 
 bool LocationFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
