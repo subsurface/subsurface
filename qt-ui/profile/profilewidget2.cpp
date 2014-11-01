@@ -272,9 +272,9 @@ void ProfileWidget2::setupItemOnScene()
 	ITEM->settingsChanged();                                                                                        \
 	ITEM->setZValue(99);
 
-	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, "pn2threshold", "pn2graph");
-	CREATE_PP_GAS(pheGasItem, PHE, PHE, PHE_ALERT, "phethreshold", "phegraph");
-	CREATE_PP_GAS(po2GasItem, PO2, PO2, PO2_ALERT, "po2threshold", "po2graph");
+	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, &prefs.pp_graphs.pn2_threshold, "pn2graph");
+	CREATE_PP_GAS(pheGasItem, PHE, PHE, PHE_ALERT, &prefs.pp_graphs.phe_threshold, "phegraph");
+	CREATE_PP_GAS(po2GasItem, PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "po2graph");
 #undef CREATE_PP_GAS
 
 	temperatureAxis->setTextVisible(false);

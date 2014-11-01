@@ -833,14 +833,14 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 	alertPolygons.clear();
 	QSettings s;
 	s.beginGroup("TecDetails");
-	double threshould = s.value(threshouldKey).toDouble();
+	double threshold = *thresholdPtr;
 	bool inAlertFragment = false;
 	for (int i = 0; i < dataModel->rowCount(); i++, entry++) {
 		double value = dataModel->index(i, vDataColumn).data().toDouble();
 		int time = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point(hAxis->posAtValue(time), vAxis->posAtValue(value));
 		poly.push_back(point);
-		if (value >= threshould) {
+		if (value >= threshold) {
 			if (inAlertFragment) {
 				alertPolygons.back().push_back(point);
 			} else {
@@ -873,9 +873,9 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 	painter->restore();
 }
 
-void PartialPressureGasItem::setThreshouldSettingsKey(const QString &threshouldSettingsKey)
+void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointer)
 {
-	threshouldKey = threshouldSettingsKey;
+	thresholdPtr = prefPointer;
 }
 
 PartialPressureGasItem::PartialPressureGasItem()

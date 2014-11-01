@@ -211,13 +211,13 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void settingsChanged();
-	void setThreshouldSettingsKey(const QString &threshouldSettingsKey);
+	void setThreshouldSettingsKey(double *prefPointer);
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	void setColors(const QColor &normalColor, const QColor &alertColor);
 
 private:
 	QVector<QPolygonF> alertPolygons;
-	QString threshouldKey;
+	double *thresholdPtr;
 	QString visibilityKey;
 	QColor normalColor;
 	QColor alertColor;
