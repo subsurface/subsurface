@@ -928,31 +928,26 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 }
 
 void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *dive)
-/* For CCR:
- * In the samples from each dive computer, any duplicate values for the
- * oxygen sensors were removed (i.e. set to 0) in order to conserve
- * storage space (see function fixup_dive_dc). But for drawing the profile
- * a complete series of valid o2 pressure values is required. This function
- * takes the oxygen sensor data and setpoint values from the structures
- * of plotinfo and re-inserts the duplicate values set to 0 so
- * that the oxygen sensor data are complete and ready for plotting.
- * The original sequence of oxygen values are recreated without attempting
- * any interpolations for values set to zero, recreating the raw data from
- * the CCR dive log. This function called by: create_plot_info_new() */
+/* In the samples from each dive computer, there may be uninitialised oxygen
+ * sensor or setpoint values, e.g. when events were inserted into the dive log
+ * or if the dive computer does not report o2 values with every sample. But
+ * for drawing the profile a complete series of valid o2 pressure values is
+ * required. This function takes the oxygen sensor data and setpoint values
+ * from the structures of plotinfo and replaces the zero values with their
+ * last known values so that the oxygen sensor data are complete and ready
+ * for plotting. This function called by: create_plot_info_new() */
 {
 	int i, j;
 	double last_setpoint, last_sensor[3], o2pressure, amb_pressure;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		// For 1st iteration, initialise the last_ values
 		if (dc->dctype == CCR) {
-			if (i == 0) {
+			if (i == 0) {	// For 1st iteration, initialise the last_ values
 				last_setpoint = pi->entry->o2setpoint;
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j] = pi->entry->o2sensor[j];
-			} else {
-				// Now re-insert the missing oxygen pressure values
+			} else {	// Now re-insert the missing oxygen pressure values
 				if (entry->o2setpoint)
 					last_setpoint = entry->o2setpoint;
 				else
@@ -962,7 +957,7 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 						last_sensor[j] = entry->o2sensor[j];
 					else
 						entry->o2sensor[j] = last_sensor[j];
-			}			// having initialised the empty o2 sensor values for this point on the profile,
+			}		// having initialised the empty o2 sensor values for this point on the profile,
 			amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 			o2pressure = calculate_ccr_po2(entry,dc);	// ...calculate the po2 based on the sensor data
 			entry->pressures.o2 = MIN(o2pressure, amb_pressure);
