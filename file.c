@@ -449,6 +449,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
 		char *lineptr;
+		static int diluent_pressure = 0, cylinder_pressure = 0;
 
 		struct dive *dive;
 		struct divecomputer *dc;
@@ -545,9 +546,19 @@ int parse_txt_file(const char *filename, const char *csv)
 						break;
 					case 13:
 						add_sample_data(sample, POSEIDON_PRESSURE, value);
+						if (!cylinder_pressure) {
+							dive->cylinder[0].sample_start.mbar = value * 1000;
+							cylinder_pressure = value;
+						} else
+							cylinder_pressure = value;
 						break;
 					case 14:
 						add_sample_data(sample, POSEIDON_DILUENT, value);
+						if (!diluent_pressure) {
+							dive->cylinder[1].sample_start.mbar = value * 1000;
+							diluent_pressure = value;
+						} else
+							diluent_pressure = value;
 						break;
 					case 20:
 						has_setpoint = true;
@@ -581,6 +592,10 @@ int parse_txt_file(const char *filename, const char *csv)
 				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
 			if (!has_setpoint)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
+			if (cylinder_pressure)
+				dive->cylinder[0].sample_end.mbar = cylinder_pressure * 1000;
+			if (diluent_pressure)
+				dive->cylinder[1].sample_end.mbar = diluent_pressure * 1000;
 			finish_sample(dc);
 
 			if (!lineptr || !*lineptr)
