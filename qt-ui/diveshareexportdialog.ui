@@ -55,7 +55,7 @@
         <item>
          <widget class="QPushButton" name="getUIDbutton">
           <property name="text">
-           <string>Get UserID</string>
+           <string>Get user ID</string>
           </property>
          </widget>
         </item>
