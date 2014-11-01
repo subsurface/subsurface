@@ -485,7 +485,7 @@ BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.label->setText(tr("Person: "));
-	ui.label->setToolTip(tr("Searches for Buddies and Divemasters"));
+	ui.label->setToolTip(tr("Searches for buddies and divemasters"));
 #if QT_VERSION >= 0x050000
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif

@@ -837,7 +837,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionFilterTags">
    <property name="text">
-    <string>&amp;Filter by Tags</string>
+    <string>&amp;Filter by tags</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>

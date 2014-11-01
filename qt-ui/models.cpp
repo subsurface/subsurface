@@ -2427,7 +2427,7 @@ void BuddyFilterModel::repopulate()
 		}
 	}
 	qSort(list);
-	list << tr("No Buddies");
+	list << tr("No buddies");
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];
@@ -2544,7 +2544,7 @@ void LocationFilterModel::repopulate()
 		}
 	}
 	qSort(list);
-	list << tr("No Location set");
+	list << tr("No location set");
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];
