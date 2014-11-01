@@ -11,7 +11,7 @@
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="488"/>
-        <source>Searches for Buddies and Divemasters</source>
+        <source>Searches for buddies and divemasters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19,7 +19,7 @@
     <name>BuddyFilterModel</name>
     <message>
         <location filename="../qt-ui/models.cpp" line="2430"/>
-        <source>No Buddies</source>
+        <source>No buddies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="585"/>
-        <source>Device settings successfully resetted</source>
+        <source>Device settings successfully reset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -350,11 +350,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="180"/>
-        <source>Suunto Vyper Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="189"/>
         <source>OSTC, Mk.2/2N/2C</source>
         <translation type="unfinished"></translation>
@@ -411,7 +406,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
         <source>Advanced Settings</source>
         <translation type="unfinished"></translation>
@@ -420,6 +414,16 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1819"/>
         <source>Alt GF can be selected underwater</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="180"/>
+        <source>Suunto Vyper family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
+        <source>Advanced settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -658,12 +662,25 @@
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
+        <source>ppO₂ max</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
+        <source>ppO₂ min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
+        <source>Total dive time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>ppO2 max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>ppO2 min</source>
         <translation type="unfinished"></translation>
@@ -730,11 +747,6 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1465"/>
         <source>60s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
-        <source>Total divetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1882,7 +1894,7 @@
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="58"/>
-        <source>Get UserID</source>
+        <source>Get user ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2267,7 +2279,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="22"/>
-        <source>TextLabel</source>
+        <source>Text label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2314,7 +2326,7 @@ p, li { white-space: pre-wrap; }
     <name>LocationFilterModel</name>
     <message>
         <location filename="../qt-ui/models.cpp" line="2547"/>
-        <source>No Location set</source>
+        <source>No location set</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2929,18 +2941,17 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="840"/>
-        <source>&amp;Filter by Tags</source>
+        <source>&amp;Filter by tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.ui" line="855"/>
+        <source>Toggle tissue graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/mainwindow.ui" line="855"/>
-        <location filename="../qt-ui/mainwindow.ui" line="858"/>
-        <source>Toggle Tissue Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3149,11 +3160,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1250"/>
-        <source>Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can);;XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;Suunto Files(*.sde *.db);;CSV Files(*.csv);;MkVI Files(*.txt);;All Files(*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="759"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"></translation>
@@ -3174,6 +3180,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1109"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="1250"/>
+        <source>Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can);;XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;Suunto files(*.sde *.db);;CSV files(*.csv);;MkVI files(*.txt);;All files(*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
