@@ -582,6 +582,6 @@ void ConfigureDiveComputer::resetThreadFinished()
 	setState(DONE);
 	if (resetThread->lastError.isEmpty()) {
 		//No error
-		emit message(tr("Device settings successfully resetted"));
+		emit message(tr("Device settings successfully reset"));
 	}
 }

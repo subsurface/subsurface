@@ -177,7 +177,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Suunto Vyper Family</string>
+        <string>Suunto Vyper family</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
@@ -602,7 +602,7 @@
           </widget>
           <widget class="QWidget" name="advancedSettings">
            <attribute name="title">
-            <string>Advanced Settings</string>
+            <string>Advanced settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout1">
             <item row="3" column="0" colspan="2">
@@ -1213,14 +1213,14 @@
             <item row="4" column="2">
              <widget class="QLabel" name="label_29">
               <property name="text">
-               <string>ppO2 max</string>
+               <string>ppO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="5" column="2">
              <widget class="QLabel" name="label_30">
               <property name="text">
-               <string>ppO2 min</string>
+               <string>ppO₂ min</string>
               </property>
              </widget>
             </item>
@@ -1470,7 +1470,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_24">
               <property name="text">
-               <string>Total divetime</string>
+               <string>Total dive time</string>
               </property>
              </widget>
             </item>
