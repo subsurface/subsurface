@@ -651,7 +651,7 @@ void MainTab::reload()
 #define EDIT_TEXT(what)                                      \
 	if (same_string(mydive->what, cd->what)) {           \
 		free(mydive->what);                          \
-		mydive->what = strdup(displayed_dive.what);  \
+		mydive->what = copy_string(displayed_dive.what);  \
 	}
 
 #define EDIT_VALUE(what)                                     \
