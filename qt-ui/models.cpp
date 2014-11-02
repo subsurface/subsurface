@@ -2417,13 +2417,11 @@ void BuddyFilterModel::repopulate()
 	struct dive *dive;
 	int i = 0;
 	for_each_dive (i, dive) {
-		QString buddy(dive->buddy);
-		QString divemaster(dive->divemaster);
-		if (!buddy.isEmpty() && !list.contains(buddy)) {
-			list.append(buddy);
-		}
-		if (!divemaster.isEmpty() && !list.contains(divemaster)) {
-			list.append(divemaster);
+		QString persons = QString(dive->buddy) + "," + QString(dive->divemaster);
+		Q_FOREACH(const QString& person, persons.split(',', QString::SkipEmptyParts)){
+			if (!list.contains(person)) {
+				list.append(person);
+			}
 		}
 	}
 	qSort(list);
