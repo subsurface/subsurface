@@ -1185,6 +1185,8 @@ void DivePlannerPointsModel::createPlan()
 	} else if (current_dive && displayed_dive.id == current_dive->id) {
 		// we are replanning a dive - make sure changes are reflected
 		// correctly in the dive structure and copy it back into the dive table
+		displayed_dive.maxdepth.mm = 0;
+		displayed_dive.dc.maxdepth.mm = 0;
 		fixup_dive(&displayed_dive);
 		copy_dive(&displayed_dive, current_dive);
 	}
