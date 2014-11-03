@@ -663,6 +663,7 @@ void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
 	struct dive *d;
+	bool do_replot = false;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
@@ -751,7 +752,7 @@ void MainTab::acceptChanges()
 			);
 			for (int i = 0; i < MAX_CYLINDERS; i++)
 				cd->cylinder[i] = displayed_dive.cylinder[i];
-			MainWindow::instance()->graphics()->replot();
+			do_replot = true;
 		}
 
 		if (weightModel->changed) {
@@ -799,6 +800,8 @@ void MainTab::acceptChanges()
 		emit addDiveFinished();
 	} else {
 		editMode = NONE;
+		if (do_replot)
+			MainWindow::instance()->graphics()->replot();
 		MainWindow::instance()->dive_list()->rememberSelection();
 		sort_table(&dive_table);
 		MainWindow::instance()->refreshDisplay();
