@@ -536,13 +536,23 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	QWidget *w = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
 
-	l->addWidget(new TagFilter());
+	TagFilter *tagFilter = new TagFilter();
+	int minimumHeight = tagFilter->ui.filterInternalList->height() +
+		tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
+
+	QListView *dummyList = new QListView();
+	QStringListModel *dummy = new QStringListModel(QStringList() << "Dummy Text");
+	dummyList->setModel(dummy);
+
+	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
 	l->addWidget(new LocationFilter());
-
 	l->setContentsMargins(0, 0, 0, 0);
-	l->setSpacing(1);
+	l->setSpacing(0);
+
 	w->setLayout(l);
-	w->setMinimumSize(l->count() * 150, 200);
 	setWidget(w);
+	w->resize(w->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
+
+	setMinimumHeight(w->height());
 }

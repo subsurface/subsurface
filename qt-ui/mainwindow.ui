@@ -28,6 +28,9 @@
      <number>0</number>
     </property>
     <item>
+     <widget class="MultiFilter" name="multiFilter" native="true"/>
+    </item>
+    <item>
      <widget class="QSplitter" name="mainSplitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -125,9 +128,6 @@
         </property>
         <widget class="QWidget" name="page_3">
          <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="MultiFilter" name="multiFilter" native="true"/>
-          </item>
           <item>
            <widget class="DiveListView" name="ListWidget">
             <property name="selectionMode">

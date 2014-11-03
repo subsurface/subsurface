@@ -130,6 +130,12 @@ private:
 	struct dive_components *what;
 };
 
+class MultiFilter : public QScrollArea {
+	Q_OBJECT
+public:
+	MultiFilter(QWidget *parent);
+};
+
 class TagFilter : public QWidget {
 	Q_OBJECT
 public:
@@ -139,6 +145,7 @@ public:
 
 private:
 	Ui::FilterWidget ui;
+	friend class MultiFilter;
 };
 
 class BuddyFilter : public QWidget {
@@ -161,13 +168,6 @@ public:
 
 private:
 	Ui::FilterWidget ui;
-};
-
-
-class MultiFilter : public QScrollArea {
-	Q_OBJECT
-public:
-	MultiFilter(QWidget *parent);
 };
 
 bool isGnome3Session();
