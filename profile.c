@@ -901,6 +901,10 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
 		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 
+		// For CCR dives use the diluent gas composition for calculating partial gas pressures:
+		if ((dive->dc.dctype == CCR) && (cylinderindex == dive->oxygen_cylinder_index))
+			cylinderindex = dive->diluent_cylinder_index;
+
 		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2);
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before

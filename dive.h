@@ -48,6 +48,7 @@ extern "C" {
 #endif
 
 enum dive_comp_type {OC, CCR};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum cylinderuse {oxygen, diluent, bailout}; // The different uses for cylinders in CCR dives
 
 struct gasmix {
 	fraction_t o2;
@@ -70,6 +71,7 @@ typedef struct
 	bool manually_added;
 	volume_t gas_used;
 	volume_t deco_gas_used;
+	enum cylinderuse cylinder_use;
 } cylinder_t;
 
 typedef struct
@@ -319,7 +321,10 @@ struct dive {
 	struct divecomputer dc;
 	int id; // unique ID for this dive
 	struct picture *picture_list;
+	int oxygen_cylinder_index, diluent_cylinder_index; // CCR dive cylinder indices
 };
+
+extern int get_cylinder_use(struct dive *dive, enum cylinderuse cylinder_use_type);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {

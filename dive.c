@@ -1038,6 +1038,12 @@ unsigned int dc_airtemp(struct divecomputer *dc)
 	return (sum + nr / 2) / nr;
 }
 
+static void fixup_cylinder_use(struct dive *dive) // for CCR dives, store the indices
+{						  // of the oxygen and diluent cylinders
+	dive->oxygen_cylinder_index = get_cylinder_use(dive, oxygen);
+	dive->diluent_cylinder_index = get_cylinder_use(dive, diluent);
+}
+
 static void fixup_airtemp(struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin)
@@ -1228,6 +1234,7 @@ struct dive *fixup_dive(struct dive *dive)
 	fixup_duration(dive);
 	fixup_watertemp(dive);
 	fixup_airtemp(dive);
+	fixup_cylinder_use(dive); // store indices for CCR oxygen and diluent cylinders
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
@@ -1504,6 +1511,22 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
 	if (!a->weight.grams)
 		a = b;
 	*res = *a;
+}
+
+/* get_cylinder_use(): Find the index of the first cylinder with a particular CCR use type.
+ * The index returned corresponds to that of the first cylinder with a cylinder_use that
+ * equals the appropriate enum value [oxygen, diluent, bailout] given by cylinder_use_type.
+ * A negative number returned indicates that a match could not be found.
+ * Call parameters: dive = the dive being processed
+ *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
+extern int get_cylinder_use(struct dive *dive, enum cylinderuse cylinder_use_type)
+{
+	int cylinder_index;
+	for (cylinder_index = 0; cylinder_index < MAX_CYLINDERS; cylinder_index++) {
+		if (dive->cylinder[cylinder_index].cylinder_use == cylinder_use_type)
+			return cylinder_index; // return the index of the cylinder with that cylinder use type
+	}
+	return -1; // negative number means cylinder_use_type not found in list of cylinders
 }
 
 int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
