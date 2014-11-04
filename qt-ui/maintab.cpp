@@ -744,14 +744,26 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (mydive != cd) {
-						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description))
-							// only copy the cylinder type, none of the other values
-							mydive->cylinder[i].type = displayed_dive.cylinder[i].type;
+						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
+							// if we started out with the same cylinder description make sure that we have the same cylinder type
+							// and copy the gasmix, but DON'T copy the start and end pressures (those are per dive after all)
+							if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
+								free((void*)mydive->cylinder[i].type.description);
+								mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
+							}
+							mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
+							mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
+							mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
+						}
 					}
 				}
 			);
-			for (int i = 0; i < MAX_CYLINDERS; i++)
+			for (int i = 0; i < MAX_CYLINDERS; i++) {
+				// copy the cylinder but make sure we have our own copy of the strings
+				free((void*)cd->cylinder[i].type.description);
 				cd->cylinder[i] = displayed_dive.cylinder[i];
+				cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
+			}
 			do_replot = true;
 		}
 
