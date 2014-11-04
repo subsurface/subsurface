@@ -71,7 +71,9 @@ const QPixmap &trashIcon()
 	return *trashIconPixmap;
 }
 
-CylindersModel::CylindersModel(QObject *parent) : rows(0)
+CylindersModel::CylindersModel(QObject *parent) :
+	rows(0),
+	changed(false)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
@@ -411,7 +413,9 @@ void CylindersModel::remove(const QModelIndex &index)
 	endRemoveRows();
 }
 
-WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent), rows(0)
+WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
+	rows(0),
+	changed(false)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
