@@ -893,19 +893,19 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 	double amb_pressure;
 
 	for (i = 1; i < pi->nr; i++) {
-		int fo2, fhe;
+		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 		int cylinderindex = entry->cylinderindex;
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
-		fo2 = get_o2(&dive->cylinder[cylinderindex].gasmix);
-		fhe = get_he(&dive->cylinder[cylinderindex].gasmix);
 
 		// For CCR dives use the diluent gas composition for calculating partial gas pressures:
 		if ((dive->dc.dctype == CCR) && (cylinderindex == dive->oxygen_cylinder_index))
 			cylinderindex = dive->diluent_cylinder_index;
 
 		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, dive->dc.dctype, entry->sac);
+		fn2 = (int) (1000.0 * entry->pressures.n2 / amb_pressure);
+		fhe = (int) (1000.0 * entry->pressures.he / amb_pressure);
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
@@ -914,7 +914,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
 		entry->mod = (double)gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
-		entry->ead = (entry->depth + 10000) * (1000 - fo2 - fhe) / (double)N2_IN_AIR - 10000;
+		entry->ead = (entry->depth + 10000) * fn2 / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
 				      (entry->pressures.o2 / amb_pressure * O2_DENSITY +
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
