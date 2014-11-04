@@ -108,8 +108,8 @@ QImage grayImage(const QImage& coloredImg)
 				continue;
 
 			QColor c(rgb);
-			int gray = (c.red() + c.green() + c.blue()) / 3;
-			img.setPixel(i, j, qRgba(gray, gray, gray, 60));
+			int gray = 204 + (c.red() + c.green() + c.blue()) / 15;
+			img.setPixel(i, j, qRgb(gray, gray, gray));
 		}
 	}
 
