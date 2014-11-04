@@ -3,6 +3,7 @@
 
 #include <QGraphicsPathItem>
 #include <QAbstractTableModel>
+#include <QAbstractButton>
 #include <QDateTime>
 
 #include "dive.h"
@@ -80,7 +81,8 @@ slots:
 	void setDisplayRuntime(bool value);
 	void setDisplayDuration(bool value);
 	void setDisplayTransitions(bool value);
-	void createPlan();
+	void savePlan();
+	void saveDuplicatePlan();
 	void remove(const QModelIndex &index);
 	void cancelPlan();
 	void createTemporaryPlan();
@@ -97,6 +99,7 @@ signals:
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	bool addGas(struct gasmix mix);
+	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
 	Mode mode;
 	bool recalc;
@@ -136,6 +139,7 @@ class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
 	explicit DivePlannerWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	void setReplanButton(bool replan);
 public
 slots:
 	void setupStartTime(QDateTime startTime);
@@ -146,6 +150,7 @@ slots:
 
 private:
 	Ui::DivePlanner ui;
+	QAbstractButton *replanButton;
 };
 
 #include "ui_plannerSettings.h"

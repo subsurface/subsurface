@@ -347,7 +347,7 @@ double init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
 	unsigned int surface_time;
-	timestamp_t when, lasttime = 0;
+	timestamp_t when, lasttime = 0, laststart = 0;
 	bool deco_init = false;
 	double tissue_tolerance, surface_pressure;
 
@@ -370,8 +370,11 @@ double init_decompression(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip)
 			continue;
-		if (!pdive || pdive->when > when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
+		if (!pdive || pdive->when >= when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
 			break;
+		/* For simultaneous dives, only consider the first */
+		if (pdive->when == laststart)
+			continue;
 		when = pdive->when;
 		lasttime = when + pdive->duration.seconds;
 	}
@@ -389,6 +392,7 @@ double init_decompression(struct dive *dive)
 #endif
 		}
 		add_dive_to_deco(pdive);
+		laststart = pdive->when;
 #if DECO_CALC_DEBUG & 2
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();

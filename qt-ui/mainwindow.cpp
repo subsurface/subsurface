@@ -466,6 +466,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	ui.newProfile->setPlanState();
 	ui.newProfile->clearHandlers();
 	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+	ui.divePlannerWidget->setReplanButton(true);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
@@ -491,6 +492,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	DivePictureModel::instance()->updateDivePictures();
+	ui.divePlannerWidget->setReplanButton(false);
 
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
 	ui.globePane->setCurrentIndex(1);

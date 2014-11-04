@@ -300,7 +300,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(DivePlannerPointsModel::instance(), SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
 
 	// Creating (and canceling) the plan
-	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(createPlan()));
+	replanButton = ui.buttonBox->addButton(tr("Save New"), QDialogButtonBox::ActionRole);
+	connect(replanButton, SIGNAL(clicked()), plannerModel, SLOT(saveDuplicatePlan()));
+	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(savePlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), plannerModel, SLOT(cancelPlan()));
@@ -317,6 +319,11 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+}
+
+void DivePlannerWidget::setReplanButton(bool replan)
+{
+	replanButton->setVisible(replan);
 }
 
 void DivePlannerWidget::setupStartTime(QDateTime startTime)
@@ -1168,7 +1175,17 @@ void DivePlannerPointsModel::deleteTemporaryPlan()
 	free_dps(&diveplan);
 }
 
-void DivePlannerPointsModel::createPlan()
+void DivePlannerPointsModel::savePlan()
+{
+	createPlan(false);
+}
+
+void DivePlannerPointsModel::saveDuplicatePlan()
+{
+	createPlan(true);
+}
+
+void DivePlannerPointsModel::createPlan(bool replanCopy)
 {
 	// Ok, so, here the diveplan creates a dive
 	char *cache = NULL;
@@ -1188,6 +1205,15 @@ void DivePlannerPointsModel::createPlan()
 		displayed_dive.maxdepth.mm = 0;
 		displayed_dive.dc.maxdepth.mm = 0;
 		fixup_dive(&displayed_dive);
+		if (replanCopy) {
+			struct dive *copy = alloc_dive();
+			copy_dive(current_dive, copy);
+			copy->id = 0;
+			copy->divetrip = NULL;
+			if (current_dive->divetrip)
+				add_dive_to_trip(copy, current_dive->divetrip);
+			record_dive(copy);
+		}
 		copy_dive(&displayed_dive, current_dive);
 	}
 	mark_divelist_changed(true);
