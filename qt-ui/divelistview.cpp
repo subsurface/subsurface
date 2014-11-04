@@ -234,6 +234,29 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 	expand(idx);
 }
 
+// this is an odd one - when filtering the dive list the selection status of the trips
+// is kept - but all other selections are lost. That's gets us into rather inconsistent state
+// we call this function which clears the selection state of the trips as well, but does so
+// without updating our internal "->selected" state. So once we called this function we can
+// go back and select those dives that are still visible under the filter and everything
+// works as expected
+void DiveListView::clearTripSelection()
+{
+	// we want to make sure no trips are selected
+	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
+	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+
+	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
+		dive_trip_t *trip = static_cast<dive_trip_t *>(index.data(DiveTripModel::TRIP_ROLE).value<void *>());
+		if (!trip)
+			continue;
+		selectionModel()->select(index, QItemSelectionModel::Deselect);
+	}
+
+	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
+	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+}
+
 void DiveListView::unselectDives()
 {
 	// make sure we don't try to redraw the dives during the selection change

@@ -2617,18 +2617,28 @@ void MultiFilterSortModel::myInvalidate()
 {
 	int i;
 	struct dive *d;
+	DiveListView *dlv = MainWindow::instance()->dive_list();
 
 	invalidate();
 
-	for_each_dive (i, d) {
-		if(d->selected)
-			MainWindow::instance()->dive_list()->selectDive(get_idx_by_uniq_id(d->id));
-	}
+	// first make sure the trips are no longer shown as selected
+	// (but without updating the selection state of the dives... this just cleans
+	//  up an oddity in the filter handling)
+	dlv->clearTripSelection();
+
 	// if we have no more selected dives, clean up the display - this later triggers us
 	// to pick one of the dives that are shown in the list as selected dive which is the
 	// natural behavior
-	if (amount_selected == 0)
+	if (amount_selected == 0) {
 		MainWindow::instance()->cleanUpEmpty();
+	} else {
+		// otherwise find the dives that should still be selected (the filter above unselected any
+		// dive that's no longer visible) and select them again
+		for_each_dive (i, d) {
+			if(d->selected)
+				dlv->selectDive(get_idx_by_uniq_id(d->id));
+		}
+	}
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)

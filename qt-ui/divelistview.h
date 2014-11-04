@@ -25,6 +25,7 @@ public:
 	void reload(DiveTripModel::Layout layout, bool forceSort = true);
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
+	void clearTripSelection();
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
 	void selectDives(const QList<int> &newDiveSelection);
 	void rememberSelection();
