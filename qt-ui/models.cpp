@@ -7,12 +7,13 @@
 #include "models.h"
 #include "diveplanner.h"
 #include "mainwindow.h"
-#include "../helpers.h"
-#include "../dive.h"
-#include "../device.h"
-#include "../statistics.h"
-#include "../qthelper.h"
-#include "../gettextfromc.h"
+#include "helpers.h"
+#include "dive.h"
+#include "device.h"
+#include "statistics.h"
+#include "qthelper.h"
+#include "gettextfromc.h"
+#include "display.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -2333,7 +2334,12 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 
 	if (!head) { // last tag means "Show empty tags";
 		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
+			if (checkState[rowCount() - 1]) {
+				return true;
+			} else {
+				deselect_dive(get_idx_by_uniq_id(d->id));
+				return false;
+			}
 		else
 			return true;
 	}
@@ -2350,6 +2356,7 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 			head = head->next;
 		}
 	}
+	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
 }
 
@@ -2388,7 +2395,12 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	// only show empty buddie dives if the user checked that.
 	if (diveBuddy.isEmpty() && divemaster.isEmpty()) {
 		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
+			if (checkState[rowCount() - 1]) {
+				return true;
+			} else {
+				deselect_dive(get_idx_by_uniq_id(d->id));
+				return false;
+			}
 		else
 			return true;
 	}
@@ -2403,6 +2415,7 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 			}
 		}
 	}
+	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
 }
 
@@ -2501,7 +2514,12 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 	// only show empty buddie dives if the user checked that.
 	if (location.isEmpty()) {
 		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
+			if (checkState[rowCount() - 1]) {
+				return true;
+			} else {
+				deselect_dive(get_idx_by_uniq_id(d->id));
+				return false;
+			}
 		else
 			return true;
 	}
@@ -2516,6 +2534,7 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 			}
 		}
 	}
+	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
 }
 
@@ -2596,7 +2615,20 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 
 void MultiFilterSortModel::myInvalidate()
 {
+	int i;
+	struct dive *d;
+
 	invalidate();
+
+	for_each_dive (i, d) {
+		if(d->selected)
+			MainWindow::instance()->dive_list()->selectDive(get_idx_by_uniq_id(d->id));
+	}
+	// if we have no more selected dives, clean up the display - this later triggers us
+	// to pick one of the dives that are shown in the list as selected dive which is the
+	// natural behavior
+	if (amount_selected == 0)
+		MainWindow::instance()->cleanUpEmpty();
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
