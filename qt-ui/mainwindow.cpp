@@ -885,6 +885,7 @@ QString MainWindow::filter()
 	f += "UDDF (*.uddf *.UDDF);;";
 	f += "XML (*.xml *.XML)";
 	f += "Divesoft (*.dlf *.DLF)";
+	f += "Datatrak/WLog Files (*.log *.LOG)";
 
 	return f;
 }
@@ -1427,6 +1428,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;"
 			"XML files (*.xml *.XML);;"
 			"APD log viewer (*.apd *.APD);;"
+			"Datatrak/WLog Files (*.log *.LOG);;"
 			"All files (*)"));
 
 	if (fileNames.isEmpty())

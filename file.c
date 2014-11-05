@@ -22,6 +22,8 @@
 #define O_BINARY 0
 #endif
 
+extern void datatrak_import(const char *file, struct dive_table *table);
+
 int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd;
@@ -452,6 +454,12 @@ int parse_file(const char *filename)
 			return 0;
 		}
 		return -1;
+	}
+
+	/* DataTrak/Wlog */
+	if (fmt && (!strcasecmp(fmt + 1, "LOG"))) {
+		datatrak_import(filename, &dive_table);
+		return 0;
 	}
 
 	ret = parse_file_buffer(filename, &mem);

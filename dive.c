@@ -1400,7 +1400,7 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
-static struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
+struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
 {
 	struct sample *p = prepare_sample(dc);
 

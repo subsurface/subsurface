@@ -105,6 +105,7 @@ HEADERS = \
 	configuredivecomputer.h \
 	configuredivecomputerthreads.h \
 	devicedetails.h \
+	datatrak.h \
 	qt-ui/statistics/monthstatistics.h \
 	qt-ui/statistics/statisticswidget.h \
 	qt-ui/statistics/statisticsbar.h \
@@ -123,6 +124,7 @@ android: HEADERS -= \
 SOURCES =  \
 	version.c \
 	cochran.c \
+	datatrak.c \
 	deco.c \
 	device.c \
 	dive.c \
