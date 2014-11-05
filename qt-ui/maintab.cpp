@@ -34,7 +34,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	cylindersModel(CylindersModel::instance()),
 	editMode(NONE),
 	divePictureModel(DivePictureModel::instance()),
-	currentTrip(0)
+	currentTrip(0),
+	copyPaste(false)
 {
 	ui.setupUi(this);
 	ui.dateEdit->setDisplayFormat(getDateFormat());
@@ -265,6 +266,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
 	modified = false;
+	copyPaste = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
 	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
@@ -648,15 +650,15 @@ void MainTab::reload()
 		mark_divelist_changed(true);                 \
 	} while (0)
 
-#define EDIT_TEXT(what)                                      \
-	if (same_string(mydive->what, cd->what)) {           \
-		free(mydive->what);                          \
-		mydive->what = copy_string(displayed_dive.what);  \
+#define EDIT_TEXT(what)                                          \
+	if (same_string(mydive->what, cd->what) || copyPaste) {  \
+		free(mydive->what);                              \
+		mydive->what = copy_string(displayed_dive.what); \
 	}
 
-#define EDIT_VALUE(what)                                     \
-	if (mydive->what == cd->what) {                      \
-		mydive->what = displayed_dive.what;          \
+#define EDIT_VALUE(what)                             \
+	if (mydive->what == cd->what || copyPaste) { \
+		mydive->what = displayed_dive.what;  \
 	}
 
 void MainTab::acceptChanges()
@@ -729,9 +731,10 @@ void MainTab::acceptChanges()
 		if (displayed_dive.latitude.udeg != cd->latitude.udeg ||
 		    displayed_dive.longitude.udeg != cd->longitude.udeg)
 			MODIFY_SELECTED_DIVES(
-				if (same_string(mydive->location, cd->location) &&
-				    mydive->latitude.udeg == cd->latitude.udeg &&
-				    mydive->longitude.udeg == cd->longitude.udeg)
+				if (copyPaste ||
+				    (same_string(mydive->location, cd->location) &&
+				     mydive->latitude.udeg == cd->latitude.udeg &&
+				     mydive->longitude.udeg == cd->longitude.udeg))
 					gpsHasChanged(mydive, cd, ui.coordinates->text(), 0);
 			);
 		if (!same_string(displayed_dive.location, cd->location))
@@ -744,9 +747,10 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (mydive != cd) {
-						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description)) {
-							// if we started out with the same cylinder description make sure that we have the same cylinder type
-							// and copy the gasmix, but DON'T copy the start and end pressures (those are per dive after all)
+						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description) || copyPaste) {
+							// if we started out with the same cylinder description (for multi-edit) or if we do copt & paste
+							// make sure that we have the same cylinder type and copy the gasmix, but DON'T copy the start
+							// and end pressures (those are per dive after all)
 							if (!same_string(mydive->cylinder[i].type.description, displayed_dive.cylinder[i].type.description)) {
 								free((void*)mydive->cylinder[i].type.description);
 								mydive->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
@@ -771,7 +775,7 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(true);
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					if (mydive != cd && same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))
+					if (mydive != cd && (copyPaste || same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description)))
 						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
 				}
 			);
@@ -1206,6 +1210,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 {
 	// take the data in our copyPasteDive and apply it to selected dives
 	enableEdition();
+	copyPaste = true;
 	SHOW_SELECTIVE(location);
 	SHOW_SELECTIVE(buddy);
 	SHOW_SELECTIVE(divemaster);

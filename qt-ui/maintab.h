@@ -103,6 +103,7 @@ private:
 	DivePictureModel *divePictureModel;
 	Completers completers;
 	bool modified;
+	bool copyPaste;
 	void resetPallete();
 	void saveTags();
 	void updateGpsCoordinates(const struct dive *dive);
