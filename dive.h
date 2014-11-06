@@ -233,6 +233,12 @@ void taglist_cleanup(struct tag_entry **tag_list);
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
 
+struct extra_data {
+	const char *key;
+	const char *value;
+	struct extra_data *next;
+};
+
 /*
  * NOTE! The deviceid and diveid are model-specific *hashes* of
  * whatever device identification that model may have. Different
@@ -260,6 +266,7 @@ struct divecomputer {
 	int samples, alloc_samples;
 	struct sample *sample;
 	struct event *events;
+	struct extra_data *extra_data;
 	struct divecomputer *next;
 };
 
