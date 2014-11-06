@@ -17,6 +17,7 @@
 
 class WeightModel;
 class CylindersModel;
+class ExtraDataModel;
 class QCompleter;
 
 struct Completers {
@@ -94,6 +95,7 @@ private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
+	ExtraDataModel *extraDataModel;
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;

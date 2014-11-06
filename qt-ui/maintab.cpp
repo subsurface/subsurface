@@ -32,6 +32,7 @@
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(CylindersModel::instance()),
+	extraDataModel(new ExtraDataModel(this)),
 	editMode(NONE),
 	divePictureModel(DivePictureModel::instance()),
 	currentTrip(0),
@@ -47,6 +48,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setModel(weightModel);
 	ui.photosView->setModel(divePictureModel);
 	connect(ui.photosView, SIGNAL(photoDoubleClicked(QString)), this, SLOT(photoDoubleClicked(QString)));
+	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
 	QAction *action = new QAction(tr("Save"), this);
@@ -473,6 +475,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.equipmentTab->setEnabled(true);
 			cylindersModel->updateDive();
 			weightModel->updateDive();
+			extraDataModel->updateDive();
 			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 		}
@@ -899,6 +902,7 @@ void MainTab::rejectChanges()
 	weightModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive();
+	extraDataModel->updateDive();
 }
 #undef EDIT_TEXT2
 

@@ -37,8 +37,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>668</width>
+         <height>658</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -336,8 +336,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -416,8 +416,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>668</width>
+         <height>658</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
@@ -745,8 +745,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>662</width>
-         <height>642</height>
+         <width>342</width>
+         <height>167</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_7">
@@ -952,6 +952,57 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QWidget" name="tab_2">
+   <attribute name="title">
+    <string>Extra data</string>
+   </attribute>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>341</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Additional data from dive computer</string>
+    </property>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>661</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_5">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>659</width>
+       <height>639</height>
+      </rect>
+     </property>
+     <widget class="QTableView" name="extraData">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>641</width>
+        <height>621</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
