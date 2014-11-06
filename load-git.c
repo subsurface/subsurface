@@ -540,6 +540,32 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 		report_error("Unexpected event key/value pair (%s/%s)", key, value);
 }
 
+/* keyvalue "key" "value"
+ * so we have two strings (possibly empty) in the membuffer, separated by a '\0' */
+static void parse_dc_keyvalue(char *line, struct membuffer *str, void *_dc)
+{
+	const char *key, *value;
+	struct divecomputer *dc = _dc;
+
+	// Let's make sure we have two strings...
+	int string_counter = 0;
+	while(*line) {
+		if (*line == '"')
+			string_counter++;
+		line++;
+	}
+	if (string_counter != 2)
+		return;
+
+	// stupidly the second string in the membuffer isn't NUL terminated;
+	// asking for a cstring fixes that; interestingly enough, given that there are two
+	// strings in the mb, the next command at the same time assigns a pointer to the
+	// first string to 'key' and NUL terminates the second string (which then goes to 'value')
+	key = mb_cstring(str);
+	value = key + strlen(key) + 1;
+	add_extra_data(dc, key, value);
+}
+
 static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 {
 	int m, s = 0;
@@ -699,7 +725,7 @@ struct keyword_action dc_action[] = {
 #undef D
 #define D(x) { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(deviceid), D(diveid), D(duration),
-	D(event), D(maxdepth), D(meandepth), D(model), D(salinity),
+	D(event), D(keyvalue), D(maxdepth), D(meandepth), D(model), D(salinity),
 	D(surfacepressure), D(surfacetime), D(time), D(watertemp),
 };
 

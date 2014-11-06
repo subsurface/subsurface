@@ -119,6 +119,15 @@ static void save_tags(struct membuffer *b, struct tag_entry *tags)
 	put_string(b, "\n");
 }
 
+static void save_extra_data(struct membuffer *b, struct extra_data *ed)
+{
+	while (ed) {
+		if (ed->key && ed->value)
+			put_format(b, "keyvalue \"%s\" \"%s\"\n", ed->key ? : "", ed->value ? : "");
+		ed = ed->next;
+	}
+}
+
 static void put_gasmix(struct membuffer *b, struct gasmix *mix)
 {
 	int o2 = mix->o2.permille;
@@ -334,6 +343,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "surfacetime ", "min\n");
 
+	save_extra_data(b, dc->extra_data);
 	save_events(b, dc->events);
 	save_samples(b, dc->samples, dc->sample);
 }
