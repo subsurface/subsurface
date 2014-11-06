@@ -952,10 +952,6 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j] = pi->entry->o2sensor[j];
 			} else {	// Now re-insert the missing oxygen pressure values
-				if (entry->o2setpoint)
-					last_setpoint = entry->o2setpoint;
-				else
-					entry->o2setpoint = last_setpoint;
 				for (j = 0; j < dc->no_o2sensors; j++)
 					if (entry->o2sensor[j])
 						last_sensor[j] = entry->o2sensor[j];
