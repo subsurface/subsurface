@@ -301,6 +301,19 @@ static void save_tags(struct membuffer *b, struct tag_entry *entry)
 	}
 }
 
+static void save_extra_data(struct membuffer *b, struct extra_data *ed)
+{
+	while (ed) {
+		if (ed->key && ed->value) {
+			put_string(b, "  <extradata");
+			show_utf8(b, ed->key, " key='", "'", 1);
+			show_utf8(b, ed->value, " value='", "'", 1);
+			put_string(b, " />\n");
+		}
+		ed = ed->next;
+	}
+}
+
 static void show_date(struct membuffer *b, timestamp_t when)
 {
 	struct tm tm;
@@ -341,7 +354,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_airpressure(b, dc);
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
-
+	save_extra_data(b, dc->extra_data);
 	save_events(b, dc->events);
 	save_samples(b, dc->samples, dc->sample);
 

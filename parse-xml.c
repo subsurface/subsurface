@@ -120,6 +120,7 @@ static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
 static int lastcylinderindex, lastsensor;
+static struct extra_data cur_extra_data;
 
 /*
  * If we don't have an explicit dive computer,
@@ -346,6 +347,18 @@ static void depth(char *buffer, depth_t *depth)
 	default:
 		printf("Strange depth reading %s\n", buffer);
 	}
+}
+
+static void extra_data_start(void)
+{
+	memset(&cur_extra_data, 0, sizeof(struct extra_data));
+}
+
+static void extra_data_end(void)
+{
+	// don't save partial structures - we must have both key and value
+	if (cur_extra_data.key && cur_extra_data.value)
+		add_extra_data(cur_dc, cur_extra_data.key, cur_extra_data.value);
 }
 
 static void weight(char *buffer, weight_t *weight)
@@ -821,7 +834,10 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 		return 1;
 	if (MATCH("salinity.water", salinity, &dc->salinity))
 		return 1;
-
+	if (MATCH("key.extradata", utf8_string, &cur_extra_data.key))
+		return 1;
+	if (MATCH("value.extradata", utf8_string, &cur_extra_data.value))
+		return 1;
 	return 0;
 }
 
@@ -1643,6 +1659,7 @@ static struct nesting {
 	  { "P", sample_start, sample_end },
 	  { "userid", userid_start, userid_stop},
 	  { "picture", picture_start, picture_end },
+	  { "extradata", extra_data_start, extra_data_end },
 
 	  /* Import type recognition */
 	  { "Divinglog", DivingLog_importer },

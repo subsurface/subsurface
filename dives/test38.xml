@@ -1,0 +1,13 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='1' date='2014-03-08' time='09:00:00' duration='30:00 min'>
+  <notes>test dive with dive computer extra data</notes>
+  <divecomputer model='Ficticious Perfect' deviceid='00abcdef' diveid='12345678'>
+  <depth max='30.0 m' mean='15.0 m' />
+  <extradata key='some key' value='some value' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
