@@ -430,7 +430,6 @@ char *parse_mkvi_value(const char *haystack, const char *needle)
 	return ret;
 }
 
-static int cur_cylinder_index;
 int parse_txt_file(const char *filename, const char *csv)
 {
 	struct memblock memtxt, memcsv;
@@ -449,7 +448,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
 		char *lineptr;
-		static int diluent_pressure = 0, cylinder_pressure = 0;
+		int diluent_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
 
 		struct dive *dive;
 		struct divecomputer *dc;
