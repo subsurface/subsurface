@@ -2436,8 +2436,9 @@ void BuddyFilterModel::repopulate()
 	for_each_dive (i, dive) {
 		QString persons = QString(dive->buddy) + "," + QString(dive->divemaster);
 		Q_FOREACH(const QString& person, persons.split(',', QString::SkipEmptyParts)){
-			if (!list.contains(person)) {
-				list.append(person);
+			// Remove any leading spaces
+			if (!list.contains(person.trimmed())) {
+				list.append(person.trimmed());
 			}
 		}
 	}
