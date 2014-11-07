@@ -7,6 +7,7 @@ struct memblock {
 };
 
 extern int try_to_open_cochran(const char *filename, struct memblock *mem);
+extern int try_to_open_liquivision(const char *filename, struct memblock *mem);
 
 #ifdef __cplusplus
 extern "C" {

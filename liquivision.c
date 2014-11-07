@@ -215,15 +215,15 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 				// Get sample times
 				sample_time = d * sample_interval;
 				depth_mm = array_uint16_le(ds + d * 2) * 10; // cm->mm
-				temp_mk = C_to_mkelvin(array_uint16_le(ts + d * 2) / 10); // dC->mK
+				temp_mk = C_to_mkelvin((float)array_uint16_le(ts + d * 2) / 10); // dC->mK
 				next_time = (d < sample_count - 1 ? (d + 1) * sample_interval : sample_time);
 				last_time = (d ? (d - 1) * sample_interval : 0);
 
 				if (d == sample_count) {
 					// We still have events to record
 					sample->time.seconds = event_time;
-					sample->depth.mm == array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
-					sample->temperature.mkelvin = C_to_mkelvin(array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
+					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
+					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 					sample->sensor = sensor;
 					sample->cylinderpressure.mbar = mbar;
 					finish_sample(dc);
@@ -257,7 +257,7 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 					} else {
 						// Extrapolate
 						last_depth = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
-						last_temp = C_to_mkelvin(array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
+						last_temp = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 						sample->depth.mm = last_depth + (depth_mm - last_depth)
 							* (event_time - last_time) / sample_interval;
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
