@@ -357,6 +357,8 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	/* Cochran export comma-separated-value files */
 	if (!strcasecmp(fmt, "DPT"))
 		return try_to_open_csv(filename, mem, CSV_DEPTH);
+	if (!strcasecmp(fmt, "LVD"))
+		return try_to_open_liquivision(filename, mem);
 	if (!strcasecmp(fmt, "TMP"))
 		return try_to_open_csv(filename, mem, CSV_TEMP);
 	if (!strcasecmp(fmt, "HP1"))

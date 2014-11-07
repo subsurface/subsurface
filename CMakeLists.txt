@@ -85,6 +85,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	equipment.c
 	file.c
 	libdivecomputer.c
+	liquivision.c
 	load-git.c
 	membuffer.c
 	parse-xml.c

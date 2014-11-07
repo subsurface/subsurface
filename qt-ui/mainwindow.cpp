@@ -727,7 +727,8 @@ QString MainWindow::filter()
 	QString f;
 	f += "ALL ( *.ssrf *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
 	f += "*.sde *.SDE *.dld *.DLD ";
-	f += "*.db *.can";
+	f += "*.db *.can ";
+	f += "*.lvd ";
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
@@ -739,7 +740,8 @@ QString MainWindow::filter()
 	f += "SDE (*.sde *.SDE);;";
 	f += "DLD (*.dld *.DLD);;";
 	f += "DB (*.db);;";
-	f += "CAN (*.can)";
+	f += "CAN (*.can);;";
+	f += "LVD (*.lvd)";
 
 	return f;
 }
@@ -1249,7 +1251,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can);;"
+		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can *.lvd);;"
 			"XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;"
 			"Suunto files(*.sde *.db);;CSV files(*.csv);;MkVI files(*.txt);;All files(*)"));
 
