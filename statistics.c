@@ -342,8 +342,8 @@ static void get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup, volu
 		return;
 	}
 
-	air.mliter = (vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup);
-	he->mliter = (vol.mliter * get_he(&mix)) / 1000;
+	air.mliter = rint(((double)vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup));
+	he->mliter = rint(((double)vol.mliter * get_he(&mix)) / 1000.0);
 	o2->mliter += vol.mliter - he->mliter - air.mliter;
 }
 
