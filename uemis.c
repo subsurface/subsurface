@@ -293,9 +293,11 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	struct divecomputer *dc = &dive->dc;
 	int template, gasoffset;
 	int active = 0;
+	char version[5];
 
 	datalen = uemis_convert_base64(base64, &data);
-
+	snprintf(version, sizeof(version), "%1u.%02u", data[18], data[17]);
+	add_extra_data(dc, "software_version", version);
 	dive->dc.airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data + 45)) / 10.0);
 	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
 	if (*(uint8_t *)(data + 19))
@@ -366,5 +368,19 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	}
 	if (sample)
 		dive->dc.duration.seconds = sample->time.seconds - 1;
+
+	/* get data from the footer */
+	char buffer[24];
+	snprintf(buffer, sizeof(buffer), "%d",*(uint16_t *)(data + i + 35));
+	add_extra_data(dc, "main battery after dive", buffer);
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 24), 60));
+	add_extra_data(dc, "no fly time", buffer);
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 26), 60));
+	add_extra_data(dc, "no dive time", buffer);
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 28), 60));
+	add_extra_data(dc, "desat time", buffer);
+	snprintf(buffer, sizeof(buffer), "%u",*(uint16_t *)(data + i + 30));
+	add_extra_data(dc, "allowed altitude", buffer);
+
 	return;
 }
