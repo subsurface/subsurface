@@ -145,6 +145,20 @@ void update_event_name(struct dive *d, struct event *event, char *name)
 	free(remove);
 }
 
+void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
+{
+	struct extra_data **ed = &dc->extra_data;
+
+	while (*ed)
+		ed = &(*ed)->next;
+	*ed = malloc(sizeof(struct extra_data));
+	if (*ed) {
+		(*ed)->key = strdup(key);
+		(*ed)->value = strdup(value);
+		(*ed)->next = NULL;
+	}
+}
+
 /* this returns a pointer to static variable - so use it right away after calling */
 struct gasmix *get_gasmix_from_event(struct event *ev)
 {

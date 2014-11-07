@@ -690,6 +690,7 @@ extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int
 extern struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
 extern void update_event_name(struct dive *d, struct event* event, char *name);
+extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
 extern int nr_cylinders(struct dive *dive);
