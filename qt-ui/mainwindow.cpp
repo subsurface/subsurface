@@ -725,23 +725,27 @@ void MainWindow::on_actionUserManual_triggered()
 QString MainWindow::filter()
 {
 	QString f;
-	f += "ALL ( *.ssrf *.xml *.XML *.uddf *.udcf *.UDFC *.jlb *.JLB ";
-	f += "*.sde *.SDE *.dld *.DLD ";
-	f += "*.db *.can ";
-	f += "*.lvd ";
+	f += "Dive log files ( *.ssrf ";
+	f += "*.can *.CAN ";
+	f += "*.db *.DB " ;
+	f += "*.dld *.DLD ";
+	f += "*.jlb *.JLB ";
+	f += "*.lvd *.LVD ";
+	f += "*.sde *.SDE ";
+	f += "*.udcf *.UDCF ";
+	f += "*.uddf *.UDDF ";
+	f += "*.xml *.XML ";
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
-	f += "XML (*.xml *.XML);;";
-	f += "UDDF (*.uddf);;";
+	f += "Cochran (*.can *.CAN);;";
+	f += "DiveLogs.de (*.dld *.DLD);;";
+	f += "JDiveLog  (*.jlb *.JLB);;";
+	f += "LiquiVision (*.lvd *.LVD);;";
+	f += "Suunto (*.sde *.SDE *.db *.DB);;";
 	f += "UDCF (*.udcf *.UDCF);;";
-	f += "JLB  (*.jlb *.JLB);;";
-
-	f += "SDE (*.sde *.SDE);;";
-	f += "DLD (*.dld *.DLD);;";
-	f += "DB (*.db);;";
-	f += "CAN (*.can);;";
-	f += "LVD (*.lvd)";
+	f += "UDDF (*.uddf *.UDDF);;";
+	f += "XML (*.xml *.XML)";
 
 	return f;
 }
@@ -1251,9 +1255,16 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.xml *.uddf *.udcf *.csv *.jlb *.dld *.sde *.db *.can *.lvd);;"
-			"XML files (*.xml);;UDDF/UDCF files(*.uddf *.udcf);;JDiveLog files(*.jlb);;"
-			"Suunto files(*.sde *.db);;CSV files(*.csv);;MkVI files(*.txt);;All files(*)"));
+		tr("Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;"
+			"Cochran files (*.can);;"
+			"CSV files (*.csv);;"
+			"DiveLog.de files (*.dld);;"
+			"JDiveLog files (*.jlb);;"
+			"MkVI files (*.txt);;"
+			"Suunto files(*.sde *.db);;"
+			"UDDF/UDCF files (*.uddf *.udcf);;"
+			"XML files (*.xml);;"
+			"All files(*)"));
 
 	if (fileNames.isEmpty())
 		return;
