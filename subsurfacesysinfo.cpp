@@ -224,16 +224,6 @@ struct QUnixOSVersion
 
 
 #ifdef USE_ETC_OS_RELEASE
-static QString unquote(const char *begin, const char *end)
-{
-	if (*begin == '"') {
-		Q_ASSERT(end[-1] == '"');
-		return QString::fromLatin1(begin + 1, end - begin - 2);
-	}
-	return QString::fromLatin1(begin, end - begin);
-}
-
-
 static bool readEtcOsRelease(QUnixOSVersion &v)
 {
 	QFile osRelease("/etc/os-release");
