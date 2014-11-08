@@ -12,9 +12,23 @@
 							+ ((p)[1]<<8) + ((p)[2]<<16) \
 							+ ((p)[3]<<24))
 
+#if __WIN32__
+static char *strndup (const char *s, size_t n)
+{
+	char *cpy;
+	size_t len = strlen(s);
+	if (n < len)
+		len = n;
+	if ((cpy = malloc(len + 1)) != NULL) {
+		cpy[len] = '\0';
+		memcpy(cpy, s, len);
+	}
+	return cpy;
+}
+#endif
 
-static void
-parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
+static void parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size)
+{
 	unsigned int ptr = 0;
 	unsigned char model;
 
@@ -142,6 +156,11 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 			algorithm = *(buf + ptr++);	// 0=ZH-L16C+GF
 			sample_count = array_uint32_le(buf + ptr);
 		}
+		// we aren't using the start_cns, dive_mode, and algorithm, yet
+		(void)start_cns;
+		(void)dive_mode;
+		(void)algorithm;
+
 		ptr += 4;
 
 		// Parse dive samples
@@ -206,7 +225,7 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 				continue;
 			}
 
-			int sample_time, next_time, last_time;
+			int sample_time, last_time;
 			int depth_mm, last_depth, temp_mk, last_temp;
 
 			while (true) {
@@ -216,7 +235,6 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 				sample_time = d * sample_interval;
 				depth_mm = array_uint16_le(ds + d * 2) * 10; // cm->mm
 				temp_mk = C_to_mkelvin((float)array_uint16_le(ts + d * 2) / 10); // dC->mK
-				next_time = (d < sample_count - 1 ? (d + 1) * sample_interval : sample_time);
 				last_time = (d ? (d - 1) * sample_interval : 0);
 
 				if (d == sample_count) {
@@ -317,9 +335,7 @@ parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size) {
 	save_dives("/tmp/test.xml");
 }
 
-
-int
-try_to_open_liquivision(const char *filename, struct memblock *mem)
+int try_to_open_liquivision(const char *filename, struct memblock *mem)
 {
 	void *name;
 	const unsigned char *buf = mem->buffer;
