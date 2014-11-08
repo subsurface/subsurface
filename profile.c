@@ -942,13 +942,12 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
  * for plotting. This function called by: create_plot_info_new() */
 {
 	int i, j;
-	double last_setpoint, last_sensor[3], o2pressure, amb_pressure;
+	double last_sensor[3], o2pressure, amb_pressure;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		if (dc->dctype == CCR) {
-			if (i == 0) {	// For 1st iteration, initialise the last_ values
-				last_setpoint = pi->entry->o2setpoint;
+			if (i == 0) {	// For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j] = pi->entry->o2sensor[j];
 			} else {	// Now re-insert the missing oxygen pressure values
