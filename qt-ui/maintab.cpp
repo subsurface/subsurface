@@ -35,8 +35,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	extraDataModel(new ExtraDataModel(this)),
 	editMode(NONE),
 	divePictureModel(DivePictureModel::instance()),
-	currentTrip(0),
-	copyPaste(false)
+	copyPaste(false),
+	currentTrip(0)
 {
 	ui.setupUi(this);
 	ui.dateEdit->setDisplayFormat(getDateFormat());
