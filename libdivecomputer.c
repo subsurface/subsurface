@@ -569,6 +569,25 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 #endif
 
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	dc_divemode_t divemode;
+	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error obtaining divemode"));
+		goto error_exit;
+	}
+	switch(divemode) {
+	case DC_DIVEMODE_FREEDIVE:
+	case DC_DIVEMODE_GAUGE:
+	case DC_DIVEMODE_OC: /* Open circuit */
+		dive->dc.dctype = OC;
+		break;
+	case DC_DIVEMODE_CC:  /* Closed circuit */
+		dive->dc.dctype = CCR;
+		break;
+	}
+#endif
+
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
