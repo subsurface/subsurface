@@ -497,6 +497,34 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 	dive->dc.maxdepth.mm = rint(maxdepth * 1000);
 
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	// if this is defined then we have a fairly late version of libdivecomputer
+	// from the 0.5 development cylcle - most likely temperatures and tank sizes
+	// are supported
+
+	// Parse temperatures
+	double temperature;
+	dc_field_type_t temp_fields[] = {DC_FIELD_TEMPERATURE_SURFACE,
+					 DC_FIELD_TEMPERATURE_MAXIMUM,
+					 DC_FIELD_TEMPERATURE_MINIMUM};
+	for (int i = 0; i < 3; i++) {
+		rc = dc_parser_get_field(parser, temp_fields[i], 0, &temperature);
+		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+			dev_info(devdata, translate("gettextFromC", "Error parsing temperature"));
+			goto error_exit;
+		}
+		switch(i) {
+		case 0:
+			dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
+			break;
+		case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
+		case 2:
+			dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
+			break;
+		}
+	}
+#endif
+
 	// Parse the gas mixes.
 	unsigned int ngases = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
