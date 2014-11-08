@@ -397,12 +397,12 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 	return csum[0];
 }
 
+#ifdef DC_FIELD_STRING
 static uint32_t calculate_string_hash(const char *str)
 {
 	return calculate_diveid(str, strlen(str));
 }
 
-#ifdef DC_FIELD_STRING
 static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
