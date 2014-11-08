@@ -708,7 +708,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 
 int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
 {
-	struct memblock mem, mem_data;
+	struct memblock mem;
 	char *params[27];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
@@ -781,8 +781,6 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	}
 
 	/* Move the CSV data to the start of mem buffer */
-	mem_data.size = (int)mem.size - (ptr_old - (char*)mem.buffer);
-	mem_data.buffer = ptr_old;
 	memmove(mem.buffer, ptr_old, mem.size - (ptr_old - (char*)mem.buffer));
 	mem.size = (int)mem.size - (ptr_old - (char*)mem.buffer);
 
