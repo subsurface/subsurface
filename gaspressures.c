@@ -97,7 +97,7 @@ static void dump_pr_track(pr_track_t **track_pr)
  * segments according to how big of a time_pressure area
  * they have.
  */
-static void fill_missing_segment_pressures(pr_track_t *list)
+static void fill_missing_segment_pressures(pr_track_t *list, enum interpolation_strategy strategy)
 {
 	while (list) {
 		int start = list->start, end;
@@ -128,17 +128,29 @@ static void fill_missing_segment_pressures(pr_track_t *list)
 		 */
 		list->start = start;
 		tmp->end = end;
-		for (;;) {
-			int pressure;
-			pt += list->pressure_time;
-			pressure = start;
-			if (pt_sum)
-				pressure -= (start - end) * (double)pt / pt_sum;
-			list->end = pressure;
-			if (list == tmp)
-				break;
-			list = list->next;
-			list->start = pressure;
+		switch (strategy) {
+		case SAC:
+			for (;;) {
+				int pressure;
+				pt += list->pressure_time;
+				pressure = start;
+				if (pt_sum)
+					pressure -= (start - end) * (double)pt / pt_sum;
+				list->end = pressure;
+				if (list == tmp)
+					break;
+				list = list->next;
+				list->start = pressure;
+			}
+			break;
+		case TIME:
+			if (list->t_end && (tmp->t_start - tmp->t_end))
+				list->end = start - (start - end) * (list->t_end - tmp->t_end) / (tmp->t_start - tmp->t_end);
+			else
+				list->end = start;
+			break;
+		case CONSTANT:
+			list->end = start;
 		}
 
 		/* Ok, we've done that set of segments */
@@ -155,12 +167,11 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 #endif
 
 
-static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur, int diluent_flag)
+static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur, int pressure)
 { // cur = index to pi->entry corresponding to t_end of segment; diluent_flag=1 indicates diluent cylinder
 	struct pr_interpolate_struct interpolate;
 	int i;
 	struct plot_data *entry;
-	int pressure;
 
 	interpolate.start = segment->start;
 	interpolate.end = segment->end;
@@ -169,10 +180,6 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 
 	for (i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
-		if (diluent_flag)
-			pressure = DILUENT_PRESSURE(entry);
-		else
-			pressure = SENSOR_PRESSURE(entry);
 
 		if (entry->sec < segment->t_start)
 			continue;
@@ -219,12 +226,17 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	int cur_pr[MAX_CYLINDERS]; // cur_pr[MAX_CYLINDERS] is the CCR diluent cylinder
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		enum interpolation_strategy strategy;
 		if (!track_pr[cyl]) {
 			/* no segment where this cylinder is used */
 			cur_pr[cyl] = -1;
 			continue;
 		}
-		fill_missing_segment_pressures(track_pr[cyl]); // Interpolate the missing tank pressure values ..
+		if (dive->cylinder[cyl].cylinder_use == OC_GAS)
+			strategy = SAC;
+		else
+			strategy = TIME;
+		fill_missing_segment_pressures(track_pr[cyl], strategy); // Interpolate the missing tank pressure values ..
 		cur_pr[cyl] = track_pr[cyl]->start;	       // in the pr_track_t lists of structures
 	}						       // and keep the starting pressure for each cylinder.
 
@@ -279,7 +291,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			continue;			   // and skip to next point.
 		}
 		// If there is a valid segment but no tank pressure ..
-		interpolate = get_pr_interpolate_data(segment, pi, i, diluent_flag); // Set up an interpolation structure
+		interpolate = get_pr_interpolate_data(segment, pi, i, pressure); // Set up an interpolation structure
 
 		/* if this segment has pressure_time, then calculate a new interpolated pressure */
 		if (interpolate.pressure_time) {

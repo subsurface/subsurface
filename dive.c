@@ -1062,8 +1062,8 @@ unsigned int dc_airtemp(struct divecomputer *dc)
 
 static void fixup_cylinder_use(struct dive *dive) // for CCR dives, store the indices
 {						  // of the oxygen and diluent cylinders
-	dive->oxygen_cylinder_index = get_cylinder_use(dive, oxygen);
-	dive->diluent_cylinder_index = get_cylinder_use(dive, diluent);
+	dive->oxygen_cylinder_index = get_cylinder_use(dive, OXYGEN);
+	dive->diluent_cylinder_index = get_cylinder_use(dive, DILUENT);
 }
 
 static void fixup_airtemp(struct dive *dive)

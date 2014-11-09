@@ -27,6 +27,7 @@ struct pr_interpolate_struct {
 	int acc_pressure_time;
 };
 
+enum interpolation_strategy {SAC, TIME, CONSTANT};
 
 #ifdef __cplusplus
 }

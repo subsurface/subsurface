@@ -507,14 +507,14 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive->dc.dctype = CCR;
 		dive->dc.no_o2sensors = 2;
 
-		dive->cylinder[cur_cylinder_index].cylinder_use = oxygen;
+		dive->cylinder[cur_cylinder_index].cylinder_use = OXYGEN;
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
 		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
 		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = 1000;
 		cur_cylinder_index++;
 
-		dive->cylinder[cur_cylinder_index].cylinder_use = diluent;
+		dive->cylinder[cur_cylinder_index].cylinder_use = DILUENT;
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
 		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
