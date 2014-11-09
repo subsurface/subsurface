@@ -54,7 +54,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 			dc->model = "Lynx";
 			break;
 		default:
-			dc->model = "LiquiVision";
+			dc->model = "Liquivision";
 			break;
 		}
 		ptr++;

@@ -741,7 +741,7 @@ QString MainWindow::filter()
 	f += "Cochran (*.can *.CAN);;";
 	f += "DiveLogs.de (*.dld *.DLD);;";
 	f += "JDiveLog  (*.jlb *.JLB);;";
-	f += "LiquiVision (*.lvd *.LVD);;";
+	f += "Liquivision (*.lvd *.LVD);;";
 	f += "Suunto (*.sde *.SDE *.db *.DB);;";
 	f += "UDCF (*.udcf *.UDCF);;";
 	f += "UDDF (*.uddf *.UDDF);;";
@@ -1260,6 +1260,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"CSV files (*.csv);;"
 			"DiveLog.de files (*.dld);;"
 			"JDiveLog files (*.jlb);;"
+			"Liquivision files (*.lvd);;"
 			"MkVI files (*.txt);;"
 			"Suunto files(*.sde *.db);;"
 			"UDDF/UDCF files (*.uddf *.udcf);;"
