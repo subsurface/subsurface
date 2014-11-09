@@ -337,7 +337,6 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem)
 {
-	void *name;
 	const unsigned char *buf = mem->buffer;
 	unsigned int buf_size = mem->size;
 	unsigned int ptr;
@@ -345,10 +344,7 @@ int try_to_open_liquivision(const char *filename, struct memblock *mem)
 
 	// Get name
 	unsigned int len = array_uint32_le(buf);
-	if (len) {
-		name = malloc(len);
-		strncpy(name, buf + 4, len);
-	}
+	// Ignore name
 	ptr = 4 + len;
 
 	unsigned int dive_count = array_uint32_le(buf + ptr);
