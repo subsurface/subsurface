@@ -432,6 +432,22 @@ char *parse_mkvi_value(const char *haystack, const char *needle)
 	return ret;
 }
 
+char *next_mkvi_key(const char *haystack)
+{
+	char *valueptr, *endptr, *ret = NULL;
+
+	if ((valueptr = strstr(haystack, "\n")) != NULL) {
+		valueptr += 1;
+	}
+	if ((endptr = strstr(valueptr, ": ")) != NULL) {
+		*endptr = 0;
+		ret = strdup(valueptr);
+		*endptr = ':';
+
+	}
+	return ret;
+}
+
 int parse_txt_file(const char *filename, const char *csv)
 {
 	struct memblock memtxt, memcsv;
@@ -449,7 +465,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		int hh = 0, mm = 0, ss = 0;
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
-		char *lineptr;
+		char *lineptr, *key, *value;
 		int diluent_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
 
 		struct dive *dive;
@@ -492,8 +508,19 @@ int parse_txt_file(const char *filename, const char *csv)
 		cur_cylinder_index++;
 
 		lineptr = strstr(memtxt.buffer, "Dive started at");
-		if (lineptr)
-			dive->notes = strdup(lineptr);
+		while (lineptr && *lineptr && (lineptr = strchr(lineptr, '\n')) && ++lineptr) {
+			key = next_mkvi_key(lineptr);
+			if (!key)
+				break;
+			value = parse_mkvi_value(lineptr, key);
+			if (!value) {
+				free(key);
+				break;
+			}
+			add_extra_data(&dive->dc, key, value);
+			free(key);
+			free(value);
+		}
 		dc = &dive->dc;
 
 		/*
