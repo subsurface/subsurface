@@ -27,6 +27,66 @@ static char *strndup (const char *s, size_t n)
 }
 #endif
 
+struct lv_event {
+	time_t time;
+	struct pressure {
+		int sensor;
+		int mbar;
+	} pressure;
+};
+
+static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
+{
+	// Skip 4 bytes
+	return 4;
+}
+
+
+static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
+{
+	int skip = 4;
+
+	switch (code) {
+	case 0x0002:	//	Unknown
+	case 0x0004:	//	Unknown
+		skip = 4;
+		break;
+	case 0x0005:	// Unknown
+		skip = 6;
+		break;
+	case 0x0007:	// Gas
+		// 4 byte time
+		// 1 byte O2, 1 bye He
+		skip = 6;
+		break;
+	case 0x0008:
+		// 4 byte time
+		// 2 byte gas set point 2
+		skip = 6;
+		break;
+	case 0x000f:
+		// Tank pressure
+		event->time = array_uint32_le(ps + ps_ptr);
+		event->pressure.sensor = 0; //array_uint16_le(ps + ps_ptr + 4);
+		event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
+		// 1 byte PSR
+		// 1 byte ST
+		skip = 10;
+		break;
+	case 0x0010:
+		skip = 26;
+		break;
+	case 0x0015:	// Unknown
+		skip = 2;
+		break;
+	default:
+		skip = 4;
+		break;
+	}
+
+	return skip;
+}
+
 static void parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size)
 {
 	unsigned int ptr = 0;
@@ -174,57 +234,26 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		ptr += sample_count * 4 + 4;
 
 		// Handle events
-		unsigned int event;
 		unsigned int ps_ptr;
 		ps_ptr = 0;
 
-		unsigned int d = 0, e;
-		int event_time, mbar, sensor;
+		unsigned int event_code, d = 0, e;
+		struct lv_event event;
 
 		// Loop through events
 		for (e = 0; e < ps_count; e++) {
 			// Get event
-			event = array_uint16_le(ps + ps_ptr);
+			event_code = array_uint16_le(ps + ps_ptr);
 			ps_ptr += 2;
 
-			switch (event) {
-			case 0x0002:	//	Unknown
-			case 0x0004:	//	Unknown
-				ps_ptr +=  4;
-				continue;
-			case 0x0005:	// Unknown
-				ps_ptr += 6;
-				continue;
-			case 0x0007:	// Gas
-				// 4 byte time
-				// 1 byte O2, 1 bye He
-				ps_ptr += 6;
-				continue;
-			case 0x0008:
-				// 4 byte time
-				// 2 byte gas set point 2
-				ps_ptr += 6;
-				continue;
-			case 0x000f:
-				// Tank pressure
-				event_time = array_uint32_le(ps + ps_ptr);
-				sensor = 0; //array_uint16_le(ps + ps_ptr + 4);
-				mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
-				// 1 byte PSR
-				// 1 byte ST
-				ps_ptr += 10;
-				break;
-			case 0x0010:
-				ps_ptr += 26;
-				continue;
-			case 0x0015:	// Unknown
-				ps_ptr += 2;
-				continue;
-			default:
-				ps_ptr += 4;
-				continue;
+			if (log_version == 3) {
+				ps_ptr += handle_event_ver3(event_code, ps, ps_ptr, &event);
+				if (event_code != 0xf)
+					continue;	// ignore all by pressure sensor event
+			} else {	// version 2
+				ps_ptr += handle_event_ver2(event_code, ps, ps_ptr, &event);
+				continue;		// ignore all events
 			}
-
 			int sample_time, last_time;
 			int depth_mm, last_depth, temp_mk, last_temp;
 
@@ -239,15 +268,15 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 				if (d == sample_count) {
 					// We still have events to record
-					sample->time.seconds = event_time;
+					sample->time.seconds = event.time;
 					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
-					sample->sensor = sensor;
-					sample->cylinderpressure.mbar = mbar;
+					sample->sensor = event.pressure.sensor;
+					sample->cylinderpressure.mbar = event.pressure.mbar;
 					finish_sample(dc);
 
 					break;
-				} else if (event_time > sample_time) {
+				} else if (event.time > sample_time) {
 					// Record sample and loop
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
@@ -256,19 +285,19 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					d++;
 
 					continue;
-				} else if (event_time == sample_time) {
+				} else if (event.time == sample_time) {
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
-					sample->sensor = sensor;
-					sample->cylinderpressure.mbar = mbar;
+					sample->sensor = event.pressure.sensor;
+					sample->cylinderpressure.mbar = event.pressure.mbar;
 					finish_sample(dc);
 
 					break;
 				} else {	// Event is prior to sample
-					sample->time.seconds = event_time;
-					sample->sensor = sensor;
-					sample->cylinderpressure.mbar = mbar;
+					sample->time.seconds = event.time;
+					sample->sensor = event.pressure.sensor;
+					sample->cylinderpressure.mbar = event.pressure.mbar;
 					if (last_time == sample_time) {
 						sample->depth.mm = depth_mm;
 						sample->temperature.mkelvin = temp_mk;
@@ -277,9 +306,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 						last_depth = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 						last_temp = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 						sample->depth.mm = last_depth + (depth_mm - last_depth)
-							* (event_time - last_time) / sample_interval;
+							* (event.time - last_time) / sample_interval;
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
-							* (event_time - last_time) / sample_interval;
+							* (event.time - last_time) / sample_interval;
 					}
 					finish_sample(dc);
 
@@ -332,7 +361,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		ptr += ps_ptr + 4;
 	} // while
 
-	save_dives("/tmp/test.xml");
+	//DEBUG save_dives("/tmp/test.xml");
 }
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem)
