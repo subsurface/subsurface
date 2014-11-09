@@ -51,59 +51,26 @@ struct atomics_gas_info {
 	uint16_t endpressure;      /* in psi */
 	uint16_t totalconsumption; /* in liters */
 };
-#define COBALT_CFATPSI 1
-#define COBALT_CFATBAR 2
-#define COBALT_WETINDL 3
-
-static bool get_tanksize(device_data_t *devdata, const unsigned char *data, cylinder_t *cyl, int idx)
-{
-	/* I don't like this kind of match... I'd love to have an ID and
-	 * a firmware version or... something; and even better, just get
-	 * this from libdivecomputer */
-	if (!strcmp(devdata->vendor, "Atomic Aquatics") &&
-	    !strcmp(devdata->product, "Cobalt")) {
-		struct atomics_gas_info *atomics_gas_info;
-		double airvolume;
-		int mbar;
-
-		/* at least some quick sanity check to make sure this is the
-		 * right data */
-		if (*(uint32_t *)data != 0xFFFEFFFE) {
-			printf("incorrect header for Atomics dive\n");
-			return false;
-		}
-		atomics_gas_info = (void *)(data + COBALT_HEADER);
-		switch (atomics_gas_info[idx].tankspecmethod) {
-		case COBALT_CFATPSI:
-			airvolume = cuft_to_l(atomics_gas_info[idx].tanksize) * 1000.0;
-			mbar = psi_to_mbar(atomics_gas_info[idx].workingpressure);
-			cyl[idx].type.size.mliter = rint(airvolume / bar_to_atm(mbar / 1000.0));
-			cyl[idx].type.workingpressure.mbar = mbar;
-			break;
-		case COBALT_CFATBAR:
-			airvolume = cuft_to_l(atomics_gas_info[idx].tanksize) * 1000.0;
-			mbar = atomics_gas_info[idx].workingpressure * 1000;
-			cyl[idx].type.size.mliter = rint(airvolume / bar_to_atm(mbar / 1000.0));
-			cyl[idx].type.workingpressure.mbar = mbar;
-			break;
-		case COBALT_WETINDL:
-			cyl[idx].type.size.mliter = atomics_gas_info[idx].tanksize * 100;
-			break;
-		}
-		return true;
-	}
-	return false;
-}
 
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
 			  const unsigned char *data)
 {
 	static bool shown_warning = false;
-	int i;
+	int i, rc, ntanks = 0;
+
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
+	if (rc == DC_STATUS_SUCCESS) {
+		if (ntanks != ngases) {
+			shown_warning = true;
+			report_error("different number of gases (%d) and tanks (%d)", ngases, ntanks);
+		}
+	}
+#endif
 
 	for (i = 0; i < ngases; i++) {
-		int rc;
 		dc_gasmix_t gasmix = { 0 };
+		dc_tank_t tank = { 0 };
 		int o2, he;
 
 		rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
@@ -134,10 +101,29 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 
-		/* for the first tank, if there is no tanksize available from the
-		 * dive computer, fill in the default tank information (if set) */
-		if (!get_tanksize(devdata, data, dive->cylinder, i) && i == 0)
+		tank.volume = 0.0;
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+		if (i < ntanks) {
+			rc = dc_parser_get_field(parser, DC_FIELD_TANK, 0, &tank);
+			if (rc == DC_STATUS_SUCCESS) {
+				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
+					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
+					dive->cylinder[i].type.workingpressure.mbar = rint(tank.workpressure * 1000);
+				} else if (tank.type == DC_TANKVOLUME_METRIC) {
+					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
+				}
+				if (tank.gasmix != i) { // we don't handle this, yet
+					shown_warning = true;
+					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
+				}
+			}
+		}
+#endif
+		if (IS_FP_SAME(tank.volume, 0.0)) {
+			/* for the first tank, if there is no tanksize available from the
+			 * dive computer, fill in the default tank information (if set) */
 			fill_default_cylinder(&dive->cylinder[i]);
+		}
 	}
 	return DC_STATUS_SUCCESS;
 }
