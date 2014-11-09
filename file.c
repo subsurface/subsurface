@@ -487,7 +487,9 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive = alloc_dive();
 		dive->when = utc_mktime(&cur_tm);;
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
-		dive->dc.deviceid = atoi(parse_mkvi_value(memtxt.buffer, "Rig Serial number"));
+		value = parse_mkvi_value(memtxt.buffer, "Rig Serial number");
+		dive->dc.deviceid = atoi(value);
+		free(value);
 		dive->dc.dctype = CCR;
 		dive->dc.no_o2sensors = 2;
 
@@ -502,8 +504,12 @@ int parse_txt_file(const char *filename, const char *csv)
 		dive->cylinder[cur_cylinder_index].type.size.mliter = 3000;
 		dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = 200000;
 		dive->cylinder[cur_cylinder_index].type.description = strdup("3l Mk6");
-		he = atoi(parse_mkvi_value(memtxt.buffer, "Helium percentage"));
-		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = (100 - atoi(parse_mkvi_value(memtxt.buffer, "Nitrogen percentage")) - he) * 10;
+		value = parse_mkvi_value(memtxt.buffer, "Helium percentage");
+		he = atoi(value);
+		free(value);
+		value = parse_mkvi_value(memtxt.buffer, "Nitrogen percentage");
+		dive->cylinder[cur_cylinder_index].gasmix.o2.permille = (100 - atoi(value) - he) * 10;
+		free(value);
 		dive->cylinder[cur_cylinder_index].gasmix.he.permille = he * 10;
 		cur_cylinder_index++;
 
