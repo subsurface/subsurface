@@ -56,9 +56,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			  const unsigned char *data)
 {
 	static bool shown_warning = false;
-	int i, rc, ntanks = 0;
+	int i, rc;
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
 	if (rc == DC_STATUS_SUCCESS) {
 		if (ntanks != ngases) {
@@ -66,12 +67,13 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			report_error("different number of gases (%d) and tanks (%d)", ngases, ntanks);
 		}
 	}
+	dc_tank_t tank = { 0 };
 #endif
 
 	for (i = 0; i < ngases; i++) {
 		dc_gasmix_t gasmix = { 0 };
-		dc_tank_t tank = { 0 };
 		int o2, he;
+		bool no_volume = true;
 
 		rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
 		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED)
@@ -101,8 +103,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		dive->cylinder[i].gasmix.o2.permille = o2;
 		dive->cylinder[i].gasmix.he.permille = he;
 
-		tank.volume = 0.0;
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+		tank.volume = 0.0;
 		if (i < ntanks) {
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, 0, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
@@ -118,8 +120,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				}
 			}
 		}
+		if (!IS_FP_SAME(tank.volume, 0.0))
+			no_volume = false;
 #endif
-		if (IS_FP_SAME(tank.volume, 0.0)) {
+		if (no_volume) {
 			/* for the first tank, if there is no tanksize available from the
 			 * dive computer, fill in the default tank information (if set) */
 			fill_default_cylinder(&dive->cylinder[i]);
