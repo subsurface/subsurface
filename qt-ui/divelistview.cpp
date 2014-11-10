@@ -325,11 +325,13 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		selectDive(sortedSelection.takeLast());
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	QModelIndex idx = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive).first();
-	if (idx.parent().isValid())
-		scrollTo(idx.parent());
-	scrollTo(idx);
-
+	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive);
+	if (!idxList.isEmpty()) {
+		QModelIndex idx = idxList.first();
+		if (idx.parent().isValid())
+			scrollTo(idx.parent());
+		scrollTo(idx);
+	}
 	// now that everything is up to date, update the widgets
 	Q_EMIT currentDiveChanged(selected_dive);
 	dontEmitDiveChangedSignal = false;
