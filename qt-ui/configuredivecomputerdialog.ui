@@ -1694,7 +1694,7 @@
             <item row="5" column="4">
              <widget class="QDoubleSpinBox" name="salinityDoubleSpinBox_3">
               <property name="suffix">
-               <string>kg/l</string>
+               <string>kg/ℓ</string>
               </property>
               <property name="minimum">
                <double>1.000000000000000</double>
@@ -1810,7 +1810,7 @@
           </widget>
           <widget class="QWidget" name="advancedSettings_3">
            <attribute name="title">
-            <string>Advanced Settings</string>
+            <string>Advanced settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="3" column="0" colspan="2">
@@ -2352,14 +2352,14 @@
             <item row="3" column="2">
              <widget class="QLabel" name="label_60">
               <property name="text">
-               <string>ppO2 max</string>
+               <string>ppO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
              <widget class="QLabel" name="label_61">
               <property name="text">
-               <string>ppO2 min</string>
+               <string>ppO₂ min</string>
               </property>
              </widget>
             </item>

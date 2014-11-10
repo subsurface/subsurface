@@ -300,7 +300,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(DivePlannerPointsModel::instance(), SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
 
 	// Creating (and canceling) the plan
-	replanButton = ui.buttonBox->addButton(tr("Save New"), QDialogButtonBox::ActionRole);
+	replanButton = ui.buttonBox->addButton(tr("Save new"), QDialogButtonBox::ActionRole);
 	connect(replanButton, SIGNAL(clicked()), plannerModel, SLOT(saveDuplicatePlan()));
 	connect(ui.buttonBox, SIGNAL(accepted()), plannerModel, SLOT(savePlan()));
 	connect(ui.buttonBox, SIGNAL(rejected()), plannerModel, SLOT(cancelPlan()));
