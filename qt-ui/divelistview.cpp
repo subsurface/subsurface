@@ -313,6 +313,7 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
 {
+	int firstInList, newSelection;
 	if (!newDiveSelection.count())
 		return;
 
@@ -321,9 +322,21 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	// becomes the selected_dive that we scroll to
 	QList<int> sortedSelection = newDiveSelection;
 	qSort(sortedSelection.begin(), sortedSelection.end());
+	newSelection = firstInList = sortedSelection.first();
+
 	while (!sortedSelection.isEmpty())
 		selectDive(sortedSelection.takeLast());
 
+	while (selected_dive == -1) {
+		// that can happen if we restored a selection after edit
+		// and the only selected dive is no longer visible because of a filter
+		newSelection--;
+		if (newSelection < 0)
+			newSelection = dive_table.nr - 1;
+		if (newSelection == firstInList)
+			break;
+		selectDive(newSelection);
+	}
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive);
 	if (!idxList.isEmpty()) {
