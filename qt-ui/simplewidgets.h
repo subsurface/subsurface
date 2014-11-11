@@ -134,6 +134,8 @@ class MultiFilter : public QScrollArea {
 	Q_OBJECT
 public:
 	MultiFilter(QWidget *parent);
+	QWidget *expandedWidget;
+	QWidget *minimizedWidget;
 };
 
 class TagFilter : public QWidget {

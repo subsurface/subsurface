@@ -8,6 +8,8 @@
 #include <QShortcut>
 #include <QCalendarWidget>
 #include <QSortFilterProxyModel>
+#include <QToolButton>
+#include <QToolBar>
 #include "exif.h"
 #include "dive.h"
 #include "file.h"
@@ -534,9 +536,8 @@ void LocationFilter::hideEvent(QHideEvent *event)
 
 MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 {
-	QWidget *w = new QWidget();
+	QWidget *expandedWidget = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
-	QVBoxLayout *v = new QVBoxLayout();
 
 
 	TagFilter *tagFilter = new TagFilter();
@@ -547,15 +548,36 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	QStringListModel *dummy = new QStringListModel(QStringList() << "Dummy Text");
 	dummyList->setModel(dummy);
 
+	// Buttons to Clear/Minimize/Close
+	QToolBar *tb = new QToolBar();
+	QToolButton *clearBtn = new QToolButton();
+	clearBtn->setToolTip(tr("Clear the filters"));
+	clearBtn->setIcon(QIcon(":/trash"));
+	clearBtn->setAutoRaise(true);
+	QToolButton *closeBtn = new QToolButton();
+	closeBtn->setToolTip(tr("Close this window and reset the filters"));
+	closeBtn->setIcon(QIcon(":/close"));
+	closeBtn->setAutoRaise(true);
+	QToolButton *minimize = new QToolButton();
+	minimize->setToolTip(tr("Minimize this window"));
+	minimize->setIcon(QIcon(":/arrow_up"));
+	minimize->setAutoRaise(true);
+
+	tb->setOrientation(Qt::Vertical);
+	tb->addWidget(clearBtn);
+	tb->addWidget(minimize);
+	tb->addWidget(closeBtn);
+
+	l->addWidget(tb);
 	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
 	l->addWidget(new LocationFilter());
 	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
 
-	w->setLayout(l);
-	setWidget(w);
-	w->resize(w->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
+	expandedWidget->setLayout(l);
+	setWidget(expandedWidget);
+	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
 
-	setMinimumHeight(w->height() + 5);
+	setMinimumHeight(expandedWidget->height() + 5);
 }
