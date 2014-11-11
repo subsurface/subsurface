@@ -2600,15 +2600,14 @@ MultiFilterSortModel *MultiFilterSortModel::instance()
 	return self;
 }
 
-MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent)
+MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent), justCleared(false)
 {
 }
 
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-	if (models.isEmpty()) {
+	if (justCleared || models.isEmpty())
 		return true;
-	}
 
 	bool shouldShow = true;
 	Q_FOREACH (MultiFilterInterface *model, models) {
@@ -2616,7 +2615,6 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 			shouldShow = false;
 		}
 	}
-
 	return shouldShow;
 }
 
@@ -2627,7 +2625,6 @@ void MultiFilterSortModel::myInvalidate()
 	DiveListView *dlv = MainWindow::instance()->dive_list();
 
 	invalidate();
-
 	// first make sure the trips are no longer shown as selected
 	// (but without updating the selection state of the dives... this just cleans
 	//  up an oddity in the filter handling)
@@ -2662,6 +2659,40 @@ void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
 	Q_ASSERT(itemModel);
 	models.removeAll(model);
 	disconnect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
+}
+
+void MultiFilterSortModel::clearFilter()
+{
+	justCleared = true;
+	Q_FOREACH(MultiFilterInterface *iface, models){
+		iface->clearFilter();
+	}
+	justCleared = false;
+	myInvalidate();
+}
+
+void BuddyFilterModel::clearFilter()
+{
+	memset(checkState, false, rowCount());
+	checkState[rowCount() - 1] = false;
+	anyChecked = false;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void LocationFilterModel::clearFilter()
+{
+	memset(checkState, false, rowCount());
+	checkState[rowCount() - 1] = false;
+	anyChecked = false;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void TagFilterModel::clearFilter()
+{
+	memset(checkState, false, rowCount());
+	checkState[rowCount() - 1] = false;
+	anyChecked = false;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
 }
 
 ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent),

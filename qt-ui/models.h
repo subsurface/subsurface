@@ -442,6 +442,7 @@ class MultiFilterInterface {
 public:
 	MultiFilterInterface() : checkState(NULL){};
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const = 0;
+	virtual void clearFilter() = 0;
 	bool *checkState;
 	bool anyChecked;
 };
@@ -454,6 +455,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	void clearFilter();
 public
 slots:
 	void repopulate();
@@ -470,6 +472,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	void clearFilter();
 public
 slots:
 	void repopulate();
@@ -486,6 +489,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	void clearFilter();
 public
 slots:
 	void repopulate();
@@ -504,8 +508,10 @@ public:
 	void removeFilterModel(MultiFilterInterface *model);
 public slots:
 	void myInvalidate();
+	void clearFilter();
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	QList<MultiFilterInterface*> models;
+	bool justCleared;
 };
 #endif // MODELS_H
