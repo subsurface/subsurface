@@ -2490,6 +2490,28 @@ void taglist_init_global()
 		taglist_add_tag(&g_tag_list, default_tags[i]);
 }
 
+bool taglist_contains(struct tag_entry *tag_list, const char *tag)
+{
+	while (tag_list) {
+		if (same_string(tag_list->tag->name, tag))
+			return true;
+		tag_list = tag_list->next;
+	}
+	return false;
+}
+
+int count_dives_with_tag(const char *tag)
+{
+	int i, counter = 0;
+	struct dive *d;
+
+	for_each_dive (i, d) {
+		if (taglist_contains(d->tag_list, tag))
+			counter++;
+	}
+	return counter;
+}
+
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
