@@ -1426,12 +1426,12 @@
               </item>
               <item>
                <property name="text">
-                <string extracomment="Suunto safety level">P1 (some)</string>
+                <string extracomment="Suunto safety level">P1 (medium)</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string extracomment="Suunto safety level">P2 (much)</string>
+                <string extracomment="Suunto safety level">P2 (high)</string>
                </property>
               </item>
              </widget>
