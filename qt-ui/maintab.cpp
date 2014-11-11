@@ -691,11 +691,11 @@ void MainTab::acceptChanges()
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
 		if (!same_string(displayedTrip.notes, currentTrip->notes)) {
-			currentTrip->notes = strdup(displayedTrip.notes);
+			currentTrip->notes = copy_string(displayedTrip.notes);
 			mark_divelist_changed(true);
 		}
 		if (!same_string(displayedTrip.location, currentTrip->location)) {
-			currentTrip->location = strdup(displayedTrip.location);
+			currentTrip->location = copy_string(displayedTrip.location);
 			mark_divelist_changed(true);
 		}
 		currentTrip = NULL;
