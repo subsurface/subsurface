@@ -440,7 +440,10 @@ private:
 
 class MultiFilterInterface {
 public:
+	MultiFilterInterface() : checkState(NULL){};
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const = 0;
+	bool *checkState;
+	bool anyChecked;
 };
 
 class TagFilterModel : public QStringListModel, public MultiFilterInterface{
@@ -451,8 +454,6 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
-	bool *checkState;
-	bool anyChecked;
 public
 slots:
 	void repopulate();
@@ -469,8 +470,6 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
-	bool *checkState;
-	bool anyChecked;
 public
 slots:
 	void repopulate();
@@ -487,8 +486,6 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
-	bool *checkState;
-	bool anyChecked;
 public
 slots:
 	void repopulate();

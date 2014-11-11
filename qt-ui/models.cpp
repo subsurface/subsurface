@@ -2253,7 +2253,7 @@ int LanguageModel::rowCount(const QModelIndex &parent) const
 }
 
 
-TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
+TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
 
@@ -2366,7 +2366,7 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 	return false;
 }
 
-BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
+BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
 
@@ -2482,7 +2482,7 @@ bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
-LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent), checkState(NULL)
+LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
 
