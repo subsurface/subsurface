@@ -531,10 +531,13 @@ void LocationFilter::hideEvent(QHideEvent *event)
 	MultiFilterSortModel::instance()->removeFilterModel(LocationFilterModel::instance());
 	QWidget::hideEvent(event);
 }
+
 MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 {
 	QWidget *w = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
+	QVBoxLayout *v = new QVBoxLayout();
+
 
 	TagFilter *tagFilter = new TagFilter();
 	int minimumHeight = tagFilter->ui.filterInternalList->height() +
@@ -554,5 +557,5 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	setWidget(w);
 	w->resize(w->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
 
-	setMinimumHeight(w->height());
+	setMinimumHeight(w->height() + 5);
 }
