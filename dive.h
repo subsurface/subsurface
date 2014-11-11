@@ -306,7 +306,8 @@ struct dive {
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
 	struct dive *next, **pprev;
-	int selected;
+	bool selected;
+	bool hidden_by_filter;
 	bool downloaded;
 	timestamp_t when;
 	char *location;

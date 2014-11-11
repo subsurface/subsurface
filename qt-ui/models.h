@@ -442,6 +442,7 @@ class MultiFilterInterface {
 public:
 	MultiFilterInterface() : checkState(NULL){};
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const = 0;
+	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	virtual void clearFilter() = 0;
 	bool *checkState;
 	bool anyChecked;
@@ -455,6 +456,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
 	void clearFilter();
 public
 slots:
@@ -472,6 +474,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
 	void clearFilter();
 public
 slots:
@@ -489,6 +492,7 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
 	void clearFilter();
 public
 slots:

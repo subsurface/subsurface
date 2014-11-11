@@ -2317,17 +2317,12 @@ bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, in
 	return false;
 }
 
-bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
-	// If there's nothing checked, this should show everythin.
+	// If there's nothing checked, this should show everything
 	if (!anyChecked) {
 		return true;
 	}
-
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
 	if (!d) { // It's a trip, only show the ones that have dives to be shown.
 		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
 			if (filterRow(i, index0, sourceModel))
@@ -2340,12 +2335,7 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 
 	if (!head) { // last tag means "Show empty tags";
 		if (rowCount() > 0)
-			if (checkState[rowCount() - 1]) {
-				return true;
-			} else {
-				deselect_dive(get_idx_by_uniq_id(d->id));
-				return false;
-			}
+			return checkState[rowCount() - 1];
 		else
 			return true;
 	}
@@ -2362,8 +2352,21 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 			head = head->next;
 		}
 	}
-	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
+}
+
+bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+{
+	// If there's nothing checked, this should show everything
+	if (!anyChecked) {
+		return true;
+	}
+
+	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
+	return doFilter(d, index0, sourceModel);
 }
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
@@ -2376,17 +2379,12 @@ BuddyFilterModel *BuddyFilterModel::instance()
 	return self;
 }
 
-bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
-	// If there's nothing checked, this should show everythin.
+	// If there's nothing checked, this should show everything
 	if (!anyChecked) {
 		return true;
 	}
-
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
 	if (!d) { // It's a trip, only show the ones that have dives to be shown.
 		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
 			if (filterRow(i, index0, sourceModel))
@@ -2401,12 +2399,7 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	// only show empty buddie dives if the user checked that.
 	if (diveBuddy.isEmpty() && divemaster.isEmpty()) {
 		if (rowCount() > 0)
-			if (checkState[rowCount() - 1]) {
-				return true;
-			} else {
-				deselect_dive(get_idx_by_uniq_id(d->id));
-				return false;
-			}
+			return checkState[rowCount() - 1];
 		else
 			return true;
 	}
@@ -2421,8 +2414,21 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 			}
 		}
 	}
-	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
+}
+
+bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+{
+	// If there's nothing checked, this should show everything
+	if (!anyChecked) {
+		return true;
+	}
+
+	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
+	return doFilter(d, index0, sourceModel);
 }
 
 Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
@@ -2496,17 +2502,11 @@ QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
-
-	// If there's nothing checked, this should show everythin.
 	if (!anyChecked) {
 		return true;
 	}
-
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
 	if (!d) { // It's a trip, only show the ones that have dives to be shown.
 		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
@@ -2518,20 +2518,15 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString location(d->location);
-	// only show empty buddie dives if the user checked that.
+	// only show empty location dives if the user checked that.
 	if (location.isEmpty()) {
 		if (rowCount() > 0)
-			if (checkState[rowCount() - 1]) {
-				return true;
-			} else {
-				deselect_dive(get_idx_by_uniq_id(d->id));
-				return false;
-			}
+			return checkState[rowCount() - 1];
 		else
 			return true;
 	}
 
-	// have at least one buddy
+	// there is a location selected
 	QStringList locationList = stringList();
 	if (!locationList.isEmpty()) {
 		locationList.removeLast(); // remove the "Show Empty Tags";
@@ -2541,8 +2536,22 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 			}
 		}
 	}
-	deselect_dive(get_idx_by_uniq_id(d->id));
 	return false;
+}
+
+bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
+{
+
+	// If there's nothing checked, this should show everything
+	if (!anyChecked) {
+		return true;
+	}
+
+	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
+	return doFilter(d, index0, sourceModel);
 }
 
 Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
@@ -2610,10 +2619,19 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		return true;
 
 	bool shouldShow = true;
+	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
 	Q_FOREACH (MultiFilterInterface *model, models) {
-		if (!model->filterRow(source_row, source_parent, sourceModel())) {
+		if (!model->doFilter(d, index0, sourceModel()))
 			shouldShow = false;
-		}
+	}
+	// if it's a dive, mark it accordingly
+	if (d) {
+		if (d->selected)
+			d->selected = shouldShow;
+		d->hidden_by_filter = !shouldShow;
 	}
 	return shouldShow;
 }
