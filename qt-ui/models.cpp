@@ -2268,7 +2268,9 @@ QVariant TagFilterModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::CheckStateRole) {
 		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
-		return stringList()[index.row()];
+		QString tag = stringList()[index.row()];
+		int count = count_dives_with_tag(tag.toUtf8().data());
+		return tag + QString("(%1)").arg(count);
 	}
 	return QVariant();
 }
