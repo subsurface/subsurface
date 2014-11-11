@@ -31,27 +31,6 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 	return dc_parser_new(parser, devdata->device);
 }
 
-/* Atomics Aquatics Cobalt specific parsing of tank information
- * realistically this REALLY needs to be done in libdivecomputer - but the
- * current API doesn't even have the notion of tank size, so for now I do
- * this here, but I need to work with Jef to make sure this gets added in
- * the new libdivecomputer API */
-#define COBALT_HEADER 228
-struct atomics_gas_info {
-	uint8_t gas_nr;
-	uint8_t po2imit;
-	uint8_t tankspecmethod; /* 1: CF@psi 2: CF@bar 3: wet vol in deciliter */
-	uint8_t gasmixtype;
-	uint8_t fo2;
-	uint8_t fhe;
-	uint16_t startpressure; /* in psi */
-	uint16_t tanksize;      /* CF or dl */
-	uint16_t workingpressure;
-	uint16_t sensorid;
-	uint16_t endpressure;      /* in psi */
-	uint16_t totalconsumption; /* in liters */
-};
-
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
 			  const unsigned char *data)
 {
