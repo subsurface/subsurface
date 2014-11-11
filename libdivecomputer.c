@@ -106,7 +106,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 		tank.volume = 0.0;
 		if (i < ntanks) {
-			rc = dc_parser_get_field(parser, DC_FIELD_TANK, 0, &tank);
+			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
 				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
 					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
