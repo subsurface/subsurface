@@ -86,35 +86,78 @@
         </cylinder>
       </xsl:for-each>
 
-      <xsl:variable name="delta" select="SAMPLES/DELTA|samples/delta"/>
+      <xsl:choose>
 
-      <!-- gas change -->
-      <xsl:for-each select="SAMPLES/SWITCH|samples/switch">
-        <event name="gaschange">
-          <xsl:variable name="timeSec" select="count(preceding-sibling::D|preceding-sibling::d) * $delta"/>
-          <xsl:attribute name="time">
-            <xsl:value-of select="concat(floor($timeSec div 60), ':',
-              format-number(floor($timeSec mod 60), '00'), ' min')"/>
-          </xsl:attribute>
-          <xsl:attribute name="value">
-            <xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2|ancestor::dive/gases/mix[mixname=current()]/o2 * 100" />
-          </xsl:attribute>
-        </event>
-      </xsl:for-each>
-      <!-- end gas change -->
+	<!-- samples recorded at irregular internal, but storing time stamp -->
+	<xsl:when test="timedepthmode">
+	  <!-- gas change -->
+	  <xsl:for-each select="SAMPLES/SWITCH|samples/switch">
+	    <event name="gaschange">
+	      <xsl:variable name="timeSec" select="following-sibling::T|following-sibling::t"/>
+	      <xsl:attribute name="time">
+		<xsl:value-of select="concat(floor($timeSec div 60), ':',
+		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="value">
+		<xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2|ancestor::dive/gases/mix[mixname=current()]/o2 * 100" />
+	      </xsl:attribute>
+	    </event>
+	  </xsl:for-each>
+	  <!-- end gas change -->
 
-      <xsl:for-each select="SAMPLES/D|samples/d">
-        <sample>
-          <xsl:variable name="timeSec" select="(position() - 1) * $delta"/>
-          <xsl:attribute name="time">
-            <xsl:value-of select="concat(floor($timeSec div 60), ':',
-              format-number(floor($timeSec mod 60), '00'), ' min')"/>
-          </xsl:attribute>
-          <xsl:attribute name="depth">
-            <xsl:value-of select="concat(., ' m')"/>
-          </xsl:attribute>
-        </sample>
-      </xsl:for-each>
+	  <!-- samples -->
+	  <xsl:for-each select="SAMPLES/D|samples/d">
+	    <sample>
+	      <xsl:variable name="timeSec" select="preceding-sibling::T[position()=1]|preceding-sibling::t[position()=1]"/>
+	      <xsl:attribute name="time">
+		<xsl:value-of select="concat(floor($timeSec div 60), ':',
+		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="depth">
+		<xsl:value-of select="concat(., ' m')"/>
+	      </xsl:attribute>
+	    </sample>
+	  </xsl:for-each>
+	  <!-- end samples -->
+	</xsl:when>
+
+	<!-- sample recorded at even internals -->
+	<xsl:otherwise>
+	  <xsl:variable name="delta" select="SAMPLES/DELTA|samples/delta"/>
+
+	  <!-- gas change -->
+	  <xsl:for-each select="SAMPLES/SWITCH|samples/switch">
+	    <event name="gaschange">
+	      <xsl:variable name="timeSec" select="count(preceding-sibling::D|preceding-sibling::d) * $delta"/>
+	      <xsl:attribute name="time">
+		<xsl:value-of select="concat(floor($timeSec div 60), ':',
+		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="value">
+		<xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2|ancestor::dive/gases/mix[mixname=current()]/o2 * 100" />
+	      </xsl:attribute>
+	    </event>
+
+	  </xsl:for-each>
+	  <!-- end gas change -->
+
+	  <!-- samples -->
+	  <xsl:for-each select="SAMPLES/D|samples/d">
+	    <sample>
+	      <xsl:variable name="timeSec" select="(position() - 1) * $delta"/>
+	      <xsl:attribute name="time">
+		<xsl:value-of select="concat(floor($timeSec div 60), ':',
+		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="depth">
+		<xsl:value-of select="concat(., ' m')"/>
+	      </xsl:attribute>
+	    </sample>
+	  </xsl:for-each>
+	  <!-- end samples -->
+
+	</xsl:otherwise>
+      </xsl:choose>
     </dive>
   </xsl:template>
 </xsl:stylesheet>
