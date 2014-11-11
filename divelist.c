@@ -869,7 +869,8 @@ void select_dives_in_trip(struct dive_trip *trip)
 	if (!trip)
 		return;
 	for (dive = trip->dives; dive; dive = dive->next)
-		select_dive(get_divenr(dive));
+		if (!dive->hidden_by_filter)
+			select_dive(get_divenr(dive));
 }
 
 /* This only gets called with non-NULL trips.
