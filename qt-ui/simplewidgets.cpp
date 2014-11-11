@@ -568,6 +568,8 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	tb->addWidget(minimize);
 	tb->addWidget(closeBtn);
 
+	connect(closeBtn, SIGNAL(clicked(bool)), this, SLOT(hide()));
+
 	l->addWidget(tb);
 	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
