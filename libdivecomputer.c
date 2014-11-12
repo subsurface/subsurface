@@ -849,7 +849,9 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		err = do_device_import(data);
 		/* TODO: Show the logfile to the user on error. */
 		dc_device_close(data->device);
-	}
+	} else if (access(data->devname, R_OK | W_OK) != 0)
+		err = translate("gettextFromC", "Insufficient privileges to open the device %s %s (%s)");
+
 	dc_context_free(data->context);
 
 	if (fp) {
