@@ -70,6 +70,7 @@ slots:
 	void setGFLow(const int ghflow);
 	void triggerGFLow();
 	void setSurfacePressure(int pressure);
+	void setSalinity(int salinity);
 	int getSurfacePressure();
 	void setBottomSac(double sac);
 	void setDecoSac(double sac);
@@ -146,6 +147,7 @@ slots:
 	void settingsChanged();
 	void atmPressureChanged(const int pressure);
 	void heightChanged(const int height);
+	void salinityChanged(const double salinity);
 	void printDecoPlan();
 
 private:

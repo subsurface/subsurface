@@ -297,6 +297,7 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.dateEdit, SIGNAL(dateChanged(QDate)), plannerModel, SLOT(setStartDate(QDate)));
 	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
 	connect(ui.atmHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
+	connect(ui.salinity, SIGNAL(valueChanged(double)), this, SLOT(salinityChanged(double)));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
 
 	// Creating (and canceling) the plan
@@ -365,6 +366,12 @@ void DivePlannerWidget::heightChanged(const int height)
 	ui.ATMPressure->setValue(pressure);
 	ui.ATMPressure->blockSignals(false);
 	plannerModel->setSurfacePressure(pressure);
+}
+
+void DivePlannerWidget::salinityChanged(const double salinity)
+{
+	/* Salinity is expressed in weight in grams per 10l */
+	plannerModel->setSalinity(10000 * salinity);
 }
 
 void PlannerSettingsWidget::bottomSacChanged(const double bottomSac)
@@ -783,6 +790,12 @@ void DivePlannerPointsModel::triggerGFLow()
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setSalinity(int salinity)
+{
+	diveplan.salinity = salinity;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 

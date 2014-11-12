@@ -766,6 +766,7 @@ struct diveplan {
 	int surface_pressure; /* mbar */
 	int bottomsac;	/* ml/min */
 	int decosac;	  /* ml/min */
+	int salinity;
 	short gflow;
 	short gfhigh;
 	struct divedatapoint *dp;

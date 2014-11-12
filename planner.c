@@ -259,6 +259,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	printf("in create_dive_from_plan\n");
 	dump_plan(diveplan);
 #endif
+	displayed_dive.salinity = diveplan->salinity;
 	// reset the cylinders and clear out the samples and events of the
 	// displayed dive so we can restart
 	reset_cylinders(&displayed_dive, track_gas);
