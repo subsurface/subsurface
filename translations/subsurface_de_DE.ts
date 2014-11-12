@@ -3,22 +3,22 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="487"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="489"/>
         <source>Person: </source>
         <translation>Person: </translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="488"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="490"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Sucht nach Tauchgruppenleiter und Tauchpartner</translation>
     </message>
 </context>
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2446"/>
+        <location filename="../qt-ui/models.cpp" line="2454"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Keine Tauchpartner</translation>
     </message>
 </context>
 <context>
@@ -26,7 +26,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="227"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation type="unfinished"/>
+        <translation>Sicherungsdatei %1 konnte nicht gespeichert werden. Fehlermeldung: %2</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="243"/>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="585"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Geräte-Einstellungen erfolgreich zurückgesetzt</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="796"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1963"/>
         <source>Last deco</source>
-        <translation type="unfinished"/>
+        <translation>Letzter Dekostopp</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="717"/>
@@ -350,47 +350,47 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="189"/>
         <source>OSTC, Mk.2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC, Mk.2/2N/2C</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="466"/>
         <source>230LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="471"/>
         <source>330LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="476"/>
         <source>390LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="481"/>
         <source>440LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="486"/>
         <source>660LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="491"/>
         <source>820LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="496"/>
         <source>1090LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="501"/>
         <source>1370LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="587"/>
@@ -404,25 +404,21 @@
         <translation>Gerät auf die Standardeinstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
-        <source>Advanced Settings</source>
-        <translation>Erweiterte Einstellungen</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1819"/>
         <source>Alt GF can be selected underwater</source>
-        <translation type="unfinished"/>
+        <translation>Alternativer GF kann unter Wasser ausgewählt werden</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="180"/>
         <source>Suunto Vyper family</source>
-        <translation type="unfinished"/>
+        <translation>Suunto Vyper Familie</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
         <source>Advanced settings</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterte Einstellungen</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="618"/>
@@ -433,7 +429,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="625"/>
         <source>Pressure sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Drucksensor-Offset</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="632"/>
@@ -451,7 +447,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="730"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1885"/>
         <source>Decotype</source>
-        <translation type="unfinished"/>
+        <translation>Dekotyp</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="756"/>
@@ -473,19 +469,19 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="788"/>
         <source>ZH-L16+GF</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16+GF</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="851"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1989"/>
         <source>Alt GFLow</source>
-        <translation type="unfinished"/>
+        <translation>Alt GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="858"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2015"/>
         <source>Alt GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>Alt GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="865"/>
@@ -564,31 +560,31 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1021"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2227"/>
         <source>Dil 1</source>
-        <translation type="unfinished"/>
+        <translation>Dil 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1026"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2232"/>
         <source>Dil 2</source>
-        <translation type="unfinished"/>
+        <translation>Dil 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1031"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2237"/>
         <source>Dil 3</source>
-        <translation type="unfinished"/>
+        <translation>Dil 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1036"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2242"/>
         <source>Dil 4</source>
-        <translation type="unfinished"/>
+        <translation>Dil 4</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1041"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2247"/>
         <source>Dil 5</source>
-        <translation type="unfinished"/>
+        <translation>Dil 5</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1086"/>
@@ -633,7 +629,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1124"/>
         <source>O2 in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ im Kalibrations-Gas</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1148"/>
@@ -656,32 +652,46 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2323"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2339"/>
         <source> cbar</source>
-        <translation type="unfinished"/>
+        <translation> cbar</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>ppO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>ppO₂ max</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>ppO₂ min</source>
+        <translation>ppO₂ min</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
+        <source>P1 (medium)</source>
+        <extracomment>Suunto safety level</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
+        <source>P2 (high)</source>
+        <extracomment>Suunto safety level</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Gesamtdauer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
-        <source>ppO2 max</source>
-        <translation type="unfinished"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
+        <source>kg/ℓ</source>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
-        <source>ppO2 min</source>
-        <translation type="unfinished"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
+        <source>Apnoea</source>
+        <translation>Apnoe</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1264"/>
@@ -713,19 +723,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1424"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
-        <source>P1 (some)</source>
-        <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
-        <source>P2 (much)</source>
-        <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P0 (keine)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1442"/>
@@ -809,11 +807,6 @@
         <translation>Salzgehalt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
-        <source>kg/l</source>
-        <translation>kg/l</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1741"/>
         <source>MM/DD/YY</source>
         <translation>MM/TT/JJ</translation>
@@ -834,29 +827,24 @@
         <translation>ZH-L16 CC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
-        <source>Apnoe</source>
-        <translation>Apnoe</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1945"/>
         <source>L16-GF OC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF OC</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1950"/>
         <source>L16-GF CC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF CC</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1955"/>
         <source>PSCR-GF</source>
-        <translation type="unfinished"/>
+        <translation>PSCR-GF</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="621"/>
         <source>Dive computer details read successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputerdetails erfolgreich gelesen.</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="922"/>
@@ -868,7 +856,8 @@
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="929"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Beim Speichern der Datensicherungsdatei ist ein Fehler aufgetreten.
+%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="933"/>
@@ -878,12 +867,12 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="934"/>
         <source>Your settings have been saved to: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ihre Einstellungen wurden gespeichert nach: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="921"/>
         <source>Backup dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputereinstellungen sichern</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="928"/>
@@ -893,7 +882,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="946"/>
         <source>Restore dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputereinstellungen wiederherstellen</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="951"/>
@@ -904,7 +893,8 @@
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="952"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Beim Wiederherstellen der Datensicherungsdatei ist ein Fehler aufgetreten.
+%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="959"/>
@@ -995,7 +985,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="40"/>
         <source>Which components would you like to copy</source>
-        <translation type="unfinished"/>
+        <translation>Welche Komponenten möchten Sie kopieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="46"/>
@@ -1040,7 +1030,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="102"/>
         <source>Tags</source>
-        <translation>Stichworte</translation>
+        <translation>Stichwörter</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="109"/>
@@ -1388,7 +1378,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="244"/>
         <source>Export yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Jährliche Statistiken exportieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="270"/>
@@ -1488,7 +1478,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="82"/>
         <source>Send the dive data to dive-share.appspot.com website</source>
-        <translation type="unfinished"/>
+        <translation>Tauchdaten an die dive-share.appspot.com-Webseite senden</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="84"/>
@@ -1662,7 +1652,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="518"/>
         <source>Tags</source>
-        <translation>Stichworte</translation>
+        <translation>Stichwörter</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="467"/>
@@ -1796,8 +1786,8 @@
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="303"/>
-        <source>Save New</source>
-        <translation type="unfinished"/>
+        <source>Save new</source>
+        <translation>Neue speichern</translation>
     </message>
 </context>
 <context>
@@ -1898,7 +1888,7 @@
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="58"/>
         <source>Get user ID</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerkennung holen</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="67"/>
@@ -1919,15 +1909,6 @@
         <location filename="../qt-ui/diveshareexportdialog.ui" line="105"/>
         <source>Upload dive data</source>
         <translation>Tauchdaten hochladen</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/diveshareexportdialog.ui" line="135"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.google.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;asd&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2277,14 +2258,14 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ExtraDataModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2669"/>
+        <location filename="../qt-ui/models.cpp" line="2720"/>
         <source>Key</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2669"/>
+        <location filename="../qt-ui/models.cpp" line="2720"/>
         <source>Value</source>
-        <translation type="unfinished"/>
+        <translation>Wert</translation>
     </message>
 </context>
 <context>
@@ -2297,7 +2278,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/listfilter.ui" line="22"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Textbezeichnung</translation>
     </message>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="32"/>
@@ -2334,7 +2315,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="513"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="515"/>
         <source>Location: </source>
         <translation>Ort:</translation>
     </message>
@@ -2342,9 +2323,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2569"/>
+        <location filename="../qt-ui/models.cpp" line="2580"/>
         <source>No location set</source>
-        <translation type="unfinished"/>
+        <translation>Kein Ort festgelegt</translation>
     </message>
 </context>
 <context>
@@ -2373,7 +2354,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/maintab.ui" line="176"/>
         <source>Tags</source>
-        <translation>Stichworte</translation>
+        <translation>Stichwörter</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="223"/>
@@ -2464,11 +2445,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/maintab.ui" line="958"/>
         <source>Extra data</source>
-        <translation type="unfinished"/>
+        <translation>Zusatzdaten</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="970"/>
-        <source>Additional data from dive computer</source>
+        <location filename="../qt-ui/maintab.ui" line="964"/>
+        <source>Aditional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2865,7 +2846,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="449"/>
         <source>&amp;Copy dive components</source>
-        <translation type="unfinished"/>
+        <translation>Tau&amp;chkomponenten kopieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="452"/>
@@ -2875,7 +2856,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="457"/>
         <source>&amp;Paste dive components</source>
-        <translation type="unfinished"/>
+        <translation>Tauchkom&amp;ponenten einfügen</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="460"/>
@@ -2960,7 +2941,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="811"/>
         <source>Scale graph</source>
-        <translation type="unfinished"/>
+        <translation>Maßstabsgraph</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="823"/>
@@ -2975,12 +2956,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="840"/>
         <source>&amp;Filter by tags</source>
-        <translation type="unfinished"/>
+        <translation>Nach Stichwörtern &amp;filtern</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="855"/>
         <source>Toggle tissue graph</source>
-        <translation type="unfinished"/>
+        <translation>Gewebe-Sättigungskurve ein-/ausschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
@@ -3195,7 +3176,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1258"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
-        <translation type="unfinished"/>
+        <translation>Tauchprotokolldateien (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran-Dateien (*.can);;CSV-Dateien (*.csv);;DiveLog.de-Dateien (*.dld);;JDiveLog-Dateien (*.jlb);;Liquivision-Dateien (*.lvd);;MkVI-Dateien (*.txt);;Suunto-Dateien (*.sde *.db);;UDDF/UDCF-Dateien (*.uddf *.udcf);;XML-Dateien (*.xml);;Alle Dateien (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="767"/>
@@ -3224,6 +3205,24 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/mainwindow.cpp" line="1297"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Bitte zuerst die aktuelle Bearbeitung abschließen um eine neue zu beginnen.</translation>
+    </message>
+</context>
+<context>
+    <name>MultiFilter</name>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="554"/>
+        <source>Clear the filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="558"/>
+        <source>Close this window and reset the filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="562"/>
+        <source>Minimize this window</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3272,7 +3271,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/diveplanner.cpp" line="490"/>
         <location filename="../qt-ui/diveplanner.cpp" line="491"/>
         <source>cuft/min</source>
-        <translation type="unfinished"/>
+        <translation>cuft/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="499"/>
@@ -3818,7 +3817,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="2096"/>
         <source>Tags:</source>
-        <translation>Stichworte:</translation>
+        <translation>Stichwörter:</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="2098"/>
@@ -3967,17 +3966,17 @@ p, li { white-space: pre-wrap; }
         <translation>Schliessen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="28"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="30"/>
         <source>Average</source>
         <translation>Ø</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="31"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="33"/>
         <source>Minimum</source>
         <translation>Min.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="34"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="36"/>
         <source>Maximum</source>
         <translation>Max.</translation>
     </message>
@@ -4069,12 +4068,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
-        <location filename="../qt-ui/simplewidgets.cpp" line="129"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="131"/>
         <source>New starting number</source>
         <translation>Neue erste Nummer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="127"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="129"/>
         <source>New number</source>
         <translation>Neue Nummer</translation>
     </message>
@@ -4148,12 +4147,12 @@ p, li { white-space: pre-wrap; }
         <translation>Welche/s Datum/Zeit werden im Bild angezeigt?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="225"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="227"/>
         <source>Open image file</source>
         <translation>Öffne Bilddatei</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="227"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="229"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation>Bilddateien (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
@@ -4289,23 +4288,23 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/tableview.ui" line="14"/>
         <location filename="../qt-ui/tableview.ui" line="17"/>
         <source>GroupBox</source>
-        <translation type="unfinished"/>
+        <translation>GroupBox</translation>
     </message>
 </context>
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="462"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="464"/>
         <source>Tags: </source>
-        <translation>Schlagwörter: </translation>
+        <translation>Stichwörter: </translation>
     </message>
 </context>
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2292"/>
+        <location filename="../qt-ui/models.cpp" line="2294"/>
         <source>Empty Tags</source>
-        <translation>Leere Schlagwörter</translation>
+        <translation>Leere Stichwörter</translation>
     </message>
 </context>
 <context>
@@ -4374,12 +4373,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="69"/>
         <source>Latest version is %1, please check with your OS vendor for updates.</source>
-        <translation type="unfinished"/>
+        <translation>Die aktuellste Version ist %1, bitte den Betriebssystem Hersteller kontaktieren.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="75"/>
         <source>Newest release version is </source>
-        <translation type="unfinished"/>
+        <translation>Die letzte freigegebene Version ist</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="76"/>
@@ -4848,7 +4847,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../file.c" line="550"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Poseidon-Import fehlgeschlagen: kann &apos;%s&apos; nicht lesen</translation>
     </message>
     <message>
         <location filename="../file.c" line="643"/>
@@ -4863,7 +4862,7 @@ Durchschnitt</translation>
         <translation>maximale Anzahl der unterstützten Spalten beim CSV-Import sind %d</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>none</source>
         <translation>keine</translation>
     </message>
@@ -4871,7 +4870,7 @@ Durchschnitt</translation>
         <location filename="../cochran.c" line="305"/>
         <location filename="../cochran.c" line="311"/>
         <location filename="../cochran.c" line="381"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>deco stop</source>
         <translation>Deko-Stopp</translation>
     </message>
@@ -4883,52 +4882,52 @@ Durchschnitt</translation>
     <message>
         <location filename="../cochran.c" line="366"/>
         <location filename="../cochran.c" line="405"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>rbt</source>
         <translation>Nullzeit</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="332"/>
         <location filename="../cochran.c" line="386"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>ascent</source>
         <translation>Aufstieg</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="375"/>
         <location filename="../cochran.c" line="422"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>ceiling</source>
         <translation>tiefster Deko-Stopp</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>workload</source>
         <translation>Arbeit</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="391"/>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>transmitter</source>
         <translation>Sender</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>violation</source>
         <translation>Verletzung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>bookmark</source>
         <translation>Markierung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>surface</source>
         <translation>Oberfläche</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>safety stop</source>
         <translation>Sicherheitsstopp</translation>
     </message>
@@ -4936,188 +4935,188 @@ Durchschnitt</translation>
         <location filename="../cochran.c" line="361"/>
         <location filename="../cochran.c" line="410"/>
         <location filename="../cochran.c" line="417"/>
-        <location filename="../libdivecomputer.c" line="143"/>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="122"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>gaschange</source>
         <translation>Gaswechsel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="143"/>
+        <location filename="../libdivecomputer.c" line="122"/>
         <source>safety stop (voluntary)</source>
         <translation>Sicherheitsstopp (freiwillig)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="143"/>
+        <location filename="../libdivecomputer.c" line="122"/>
         <source>safety stop (mandatory)</source>
         <translation>Sicherheitsstopp (obligatorisch)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>deepstop</source>
         <translation>Tiefen-Stopp</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>ceiling (safety stop)</source>
         <translation>Sicherheits-Stopp</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>divetime</source>
         <translation>Tauchgangsdauer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>unterhalb Dekotiefe</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="349"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>maxdepth</source>
         <translation>Max. Tiefe</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="344"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="354"/>
         <location filename="../cochran.c" line="400"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>PO2</source>
         <translation>PO₂</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>airtime</source>
         <translation>verbleibende Atemzeit</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>heading</source>
         <translation>Richtung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>tissue level warning</source>
         <translation>Gewebewarnung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>non stop time</source>
         <translation>Nullzeit</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="163"/>
+        <location filename="../libdivecomputer.c" line="142"/>
         <source>invalid event number</source>
         <translation>ungültige Ereignisnummer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="442"/>
+        <location filename="../libdivecomputer.c" line="421"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Nicht in der Lage, einen Parser für %s %s zu erstellen</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="448"/>
+        <location filename="../libdivecomputer.c" line="427"/>
         <source>Error registering the data</source>
         <translation>Fehler beim Registrieren der Daten</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="456"/>
+        <location filename="../libdivecomputer.c" line="435"/>
         <source>Error parsing the datetime</source>
         <translation>Fehler beim Lesen des Datums</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="472"/>
+        <location filename="../libdivecomputer.c" line="451"/>
         <source>Dive %d: %s</source>
         <translation>Tauchgang %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="476"/>
+        <location filename="../libdivecomputer.c" line="455"/>
         <source>Error parsing the divetime</source>
         <translation>Fehler beim Lesen der Dauer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="485"/>
+        <location filename="../libdivecomputer.c" line="464"/>
         <source>Error parsing the maxdepth</source>
         <translation>Fehler beim Lesen der maximalen Tiefe</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="503"/>
+        <location filename="../libdivecomputer.c" line="482"/>
         <source>Error parsing temperature</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Lesen der Temperatur</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="522"/>
+        <location filename="../libdivecomputer.c" line="501"/>
         <source>Error parsing the gas mix count</source>
         <translation>Fehler beim Lesen der Gasgemischszahl</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="534"/>
+        <location filename="../libdivecomputer.c" line="513"/>
         <source>Error obtaining water salinity</source>
         <translation>Fehler beim Lesen des Salzgehalts</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="542"/>
+        <location filename="../libdivecomputer.c" line="521"/>
         <source>Error obtaining surface pressure</source>
         <translation>Kein Oberflächendruck erhalten</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="566"/>
+        <location filename="../libdivecomputer.c" line="545"/>
         <source>Error obtaining divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="583"/>
+        <location filename="../libdivecomputer.c" line="562"/>
         <source>Error parsing the gas mix</source>
         <translation>Fehler beim Lesen des Gasgemischs</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="590"/>
+        <location filename="../libdivecomputer.c" line="569"/>
         <source>Error parsing the samples</source>
         <translation>Fehler beim Lesen der Samples</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="727"/>
+        <location filename="../libdivecomputer.c" line="706"/>
         <source>Event: waiting for user action</source>
         <translation>Ereignis: warte auf Benutzeraktion</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="735"/>
+        <location filename="../libdivecomputer.c" line="714"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="795"/>
+        <location filename="../libdivecomputer.c" line="774"/>
         <source>Error registering the event handler.</source>
         <translation>Fehler beim Registrieren der Ereignisbehandlung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="800"/>
+        <location filename="../libdivecomputer.c" line="779"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Fehler bei der Registrierung der Abbruchbehandlung</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="821"/>
+        <location filename="../libdivecomputer.c" line="800"/>
         <source>Dive data import error</source>
         <translation>Fehler beim Importieren der Tauchgangsdaten</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="860"/>
+        <location filename="../libdivecomputer.c" line="839"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Fehler beim Erzeugen des libdivecomputer Contexts</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="867"/>
+        <location filename="../libdivecomputer.c" line="846"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Fehler beim Öffnen von %s %s (%s)</translation>
     </message>
@@ -5295,7 +5294,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="521"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>HAFTUNGSAUSSCHLUSS / WARNUNG: DIES IST EINE NEUE IMPLEMENTATION DES BÜHLMANN-ALGORITHMUS UND EINES DARAUF BASIERENDEN TAUCHPLANERS, DIE NUR EINGESCHRÄNKT GETESTET WURDE. WIR RATEN DRINGENST, KEINE TAUCHGÄNGE DURCHZUFÜHREN, DIE NUR AUF DEN HIER ERSTELLTEN DATEN BERUHEN.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="675"/>
@@ -6127,7 +6126,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../save-html.c" line="472"/>
         <source>Tags</source>
-        <translation>Stichworte</translation>
+        <translation>Stichwörter</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="473"/>
@@ -6232,7 +6231,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../save-html.c" line="486"/>
         <source>Average SAC</source>
-        <translation type="unfinished"/>
+        <translation>Durchschnittliches AMV</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="487"/>

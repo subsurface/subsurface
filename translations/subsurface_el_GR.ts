@@ -3,12 +3,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="487"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="489"/>
         <source>Person: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="488"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="490"/>
         <source>Searches for buddies and divemasters</source>
         <translation type="unfinished"/>
     </message>
@@ -16,7 +16,7 @@
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2446"/>
+        <location filename="../qt-ui/models.cpp" line="2454"/>
         <source>No buddies</source>
         <translation type="unfinished"/>
     </message>
@@ -404,11 +404,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
-        <source>Advanced Settings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1819"/>
         <source>Alt GF can be selected underwater</source>
@@ -421,6 +416,7 @@
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
         <source>Advanced settings</source>
         <translation type="unfinished"/>
     </message>
@@ -660,12 +656,26 @@
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>ppO₂ max</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>ppO₂ min</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
+        <source>P1 (medium)</source>
+        <extracomment>Suunto safety level</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
+        <source>P2 (high)</source>
+        <extracomment>Suunto safety level</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -674,13 +684,13 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
-        <source>ppO2 max</source>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
+        <source>kg/ℓ</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
-        <source>ppO2 min</source>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
+        <source>Apnoea</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -712,18 +722,6 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1424"/>
         <source>P0 (none)</source>
-        <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
-        <source>P1 (some)</source>
-        <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
-        <source>P2 (much)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation type="unfinished"/>
     </message>
@@ -809,11 +807,6 @@
         <translation>Αλμυρότητα</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
-        <source>kg/l</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1741"/>
         <source>MM/DD/YY</source>
         <translation type="unfinished"/>
@@ -831,11 +824,6 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1935"/>
         <source>ZH-L16 CC</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
-        <source>Apnoe</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1797,7 +1785,7 @@
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="303"/>
-        <source>Save New</source>
+        <source>Save new</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1919,15 +1907,6 @@
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="105"/>
         <source>Upload dive data</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/diveshareexportdialog.ui" line="135"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.google.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;asd&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2278,12 +2257,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ExtraDataModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2669"/>
+        <location filename="../qt-ui/models.cpp" line="2720"/>
         <source>Key</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2669"/>
+        <location filename="../qt-ui/models.cpp" line="2720"/>
         <source>Value</source>
         <translation type="unfinished"/>
     </message>
@@ -2335,7 +2314,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="513"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="515"/>
         <source>Location: </source>
         <translation type="unfinished"/>
     </message>
@@ -2343,7 +2322,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2569"/>
+        <location filename="../qt-ui/models.cpp" line="2580"/>
         <source>No location set</source>
         <translation type="unfinished"/>
     </message>
@@ -2468,8 +2447,8 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.ui" line="970"/>
-        <source>Additional data from dive computer</source>
+        <location filename="../qt-ui/maintab.ui" line="964"/>
+        <source>Aditional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3222,6 +3201,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>MultiFilter</name>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="554"/>
+        <source>Clear the filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="558"/>
+        <source>Close this window and reset the filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/simplewidgets.cpp" line="562"/>
+        <source>Minimize this window</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PlannerSettingsWidget</name>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="479"/>
@@ -3962,17 +3959,17 @@ p, li { white-space: pre-wrap; }
         <translation>Κλείσιμο</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="28"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="30"/>
         <source>Average</source>
         <translation>Μέσος όρος</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="31"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="33"/>
         <source>Minimum</source>
         <translation>Ελάχιστο</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="34"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="36"/>
         <source>Maximum</source>
         <translation>Μέγιστο</translation>
     </message>
@@ -4064,12 +4061,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
-        <location filename="../qt-ui/simplewidgets.cpp" line="129"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="131"/>
         <source>New starting number</source>
         <translation>Νέος αρχικός αριθμός</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="127"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="129"/>
         <source>New number</source>
         <translation type="unfinished"/>
     </message>
@@ -4143,12 +4140,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="225"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="227"/>
         <source>Open image file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="227"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="229"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation type="unfinished"/>
     </message>
@@ -4290,7 +4287,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="462"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="464"/>
         <source>Tags: </source>
         <translation type="unfinished"/>
     </message>
@@ -4298,7 +4295,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2292"/>
+        <location filename="../qt-ui/models.cpp" line="2294"/>
         <source>Empty Tags</source>
         <translation type="unfinished"/>
     </message>
@@ -4854,7 +4851,7 @@ SAC (%1)</translation>
         <translation>Μέγιστο αριθμός υποστηριζόμενων στηλών στην εισαγωγή CSV είναι %d</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>none</source>
         <translation>κανένα</translation>
     </message>
@@ -4862,7 +4859,7 @@ SAC (%1)</translation>
         <location filename="../cochran.c" line="305"/>
         <location filename="../cochran.c" line="311"/>
         <location filename="../cochran.c" line="381"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>deco stop</source>
         <translation>στάση αποσυμπίεσης</translation>
     </message>
@@ -4874,52 +4871,52 @@ SAC (%1)</translation>
     <message>
         <location filename="../cochran.c" line="366"/>
         <location filename="../cochran.c" line="405"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="332"/>
         <location filename="../cochran.c" line="386"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>ascent</source>
         <translation>άνοδος</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="375"/>
         <location filename="../cochran.c" line="422"/>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>ceiling</source>
         <translation>ταβάνι</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="141"/>
+        <location filename="../libdivecomputer.c" line="120"/>
         <source>workload</source>
         <translation>φόρτο εργασίας</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="391"/>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>transmitter</source>
         <translation>πομπός</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>violation</source>
         <translation>παράβαση</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>bookmark</source>
         <translation>σελιδοδείκτης</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>surface</source>
         <translation>επιφάνεια</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="142"/>
+        <location filename="../libdivecomputer.c" line="121"/>
         <source>safety stop</source>
         <translation>στάση ασφαλείας</translation>
     </message>
@@ -4927,188 +4924,188 @@ SAC (%1)</translation>
         <location filename="../cochran.c" line="361"/>
         <location filename="../cochran.c" line="410"/>
         <location filename="../cochran.c" line="417"/>
-        <location filename="../libdivecomputer.c" line="143"/>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="122"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>gaschange</source>
         <translation>αλλαγή αερίου</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="143"/>
+        <location filename="../libdivecomputer.c" line="122"/>
         <source>safety stop (voluntary)</source>
         <translation>στάση ασφαλείας (προληπτική)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="143"/>
+        <location filename="../libdivecomputer.c" line="122"/>
         <source>safety stop (mandatory)</source>
         <translation>στάση ασφαλείας (υποχρεωτική)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>deepstop</source>
         <translation>βαθιά στάση</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>ceiling (safety stop)</source>
         <translation>ταβάνι (στάση ασφαλείας)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>divetime</source>
         <translation>διάρκεια</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="144"/>
+        <location filename="../libdivecomputer.c" line="123"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>below floor</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="349"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>maxdepth</source>
         <translation>μέγιστο βάθος</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="344"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="354"/>
         <location filename="../cochran.c" line="400"/>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>PO2</source>
         <translation>PO2</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>airtime</source>
         <translation>airtime</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="145"/>
+        <location filename="../libdivecomputer.c" line="124"/>
         <source>heading</source>
         <translation>heading</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>tissue level warning</source>
         <translation>προειδοποίηση επιπέδου ιστών</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="146"/>
+        <location filename="../libdivecomputer.c" line="125"/>
         <source>non stop time</source>
         <translation>non stop time</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="163"/>
+        <location filename="../libdivecomputer.c" line="142"/>
         <source>invalid event number</source>
         <translation>άκυρος αριθμός συμβάντος</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="442"/>
+        <location filename="../libdivecomputer.c" line="421"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Αδύνατον να αναλυθεί το %s %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="448"/>
+        <location filename="../libdivecomputer.c" line="427"/>
         <source>Error registering the data</source>
         <translation>Σφάλμα στην καταχώρηση των δεδομένων</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="456"/>
+        <location filename="../libdivecomputer.c" line="435"/>
         <source>Error parsing the datetime</source>
         <translation>Σφάλμα στην ημερομηνία</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="472"/>
+        <location filename="../libdivecomputer.c" line="451"/>
         <source>Dive %d: %s</source>
         <translation>Κατάδυση %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="476"/>
+        <location filename="../libdivecomputer.c" line="455"/>
         <source>Error parsing the divetime</source>
         <translation>Σφάλμα στην διάρκεια της κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="485"/>
+        <location filename="../libdivecomputer.c" line="464"/>
         <source>Error parsing the maxdepth</source>
         <translation>Σφάλμα στο μέγιστο βάθος</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="503"/>
+        <location filename="../libdivecomputer.c" line="482"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="522"/>
+        <location filename="../libdivecomputer.c" line="501"/>
         <source>Error parsing the gas mix count</source>
         <translation>Σφάλμα στον αριθμό των αερίων</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="534"/>
+        <location filename="../libdivecomputer.c" line="513"/>
         <source>Error obtaining water salinity</source>
         <translation>Σφάλμα στην απόκτηση της αλμυρότητας</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="542"/>
+        <location filename="../libdivecomputer.c" line="521"/>
         <source>Error obtaining surface pressure</source>
         <translation>Σφάλμα στην απόκτηση της ατμοσφαιρικής πίεσης</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="566"/>
+        <location filename="../libdivecomputer.c" line="545"/>
         <source>Error obtaining divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="583"/>
+        <location filename="../libdivecomputer.c" line="562"/>
         <source>Error parsing the gas mix</source>
         <translation>Σφάλμα στο μίγμα αερίων</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="590"/>
+        <location filename="../libdivecomputer.c" line="569"/>
         <source>Error parsing the samples</source>
         <translation>Σφάλμα στα δείγματα</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="727"/>
+        <location filename="../libdivecomputer.c" line="706"/>
         <source>Event: waiting for user action</source>
         <translation>Συμβάν: Περιμένοντας για ενέργεια από τον χρήστη</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="735"/>
+        <location filename="../libdivecomputer.c" line="714"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="795"/>
+        <location filename="../libdivecomputer.c" line="774"/>
         <source>Error registering the event handler.</source>
         <translation>Σφάλμα στην καταχώρηση του συμβάντος</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="800"/>
+        <location filename="../libdivecomputer.c" line="779"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Σφάλμα στην καταχώρηση της ακύρωσης</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="821"/>
+        <location filename="../libdivecomputer.c" line="800"/>
         <source>Dive data import error</source>
         <translation>Σφάλμα στην εισαγωγή δεδομένων</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="860"/>
+        <location filename="../libdivecomputer.c" line="839"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Unable to create libdivecomputer context</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="867"/>
+        <location filename="../libdivecomputer.c" line="846"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Αδύνατον να ανοιχθεί το %s %s (%s)</translation>
     </message>
