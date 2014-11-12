@@ -873,6 +873,16 @@ void select_dives_in_trip(struct dive_trip *trip)
 			select_dive(get_divenr(dive));
 }
 
+void filter_dive(struct dive *d, bool shown)
+{
+	if (!d)
+		return;
+	d->hidden_by_filter = !shown;
+	if (!shown && d->selected)
+		deselect_dive(get_divenr(d));
+}
+
+
 /* This only gets called with non-NULL trips.
  * It does not combine notes or location, just picks the first one
  * (or the second one if the first one is empty */
