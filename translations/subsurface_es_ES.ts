@@ -10,7 +10,7 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="490"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Busca por compañeros y divemasters</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="2454"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Sin compañeros</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="585"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Ajustes del dispositivo reiniciados con exito</translation>
     </message>
 </context>
 <context>
@@ -412,13 +412,13 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="180"/>
         <source>Suunto Vyper family</source>
-        <translation type="unfinished"/>
+        <translation>Familia Suunto Vyper</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
         <source>Advanced settings</source>
-        <translation type="unfinished"/>
+        <translation>Ajustes avanzados</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="618"/>
@@ -658,40 +658,40 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>ppO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>ppO₂ max</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>ppO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>ppO₂ min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (medio)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (alto)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo total de buceo</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
         <source>Apnoea</source>
-        <translation type="unfinished"/>
+        <translation>Apnea</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1264"/>
@@ -1789,7 +1789,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="303"/>
         <source>Save new</source>
-        <translation type="unfinished"/>
+        <translation>Guardar nueva</translation>
     </message>
 </context>
 <context>
@@ -1890,7 +1890,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="58"/>
         <source>Get user ID</source>
-        <translation type="unfinished"/>
+        <translation>Solicitar ID</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="67"/>
@@ -2262,7 +2262,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="2720"/>
         <source>Key</source>
-        <translation type="unfinished"/>
+        <translation>Clave</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="2720"/>
@@ -2280,7 +2280,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="22"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Etiqueta de texto</translation>
     </message>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="32"/>
@@ -2327,7 +2327,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="2580"/>
         <source>No location set</source>
-        <translation type="unfinished"/>
+        <translation>Sin localización</translation>
     </message>
 </context>
 <context>
@@ -2447,11 +2447,11 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="958"/>
         <source>Extra data</source>
-        <translation type="unfinished"/>
+        <translation>Otros datos</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
-        <source>Aditional data from dive computer</source>
+        <source>Additional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2958,12 +2958,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="840"/>
         <source>&amp;Filter by tags</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Filtrar por etiquetas</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="855"/>
         <source>Toggle tissue graph</source>
-        <translation type="unfinished"/>
+        <translation>Activar el gráfico de tejidos</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
@@ -3178,7 +3178,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1258"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
-        <translation type="unfinished"/>
+        <translation>Archivos de diarios (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Archivos de Cochran (*.can);;Archivos CSV (*.csv);;Archivos de DiveLog.de  (*.dld);;Archivos de JDiveLog(*.jlb);;Archivos de Liquivision (*.lvd);;Archivos de MkVI (*.txt);;Archivos de Suunto (*.sde *.db);;Archivos UDDF/UDCF (*.uddf *.udcf);;Archivos XML (*.xml);;Todos los archivos (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="767"/>
@@ -3214,17 +3214,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="554"/>
         <source>Clear the filters</source>
-        <translation type="unfinished"/>
+        <translation>Limpiar los filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="558"/>
         <source>Close this window and reset the filters</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar esta ventana y reiniciar los filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="562"/>
         <source>Minimize this window</source>
-        <translation type="unfinished"/>
+        <translation>Minimizar esta ventana</translation>
     </message>
 </context>
 <context>
@@ -4306,7 +4306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="2294"/>
         <source>Empty Tags</source>
-        <translation>Etiquetas vacio</translation>
+        <translation>Sin etiquetas</translation>
     </message>
 </context>
 <context>
@@ -5055,7 +5055,7 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="482"/>
         <source>Error parsing temperature</source>
-        <translation type="unfinished"/>
+        <translation>Error al leer la temperatura</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="501"/>
@@ -5075,7 +5075,7 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="545"/>
         <source>Error obtaining divemode</source>
-        <translation type="unfinished"/>
+        <translation>Error al obtener el modo de buceo</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="562"/>
@@ -5278,7 +5278,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="652"/>
         <source>Gas consumption (CCR legs excluded):</source>
-        <translation type="unfinished"/>
+        <translation>Consumo de gas (excluidos segmentos con CCR)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="654"/>

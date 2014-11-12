@@ -670,13 +670,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (médio)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (alto)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
@@ -2450,7 +2450,7 @@ remover o computador de mergulho seleccionado?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
-        <source>Aditional data from dive computer</source>
+        <source>Additional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3213,17 +3213,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="554"/>
         <source>Clear the filters</source>
-        <translation type="unfinished"/>
+        <translation>Limpar os filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="558"/>
         <source>Close this window and reset the filters</source>
-        <translation type="unfinished"/>
+        <translation>Fechar esta janela e reinicializar os filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="562"/>
         <source>Minimize this window</source>
-        <translation type="unfinished"/>
+        <translation>Minimizar esta janela</translation>
     </message>
 </context>
 <context>

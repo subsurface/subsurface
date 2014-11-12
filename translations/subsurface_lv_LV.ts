@@ -2448,7 +2448,7 @@ likvidēt izvēlētus datorus?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
-        <source>Aditional data from dive computer</source>
+        <source>Additional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>

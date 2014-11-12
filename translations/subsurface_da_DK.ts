@@ -5,12 +5,12 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="489"/>
         <source>Person: </source>
-        <translation type="unfinished"/>
+        <translation>Person:</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="490"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Søger efter makkere og divemasters</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="2454"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Ingen makkere</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="576"/>
         <source>Device firmware successfully updated</source>
-        <translation type="unfinished"/>
+        <translation>Firmware er opdateret med succes</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="585"/>
@@ -2449,7 +2449,7 @@ fjerne den valgte dykkercomputer?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
-        <source>Aditional data from dive computer</source>
+        <source>Additional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>

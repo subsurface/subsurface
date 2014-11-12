@@ -670,13 +670,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (mittel)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (hoch)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
@@ -2449,7 +2449,7 @@
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
-        <source>Aditional data from dive computer</source>
+        <source>Additional data from dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3222,7 +3222,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="562"/>
         <source>Minimize this window</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Fenster minimieren</translation>
     </message>
 </context>
 <context>
