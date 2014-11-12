@@ -900,7 +900,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 
 		// For CCR dives use the diluent gas composition for calculating partial gas pressures:
-		if ((dive->dc.dctype == CCR) && (cylinderindex == dive->oxygen_cylinder_index))
+		if (dive->dc.dctype == CCR && cylinderindex == dive->oxygen_cylinder_index && dive->diluent_cylinder_index != -1)
 			cylinderindex = dive->diluent_cylinder_index;
 
 		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, dive->dc.dctype, entry->sac);
