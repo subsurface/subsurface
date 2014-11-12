@@ -314,6 +314,8 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
 {
 	int firstInList, newSelection;
+	struct dive *d;
+
 	if (!newDiveSelection.count())
 		return;
 
@@ -335,7 +337,8 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 			newSelection = dive_table.nr - 1;
 		if (newSelection == firstInList)
 			break;
-		selectDive(newSelection);
+		if ((d = get_dive(newSelection)) != NULL && !d->hidden_by_filter)
+			selectDive(newSelection);
 	}
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive);

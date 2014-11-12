@@ -2366,7 +2366,9 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
-	return doFilter(d, index0, sourceModel);
+	bool show = doFilter(d, index0, sourceModel);
+	filter_dive(d, show);
+	return show;
 }
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
@@ -2628,11 +2630,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 			shouldShow = false;
 	}
 	// if it's a dive, mark it accordingly
-	if (d) {
-		if (d->selected)
-			d->selected = shouldShow;
-		d->hidden_by_filter = !shouldShow;
-	}
+	filter_dive(d, shouldShow);
 	return shouldShow;
 }
 
@@ -2656,10 +2654,12 @@ void MultiFilterSortModel::myInvalidate()
 	} else {
 		// otherwise find the dives that should still be selected (the filter above unselected any
 		// dive that's no longer visible) and select them again
+		QList<int>curSelectedDives;
 		for_each_dive (i, d) {
 			if(d->selected)
-				dlv->selectDive(get_idx_by_uniq_id(d->id));
+				curSelectedDives.append(get_divenr(d));
 		}
+		dlv->selectDives(curSelectedDives);
 	}
 }
 
