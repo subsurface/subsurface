@@ -308,7 +308,7 @@ extern "C" bool string_sequence_contains(const char *string_sequence, const char
 
 	QString stringSequence(string_sequence);
 	QStringList strings = stringSequence.split(",", QString::SkipEmptyParts);
-	Q_FOREACH (QString string, strings) {
+	Q_FOREACH (const QString& string, strings) {
 		if (string.trimmed().compare(QString(text).trimmed(), Qt::CaseInsensitive) == 0)
 			return true;
 	}
