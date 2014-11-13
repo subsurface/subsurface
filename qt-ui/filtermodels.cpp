@@ -14,8 +14,31 @@ CLASS *CLASS::instance() \
 CREATE_INSTANCE_METHOD(TagFilterModel);
 CREATE_INSTANCE_METHOD(BuddyFilterModel);
 CREATE_INSTANCE_METHOD(LocationFilterModel);
+CREATE_INSTANCE_METHOD(MultiFilterSortModel);
 
 #undef CREATE_INSTANCE_METHOD
+
+#define CREATE_MODEL_SET_DATA_METHOD( CLASS ) \
+bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
+{ \
+	if (role == Qt::CheckStateRole) { \
+		checkState[index.row()] = value.toBool(); \
+		anyChecked = false; \
+		for (int i = 0; i < rowCount(); i++) { \
+			if (checkState[i] == true) { \
+				anyChecked = true; \
+				break; \
+			} \
+		} \
+		dataChanged(index, index); \
+		return true; \
+	} \
+	return false; \
+}
+
+CREATE_MODEL_SET_DATA_METHOD(TagFilterModel);
+CREATE_MODEL_SET_DATA_METHOD(BuddyFilterModel);
+CREATE_MODEL_SET_DATA_METHOD(LocationFilterModel);
 
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
@@ -56,23 +79,6 @@ void TagFilterModel::repopulate()
 	memset(checkState, false, list.count());
 	checkState[list.count() - 1] = false;
 	anyChecked = false;
-}
-
-bool TagFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (role == Qt::CheckStateRole) {
-		checkState[index.row()] = value.toBool();
-		anyChecked = false;
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] == true) {
-				anyChecked = true;
-				break;
-			}
-		}
-		dataChanged(index, index);
-		return true;
-	}
-	return false;
 }
 
 bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -226,24 +232,6 @@ QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-
-bool BuddyFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (role == Qt::CheckStateRole) {
-		checkState[index.row()] = value.toBool();
-		anyChecked = false;
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] == true) {
-				anyChecked = true;
-				break;
-			}
-		}
-		dataChanged(index, index);
-		return true;
-	}
-	return false;
-}
-
 LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
@@ -336,29 +324,6 @@ void LocationFilterModel::repopulate()
 	memset(checkState, false, list.count());
 	checkState[list.count() - 1] = false;
 	anyChecked = false;
-}
-
-bool LocationFilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (role == Qt::CheckStateRole) {
-		checkState[index.row()] = value.toBool();
-		anyChecked = false;
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] == true) {
-				anyChecked = true;
-				break;
-			}
-		}
-		dataChanged(index, index);
-		return true;
-	}
-	return false;
-}
-
-MultiFilterSortModel *MultiFilterSortModel::instance()
-{
-	static MultiFilterSortModel *self = new MultiFilterSortModel();
-	return self;
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent), justCleared(false)
