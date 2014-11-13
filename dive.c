@@ -2541,6 +2541,20 @@ int count_dives_with_location(const char *location)
 	return counter;
 }
 
+// count the dives with exactly the suit
+int count_dives_with_suit(const char *suit)
+{
+	int i, counter = 0;
+	struct dive *d;
+
+	for_each_dive (i, d) {
+		if (same_string(d->suit, suit))
+			counter++;
+	}
+	return counter;
+}
+
+
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
