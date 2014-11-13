@@ -577,7 +577,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	// Buttons to Clear/Minimize/Close
 	QToolBar *tb = new QToolBar();
 	QToolButton *clearBtn = new QToolButton();
-	clearBtn->setToolTip(tr("Clear the filters"));
+	clearBtn->setToolTip(tr("Reset the filters"));
 	clearBtn->setIcon(QIcon(":/trash"));
 	clearBtn->setAutoRaise(true);
 	QToolButton *closeBtn = new QToolButton();
@@ -594,7 +594,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	tb->addWidget(minimize);
 	tb->addWidget(closeBtn);
 
-	connect(closeBtn, SIGNAL(clicked(bool)), this, SLOT(hide()));
+	connect(closeBtn, SIGNAL(clicked(bool)), this, SLOT(closeFilter()));
 	connect(clearBtn, SIGNAL(clicked(bool)), MultiFilterSortModel::instance(), SLOT(clearFilter()));
 	l->addWidget(tb);
 	l->addWidget(tagFilter);
@@ -609,4 +609,10 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
 
 	setMinimumHeight(expandedWidget->height() + 5);
+}
+
+void MultiFilter::closeFilter()
+{
+	MultiFilterSortModel::instance()->clearFilter();
+	hide();
 }

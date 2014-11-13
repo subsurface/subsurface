@@ -132,6 +132,9 @@ private:
 
 class MultiFilter : public QScrollArea {
 	Q_OBJECT
+public
+slots:
+	void closeFilter();
 public:
 	MultiFilter(QWidget *parent);
 	QWidget *expandedWidget;
