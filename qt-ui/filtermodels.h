@@ -68,6 +68,24 @@ private:
 	explicit LocationFilterModel(QObject *parent = 0);
 };
 
+class SuitsFilterModel : public QStringListModel, public MultiFilterInterface{
+	Q_OBJECT
+public:
+	static SuitsFilterModel *instance();
+	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+	virtual bool filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const;
+	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
+	void clearFilter();
+public
+slots:
+	void repopulate();
+
+private:
+	explicit SuitsFilterModel(QObject *parent = 0);
+};
+
 class MultiFilterSortModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
