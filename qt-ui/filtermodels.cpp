@@ -51,7 +51,7 @@ QVariant CLASS::data(const QModelIndex &index, int role) const \
 		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked; \
 	} else if (role == Qt::DisplayRole) { \
 		QString value = stringList()[index.row()]; \
-		int count = COUNTER_FUNCTION(value.toUtf8().data()); \
+		int count = COUNTER_FUNCTION((index.row() == rowCount() - 1) ? "" : value.toUtf8().data()); \
 		return value + QString(" (%1)").arg(count); \
 	} \
 	return QVariant(); \

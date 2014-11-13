@@ -2507,8 +2507,13 @@ int count_dives_with_tag(const char *tag)
 	struct dive *d;
 
 	for_each_dive (i, d) {
-		if (taglist_contains(d->tag_list, tag))
+		if (same_string(tag, "")) {
+			// count dives with no tags
+			if (d->tag_list == NULL)
+				counter++;
+		} else if (taglist_contains(d->tag_list, tag)) {
 			counter++;
+		}
 	}
 	return counter;
 }
@@ -2522,8 +2527,13 @@ int count_dives_with_person(const char *person)
 	struct dive *d;
 
 	for_each_dive (i, d) {
-		if (string_sequence_contains(d->buddy, person) || string_sequence_contains(d->divemaster, person))
+		if (same_string(person, "")) {
+			// solo dive
+			if (same_string(d->buddy, "") && same_string(d->divemaster, ""))
+				counter++;
+		} else if (string_sequence_contains(d->buddy, person) || string_sequence_contains(d->divemaster, person)) {
 			counter++;
+		}
 	}
 	return counter;
 }
