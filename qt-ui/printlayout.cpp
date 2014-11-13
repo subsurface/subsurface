@@ -17,7 +17,7 @@
 #include "models.h"
 #include "modeldelegates.h"
 
-PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct options *optionsPtr)
+PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct print_options *optionsPtr)
 {
 	dialog = dialogPtr;
 	printer = printerPtr;
@@ -74,16 +74,16 @@ void PrintLayout::print()
 		return;
 	}
 	switch (printOptions->type) {
-	case options::PRETTY:
+	case print_options::PRETTY:
 		printProfileDives(3, 2);
 		break;
-	case options::ONEPERPAGE:
+	case print_options::ONEPERPAGE:
 		printProfileDives(1, 1);
 		break;
-	case options::TWOPERPAGE:
+	case print_options::TWOPERPAGE:
 		printProfileDives(2, 1);
 		break;
-	case options::TABLE:
+	case print_options::TABLE:
 		printTable();
 		break;
 	}

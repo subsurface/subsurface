@@ -13,12 +13,42 @@
 #include <QShortcut>
 #include <QPrinterInfo>
 #include <QMessageBox>
+#include <QSettings>
+#include <QMarginsF>
+
+#define SETTINGS_GROUP "PrintDialog"
 
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
-	// options template (are we storing these in the settings?)
-	struct options tempOptions = { options::PRETTY, 1, 2, false };
-	printOptions = tempOptions;
+	// check if the options were previously stored in the settings; if not use some defaults.
+	QSettings s;
+	bool stored = s.childGroups().contains(SETTINGS_GROUP);
+	if (!stored) {
+		printOptions.type = print_options::PRETTY;
+		printOptions.print_selected = true;
+		printOptions.color_selected = true;
+		printOptions.notes_up = false;
+		printOptions.landscape = false;
+		memset(printOptions.margins, 0, sizeof(printOptions.margins));
+	} else {
+		s.beginGroup(SETTINGS_GROUP);
+		printOptions.type = (print_options::print_type)s.value("type").toInt();
+		printOptions.print_selected = s.value("print_selected").toBool();
+		printOptions.color_selected = s.value("color_selected").toBool();
+		printOptions.notes_up = s.value("notes_up").toBool();
+		printOptions.landscape = s.value("landscape").toBool();
+		printOptions.margins[0] = s.value("margin_left").toInt();
+		printOptions.margins[1] = s.value("margin_top").toInt();
+		printOptions.margins[2] = s.value("margin_right").toInt();
+		printOptions.margins[3] = s.value("margin_bottom").toInt();
+		printer.setOrientation((QPrinter::Orientation)printOptions.landscape);
+		QMarginsF margins;
+		margins.setLeft(printOptions.margins[0]);
+		margins.setRight(printOptions.margins[1]);
+		margins.setTop(printOptions.margins[2]);
+		margins.setBottom(printOptions.margins[3]);
+		printer.setPageMargins(margins, QPageLayout::Millimeter);
+	}
 
 	// create a print layout and pass the printer and options
 	printLayout = new PrintLayout(this, &printer, &printOptions);
@@ -64,6 +94,26 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+
+	// seems to be the most reliable way to track for all sorts of dialog disposal.
+	connect(this, SIGNAL(finished(int)), this, SLOT(onFinished()));
+}
+
+void PrintDialog::onFinished()
+{
+	// save the settings
+	QSettings s;
+	s.beginGroup(SETTINGS_GROUP);
+	s.setValue("type", printOptions.type);
+	s.setValue("print_selected", printOptions.print_selected);
+	s.setValue("color_selected", printOptions.color_selected);
+	s.setValue("notes_up", printOptions.notes_up);
+	s.setValue("landscape", (bool)printer.pageLayout().orientation());
+	QMarginsF margins = printer.pageLayout().margins(QPageLayout::Millimeter);
+	s.setValue("margin_left", margins.left());
+	s.setValue("margin_right", margins.top());
+	s.setValue("margin_top", margins.right());
+	s.setValue("margin_bottom", margins.bottom());
 }
 
 void PrintDialog::previewClicked(void)

@@ -1,7 +1,7 @@
 #include "printoptions.h"
 #include "../display.h"
 
-PrintOptions::PrintOptions(QWidget *parent, struct options *printOpt)
+PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
 {
 	hasSetupSlots = false;
 	ui.setupUi(this);
@@ -12,21 +12,21 @@ PrintOptions::PrintOptions(QWidget *parent, struct options *printOpt)
 	setup(printOpt);
 }
 
-void PrintOptions::setup(struct options *printOpt)
+void PrintOptions::setup(struct print_options *printOpt)
 {
 	printOptions = printOpt;
 	// print type radio buttons
 	switch (printOptions->type) {
-	case options::PRETTY:
+	case print_options::PRETTY:
 		ui.radioSixDives->setChecked(true);
 		break;
-	case options::TWOPERPAGE:
+	case print_options::TWOPERPAGE:
 		ui.radioTwoDives->setChecked(true);
 		break;
-	case options::ONEPERPAGE:
+	case print_options::ONEPERPAGE:
 		ui.radioOneDive->setChecked(true);
 		break;
-	case options::TABLE:
+	case print_options::TABLE:
 		ui.radioTablePrint->setChecked(true);
 		break;
 	}
@@ -61,33 +61,33 @@ void PrintOptions::setup(struct options *printOpt)
 // print type radio buttons
 void PrintOptions::radioSixDivesClicked(bool check)
 {
-	printOptions->type = options::PRETTY;
+	printOptions->type = print_options::PRETTY;
 }
 
 void PrintOptions::radioTwoDivesClicked(bool check)
 {
-	printOptions->type = options::TWOPERPAGE;
+	printOptions->type = print_options::TWOPERPAGE;
 }
 
 void PrintOptions::radioOneDiveClicked(bool check)
 {
-	printOptions->type = options::ONEPERPAGE;
+	printOptions->type = print_options::ONEPERPAGE;
 }
 
 void PrintOptions::radioTablePrintClicked(bool check)
 {
-	printOptions->type = options::TABLE;
+	printOptions->type = print_options::TABLE;
 }
 
 // general print option checkboxes
 void PrintOptions::printInColorClicked(bool check)
 {
-	printOptions->color_selected = (int)check;
+	printOptions->color_selected = check;
 }
 
 void PrintOptions::printSelectedClicked(bool check)
 {
-	printOptions->print_selected = (int)check;
+	printOptions->print_selected = check;
 }
 
 // ordering

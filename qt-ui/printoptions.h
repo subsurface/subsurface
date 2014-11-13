@@ -10,12 +10,12 @@ class PrintOptions : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit PrintOptions(QWidget *parent = 0, struct options *printOpt = 0);
-	void setup(struct options *printOpt);
+	explicit PrintOptions(QWidget *parent = 0, struct print_options *printOpt = 0);
+	void setup(struct print_options *printOpt);
 
 private:
 	Ui::PrintOptions ui;
-	struct options *printOptions;
+	struct print_options *printOptions;
 	bool hasSetupSlots;
 
 private

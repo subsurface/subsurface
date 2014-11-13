@@ -17,13 +17,13 @@ class PrintLayout : public QObject {
 	Q_OBJECT
 
 public:
-	PrintLayout(PrintDialog *, QPrinter *, struct options *);
+	PrintLayout(PrintDialog *, QPrinter *, struct print_options *);
 	void print();
 
 private:
 	PrintDialog *dialog;
 	QPrinter *printer;
-	struct options *printOptions;
+	struct print_options *printOptions;
 
 	int screenDpiX, screenDpiY, printerDpi, pageW, pageH;
 	QRect pageRect;

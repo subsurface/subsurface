@@ -14,7 +14,6 @@ class PrintDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	struct options printOptions;
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private:
@@ -22,9 +21,11 @@ private:
 	PrintLayout *printLayout;
 	QProgressBar *progressBar;
 	QPrinter printer;
+	struct print_options printOptions;
 
 private
 slots:
+	void onFinished();
 	void previewClicked();
 	void printClicked();
 	void onPaintRequested(QPrinter *);
