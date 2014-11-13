@@ -1399,5 +1399,8 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	ui.multiFilter->setVisible(!ui.multiFilter->isVisible());
+	if (ui.multiFilter->isVisible())
+		ui.multiFilter->closeFilter();
+	else
+		ui.multiFilter->setVisible(true);
 }
