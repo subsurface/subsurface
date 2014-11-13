@@ -71,8 +71,7 @@ const QPixmap &trashIcon()
 	return *trashIconPixmap;
 }
 
-CylindersModel::CylindersModel(QObject *parent) :
-	changed(false),
+CylindersModel::CylindersModel(QObject *parent) : changed(false),
 	rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};

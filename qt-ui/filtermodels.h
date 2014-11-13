@@ -14,7 +14,7 @@ public:
 	bool anyChecked;
 };
 
-class TagFilterModel : public QStringListModel, public MultiFilterInterface{
+class TagFilterModel : public QStringListModel, public MultiFilterInterface {
 	Q_OBJECT
 public:
 	static TagFilterModel *instance();
@@ -32,7 +32,7 @@ private:
 	explicit TagFilterModel(QObject *parent = 0);
 };
 
-class BuddyFilterModel : public QStringListModel, public MultiFilterInterface{
+class BuddyFilterModel : public QStringListModel, public MultiFilterInterface {
 	Q_OBJECT
 public:
 	static BuddyFilterModel *instance();
@@ -50,7 +50,7 @@ private:
 	explicit BuddyFilterModel(QObject *parent = 0);
 };
 
-class LocationFilterModel : public QStringListModel, public MultiFilterInterface{
+class LocationFilterModel : public QStringListModel, public MultiFilterInterface {
 	Q_OBJECT
 public:
 	static LocationFilterModel *instance();
@@ -68,7 +68,7 @@ private:
 	explicit LocationFilterModel(QObject *parent = 0);
 };
 
-class SuitsFilterModel : public QStringListModel, public MultiFilterInterface{
+class SuitsFilterModel : public QStringListModel, public MultiFilterInterface {
 	Q_OBJECT
 public:
 	static SuitsFilterModel *instance();
@@ -93,12 +93,14 @@ public:
 	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 	void addFilterModel(MultiFilterInterface *model);
 	void removeFilterModel(MultiFilterInterface *model);
-public slots:
+public
+slots:
 	void myInvalidate();
 	void clearFilter();
+
 private:
 	MultiFilterSortModel(QObject *parent = 0);
-	QList<MultiFilterInterface*> models;
+	QList<MultiFilterInterface *> models;
 	bool justCleared;
 };
 

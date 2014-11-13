@@ -179,6 +179,7 @@ public:
 
 	void clear();
 	void updateDive();
+
 private:
 	int rows;
 };

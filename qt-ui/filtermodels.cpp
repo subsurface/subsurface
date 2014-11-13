@@ -71,7 +71,7 @@ CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit);
 
 CREATE_INSTANCE_METHOD(MultiFilterSortModel);
 
-SuitsFilterModel::SuitsFilterModel(QObject *parent): QStringListModel(parent)
+SuitsFilterModel::SuitsFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
 
@@ -273,7 +273,7 @@ void BuddyFilterModel::repopulate()
 	int i = 0;
 	for_each_dive (i, dive) {
 		QString persons = QString(dive->buddy) + "," + QString(dive->divemaster);
-		Q_FOREACH(const QString& person, persons.split(',', QString::SkipEmptyParts)){
+		Q_FOREACH (const QString &person, persons.split(',', QString::SkipEmptyParts)) {
 			// Remove any leading spaces
 			if (!list.contains(person.trimmed())) {
 				list.append(person.trimmed());
@@ -405,9 +405,9 @@ void MultiFilterSortModel::myInvalidate()
 	} else {
 		// otherwise find the dives that should still be selected (the filter above unselected any
 		// dive that's no longer visible) and select them again
-		QList<int>curSelectedDives;
+		QList<int> curSelectedDives;
 		for_each_dive (i, d) {
-			if(d->selected)
+			if (d->selected)
 				curSelectedDives.append(get_divenr(d));
 		}
 		dlv->selectDives(curSelectedDives);
@@ -433,7 +433,7 @@ void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
 void MultiFilterSortModel::clearFilter()
 {
 	justCleared = true;
-	Q_FOREACH(MultiFilterInterface *iface, models){
+	Q_FOREACH (MultiFilterInterface *iface, models) {
 		iface->clearFilter();
 	}
 	justCleared = false;
