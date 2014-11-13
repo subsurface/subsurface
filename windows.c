@@ -176,7 +176,7 @@ int subsurface_rename(const char *path, const char *newpath)
 {
 	int ret = -1;
 	if (!path || !newpath)
-		return -1;
+		return ret;
 
 	wchar_t *wpath = utf8_to_utf16(path);
 	wchar_t *wnewpath = utf8_to_utf16(newpath);
@@ -192,13 +192,11 @@ int subsurface_open(const char *path, int oflags, mode_t mode)
 {
 	int ret = -1;
 	if (!path)
-		return -1;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath) {
-		ret = _wopen(wpath, oflags, mode);
-		free((void *)wpath);
 		return ret;
-	}
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath)
+		ret = _wopen(wpath, oflags, mode);
+	free((void *)wpath);
 	return ret;
 }
 
@@ -215,9 +213,8 @@ FILE *subsurface_fopen(const char *path, const char *mode)
 			wmode[i] = (wchar_t)mode[i];
 		wmode[len] = 0;
 		ret = _wfopen(wpath, wmode);
-		free((void *)wpath);
-		return ret;
 	}
+	free((void *)wpath);
 	return ret;
 }
 
@@ -228,11 +225,9 @@ void *subsurface_opendir(const char *path)
 	if (!path)
 		return ret;
 	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath) {
+	if (wpath)
 		ret = _wopendir(wpath);
-		free((void *)wpath);
-		return (void *)ret;
-	}
+	free((void *)wpath);
 	return (void *)ret;
 }
 
