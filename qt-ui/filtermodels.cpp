@@ -87,6 +87,23 @@ bool SuitsFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 
 void SuitsFilterModel::repopulate()
 {
+	QStringList list;
+	struct dive *dive;
+	int i = 0;
+	for_each_dive (i, dive) {
+		QString suit(dive->suit);
+		if (!suit.isEmpty() && !list.contains(suit)) {
+			list.append(suit);
+		}
+	}
+	qSort(list);
+	list << tr("No suit set");
+	setStringList(list);
+	delete[] checkState;
+	checkState = new bool[list.count()];
+	memset(checkState, false, list.count());
+	checkState[list.count() - 1] = false;
+	anyChecked = false;
 }
 
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
