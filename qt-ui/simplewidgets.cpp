@@ -535,6 +535,31 @@ void LocationFilter::hideEvent(QHideEvent *event)
 	QWidget::hideEvent(event);
 }
 
+SuitFilter::SuitFilter(QWidget *parent) : QWidget(parent)
+{
+	ui.setupUi(this);
+	ui.label->setText(tr("Suits: "));
+#if QT_VERSION >= 0x050000
+	ui.filterInternalList->setClearButtonEnabled(true);
+#endif
+	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
+	filter->setSourceModel(SuitsFilterModel::instance());
+	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	ui.filterList->setModel(filter);
+}
+
+void SuitFilter::showEvent(QShowEvent *event)
+{
+	MultiFilterSortModel::instance()->addFilterModel(SuitsFilterModel::instance());
+	QWidget::showEvent(event);
+}
+
+void SuitFilter::hideEvent(QHideEvent *event)
+{
+	MultiFilterSortModel::instance()->removeFilterModel(SuitsFilterModel::instance());
+	QWidget::hideEvent(event);
+}
+
 MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 {
 	QWidget *expandedWidget = new QWidget();
@@ -575,6 +600,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
 	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
 	l->addWidget(new LocationFilter());
+	l->addWidget(new SuitFilter());
 	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
 
