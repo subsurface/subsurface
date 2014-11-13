@@ -57,6 +57,16 @@ CREATE_CLEAR_FILTER_METHOD(LocationFilterModel);
 
 #undef CREATE_CLEAR_FILTER_METHOD
 
+#define CREATE_FLAGS_METHOD( CLASS ) \
+Qt::ItemFlags CLASS::flags(const QModelIndex &index) const \
+{ \
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable; \
+}
+
+CREATE_FLAGS_METHOD(TagFilterModel);
+CREATE_FLAGS_METHOD(BuddyFilterModel);
+CREATE_FLAGS_METHOD(LocationFilterModel);
+
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
@@ -71,11 +81,6 @@ QVariant TagFilterModel::data(const QModelIndex &index, int role) const
 		return tag + QString(" (%1)").arg(count);
 	}
 	return QVariant();
-}
-
-Qt::ItemFlags TagFilterModel::flags(const QModelIndex &index) const
-{
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 void TagFilterModel::repopulate()
@@ -208,11 +213,6 @@ bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_paren
 	return doFilter(d, index0, sourceModel);
 }
 
-Qt::ItemFlags BuddyFilterModel::flags(const QModelIndex &index) const
-{
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
-}
-
 void BuddyFilterModel::repopulate()
 {
 	QStringList list;
@@ -315,11 +315,6 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
 	return doFilter(d, index0, sourceModel);
-}
-
-Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
-{
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 void LocationFilterModel::repopulate()
