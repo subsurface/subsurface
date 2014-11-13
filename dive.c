@@ -2500,6 +2500,7 @@ bool taglist_contains(struct tag_entry *tag_list, const char *tag)
 	return false;
 }
 
+// count the dives where the tag list contains the given tag
 int count_dives_with_tag(const char *tag)
 {
 	int i, counter = 0;
@@ -2507,6 +2508,34 @@ int count_dives_with_tag(const char *tag)
 
 	for_each_dive (i, d) {
 		if (taglist_contains(d->tag_list, tag))
+			counter++;
+	}
+	return counter;
+}
+
+extern bool string_sequence_contains(const char *string_sequence, const char *text);
+
+// count the dives where the person is included in the comma separated string sequences of buddies or divemasters
+int count_dives_with_person(const char *person)
+{
+	int i, counter = 0;
+	struct dive *d;
+
+	for_each_dive (i, d) {
+		if (string_sequence_contains(d->buddy, person) || string_sequence_contains(d->divemaster, person))
+			counter++;
+	}
+	return counter;
+}
+
+// count the dives with exactly the location
+int count_dives_with_location(const char *location)
+{
+	int i, counter = 0;
+	struct dive *d;
+
+	for_each_dive (i, d) {
+		if (same_string(d->location, location))
 			counter++;
 	}
 	return counter;

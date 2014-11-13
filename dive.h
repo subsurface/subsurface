@@ -235,6 +235,8 @@ void taglist_free(struct tag_entry *tag_list);
 
 bool taglist_contains(struct tag_entry *tag_list, const char *tag);
 int count_dives_with_tag(const char *tag);
+int count_dives_with_person(const char *person);
+int count_dives_with_location(const char *location);
 
 struct extra_data {
 	const char *key;

@@ -2270,7 +2270,7 @@ QVariant TagFilterModel::data(const QModelIndex &index, int role) const
 	} else if (role == Qt::DisplayRole) {
 		QString tag = stringList()[index.row()];
 		int count = count_dives_with_tag(tag.toUtf8().data());
-		return tag + QString("(%1)").arg(count);
+		return tag + QString(" (%1)").arg(count);
 	}
 	return QVariant();
 }
@@ -2467,7 +2467,9 @@ QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::CheckStateRole) {
 		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
-		return stringList()[index.row()];
+		QString person = stringList()[index.row()];
+		int count = count_dives_with_person(person.toUtf8().data());
+		return person + QString(" (%1)").arg(count);
 	}
 	return QVariant();
 }
@@ -2499,7 +2501,9 @@ QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::CheckStateRole) {
 		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
-		return stringList()[index.row()];
+		QString location = stringList()[index.row()];
+		int count = count_dives_with_location(location.toUtf8().data());
+		return location + QString(" (%1)").arg(count);
 	}
 	return QVariant();
 }
