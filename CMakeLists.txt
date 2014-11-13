@@ -150,6 +150,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/divepicturewidget.cpp
 	qt-ui/usersurvey.cpp
 	qt-ui/configuredivecomputerdialog.cpp
+	qt-ui/filtermodels.cpp
 )
 
 #the profile widget

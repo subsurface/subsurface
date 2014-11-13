@@ -102,7 +102,8 @@ HEADERS = \
 	qt-ui/statistics/statisticswidget.h \
 	qt-ui/statistics/statisticsbar.h \
 	qt-ui/statistics/yearstatistics.h \
-	qt-ui/diveshareexportdialog.h
+	qt-ui/diveshareexportdialog.h \
+	qt-ui/filtermodels.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -195,7 +196,8 @@ SOURCES =  \
 	qt-ui/statistics/yearstatistics.cpp \
 	qt-ui/statistics/statisticsbar.cpp \
 	qt-ui/statistics/monthstatistics.cpp \
-	qt-ui/diveshareexportdialog.cpp
+	qt-ui/diveshareexportdialog.cpp \
+	qt-ui/filtermodels.cpp
 
 android: SOURCES += android.cpp
 else: win32: SOURCES += windows.c

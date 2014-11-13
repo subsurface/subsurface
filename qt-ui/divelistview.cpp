@@ -6,6 +6,7 @@
  */
 #include "divelistview.h"
 #include "models.h"
+#include "filtermodels.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
 #include "subsurfacewebservices.h"

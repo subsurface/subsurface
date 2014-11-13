@@ -1,4 +1,5 @@
 #include "simplewidgets.h"
+#include "filtermodels.h"
 
 #include <QLabel>
 #include <QProcess>

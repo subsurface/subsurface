@@ -44,6 +44,7 @@
 #include "planner.h"
 #include "configuredivecomputerdialog.h"
 #include "statistics/statisticswidget.h"
+#include "filtermodels.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
