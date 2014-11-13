@@ -40,6 +40,23 @@ CREATE_MODEL_SET_DATA_METHOD(TagFilterModel);
 CREATE_MODEL_SET_DATA_METHOD(BuddyFilterModel);
 CREATE_MODEL_SET_DATA_METHOD(LocationFilterModel);
 
+#undef CREATE_MODEL_SET_DATA_METHOD
+
+#define CREATE_CLEAR_FILTER_METHOD( CLASS ) \
+void CLASS::clearFilter() \
+{ \
+	memset(checkState, false, rowCount()); \
+	checkState[rowCount() - 1] = false; \
+	anyChecked = false; \
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0)); \
+}
+
+CREATE_CLEAR_FILTER_METHOD(TagFilterModel);
+CREATE_CLEAR_FILTER_METHOD(BuddyFilterModel);
+CREATE_CLEAR_FILTER_METHOD(LocationFilterModel);
+
+#undef CREATE_CLEAR_FILTER_METHOD
+
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
@@ -403,28 +420,4 @@ void MultiFilterSortModel::clearFilter()
 	}
 	justCleared = false;
 	myInvalidate();
-}
-
-void BuddyFilterModel::clearFilter()
-{
-	memset(checkState, false, rowCount());
-	checkState[rowCount() - 1] = false;
-	anyChecked = false;
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
-}
-
-void LocationFilterModel::clearFilter()
-{
-	memset(checkState, false, rowCount());
-	checkState[rowCount() - 1] = false;
-	anyChecked = false;
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
-}
-
-void TagFilterModel::clearFilter()
-{
-	memset(checkState, false, rowCount());
-	checkState[rowCount() - 1] = false;
-	anyChecked = false;
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
 }
