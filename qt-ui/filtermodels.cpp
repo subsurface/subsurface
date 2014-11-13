@@ -4,14 +4,21 @@
 #include "mainwindow.h"
 #include "display.h"
 
-TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
-{
+#define CREATE_INSTANCE_METHOD( CLASS ) \
+CLASS *CLASS::instance() \
+{ \
+	static CLASS *self = new CLASS(); \
+	return self; \
 }
 
-TagFilterModel *TagFilterModel::instance()
+CREATE_INSTANCE_METHOD(TagFilterModel);
+CREATE_INSTANCE_METHOD(BuddyFilterModel);
+CREATE_INSTANCE_METHOD(LocationFilterModel);
+
+#undef CREATE_INSTANCE_METHOD
+
+TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
-	static TagFilterModel *self = new TagFilterModel();
-	return self;
 }
 
 QVariant TagFilterModel::data(const QModelIndex &index, int role) const
@@ -124,12 +131,6 @@ bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent,
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
 {
-}
-
-BuddyFilterModel *BuddyFilterModel::instance()
-{
-	static BuddyFilterModel *self = new BuddyFilterModel();
-	return self;
 }
 
 bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -314,12 +315,6 @@ bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_pa
 Qt::ItemFlags LocationFilterModel::flags(const QModelIndex &index) const
 {
 	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
-}
-
-LocationFilterModel *LocationFilterModel::instance()
-{
-	static LocationFilterModel *self = new LocationFilterModel();
-	return self;
 }
 
 void LocationFilterModel::repopulate()
