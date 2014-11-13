@@ -44,31 +44,33 @@ Qt::ItemFlags CLASS::flags(const QModelIndex &index) const \
 	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable; \
 }
 
-#define CREATE_COMMON_METHODS_FOR_FILTER( CLASS ) \
+#define CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION ) \
+QVariant CLASS::data(const QModelIndex &index, int role) const \
+{ \
+	if (role == Qt::CheckStateRole) { \
+		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked; \
+	} else if (role == Qt::DisplayRole) { \
+		QString value = stringList()[index.row()]; \
+		int count = COUNTER_FUNCTION(value.toUtf8().data()); \
+		return value + QString(" (%1)").arg(count); \
+	} \
+	return QVariant(); \
+}
+
+#define CREATE_COMMON_METHODS_FOR_FILTER( CLASS, COUNTER_FUNCTION ) \
 CREATE_FLAGS_METHOD( CLASS ); \
 CREATE_CLEAR_FILTER_METHOD( CLASS ); \
 CREATE_MODEL_SET_DATA_METHOD( CLASS ); \
-CREATE_INSTANCE_METHOD( CLASS )
+CREATE_INSTANCE_METHOD( CLASS ); \
+CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION )
 
-CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel);
-CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel);
-CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel);
+CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel, count_dives_with_tag);
+CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel, count_dives_with_person);
+CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel, count_dives_with_location);
 CREATE_INSTANCE_METHOD(MultiFilterSortModel);
 
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
-}
-
-QVariant TagFilterModel::data(const QModelIndex &index, int role) const
-{
-	if (role == Qt::CheckStateRole) {
-		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
-	} else if (role == Qt::DisplayRole) {
-		QString tag = stringList()[index.row()];
-		int count = count_dives_with_tag(tag.toUtf8().data());
-		return tag + QString(" (%1)").arg(count);
-	}
-	return QVariant();
 }
 
 void TagFilterModel::repopulate()
@@ -225,32 +227,8 @@ void BuddyFilterModel::repopulate()
 	anyChecked = false;
 }
 
-QVariant BuddyFilterModel::data(const QModelIndex &index, int role) const
-{
-	if (role == Qt::CheckStateRole) {
-		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
-	} else if (role == Qt::DisplayRole) {
-		QString person = stringList()[index.row()];
-		int count = count_dives_with_person(person.toUtf8().data());
-		return person + QString(" (%1)").arg(count);
-	}
-	return QVariant();
-}
-
 LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent)
 {
-}
-
-QVariant LocationFilterModel::data(const QModelIndex &index, int role) const
-{
-	if (role == Qt::CheckStateRole) {
-		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
-	} else if (role == Qt::DisplayRole) {
-		QString location = stringList()[index.row()];
-		int count = count_dives_with_location(location.toUtf8().data());
-		return location + QString(" (%1)").arg(count);
-	}
-	return QVariant();
 }
 
 bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
