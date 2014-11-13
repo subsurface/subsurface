@@ -324,7 +324,6 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 {
 	int i, j;
 	struct dive *d;
-	QString gas;
 	QMap<QString, int> gasUsed;
 	for_each_dive (i, d) {
 		if (!d->selected)
@@ -337,7 +336,7 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 	}
-	Q_FOREACH(gas, gasUsed.keys()) {
+	Q_FOREACH(const QString& gas, gasUsed.keys()) {
 		gasUsedOrdered.append(qMakePair(gas, gasUsed[gas]));
 	}
 	qSort(gasUsedOrdered.begin(), gasUsedOrdered.end(), lessThan);
