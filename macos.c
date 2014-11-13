@@ -11,7 +11,7 @@
 #include <sys/syslimits.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <dirent.h>
+#include <unistd.h>
 
 void subsurface_user_info(struct user_info *info)
 { /* Nothing, let's use libgit2-20 on MacOS */ }
@@ -145,6 +145,11 @@ FILE *subsurface_fopen(const char *path, const char *mode)
 void *subsurface_opendir(const char *path)
 {
 	return (void *)opendir(path);
+}
+
+int subsurface_access(const char *path, int mode)
+{
+	return access(path, mode);
 }
 
 struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)

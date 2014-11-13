@@ -1,5 +1,6 @@
 /* windows.c */
 /* implements Windows specific functions */
+#include <io.h>
 #include "dive.h"
 #include "display.h"
 #undef _WIN32_WINNT
@@ -233,6 +234,18 @@ void *subsurface_opendir(const char *path)
 		return (void *)ret;
 	}
 	return (void *)ret;
+}
+
+int subsurface_access(const char *path, int mode)
+{
+	int ret = -1;
+	if (!path)
+		return ret;
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath)
+		ret = _waccess(wpath, mode);
+	free((void *)wpath);
+	return ret;
 }
 
 #ifndef O_BINARY
