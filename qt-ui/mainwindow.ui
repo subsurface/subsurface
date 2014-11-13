@@ -836,8 +836,11 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionFilterTags">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>&amp;Filter by tags</string>
+    <string>&amp;Filter divelist</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
