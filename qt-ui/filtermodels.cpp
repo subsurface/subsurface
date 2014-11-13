@@ -82,7 +82,16 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 
 bool SuitsFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
 {
-	return false;
+	// If there's nothing checked, this should show everything
+	if (!anyChecked) {
+		return true;
+	}
+
+	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
+	return doFilter(d, index0, sourceModel);
 }
 
 void SuitsFilterModel::repopulate()
