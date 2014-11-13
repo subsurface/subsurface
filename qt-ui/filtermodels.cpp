@@ -77,6 +77,38 @@ SuitsFilterModel::SuitsFilterModel(QObject *parent): QStringListModel(parent)
 
 bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
+	if (!anyChecked) {
+		return true;
+	}
+
+	if (!d) { // It's a trip, only show the ones that have dives to be shown.
+		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
+			if (filterRow(i, index0, sourceModel))
+				return true;
+		}
+		return false;
+	}
+
+	// Checked means 'Show', Unchecked means 'Hide'.
+	QString suit(d->suit);
+	// only show empty suit dives if the user checked that.
+	if (suit.isEmpty()) {
+		if (rowCount() > 0)
+			return checkState[rowCount() - 1];
+		else
+			return true;
+	}
+
+	// there is a suit selected
+	QStringList suitList = stringList();
+	if (!suitList.isEmpty()) {
+		suitList.removeLast(); // remove the "Show Empty Suits";
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] && (suit.indexOf(stringList()[i]) != -1)) {
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
