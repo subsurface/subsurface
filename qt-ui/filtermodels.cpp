@@ -11,13 +11,6 @@ CLASS *CLASS::instance() \
 	return self; \
 }
 
-CREATE_INSTANCE_METHOD(TagFilterModel);
-CREATE_INSTANCE_METHOD(BuddyFilterModel);
-CREATE_INSTANCE_METHOD(LocationFilterModel);
-CREATE_INSTANCE_METHOD(MultiFilterSortModel);
-
-#undef CREATE_INSTANCE_METHOD
-
 #define CREATE_MODEL_SET_DATA_METHOD( CLASS ) \
 bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
 { \
@@ -36,12 +29,6 @@ bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
 	return false; \
 }
 
-CREATE_MODEL_SET_DATA_METHOD(TagFilterModel);
-CREATE_MODEL_SET_DATA_METHOD(BuddyFilterModel);
-CREATE_MODEL_SET_DATA_METHOD(LocationFilterModel);
-
-#undef CREATE_MODEL_SET_DATA_METHOD
-
 #define CREATE_CLEAR_FILTER_METHOD( CLASS ) \
 void CLASS::clearFilter() \
 { \
@@ -51,21 +38,22 @@ void CLASS::clearFilter() \
 	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0)); \
 }
 
-CREATE_CLEAR_FILTER_METHOD(TagFilterModel);
-CREATE_CLEAR_FILTER_METHOD(BuddyFilterModel);
-CREATE_CLEAR_FILTER_METHOD(LocationFilterModel);
-
-#undef CREATE_CLEAR_FILTER_METHOD
-
 #define CREATE_FLAGS_METHOD( CLASS ) \
 Qt::ItemFlags CLASS::flags(const QModelIndex &index) const \
 { \
 	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable; \
 }
 
-CREATE_FLAGS_METHOD(TagFilterModel);
-CREATE_FLAGS_METHOD(BuddyFilterModel);
-CREATE_FLAGS_METHOD(LocationFilterModel);
+#define CREATE_COMMON_METHODS_FOR_FILTER( CLASS ) \
+CREATE_FLAGS_METHOD( CLASS ); \
+CREATE_CLEAR_FILTER_METHOD( CLASS ); \
+CREATE_MODEL_SET_DATA_METHOD( CLASS ); \
+CREATE_INSTANCE_METHOD( CLASS )
+
+CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel);
+CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel);
+CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel);
+CREATE_INSTANCE_METHOD(MultiFilterSortModel);
 
 TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
 {
