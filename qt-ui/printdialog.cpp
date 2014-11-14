@@ -14,7 +14,10 @@
 #include <QPrinterInfo>
 #include <QMessageBox>
 #include <QSettings>
+
+#if QT_VERSION >= 0x050300
 #include <QMarginsF>
+#endif
 
 #define SETTINGS_GROUP "PrintDialog"
 
@@ -42,12 +45,22 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.margins[2] = s.value("margin_right").toInt();
 		printOptions.margins[3] = s.value("margin_bottom").toInt();
 		printer.setOrientation((QPrinter::Orientation)printOptions.landscape);
+#if QT_VERSION >= 0x050300
 		QMarginsF margins;
 		margins.setLeft(printOptions.margins[0]);
-		margins.setRight(printOptions.margins[1]);
-		margins.setTop(printOptions.margins[2]);
+		margins.setTop(printOptions.margins[1]);
+		margins.setRight(printOptions.margins[2]);
 		margins.setBottom(printOptions.margins[3]);
 		printer.setPageMargins(margins, QPageLayout::Millimeter);
+#else
+		printer.setPageMargins(
+			printOptions.margins[0],
+			printOptions.margins[1],
+			printOptions.margins[2],
+			printOptions.margins[3],
+			QPrinter::Millimeter
+		);
+#endif
 	}
 
 	// create a print layout and pass the printer and options
@@ -108,12 +121,22 @@ void PrintDialog::onFinished()
 	s.setValue("print_selected", printOptions.print_selected);
 	s.setValue("color_selected", printOptions.color_selected);
 	s.setValue("notes_up", printOptions.notes_up);
+#if QT_VERSION >= 0x050300
 	s.setValue("landscape", (bool)printer.pageLayout().orientation());
 	QMarginsF margins = printer.pageLayout().margins(QPageLayout::Millimeter);
 	s.setValue("margin_left", margins.left());
-	s.setValue("margin_right", margins.top());
-	s.setValue("margin_top", margins.right());
+	s.setValue("margin_top", margins.top());
+	s.setValue("margin_right", margins.right());
 	s.setValue("margin_bottom", margins.bottom());
+#else
+	s.setValue("landscape", (bool)printer.orientation());
+	qreal left, top, right, bottom;
+	printer.getPageMargins(&left, &top, &right, &bottom, QPrinter::Millimeter);
+	s.setValue("margin_left", (int)left);
+	s.setValue("margin_top", (int)top);
+	s.setValue("margin_right", (int)right);
+	s.setValue("margin_bottom", (int)bottom);
+#endif
 }
 
 void PrintDialog::previewClicked(void)
