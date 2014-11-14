@@ -1,3 +1,34 @@
+			Subsurface 4.3 Beta 1
+			=====================
+
+Some of the changes since Subsurface 4.2
+
+- Multi filter: filter the dive list by many criteria including tags,
+  people who were on the dive, location, suit, etc
+- Cut and paste support when editing dives: copy selected components
+  of a dive and paste them into one or more other dives. This makes
+  it easy to add the same equipment, buddies, tags or other aspects
+  of a dive into others
+- Tissue saturation visualization
+- Configuration of the OSTC 2 and 3 as well as the Suunto Vyper
+  family of dive computers
+- Support for extra data that can be downloaded from some dive
+  computers, including information like battery levels, no fly times,
+  etc (only as supported by the dive computer)
+- Better visualization of the gases used during a dive ("tank bar")
+- Ability to re-plan dives
+- Import dive logs from Liquivision and Cochran software
+- Import dive logs from the Poseidon Mk6 CCR
+- Many improvements to HTML export
+- Improvements on HiDPI displays
+- Experimental CCR support: (someone explain what does and does not work, please)
+
+Known bugs
+
+- this appears to be a bug in Qt. When changing the password needed
+  authenticate with a proxy, Subsurface will not use the new password
+  until after a restart
+
 			Subsurface 4.2
 			==============
 

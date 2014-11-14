@@ -1,20 +1,20 @@
-This is the README file for Subsurface 4.2
+This is the README file for Subsurface 4.3 Beta 1
 
 Please check the ReleaseNotes.txt for details about new features and
-changes since Subsurface 4.1
+changes since Subsurface 4.2
 
-Report bugs and issues at http://trac.hohndel.org
+Report bugs and issues at http://trac.subsurface-divelog.org
 
 License: GPLv2
 
-Subsurface can be found at http://subsurface.hohndel.org
+Subsurface can be found at http://subsurface-divelog.org
 
 You can get the sources to the latest development version from the git
 repository:
 
-git clone git://subsurface.hohndel.org/subsurface.git .
+git clone git://git.subsurface-divelog.org/subsurface.git .
 
-You can also browse the sources via gitweb at git.hohndel.org
+You can also browse the sources via gitweb at the same site.
 
 If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
@@ -66,8 +66,8 @@ http://subsurface.hohndel.org/documentation/
 Contributing:
 =============
 
-There is a mailing list for developers: subsurface@hohndel.org
-Go to http://lists.hohndel.org/cgi-bin/mailman/listinfo/subsurface
+There is a mailing list for developers: subsurface@subsurface-divelog.org
+Go to http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 to subscribe.
 
 If you want to contribute code, please either send signed-off patches or
