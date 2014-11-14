@@ -20,12 +20,6 @@ DiveEventItem::DiveEventItem(QObject *parent) : DivePixmapItem(parent),
 	internalEvent(NULL)
 {
 	setFlag(ItemIgnoresTransformations);
-	// create a narrow but somewhat tall, basically transparent pixmap
-	// that allows tooltips to work when we don't want to show a specific
-	// pixmap for an event, but want to show the event value in the tooltip
-	// (e.g. if there is heading data in every sample)
-	transparentPixmap = new QPixmap(4, 20);
-	transparentPixmap->fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
 }
 
 
@@ -79,7 +73,13 @@ void DiveEventItem::setupPixmap()
 		// some dive computers have heading in every sample...
 		// set an "almost invisible" pixmap
 		// so we get the tooltip but not the clutter
-		setPixmap(*transparentPixmap);
+		// create a narrow but somewhat tall, basically transparent pixmap
+		// that allows tooltips to work when we don't want to show a specific
+		// pixmap for an event, but want to show the event value in the tooltip
+		// (e.g. if there is heading data in every sample)
+		QPixmap transparentPixmap(4, 20);
+		transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
+		setPixmap(transparentPixmap);
 	} else if (event_is_gaschange(internalEvent)) {
 		if (internalEvent->gas.mix.he.permille)
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
