@@ -29,6 +29,7 @@ private:
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
 	struct event *internalEvent;
+	QPixmap *transparentPixmap;
 };
 
 #endif // DIVEEVENTITEM_H
