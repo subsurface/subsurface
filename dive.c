@@ -434,6 +434,10 @@ void clear_dive(struct dive *d)
 	taglist_free(d->tag_list);
 	STRUCTURED_LIST_FREE(struct divecomputer, d->dc.next, free_dc);
 	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_pic);
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		free((void *)d->cylinder[i].type.description);
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		free((void *)d->weightsystem[i].description);
 	memset(d, 0, sizeof(struct dive));
 }
 
@@ -452,6 +456,10 @@ void copy_dive(struct dive *s, struct dive *d)
 	d->location = copy_string(s->location);
 	d->notes = copy_string(s->notes);
 	d->suit = copy_string(s->suit);
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		d->cylinder[i].type.description = copy_string(s->cylinder[i].type.description);
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);

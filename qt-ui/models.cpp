@@ -632,7 +632,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 				int i = -1;
 				while (ws_info[++i].name) {
 					if (gettextFromC::instance()->tr(ws_info[i].name) == vString) {
-						ws->description = ws_info[i].name;
+						ws->description = copy_string(ws_info[i].name);
 						break;
 					}
 				}

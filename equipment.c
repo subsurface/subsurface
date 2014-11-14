@@ -23,7 +23,7 @@ void add_cylinder_description(cylinder_type_t *type)
 			return;
 	}
 	if (i < 100) {
-		tank_info[i].name = desc;
+		tank_info[i].name = strdup(desc);
 		tank_info[i].ml = type->size.mliter;
 		tank_info[i].bar = type->workingpressure.mbar / 1000;
 	}
@@ -43,7 +43,7 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 		}
 	}
 	if (i < 100) {
-		ws_info[i].name = desc;
+		ws_info[i].name = strdup(desc);
 		ws_info[i].grams = weightsystem->weight.grams;
 	}
 }
