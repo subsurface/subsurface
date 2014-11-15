@@ -1264,10 +1264,10 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"JDiveLog files (*.jlb);;"
 			"Liquivision files (*.lvd);;"
 			"MkVI files (*.txt);;"
-			"Suunto files(*.sde *.db);;"
+			"Suunto files (*.sde *.db);;"
 			"UDDF/UDCF files (*.uddf *.udcf);;"
 			"XML files (*.xml);;"
-			"All files(*)"));
+			"All files (*)"));
 
 	if (fileNames.isEmpty())
 		return;
