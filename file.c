@@ -160,6 +160,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 {
 	sqlite3 *handle;
 	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
+	char dm5_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%SampleBlob%'";
 	char shearwater_test[] = "select count(*) from sqlite_master where type='table' and name='system' and sql like '%dbVersion%'";
 	int retval;
 
@@ -168,6 +169,14 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	if (retval) {
 		fprintf(stderr, translate("gettextFromC", "Database connection failed '%s'.\n"), filename);
 		return 1;
+	}
+
+	/* Testing if DB schema resembles Suunto DM5 database format */
+	retval = sqlite3_exec(handle, dm5_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		sqlite3_close(handle);
+		return retval;
 	}
 
 	/* Testing if DB schema resembles Suunto DM4 database format */

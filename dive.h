@@ -621,6 +621,7 @@ extern void parse_xml_exit(void);
 extern void set_filename(const char *filename, bool force);
 
 extern int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
+extern int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
 extern int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
 
 extern int parse_file(const char *filename);

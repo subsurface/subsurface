@@ -1999,6 +1999,116 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	return SQLITE_OK;
 }
 
+extern int dm5_dive(void *param, int columns, char **data, char **column)
+{
+	int i, interval, retval = 0;
+	sqlite3 *handle = (sqlite3 *)param;
+	float *profileBlob;
+	unsigned char *tempBlob;
+	int *pressureBlob;
+	unsigned const char *sampleBlob;
+	char *err = NULL;
+	char get_events_template[] = "select * from Mark where DiveId = %d";
+	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
+	char get_events[64];
+
+	dive_start();
+	cur_dive->number = atoi(data[0]);
+
+	cur_dive->when = (time_t)(atol(data[1]));
+	if (data[2])
+		utf8_string(data[2], &cur_dive->notes);
+
+	if (data[3])
+		cur_dive->duration.seconds = atoi(data[3]);
+	if (data[15])
+		cur_dive->dc.duration.seconds = atoi(data[15]);
+
+	/*
+	 * TODO: the deviceid hash should be calculated here.
+	 */
+	settings_start();
+	dc_settings_start();
+	if (data[4])
+		utf8_string(data[4], &cur_settings.dc.serial_nr);
+	if (data[5])
+		utf8_string(data[5], &cur_settings.dc.model);
+
+	cur_settings.dc.deviceid = 0xffffffff;
+	dc_settings_end();
+	settings_end();
+
+	if (data[6])
+		cur_dive->dc.maxdepth.mm = atof(data[6]) * 1000;
+	if (data[8])
+		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
+	if (data[9])
+		cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
+
+	/*
+	 * TODO: handle multiple cylinders
+	 */
+	cylinder_start();
+	if (data[22] && atoi(data[22]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[22]);
+	else if (data[10] && atoi(data[10]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[10]);
+	if (data[23] && atoi(data[23]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[23]));
+	if (data[11] && atoi(data[11]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
+	if (data[12])
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[12])) * 1000;
+	if (data[13])
+		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
+	if (data[20])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[20]) * 10;
+	if (data[21])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[21]) * 10;
+	cylinder_end();
+
+	if (data[14])
+		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
+
+	interval = data[16] ? atoi(data[16]) : 0;
+	profileBlob = (float *)(data[17] + 3);
+	tempBlob = (unsigned char *)(data[17] + 10);
+	pressureBlob = (int *)(data[17] + 7);
+	sampleBlob = (unsigned const char *)data[17];
+	for (i = 0; interval && i * interval < cur_dive->duration.seconds; i++) {
+		float *depth = (float *)&sampleBlob[i * 16 + 3];
+
+		int32_t temp = (sampleBlob[i * 16 + 10] << 8) + sampleBlob[i * 16 + 11];
+		int32_t pressure = (sampleBlob[i * 16 + 9] << 16) + (sampleBlob[i * 16 + 8] << 8) + sampleBlob[i * 16 + 7];
+
+		sample_start();
+		cur_sample->time.seconds = i * interval;
+		cur_sample->depth.mm = depth[0] * 1000;
+		cur_sample->temperature.mkelvin = C_to_mkelvin(temp);
+		cur_sample->cylinderpressure.mbar = pressure;
+		sample_end();
+	}
+
+	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_events failed.\n"));
+		return 1;
+	}
+
+	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_tags failed.\n"));
+		return 1;
+	}
+
+	dive_end();
+
+	return SQLITE_OK;
+}
+
+
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 		     struct dive_table *table)
 {
@@ -2011,6 +2121,27 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
+
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		return 1;
+	}
+
+	return 0;
+}
+
+int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
+		     struct dive_table *table)
+{
+	int retval;
+	char *err = NULL;
+	target_table = table;
+
+	/* StartTime is converted from Suunto's nano seconds to standard
+	 * time. We also need epoch, not seconds since year 1. */
+	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,SampleBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+
+	retval = sqlite3_exec(handle, get_dives, &dm5_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
