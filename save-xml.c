@@ -177,8 +177,8 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_pressure(b, cylinder->type.workingpressure, " workpressure='", " bar'");
 		show_utf8(b, description, " description='", "'", 1);
 		put_gasmix(b, &cylinder->gasmix);
-		put_pressure(b, cylinder->start.mbar ? cylinder->start : cylinder->sample_start, " start='", " bar'");
-		put_pressure(b, cylinder->end.mbar ? cylinder->end : cylinder->sample_end, " end='", " bar'");
+		put_pressure(b, cylinder->start, " start='", " bar'");
+		put_pressure(b, cylinder->end, " end='", " bar'");
 		put_format(b, " />\n");
 	}
 }
