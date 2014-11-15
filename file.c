@@ -423,9 +423,14 @@ char *parse_mkvi_value(const char *haystack, const char *needle)
 			valueptr += 2;
 		}
 		if ((endptr = strstr(lineptr, "\n")) != NULL) {
+			char terminator = '\n';
+			if (*(endptr - 1) == '\r') {
+				--endptr;
+				terminator = '\r';
+			}
 			*endptr = 0;
 			ret = strdup(valueptr);
-			*endptr = '\n';
+			*endptr = terminator;
 
 		}
 	}
