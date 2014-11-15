@@ -1090,18 +1090,18 @@ el ordenador de buceo seleccionado?</translation>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="112"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="121"/>
         <source>Bailing out to OC</source>
         <translation>Cambio de emergencia a OC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="114"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="123"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation>comienzo</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="115"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="124"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation>fin</translation>
@@ -1733,7 +1733,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="220"/>
         <source> kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation> kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -2462,7 +2462,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="964"/>
         <source>Additional data from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Datos adicionales del ordenador de buceo</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="305"/>
@@ -2968,7 +2968,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
         <source>&amp;Filter divelist</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Filtrar la lista de inmersiones</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="858"/>
@@ -3186,11 +3186,6 @@ p, li { white-space: pre-wrap; }
         <translation>Abrir archivo de registro de inmersiones</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
-        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
-        <translation>Archivos de diarios (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Archivos de Cochran (*.can);;Archivos CSV (*.csv);;Archivos de DiveLog.de  (*.dld);;Archivos de JDiveLog(*.jlb);;Archivos de Liquivision (*.lvd);;Archivos de MkVI (*.txt);;Archivos de Suunto (*.sde *.db);;Archivos UDDF/UDCF (*.uddf *.udcf);;Archivos XML (*.xml);;Todos los archivos (*)</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="769"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Se perderán los cambios si no los guarda.</translation>
@@ -3214,6 +3209,11 @@ p, li { white-space: pre-wrap; }
         <translation>Archivos XML de Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
+        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1299"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Por favor, termina la edición actual antes de intentar hacer otra.</translation>
@@ -3224,7 +3224,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="580"/>
         <source>Reset the filters</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar los filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="584"/>
@@ -3683,17 +3683,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrintDialog</name>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="48"/>
+        <location filename="../qt-ui/printdialog.cpp" line="91"/>
         <source>&amp;Preview</source>
         <translation>&amp;Previsualizar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="45"/>
+        <location filename="../qt-ui/printdialog.cpp" line="88"/>
         <source>P&amp;rint</source>
         <translation>Imp&amp;rimir</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="60"/>
+        <location filename="../qt-ui/printdialog.cpp" line="103"/>
         <source>Print</source>
         <translation>Imprimir</translation>
     </message>
@@ -3878,6 +3878,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="588"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
+        <source>Show NDL / TTS was disabled because of excessive processing time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
@@ -4294,7 +4299,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="541"/>
         <source>Suits: </source>
-        <translation type="unfinished"/>
+        <translation>Trajes:</translation>
     </message>
 </context>
 <context>
@@ -4302,7 +4307,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="136"/>
         <source>No suit set</source>
-        <translation type="unfinished"/>
+        <translation>Sin traje definido</translation>
     </message>
 </context>
 <context>
@@ -4827,7 +4832,7 @@ Media</translation>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1432"/>
+        <location filename="../dive.c" line="1440"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) o (%s)</translation>
     </message>
@@ -4867,25 +4872,25 @@ Media</translation>
     <message>
         <location filename="../file.c" line="109"/>
         <location filename="../file.c" line="398"/>
-        <location filename="../file.c" line="456"/>
-        <location filename="../file.c" line="773"/>
+        <location filename="../file.c" line="461"/>
+        <location filename="../file.c" line="778"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>No se pudo leer «%s»</translation>
     </message>
     <message>
-        <location filename="../file.c" line="550"/>
+        <location filename="../file.c" line="555"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Importación de Poseidon ha fallado: imposible leer &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="643"/>
+        <location filename="../file.c" line="648"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>No se ha encontrado concordancia con ningún DC para el archivo &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="726"/>
-        <location filename="../file.c" line="765"/>
-        <location filename="../file.c" line="853"/>
+        <location filename="../file.c" line="731"/>
+        <location filename="../file.c" line="770"/>
+        <location filename="../file.c" line="858"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>El máximo número de columnas que soporta importar CSV es %d</translation>
     </message>
@@ -5151,7 +5156,7 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="853"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Privilegios insuficientes para abrir el dispositivo %s %s (%s)</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="481"/>

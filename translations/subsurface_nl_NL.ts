@@ -1089,18 +1089,18 @@ duikcomputer wilt verwijderen?</translation>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="112"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="121"/>
         <source>Bailing out to OC</source>
         <translation>Schakel om naar OC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="114"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="123"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> begin</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="115"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="124"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> eind</translation>
@@ -2967,7 +2967,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
         <source>&amp;Filter divelist</source>
-        <translation type="unfinished"/>
+        <translation>Duiklijst filteren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="858"/>
@@ -3185,11 +3185,6 @@ p, li { white-space: pre-wrap; }
         <translation>Open duiklogboek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
-        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
-        <translation>Logboek bestanden (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran bestanden (*.can);;CSV bestanden (*.csv);;DiveLog.de bestanden (*.dld);;JDiveLog bestanden (*.jlb);;Liquivision bestanden (*.lvd);;MkVI bestanden (*.txt);;Suunto bestanden (*.sde *.db);;UDDF/UDCF bestanden (*.uddf *.udcf);;XML bestanden (*.xml);;Alle bestanden (*)</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="769"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Wijzigingen gaan verloren als u deze niet bewaart.</translation>
@@ -3213,6 +3208,11 @@ p, li { white-space: pre-wrap; }
         <translation>Subsurface XML bestanden (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
+        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1299"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Rond de huidige wijziging af vooraleer een volgende te beginnen.</translation>
@@ -3223,7 +3223,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="580"/>
         <source>Reset the filters</source>
-        <translation type="unfinished"/>
+        <translation>Filters terugzetten</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="584"/>
@@ -3682,17 +3682,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrintDialog</name>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="48"/>
+        <location filename="../qt-ui/printdialog.cpp" line="91"/>
         <source>&amp;Preview</source>
         <translation>Voorbeeldweergave</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="45"/>
+        <location filename="../qt-ui/printdialog.cpp" line="88"/>
         <source>P&amp;rint</source>
         <translation>Afd&amp;rukken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="60"/>
+        <location filename="../qt-ui/printdialog.cpp" line="103"/>
         <source>Print</source>
         <translation>Afdrukken</translation>
     </message>
@@ -3877,6 +3877,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="588"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 van %2)</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
+        <source>Show NDL / TTS was disabled because of excessive processing time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
@@ -4293,7 +4298,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="541"/>
         <source>Suits: </source>
-        <translation type="unfinished"/>
+        <translation>Duikpakken:</translation>
     </message>
 </context>
 <context>
@@ -4301,7 +4306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="136"/>
         <source>No suit set</source>
-        <translation type="unfinished"/>
+        <translation>Geen duikpak geselecteerd</translation>
     </message>
 </context>
 <context>
@@ -4826,7 +4831,7 @@ Maximum</translation>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1432"/>
+        <location filename="../dive.c" line="1440"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) of (%s)</translation>
     </message>
@@ -4866,25 +4871,25 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="109"/>
         <location filename="../file.c" line="398"/>
-        <location filename="../file.c" line="456"/>
-        <location filename="../file.c" line="773"/>
+        <location filename="../file.c" line="461"/>
+        <location filename="../file.c" line="778"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Fout bij lezen van &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="550"/>
+        <location filename="../file.c" line="555"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Poseidon import mislukt: kan &apos;%s&apos; niet lezen</translation>
     </message>
     <message>
-        <location filename="../file.c" line="643"/>
+        <location filename="../file.c" line="648"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>Geen duikcomputer gevonden voor bestand &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="726"/>
-        <location filename="../file.c" line="765"/>
-        <location filename="../file.c" line="853"/>
+        <location filename="../file.c" line="731"/>
+        <location filename="../file.c" line="770"/>
+        <location filename="../file.c" line="858"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>Het maximum aantal kolommen bij CSV importeren is %d</translation>
     </message>

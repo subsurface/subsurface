@@ -774,12 +774,12 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1539"/>
         <source>Imperial</source>
-        <translation>Imperialny</translation>
+        <translation>Imperialne</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1544"/>
         <source>Metric</source>
-        <translation>Metryczny</translation>
+        <translation>Metryczne</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1555"/>
@@ -789,7 +789,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1562"/>
         <source>Light</source>
-        <translation>Światło</translation>
+        <translation>Podświetlenie</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1579"/>
@@ -1089,18 +1089,18 @@ wybrany komputer nurkowy?</translation>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="112"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="121"/>
         <source>Bailing out to OC</source>
         <translation>Przejście na obieg otwarty</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="114"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="123"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> początek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="115"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="124"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> koniec</translation>
@@ -2968,7 +2968,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="843"/>
         <source>&amp;Filter divelist</source>
-        <translation type="unfinished"/>
+        <translation>Filtrowanie nurkowań</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="858"/>
@@ -3186,11 +3186,6 @@ p, li { white-space: pre-wrap; }
         <translation>Otwórz plik z logiem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
-        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
-        <translation>Logi nurkowe (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml);;Pliki Cochran (*.can);;Pliki CSV (*.csv);;Pliki DiveLog.de (*.dld);;Pliki JDiveLog (*.jlb);;Pliki Liquivision (*.lvd);;Pliki MkVI (*.txt);;Pliki Suunto (*.sde *.db);;Pliki UDDF/UDCF (*.uddf *.udcf);;Pliki XML (*.xml);;Wszystkie pliki (*)</translation>
-    </message>
-    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="769"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Zmiany zostaną utracone jeśli ich nie za zapiszesz.</translation>
@@ -3214,6 +3209,11 @@ p, li { white-space: pre-wrap; }
         <translation>Pliki Subsurface XML  (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
+        <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files(*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files(*)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1299"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Proszę dokończyć edycję tego nurkowania przed rozpoczęciem kolejnej. </translation>
@@ -3224,7 +3224,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="580"/>
         <source>Reset the filters</source>
-        <translation type="unfinished"/>
+        <translation>Wyczyść filtrowanie</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="584"/>
@@ -3683,17 +3683,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrintDialog</name>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="48"/>
+        <location filename="../qt-ui/printdialog.cpp" line="91"/>
         <source>&amp;Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="45"/>
+        <location filename="../qt-ui/printdialog.cpp" line="88"/>
         <source>P&amp;rint</source>
         <translation>Drukuj</translation>
     </message>
     <message>
-        <location filename="../qt-ui/printdialog.cpp" line="60"/>
+        <location filename="../qt-ui/printdialog.cpp" line="103"/>
         <source>Print</source>
         <translation>Drukuj</translation>
     </message>
@@ -3878,6 +3878,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="588"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
+        <source>Show NDL / TTS was disabled because of excessive processing time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
@@ -4294,7 +4299,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="541"/>
         <source>Suits: </source>
-        <translation type="unfinished"/>
+        <translation>Skafandry:</translation>
     </message>
 </context>
 <context>
@@ -4302,7 +4307,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="136"/>
         <source>No suit set</source>
-        <translation type="unfinished"/>
+        <translation>nieznany</translation>
     </message>
 </context>
 <context>
@@ -4822,7 +4827,7 @@ Maximum</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1432"/>
+        <location filename="../dive.c" line="1440"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) lub (%s)</translation>
     </message>
@@ -4862,25 +4867,25 @@ Maximum</source>
     <message>
         <location filename="../file.c" line="109"/>
         <location filename="../file.c" line="398"/>
-        <location filename="../file.c" line="456"/>
-        <location filename="../file.c" line="773"/>
+        <location filename="../file.c" line="461"/>
+        <location filename="../file.c" line="778"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Błąd odczytu &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="550"/>
+        <location filename="../file.c" line="555"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Błąd importu: nie można odczytać &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="643"/>
+        <location filename="../file.c" line="648"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>Nie znaleziono komputera nurkowego pasującego do pliku &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="726"/>
-        <location filename="../file.c" line="765"/>
-        <location filename="../file.c" line="853"/>
+        <location filename="../file.c" line="731"/>
+        <location filename="../file.c" line="770"/>
+        <location filename="../file.c" line="858"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>Maksymalna ilość kolumn danych przy imporcie CSV to %d</translation>
     </message>
