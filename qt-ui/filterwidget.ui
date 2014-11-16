@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string></string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -69,8 +69,8 @@
      </item>
      <item>
       <widget class="QToolButton" name="clear">
-       <property name="text">
-        <string>...</string>
+       <property name="toolTip">
+	<string>Reset filters</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
@@ -83,8 +83,8 @@
      </item>
      <item>
       <widget class="QToolButton" name="maximize">
-       <property name="text">
-        <string>...</string>
+       <property name="toolTip">
+	<string>Show/hide filters</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
@@ -97,8 +97,8 @@
      </item>
      <item>
       <widget class="QToolButton" name="close">
-       <property name="text">
-        <string>...</string>
+       <property name="toolTip">
+        <string>Close and reset filters</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
