@@ -81,14 +81,6 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 		return true;
 	}
 
-	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
-			if (filterRow(i, index0, sourceModel))
-				return true;
-		}
-		return false;
-	}
-
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString suit(d->suit);
 	// only show empty suit dives if the user checked that.
@@ -110,15 +102,6 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 		}
 	}
 	return false;
-}
-
-bool SuitsFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
-{
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
-	return doFilter(d, index0, sourceModel);
 }
 
 void SuitsFilterModel::repopulate()
@@ -172,13 +155,6 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 	if (!anyChecked) {
 		return true;
 	}
-	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
-			if (filterRow(i, index0, sourceModel))
-				return true;
-		}
-		return false;
-	}
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
@@ -204,17 +180,6 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 	return false;
 }
 
-bool TagFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
-{
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
-	bool show = doFilter(d, index0, sourceModel);
-	filter_dive(d, show);
-	return show;
-}
-
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
 {
 }
@@ -225,14 +190,6 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	if (!anyChecked) {
 		return true;
 	}
-	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
-			if (filterRow(i, index0, sourceModel))
-				return true;
-		}
-		return false;
-	}
-
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString diveBuddy(d->buddy);
 	QString divemaster(d->divemaster);
@@ -255,15 +212,6 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 		}
 	}
 	return false;
-}
-
-bool BuddyFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
-{
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
-	return doFilter(d, index0, sourceModel);
 }
 
 void BuddyFilterModel::repopulate()
@@ -299,15 +247,6 @@ bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstrac
 	if (!anyChecked) {
 		return true;
 	}
-
-	if (!d) { // It's a trip, only show the ones that have dives to be shown.
-		for (int i = 0; i < sourceModel->rowCount(index0); i++) {
-			if (filterRow(i, index0, sourceModel))
-				return true;
-		}
-		return false;
-	}
-
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString location(d->location);
 	// only show empty location dives if the user checked that.
@@ -329,15 +268,6 @@ bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstrac
 		}
 	}
 	return false;
-}
-
-bool LocationFilterModel::filterRow(int source_row, const QModelIndex &source_parent, QAbstractItemModel *sourceModel) const
-{
-	QModelIndex index0 = sourceModel->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
-	return doFilter(d, index0, sourceModel);
 }
 
 void LocationFilterModel::repopulate()
@@ -375,6 +305,14 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
+	if (!d) { // It's a trip, only show the ones that have dives to be shown.
+		bool showTrip = false;
+		for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
+			if (filterAcceptsRow(i, index0))
+				showTrip = true; // do not shortcircuit the loop or the counts will be wrong
+		}
+		return showTrip;
+	}
 	Q_FOREACH (MultiFilterInterface *model, models) {
 		if (!model->doFilter(d, index0, sourceModel()))
 			shouldShow = false;
