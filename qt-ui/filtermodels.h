@@ -88,7 +88,6 @@ public:
 	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 	void addFilterModel(MultiFilterInterface *model);
 	void removeFilterModel(MultiFilterInterface *model);
-	int divesFilteredOut;
 	int divesDisplayed;
 public
 slots:

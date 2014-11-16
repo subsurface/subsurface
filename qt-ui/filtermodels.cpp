@@ -329,7 +329,6 @@ void MultiFilterSortModel::myInvalidate()
 	DiveListView *dlv = MainWindow::instance()->dive_list();
 
 	divesDisplayed = 0;
-	divesFilteredOut = 0;
 
 	invalidate();
 
@@ -356,9 +355,7 @@ void MultiFilterSortModel::myInvalidate()
 	}
 
 	for_each_dive (i,d) {
-		if (d->hidden_by_filter)
-			divesFilteredOut++;
-		else
+		if (!d->hidden_by_filter)
 			divesDisplayed++;
 	}
 
