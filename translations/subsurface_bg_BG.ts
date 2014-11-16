@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="bg_BG">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="bg_BG" version="2.0">
 <defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="490"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="491"/>
         <source>Person: </source>
         <translation>Лице:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="491"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="492"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Търсене за партньори и водачи</translation>
     </message>
@@ -18,7 +16,7 @@
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="284"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="232"/>
         <source>No buddies</source>
         <translation>Няма партньори</translation>
     </message>
@@ -1068,22 +1066,22 @@
 <context>
     <name>DiveComputerModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1588"/>
+        <location filename="../qt-ui/models.cpp" line="1598"/>
         <source>Model</source>
         <translation>Модел</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1588"/>
+        <location filename="../qt-ui/models.cpp" line="1598"/>
         <source>Device ID</source>
         <translation>Име на устройство</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1588"/>
+        <location filename="../qt-ui/models.cpp" line="1598"/>
         <source>Nickname</source>
         <translation>Прякор</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1624"/>
+        <location filename="../qt-ui/models.cpp" line="1634"/>
         <source>Clicking here will remove this dive computer.</source>
         <translation>Кликнете тук за да изтриете този гмуркачески компютър.</translation>
     </message>
@@ -1111,97 +1109,97 @@
 <context>
     <name>DiveItem</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1220"/>
+        <location filename="../qt-ui/models.cpp" line="1230"/>
         <source>#</source>
         <translation>№</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1223"/>
+        <location filename="../qt-ui/models.cpp" line="1233"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1226"/>
+        <location filename="../qt-ui/models.cpp" line="1236"/>
         <source>Rating</source>
         <translation>Оценка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1229"/>
+        <location filename="../qt-ui/models.cpp" line="1239"/>
         <source>Depth(%1)</source>
         <translation>Дълбочина(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1229"/>
+        <location filename="../qt-ui/models.cpp" line="1239"/>
         <source>m</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1229"/>
+        <location filename="../qt-ui/models.cpp" line="1239"/>
         <source>ft</source>
         <translation>фута</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1232"/>
+        <location filename="../qt-ui/models.cpp" line="1242"/>
         <source>Duration</source>
         <translation>Продълж. (мин.)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1235"/>
+        <location filename="../qt-ui/models.cpp" line="1245"/>
         <source>Temp(%1%2)</source>
         <translation>Температура(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1238"/>
+        <location filename="../qt-ui/models.cpp" line="1248"/>
         <source>Weight(%1)</source>
         <translation>Тежест(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1238"/>
+        <location filename="../qt-ui/models.cpp" line="1248"/>
         <source>kg</source>
         <translation>кг</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1238"/>
+        <location filename="../qt-ui/models.cpp" line="1248"/>
         <source>lbs</source>
         <translation>паунда</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1241"/>
+        <location filename="../qt-ui/models.cpp" line="1251"/>
         <source>Suit</source>
         <translation>Водолазен костюм</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1244"/>
+        <location filename="../qt-ui/models.cpp" line="1254"/>
         <source>Cyl</source>
         <translation>Бут.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1247"/>
+        <location filename="../qt-ui/models.cpp" line="1257"/>
         <source>Gas</source>
         <translation>Газ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1252"/>
+        <location filename="../qt-ui/models.cpp" line="1262"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1252"/>
+        <location filename="../qt-ui/models.cpp" line="1262"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1255"/>
+        <location filename="../qt-ui/models.cpp" line="1265"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1258"/>
+        <location filename="../qt-ui/models.cpp" line="1268"/>
         <source>Max CNS</source>
         <translation>Макс. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1261"/>
+        <location filename="../qt-ui/models.cpp" line="1271"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
@@ -1927,127 +1925,127 @@
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1415"/>
-        <location filename="../qt-ui/models.cpp" line="1461"/>
+        <location filename="../qt-ui/models.cpp" line="1425"/>
+        <location filename="../qt-ui/models.cpp" line="1471"/>
         <source>#</source>
         <translation>№</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1418"/>
-        <location filename="../qt-ui/models.cpp" line="1464"/>
+        <location filename="../qt-ui/models.cpp" line="1428"/>
+        <location filename="../qt-ui/models.cpp" line="1474"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1421"/>
-        <location filename="../qt-ui/models.cpp" line="1467"/>
+        <location filename="../qt-ui/models.cpp" line="1431"/>
+        <location filename="../qt-ui/models.cpp" line="1477"/>
         <source>Rating</source>
         <translation>Оценка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1424"/>
+        <location filename="../qt-ui/models.cpp" line="1434"/>
         <source>Depth</source>
         <translation>Дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1430"/>
+        <location filename="../qt-ui/models.cpp" line="1440"/>
         <source>Temp</source>
         <translation>Температура</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1433"/>
+        <location filename="../qt-ui/models.cpp" line="1443"/>
         <source>Weight</source>
         <translation>Тежест</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1445"/>
+        <location filename="../qt-ui/models.cpp" line="1455"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1470"/>
+        <location filename="../qt-ui/models.cpp" line="1480"/>
         <source>m</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1470"/>
+        <location filename="../qt-ui/models.cpp" line="1480"/>
         <source>ft</source>
         <translation>фута</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1479"/>
+        <location filename="../qt-ui/models.cpp" line="1489"/>
         <source>Weight(%1)</source>
         <translation>Тежест(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1436"/>
-        <location filename="../qt-ui/models.cpp" line="1482"/>
+        <location filename="../qt-ui/models.cpp" line="1446"/>
+        <location filename="../qt-ui/models.cpp" line="1492"/>
         <source>Suit</source>
         <translation>Водолазен костюм</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1439"/>
-        <location filename="../qt-ui/models.cpp" line="1485"/>
+        <location filename="../qt-ui/models.cpp" line="1449"/>
+        <location filename="../qt-ui/models.cpp" line="1495"/>
         <source>Cyl</source>
         <translation>Бут.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1442"/>
-        <location filename="../qt-ui/models.cpp" line="1488"/>
+        <location filename="../qt-ui/models.cpp" line="1452"/>
+        <location filename="../qt-ui/models.cpp" line="1498"/>
         <source>Gas</source>
         <translation>Газ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1493"/>
+        <location filename="../qt-ui/models.cpp" line="1503"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1493"/>
+        <location filename="../qt-ui/models.cpp" line="1503"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1451"/>
-        <location filename="../qt-ui/models.cpp" line="1499"/>
+        <location filename="../qt-ui/models.cpp" line="1461"/>
+        <location filename="../qt-ui/models.cpp" line="1509"/>
         <source>Max CNS</source>
         <translation>Макс. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1454"/>
-        <location filename="../qt-ui/models.cpp" line="1502"/>
+        <location filename="../qt-ui/models.cpp" line="1464"/>
+        <location filename="../qt-ui/models.cpp" line="1512"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1479"/>
+        <location filename="../qt-ui/models.cpp" line="1489"/>
         <source>kg</source>
         <translation>кг</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1470"/>
+        <location filename="../qt-ui/models.cpp" line="1480"/>
         <source>Depth(%1)</source>
         <translation>Дълбочина(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1427"/>
-        <location filename="../qt-ui/models.cpp" line="1473"/>
+        <location filename="../qt-ui/models.cpp" line="1437"/>
+        <location filename="../qt-ui/models.cpp" line="1483"/>
         <source>Duration</source>
         <translation>Продълж. (мин.)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1476"/>
+        <location filename="../qt-ui/models.cpp" line="1486"/>
         <source>Temp(%1%2)</source>
         <translation>Температура(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1479"/>
+        <location filename="../qt-ui/models.cpp" line="1489"/>
         <source>lbs</source>
         <translation>паунда</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1448"/>
-        <location filename="../qt-ui/models.cpp" line="1496"/>
+        <location filename="../qt-ui/models.cpp" line="1458"/>
+        <location filename="../qt-ui/models.cpp" line="1506"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
@@ -2271,12 +2269,12 @@
 <context>
     <name>ExtraDataModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2258"/>
+        <location filename="../qt-ui/models.cpp" line="2268"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2258"/>
+        <location filename="../qt-ui/models.cpp" line="2268"/>
         <source>Value</source>
         <translation>Стойност</translation>
     </message>
@@ -2297,6 +2295,24 @@
         <location filename="../qt-ui/listfilter.ui" line="32"/>
         <source>Filter this list</source>
         <translation>Филтрирай списъка</translation>
+    </message>
+</context>
+<context>
+    <name>FilterWidget2</name>
+    <message>
+        <location filename="../qt-ui/filterwidget.ui" line="73"/>
+        <source>Reset filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/filterwidget.ui" line="87"/>
+        <source>Show/hide filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/filterwidget.ui" line="101"/>
+        <source>Close and reset filters</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2328,7 +2344,7 @@
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="516"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="517"/>
         <source>Location: </source>
         <translation>Местонахождение:</translation>
     </message>
@@ -2336,7 +2352,7 @@
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="355"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="285"/>
         <source>No location set</source>
         <translation>Няма зададено местонахождение</translation>
     </message>
@@ -2743,7 +2759,7 @@ mixed from Air and using:
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Courier&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -3189,7 +3205,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Регистър файлове (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran файлове (*.can);;CSV файлове (*.csv);;DiveLog.de файлове (*.dld);;JDiveLog файлове (*.jlb);;Liquivision файлове (*.lvd);;MkVI файлове (*.txt);;Suunto файлове (*.sde *.db);;UDDF/UDCF файлове (*.uddf *.udcf);;XML файлове (*.xml);;Всички файлове (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="769"/>
@@ -3223,19 +3239,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="580"/>
-        <source>Reset the filters</source>
-        <translation>Изчисти филтрите</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="584"/>
-        <source>Close this window and reset the filters</source>
-        <translation>Затвори прозореца и изчисти филтрите</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="588"/>
-        <source>Minimize this window</source>
-        <translation>Минимизирай прозореца</translation>
+        <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
+        <source>Filter shows %1 (of %2) dives</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3803,72 +3809,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProfilePrintModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2073"/>
+        <location filename="../qt-ui/models.cpp" line="2083"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2078"/>
+        <location filename="../qt-ui/models.cpp" line="2088"/>
         <source>Dive #%1 - %2</source>
         <translation>Гмуркане №%1 - %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2081"/>
+        <location filename="../qt-ui/models.cpp" line="2091"/>
         <source>Max depth: %1 %2</source>
         <translation>Макс. дълбочина: %1 %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2088"/>
+        <location filename="../qt-ui/models.cpp" line="2098"/>
         <source>Duration: %1 min</source>
         <translation>Времетраене: %1 мин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2093"/>
+        <location filename="../qt-ui/models.cpp" line="2103"/>
         <source>Gas used:</source>
         <translation>Използван газ:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2095"/>
+        <location filename="../qt-ui/models.cpp" line="2105"/>
         <source>Tags:</source>
         <translation>Тагове:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2097"/>
+        <location filename="../qt-ui/models.cpp" line="2107"/>
         <source>SAC:</source>
         <translation>SAC:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2099"/>
+        <location filename="../qt-ui/models.cpp" line="2109"/>
         <source>Weights:</source>
         <translation>Тежести:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2104"/>
+        <location filename="../qt-ui/models.cpp" line="2114"/>
         <source>Notes:</source>
         <translation>Бележки:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2111"/>
+        <location filename="../qt-ui/models.cpp" line="2121"/>
         <source>Divemaster:</source>
         <translation>Водач:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2113"/>
+        <location filename="../qt-ui/models.cpp" line="2123"/>
         <source>Buddy:</source>
         <translation>Партньор:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2115"/>
+        <location filename="../qt-ui/models.cpp" line="2125"/>
         <source>Suit:</source>
         <translation>Водолазен костюм:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2117"/>
+        <location filename="../qt-ui/models.cpp" line="2127"/>
         <source>Viz:</source>
         <translation>Видимост:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2119"/>
+        <location filename="../qt-ui/models.cpp" line="2129"/>
         <source>Rating:</source>
         <translation>Оценка:</translation>
     </message>
@@ -3883,7 +3889,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation type="unfinished"></translation>
+        <translation>Показването на NDL / TTS бе изключено поради прекалено дълго време за обработка на данните</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
@@ -3984,17 +3990,17 @@ p, li { white-space: pre-wrap; }
         <translation>Затвори</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="31"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="32"/>
         <source>Average</source>
         <translation>Средно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="34"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="35"/>
         <source>Minimum</source>
         <translation>Минимум</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="37"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="38"/>
         <source>Maximum</source>
         <translation>Максимум</translation>
     </message>
@@ -4086,12 +4092,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
-        <location filename="../qt-ui/simplewidgets.cpp" line="132"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="133"/>
         <source>New starting number</source>
         <translation>Нов стартов номер</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="130"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="131"/>
         <source>New number</source>
         <translation>Нов номер</translation>
     </message>
@@ -4165,12 +4171,12 @@ p, li { white-space: pre-wrap; }
         <translation>Коя дата и час са показани на снимката?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="228"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="229"/>
         <source>Open image file</source>
         <translation>Отвори изображения</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="230"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="231"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation>Изображения (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
@@ -4298,7 +4304,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="541"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="542"/>
         <source>Suits: </source>
         <translation>Костюми:</translation>
     </message>
@@ -4306,7 +4312,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SuitsFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="136"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="119"/>
         <source>No suit set</source>
         <translation>Няма избран костюм</translation>
     </message>
@@ -4328,7 +4334,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="465"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="466"/>
         <source>Tags: </source>
         <translation>Тагове:</translation>
     </message>
@@ -4336,7 +4342,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="160"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="143"/>
         <source>Empty Tags</source>
         <translation>Празни тагове</translation>
     </message>
@@ -4365,6 +4371,14 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/profile/divetooltipitem.cpp" line="141"/>
         <source>Information</source>
         <translation>Информация</translation>
+    </message>
+</context>
+<context>
+    <name>TripItem</name>
+    <message>
+        <location filename="../qt-ui/models.cpp" line="1080"/>
+        <source> (%1 shown)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4680,79 +4694,79 @@ OS CPU архитектура %1</translation>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1819"/>
+        <location filename="../qt-ui/models.cpp" line="1829"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>Година
  &gt; Месец / Пътуване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1822"/>
+        <location filename="../qt-ui/models.cpp" line="1832"/>
         <source>#</source>
         <translation>№</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1825"/>
+        <location filename="../qt-ui/models.cpp" line="1835"/>
         <source>Duration 
  Total</source>
         <translation>Продължителност
 Общо</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1828"/>
+        <location filename="../qt-ui/models.cpp" line="1838"/>
         <source>
 Average</source>
         <translation>
 Средно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1831"/>
+        <location filename="../qt-ui/models.cpp" line="1841"/>
         <source>
 Shortest</source>
         <translation>
 Най-късо</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1834"/>
+        <location filename="../qt-ui/models.cpp" line="1844"/>
         <source>
 Longest</source>
         <translation>
 Най-дълго</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1837"/>
+        <location filename="../qt-ui/models.cpp" line="1847"/>
         <source>Depth (%1)
  Average</source>
         <translation>Дълбочина (%1)
 Средно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1840"/>
-        <location filename="../qt-ui/models.cpp" line="1849"/>
-        <location filename="../qt-ui/models.cpp" line="1858"/>
+        <location filename="../qt-ui/models.cpp" line="1850"/>
+        <location filename="../qt-ui/models.cpp" line="1859"/>
+        <location filename="../qt-ui/models.cpp" line="1868"/>
         <source>
 Minimum</source>
         <translation>
 Минимум</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1843"/>
-        <location filename="../qt-ui/models.cpp" line="1852"/>
-        <location filename="../qt-ui/models.cpp" line="1861"/>
+        <location filename="../qt-ui/models.cpp" line="1853"/>
+        <location filename="../qt-ui/models.cpp" line="1862"/>
+        <location filename="../qt-ui/models.cpp" line="1871"/>
         <source>
 Maximum</source>
         <translation>
 Максимум</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1846"/>
+        <location filename="../qt-ui/models.cpp" line="1856"/>
         <source>SAC (%1)
  Average</source>
         <translation>SAC (%1)
 Средно</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1855"/>
+        <location filename="../qt-ui/models.cpp" line="1865"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Темп. (%1)
@@ -4872,26 +4886,26 @@ Maximum</source>
     </message>
     <message>
         <location filename="../file.c" line="109"/>
-        <location filename="../file.c" line="398"/>
-        <location filename="../file.c" line="461"/>
-        <location filename="../file.c" line="778"/>
+        <location filename="../file.c" line="407"/>
+        <location filename="../file.c" line="470"/>
+        <location filename="../file.c" line="787"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Не може да бъде прочетен &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="555"/>
+        <location filename="../file.c" line="564"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Проблем при Poseidon импорт: не може да бъде прочетен &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="648"/>
+        <location filename="../file.c" line="657"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>Няма подходящ Л.К. за файла &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="731"/>
-        <location filename="../file.c" line="770"/>
-        <location filename="../file.c" line="858"/>
+        <location filename="../file.c" line="740"/>
+        <location filename="../file.c" line="779"/>
+        <location filename="../file.c" line="867"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>Максималният потдържан брой на CSV колони е %d</translation>
     </message>
@@ -5173,6 +5187,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1975"/>
+        <location filename="../parse-xml.c" line="2095"/>
         <source>Database query get_events failed.
 </source>
         <translation>Базата данни не може да изпълни get_events.
@@ -5180,49 +5195,51 @@ Maximum</source>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1982"/>
+        <location filename="../parse-xml.c" line="2102"/>
         <source>Database query get_tags failed.
 </source>
         <translation>Базата данни не може да изпълни get_tags.
 </translation>
     </message>
     <message>
-        <location filename="../file.c" line="169"/>
-        <source>Database connection failed &apos;%s&apos;.
+        <location filename="../file.c" line="170"/>
+        <source>Database connection failed '%s'.
 </source>
         <translation>Няма връзка към базата данни &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2016"/>
-        <location filename="../parse-xml.c" line="2165"/>
-        <source>Database query failed &apos;%s&apos;.
+        <location filename="../parse-xml.c" line="2126"/>
+        <location filename="../parse-xml.c" line="2147"/>
+        <location filename="../parse-xml.c" line="2296"/>
+        <source>Database query failed '%s'.
 </source>
         <translation>Грешка при заява към база данни &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2129"/>
+        <location filename="../parse-xml.c" line="2260"/>
         <source>Database query get_cylinders failed.
 </source>
         <translation>Базата данни не може да изпълни get_cylinders.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2136"/>
+        <location filename="../parse-xml.c" line="2267"/>
         <source>Database query get_changes failed.
 </source>
         <translation>Базата данни не може да изпълни get_changes.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2143"/>
+        <location filename="../parse-xml.c" line="2274"/>
         <source>Database query get_profile_sample failed.
 </source>
         <translation>Базата данни не може да изпълни get_profile_sample.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2234"/>
+        <location filename="../parse-xml.c" line="2365"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Не може да бъде отворен стилов файл %s</translation>
     </message>
