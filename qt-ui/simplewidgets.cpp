@@ -598,8 +598,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 
 void MultiFilter::filterFinished()
 {
-	ui->filterText->setText(tr("Dives filtered out: ") + QString::number(MultiFilterSortModel::instance()->divesFilteredOut)
-		+ tr("Dives being shown: ") + QString::number(MultiFilterSortModel::instance()->divesDisplayed));
+	ui->filterText->setText(tr("Filter shows %1 (of %2) dives").arg(MultiFilterSortModel::instance()->divesDisplayed).arg(dive_table.nr));
 }
 
 void MultiFilter::adjustHeight()

@@ -35,6 +35,19 @@
       <number>0</number>
      </property>
      <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QLabel" name="filterText">
        <property name="text">
         <string/>
@@ -112,7 +125,7 @@
         <x>0</x>
         <y>0</y>
         <width>594</width>
-        <height>332</height>
+        <height>337</height>
        </rect>
       </property>
      </widget>
