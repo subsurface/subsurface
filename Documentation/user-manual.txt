@@ -963,13 +963,68 @@ available, as in dialogue *B*, above. Currently these are:
  - XML-formatted dive logs (Divinglog 5.0, MacDive and several other dive log systems)
  - UDDF-formatted dive logs (e.g. Kenozoooid)
  - UDCF-formatted dive logs
+ - Poseidon CCR logs
  - JDiveLog
  - Suunto Dive Manager (DM3 and DM4)
- - CSV (text-based and spreadsheet-based) dive logs.
+ - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate file in the file list of the dialogue opens
 the imported dive log in the _Subsurface_ *Dive List*. Some other formats, not
 accessible through the Import dialogue are also supported, as explained below.
+
+==== Importing dive logs from closed circuit rebreather (CCR) systems
+
+[icon="images/APD.jpg"]
+[NOTE]
+Closed system rebreathers use avanced technology to recirculate
+gas that has been breathed while doing two things to maintain a
+breathable oxygen concentration:
+a) remove carbon dioxide from the gas that has been exhaled
+b) regulate the oxygen concentration to remain within safe diving limits.
+Currently, within _Subsurface_, the Poseidon MkVI Discovery is the best
+supported CCR dive computer. The CCR interface of _Subsurface_ is currently experimental
+and under active development. In contrast to a conventional open circuit
+dive computer, a CCR system computer does not allow the download of a log
+containg multiple dives. Rather, each dive is stored independently. This
+means that _Subsurface_ cannot download a dive log directly from a CCR
+dive computer, but that it imports CCR dive logs in the same way that it
+imports dive log data from other databases.
+
+===== Import a CCR dive
+
+See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+digital sources]. From the main menu of _Subsurface_, select _Import->Import
+log files_ to bring up the xref:Unified_import[universal import dialogue]. As
+explained in the previous section, the bottom right
+hand of the import dialogue contains a dropdown list of appropriate devices
+that currently includes an option for MkVI files. Having selected the appropriate CCR format and
+the directory where the original dive logs have been stored from the CCR dive
+computer, one can select a particular dive log file (in the case of the MkVI
+it is a file with a .txt extension). After selecting the appropriate dive log,
+activate the _Open_ button at the bottom right hand of the universal import dialogue.
+
+===== Displayed information for a  dive
+
+_Partial pressures of gases_: The graph of oxygen partial pressure shows the
+information from the oxygen sensors of the CCR equipment. In the case of the
+Poseidon MKVI, the mean value of the two oxygen sensors are shown. In the case
+of the APD equipment, the mean of the three oxygen sensors are shown. If one
+sensor shows a very different oxygen PO2 reading compared to the others, the
+divergent sensor is ingnored. For CCR dives the graph for oxygen partial pressure
+should be fairly flat, reflecting the setpoint settings during the dive.
+Partial pressures for nitrogen (and helium,
+if applicable) are shown in the usual way as for other dives.
+
+_Cylinder pressures_: CCR dive computers like the Poseidon MkVI record the
+pressures of the oxygen and diluent cylinders. The pressure of the oxygen cylinder
+is shown on the dive profile. In addition, start and end pressures for both oxygen
+and diluent cylinders are shown in the _Equipment Tab_.
+
+_Equipment-specific information_: Equipment-specific information gathered by
+_Subsurface_ is shown in the _Extra data_ tab. This may include setup information
+or metadata about the dive.
+
+More equipment-specific information for downloading CCR dive logs can be found in xref:S_PoseidonMkVI[Appendix B].
 
 ==== Importing from Mares Dive Organiser V2.1
 
@@ -2900,6 +2955,54 @@ this, but it is reported to be solved sometimes by one of these steps:
    the built-in one of the _Subsurface_ computer
  * switch to different Bluetooth drivers for the same hardware
  * switch off WiFi while using Bluetooth
+
+[[S_PoseidonMkVI]]
+=== Importing dive logs from the Poseidon MkVI Discovery
+
+[icon="images/MkVI.jpeg"]
+[NOTE]
+Download of dive logs from the MkVI is performed using a custom communications
+adapter and the _Poseidon PC Configuration Software_, obtained when purchasing
+the MKVI equipment. The latter is a Windows application allowing configuration
+of equipment and storage of dive logs. Communication between dive computer and
+desktop computer utilises the IrDA infra-red protocol. Only data for one dive
+can be downloaded at a time, comprising three files:
+
+- Setup configuration for the dive and key dive parameters (file with a .txt
+extension)
+- Dive log details (file with a .csv extension)
+- Redbook format dive log (file with .cvsr extension). This is a compressed
+version of the dive log using a propriatary format.
+
+_Subsurface_ accesses the .txt and the .csv files to obtain dive log information.
+
+
+=== Importing dive logs from the APD Inspiration CCR
+
+[icon="images/APDComputer.jpg"]
+[NOTE]
+The dive logs of an APD Inspiration or similar CCR dive computer are downloaded using
+a communications adapter and _AP Communicator_, obtained when
+purchasing the equipment. The dive logs can be viewed using the _AP Log Viewer_,
+within Windows or Mac/OS. However, APD logs can be viewed and managed from within
+_Subsurface_ (together with dives using many other types of dive computer). The
+APD inspiration dive logs are imported into _Subsurface_ as follows:
+
+- Open a dive within the _AP Log Viewer_.
+- Select the tab at the top of the screen, entitled "_Data_".
+- If the raw dive log data show on the screen, click on "_Copy to Clipboard_".
+- Open a text editor, e.g. Notepad (Windows), TextWrangler (Mac).
+- Copy the contents of the clipboard into the text editor and save the text file
+with a filename extension of .CSV
+- Within _Subsurface_, select _Import->Import log files_ to open the xref:Unified_import[universal import dialogue].
+- In the dropdown list towards the bottom right of the dialogue, select "_CSV files_".
+- On the list of file names select the .CSV file that has been created above. An import
+dialogue opens.
+- In the dropdown list on the middle right labeled '_Pre-configured imports_",
+select _APD Log Viewer_.
+- Ensure the other settings for the ADP dive log are appropriate, then select _OK_.
+
+The APD dive log will appear within _Subsurface_.
 
 
 == APPENDIX C: Exporting Dive log information from external dive log software.
