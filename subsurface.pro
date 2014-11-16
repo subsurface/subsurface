@@ -232,7 +232,8 @@ FORMS = \
 	qt-ui/divecomponentselection.ui \
 	qt-ui/configuredivecomputerdialog.ui \
 	qt-ui/listfilter.ui \
-	qt-ui/diveshareexportdialog.ui
+	qt-ui/diveshareexportdialog.ui \
+	qt-ui/filterwidget.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui

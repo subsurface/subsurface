@@ -17,6 +17,7 @@
 #include "display.h"
 #include "mainwindow.h"
 #include "helpers.h"
+#include "ui_filterwidget.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -560,55 +561,50 @@ void SuitFilter::hideEvent(QHideEvent *event)
 	QWidget::hideEvent(event);
 }
 
-MultiFilter::MultiFilter(QWidget *parent) : QScrollArea(parent)
+MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 {
+	ui = new Ui::FilterWidget2();
+	ui->setupUi(this);
+
 	QWidget *expandedWidget = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
 
-
 	TagFilter *tagFilter = new TagFilter();
 	int minimumHeight = tagFilter->ui.filterInternalList->height() +
-		tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
+			tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
 
 	QListView *dummyList = new QListView();
 	QStringListModel *dummy = new QStringListModel(QStringList() << "Dummy Text");
 	dummyList->setModel(dummy);
 
-	// Buttons to Clear/Minimize/Close
-	QToolBar *tb = new QToolBar();
-	QToolButton *clearBtn = new QToolButton();
-	clearBtn->setToolTip(tr("Reset the filters"));
-	clearBtn->setIcon(QIcon(":/trash"));
-	clearBtn->setAutoRaise(true);
-	QToolButton *closeBtn = new QToolButton();
-	closeBtn->setToolTip(tr("Close this window and reset the filters"));
-	closeBtn->setIcon(QIcon(":/close"));
-	closeBtn->setAutoRaise(true);
-	QToolButton *minimize = new QToolButton();
-	minimize->setToolTip(tr("Minimize this window"));
-	minimize->setIcon(QIcon(":/arrow_up"));
-	minimize->setAutoRaise(true);
+	connect(ui->close, SIGNAL(clicked(bool)), this, SLOT(closeFilter()));
+	connect(ui->clear, SIGNAL(clicked(bool)), MultiFilterSortModel::instance(), SLOT(clearFilter()));
+	connect(ui->maximize, SIGNAL(clicked(bool)), this, SLOT(adjustHeight()));
 
-	tb->setOrientation(Qt::Vertical);
-	tb->addWidget(clearBtn);
-	tb->addWidget(minimize);
-	tb->addWidget(closeBtn);
-
-	connect(closeBtn, SIGNAL(clicked(bool)), this, SLOT(closeFilter()));
-	connect(clearBtn, SIGNAL(clicked(bool)), MultiFilterSortModel::instance(), SLOT(clearFilter()));
-	l->addWidget(tb);
 	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
 	l->addWidget(new LocationFilter());
 	l->addWidget(new SuitFilter());
 	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
-
 	expandedWidget->setLayout(l);
-	setWidget(expandedWidget);
-	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
 
-	setMinimumHeight(expandedWidget->height() + 5);
+	ui->scrollArea->setWidget(expandedWidget);
+	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
+	ui->scrollArea->setMinimumHeight(expandedWidget->height() + 5);
+
+	connect(MultiFilterSortModel::instance(), SIGNAL(filterFinished()), this, SLOT(filterFinished()));
+}
+
+void MultiFilter::filterFinished()
+{
+	ui->filterText->setText(tr("Dives filtered out: ") + QString::number(MultiFilterSortModel::instance()->divesFilteredOut)
+		+ tr("Dives being shown: ") + QString::number(MultiFilterSortModel::instance()->divesDisplayed));
+}
+
+void MultiFilter::adjustHeight()
+{
+	ui->scrollArea->setVisible(!ui->scrollArea->isVisible());
 }
 
 void MultiFilter::closeFilter()

@@ -130,15 +130,21 @@ private:
 	struct dive_components *what;
 };
 
-class MultiFilter : public QScrollArea {
+namespace Ui{
+	class FilterWidget2;
+};
+
+class MultiFilter : public QWidget {
 	Q_OBJECT
 public
 slots:
 	void closeFilter();
+	void adjustHeight();
+	void filterFinished();
+
 public:
 	MultiFilter(QWidget *parent);
-	QWidget *expandedWidget;
-	QWidget *minimizedWidget;
+	Ui::FilterWidget2 *ui;
 };
 
 class TagFilter : public QWidget {

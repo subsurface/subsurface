@@ -379,7 +379,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		if (!model->doFilter(d, index0, sourceModel()))
 			shouldShow = false;
 	}
-	// if it's a dive, mark it accordingly
+
 	filter_dive(d, shouldShow);
 	return shouldShow;
 }
@@ -390,7 +390,11 @@ void MultiFilterSortModel::myInvalidate()
 	struct dive *d;
 	DiveListView *dlv = MainWindow::instance()->dive_list();
 
+	divesDisplayed = 0;
+	divesFilteredOut = 0;
+
 	invalidate();
+
 	// first make sure the trips are no longer shown as selected
 	// (but without updating the selection state of the dives... this just cleans
 	//  up an oddity in the filter handling)
@@ -412,6 +416,15 @@ void MultiFilterSortModel::myInvalidate()
 		}
 		dlv->selectDives(curSelectedDives);
 	}
+
+	for_each_dive (i,d) {
+		if (d->hidden_by_filter)
+			divesFilteredOut++;
+		else
+			divesDisplayed++;
+	}
+
+	emit filterFinished();
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
