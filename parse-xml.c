@@ -29,6 +29,25 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 struct dive_table dive_table;
 struct dive_table *target_table = NULL;
 
+/* Trim a character string by removing leading and trailing white space characters.
+ * Parameter: a pointer to a null-terminated character string (buffer);
+ * Return value: length of the trimmed string, excluding the terminal 0x0 byte
+ * The original pointer (buffer) remains valid after this function has been called
+ * and points to the trimmed string */
+int trimspace(char *buffer) {
+	int i, size, start, end;
+	size = strlen(buffer);
+	for(start = 0; isspace(buffer[start]); start++)
+		if (start >= size) return 0;	// Find 1st character following leading whitespace
+	for(end = size - 1; isspace(buffer[end]); end--) // Find last character before trailing whitespace
+		if (end <= 0) return 0;
+	for(i = start; i <= end; i++)		// Move the nonspace characters to the start of the string
+		buffer[i-start] = buffer[i];
+	size = end - start + 1;
+	buffer[size] = 0x0;			// then terminate the string
+	return size;				// return string length
+}
+
 /*
  * Add a dive into the dive_table array
  */
@@ -319,10 +338,12 @@ static void pressure(char *buffer, pressure_t *pressure)
 
 static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
 {
-	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
-		if (same_string(buffer, cylinderuse_text[i])) {
-			*cyl_use = i;
-			return;
+	if (trimspace(buffer)) {
+		for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+			if (same_string(buffer, cylinderuse_text[i])) {
+				*cyl_use = i;
+				return;
+			}
 		}
 	}
 }
@@ -522,26 +543,6 @@ static void cylindersize(char *buffer, volume_t *volume)
 	}
 }
 
-/* Trim a character string by removing leading and trailing white space characters.
- * Parameter: a pointer to a null-terminated character string (buffer);
- * Return value: length of the trimmed string, excluding the terminal 0x0 byte
- * The original pointer (buffer) remains valid after this function has been called
- * and points to the trimmed string */
-int trimspace(char *buffer) {
-	int i, size, start, end;
-	size = strlen(buffer);
-	for(start = 0; isspace(buffer[start]); start++)
-		if (start >= size) return 0;	// Find 1st character following leading whitespace
-	for(end = size - 1; isspace(buffer[end]); end--) // Find last character before trailing whitespace
-		if (end <= 0) return 0;
-	for(i = start; i <= end; i++)		// Move the nonspace characters to the start of the string
-		buffer[i-start] = buffer[i];
-	size = end - start + 1;
-	buffer[size] = 0x0;			// then terminate the string
-	return size;				// return string length
-}
-
-
 static void utf8_string(char *buffer, void *_res)
 {
 	char **res = _res;
@@ -561,11 +562,15 @@ static void event_name(char *buffer, char *name)
 }
 
 /* Extract the dive computer type from the xml text buffer */
-static void get_dc_type(char *buffer, enum dive_comp_type *i)
+static void get_dc_type(char *buffer, enum dive_comp_type *dct)
 {
-	if((trimspace(buffer)) && (strcmp(buffer,"CCR") == 0))
-		*i = CCR;	// if the xml string = "CCR", set dc-type to CCR
-}				// otherwise the default dc-type is used (OC)
+	if (trimspace(buffer)) {
+		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
+			if (strcmp(buffer, dctype_text[i]) == 0)
+				*dct = i;
+		}
+	}
+}
 
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\

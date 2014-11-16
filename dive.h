@@ -47,10 +47,11 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-enum dive_comp_type {OC, CCR, PSCR};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum dive_comp_type {OC, CCR, PSCR, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
+extern const char *dctype_text[];
 
 struct gasmix {
 	fraction_t o2;

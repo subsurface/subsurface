@@ -27,6 +27,7 @@ static const char *default_tags[] = {
 };
 
 const char *cylinderuse_text[] = { "OC-gas", "diluent", "oxygen" };
+const char *dctype_text[] = { "OC", "CCR", "PSCR" };
 
 
 int event_is_gaschange(struct event *ev)

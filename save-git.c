@@ -339,6 +339,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 		show_date(b, dc->when);
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
 		put_duration(b, dc->duration, "duration ", "min\n");
+	if (dc->dctype != OC)
+		put_format(b, "dctype %s\n", dctype_text[dc->dctype]);
 
 	save_depths(b, dc);
 	save_temperatures(b, dc);

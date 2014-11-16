@@ -130,6 +130,15 @@ static duration_t get_duration(const char *line)
 	return d;
 }
 
+static enum dive_comp_type get_dctype(const char *line)
+{
+	for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
+		if (strcmp(line, dctype_text[i]) == 0)
+			return i;
+	}
+	return 0;
+}
+
 static int get_index(const char *line)
 { return atoi(line); }
 static int get_hex(const char *line)
@@ -500,6 +509,9 @@ static void parse_dc_diveid(char *line, struct membuffer *str, void *_dc)
 static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
 
+static void parse_dc_dctype(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->dctype = get_dctype(line); }
+
 static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
 
@@ -732,7 +744,7 @@ static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 struct keyword_action dc_action[] = {
 #undef D
 #define D(x) { #x, parse_dc_ ## x }
-	D(airtemp), D(date), D(deviceid), D(diveid), D(duration),
+	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
 	D(event), D(keyvalue), D(maxdepth), D(meandepth), D(model), D(salinity),
 	D(surfacepressure), D(surfacetime), D(time), D(watertemp),
 };
