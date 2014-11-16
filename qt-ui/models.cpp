@@ -1068,10 +1068,20 @@ QVariant TripItem::data(int column, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 		case DiveTripModel::NR:
+			QString shownText;
+			struct dive *d = trip->dives;
+			int countShown = 0;
+			while (d) {
+				if (!d->hidden_by_filter)
+					countShown++;
+				d = d->next;
+			}
+			if (countShown < trip->nrdives)
+				shownText = tr(" (%1 shown)").arg(countShown);
 			if (trip->location && *trip->location)
-				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives);
+				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives) + shownText;
 			else
-				ret = get_trip_date_string(trip->when, trip->nrdives);
+				ret = get_trip_date_string(trip->when, trip->nrdives) + shownText;
 			break;
 		}
 	}
