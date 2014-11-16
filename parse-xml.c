@@ -317,6 +317,16 @@ static void pressure(char *buffer, pressure_t *pressure)
 	}
 }
 
+static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
+{
+	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+		if (same_string(buffer, cylinderuse_text[i])) {
+			*cyl_use = i;
+			return;
+		}
+	}
+}
+
 static void salinity(char *buffer, int *salinity)
 {
 	union int_or_float val;
@@ -1225,6 +1235,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH("start.cylinder", pressure, &dive->cylinder[cur_cylinder_index].start))
 		return;
 	if (MATCH("end.cylinder", pressure, &dive->cylinder[cur_cylinder_index].end))
+		return;
+	if (MATCH("use.cylinder", cylinder_use, &dive->cylinder[cur_cylinder_index].cylinder_use))
 		return;
 	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[cur_ws_index].description))
 		return;

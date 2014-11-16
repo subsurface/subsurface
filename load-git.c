@@ -254,6 +254,14 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 		cylinder->end = get_pressure(value);
 		return;
 	}
+	if (!strcmp(key, "use")) {
+		for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+			if (same_string(value, cylinderuse_text[i])) {
+				cylinder->cylinder_use = i;
+				return;
+			}
+		}
+	}
 	report_error("Unknown cylinder key/value pair (%s/%s)", key, value);
 }
 

@@ -159,6 +159,9 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_gasmix(b, &cylinder->gasmix);
 		put_pressure(b, cylinder->start, " start=", "bar");
 		put_pressure(b, cylinder->end, " end=", "bar");
+		if (cylinder->cylinder_use != OC_GAS)
+			put_format(b, " use=%s", cylinderuse_text[cylinder->cylinder_use]);
+
 		put_string(b, "\n");
 	}
 }

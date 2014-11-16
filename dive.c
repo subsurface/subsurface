@@ -26,6 +26,9 @@ static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "deco")
 };
 
+const char *cylinderuse_text[] = { "OC-gas", "diluent", "oxygen" };
+
+
 int event_is_gaschange(struct event *ev)
 {
 	return ev->type == SAMPLE_EVENT_GASCHANGE ||
