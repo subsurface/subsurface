@@ -341,7 +341,7 @@ struct dive {
 	int oxygen_cylinder_index, diluent_cylinder_index; // CCR dive cylinder indices
 };
 
-extern int get_cylinder_use(struct dive *dive, enum cylinderuse cylinder_use_type);
+extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {

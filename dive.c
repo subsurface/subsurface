@@ -698,10 +698,18 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		mean[i] = duration[i] = 0;
 	struct event *ev = get_next_event(dc->events, "gaschange");
-	if (!ev) {
-		// special case - no gas changes
-		mean[0] = dc->meandepth.mm;
-		duration[0] = dc->duration.seconds;
+	if (!ev || (dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds && get_next_event(ev->next, "gaschange") == NULL)) {
+		// we have either no gas change or only one gas change and that's setting an explicit first cylinder
+		if (dc->dctype == CCR) {
+			int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
+			int diluent_cyl = get_cylinder_idx_by_use(dive, DILUENT);
+			mean[o2_cyl] = mean[diluent_cyl] = dc->meandepth.mm;
+			duration[o2_cyl] = duration[diluent_cyl] = dc->duration.seconds;
+		} else {
+			// OC, no real gas changes, it's all the first cylinder
+			mean[explicit_first_cylinder(dive, dc)] = dc->meandepth.mm;
+			duration[explicit_first_cylinder(dive, dc)] = dc->duration.seconds;
+		}
 		return;
 	}
 	if (!dc->samples)
@@ -1066,8 +1074,8 @@ unsigned int dc_airtemp(struct divecomputer *dc)
 
 static void fixup_cylinder_use(struct dive *dive) // for CCR dives, store the indices
 {						  // of the oxygen and diluent cylinders
-	dive->oxygen_cylinder_index = get_cylinder_use(dive, OXYGEN);
-	dive->diluent_cylinder_index = get_cylinder_use(dive, DILUENT);
+	dive->oxygen_cylinder_index = get_cylinder_idx_by_use(dive, OXYGEN);
+	dive->diluent_cylinder_index = get_cylinder_idx_by_use(dive, DILUENT);
 }
 
 static void fixup_airtemp(struct dive *dive)
@@ -1543,13 +1551,13 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
 	*res = *a;
 }
 
-/* get_cylinder_use(): Find the index of the first cylinder with a particular CCR use type.
+/* get_cylinder_idx_by_use(): Find the index of the first cylinder with a particular CCR use type.
  * The index returned corresponds to that of the first cylinder with a cylinder_use that
  * equals the appropriate enum value [oxygen, diluent, bailout] given by cylinder_use_type.
  * A negative number returned indicates that a match could not be found.
  * Call parameters: dive = the dive being processed
  *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
-extern int get_cylinder_use(struct dive *dive, enum cylinderuse cylinder_use_type)
+extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type)
 {
 	int cylinder_index;
 	for (cylinder_index = 0; cylinder_index < MAX_CYLINDERS; cylinder_index++) {
