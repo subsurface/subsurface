@@ -61,7 +61,10 @@ void RulerNodeItem2::recalculate()
 
 void RulerNodeItem2::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	setPos(event->scenePos());
+	qreal x = event->scenePos().x();
+	if (x < 0.0)
+		x = 0.0;
+	setPos(x, event->scenePos().y());
 	recalculate();
 	ruler->recalculate();
 }
