@@ -41,7 +41,6 @@ Some of the changes since Subsurface 4.2
 
 Known bugs
 
-- yearly statistics show a half-empty window
 - this appears to be a bug in Qt. When changing the password needed
   authenticate with a proxy, Subsurface will not use the new password
   until after a restart
