@@ -552,14 +552,16 @@ void MainWindow::on_actionAutoGroup_triggered()
 void MainWindow::on_actionYearlyStatistics_triggered()
 {
 	QDialog d;
-	YearlyStatisticsWidget *newView = new YearlyStatisticsWidget();
 	QVBoxLayout *l = new QVBoxLayout(&d);
-	l->addWidget(newView);
 	YearlyStatisticsModel *m = new YearlyStatisticsModel();
 	QTreeView *view = new QTreeView();
 	view->setModel(m);
-	newView->setModel(m);
 	l->addWidget(view);
+	d.resize(width() * .8, height() / 2);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), &d);
+	connect(close, SIGNAL(activated()), &d, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), &d);
+	connect(quit, SIGNAL(activated()), this, SLOT(close()));
 	d.exec();
 }
 
