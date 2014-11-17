@@ -99,6 +99,8 @@ static void dump_pr_track(pr_track_t **track_pr)
  */
 static void fill_missing_segment_pressures(pr_track_t *list, enum interpolation_strategy strategy)
 {
+	double magic;
+
 	while (list) {
 		int start = list->start, end;
 		pr_track_t *tmp = list;
@@ -144,10 +146,12 @@ static void fill_missing_segment_pressures(pr_track_t *list, enum interpolation_
 			}
 			break;
 		case TIME:
-			if (list->t_end && (tmp->t_start - tmp->t_end))
-				list->end = start - (start - end) * (list->t_end - tmp->t_end) / (tmp->t_start - tmp->t_end);
-			else
+			if (list->t_end && (tmp->t_start - tmp->t_end)) {
+				magic = (list->t_start - tmp->t_end) / (tmp->t_start - tmp->t_end);
+				list->end = rint(start - (start - end) * magic);
+			} else {
 				list->end = start;
+			}
 			break;
 		case CONSTANT:
 			list->end = start;
@@ -219,7 +223,7 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, int o2_flag)
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, bool o2_flag)
 {
 	int cyl, i;
 	struct plot_data *entry;
@@ -291,16 +295,22 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			*save_pressure = cur_pr[cyl];      // Just use our current pressure
 			continue;			   // and skip to next point.
 		}
+
 		// If there is a valid segment but no tank pressure ..
 		interpolate = get_pr_interpolate_data(segment, pi, i, pressure); // Set up an interpolation structure
+		if(dive->cylinder[cyl].cylinder_use == OC_GAS) {
 
-		/* if this segment has pressure_time, then calculate a new interpolated pressure */
-		if (interpolate.pressure_time) {
-			/* Overall pressure change over total pressure-time for this segment*/
-			magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
+			/* if this segment has pressure_time, then calculate a new interpolated pressure */
+			if (interpolate.pressure_time) {
+				/* Overall pressure change over total pressure-time for this segment*/
+				magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
 
-			/* Use that overall pressure change to update the current pressure */
-			cur_pr[cyl] = rint(interpolate.start + magic * interpolate.acc_pressure_time);
+				/* Use that overall pressure change to update the current pressure */
+				cur_pr[cyl] = rint(interpolate.start + magic * interpolate.acc_pressure_time);
+			}
+		} else {
+			magic = (interpolate.end - interpolate.start) /  (segment->t_end - segment->t_start);
+			cur_pr[cyl] = rint(segment->start + magic * (entry->sec - segment->t_start));
 		}
 		*save_interpolated = cur_pr[cyl]; // and store the interpolated data in plot_info
 	}
@@ -341,7 +351,7 @@ static void debug_print_pressures(struct plot_info *pi)
 }
 #endif
 
-/* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or DILUENT_PRESSURE(entry),
+/* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or O2CYLINDER_PRESSURE(entry),
  * of structure plot_info for the dive profile where each item in the list corresponds to one point (node) of the
  * profile. It finds values for which there are no tank pressures (pressure==0). For each missing item (node) of
  * tank pressure it creates a pr_track_alloc structure that represents a segment on the dive profile and that

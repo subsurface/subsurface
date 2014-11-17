@@ -92,9 +92,11 @@ int get_maxdepth(struct plot_info *pi);
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
 #define O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[SENSOR_PR]
+#define CYLINDER_PRESSURE(_o2, _entry) (_o2 ? O2CYLINDER_PRESSURE(_entry) : SENSOR_PRESSURE(_entry))
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
 #define INTERPOLATED_O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
+#define GET_O2CYLINDER_PRESSURE(_entry) (O2CYLINDER_PRESSURE(_entry) ? O2CYLINDER_PRESSURE(_entry) : INTERPOLATED_O2CYLINDER_PRESSURE(_entry))
 #define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */
 
 #ifdef __cplusplus

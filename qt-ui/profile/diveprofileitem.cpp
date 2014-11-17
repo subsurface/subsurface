@@ -574,12 +574,18 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 	int last_index = -1;
-	QPolygonF boundingPoly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
+	int o2mbar;
+	QPolygonF boundingPoly, o2Poly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
 	polygons.clear();
+	if (displayed_dive.dc.dctype == CCR)
+		polygons.append(o2Poly);
 
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
+		o2mbar = 0;
 		plot_data *entry = dataModel->data().entry + i;
 		int mbar = GET_PRESSURE(entry);
+		if (displayed_dive.dc.dctype == CCR)
+			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (entry->cylinderindex != last_index) {
 			polygons.append(QPolygonF()); // this is the polygon that will be actually drawned on screen.
@@ -587,6 +593,11 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		}
 		if (!mbar) {
 			continue;
+		}
+		if (o2mbar) {
+			QPointF o2point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(o2mbar));
+			boundingPoly.push_back(o2point);
+			polygons.first().push_back(o2point);
 		}
 
 		QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(mbar));
@@ -603,9 +614,23 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	struct plot_data *entry;
 
 	cyl = -1;
+	o2mbar = 0;
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		entry = dataModel->data().entry + i;
 		mbar = GET_PRESSURE(entry);
+		if (displayed_dive.dc.dctype == CCR)
+			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
+
+		if (o2mbar) {
+			if (!seen_cyl[displayed_dive.oxygen_cylinder_index]) {
+				plotPressureValue(o2mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom);
+				plotGasValue(o2mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom, displayed_dive.cylinder[displayed_dive.oxygen_cylinder_index].gasmix);
+				seen_cyl[displayed_dive.oxygen_cylinder_index] = true;
+			}
+			last_pressure[displayed_dive.oxygen_cylinder_index] = o2mbar;
+			last_time[displayed_dive.oxygen_cylinder_index] = entry->sec;
+		}
+
 
 		if (!mbar)
 			continue;

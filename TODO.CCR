@@ -1,5 +1,5 @@
 TODO for CCR support
 
-- tank pressure plot (see test40.xml)
+- make tank pressure plot work for bailout dives
 - bailout handling in SAC rate calculation
 - UI to modify the tank type for CCR (i.e., set the diluent and oxygen cylinders)

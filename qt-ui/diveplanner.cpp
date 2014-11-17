@@ -36,7 +36,7 @@
 QString gasToStr(struct gasmix gas)
 {
 	uint o2 = (get_o2(&gas) + 5) / 10, he = (get_he(&gas) + 5) / 10;
-	QString result = gasmix_is_air(&gas) ? QObject::tr("AIR") : he == 0 ? QString("EAN%1").arg(o2, 2, 10, QChar('0')) : QString("%1/%2").arg(o2).arg(he);
+	QString result = gasmix_is_air(&gas) ? QObject::tr("AIR") : he == 0 ? (o2 == 100 ? QObject::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
 	return result;
 }
 

@@ -612,34 +612,40 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 #undef INSERT_ENTRY
 
-static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi)
+static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi, bool o2flag)
 {
 	int i;
 
 	/* First: check that none of the entries has sensor pressure for this cylinder index */
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx)
+		if (entry->cylinderindex != idx && !o2flag)
 			continue;
-		if (SENSOR_PRESSURE(entry))
+		if (CYLINDER_PRESSURE(o2flag, entry))
 			return;
 	}
 
 	/* Then: populate the first entry with the beginning cylinder pressure */
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx)
+		if (entry->cylinderindex != idx && !o2flag)
 			continue;
-		SENSOR_PRESSURE(entry) = start;
+		if (o2flag)
+			O2CYLINDER_PRESSURE(entry) = start;
+		else
+			SENSOR_PRESSURE(entry) = start;
 		break;
 	}
 
 	/* .. and the last entry with the ending cylinder pressure */
 	for (i = pi->nr; --i >= 0; /* nothing */) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx)
+		if (entry->cylinderindex != idx && !o2flag)
 			continue;
-		SENSOR_PRESSURE(entry) = end;
+		if (o2flag)
+			O2CYLINDER_PRESSURE(entry) = end;
+		else
+			SENSOR_PRESSURE(entry) = end;
 		break;
 	}
 }
@@ -688,7 +694,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 		if (!start || !end)
 			continue;
 
-		populate_cylinder_pressure_data(i, start, end, pi);
+		populate_cylinder_pressure_data(i, start, end, pi, dive->cylinder[i].cylinder_use == OXYGEN);
 	}
 
 	/*
@@ -1013,9 +1019,9 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 
 	check_gas_change_events(dive, dc, pi);			/* Populate the gas index from the gas change events */
 	setup_gas_sensor_pressure(dive, dc, pi);		/* Try to populate our gas pressure knowledge */
-	populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except diluent */
+	populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
 	if (dc->dctype == CCR)					/* For CCR dives.. */
-		populate_pressure_information(dive, dc, pi, true); /* .. calculate missing diluent gas pressure entries */
+		populate_pressure_information(dive, dc, pi, true); /* .. calculate missing o2 gas pressure entries */
 
 	fill_o2_values(dc, pi, dive);				/* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, pi); /* Calculate sac */
