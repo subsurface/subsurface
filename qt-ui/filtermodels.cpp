@@ -136,7 +136,8 @@ void TagFilterModel::repopulate()
 	QStringList list;
 	struct tag_entry *current_tag_entry = g_tag_list->next;
 	while (current_tag_entry != NULL) {
-		list.append(QString(current_tag_entry->tag->name));
+		if (count_dives_with_tag(current_tag_entry->tag->name) > 0)
+			list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
 	}
 	qSort(list);
