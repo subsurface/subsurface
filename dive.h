@@ -647,6 +647,8 @@ extern int git_load_dives(struct git_repository *, const char *);
 extern const char *saved_git_id;
 extern void clear_git_id(void);
 extern void set_git_id(const struct git_oid *);
+int cylinderuse_from_text(const char *text);
+
 
 struct user_info {
 	const char *name;

@@ -583,6 +583,15 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 	}
 }
 
+int cylinderuse_from_text(const char *text)
+{
+	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+		if (same_string(text, cylinderuse_text[i]))
+			return i;
+	}
+	return -1;
+}
+
 void copy_samples(struct divecomputer *s, struct divecomputer *d)
 {
 	/* instead of carefully copying them one by one and calling add_sample
