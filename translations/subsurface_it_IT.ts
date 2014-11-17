@@ -1186,7 +1186,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1272"/>
         <source>SAC(%1)</source>
-        <translation>SAC(%1)</translation>
+        <translation>CAS(%1)</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1272"/>
@@ -2003,7 +2003,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1513"/>
         <source>SAC(%1)</source>
-        <translation>SAC(%1)</translation>
+        <translation>CAS(%1)</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1513"/>
@@ -2645,47 +2645,47 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="556"/>
         <source>Highest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>CAS totale più alto di una immersione</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="557"/>
         <source>Lowest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>CAS totale più basso di una immersione</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="558"/>
         <source>Average total SAC of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>CAS totale medio di tutte le immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="569"/>
         <source>Highest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura più alta</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="570"/>
         <source>Lowest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura più bassa</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="571"/>
         <source>Average temperature of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura media di tutte le immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="581"/>
         <source>Longest dive</source>
-        <translation type="unfinished"/>
+        <translation>Immersione più lunga</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="582"/>
         <source>Shortest dive</source>
-        <translation type="unfinished"/>
+        <translation>Immersione più corta</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="583"/>
         <source>Average length of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Durata media di tutte le immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="607"/>
@@ -2787,7 +2787,7 @@ mixati con aria e usando:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="787"/>
         <source>Toggle SAC rate</source>
-        <translation>Visualizza il consumo equivalente di superficie</translation>
+        <translation>Visualizza il CAS</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="799"/>
@@ -4032,7 +4032,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="39"/>
         <source>OXYGEN</source>
-        <translation type="unfinished"/>
+        <translation>OSSIGENO</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="224"/>
@@ -4817,7 +4817,7 @@ Massimo</translation>
         <location filename="../qt-ui/models.cpp" line="1866"/>
         <source>SAC (%1)
  Average</source>
-        <translation>SAC (%1)
+        <translation>CAS(%1)
 Media</translation>
     </message>
     <message>
@@ -5473,7 +5473,8 @@ D:%.1f%s
         <location filename="../profile.c" line="1076"/>
         <source>SAC: %.*f%s/min
 </source>
-        <translation>SAC: %.*f%s/min
+        <translation>CAS: %.*f%s/min
+
 </translation>
     </message>
     <message>
@@ -6358,17 +6359,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../save-html.c" line="486"/>
         <source>Average SAC</source>
-        <translation>SAC medio</translation>
+        <translation>CAS medio</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="487"/>
         <source>Min SAC</source>
-        <translation>Min. CAS</translation>
+        <translation>CAS Min.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="488"/>
         <source>Max SAC</source>
-        <translation>CAS Massimo</translation>
+        <translation>CAS Max.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="495"/>
@@ -6586,7 +6587,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="373"/>
         <source>Deco SAC</source>
-        <translation>SAC in deco</translation>
+        <translation>CAS in deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="380"/>

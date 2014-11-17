@@ -2659,32 +2659,32 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="569"/>
         <source>Highest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Höchste Temperatur</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="570"/>
         <source>Lowest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Niedrigste Temperatur</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="571"/>
         <source>Average temperature of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Durchschnittstemperatur aller ausgewählten Tauchgänge</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="581"/>
         <source>Longest dive</source>
-        <translation type="unfinished"/>
+        <translation>Längster Tauchgang</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="582"/>
         <source>Shortest dive</source>
-        <translation type="unfinished"/>
+        <translation>Kürzester Tauchgang</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="583"/>
         <source>Average length of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Durchschnittsdauer aller ausgewählten Tauchgänge</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="607"/>
@@ -4031,7 +4031,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="39"/>
         <source>OXYGEN</source>
-        <translation type="unfinished"/>
+        <translation>SAUERSTOFF</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="224"/>

@@ -162,7 +162,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="324"/>
         <source>OC</source>
-        <translation>OC</translation>
+        <translation>CA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="329"/>
@@ -829,7 +829,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1945"/>
         <source>L16-GF OC</source>
-        <translation>L16-GF OC</translation>
+        <translation>L16-GF CA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1950"/>
@@ -962,7 +962,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="79"/>
         <source>Use</source>
-        <translation type="unfinished"/>
+        <translation>Utilização</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="191"/>
@@ -1096,7 +1096,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="121"/>
         <source>Bailing out to OC</source>
-        <translation>Troca de emergência para circuito aberto</translation>
+        <translation>Troca de emergência para CA</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="123"/>
@@ -2645,47 +2645,47 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="556"/>
         <source>Highest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Consumo mais elevado num mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="557"/>
         <source>Lowest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Consumo mais baixo num mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="558"/>
         <source>Average total SAC of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Média do consumo para os mergulhos seleccionados</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="569"/>
         <source>Highest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura mais elevada</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="570"/>
         <source>Lowest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura mais baixa</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="571"/>
         <source>Average temperature of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Média da temperatura nos mergulhos seleccionados</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="581"/>
         <source>Longest dive</source>
-        <translation type="unfinished"/>
+        <translation>Mergulho mais longo</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="582"/>
         <source>Shortest dive</source>
-        <translation type="unfinished"/>
+        <translation>Mergulho mais curto</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="583"/>
         <source>Average length of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Duração média para os mergulhos seleccionados</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="607"/>
@@ -4032,7 +4032,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="39"/>
         <source>OXYGEN</source>
-        <translation type="unfinished"/>
+        <translation>OXIGÉNIO</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="224"/>
@@ -5790,17 +5790,17 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="30"/>
         <source>OC-gas</source>
-        <translation type="unfinished"/>
+        <translation>gás CA</translation>
     </message>
     <message>
         <location filename="../dive.c" line="30"/>
         <source>diluent</source>
-        <translation type="unfinished"/>
+        <translation>diluente</translation>
     </message>
     <message>
         <location filename="../dive.c" line="30"/>
         <source>oxygen</source>
-        <translation type="unfinished"/>
+        <translation>oxigénio</translation>
     </message>
     <message>
         <location filename="../dive.c" line="232"/>
