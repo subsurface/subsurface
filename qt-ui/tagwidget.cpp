@@ -195,3 +195,11 @@ void TagWidget::wheelEvent(QWheelEvent *event)
 		GroupedLineEdit::wheelEvent(event);
 	}
 }
+
+void TagWidget::fixPopupPosition(int delta)
+{
+	if(m_completer->popup()->isVisible()){
+		QRect toGlobal = m_completer->popup()->geometry();
+		m_completer->popup()->setGeometry(toGlobal.x(), toGlobal.y() + delta +10, toGlobal.width(), toGlobal.height());
+	}
+}

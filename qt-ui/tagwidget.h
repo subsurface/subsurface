@@ -17,6 +17,7 @@ public:
 	void clear();
 	void setCursorPosition(int position);
 	void wheelEvent(QWheelEvent *event);
+	void fixPopupPosition(int delta);
 public
 slots:
 	void reparse();
@@ -25,7 +26,6 @@ slots:
 
 protected:
 	void keyPressEvent(QKeyEvent *e);
-
 private:
 	QCompleter *m_completer;
 	bool lastFinishedTag;

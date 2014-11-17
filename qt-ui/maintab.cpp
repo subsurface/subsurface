@@ -250,6 +250,9 @@ void MainTab::displayMessage(QString str)
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
 	updateTextLabels();
+	ui.tagWidget->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
+	ui.buddy->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
+	ui.divemaster->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
 }
 
 void MainTab::updateTextLabels(bool showUnits)

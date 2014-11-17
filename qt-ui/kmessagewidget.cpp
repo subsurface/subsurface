@@ -206,6 +206,12 @@ void KMessageWidget::setText(const QString &text)
 	updateGeometry();
 }
 
+int KMessageWidget::bestContentHeight() const
+{
+	return d->bestContentHeight();
+}
+
+
 KMessageWidget::MessageType KMessageWidget::messageType() const
 {
 	return d->messageType;

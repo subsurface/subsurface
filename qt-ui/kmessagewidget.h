@@ -165,6 +165,7 @@ Q_SLOTS:
 	 */
 	void setIcon(const QIcon &icon);
 
+	int bestContentHeight() const;
 Q_SIGNALS:
 	/**
 	 * This signal is emitted when the user clicks a link in the text label.
