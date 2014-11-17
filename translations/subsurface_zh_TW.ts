@@ -958,17 +958,22 @@
         <translation>交換於</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="188"/>
+        <location filename="../qt-ui/models.cpp" line="79"/>
+        <source>Use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/models.cpp" line="191"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>於此處按下將移除此氣瓶.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="396"/>
+        <location filename="../qt-ui/models.cpp" line="406"/>
         <source>Cylinder cannot be removed</source>
         <translation>氣瓶無法移除</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="397"/>
+        <location filename="../qt-ui/models.cpp" line="407"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>此氣瓶仍在使用中，在潛水中，只有未使用的氣瓶可被移除。</translation>
     </message>
@@ -1064,22 +1069,22 @@
 <context>
     <name>DiveComputerModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1598"/>
+        <location filename="../qt-ui/models.cpp" line="1608"/>
         <source>Model</source>
         <translation>型號</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1598"/>
+        <location filename="../qt-ui/models.cpp" line="1608"/>
         <source>Device ID</source>
         <translation>裝置 ID</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1598"/>
+        <location filename="../qt-ui/models.cpp" line="1608"/>
         <source>Nickname</source>
         <translation>別名</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1634"/>
+        <location filename="../qt-ui/models.cpp" line="1644"/>
         <source>Clicking here will remove this dive computer.</source>
         <translation>點擊這裡移除此潛水電腦。</translation>
     </message>
@@ -1107,97 +1112,97 @@
 <context>
     <name>DiveItem</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1230"/>
+        <location filename="../qt-ui/models.cpp" line="1240"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1233"/>
+        <location filename="../qt-ui/models.cpp" line="1243"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1236"/>
+        <location filename="../qt-ui/models.cpp" line="1246"/>
         <source>Rating</source>
         <translation>評分</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1239"/>
+        <location filename="../qt-ui/models.cpp" line="1249"/>
         <source>Depth(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1239"/>
+        <location filename="../qt-ui/models.cpp" line="1249"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1239"/>
+        <location filename="../qt-ui/models.cpp" line="1249"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1242"/>
+        <location filename="../qt-ui/models.cpp" line="1252"/>
         <source>Duration</source>
         <translation>區間</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1245"/>
+        <location filename="../qt-ui/models.cpp" line="1255"/>
         <source>Temp(%1%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1248"/>
+        <location filename="../qt-ui/models.cpp" line="1258"/>
         <source>Weight(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1248"/>
+        <location filename="../qt-ui/models.cpp" line="1258"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1248"/>
+        <location filename="../qt-ui/models.cpp" line="1258"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1251"/>
+        <location filename="../qt-ui/models.cpp" line="1261"/>
         <source>Suit</source>
         <translation>防寒衣</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1254"/>
+        <location filename="../qt-ui/models.cpp" line="1264"/>
         <source>Cyl</source>
         <translation>氣瓶</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1257"/>
+        <location filename="../qt-ui/models.cpp" line="1267"/>
         <source>Gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1262"/>
+        <location filename="../qt-ui/models.cpp" line="1272"/>
         <source>SAC(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1262"/>
+        <location filename="../qt-ui/models.cpp" line="1272"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1265"/>
+        <location filename="../qt-ui/models.cpp" line="1275"/>
         <source>OTU</source>
         <translation>氧容許量 OTU</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1268"/>
+        <location filename="../qt-ui/models.cpp" line="1278"/>
         <source>Max CNS</source>
         <translation>最大 CNS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1271"/>
+        <location filename="../qt-ui/models.cpp" line="1281"/>
         <source>Location</source>
         <translation>位置</translation>
     </message>
@@ -1923,127 +1928,127 @@
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1425"/>
-        <location filename="../qt-ui/models.cpp" line="1471"/>
+        <location filename="../qt-ui/models.cpp" line="1435"/>
+        <location filename="../qt-ui/models.cpp" line="1481"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1428"/>
-        <location filename="../qt-ui/models.cpp" line="1474"/>
+        <location filename="../qt-ui/models.cpp" line="1438"/>
+        <location filename="../qt-ui/models.cpp" line="1484"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1431"/>
-        <location filename="../qt-ui/models.cpp" line="1477"/>
+        <location filename="../qt-ui/models.cpp" line="1441"/>
+        <location filename="../qt-ui/models.cpp" line="1487"/>
         <source>Rating</source>
         <translation>評分</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1434"/>
+        <location filename="../qt-ui/models.cpp" line="1444"/>
         <source>Depth</source>
         <translation>深度</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1440"/>
+        <location filename="../qt-ui/models.cpp" line="1450"/>
         <source>Temp</source>
         <translation>溫度</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1443"/>
+        <location filename="../qt-ui/models.cpp" line="1453"/>
         <source>Weight</source>
         <translation>重量</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1455"/>
+        <location filename="../qt-ui/models.cpp" line="1465"/>
         <source>SAC</source>
         <translation>耗氣率</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1480"/>
+        <location filename="../qt-ui/models.cpp" line="1490"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1480"/>
+        <location filename="../qt-ui/models.cpp" line="1490"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1489"/>
+        <location filename="../qt-ui/models.cpp" line="1499"/>
         <source>Weight(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1446"/>
-        <location filename="../qt-ui/models.cpp" line="1492"/>
+        <location filename="../qt-ui/models.cpp" line="1456"/>
+        <location filename="../qt-ui/models.cpp" line="1502"/>
         <source>Suit</source>
         <translation>防寒衣</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1449"/>
-        <location filename="../qt-ui/models.cpp" line="1495"/>
+        <location filename="../qt-ui/models.cpp" line="1459"/>
+        <location filename="../qt-ui/models.cpp" line="1505"/>
         <source>Cyl</source>
         <translation>氣瓶</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1452"/>
-        <location filename="../qt-ui/models.cpp" line="1498"/>
+        <location filename="../qt-ui/models.cpp" line="1462"/>
+        <location filename="../qt-ui/models.cpp" line="1508"/>
         <source>Gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1503"/>
+        <location filename="../qt-ui/models.cpp" line="1513"/>
         <source>SAC(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1503"/>
+        <location filename="../qt-ui/models.cpp" line="1513"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1461"/>
-        <location filename="../qt-ui/models.cpp" line="1509"/>
+        <location filename="../qt-ui/models.cpp" line="1471"/>
+        <location filename="../qt-ui/models.cpp" line="1519"/>
         <source>Max CNS</source>
         <translation>最大 CNS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1464"/>
-        <location filename="../qt-ui/models.cpp" line="1512"/>
+        <location filename="../qt-ui/models.cpp" line="1474"/>
+        <location filename="../qt-ui/models.cpp" line="1522"/>
         <source>Location</source>
         <translation>位置</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1489"/>
+        <location filename="../qt-ui/models.cpp" line="1499"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1480"/>
+        <location filename="../qt-ui/models.cpp" line="1490"/>
         <source>Depth(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1437"/>
-        <location filename="../qt-ui/models.cpp" line="1483"/>
+        <location filename="../qt-ui/models.cpp" line="1447"/>
+        <location filename="../qt-ui/models.cpp" line="1493"/>
         <source>Duration</source>
         <translation>區間</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1486"/>
+        <location filename="../qt-ui/models.cpp" line="1496"/>
         <source>Temp(%1%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1489"/>
+        <location filename="../qt-ui/models.cpp" line="1499"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1458"/>
-        <location filename="../qt-ui/models.cpp" line="1506"/>
+        <location filename="../qt-ui/models.cpp" line="1468"/>
+        <location filename="../qt-ui/models.cpp" line="1516"/>
         <source>OTU</source>
         <translation>氧容許量 OTU</translation>
     </message>
@@ -2267,12 +2272,12 @@
 <context>
     <name>ExtraDataModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2268"/>
+        <location filename="../qt-ui/models.cpp" line="2278"/>
         <source>Key</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2268"/>
+        <location filename="../qt-ui/models.cpp" line="2278"/>
         <source>Value</source>
         <translation type="unfinished"/>
     </message>
@@ -2359,7 +2364,7 @@
     <name>MainTab</name>
     <message>
         <location filename="../qt-ui/maintab.ui" line="134"/>
-        <location filename="../qt-ui/maintab.cpp" line="473"/>
+        <location filename="../qt-ui/maintab.cpp" line="477"/>
         <source>Location</source>
         <translation>位置</translation>
     </message>
@@ -2400,27 +2405,27 @@
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="18"/>
-        <location filename="../qt-ui/maintab.cpp" line="448"/>
+        <location filename="../qt-ui/maintab.cpp" line="452"/>
         <source>Dive notes</source>
         <translation>潛水筆記</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <location filename="../qt-ui/maintab.ui" line="632"/>
-        <location filename="../qt-ui/maintab.cpp" line="261"/>
+        <location filename="../qt-ui/maintab.cpp" line="265"/>
         <source>Air temp.</source>
         <translation>氣溫</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="79"/>
         <location filename="../qt-ui/maintab.ui" line="651"/>
-        <location filename="../qt-ui/maintab.cpp" line="262"/>
+        <location filename="../qt-ui/maintab.cpp" line="266"/>
         <source>Water temp.</source>
         <translation>水溫</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
-        <location filename="../qt-ui/maintab.cpp" line="474"/>
+        <location filename="../qt-ui/maintab.cpp" line="478"/>
         <source>Notes</source>
         <translation>記錄</translation>
     </message>
@@ -2582,61 +2587,61 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="258"/>
+        <location filename="../qt-ui/maintab.cpp" line="262"/>
         <source>Air temp. [%1]</source>
         <translation>氣溫 [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="259"/>
+        <location filename="../qt-ui/maintab.cpp" line="263"/>
         <source>Water temp. [%1]</source>
         <translation>水溫 [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="296"/>
+        <location filename="../qt-ui/maintab.cpp" line="300"/>
         <source>This trip is being edited.</source>
         <translation>此旅程已被編輯.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="303"/>
+        <location filename="../qt-ui/maintab.cpp" line="307"/>
         <source>Multiple dives are being edited.</source>
         <translation>此些旅程已被編輯.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="305"/>
+        <location filename="../qt-ui/maintab.cpp" line="309"/>
         <source>This dive is being edited.</source>
         <translation>此潛水已被編輯.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="419"/>
-        <location filename="../qt-ui/maintab.cpp" line="443"/>
+        <location filename="../qt-ui/maintab.cpp" line="423"/>
+        <location filename="../qt-ui/maintab.cpp" line="447"/>
         <source>Trip notes</source>
         <translation>旅程筆記</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="441"/>
+        <location filename="../qt-ui/maintab.cpp" line="445"/>
         <source>Trip location</source>
         <translation>旅程位置</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="509"/>
-        <location filename="../qt-ui/maintab.cpp" line="541"/>
+        <location filename="../qt-ui/maintab.cpp" line="513"/>
         <location filename="../qt-ui/maintab.cpp" line="545"/>
         <location filename="../qt-ui/maintab.cpp" line="549"/>
+        <location filename="../qt-ui/maintab.cpp" line="553"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="538"/>
+        <location filename="../qt-ui/maintab.cpp" line="542"/>
         <source>Deepest dive</source>
         <translation>最深的潛水</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="539"/>
+        <location filename="../qt-ui/maintab.cpp" line="543"/>
         <source>Shallowest dive</source>
         <translation>最淺的潛水</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="592"/>
+        <location filename="../qt-ui/maintab.cpp" line="596"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -2645,17 +2650,17 @@ mixed from Air and using:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="596"/>
+        <location filename="../qt-ui/maintab.cpp" line="600"/>
         <source> and </source>
         <translation>與</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="870"/>
+        <location filename="../qt-ui/maintab.cpp" line="884"/>
         <source>Discard the changes?</source>
         <translation>取消變更？</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="871"/>
+        <location filename="../qt-ui/maintab.cpp" line="885"/>
         <source>You are about to discard your changes.</source>
         <translation>您將要放棄您的變更。</translation>
     </message>
@@ -3807,72 +3812,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProfilePrintModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2083"/>
+        <location filename="../qt-ui/models.cpp" line="2093"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2088"/>
+        <location filename="../qt-ui/models.cpp" line="2098"/>
         <source>Dive #%1 - %2</source>
         <translation>潛水 #%1 - %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2091"/>
+        <location filename="../qt-ui/models.cpp" line="2101"/>
         <source>Max depth: %1 %2</source>
         <translation>最大深度: %1 %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2098"/>
+        <location filename="../qt-ui/models.cpp" line="2108"/>
         <source>Duration: %1 min</source>
         <translation>區間: %1 min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2103"/>
+        <location filename="../qt-ui/models.cpp" line="2113"/>
         <source>Gas used:</source>
         <translation>消耗氣體: </translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2105"/>
+        <location filename="../qt-ui/models.cpp" line="2115"/>
         <source>Tags:</source>
         <translation>標籤:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2107"/>
+        <location filename="../qt-ui/models.cpp" line="2117"/>
         <source>SAC:</source>
         <translation>耗氣率: </translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2109"/>
+        <location filename="../qt-ui/models.cpp" line="2119"/>
         <source>Weights:</source>
         <translation>配重:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2114"/>
+        <location filename="../qt-ui/models.cpp" line="2124"/>
         <source>Notes:</source>
         <translation>記錄:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2121"/>
+        <location filename="../qt-ui/models.cpp" line="2131"/>
         <source>Divemaster:</source>
         <translation>導潛:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2123"/>
+        <location filename="../qt-ui/models.cpp" line="2133"/>
         <source>Buddy:</source>
         <translation>潛伴:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2125"/>
+        <location filename="../qt-ui/models.cpp" line="2135"/>
         <source>Suit:</source>
         <translation>防寒衣：</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2127"/>
+        <location filename="../qt-ui/models.cpp" line="2137"/>
         <source>Viz:</source>
         <translation>能見度:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="2129"/>
+        <location filename="../qt-ui/models.cpp" line="2139"/>
         <source>Rating:</source>
         <translation>評分:</translation>
     </message>
@@ -4008,42 +4013,42 @@ p, li { white-space: pre-wrap; }
         <translation>在地圖上移動, 並且雙擊來設定潛水位置</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="511"/>
+        <location filename="../qt-ui/models.cpp" line="521"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="512"/>
+        <location filename="../qt-ui/models.cpp" line="522"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="536"/>
+        <location filename="../qt-ui/models.cpp" line="546"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="537"/>
+        <location filename="../qt-ui/models.cpp" line="547"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="560"/>
+        <location filename="../qt-ui/models.cpp" line="570"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="561"/>
+        <location filename="../qt-ui/models.cpp" line="571"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="585"/>
+        <location filename="../qt-ui/models.cpp" line="595"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="586"/>
+        <location filename="../qt-ui/models.cpp" line="596"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -4348,17 +4353,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TankInfoModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="902"/>
+        <location filename="../qt-ui/models.cpp" line="912"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="902"/>
+        <location filename="../qt-ui/models.cpp" line="912"/>
         <source>ml</source>
         <translation>ml</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="902"/>
+        <location filename="../qt-ui/models.cpp" line="912"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -4374,7 +4379,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TripItem</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1080"/>
+        <location filename="../qt-ui/models.cpp" line="1090"/>
         <source> (%1 shown)</source>
         <translation type="unfinished"/>
     </message>
@@ -4595,12 +4600,12 @@ OS CPU 架構: %1</translation>
 <context>
     <name>WSInfoModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="773"/>
+        <location filename="../qt-ui/models.cpp" line="783"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="773"/>
+        <location filename="../qt-ui/models.cpp" line="783"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -4661,17 +4666,17 @@ OS CPU 架構: %1</translation>
 <context>
     <name>WeightModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="420"/>
+        <location filename="../qt-ui/models.cpp" line="430"/>
         <source>Type</source>
         <translation>類型</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="420"/>
+        <location filename="../qt-ui/models.cpp" line="430"/>
         <source>Weight</source>
         <translation>重量</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="486"/>
+        <location filename="../qt-ui/models.cpp" line="496"/>
         <source>Clicking here will remove this weight system.</source>
         <translation>按此處移除配重系統。</translation>
     </message>
@@ -4692,79 +4697,79 @@ OS CPU 架構: %1</translation>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1829"/>
+        <location filename="../qt-ui/models.cpp" line="1839"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>年 
  &gt; 月 / 旅程</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1832"/>
+        <location filename="../qt-ui/models.cpp" line="1842"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1835"/>
+        <location filename="../qt-ui/models.cpp" line="1845"/>
         <source>Duration 
  Total</source>
         <translation>區間 
 全部</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1838"/>
+        <location filename="../qt-ui/models.cpp" line="1848"/>
         <source>
 Average</source>
         <translation>
 平均</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1841"/>
+        <location filename="../qt-ui/models.cpp" line="1851"/>
         <source>
 Shortest</source>
         <translation>
 最短</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1844"/>
+        <location filename="../qt-ui/models.cpp" line="1854"/>
         <source>
 Longest</source>
         <translation>
 最長</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1847"/>
+        <location filename="../qt-ui/models.cpp" line="1857"/>
         <source>Depth (%1)
  Average</source>
         <translation>深度 (%1)
 平均</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1850"/>
-        <location filename="../qt-ui/models.cpp" line="1859"/>
-        <location filename="../qt-ui/models.cpp" line="1868"/>
+        <location filename="../qt-ui/models.cpp" line="1860"/>
+        <location filename="../qt-ui/models.cpp" line="1869"/>
+        <location filename="../qt-ui/models.cpp" line="1878"/>
         <source>
 Minimum</source>
         <translation>
 最小</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1853"/>
-        <location filename="../qt-ui/models.cpp" line="1862"/>
-        <location filename="../qt-ui/models.cpp" line="1871"/>
+        <location filename="../qt-ui/models.cpp" line="1863"/>
+        <location filename="../qt-ui/models.cpp" line="1872"/>
+        <location filename="../qt-ui/models.cpp" line="1881"/>
         <source>
 Maximum</source>
         <translation>
 最大</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1856"/>
+        <location filename="../qt-ui/models.cpp" line="1866"/>
         <source>SAC (%1)
  Average</source>
         <translation>耗氣率 (%1)
 平均</translation>
     </message>
     <message>
-        <location filename="../qt-ui/models.cpp" line="1865"/>
+        <location filename="../qt-ui/models.cpp" line="1875"/>
         <source>Temp. (%1)
  Average</source>
         <translation>溫度 (%1)
@@ -4774,29 +4779,29 @@ Maximum</source>
 <context>
     <name>gettextFromC</name>
     <message>
-        <location filename="../dive.c" line="181"/>
+        <location filename="../dive.c" line="186"/>
         <source>pascal</source>
         <translation>pascal</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="186"/>
+        <location filename="../dive.c" line="191"/>
         <location filename="../qt-gui.cpp" line="338"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="190"/>
+        <location filename="../dive.c" line="195"/>
         <location filename="../qt-gui.cpp" line="341"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="232"/>
+        <location filename="../dive.c" line="237"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="269"/>
+        <location filename="../dive.c" line="274"/>
         <location filename="../qt-gui.cpp" line="220"/>
         <location filename="../qt-gui.cpp" line="235"/>
         <location filename="../worldmap-save.c" line="44"/>
@@ -4804,48 +4809,48 @@ Maximum</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="274"/>
+        <location filename="../dive.c" line="279"/>
         <location filename="../qt-gui.cpp" line="223"/>
         <location filename="../qt-gui.cpp" line="237"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="297"/>
+        <location filename="../dive.c" line="302"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="299"/>
+        <location filename="../dive.c" line="304"/>
         <source>m/s</source>
         <translation>m/s</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="304"/>
+        <location filename="../dive.c" line="309"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="306"/>
+        <location filename="../dive.c" line="311"/>
         <source>ft/s</source>
         <translation>ft/s</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="325"/>
+        <location filename="../dive.c" line="330"/>
         <location filename="../qt-gui.cpp" line="246"/>
         <location filename="../qt-gui.cpp" line="256"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="329"/>
+        <location filename="../dive.c" line="334"/>
         <location filename="../qt-gui.cpp" line="244"/>
         <location filename="../qt-gui.cpp" line="254"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1440"/>
+        <location filename="../dive.c" line="1469"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) 或 (%s)</translation>
     </message>
@@ -5172,28 +5177,28 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="481"/>
+        <location filename="../parse-xml.c" line="506"/>
         <source>Strange percentage reading %s
 </source>
         <translation>有問題的讀取比例 %s
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1747"/>
+        <location filename="../parse-xml.c" line="1760"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>無法解析訊息 &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1975"/>
-        <location filename="../parse-xml.c" line="2095"/>
+        <location filename="../parse-xml.c" line="1988"/>
+        <location filename="../parse-xml.c" line="2108"/>
         <source>Database query get_events failed.
 </source>
         <translation>資料庫讀取 get_events 失敗.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1982"/>
-        <location filename="../parse-xml.c" line="2102"/>
+        <location filename="../parse-xml.c" line="1995"/>
+        <location filename="../parse-xml.c" line="2115"/>
         <source>Database query get_tags failed.
 </source>
         <translation>數據庫請求get_tags失敗</translation>
@@ -5206,37 +5211,37 @@ Maximum</source>
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2126"/>
-        <location filename="../parse-xml.c" line="2147"/>
-        <location filename="../parse-xml.c" line="2296"/>
+        <location filename="../parse-xml.c" line="2139"/>
+        <location filename="../parse-xml.c" line="2160"/>
+        <location filename="../parse-xml.c" line="2309"/>
         <source>Database query failed '%s'.
 </source>
         <translation>資料庫要求錯誤 &apos;%s&apos; .
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2260"/>
+        <location filename="../parse-xml.c" line="2273"/>
         <source>Database query get_cylinders failed.
 </source>
         <translation>資料庫讀取  get_cylinders 失敗。
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2267"/>
+        <location filename="../parse-xml.c" line="2280"/>
         <source>Database query get_changes failed.
 </source>
         <translation>資料庫讀取  get_changes 失敗。
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2274"/>
+        <location filename="../parse-xml.c" line="2287"/>
         <source>Database query get_profile_sample failed.
 </source>
         <translation>資料庫讀取  get_profile_sample 失敗。
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2365"/>
+        <location filename="../parse-xml.c" line="2378"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>無法開啟樣式 %s</translation>
     </message>
@@ -5380,7 +5385,7 @@ Maximum</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1058"/>
+        <location filename="../profile.c" line="1054"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -5389,63 +5394,63 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1061"/>
+        <location filename="../profile.c" line="1057"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1065"/>
+        <location filename="../profile.c" line="1061"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1071"/>
+        <location filename="../profile.c" line="1067"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1074"/>
+        <location filename="../profile.c" line="1070"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1076"/>
+        <location filename="../profile.c" line="1072"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1078"/>
+        <location filename="../profile.c" line="1074"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1080"/>
+        <location filename="../profile.c" line="1076"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1082"/>
+        <location filename="../profile.c" line="1078"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1085"/>
+        <location filename="../profile.c" line="1081"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1092"/>
+        <location filename="../profile.c" line="1088"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -5454,7 +5459,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1096"/>
+        <location filename="../profile.c" line="1092"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -5463,142 +5468,142 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1108"/>
+        <location filename="../profile.c" line="1104"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>安全停留: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1111"/>
+        <location filename="../profile.c" line="1107"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>安全停留: 未知時間 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1116"/>
+        <location filename="../profile.c" line="1112"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deco: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1119"/>
+        <location filename="../profile.c" line="1115"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>減壓: 未知時間 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1123"/>
+        <location filename="../profile.c" line="1119"/>
         <source>In deco
 </source>
         <translation>減壓中
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1125"/>
+        <location filename="../profile.c" line="1121"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1128"/>
+        <location filename="../profile.c" line="1124"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1131"/>
+        <location filename="../profile.c" line="1127"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>減壓: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1139"/>
+        <location filename="../profile.c" line="1135"/>
         <source>In deco (calc)
 </source>
         <translation>減壓 (計算)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1141"/>
+        <location filename="../profile.c" line="1137"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL:%umin (預計)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1144"/>
+        <location filename="../profile.c" line="1140"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1147"/>
+        <location filename="../profile.c" line="1143"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>計算的上限深度 %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1153"/>
+        <location filename="../profile.c" line="1149"/>
         <source>Tissue %.0fmin: %.0f%s
 </source>
         <translation>組織 %.0fmin: %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1159"/>
+        <location filename="../profile.c" line="1155"/>
         <source>heartbeat: %d
 </source>
         <translation>心跳: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1161"/>
+        <location filename="../profile.c" line="1157"/>
         <source>bearing: %d
 </source>
         <translation>方位: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1254"/>
+        <location filename="../profile.c" line="1250"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
+        <location filename="../profile.c" line="1254"/>
         <location filename="../profile.c" line="1258"/>
         <location filename="../profile.c" line="1262"/>
-        <location filename="../profile.c" line="1266"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1270"/>
+        <location filename="../profile.c" line="1266"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1274"/>
+        <location filename="../profile.c" line="1270"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
+        <location filename="../profile.c" line="1274"/>
         <location filename="../profile.c" line="1278"/>
-        <location filename="../profile.c" line="1282"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1289"/>
+        <location filename="../profile.c" line="1285"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
@@ -5718,7 +5723,22 @@ EADD: %d%s
         <translation>減壓</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="227"/>
+        <location filename="../dive.c" line="30"/>
+        <source>OC-gas</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../dive.c" line="30"/>
+        <source>diluent</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../dive.c" line="30"/>
+        <source>oxygen</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../dive.c" line="232"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
