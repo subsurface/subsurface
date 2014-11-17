@@ -1762,6 +1762,20 @@ If, in addition, the *3m increments* button on the Profile Panel is clicked, the
 
 image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution",align="center"]
 
+[icon="images/tissues.jpg"]
+[NOTE]
+Display inert gas tissue pressures relative to ambient inert gas pressure (horizontal grey line).
+Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from
+green (faster tissues) to blue (slower tissues).
+The black line, graphed above the ambient pressure, is the maximum allowable tissue supersaturation (pressure limit) derived
+from the gradient factors specified in the *Preferences*. For
+divers involved in planned decompression diving, efficient rates of offgasing are obtained with tissue pressures
+between the ambient inert gas pressure (grey line) and the pressure limit (black line). This display is a representation
+of the tissue pressures during the whole dive. In contast, the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box* on the *Dive Profile*
+is an instantaneous reflection of tissue pressures at the moment in time reflected by the position of the cursor on the dive profile.
+
+image::images/tissuesGraph.jpg["Figure: Inert gas tissue pressure graph",align="center"]
+
 Gradient Factor settings strongly affect the calculated ceilings and their depths.
 For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings]. The
 currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated.
@@ -1773,13 +1787,6 @@ during the dive. For more information external to this manual see:
 
  ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
-[icon="images/tissues.jpg"]
-[NOTE]
-Display inert gas tissue pressures relative to ambient pressure (horizontal grey line.)
-Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from green (faster tissues) to blue (slower tissues).
-The black line, graphed above the ambient pressure, is the maximum allowable tissue supersaturation which includes the gradient factors specified in Preferences.
-
-image::images/tissuesGraph.jpg["Figure: Inert gas tissue pressure graph",align="center"]
 
 === The Dive Profile context menu
 
@@ -1873,6 +1880,7 @@ air diving at a depth equalling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of data.
 
+[[S_gas_pressure_graph]]
 ==== The Gas Pressure Bar Graph
 
 On the left of the *Information Box* is a vertical bar graph indicating the
@@ -2091,6 +2099,41 @@ panel to reflect events or conditions that apply to the merged dive. The figure
 below shows the depth profile of two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
+
+=== Filtering the dive list
+
+The dives in the *Dive List* panel can be filtered, that is, one can select only some
+of the dives based on their attributes, e.g. dive tags, dive site, dive master, buddy or protective
+clothing. For instance, filtering allows one to list the deep dives at a particular
+dive site, or otherwise the cave dives with a particular buddy.
+
+To open the filter, select _Log -> Filter divelist_ from the main menu. This opens the
+_Filter Panel_ at the top of the _Subsurface_ window. Three icons are located at the top
+right hand of the filter panel. The _Filter Panel_ can be reset
+(i.e. all current filters cleared) by selecting the *+*. The _Filter Panel_ may also be
+minimised by selecting the middle icon. When minimised, only these three icons are shown.
+The panel can be maximised by clicking the icon that minimised the panel. The filter may also be
+reset and closed by selecting the button with the flag.
+An example of the _Filter Panel_ is shown in the figure below.
+
+
+image::images/Filterpanel.jpg["Figure: Filter panel",align="center"]
+
+
+Four filter criteria may be used to filter the dive list: dive tags, person (buddy / dive master), dive site
+and dive suit, each of which is represented by a check list with check boxes. Above
+each check list is a second-level filter tool, allowing the listing of only some of
+the attributes within that check list. For instance, typing "_ca_" in the filter
+textbox above the tags check list results in the tags check list being reduced
+to "_cave_" and "_cavern_". Filtering of the check list enables the rapid finding
+of search terms for filtering the dive list.
+
+To activate filtering of the dive list, the check box of at least one item in one of
+the four check lists needs to be checked. The dive list is then shortened to include
+only the dives that pertain to the selection criteria specified in the check lists.
+The four check lists work as a filter with _AND_ operators: there is no _OR_ operator.
+One can therfore  search for _cave_ as a tag AND _Joe Smith_ as a buddy; but NOT
+for dives with either _cave_ as a tag OR _Joe Smith_ as a dive buddy.
 
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
