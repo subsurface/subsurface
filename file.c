@@ -242,7 +242,7 @@ enum csv_format {
 	POSEIDON_SENSOR1,
 	POSEIDON_SENSOR2,
 	POSEIDON_PRESSURE,
-	POSEIDON_DILUENT
+	POSEIDON_O2CYLINDER
 };
 
 static void add_sample_data(struct sample *sample, enum csv_format type, double val)
@@ -275,8 +275,8 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 	case POSEIDON_PRESSURE:
 		sample->cylinderpressure.mbar = val * 1000;
 		break;
-	case POSEIDON_DILUENT:
-		sample->diluentpressure.mbar = val * 1000;
+	case POSEIDON_O2CYLINDER:
+		sample->o2cylinderpressure.mbar = val * 1000;
 		break;
 	}
 }
@@ -480,7 +480,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
 		bool has_depth = false, has_setpoint = false;
 		char *lineptr, *key, *value;
-		int diluent_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
+		int o2cylinder_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
 
 		struct dive *dive;
 		struct divecomputer *dc;
@@ -595,20 +595,20 @@ int parse_txt_file(const char *filename, const char *csv)
 						add_sample_data(sample, POSEIDON_DEPTH, value);
 						break;
 					case 13:
+						add_sample_data(sample, POSEIDON_O2CYLINDER, value);
+						if (!o2cylinder_pressure) {
+							dive->cylinder[1].sample_start.mbar = value * 1000;
+							o2cylinder_pressure = value;
+						} else
+							o2cylinder_pressure = value;
+						break;
+					case 14:
 						add_sample_data(sample, POSEIDON_PRESSURE, value);
 						if (!cylinder_pressure) {
 							dive->cylinder[0].sample_start.mbar = value * 1000;
 							cylinder_pressure = value;
 						} else
 							cylinder_pressure = value;
-						break;
-					case 14:
-						add_sample_data(sample, POSEIDON_DILUENT, value);
-						if (!diluent_pressure) {
-							dive->cylinder[1].sample_start.mbar = value * 1000;
-							diluent_pressure = value;
-						} else
-							diluent_pressure = value;
 						break;
 					case 20:
 						has_setpoint = true;
@@ -643,9 +643,9 @@ int parse_txt_file(const char *filename, const char *csv)
 			if (!has_setpoint)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
 			if (cylinder_pressure)
-				dive->cylinder[0].sample_end.mbar = cylinder_pressure * 1000;
-			if (diluent_pressure)
-				dive->cylinder[1].sample_end.mbar = diluent_pressure * 1000;
+				dive->cylinder[1].sample_end.mbar = cylinder_pressure * 1000;
+			if (o2cylinder_pressure)
+				dive->cylinder[0].sample_end.mbar = o2cylinder_pressure * 1000;
 			finish_sample(dc);
 
 			if (!lineptr || !*lineptr)

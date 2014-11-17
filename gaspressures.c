@@ -168,7 +168,7 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 
 
 static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur, int pressure)
-{ // cur = index to pi->entry corresponding to t_end of segment; diluent_flag=1 indicates diluent cylinder
+{ // cur = index to pi->entry corresponding to t_end of segment;
 	struct pr_interpolate_struct interpolate;
 	int i;
 	struct plot_data *entry;
@@ -219,7 +219,7 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, int diluent_flag)
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, int o2_flag)
 {
 	int cyl, i;
 	struct plot_data *entry;
@@ -264,12 +264,12 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 
 		entry = pi->entry + i;
 
-		if (diluent_flag) {
+		if (o2_flag) {
 			// Find the cylinder index (cyl) and pressure
-			cyl = dive->diluent_cylinder_index;
-			pressure = DILUENT_PRESSURE(entry);
-			save_pressure = &(entry->diluentpressure[SENSOR_PR]);
-			save_interpolated = &(entry->diluentpressure[INTERPOLATED_PR]);
+			cyl = dive->oxygen_cylinder_index;
+			pressure = O2CYLINDER_PRESSURE(entry);
+			save_pressure = &(entry->o2cylinderpressure[SENSOR_PR]);
+			save_interpolated = &(entry->o2cylinderpressure[INTERPOLATED_PR]);
 		} else {
 			pressure = SENSOR_PRESSURE(entry);
 			save_pressure = &(entry->pressure[SENSOR_PR]);
@@ -351,7 +351,7 @@ static void debug_print_pressures(struct plot_info *pi)
  * in the pr_track_alloc structures. If diluent_flag = 1, then DILUENT_PRESSURE(entry) is used instead of SENSOR_PRESSURE.
  * This function is called by create_plot_info_new() in profile.c
  */
-void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int diluent_flag)
+void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int o2_flag)
 {
 	int i, cylinderid, cylinderindex = -1;
 	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
@@ -361,9 +361,9 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		unsigned pressure;
-		if (diluent_flag) { // if this is a diluent cylinder:
-			pressure = DILUENT_PRESSURE(entry);
-			cylinderid = dive->diluent_cylinder_index;
+		if (o2_flag) { // if this is a diluent cylinder:
+			pressure = O2CYLINDER_PRESSURE(entry);
+			cylinderid = dive->oxygen_cylinder_index;
 		} else {
 			pressure = SENSOR_PRESSURE(entry);
 			cylinderid = entry->cylinderindex;
@@ -379,8 +379,8 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		/* If 1st record or different cylinder: Create a new track_pr structure: */
 		/* track the segments per cylinder and their pressure/time integral */
 		if (cylinderid != cylinderindex) {
-			if (diluent_flag)			  // For CCR dives:
-				cylinderindex = dive->diluent_cylinder_index; // indicate diluent cylinder
+			if (o2_flag)			  // For CCR dives:
+				cylinderindex = dive->oxygen_cylinder_index; // indicate o2 cylinder
 			else
 				cylinderindex = entry->cylinderindex;
 			current = pr_track_alloc(pressure, entry->sec);
@@ -395,7 +395,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		current->end = pressure;
 
 		/* Was it continuous? */
-		if ((diluent_flag) && (DILUENT_PRESSURE(entry - 1))) // in the case of CCR diluent pressure
+		if ((o2_flag) && (O2CYLINDER_PRESSURE(entry - 1))) // in the case of CCR o2 pressure
 			continue;
 		else if (SENSOR_PRESSURE(entry - 1)) // for all other cylinders
 			continue;
@@ -406,7 +406,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	}
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(dive, pi, track_pr, diluent_flag);
+		fill_missing_tank_pressures(dive, pi, track_pr, o2_flag);
 	}
 
 #ifdef PRINT_PRESSURES_DEBUG

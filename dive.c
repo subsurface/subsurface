@@ -706,15 +706,14 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	struct event *ev = get_next_event(dc->events, "gaschange");
 	if (!ev || (dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds && get_next_event(ev->next, "gaschange") == NULL)) {
 		// we have either no gas change or only one gas change and that's setting an explicit first cylinder
+		mean[explicit_first_cylinder(dive, dc)] = dc->meandepth.mm;
+		duration[explicit_first_cylinder(dive, dc)] = dc->duration.seconds;
+
 		if (dc->dctype == CCR) {
+			// Do the same for the  O2 cylinder
 			int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
-			int diluent_cyl = get_cylinder_idx_by_use(dive, DILUENT);
-			mean[o2_cyl] = mean[diluent_cyl] = dc->meandepth.mm;
-			duration[o2_cyl] = duration[diluent_cyl] = dc->duration.seconds;
-		} else {
-			// OC, no real gas changes, it's all the first cylinder
-			mean[explicit_first_cylinder(dive, dc)] = dc->meandepth.mm;
-			duration[explicit_first_cylinder(dive, dc)] = dc->duration.seconds;
+			mean[o2_cyl] = dc->meandepth.mm;
+			duration[o2_cyl] = dc->duration.seconds;
 		}
 		return;
 	}
@@ -831,6 +830,8 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 	struct event *ev = get_next_event(dc->events, "gaschange");
 	if (ev && dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
 		return get_cylinder_index(dive, ev);
+	else if (dc->dctype == CCR)
+		return get_cylinder_idx_by_use(dive, DILUENT);
 	else
 		return 0;
 }
@@ -1151,7 +1152,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int maxdepth = dc->maxdepth.mm;
 	int mintemp = 0;
 	int lastdepth = 0;
-	int lastpressure = 0, lastdiluentpressure = 0;
+	int lastpressure = 0, lasto2pressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 	int first_cylinder;
 
@@ -1171,7 +1172,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		int depth = sample->depth.mm;
 		int temp = sample->temperature.mkelvin;
 		int pressure = sample->cylinderpressure.mbar;
-		int diluent_pressure = sample->diluentpressure.mbar;
+		int o2_pressure = sample->o2cylinderpressure.mbar;
 		int index;
 
 		/* if we have an explicit first cylinder */
@@ -1184,8 +1185,8 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			/* Remove duplicate redundant pressure information */
 			if (pressure == lastpressure)
 				sample->cylinderpressure.mbar = 0;
-			if (diluent_pressure == lastdiluentpressure)
-				sample->diluentpressure.mbar = 0;
+			if (o2_pressure == lasto2pressure)
+				sample->o2cylinderpressure.mbar = 0;
 			/* check for simply linear data in the samples
 			   +INT_MAX means uninitialized, -INT_MAX means not linear */
 			if (pressure_delta[index] != -INT_MAX && lastpressure) {
@@ -1203,7 +1204,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		}
 		lastindex = index;
 		lastpressure = pressure;
-		lastdiluentpressure = diluent_pressure;
+		lasto2pressure = o2_pressure;
 
 		if (depth > SURFACE_THRESHOLD) {
 			if (depth > maxdepth)

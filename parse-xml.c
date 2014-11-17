@@ -891,7 +891,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("cylpress.sample", pressure, &sample->cylinderpressure))
 		return;
-	if (MATCH("pdiluent.sample", pressure, &sample->diluentpressure))
+	if (MATCH("pdiluent.sample", pressure, &sample->cylinderpressure))
+		return;
+	if (MATCH("o2pressure.sample", pressure, &sample->o2cylinderpressure))
 		return;
 	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor))
 		return;

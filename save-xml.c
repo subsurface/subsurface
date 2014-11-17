@@ -215,7 +215,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	put_temperature(b, sample->temperature, " temp='", " C'");
 	put_pressure(b, sample->cylinderpressure, " pressure='", " bar'");
-	put_pressure(b, sample->diluentpressure, " pdiluent='", " bar'");
+	put_pressure(b, sample->o2cylinderpressure, " pdiluent='", " bar'");
 
 	/*
 	 * We only show sensor information for samples with pressure, and only if it

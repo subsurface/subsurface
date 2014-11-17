@@ -25,7 +25,7 @@ struct plot_data {
 	int pressure[2];
 	/* diluentpressure[0] is diluent pressure [CCR]
 	 * diluentpressure[1] is interpolated diluent pressure [CCR] */
-	int diluentpressure[2];
+	int o2cylinderpressure[2];
 	int temperature;
 	/* Depth info */
 	int depth;
@@ -40,7 +40,7 @@ struct plot_data {
 	int smoothed;
 	int sac;
 	struct gas_pressures pressures;
-	double o2setpoint, o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
+	double o2pressure, o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
 	double mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
@@ -91,9 +91,9 @@ int get_maxdepth(struct plot_info *pi);
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
-#define DILUENT_PRESSURE(_entry) (_entry)->diluentpressure[SENSOR_PR]
+#define O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[SENSOR_PR]
 #define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
-#define INTERPOLATED_DILUENT_PRESSURE(_entry) (_entry)->diluentpressure[INTERPOLATED_PR]
+#define INTERPOLATED_O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
 #define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */
 
