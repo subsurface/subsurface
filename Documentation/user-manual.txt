@@ -2131,9 +2131,10 @@ of search terms for filtering the dive list.
 To activate filtering of the dive list, the check box of at least one item in one of
 the four check lists needs to be checked. The dive list is then shortened to include
 only the dives that pertain to the selection criteria specified in the check lists.
-The four check lists work as a filter with _AND_ operators: there is no _OR_ operator.
-One can therfore  search for _cave_ as a tag AND _Joe Smith_ as a buddy; but NOT
-for dives with either _cave_ as a tag OR _Joe Smith_ as a dive buddy.
+The four check lists work as a filter with _AND_ operators, Subsurface
+filters therfore  for _cave_ as a tag AND _Joe Smith_ as a buddy; but the
+filters within a category are inclusive - filtering for _cave_ and _boat_
+shows those dives that have either one or both of these tags.
 
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
