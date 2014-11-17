@@ -2302,17 +2302,17 @@
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="73"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Изчисти филтрите</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="87"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Покажи/скрий филтрите</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="101"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Затвори и изчисти филтрите</translation>
     </message>
 </context>
 <context>
@@ -3241,7 +3241,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
         <source>Filter shows %1 (of %2) dives</source>
-        <translation type="unfinished"/>
+        <translation>Филтърът показва %1 (от %2) гмуркания</translation>
     </message>
 </context>
 <context>
@@ -4378,7 +4378,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1080"/>
         <source> (%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 показани)</translation>
     </message>
 </context>
 <context>

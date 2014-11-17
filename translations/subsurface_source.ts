@@ -4754,29 +4754,29 @@ Maximum</source>
 <context>
     <name>gettextFromC</name>
     <message>
-        <location filename="../dive.c" line="181"/>
+        <location filename="../dive.c" line="185"/>
         <source>pascal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="186"/>
+        <location filename="../dive.c" line="190"/>
         <location filename="../qt-gui.cpp" line="338"/>
         <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="190"/>
+        <location filename="../dive.c" line="194"/>
         <location filename="../qt-gui.cpp" line="341"/>
         <source>psi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="232"/>
+        <location filename="../dive.c" line="236"/>
         <source>cuft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="269"/>
+        <location filename="../dive.c" line="273"/>
         <location filename="../qt-gui.cpp" line="220"/>
         <location filename="../qt-gui.cpp" line="235"/>
         <location filename="../worldmap-save.c" line="44"/>
@@ -4784,48 +4784,48 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="274"/>
+        <location filename="../dive.c" line="278"/>
         <location filename="../qt-gui.cpp" line="223"/>
         <location filename="../qt-gui.cpp" line="237"/>
         <source>ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="297"/>
+        <location filename="../dive.c" line="301"/>
         <source>m/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="299"/>
+        <location filename="../dive.c" line="303"/>
         <source>m/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="304"/>
+        <location filename="../dive.c" line="308"/>
         <source>ft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="306"/>
+        <location filename="../dive.c" line="310"/>
         <source>ft/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="325"/>
+        <location filename="../dive.c" line="329"/>
         <location filename="../qt-gui.cpp" line="246"/>
         <location filename="../qt-gui.cpp" line="256"/>
         <source>lbs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="329"/>
+        <location filename="../dive.c" line="333"/>
         <location filename="../qt-gui.cpp" line="244"/>
         <location filename="../qt-gui.cpp" line="254"/>
         <source>kg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1440"/>
+        <location filename="../dive.c" line="1452"/>
         <source>(%s) or (%s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5152,26 +5152,26 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="481"/>
+        <location filename="../parse-xml.c" line="512"/>
         <source>Strange percentage reading %s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1747"/>
+        <location filename="../parse-xml.c" line="1764"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1975"/>
-        <location filename="../parse-xml.c" line="2095"/>
+        <location filename="../parse-xml.c" line="1992"/>
+        <location filename="../parse-xml.c" line="2112"/>
         <source>Database query get_events failed.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1982"/>
-        <location filename="../parse-xml.c" line="2102"/>
+        <location filename="../parse-xml.c" line="1999"/>
+        <location filename="../parse-xml.c" line="2119"/>
         <source>Database query get_tags failed.
 </source>
         <translation type="unfinished"></translation>
@@ -5183,33 +5183,33 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2126"/>
-        <location filename="../parse-xml.c" line="2147"/>
-        <location filename="../parse-xml.c" line="2296"/>
+        <location filename="../parse-xml.c" line="2143"/>
+        <location filename="../parse-xml.c" line="2164"/>
+        <location filename="../parse-xml.c" line="2313"/>
         <source>Database query failed &apos;%s&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2260"/>
+        <location filename="../parse-xml.c" line="2277"/>
         <source>Database query get_cylinders failed.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2267"/>
+        <location filename="../parse-xml.c" line="2284"/>
         <source>Database query get_changes failed.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2274"/>
+        <location filename="../parse-xml.c" line="2291"/>
         <source>Database query get_profile_sample failed.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2365"/>
+        <location filename="../parse-xml.c" line="2382"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5667,7 +5667,7 @@ EADD: %d%s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="227"/>
+        <location filename="../dive.c" line="231"/>
         <source>ℓ</source>
         <translation type="unfinished"></translation>
     </message>

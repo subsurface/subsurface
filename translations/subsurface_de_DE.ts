@@ -424,7 +424,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="618"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1826"/>
         <source>Future TTS</source>
-        <translation type="unfinished"/>
+        <translation>Künftige Gesamtaufstiegszeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="625"/>
@@ -1593,12 +1593,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="165"/>
         <source>NDL</source>
-        <translation>NDL</translation>
+        <translation>Nullzeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="185"/>
         <source>TTS</source>
-        <translation>TTS</translation>
+        <translation>Gesamtaufstiegszeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="205"/>
@@ -2301,17 +2301,17 @@
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="73"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Filter zurücksetzen</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="87"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Filter anzeigen/ausblenden</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="101"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Filter schließen und zurücksetzen</translation>
     </message>
 </context>
 <context>
@@ -2691,7 +2691,7 @@ den folgenden Gasen gemischt werden:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="775"/>
         <source>Toggle NDL, TTS</source>
-        <translation>NDL, TTS ein-/ausschalten</translation>
+        <translation>Nullzeit, Gesamtaufstiegszeit ein-/ausschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="727"/>
@@ -3240,7 +3240,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
         <source>Filter shows %1 (of %2) dives</source>
-        <translation type="unfinished"/>
+        <translation>Filter zeigt %1 (von %2) Tauchgängen</translation>
     </message>
 </context>
 <context>
@@ -4377,7 +4377,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1080"/>
         <source> (%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation> (%1 angezeigt)</translation>
     </message>
 </context>
 <context>
@@ -5510,14 +5510,14 @@ EADD: %d%s
         <location filename="../profile.c" line="1125"/>
         <source>NDL: %umin
 </source>
-        <translation>NDL: %umin
+        <translation>Nullzeit: %umin
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1128"/>
         <source>TTS: %umin
 </source>
-        <translation>TTS: %umin
+        <translation>Gesamtaufstiegszeit: %umin
 </translation>
     </message>
     <message>
@@ -5538,14 +5538,14 @@ EADD: %d%s
         <location filename="../profile.c" line="1141"/>
         <source>NDL: %umin (calc)
 </source>
-        <translation>NDL: %umin (berechnet)
+        <translation>Nullzeit: %umin (berechnet)
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1144"/>
         <source>TTS: %umin (calc)
 </source>
-        <translation>TTS: %umin (berechnet)
+        <translation>Gesamtaufstiegszeit: %umin (berechnet)
 </translation>
     </message>
     <message>

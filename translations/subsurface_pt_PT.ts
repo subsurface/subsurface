@@ -2302,17 +2302,17 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="73"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Reinicializar filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="87"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/ocultar filtros</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="101"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Fechar e reinicializar filtros</translation>
     </message>
 </context>
 <context>
@@ -3205,7 +3205,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Ficheiros de logbooks (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Ficheiros Cochran (*.can);;Ficheiros CSV (*.csv);;Ficheiros DiveLog.de (*.dld);;JDiveLog files (*.jlb);;Ficheiros Liquivision (*.lvd);;Ficheiros MkVI (*.txt);;Ficheiros Suunto (*.sde *.db);;Ficheiros UDDF/UDCF (*.uddf *.udcf);;Ficheiros XML (*.xml);;Todos os ficheiros (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="769"/>
@@ -3241,7 +3241,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
         <source>Filter shows %1 (of %2) dives</source>
-        <translation type="unfinished"/>
+        <translation>O filtro mostra %1 (de %2) mergulhos</translation>
     </message>
 </context>
 <context>
@@ -3889,7 +3889,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation type="unfinished"/>
+        <translation>A visualização do NDL /TTS foi desactivada devido ao excessivo tempo de processamento</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
@@ -4378,7 +4378,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1080"/>
         <source> (%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 mostrados)</translation>
     </message>
 </context>
 <context>

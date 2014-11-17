@@ -18,7 +18,7 @@
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="232"/>
         <source>No buddies</source>
-        <translation>Brak partnerów</translation>
+        <translation>brak partnerów</translation>
     </message>
 </context>
 <context>
@@ -2302,17 +2302,17 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="73"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Wyczyść filtry</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="87"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż/ukryj filtry</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="101"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Wyczyść filtry i zamknij</translation>
     </message>
 </context>
 <context>
@@ -2354,7 +2354,7 @@ wybrany komputer nurkowy?</translation>
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="285"/>
         <source>No location set</source>
-        <translation>brak podanego miejsca</translation>
+        <translation>nie podano miejsca</translation>
     </message>
 </context>
 <context>
@@ -3242,7 +3242,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
         <source>Filter shows %1 (of %2) dives</source>
-        <translation type="unfinished"/>
+        <translation>Filtr pokazuje %1 (z %2) nurkowań</translation>
     </message>
 </context>
 <context>
@@ -4315,7 +4315,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="119"/>
         <source>No suit set</source>
-        <translation>nieznany</translation>
+        <translation>nie podano skafandra</translation>
     </message>
 </context>
 <context>
@@ -4379,7 +4379,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="1080"/>
         <source> (%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation> (%1 pokazane)</translation>
     </message>
 </context>
 <context>
