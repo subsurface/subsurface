@@ -512,8 +512,11 @@ void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components 
 	if (what.cylinders)
 		copy_cylinders(s, d, false);
 	if (what.weights)
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+			free((void *)d->weightsystem[i].description);
 			d->weightsystem[i] = s->weightsystem[i];
+			d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
+		}
 }
 #undef CONDITIONAL_COPY_STRING
 
@@ -567,11 +570,14 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 	if (!s || !d)
 		return;
 	for (i = 0; i < MAX_CYLINDERS; i++) {
+		free((void *)d->cylinder[i].type.description);
 		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 		if (!used_only || is_cylinder_used(s, i)) {
 			d->cylinder[i].type = s->cylinder[i].type;
+			d->cylinder[i].type.description = copy_string(s->cylinder[i].type.description);
 			d->cylinder[i].gasmix = s->cylinder[i].gasmix;
 			d->cylinder[i].depth = s->cylinder[i].depth;
+			d->cylinder[i].cylinder_use = s->cylinder[i].cylinder_use;
 			d->cylinder[i].manually_added = true;
 		}
 	}
