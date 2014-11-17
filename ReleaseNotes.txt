@@ -19,6 +19,11 @@ Some of the changes since Subsurface 4.2
   version of libdivecomputer oder a Uemis Zurich SDA)
 - Better visualization of the gases used during a dive ("tank bar")
 - Ability to re-plan dives
+- Support for several new dive computers including the Suunto EON Steel,
+  Aeris A300 CD, Aeris F11 (Suunto EON Steel support is included with the
+  Windows binaries but requires a patched version of libdivecomputer when
+  building from source -- we expect the necessary patches to be upstream,
+  soon)
 - Import dive logs from Liquivision and Cochran software
 - Import dive logs from the Poseidon Mk6 CCR
 - Import dive logs from Suunto DM5
