@@ -14,17 +14,34 @@ Some of the changes since Subsurface 4.2
   family of dive computers
 - Support for extra data that can be downloaded from some dive
   computers, including information like battery levels, no fly times,
-  etc (only as supported by the dive computer)
+  Gradient Factors used during the dive, etc (only as supported by the
+  dive computer, at the time of this writing this requires a custom
+  version of libdivecomputer oder a Uemis Zurich SDA)
 - Better visualization of the gases used during a dive ("tank bar")
 - Ability to re-plan dives
 - Import dive logs from Liquivision and Cochran software
 - Import dive logs from the Poseidon Mk6 CCR
+- Import dive logs from Suunto DM5
+- Many improvements for UDDF and CSV import
 - Many improvements to HTML export
+- Many small improvements to the planner
+- Many small UI changes for better use on small displays (tighter columns
+  and column headers on the dive list, the toolbox of icons no longer
+  forces a minimum height of the profile, etc)
 - Improvements on HiDPI displays
-- Experimental CCR support: (someone explain what does and does not work, please)
+- Fix annoying bug where when starting to edit a dive the pop-up with
+  completions would cover the edit line (this usually happened when
+  editing tags)
+- Declutter profile for dive computers that send a heading event in every
+  sample
+- on Windows, prevent installation of 64bit binaries on 32bit OS and warn
+  when installing 32bit binaries on 64bit OS
+- support multiple tanks when syncing with divelogs.de
+- Experimental CCR and PSCR support: (someone explain what does and does not work, please)
 
 Known bugs
 
+- yearly statistics show a half-empty window
 - this appears to be a bug in Qt. When changing the password needed
   authenticate with a proxy, Subsurface will not use the new password
   until after a restart
