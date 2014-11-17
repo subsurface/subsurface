@@ -764,6 +764,8 @@ void MainTab::acceptChanges()
 							mydive->cylinder[i].type.size = displayed_dive.cylinder[i].type.size;
 							mydive->cylinder[i].type.workingpressure = displayed_dive.cylinder[i].type.workingpressure;
 							mydive->cylinder[i].gasmix = displayed_dive.cylinder[i].gasmix;
+							mydive->cylinder[i].cylinder_use = displayed_dive.cylinder[i].cylinder_use;
+							mydive->cylinder[i].depth = displayed_dive.cylinder[i].depth;
 						}
 					}
 				}
