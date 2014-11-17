@@ -597,7 +597,7 @@ int parse_txt_file(const char *filename, const char *csv)
 					case 13:
 						add_sample_data(sample, POSEIDON_O2CYLINDER, value);
 						if (!o2cylinder_pressure) {
-							dive->cylinder[1].sample_start.mbar = value * 1000;
+							dive->cylinder[0].sample_start.mbar = value * 1000;
 							o2cylinder_pressure = value;
 						} else
 							o2cylinder_pressure = value;
@@ -605,7 +605,7 @@ int parse_txt_file(const char *filename, const char *csv)
 					case 14:
 						add_sample_data(sample, POSEIDON_PRESSURE, value);
 						if (!cylinder_pressure) {
-							dive->cylinder[0].sample_start.mbar = value * 1000;
+							dive->cylinder[1].sample_start.mbar = value * 1000;
 							cylinder_pressure = value;
 						} else
 							cylinder_pressure = value;

@@ -214,8 +214,8 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	put_temperature(b, sample->temperature, " temp='", " C'");
-	put_pressure(b, sample->cylinderpressure, " pressure='", " bar'");
-	put_pressure(b, sample->o2cylinderpressure, " pdiluent='", " bar'");
+	put_pressure(b, sample->cylinderpressure, " pdiluent='", " bar'");
+	put_pressure(b, sample->o2cylinderpressure, " pressure='", " bar'");
 
 	/*
 	 * We only show sensor information for samples with pressure, and only if it
@@ -252,6 +252,21 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	if (sample->cns != old->cns) {
 		put_format(b, " cns='%u%%'", sample->cns);
 		old->cns = sample->cns;
+	}
+
+	if ((sample->o2sensor[0].mbar) && (sample->o2sensor[0].mbar != old->o2sensor[0].mbar)) {
+		put_milli(b, " sensor1='", sample->o2sensor[0].mbar, " bar'");
+		old->o2sensor[0] = sample->o2sensor[0];
+	}
+
+	if ((sample->o2sensor[1].mbar) && (sample->o2sensor[1].mbar != old->o2sensor[1].mbar)) {
+		put_milli(b, " sensor2='", sample->o2sensor[1].mbar, " bar'");
+		old->o2sensor[1] = sample->o2sensor[1];
+	}
+
+	if ((sample->o2sensor[2].mbar) && (sample->o2sensor[2].mbar != old->o2sensor[2].mbar)) {
+		put_milli(b, " sensor3='", sample->o2sensor[2].mbar, " bar'");
+		old->o2sensor[2] = sample->o2sensor[2];
 	}
 
 	if (sample->setpoint.mbar != old->setpoint.mbar) {
@@ -355,6 +370,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++)
 			if (dc->dctype == i)
 				show_utf8(b, dctype_text[i], " dctype='", "'", 1);
+		if (dc->no_o2sensors)
+			put_format(b," no_o2sensors='%d'", dc->no_o2sensors);
 	}
 	put_format(b, ">\n");
 	save_depths(b, dc);

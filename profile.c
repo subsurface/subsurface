@@ -905,7 +905,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 
-		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->pressures.o2, dive->dc.dctype, entry->sac);
+		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure, dive->dc.dctype, entry->sac);
 		fn2 = (int) (1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int) (1000.0 * entry->pressures.he / amb_pressure);
 
