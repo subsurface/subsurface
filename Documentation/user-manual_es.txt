@@ -880,6 +880,8 @@ nuevos datos se guardan.
 
 === Importar información de inmersiones de otras fuentes u otros formatos de datos
 
+[[S_ImportingAlienDiveLogs]]
+
 Si el usuario bucea desde hace algún tiempo, es posible que bastantes
 inmersiones hayan sido registradas usando otro software. No es necesario teclear
 de nuevo esta información ya que, probablemente, estos diarios puedan importarse
@@ -928,14 +930,75 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
  - Diarios en formato XML (Divinglog 5.0, MacDive y varios otros)
  - Diarios en formato UDDF (p.e. Kenozoooid)
  - Diarios en formato UDCF
+ - Diarios de CCR Poseidon
  - JDiveLog
  - Suunto Dive Manager (DM3 y DM4)
- - Diarios en formato CSV (basados en texto o en hojas de cálculo).
+ - Diarios en formato CSV (basados en texto o en hojas de cálculo), incluidos
+diarios de CCR APD.
 
 Seleccionar el archivo correspondiente en la lista del diálogo abre el archivo
 importado directamente en la *Lista de Inmersiones* de _Subsurface_. También
 están soportados algunos otros formatos, no accesibles desde el diálogo
 Importar, como se explica a continuación.
+
+==== Importar diarios de sistemas de recicladores de circuito cerrado (CCR)
+
+[icon="images/APD.jpg"]
+[NOTE]
+Los recicladores de circuito cerrado utilizan tecnologías avanzadas para
+reciclar el gas expirado, llevando a cabo dos acciones para mantener una
+concentración de oxígeno respirable:
+a) Eliminan dióxido de carbono del gas que ha sido exhalado.
+b) Regulan la concentración de oxígeno para que sea segura en la inmersión.
+Actualmente, en _Subsurface_, el Poseidon MKVI Discovery es el ordenador de
+buceo mejor soportado. El interfaz CCR de _Subsurface_ es todavía experimental
+y se halla bajo desarrollo activo.  En contraste con un ordenador de circuito
+abierto convencional, el ordenador de un sistema CCR no permite la descarga de
+un diario que contenga múltiples inmersiones. En su lugar, cada buceo se guarda
+independientemente. Esto supone que _Subsurface_ no pueda descargar un diario
+directamente del ordenador CCR, sino que se importa de la misma manera que se
+importan los diarios de otras bases de datos.
+
+==== Importar una inmersión con CCR
+
+Consulta la sección que trata
+xref:S_ImportingAlienDiveLogs[la importación de otras fuentes digitales].
+Desde el menú principal de _Subsurface_, selecciona _Importar -> Importar
+archivos de registro_ para desplegar el
+xref:Unified_import[diálogo unificado de importación]. Como se explicó en la
+sección anterior, la parte inferior derecha del diálogo contiene una lista
+desplegable de dispositivos que incluye una opción para los archivos de MKVI.
+Tras seleccionar el formato CCR apropiado y el directorio donde se hallan
+guardados los archivos originales del ordenador CCR, se puede seleccionar un
+archivo de diario concreto (en el caso del MKVI será un archivo con extensión
+.txt). Después de haber seleccionado el archivo, pulsa el botón _Abrir_ debajo
+a la derecha en el diálogo de importación.
+
+==== Información mostrada para una inmersión
+
+_Presiones parciales de los gases_: El gráfico de presión parcial de oxígeno
+muestra la información de los sensores de oxígeno del equipo CCR. En el caso
+del Poseidon MKVI, se muestra el valor promedio de los dos sensores. En el
+caso del equipo APD, se muestra el promedio de los 3 sensores de oxígeno. Si
+uno de los sensores muestra una lectura muy diferente en comparación a los
+otros dos, se ignora el sensor que diverge. Para las inmersiones con CCR, el
+gráfico de presiones parciales de oxígeno debería ser bastante plano,
+reflejando el ajuste del "setpoint" durante la inmersión.
+Las presiones parciales de nitrógeno (y helio en su caso) se muestran de la
+forma habitual como en el resto de inmersiones.
+
+_Presiones de las botellas_: Los ordenadores de buceo con CCR como el Poseidon
+MKVI registran las presiones de las botellas de oxígeno y diluyente. La presión
+de la botella de oxígeno es la que se muestra en el perfil. Además, en la
+pestaña _Equipo_ se mostrarán las presiones inicial y final de ambas, la de
+oxígeno y la de diluyente.
+
+_Información específica del equipo_: La información específica del equipo
+recabada por _Subsurface_ se muestra en la pestaña _Otros datos_. Puede incluir
+información de ajustes o metadatos sobre la inmersión.
+
+Se puede encontrar más información especifica sobre descarga de diarios de CCR
+en el xref:S_PoseidonMkVI[Apéndice B].
 
 ==== Importar desde Mares Dive Organiser V2.1
 
@@ -1676,6 +1739,19 @@ detallada de los factores de gradiente, consultar los siguientes links:
 ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 ** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+
+[icon="images/tissues.jpg"]
+[NOTE]
+Muestra presiones de los gases inertes en los tejidos, en relación con la
+presión ambiental (línea gris horizontal).
+Las presiones en los tejidos se calculan utilizando el algoritmo Bühlmann ZH-16
+y se muestran como líneas de colores que varían desde el verde (tejidos rápidos)
+al azul (tejidos más lentos).
+La línea negra, dibujada sobre la presión ambiental, es la máxima sobresaturación
+de tejidos permitida, en la que se incluyen los factores de gradiente que se
+establecieron en _Preferencias_.
+
+image::images/tissuesGraph.jpg["Figura: Gráfico de presión de gases inertes en los tejidos",align="center"]
 
 === El menú contextual del Perfil de Inmersión
 
@@ -2908,6 +2984,57 @@ del incorporado en el PC.
  * Cambiar a drivers bluetooth distintos para hardware del PC
  * Apagar Wi-Fi mientras se utiliza bluetooth
 
+[[S_PoseidonMkVI]]
+=== Importar diarios desde el Poseidon MKVI Discovery
+
+[icon="images/MkVI.jpeg"]
+[NOTE]
+La descarga de diarios desde el MKVI se realiza utilizando un adaptador de
+comunicaciones personalizado y el _Poseidon PC Configuration Software_, que
+se obtiene al adquirir el equipo MKVI. La última es una aplicación de
+windows que permite configurar el equipo y guardar los diarios. La comunicación
+entre el ordenador de buceo y el PC utiliza el protocolo IrDA de infrarrojos.
+Solo se pueden descargar datos de una inmersión cada vez e incluyen tres
+archivos:
+
+- Configuración de ajustes para la inmersión y parámetros clave de la misma (es
+el archivo con extensión .txt).
+- Detalles del diario (archivo con extensión .csv).
+- Diario en formato Redbook (archivo con extensión .cvsr). Es una versión
+comprimida del diario utilizando un formato propio.
+
+_Subsurface_ accede a los archivos .txt y .csv para obtener información.
+
+=== Importar diarios del CCR APD Inspiration
+
+[icon="images/APDComputer.jpg"]
+[NOTE]
+Los diarios del ordenador de buceo de un APD Inspiration o similar, se
+descargan utilizando un adaptador y el _AP Communicator_, obtenidos al comprar
+el equipo. Los diarios se pueden visualizar utilizando el _AP Log Viewer_ desde
+Windows o Mac/OS. Sin embargo, los diarios de APD se pueden ver o manejar desde
+_Subsurface_ (junto a buceos en los que se haya utilizado otros muchos tipos de
+ordenador de buceo). Los diarios de APD Inspiration se importan a _Subsurface_
+como sigue:
+
+- Abrir una inmersión con el _AP Log Viewer_.
+- Seleccionar la pestaña llamada _Datos_ (_Data_).
+- Si se muestran en la pantalla los datos del diario "en crudo", pulsar en
+_Copiar al portapapeles_.
+- Abrir un editor de texto (p.e. Notepad en windows o TextWrangler en Mac).
+- Copiar el contenido del portapapeles al editor y guardar el archivo de texto
+con extensión de archivo .csv.
+- Desde Subsurface, seleccionar _Importar -> Importar archivos de registro_
+para abrir el xref:Unified_import[diálogo de importación universal].
+- En la lista desplegable de abajo del diálogo seleccionar _Archivos CSV_.
+- En la lista de nombres de archivo, seleccionar el archivo .CSV que acabamos
+de crear y se abrirá un diálogo de importación.
+- En la lista desplegable llamada _Importaciones pre-configuradas_, seleccionar
+el _APD Log Viewer_.
+- Asegurarse que los otros ajustes del diario APD son correctas y pulsar
+_Aceptar_.
+
+El diario de APD aparecerá en _Subsurface_.
 
 == APÉNDICE C: Exportar información de diarios desde otros softwares externos.
 
