@@ -26,9 +26,10 @@ static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "deco")
 };
 
-const char *cylinderuse_text[] = { "OC-gas", "diluent", "oxygen" };
+const char *cylinderuse_text[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen")
+};
 const char *dctype_text[] = { "OC", "CCR", "PSCR" };
-
 
 int event_is_gaschange(struct event *ev)
 {
@@ -586,7 +587,7 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 int cylinderuse_from_text(const char *text)
 {
 	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
-		if (same_string(text, cylinderuse_text[i]))
+		if (same_string(text, cylinderuse_text[i]) || same_string(text, translate("gettextFromC", cylinderuse_text[i])))
 			return i;
 	}
 	return -1;

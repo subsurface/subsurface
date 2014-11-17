@@ -173,7 +173,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			ret = get_depth_string(cyl->depth, true);
 			break;
 		case USE:
-			ret = QString(cylinderuse_text[cyl->cylinder_use]);
+			ret = gettextFromC::instance()->trGettext(cylinderuse_text[cyl->cylinder_use]);
 			break;
 		}
 		break;

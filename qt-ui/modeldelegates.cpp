@@ -1,10 +1,11 @@
 #include "modeldelegates.h"
-#include "../dive.h"
-#include "../divelist.h"
+#include "dive.h"
+#include "divelist.h"
 #include "starwidget.h"
 #include "models.h"
 #include "diveplanner.h"
 #include "simplewidgets.h"
+#include "gettextfromc.h"
 
 #include <QtDebug>
 #include <QPainter>
@@ -286,7 +287,7 @@ QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewI
 {
 	QComboBox *comboBox = new QComboBox(parent);
 	for (int i = 0; i < NUM_GAS_USE; i++)
-		comboBox->addItem(QString(cylinderuse_text[i]));
+		comboBox->addItem(gettextFromC::instance()->trGettext(cylinderuse_text[i]));
 	return comboBox;
 }
 
