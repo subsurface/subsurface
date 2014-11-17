@@ -781,12 +781,16 @@ void MainTab::acceptChanges()
 			mark_divelist_changed(true);
 			MODIFY_SELECTED_DIVES(
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
-					if (mydive != cd && (copyPaste || same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description)))
+					if (mydive != cd && (copyPaste || same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
 						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
+						mydive->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
+					}
 				}
 			);
-			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+			for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 				cd->weightsystem[i] = displayed_dive.weightsystem[i];
+				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
+			}
 		}
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
