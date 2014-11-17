@@ -103,6 +103,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
+	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
@@ -612,6 +613,10 @@ void MainTab::updateDiveInfo(bool clear)
 	}
 	editMode = NONE;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
+	if (get_dive_dc(&displayed_dive, dc_number)->dctype == CCR)
+		ui.cylinders->view()->showColumn(CylindersModel::USE);
+	else
+		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 }
 
 void MainTab::addCylinder_clicked()

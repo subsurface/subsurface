@@ -76,7 +76,7 @@ CylindersModel::CylindersModel(QObject *parent) : changed(false),
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << trUtf8("O" UTF8_SUBSCRIPT_2 "%") << tr("He%")
-					   << tr("Switch at"));
+					   << tr("Switch at") << tr("Use"));
 
 	initTrashIcon();
 }
@@ -171,6 +171,9 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			break;
 		case DEPTH:
 			ret = get_depth_string(cyl->depth, true);
+			break;
+		case USE:
+			ret = QString(cylinderuse_text[cyl->cylinder_use]);
 			break;
 		}
 		break;
@@ -297,6 +300,13 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			cyl->depth = string_to_depth(vString.toUtf8().data());
 			changed = true;
 		}
+		break;
+	case USE:
+		if (CHANGED()) {
+			cyl->cylinder_use = (enum cylinderuse)vString.toInt();
+			changed = true;
+		}
+		break;
 	}
 	if (addDiveMode)
 		DivePlannerPointsModel::instance()->tanksUpdated();

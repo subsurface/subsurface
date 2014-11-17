@@ -2,7 +2,7 @@
 #define MODELDELEGATES_H
 
 #include <QStyledItemDelegate>
-class QComboBox;
+#include <QComboBox>
 class QPainter;
 
 class DiveListDelegate : public QStyledItemDelegate {
@@ -57,6 +57,15 @@ public:
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+};
+
+class TankUseDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+public:
+	explicit TankUseDelegate(QObject *parent = 0);
+	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual void setEditorData(QWidget * editor, const QModelIndex & index) const;
 };
 
 class WSInfoDelegate : public ComboBoxDelegate {

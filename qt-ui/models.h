@@ -107,6 +107,7 @@ public:
 		O2,
 		HE,
 		DEPTH,
+		USE,
 		COLUMNS
 	};
 

@@ -277,6 +277,32 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	return delegate;
 }
 
+TankUseDelegate::TankUseDelegate(QObject *parent)
+{
+
+}
+
+QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
+{
+	QComboBox *comboBox = new QComboBox(parent);
+	for (int i = 0; i < NUM_GAS_USE; i++)
+		comboBox->addItem(QString(cylinderuse_text[i]));
+	return comboBox;
+}
+
+void TankUseDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
+{
+	QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
+	QString indexString = index.data().toString();
+	comboBox->setCurrentIndex(cylinderuse_from_text(indexString.toUtf8().data()));
+}
+
+void TankUseDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const
+{
+	QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
+	model->setData(index, comboBox->currentIndex());
+}
+
 struct RevertWeightData {
 	QString type;
 	int weight;
