@@ -1161,8 +1161,8 @@ edited directly by clicking on each of them in the text box and by overtyping th
 information displayed.</p></div>
 <div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
-temperature information and this field may therefore not require further
-editing. If air temperature is not provided by the dive computer, the first temperature reading
+temperature information and this field may therefore contain information obtained from the dive computer.
+If air temperature is not provided by the dive computer, the first temperature reading
 might be used for the air temperature. Generally this is close enough to the real air temperature as
 the change in the temperature sensor reading is quite slow to follow the changes in the environment.
 If editing is required, only a value is required, the units of temperature will be
@@ -1189,7 +1189,7 @@ stored.
 <li>
 <p>
 The user can obtain the coordinates from the <em>Subsurface</em> Companion app if
-an Android device with GPS was used and the if the coordinates of the dive site
+an Android device with GPS was used and if the coordinates of the dive site
 were stored using that device.
 <a href="#S_Companion">Click here for more information</a>
 </p>
@@ -1348,7 +1348,38 @@ with two types of weights: integrated as well as a weight belt:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_adding_bookmarks_to_a_dive">4.2.6. Adding Bookmarks to a dive</h4>
+<h4 id="_editing_several_selected_dives_simultaneously">4.2.6. Editing several selected dives simultaneously</h4>
+<div class="paragraph"><p><em>METHOD 1</em>: After uploading dives from
+a dive computer, the dive profiles of the uploaded dives are shown in the <strong>Dive profile</strong> tab, as well
+as a few items of information
+in the <strong>Dive Notes</strong> tab (e.g. water temperature) and in the <strong>Equipment</strong> tab (e.g. gas pressures
+and gas composition). However the other fields remain empty.
+It may be useful to simultaneously edit some of the
+fields in the <strong>Dive Notes</strong> and <strong>Equipment</strong> tabs.  For instance, it is possible
+that a diver performed several dives during a single day, using identical equipment while diving at the same
+dive site or with the same dive master and/or buddy or tags. Instead of completing the information for each
+of these dives separately, one can select all the dives for that day in the <strong>Dive List</strong> and
+insert the same information in the <strong>Dive Notes</strong> and <strong>Equipment</strong> fields that need
+identical information. This is achieved by editing the dive notes or the equipment for any one
+of the selected dives.</p></div>
+<div class="paragraph"><p>The simultaneous editing only works with fields that do not already contain information.
+This means that, if some fields have been edited for a particular dive among the selected dives,
+these are not changed while
+editing the dives simultaneously. Technically, the rule for editing several dives simultaneously is:
+if the data field being edited contains <em>exactly the same information</em> for all the dives that have been
+selected, the new, edited information is substituted for all the selected dives, otherwise only the
+edited dive is
+changed, even though several dives have been selected in the <strong>Dive List</strong>. This greatly speeds
+up the completion of the dive log after several similar dives.</p></div>
+<div class="paragraph" id="S_CopyComponents"><p><em>METHOD 2</em>:There is a different way of achieving the same goal. Select a dive with all the appropriate information
+typed into the <strong>Dive Notes</strong> and <strong>Equipment</strong> tabs. Then, from the main menu, select <em>Log &#8594; Copy dive components</em>.
+A box is presented with a selection of check boxes for most of the fields in the <strong>Dive Notes</strong> and <strong>Equipment</strong> tabs.
+Select the fields to be copied from the currently selected dive, then select <em>OK</em>. Now, in the <strong>Dive List</strong>,
+select the dives
+into which this information is to be pasted. Then, from the main menu, select <em>Log &#8594; Paste dive components</em>. All the selected dives now contain the data initially selected in the original source dive log.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_adding_bookmarks_to_a_dive">4.2.7. Adding Bookmarks to a dive</h4>
 <div class="paragraph"><p>Many divers wish to annotate their dives with text that indicate particular events
 during the dive, e.g. "Saw dolphins", or "Released surface bouy". This is easily
 done:</p></div>
@@ -1385,7 +1416,7 @@ the bottom of the information box (see <strong>D</strong> below).
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_updated_dive_information">4.2.7. Saving the updated dive information</h4>
+<h4 id="_saving_the_updated_dive_information">4.2.8. Saving the updated dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab and the <strong>Equipment</strong> tab can be
 saved by
 using the
@@ -1461,6 +1492,11 @@ UDCF-formatted dive logs
 </li>
 <li>
 <p>
+Poseidon CCR logs
+</p>
+</li>
+<li>
+<p>
 JDiveLog
 </p>
 </li>
@@ -1471,7 +1507,7 @@ Suunto Dive Manager (DM3 and DM4)
 </li>
 <li>
 <p>
-CSV (text-based and spreadsheet-based) dive logs.
+CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 </p>
 </li>
 </ul></div>
@@ -1480,7 +1516,63 @@ the imported dive log in the <em>Subsurface</em> <strong>Dive List</strong>. Som
 accessible through the Import dialogue are also supported, as explained below.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_mares_dive_organiser_v2_1">4.3.2. Importing from Mares Dive Organiser V2.1</h4>
+<h4 id="_importing_dive_logs_from_closed_circuit_rebreather_ccr_systems">4.3.2. Importing dive logs from closed circuit rebreather (CCR) systems</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/APD.jpg" alt="Note" />
+</td>
+<td class="content">Closed system rebreathers use avanced technology to recirculate
+gas that has been breathed while doing two things to maintain a
+breathable oxygen concentration:
+a) remove carbon dioxide from the gas that has been exhaled
+b) regulate the oxygen concentration to remain within safe diving limits.
+Currently, within <em>Subsurface</em>, the Poseidon MkVI Discovery is the best
+supported CCR dive computer. The CCR interface of <em>Subsurface</em> is currently experimental
+and under active development. In contrast to a conventional open circuit
+dive computer, a CCR system computer does not allow the download of a log
+containg multiple dives. Rather, each dive is stored independently. This
+means that <em>Subsurface</em> cannot download a dive log directly from a CCR
+dive computer, but that it imports CCR dive logs in the same way that it
+imports dive log data from other databases.</td>
+</tr></table>
+</div>
+<div class="sect4">
+<h5 id="_import_a_ccr_dive">Import a CCR dive</h5>
+<div class="paragraph"><p>See the section dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive information from other
+digital sources</a>. From the main menu of <em>Subsurface</em>, select <em>Import&#8594;Import
+log files</em> to bring up the <a href="#Unified_import">universal import dialogue</a>. As
+explained in the previous section, the bottom right
+hand of the import dialogue contains a dropdown list of appropriate devices
+that currently includes an option for MkVI files. Having selected the appropriate CCR format and
+the directory where the original dive logs have been stored from the CCR dive
+computer, one can select a particular dive log file (in the case of the MkVI
+it is a file with a .txt extension). After selecting the appropriate dive log,
+activate the <em>Open</em> button at the bottom right hand of the universal import dialogue.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_displayed_information_for_a_dive">Displayed information for a  dive</h5>
+<div class="paragraph"><p><em>Partial pressures of gases</em>: The graph of oxygen partial pressure shows the
+information from the oxygen sensors of the CCR equipment. In the case of the
+Poseidon MKVI, the mean value of the two oxygen sensors are shown. In the case
+of the APD equipment, the mean of the three oxygen sensors are shown. If one
+sensor shows a very different oxygen PO2 reading compared to the others, the
+divergent sensor is ingnored. For CCR dives the graph for oxygen partial pressure
+should be fairly flat, reflecting the setpoint settings during the dive.
+Partial pressures for nitrogen (and helium,
+if applicable) are shown in the usual way as for other dives.</p></div>
+<div class="paragraph"><p><em>Cylinder pressures</em>: CCR dive computers like the Poseidon MkVI record the
+pressures of the oxygen and diluent cylinders. The pressure of the oxygen cylinder
+is shown on the dive profile. In addition, start and end pressures for both oxygen
+and diluent cylinders are shown in the <em>Equipment Tab</em>.</p></div>
+<div class="paragraph"><p><em>Equipment-specific information</em>: Equipment-specific information gathered by
+<em>Subsurface</em> is shown in the <em>Extra data</em> tab. This may include setup information
+or metadata about the dive.</p></div>
+<div class="paragraph"><p>More equipment-specific information for downloading CCR dive logs can be found in <a href="#S_PoseidonMkVI">Appendix B</a>.</p></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_importing_from_mares_dive_organiser_v2_1">4.3.3. Importing from Mares Dive Organiser V2.1</h4>
 <div class="paragraph"><p>Since Mares utilise proprietary Windows software not compatible with
 multi-platform applications, these dive logs cannot be
 directly imported into
@@ -1514,7 +1606,7 @@ from <em>divelogs.de</em> to <em>Subsurface</em>, using the instructions below.
 </ol></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">4.3.3. Importing dives from <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">4.3.4. Importing dives from <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. The <em>Import&#8594;Import form Divelogs.de</em> option should be selected
 from the Main Menu. This
@@ -1533,7 +1625,7 @@ success status is indicated (see figure on the right [<strong>B</strong>], below
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSV">4.3.4. Importing dives in CSV format</h4>
+<h4 id="S_ImportingCSV">4.3.5. Importing dives in CSV format</h4>
 <div class="paragraph"><p>Sometimes dive computers export dive information as files with
 <em>comma-separated values</em> (.CSV). For example, the APD Inspiration and Evolution
 closed circuit rebreather (CCR) systems export dive information in a CSV
@@ -1626,7 +1718,7 @@ the image. After completing the column specification, select the <em>OK</em> but
 and the dive will be imported and listed in the <strong>Dive List</strong> tab of <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingManualCSV">4.3.5. Importing dives from manually kept CSV file</h4>
+<h4 id="S_ImportingManualCSV">4.3.6. Importing dives from manually kept CSV file</h4>
 <div class="paragraph"><p>If one keeps dive logs in a spreadsheet, there is an option to import
 those dives as well. Spreadsheet data, exported as a CSV file, can
 be imported to <em>Subsurface</em>. When importing manually
@@ -2462,6 +2554,27 @@ compartments following the Bühlmann model (<strong>B</strong> in figure below).
 <img src="images/Ceilings2.jpg" alt="Figure: Ceiling with 3m resolution" />
 </div>
 </div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/tissues.jpg" alt="Note" />
+</td>
+<td class="content">Display inert gas tissue pressures relative to ambient inert gas pressure (horizontal grey line).
+Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from
+green (faster tissues) to blue (slower tissues).
+The black line, graphed above the ambient pressure, is the maximum allowable tissue supersaturation (pressure limit) derived
+from the gradient factors specified in the <strong>Preferences</strong>. For
+divers involved in planned decompression diving, efficient rates of offgasing are obtained with tissue pressures
+between the ambient inert gas pressure (grey line) and the pressure limit (black line). This display is a representation
+of the tissue pressures during the whole dive. In contast, the <a href="#S_gas_pressure_graph">Gas Pressure Graph</a> in the <strong>Information Box</strong> on the <strong>Dive Profile</strong>
+is an instantaneous reflection of tissue pressures at the moment in time reflected by the position of the cursor on the dive profile.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/tissuesGraph.jpg" alt="Figure: Inert gas tissue pressure graph" />
+</div>
+</div>
 <div class="paragraph"><p>Gradient Factor settings strongly affect the calculated ceilings and their depths.
 For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>. The
 currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated.
@@ -2588,6 +2701,101 @@ air diving at a depth equalling the END.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of data.</p></div>
+<div class="sect3">
+<h4 id="S_gas_pressure_graph">5.5.1. The Gas Pressure Bar Graph</h4>
+<div class="paragraph"><p>On the left of the <strong>Information Box</strong> is a vertical bar graph indicating the
+pressures of the nitrogen (and other inert gases, e.g. helium, if applicable) that the diver
+was inhaling <em>at a particular instant during the dive</em>, indicated by the position
+of the cursor on the <strong>Dive Profile</strong>. The drawing on the left below indicates the
+meaning of the different parts of the Gas Pressure Bar Graph.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/GasPressureBarGraph.jpg" alt="FIGURE:Gas Pressure bar Graph" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+The light green area indicates the total gas, with the top margin of the light green
+area indicating the total gas pressure inhaled by the diver and measured from the bottom
+of the graph to the top of the light green area. This pressure has a <em>relative</em> value in the graph
+and does not indicate absolute pressure.
+</p>
+</li>
+<li>
+<p>
+The horizontal black line underneath the light green margin indicates the equilibrium pressure
+of the inert gases inhaled by the diver, usually nitrogen. In
+the case of trimix, it is the pressures of nitrogen and helium combined. In this example,
+the user is diving with EAN32, so the inert gas pressure is 68% of the distance from the
+bottom of the graph to the total gas pressure value.
+</p>
+</li>
+<li>
+<p>
+The dark green area at the bottom of the graph represents the pressures of inert gas in each
+of the 16 tissue compartments, following the Bühlmann algorithm, the fast tissues being on the
+left hand side.
+</p>
+</li>
+<li>
+<p>
+The top black horizontal line indicates the the gradient factor that applies to the depth of
+the diver at the particular point on the <strong>Dive Profile</strong>. The appropriate gradient factor is an
+interpolation between the FGLow and GFHigh values specified in the Graph tab of the <strong>Preferences
+Panel</strong> of <strong>Subsurface</strong>.
+</p>
+</li>
+<li>
+<p>
+The bottom margin of the red area in the graph indicates the Bühlman-derived M-value, that is the
+pressure value of inert gases at which bubble formation is expected to be severe, resulting
+in decompression sickness.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>These five values are indicated on the left in the graph above. The way the Gas Pressure Bar Graph changes
+during a dive is indicated on the right hand side of the above figure for a diver using EAN32.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Graph <strong>A</strong> indicates the situation at the start of a dive with diver at the surface. The pressures in all
+the tissue compartments are still at the quilibrium pressure because no diving has taken place.
+</p>
+</li>
+<li>
+<p>
+Graph <strong>B</strong> indicates the situation after a descent to 30 meters. Few of the tissue compartments have had
+time to respond to the descent, their gas pressures being far below the equilibrium gas pressure.
+</p>
+</li>
+<li>
+<p>
+Graph <strong>C</strong> represents the pressures after 30 minutes at 30 m. The fast compartments have attained
+equilibrium (i.e. they have reached the hight of the black line indicating the equilibrium pressure). The
+slower compartments (towards the right) have not reached equilibrium and are in the process of slowly
+increasing in pressure.
+</p>
+</li>
+<li>
+<p>
+Graph <strong>D</strong> shows the pressures after ascent to a depth of 4.5 meters. Since, during ascent, the total
+inhaled gas pressure has decreased strongly from 4 bar to 1.45 bar, the pressures in the different tissue
+compartments now exceed that of the total gas pressure and approaches the gradient factor value (i.e.
+the top black horizontal line). Further ascent will result in exceeding the gradient
+factor value (GFHigh), endangering the diver.
+</p>
+</li>
+<li>
+<p>
+Graph <strong>E</strong> indicates the situation after remaining at 4.5 meters for 10 minutes. The fast compartments
+have decreased in pressure. As expected, the pressures in the slow compartments have not changed much.
+The pressures in the fast compartments do not approach the GFHigh value any more and the diver is safer
+than in the situation indicated in graph <strong>D</strong>.
+</p>
+</li>
+</ul></div>
+</div>
 </div>
 </div>
 </div>
@@ -2762,6 +2970,40 @@ below shows the depth profile of two such dives that were merged:</p></div>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_filtering_the_dive_list">6.5. Filtering the dive list</h3>
+<div class="paragraph"><p>The dives in the <strong>Dive List</strong> panel can be filtered, that is, one can select only some
+of the dives based on their attributes, e.g. dive tags, dive site, dive master, buddy or protective
+clothing. For instance, filtering allows one to list the deep dives at a particular
+dive site, or otherwise the cave dives with a particular buddy.</p></div>
+<div class="paragraph"><p>To open the filter, select <em>Log &#8594; Filter divelist</em> from the main menu. This opens the
+<em>Filter Panel</em> at the top of the <em>Subsurface</em> window. Three icons are located at the top
+right hand of the filter panel. The <em>Filter Panel</em> can be reset
+(i.e. all current filters cleared) by selecting the <strong>+</strong>. The <em>Filter Panel</em> may also be
+minimised by selecting the middle icon. When minimised, only these three icons are shown.
+The panel can be maximised by clicking the icon that minimised the panel. The filter may also be
+reset and closed by selecting the button with the flag.
+An example of the <em>Filter Panel</em> is shown in the figure below.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Filterpanel.jpg" alt="Figure: Filter panel" />
+</div>
+</div>
+<div class="paragraph"><p>Four filter criteria may be used to filter the dive list: dive tags, person (buddy / dive master), dive site
+and dive suit, each of which is represented by a check list with check boxes. Above
+each check list is a second-level filter tool, allowing the listing of only some of
+the attributes within that check list. For instance, typing "<em>ca</em>" in the filter
+textbox above the tags check list results in the tags check list being reduced
+to "<em>cave</em>" and "<em>cavern</em>". Filtering of the check list enables the rapid finding
+of search terms for filtering the dive list.</p></div>
+<div class="paragraph"><p>To activate filtering of the dive list, the check box of at least one item in one of
+the four check lists needs to be checked. The dive list is then shortened to include
+only the dives that pertain to the selection criteria specified in the check lists.
+The four check lists work as a filter with <em>AND</em> operators, Subsurface
+filters therfore  for <em>cave</em> as a tag AND <em>Joe Smith</em> as a buddy; but the
+filters within a category are inclusive - filtering for <em>cave</em> and <em>boat</em>
+shows those dives that have either one or both of these tags.</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2835,8 +3077,8 @@ starting from 1.
 </li>
 <li>
 <p>
-Minimum Javascript: This will minimize the Javascript produced with the file,
-some functionality will be lost.
+Export Yearly Statistics: if this option is checked, a yearly statistics table will
+be attached with the HTML exports.
 </p>
 </li>
 <li>
@@ -3471,18 +3713,12 @@ time to get to that level. However, if the <em>Display transition in deco</em> o
 the transitions are shown separately from the segment durations at a particular level.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_printing_the_dive_plan">11.5. Printing the dive plan</h3>
-<div class="paragraph"><p>Selecting the <em>Print</em> button in the planner allows printing of the  <em>Dive Plan Details</em>
-for wet notes. Alternatively one can cut and paste the <em>Dive Plan Details</em> for
-inclusion in a text file or word processing document.</p></div>
-<div class="paragraph"><p>Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
-After a dive plan has been saved, the dive details and gas calculations are saved in
-the <strong>Dive Notes</strong> tab. While a dive plan is being designed, it can be printed using
-the <em>Print</em> button in the dive planner. This prints the dive details and gas calculations
-in the <em>Dive Plan Details</em> panel of the dive planner. However, after the plan has been saved, it is
-represented in a way very similar to a dive log and the gas calculations cannot be
-accessed in the same way as during the planning process. The only way to print the
-dive plan is to use the <em>File&#8594;Print</em> facility on the main menu in the same way as for dive logs.</p></div>
+<h3 id="S_Replan">11.5. Modifying an existing dive plan</h3>
+<div class="paragraph"><p>Normally, when a dive plan has been saved, it is accessible from the <strong>Dive List</strong>, like any
+other dive log. Within the <strong>Dive List</strong> there is not a way to change a saved dive plan.
+To perform changes to a dive plan, select it on the <strong>Dive List</strong>. Then, in the main menu,
+select <em>Log &#8594; Re-plan dive</em>. This will open the selected dive plan within the dive planner,
+allowing changes to be made and saved as usual.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_planning_for_repetitive_dives">11.6. Planning for repetitive dives</h3>
@@ -3500,6 +3736,20 @@ and allows planning within these limitations.</p></div>
 be created conforming to one of the configurations. If one now wishes to plan a dive using
 this configuration, just highlight the template dive in the <strong>Dive List</strong> and activate the
 planner: the planner takes into account the configuration in the highlighted dive.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_printing_the_dive_plan">11.7. Printing the dive plan</h3>
+<div class="paragraph"><p>Selecting the <em>Print</em> button in the planner allows printing of the  <em>Dive Plan Details</em>
+for wet notes. Alternatively one can cut and paste the <em>Dive Plan Details</em> for
+inclusion in a text file or word processing document.</p></div>
+<div class="paragraph"><p>Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
+After a dive plan has been saved, the dive details and gas calculations are saved in
+the <strong>Dive Notes</strong> tab. While a dive plan is being designed, it can be printed using
+the <em>Print</em> button in the dive planner. This prints the dive details and gas calculations
+in the <em>Dive Plan Details</em> panel of the dive planner. However, after the plan has been saved, it is
+represented in a way very similar to a dive log and the gas calculations cannot be
+accessed in the same way as during the planning process. The only way to print the
+dive plan is to use the <em>File&#8594;Print</em> facility on the main menu in the same way as for dive logs.</p></div>
 </div>
 </div>
 </div>
@@ -3560,6 +3810,11 @@ the selected dives in the logbook) to one of several formats.
 <em>Quit</em> - Quit <em>Subsurface</em>.
 </p>
 </li>
+<li>
+<p>
+<em>Configure dive computer</em> - This option is currently experimental and under development.
+</p>
+</li>
 </ul></div>
 </div>
 <div class="sect2">
@@ -3602,6 +3857,23 @@ from <em>www.Divelogs.de</em>.
 <li>
 <p>
 <a href="#S_DivePlanner"><em>Plan Dive</em></a> - This feature allows the planning of dives.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Replan"><em>Re-plan dive</em></a> - Edit a dive plan that has been saved into the <strong>Dive List</strong>.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_CopyComponents"><em>Copy dive components</em></a> - By selecting this option, one can copy information
+  from several fields of a dive log onto the clipboard.
+</p>
+</li>
+<li>
+<p>
+<em>Paste dive components</em> - Paste, into the selected dives in the <strong>Dive List</strong>,
+   the information copied using the <em>Copy dive components</em> option.
 </p>
 </li>
 <li>
@@ -4076,6 +4348,114 @@ switch off WiFi while using Bluetooth
 </li>
 </ul></div>
 </div>
+<div class="sect2">
+<h3 id="S_PoseidonMkVI">14.5. Importing dive logs from the Poseidon MkVI Discovery</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/MkVI.jpeg" alt="Note" />
+</td>
+<td class="content">Download of dive logs from the MkVI is performed using a custom communications
+adapter and the <em>Poseidon PC Configuration Software</em>, obtained when purchasing
+the MKVI equipment. The latter is a Windows application allowing configuration
+of equipment and storage of dive logs. Communication between dive computer and
+desktop computer utilises the IrDA infra-red protocol. Only data for one dive
+can be downloaded at a time, comprising three files:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Setup configuration for the dive and key dive parameters (file with a .txt
+extension)
+</p>
+</li>
+<li>
+<p>
+Dive log details (file with a .csv extension)
+</p>
+</li>
+<li>
+<p>
+Redbook format dive log (file with .cvsr extension). This is a compressed
+version of the dive log using a propriatary format.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><em>Subsurface</em> accesses the .txt and the .csv files to obtain dive log information.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_importing_dive_logs_from_the_apd_inspiration_ccr">14.6. Importing dive logs from the APD Inspiration CCR</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/APDComputer.jpg" alt="Note" />
+</td>
+<td class="content">The dive logs of an APD Inspiration or similar CCR dive computer are downloaded using
+a communications adapter and <em>AP Communicator</em>, obtained when
+purchasing the equipment. The dive logs can be viewed using the <em>AP Log Viewer</em>,
+within Windows or Mac/OS. However, APD logs can be viewed and managed from within
+<em>Subsurface</em> (together with dives using many other types of dive computer). The
+APD inspiration dive logs are imported into <em>Subsurface</em> as follows:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open a dive within the <em>AP Log Viewer</em>.
+</p>
+</li>
+<li>
+<p>
+Select the tab at the top of the screen, entitled "<em>Data</em>".
+</p>
+</li>
+<li>
+<p>
+If the raw dive log data show on the screen, click on "<em>Copy to Clipboard</em>".
+</p>
+</li>
+<li>
+<p>
+Open a text editor, e.g. Notepad (Windows), TextWrangler (Mac).
+</p>
+</li>
+<li>
+<p>
+Copy the contents of the clipboard into the text editor and save the text file
+with a filename extension of .CSV
+</p>
+</li>
+<li>
+<p>
+Within <em>Subsurface</em>, select <em>Import&#8594;Import log files</em> to open the <a href="#Unified_import">universal import dialogue</a>.
+</p>
+</li>
+<li>
+<p>
+In the dropdown list towards the bottom right of the dialogue, select "<em>CSV files</em>".
+</p>
+</li>
+<li>
+<p>
+On the list of file names select the .CSV file that has been created above. An import
+dialogue opens.
+</p>
+</li>
+<li>
+<p>
+In the dropdown list on the middle right labeled '<em>Pre-configured imports</em>",
+select <em>APD Log Viewer</em>.
+</p>
+</li>
+<li>
+<p>
+Ensure the other settings for the ADP dive log are appropriate, then select <em>OK</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The APD dive log will appear within <em>Subsurface</em>.</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -4403,7 +4783,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-07 23:54:22 PDT
+Last updated 2014-11-17 09:10:46 GMT
 </div>
 </div>
 </body>

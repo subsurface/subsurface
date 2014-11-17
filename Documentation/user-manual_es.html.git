@@ -1151,13 +1151,13 @@ cada uno de ellos y sobreescribiendo la información mostrada.</p></div>
 <div class="paragraph"><p><strong>Temperaturas Aire/Agua</strong>: Las temperaturas de aire y agua durante la inmersión
 se muestran en estos campos a la derecha de la Hora de Inicio. Muchos
 ordenadores de buceo suministran información sobre la temperatura del agua y
-este campo puede que no necesite editarse. Si no se proporciona la temperatura
-del aire, puede utilizarse la primera lectura del ordenados. En general, suele
-estar bastante cerca de la temperatura real del aire ya que el cambio en la
-lectura del sensor de temperatura es bastante lento para seguir los cambios en
-el entorno. Si fuera necesario, no hay que teclear las unidades de temperatura:
-<em>Subsurface</em> las suministra automáticamente de acuerdo con las <em>Preferencias</em>
-(métricas o imperiales).</p></div>
+este campo puede que ya contenga información obtenida del mismo. Si no se
+proporciona la temperatura del aire, puede utilizarse la primera lectura del
+ordenador. En general, suele estar bastante cerca de la temperatura real del
+aire ya que el cambio en la lectura del sensor de temperatura es bastante lento
+para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
+las unidades de temperatura: <em>Subsurface</em> las suministra automáticamente de
+acuerdo con las <em>Preferencias</em> (métricas o imperiales).</p></div>
 <div class="paragraph"><p><strong>Ubicación</strong>: Se teclea aquí el texto que describa el lugar donde se hizo la
 inmersión, p.e. "Tihany, Lake Balaton, Hungary". El autocompletado de los
 nombres hará este paso más simple cuando el usuario bucee frecuentemente en los
@@ -1320,7 +1320,42 @@ inmersión con dos tipos de lastre: integrado y cinturón:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_añadir_marcas_a_una_inmersión">4.2.6. Añadir Marcas a una inmersión</h4>
+<h4 id="_editar_simultáneamente_varias_inmersiones_seleccionadas">4.2.6. Editar simultáneamente varias inmersiones seleccionadas</h4>
+<div class="paragraph"><p><em>METODO 1</em>: Tras descargar inmersiones de un ordenador de buceo, los perfiles
+de los buceos descargados se mostrarán en el panel "Perfil de la inmersión",
+así como algunas otras informaciones en las pestañas "Notas de la Inmersión" y
+"Equipo". Sin embargo, otros campos permanecerán vacíos.</p></div>
+<div class="paragraph"><p>Puede resultar útil editar simultáneamente algunos de los campos de las "Notas
+de la Inmersión" o del "Equipo". Por ejemplo, es posible que un buceador
+efectuara varias inmersiones en un solo día utilizando el mismo equipo, o en el
+mismo punto de buceo o con el mismo guía o compañero. En lugar de completar la
+información de las inmersiones una por una, se pueden seleccionar todos los
+buceos deseados en la "Lista de Inmersiones" e insertar la información común en
+las "Notas de Inmersión" y "Equipo".</p></div>
+<div class="paragraph"><p>La edición simultánea solo funciona con campos que no contienen aún ninguna
+información. Esto significa que si, para una inmersión en concreto, uno de los
+campos ya ha sido rellenado, no será modificado por la edición simultánea en
+ese buceo en concreto. Técnicamente, la regla para editar varias inmersiones a
+la vez es: "si el campo que estamos editando contiene <em>exactamente la misma
+información</em> en todas las inmersiones que hemos seleccionado, la nueva
+información introducida se sustituye en todas las inmersiones seleccionadas, de
+lo contrario solo se cambia la inmersión que estemos editando aunque haya
+varias seleccionadas.</p></div>
+<div class="paragraph"><p>Esto acelera notablemente el rellenado del divelog después de haber efectuado
+varios buceos similares.</p></div>
+<div class="paragraph" id="S_CopyComponents"><p><em>METODO 2</em>: Hay una forma diferente de hacer lo mismo. Seleccionamos un buceo
+que contenga toda la información apropiada  en las pestañas <strong>Notas de la
+Inmersión</strong> y <strong>Equipo</strong>. Entonces, desde el menú principal, seleccionamos
+<em>Registro &#8594; Copiar componentes</em>. Aparecerá una ventana con casillas
+seleccionables para la mayoría de campos de las pestañas <strong>Notas de la inmersión</strong>
+y <strong>Equipo</strong>.  Selecciona los campos a copiar desde la inmersión seleccionada,
+luego pulsa <em>Aceptar</em>. Ahora selecciona en la <strong>Lista de Inmersiones</strong> los buceos
+a los que pegar esta información. Desde el menú principal, selecciona <em>Registro
+ &#8594; Pegar componentes</em>. Tras esto, todas las inmersiones seleccionadas
+ contendrán los datos seleccionados previamente de la anterior inmersión.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_añadir_marcas_a_una_inmersión">4.2.7. Añadir Marcas a una inmersión</h4>
 <div class="paragraph"><p>Muchos buceadores desean anotar en sus inmersiones textos que indiquen sucesos
 concretos durante el buceo, p.e. "Avistamos delfines" o "Lanzada boya deco".
 Esto se hace fácilmente:</p></div>
@@ -1360,7 +1395,7 @@ Cuando el ratón pase sobre el marcador rojo, el texto guardado se mostrará en
 </div>
 </div>
 <div class="sect3">
-<h4 id="_guardar_la_información_de_buceo_actualizada">4.2.7. Guardar la información de buceo actualizada</h4>
+<h4 id="_guardar_la_información_de_buceo_actualizada">4.2.8. Guardar la información de buceo actualizada</h4>
 <div class="paragraph"><p>La información introducida en las pestañas Notas de la inmersión y Equipo puede
 guardarse utilizando los dos botones de arriba a la derecha de la pestaña <strong>Notas
 de la Inmersión</strong>. Si se pulsa <em>Guardar</em> los datos del buceo se guardan. Si se
@@ -1372,7 +1407,7 @@ nuevos datos se guardan.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_importar_información_de_inmersiones_de_otras_fuentes_u_otros_formatos_de_datos">4.3. Importar información de inmersiones de otras fuentes u otros formatos de datos</h3>
-<div class="paragraph"><p>Si el usuario bucea desde hace algún tiempo, es posible que bastantes
+<div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Si el usuario bucea desde hace algún tiempo, es posible que bastantes
 inmersiones hayan sido registradas usando otro software. No es necesario teclear
 de nuevo esta información ya que, probablemente, estos diarios puedan importarse
 a <em>Subsurface</em>. <em>Subsurface</em> puede importar un amplio abanico de diarios de
@@ -1432,6 +1467,11 @@ Diarios en formato UDCF
 </li>
 <li>
 <p>
+Diarios de CCR Poseidon
+</p>
+</li>
+<li>
+<p>
 JDiveLog
 </p>
 </li>
@@ -1442,7 +1482,8 @@ Suunto Dive Manager (DM3 y DM4)
 </li>
 <li>
 <p>
-Diarios en formato CSV (basados en texto o en hojas de cálculo).
+Diarios en formato CSV (basados en texto o en hojas de cálculo), incluidos
+diarios de CCR APD.
 </p>
 </li>
 </ul></div>
@@ -1452,7 +1493,68 @@ están soportados algunos otros formatos, no accesibles desde el diálogo
 Importar, como se explica a continuación.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importar_desde_mares_dive_organiser_v2_1">4.3.2. Importar desde Mares Dive Organiser V2.1</h4>
+<h4 id="_importar_diarios_de_sistemas_de_recicladores_de_circuito_cerrado_ccr">4.3.2. Importar diarios de sistemas de recicladores de circuito cerrado (CCR)</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/APD.jpg" alt="Note" />
+</td>
+<td class="content">Los recicladores de circuito cerrado utilizan tecnologías avanzadas para
+reciclar el gas expirado, llevando a cabo dos acciones para mantener una
+concentración de oxígeno respirable:
+a) Eliminan dióxido de carbono del gas que ha sido exhalado.
+b) Regulan la concentración de oxígeno para que sea segura en la inmersión.
+Actualmente, en <em>Subsurface</em>, el Poseidon MKVI Discovery es el ordenador de
+buceo mejor soportado. El interfaz CCR de <em>Subsurface</em> es todavía experimental
+y se halla bajo desarrollo activo.  En contraste con un ordenador de circuito
+abierto convencional, el ordenador de un sistema CCR no permite la descarga de
+un diario que contenga múltiples inmersiones. En su lugar, cada buceo se guarda
+independientemente. Esto supone que <em>Subsurface</em> no pueda descargar un diario
+directamente del ordenador CCR, sino que se importa de la misma manera que se
+importan los diarios de otras bases de datos.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_importar_una_inmersión_con_ccr">4.3.3. Importar una inmersión con CCR</h4>
+<div class="paragraph"><p>Consulta la sección que trata
+<a href="#S_ImportingAlienDiveLogs">la importación de otras fuentes digitales</a>.
+Desde el menú principal de <em>Subsurface</em>, selecciona <em>Importar &#8594; Importar
+archivos de registro</em> para desplegar el
+<a href="#Unified_import">diálogo unificado de importación</a>. Como se explicó en la
+sección anterior, la parte inferior derecha del diálogo contiene una lista
+desplegable de dispositivos que incluye una opción para los archivos de MKVI.
+Tras seleccionar el formato CCR apropiado y el directorio donde se hallan
+guardados los archivos originales del ordenador CCR, se puede seleccionar un
+archivo de diario concreto (en el caso del MKVI será un archivo con extensión
+.txt). Después de haber seleccionado el archivo, pulsa el botón <em>Abrir</em> debajo
+a la derecha en el diálogo de importación.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_información_mostrada_para_una_inmersión">4.3.4. Información mostrada para una inmersión</h4>
+<div class="paragraph"><p><em>Presiones parciales de los gases</em>: El gráfico de presión parcial de oxígeno
+muestra la información de los sensores de oxígeno del equipo CCR. En el caso
+del Poseidon MKVI, se muestra el valor promedio de los dos sensores. En el
+caso del equipo APD, se muestra el promedio de los 3 sensores de oxígeno. Si
+uno de los sensores muestra una lectura muy diferente en comparación a los
+otros dos, se ignora el sensor que diverge. Para las inmersiones con CCR, el
+gráfico de presiones parciales de oxígeno debería ser bastante plano,
+reflejando el ajuste del "setpoint" durante la inmersión.
+Las presiones parciales de nitrógeno (y helio en su caso) se muestran de la
+forma habitual como en el resto de inmersiones.</p></div>
+<div class="paragraph"><p><em>Presiones de las botellas</em>: Los ordenadores de buceo con CCR como el Poseidon
+MKVI registran las presiones de las botellas de oxígeno y diluyente. La presión
+de la botella de oxígeno es la que se muestra en el perfil. Además, en la
+pestaña <em>Equipo</em> se mostrarán las presiones inicial y final de ambas, la de
+oxígeno y la de diluyente.</p></div>
+<div class="paragraph"><p><em>Información específica del equipo</em>: La información específica del equipo
+recabada por <em>Subsurface</em> se muestra en la pestaña <em>Otros datos</em>. Puede incluir
+información de ajustes o metadatos sobre la inmersión.</p></div>
+<div class="paragraph"><p>Se puede encontrar más información especifica sobre descarga de diarios de CCR
+en el <a href="#S_PoseidonMkVI">Apéndice B</a>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_importar_desde_mares_dive_organiser_v2_1">4.3.5. Importar desde Mares Dive Organiser V2.1</h4>
 <div class="paragraph"><p>Dado que Mares utiliza software propiedad de Microsoft no compatible con
 aplicaciones multiplataforma, estos diarios no pueden importarse directamente a
 <em>Subsurface</em>. Los diarios de Mares necesitan ser importados usando un proceso en
@@ -1484,7 +1586,7 @@ utilizando las instrucciones a continuación.
 </ol></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">4.3.3. Importar inmersiones desde <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">4.3.6. Importar inmersiones desde <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>Importar información de inmersiones desde <em>divelogs.de</em> es simple, se usa un
 único diálogo. Se selecciona <em>Importar → Importar desde Divelogs.de</em> en el menú
 principal. Esto despliega un diálogo (ver figura [<strong>A</strong>] abajo a la izquierda). Es
@@ -1501,7 +1603,7 @@ inmersiones importadas aparecerán en el panel <strong>Lista de Inmersiones</str
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSV">4.3.4. Importar inmersiones en formato CSV</h4>
+<h4 id="S_ImportingCSV">4.3.7. Importar inmersiones en formato CSV</h4>
 <div class="paragraph"><p>En ocasiones, los ordenadores de buceo exportan la información en ficheros con
 <em>comma separated values</em> (.CSV, valores separados por comas). Por ejemplo, los
 sistemas CCR Inspiration y Evolution de APD exportan ficheros en formato CSV que
@@ -1583,7 +1685,7 @@ columnas, se selecciona el botón <em>Aceptar</em> y el buceo será importado y 
 en la <strong>Lista de Inmersiones</strong> de <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingManualCSV">4.3.5. Importar inmersiones de archivos CSV mantenidos manualmente</h4>
+<h4 id="S_ImportingManualCSV">4.3.8. Importar inmersiones de archivos CSV mantenidos manualmente</h4>
 <div class="paragraph"><p>Si uno mantiene sus diarios en una hoja de cálculo, también hay una opción para
 importarlos. Los datos de la hoja de cálculo, exportados a un archivo CSV,
 pueden ser importados a <em>Subsurface</em>. Al importar registros mantenidos
@@ -2092,10 +2194,20 @@ perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.</p>
 </div>
 <div class="sect2">
 <h3 id="_visualizar_las_imágenes">5.2. Visualizar las imágenes</h3>
-<div class="paragraph"><p>Después que las imágenes han sido cargadas aparecen en la pestaña <em>Fotos</em> del
-panel <strong>Notas de Inmersión</strong>. También aparecen como pequeños iconos en el perfil
-de inmersión en las posiciones apropiadas reflejando la hora en que se tomó cada
-fotografía. Ver a continuación:</p></div>
+<div class="paragraph"><p>Después que las imágenes han sido cargadas aparecen en dos lugares:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+La pestaña <em>Fotos</em> del panel <em>Notas de la inmersión</em>.
+</p>
+</li>
+<li>
+<p>
+Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
+ que relejan la hora en que se tomó cada fotografía. Ver a continuación:
+</p>
+</li>
+</ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage4.jpg" alt="FIGURA: Fotos sobre un perfil de inmersión" />
@@ -2108,14 +2220,14 @@ de la foto. Ver imagen a continuación:</p></div>
 <img src="images/LoadImage5.jpg" alt="FIGURA: Foto reducida sobre perfil de inmersión" />
 </div>
 </div>
-<div class="paragraph"><p>Cada imagen reducida tiene una pequeña papelera en su esquina superior
+<div class="paragraph"><p>Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
+completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de las
+fotos que han sido importadas. Ver imagen a continuación.
+Cada imagen reducida tiene una pequeña papelera en su esquina superior
 izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
 borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
 sobre las imágenes. Las imágenes  también puede borrase desde la pestaña <em>Fotos</em>
-(ver en el siguiente punto).
-Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de las
-fotos que han sido importadas. Ver imagen a continuación.</p></div>
+(ver en el siguiente punto).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage6.jpg" alt="FIGURA: Foto a pantalla completa sobre el perfil de inmersión" />
@@ -2445,6 +2557,26 @@ detallada de los factores de gradiente, consultar los siguientes links:</p></div
 </p>
 </li>
 </ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/tissues.jpg" alt="Note" />
+</td>
+<td class="content">Muestra presiones de los gases inertes en los tejidos, en relación con la
+presión ambiental (línea gris horizontal).
+Las presiones en los tejidos se calculan utilizando el algoritmo Bühlmann ZH-16
+y se muestran como líneas de colores que varían desde el verde (tejidos rápidos)
+al azul (tejidos más lentos).
+La línea negra, dibujada sobre la presión ambiental, es la máxima sobresaturación
+de tejidos permitida, en la que se incluyen los factores de gradiente que se
+establecieron en <em>Preferencias</em>.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/tissuesGraph.jpg" alt="Figura: Gráfico de presión de gases inertes en los tejidos" />
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_el_menú_contextual_del_perfil_de_inmersión">6.4. El menú contextual del Perfil de Inmersión</h3>
@@ -2544,6 +2676,89 @@ respirando aire a una profundidad igual a la PNE.</td>
 </div>
 <div class="paragraph"><p>La figura (<strong>B</strong>) anterior muestra un Recuadro de Información con un conjunto de
 datos casi completo.</p></div>
+<div class="sect3">
+<h4 id="_el_gráfico_de_barras_de_presión_de_gases">6.5.1. El gráfico de barras de presión de gases</h4>
+<div class="paragraph"><p>A la izquierda del <strong>Recuadro de Información</strong>  hay un gráfico de barras vertical
+que indica las presiones de los gases inertes que el buceador estaba respirando
+<em>en un momento dado de la inmersión</em>, señalado por la posición del cursor sobre
+el <strong>Perfil de inmersión</strong>. La figura abajo a la izquierda indica el significado
+de las diferentes partes del gráfico de barras.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/GasPressureBarGraph.jpg" alt="FIGURE:Gráfico de barras de presiones de gases" />
+</div>
+</div>
+<div class="paragraph"><p>El área verde claro indica el gas total, con el margen superior de esta zona
+indicando la presión total de gas inhalada por el buceador y medida desde el
+fondo del gráfico a la parte superior. Esta presión tiene un valor <em>relativo</em>
+en el gráfico y no indica presión absoluta.</p></div>
+<div class="paragraph"><p>La línea negra horizontal por debajo de la zona verde claro indica la presión de
+equilibrio de los gases inertes respirados, habitualmente nitrógeno. En el caso
+del  trimix, es la presión combinada del helio y el nitrógeno. En este ejemplo,
+el usuario esta buceando con EAN32, por lo tanto la presión del gas inerte está
+al 68% de la distancia desde el fondo del gráfico hasta el valor de la presión
+total.</p></div>
+<div class="paragraph"><p>La zona verde oscura en la parte baja del gráfico representa las presiones de
+los gases inertes en cada uno de los 16 compartimentos de tejidos, según el
+algoritmo de Bühlmann, estando los tejidos rápidos en el lado izquierdo.</p></div>
+<div class="paragraph"><p>La línea horizontal negra superior indica el factor de gradiente que se aplica
+a la profundidad del buceador para el punto concreto del <strong>Perfil de Inmersión</strong>.
+Este factor de gradiente es una interpolación entre el GFbajo y el GFalto que
+se hayan especificado en la pestaña Gráfico del <strong>Panel de preferencias</strong> de
+<em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>El margen inferior de la zona roja del gráfico indica el valor M derivado de
+Bühlman, o sea el valor de la presión de gases inertes a partir de la cual la
+formación de burbujas se espera que sea severa, resultando en una enfermedad
+descompresiva.</p></div>
+<div class="paragraph"><p>Estos cinco valores se indican a la izquierda en la figura anterior. La forma
+en que el gráfico de barras cambia durante una inmersión, se representa en el
+lado derecho de la figura anterior, para un buceador usando EAN32.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+El gráfico <strong>A</strong> indica la situación al inicio de una inmersión, con el buzo
+en superficie. Las presiones en los compartimentos de tejidos todavía están
+a la presión de equilibrio ya que aún no se ha buceado.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>B</strong> indica la situación tras un descenso a 30 metros. Pocos de
+los compartimentos de tejidos han tenido tiempo de responder al descenso, las
+presiones de los gases muy por debajo de presión de equilibrio.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>C</strong> representa las presiones tras 30 minutos a 30 metros. Los
+compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
+de la línea negra que indica la presión de equilibrio). Los compartimentos más
+lentos (hacia la derecha) no han alcanzado el equilibrio y están en proceso de
+incrementar lentamente la presión.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>D</strong> muestra las presiones tras ascender a una profundidad de 4.5
+metros. Ya que, durante el ascenso, la presión total del gas inhalado ha caído
+mucho, de 4 bares a 1.45 bares, las presiones en los diferentes compartimentos
+de tejidos sobrepasan la presión total del gas y se aproximan al factor de
+gradiente (la línea negra superior en la imagen). Continuar el ascenso haría
+que rebasáramos el valor del factor de gradiente (GFalto), poniendo en peligro
+al buceador.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>E</strong> indica la situación después de permanecer a 4.5 metros durante
+10 minutos. Los compartimentos rápidos han bajado su presión. Como era de
+esperar, las presiones en los compartimentos lentos no han variado mucho. Las
+presiones en los compartimentos rápidos ya no se acercan al valor de GFalto y
+el buceador está más seguro que en la situación expuesta en el gráfico <strong>D</strong>.
+</p>
+</li>
+</ul></div>
+</div>
 </div>
 </div>
 </div>
@@ -2795,8 +3010,8 @@ contrario, los buceos se numerarán a partir de 1.
 </li>
 <li>
 <p>
-Javascript mínimo: Esta opción minimizará la cantidad de código javascript
-producido con el archivo y se perderán algunas funcionalidades.
+Exportar estadísticas anuales: Si se selecciona esta opción, se anexará una
+tabla con estadísticas anuales a los datos exportados a HTML.
 </p>
 </li>
 <li>
@@ -3420,7 +3635,7 @@ podría crearse el plan completo editando los puntos desde el diálogo.</p></div
 <a href="#S_CreateProfile">Crear a mano un perfil de inmersión</a>. Estos cambios deberían
 reflejar las botellas y composiciones de gas definidas en la table <em>Gases
 disponibles</em>. Si se usan dos o más gases, se sugerirán automáticamente cambios
-de gas durante la fase de aascenso a superficie. Sin embargo, estos cambios
+de gas durante la fase de ascenso a superficie. Sin embargo, estos cambios
 pueden borrarse haciendo clic-derecho en el cambio de gas, o pueden crearse
 manualmente de la misma forma, haciendo clic-derecho en el punto de paso
 adecuado.</p></div>
@@ -3451,22 +3666,14 @@ embargo, si se selecciona <em>Mostrar transiciones en deco</em>, las transicione
 muestran separadamente de las duraciones de las paradas en cada nivel.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_imprimir_el_plan_de_inmersión">12.5. Imprimir el plan de inmersión</h3>
-<div class="paragraph"><p>Seleccionar el botón <em>Imprimir</em> permite imprimir los <em>Detalles del plan de
-buceo</em> para unas "wet notes". También se pueden copiar y pegar los <em>Detalles del
-plan de buceo</em> para incluirlos en un archivo de texto o un procesador de
-textos.</p></div>
-<div class="paragraph"><p>Los planes de inmersión tienen muchas características en común con los registros
-de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
-los calculos de gas quedan almacenados en la pestaña <strong>Notas de la inmersión</strong>.
-Mientras se está diseñando un plan, se puede imprimir utilizando el botón
-<em>Imprimir</em> del planificador. Esto imprimirá los detalles y cálculos de gases del
-panel <em>Detalles del plan de inmersión</em> del planificador. Sin embargo, tras haber
-sido guardado, aparece de una forma muy similar a una anotación en el diario y
-no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
-de planificación. En esta situación, la única manera de imprimir el plan es usar
-<em>Archivo &#8594; Imprimir</em> en el menú principal, igual que haríamos para imprimir un
-registro de inmersión.</p></div>
+<h3 id="S_Replan">12.5. Modificar un plan de inmersión existente</h3>
+<div class="paragraph"><p>Normalmente, cuando se ha guardado un plan de inmersión, se encuentra disponible
+desde la <strong>Lista de Inmersiones</strong> como cualquier buceo. Desde la <strong>Lista de
+Inmersiones</strong> no hay forma de cambiar un plan. Para efectuar cambios a un plan de
+buceo, selecciónalo en la <strong>Lista de Inmersiones</strong>, luego, desde el menú principal
+selecciona <em>Registro &#8594; Re-planificar inmersión</em>, con ello se abrirá el plan en
+el planificador, permitiendo hacer las modificaciones oportunas  y guardarlas de
+la forma habitual.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_planificar_inmersiones_sucesivas">12.6. Planificar inmersiones sucesivas</h3>
@@ -3484,6 +3691,24 @@ plantilla de acuerdo con una de las configuraciones. Si ahora se desea planear
 una inmersión usando esta configuración, simplemente se selecciona la plantilla
 de la <strong>Lista de inmersiones</strong> y se activa el planificador: el planificador tendrá
 en cuenta la configuración de la plantilla seleccionada.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_imprimir_el_plan_de_inmersión">12.7. Imprimir el plan de inmersión</h3>
+<div class="paragraph"><p>Seleccionar el botón <em>Imprimir</em> permite imprimir los <em>Detalles del plan de
+buceo</em> para unas "wet notes". También se pueden copiar y pegar los <em>Detalles del
+plan de buceo</em> para incluirlos en un archivo de texto o un procesador de
+textos.</p></div>
+<div class="paragraph"><p>Los planes de inmersión tienen muchas características en común con los registros
+de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
+los calculos de gas quedan almacenados en la pestaña <strong>Notas de la inmersión</strong>.
+Mientras se está diseñando un plan, se puede imprimir utilizando el botón
+<em>Imprimir</em> del planificador. Esto imprimirá los detalles y cálculos de gases del
+panel <em>Detalles del plan de inmersión</em> del planificador. Sin embargo, tras haber
+sido guardado, aparece de una forma muy similar a una anotación en el diario y
+no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
+de planificación. En esta situación, la única manera de imprimir el plan es usar
+<em>Archivo &#8594; Imprimir</em> en el menú principal, igual que haríamos para imprimir un
+registro de inmersión.</p></div>
 </div>
 </div>
 </div>
@@ -3545,6 +3770,12 @@ inmersiones seleccionadas en el diario) a algún otro formato.
 <em>Salir</em> - Sale de <em>Subsurface</em>.
 </p>
 </li>
+<li>
+<p>
+<em>Configure dive computer</em> - Esta opción está en fase experimental y en
+desarrollo.
+</p>
+</li>
 </ul></div>
 </div>
 <div class="sect2">
@@ -3589,6 +3820,25 @@ panel Lista de inmersiones.
 <p>
 <a href="#S_DivePlanner"><em>Planificar inmersión</em></a> - Esta característica permite
 planificar inmersiones.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Replan"><em>Re-planificar inmersión</em></a> - Edita un plan de buceo que se ha
+guardado en la <strong>Lista de Inmersiones</strong>.
+</p>
+</li>
+<li>
+<p>
+<a href="#S_CopyComponents"><em>Copiar componentes</em></a> - Al seleccionar esta opción se
+se puede copiar información de varios campos de una inmersión al portapapeles.
+</p>
+</li>
+<li>
+<p>
+<em>Pegar componentes</em> - Pega, en las inmersiones previamente seleccionadas de
+la <strong>Lista de Inmersiones</strong>, la información copiada previamente usando la opción
+<em>Copiar componentes</em>.
 </p>
 </li>
 <li>
@@ -4052,6 +4302,119 @@ Apagar Wi-Fi mientras se utiliza bluetooth
 </li>
 </ul></div>
 </div>
+<div class="sect2">
+<h3 id="S_PoseidonMkVI">15.5. Importar diarios desde el Poseidon MKVI Discovery</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/MkVI.jpeg" alt="Note" />
+</td>
+<td class="content">La descarga de diarios desde el MKVI se realiza utilizando un adaptador de
+comunicaciones personalizado y el <em>Poseidon PC Configuration Software</em>, que
+se obtiene al adquirir el equipo MKVI. La última es una aplicación de
+windows que permite configurar el equipo y guardar los diarios. La comunicación
+entre el ordenador de buceo y el PC utiliza el protocolo IrDA de infrarrojos.
+Solo se pueden descargar datos de una inmersión cada vez e incluyen tres
+archivos:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Configuración de ajustes para la inmersión y parámetros clave de la misma (es
+el archivo con extensión .txt).
+</p>
+</li>
+<li>
+<p>
+Detalles del diario (archivo con extensión .csv).
+</p>
+</li>
+<li>
+<p>
+Diario en formato Redbook (archivo con extensión .cvsr). Es una versión
+comprimida del diario utilizando un formato propio.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><em>Subsurface</em> accede a los archivos .txt y .csv para obtener información.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_importar_diarios_del_ccr_apd_inspiration">15.6. Importar diarios del CCR APD Inspiration</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/APDComputer.jpg" alt="Note" />
+</td>
+<td class="content">Los diarios del ordenador de buceo de un APD Inspiration o similar, se
+descargan utilizando un adaptador y el <em>AP Communicator</em>, obtenidos al comprar
+el equipo. Los diarios se pueden visualizar utilizando el <em>AP Log Viewer</em> desde
+Windows o Mac/OS. Sin embargo, los diarios de APD se pueden ver o manejar desde
+<em>Subsurface</em> (junto a buceos en los que se haya utilizado otros muchos tipos de
+ordenador de buceo). Los diarios de APD Inspiration se importan a <em>Subsurface</em>
+como sigue:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Abrir una inmersión con el <em>AP Log Viewer</em>.
+</p>
+</li>
+<li>
+<p>
+Seleccionar la pestaña llamada <em>Datos</em> (<em>Data</em>).
+</p>
+</li>
+<li>
+<p>
+Si se muestran en la pantalla los datos del diario "en crudo", pulsar en
+<em>Copiar al portapapeles</em>.
+</p>
+</li>
+<li>
+<p>
+Abrir un editor de texto (p.e. Notepad en windows o TextWrangler en Mac).
+</p>
+</li>
+<li>
+<p>
+Copiar el contenido del portapapeles al editor y guardar el archivo de texto
+con extensión de archivo .csv.
+</p>
+</li>
+<li>
+<p>
+Desde Subsurface, seleccionar <em>Importar &#8594; Importar archivos de registro</em>
+para abrir el <a href="#Unified_import">diálogo de importación universal</a>.
+</p>
+</li>
+<li>
+<p>
+En la lista desplegable de abajo del diálogo seleccionar <em>Archivos CSV</em>.
+</p>
+</li>
+<li>
+<p>
+En la lista de nombres de archivo, seleccionar el archivo .CSV que acabamos
+de crear y se abrirá un diálogo de importación.
+</p>
+</li>
+<li>
+<p>
+En la lista desplegable llamada <em>Importaciones pre-configuradas</em>, seleccionar
+el <em>APD Log Viewer</em>.
+</p>
+</li>
+<li>
+<p>
+Asegurarse que los otros ajustes del diario APD son correctas y pulsar
+<em>Aceptar</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>El diario de APD aparecerá en <em>Subsurface</em>.</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -4385,7 +4748,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-08-08 11:17:28 PDT
+Last updated 2014-11-17 14:55:30 GMT
 </div>
 </div>
 </body>
