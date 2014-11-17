@@ -338,14 +338,8 @@ static void pressure(char *buffer, pressure_t *pressure)
 
 static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
 {
-	if (trimspace(buffer)) {
-		for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
-			if (same_string(buffer, cylinderuse_text[i])) {
-				*cyl_use = i;
-				return;
-			}
-		}
-	}
+	if (trimspace(buffer))
+		*cyl_use = cylinderuse_from_text(buffer);
 }
 
 static void salinity(char *buffer, int *salinity)
