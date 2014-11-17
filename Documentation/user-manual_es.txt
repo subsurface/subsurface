@@ -1765,6 +1765,75 @@ respirando aire a una profundidad igual a la PNE.
 La figura (*B*) anterior muestra un Recuadro de Información con un conjunto de
 datos casi completo.
 
+==== El gráfico de barras de presión de gases
+
+A la izquierda del *Recuadro de Información*  hay un gráfico de barras vertical
+que indica las presiones de los gases inertes que el buceador estaba respirando
+_en un momento dado de la inmersión_, señalado por la posición del cursor sobre
+el *Perfil de inmersión*. La figura abajo a la izquierda indica el significado
+de las diferentes partes del gráfico de barras.
+
+image::images/GasPressureBarGraph.jpg["FIGURE:Gráfico de barras de presiones de gases",align="center"]
+
+El área verde claro indica el gas total, con el margen superior de esta zona
+indicando la presión total de gas inhalada por el buceador y medida desde el
+fondo del gráfico a la parte superior. Esta presión tiene un valor _relativo_
+en el gráfico y no indica presión absoluta.
+
+La línea negra horizontal por debajo de la zona verde claro indica la presión de
+equilibrio de los gases inertes respirados, habitualmente nitrógeno. En el caso
+del  trimix, es la presión combinada del helio y el nitrógeno. En este ejemplo,
+el usuario esta buceando con EAN32, por lo tanto la presión del gas inerte está
+al 68% de la distancia desde el fondo del gráfico hasta el valor de la presión
+total.
+
+La zona verde oscura en la parte baja del gráfico representa las presiones de
+los gases inertes en cada uno de los 16 compartimentos de tejidos, según el
+algoritmo de Bühlmann, estando los tejidos rápidos en el lado izquierdo.
+
+La línea horizontal negra superior indica el factor de gradiente que se aplica
+a la profundidad del buceador para el punto concreto del *Perfil de Inmersión*.
+Este factor de gradiente es una interpolación entre el GFbajo y el GFalto que
+se hayan especificado en la pestaña Gráfico del *Panel de preferencias* de
+_Subsurface_.
+
+El margen inferior de la zona roja del gráfico indica el valor M derivado de
+Bühlman, o sea el valor de la presión de gases inertes a partir de la cual la
+formación de burbujas se espera que sea severa, resultando en una enfermedad
+descompresiva.
+
+Estos cinco valores se indican a la izquierda en la figura anterior. La forma
+en que el gráfico de barras cambia durante una inmersión, se representa en el
+lado derecho de la figura anterior, para un buceador usando EAN32.
+
+- El gráfico *A* indica la situación al inicio de una inmersión, con el buzo
+en superficie. Las presiones en los compartimentos de tejidos todavía están
+a la presión de equilibrio ya que aún no se ha buceado.
+
+- El gráfico *B* indica la situación tras un descenso a 30 metros. Pocos de
+los compartimentos de tejidos han tenido tiempo de responder al descenso, las
+presiones de los gases muy por debajo de presión de equilibrio.
+
+- El gráfico *C* representa las presiones tras 30 minutos a 30 metros. Los
+compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
+de la línea negra que indica la presión de equilibrio). Los compartimentos más
+lentos (hacia la derecha) no han alcanzado el equilibrio y están en proceso de
+incrementar lentamente la presión.
+
+- El gráfico *D* muestra las presiones tras ascender a una profundidad de 4.5
+metros. Ya que, durante el ascenso, la presión total del gas inhalado ha caído
+mucho, de 4 bares a 1.45 bares, las presiones en los diferentes compartimentos
+de tejidos sobrepasan la presión total del gas y se aproximan al factor de
+gradiente (la línea negra superior en la imagen). Continuar el ascenso haría
+que rebasáramos el valor del factor de gradiente (GFalto), poniendo en peligro
+al buceador.
+
+- El gráfico *E* indica la situación después de permanecer a 4.5 metros durante
+10 minutos. Los compartimentos rápidos han bajado su presión. Como era de
+esperar, las presiones en los compartimentos lentos no han variado mucho. Las
+presiones en los compartimentos rápidos ya no se acercan al valor de GFalto y
+el buceador está más seguro que en la situación expuesta en el gráfico *D*.
+
 == Organizar el registro (Manipular grupos de inmersiones)
 
 === El menú contextual de la Lista de Inmersiones
