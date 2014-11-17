@@ -112,11 +112,19 @@ void MinMaxAvgWidget::setMinimum(const QString &minimum)
 void MinMaxAvgWidget::overrideMinToolTipText(const QString &newTip)
 {
 	d->minIco->setToolTip(newTip);
+	d->minValue->setToolTip(newTip);
+}
+
+void MinMaxAvgWidget::overrideAvgToolTipText(const QString &newTip)
+{
+	d->avgIco->setToolTip(newTip);
+	d->avgValue->setToolTip(newTip);
 }
 
 void MinMaxAvgWidget::overrideMaxToolTipText(const QString &newTip)
 {
 	d->maxIco->setToolTip(newTip);
+	d->maxValue->setToolTip(newTip);
 }
 
 RenumberDialog *RenumberDialog::instance()
