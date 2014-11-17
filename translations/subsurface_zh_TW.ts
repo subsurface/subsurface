@@ -3,12 +3,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="491"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="499"/>
         <source>Person: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="492"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="500"/>
         <source>Searches for buddies and divemasters</source>
         <translation type="unfinished"/>
     </message>
@@ -2347,7 +2347,7 @@
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="517"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="525"/>
         <source>Location: </source>
         <translation type="unfinished"/>
     </message>
@@ -2641,7 +2641,52 @@
         <translation>最淺的潛水</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="596"/>
+        <location filename="../qt-ui/maintab.cpp" line="556"/>
+        <source>Highest total SAC of a dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="557"/>
+        <source>Lowest total SAC of a dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="558"/>
+        <source>Average total SAC of all selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="569"/>
+        <source>Highest temperature</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="570"/>
+        <source>Lowest temperature</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="571"/>
+        <source>Average temperature of all selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="581"/>
+        <source>Longest dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="582"/>
+        <source>Shortest dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="583"/>
+        <source>Average length of all selected dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="607"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -2650,17 +2695,17 @@ mixed from Air and using:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="600"/>
+        <location filename="../qt-ui/maintab.cpp" line="611"/>
         <source> and </source>
         <translation>與</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="884"/>
+        <location filename="../qt-ui/maintab.cpp" line="895"/>
         <source>Discard the changes?</source>
         <translation>取消變更？</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="885"/>
+        <location filename="../qt-ui/maintab.cpp" line="896"/>
         <source>You are about to discard your changes.</source>
         <translation>您將要放棄您的變更。</translation>
     </message>
@@ -3181,60 +3226,60 @@ p, li { white-space: pre-wrap; }
         <translation>列印操作表格</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="761"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="763"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>您是否要對檔案 %1 所做的修改儲存?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="763"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="765"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>您是否要對資料檔案所做的修改進行儲存?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="768"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="770"/>
         <source>Save changes?</source>
         <translation>儲存變更?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1118"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1120"/>
         <source>Save file as</source>
         <translation>另存新檔</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1259"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1261"/>
         <source>Open dive log file</source>
         <translation>打開潛水日誌檔案</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1260"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1262"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="769"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="771"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>如果不進行儲存, 所做變更將會遺失.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="252"/>
         <location filename="../qt-ui/mainwindow.cpp" line="387"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1299"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1301"/>
         <source>Warning</source>
         <translation>提醒</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="208"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1102"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1104"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>在開啟新檔前, 請儲存或取消此次潛水的編輯.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1119"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1121"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML 檔案 (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1299"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1301"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>請在嘗試其他編輯時先完成當前編輯</translation>
     </message>
@@ -3242,7 +3287,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="601"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="609"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation type="unfinished"/>
     </message>
@@ -3983,6 +4028,11 @@ p, li { white-space: pre-wrap; }
         <translation>空氣</translation>
     </message>
     <message>
+        <location filename="../qt-ui/diveplanner.cpp" line="39"/>
+        <source>OXYGEN</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../qt-ui/diveplanner.cpp" line="224"/>
         <source>Remove this point</source>
         <translation>移除此點</translation>
@@ -4095,12 +4145,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
-        <location filename="../qt-ui/simplewidgets.cpp" line="133"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="141"/>
         <source>New starting number</source>
         <translation>新的開始編號</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="131"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="139"/>
         <source>New number</source>
         <translation>新編號</translation>
     </message>
@@ -4174,12 +4224,12 @@ p, li { white-space: pre-wrap; }
         <translation>哪個日期和時間將會被顯示在圖片上?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="229"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="237"/>
         <source>Open image file</source>
         <translation>開啟影像檔</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="231"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="239"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation>影像檔案 (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
@@ -4307,7 +4357,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="542"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="550"/>
         <source>Suits: </source>
         <translation type="unfinished"/>
     </message>
@@ -4337,7 +4387,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="466"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="474"/>
         <source>Tags: </source>
         <translation type="unfinished"/>
     </message>
@@ -5385,7 +5435,7 @@ Maximum</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1054"/>
+        <location filename="../profile.c" line="1060"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -5394,63 +5444,63 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1057"/>
+        <location filename="../profile.c" line="1063"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1061"/>
+        <location filename="../profile.c" line="1067"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1067"/>
+        <location filename="../profile.c" line="1073"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1070"/>
+        <location filename="../profile.c" line="1076"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1072"/>
+        <location filename="../profile.c" line="1078"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1074"/>
+        <location filename="../profile.c" line="1080"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1076"/>
+        <location filename="../profile.c" line="1082"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1078"/>
+        <location filename="../profile.c" line="1084"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1081"/>
+        <location filename="../profile.c" line="1087"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1088"/>
+        <location filename="../profile.c" line="1094"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -5459,7 +5509,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1092"/>
+        <location filename="../profile.c" line="1098"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -5468,142 +5518,142 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1104"/>
+        <location filename="../profile.c" line="1110"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>安全停留: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1107"/>
+        <location filename="../profile.c" line="1113"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>安全停留: 未知時間 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1112"/>
+        <location filename="../profile.c" line="1118"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deco: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1115"/>
+        <location filename="../profile.c" line="1121"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>減壓: 未知時間 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1119"/>
+        <location filename="../profile.c" line="1125"/>
         <source>In deco
 </source>
         <translation>減壓中
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1121"/>
+        <location filename="../profile.c" line="1127"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1124"/>
+        <location filename="../profile.c" line="1130"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1127"/>
+        <location filename="../profile.c" line="1133"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>減壓: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1135"/>
+        <location filename="../profile.c" line="1141"/>
         <source>In deco (calc)
 </source>
         <translation>減壓 (計算)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1137"/>
+        <location filename="../profile.c" line="1143"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL:%umin (預計)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1140"/>
+        <location filename="../profile.c" line="1146"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1143"/>
+        <location filename="../profile.c" line="1149"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>計算的上限深度 %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1155"/>
         <source>Tissue %.0fmin: %.0f%s
 </source>
         <translation>組織 %.0fmin: %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1155"/>
+        <location filename="../profile.c" line="1161"/>
         <source>heartbeat: %d
 </source>
         <translation>心跳: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1157"/>
+        <location filename="../profile.c" line="1163"/>
         <source>bearing: %d
 </source>
         <translation>方位: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1250"/>
+        <location filename="../profile.c" line="1256"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1254"/>
-        <location filename="../profile.c" line="1258"/>
-        <location filename="../profile.c" line="1262"/>
+        <location filename="../profile.c" line="1260"/>
+        <location filename="../profile.c" line="1264"/>
+        <location filename="../profile.c" line="1268"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1266"/>
+        <location filename="../profile.c" line="1272"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1270"/>
+        <location filename="../profile.c" line="1276"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1274"/>
-        <location filename="../profile.c" line="1278"/>
+        <location filename="../profile.c" line="1280"/>
+        <location filename="../profile.c" line="1284"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1285"/>
+        <location filename="../profile.c" line="1291"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
