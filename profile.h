@@ -88,9 +88,6 @@ int get_maxtime(struct plot_info *pi);
  * partial pressure graphs */
 int get_maxdepth(struct plot_info *pi);
 
-#define DILUENT_CYLINDER 1
-#define DILUENT 1
-#define NONDILUENT 0
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
 #define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]

@@ -264,8 +264,9 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 
 		entry = pi->entry + i;
 
-		if (diluent_flag) {		// Find the cylinder index (cyl) ..
-			cyl = DILUENT_CYLINDER; // .. as well as the cylinder pressure
+		if (diluent_flag) {
+			// Find the cylinder index (cyl) and pressure
+			cyl = dive->diluent_cylinder_index;
 			pressure = DILUENT_PRESSURE(entry);
 			save_pressure = &(entry->diluentpressure[SENSOR_PR]);
 			save_interpolated = &(entry->diluentpressure[INTERPOLATED_PR]);
@@ -362,7 +363,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		unsigned pressure;
 		if (diluent_flag) { // if this is a diluent cylinder:
 			pressure = DILUENT_PRESSURE(entry);
-			cylinderid = DILUENT_CYLINDER;
+			cylinderid = dive->diluent_cylinder_index;
 		} else {
 			pressure = SENSOR_PRESSURE(entry);
 			cylinderid = entry->cylinderindex;
@@ -379,7 +380,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		/* track the segments per cylinder and their pressure/time integral */
 		if (cylinderid != cylinderindex) {
 			if (diluent_flag)			  // For CCR dives:
-				cylinderindex = DILUENT_CYLINDER; // indicate diluent cylinder
+				cylinderindex = dive->diluent_cylinder_index; // indicate diluent cylinder
 			else
 				cylinderindex = entry->cylinderindex;
 			current = pr_track_alloc(pressure, entry->sec);

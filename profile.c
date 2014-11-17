@@ -1015,13 +1015,13 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	}
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 
-	check_gas_change_events(dive, dc, pi);			 /* Populate the gas index from the gas change events */
-	setup_gas_sensor_pressure(dive, dc, pi);		 /* Try to populate our gas pressure knowledge */
-	populate_pressure_information(dive, dc, pi, NONDILUENT); /* .. calculate missing pressure entries for all gasses except diluent */
-	if (dc->dctype == CCR)					 /* For CCR dives.. */
-		populate_pressure_information(dive, dc, pi, DILUENT); /* .. calculate missing diluent gas pressure entries */
+	check_gas_change_events(dive, dc, pi);			/* Populate the gas index from the gas change events */
+	setup_gas_sensor_pressure(dive, dc, pi);		/* Try to populate our gas pressure knowledge */
+	populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except diluent */
+	if (dc->dctype == CCR)					/* For CCR dives.. */
+		populate_pressure_information(dive, dc, pi, true); /* .. calculate missing diluent gas pressure entries */
 
-	fill_o2_values(dc, pi, dive);				      /* .. and insert the O2 sensor data having 0 values. */
+	fill_o2_values(dc, pi, dive);				/* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, pi); /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
 	calculate_gas_information_new(dive, pi); /* Calculate gas partial pressures */
