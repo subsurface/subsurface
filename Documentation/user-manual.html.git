@@ -447,9 +447,9 @@ many more hardware platforms and software environments where Qt and
 libdivecomputer are available.</p></div>
 <div class="paragraph"><p>The scope of this document is the use of the <em>Subsurface</em> program. To install
 the software, consult the <em>Downloads</em> page on the
-<a href="http://subsurface.hohndel.org/"><em>Subsurface</em> web site</a>.
+<a href="http://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.
 Please discuss issues with this program by sending an email to
-<a href="mailto:subsurface@hohndel.org">our mailing list</a> and report bugs at
+<a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a> and report bugs at
 <a href="http://trac.hohndel.org">our bugtracker</a>.  For instructions on how to build the
 software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.</p></div>
@@ -572,7 +572,7 @@ use a dive computer and dives were recorded in a written logbook.
 Import dive information directly from a dive computer if it is supported by
 <em>Subsurface</em>. The latest list of dive computers supported by <em>Subsurface</em> can
 be found at:
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">
 Supported dive computers</a>.
 </p>
 </li>
@@ -880,7 +880,7 @@ and of gas partial pressures. <em>Subsurface</em> can capture this information a
 present it as part of the dive information, using dive
 information from a wide range of dive computers. The latest list of supported
 dive computers can be found at:
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">
 Supported dive computers</a>.</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -1108,7 +1108,7 @@ checked, no dives are added to the
 subsurface.bin</code></pre>
 </div></div>
 <div class="paragraph"><p>These files should be send to the <em>Subsurface</em> mail list:
-<em>subsurface@hohndel.org</em> with a
+<em>subsurface@subsurface-divelog.org</em> with a
 request for the files to be analysed. Provide the dive computer
 make and model
 as well as contextual information about the dives recorded on the dive computer.</p></div>
@@ -3969,7 +3969,7 @@ well as licensing information.
 <li>
 <p>
 <em>Check for updates</em> - Find out whether a newer version of Subsurface is available
-on the <a href="http://subsurface.hohndel.org/"><em>Subsurface</em> web site</a>.
+on the <a href="http://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.
 </p>
 </li>
 <li>
@@ -4783,7 +4783,7 @@ you may stay in the water for a long time, but spend most of it at the surface. 
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-11-17 09:10:46 GMT
+Last updated 2014-11-18 13:04:00 GMT
 </div>
 </div>
 </body>

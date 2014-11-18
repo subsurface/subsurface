@@ -447,9 +447,9 @@ Intel (OS/X) y muchas distribuciones de Linux. <em>Subsurface</em> puede compila
 para muchas otras plataformas de hardware y entornos de software en los que
 estén disponibles Qt y libdivecomputer.</p></div>
 <div class="paragraph"><p>El ámbito de este documento es el uso del programa <em>Subsurface</em>. Para instalar
-el software, consulta la página Descargas en <a href="http://subsurface.hohndel.org/">la
+el software, consulta la página Descargas en <a href="http://subsurface-divelog.org/">la
 web</a>. Por favor, comenta los problemas que tengas con este programa enviando un
-mail a <a href="mailto:subsurface@hohndel.org">nuestra lista de correo</a> e informa de
+mail a <a href="mailto:subsurface@subsurface-divelog.org">nuestra lista de correo</a> e informa de
 fallos en <a href="http://trac.hohndel.org">nuestro bugtracker</a>. Para instrucciones acerca
 de como compilar el software y (en caso necesario) sus dependencias, por favor,
 consulta el archivo INSTALL incluido con el código fuente.</p></div>
@@ -580,7 +580,7 @@ escrito.
 Importar información de la inmersión directamente de un ordenador de buceo si
 está soportado por <em>Subsurface</em>. La lista más actualizada de ordenadores
 soportados por <em>Subsurface</em> puede encontrarse en:
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">Ordenadores soportados</a>.
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">Ordenadores soportados</a>.
 </p>
 </li>
 <li>
@@ -885,7 +885,7 @@ duración, ratios de ascenso/descenso y de presiones parciales de los gases.
 información de la inmersión. <em>Subsurface</em> puede obtener información de un amplio
 abanico de ordenadores de buceo, la última lista de los cuales puede encontrarse
 en:
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">Ordenadores de buceo soportados.</a></p></div>
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">Ordenadores de buceo soportados.</a></p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3932,7 +3932,7 @@ inmersiones efectuadas en este año y los pasados.
 <li>
 <p>
 <em>Comprobar si hay actualizaciones</em> - Encuentra si hay disponible una nueva
-versión de <em>Subsurface</em> en la  <a href="http://subsurface.hohndel.org/">página web de <em>Subsurface</em></a>.
+versión de <em>Subsurface</em> en la  <a href="http://subsurface-divelog.org/">página web de <em>Subsurface</em></a>.
 </p>
 </li>
 <li>
@@ -4748,7 +4748,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-11-17 14:55:30 GMT
+Last updated 2014-11-18 13:04:52 GMT
 </div>
 </div>
 </body>

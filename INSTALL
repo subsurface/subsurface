@@ -72,7 +72,7 @@ $ make
 $ sudo make install
 
 To compile Subsurface:
-$ git clone git://subsurface.hohndel.org/subsurface.git
+$ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
 $ qmake # qmake-qt4 on some flavors of Linux
 $ make
@@ -126,7 +126,7 @@ $ make install
 6) Compile Subsurface
 
 $ cd ~/src
-$ git clone git://subsurface.hohndel.org/subsurface.git
+$ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
 $ qmake
 $ make
@@ -175,7 +175,7 @@ The following ports are currently installed:
 4) Compile Subsurface
 
 $ cd ~/src
-$ git clone git://subsurface.hohndel.org/subsurface.git
+$ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
 $ qmake
 $ make
@@ -221,7 +221,7 @@ $ mingw32-cmake --build .
 To compile Subsurface, use:
 
 $ mkdir -p ~/src/subsurface
-$ git clone git://subsurface.hohndel.org/subsurface.git ~/src/subsurface
+$ git clone git://subsurface-divelog.org/subsurface.git ~/src/subsurface
 $ cd ~/src/subsurface
 $ packaging/windows/mingw-make.sh
 $ packaging/windows/mingw-make.sh install
@@ -296,7 +296,7 @@ variable - e.g. PKG_CONFIG_PATH=c:\msys\pkg-config
 
 To build subsurface, use:
 
-$ git clone git://subsurface.hohndel.org/subsurface.git
+$ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
 $ qmake
 $ make

@@ -30,5 +30,5 @@ void SubsurfaceAbout::on_licenseButton_clicked()
 
 void SubsurfaceAbout::on_websiteButton_clicked()
 {
-	QDesktopServices::openUrl(QUrl("http://subsurface.hohndel.org"));
+	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org"));
 }

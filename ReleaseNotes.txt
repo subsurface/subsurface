@@ -367,4 +367,4 @@ New in version 3.0 (compared to Subsurface 2.1):
 
 License: GPLv2
 
-Subsurface can be found at http://subsurface.hohndel.org
+Subsurface can be found at http://subsurface-divelog.org

@@ -446,9 +446,9 @@ Intel Mac (OS/X) и множества дистрибутивов Linux. <em>Sub
 также скомпилирован на множестве других платформ, где доступны Qt и
 libdivecomputer.</p></div>
 <div class="paragraph"><p>Этот документ описывает использование программы <em>Subsurface</em>. Для установки
-обратитесь к странице <em>Downloads</em> на <a href="http://subsurface.hohndel.org/">веб-сайте
+обратитесь к странице <em>Downloads</em> на <a href="http://subsurface-divelog.org/">веб-сайте
 <em>Subsurface</em></a>.  Вы можете обсудить эту программу, отправив email на адрес
-<a href="mailto:subsurface@hohndel.org">списка рассылки</a> и сообщить об ошибках на сайте
+<a href="mailto:subsurface@subsurface-divelog.org">списка рассылки</a> и сообщить об ошибках на сайте
 <a href="http://trac.hohndel.org">треккера ошибок</a>. Инструкции по самостоятельной сборке
 и, если необходимо, зависимостей, описаны в файле INSTALL, распространяемом
 вместе с исходными текстами.</p></div>
@@ -562,7 +562,7 @@ libdivecomputer.</p></div>
 <p>
 Импорт данных из дайв-компьютера (при условии, что он поддерживается
 <em>Subsurface</em>).  На веб-сайте вы можете просмотреть актуальный
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">
 список моделей компьютеров</a>, поддерживаемых <em>Subsurface</em>.
 </p>
 </li>
@@ -834,7 +834,7 @@ libdivecomputer.</p></div>
 информации о погружении, например, точные значения глубин, длительности,
 скорости погружения и всплытия, парциального давления газов. <em>Subsurface</em>
 поддерживает множество моделей дайв-компьютеров,
-<a href="http://subsurface.hohndel.org/documentation/supported-dive-computers/">
+<a href="http://subsurface-divelog.org/documentation/supported-dive-computers/">
 актуальный список</a> доступен на веб-сайте.</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -1036,7 +1036,7 @@ libdivecomputer.</p></div>
 <pre><code>subsurface.log
 subsurface.bin</code></pre>
 </div></div>
-<div class="paragraph"><p>Эти файлы следует отправить разработчикам в <a href="mailto:subsurface@hohndel.org">
+<div class="paragraph"><p>Эти файлы следует отправить разработчикам в <a href="mailto:subsurface@subsurface-divelog.org">
 список рассылки</a> с просьбой проанализировать проблему. Необходимо указать
 производителя и модель дайв-компьютера и дать словесное описание загружаемых
 погружений.</p></div>
@@ -3371,7 +3371,7 @@ SAC отдельно для донной фазы (<em>SAC на дне</em>) и 
 <li>
 <p>
 <em>Проверить обновления</em> - проверяет доступность новой версии на
-  <a href="http://subsurface.hohndel.org/">_веб-сайте Subsurface</a>.
+  <a href="http://subsurface-divelog.org/">_веб-сайте Subsurface</a>.
 </p>
 </li>
 <li>
@@ -4032,7 +4032,7 @@ Language</em> и нажмите кнопку <em>Metric</em>). Затем вып
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Последнее обновление 2014-08-07 19:22:48 BST
+Последнее обновление 2014-11-18 13:05:57 GMT
 </div>
 </div>
 </body>

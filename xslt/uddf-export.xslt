@@ -11,7 +11,7 @@
       <generator>
         <manufacturer id="subsurface">
           <name>Subsurface Team</name>
-          <contact>http://subsurface.hohndel.org/</contact>
+          <contact>http://subsurface-divelog.org/</contact>
         </manufacturer>
         <version>
           <xsl:value-of select="/divelog/@version"/>

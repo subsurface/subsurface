@@ -25,10 +25,10 @@
   </p>
  </description>
  <screenshots>
-  <screenshot type="default" width="1860" height="1046">http://subsurface.hohndel.org/screenshots/main.png</screenshot>
-  <screenshot width="778" height="438">http://subsurface.hohndel.org/screenshots/preferences.png</screenshot>
-  <screenshot width="782" height="440">http://subsurface.hohndel.org/screenshots/preferences2.png</screenshot>
+  <screenshot type="default" width="1860" height="1046">http://subsurface-divelog.org/screenshots/main.png</screenshot>
+  <screenshot width="778" height="438">http://subsurface-divelog.org/screenshots/preferences.png</screenshot>
+  <screenshot width="782" height="440">http://subsurface-divelog.org/screenshots/preferences2.png</screenshot>
  </screenshots>
- <url type="homepage">http://www.http://subsurface.hohndel.org/</url>
- <updatecontact>subsurface@hohndel.org</updatecontact>
+ <url type="homepage">http://www.http://subsurface-divelog.org/</url>
+ <updatecontact>subsurface@subsurface-divelog.org</updatecontact>
 </application>

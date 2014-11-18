@@ -9,7 +9,7 @@
 :toc:
 :toc-placement: manual
 :numbered:
-// :website: http://subsurface.hohndel.org
+// :website: http://subsurface-divelog.org
 
 image::images/Subsurface4Banner.png["Banner",align="center"]
 
@@ -46,9 +46,9 @@ libdivecomputer are available.
 
 The scope of this document is the use of the _Subsurface_ program. To install
 the software, consult the _Downloads_ page on the
-http://subsurface.hohndel.org/[_Subsurface_ web site].
+http://subsurface-divelog.org/[_Subsurface_ web site].
 Please discuss issues with this program by sending an email to
-mailto:subsurface@hohndel.org[our mailing list] and report bugs at
+mailto:subsurface@subsurface-divelog.org[our mailing list] and report bugs at
 http://trac.hohndel.org[our bugtracker].  For instructions on how to build the
 software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.
@@ -160,7 +160,7 @@ use a dive computer and dives were recorded in a written logbook.
 2. Import dive information directly from a dive computer if it is supported by
 _Subsurface_. The latest list of dive computers supported by _Subsurface_ can
 be found at:
-link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[
+link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
 3. Import dive information from another database or file format. If you
@@ -450,7 +450,7 @@ and of gas partial pressures. _Subsurface_ can capture this information and
 present it as part of the dive information, using dive
 information from a wide range of dive computers. The latest list of supported
 dive computers can be found at:
-link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[
+link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
 [icon="images/icons/warning2.png"]
@@ -618,7 +618,7 @@ checked, no dives are added to the
 	subsurface.bin
 
 These files should be send to the _Subsurface_ mail list:
-_subsurface@hohndel.org_ with a
+_subsurface@subsurface-divelog.org_ with a
 request for the files to be analysed. Provide the dive computer
 make and model
 as well as contextual information about the dives recorded on the dive computer.
@@ -2713,7 +2713,7 @@ years.
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
 well as licensing information.
 - _Check for updates_ - Find out whether a newer version of Subsurface is available
-on the http://subsurface.hohndel.org/[_Subsurface_ web site].
+on the http://subsurface-divelog.org/[_Subsurface_ web site].
 - _User Manual_ - Open a window showing this user manual.
 
 

@@ -45,9 +45,9 @@ para muchas otras plataformas de hardware y entornos de software en los que
 estén disponibles Qt y libdivecomputer.
 
 El ámbito de este documento es el uso del programa _Subsurface_. Para instalar
-el software, consulta la página Descargas en http://subsurface.hohndel.org/[la
+el software, consulta la página Descargas en http://subsurface-divelog.org/[la
 web]. Por favor, comenta los problemas que tengas con este programa enviando un
-mail a mailto:subsurface@hohndel.org[nuestra lista de correo] e informa de
+mail a mailto:subsurface@subsurface-divelog.org[nuestra lista de correo] e informa de
 fallos en http://trac.hohndel.org[nuestro bugtracker]. Para instrucciones acerca
 de como compilar el software y (en caso necesario) sus dependencias, por favor,
 consulta el archivo INSTALL incluido con el código fuente.
@@ -169,7 +169,7 @@ escrito.
 2. Importar información de la inmersión directamente de un ordenador de buceo si
 está soportado por _Subsurface_. La lista más actualizada de ordenadores
 soportados por _Subsurface_ puede encontrarse en:
-link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[Ordenadores soportados].
+link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores soportados].
 
 3. Importar información de inmersiones de otra base de datos o formato de
 archivo. Si se tienen diarios guardados con otro software, a menudo podrán
@@ -448,7 +448,7 @@ _Subsurface_ puede capturar esta información y presentarla como parte de la
 información de la inmersión. _Subsurface_ puede obtener información de un amplio
 abanico de ordenadores de buceo, la última lista de los cuales puede encontrarse
 en:
-link:http://subsurface.hohndel.org/documentation/supported-dive-computers/[Ordenadores de buceo soportados.]
+link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores de buceo soportados.]
 
 [icon="images/icons/warning2.png"]
 [WARNING]
@@ -2706,7 +2706,7 @@ inmersiones efectuadas en este año y los pasados.
 - _Acerca de Subsurface_ - Muestra un panel con el número de versión de
 _Subsurface_ e información de la licencia.
 - _Comprobar si hay actualizaciones_ - Encuentra si hay disponible una nueva
-versión de _Subsurface_ en la  http://subsurface.hohndel.org/[página web de _Subsurface_].
+versión de _Subsurface_ en la  http://subsurface-divelog.org/[página web de _Subsurface_].
 - _Manual de usuario_ - Abre una ventana que muestra este manual.
 
 == APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.
