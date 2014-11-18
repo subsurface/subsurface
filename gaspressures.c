@@ -402,7 +402,8 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 			missing_pr = 1;
 			continue;
 		}
-		current->end = pressure;
+		if (current)
+			current->end = pressure;
 
 		/* Was it continuous? */
 		if ((o2_flag) && (O2CYLINDER_PRESSURE(entry - 1))) // in the case of CCR o2 pressure
