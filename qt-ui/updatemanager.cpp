@@ -24,7 +24,7 @@ void UpdateManager::checkForUpdates()
 #endif
 
 	QString version = VERSION_STRING;
-	QString url = QString("http://subsurface.hohndel.org/updatecheck.html?os=%1&ver=%2").arg(os, version);
+	QString url = QString("http://subsurface-divelog.org/updatecheck.html?os=%1&ver=%2").arg(os, version);
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");

@@ -934,7 +934,7 @@ UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : Web
 QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 {
 	QNetworkRequest request;
-	request.setUrl(QString("http://subsurface.hohndel.org/survey?%1").arg(values));
+	request.setUrl(QString("http://subsurface-divelog.org/survey?%1").arg(values));
 	request.setRawHeader("Accept", "text/xml");
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	reply = manager()->get(request);
