@@ -637,6 +637,9 @@ p, li { white-space: pre-wrap; }
    <property name="shortcut">
     <string>Ctrl+Shift+C</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
   </action>
   <action name="actionReplanDive">
    <property name="text">
