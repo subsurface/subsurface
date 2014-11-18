@@ -20,11 +20,11 @@ struct plot_data {
 	unsigned int in_deco : 1;
 	int cylinderindex;
 	int sec;
-	/* pressure[0] is sensor pressure [when CCR, the pressure of the oxygen cylinder]
-	 * pressure[1] is interpolated pressure */
+	/* pressure[0] is sensor cylinder pressure [when CCR, the pressure of the diluent cylinder]
+	 * pressure[1] is interpolated cylinder pressure */
 	int pressure[2];
-	/* diluentpressure[0] is diluent pressure [CCR]
-	 * diluentpressure[1] is interpolated diluent pressure [CCR] */
+	/* o2pressure[0] is o2 cylinder pressure [CCR]
+	 * o2pressure[1] is interpolated o2 cylinder pressure [CCR] */
 	int o2cylinderpressure[2];
 	int temperature;
 	/* Depth info */
@@ -40,7 +40,8 @@ struct plot_data {
 	int smoothed;
 	int sac;
 	struct gas_pressures pressures;
-	double o2pressure, o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
+	pressure_t o2pressure;  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.
+	pressure_t o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
 	double mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
