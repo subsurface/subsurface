@@ -1725,6 +1725,27 @@ de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
 image::images/Ceilings2.jpg["Figura: Techo con resolución de 3 metros",align="center"]
 
+[icon="images/tissues.jpg"]
+[NOTE]
+Muestra presiones de los gases inertes en los tejidos, en relación con la
+presión ambiental (línea gris horizontal).
+Las presiones en los tejidos se calculan utilizando el algoritmo Bühlmann ZH-16
+y se muestran como líneas de colores que varían desde el verde (tejidos rápidos)
+al azul (tejidos más lentos).
+La línea negra, dibujada sobre la presión ambiental, es la máxima sobresaturación
+de tejidos permitida, en la que se incluyen los factores de gradiente que se
+establecieron en _Preferencias_. Para buceadores que hacen buceo con descompresión
+planificada, se obtienen ritmos de desaturación eficientes manteniendo los tejidos
+entre la presión ambiental de los gases inertes (línea gris) y la presión límite
+(línea negra). Lo que se muestra en pantalla es una representación de la presión
+en los tejidos durante toda la inmersión. En contraste, el
+xref:S_gas_pressure_graph[Gráfico de presión de gases] de la ventana *Información*
+del *Perfil* es un reflejo de las presiones de los tejidos en el instante de
+tiempo señalado por la posición del cursor sobre el perfil de la inmersión.
+
+image::images/tissuesGraph.jpg["Figura: Gráfico de presión de gases inertes en los tejidos",align="center"]
+
+
 El ajuste de los factores de gradiente afecta mucho a los techos calculados y
 sus profundidades. Para más información acerca de factores de gradiente,
 consultar la sección xref:S_GradientFactors[Ajuste de preferencias de factores de gradiente].
@@ -1740,18 +1761,6 @@ detallada de los factores de gradiente, consultar los siguientes links:
 
 ** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
-[icon="images/tissues.jpg"]
-[NOTE]
-Muestra presiones de los gases inertes en los tejidos, en relación con la
-presión ambiental (línea gris horizontal).
-Las presiones en los tejidos se calculan utilizando el algoritmo Bühlmann ZH-16
-y se muestran como líneas de colores que varían desde el verde (tejidos rápidos)
-al azul (tejidos más lentos).
-La línea negra, dibujada sobre la presión ambiental, es la máxima sobresaturación
-de tejidos permitida, en la que se incluyen los factores de gradiente que se
-establecieron en _Preferencias_.
-
-image::images/tissuesGraph.jpg["Figura: Gráfico de presión de gases inertes en los tejidos",align="center"]
 
 === El menú contextual del Perfil de Inmersión
 
@@ -1841,6 +1850,7 @@ respirando aire a una profundidad igual a la PNE.
 La figura (*B*) anterior muestra un Recuadro de Información con un conjunto de
 datos casi completo.
 
+[[S_gas_pressure_graph]]
 ==== El gráfico de barras de presión de gases
 
 A la izquierda del *Recuadro de Información*  hay un gráfico de barras vertical
@@ -2067,6 +2077,45 @@ inmersiones que fueron unidas:
 
 image::images/MergedDive.png["Ejemplo: Inmersión mezclada",align="center"]
 
+=== Filtrar la Lista de Inmersiones
+
+Los buceos del panel *Lista de inmersiones* pueden filtrarse, esto es, se pueden
+seleccionar únicamente algunos de los buceos basándose en sus atributos, p.e.
+las etiquetas, el lugar de buceo, el divemaster, compañeros o traje protector.
+El filtrado permite, por ejemplo, listar las inmersiones profundas en un punto
+determinado o, por el contrario, las inmersiones en cuevas con cierto
+compañero.
+
+Para abrir el filtrado, seleccionar _Registro -> Filtrar la lista de inmersiones_
+desde el menú principal. Esto abrirá el _Panel de filtrado_ en la parte de arriba
+de la ventana de _Subsurface_. Arriba a la derecha del panel se ubican tres
+iconos. El _Panel de filtrado_ puede reiniciarse (p.e. limpiar todos los filtros
+actuales) seleccionando el *+*. El _Panel de filtrado_ también puede minimizarse
+seleccionando el icono central. Cuando está minimizado solo se muestran los tres
+iconos. El panel puede maximizarse clicando el icono que lo minimizó. El filtro
+se cierra y reinicia seleccionando el icono con la bandera.
+Un ejemplo del _Panel de filtrado_ se muestra en la figura a continuación.
+
+image::images/Filterpanel.jpg["Figura: Panel de filtrado",align="center"]
+
+Se pueden utilizar cuatro criterios para filtrar la lista de inmersiones:
+las etiquetas, las personas (compañeros/divemasters), punto de inmersión y traje
+de buceo, cada uno de los cuales viene representado por una lista seleccionable.
+Sobre cada lista hay un segundo nivel de filtrado. Por ejemplo, tecleando "_Ba_"
+en la casilla de texto sobre las ubicaciones, la lista podría quedar reducida a
+"_Bajo Piles I_", "_Bajo Piles II_" y "_Bajo de Testa_". Filtrar la lista
+permite encontrar rápidamente términos de búsqueda para filtrar la lista de
+inmersiones.
+
+Para activar el filtrado de la lista de inmersiones, se necesita seleccionar
+al menos una casilla en una de las cuatro listas. La lista de inmersiones se
+reduce para mostrar solo los buceos que cumplen los criterios seleccionados en
+las listas. Las cuatro listas funcionan como un filtro con operadores _Y_,
+_Subsurface_ filtraría, pues, para "_cueva_" como etiqueta y "_José García_"
+como compañero; pero los filtros dentro de una categoría son inclusivos, esto
+es, filtrar por etiquetas con "cueva" y "barco" mostraría todas las inmersiones
+en las que aparezcan las etiquetas "cueva" _O_ "barco", solas o conjuntamente.
+
 [[S_ExportLog]]
 == Exportar el registro de inmersiones o parte del mismo
 
@@ -2076,7 +2125,7 @@ guardar TODAS las inmersiones, o guardar solo las inmersiones seleccionadas en
 el panel *Lista de Inmersiones* de _Subsurface_. Marca la casilla seleccionable
 apropiada (ver imagen a continuación).
 
-image::images/Export.jpg["Figura: Diálogo de exportaación",align="center"]
+image::images/Export.jpg["Figura: Diálogo de exportación",align="center"]
 
 Un registro de buceo puede guardarse en tres formatos:
 
