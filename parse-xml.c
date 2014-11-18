@@ -2016,9 +2016,6 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
 	int i, interval, retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
-	float *profileBlob;
-	unsigned char *tempBlob;
-	int *pressureBlob;
 	unsigned const char *sampleBlob;
 	char *err = NULL;
 	char get_events_template[] = "select * from Mark where DiveId = %d";
@@ -2084,9 +2081,6 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
 
 	interval = data[16] ? atoi(data[16]) : 0;
-	profileBlob = (float *)(data[17] + 3);
-	tempBlob = (unsigned char *)(data[17] + 10);
-	pressureBlob = (int *)(data[17] + 7);
 	sampleBlob = (unsigned const char *)data[17];
 	for (i = 0; interval && i * interval < cur_dive->duration.seconds; i++) {
 		float *depth = (float *)&sampleBlob[i * 16 + 3];
