@@ -616,6 +616,17 @@ int parse_txt_file(const char *filename, const char *csv)
 									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position NC"));
 							break;
 						}
+					case 3:
+						//Power Off event
+						add_event(dc, cur_sampletime, 0, 0, 0,
+								QT_TRANSLATE_NOOP("gettextFromC", "Power off"));
+						break;
+					case 4:
+						//Battery State of Charge in %
+#ifdef SAMPLE_EVENT_BATTERY
+						add_event(dc, cur_sampletime, SAMPLE_EVENT_BATTERY, 0,
+								value, QT_TRANSLATE_NOOP("gettextFromC", "battery"));
+#endif
 						break;
 					case 6:
 						add_sample_data(sample, POSEIDON_SENSOR1, value);
@@ -627,6 +638,11 @@ int parse_txt_file(const char *filename, const char *csv)
 						has_depth = true;
 						prev_depth = value;
 						add_sample_data(sample, POSEIDON_DEPTH, value);
+						break;
+					case 11:
+						//Ascent Rate Alert >10 m/s
+						add_event(dc, cur_sampletime, SAMPLE_EVENT_ASCENT, 0, 0,
+								QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
 						break;
 					case 13:
 						add_sample_data(sample, POSEIDON_O2CYLINDER, value);
@@ -649,9 +665,22 @@ int parse_txt_file(const char *filename, const char *csv)
 						prev_setpoint = value;
 						add_sample_data(sample, POSEIDON_SETPOINT, value);
 						break;
+					case 22:
+						//End of O2 calibration Event: 0 = OK, 2 = Failed, rest of dive setpoint 1.0
+						if (value == 2)
+							add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_END, 0,
+									QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration failed"));
+						add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_END, 0,
+								QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration"));
+						break;
 					case 25:
 						//25 Max Ascent depth
 						add_sample_data(sample, POSEIDON_CEILING, value);
+						break;
+					case 31:
+						//Start of O2 calibration Event
+						add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_BEGIN, 0,
+								QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration"));
 						break;
 					case 37:
 						//Remaining dive time #2?
