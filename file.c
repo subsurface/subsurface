@@ -11,6 +11,9 @@
 #include "dive.h"
 #include "file.h"
 
+/* For SAMPLE_* */
+#include <libdivecomputer/parser.h>
+
 /* Crazy windows sh*t */
 #ifndef O_BINARY
 #define O_BINARY 0
@@ -577,6 +580,7 @@ int parse_txt_file(const char *filename, const char *csv)
 			int type;
 			int value;
 			int sampletime;
+			int gaschange = 0;
 
 			/* Collect all the information for one sample */
 			sscanf(lineptr, "%d,%d,%d", &cur_sampletime, &type, &value);
@@ -658,6 +662,14 @@ int parse_txt_file(const char *filename, const char *csv)
 					case 39:
 						add_sample_data(sample, POSEIDON_TEMP, value);
 						break;
+					case 85:
+						//He diluent part in %
+						gaschange ^= value << 16;
+						break;
+					case 86:
+						//O2 diluent part in %
+						gaschange ^= value;
+						break;
 					default:
 						break;
 					} /* sample types */
@@ -678,6 +690,9 @@ int parse_txt_file(const char *filename, const char *csv)
 				sscanf(lineptr, "%d,%d,%d", &cur_sampletime, &type, &value);
 			} while (sampletime == cur_sampletime);
 
+			if (gaschange)
+				add_event(dc, cur_sampletime, SAMPLE_EVENT_GASCHANGE2, 0, gaschange,
+						QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
 			if (!has_depth)
 				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
 			if (!has_setpoint)
