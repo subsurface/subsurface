@@ -629,22 +629,28 @@ int parse_txt_file(const char *filename, const char *csv)
 #endif
 						break;
 					case 6:
+						//PO2 Cell 1 Average
 						add_sample_data(sample, POSEIDON_SENSOR1, value);
 						break;
 					case 7:
+						//PO2 Cell 2 Average
 						add_sample_data(sample, POSEIDON_SENSOR2, value);
 						break;
 					case 8:
+						//Depth * 2
 						has_depth = true;
 						prev_depth = value;
 						add_sample_data(sample, POSEIDON_DEPTH, value);
 						break;
+						//9 Max Depth * 2
+						//10 Ascent/Descent Rate * 2
 					case 11:
 						//Ascent Rate Alert >10 m/s
 						add_event(dc, cur_sampletime, SAMPLE_EVENT_ASCENT, 0, 0,
 								QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
 						break;
 					case 13:
+						//O2 Tank Pressure
 						add_sample_data(sample, POSEIDON_O2CYLINDER, value);
 						if (!o2cylinder_pressure) {
 							dive->cylinder[0].sample_start.mbar = value * 1000;
@@ -653,6 +659,7 @@ int parse_txt_file(const char *filename, const char *csv)
 							o2cylinder_pressure = value;
 						break;
 					case 14:
+						//Diluent Tank Pressure
 						add_sample_data(sample, POSEIDON_PRESSURE, value);
 						if (!cylinder_pressure) {
 							dive->cylinder[1].sample_start.mbar = value * 1000;
@@ -660,7 +667,10 @@ int parse_txt_file(const char *filename, const char *csv)
 						} else
 							cylinder_pressure = value;
 						break;
+						//16 Remaining dive time #1?
+						//17 related to O2 injection
 					case 20:
+						//PO2 Setpoint
 						has_setpoint = true;
 						prev_setpoint = value;
 						add_sample_data(sample, POSEIDON_SETPOINT, value);
@@ -689,6 +699,7 @@ int parse_txt_file(const char *filename, const char *csv)
 						add_sample_data(sample, POSEIDON_NDL, value);
 						break;
 					case 39:
+						// Water Temperature in Celcius
 						add_sample_data(sample, POSEIDON_TEMP, value);
 						break;
 					case 85:
@@ -699,7 +710,14 @@ int parse_txt_file(const char *filename, const char *csv)
 						//O2 diluent part in %
 						gaschange ^= value;
 						break;
+						//239 Unknown, maybe PO2 at sensor validation?
+						//240 Unknown, maybe PO2 at sensor validation?
+						//247 Unknown, maybe PO2 Cell 1 during pressure test
+						//248 Unknown, maybe PO2 Cell 2 during pressure test
+						//250 PO2 Cell 1
+						//251 PO2 Cell 2
 					default:
+						printf("Ignoring %d = %d\n", type, value);
 						break;
 					} /* sample types */
 					break;
