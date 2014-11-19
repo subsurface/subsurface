@@ -1110,6 +1110,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	// create the profile context menu
+	QPointF scenePos = mapToScene(event->pos());
+	struct plot_data *entry = getEntryFromPos(scenePos);
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
@@ -1121,6 +1123,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 			action->setData(event->globalPos());
+			if (i == entry->cylinderindex)
+				action->setDisabled(true);
 			gasChange->addAction(action);
 		}
 	}
