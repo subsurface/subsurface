@@ -592,6 +592,27 @@ int parse_txt_file(const char *filename, const char *csv)
 				switch (i) {
 				case 3:
 					switch (type) {
+					case 0:
+						//MouthPiece position event: 0=OC, 1=CC, 2=UN, 3=NC
+						switch (value) {
+						case 0:
+							add_event(dc, cur_sampletime, 0, 0, 0,
+									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position OC"));
+							break;
+						case 1:
+							add_event(dc, cur_sampletime, 0, 0, 0,
+									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position CC"));
+							break;
+						case 2:
+							add_event(dc, cur_sampletime, 0, 0, 0,
+									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position UN"));
+							break;
+						case 3:
+							add_event(dc, cur_sampletime, 0, 0, 0,
+									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position NC"));
+							break;
+						}
+						break;
 					case 6:
 						add_sample_data(sample, POSEIDON_SENSOR1, value);
 						break;
