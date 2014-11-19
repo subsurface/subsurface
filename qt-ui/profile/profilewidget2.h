@@ -16,6 +16,7 @@
 #include "graphicsview-common.h"
 #include "divelineitem.h"
 #include "diveprofileitem.h"
+#include "display.h"
 
 class RulerItem2;
 struct dive;
@@ -145,7 +146,7 @@ private:
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.
-	struct plot_info *plotInfo;
+	struct plot_info plotInfo;
 	DepthAxis *profileYAxis;
 	PartialGasPressureAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;

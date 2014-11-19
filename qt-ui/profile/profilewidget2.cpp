@@ -491,16 +491,16 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 * so I'll *not* calculate everything if something is not being
 	 * shown.
 	 */
-	struct plot_info pInfo = calculate_max_limits_new(&displayed_dive, currentdc);
-	create_plot_info_new(&displayed_dive, currentdc, &pInfo);
+	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
+	create_plot_info_new(&displayed_dive, currentdc, &plotInfo);
 	if(shouldCalculateMaxTime)
-		maxtime = get_maxtime(&pInfo);
+		maxtime = get_maxtime(&plotInfo);
 
 	/* Only update the max depth if it's bigger than the current ones
 	 * when we are dragging the handler to plan / add dive.
 	 * otherwhise, update normally.
 	 */
-	int newMaxDepth = get_maxdepth(&pInfo);
+	int newMaxDepth = get_maxdepth(&plotInfo);
 	if(!shouldCalculateMaxDepth) {
 		if (maxdepth < newMaxDepth) {
 			maxdepth = newMaxDepth;
@@ -509,23 +509,23 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		maxdepth = newMaxDepth;
 	}
 
-	dataModel->setDive(&displayed_dive, pInfo);
-	toolTipItem->setPlotInfo(pInfo);
+	dataModel->setDive(&displayed_dive, plotInfo);
+	toolTipItem->setPlotInfo(plotInfo);
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);
 	profileYAxis->updateTicks();
 
-	temperatureAxis->setMinimum(pInfo.mintemp);
-	temperatureAxis->setMaximum(pInfo.maxtemp);
+	temperatureAxis->setMinimum(plotInfo.mintemp);
+	temperatureAxis->setMaximum(plotInfo.maxtemp);
 
-	if (pInfo.maxhr) {
-		heartBeatAxis->setMinimum(pInfo.minhr);
-		heartBeatAxis->setMaximum(pInfo.maxhr);
+	if (plotInfo.maxhr) {
+		heartBeatAxis->setMinimum(plotInfo.minhr);
+		heartBeatAxis->setMaximum(plotInfo.maxhr);
 		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
 	}
-	heartBeatAxis->setVisible(prefs.hrgraph && pInfo.maxhr);
+	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
 
 	percentageAxis->setMinimum(0);
 	percentageAxis->setMaximum(100);
@@ -550,15 +550,15 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		incr *= 2;
 	timeAxis->setTickInterval(incr);
 	timeAxis->updateTicks();
-	cylinderPressureAxis->setMinimum(pInfo.minpressure);
-	cylinderPressureAxis->setMaximum(pInfo.maxpressure);
+	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
+	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
 
-	rulerItem->setPlotInfo(pInfo);
-	tankItem->setData(dataModel, &pInfo, &displayed_dive);
+	rulerItem->setPlotInfo(plotInfo);
+	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
 	meanDepth->setVisible(prefs.show_average_depth);
-	meanDepth->setMeanDepth(pInfo.meandepth);
+	meanDepth->setMeanDepth(plotInfo.meandepth);
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(currentdc->duration.seconds), 0);
-	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(pInfo.meandepth));
+	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(plotInfo.meandepth));
 
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
