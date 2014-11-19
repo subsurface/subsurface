@@ -242,7 +242,8 @@ enum csv_format {
 	POSEIDON_SENSOR1,
 	POSEIDON_SENSOR2,
 	POSEIDON_PRESSURE,
-	POSEIDON_O2CYLINDER
+	POSEIDON_O2CYLINDER,
+	POSEIDON_NDL
 };
 
 static void add_sample_data(struct sample *sample, enum csv_format type, double val)
@@ -277,6 +278,9 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		break;
 	case POSEIDON_O2CYLINDER:
 		sample->o2cylinderpressure.mbar = val * 1000;
+		break;
+	case POSEIDON_NDL:
+		sample->ndl.seconds = val * 60;
 		break;
 	}
 }
@@ -477,8 +481,8 @@ int parse_txt_file(const char *filename, const char *csv)
 	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
 		int d, m, y, he;
 		int hh = 0, mm = 0, ss = 0;
-		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1;
-		bool has_depth = false, has_setpoint = false;
+		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1, prev_ndl = -1;
+		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr, *key, *value;
 		int o2cylinder_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
 
@@ -575,6 +579,7 @@ int parse_txt_file(const char *filename, const char *csv)
 
 			has_depth = false;
 			has_setpoint = false;
+			has_ndl = false;
 			sample = prepare_sample(dc);
 			sample->time.seconds = cur_sampletime;
 
@@ -615,6 +620,12 @@ int parse_txt_file(const char *filename, const char *csv)
 						prev_setpoint = value;
 						add_sample_data(sample, POSEIDON_SETPOINT, value);
 						break;
+					case 37:
+						//Remaining dive time #2?
+						has_ndl = true;
+						prev_ndl = value;
+						add_sample_data(sample, POSEIDON_NDL, value);
+						break;
 					case 39:
 						add_sample_data(sample, POSEIDON_TEMP, value);
 						break;
@@ -642,6 +653,8 @@ int parse_txt_file(const char *filename, const char *csv)
 				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
 			if (!has_setpoint)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
+			if (!has_ndl)
+				add_sample_data(sample, POSEIDON_NDL, prev_ndl);
 			if (cylinder_pressure)
 				dive->cylinder[1].sample_end.mbar = cylinder_pressure * 1000;
 			if (o2cylinder_pressure)
