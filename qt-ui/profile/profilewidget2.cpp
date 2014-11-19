@@ -1096,16 +1096,19 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	// create the profile context menu
-	QMenu *gasChange = m.addMenu(tr("Add gas change"));
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
-	for (int i = 0; i < rowCount; i++) {
-		QAction *action = new QAction(&m);
-		action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
-		action->setData(event->globalPos());
-		gasChange->addAction(action);
+	if (rowCount > 1) {
+		// if we have more than one gas, offer to switch to another one
+		QMenu *gasChange = m.addMenu(tr("Add gas change"));
+		for (int i = 0; i < rowCount; i++) {
+			QAction *action = new QAction(&m);
+			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
+			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+			action->setData(event->globalPos());
+			gasChange->addAction(action);
+		}
 	}
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
