@@ -1060,6 +1060,20 @@ bool ProfileWidget2::isAddOrPlanner()
 	return currentState == PLAN || currentState == ADD;
 }
 
+struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
+{
+	// find the time stamp corresponding to the mouse position
+	int seconds = timeAxis->valueAt(pos);
+	struct plot_data *entry;
+
+	for (int i = 0; i < plotInfo.nr; i++) {
+		entry = plotInfo.entry + i;
+		if (entry->sec >= seconds)
+			break;
+	}
+	return entry;
+}
+
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {

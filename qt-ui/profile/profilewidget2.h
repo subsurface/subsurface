@@ -134,6 +134,7 @@ private: /*methods*/
 	void addItemsToScene();
 	void setupItemOnScene();
 	void disconnectTemporaryConnections();
+	struct plot_data *getEntryFromPos(QPointF pos);
 
 private:
 	DivePlotDataModel *dataModel;
