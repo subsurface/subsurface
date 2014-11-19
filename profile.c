@@ -979,9 +979,9 @@ static void debug_print_profiledata(struct plot_info *pi)
 		fprintf(f1, "id t1 gas gasint t2 t3 dil dilint t4 t5 setpoint sensor1 sensor2 sensor3 t6 po2 fo2\n");
 		for (i = 0; i < pi->nr; i++) {
 			entry = pi->entry + i;
-			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %f %f %f %f PO2= %f\n", i, SENSOR_PRESSURE(entry),
+			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %d %d %d %d PO2= %f\n", i, SENSOR_PRESSURE(entry),
 				INTERPOLATED_PRESSURE(entry), O2CYLINDER_PRESSURE(entry), INTERPOLATED_O2CYLINDER_PRESSURE(entry),
-				entry->o2pressure, entry->o2sensor[0], entry->o2sensor[1], entry->o2sensor[2], entry->pressures.o2);
+				entry->o2pressure.mbar, entry->o2sensor[0].mbar, entry->o2sensor[1].mbar, entry->o2sensor[2].mbar, entry->pressures.o2);
 		}
 		fclose(f1);
 	}
