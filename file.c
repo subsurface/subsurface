@@ -243,7 +243,8 @@ enum csv_format {
 	POSEIDON_SENSOR2,
 	POSEIDON_PRESSURE,
 	POSEIDON_O2CYLINDER,
-	POSEIDON_NDL
+	POSEIDON_NDL,
+	POSEIDON_CEILING
 };
 
 static void add_sample_data(struct sample *sample, enum csv_format type, double val)
@@ -281,6 +282,9 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		break;
 	case POSEIDON_NDL:
 		sample->ndl.seconds = val * 60;
+		break;
+	case POSEIDON_CEILING:
+		sample->stopdepth.mm = val * 1000;
 		break;
 	}
 }
@@ -619,6 +623,10 @@ int parse_txt_file(const char *filename, const char *csv)
 						has_setpoint = true;
 						prev_setpoint = value;
 						add_sample_data(sample, POSEIDON_SETPOINT, value);
+						break;
+					case 25:
+						//25 Max Ascent depth
+						add_sample_data(sample, POSEIDON_CEILING, value);
 						break;
 					case 37:
 						//Remaining dive time #2?
