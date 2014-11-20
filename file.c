@@ -597,23 +597,23 @@ int parse_txt_file(const char *filename, const char *csv)
 				case 3:
 					switch (type) {
 					case 0:
-						//MouthPiece position event: 0=OC, 1=CC, 2=UN, 3=NC
+						//Mouth piece position event: 0=OC, 1=CC, 2=UN, 3=NC
 						switch (value) {
 						case 0:
 							add_event(dc, cur_sampletime, 0, 0, 0,
-									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position OC"));
+									QT_TRANSLATE_NOOP("gettextFromC", "Mouth piece position OC"));
 							break;
 						case 1:
 							add_event(dc, cur_sampletime, 0, 0, 0,
-									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position CC"));
+									QT_TRANSLATE_NOOP("gettextFromC", "Mouth piece position CC"));
 							break;
 						case 2:
 							add_event(dc, cur_sampletime, 0, 0, 0,
-									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position UN"));
+									QT_TRANSLATE_NOOP("gettextFromC", "Mouth piece position unknown"));
 							break;
 						case 3:
 							add_event(dc, cur_sampletime, 0, 0, 0,
-									QT_TRANSLATE_NOOP("gettextFromC", "MouthPiece position NC"));
+									QT_TRANSLATE_NOOP("gettextFromC", "Mouth piece position not connected"));
 							break;
 						}
 					case 3:
