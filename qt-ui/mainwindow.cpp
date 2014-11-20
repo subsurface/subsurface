@@ -558,10 +558,14 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	view->setModel(m);
 	l->addWidget(view);
 	d.resize(width() * .8, height() / 2);
+	d.move(width() * .1, height() / 4);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), &d);
 	connect(close, SIGNAL(activated()), &d, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), &d);
 	connect(quit, SIGNAL(activated()), this, SLOT(close()));
+	d.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
+		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
+	d.setWindowTitle(tr("Yearly Statistics"));
 	d.exec();
 }
 
