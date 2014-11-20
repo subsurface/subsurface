@@ -1141,13 +1141,51 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		action->setData(QVariant::fromValue<void *>(item));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(hideEvents()));
 		m.addAction(action);
-		if (item->getEvent()->type == SAMPLE_EVENT_BOOKMARK) {
+		struct event *dcEvent = item->getEvent();
+		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK) {
 			action = new QAction(&m);
 			action->setText(tr("Edit name"));
 			action->setData(QVariant::fromValue<void *>(item));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(editName()));
 			m.addAction(action);
 		}
+#if 0 // FIXME::: FINISH OR DISABLE
+		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
+		// at either side of a gas change
+		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
+			qDebug() << "figure out if there are interpolated pressures";
+			struct plot_data *gasChangeEntry = entry;
+			struct plot_data *newGasEntry;
+			while (gasChangeEntry > plotInfo.entry) {
+				--gasChangeEntry;
+				if (gasChangeEntry->sec <= dcEvent->time.seconds)
+					break;
+			}
+			qDebug() << "at gas change at" << gasChangeEntry->sec << ": sensor pressure" << gasChangeEntry->pressure[0] << "interpolated" << gasChangeEntry->pressure[1];
+			// now gasChangeEntry points at the gas change, that entry has the final pressure of
+			// the old tank, the next entry has the starting pressure of the next tank
+			if (gasChangeEntry + 1 <= plotInfo.entry + plotInfo.nr) {
+				newGasEntry = gasChangeEntry + 1;
+				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
+				if (SENSOR_PRESSURE(gasChangeEntry) == 0 || displayed_dive.cylinder[gasChangeEntry->cylinderindex].sample_start.mbar == 0) {
+					// if we have no sensorpressure or if we have no pressure from samples we can assume that
+					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
+					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
+					pressure_t pressure;
+					pressure.mbar = INTERPOLATED_PRESSURE(gasChangeEntry) ? : SENSOR_PRESSURE(gasChangeEntry);
+					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
+										 .arg(gasChangeEntry->cylinderindex + 1).arg(get_pressure_string(pressure)));
+				}
+				if (SENSOR_PRESSURE(newGasEntry) == 0 || displayed_dive.cylinder[newGasEntry->cylinderindex].sample_start.mbar == 0) {
+					// we only have interpolated press -- see commend above
+					pressure_t pressure;
+					pressure.mbar = INTERPOLATED_PRESSURE(newGasEntry) ? : SENSOR_PRESSURE(newGasEntry);
+					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
+										 .arg(newGasEntry->cylinderindex + 1).arg(get_pressure_string(pressure)));
+				}
+			}
+		}
+#endif
 	}
 	bool some_hidden = false;
 	for (int i = 0; i < evn_used; i++) {
