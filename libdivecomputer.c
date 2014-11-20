@@ -210,6 +210,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	case DC_SAMPLE_BEARING:
 		sample->bearing.degrees = value.bearing;
 		break;
+#ifdef DEBUG_DC_VENDOR
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
 		       value.vendor.type, value.vendor.size);
@@ -217,6 +218,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
 		printf("</vendor>\n");
 		break;
+#endif
 #if DC_VERSION_CHECK(0, 3, 0)
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
