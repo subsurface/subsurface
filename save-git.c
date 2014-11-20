@@ -754,7 +754,7 @@ static void save_userid(void *_b)
 {
 	struct membuffer *b = _b;
 	if (prefs.save_userid_local)
-		put_format(b, "userid %30s", prefs.userid);
+		put_format(b, "userid %30s\n", prefs.userid);
 }
 
 static void save_one_device(void *_b, const char *model, uint32_t deviceid,
