@@ -865,7 +865,7 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc) {
 		}
 	switch (np) {
 	case 0: // Uhoh
-		return entry->o2pressure.mbar / 1000.0;
+		return entry->o2pressure.mbar;
 	case 1: // Return what we have
 		return sump;
 	case 2: // Take the average
