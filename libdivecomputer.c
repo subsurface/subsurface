@@ -384,16 +384,18 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 	}
 
 	if (!strcmp(str->desc, "Serial")) {
-		if (!dive->dc.serial)
-			dive->dc.serial = strdup(str->value);
+		fprintf(stderr, "string field \"Serial\": %s -- overwriting the existing serial of %s", str->value, dive->dc.serial);
+		dive->dc.serial = strdup(str->value);
+		/* should we just overwrite this whenever we have the "Serial" field?
+		 * It's a much better deviceid then what we have so far... for now I'm leaving it as is */
 		if (!dive->dc.deviceid)
 			dive->dc.deviceid = calculate_string_hash(str->value);
 		return;
 	}
 
 	if (!strcmp(str->desc, "FW Version")) {
-		if (!dive->dc.fw_version)
-			dive->dc.fw_version = strdup(str->value);
+		fprintf(stderr, "string field \"FW Version\": %s -- overwriting the existing firware of %s", str->value, dive->dc.fw_version);
+		dive->dc.fw_version = strdup(str->value);
 		return;
 	}
 
@@ -439,6 +441,10 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 	dive->dc.model = strdup(devdata->model);
 	dive->dc.deviceid = devdata->deviceid;
+	/* for now copy the "made up" strings converted from the 32bit numbers that libdivecomputer gives us;
+	 * if the dive computer backend supports the DC_FIELD_STRING interface this will later be overwritten by the correct strings */
+	dive->dc.serial = copy_string(devdata->serial);
+	dive->dc.fw_version = copy_string(devdata->firmware);
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	tm.tm_year = dt.year;
@@ -702,6 +708,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	const dc_event_vendor_t *vendor = data;
 	device_data_t *devdata = userdata;
 	unsigned int serial;
+	char buffer[16];
 
 	switch (event) {
 	case DC_EVENT_WAITING:
@@ -731,7 +738,19 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		if (!strcmp(devdata->vendor, "Suunto"))
 			serial = fixup_suunto_versions(devdata, devinfo);
 		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, serial);
-
+		/* really, serial and firmware version are NOT numbers. We'll try to save them here
+		 * in something that might work, but this really needs to be handled with the
+		 * DC_FIELD_STRING interface instead */
+		if (serial != 0) {
+			snprintf(buffer, sizeof(buffer), "%04u-%04u", serial / 10000, serial % 10000);
+			devdata->serial = strdup(buffer);
+			fprintf(stderr, "libdc devinfo serial nr converted to %s\n", devdata->serial);
+		}
+		if (devinfo->firmware != 0) {
+			snprintf(buffer, sizeof(buffer), "%02u.%02u", devinfo->firmware / 100, devinfo->firmware % 100);
+			devdata->firmware = strdup(buffer);
+			fprintf(stderr, "libdc devinfo firmware version converted to %s\n", devdata->firmware);
+		}
 		break;
 	case DC_EVENT_CLOCK:
 		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
