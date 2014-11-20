@@ -704,11 +704,11 @@ int parse_txt_file(const char *filename, const char *csv)
 						break;
 					case 85:
 						//He diluent part in %
-						gaschange ^= value << 16;
+						gaschange += value << 16;
 						break;
 					case 86:
 						//O2 diluent part in %
-						gaschange ^= value;
+						gaschange += value;
 						break;
 						//239 Unknown, maybe PO2 at sensor validation?
 						//240 Unknown, maybe PO2 at sensor validation?
