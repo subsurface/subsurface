@@ -514,9 +514,9 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	char buffer[20000], temp[1000];
-	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1;
+	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0;
 	struct divedatapoint *dp = diveplan->dp;
-	bool gaschange = !plan_verbatim;
+	bool gaschange = !plan_verbatim, postponed = plan_verbatim;
 	struct divedatapoint *nextdp = NULL;
 
 	disclaimer =  translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
@@ -577,13 +577,14 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		    nextdp &&
 		    dp->setpoint == nextdp->setpoint &&
 		    dp->depth != lastdepth &&
-		    nextdp->depth != dp->depth)
+		    nextdp->depth != dp->depth
+		    && !gaschange)
 			continue;
 		if (dp->time - lasttime < 10 && !(gaschange && dp->next && dp->depth != dp->next->depth))
 			continue;
 
 		len = strlen(buffer);
-		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != lastsetpoint))
+		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint))
 			gaschange = true;
 		if (plan_verbatim) {
 			if (dp->depth != lastdepth) {
@@ -604,6 +605,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 							 gasname(&gasmix));
 
 					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
+					newdepth = dp->depth;
 					lasttime = dp->time;
 				}
 			} else {
@@ -623,6 +625,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 								gasname(&gasmix));
 
 						len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
+					newdepth = dp->depth;
 					lasttime = dp->time;
 				}
 			}
@@ -638,38 +641,50 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					snprintf(temp, sizeof(temp), translate("gettextFromC", "%3dmin"), (dp->time - lasttime + 30) / 60);
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
+
 				if (gaschange) {
-					if (dp->setpoint) {
-						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
-						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
-								temp);
+					if(dp->depth == lastdepth && !postponed) {
+						postponed = true;
 					} else {
-						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+						if (dp->setpoint) {
+							snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
+							len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
+									temp);
+						} else {
+							len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+						}
+						gaschange = false;
+						postponed = false;
 					}
-					gaschange = false;
 				} else {
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td>&nbsp;</td>");
 				}
 				len += snprintf(buffer + len, sizeof(buffer) - len, "</tr>");
+				newdepth = dp->depth;
 				lasttime = dp->time;
 			}
 		}
 		if (gaschange) {
+			if(dp->depth == lastdepth && !postponed) {
+				postponed = true;
+			} else {
 			// gas switch at this waypoint
 			if (plan_verbatim) {
 				if (lastsetpoint >= 0) {
-					if (dp->setpoint)
-						snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) dp->setpoint / 1000.0);
+					if (nextdp && nextdp->setpoint)
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) nextdp->setpoint / 1000.0);
 					else
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
 
 					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
 				}
 				gaschange = false;
+				postponed = true;
 			}
 			gasmix = newgasmix;
+			}
 		}
-		lastdepth = dp->depth;
+		lastdepth = newdepth;
 		lastsetpoint = dp->setpoint;
 	} while ((dp = nextdp) != NULL);
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div>");
