@@ -763,15 +763,20 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	}
 }
 
-static void fixup_pressure(struct dive *dive, struct sample *sample)
+static void fixup_pressure(struct dive *dive, struct sample *sample, enum cylinderuse cyl_use)
 {
 	int pressure, index;
 	cylinder_t *cyl;
 
-	pressure = sample->cylinderpressure.mbar;
+	if (cyl_use != OXYGEN) {
+		pressure = sample->cylinderpressure.mbar;
+		index = sample->sensor;
+	} else {	// for the CCR oxygen cylinder:
+		pressure = sample->o2cylinderpressure.mbar;
+		index = get_cylinder_idx_by_use(dive, OXYGEN);
+	}
 	if (!pressure)
 		return;
-	index = sample->sensor;
 
 	/* FIXME! sensor -> cylinder mapping? */
 	if (index >= MAX_CYLINDERS)
@@ -1221,7 +1226,9 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 				maxdepth = depth;
 		}
 
-		fixup_pressure(dive, sample);
+		fixup_pressure(dive, sample, OC_GAS);
+		if (dive->dc.dctype == CCR)
+			fixup_pressure(dive, sample, OXYGEN);
 
 		if (temp) {
 			if (!mintemp || temp < mintemp)
