@@ -514,7 +514,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	char buffer[20000], temp[1000];
-	int len, lastdepth = 0, lasttime = 0;
+	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1;
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange = !plan_verbatim;
 	struct divedatapoint *nextdp = NULL;
@@ -575,6 +575,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (!dp->entered &&
 		    gasmix_distance(&gasmix, &newgasmix) == 0 &&
 		    nextdp &&
+		    dp->setpoint == nextdp->setpoint &&
 		    dp->depth != lastdepth &&
 		    nextdp->depth != dp->depth)
 			continue;
@@ -582,27 +583,46 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			continue;
 
 		len = strlen(buffer);
-		if (nextdp && gasmix_distance(&gasmix, &newgasmix))
+		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != lastsetpoint))
 			gaschange = true;
 		if (plan_verbatim) {
 			if (dp->depth != lastdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
-					snprintf(temp, sizeof(temp), translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
-						 decimals, depthvalue, depth_unit,
-						 FRACTION(dp->time - lasttime, 60),
-						 FRACTION(dp->time, 60),
-						 gasname(&gasmix));
+					if (dp->setpoint)
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
+							 decimals, depthvalue, depth_unit,
+							 FRACTION(dp->time - lasttime, 60),
+							 FRACTION(dp->time, 60),
+							 gasname(&gasmix),
+							 (double) dp->setpoint / 1000.0);
+
+					else
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
+							 decimals, depthvalue, depth_unit,
+							 FRACTION(dp->time - lasttime, 60),
+							 FRACTION(dp->time, 60),
+							 gasname(&gasmix));
+
 					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
 					lasttime = dp->time;
 				}
 			} else {
-				if (dp->depth != nextdp->depth) {
-					snprintf(temp, sizeof(temp), translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s"),
-							decimals, depthvalue, depth_unit,
-							FRACTION(dp->time - lasttime, 60),
-							FRACTION(dp->time, 60),
-							gasname(&gasmix));
-					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
+				if (dp->depth != nextdp->depth || gasmix_distance(&gasmix, &newgasmix) != 0 || dp->setpoint != nextdp->setpoint) {
+					if (dp->setpoint)
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
+								decimals, depthvalue, depth_unit,
+								FRACTION(dp->time - lasttime, 60),
+								FRACTION(dp->time, 60),
+								gasname(&gasmix),
+								(double) dp->setpoint / 1000.0);
+					else
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s"),
+								decimals, depthvalue, depth_unit,
+								FRACTION(dp->time - lasttime, 60),
+								FRACTION(dp->time, 60),
+								gasname(&gasmix));
+
+						len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
 					lasttime = dp->time;
 				}
 			}
@@ -619,7 +639,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
 				if (gaschange) {
-					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+					if (dp->setpoint) {
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
+						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
+								temp);
+					} else {
+						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+					}
 					gaschange = false;
 				} else {
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td>&nbsp;</td>");
@@ -631,13 +657,20 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (gaschange) {
 			// gas switch at this waypoint
 			if (plan_verbatim) {
-				snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
-				len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
+				if (lastsetpoint >= 0) {
+					if (dp->setpoint)
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) dp->setpoint / 1000.0);
+					else
+						snprintf(temp, sizeof(temp), translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
+
+					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
+				}
 				gaschange = false;
 			}
 			gasmix = newgasmix;
 		}
 		lastdepth = dp->depth;
+		lastsetpoint = dp->setpoint;
 	} while ((dp = nextdp) != NULL);
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div>");
 
