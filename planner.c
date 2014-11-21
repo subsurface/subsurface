@@ -790,7 +790,13 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
-	gaschanges = analyze_gaslist(diveplan, &gaschangenr, depth, &best_first_ascend_cylinder);
+
+	if (po2) {	// Don't change gas in CCR mode
+		gaschanges = NULL;
+		gaschangenr = 0;
+	} else {
+		gaschanges = analyze_gaslist(diveplan, &gaschangenr, depth, &best_first_ascend_cylinder);
+	}
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
 		if (decostoplevels[stopidx] >= depth)
