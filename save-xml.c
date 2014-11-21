@@ -214,8 +214,8 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	put_temperature(b, sample->temperature, " temp='", " C'");
-	put_pressure(b, sample->cylinderpressure, " pdiluent='", " bar'");
-	put_pressure(b, sample->o2cylinderpressure, " pressure='", " bar'");
+	put_pressure(b, sample->cylinderpressure, " pressure='", " bar'");
+	put_pressure(b, sample->o2cylinderpressure, " o2pressure='", " bar'");
 
 	/*
 	 * We only show sensor information for samples with pressure, and only if it
