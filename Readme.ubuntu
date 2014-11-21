@@ -1,0 +1,64 @@
+Building Ubuntu packages
+
+These steps describe roughly, how one can create Ubuntu packages out of
+Subsurface and publish them in Launchpad. Steps are from our latest beta
+release and pushed to subsurface-beta. You need quite a bit of packages
+installed for all this to work, but that is not described here. The
+contents of control, rules and other files edited can be spied from the
+previous packages. GPG is used to sign the changes file and SSH keys are
+required for the upload to Launchpad.
+
+---8<---
+# First we need to create a source directory and have the sources of the
+# latest version there
+
+version="4.2.90"
+mkdir subsurface-${version}
+cd subsurface-git
+git archive --format=tar v${version} | tar -xf - -C ../subsurface${version}/
+cd ../subsurface${version}
+
+# Then we create the source tarball and "Debianize" the sources with
+# dh_make
+
+dh_make --email miika.turkia@gmail.com -c gpl2 --createorig --single
+
+# Next step is to fix the control files
+
+rm debian/*.ex debian/*.EX debian/README.*
+vi debian/{changelog,copyright,control,rules}
+
+# Generating the build instructions that can be uploaded to Launchpad
+# (or tested first locally with pbuilder). Following assumes that the
+# version initially is "trusty"
+
+debuild -S
+
+# To test locally, one needs pbuilder set up properly
+
+sudo pbuilder build subsurface_${version}-0exp1ppa1~trusty.dsc
+
+# Once everything is working properly, create the other supported
+# releases and upload them all to Launchpad.
+
+sed -i 's/trusty/utopic/g' debian/changelog && debuild  -S
+sed -i 's/utopic/precise/g' debian/changelog && debuild  -S
+
+dput ppa:subsurface/subsurface-beta subsurface_${version}-0exp1ppa1~trusty_source.changes
+dput ppa:subsurface/subsurface-beta subsurface_${version}-0exp1ppa1~utopic_source.changes
+dput ppa:subsurface/subsurface-beta subsurface_${version}-0exp1ppa1~precise_source.changes
+---8<---
+
+Current dependencies are the following:
+
+Build-Depends: debhelper (>= 8.0.0), cmake, libdivecomputer-dev (>=
+0.4.2), cdbs, libqt4-dev, qt4-qmake, libxml2-dev, libxslt1-dev,
+zlib1g-dev, libusb-1.0-0-dev, libzip-dev, libmarble-dev, libsqlite3-dev,
+libqtwebkit-dev, pkg-config, libgit2-dev, asciidoc
+
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdivecomputer0 (>= 0.4.2)
+
+And the rules file contains only the following includes:
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/qmake.mk
