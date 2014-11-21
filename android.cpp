@@ -69,6 +69,11 @@ void *subsurface_opendir(const char *path)
 	return (void *)opendir(path);
 }
 
+int subsurface_access(const char *path, int mode)
+{
+	return access(path, mode);
+}
+
 struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)
 {
 	return zip_open(path, flags, errorp);
