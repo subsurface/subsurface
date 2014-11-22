@@ -618,7 +618,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		entry = dataModel->data().entry + i;
 		mbar = GET_PRESSURE(entry);
-		if (displayed_dive.dc.dctype == CCR)
+		if (displayed_dive.dc.dctype == CCR && displayed_dive.oxygen_cylinder_index >= 0)
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (o2mbar) {

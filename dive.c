@@ -722,6 +722,8 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		if (dc->dctype == CCR) {
 			// Do the same for the  O2 cylinder
 			int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
+			if (o2_cyl < 0)
+				return;
 			mean[o2_cyl] = dc->meandepth.mm;
 			duration[o2_cyl] = dc->duration.seconds;
 		}
@@ -775,6 +777,8 @@ static void fixup_pressure(struct dive *dive, struct sample *sample, enum cylind
 		pressure = sample->o2cylinderpressure.mbar;
 		index = get_cylinder_idx_by_use(dive, OXYGEN);
 	}
+	if (index < 0)
+		return;
 	if (!pressure)
 		return;
 
@@ -846,7 +850,7 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 	if (ev && dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
 		return get_cylinder_index(dive, ev);
 	else if (dc->dctype == CCR)
-		return get_cylinder_idx_by_use(dive, DILUENT);
+		return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
 	else
 		return 0;
 }

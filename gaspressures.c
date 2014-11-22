@@ -271,6 +271,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		if (o2_flag) {
 			// Find the cylinder index (cyl) and pressure
 			cyl = dive->oxygen_cylinder_index;
+			if (cyl < 0)
+				return;   // Can we do this?!?
 			pressure = O2CYLINDER_PRESSURE(entry);
 			save_pressure = &(entry->o2cylinderpressure[SENSOR_PR]);
 			save_interpolated = &(entry->o2cylinderpressure[INTERPOLATED_PR]);
@@ -374,6 +376,8 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		if (o2_flag) { // if this is a diluent cylinder:
 			pressure = O2CYLINDER_PRESSURE(entry);
 			cylinderid = dive->oxygen_cylinder_index;
+			if (cylinderid < 0)
+				goto GIVE_UP;
 		} else {
 			pressure = SENSOR_PRESSURE(entry);
 			cylinderid = entry->cylinderindex;
@@ -424,6 +428,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	debug_print_pressures(pi);
 #endif
 
+GIVE_UP:
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		list_free(track_pr[i]);
 }
