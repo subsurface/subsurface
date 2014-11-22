@@ -382,9 +382,9 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 			dive->dc.diveid = calculate_string_hash(str->value);
 		return;
 	}
-
+	add_extra_data(&dive->dc, str->desc, str->value);
 	if (!strcmp(str->desc, "Serial")) {
-		fprintf(stderr, "string field \"Serial\": %s -- overwriting the existing serial of %s", str->value, dive->dc.serial);
+		fprintf(stderr, "string field \"Serial\": %s -- overwriting the existing serial of %s\n", str->value, dive->dc.serial);
 		dive->dc.serial = strdup(str->value);
 		/* should we just overwrite this whenever we have the "Serial" field?
 		 * It's a much better deviceid then what we have so far... for now I'm leaving it as is */
@@ -392,14 +392,11 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 			dive->dc.deviceid = calculate_string_hash(str->value);
 		return;
 	}
-
 	if (!strcmp(str->desc, "FW Version")) {
-		fprintf(stderr, "string field \"FW Version\": %s -- overwriting the existing firware of %s", str->value, dive->dc.fw_version);
+		fprintf(stderr, "string field \"FW Version\": %s -- overwriting the existing firware of %s\n", str->value, dive->dc.fw_version);
 		dive->dc.fw_version = strdup(str->value);
 		return;
 	}
-
-	add_extra_data(&dive->dc, str->desc, str->value);
 }
 #endif
 
