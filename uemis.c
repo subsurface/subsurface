@@ -82,7 +82,7 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 	datalen = (len / 4 + 1) * 3;
 	if (datalen < 0x123 + 0x25) {
 		/* less than header + 1 sample??? */
-		fprintf(stderr, "suspiciously short data block\n");
+		fprintf(stderr, "suspiciously short data block %d\n", datalen);
 	}
 	*data = malloc(datalen);
 	if (!*data) {
