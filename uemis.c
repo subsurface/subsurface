@@ -296,8 +296,6 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	char version[5];
 
 	datalen = uemis_convert_base64(base64, &data);
-	snprintf(version, sizeof(version), "%1u.%02u", data[18], data[17]);
-	add_extra_data(dc, "software_version", version);
 	dive->dc.airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data + 45)) / 10.0);
 	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
 	if (*(uint8_t *)(data + 19))
@@ -342,13 +340,15 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	/* first byte of divelog data is at offset 0x123 */
 	i = 0x123;
 	u_sample = (uemis_sample_t *)(data + i);
-	while ((i < datalen) && (u_sample->dive_time)) {
+	while ((i <= datalen) && (data[i] != 0 || data[i+1] != 0)) {
 		/* it seems that a dive_time of 0 indicates the end of the valid readings */
 		/* the SDA usually records more samples after the end of the dive --
 		 * we want to discard those, but not cut the dive short; sadly the dive
 		 * duration in the header is a) in minutes and b) up to 3 minutes short */
-		if (u_sample->dive_time > dive->dc.duration.seconds + 180)
-			break;
+		if (u_sample->dive_time > dive->dc.duration.seconds + 180) {
+			i += 0x25;
+			continue;
+		}
 		if (u_sample->active_tank != active) {
 			active = u_sample->active_tank;
 			add_gas_switch_event(dive, dc, u_sample->dive_time, active);
@@ -371,6 +371,11 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 
 	/* get data from the footer */
 	char buffer[24];
+
+	snprintf(version, sizeof(version), "%1u.%02u", data[18], data[17]);
+	add_extra_data(dc, "FW Version", version);
+	snprintf(buffer, sizeof(buffer), "%08x", *(uint32_t *)(data + 9));
+	add_extra_data(dc, "Serial", buffer);
 	snprintf(buffer, sizeof(buffer), "%d",*(uint16_t *)(data + i + 35));
 	add_extra_data(dc, "main battery after dive", buffer);
 	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 24), 60));
