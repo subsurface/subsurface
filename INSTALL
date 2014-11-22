@@ -44,8 +44,8 @@ Building Subsurface 4 under Linux
 ---------------------------------
 
 On Fedora you need qt-devel, marble-devel, libzip-devel,
-libxml2-devel, libxslt-devel, libsqlite3x-devel, libudev-devel. If you are going
-to compile libdivecomputer, you need libusb-devel, too.
+libxml2-devel, libxslt-devel, libsqlite3x-devel, libudev-devel, qtwebkit-devel.
+If you are going to compile libdivecomputer, you need libusb-devel, too.
 
 On Debian style distributions you can install the required development
 packages by running (once Qt version of subsurface is available in your
