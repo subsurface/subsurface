@@ -1,4 +1,5 @@
-Building Ubuntu packages
+Building Ubuntu packages of Subsurface
+--------------------------------------
 
 These steps describe roughly, how one can create Ubuntu packages out of
 Subsurface and publish them in Launchpad. Steps are from our latest beta
@@ -62,3 +63,23 @@ And the rules file contains only the following includes:
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/qmake.mk
+
+
+Building Ubuntu packages of libdivecomputer
+-------------------------------------------
+
+Building libdivecomputer is mostly the same as building Subsurface.
+However, one must remove the line "usr/share/pkgconfig/*" from
+debian/libdivecomputer-dev.install. Also "debianizing" the sources
+differs and is done with the following command:
+
+dh_make --email miika.turkia@gmail.com -c gpl2 --createorig --library
+
+
+Including libgit2
+-----------------
+
+It should suffice for us to just copy the libgit2 package from
+repository to another on Launchpad. Precise is the only release that
+does not have libgit2 available, for the other releases we can use the
+distribution provided version.
