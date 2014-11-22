@@ -246,6 +246,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_milli(b, " ", sample->depth.mm, "m");
 	put_temperature(b, sample->temperature, " ", "°C");
 	put_pressure(b, sample->cylinderpressure, " ", "bar");
+	put_pressure(b, sample->o2cylinderpressure," o2pressure=","bar");
 
 	/*
 	 * We only show sensor information for samples with pressure, and only if it
@@ -282,6 +283,21 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	if (sample->cns != old->cns) {
 		put_format(b, " cns=%u%%", sample->cns);
 		old->cns = sample->cns;
+	}
+
+	if (sample->o2sensor[0].mbar != old->o2sensor[0].mbar) {
+		put_milli(b, " sensor1=", sample->o2sensor[0].mbar, "bar");
+		old->o2sensor[0] = sample->o2sensor[0];
+	}
+
+	if ((sample->o2sensor[1].mbar) && (sample->o2sensor[1].mbar != old->o2sensor[1].mbar)) {
+		put_milli(b, " sensor2=", sample->o2sensor[1].mbar, "bar");
+		old->o2sensor[1] = sample->o2sensor[1];
+	}
+
+	if ((sample->o2sensor[2].mbar) && (sample->o2sensor[2].mbar != old->o2sensor[2].mbar)) {
+		put_milli(b, " sensor3=", sample->o2sensor[2].mbar, "bar");
+		old->o2sensor[2] = sample->o2sensor[2];
 	}
 
 	if (sample->setpoint.mbar != old->setpoint.mbar) {
@@ -339,8 +355,10 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 		show_date(b, dc->when);
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
 		put_duration(b, dc->duration, "duration ", "min\n");
-	if (dc->dctype != OC)
+	if (dc->dctype != OC) {
 		put_format(b, "dctype %s\n", dctype_text[dc->dctype]);
+	put_format(b, "numberofoxygensensors %d\n",dc->no_o2sensors);
+	}
 
 	save_depths(b, dc);
 	save_temperatures(b, dc);

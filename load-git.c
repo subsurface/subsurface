@@ -141,6 +141,7 @@ static enum dive_comp_type get_dctype(const char *line)
 
 static int get_index(const char *line)
 { return atoi(line); }
+
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
@@ -323,15 +324,15 @@ static int match_action(char *line, struct membuffer *str, void *data,
 	char *p = line, c;
 	unsigned low, high;
 
-	while ((c = *p) >= 'a' && c <= 'z')
-		p++;
+	while ((c = *p) >= 'a' && c <= 'z') // skip over 1st word
+		p++;	// Extract the second word from the line:
 	if (p == line)
 		return -1;
 	switch (c) {
-	case 0:
+	case 0:		// if 2nd word is C-terminated
 		break;
-	case ' ':
-		*p++ = 0;
+	case ' ':	// =end of 2nd word?
+		*p++ = 0;	// then C-terminate that word
 		break;
 	default:
 		return -1;
@@ -344,10 +345,10 @@ static int match_action(char *line, struct membuffer *str, void *data,
 		unsigned mid = (low+high)/2;
 		struct keyword_action *a = action + mid;
 		int cmp = strcmp(line, a->keyword);
-		if (!cmp) {
-			a->fn(p, str, data);
-			return 0;
-		}
+		if (!cmp) {	// attribute found:
+			a->fn(p, str, data);	// Execute appropriate function,
+			return 0;		// .. passing 2n word from above
+		}				// (p) as a function argument.
 		if (cmp < 0)
 			high = mid;
 		else
@@ -395,6 +396,26 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 		sample->setpoint.mbar = p.mbar;
 		return;
 	}
+	if (!strcmp(key, "sensor1")) {
+		pressure_t p = get_pressure(value);
+		sample->o2sensor[0].mbar = p.mbar;
+		return;
+	}
+	if (!strcmp(key, "sensor2")) {
+		pressure_t p = get_pressure(value);
+		sample->o2sensor[1].mbar = p.mbar;
+		return;
+	}
+	if (!strcmp(key, "sensor3")) {
+		pressure_t p = get_pressure(value);
+		sample->o2sensor[2].mbar = p.mbar;
+		return;
+	}
+	if (!strcmp(key, "o2pressure")) {
+		pressure_t p = get_pressure(value);
+		sample->o2cylinderpressure.mbar = p.mbar;
+		return;
+	}
 	if (!strcmp(key, "heartbeat")) {
 		sample->heartbeat = atoi(value);
 		return;
@@ -403,6 +424,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 		sample->bearing.degrees = atoi(value);
 		return;
 	}
+
 	report_error("Unexpected sample key/value pair (%s/%s)", key, value);
 }
 
@@ -516,6 +538,9 @@ static void parse_dc_meandepth(char *line, struct membuffer *str, void *_dc)
 
 static void parse_dc_model(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->model = get_utf8(str); }
+
+static void parse_dc_numberofoxygensensors(char *line, struct membuffer *str, void *_dc)
+{ struct divecomputer *dc = _dc; dc->no_o2sensors = get_index(line); }
 
 static void parse_dc_surfacepressure(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
@@ -741,8 +766,8 @@ struct keyword_action dc_action[] = {
 #undef D
 #define D(x) { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
-	D(event), D(keyvalue), D(maxdepth), D(meandepth), D(model), D(salinity),
-	D(surfacepressure), D(surfacetime), D(time), D(watertemp),
+	D(event), D(keyvalue), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
+	D(salinity), D(surfacepressure), D(surfacetime), D(time), D(watertemp)
 };
 
 /* Sample lines start with a space or a number */
