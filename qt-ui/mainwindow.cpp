@@ -211,12 +211,19 @@ void MainWindow::on_actionOpen_triggered()
 	// yes, this look wrong to use getSaveFileName() for the open dialog, but we need to be able
 	// to enter file names that don't exist in order to use our git syntax /path/to/dir[branch]
 	// with is a potentially valid input, but of course won't exist. So getOpenFileName() wouldn't work
-	QString filename = QFileDialog::getSaveFileName(this, tr("Open file"), lastUsedDir(), filter(), NULL, QFileDialog::DontConfirmOverwrite);
-	if (filename.isEmpty())
+	QFileDialog dialog(this, tr("Open file"), lastUsedDir(), filter());
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setViewMode(QFileDialog::Detail);
+	dialog.setLabelText(QFileDialog::Accept, tr("Open"));
+	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
+	QStringList filenames;
+	if (dialog.exec())
+		filenames = dialog.selectedFiles();
+	if (filenames.isEmpty())
 		return;
-	updateLastUsedDir(QFileInfo(filename).dir().path());
+	updateLastUsedDir(QFileInfo(filenames.first()).dir().path());
 	closeCurrentFile();
-	loadFiles(QStringList() << filename);
+	loadFiles(filenames);
 }
 
 void MainWindow::on_actionSave_triggered()
