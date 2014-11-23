@@ -51,11 +51,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	QAction *action = new QAction(tr("Save"), this);
+	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
 	addMessageAction(action);
 
-	action = new QAction(tr("Cancel"), this);
+	action = new QAction(tr("Discard changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
