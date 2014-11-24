@@ -22,7 +22,7 @@
 	(void) (&_max1 == &_max2);      \
 	_max1 > _max2 ? _max1 : _max2; })
 
-#define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) < 0.000001 * MAX(fabs(_a), fabs(_b)))
+#define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) <= 0.000001 * MAX(fabs(_a), fabs(_b)))
 
 static inline int same_string(const char *a, const char *b)
 {
