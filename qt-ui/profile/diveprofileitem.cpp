@@ -685,8 +685,9 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	painter->save();
-	struct plot_data *entry = dataModel->data().entry;
+	struct plot_data *entry;
 	Q_FOREACH (const QPolygonF &poly, polygons) {
+		entry = dataModel->data().entry;
 		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
 			pen.setBrush(getSacColor(entry->sac, displayed_dive.sac));
 			painter->setPen(pen);
