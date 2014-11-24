@@ -16,7 +16,7 @@
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="232"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="233"/>
         <source>No buddies</source>
         <translation type="unfinished"/>
     </message>
@@ -2321,17 +2321,17 @@
 <context>
     <name>FirmwareUpdateThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1384"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1387"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1387"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1390"/>
         <source>Firmware update failed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1391"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1394"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation type="unfinished"/>
     </message>
@@ -2355,7 +2355,7 @@
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="285"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="286"/>
         <source>No location set</source>
         <translation type="unfinished"/>
     </message>
@@ -2578,13 +2578,13 @@
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="54"/>
-        <source>Save</source>
-        <translation>Salvesta</translation>
+        <source>Apply changes</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="58"/>
-        <source>Cancel</source>
-        <translation>Loobu</translation>
+        <source>Discard changes</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="262"/>
@@ -2717,32 +2717,32 @@ mixed from Air and using:
         <translation>&amp;Fail</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="679"/>
+        <location filename="../qt-ui/mainwindow.ui" line="682"/>
         <source>Toggle pHe graph</source>
         <translation>pHe graaf</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="715"/>
+        <location filename="../qt-ui/mainwindow.ui" line="718"/>
         <source>Toggle calculating all tissues</source>
         <translation>Kõik koed</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="691"/>
+        <location filename="../qt-ui/mainwindow.ui" line="694"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Sukeldumiskompuutri poolt antud lagi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="703"/>
+        <location filename="../qt-ui/mainwindow.ui" line="706"/>
         <source>Toggle calculated ceiling</source>
         <translation>Arvutatud lagi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="775"/>
+        <location filename="../qt-ui/mainwindow.ui" line="778"/>
         <source>Toggle NDL, TTS</source>
         <translation>NDL, TTS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="727"/>
+        <location filename="../qt-ui/mainwindow.ui" line="730"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Arvutatud lagi 3m intervalliga</translation>
     </message>
@@ -2752,42 +2752,42 @@ mixed from Air and using:
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="643"/>
+        <location filename="../qt-ui/mainwindow.ui" line="646"/>
         <source>Re-plan &amp;dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="655"/>
+        <location filename="../qt-ui/mainwindow.ui" line="658"/>
         <source>Toggle pO2 Graph</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="667"/>
+        <location filename="../qt-ui/mainwindow.ui" line="670"/>
         <source>Toggle pN2 Graph</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="739"/>
+        <location filename="../qt-ui/mainwindow.ui" line="742"/>
         <source>Toggle heart rate</source>
         <translation>Südame pulss</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="751"/>
+        <location filename="../qt-ui/mainwindow.ui" line="754"/>
         <source>Toggle MOD</source>
         <translation>MOD</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="763"/>
+        <location filename="../qt-ui/mainwindow.ui" line="766"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>EAD, END, EADD</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="787"/>
+        <location filename="../qt-ui/mainwindow.ui" line="790"/>
         <source>Toggle SAC rate</source>
         <translation>SAC määr</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="799"/>
+        <location filename="../qt-ui/mainwindow.ui" line="802"/>
         <source>Toggle ruler</source>
         <translation>Joonlaud</translation>
     </message>
@@ -2856,6 +2856,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="349"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="217"/>
         <source>Open</source>
         <translation>Ava</translation>
     </message>
@@ -3015,32 +3016,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="811"/>
+        <location filename="../qt-ui/mainwindow.ui" line="814"/>
         <source>Scale graph</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="823"/>
+        <location filename="../qt-ui/mainwindow.ui" line="826"/>
         <source>Toggle pictures</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="835"/>
+        <location filename="../qt-ui/mainwindow.ui" line="838"/>
         <source>Toggle tank bar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="843"/>
+        <location filename="../qt-ui/mainwindow.ui" line="846"/>
         <source>&amp;Filter divelist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="858"/>
+        <location filename="../qt-ui/mainwindow.ui" line="861"/>
         <source>Toggle tissue graph</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.ui" line="846"/>
+        <location filename="../qt-ui/mainwindow.ui" line="849"/>
         <source>Ctrl+F</source>
         <translation type="unfinished"/>
     </message>
@@ -3205,80 +3206,90 @@ p, li { white-space: pre-wrap; }
         <translation>F11</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="211"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="214"/>
         <source>Open file</source>
         <translation>Ava fail</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="280"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="218"/>
+        <source>Cancel</source>
+        <translation>Loobu</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="290"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Enne faili sulgemist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="387"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="397"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Enne sukeldumise lisamist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="434"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Print runtime table</source>
         <translation>Väljasta jooksva aja tabel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="763"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="578"/>
+        <source>Yearly Statistics</source>
+        <translation>Aasta statistika</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/mainwindow.cpp" line="777"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Kas soovid salvestada muudatused mis tegid faili %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="765"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="779"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Kas soovid salvestada muudatused mis tegid andmefaili?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="770"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="784"/>
         <source>Save changes?</source>
         <translation>Salvesta muudatused?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1120"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1134"/>
         <source>Save file as</source>
         <translation>Salvesta nimega</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1261"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1275"/>
         <source>Open dive log file</source>
         <translation>Ava sukeldumislogi fail</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1262"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1276"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="771"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="785"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Muudatusi lähevad kaotsi kui neid ei salvestata.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="252"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="387"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1301"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="262"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="397"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1315"/>
         <source>Warning</source>
         <translation>Hoiatus</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="208"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1104"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1118"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Enne uue faili avamist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1121"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1135"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML files (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1301"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1315"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Lõpeta praegune toimetamine enne järgmise alustamist.</translation>
     </message>
@@ -3940,82 +3951,88 @@ väärtused</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1090"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1104"/>
         <source>Make first divecomputer</source>
         <translation>Loo esimene sukeldumiskompuuter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1092"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1106"/>
         <source>Delete this divecomputer</source>
         <translation>Kustuta see sukeldumiskompuuter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1099"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1120"/>
         <source>Add gas change</source>
         <translation>Lisa gaasivahetus</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1105"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1123"/>
         <source> (Tank %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1110"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1131"/>
         <source>Add bookmark</source>
         <translation>Lisa järjehoidja</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1114"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1135"/>
         <source>Remove event</source>
         <translation>Eemalda sündmus</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1119"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1140"/>
         <source>Hide similar events</source>
         <translation>Peida sarnased sündmused</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1125"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1147"/>
         <source>Edit name</source>
         <translation>Toimeta nimi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1139"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1176"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1183"/>
+        <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1198"/>
         <source>Unhide all events</source>
         <translation>Peida kõik sündmused</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1173"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1232"/>
         <source>Hide events</source>
         <translation>Peida sündmused</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1173"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1232"/>
         <source>Hide all %1 events?</source>
         <translation>Peida kõik %1 sündmust?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1208"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1267"/>
         <source>Remove the selected event?</source>
         <translation>Eemalda valitud sündmus?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1209"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1268"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1291"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1350"/>
         <source>Edit name of bookmark</source>
         <translation>Toimeta järjehoidja nimi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1292"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1351"/>
         <source>Custom name:</source>
         <translation>Kohandatud nimi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1297"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1356"/>
         <source>Name is too long!</source>
         <translation>Nimi on liiga pikk!</translation>
     </message>
@@ -4126,12 +4143,12 @@ väärtused</translation>
 <context>
     <name>ReadSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="808"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="810"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="801"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="803"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation type="unfinished"/>
     </message>
@@ -4158,12 +4175,12 @@ väärtused</translation>
 <context>
     <name>ResetSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1417"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1420"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1422"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1425"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation type="unfinished"/>
     </message>
@@ -4395,7 +4412,7 @@ väärtused</translation>
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-ui/filtermodels.cpp" line="143"/>
+        <location filename="../qt-ui/filtermodels.cpp" line="144"/>
         <source>Empty Tags</source>
         <translation type="unfinished"/>
     </message>
@@ -4734,12 +4751,12 @@ OS CPU Arhidektuur: %1</translation>
 <context>
     <name>WriteSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1342"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1345"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1347"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1350"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation type="unfinished"/>
     </message>
@@ -4900,15 +4917,15 @@ Max</translation>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1469"/>
+        <location filename="../dive.c" line="1480"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) või (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="464"/>
         <location filename="../equipment.c" line="79"/>
-        <location filename="../planner.c" line="1004"/>
-        <location filename="../planner.c" line="1007"/>
+        <location filename="../planner.c" line="1058"/>
+        <location filename="../planner.c" line="1061"/>
         <source>air</source>
         <translation>õhk</translation>
     </message>
@@ -4938,27 +4955,63 @@ Max</translation>
         <translation>külgeriputatav</translation>
     </message>
     <message>
-        <location filename="../file.c" line="109"/>
-        <location filename="../file.c" line="407"/>
-        <location filename="../file.c" line="470"/>
-        <location filename="../file.c" line="787"/>
+        <location filename="../file.c" line="112"/>
+        <location filename="../file.c" line="418"/>
+        <location filename="../file.c" line="481"/>
+        <location filename="../file.c" line="891"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>&apos;%s&apos; lugemine ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../file.c" line="564"/>
+        <location filename="../file.c" line="575"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="657"/>
+        <location filename="../file.c" line="604"/>
+        <source>Mouth piece position OC</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="608"/>
+        <source>Mouth piece position CC</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="612"/>
+        <source>Mouth piece position unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="616"/>
+        <source>Mouth piece position not connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="622"/>
+        <source>Power off</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="682"/>
+        <source>O2 calibration failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="684"/>
+        <location filename="../file.c" line="693"/>
+        <source>O2 calibration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="761"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="740"/>
-        <location filename="../file.c" line="779"/>
-        <location filename="../file.c" line="867"/>
+        <location filename="../file.c" line="844"/>
+        <location filename="../file.c" line="883"/>
+        <location filename="../file.c" line="971"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>CSV impordil on max toetatud veergude arv %d</translation>
     </message>
@@ -4977,6 +5030,7 @@ Max</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="338"/>
+        <location filename="../file.c" line="628"/>
         <source>battery</source>
         <translation type="unfinished"/>
     </message>
@@ -4990,6 +5044,7 @@ Max</translation>
     <message>
         <location filename="../cochran.c" line="332"/>
         <location filename="../cochran.c" line="386"/>
+        <location filename="../file.c" line="650"/>
         <location filename="../libdivecomputer.c" line="120"/>
         <source>ascent</source>
         <translation>tõus</translation>
@@ -5036,6 +5091,7 @@ Max</translation>
         <location filename="../cochran.c" line="361"/>
         <location filename="../cochran.c" line="410"/>
         <location filename="../cochran.c" line="417"/>
+        <location filename="../file.c" line="742"/>
         <location filename="../libdivecomputer.c" line="122"/>
         <location filename="../libdivecomputer.c" line="125"/>
         <source>gaschange</source>
@@ -5122,107 +5178,107 @@ Max</translation>
         <translation>vale sündmuse nr</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="421"/>
+        <location filename="../libdivecomputer.c" line="422"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Ei saa luua parserit %s %s jaoks</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="427"/>
+        <location filename="../libdivecomputer.c" line="428"/>
         <source>Error registering the data</source>
         <translation>Viga andmete registreerimisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="435"/>
+        <location filename="../libdivecomputer.c" line="436"/>
         <source>Error parsing the datetime</source>
         <translation>Viga kuupäeva ja aja tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="451"/>
+        <location filename="../libdivecomputer.c" line="456"/>
         <source>Dive %d: %s</source>
         <translation>Sukeldumine %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="455"/>
+        <location filename="../libdivecomputer.c" line="460"/>
         <source>Error parsing the divetime</source>
         <translation>Viga põhjaaja tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="464"/>
+        <location filename="../libdivecomputer.c" line="469"/>
         <source>Error parsing the maxdepth</source>
         <translation>Viga max sügavuse tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="482"/>
+        <location filename="../libdivecomputer.c" line="487"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="501"/>
+        <location filename="../libdivecomputer.c" line="506"/>
         <source>Error parsing the gas mix count</source>
         <translation>Viga gaasisegude arvu tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="513"/>
+        <location filename="../libdivecomputer.c" line="518"/>
         <source>Error obtaining water salinity</source>
         <translation>Viga vee soolsuse saamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="521"/>
+        <location filename="../libdivecomputer.c" line="526"/>
         <source>Error obtaining surface pressure</source>
         <translation>Viga pinnarõhu saamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="545"/>
+        <location filename="../libdivecomputer.c" line="550"/>
         <source>Error obtaining divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="562"/>
+        <location filename="../libdivecomputer.c" line="567"/>
         <source>Error parsing the gas mix</source>
         <translation>Viga gaasisegu tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="569"/>
+        <location filename="../libdivecomputer.c" line="574"/>
         <source>Error parsing the samples</source>
         <translation>Viga proovide tuvastamisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="706"/>
+        <location filename="../libdivecomputer.c" line="712"/>
         <source>Event: waiting for user action</source>
         <translation>Sündmus: ootan kasutaja sekkumist</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="714"/>
+        <location filename="../libdivecomputer.c" line="720"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>mudel=%u (0x%08x), püsivara=%u (0x%08x), seerianr=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="774"/>
+        <location filename="../libdivecomputer.c" line="792"/>
         <source>Error registering the event handler.</source>
         <translation>Viga sündmuste draiveri registreerimisel.</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="779"/>
+        <location filename="../libdivecomputer.c" line="797"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Viga tühistamise draiveri registreerimisel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="800"/>
+        <location filename="../libdivecomputer.c" line="818"/>
         <source>Dive data import error</source>
         <translation>Viga sukeldumise andmete impordil</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="839"/>
+        <location filename="../libdivecomputer.c" line="857"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Ei saa luua libdivecomputer konteksti</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="846"/>
+        <location filename="../libdivecomputer.c" line="864"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Ei saa avada %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="853"/>
+        <location filename="../libdivecomputer.c" line="871"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation type="unfinished"/>
     </message>
@@ -5240,7 +5296,7 @@ Max</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1988"/>
-        <location filename="../parse-xml.c" line="2108"/>
+        <location filename="../parse-xml.c" line="2107"/>
         <source>Database query get_events failed.
 </source>
         <translation>Andmebaasi päring get_events ebaõnnestus.
@@ -5248,51 +5304,51 @@ Max</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1995"/>
-        <location filename="../parse-xml.c" line="2115"/>
+        <location filename="../parse-xml.c" line="2114"/>
         <source>Database query get_tags failed.
 </source>
         <translation>Andmebaasi päring get_tags ebaõnnestus.
 </translation>
     </message>
     <message>
-        <location filename="../file.c" line="170"/>
+        <location filename="../file.c" line="173"/>
         <source>Database connection failed '%s'.
 </source>
         <translation>Andmebaasi ühendus ebaõnnestus &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2139"/>
-        <location filename="../parse-xml.c" line="2160"/>
-        <location filename="../parse-xml.c" line="2309"/>
+        <location filename="../parse-xml.c" line="2138"/>
+        <location filename="../parse-xml.c" line="2159"/>
+        <location filename="../parse-xml.c" line="2308"/>
         <source>Database query failed '%s'.
 </source>
         <translation>Andmebaasi päring ebaõnnestus &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2273"/>
+        <location filename="../parse-xml.c" line="2272"/>
         <source>Database query get_cylinders failed.
 </source>
         <translation>Andmebaasi päring get_cylinders ebaõnnestus.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2280"/>
+        <location filename="../parse-xml.c" line="2279"/>
         <source>Database query get_changes failed.
 </source>
         <translation>Andmebaasi päring get_changes ebaõnnestus.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2287"/>
+        <location filename="../parse-xml.c" line="2286"/>
         <source>Database query get_profile_sample failed.
 </source>
         <translation>Andmebaasi päring get-profile_sample ebaõnnestus.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2378"/>
+        <location filename="../parse-xml.c" line="2377"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Ei suuda avada stiililehte &amp;s</translation>
     </message>
@@ -5302,7 +5358,7 @@ Max</translation>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="770"/>
+        <location filename="../planner.c" line="818"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Ei leia gaasi %s</translation>
     </message>
@@ -5347,56 +5403,76 @@ Max</translation>
         <translation>gaas</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="590"/>
+        <location filename="../planner.c" line="593"/>
+        <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../planner.c" line="601"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Üleminek %.*f %s-le %d:%02d min jooksul - jooksev aeg %d:%02u %s peal</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="600"/>
+        <location filename="../planner.c" line="614"/>
+        <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../planner.c" line="621"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Püsi %.*f %s peal %d:%02d min - jooksev aeg %d:%02u %s peal</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="611"/>
+        <location filename="../planner.c" line="634"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="614"/>
-        <location filename="../planner.c" line="618"/>
+        <location filename="../planner.c" line="637"/>
+        <location filename="../planner.c" line="641"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="634"/>
+        <location filename="../planner.c" line="650"/>
+        <source>(SP = %.1fbar)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../planner.c" line="675"/>
+        <source>Switch gas to %s (SP = %.1fbar)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../planner.c" line="677"/>
         <source>Switch gas to %s</source>
         <translation>Vaheta gaasiks %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="647"/>
+        <location filename="../planner.c" line="695"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="649"/>
+        <location filename="../planner.c" line="697"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="653"/>
+        <location filename="../planner.c" line="701"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="655"/>
+        <location filename="../planner.c" line="703"/>
         <source>Gas consumption:</source>
         <translation>Gaasi tarbimine:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="534"/>
-        <location filename="../planner.c" line="675"/>
-        <location filename="../planner.c" line="680"/>
-        <location filename="../planner.c" line="703"/>
+        <location filename="../planner.c" line="723"/>
+        <location filename="../planner.c" line="728"/>
+        <location filename="../planner.c" line="751"/>
         <source>Warning:</source>
         <translation>Hoiatus:</translation>
     </message>
@@ -5406,37 +5482,37 @@ Max</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../planner.c" line="676"/>
+        <location filename="../planner.c" line="724"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>gaasi hulk on suurem kui määratud balloonis võimalik!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="681"/>
+        <location filename="../planner.c" line="729"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>pole piisavalt reservi gaasi jagamiseks tõusul!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="683"/>
+        <location filename="../planner.c" line="731"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s %s-st (%.0f%s/%.0f%s planeeritud tõusul)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="685"/>
+        <location filename="../planner.c" line="733"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s planeeritud tõusu jooksul) %s-st</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="700"/>
+        <location filename="../planner.c" line="748"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>kõrge pO₂ väärtus %.2f %d:%02u peal gaasiga %s sügavusel %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1008"/>
+        <location filename="../planner.c" line="1062"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1060"/>
+        <location filename="../profile.c" line="1056"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -5445,70 +5521,70 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1063"/>
+        <location filename="../profile.c" line="1059"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1067"/>
+        <location filename="../profile.c" line="1063"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1073"/>
+        <location filename="../profile.c" line="1069"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1076"/>
+        <location filename="../profile.c" line="1072"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1078"/>
+        <location filename="../profile.c" line="1074"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1080"/>
+        <location filename="../profile.c" line="1076"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1082"/>
+        <location filename="../profile.c" line="1078"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1084"/>
+        <location filename="../profile.c" line="1080"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1087"/>
+        <location filename="../profile.c" line="1083"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1094"/>
+        <location filename="../profile.c" line="1090"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -5517,7 +5593,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1098"/>
+        <location filename="../profile.c" line="1094"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -5526,137 +5602,137 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1110"/>
+        <location filename="../profile.c" line="1106"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>Ohutuspeatus: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1113"/>
+        <location filename="../profile.c" line="1109"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>Ohutuspeatus: teadmata aeg @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1118"/>
+        <location filename="../profile.c" line="1114"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deko: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1121"/>
+        <location filename="../profile.c" line="1117"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>Deko: teadmata aeg @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1125"/>
+        <location filename="../profile.c" line="1121"/>
         <source>In deco
 </source>
         <translation>Dekos
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1127"/>
+        <location filename="../profile.c" line="1123"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1130"/>
+        <location filename="../profile.c" line="1126"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1133"/>
+        <location filename="../profile.c" line="1129"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deko: %umin @ %.0f%s (arvutatud)</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1141"/>
+        <location filename="../profile.c" line="1137"/>
         <source>In deco (calc)
 </source>
         <translation>Dekos (arvutatud)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1143"/>
+        <location filename="../profile.c" line="1139"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (arvutatud)</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1142"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (arvutatud)</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1145"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Arvutatud lagi %.0f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1155"/>
+        <location filename="../profile.c" line="1151"/>
         <source>Tissue %.0fmin: %.0f%s
 </source>
         <translation>Kude %.0fmin: %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1161"/>
+        <location filename="../profile.c" line="1157"/>
         <source>heartbeat: %d
 </source>
         <translation>Pulss: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1163"/>
+        <location filename="../profile.c" line="1159"/>
         <source>bearing: %d
 </source>
         <translation>Kurss: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1256"/>
+        <location filename="../profile.c" line="1252"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
+        <location filename="../profile.c" line="1256"/>
         <location filename="../profile.c" line="1260"/>
         <location filename="../profile.c" line="1264"/>
-        <location filename="../profile.c" line="1268"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1272"/>
+        <location filename="../profile.c" line="1268"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1276"/>
+        <location filename="../profile.c" line="1272"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
+        <location filename="../profile.c" line="1276"/>
         <location filename="../profile.c" line="1280"/>
-        <location filename="../profile.c" line="1284"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1291"/>
+        <location filename="../profile.c" line="1287"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
