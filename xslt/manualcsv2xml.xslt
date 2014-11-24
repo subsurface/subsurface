@@ -61,12 +61,17 @@
     <xsl:param name="line"/>
 
     <xsl:variable name="number">
-      <xsl:if test="$numberField >= 0">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$numberField"/>
-          <xsl:with-param name="line" select="$line"/>
-        </xsl:call-template>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="$numberField >= 0">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$numberField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'0'"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
 
     <xsl:if test="$number >= 0">
