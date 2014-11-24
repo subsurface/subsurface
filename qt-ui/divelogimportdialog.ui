@@ -361,6 +361,9 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="DateCheck">
+            <property name="toolTip">
+             <string>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</string>
+            </property>
             <property name="text">
              <string>Date</string>
             </property>
@@ -368,6 +371,9 @@
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="Date">
+            <property name="toolTip">
+             <string>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</string>
+            </property>
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -429,6 +435,9 @@
           </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="DurationCheck">
+            <property name="toolTip">
+             <string>Dive duration in seconds or in min:sec format</string>
+            </property>
             <property name="text">
              <string>Duration</string>
             </property>
@@ -436,6 +445,9 @@
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="Duration">
+            <property name="toolTip">
+             <string>Dive duration in seconds or in min:sec format</string>
+            </property>
             <property name="enabled">
              <bool>false</bool>
             </property>
