@@ -438,10 +438,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 	dive->dc.model = strdup(devdata->model);
 	dive->dc.deviceid = devdata->deviceid;
-	/* for now copy the "made up" strings converted from the 32bit numbers that libdivecomputer gives us;
-	 * if the dive computer backend supports the DC_FIELD_STRING interface this will later be overwritten by the correct strings */
-	dive->dc.serial = copy_string(devdata->serial);
-	dive->dc.fw_version = copy_string(devdata->firmware);
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	tm.tm_year = dt.year;
