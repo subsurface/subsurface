@@ -18,6 +18,7 @@
   <xsl:param name="buddyField" select="buddyField"/>
   <xsl:param name="notesField" select="notesField"/>
   <xsl:param name="weightField" select="weightField"/>
+  <xsl:param name="dateformat" select="dateformat"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -79,10 +80,42 @@
       <xsl:attribute name="date">
         <xsl:choose>
           <xsl:when test="$dateField >= 0">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$dateField"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
+            <xsl:variable name="indate">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$dateField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="separator">
+              <xsl:choose>
+                <xsl:when test="substring-before($indate, '.') != ''">
+                  <xsl:value-of select="'.'"/>
+                </xsl:when>
+                <xsl:when test="substring-before($indate, '-') != ''">
+                  <xsl:value-of select="'-'"/>
+                </xsl:when>
+                <xsl:when test="substring-before($indate, '/') != ''">
+                  <xsl:value-of select="'/'"/>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:choose>
+              <!-- dd.mm.yyyy -->
+              <xsl:when test="$datefmt = 0">
+                <xsl:value-of select="concat(substring-after(substring-after($indate, $separator), $separator), '-', substring-before(substring-after($indate, $separator), $separator), '-', substring-before($indate, $separator))"/>
+              </xsl:when>
+              <!-- mm.yy.yyyy -->
+              <xsl:when test="$datefmt = 1">
+                <xsl:value-of select="concat(substring-after(substring-after($indate, $separator), $separator), '-', substring-before($indate, $separator), '-', substring-before(substring-after($indate, $separator), $separator))"/>
+              </xsl:when>
+              <!-- yyyy.mm.dd -->
+              <xsl:when test="$datefmt = 2">
+                <xsl:value-of select="concat(substring-before($indate, $separator), '-', substring-before(substring-after($indate, $separator), $separator), '-', substring-after(substring-after($indate, $separator), $separator))"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'1900-1-1'"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(substring($date, 1, 4), '-', substring($date, 5, 2), '-', substring($date, 7, 2))"/>

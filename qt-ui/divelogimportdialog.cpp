@@ -107,6 +107,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			parse_manual_file(fileNames[i].toUtf8().data(),
 					  ui->ManualSeparator->currentIndex(),
 					  ui->Units->currentIndex(),
+                                          ui->DateFormat->currentIndex(),
 					  VALUE_IF_CHECKED(DiveNumber),
 					  VALUE_IF_CHECKED(Date), VALUE_IF_CHECKED(Time),
 					  VALUE_IF_CHECKED(Duration), VALUE_IF_CHECKED(Location),

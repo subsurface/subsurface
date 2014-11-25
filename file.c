@@ -943,11 +943,11 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return 0;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf)
+int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[33];
+	char *params[35];
 	char numberbuf[MAXCOLDIGITS];
 	char datebuf[MAXCOLDIGITS];
 	char timebuf[MAXCOLDIGITS];
@@ -962,6 +962,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int numberf, 
 	char tagsbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	char unit[MAXCOLDIGITS];
+	char datefmt[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
@@ -984,6 +985,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int numberf, 
 	snprintf(tagsbuf, MAXCOLDIGITS, "%d", tagsf);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unit, MAXCOLDIGITS, "%d", units);
+	snprintf(datefmt, MAXCOLDIGITS, "%d", dateformat);
 	time(&now);
 	timep = localtime(&now);
 	strftime(curdate, DATESTR, "%Y%m%d", timep);
@@ -1024,6 +1026,8 @@ int parse_manual_file(const char *filename, int sepidx, int units, int numberf, 
 	params[pnr++] = separator_index;
 	params[pnr++] = "units";
 	params[pnr++] = unit;
+	params[pnr++] = "datefmt";
+	params[pnr++] = datefmt;
 	params[pnr++] = NULL;
 
 	if (filename == NULL)
