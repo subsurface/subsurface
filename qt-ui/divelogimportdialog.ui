@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>385</height>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,6 +29,54 @@
        <string>CSV options</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Units</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4b">
+          <item>
+           <widget class="QComboBox" name="CSVUnits">
+            <item>
+             <property name="text">
+              <string>Metric</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Imperial</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Field separator</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QComboBox" name="CSVSeparator"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="0" rowspan="3">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
@@ -207,6 +255,8 @@
            </widget>
           </item>
          </layout>
+         <zorder>CSVpressure</zorder>
+         <zorder>pressureCheckBox</zorder>
          <zorder>ndlCheckBox</zorder>
          <zorder>CSVndl</zorder>
          <zorder>ttsCheckBox</zorder>
@@ -225,18 +275,6 @@
          <zorder>CSVstopdepth</zorder>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Field separator</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QComboBox" name="CSVSeparator"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
@@ -253,42 +291,6 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QGroupBox" name="groupBox_7">
-         <property name="title">
-          <string>Units</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4b">
-          <item>
-           <widget class="QComboBox" name="CSVUnits">
-            <item>
-             <property name="text">
-              <string>Metric</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Imperial</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
@@ -296,8 +298,14 @@
        <string>Manual dives</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="title">
           <string>Field separator</string>
          </property>
@@ -308,7 +316,7 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QGroupBox" name="groupBox_8">
          <property name="toolTip">
           <string>Choose day, month and year order for date format. The field separator can be any of the characters .-/.</string>
@@ -343,30 +351,7 @@
          </widget>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QGroupBox" name="groupBox_6">
-         <property name="title">
-          <string>Units</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QComboBox" name="Units">
-            <item>
-             <property name="text">
-              <string>Metric</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Imperial</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0" rowspan="2">
+       <item row="0" column="0" rowspan="4">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>Field configuration</string>
@@ -418,11 +403,11 @@
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="Date">
-            <property name="toolTip">
-             <string>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</string>
-            </property>
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</string>
             </property>
             <property name="minimum">
              <number>1</number>
@@ -492,11 +477,11 @@
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="Duration">
-            <property name="toolTip">
-             <string>Dive duration in seconds or in min:sec format</string>
-            </property>
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>Dive duration in seconds or in min:sec format</string>
             </property>
             <property name="minimum">
              <number>1</number>
@@ -586,6 +571,35 @@
             <property name="minimum">
              <number>1</number>
             </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Units</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QComboBox" name="Units">
+            <item>
+             <property name="text">
+              <string>Metric</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Imperial</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>
