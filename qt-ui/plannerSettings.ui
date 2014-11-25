@@ -525,7 +525,7 @@
           <item row="3" column="0">
            <widget class="QCheckBox" name="verbatim_plan">
             <property name="text">
-             <string>Verbatim diveplan</string>
+             <string>Verbatim dive plan</string>
             </property>
            </widget>
           </item>
