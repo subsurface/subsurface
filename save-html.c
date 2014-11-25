@@ -453,8 +453,8 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Date", translate("gettextFromC", "Date"), ", ");
 	write_attribute(b, "Time", translate("gettextFromC", "Time"), ", ");
 	write_attribute(b, "Location", translate("gettextFromC", "Location"), ", ");
-	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air temp"), ", ");
-	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water temp"), ", ");
+	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air temp."), ", ");
+	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water temp."), ", ");
 	write_attribute(b, "dives", translate("gettextFromC", "Dives"), ", ");
 	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand all"), ", ");
 	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse all"), ", ");
@@ -481,14 +481,14 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest time"), ", ");
 	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest time"), ", ");
 	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average depth"), ", ");
-	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min depth"), ", ");
-	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max depth"), ", ");
+	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min. depth"), ", ");
+	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max. depth"), ", ");
 	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"), ", ");
-	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min SAC"), ", ");
-	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max SAC"), ", ");
-	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average temp"), ", ");
-	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min temp"), ", ");
-	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max temp"), ", ");
+	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min. SAC"), ", ");
+	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max. SAC"), ", ");
+	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average temp."), ", ");
+	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min. temp."), ", ");
+	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max. temp."), ", ");
 	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to list"), ", ");
 
 	//dive detailed view

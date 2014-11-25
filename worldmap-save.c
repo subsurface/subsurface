@@ -40,12 +40,12 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Duration:"));
 		snprintf(post, sizeof(post), " %s</p>", translate("gettextFromC", "min"));
 		put_duration(b, dive->duration, pre, post);
-		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Max depth:"));
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Max. depth:"));
 		snprintf(post, sizeof(post), " %s</p>", translate("gettextFromC", "m"));
 		put_depth(b, dive->maxdepth, pre, post);
-		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Air temp:"));
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Air temp.:"));
 		put_HTML_airtemp(b, dive, pre, "</p>");
-		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Water temp:"));
+		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Water temp.:"));
 		put_HTML_watertemp(b, dive, pre, "</p>");
 		snprintf(pre, sizeof(pre), "<p>%s <b>", translate("gettextFromC", "Location:"));
 		put_string(b, pre);
