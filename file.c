@@ -679,9 +679,9 @@ int parse_txt_file(const char *filename, const char *csv)
 						//End of O2 calibration Event: 0 = OK, 2 = Failed, rest of dive setpoint 1.0
 						if (value == 2)
 							add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_END, 0,
-									QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration failed"));
+									QT_TRANSLATE_NOOP("gettextFromC", "O₂ calibration failed"));
 						add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_END, 0,
-								QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration"));
+								QT_TRANSLATE_NOOP("gettextFromC", "O₂ calibration"));
 						break;
 					case 25:
 						//25 Max Ascent depth
@@ -690,7 +690,7 @@ int parse_txt_file(const char *filename, const char *csv)
 					case 31:
 						//Start of O2 calibration Event
 						add_event(dc, cur_sampletime, 0, SAMPLE_FLAGS_BEGIN, 0,
-								QT_TRANSLATE_NOOP("gettextFromC", "O2 calibration"));
+								QT_TRANSLATE_NOOP("gettextFromC", "O₂ calibration"));
 						break;
 					case 37:
 						//Remaining dive time #2?
