@@ -9,11 +9,13 @@ class QAbstractButton;
 #include <stdint.h>
 
 #include "ui_renumber.h"
+#include "ui_setpoint.h"
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
 #include "exif.h"
+#include <dive.h>
 
 class MinMaxAvgWidget : public QWidget {
 	Q_OBJECT
@@ -54,6 +56,22 @@ private:
 	explicit RenumberDialog(QWidget *parent);
 	Ui::RenumberDialog ui;
 	bool selectedOnly;
+};
+
+class SetpointDialog : public QDialog {
+	Q_OBJECT
+public:
+	static SetpointDialog *instance();
+	void setpointData(struct divecomputer *divecomputer, int time);
+private
+slots:
+	void buttonClicked(QAbstractButton *button);
+
+private:
+	explicit SetpointDialog(QWidget *parent);
+	Ui::SetpointDialog ui;
+	struct divecomputer *dc;
+	int time;
 };
 
 class ShiftTimesDialog : public QDialog {

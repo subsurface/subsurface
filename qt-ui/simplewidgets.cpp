@@ -18,6 +18,8 @@
 #include "mainwindow.h"
 #include "helpers.h"
 #include "ui_filterwidget.h"
+#include "libdivecomputer/parser.h"
+
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -151,6 +153,35 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 }
 
 RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(false)
+{
+	ui.setupUi(this);
+	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+}
+
+SetpointDialog *SetpointDialog::instance()
+{
+	static SetpointDialog *self = new SetpointDialog(MainWindow::instance());
+	return self;
+}
+
+void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
+{
+	dc = divecomputer;
+	time = second;
+}
+
+void SetpointDialog::buttonClicked(QAbstractButton *button)
+{
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		add_event(dc, time, SAMPLE_EVENT_PO2, 0, ui.spinbox->value(), "SP change");
+	}
+}
+
+SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));

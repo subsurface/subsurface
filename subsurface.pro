@@ -220,6 +220,7 @@ FORMS = \
 	qt-ui/preferences.ui \
 	qt-ui/printoptions.ui \
 	qt-ui/renumber.ui \
+	qt-ui/setpoint.ui \
 	qt-ui/shifttimes.ui \
 	qt-ui/shiftimagetimes.ui \
 	qt-ui/webservices.ui \
