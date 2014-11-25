@@ -121,7 +121,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		QT_TRANSLATE_NOOP("gettextFromC", "transmitter"), QT_TRANSLATE_NOOP("gettextFromC", "violation"), QT_TRANSLATE_NOOP("gettextFromC", "bookmark"), QT_TRANSLATE_NOOP("gettextFromC", "surface"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
 		QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
 		QT_TRANSLATE_NOOP("gettextFromC", "deepstop"), QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"), QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time"), QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
-		QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"), QT_TRANSLATE_NOOP("gettextFromC", "OLF"), QT_TRANSLATE_NOOP("gettextFromC", "PO2"), QT_TRANSLATE_NOOP("gettextFromC", "airtime"), QT_TRANSLATE_NOOP("gettextFromC", "rgbm"), QT_TRANSLATE_NOOP("gettextFromC", "heading"),
+		QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"), QT_TRANSLATE_NOOP("gettextFromC", "OLF"), QT_TRANSLATE_NOOP("gettextFromC", "pO₂"), QT_TRANSLATE_NOOP("gettextFromC", "airtime"), QT_TRANSLATE_NOOP("gettextFromC", "rgbm"), QT_TRANSLATE_NOOP("gettextFromC", "heading"),
 		QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"), QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "non stop time")
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);

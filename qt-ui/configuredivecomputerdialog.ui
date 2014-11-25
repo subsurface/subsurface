@@ -913,7 +913,7 @@
               </column>
               <column>
                <property name="text">
-                <string>%O2</string>
+                <string>%O₂</string>
                </property>
               </column>
               <column>
@@ -998,7 +998,7 @@
               </column>
               <column>
                <property name="text">
-                <string>%O2</string>
+                <string>%O₂</string>
                </property>
               </column>
               <column>
@@ -1121,7 +1121,7 @@
             <item row="2" column="2">
              <widget class="QLabel" name="label_35">
               <property name="text">
-               <string>O2 in calibration gas</string>
+               <string>O₂ in calibration gas</string>
               </property>
              </widget>
             </item>
@@ -1213,14 +1213,14 @@
             <item row="4" column="2">
              <widget class="QLabel" name="label_29">
               <property name="text">
-               <string>ppO₂ max</string>
+               <string>pO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="5" column="2">
              <widget class="QLabel" name="label_30">
               <property name="text">
-               <string>ppO₂ min</string>
+               <string>pO₂ min</string>
               </property>
              </widget>
             </item>
@@ -2119,7 +2119,7 @@
               </column>
               <column>
                <property name="text">
-                <string>%O2</string>
+                <string>%O₂</string>
                </property>
               </column>
               <column>
@@ -2204,7 +2204,7 @@
               </column>
               <column>
                <property name="text">
-                <string>%O2</string>
+                <string>%O₂</string>
                </property>
               </column>
               <column>
@@ -2352,14 +2352,14 @@
             <item row="3" column="2">
              <widget class="QLabel" name="label_60">
               <property name="text">
-               <string>ppO₂ max</string>
+               <string>pO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
              <widget class="QLabel" name="label_61">
               <property name="text">
-               <string>ppO₂ min</string>
+               <string>pO₂ min</string>
               </property>
              </widget>
             </item>
