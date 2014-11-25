@@ -141,7 +141,7 @@ void TagFilterModel::repopulate()
 		current_tag_entry = current_tag_entry->next;
 	}
 	qSort(list);
-	list << tr("Empty Tags");
+	list << tr("Empty tags");
 	setStringList(list);
 	delete[] checkState;
 	checkState = new bool[list.count()];

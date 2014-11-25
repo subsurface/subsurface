@@ -56,16 +56,16 @@ void UpdateManager::requestReceived()
 		msgbox.setIcon(QMessageBox::Information);
 
 		if (responseBody == "OK") {
-			msgText = tr("You are using the latest version of subsurface.");
+			msgText = tr("You are using the latest version of Subsurface.");
 		} else if (responseBody.startsWith("http")) {
-			msgText = tr("A new version of subsurface is available.<br/>Click on:<br/><a href=\"%1\">%1</a><br/> to download it.")
+			msgText = tr("A new version of Subsurface is available.<br/>Click on:<br/><a href=\"%1\">%1</a><br/> to download it.")
 					.arg(responseBody);
 		} else if (responseBody.startsWith("Latest version")) {
 			// the webservice backend doesn't localize - but it's easy enough to just replace the
 			// strings that it is likely to send back
 			responseBody.replace("Latest version is ", "");
 			responseBody.replace(". please check with your OS vendor for updates.", "");
-			msgText = QString("<b>") + tr("A new version of subsurface is available.") + QString("</b><br/><br/>") +
+			msgText = QString("<b>") + tr("A new version of Subsurface is available.") + QString("</b><br/><br/>") +
 					tr("Latest version is %1, please check with your OS vendor for updates.")
 					.arg(responseBody);
 		} else {

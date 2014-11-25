@@ -193,45 +193,45 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 	static int lastndl;
 
 	if (flags[1] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Safety Stop Violation"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Safety stop violation"));
 	if (flags[1] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed alarm"));
 #if WANT_CRAZY_WARNINGS
 	if (flags[1] & 0x06) /* both bits 1 and 2 are a warning */
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Speed warning"));
 	if (flags[1] & 0x10)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Green Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ green warning"));
 #endif
 	if (flags[1] & 0x20)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Ascend Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ ascend warning"));
 	if (flags[1] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ Ascend Alarm"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "pO₂ ascend alarm"));
 	/* flags[2] reflects the deco / time bar
 	 * flags[3] reflects more display details on deco and pO2 */
 	if (flags[4] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank Pressure Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank pressure info"));
 	if (flags[4] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT warning"));
 	if (flags[4] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "RGT alert"));
 	if (flags[4] & 0x40)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank Change Suggested"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Tank change suggested"));
 	if (flags[4] & 0x80)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Depth Limit Exceeded"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Depth limit exceeded"));
 	if (flags[5] & 0x01)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Max Deco Time Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Max deco time warning"));
 	if (flags[5] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive Time Info"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive time info"));
 	if (flags[5] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive Time Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Dive time alert"));
 	if (flags[5] & 0x10)
 		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Marker"));
 	if (flags[6] & 0x02)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "No Tank Data"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "No tank data"));
 	if (flags[6] & 0x04)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low Battery Warning"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low battery warning"));
 	if (flags[6] & 0x08)
-		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low Battery Alert"));
+		add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "Low battery alert"));
 /* flags[7] reflects the little on screen icons that remind of previous
 	 * warnings / alerts - not useful for events */
 

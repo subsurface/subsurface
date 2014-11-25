@@ -510,7 +510,7 @@
           <item row="5" column="0">
            <widget class="QCheckBox" name="GpsCheck">
             <property name="text">
-             <string>Gps</string>
+             <string>GPS</string>
             </property>
            </widget>
           </item>

@@ -575,7 +575,7 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	connect(quit, SIGNAL(activated()), this, SLOT(close()));
 	d.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
 		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-	d.setWindowTitle(tr("Yearly Statistics"));
+	d.setWindowTitle(tr("Yearly statistics"));
 	d.exec();
 }
 

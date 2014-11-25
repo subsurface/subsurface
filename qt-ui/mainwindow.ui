@@ -624,7 +624,7 @@ p, li { white-space: pre-wrap; }
     <string>&amp;Export</string>
    </property>
    <property name="toolTip">
-    <string>Export Dive Logs</string>
+    <string>Export dive logs</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -655,7 +655,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
    </property>
    <property name="text">
-    <string>Toggle pO2 Graph</string>
+    <string>Toggle pO₂ graph</string>
    </property>
   </action>
   <action name="profPn2">
@@ -667,7 +667,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
    </property>
    <property name="text">
-    <string>Toggle pN2 Graph</string>
+    <string>Toggle pN₂ graph</string>
    </property>
   </action>
   <action name="profPhe">

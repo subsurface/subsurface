@@ -850,7 +850,7 @@ const char *do_uemis_import(device_data_t *data)
 
 	if (dive_table.nr == 0)
 		keep_number = true;
-	uemis_info(translate("gettextFromC", "Init Communication"));
+	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath))
 		return translate("gettextFromC", "Uemis init failed");
 	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))

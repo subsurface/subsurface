@@ -92,11 +92,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 			label->setAlignment(Qt::AlignHCenter);
 	}
 	ui.cylinders->setTitle(tr("Cylinders"));
-	ui.cylinders->setBtnToolTip(tr("Add Cylinder"));
+	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
 	connect(ui.cylinders, SIGNAL(addButtonClicked()), this, SLOT(addCylinder_clicked()));
 
 	ui.weights->setTitle(tr("Weights"));
-	ui.weights->setBtnToolTip(tr("Add Weight System"));
+	ui.weights->setBtnToolTip(tr("Add weight system"));
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
