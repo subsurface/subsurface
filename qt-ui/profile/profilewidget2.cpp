@@ -1128,6 +1128,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			gasChange->addAction(action);
 		}
 	}
+	QAction *setpointAction = m.addAction(tr("Add set-point change"), this, SLOT(addSetpointChange()));
+	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
@@ -1280,6 +1282,14 @@ void ProfileWidget2::addBookmark()
 	add_event(current_dc, timeAxis->valueAt(scenePos), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
 	mark_divelist_changed(true);
 	replot();
+}
+
+void ProfileWidget2::addSetpointChange()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	SetpointDialog::instance()->setpointData(current_dc, timeAxis->valueAt(scenePos));
+	SetpointDialog::instance()->show();
 }
 
 void ProfileWidget2::changeGas()

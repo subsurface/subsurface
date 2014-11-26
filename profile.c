@@ -373,6 +373,18 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, un
 	return i;
 }
 
+static int set_setpoint(struct plot_info *pi, int i, int setpoint, unsigned int end)
+{
+	while (i < pi->nr) {
+		struct plot_data *entry = pi->entry + i;
+		if (entry->sec > end)
+			break;
+		entry->o2pressure.mbar = setpoint;
+		i++;
+	}
+	return i;
+}
+
 /* normally the first cylinder has index 0... if not, we need to fix this up here */
 static int set_first_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
 {
@@ -405,6 +417,27 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 		ev = get_next_event(ev->next, "gaschange");
 	} while (ev);
 	set_cylinder_index(pi, i, cylinderindex, ~0u);
+}
+
+static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+{
+	int i = 0;
+	pressure_t setpoint;
+
+	setpoint.mbar = 0;
+	struct event *ev = get_next_event(dc->events, "SP change");
+
+	if (!ev)
+		return;
+
+	do {
+		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
+		setpoint.mbar = ev->value;
+		if(setpoint.mbar)
+			dc->dctype = CCR;
+		ev = get_next_event(ev->next, "SP change");
+	} while (ev);
+	set_setpoint(pi, i, setpoint.mbar, ~0u);
 }
 
 
@@ -1014,6 +1047,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 
 	check_gas_change_events(dive, dc, pi);			/* Populate the gas index from the gas change events */
+	check_setpoint_events(dive, dc, pi);			/* Populate setpoints */
 	setup_gas_sensor_pressure(dive, dc, pi);		/* Try to populate our gas pressure knowledge */
 	populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
 	if (dc->dctype == CCR)					/* For CCR dives.. */

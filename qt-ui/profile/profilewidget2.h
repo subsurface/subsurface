@@ -92,6 +92,7 @@ slots: // Necessary to call from QAction's signals.
 	void setPlanState();
 	void setAddState();
 	void changeGas();
+	void addSetpointChange();
 	void addBookmark();
 	void hideEvents();
 	void unhideEvents();

@@ -172,13 +172,18 @@ void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 {
 	dc = divecomputer;
 	time = second;
+	qDebug() << second << time;
 }
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		add_event(dc, time, SAMPLE_EVENT_PO2, 0, ui.spinbox->value(), "SP change");
+		qDebug() << time << (int)(1000.0 * ui.spinbox->value());
+		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
 	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->graphics()->replot();
+
 }
 
 SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent)
