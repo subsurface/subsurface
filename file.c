@@ -836,7 +836,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	time_t now;
-	struct tm *timep;
+	struct tm *timep = NULL;
 	char curdate[DATESTR];
 	char curtime[TIMESTR];
 
@@ -873,7 +873,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	time_t now;
-	struct tm *timep;
+	struct tm *timep = NULL;
 	char curdate[DATESTR];
 	char curtime[TIMESTR];
 	char *ptr, *ptr_old = NULL;
