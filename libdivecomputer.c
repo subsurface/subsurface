@@ -153,7 +153,6 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
-	int i;
 	unsigned int mm;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
@@ -214,7 +213,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
 		       value.vendor.type, value.vendor.size);
-		for (i = 0; i < value.vendor.size; ++i)
+		for (int i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
 		printf("</vendor>\n");
 		break;
