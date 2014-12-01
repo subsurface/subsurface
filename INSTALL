@@ -83,6 +83,11 @@ Note: on Fedora qmake will appear as qmake-qt4
 Building the Qt version under MacOSX (using Homebrew)
 -----------------------------------------------------
 
+0) You need to have XCode installed. The first time (and possibly after updating OSX)
+you need to run
+
+$ xcode-select --install
+
 1)  Install Homebrew
 
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
