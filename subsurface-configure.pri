@@ -156,11 +156,19 @@ contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE NO_USERMANUAL NO_PRINTIN
 !isEmpty(LIBMARBLEDEVEL) {
 	# find it next to our sources
 	INCLUDEPATH += $$LIBMARBLEDEVEL/include
-	LIBS += -L$$LIBMARBLEDEVEL/lib
+	isEmpty(LIBMARBLESTATIC) {
+		LIBS += -L$$LIBMARBLEDEVEL/lib
+	}
 }
 !contains(DEFINES, NO_MARBLE) {
 	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
-	else: LIBS += -lmarblewidget
+	else: {
+		isEmpty(LIBMARBLESTATIC) {
+			LIBS += -lmarblewidget
+		} else {
+			LIBS += $$LIBMARBLEDEVEL/src/lib/marble/libmarblewidget.a
+		}
+	}
 }
 
 libgit21-api {
