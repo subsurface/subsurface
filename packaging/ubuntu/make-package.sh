@@ -6,7 +6,8 @@ if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivec
 	exit 1;
 fi
 
-VERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v// ; s/-/./')
+GITVERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v//')
+VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo "building Subsurface" $VERSION
 if [[ -d subsurface_$VERSION ]]; then
 	rm -rf subsurface_$VERSION.bak.prev
@@ -14,8 +15,10 @@ if [[ -d subsurface_$VERSION ]]; then
 	mv subsurface_$VERSION subsurface_$VERSION.bak
 fi
 mkdir subsurface_$VERSION
-(cd subsurface ; tar cf - . .git ) | (cd subsurface_$VERSION ; tar xf - )
+(cd subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
 cd subsurface_$VERSION
+echo $GITVERSION > .gitversion
+
 dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION
 rm debian/*.ex debian/*.EX debian/README.*
 cp ../subsurface/packaging/ubuntu/control debian/control

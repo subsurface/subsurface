@@ -22,7 +22,11 @@ exists(.git/HEAD): {
 	QMAKE_EXTRA_COMPILERS += version_h
 } else {
 	# This is probably a package
-	FULL_VERSION = $$VERSION
-	system(echo \\$${LITERAL_HASH}define VERSION_STRING \\\"$$VERSION\\\" > $$VERSION_FILE)
+	exists(.gitversion): {
+		FULL_VERSION = $$system("cat .gitversion")
+	} else {
+		FULL_VERSION = $$VERSION
+	}
+	system(echo \\$${LITERAL_HASH}define VERSION_STRING \\\"$$FULL_VERSION\\\" > $$VERSION_FILE)
 	QMAKE_CLEAN += $$VERSION_FILE
 }
