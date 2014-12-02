@@ -137,7 +137,11 @@ isEmpty(LIBGIT2DEVEL) {
 	PKGCONFIG += libgit2
 } else {
 	INCLUDEPATH += $$LIBGIT2DEVEL/include
-	LIBS += -L$$LIBGIT2DEVEL/build -lgit2 -lz -lcrypto
+	isEmpty(LIBGIT2STATIC) {
+		LIBS += -L$$LIBGIT2DEVEL/build -lgit2 -lz -lcrypto
+	} else {
+		LIBS += $$LIBGIT2DEVEL/build/libgit2.a -Wl,-Bstatic -lz -lssl -lcrypto -Wl,-Bdynamic -ldl
+	}
 }
 
 # Add libiconv if needed

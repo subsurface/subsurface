@@ -18,8 +18,8 @@ override_dh_auto_clean:
 
 override_dh_auto_configure:
 	(cd libdivecomputer ; autoreconf --install ; ./configure ; make)
-	(mkdir libgit2/build ; cd libgit2/build ; cmake .. ; make )
-	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 subsurface.pro
+	(mkdir libgit2/build ; cd libgit2/build ; cmake -DBUILD_SHARED_LIBS=OFF .. ; sed -i 's/.so$/.a/' CMakeCache.txt ; make )
+	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 LIBGIT2STATIC=1 subsurface.pro
 
 override_dh_installchangelogs:
 	dh_installchangelogs
