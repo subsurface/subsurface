@@ -112,11 +112,9 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
 
 }
 
-#if DC_VERSION_CHECK(0, 5, 0)
 static int read_ostc_cf(unsigned char data[], unsigned char cf) {
 	return data[128 + (cf % 32) * 4 + 3] << 8 ^ data[128 + (cf % 32) * 4 + 2];
 }
-#endif
 
 static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char max_CF, unsigned int value) {
 	// Only write settings supported by this firmware.
@@ -490,6 +488,7 @@ void ReadSettingsThread::run()
 			emit devicedetails(m_deviceDetails);
 			break;
 		}
+#endif	// divecomputer 0.5.0
 #ifdef DEBUG_OSTC
 		case DC_FAMILY_NULL:
 #endif
@@ -796,7 +795,6 @@ void ReadSettingsThread::run()
 			emit devicedetails(m_deviceDetails);
 			break;
 		}
-#endif	// divecomputer 0.5.0
 		default:
 			supported = false;
 			break;
