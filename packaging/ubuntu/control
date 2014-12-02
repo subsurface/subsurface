@@ -1,0 +1,42 @@
+Source: subsurface-4.2.90
+Section: utils
+Priority: optional
+Maintainer: Dirk Hohndel <dirk@hohndel.org>
+Build-Depends: asciidoc,
+               debhelper (>= 9),
+               libqt4-dev,
+               libqtwebkit-dev,
+               libgconf2-dev,
+               libtool,
+               libxml2-dev,
+               libxslt-dev,
+               libsoup2.4-dev,
+               pkg-config,
+               txt2html,
+               libzip-dev,
+               libsqlite3-dev,
+               libmarble-dev,
+               autoconf,
+               automake,
+               cmake,
+               dpkg-dev (>= 1.16.1.1),
+               libusb-dev,
+               dh-autoreconf,
+               libz-dev,
+               libssl-dev,
+               git
+#               libgit2-dev,
+Standards-Version: 3.9.5
+Homepage: http://subsurface-divelog.hohndel.org
+#Vcs-Git: git://git.debian.org/collab-maint/subsurface-4.2.90.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/subsurface-4.2.90.git;a=summary
+
+Package: subsurface-4.2.90
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Dive log program
+ Subsurface is an open source divelog program that runs on Windows, Mac and Linux.
+ Subsurface is able to track single- and multi-tank dives using air, Nitrox or
+ TriMix. It also allows logging of weights and exposure protection used, dive
+ masters and dive buddies and enables the user to rate dives and provide
+ additional dive notes.

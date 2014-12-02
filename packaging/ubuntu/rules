@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+
+%:
+	dh $@
+
+override_dh_auto_clean:
+	(cd libdivecomputer ; make clean || true)
+	make clean || true
+	rm -rf libgit2/build
+	rm -f ssrf-version.h
+	rm -f subsurface
+	rm -f Makefile
+
+override_dh_auto_configure:
+	(cd libdivecomputer ; autoreconf --install ; ./configure ; make)
+	(mkdir libgit2/build ; cd libgit2/build ; cmake .. ; make )
+	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 subsurface.pro
+
+override_dh_installchangelogs:
+	dh_installchangelogs
+	dh_installchangelogs ReleaseNotes.txt 
+	txt2html Documentation/user-manual.txt > Documentation/user-manual.html
+	mkdir -p debian/subsurface/usr/share/doc/subsurface
+	cp Documentation/user-manual.txt debian/subsurface/usr/share/doc/subsurface/
+	cp Documentation/user-manual.html debian/subsurface/usr/share/doc/subsurface/html
+

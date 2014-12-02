@@ -1,0 +1,3 @@
+
+  * Daily build - check git revision for full changelog
+

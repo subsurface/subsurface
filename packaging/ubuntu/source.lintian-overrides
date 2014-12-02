@@ -1,0 +1,8 @@
+# We use the package
+subsurface source: source-is-missing theme/jqplot.canvasAxisTickRenderer.min.js
+subsurface source: source-is-missing theme/jqplot.canvasTextRenderer.min.js
+subsurface source: source-is-missing theme/jqplot.highlighter.min.js
+subsurface source: source-is-missing theme/jquery.jqplot.min.js
+subsurface source: source-is-missing theme/jquery.min.js
+
+
