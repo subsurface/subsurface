@@ -1,5 +1,11 @@
 #!/bin/bash
 # start from the directory above the combined subsurface & subsurface/libdivecomputer directory
+if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer || ! -d subsurface/libgit2 ]] ; then
+	echo "Please start this script from the folder ABOVE the subsurface source directory"
+	echo "which includes libdivecomputer and libgit2 as subdirectories)."
+	exit 1;
+fi
+
 VERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v// ; s/-/./')
 echo "building Subsurface" $VERSION
 if [[ -d subsurface_$VERSION ]]; then
