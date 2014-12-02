@@ -1,4 +1,4 @@
-Source: subsurface-4.2.90
+Source: subsurface
 Section: utils
 Priority: optional
 Maintainer: Dirk Hohndel <dirk@hohndel.org>
@@ -31,7 +31,7 @@ Homepage: http://subsurface-divelog.hohndel.org
 #Vcs-Git: git://git.debian.org/collab-maint/subsurface-4.2.90.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/subsurface-4.2.90.git;a=summary
 
-Package: subsurface-4.2.90
+Package: subsurface
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Dive log program
