@@ -431,10 +431,12 @@ function sort_it(sortOn, function_)
 	for (var j = 0; j < itemsToShow.length; j++) {
 		visited[j] = false;
 	}
+
+	var iSmaller;
 	for (var i = 0; i < itemsToShow.length; i++) {
 		for (var j = 0; j < itemsToShow.length; j++)
 			if (visited[j] === false)
-				var iSmaller = j;
+				iSmaller = j;
 		for (var j = 0; j < itemsToShow.length; j++) {
 			if (function_(itemsToShow[j], itemsToShow[iSmaller])) {
 				if (visited[j] === false) {
