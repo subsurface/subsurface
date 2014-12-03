@@ -28,10 +28,17 @@ cp ../subsurface/packaging/ubuntu/debian/rules debian/rules
 cp ../subsurface/packaging/ubuntu/debian/source.lintian-overrides debian/source.lintian-overrides
 # do something clever with changelog
 mv debian/changelog debian/autocl
-head -1 debian/autocl | sed -e 's/unstable/trusty/' > debian/changelog
+head -1 debian/autocl | sed -e 's/)/~trusty)/' -e 's/unstable/trusty/' > debian/changelog
 cat ../subsurface/packaging/ubuntu/debian/changelog >> debian/changelog
 tail -1 debian/autocl >> debian/changelog
 rm -f debian/autocl
 
 debuild -S 
 
+prev=trusty
+for rel in utopic precise
+do
+	sed -i "s/${prev}/${rel}/g" debian/changelog
+	debuild -S
+	prev=${rel}
+done
