@@ -4,8 +4,6 @@ Priority: optional
 Maintainer: Dirk Hohndel <dirk@hohndel.org>
 Build-Depends: asciidoc,
                debhelper (>= 9),
-               libqt4-dev,
-               libqtwebkit-dev,
                libgconf2-dev,
                libtool,
                libxml2-dev,
@@ -23,8 +21,12 @@ Build-Depends: asciidoc,
                dh-autoreconf,
                libz-dev,
                libssl-dev,
-               git
-#               libgit2-dev,
+               git,
+               qttools5-dev-tools,
+               qt5-qmake,
+               libqt5svg5-dev,
+               qtscript5-dev,
+               qt5-default
 Standards-Version: 3.9.5
 Homepage: http://subsurface-divelog.hohndel.org
 #Vcs-Git: git://git.debian.org/collab-maint/subsurface-4.2.90.git
