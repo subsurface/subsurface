@@ -2082,7 +2082,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 
 	interval = data[16] ? atoi(data[16]) : 0;
 	sampleBlob = (unsigned const char *)data[17];
-	for (i = 0; interval && i * interval < cur_dive->duration.seconds; i++) {
+	for (i = 0; interval && sampleBlob && i * interval < cur_dive->duration.seconds; i++) {
 		float *depth = (float *)&sampleBlob[i * 16 + 3];
 		int32_t temp = (sampleBlob[i * 16 + 10] << 8) + sampleBlob[i * 16 + 11];
 		int32_t pressure = (sampleBlob[i * 16 + 9] << 16) + (sampleBlob[i * 16 + 8] << 8) + sampleBlob[i * 16 + 7];
