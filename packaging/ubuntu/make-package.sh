@@ -17,6 +17,7 @@ fi
 mkdir subsurface_$VERSION
 (cd subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
 cd subsurface_$VERSION
+rm -rf .git libdivecomputer/.git libgit2/.git
 echo $GITVERSION > .gitversion
 
 dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION

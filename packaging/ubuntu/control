@@ -25,6 +25,7 @@ Build-Depends: asciidoc,
                qttools5-dev-tools,
                qt5-qmake,
                libqt5svg5-dev,
+               libqt5webkit5-dev,
                qtscript5-dev,
                qt5-default
 Standards-Version: 3.9.5
