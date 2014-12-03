@@ -2101,6 +2101,35 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		sample_end();
 	}
 
+	/*
+	 * Log was converted from DM4, thus we need to parse the profile
+	 * from DM4 format
+	 */
+
+	if (i == 0) {
+		float *profileBlob;
+		unsigned char *tempBlob;
+		int *pressureBlob;
+
+		profileBlob = (float *)data[17];
+		tempBlob = (unsigned char *)data[18];
+		pressureBlob = (int *)data[19];
+		for (i = 0; interval && i * interval < cur_dive->duration.seconds; i++) {
+			sample_start();
+			cur_sample->time.seconds = i * interval;
+			if (profileBlob)
+				cur_sample->depth.mm = profileBlob[i] * 1000;
+			else
+				cur_sample->depth.mm = cur_dive->dc.maxdepth.mm;
+
+			if (data[18] && data[18][0])
+				cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
+			if (data[19] && data[19][0])
+				cur_sample->cylinderpressure.mbar = pressureBlob[i];
+			sample_end();
+		}
+	}
+
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
