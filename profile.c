@@ -1028,7 +1028,7 @@ static void debug_print_profiledata(struct plot_info *pi)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast)
 {
 	int o2, he, o2low;
 	init_decompression(dive);
@@ -1049,10 +1049,11 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	check_gas_change_events(dive, dc, pi);			/* Populate the gas index from the gas change events */
 	check_setpoint_events(dive, dc, pi);			/* Populate setpoints */
 	setup_gas_sensor_pressure(dive, dc, pi);		/* Try to populate our gas pressure knowledge */
-	populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
-	if (dc->dctype == CCR)					/* For CCR dives.. */
-		populate_pressure_information(dive, dc, pi, true); /* .. calculate missing o2 gas pressure entries */
-
+	if (!fast) {
+		populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
+		if (dc->dctype == CCR)					/* For CCR dives.. */
+			populate_pressure_information(dive, dc, pi, true); /* .. calculate missing o2 gas pressure entries */
+	}
 	fill_o2_values(dc, pi, dive);				/* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, pi); /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
