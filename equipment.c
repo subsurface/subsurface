@@ -215,14 +215,14 @@ void remove_weightsystem(struct dive *dive, int idx)
 void reset_cylinders(struct dive *dive, bool track_gas)
 {
 	int i;
-	pressure_t pO2 = {.mbar = 1400};
+	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &dive->cylinder[i];
 		if (cylinder_none(cyl))
 			continue;
-		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, assume conservative pO2 */
-			cyl->depth = gas_mod(&cyl->gasmix, pO2, M_OR_FT(3,10));
+		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
+			cyl->depth = gas_mod(&cyl->gasmix, decopo2, M_OR_FT(3,10));
 		if (track_gas)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 		cyl->gas_used.mliter = 0;
