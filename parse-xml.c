@@ -2081,7 +2081,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
 
 	interval = data[16] ? atoi(data[16]) : 0;
-	sampleBlob = (unsigned const char *)data[17];
+	sampleBlob = (unsigned const char *)data[24];
 	for (i = 0; interval && sampleBlob && i * interval < cur_dive->duration.seconds; i++) {
 		float *depth = (float *)&sampleBlob[i * 16 + 3];
 		int32_t temp = (sampleBlob[i * 16 + 10] << 8) + sampleBlob[i * 16 + 11];
@@ -2180,7 +2180,7 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 
 	/* StartTime is converted from Suunto's nano seconds to standard
 	 * time. We also need epoch, not seconds since year 1. */
-	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,SampleBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure,SampleBlob FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, handle, &err);
 
