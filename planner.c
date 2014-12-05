@@ -514,7 +514,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	char buffer[20000], temp[1000];
-	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0;
+	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange = !plan_verbatim, postponed = plan_verbatim;
 	struct divedatapoint *nextdp = NULL;
@@ -587,7 +587,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint))
 			gaschange = true;
 		if (plan_verbatim) {
-			if (dp->depth != lastdepth) {
+			if (dp->depth != lastprintdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
 					if (dp->setpoint)
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
@@ -684,7 +684,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			gasmix = newgasmix;
 			}
 		}
-		lastdepth = newdepth;
+		lastprintdepth = newdepth;
+		lastdepth = dp->depth;
 		lastsetpoint = dp->setpoint;
 	} while ((dp = nextdp) != NULL);
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div>");
