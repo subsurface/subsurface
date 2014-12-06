@@ -103,16 +103,18 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
-          <xsl:attribute name="po2">
-            <xsl:choose>
-              <xsl:when test="$units = 'imperial'">
-                <xsl:value-of select="concat(averagePPO2 div 14.5037738, ' bar')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(averagePPO2, ' bar')"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
+          <xsl:if test="currentCircuitSetting = 0">
+            <xsl:attribute name="po2">
+              <xsl:choose>
+                <xsl:when test="$units = 'imperial'">
+                  <xsl:value-of select="concat(averagePPO2 div 14.5037738, ' bar')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat(averagePPO2, ' bar')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </xsl:if>
         </sample>
       </xsl:for-each>
     </dive>
