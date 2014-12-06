@@ -42,7 +42,11 @@ int main(int argc, char **argv)
 			files.push_back(a);
 		}
 	}
+#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 20 && !defined(USE_LIBGIT21_API)
 	git_threads_init();
+#else
+	git_libgit2_init();
+#endif
 	setup_system_prefs();
 	prefs = default_prefs;
 	fill_profile_color();
