@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
-[blue]#_Version 4.2,  August 2014_#
+[blue]#_Version 4.3,  December 2014_#
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
@@ -26,18 +26,22 @@ extensive infrastructure to describe, organise, interpret and print scuba
 and free dives. _Subsurface_ offers many advantages over other similar
 software solutions:
 
+ - Do you need a flexible way of logging dives using recreational equipment,
+   even not using a dive computer?
  - Do you use two different dive computer brands, each with its own proprietary
    software for downloading dive logs? Do you dive with rebreathers as well
-   as open circuit? Do you use a Reefnet Sensus time-depth recorder
-   in conjunction with a dive computer? _Subsurface_ offers a standard
+   as open circuit or recreational equipment? Do you use a Reefnet Sensus time-depth
+   recorder in conjunction with a dive computer? _Subsurface_ offers a standard
    interface for downloading dive logs from all these different pieces of
    equipment and to store and analyse the dive logs within a unified system.
  - Do you use more than one operating system? _Subsurface_ is fully compatible
    with Mac, Linux and Windows, allowing you to access your dive log on each
-   of your operating systems with a single application.
+   of your operating systems using a single application.
  - Do you use Linux or Mac and your dive computer has only Windows-based software
    for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
-   storing and analysing your dive logs on other operating systems.
+   downloading and analysing your dive logs on other operating systems.
+ - Do you need an intuitive graphical dive planner that integrates with and takes
+   into account the dives that have already been logged?
 
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
@@ -1597,6 +1601,17 @@ _Subsurface_ calculates SAC and Gas consumption taking in account gas
 incompressibility, particularly at tank pressures above 200 bar, making them more accurate.
 Users should refer to xref:SAC_CALCULATION[Appendix D] for more information.
 
+=== The *Extra Data* tab (usually for individual dives)
+
+When using a dive computer, it often reports several data items that cannot easily be
+presented in a stardardised way because the nature of the information differs from one
+dive computer to another. These data often comprise setup information, metadata about
+a dive, battery levels, no fly times, or gradient factors used during the dive. When
+possible, this information is presented in the *Extra Data* tab. Below is an
+image showing extra data for a dive using a Poseidon rebreather.
+
+image::images/ExtraDataTab_f20.jpg["FIGURE: Extra Data tab",align="center"]
+
 === The *Stats* tab (for groups of dives)
 
 The Stats tab gives summary statistics for more than one dive, assuming that
@@ -1762,7 +1777,18 @@ If, in addition, the *3m increments* button on the Profile Panel is clicked, the
 
 image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution",align="center"]
 
+[icon="images/icons/ShowCylindersButton.jpg"]
+[NOTE]
+By selecting this icon, the different cylinders used during a dive can be represented as a coloured bar at the bottom
+of the *Dive Profile*. In general oxygen is represented by a green bar, nitrogen with a yellow bar and helium with a
+red bar. The image below shows a dive which first uses a trimix cylinder (red and green), followed by a switch to a nitrox cylinder
+(yellow and green) after 23 minutes. Cylinders with air are shown as a light blue bar.
+
+image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
+
+
 [icon="images/tissues.jpg"]
+
 [NOTE]
 Display inert gas tissue pressures relative to ambient inert gas pressure (horizontal grey line).
 Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from
@@ -3068,11 +3094,11 @@ data from foreign
 dive log software. The procedures below mostly apply to Linux and/or Windows.
 
 [[S_ImportingDivesSuunto]]
-=== Exporting dives from *Suunto Divemanager (DM3 and DM4)*
+=== Exporting dives from *Suunto Divemanager (DM3, DM4 and DM5)*
 [icon="images/icons/suuntologo.jpg"]
 [NOTE]
 Divemanager 3 (DM3) is an older version of the Suunto software. More recent
-Suunto dive computers use Divemanager 4 (DM4). The
+Suunto dive computers use Divemanager 4 (DM4) or DM5. The
 two versions of Divemanager use different methods and different file naming
 conventions to export dive log data.
 
@@ -3104,7 +3130,7 @@ To export divelog from 'Suunto DM4', one needs to locate the DM4 database
 where the dives are stored. the user can either look for the original
 database or make a backup of the dives. Both methods are described here.
 
-Locating the Suunto DM4 database:
+Locating the Suunto DM4 or DM5 database:
 
 1. Start Suunto DM4
 2. Select 'Help -> About'
