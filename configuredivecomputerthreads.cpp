@@ -802,6 +802,8 @@ void ReadSettingsThread::run()
 	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
 		emit error(lastError);
+		// So we don't trigger the "unsupported" clause later..
+		supported = true;
 	}
 unsupported_dc_error:
 	dc_device_close(m_data->device);
