@@ -116,7 +116,7 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 	 *
 	 * Tag markers take: strlen("<></>") = 5
 	 */
-	buf = realloc(mem->buffer, mem->size + 5 + strlen(tag) * 2);
+	buf = realloc(mem->buffer, mem->size + 6 + strlen(tag) * 2);
 	if (buf != NULL) {
 		char *starttag = NULL;
 		char *endtag = NULL;
