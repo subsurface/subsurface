@@ -93,6 +93,20 @@
           <xsl:value-of select="computerSerial"/>
         </xsl:attribute>
 
+        <extradata key="startBatteryVoltage" value="{startBatteryVoltage}"/>
+        <extradata key="endBatteryVoltage" value="{endBatteryVoltage}"/>
+        <extradata key="computerFirmware" value="{computerFirmware}"/>
+        <extradata key="computerSerial" value="{computerSerial}"/>
+        <extradata key="computerSoftwareVersion" value="{computerSoftwareVersion}"/>
+        <extradata key="computerModel" value="{computerModel}"/>
+        <extradata key="logVersion" value="{logVersion}"/>
+        <extradata key="product" value="{product}"/>
+        <extradata key="features" value="{features}"/>
+        <extradata key="decoModel" value="{decoModel}"/>
+        <extradata key="vpmbConservatism" value="{vpmbConservatism}"/>
+        <extradata key="gfMin" value="{gfMin}"/>
+        <extradata key="gfMax" value="{gfMax}"/>
+
         <xsl:for-each select="diveLogRecords/diveLogRecord">
           <sample>
             <xsl:attribute name="time">
