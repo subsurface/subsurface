@@ -67,15 +67,6 @@
         </xsl:attribute>
       </surface>
 
-      <divecomputer>
-        <xsl:attribute name="model">
-          <xsl:value-of select="'Shearwater'"/>
-        </xsl:attribute>
-        <xsl:attribute name="deviceid">
-          <xsl:value-of select="computerSerial"/>
-        </xsl:attribute>
-      </divecomputer>
-
       <xsl:for-each select="diveLogRecords/diveLogRecord[generate-id() = generate-id(key('gases', concat(fractionO2, '/', fractionHe))[1])]">
         <xsl:if test="currentCircuitSetting = 1">
           <cylinder>
@@ -94,49 +85,58 @@
         </xsl:if>
       </xsl:for-each>
 
-      <xsl:for-each select="diveLogRecords/diveLogRecord">
-        <sample>
-          <xsl:attribute name="time">
-            <xsl:call-template name="sec2time">
-              <xsl:with-param name="timeSec">
-                <xsl:value-of select="currentTime"/>
-              </xsl:with-param>
-            </xsl:call-template>
-          </xsl:attribute>
-          <xsl:attribute name="depth">
-            <xsl:choose>
-              <xsl:when test="$units = 'imperial'">
-                <xsl:value-of select="format-number(currentDepth * 0.3048, '0.00')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="currentDepth"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-          <xsl:attribute name="temp">
-            <xsl:choose>
-              <xsl:when test="$units = 'imperial'">
-                <xsl:value-of select="concat(format-number((waterTemp - 32) * 5 div 9, '0.0'), ' C')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="waterTemp"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-          <xsl:if test="currentCircuitSetting = 0">
-            <xsl:attribute name="po2">
+      <divecomputer>
+        <xsl:attribute name="model">
+          <xsl:value-of select="'Shearwater'"/>
+        </xsl:attribute>
+        <xsl:attribute name="deviceid">
+          <xsl:value-of select="computerSerial"/>
+        </xsl:attribute>
+
+        <xsl:for-each select="diveLogRecords/diveLogRecord">
+          <sample>
+            <xsl:attribute name="time">
+              <xsl:call-template name="sec2time">
+                <xsl:with-param name="timeSec">
+                  <xsl:value-of select="currentTime"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="depth">
               <xsl:choose>
                 <xsl:when test="$units = 'imperial'">
-                  <xsl:value-of select="concat(averagePPO2 div 14.5037738, ' bar')"/>
+                  <xsl:value-of select="format-number(currentDepth * 0.3048, '0.00')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(averagePPO2, ' bar')"/>
+                  <xsl:value-of select="currentDepth"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-          </xsl:if>
-        </sample>
-      </xsl:for-each>
+            <xsl:attribute name="temp">
+              <xsl:choose>
+                <xsl:when test="$units = 'imperial'">
+                  <xsl:value-of select="concat(format-number((waterTemp - 32) * 5 div 9, '0.0'), ' C')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="waterTemp"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+            <xsl:if test="currentCircuitSetting = 0">
+              <xsl:attribute name="po2">
+                <xsl:choose>
+                  <xsl:when test="$units = 'imperial'">
+                    <xsl:value-of select="concat(averagePPO2 div 14.5037738, ' bar')"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="concat(averagePPO2, ' bar')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+            </xsl:if>
+          </sample>
+        </xsl:for-each>
+      </divecomputer>
     </dive>
   </xsl:template>
 </xsl:stylesheet>
