@@ -3,6 +3,8 @@
   <xsl:output method="xml" indent="yes"/>
   <xsl:include href="commonTemplates.xsl"/>
 
+  <xsl:key name="gases" match="diveLogRecord" use="concat(fractionO2, '/', fractionHe)" />
+
   <xsl:template match="/">
     <divelog program='subsurface-import' version='2'>
       <dives>
@@ -73,6 +75,24 @@
           <xsl:value-of select="computerSerial"/>
         </xsl:attribute>
       </divecomputer>
+
+      <xsl:for-each select="diveLogRecords/diveLogRecord[generate-id() = generate-id(key('gases', concat(fractionO2, '/', fractionHe))[1])]">
+        <xsl:if test="currentCircuitSetting = 1">
+          <cylinder>
+            <xsl:attribute name="description">
+              <xsl:value-of select="concat(fractionO2 * 100, '/', fractionHe * 100)"/>
+            </xsl:attribute>
+            <xsl:attribute name="o2">
+              <xsl:value-of select="concat(fractionO2 * 100, '%')"/>
+            </xsl:attribute>
+            <xsl:if test="fractionHe != 0">
+              <xsl:attribute name="he">
+                <xsl:value-of select="concat(fractionHe * 100, '%')"/>
+              </xsl:attribute>
+            </xsl:if>
+          </cylinder>
+        </xsl:if>
+      </xsl:for-each>
 
       <xsl:for-each select="diveLogRecords/diveLogRecord">
         <sample>
