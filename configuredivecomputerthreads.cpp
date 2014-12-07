@@ -247,7 +247,11 @@ void ReadSettingsThread::run()
 			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_TIME, data, 2);
 			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setAlarmTime(data[0] << 8 ^ data[1]);
+				int time = data[0] << 8 ^ data[1];
+				// The stinger stores alarm time in seconds instead of minutes.
+				if (m_deviceDetails->model() == "Stinger")
+					time /= 60;
+				m_deviceDetails->setAlarmTime(time);
 			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
 			if (rc == DC_STATUS_SUCCESS) {
@@ -838,6 +842,7 @@ void WriteSettingsThread::run()
 		case DC_FAMILY_SUUNTO_VYPER:
 			unsigned char data;
 			unsigned char data2[2];
+			int time;
 			// Maybee we should read the model from the device to sanity check it here too..
 			// For now we just check that we actually read a device before writing to one.
 			if (m_deviceDetails->model() == "")
@@ -863,8 +868,12 @@ void WriteSettingsThread::run()
 			dc_device_write(m_data->device, SUUNTO_VYPER_LIGHT, &data, 1);
 			data = m_deviceDetails->alarmDepthEnabled() << 1 ^ m_deviceDetails->alarmTimeEnabled();
 			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
-			data2[0] = m_deviceDetails->alarmTime() >> 8;
-			data2[1] = m_deviceDetails->alarmTime() & 0xFF;
+			// The stinger stores alarm time in seconds instead of minutes.
+			time = m_deviceDetails->alarmTime();
+			if (m_deviceDetails->model() == "Stinger")
+				time *= 60;
+			data2[0] = time >> 8;
+			data2[1] = time & 0xFF;
 			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_TIME, data2, 2);
 			data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) >> 8;
 			data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
