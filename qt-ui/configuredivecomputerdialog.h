@@ -62,7 +62,6 @@ private slots:
 	void configMessage(QString msg);
 	void configError(QString err);
 	void on_cancel_clicked();
-	void deviceReadFinished();
 	void on_saveSettingsPushButton_clicked();
 	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
 	void reloadValues();

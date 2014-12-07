@@ -41,8 +41,6 @@ public:
 signals:
 	void message(QString msg);
 	void error(QString err);
-	void readFinished();
-	void writeFinished();
 	void stateChanged(states newState);
 	void deviceDetailsChanged(DeviceDetails *newDetails);
 

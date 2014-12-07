@@ -556,7 +556,10 @@ void ConfigureDiveComputer::setError(QString err)
 void ConfigureDiveComputer::readThreadFinished()
 {
 	setState(DONE);
-	emit readFinished();
+	if (readThread->lastError.isEmpty()) {
+		//No error
+		emit message(tr("Dive computer details read successfully"));
+	}
 }
 
 void ConfigureDiveComputer::writeThreadFinished()

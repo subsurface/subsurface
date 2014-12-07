@@ -111,7 +111,6 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	config = new ConfigureDiveComputer(this);
 	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
-	connect(config, SIGNAL(readFinished()), this, SLOT(deviceReadFinished()));
 	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
 		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
 	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
@@ -614,11 +613,6 @@ void ConfigureDiveComputerDialog::getDeviceData()
 void ConfigureDiveComputerDialog::on_cancel_clicked()
 {
 	this->close();
-}
-
-void ConfigureDiveComputerDialog::deviceReadFinished()
-{
-	ui.statusLabel->setText(tr("Dive computer details read successfully."));
 }
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
