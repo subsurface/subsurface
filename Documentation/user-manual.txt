@@ -2680,7 +2680,7 @@ Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
 Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
 can be read and changed to different values. As a first step, ensure that the appropriate hardware driver
 is installed for the dive computer and that the device name of the dive computer is known.
-See <<S_APPENDIX_A,APPENDIX A>> for information on how to do this.
+See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
 
 Once the dive computer is connected to the _Subsurface_ computer, select _File->Configure dive
 computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
@@ -2769,7 +2769,6 @@ on the http://subsurface-divelog.org/[_Subsurface_ web site].
 - _User Manual_ - Open a window showing this user manual.
 
 
-[[S_APPENDIX_A]]
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
 
 === Make sure that the OS has the required drivers installed
