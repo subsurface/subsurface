@@ -881,7 +881,7 @@ into which this information is to be pasted. Then, from the main menu, select _L
 ==== Adding Bookmarks to a dive
 
 Many divers wish to annotate their dives with text that indicate particular events
-during the dive, e.g. "Saw dolphins", or "Released surface bouy". This is easily
+during the dive, e.g. "Saw dolphins", or "Released surface buoy". This is easily
 done:
 
  - Right-click at the appropriate point on the dive profile.
@@ -977,7 +977,7 @@ accessible through the Import dialogue are also supported, as explained below.
 
 [icon="images/APD.jpg"]
 [NOTE]
-Closed system rebreathers use avanced technology to recirculate
+Closed system rebreathers use advanced technology to recirculate
 gas that has been breathed while doing two things to maintain a
 breathable oxygen concentration:
 a) remove carbon dioxide from the gas that has been exhaled
@@ -986,7 +986,7 @@ Currently, within _Subsurface_, the Poseidon MkVI Discovery is the best
 supported CCR dive computer. The CCR interface of _Subsurface_ is currently experimental
 and under active development. In contrast to a conventional open circuit
 dive computer, a CCR system computer does not allow the download of a log
-containg multiple dives. Rather, each dive is stored independently. This
+containing multiple dives. Rather, each dive is stored independently. This
 means that _Subsurface_ cannot download a dive log directly from a CCR
 dive computer, but that it imports CCR dive logs in the same way that it
 imports dive log data from other databases.
@@ -1011,7 +1011,7 @@ information from the oxygen sensors of the CCR equipment. In the case of the
 Poseidon MKVI, the mean value of the two oxygen sensors are shown. In the case
 of the APD equipment, the mean of the three oxygen sensors are shown. If one
 sensor shows a very different oxygen PO2 reading compared to the others, the
-divergent sensor is ingnored. For CCR dives the graph for oxygen partial pressure
+divergent sensor is ignored. For CCR dives the graph for oxygen partial pressure
 should be fairly flat, reflecting the setpoint settings during the dive.
 Partial pressures for nitrogen (and helium,
 if applicable) are shown in the usual way as for other dives.
@@ -1601,7 +1601,7 @@ Users should refer to xref:SAC_CALCULATION[Appendix D] for more information.
 === The *Extra Data* tab (usually for individual dives)
 
 When using a dive computer, it often reports several data items that cannot easily be
-presented in a stardardised way because the nature of the information differs from one
+presented in a standardised way because the nature of the information differs from one
 dive computer to another. These data often comprise setup information, metadata about
 a dive, battery levels, no fly times, or gradient factors used during the dive. When
 possible, this information is presented in the *Extra Data* tab. Below is an
@@ -1929,7 +1929,7 @@ bottom of the graph to the total gas pressure value.
 of the 16 tissue compartments, following the Bühlmann algorithm, the fast tissues being on the
 left hand side.
 
-- The top black horizontal line indicates the the gradient factor that applies to the depth of
+- The top black horizontal line indicates the gradient factor that applies to the depth of
 the diver at the particular point on the *Dive Profile*. The appropriate gradient factor is an
 interpolation between the FGLow and GFHigh values specified in the Graph tab of the *Preferences
 Panel* of *Subsurface*.
@@ -1942,7 +1942,7 @@ These five values are indicated on the left in the graph above. The way the Gas 
 during a dive is indicated on the right hand side of the above figure for a diver using EAN32.
 
 - Graph *A* indicates the situation at the start of a dive with diver at the surface. The pressures in all
-the tissue compartments are still at the quilibrium pressure because no diving has taken place.
+the tissue compartments are still at the equilibrium pressure because no diving has taken place.
 
 - Graph *B* indicates the situation after a descent to 30 meters. Few of the tissue compartments have had
 time to respond to the descent, their gas pressures being far below the equilibrium gas pressure.
@@ -1982,7 +1982,7 @@ The context menu is used in many manipulations described below.
 image::images/DiveListOptions.jpg["Example: Dive list info options",align="left"]
 
 The default information in the *Dive List* includes, for each dive, Dive_number, Date, Rating, Dive_depth,
-Dive_duration and Dive_location. This information can be contolled and changed by right-clicking on the
+Dive_duration and Dive_location. This information can be controlled and changed by right-clicking on the
 header bar of the *Dive List*. For instance, a right-click on the 'Date' header brings up a list of items
 that can be shown in the dive list (see above). Select an item to be shown in the *Dive List* or to be
 deleted from the dive list, and the list is immediately updated accordingly. Preferences for information
@@ -2156,7 +2156,7 @@ To activate filtering of the dive list, the check box of at least one item in on
 the four check lists needs to be checked. The dive list is then shortened to include
 only the dives that pertain to the selection criteria specified in the check lists.
 The four check lists work as a filter with _AND_ operators, Subsurface
-filters therfore  for _cave_ as a tag AND _Joe Smith_ as a buddy; but the
+filters therefore  for _cave_ as a tag AND _Joe Smith_ as a buddy; but the
 filters within a category are inclusive - filtering for _cave_ and _boat_
 shows those dives that have either one or both of these tags.
 
@@ -2190,7 +2190,7 @@ duration, depth, temperature and pressure.
 some information about it are indicated. This map is not editable.
 
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable
-with an Internet browser. Most modern web browsers are supported, but Javascript
+with an Internet browser. Most modern web browsers are supported, but JavaScript
 must be enabled. This generated HTML file is not intended to be edited
 by the users.
 The HTML dive log contains most of the information and also contains a search
@@ -2694,7 +2694,7 @@ Using the appropriate buttons on the configuration panel, the following actions 
  - *Retrieve available details*. This loads the existing configuration from the dive computer
    to _Subsurface_, showing this in the configuration panel.
  - *Save changes to device*. This changes the configuration of the
-   dive computer to correspond to the informtion shown in the configuration panel.
+   dive computer to correspond to the information shown in the configuration panel.
  - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
    a file location and file name for the saved information.
  - *Restore backup*. This loads the information from a backup file and displays it
@@ -3069,7 +3069,7 @@ can be downloaded at a time, comprising three files:
 extension)
 - Dive log details (file with a .csv extension)
 - Redbook format dive log (file with .cvsr extension). This is a compressed
-version of the dive log using a propriatary format.
+version of the dive log using a proprietary format.
 
 _Subsurface_ accesses the .txt and the .csv files to obtain dive log information.
 
