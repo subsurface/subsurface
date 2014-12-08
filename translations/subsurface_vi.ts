@@ -4233,7 +4233,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="17"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Đánh số lại</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
@@ -4243,7 +4243,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>

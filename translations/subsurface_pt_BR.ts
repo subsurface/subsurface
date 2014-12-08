@@ -1631,7 +1631,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="169"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="298"/>
@@ -3319,7 +3319,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="578"/>
         <source>Yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Estatisticas Anuais</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1135"/>
@@ -4240,7 +4240,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="17"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Renumerar</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
@@ -4250,7 +4250,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>
@@ -5223,7 +5223,7 @@ Médio</translation>
     <message>
         <location filename="../libdivecomputer.c" line="124"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="125"/>
@@ -6318,12 +6318,12 @@ O Uemis Zurich está conectado corretamente?</translation>
     <message>
         <location filename="../save-html.c" line="456"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura do ar</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="457"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura da água</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="462"/>
@@ -6443,7 +6443,7 @@ O Uemis Zurich está conectado corretamente?</translation>
     <message>
         <location filename="../save-html.c" line="485"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Profundidade máxima</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="487"/>

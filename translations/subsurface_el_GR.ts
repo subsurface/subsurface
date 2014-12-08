@@ -1631,7 +1631,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="169"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="298"/>
@@ -4234,7 +4234,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="17"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Επαναρίθμηση</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
@@ -4244,7 +4244,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>
@@ -5214,7 +5214,7 @@ SAC (%1)</translation>
     <message>
         <location filename="../libdivecomputer.c" line="124"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="125"/>

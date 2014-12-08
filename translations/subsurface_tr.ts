@@ -1631,7 +1631,7 @@ kaldırmak istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="169"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="298"/>
@@ -2616,7 +2616,7 @@ kaldırmak istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="95"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Tüp ekle</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="99"/>
@@ -3313,7 +3313,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="578"/>
         <source>Yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Yıllık istatistikler</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1135"/>
@@ -4234,7 +4234,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="17"/>
         <source>Renumber</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden numarala</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
@@ -4244,7 +4244,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
         <source>bar</source>
-        <translation type="unfinished"/>
+        <translation>bar</translation>
     </message>
 </context>
 <context>
@@ -5196,7 +5196,7 @@ Ortalama</translation>
         <location filename="../cochran.c" line="354"/>
         <location filename="../cochran.c" line="400"/>
         <source>PO2</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="124"/>
@@ -5216,7 +5216,7 @@ Ortalama</translation>
     <message>
         <location filename="../libdivecomputer.c" line="124"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="125"/>
@@ -6283,12 +6283,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="456"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Hava sıcaklığı.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="457"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Su sıcaklığı.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="462"/>
@@ -6408,7 +6408,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="485"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Azami derinlik</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="487"/>
