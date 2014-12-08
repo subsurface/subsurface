@@ -2126,6 +2126,7 @@ below shows the depth profile of two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
+[[S_Filter]]
 === Filtering the dive list
 
 The dives in the *Dive List* panel can be filtered, that is, one can select only some
@@ -2674,6 +2675,36 @@ represented in a way very similar to a dive log and the gas calculations cannot 
 accessed in the same way as during the planning process. The only way to print the
 dive plan is to use the _File->Print_ facility on the main menu in the same way as for dive logs.
 
+[[S_Configure]]
+== Configuring a dive computer
+
+_Subsurface_ enables one to configure a dive computer. Currently the Heinrichs-Weikamp (OSTC 2, OSTC 3) and
+Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
+Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
+can be read and changed to different values. As a first step, ensure that the appropriate hardware driver
+is installed for the dive computer and that the device name of the dive computer is known.
+See <<S_APPENDIX_A,APPENDIX A>> for information on how to do this.
+
+Once the dive computer is connected to the _Subsurface_ computer, select _File->Configure dive
+computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
+top of the configuration panel that opens and select the appropriate dive
+computer model from the panel on the lefthand (see image below).
+
+image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer",align="center"]
+
+Using the appropriate buttons on the configuration panel, the following actions can be performed:
+
+ - *Retrieve available details*. This loads the existing configuration from the dive computer
+   to _Subsurface_, showing this in the configuration panel.
+ - *Save changes to device*. This changes the configuration of the
+   dive computer to correspond to the informtion shown in the configuration panel.
+ - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
+   a file location and file name for the saved information.
+ - *Restore backup*. This loads the information from a backup file and displays it
+   in the configuration panel.
+ - *Update firmware*. If new firmware is available for the dive computer, this is
+   loaded into the dive computer.
+
 == Description of the Subsurface Main Menu items
 
 This section describes the functions and operation of the items in the Main Menu
@@ -2692,15 +2723,15 @@ logbook to open.
 the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
+- <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
-- _Configure dive computer_ - This option is currently experimental and under development.
 
 === Import
 - <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information
 from a dive computer.
 - <<Unified_import,_Import Log Files_>> - Import dive information from a file in
 in a _Subsurface_-compatible format.
-- <<S_Companion,_Import GPS data from Subsurface Service_>> - Load GPS
+- <<S_Companion,_Import GPS data from Subsurface web service_>> - Load GPS
 coordinates from the _Subsurface_ mobile phone app.
 - <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive information
 from _www.Divelogs.de_.
@@ -2718,6 +2749,7 @@ panel.
 - <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into dive
 trips.
 - <<S_DeviceNames,_Edit Device Names_>> - Edit the names of dive computers to facilitate your logs.
+- <<S_Filter,_Filter divelist_>> - Select only some dives, based on specific tags or dive criteria.
 
 === View
 - <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
@@ -2732,9 +2764,6 @@ years.
 - _Next DC_ - Switch to previous dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
 
-=== Filter
-- _Select Events_ - This option is not implemented yet.
-
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
 well as licensing information.
@@ -2743,6 +2772,7 @@ on the http://subsurface-divelog.org/[_Subsurface_ web site].
 - _User Manual_ - Open a window showing this user manual.
 
 
+[[S_APPENDIX_A]]
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
 
 === Make sure that the OS has the required drivers installed
@@ -3094,12 +3124,13 @@ data from foreign
 dive log software. The procedures below mostly apply to Linux and/or Windows.
 
 [[S_ImportingDivesSuunto]]
-=== Exporting dives from *Suunto Divemanager (DM3, DM4 and DM5)*
+=== Exporting dives from *Suunto Divemanager (DM3, DM4 or DM5)*
 [icon="images/icons/suuntologo.jpg"]
 [NOTE]
+DiveManager is a MS Windows application for Suunto dive computers.
 Divemanager 3 (DM3) is an older version of the Suunto software. More recent
-Suunto dive computers use Divemanager 4 (DM4) or DM5. The
-two versions of Divemanager use different methods and different file naming
+Suunto dive computers use Divemanager version 4 or 5 (DM4 or DM5). The
+different versions of Divemanager use different methods and different file naming
 conventions to export dive log data.
 
 *Divemanager 3 (DM3):*
@@ -3124,29 +3155,30 @@ Divelog.SDE file
 	* Back in the Export pop-up, press the button 'Export'
 7. The dives are now exported to the file Divelog.SDE.
 
-*Divemanager 4 (DM4):*
+*Divemanager 4 (DM4) and Divemanager 5 (DM5):*
 
-To export divelog from 'Suunto DM4', one needs to locate the DM4 database
+DM4 and DM5 use identical mechanisms for exporting dive logs.
+To export a divelog from Divemanager one needs to locate the DM4/DM5 database
 where the dives are stored. the user can either look for the original
 database or make a backup of the dives. Both methods are described here.
 
-Locating the Suunto DM4 or DM5 database:
+Locating the Suunto DM4 (or DM5) database:
 
-1. Start Suunto DM4
+1. Start Suunto DM4/DM5
 2. Select 'Help -> About'
 3. Click 'Copy' after text 'Copy log folder path to clipboard'
 4. Now open Windows Explorer
 5. Paste the address to the path box at the top of the File Explorer
-6. The database is called DM4.db
+6. The database is called DM4.db or DM5.db
 
-Backing up Suunto DM4:
+Making a backup copy of the Suunto DM4/DM5 database:
 
-1. Start Suunto DM4
+1. Start Suunto DM4/DM5
 2. Select 'File - Create backup'
 3. From the file menu select the location and name for the backup, we'll
-   use DM4 in here with the default extension .bak
+   use DM4 (or DM5) in here with the default extension .bak
 4. Click 'Save'
-5. The dives are now exported to the file DM4.bak
+5. The dives are now exported to the file DM4.bak (or DM5.bak)
 
 
 === Exporting from Mares Dive Organiser V2.1
