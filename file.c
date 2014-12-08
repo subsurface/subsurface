@@ -76,7 +76,7 @@ static void zip_read(struct zip_file *file, const char *filename)
 		mem = realloc(mem, size);
 	}
 	mem[read] = 0;
-	parse_xml_buffer(filename, mem, read, &dive_table, NULL);
+	(void) parse_xml_buffer(filename, mem, read, &dive_table, NULL);
 	free(mem);
 }
 
@@ -370,7 +370,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
-		return 1;
+		return report_error("Cannot open CSV file %s; please use Import log file dialog", filename);
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
 		return try_to_open_cochran(filename, mem);
@@ -387,16 +387,17 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	return 0;
 }
 
-static void parse_file_buffer(const char *filename, struct memblock *mem)
+static int parse_file_buffer(const char *filename, struct memblock *mem)
 {
+	int ret;
 	char *fmt = strrchr(filename, '.');
-	if (fmt && open_by_filename(filename, fmt + 1, mem))
-		return;
+	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem)) != 0)
+		return ret;
 
 	if (!mem->size || !mem->buffer)
-		return;
+		return report_error("Out of memory parsing file %s\n", filename);
 
-	parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
+	return parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
 }
 
 int parse_file(const char *filename)
@@ -405,6 +406,7 @@ int parse_file(const char *filename)
 	const char *branch;
 	struct memblock mem;
 	char *fmt;
+	int ret;
 
 	git = is_git_repository(filename, &branch);
 	if (git && !git_load_dives(git, branch))
@@ -426,9 +428,9 @@ int parse_file(const char *filename)
 		}
 	}
 
-	parse_file_buffer(filename, &mem);
+	ret = parse_file_buffer(filename, &mem);
 	free(mem.buffer);
-	return 0;
+	return ret;
 }
 
 #define MATCH(buffer, pattern) \
@@ -822,6 +824,7 @@ void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *t
 
 int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
 {
+	int ret;
 	struct memblock mem;
 	char *params[27];
 	char timebuf[MAXCOLDIGITS];
@@ -852,13 +855,14 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
 
-	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 	free(mem.buffer);
-	return 0;
+	return ret;
 }
 
 int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
 {
+	int ret;
 	struct memblock mem;
 	char *params[27];
 	char timebuf[MAXCOLDIGITS];
@@ -938,9 +942,9 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
 
-	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 	free(mem.buffer);
-	return 0;
+	return ret;
 }
 
 int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf)
@@ -967,6 +971,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	struct tm *timep;
 	char curdate[9];
 	char curtime[6];
+	int ret;
 
 	if (numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
@@ -1037,7 +1042,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	if (try_to_xslt_open_csv(filename, &mem, "manualCSV"))
 		return -1;
 
-	parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
+	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 	free(mem.buffer);
-	return 0;
+	return ret;
 }

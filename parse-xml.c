@@ -1745,7 +1745,7 @@ const char *preprocess_divelog_de(const char *buffer)
 	return buffer;
 }
 
-void parse_xml_buffer(const char *url, const char *buffer, int size,
+int parse_xml_buffer(const char *url, const char *buffer, int size,
 		      struct dive_table *table, const char **params)
 {
 	xmlDoc *doc;
@@ -1756,10 +1756,9 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	if (res != buffer)
 		free((char *)res);
 
-	if (!doc) {
-		report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
-		return;
-	}
+	if (!doc)
+		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
+
 	set_save_userid_local(false);
 	set_userid("");
 	reset_all();
@@ -1768,6 +1767,8 @@ void parse_xml_buffer(const char *url, const char *buffer, int size,
 	traverse(xmlDocGetRootElement(doc));
 	dive_end();
 	xmlFreeDoc(doc);
+
+	return 0;
 }
 
 void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char *starttime)
