@@ -118,7 +118,7 @@ temperatures and SAC; total time and number of dives selected).
 
 [[S_ViewPanels]]
 
-image::images/main_window.jpg["The Main Window",align="center"]
+image::images/main_window_f20.jpg["The Main Window",align="center"]
 
 The user can determine which of the four panels are displayed by selecting the
 *View* option on the main menu. This feature gives the user several choices of
@@ -187,18 +187,15 @@ of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 [red]#C#
 in the figure below. Each of these tabs will now be explained for data entry.
 
-image::images/AddDive1.jpg["FIGURE: Add dive",align="center"]
+image::images/AddDive1_f20.jpg["FIGURE: Add dive",align="center"]
 
 When one edits a field in Dive notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
-indicated by the message in the blue box at the top of the _Dive Notes_ panel. This message is
+indicated by the message in the blue box at the top of the _Dive Notes_ panel (see the image below). This message is
 displayed in all the panels under Dive notes and Equipment when in *Editing Mode*.
 
-////
-Not displaying the edit bar as the Save and Cancel buttons are on reverse order when comparing to
-the full screenshot.
+image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
 
-image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
-////
+The _Save_ button should only be selected after all the parts of a dive have been entered. When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed before saving the information. By selecting the _Save_ button, a local copy of the information for this specific dive is saved in memory. When one closes Subsurface, the program will ask again, this time whether the complete dive log should be saved on disk or not.
 
 ==== Dive Notes
 
@@ -207,7 +204,7 @@ environmental conditions, co-divers and buddies, as well as some descriptive
 information. If one clicks on the *Dive Notes* tab, the following
 fields are visible:
 
-image::images/AddDive2.jpg["FIGURE: The Dive Notes tab",align="center"]
+image::images/AddDive2_f20.jpg["FIGURE: The Dive Notes tab",align="center"]
 
 The *Time* field reflects the date and the time of the dive. By clicking
 the date, a calendar is displayed from which
@@ -296,7 +293,7 @@ the info panel and in the dive profile panel, so there's no need to use them
 until ALL other information has been added. Here is an example of a completed
 Dive Notes panel:
 
-image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Dive Notes tab",align="center"]
 
 ==== Equipment
 
@@ -310,7 +307,7 @@ cylinders and gases (entered here) affects the behaviour of the dive profile
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
-image::images/Gas_dialogue1.jpg["FIGURE:Initial cylinder dialogue",align="center"]
+image::images/Gas_dialogue1_f20.jpg["FIGURE:Initial cylinder dialogue",align="center"]
 
 The + button at the top right allows the user to add more cylinders for this
 dive.
@@ -324,7 +321,7 @@ table.  To select a cylinder, click in the *Type* box.
 This brings up a button that can be used to display a dropdown list of
 cylinders:
 
-image::images/Gas_dialogue2.jpg["FIGURE:The cylinder drop-down list button",align="center"]
+image::images/Gas_dialogue2_f20.jpg["FIGURE:The cylinder drop-down list button",align="center"]
 
 The drop-down list can be used to select the cylinder type used
 for the dive or the user may start typing in the box which shows the
@@ -349,19 +346,19 @@ cylinders can be added by using the + button at the top right hand. Following
 is an example of a complete description for a
 dive made using two cylinders (air and EAN50):
 
-image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
+image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
 *Weights*: Information about the weight system used during a dive can be entered
 using a dialogue very similar to that for the cylinder information. If the user
 clicks the + button on the top right of the weights dialogue, the table looks
 like this:
 
-image::images/WeightsDataEntry1.jpg["FIGURE: The Weights dialogue",align="center"]
+image::images/WeightsDataEntry1_f20.jpg["FIGURE: The Weights dialogue",align="center"]
 
 If one then clicks on the *Type* field, a drop-down list becomes accessible
 through a down-arrow:
 
-image::images/WeightsDataEntry2.jpg["FIGURE: Weights type drop-down list button",align="center"]
+image::images/WeightsDataEntry2_f20.jpg["FIGURE: Weights type drop-down list button",align="center"]
 
 The drop-down list can then be used to select the type of weight system or the user may start
 typing in the box which shows the available options for the entered characters. In
@@ -376,7 +373,7 @@ the + button on the top right hand. Weight systems can be deleted using the
 dustbin icon on the left hand. Here is an example of information for a dive
 with two types of weights: integrated and a weight belt:
 
-image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
+image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information table",align="center"]
 
 There's NO need to click the _Save_ button before the dive
 profile has been completed.
@@ -390,7 +387,7 @@ _Subsurface_ window. When a dive is manually added to a logbook, _Subsurface_
 presents a default dive profile that needs to be modified to best represent the
 dive being described:
 
-image::images/DiveProfile1.jpg["FIGURE: Initial dive profile",align="center"]
+image::images/DiveProfile1_f20.jpg["FIGURE: Initial dive profile",align="center"]
 
 _Modifying the dive profile_: When the cursor is moved around the dive profile,
 its position is indicated by two coloured lines (red and green) as shown below.
@@ -409,7 +406,7 @@ accurate
 time duration for the dive. Below is a dive profile that represents a dive
 to 20 m for 30 min, followed by a 5 minute safety stop at 5 m.
 
-image::images/DiveProfile2.jpg["FIGURE: Edited dive profile",align="center"]
+image::images/DiveProfile2_f20.jpg["FIGURE: Edited dive profile",align="center"]
 
 _Specifying the gas composition:_ The gas composition used is clearly indicated
 along the line segments of the dive profile. This defaults to the first gas
@@ -422,13 +419,13 @@ that
 waypoint. Note that only the gases defined in the *Equipment* tab appear in the
 context menu.
 
-image::images/DiveProfile3.jpg["FIGURE: Gas composition context menu",align="center"]
+image::images/DiveProfile3_f20.jpg["FIGURE: Gas composition context menu",align="center"]
 
-Below is the profile of a dive to 20 m for 30 min and with a switch from air to
+Below is the profile of a dive to 25 m for 30 min and with a switch from air to
 EAN50 at the end of the duration at 20m. In this case the first cylinder in the
 *Equipment* tab contained air and the second cylinder contained EAN50.
 
-image::images/DiveProfile4.jpg["FIGURE: Completed dive profile",align="center"]
+image::images/DiveProfile4_f20.jpg["FIGURE: Completed dive profile",align="center"]
 
 ==== Saving the hand-entered dive information
 
@@ -761,7 +758,7 @@ in the info panel and in the dive profile panel, so there's no need to use them
 until ALL other information has been added. Here is an example of a completed
 Dive Notes panel:
 
-image::images/CompletedDiveInfo.jpg["FIGURE: A completed Dive Notes tab",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Dive Notes tab",align="center"]
 
 ==== Equipment
 
@@ -769,7 +766,7 @@ The Equipment tab allows one to enter information about the type of
 cylinder and gas used as well as the weights used for the dive. The
 message in a blue box at the top of the panel:
 
-image::images/BlueEditBar.jpg["FIGURE: Blue edit bar",align="center"]
+image::images/BlueEditBar_f20.jpg["FIGURE: Blue edit bar",align="center"]
 
 indicates that the dive is being edited. This is a highly interactive part of
 _Subsurface_ and the information on
@@ -816,7 +813,7 @@ the cursor. Information for any additional cylinders can be added by using the +
 button at the top right hand. Following is an example of a complete description
 for a dive using two cylinders (air and EAN50):
 
-image::images/CylinderDataEntry3.jpg["FIGURE: a completed cylinder dive information table",align="center"]
+image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
 *Weights*: Information about the weight system used can be entered
 using a dialogue very similar to that of the cylinder information. If one
@@ -824,12 +821,12 @@ clicks
 the + button on the top right of the weights dialogue, the table looks like
 this:
 
-image::images/WeightsDataEntry1.jpg["FIGURE:The Weights dialogue",align="center"]
+image::images/WeightsDataEntry1_f20.jpg["FIGURE:The Weights dialogue",align="center"]
 
 By clicking on the *Type* field, a drop-down list becomes accessible through a
 down-arrow:
 
-image::images/WeightsDataEntry2.jpg["FIGURE:Weights type drop-down list button",align="center"]
+image::images/WeightsDataEntry2_f20.jpg["FIGURE:Weights type drop-down list button",align="center"]
 
 The drop-down list can then be used to select the type of weight system
 used during the dive or the user may start typing in the box
@@ -845,7 +842,7 @@ using the + button on the top right hand. Weight systems can be deleted using
 the dustbin icon on the left hand. Here is an example of information for a dive
 with two types of weights: integrated as well as a weight belt:
 
-image::images/WeightsDataEntry3.jpg["FIGURE: A completed weights information table",align="center"]
+image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information table",align="center"]
 
 ==== Editing several selected dives simultaneously
 
