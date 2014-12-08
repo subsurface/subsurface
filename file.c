@@ -364,13 +364,18 @@ static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_
 
 static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem)
 {
+	// hack to be able to provide a comment for the translated string
+	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
+						      "Cannot open CSV file %s; please use Import log file dialog",
+						      "'Import log file' should be the same text as corresponding label in Import menu");
+
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
 		return try_to_open_zip(filename, mem);
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
-		return report_error("Cannot open CSV file %s; please use Import log file dialog", filename);
+		return report_error(translate("gettextFromC", csv_warning), filename);
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
 		return try_to_open_cochran(filename, mem);
