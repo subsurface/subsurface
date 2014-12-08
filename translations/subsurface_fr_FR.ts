@@ -34,17 +34,22 @@
         <translation>Impossible d&apos;ouvrir le fichier backup : %1</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="567"/>
+        <location filename="../configuredivecomputer.cpp" line="561"/>
+        <source>Dive computer details read successfully</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../configuredivecomputer.cpp" line="570"/>
         <source>Setting successfully written to device</source>
         <translation>Paramètre correctement envoyé à l&apos;ordinateur</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="576"/>
+        <location filename="../configuredivecomputer.cpp" line="579"/>
         <source>Device firmware successfully updated</source>
         <translation>Le firmware de l&apos;ordinateur a été mis à jour avec succès</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="585"/>
+        <location filename="../configuredivecomputer.cpp" line="588"/>
         <source>Device settings successfully reset</source>
         <translation>Les paramètres du périphérique ont été remis à zéro avec succès</translation>
     </message>
@@ -842,77 +847,72 @@
         <translation>PSCR-GF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="621"/>
-        <source>Dive computer details read successfully.</source>
-        <translation>Détails de l&apos;ordinateur de plongée lus avec succès.</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="922"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="947"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="916"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="941"/>
         <source>Backup files (*.xml)</source>
         <translation>Sauvegarder les fichiers (*.xml)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="929"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="923"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>Une erreur s&apos;est produite lors de l&apos;enregistrement du fichier de sauvegarde.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="933"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="927"/>
         <source>Backup succeeded</source>
         <translation>Sauvegarde réussie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="934"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="928"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Les paramètres ont été enregistrés vers : %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="921"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="915"/>
         <source>Backup dive computer settings</source>
         <translation>Sauvegarder les paramètres de l&apos;ordinateur de plongée</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="928"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="922"/>
         <source>XML backup error</source>
         <translation>Erreur de sauvegarde XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="946"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="940"/>
         <source>Restore dive computer settings</source>
         <translation>Restaurer les paramètres de l&apos;ordinateur de plongée</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="951"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="945"/>
         <source>XML restore error</source>
         <translation>Erreur de restauration XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="952"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="946"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>Une erreur s&apos;est produite lors de la restauration du fichier de sauvegarde.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="959"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="953"/>
         <source>Restore succeeded</source>
         <translation>La restauration a réussi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="960"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="954"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Vos paramètres ont été restaurés avec succès.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="971"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="965"/>
         <source>Select firmware file</source>
         <translation>Sélectionner le fichier du microprogramme</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="972"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="966"/>
         <source>All files (*.*)</source>
         <translation>Tous les fichiers (*.*)</translation>
     </message>
@@ -2361,17 +2361,17 @@ l&apos;ordinateur de plongée sélectionné ?</translation>
 <context>
     <name>FirmwareUpdateThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1387"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1399"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Cette fonctionnalité n&apos;est pas disponible pour l&apos;ordinateur de plongé sélectionné</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1390"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1402"/>
         <source>Firmware update failed!</source>
         <translation>La mise à jour du firmware à échoué</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1394"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1406"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Impossible de se connecter à l&apos;ordinateur de plongée</translation>
     </message>
@@ -4188,12 +4188,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ReadSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="810"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="816"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Cette fonctionnalité n&apos;est pas disponible pour l&apos;ordinateur de plongé sélectionné</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="803"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="807"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Impossible de se connecter à l&apos;ordinateur de plongée</translation>
     </message>
@@ -4220,12 +4220,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ResetSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1420"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1432"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Cette fonctionnalité n&apos;est pas disponible pour l&apos;ordinateur de plongé sélectionné</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1425"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1437"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Impossible de se connecter à l&apos;ordinateur de plongée</translation>
     </message>
@@ -4815,12 +4815,12 @@ Architecture OS CPU: %1</translation>
 <context>
     <name>WriteSettingsThread</name>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1345"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1357"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Cette fonctionnalité n&apos;est pas disponible pour l&apos;ordinateur de plongé sélectionné</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputerthreads.cpp" line="1350"/>
+        <location filename="../configuredivecomputerthreads.cpp" line="1362"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Impossible de se connecter à l&apos;ordinateur de plongée</translation>
     </message>
@@ -4988,8 +4988,8 @@ Moyenne</translation>
     <message>
         <location filename="../divelist.c" line="464"/>
         <location filename="../equipment.c" line="79"/>
-        <location filename="../planner.c" line="1058"/>
-        <location filename="../planner.c" line="1061"/>
+        <location filename="../planner.c" line="1059"/>
+        <location filename="../planner.c" line="1062"/>
         <source>air</source>
         <translation>air</translation>
     </message>
@@ -5020,62 +5020,68 @@ Moyenne</translation>
     </message>
     <message>
         <location filename="../file.c" line="112"/>
-        <location filename="../file.c" line="418"/>
-        <location filename="../file.c" line="481"/>
-        <location filename="../file.c" line="891"/>
+        <location filename="../file.c" line="425"/>
+        <location filename="../file.c" line="488"/>
+        <location filename="../file.c" line="900"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Impossible de lire « %s »</translation>
     </message>
     <message>
-        <location filename="../file.c" line="575"/>
+        <location filename="../file.c" line="368"/>
+        <source>Cannot open CSV file %s; please use Import log file dialog</source>
+        <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="582"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="604"/>
+        <location filename="../file.c" line="611"/>
         <source>Mouth piece position OC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="608"/>
+        <location filename="../file.c" line="615"/>
         <source>Mouth piece position CC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="612"/>
+        <location filename="../file.c" line="619"/>
         <source>Mouth piece position unknown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="616"/>
+        <location filename="../file.c" line="623"/>
         <source>Mouth piece position not connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="622"/>
+        <location filename="../file.c" line="629"/>
         <source>Power off</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="682"/>
+        <location filename="../file.c" line="689"/>
         <source>O₂ calibration failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="684"/>
-        <location filename="../file.c" line="693"/>
+        <location filename="../file.c" line="691"/>
+        <location filename="../file.c" line="700"/>
         <source>O₂ calibration</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="761"/>
+        <location filename="../file.c" line="768"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../file.c" line="844"/>
-        <location filename="../file.c" line="883"/>
-        <location filename="../file.c" line="972"/>
+        <location filename="../file.c" line="852"/>
+        <location filename="../file.c" line="892"/>
+        <location filename="../file.c" line="982"/>
         <source>Maximum number of supported columns on CSV import is %d</source>
         <translation>Le nombre maximum de colonnes supporté pour les importations de fichiers CSV est %d.</translation>
     </message>
@@ -5094,7 +5100,7 @@ Moyenne</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="338"/>
-        <location filename="../file.c" line="628"/>
+        <location filename="../file.c" line="635"/>
         <source>battery</source>
         <translation>Batterie</translation>
     </message>
@@ -5108,7 +5114,7 @@ Moyenne</translation>
     <message>
         <location filename="../cochran.c" line="332"/>
         <location filename="../cochran.c" line="386"/>
-        <location filename="../file.c" line="650"/>
+        <location filename="../file.c" line="657"/>
         <location filename="../libdivecomputer.c" line="120"/>
         <source>ascent</source>
         <translation>ascension</translation>
@@ -5155,7 +5161,7 @@ Moyenne</translation>
         <location filename="../cochran.c" line="361"/>
         <location filename="../cochran.c" line="410"/>
         <location filename="../cochran.c" line="417"/>
-        <location filename="../file.c" line="742"/>
+        <location filename="../file.c" line="749"/>
         <location filename="../libdivecomputer.c" line="122"/>
         <location filename="../libdivecomputer.c" line="125"/>
         <source>gaschange</source>
@@ -5363,16 +5369,16 @@ Moyenne</translation>
         <translation>Impossible d&apos;analyser « %s »</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1988"/>
-        <location filename="../parse-xml.c" line="2136"/>
+        <location filename="../parse-xml.c" line="1989"/>
+        <location filename="../parse-xml.c" line="2137"/>
         <source>Database query get_events failed.
 </source>
         <translation>Échec de la requête get_events.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="1995"/>
-        <location filename="../parse-xml.c" line="2143"/>
+        <location filename="../parse-xml.c" line="1996"/>
+        <location filename="../parse-xml.c" line="2144"/>
         <source>Database query get_tags failed.
 </source>
         <translation>Échec de la requête get_tags.
@@ -5386,37 +5392,37 @@ Moyenne</translation>
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2167"/>
-        <location filename="../parse-xml.c" line="2188"/>
-        <location filename="../parse-xml.c" line="2337"/>
+        <location filename="../parse-xml.c" line="2168"/>
+        <location filename="../parse-xml.c" line="2189"/>
+        <location filename="../parse-xml.c" line="2338"/>
         <source>Database query failed '%s'.
 </source>
         <translation>Échec de la requête &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2301"/>
+        <location filename="../parse-xml.c" line="2302"/>
         <source>Database query get_cylinders failed.
 </source>
         <translation>Échec de la requête get_cylinders.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2308"/>
+        <location filename="../parse-xml.c" line="2309"/>
         <source>Database query get_changes failed.
 </source>
         <translation>Échec de la requête get_changes.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2315"/>
+        <location filename="../parse-xml.c" line="2316"/>
         <source>Database query get_profile_sample failed.
 </source>
         <translation>Échec de la requête get_profile_sample.
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2406"/>
+        <location filename="../parse-xml.c" line="2407"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Impossible d&apos;ouvrir le feuille de style %s</translation>
     </message>
@@ -5426,7 +5432,7 @@ Moyenne</translation>
         <translation>Nitrox%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="818"/>
+        <location filename="../planner.c" line="819"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Ne peut pas trouver le gaz %s</translation>
     </message>
@@ -5517,30 +5523,30 @@ Moyenne</translation>
         <translation>Changer de gaz vers %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="695"/>
+        <location filename="../planner.c" line="696"/>
         <source>CNS</source>
         <translation>SNC</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="697"/>
+        <location filename="../planner.c" line="698"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="701"/>
+        <location filename="../planner.c" line="702"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Consommation de gaz (segments CCR exclus) :</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="703"/>
+        <location filename="../planner.c" line="704"/>
         <source>Gas consumption:</source>
         <translation>Consommation de gaz:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="534"/>
-        <location filename="../planner.c" line="723"/>
-        <location filename="../planner.c" line="728"/>
-        <location filename="../planner.c" line="751"/>
+        <location filename="../planner.c" line="724"/>
+        <location filename="../planner.c" line="729"/>
+        <location filename="../planner.c" line="752"/>
         <source>Warning:</source>
         <translation>Avertissement:</translation>
     </message>
@@ -5550,32 +5556,32 @@ Moyenne</translation>
         <translation>ATTENTION : CECI EST UNE NOUVELLE IMPLÉMENTATION DE L&apos;ALGORITHME DE BÜHLMANN ET SON ADAPTATION DANS UN PLANIFICATEUR DE PLONGÉE QUI N&apos;A ÉTÉ TESTÉ QUE SOMMAIREMENT. NOUS VOUS RECOMMANDONS FORTEMENT DE NE PAS PLANIFIER VOS PLONGÉES EN VOUS BASANT QUE SUR LES RÉSULTATS PROPOSÉS ICI.</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="724"/>
+        <location filename="../planner.c" line="725"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>C&apos;est plus de gaz que ce qui est disponible dans le bloc spécifié!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="729"/>
+        <location filename="../planner.c" line="730"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>pas assez de gaz en réserve pour un échange lors de la remontée</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="731"/>
+        <location filename="../planner.c" line="732"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s de %s (%.0f%s/%.0f%s dans la remontée planifiée)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="733"/>
+        <location filename="../planner.c" line="734"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s durant la remontée planifiée) de %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="748"/>
+        <location filename="../planner.c" line="749"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>valeur pO₂ haute %.2f à %d:%02u avec le gaz %s à la profondeur %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1062"/>
+        <location filename="../planner.c" line="1063"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
