@@ -73,8 +73,11 @@
             </xsl:attribute>
             <personal>
               <first_name>
-                <xsl:value-of select="."/>
+                <xsl:value-of select="substring-before(., ' ')"/>
               </first_name>
+              <last_name>
+                <xsl:value-of select="substring-after(., ' ')"/>
+              </last_name>
             </personal>
           </buddy>
         </xsl:for-each>
