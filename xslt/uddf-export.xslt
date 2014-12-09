@@ -203,11 +203,13 @@
     <dive id="{generate-id(.)}">
 
       <informationbeforedive>
-        <xsl:if test="temperature/@air|divetemperature/@air != ''">
-          <airtemperature>
-            <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
-          </airtemperature>
-        </xsl:if>
+        <xsl:for-each select="divecomputer">
+          <xsl:if test="temperature/@air|divetemperature/@air != ''">
+            <airtemperature>
+              <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
+            </airtemperature>
+          </xsl:if>
+        </xsl:for-each>
         <datetime>
           <xsl:value-of select="concat(./@date, 'T', ./@time)"/>
         </datetime>
