@@ -496,7 +496,7 @@ From Dive Computer_.
 Dialogue *A* in the figure below appears:
 
 
-image::images/ImportFromDC1.jpg["FIGURE: Download dialogue 1",align="center"]
+image::images/ImportFromDC1_f20.jpg["FIGURE: Download dialogue 1",align="center"]
 
 Dive computers tend to keep a certain number of dives in their memory, even
 though these dives have already been imported to _Subsurface_. For that reason
@@ -655,14 +655,14 @@ _Subsurface_ window should be used.
 ==== Dive Notes
 
 The date and time of the dive, gas mixture and (often) water temperature is
-shown as obtained from the dive computer, but the user needs to add some
+shown as obtained from the dive computer, but the user needs to add
 additional information by hand in order to have a more complete dive record.
 If the contents of this tab is changed or edited in any way, the message in a blue box at
 the top of the panel indicates that the dive is being edited. If one
 clicks on the *Dive Notes* tab, the following fields are
 visible:
 
-image::images/AddDive3.jpg["FIGURE: The Dive Notes tab",align="center"]
+image::images/AddDive3_f20.jpg["FIGURE: The Dive Notes tab",align="center"]
 
 The *Time* field reflects the date and time of the dive. By clicking
 the date, a calendar is displayed from which
@@ -776,7 +776,7 @@ cylinders and gases (entered here) determines the behaviour of the dive profile
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
-image::images/DC_gas_dialogue1.jpg["FIGURE: Initial cylinder dialogue",align="center"]
+image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialogue",align="center"]
 
 In most cases _Subsurface_ obtains the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen) in the table. The + button
@@ -790,7 +790,7 @@ table.  To select a cylinder, the *cylinder type* box should be clicked. This
 brings up a list button that can be used to display a dropdown list of
 cylinders:
 
-image::images/DC_gas_dialogue2.jpg["FIGURE: The cylinder drop-down list button",align="center"]
+image::images/DC_gas-dialogue2_f20.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
 The drop-down list can then be used to select the cylinder type that was used
 for this dive or the user may start typing in the box which shows the available
