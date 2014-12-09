@@ -389,7 +389,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 static void save_picture(struct membuffer *b, struct picture *pic)
 {
 	put_string(b, "  <picture filename='");
-	put_string(b, pic->filename);
+	put_quoted(b, pic->filename, true, false);
 	put_string(b, "'");
 	if (pic->offset.seconds) {
 		int offset = pic->offset.seconds;
