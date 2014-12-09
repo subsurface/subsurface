@@ -78,7 +78,15 @@
         </xsl:for-each>
       </diver>
 
-      <xsl:apply-templates select="//location"/>
+      <divesite>
+
+        <!-- There must be at least one divebase. Subsurface doesn't track this as a concept, so just assign them all to a single divebase. -->
+        <divebase id="allbase">
+          <name>Subsurface Divebase</name>
+        </divebase>
+
+        <xsl:apply-templates select="//location"/>
+      </divesite>
 
       <!-- Define all the unique gases found in the dive log -->
       <gasdefinitions>
@@ -163,27 +171,26 @@
   <xsl:key name="location" match="location" use="."/>
   <xsl:template match="location">
     <xsl:if test="generate-id() = generate-id(key('location', normalize-space(.)))">
-      <dive_site>
+      <site>
         <xsl:attribute name="id">
           <xsl:value-of select="."/>
         </xsl:attribute>
         <name>
           <xsl:value-of select="."/>
         </name>
+        <link ref="allbase"/>
         <geography>
           <location>
             <xsl:value-of select="."/>
           </location>
-          <gps>
-            <latitude>
-              <xsl:value-of select="substring-before(@gps, ' ')"/>
-            </latitude>
-            <longitude>
-              <xsl:value-of select="substring-after(@gps, ' ')"/>
-            </longitude>
-          </gps>
+          <latitude>
+            <xsl:value-of select="substring-before(@gps, ' ')"/>
+          </latitude>
+          <longitude>
+            <xsl:value-of select="substring-after(@gps, ' ')"/>
+          </longitude>
         </geography>
-      </dive_site>
+      </site>
       </xsl:if>
   </xsl:template>
 
@@ -219,11 +226,11 @@
           </link>
         </xsl:for-each>
         <xsl:if test="location != ''">
-          <dive_site_ref>
+          <link>
             <xsl:attribute name="ref">
               <xsl:value-of select="location"/>
             </xsl:attribute>
-          </dive_site_ref>
+          </link>
         </xsl:if>
       </informationbeforedive>
 
