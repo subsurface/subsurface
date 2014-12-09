@@ -1,4 +1,5 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xt="http://www.jclark.com/xt"
+                extension-element-prefixes="xt" version="1.0">
   <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -54,8 +55,27 @@
             </xsl:for-each>
           </equipment>
         </owner>
-
-        <xsl:apply-templates select="//buddy"/>
+        <xsl:variable name="buddylist">
+          <xsl:for-each select="//buddy">
+            <xsl:call-template name="tokenize">
+              <xsl:with-param name="string" select="." />
+              <xsl:with-param name="delim" select="', '" />
+            </xsl:call-template>
+          </xsl:for-each>
+        </xsl:variable>
+        <xsl:for-each select="xt:node-set($buddylist)/token[generate-id() = generate-id(key('tokenkey', .)[1])]">
+          <xsl:sort select="." />
+          <buddy>
+            <xsl:attribute name="id">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+            <personal>
+              <first_name>
+                <xsl:value-of select="."/>
+              </first_name>
+            </personal>
+          </buddy>
+        </xsl:for-each>
       </diver>
 
       <xsl:apply-templates select="//location"/>
@@ -121,20 +141,23 @@
     </uddf>
   </xsl:template>
 
-  <xsl:key name="buddy" match="buddy" use="."/>
-  <xsl:template match="buddy">
-    <xsl:if test="generate-id() = generate-id(key('buddy', normalize-space(.)))">
-      <buddy>
-        <xsl:attribute name="id">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-        <personal>
-          <first_name>
-            <xsl:value-of select="."/>
-          </first_name>
-        </personal>
-      </buddy>
-      </xsl:if>
+  <xsl:key name="tokenkey" match="token" use="." />
+
+  <xsl:template name="tokenize">
+    <xsl:param name="string" />
+    <xsl:param name="delim" />
+    <xsl:choose>
+      <xsl:when test="contains($string, $delim)">
+      <token><xsl:value-of select="substring-before($string, $delim)" /></token>
+        <xsl:call-template name="tokenize">
+        <xsl:with-param name="string" select="substring-after($string,$delim)" />
+        <xsl:with-param name="delim" select="$delim" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <token><xsl:value-of select="$string" /></token>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:key name="location" match="location" use="."/>
@@ -179,13 +202,22 @@
         <divenumber>
           <xsl:value-of select="./@number"/>
         </divenumber>
-        <xsl:if test="buddy != ''">
-          <buddy_ref>
+        <xsl:variable name="buddylist">
+          <xsl:for-each select="buddy">
+            <xsl:call-template name="tokenize">
+              <xsl:with-param name="string" select="." />
+              <xsl:with-param name="delim" select="', '" />
+            </xsl:call-template>
+          </xsl:for-each>
+        </xsl:variable>
+        <xsl:for-each select="xt:node-set($buddylist)/token[generate-id() = generate-id(key('tokenkey', .)[1])]">
+          <xsl:sort select="." />
+          <link>
             <xsl:attribute name="ref">
-              <xsl:value-of select="buddy"/>
+              <xsl:value-of select="."/>
             </xsl:attribute>
-          </buddy_ref>
-        </xsl:if>
+          </link>
+        </xsl:for-each>
         <xsl:if test="location != ''">
           <dive_site_ref>
             <xsl:attribute name="ref">
