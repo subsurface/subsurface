@@ -7,6 +7,8 @@
   <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
   <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
 
+  <xsl:template match="/divelog/settings"/>
+
   <xsl:template match="/divelog/dives">
     <uddf version="3.2.0">
       <generator>
