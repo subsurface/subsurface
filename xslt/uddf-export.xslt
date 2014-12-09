@@ -237,6 +237,10 @@
             </xsl:attribute>
           </link>
         </xsl:if>
+        <equipmentused>
+          <leadquantity><xsl:value-of select="substring-before(weightsystem/@weight, ' ')"/>
+          </leadquantity>
+        </equipmentused>
       </informationbeforedive>
 
       <samples>
