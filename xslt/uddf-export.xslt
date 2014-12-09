@@ -93,7 +93,7 @@
       <!-- Define all the unique gases found in the dive log -->
       <gasdefinitions>
         <!-- Get unique gas mixes from all the recorded dives -->
-        <xsl:for-each select="dive/cylinder[generate-id() = generate-id(key('gases', concat(substring-before(@o2, '.'), '/', substring-before(@he, '.')))[1])]">
+        <xsl:for-each select="//dive/cylinder[generate-id() = generate-id(key('gases', concat(substring-before(@o2, '.'), '/', substring-before(@he, '.')))[1])]">
 
           <xsl:variable name="o2">
             <xsl:choose>
