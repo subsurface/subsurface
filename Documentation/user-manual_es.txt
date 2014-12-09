@@ -1,15 +1,15 @@
-// _Subsurface_ 4.2 User Manual
+// _Subsurface_ 4.3 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat
-// :revnumber: 4.2
-// :revdate: August 2014
+// :revnumber: 4.3
+// :revdate: December 2014
 :icons:
 :toc:
 :toc-placement: manual
 :numbered:
-// :website: http://Subsurface.hohndel.org
+// :website: http://subsurface-divelog.org
 
 image::images/Subsurface4Banner.png["Banner",align="center"]
 
@@ -18,19 +18,21 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 *Autores*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
 
-[BLUE]#_Versión 4.2, Agosto 2014_#
+[BLUE]#_Versión 4.3, Diciembre 2014_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
 interpretarbuceos en apnea o con botella. _Subsurface_ ofrece muchas ventajas
 sobre otras soluciones de software similares:
 
+- ¿Necesitas una forma flexible de registrar inmersiones usando equipo
+recreativo, incluso aunque no uses ordenador?
 - ¿Utilizas dos ordenadores de buceo diferentes, cada uno con su software
 propietario para descargar los diarios de buceo? ¿Buceas con reciclador y con
-circuito abierto? ¿Usas un bottom-timer junto a un ordenador de buceo?
-_Subsurface_ ofrece una interfaz estándar para descargar diarios de buceo desde
-todas estas piezas de equipo y para almacenarlos y analizarlos en un sistema
-unificado.
+circuito abierto o equipo recreativo? ¿Usas un bottom-timer junto a un ordenador
+de buceo? _Subsurface_ ofrece una interfaz estándar para descargar diarios de
+buceo desde todas estas piezas de equipo y para almacenarlos y analizarlos en un
+sistema unificado.
 - ¿Usas más de un sistema operativo? _Subsurface_ es totalmente compatible con
 Mac, Linux y Windows permitiéndote acceder a tu registro de buceo de de la
 misma forma desde cualquiera de estos sistemas operativos.
@@ -38,6 +40,8 @@ misma forma desde cualquiera de estos sistemas operativos.
 Windows para descargar la información de buceo (p.e. Mares)? _Subsurface_ te
 proporciona una manera de almacenar y analizar las inmersiones en otro sistema
 operativo.
+- ¿Necesitas un planificador de inmersiones gráfico que sea intuitivo, tenga
+en cuenta las inmersiones ya guardadas y se integre con ellas?
 
 Hay binarios disponibles para PCs con Windows (XP o posterior), Macs basados en
 Intel (OS/X) y muchas distribuciones de Linux. _Subsurface_ puede compilarse
@@ -119,7 +123,7 @@ inmersiones seleccionadas).
 
 [[S_ViewPanels]]
 
-image::images/main_window.jpg["La ventana principal",align="center"]
+image::images/main_window_f20.jpg["La ventana principal",align="center"]
 
 
 El usuario puede elegir cual de los cuatro paneles se mostrará seleccionando la
@@ -192,7 +196,7 @@ perfil gráfico de cada buceo. Estos paneles estan marcados respectivamente como
 [red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
 las pestañas usadas para introducir la información.
 
-image::images/AddDive1.jpg["FIGURA: Añadir inmersión",align="center"]
+image::images/AddDive1_f20.jpg["FIGURA: Añadir inmersión",align="center"]
 
 Al editar un campo de los paneles _Notas de la Inmersión_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
@@ -200,7 +204,15 @@ en la parte de arriba del panel _Notas de la Inmersión_. Este mensaje se
 muestra en todos los paneles dependientes de _Notas de la Inmersión_ mientras
 se esté en modo de edición.
 
-image::images/BlueEditBar.jpg["Blue edit bar",align="center"]
+image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
+
+El botón _Guardar_ solo debería utilizarse cuando todas las partes de la
+inmersión hayan sido rellenadas. Cuando se introduzcan inmersiones a mano,
+deberían haberse completado las pestañas _Información_, _Equipo_ y _Perfil_
+antes de guardar la información. Al seleccionar el botón _Guardar_, se guarda
+en memoria una copia local de la información. Al salir de _Subsurface_, el
+programa preguntará de nuevo, esta vez si se guarda el diario completo en el
+disco o no.
 
 ==== Notas de la inmersión
 
@@ -209,7 +221,7 @@ condiciones ambientales, compañeros así como alguna información descriptiva. 
 pulsas en la pestaña *Notas de la inmersión*, los siguientes campos aparecen
 visibles:
 
-image::images/AddDive2.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
+image::images/AddDive2_f20.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
 
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
@@ -295,7 +307,7 @@ de los campos del panel de información y del panel de perfil, por lo que no hay
 necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
 ejemplo de panel de Notas de la Inmersión completo:
 
-image::images/CompletedDiveInfo.jpg["FIGURA: Una pestaña de Notas de la Inmersión completada",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURA: Una pestaña de Notas de la Inmersión completada",align="center"]
 
 ==== Equipo
 
@@ -309,7 +321,7 @@ gases que se introduzca determinará el comportamiento del perfil de la inmersi�
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
-image::images/Gas_dialogue1.jpg["FIGURA: Dialogo de botellas inicial",align="center"]
+image::images/Gas_dialogue1_f20.jpg["FIGURA: Dialogo de botellas inicial",align="center"]
 
 El botón + arriba a la derecha permite al usuario añadir más botellas para esta
 inmersión. El icono oscuro de papelera de la izquierda permite borrar la
@@ -322,7 +334,7 @@ Se empieza por seleccionar un tipo de botella en el lado izquierdo de la tabla.
 Para seleccionar una botella hay que hacer clic en la casilla Tipo. Esto
 mostrará un botón que puede usarse para desplegar una lista de botellas:
 
-image::images/Gas_dialogue2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
+image::images/Gas_dialogue2_f20.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
 
 La lista desplegable puede utilizarse para seleccionar el tipo de botella que se
 usó en esta inmersión, o el usuario puede escribir en la casilla, con lo que se
@@ -347,19 +359,19 @@ información para cualquier botella adicional usando el botón + de arriba a la
 derecha. Aquí hay un ejemplo de descripción completa para una inmersión en la
 que se han utilizado dos botellas (aire y EAN50):
 
-image::images/CylinderDataEntry3.jpg["FIGURA: Tabla con la información de botellas completada",align="center"]
+image::images/CylinderDataEntry3_f20.jpg["FIGURA: Tabla con la información de botellas completada",align="center"]
 
 *Lastre*: Se puede introducir información sobre el sistema de lastre utilizado
 en una inmersión, usando un dialogo muy similar al de la información de las
 botellas. Si el usuario pulsa el botón + de arriba a la derecha en el dialogo de
 lastre, la tabla aparecerá como sigue
 
-image::images/WeightsDataEntry1.jpg["FIGURA: El diálogo lastre",align="center"]
+image::images/WeightsDataEntry1_f20.jpg["FIGURA: El diálogo lastre",align="center"]
 
 Si se hace clic en el campo *Tipo*, se accede a una lista desplegable con la
 flecha:
 
-image::images/WeightsDataEntry2.jpg["FIGURE: Desplegable con la lista de tipos de lastre",align="center"]
+image::images/WeightsDataEntry2_f20.jpg["FIGURE: Desplegable con la lista de tipos de lastre",align="center"]
 
 La lista desplegable puede utilizarse para seleccionar el tipo de sistema de
 lastre utilizado o el usuario puede empezar a teclear en la casilla, con lo que
@@ -371,7 +383,7 @@ de arriba a la derecha. Se pueden borrar lastres usando el icono de papelera de
 la izquierda. A continuación, un ejemplo de información para una inmersión con
 dos tipos de lastre: integrado y cinturón:
 
-image::images/WeightsDataEntry3.jpg["FIGURA: Tabla con la información de lastre completada",align="center"]
+image::images/WeightsDataEntry3_f20.jpg["FIGURA: Tabla con la información de lastre completada",align="center"]
 
 No es necesario pulsar el botón Guardar antes de que se haya terminado el perfil
 de la inmersión.
@@ -385,7 +397,7 @@ ventana de _Subsurface_ . Cuando se añade manualmente una inmersión a un diari
 _Subsurface_ presenta un perfil por defecto que necesita modificarse para
 representar mejor el buceo que se está describiendo.
 
-image::images/DiveProfile1.jpg["FIGURA: Perfil de inmersión inicial",align="center"]
+image::images/DiveProfile1_f20.jpg["FIGURA: Perfil de inmersión inicial",align="center"]
 
 _Modificar el perfil de la inmersión_: Cuando se mueve el cursor por el perfil,
 su posición se indica por dos líneas de colores (roja y verde), como se muestra
@@ -404,7 +416,7 @@ representar una duración adecuada del buceo. A continuación hay un perfil de
 inmersión que representa un buceo a 20m durante 30 minutos, seguido de una
 parada de seguridad de 5 minutos a 5m.
 
-image::images/DiveProfile2.jpg["FIGURA: Perfil de buceo editado",align="center"]
+image::images/DiveProfile2_f20.jpg["FIGURA: Perfil de buceo editado",align="center"]
 
 
 _Especificar la composición del gas_: La composición del gas usado se indica
@@ -417,14 +429,14 @@ contextual. Cambiar el gas de un punto de referencia afecta al gas mostrado a la
 izquierda _a la izquierda_ del punto. Nótese que únicamente los gases definidos
 en la pestaña *Equipo* aparecen en el menú contextual:
 
-image::images/DiveProfile3.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
+image::images/DiveProfile3_f20.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
-Abajo está el perfil de una inmersión a 20m durante 30 minutos, a la que se ha
+Abajo está el perfil de una inmersión a 25m durante 30 minutos, a la que se ha
 añadido un cambio de aire a EAN50 a 20 m tras los 30 minutos. En este caso, la
 primera botella en la pestaña *Equipo* contenía aire y la segunda contenía
 EAN50.
 
-image::images/DiveProfile4.jpg["FIGURE: Perfil de inmersión completado",align="center"]
+image::images/DiveProfile4_f20.jpg["FIGURE: Perfil de inmersión completado",align="center"]
 
 ==== Guardar la información introducida a mano
 
@@ -726,7 +738,7 @@ de los campos del panel de información y del panel de perfil, por lo que no hay
 necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
 ejemplo de panel de Notas de la Inmersión completo:
 
-image::images/CompletedDiveInfo.jpg["FIGURA:Una pestaña completa de Notas de la Inmersión",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURA:Una pestaña completa de Notas de la Inmersión",align="center"]
 
 ==== Equipo
 
@@ -734,7 +746,7 @@ La pestaña Equipo permite al usuario introducir información acerca del tipo de
 botella y gas utilizado, así como el lastre utilizado en una inmersión. El
 mensaje en azul arriba del panel
 
-image::images/BlueEditBar.jpg["FIGURA: Barra azul de edición",align="center"]
+image::images/BlueEditBar_f20.jpg["FIGURA: Barra azul de edición",align="center"]
 
 indica que la inmersión se está editando. Esta parte de _Subsurface_ es
 altamente interactiva y la información de botellas y gases que se introduzca
@@ -779,19 +791,19 @@ cursor. Puede añadirse información para cualquier botella adicional usando el
 botón + de arriba a la derecha. Aquí hay un ejemplo de descripción completa para
 una inmersión en la que se han utilizado dos botellas (aire y EAN50):
 
-image::images/CylinderDataEntry3.jpg["FIGURA: Tabla con la informaación de botellas completada",align="center"]
+image::images/CylinderDataEntry3_f20.jpg["FIGURA: Tabla con la informaación de botellas completada",align="center"]
 
 *Lastre*: Se puede introducir información sobre el sistema de lastre utilizado
 en una inmersión, usando un dialogo muy similar al de la información de las
 botellas. Si se pulsa el botón + de arriba a la derecha en el dialogo de lastre,
 la tabla aparecerá como sigue
 
-image::images/WeightsDataEntry1.jpg["FIGURA: El diálogo Lastre",align="center"]
+image::images/WeightsDataEntry1_f20.jpg["FIGURA: El diálogo Lastre",align="center"]
 
 Si se hace clic en el campo Tipo, se accede a una lista desplegable con la
 flecha:
 
-image::images/WeightsDataEntry2.jpg["FIGURA: Desplegable con la lista de tipos de lastre",align="center"]
+image::images/WeightsDataEntry2_f20.jpg["FIGURA: Desplegable con la lista de tipos de lastre",align="center"]
 
 La lista desplegable puede usarse para seleccionar el tipo de sistema de lastre
 utilizado durante la inmersión, o simplemente teclear en la casilla, con lo que
@@ -804,7 +816,7 @@ el botón + de arriba a la derecha. Se pueden borrar lastres usando el icono de
 papelera de la izquierda. A continuación, un ejemplo de información para una
 inmersión con dos tipos de lastre: integrado y cinturón:
 
-image::images/WeightsDataEntry3.jpg["FIGURA: Tabla con información de lastre completada",align="center"]
+image::images/WeightsDataEntry3_f20.jpg["FIGURA: Tabla con información de lastre completada",align="center"]
 
 ==== Editar simultáneamente varias inmersiones seleccionadas
 
@@ -927,7 +939,7 @@ Abajo a la derecha hay un desplegable con una etiqueta por defecto Archivos de
 registro que da acceso a los diferentes tipos de archivo disponibles para
 importar directamente, como en el dialogo *B* anterior. Actualmente son:
 
- - Diarios en formato XML (Divinglog 5.0, MacDive y varios otros)
+ - Diarios en formato XML (DivingLog 5.0, MacDive y varios otros)
  - Diarios en formato UDDF (p.e. Kenozoooid)
  - Diarios en formato UDCF
  - Diarios de CCR Poseidon
@@ -1559,6 +1571,19 @@ teniendo en cuenta la incompresibilidad de los gases, particularmente a
 presiones en las botellas superiores a 200 bar, haciéndolos más precisos. Los
 usuarios deberían consultar el Apendice_D para más información.
 
+=== La pestaña *Otros datos* (para inmersiones individuales)
+
+Cuando se utiliza un ordenador de buceo, a menudo facilita determinadas
+informaciones que no pueden presentarse de forma estandarizada ya que la
+naturaleza de la información varía de un ordenador a otro.  Estos datos suelen
+comprender informaciones de ajustes, metadatos sobre una inmersión, niveles de
+batería, tiempos de "no vuelo" o factores de gradiente usados durante el buceo.
+Si es posible, toda esta información se presenta en la pestaña *Otros datos*. A
+continuación hay una imagen que muestra otros datos para un buceo con un
+rebreather Poseidon.
+
+image::images/ExtraDataTab_f20.jpg["FIGURA: Pestaña Otros datos",align="center"]
+
 === La pestaña Estadísticas (para grupos de inmersiones)
 
 La pestaña Estadísticas facilita información resumida para más de una inmersión,
@@ -1724,6 +1749,18 @@ Si, además, se selecciona el botón *Mostrar el techo calculado con incrementos
 de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
 image::images/Ceilings2.jpg["Figura: Techo con resolución de 3 metros",align="center"]
+
+[icon="images/icons/ShowCylindersButton.jpg"]
+[NOTE]
+Al seleccionar este icono, los diferentes gases utilizados durante una inmersión
+se presentarán en forma de barras de colores en la parte de abajo del perfil. En
+general, el oxígeno se presenta con una barra verde, el nitrógeno con una barra
+amarilla y el helio con una barra roja. La imagen a continuación muestra un buceo
+que primero utiliza una botella de trimix (rojo y verde), seguida por un cambio a
+una botella de nitrox (amarillo y verde) tras 23 minutos. Las botellas con aire
+se muestran con una barra azul claro.
+
+image::images/ShowCylinders_f20.jpg["Figura: Gráfico de uso de botellas",align="center"]
 
 [icon="images/tissues.jpg"]
 [NOTE]
@@ -2077,6 +2114,7 @@ inmersiones que fueron unidas:
 
 image::images/MergedDive.png["Ejemplo: Inmersión mezclada",align="center"]
 
+[[S_Filter]]
 === Filtrar la Lista de Inmersiones
 
 Los buceos del panel *Lista de inmersiones* pueden filtrarse, esto es, se pueden
@@ -2681,6 +2719,41 @@ de planificación. En esta situación, la única manera de imprimir el plan es u
 _Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
 registro de inmersión.
 
+[[S_Configure]]
+== Configurar un ordenador de buceo
+
+_Subsurface_ permite configurar algunos ordenadores de buceo. En estos momentos,
+los Heinrichs-Weikamp OSTC2 y OSTC3 y los Suunto de la familia Vyper (Stinger,
+Mosquito, D3, Vyper, Vytec, Cobra, Gekko y Zoop).  Se pueden leer y modificar un
+gran número de ajustes. En primer lugar hay que asegurarse de tener instalado el
+driver adecuado para el ordenador de buceo y de conocer el nombre de dispositivo
+asignado al ordenador por el sistema operativo.
+Ver el <<_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo, APÉNDICE A>>
+para información sobre como hacerlo.
+
+Una vez que el ordenador de buceo está al PC con _Subsurface_, se selecciona
+_Archivo -> Configurar ordenador de buceo_ en el menú principal. Si se ha
+indicado el nombre de dispositivo correcto en el campo de texto de la parte
+superior, esto abrirá y seleccionará el modelo correcto en el panel de la
+izquierda (ver imagen a continuación).
+
+image::images/Configure_dc_f20.jpg["FIGURA: Configurar ordenador de buceo",align="center"]
+
+Utilizando los botones apropiados del panel de configuración, pueden llevarse
+a cabo las siguientes acciones:
+
+ - *Descargar detalles disponibles*. Descarga a _Subsurface_ la configuración
+del ordenador de buceo, mostrándola en el panel.
+ - *Guardar cambios en el dispositivo*. Esto cambia la configuración del
+ordenador de buceo para hacerla coincidir con la que se muestra en el panel.
+ - *Copia de seguridad*. Guarda los datos de configuración en un archivo.
+_Subsurface_ solicitará una ubicación y un nombre de archivo para guardar la
+información.
+ - *Restaurar copia de seguridad*. Carga la información de un archivo de copia
+de seguridad y la muestra en el panel.
+ - *Actualizar firmware*. Si está disponible un nuevo firmware para el
+ordenador de buceo, este será cargado al mismo.
+
 == Descripción de las opciones del menú principal de _Subsurface_
 
 Esta sección describe las funciones y manejo de las opciones del menú principal
@@ -2701,16 +2774,16 @@ inmersiones seleccionadas en el diario) a algún otro formato.
 - <<S_PrintDivelog,_Imprimir_>> - Imprime el registro de inmersiones abierto.
 - <<S_Preferences, _Preferencias_>> - Fija las preferencias del usuario de
 _Subsurface_.
+- <<S_Configure, _Configurar ordenador de buceo_>> - Edita la configuración de
+un ordenador de buceo.
 - _Salir_ - Sale de _Subsurface_.
-- _Configure dive computer_ - Esta opción está en fase experimental y en
-desarrollo.
 
 === Importar
 - <<S_ImportDiveComputer,_Importar del ordenador de buceo_>> - Descarga
 información desde un ordenador de buceo.
 - <<Unified_import,_Importar Archivos de registro_>> - Importa información de
 buceo desde un fichero que esté en un formato compatible con _Subsurface_.
-- <<S_Companion,_Importar datos GPS del Servicio Subsurface_>> - Carga
+- <<S_Companion,_Importar datos GPS del Servicio web de Subsurface_>> - Carga
 coordenadas GPS desde la app para teléfonos móviles.
 - <<S_ImportingDivelogsDe,_Importar desde Divelogs.de_>> - Importa información
 de buceo desde www.divelogs.de.
@@ -2733,6 +2806,8 @@ Lista de inmersiones.
 inmersiones en viajes de buceo.
 - <<S_DeviceNames,_Editar nombres de dispositivos_>> - Edita los nombres
 asignados a los ordenadores de buceo.
+- <<S_Filter, _Filtrar la lista de inmersiones_>> - Seleccionar únicamente
+algunas inmersiones, basándose en criterios específicos.
 
 === Vista
 - <<S_ViewPanels,_Todo_>> - Se presentan los cuatro paneles principales de
@@ -2747,9 +2822,6 @@ inmersiones efectuadas en este año y los pasados.
 - _Anterior ordenador_ - Cambia al siguiente ordenador de buceo.
 - _Siguiente ordenador_ - Cambia al anterior ordenador de buceo.
 - _Pantalla completa_ - Activa el modo de pantalla completa.
-
-=== Filtrar
-- _Seleccionar eventos_ - Esta opción no está implementada aún.
 
 === Ayuda
 - _Acerca de Subsurface_ - Muestra un panel con el número de versión de
@@ -3103,13 +3175,14 @@ diarios desde softwares externos. Los procedimientos a continuación se aplican
 mayormente en Linux y/o Windows.
 
 [[S_ImportingDivesSuunto]]
-=== Exportar inmersiones desde *Suunto Divemanager (DM3 y DM4)*
+=== Exportar inmersiones desde *Suunto Divemanager (DM3, DM4 o DM5)*
 [icon="images/icons/suuntologo.jpg"]
 [NOTE]
+Divemanager es una aplicación en MS Windows para ordenadores de buceo Suunto.
 Divemanager 3 (DM3) es una versión más antigua del software de Suunto. Los
-ordenadores de buceo más recientes usan Divemanager 4 (DM4). Las dos versiones
-de Divemanager usan diferentes métodos y diferentes nomenclaturas de archivos al
-exportar datos.
+ordenadores de buceo más recientes usan Divemanager 4 o 5 (DM4 o DM5). Las
+diferentes versiones de Divemanager usan diferentes métodos y diferentes
+nomenclaturas de archivos al exportar datos.
 
 *Divemanager 3 (DM3):*
 
@@ -3136,32 +3209,33 @@ llamado Export Path.
         * De vuelta en el desplegable de exportación, pulsa el botón 'Export'.
 7. Las inmersiones han quedado exportadas en el archivo Divelogs.SDE.
 
-*Divemanager 4 (DM4):*
+*Divemanager 4 (DM4) y Divemanager 5 (DM5):*
 
-Para exportar un diario desde 'Suunto DM4', se necesita localizar la base de
-datos DM4 donde están guardadas las inmersiones. El usuario puede buscar la
+DM4 y DM5 utilizan idénticos mecanismos para exportar los diarios.
+Para exportar un diario desde Divemanager, se necesita localizar la base de
+datos DM4/DM5 donde están guardadas las inmersiones. El usuario puede buscar la
 base de datos original o hacer una copia de respaldo. A continuación se
 describen ambos métodos.
 
-Localizar la base de datos Suunto DM4:
+Localizar la base de datos Suunto DM4 (o DM5):
 
-1. Iniciar Suunto DM4
+1. Iniciar Suunto DM4/DM5
 2. Seleccionar 'Help → About' (Ayuda → Acerca de)
 3. Hacer clic en el botón 'Copy' (Copiar) tras el texto 'Copy log folder path to
 clipboard' (Copiar la ruta a la carpeta del registro al portapapeles)
 4. Abrir el explorador de Windows
 5. Pegar la ruta en la casilla de direcciones en la parte de arriba del
 explorador
-6. La base de datos se llama DM4.db
+6. La base de datos se llama DM4.db o DM5.db
 
-Hacer una copia de respaldo de Suunto DM4:
+Hacer una copia de respaldo de la base de datos de Suunto DM4/DM5:
 
-1. Iniciar Suunto DM4
+1. Iniciar Suunto DM4/DN5
 2. Seleccionar 'File → Create backup' (Archivo → Copia de seguridad)
 3. Desde el menú de archivos, seleccionar la carpeta y el nombre para la copia,
-aquí usaremos DM4 con la extensión por defecto .bak
+aquí usaremos DM4 (o DM5) con la extensión por defecto .bak
 4. Clicar 'Save' (Guardar)
-5. Los buceos se han exportado al archivo DM4.bak
+5. Los buceos se han exportado al archivo DM4.bak (o DM5.bak)
 
 [[Mares_Export]]
 === Exportar desde Mares Dive Organiser V2.1
@@ -3184,7 +3258,7 @@ comprimida en el archivo .zip, hay otro archivo llamado _DiveOrganiser.sdf_.
 3. Extrae a tu escritorio el archivo _.sdf_ desde la carpeta comprimida.
 4. La password para acceder al archivo .zip es _mares_.
 
-[[S_ImportingDivinglog]]
+[[S_ImportingDivingLog]]
 === Exportar inmersiones desde *DivingLog 5.0*
 
 [icon="images/icons/divingloglogo.jpg"]
