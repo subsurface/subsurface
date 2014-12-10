@@ -248,8 +248,16 @@
             </xsl:attribute>
           </link>
         </xsl:if>
+        <xsl:variable name="trimmedweightlist">
+          <xsl:for-each select="weightsystem">
+            <weight>
+              <xsl:value-of select="substring-before(@weight, ' ')"/>
+            </weight>
+          </xsl:for-each>
+        </xsl:variable>
         <equipmentused>
-          <leadquantity><xsl:value-of select="substring-before(weightsystem/@weight, ' ')"/>
+          <leadquantity>
+            <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/weight)"/>
           </leadquantity>
         </equipmentused>
       </informationbeforedive>
