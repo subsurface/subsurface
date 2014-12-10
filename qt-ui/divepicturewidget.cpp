@@ -44,7 +44,8 @@ void DivePictureModel::updateDivePictures()
 		endRemoveRows();
 	}
 
-	numberOfPictures = dive_get_picture_count(&displayed_dive);
+	// if the dive_table is empty, ignore the displayed_dive
+	numberOfPictures = dive_table.nr == 0 ? 0 : dive_get_picture_count(&displayed_dive);
 	if (numberOfPictures == 0) {
 		return;
 	}

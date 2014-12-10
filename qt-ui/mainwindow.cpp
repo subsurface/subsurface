@@ -289,6 +289,8 @@ void MainWindow::on_actionClose_triggered()
 {
 	if (okToClose(tr("Please save or cancel the current dive edit before closing the file."))) {
 		closeCurrentFile();
+		// hide any pictures and the filter
+		DivePictureModel::instance()->updateDivePictures();
 		ui.multiFilter->closeFilter();
 		recreateDiveList();
 	}
