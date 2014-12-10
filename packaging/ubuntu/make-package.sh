@@ -35,10 +35,8 @@ rm -f debian/autocl
 
 debuild -S 
 
+# and now for utopic (precise can't build Qt5 based packages)
 prev=trusty
-for rel in utopic precise
-do
-	sed -i "s/${prev}/${rel}/g" debian/changelog
-	debuild -S
-	prev=${rel}
-done
+rel=utopic
+sed -i "s/${prev}/${rel}/g" debian/changelog
+debuild -S
