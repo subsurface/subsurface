@@ -359,7 +359,7 @@ void ProfileWidget2::setupItemSizes()
 
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
-	itemPos.temperature.pos.on.setY(60);
+	itemPos.temperature.pos.on.setY(50);
 	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
@@ -520,7 +520,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	profileYAxis->updateTicks();
 
 	temperatureAxis->setMinimum(plotInfo.mintemp);
-	temperatureAxis->setMaximum(plotInfo.maxtemp);
+	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
 	if (plotInfo.maxhr) {
 		heartBeatAxis->setMinimum(plotInfo.minhr);
