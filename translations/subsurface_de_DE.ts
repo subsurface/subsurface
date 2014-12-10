@@ -36,7 +36,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputerdetails erfolgreich gelesen</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
@@ -3387,7 +3387,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/diveplanner.cpp" line="497"/>
         <location filename="../qt-ui/diveplanner.cpp" line="498"/>
         <source>cuft/min</source>
-        <translation>cuft/min</translation>
+        <translation>cft/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="506"/>
@@ -3551,7 +3551,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>Proxy type</source>
-        <translation>Proxy Typ</translation>
+        <translation>Proxy-Typ</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="850"/>
@@ -3646,7 +3646,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="525"/>
         <source>lbs</source>
-        <translation>US Pfund</translation>
+        <translation>US-Pfund</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="540"/>
@@ -3671,7 +3671,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="776"/>
         <source>GFLow at max depth</source>
-        <translation>GF low bei maximaler Tiefe anwenden</translation>
+        <translation>GF niedrig bei maximaler Tiefe anwenden</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="736"/>
@@ -3726,12 +3726,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="742"/>
         <source>GFLow</source>
-        <translation>GF low</translation>
+        <translation>GF niedrig</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="759"/>
         <source>GFHigh</source>
-        <translation>GF high</translation>
+        <translation>GF hoch</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="23"/>
@@ -4160,7 +4160,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/models.cpp" line="596"/>
         <source>cuft</source>
-        <translation>cuft</translation>
+        <translation>cft</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="531"/>
@@ -4926,7 +4926,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../dive.c" line="237"/>
         <source>cuft</source>
-        <translation>cuft</translation>
+        <translation>cft</translation>
     </message>
     <message>
         <location filename="../dive.c" line="274"/>
@@ -5027,7 +5027,7 @@ Durchschnitt</translation>
         <location filename="../file.c" line="368"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation type="unfinished"/>
+        <translation>Kann CSV-Datei %s nicht öffnen; bitte verwenden Sie den Dialog Protokolldatei importieren</translation>
     </message>
     <message>
         <location filename="../file.c" line="582"/>
@@ -5446,7 +5446,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="540"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
-        <translation>basierend auf GFlow = %d und GFhigh = %d</translation>
+        <translation>basierend auf GF niedrig = %d und GF hoch = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="543"/>
@@ -6689,7 +6689,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>GF low</source>
-        <translation>GF low</translation>
+        <translation>GF niedrig</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="275"/>
@@ -6700,7 +6700,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
         <source>GF high</source>
-        <translation>GF high</translation>
+        <translation>GF hoch</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="308"/>

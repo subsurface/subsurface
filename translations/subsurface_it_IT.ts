@@ -36,7 +36,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli del computer letti correttamente</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
@@ -684,24 +684,24 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2122"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2207"/>
         <source>%O₂</source>
-        <translation type="unfinished"/>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1124"/>
         <source>O₂ in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ nel gas di calibrazione</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1290"/>
@@ -952,7 +952,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="79"/>
@@ -1643,7 +1643,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="322"/>
         <source>Choose day, month and year order for date format. The field separator can be any of the characters .-/.</source>
-        <translation type="unfinished"/>
+        <translation>Scegli l&apos;ordine del giorno, mese e anno per il formato della data. Puoi usare qualsiasi carattere come separatore .-/.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="325"/>
@@ -1653,17 +1653,17 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="338"/>
         <source>dd.mm.yyyy</source>
-        <translation type="unfinished"/>
+        <translation>dd.mm.yyyy</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="343"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>mm/dd/yyyy</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="348"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>yyyy-mm-dd</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="363"/>
@@ -1674,7 +1674,7 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogimportdialog.ui" line="397"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="410"/>
         <source>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</source>
-        <translation type="unfinished"/>
+        <translation>Data in formato dd.mm.yyyy, yyyy-mm-dd o mm/dd/yyyy</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="400"/>
@@ -1685,7 +1685,7 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogimportdialog.ui" line="471"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="484"/>
         <source>Dive duration in seconds or in min:sec format</source>
-        <translation type="unfinished"/>
+        <translation>Durata dell&apos;immersione in secondi nel formato min:sec</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="474"/>
@@ -1695,7 +1695,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="545"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="562"/>
@@ -2623,7 +2623,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="99"/>
         <source>Add weight system</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi la tipologia della pesata</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="262"/>
@@ -2759,7 +2759,7 @@ mixati con aria e usando:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="627"/>
         <source>Export dive logs</source>
-        <translation type="unfinished"/>
+        <translation>Esporta il libretto di immersioni</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="682"/>
@@ -3048,12 +3048,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="658"/>
         <source>Toggle pO₂ graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi il grafico della  pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="670"/>
         <source>Toggle pN₂ graph</source>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi il grafico della pN₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="814"/>
@@ -3602,7 +3602,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="215"/>
         <source>Display invalid</source>
-        <translation>Visualizza le non valide</translation>
+        <translation>Visualizza le immersioni non valide</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="232"/>
@@ -4012,7 +4012,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1131"/>
         <source>Add set-point change</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi un cambio di set-point</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1133"/>
@@ -4247,7 +4247,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
         <source>New set-point (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo set-point (0 for OC)</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
@@ -4476,7 +4476,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="144"/>
         <source>Empty tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag vuoti</translation>
     </message>
 </context>
 <context>
@@ -4538,17 +4538,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="59"/>
         <source>You are using the latest version of Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Stai usando la versione più recente di Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="61"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>E&apos; disponibile una nuova versione di Subsurface.&lt;br/&gt;Clicca su:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; per scaricarla.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="68"/>
         <source>A new version of Subsurface is available.</source>
-        <translation type="unfinished"/>
+        <translation>E&apos; disponibile una nuova versione di Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="69"/>
@@ -5028,7 +5028,7 @@ Media</translation>
         <location filename="../file.c" line="368"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation type="unfinished"/>
+        <translation>Non posso aprire il file CSV %s; per favore usa la finestra Importa logbook da file</translation>
     </message>
     <message>
         <location filename="../file.c" line="582"/>
@@ -5063,13 +5063,13 @@ Media</translation>
     <message>
         <location filename="../file.c" line="689"/>
         <source>O₂ calibration failed</source>
-        <translation type="unfinished"/>
+        <translation>Calibrazione O₂ fallita</translation>
     </message>
     <message>
         <location filename="../file.c" line="691"/>
         <location filename="../file.c" line="700"/>
         <source>O₂ calibration</source>
-        <translation type="unfinished"/>
+        <translation>Calibrazione O₂</translation>
     </message>
     <message>
         <location filename="../file.c" line="768"/>
@@ -6198,7 +6198,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="853"/>
         <source>Initialise communication</source>
-        <translation type="unfinished"/>
+        <translation>Inizializza il colloquio</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="855"/>
@@ -6213,72 +6213,72 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../uemis.c" line="196"/>
         <source>Safety stop violation</source>
-        <translation type="unfinished"/>
+        <translation>Violazione della tappa di sicurezza</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="198"/>
         <source>Speed alarm</source>
-        <translation type="unfinished"/>
+        <translation>Allarme di velocità</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>
         <source>Speed warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso velocità</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>pO₂ green warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso verde pO₂</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>pO₂ ascend warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso pO₂ in risalita</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>pO₂ ascend alarm</source>
-        <translation type="unfinished"/>
+        <translation>Allarme pO₂ in risalita</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
         <source>Tank pressure info</source>
-        <translation type="unfinished"/>
+        <translation>Informazione sulla pressione della bombola</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="214"/>
         <source>RGT warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="216"/>
         <source>RGT alert</source>
-        <translation type="unfinished"/>
+        <translation>Allarme RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="218"/>
         <source>Tank change suggested</source>
-        <translation type="unfinished"/>
+        <translation>Suggerimento di cambio bombola</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="220"/>
         <source>Depth limit exceeded</source>
-        <translation type="unfinished"/>
+        <translation>Limite di profondità superato</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Max deco time warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso della massima deco raggiunta</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive time info</source>
-        <translation type="unfinished"/>
+        <translation>Informazione sul tempo di immersione</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>
         <source>Dive time alert</source>
-        <translation type="unfinished"/>
+        <translation>Allarme sul tempo di immersione</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="228"/>
@@ -6288,17 +6288,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../uemis.c" line="230"/>
         <source>No tank data</source>
-        <translation type="unfinished"/>
+        <translation>Nessun dato sulla bombola</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="232"/>
         <source>Low battery warning</source>
-        <translation type="unfinished"/>
+        <translation>Avviso batteria scarica</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="234"/>
         <source>Low battery alert</source>
-        <translation type="unfinished"/>
+        <translation>Allarme batteria scarica</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="434"/>
@@ -6450,7 +6450,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../save-html.c" line="484"/>
         <source>Min. depth</source>
-        <translation type="unfinished"/>
+        <translation>Profondità minima</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="485"/>
@@ -6460,27 +6460,27 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../save-html.c" line="487"/>
         <source>Min. SAC</source>
-        <translation type="unfinished"/>
+        <translation>CAS minimo</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="488"/>
         <source>Max. SAC</source>
-        <translation type="unfinished"/>
+        <translation>CAS massimo</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="489"/>
         <source>Average temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura media</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="490"/>
         <source>Min. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura minima</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="491"/>
         <source>Max. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura massima</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="492"/>
@@ -6596,17 +6596,17 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max. depth:</source>
-        <translation type="unfinished"/>
+        <translation>profondità massima</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
         <source>Air temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura dell&apos;aria</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="48"/>
         <source>Water temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Temperatura dell&apos;acqua</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
@@ -6774,7 +6774,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="528"/>
         <source>Verbatim dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Piano di immersione dettagliato</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="387"/>

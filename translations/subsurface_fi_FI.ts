@@ -36,7 +36,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Sukellustietokoneen tiedot luettu onnistuneesti</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
@@ -5028,7 +5028,7 @@ Keski</translation>
         <location filename="../file.c" line="368"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation type="unfinished"/>
+        <translation>CSV -tiedoston %s avaus epäonnistui; käytä Tuonti -dialogia</translation>
     </message>
     <message>
         <location filename="../file.c" line="582"/>
