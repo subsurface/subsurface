@@ -165,6 +165,11 @@ mac {
 	target.path = /$(EXPORT_BINDIR)
 	target.files = $$TARGET
 
+	!isEmpty(SPECIAL_MARBLE_PREFIX) {
+		ourmarble.path = /$(prefix)/lib
+		ourmarble.files = marble-build/src/lib/marble/libssrfmarblewidget.so*
+	}
+
 	desktop.path = /$(EXPORT_DESKTOPDIR)
 	desktop.files = $$DESKTOP_FILE
 	manpage.path = /$(EXPORT_MANDIR)
@@ -183,6 +188,7 @@ mac {
 	translation.CONFIG += no_check_exist
 
 	INSTALLS += target desktop manpage doc marbledir translation icon theme
+	!isEmpty(SPECIAL_MARBLE_PREFIX) : INSTALLS += ourmarble
 	install.target = install
 }
 !isEmpty(TRANSLATIONS) {
