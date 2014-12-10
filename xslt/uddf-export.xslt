@@ -72,12 +72,21 @@
               <xsl:value-of select="."/>
             </xsl:attribute>
             <personal>
-              <first_name>
-                <xsl:value-of select="substring-before(., ' ')"/>
-              </first_name>
-              <last_name>
-                <xsl:value-of select="substring-after(., ' ')"/>
-              </last_name>
+              <xsl:choose>
+                <xsl:when test="contains(., ' ')">
+                  <first_name>
+                    <xsl:value-of select="substring-before(., ' ')"/>
+                  </first_name>
+                  <last_name>
+                    <xsl:value-of select="substring-after(., ' ')"/>
+                  </last_name>
+                </xsl:when>
+                <xsl:otherwise>
+                  <first_name>
+                    <xsl:value-of select="."/>
+                  </first_name>
+                </xsl:otherwise>
+              </xsl:choose>
             </personal>
           </buddy>
         </xsl:for-each>
