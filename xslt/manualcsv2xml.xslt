@@ -19,7 +19,7 @@
   <xsl:param name="notesField" select="notesField"/>
   <xsl:param name="weightField" select="weightField"/>
   <xsl:param name="dateformat" select="dateformat"/>
-  <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
 </xsl:text></xsl:variable>
@@ -166,9 +166,9 @@
 
       <divecomputerid deviceid="ffffffff" model="csv" />
 
-      <xsl:if test="$locationField >= 0">
+      <xsl:if test="$locationField != '' or $gpsField != ''">
         <location>
-          <xsl:if test="$gpsField >= 0">
+          <xsl:if test="$gpsField != ''">
             <xsl:attribute name="gps">
               <xsl:call-template name="getFieldByIndex">
                 <xsl:with-param name="index" select="$gpsField"/>
@@ -176,10 +176,12 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:call-template name="getFieldByIndex">
-            <xsl:with-param name="index" select="$locationField"/>
-            <xsl:with-param name="line" select="$line"/>
-          </xsl:call-template>
+          <xsl:if test="$locationField != ''">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$locationField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:if>
         </location>
       </xsl:if>
 
