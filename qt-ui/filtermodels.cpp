@@ -134,7 +134,7 @@ void TagFilterModel::repopulate()
 	if (g_tag_list == NULL)
 		return;
 	QStringList list;
-	struct tag_entry *current_tag_entry = g_tag_list->next;
+	struct tag_entry *current_tag_entry = g_tag_list;
 	while (current_tag_entry != NULL) {
 		if (count_dives_with_tag(current_tag_entry->tag->name) > 0)
 			list.append(QString(current_tag_entry->tag->name));
