@@ -149,6 +149,7 @@
       </gasdefinitions>
 
       <profiledata>
+
         <xsl:for-each select="trip">
           <repetitiongroup id="{generate-id(.)}">
             <xsl:apply-templates select="dive"/>
@@ -160,6 +161,11 @@
           </repetitiongroup>
         </xsl:for-each>
       </profiledata>
+
+      <divetrip>
+        <xsl:apply-templates select="//trip"/>
+      </divetrip>
+
     </uddf>
   </xsl:template>
 
@@ -260,6 +266,9 @@
             <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/weight)"/>
           </leadquantity>
         </equipmentused>
+        <xsl:if test="parent::trip">
+          <tripmembership><xsl:value-of select="../@location"/>&#xA0;<xsl:value-of select="../@date"/></tripmembership>
+        </xsl:if>
       </informationbeforedive>
 
       <samples>
@@ -573,6 +582,25 @@
     </dive>
   </xsl:template>
 
+  <xsl:template match="trip">
+      <trip id="{@location} {@date}">
+        <trippart>
+          <name><xsl:value-of select="@location"/>&#xA0;<xsl:value-of select="@date"/></name>
+          <relateddives>
+            <xsl:for-each select="dive">
+              <link ref="{generate-id(.)}"/>
+            </xsl:for-each>
+          </relateddives>
+          <xsl:if test="notes != ''">
+            <notes>
+              <para>
+                  <xsl:value-of select="notes"/>
+              </para>
+            </notes>
+          </xsl:if>
+        </trippart>
+      </trip>
+  </xsl:template>
 
 <!-- Approximate waypoint depth.
      Parameters:
