@@ -513,6 +513,7 @@ TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(TagFilterModel::instance());
+	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 }
@@ -539,6 +540,7 @@ BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(BuddyFilterModel::instance());
+	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 }
@@ -564,6 +566,7 @@ LocationFilter::LocationFilter(QWidget *parent) : QWidget(parent)
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(LocationFilterModel::instance());
+	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 }
@@ -589,6 +592,7 @@ SuitFilter::SuitFilter(QWidget *parent) : QWidget(parent)
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
 	filter->setSourceModel(SuitsFilterModel::instance());
+	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 }
