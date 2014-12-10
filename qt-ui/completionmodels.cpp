@@ -15,6 +15,7 @@
 				list.append(buddy);            \
 			}                                      \
 		}                                              \
+		std::sort(list.begin(), list.end());           \
 		setStringList(list);                           \
 	}
 
