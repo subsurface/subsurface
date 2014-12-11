@@ -955,7 +955,7 @@ Importing dives from other software is performed through a universal interface
 that is activated by selecting _Import_ from the Main Menu, then clicking on
 _Import Log Files_. This brings up the dialogue *A* below.
 
-image::images/Import1.jpg["FIGURE: Import dialogue: step 1",align="center"]
+image::images/Import1_f20.jpg["FIGURE: Import dialogue: step 1",align="center"]
 
 Towards the bottom right is a dropdown selector with a default label
 of _Dive Log Files_ which gives access to the different types of direct imports
@@ -964,7 +964,7 @@ available, as in dialogue *B*, above. Currently these are:
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log systems)
  - UDDF-formatted dive logs (e.g. Kenozoooid)
  - UDCF-formatted dive logs
- - Poseidon CCR logs
+ - Poseidon MkVI CCR logs
  - JDiveLog
  - Suunto Dive Manager (DM3 and DM4)
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
@@ -1475,12 +1475,12 @@ on the dive profile, from where they can be viewed.
 Left-lick on a dive or on a group of dives on the dive list. Then right-click on this
 dive or group of dives and choose the option _Load Images_:
 
-image::images/LoadImage1.jpg["FIGURE: Load images option",align="center"]
+image::images/LoadImage1_f20.jpg["FIGURE: Load images option",align="center"]
 
 The system file browser appears. Select the folder and photographs that need
 to be loaded into _Subsurface_ and click the _Open_ button.
 
-image::images/LoadImage2.jpg["FIGURE: Load images option",align="center"]
+image::images/LoadImage2_f20.jpg["FIGURE: Load images option",align="center"]
 
 This brings one to the time synchronisation dialog, shown below. The
 critical problem is that the time
@@ -1504,7 +1504,7 @@ In the above example, the _earlier_ option is appropriate, since the photos need
 7 minutes earlier (camera is 7 minutes ahead of dive computer). Ignore any "AM" or "PM" suffix
 in that tool. Click the _OK_ button and synchronisation is achieved.
 
-image::images/LoadImage3b.jpg["FIGURE: Synchronisation dialog",align="center"]
+image::images/LoadImage3b_f20.jpg["FIGURE: Synchronisation dialog",align="center"]
 
 
 - *By photograph*: There is a very slick way of achieving synchronisation. If one takes a
@@ -1531,7 +1531,7 @@ the dive profile. If the timestamp of the photo is within 30 minutes of the dive
 In order to view the photos added to a dive, activate the _show-photos_ button in the tool bar
 to the left of the dive profile:
 
-image::images/icons/ShowPhotos.png["FIGURE:Show photos toolbar button",align="left"]
+image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
 
 After the images have been loaded, they appear in two places:
 
@@ -1539,12 +1539,12 @@ After the images have been loaded, they appear in two places:
  - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
    each photograph was taken. See below:
 
-image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
+image::images/LoadImage4_f20.jpg["FIGURE: Photos on dive profile",align="center"]
 
 If one hovers with the mouse over any of the photo icons, then a thumbnail photo
 is shown of the appropriate photo. See the image below:
 
-image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
+image::images/LoadImage5_f20.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
 
 Clicking on the thumbnail brings up a full size
 photo overlaid on the _Subsurface_ window. This allows good viewing of
@@ -1554,7 +1554,7 @@ the dustbin, the image is removed from the dive. Therefore some care
 is required when clicking on a thumbnail. Images
 can also be deleted using the _Photos_ tab (see text below).
 
-image::images/LoadImage6.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
+image::images/LoadImage6_f20.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
 
 ==== The _Photos_ tab
 
