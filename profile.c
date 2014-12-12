@@ -597,6 +597,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->sec = time;
 		entry->depth = depth;
 
+		entry->running_sum = (entry - 1)->running_sum + (time - lasttime) * (depth + lastdepth) / 2;
 		entry->stopdepth = sample->stopdepth.mm;
 		entry->stoptime = sample->stoptime.seconds;
 		entry->ndl = sample->ndl.seconds;
