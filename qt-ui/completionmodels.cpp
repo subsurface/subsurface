@@ -33,7 +33,9 @@
 				set.insert(value.trimmed());                                     \
 			}                                                                        \
 		}                                                                                \
-		setStringList(set.toList());                                                     \
+		QStringList setList = set.toList();                                              \
+		std::sort(setList.begin(), setList.end());                                       \
+		setStringList(setList);                                                     \
 	}
 
 CREATE_CSV_UPDATE_METHOD(BuddyCompletionModel, buddy);
