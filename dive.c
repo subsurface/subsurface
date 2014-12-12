@@ -1637,8 +1637,12 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 			pressures->n2 = pressures->he = 0.0;
 		} else {
 			pressures->o2 = po2;
-			pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
-			pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+			if (get_o2(mix) == 1000) {
+				pressures->he = pressures->n2 = 0;
+			} else {
+				pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+				pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+			}
 		}
 	} else {	// Open circuit dives: no gas pressure values available, they need to be calculated
 		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
