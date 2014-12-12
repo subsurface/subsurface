@@ -359,7 +359,7 @@ void ProfileWidget2::setupItemSizes()
 
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
-	itemPos.temperature.pos.on.setY(50);
+	itemPos.temperature.pos.on.setY(60);
 	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
@@ -656,7 +656,11 @@ void ProfileWidget2::settingsChanged()
 		}
 	} else {
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
-		temperatureAxis->setPos(itemPos.temperature.pos.on);
+		if (prefs.tankbar) {
+			temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
+		} else {
+			temperatureAxis->setPos(itemPos.temperature.pos.on);
+		}
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
@@ -928,7 +932,11 @@ void ProfileWidget2::setProfileState()
 		}
 	} else {
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
-		temperatureAxis->setPos(itemPos.temperature.pos.on);
+		if (prefs.tankbar) {
+			temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
+		} else {
+			temperatureAxis->setPos(itemPos.temperature.pos.on);
+		}
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
