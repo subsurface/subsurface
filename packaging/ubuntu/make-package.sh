@@ -8,7 +8,8 @@ fi
 
 GITVERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
-echo "building Subsurface" $VERSION
+LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
+echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
 if [[ -d subsurface_$VERSION ]]; then
 	rm -rf subsurface_$VERSION.bak.prev
 	mv subsurface_$VERSION.bak subsurface_$VERSION.bak.prev
@@ -19,6 +20,7 @@ mkdir subsurface_$VERSION
 cd subsurface_$VERSION
 rm -rf .git libdivecomputer/.git libgit2/.git marble-source/.git
 echo $GITVERSION > .gitversion
+echo $LIBDCREVISION > libdivecomputer/revision
 
 dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION
 rm debian/*.ex debian/*.EX debian/README.*
