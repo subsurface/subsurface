@@ -333,6 +333,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		/* set po2 at beginning of this segment */
 		/* and keep it valid for last sample - where it likely doesn't matter */
 		sample[-1].setpoint.mbar = po2;
+		sample->setpoint.mbar = po2;
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		sample->manually_entered = dp->entered;
