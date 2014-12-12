@@ -601,6 +601,7 @@ void copy_samples(struct divecomputer *s, struct divecomputer *d)
 		return;
 	int nr = s->samples;
 	d->samples = nr;
+	d->alloc_samples = nr;
 	d->sample = malloc(nr * sizeof(struct sample));
 	if (d->sample)
 		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
