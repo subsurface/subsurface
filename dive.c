@@ -602,6 +602,14 @@ void copy_samples(struct divecomputer *s, struct divecomputer *d)
 	int nr = s->samples;
 	d->samples = nr;
 	d->alloc_samples = nr;
+	// We expect to be able to read the memory in the other end of the pointer
+	// if its a valid pointer, so don't expect malloc() to return NULL for
+	// zero-sized malloc, do it ourselves.
+	d->sample = NULL;
+
+	if(!nr)
+		return;
+
 	d->sample = malloc(nr * sizeof(struct sample));
 	if (d->sample)
 		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
