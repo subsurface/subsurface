@@ -22,7 +22,7 @@
   <xsl:template match="/divelog/settings"/>
 
   <xsl:template match="/divelog/dives">
-    <uddf version="3.2.0">
+    <uddf version="3.2.0"  xmlns="http://www.streit.cc/uddf/3.2/">
       <generator>
         <name>Subsurface Divelog</name>
         <manufacturer id="subsurface">
@@ -201,7 +201,7 @@
   <xsl:key name="location" match="location" use="./@gps"/>
   <xsl:template match="location">
     <xsl:if test="generate-id() = generate-id(key('location', normalize-space(./@gps)))">
-      <site>
+      <site xmlns="http://www.streit.cc/uddf/3.2/">
         <xsl:attribute name="id">
           <xsl:value-of select="generate-id()"/>
         </xsl:attribute>
@@ -224,22 +224,9 @@
   </xsl:template>
 
   <xsl:template match="dive">
-    <dive id="{generate-id(.)}">
+    <dive id="{generate-id(.)}" xmlns="http://www.streit.cc/uddf/3.2/">
 
       <informationbeforedive>
-        <xsl:for-each select="divecomputer">
-          <xsl:if test="temperature/@air|divetemperature/@air != ''">
-            <airtemperature>
-              <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
-            </airtemperature>
-          </xsl:if>
-        </xsl:for-each>
-        <datetime>
-          <xsl:value-of select="concat(./@date, 'T', ./@time)"/>
-        </datetime>
-        <divenumber>
-          <xsl:value-of select="./@number"/>
-        </divenumber>
         <xsl:variable name="buddylist">
           <xsl:call-template name="tokenize">
             <xsl:with-param name="string" select="buddy" />
@@ -263,20 +250,21 @@
             </xsl:attribute>
           </link>
         </xsl:for-each>
-        <xsl:variable name="trimmedweightlist">
-          <xsl:for-each select="weightsystem">
-            <weight>
-              <xsl:value-of select="substring-before(@weight, ' ')"/>
-            </weight>
-          </xsl:for-each>
-        </xsl:variable>
-        <equipmentused>
-          <leadquantity>
-            <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/weight)"/>
-          </leadquantity>
-        </equipmentused>
+        <divenumber>
+          <xsl:value-of select="./@number"/>
+        </divenumber>
+        <datetime>
+          <xsl:value-of select="concat(./@date, 'T', ./@time)"/>
+        </datetime>
+        <xsl:for-each select="divecomputer">
+          <xsl:if test="temperature/@air|divetemperature/@air != ''">
+            <airtemperature>
+              <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
+            </airtemperature>
+          </xsl:if>
+        </xsl:for-each>
         <xsl:if test="parent::trip">
-          <tripmembership><xsl:value-of select="../@location"/>&#xA0;<xsl:value-of select="../@date"/></tripmembership>
+          <tripmembership ref="trip{generate-id(..)}"/>
         </xsl:if>
       </informationbeforedive>
 
@@ -362,6 +350,12 @@
 
               <xsl:if test="$timesecond != $time">
                 <waypoint>
+                  <xsl:if test="not(@name = 'heading') and not(@name = 'gaschange')">
+                    <alarm>
+                      <xsl:value-of select="@name"/>
+                    </alarm>
+                  </xsl:if>
+
                   <depth>
                     <xsl:call-template name="approximatedepth">
                       <xsl:with-param name="timefirst">
@@ -391,7 +385,7 @@
                   <xsl:if test="@name = 'gaschange'">
                     <switchmix>
                       <xsl:attribute name="ref">
-                        <xsl:value-of select="@value"/>
+                        <xsl:value-of select="'mix' + @value"/>
                       </xsl:attribute>
                     </switchmix>
                   </xsl:if>
@@ -402,12 +396,6 @@
                     </heading>
                   </xsl:if>
 
-                  <xsl:if test="not(@name = 'heading') and not(@name = 'gaschange')">
-                    <alarm>
-                      <xsl:value-of select="@name"/>
-                    </alarm>
-                  </xsl:if>
-
                 </waypoint>
               </xsl:if>
             </xsl:when>
@@ -415,6 +403,17 @@
 
               <!-- Recorded waypoints and events occurring at the exact same time -->
               <waypoint>
+
+                <xsl:variable name="time">
+                  <xsl:value-of select="@time"/>
+                </xsl:variable>
+
+                <xsl:for-each select="preceding-sibling::event[@time = $time and not(@name='heading' or @name='gaschange')]/@name">
+                  <alarm>
+                    <xsl:value-of select="."/>
+                  </alarm>
+                </xsl:for-each>
+
                 <depth>
                   <xsl:value-of select="substring-before(./@depth, ' ')"/>
                 </depth>
@@ -426,6 +425,20 @@
                     </xsl:with-param>
                   </xsl:call-template>
                 </divetime>
+
+                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='heading']/@value">
+                  <heading>
+                    <xsl:value-of select="."/>
+                  </heading>
+                </xsl:for-each>
+
+                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='gaschange']/@value">
+                  <switchmix>
+                    <xsl:attribute name="ref">
+                      <xsl:value-of select="'mix' + ."/>
+                    </xsl:attribute>
+                  </switchmix>
+                </xsl:for-each>
 
                 <xsl:if test="./@pressure != ''">
                   <tankpressure>
@@ -439,29 +452,6 @@
                   </temperature>
                 </xsl:if>
 
-                <xsl:variable name="time">
-                  <xsl:value-of select="@time"/>
-                </xsl:variable>
-
-                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='gaschange']/@value">
-                  <switchmix>
-                    <xsl:attribute name="ref">
-                      <xsl:value-of select="."/>
-                    </xsl:attribute>
-                  </switchmix>
-                </xsl:for-each>
-
-                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='heading']/@value">
-                  <heading>
-                    <xsl:value-of select="."/>
-                  </heading>
-                </xsl:for-each>
-
-                <xsl:for-each select="preceding-sibling::event[@time = $time and not(@name='heading' or @name='gaschange')]/@name">
-                  <alarm>
-                    <xsl:value-of select="."/>
-                  </alarm>
-                </xsl:for-each>
                 <!-- Recorded waypoints -->
               </waypoint>
             </xsl:otherwise>
@@ -523,6 +513,14 @@
       </xsl:for-each>
 
       <informationafterdive>
+		<xsl:variable name="trimmedweightlist">
+          <xsl:for-each select="weightsystem">
+            <weight>
+              <xsl:value-of select="substring-before(@weight, ' ')"/>
+            </weight>
+          </xsl:for-each>
+        </xsl:variable>
+
         <xsl:if test="node()/depth/@max != ''">
           <greatestdepth>
             <xsl:value-of select="substring-before(node()/depth/@max, ' ')"/>
@@ -586,13 +584,20 @@
               </xsl:when>
             </xsl:choose>
         </visibility>
+        <equipmentused>
+          <leadquantity>
+            <xsl:value-of select="sum(xt:node-set($trimmedweightlist))"/>
+          </leadquantity>
+        </equipmentused>
+
       </informationafterdive>
 
     </dive>
   </xsl:template>
 
   <xsl:template match="trip">
-      <trip id="{@location} {@date}">
+      <trip id="trip{generate-id()}"  xmlns="http://www.streit.cc/uddf/3.2/">
+        <name><xsl:value-of select="@location"/>&#xA0;<xsl:value-of select="@date"/></name>
         <trippart>
           <name><xsl:value-of select="@location"/>&#xA0;<xsl:value-of select="@date"/></name>
           <relateddives>
