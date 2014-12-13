@@ -109,6 +109,17 @@
 
     <ADDITIONALTANKS>
       <xsl:for-each select="cylinder[position() != $cylinder]">
+        <xsl:variable name="gas">
+          <xsl:choose>
+            <xsl:when test="@o2 != ''">
+              <xsl:value-of select="substring-before(@o2, '.')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="'21'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:if test="following-sibling::divecomputer/event[@name='gaschange' and @value=$gas]">
           <xsl:variable name="cur_cyl">
             <xsl:value-of select="position()"/>
           </xsl:variable>
@@ -147,6 +158,7 @@
               <xsl:value-of select="substring-before(@he, '%')"/>
             </HEPCT>
           </TANK>
+        </xsl:if>
       </xsl:for-each>
     </ADDITIONALTANKS>
 
