@@ -147,14 +147,6 @@
         </xsl:attribute>
       </xsl:if>
 
-      <xsl:if test="condition/air_temp|informationbeforedive/airtemperature != ''">
-        <divetemperature>
-          <xsl:attribute name="air">
-            <xsl:value-of select="concat(format-number(condition/air_temp|informationbeforedive/airtemperature - 273.15, '0.0'), ' C')"/>
-          </xsl:attribute>
-        </divetemperature>
-      </xsl:if>
-
       <xsl:if test="dive_site_ref/@ref|informationbeforedive/dive_site_ref/@ref != ''">
         <location>
           <xsl:variable name="ref">
@@ -198,15 +190,21 @@
         </weightsystem>
       </xsl:if>
 
-      <xsl:for-each select="lowesttemperature|informationafterdive/lowesttemperature|u:lowesttemperature|u:informationafterdive/u:lowesttemperature|u1:lowesttemperature|u1:informationafterdive/u1:lowesttemperature|condition/water_temp">
-        <temperature>
+      <temperature>
+        <xsl:for-each select="lowesttemperature|informationafterdive/lowesttemperature|u:lowesttemperature|u:informationafterdive/u:lowesttemperature|u1:lowesttemperature|u1:informationafterdive/u1:lowesttemperature|condition/water_temp">
           <xsl:if test="$temperatureSamples &gt; 0 or . != 273.15">
             <xsl:attribute name="water">
               <xsl:value-of select="concat(format-number(.- 273.15, '0.0'), ' C')"/>
             </xsl:attribute>
           </xsl:if>
-        </temperature>
-      </xsl:for-each>
+        </xsl:for-each>
+        <xsl:if test="condition/air_temp|informationbeforedive/airtemperature|u:informationbeforedive/u:airtemperature != ''">
+          <xsl:attribute name="air">
+            <xsl:value-of select="concat(format-number(condition/air_temp|informationbeforedive/airtemperature|u:informationbeforedive/u:airtemperature - 273.15, '0.0'), ' C')"/>
+          </xsl:attribute>
+        </xsl:if>
+      </temperature>
+
 
       <divecomputer deviceid="ffffffff">
         <xsl:attribute name="model">
