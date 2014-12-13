@@ -9,6 +9,7 @@
 :toc:
 :toc-placement: manual
 :numbered:
+:ascii-ids:
 // :website: http://subsurface-divelog.org
 
 image::images/Subsurface4Banner.png["Banner",align="center"]
@@ -478,10 +479,10 @@ puerto de comunicaciones (o el punto de montaje) del PC con _Subsurface_ que
 conecta con el ordenador de buceo. Para poder ajustar esta comunicación, es
 necesario encontrar la información adecuada para indicar a _Subsurface_ donde y
 como importar la información. El
-xref:_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
+xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
 proporciona información técnica para ayudarte a conseguir esto en diferentes
 sistemas operativos y el
-xref:_apéndice_b_información_específica_por_ordenadores_de_buceo[Apéndice B]
+xref:_apendice_b_informacion_especifica_por_ordenadores_de_buceo[Apéndice B]
 contiene información específica de ordenadores de buceo.
 
 Ahora es el momento de conectar el ordenador de buceo al PC del usuario, para
@@ -518,8 +519,8 @@ selecciona el modelo del ordenador, p.e. D4 (Suunto), Veo200 (Oceanic) o Puck
 USB o Bluetooth que _Subsurface_ necesita conocer para comunicarse con el
 ordenador de buceo. Debe seleccionarse el nombre de puerto apropiado. Consultar
 el
-xref:_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
-y xref:_apéndice_b_información_específica_por_ordenadores_de_buceo[Apéndice B]
+xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
+y xref:_apendice_b_informacion_especifica_por_ordenadores_de_buceo[Apéndice B]
 para detalles técnicos de como encontrar la información apropiada sobre
 puertos, para un ordenador en concreto y, en algunos casos, como hacer los
 ajustes correctos al Sistema Operativo del ordenador que ejecuta _Subsurface_.
@@ -581,12 +582,12 @@ funcionado antes o es la primera vez que se usa ? ¿ Están limpios los contacto
 entre el cable y el ordenador de buceo ?
 
 - Consultar el
-xref:_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
+xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
 y asegurarse de que se especificó el punto de montaje correcto.
 
 - En sistemas operativos tipo unix, comprobar que el usuario tiene permisos de
 escritura en el puerto USB. Si nó, consultar el
-xref:_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A].
+xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A].
 
 Si el PC con _Subsurface_ no reconoce el adaptador USB mostrando un nombre de
 dispositivo correcto, existe la posibilidad de que fallen el cable o el
@@ -2728,7 +2729,7 @@ Mosquito, D3, Vyper, Vytec, Cobra, Gekko y Zoop).  Se pueden leer y modificar un
 gran número de ajustes. En primer lugar hay que asegurarse de tener instalado el
 driver adecuado para el ordenador de buceo y de conocer el nombre de dispositivo
 asignado al ordenador por el sistema operativo.
-Ver el <<_apéndice_a_información_específica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo, APÉNDICE A>>
+Ver el <<_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo, APÉNDICE A>>
 para información sobre como hacerlo.
 
 Una vez que el ordenador de buceo está al PC con _Subsurface_, se selecciona
