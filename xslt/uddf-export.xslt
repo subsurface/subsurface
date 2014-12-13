@@ -12,9 +12,12 @@
   <xsl:template match="/divelog/dives">
     <uddf version="3.2.0">
       <generator>
+        <name>Subsurface Divelog</name>
         <manufacturer id="subsurface">
           <name>Subsurface Team</name>
-          <contact>http://subsurface-divelog.org/</contact>
+          <contact>
+            <homepage>http://subsurface-divelog.org/</homepage>
+          </contact>
         </manufacturer>
         <version>
           <xsl:value-of select="/divelog/@version"/>
@@ -36,7 +39,7 @@
       </mediadata>
 
       <diver>
-        <owner id="1">
+        <owner id="owner">
           <equipment>
             <xsl:for-each select="/divelog/settings/divecomputerid">
               <divecomputer id="{./@deviceid}">
