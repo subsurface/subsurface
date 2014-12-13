@@ -176,9 +176,9 @@
         </buddy>
       </xsl:if>
 
-      <xsl:if test="note/text|informationafterdive/notes/para != ''">
+      <xsl:if test="note/text|informationafterdive/notes/para|u:informationafterdive/u:notes/u:para != ''">
         <notes>
-          <xsl:value-of select="note/text|informationafterdive/notes/para"/>
+          <xsl:value-of select="note/text|informationafterdive/notes/para|u:informationafterdive/u:notes/u:para"/>
         </notes>
       </xsl:if>
 
