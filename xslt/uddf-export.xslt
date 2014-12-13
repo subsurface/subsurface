@@ -475,37 +475,34 @@
           </link>
 
           <xsl:if test="@size">
+
             <tankvolume>
               <xsl:value-of select="substring-before(@size, ' ')"/>
             </tankvolume>
           </xsl:if>
           <xsl:choose>
-            <xsl:when test="divecomputer[1]/sample/@pressure != ''">
-              <tankpressurebegin>
-                <xsl:value-of select="substring-before(divecomputer[1]/sample/@pressure[1], ' ') * 100000"/>
-              </tankpressurebegin>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:if test="@start">
+            <xsl:when test="@start">
                 <tankpressurebegin>
                   <xsl:value-of select="substring-before(@start, ' ') * 100000"/>
                 </tankpressurebegin>
-              </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+              <tankpressurebegin>
+                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure]/@pressure[1], ' ') * 100000"/>
+              </tankpressurebegin>
             </xsl:otherwise>
           </xsl:choose>
 
           <xsl:choose>
-            <xsl:when test="count(divecomputer[1]/sample[@pressure]) &gt; 0">
-              <tankpressureend>
-                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 100000"/>
-              </tankpressureend>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:if test="@end">
+            <xsl:when test="@end">
                 <tankpressureend>
                   <xsl:value-of select="substring-before(@end, ' ') * 100000"/>
                 </tankpressureend>
-              </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+              <tankpressureend>
+                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 100000"/>
+              </tankpressureend>
             </xsl:otherwise>
           </xsl:choose>
 
