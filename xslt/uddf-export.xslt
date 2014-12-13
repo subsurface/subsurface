@@ -7,6 +7,17 @@
   <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
   <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
 
+  <!-- This needs to be set at this top level so that it is avialable in both the buddies and profiledata sections-->
+  <xsl:variable name="buddies">
+    <xsl:for-each select="//buddy">
+      <xsl:call-template name="tokenize">
+        <xsl:with-param name="string" select="." />
+        <xsl:with-param name="delim" select="', '" />
+      </xsl:call-template>
+    </xsl:for-each>
+  </xsl:variable>
+
+
   <xsl:template match="/divelog/settings"/>
 
   <xsl:template match="/divelog/dives">
@@ -60,19 +71,11 @@
             </xsl:for-each>
           </equipment>
         </owner>
-        <xsl:variable name="buddylist">
-          <xsl:for-each select="//buddy">
-            <xsl:call-template name="tokenize">
-              <xsl:with-param name="string" select="." />
-              <xsl:with-param name="delim" select="', '" />
-            </xsl:call-template>
-          </xsl:for-each>
-        </xsl:variable>
-        <xsl:for-each select="xt:node-set($buddylist)/token[generate-id() = generate-id(key('tokenkey', .)[1])]">
+        <xsl:for-each select="xt:node-set($buddies)/token[generate-id() = generate-id(key('tokenkey', .)[1])]">
           <xsl:sort select="." />
           <buddy>
             <xsl:attribute name="id">
-              <xsl:value-of select="."/>
+              <xsl:value-of select="generate-id(key('tokenkey', .)[1])"/>
             </xsl:attribute>
             <personal>
               <xsl:choose>
@@ -93,7 +96,7 @@
             </personal>
           </buddy>
         </xsl:for-each>
-      </diver>
+        </diver>
 
       <divesite>
 
@@ -235,20 +238,20 @@
           <xsl:value-of select="./@number"/>
         </divenumber>
         <xsl:variable name="buddylist">
-          <xsl:for-each select="buddy">
-            <xsl:call-template name="tokenize">
-              <xsl:with-param name="string" select="." />
-              <xsl:with-param name="delim" select="', '" />
-            </xsl:call-template>
-          </xsl:for-each>
+          <xsl:call-template name="tokenize">
+            <xsl:with-param name="string" select="buddy" />
+            <xsl:with-param name="delim" select="', '" />
+          </xsl:call-template>
         </xsl:variable>
-        <xsl:for-each select="xt:node-set($buddylist)/token[generate-id() = generate-id(key('tokenkey', .)[1])]">
-          <xsl:sort select="." />
+        <xsl:for-each select="xt:node-set($buddylist)/token">
+          <xsl:variable name="buddyname" select="."/>
+          <xsl:for-each select="xt:node-set($buddies)/token[generate-id() = generate-id(key('tokenkey', .)[1]) and $buddyname = .]">
           <link>
             <xsl:attribute name="ref">
-              <xsl:value-of select="."/>
+              <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
           </link>
+          </xsl:for-each>
         </xsl:for-each>
         <xsl:if test="location != ''">
           <link>
