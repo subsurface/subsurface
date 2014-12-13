@@ -385,7 +385,7 @@
                   <xsl:if test="@name = 'gaschange'">
                     <switchmix>
                       <xsl:attribute name="ref">
-                        <xsl:value-of select="'mix' + @value"/>
+                        <xsl:value-of select="concat('mix', @value)"/>
                       </xsl:attribute>
                     </switchmix>
                   </xsl:if>
@@ -435,7 +435,7 @@
                 <xsl:for-each select="preceding-sibling::event[@time = $time and @name='gaschange']/@value">
                   <switchmix>
                     <xsl:attribute name="ref">
-                      <xsl:value-of select="'mix' + ."/>
+                      <xsl:value-of select="concat('mix', .)"/>
                     </xsl:attribute>
                   </switchmix>
                 </xsl:for-each>
