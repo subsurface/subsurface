@@ -90,11 +90,11 @@
           <xsl:value-of select="dive_number|u:informationbeforedive/u:divenumber"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="dive_duration != '' and dive_duration != 0">
+      <xsl:if test="(dive_duration != '' and dive_duration != 0) or (u:informationafterdive/u:diveduration != '' and u:informationafterdive/u:diveduration != 0)">
         <xsl:attribute name="duration">
           <xsl:call-template name="timeConvert">
             <xsl:with-param name="timeSec">
-              <xsl:value-of select="dive_duration"/>
+              <xsl:value-of select="dive_duration|u:informationafterdive/u:diveduration"/>
             </xsl:with-param>
           </xsl:call-template>
         </xsl:attribute>
