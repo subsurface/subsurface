@@ -224,10 +224,10 @@
         </notes>
       </xsl:if>
 
-      <xsl:if test="equipment_used/weight_used &gt; 0">
+      <xsl:if test="equipment_used/weight_used|u:informationafterdive/u:equipmentused/u:leadquantity &gt; 0">
         <weightsystem description="unknown">
           <xsl:attribute name="weight">
-            <xsl:value-of select="concat(format-number(equipment_used/weight_used, '0.0'), ' kg')"/>
+            <xsl:value-of select="concat(format-number(equipment_used/weight_used|u:informationafterdive/u:equipmentused/u:leadquantity, '0.0'), ' kg')"/>
           </xsl:attribute>
         </weightsystem>
       </xsl:if>
