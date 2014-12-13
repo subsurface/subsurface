@@ -465,7 +465,7 @@
             <xsl:attribute name="ref">
               <xsl:choose>
                 <xsl:when test="@o2 != ''">
-                  <xsl:value-of select="'mix' + substring-before(@o2, '.')"/>
+                  <xsl:value-of select="concat('mix', substring-before(@o2, '.'))"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="'mix21'"/>
