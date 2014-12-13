@@ -100,19 +100,19 @@
         </xsl:attribute>
       </xsl:if>
 
-      <xsl:if test="condition/visibility|informationafterdive/visibility != '' and condition/visibility|informationafterdive/visibility != 0">
+      <xsl:if test="condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility != '' and condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility != 0">
         <xsl:attribute name="visibility">
           <xsl:choose>
-            <xsl:when test="condition/visibility|informationafterdive/visibility &lt; 1">
+            <xsl:when test="condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility &lt; 1">
               <xsl:value-of select="1"/>
             </xsl:when>
-            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 3">
+            <xsl:when test="condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility &lt;= 3">
               <xsl:value-of select="2"/>
             </xsl:when>
-            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 5">
+            <xsl:when test="condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility &lt;= 5">
               <xsl:value-of select="3"/>
             </xsl:when>
-            <xsl:when test="condition/visibility|informationafterdive/visibility &lt;= 10">
+            <xsl:when test="condition/visibility|informationafterdive/visibility|u:informationafterdive/u:visibility &lt;= 10">
               <xsl:value-of select="4"/>
             </xsl:when>
             <xsl:otherwise>
@@ -122,22 +122,22 @@
         </xsl:attribute>
       </xsl:if>
 
-      <xsl:if test="informationafterdive/rating/ratingvalue != '' and informationafterdive/rating/ratingvalue != 0">
+      <xsl:if test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue != '' and informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue != 0">
         <xsl:attribute name="rating">
           <xsl:choose>
-            <xsl:when test="informationafterdive/rating/ratingvalue &lt; 2">
+            <xsl:when test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue &lt; 2">
               <xsl:value-of select="0"/>
             </xsl:when>
-            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 2">
+            <xsl:when test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue &lt;= 2">
               <xsl:value-of select="1"/>
             </xsl:when>
-            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 4">
+            <xsl:when test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue &lt;= 4">
               <xsl:value-of select="2"/>
             </xsl:when>
-            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 6">
+            <xsl:when test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue &lt;= 6">
               <xsl:value-of select="3"/>
             </xsl:when>
-            <xsl:when test="informationafterdive/rating/ratingvalue &lt;= 8">
+            <xsl:when test="informationafterdive/rating/ratingvalue|u:informationafterdive/u:rating/u:ratingvalue &lt;= 8">
               <xsl:value-of select="4"/>
             </xsl:when>
             <xsl:otherwise>
