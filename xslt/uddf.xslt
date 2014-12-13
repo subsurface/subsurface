@@ -85,9 +85,9 @@
           </xsl:call-template>
         </xsl:when>
       </xsl:choose>
-      <xsl:if test="dive_number != ''">
+      <xsl:if test="dive_number|u:informationbeforedive/u:divenumber != ''">
         <xsl:attribute name="number">
-          <xsl:value-of select="dive_number"/>
+          <xsl:value-of select="dive_number|u:informationbeforedive/u:divenumber"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="dive_duration != '' and dive_duration != 0">
