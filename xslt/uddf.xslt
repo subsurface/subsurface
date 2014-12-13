@@ -180,6 +180,32 @@
         </xsl:if>
       </xsl:for-each>
 
+      <xsl:variable name="buddies">
+        <xsl:for-each select="u:informationbeforedive/u:link">
+          <xsl:variable name="ref">
+            <xsl:value-of select="@ref"/>
+          </xsl:variable>
+          <xsl:for-each select="//u:diver/u:buddy[@id = $ref]/u:personal/u:firstname|//u:diver/u:buddy[@id = $ref]/u:personal/u:lastname">
+            <xsl:value-of select="."/>
+            <xsl:if test="following-sibling::* != ''">
+              <xsl:value-of select="' '"/>
+            </xsl:if>
+          </xsl:for-each>
+          <xsl:variable name="next">
+            <xsl:value-of select="following-sibling::u:link/@ref"/>
+          </xsl:variable>
+          <xsl:if test="//u:diver/u:buddy[@id = $next]/u:personal/u:firstname != ''">
+            <xsl:value-of select="', '"/>
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:variable>
+
+      <xsl:if test="$buddies != ''">
+        <buddy>
+          <xsl:value-of select="$buddies"/>
+        </buddy>
+      </xsl:if>
+
       <xsl:if test="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref != ''">
         <buddy>
           <xsl:variable name="ref">
