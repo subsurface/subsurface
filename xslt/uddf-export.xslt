@@ -6,6 +6,7 @@
 
   <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
   <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
+  <xsl:key name="divecomputer" match="divecomputer" use="@deviceid" />
 
   <!-- This needs to be set at this top level so that it is avialable in both the buddies and profiledata sections-->
   <xsl:variable name="buddies">
@@ -52,7 +53,7 @@
       <diver>
         <owner id="owner">
           <equipment>
-            <xsl:for-each select="/divelog/settings/divecomputerid">
+            <xsl:for-each select="//dive/divecomputer[generate-id() = generate-id(key('divecomputer', @deviceid)[1])]">
               <divecomputer id="{./@deviceid}">
                 <name>
                   <xsl:choose>
