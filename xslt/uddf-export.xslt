@@ -194,12 +194,12 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:key name="location" match="location" use="."/>
+  <xsl:key name="location" match="location" use="./@gps"/>
   <xsl:template match="location">
-    <xsl:if test="generate-id() = generate-id(key('location', normalize-space(.)))">
+    <xsl:if test="generate-id() = generate-id(key('location', normalize-space(./@gps)))">
       <site>
         <xsl:attribute name="id">
-          <xsl:value-of select="."/>
+          <xsl:value-of select="generate-id()"/>
         </xsl:attribute>
         <name>
           <xsl:value-of select="."/>
@@ -253,13 +253,13 @@
           </link>
           </xsl:for-each>
         </xsl:for-each>
-        <xsl:if test="location != ''">
+        <xsl:for-each select="location">
           <link>
             <xsl:attribute name="ref">
-              <xsl:value-of select="location"/>
+              <xsl:value-of select="generate-id(key('location',normalize-space(./@gps)))"/>
             </xsl:attribute>
           </link>
-        </xsl:if>
+        </xsl:for-each>
         <xsl:variable name="trimmedweightlist">
           <xsl:for-each select="weightsystem">
             <weight>
