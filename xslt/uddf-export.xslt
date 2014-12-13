@@ -256,12 +256,10 @@
         <datetime>
           <xsl:value-of select="concat(./@date, 'T', ./@time)"/>
         </datetime>
-        <xsl:for-each select="divecomputer">
-          <xsl:if test="temperature/@air|divetemperature/@air != ''">
-            <airtemperature>
-              <xsl:value-of select="format-number(substring-before(temperature/@air|divetemperature/@air, ' ') + 273.15, '0.00')"/>
-            </airtemperature>
-          </xsl:if>
+        <xsl:for-each select="divecomputer/temperature/@air|divecomputer/divetemperature/@air|divetemperature/@air">
+          <airtemperature>
+            <xsl:value-of select="format-number(substring-before(., ' ') + 273.15, '0.00')"/>
+          </airtemperature>
         </xsl:for-each>
         <xsl:if test="parent::trip">
           <tripmembership ref="trip{generate-id(..)}"/>
