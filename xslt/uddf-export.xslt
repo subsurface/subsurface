@@ -49,9 +49,12 @@
           </image>
         </xsl:for-each>
       </mediadata>
-
       <diver>
         <owner id="owner">
+          <personal>
+            <firstname></firstname>
+            <lastname></lastname>
+          </personal>
           <equipment>
             <xsl:for-each select="//dive/divecomputer[generate-id() = generate-id(key('divecomputer', @deviceid)[1])]">
               <divecomputer id="{./@deviceid}">
@@ -81,12 +84,12 @@
             <personal>
               <xsl:choose>
                 <xsl:when test="contains(., ' ')">
-                  <first_name>
+                  <firstname>
                     <xsl:value-of select="substring-before(., ' ')"/>
-                  </first_name>
-                  <last_name>
+                  </firstname>
+                  <lastname>
                     <xsl:value-of select="substring-after(., ' ')"/>
-                  </last_name>
+                  </lastname>
                 </xsl:when>
                 <xsl:otherwise>
                   <first_name>
@@ -141,7 +144,7 @@
                just use the same references used internally on
                Subsurface.
           -->
-          <mix id="{$o2}">
+          <mix id="mix{$o2}">
             <name>
               <xsl:value-of select="concat($o2, '/', $he)"/>
             </name>
@@ -205,7 +208,6 @@
         <name>
           <xsl:value-of select="."/>
         </name>
-        <link ref="allbase"/>
         <geography>
           <location>
             <xsl:value-of select="."/>
@@ -473,10 +475,10 @@
             <xsl:attribute name="ref">
               <xsl:choose>
                 <xsl:when test="@o2 != ''">
-                  <xsl:value-of select="substring-before(@o2, '.')"/>
+                  <xsl:value-of select="'mix' + substring-before(@o2, '.')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="'21'"/>
+                  <xsl:value-of select="'mix21'"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
