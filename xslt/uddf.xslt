@@ -371,7 +371,7 @@
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
               <xsl:with-param name="timeSec">
-                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime"/>
+                <xsl:value-of select="preceding-sibling::divetime|preceding-sibling::u:divetime|preceding-sibling::u1:divetime|following-sibling::u:divetime"/>
               </xsl:with-param>
             </xsl:call-template>
           </xsl:attribute>
