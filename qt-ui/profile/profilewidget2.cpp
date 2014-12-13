@@ -289,10 +289,14 @@ void ProfileWidget2::setupItemOnScene()
 	heartBeatAxis->setLinesVisible(true);
 	percentageAxis->setTextVisible(true);
 	percentageAxis->setLinesVisible(true);
+
+	replotEnabled = true;
 }
 
 void ProfileWidget2::replot()
 {
+	if (!replotEnabled)
+		return;
 	dataModel->clear();
 	plotDive(0, true); // simply plot the displayed_dive again
 }
@@ -1087,6 +1091,11 @@ struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 			break;
 	}
 	return entry;
+}
+
+void ProfileWidget2::setReplot(bool state)
+{
+	replotEnabled = state;
 }
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)

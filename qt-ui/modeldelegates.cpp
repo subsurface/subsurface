@@ -6,6 +6,8 @@
 #include "diveplanner.h"
 #include "simplewidgets.h"
 #include "gettextfromc.h"
+#include "profile/profilewidget2.h"
+#include "mainwindow.h"
 
 #include <QtDebug>
 #include <QPainter>
@@ -252,6 +254,14 @@ void TankInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 
 TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent)
 {
+	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
+		this, SLOT(reenableReplot(QWidget *, QAbstractItemDelegate::EndEditHint)));
+}
+
+void TankInfoDelegate::reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
+{
+	MainWindow::instance()->graphics()->setReplot(true);
+	MainWindow::instance()->graphics()->replot();
 }
 
 void TankInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
@@ -275,6 +285,7 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCylinderData.type = copy_string(cyl->type.description);
 	currCylinderData.pressure = cyl->type.workingpressure.mbar;
 	currCylinderData.size = cyl->type.size.mliter;
+	MainWindow::instance()->graphics()->setReplot(false);
 	return delegate;
 }
 

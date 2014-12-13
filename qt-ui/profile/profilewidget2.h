@@ -103,6 +103,7 @@ slots: // Necessary to call from QAction's signals.
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void plotPictures();
+	void setReplot(bool state);
 	void replot();
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
@@ -145,6 +146,7 @@ private:
 	QString backgroundFile;
 	ToolTipItem *toolTipItem;
 	bool isPlotZoomed;
+	bool replotEnabled;
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.

@@ -57,6 +57,7 @@ public:
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+	void reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
 class TankUseDelegate : public QStyledItemDelegate {
