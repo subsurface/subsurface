@@ -724,7 +724,6 @@ int parse_txt_file(const char *filename, const char *csv)
 						//250 PO2 Cell 1
 						//251 PO2 Cell 2
 					default:
-						printf("Ignoring %d = %d\n", type, value);
 						break;
 					} /* sample types */
 					break;
