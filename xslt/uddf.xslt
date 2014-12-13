@@ -427,13 +427,13 @@
           </xsl:choose>
 
           <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
-            <xsl:attribute name="temperature">
+            <xsl:attribute name="temp">
               <xsl:value-of select="concat(format-number(temperature - 273.15, '0.0'), ' C')"/>
             </xsl:attribute>
           </xsl:if>
 
           <xsl:if test="u:temperature|u1:temperature != '' and $temperatureSamples &gt; 0">
-            <xsl:attribute name="temperature">
+            <xsl:attribute name="temp">
               <xsl:value-of select="concat(format-number(u:temperature|u1:temperature - 273.15, '0.0'), ' C')"/>
             </xsl:attribute>
           </xsl:if>
