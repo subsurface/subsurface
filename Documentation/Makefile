@@ -42,4 +42,4 @@ show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ docbook-xsl.css $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
+	rm -f *~ *.xml docbook-xsl.css $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
