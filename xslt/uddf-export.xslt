@@ -581,8 +581,8 @@
         </visibility>
         <equipmentused>
           <leadquantity>
-            <xsl:if test="sum(xt:node-set($trimmedweightlist)) >= 0">
-              <xsl:value-of select="sum(xt:node-set($trimmedweightlist))"/>
+            <xsl:if test="sum(xt:node-set($trimmedweightlist)/node()) >= 0">
+              <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/node())"/>
             </xsl:if>
           </leadquantity>
         </equipmentused>
