@@ -18,6 +18,24 @@
     </xsl:for-each>
   </xsl:variable>
 
+  <xsl:variable name="eventmap">
+    <!--entry key="safety stop (mandatory)"></entry-->
+    <!--entry key="deco"></entry-->
+    <entry key="ascent">ascent</entry><!--Not sure of definitions in our file. Ascent too fast??-->
+    <entry key="violation">deco</entry><!--Assume this is missed deco-->
+    <!--entry key="below floor">error</entry-->
+    <entry key="divetime">rbt</entry>
+    <!--entry key="maxdepth"></entry-->
+    <!--entry key="OLF"></entry-->
+    <!--entry key="PO2"></entry-->
+    <!--entry key="airtime"></entry-->
+    <entry key="ceiling">error</entry>
+    <!--entry key="heading"></entry-->
+    <entry key="surface">surface</entry>
+    <!--entry key="bookmark"></entry-->
+    <entry key="unknown">error</entry>
+  </xsl:variable>
+
 
   <xsl:template match="/divelog/settings"/>
 
@@ -348,9 +366,12 @@
 
               <xsl:if test="$timesecond != $time">
                 <waypoint>
-                  <xsl:if test="not(@name = 'heading') and not(@name = 'gaschange')">
+                  <xsl:variable name="name">
+                    <xsl:value-of select="@name"/>
+                  </xsl:variable>
+                  <xsl:if test="xt:node-set($eventmap)/entry[@key = $name]">
                     <alarm>
-                      <xsl:value-of select="@name"/>
+                      <xsl:value-of select="xt:node-set($eventmap)/entry[@key = $name]"/>
                     </alarm>
                   </xsl:if>
 
@@ -406,10 +427,15 @@
                   <xsl:value-of select="@time"/>
                 </xsl:variable>
 
-                <xsl:for-each select="preceding-sibling::event[@time = $time and not(@name='heading' or @name='gaschange')]/@name">
-                  <alarm>
-                    <xsl:value-of select="."/>
-                  </alarm>
+                <xsl:for-each select="preceding-sibling::event[@time = $time]">
+                  <xsl:variable name="name">
+                    <xsl:value-of select="@name"/>
+                  </xsl:variable>
+                  <xsl:if test="xt:node-set($eventmap)/entry[@key = $name]">
+                    <alarm>
+                      <xsl:value-of select="xt:node-set($eventmap)/entry[@key = $name]"/>
+                    </alarm>
+                  </xsl:if>
                 </xsl:for-each>
 
                 <depth>
