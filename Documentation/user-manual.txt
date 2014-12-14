@@ -2,7 +2,7 @@
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
-// Ferguson, Salvador Cuñat
+// Ferguson, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.2
 // :revdate: July 2014
 :icons:
@@ -16,7 +16,7 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 [big]#USER MANUAL#
 
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
 [blue]#_Version 4.3,  December 2014_#
 
@@ -154,22 +154,25 @@ open logbook, the user is asked whether the open logbook should be
 saved before a new logbook is created.
 
 [[S_GetInformation]]
-== How to store dive information in the user's logbook
+== Storing dive information in the logbook
 
-There are several ways in which dive information can be added to a logbook:
+Now that a new logbook was created, users can start adding their dive data to it. _Subsurface_ allows users to add dive data to their logbooks in several different ways, all of which will be detailed in the following sections.
+If the user has a handwritten divelog, a spreadsheet or another form of manually maintained divelog, then dive data can be added to _Subsurface_ either by:
 
-1. Enter dive information by hand. This is typically useful if the diver did not
-use a dive computer and dives were recorded in a written logbook.
+1. Typing in the information directly into the Dive Notes tab, selecting _Log -> _Add Dive_ menu item (xref:S_EnterData[Entering dive information by hand])
 
-2. Import dive information directly from a dive computer if it is supported by
-_Subsurface_. The latest list of dive computers supported by _Subsurface_ can
-be found at:
-link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
-Supported dive computers].
+2. Importing from CSV files containing dive profiles (xref:S_ImportingCSVDives[Importing dives in CSV format])
 
-3. Import dive information from another database or file format. If you
-have kept your dive logs with other log software, these logs can often
-be imported to subsurface. This is discussed in more detail below.
+3. Importing diving metadata from a spreadsheet via CSV (xref:S_ImportingManualCSV[Importing dives from manually created CSV files] and xref:_appendix_e_creating_a_csv_file_from_libreoffice_calc[APPENDIX E]).
+
+If the user already has dives recorded with a dive computer, then these dives can be imported from:
+
+1. Import dive information directly from a dive computer if it is supported by_Subsurface_. The latest list of dive computers supported by _Subsurface_ can
+be found at: link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
+Supported dive computers] (xref:S_ImportDiveComputer[Importing new dive information from a Dive Computer]) or
+
+2. Import dive information from another database or file format. If you have kept your dive logs with other log software, these logs can often
+be imported to subsurface. (xref:S_ImportingAlienDiveLogs[Importing dive information from other digital data sources or other data formats]).
 
 [[S_EnterData]]
 === Entering dive information by hand
@@ -1066,15 +1069,14 @@ _Subsurface_ *Dive List* panel.
 
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 
+[[S_ImportingCSVData]]
+==== Importing data in CSV format
 
-[[S_ImportingCSV]]
-==== Importing dives in CSV format
+A comma-separated file (.csv) can be used to import dive information either as dive profiles (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive metadata (in case the user keeps dive data in a spreadsheet).
 
-Sometimes dive computers export dive information as files with
-_comma-separated values_ (.CSV). For example, the APD Inspiration and Evolution
-closed circuit rebreather (CCR) systems export dive information in a CSV
-formatted file that normally contains information for a single dive only. These
-files can easily be imported into _Subsurface_.
+[[S_ImportingCSVDives]]
+===== Importing dives in CSV format
+
 CSV files are normally organised into
 a single line that provides the headers of the data columns, followed by the
 data, one record per line. CSV files can be opened with a normal text editor.
@@ -1155,15 +1157,13 @@ and the dive will be imported and listed in the *Dive List* tab of _Subsurface_.
 [[S_ImportingManualCSV]]
 ==== Importing dives from manually kept CSV file
 
-If one keeps dive logs in a spreadsheet, there is an option to import
-those dives as well. Spreadsheet data, exported as a CSV file, can
-be imported to _Subsurface_. When importing manually
-kept log files, the information needed is quite different as we are
+If the user keeps their dive logs in a spreadsheet, there is an option to import those dives as well. Spreadsheet data, exported as a CSV file, can be easily imported to _Subsurface_.
+Information on how to convert the data stored on a spreadsheet to a CSV file is provided on the xref:_appendix_e_creating_a_csv_file_from_libreoffice_calc[APPENDIX E].
+When importing manually kept log files, the information needed is quite different as we are
 importing only metadata, not profile samples.
 
 Similarly to importing dives in CSV format (see above), one needs to
-know the internal format
-of the CSV data to import.
+know the internal format of the CSV data to import.
 
 a. Which character separates the different columns within a single line of
 data? This
@@ -3268,4 +3268,35 @@ that your dive is 50 minutes long - because you have fifty minutes worth of samp
 subsurface will say it's 45 minutes - because you were actually diving for 45 minutes.
 It's even more noticeable if you do things like divemastering the initial OW dives, when
 you may stay in the water for a long time, but spend most of it at the surface. And then
- you don't want that to count as some kind of long dive”.
+you don't want that to count as some kind of long dive”.
+
+== APPENDIX E: Creating a .CSV file from Libreoffice Calc.
+
+Many divers keep a diving log in some form of a digital file, commonly a spreadsheet with various fields of information. These logs can be easily imported into _Subsurface_ (xref:S_ImportingManualCSV[Importing dives from_manually kept CSV file]), after the spreadsheet is converted in a .CSV file.
+This section explains the procedure to convert a diving logbook stored in a spreadsheet to a .CSV file that will later be imported from _Subsurface_.
+Creating a .CSV is a straightforward task, although the procedure will somewhat be different according to which spreadsheet program is used.
+In this example, Libreoffice Calc will be used, but the procedure should be the same in OpenOffice. The procedure for Microsoft Excel users should also be similar.
+
+=== Organize data on the spreadsheet
+The first step is to organize the diving data on the spreadsheet, so that the first row contains the names of each field and all each dive is stored on a single row.
+_Subsurface_ does not require any particular fields, but supports several (Dive #, Date, Time, Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight and Tags).
+The user can organize diving metadata according to a few simple rules:
+
+1. Date: the users should use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy
+2. Duration: the format should be minutes:seconds. In Libreoffice Calc this should be: [mm]:ss
+3. Unit system: only one unit system shold be used (i.e., no mixture between imperial and metric units)
+4. Tags and buddies: values should be separated with a “,”
+5. GPS position: users must use decimal degrees, e.g. 30.22496 30.821798
+
+image::images/spreadsheetdata.jpg["FIGURE: Spreadsheet data",align="center"]
+
+=== Creating the .CSV file
+When the data is organized on the spreadsheet, it's time to export it as .CSV file. In order to do that, user must click _File_ and _Save As_. On the dialogue that comes up, select the “_Text CSV (.csv)_” as the file type and select the option “_Edit filter settings_”.
+
+image::images/save_as_options.jpg["FIGURE: Save as options",align="center"]
+
+After clicking _Save_, select the appropriate field delimiter (choose {Tab} to prevent conflicts with the “comma”) and select _OK_.
+
+image::images/field_options.jpg["FIGURE: Field options",align="center"]
+
+That should be it. You can double check the .CSV file by opening it with a text editor, and then import you diving data as explained on the section xref:S_ImportingManualCS[Importing dives from_manually kept CSV file].
