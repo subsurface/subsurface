@@ -2,10 +2,9 @@ Building Subsurface from Source
 ===============================
 
 Subsurface uses a few open source libraries and frameworks to do its
-job. The most important ones include libdivecomputer, Qt4, Marble
-(more precisely libmarble; this is what causes the need for Qt4 as
-Marble as of the time of this writing hasn't been ported to Qt5, yet),
-libxml2, libxslt, libsqlite3, and libzip.
+job. The most important ones include libdivecomputer, Qt, Marble
+(more precisely libmarblewidget), libxml2, libxslt, libsqlite3, libzip,
+and libgit2.
 
 Below are instructions for building Subsurface under some popular
 Linux distributions, for building Subsurface using Homebrew on a Mac,
@@ -14,6 +13,23 @@ package management system for Windows makes it really painful to build
 Subsurface natively under Windows, we have some hints how to do so
 here as well.
 
+As of Subsurface 4.3 all of the prebuilt binaries that we provide (right
+now Windows64, Windows32, Mac, Ubuntu and LinuxMint) are built using our
+own custom "flavors" of libdivecomputer and libmarblewidget. You can get
+these from
+
+git://git.subsurface-divelog.org/marble (in the Subsurface-4.3 branch)
+git://git.subsurface-divelog.org/libdc (in the Subsurface-4.3 branch)
+
+Both of these repositories also have a Subsurface-testing branch. That
+branch is explicitly marked as NOT STABLE and will receive force pushes.
+The rationale for this is that we have no intention of forking either of
+these two projects. We simply are adding a few patches on top of their
+latest versions and so those testing branches get frequently rebased.
+
+Also, all of the prebuilt binaries (with the exception of the Windows32
+build) are now Qt5 based and Qt5 is considered the stable and supported
+framework to use for building Subsurface.
 
 Build options for Subsurface
 ----------------------------
@@ -25,6 +41,8 @@ The following options are recognized when passed to qmake:
 		      The default depends on how Qt was built.
  V=1                  Disable the "silent" build mode
  LIBDCDEVEL=1         Search for libdivecomputer in ../libdivecomputer
+ LIBMARBLEDEVEL=path  Search for marble library and includes in path
+ LIBGIT2DEVEL=path    Search for libgit2 library and includes in path
  INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
 		      (pass the actual path, without -I)
  LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
@@ -43,45 +61,89 @@ example:
 Building Subsurface 4 under Linux
 ---------------------------------
 
-On Fedora you need qt-devel, marble-devel, libzip-devel,
-libxml2-devel, libxslt-devel, libsqlite3x-devel, libudev-devel, qtwebkit-devel.
-If you are going to compile libdivecomputer, you need libusb-devel, too.
+On Fedora you need
+
+sudo yum install git gcc-c++ make autoconf automake libtool cmake \
+	libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
+	libgit2-devel libudev-devel libusbx-devel \
+	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
+	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel
+
+FIXME -- Debian package names needed
 
 On Debian style distributions you can install the required development
 packages by running (once Qt version of subsurface is available in your
 distribution)
 $ sudo apt-get build-dep subsurface
+but on many of them this will give you the build dependencies for the
+official package (which is often way out of date). So be careful that this
+doesn't get you a Qt4 based environment
 
 If you want to install the required packages individually instead you
 need libqt4-dev, qt4-qmake, libxml2-dev, libxslt1-dev, zlib1g-dev,
 libzip-dev, libmarble-dev, libsqlite3-dev, libqtwebkit-dev
 (and libusb-1.0-0-dev if you're going to compile libdivecomputer).
 
-Unfortunately the marble version in Debian stable (and possibly
-Ubuntu) appears to be missing essential header files used in
-Subsurface. We hack around this right now by including this header
-file but that of course causes potential version conflicts.
 
-To compile libdivecomputer:
-$ git clone git://git.libdivecomputer.org/libdivecomputer
+First you need to compile our version of libdivecomputer:
+
+$ mkdir ~/src # unless you have this already
+$ cd ~/src
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
+       # or -b Subsurface-testing to get the testing version - careful,
+       #                          careful - this gets rebased and may be broken
+
 $ cd libdivecomputer
-$ git checkout release-0.4
 $ autoreconf --install
 $ ./configure --disable-shared
 $ make
 $ sudo make install
 
-To compile Subsurface:
+Then you compile our custom branch of libmarblewidget
+
+$ cd ~/src
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/marble marble-source
+       # or -b Subsurface-testing to get the testing version - careful,
+       #                          careful - this gets rebased and may be broken
+
+$ mkdir marble-build
+$ cd marble-build
+$ cmake -DQTONLY=ON -DQT5BUILD=ON \
+	-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
+	-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
+	-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
+	-DBUILD_WITH_DBUS=OFF ../marble-source
+$ make # <- this step will take quite a while... if you have more cores
+       #    try make -j8 or something like that
+$ sudo make install
+
+Finally you can compile Subsurface:
+
+$ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ qmake # qmake-qt4 on some flavors of Linux
+$ cd git checkout v4.3   # this get's you the last release
+                         # skip this step to build the latest development
+			 # version
+$ qmake  # on Fedora you need qmake-qt5
 $ make
-$ sudo make install     [optionally, add: prefix=/usr/local]
+$ sudo make install    # [optionally, add: prefix=/usr/local]
 
-Note: on Fedora qmake will appear as qmake-qt4
+At least on Fedora you need to make sure that /usr/local/lib is searched
+for shared libraries (this is where the steps above installed
+libdivecomputer and libmarblewidget in oder not to conflict with system
+pacakges). So you need to do the following:
+$ sudo echo "/usr/local/lib" > /etc/ld.so.conf.d/local.conf
+$ sudo ldconfig
 
-Building the Qt version under MacOSX (using Homebrew)
------------------------------------------------------
+Now you should be able to start the Subsurface binary you just created
+with
+
+$ ./subsurface
+
+
+Building Subsurface under MacOSX (using Homebrew)
+-------------------------------------------------
 
 0) You need to have XCode installed. The first time (and possibly after updating OSX)
 you need to run
