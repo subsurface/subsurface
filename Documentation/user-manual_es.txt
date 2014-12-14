@@ -497,7 +497,7 @@ consultar el manual de su ordenador de buceo en concreto.
 3. En _Subsurface_, desde el Menú principal, seleccionar Importar → Importar del
 ordenador de buceo. Aparecerá el diálogo *A* en la figura a continuación:
 
-image::images/ImportFromDC1.jpg["FIGURA: Diálogo de descarga 1",align="center"]
+image::images/ImportFromDC1_f20.jpg["FIGURA: Diálogo de descarga 1",align="center"]
 
 Los ordenadores de buceo tienden a mantener un cierto número de inmersiones en
 su memoria, incluso cuando estas inmersiones ya han sido importadas a
@@ -657,7 +657,7 @@ el mensaje de la barra azul arriba del panel indicará que se está editando el
 buceo. Si se pulsa en la pestaña *Notas de la inmersión*, se visualizan los
 siguientes campos:
 
-image::images/AddDive3.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
+image::images/AddDive3_f20.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
 
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
@@ -757,7 +757,7 @@ derecha).
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
-image::images/DC_gas_dialogue1.jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
+image::images/DC_gas_dialogue1_f20_jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
 
 En la mayoría de los casos _Subsurface_ obtiene el gas usado del ordenador de
 buceo e inserta automáticamente la composición (% oxigeno) en la tabla. El botón
@@ -771,7 +771,7 @@ Se empieza por seleccionar un tipo de botella. Para ello hay que hacer clic en
 la casilla *Tipo de botella*. Esto hará aparecer un botón que puede usarse para
 mostrar una lista desplegable de botellas.
 
-image::images/DC_gas_dialogue2.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
+image::images/DC_gas_dialogue2_f20_jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
 
 La lista desplegable puede usarse para seleccionar el tipo de botella que
 utilizó en esta inmersión, o el usuario puede empezar a teclear en la casilla,
@@ -934,7 +934,7 @@ universal que se activa seleccionando Importar desde el menú principal y
 haciendo clic en _Importar archivos de registro_. Con ello se mostrará el
 dialogo *A* a continuación.
 
-image::images/Import1.jpg["FIGURA: Importar: paso 1",align="center"]
+image::images/Import1_f20_jpg["FIGURA: Importar: paso 1",align="center"]
 
 Abajo a la derecha hay un desplegable con una etiqueta por defecto Archivos de
 registro que da acceso a los diferentes tipos de archivo disponibles para
@@ -943,7 +943,7 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
  - Diarios en formato XML (DivingLog 5.0, MacDive y varios otros)
  - Diarios en formato UDDF (p.e. Kenozoooid)
  - Diarios en formato UDCF
- - Diarios de CCR Poseidon
+ - Diarios de CCR Poseidon MKVI
  - JDiveLog
  - Suunto Dive Manager (DM3 y DM4)
  - Diarios en formato CSV (basados en texto o en hojas de cálculo), incluidos
@@ -1448,13 +1448,13 @@ pueden visualizarse.
 Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
 clic-derecho en la selección y se elige la opción _Carga imagenes_:
 
-image::images/LoadImage1.jpg["FIGURA: Opción de carga de imágenes",align="center"]
+image::images/LoadImage1_f20.jpg["FIGURA: Opción de carga de imágenes",align="center"]
 
 Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
 fotografías que se necesitan cargar en _Subsurface_ y se hace clic en el botón
 _Abrir_.
 
-image::images/LoadImage2.jpg["FIGURA: Opción de carga de imágenes",align="center"]
+image::images/LoadImage2_f20.jpg["FIGURA: Opción de carga de imágenes",align="center"]
 
 Esto desplegará el diálogo de sincronización que se muestra a continuación. El
 problema crítico es que la sincronización horaria entre la cámara y el ordenador
@@ -1477,7 +1477,7 @@ sincronización. Hay que marcar _Más pronto_ o _Más tarde_ según corresponda.
 el ejemplo a continuación, la opción _Más pronto_ es la correcta ya que la
 cámara de fotos va 7 minutos por delante del ordenador de buceo.
 
-image::images//LoadImage3b.jpg["FIGURA: Diálogo de sincronización",align="center"]
+image::images//LoadImage3b_f20.jpg["FIGURA: Diálogo de sincronización",align="center"]
 
 - *Por fotografía*: Hay una forma muy cómoda de conseguir sincronización. Si se
 toma una foto de la pantalla del ordenador mostrando la hora, _Subsurface_ puede
@@ -1505,12 +1505,12 @@ Después que las imágenes han sido cargadas aparecen en dos lugares:
  - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
  que relejan la hora en que se tomó cada fotografía. Ver a continuación:
 
-image::images/LoadImage4.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
+image::images/LoadImage4_f20.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
 
 Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
 de la foto. Ver imagen a continuación:
 
-image::images/LoadImage5.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
+image::images/LoadImage5_f20.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
 
 Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
 completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
@@ -1521,7 +1521,7 @@ borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
 sobre las imágenes. Las imágenes  también puede borrase desde la pestaña _Fotos_
 (ver en el siguiente punto).
 
-image::images/LoadImage6.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
+image::images/LoadImage6_f20.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
 
 ==== La pestaña _Fotos_
 
@@ -1690,7 +1690,7 @@ la izquierda del perfil La medición se hace arrastrando los puntos rojos a los
 dos puntos del perfil entre los que deseas medir. La información se facilita en
 el área blanca horizontal bajo los dos puntos.
 
-[icon="images/icons/ShowPhotos.png"]
+[icon="images/icons/ShowPhotos_f20.png"]
 [NOTE]
 Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
 seleccionando el botón *Mostrar foto* en la barra de herramientas a la izquierda
