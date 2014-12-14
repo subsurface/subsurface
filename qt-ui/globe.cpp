@@ -18,6 +18,7 @@
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
 #include <marble/GeoDataLineString.h>
+#include <marble/MarbleDebug.h>
 #if INCOMPLETE_MARBLE
 #include "marble/GeoDataTreeModel.h"
 #else
@@ -84,6 +85,7 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
 	fixZoomTimer->setSingleShot(true);
 	installEventFilter(this);
+	Marble::MarbleDebug::setEnabled(verbose);
 }
 
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
