@@ -50,7 +50,7 @@ cp ../debian.changelog debian/changelog
 #tail -1 debian/autocl >> debian/changelog
 #rm -f debian/autocl
 
-dch -i -D trusty -M
+dch -v $VERSION-1~trusty -D trusty -M
 mv ~/src/debian.changelog ~/src/debian.changelog.previous
 cp debian/changelog ~/src/debian.changelog
 
