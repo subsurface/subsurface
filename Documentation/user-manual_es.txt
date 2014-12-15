@@ -2,7 +2,7 @@
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
-// Ferguson, Salvador Cuñat
+// Ferguson, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.3
 // :revdate: December 2014
 :icons:
@@ -17,7 +17,8 @@ image::images/Subsurface4Banner.png["Banner",align="center"]
 [big]#MANUAL DE USUARIO#
 
 *Autores*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
+Pedro Neves
 
 [BLUE]#_Versión 4.3, Diciembre 2014_#
 
@@ -163,22 +164,37 @@ datos no guardados en un diario abierto, al usuario se le preguntará si desea
 guardar el diario abierto antes de crear uno nuevo.
 
 [[S_GetInformation]]
-== Como guardar información en el diario de buceo del usuario
+== Guardar información en el diario de buceo
 
-Hay varias formas de añadir información a un registro:
+Ahora que se ha creado un nuevo diario, el usuario puede empezar a añadirle sus
+datos. _Subsurface_ permite al usuario añadir datos a sus registros de varias
+maneras distintas, todas las cuales las veremos en detalle en las secciones
+siguientes. Si el usuario tiene un diario en papel, una hoja de cálculo u otra
+forma de diario manual, se pueden añadir los datos de una de estas formas:
 
-1. Introducir la información de buceo a mano. Esto es útil cuando el buceador no
-utilizó un ordenador de buceo y las inmersiones se guardaron en un diario
-escrito.
+1. Introducir la información de buceo a mano directamente en la pestaña
+_Notas de la Inmersión_ seleccionando la opción del menú general _Registro ->
+Añadir inmersión_ (xref:S_EnterData[Introducir información de buceo a mano])
 
-2. Importar información de la inmersión directamente de un ordenador de buceo si
+2. Importar datos de archivos CSV que contengan perfiles de inmersión
+(xref:S_ImportingCSVDives[Importar inmersiones en formato CSV])
+
+3. Importar metadatos de buceo de una hoja de cálculo vía CSV
+(xref:S_ImportingManualCSV[Importar buceos de archivos CSV creados a mano]
+y xref:_apendice_e_crear_un_archivo_csv_con_libreoffice_calc[APÉNDICE E]).
+
+Si el usuario ya tiene inmersiones registradas con un ordenador de buceo, estos
+buceos pueden importarse de las siguientes formas:
+
+1. Importar información de la inmersión directamente de un ordenador de buceo si
 está soportado por _Subsurface_. La lista más actualizada de ordenadores
 soportados por _Subsurface_ puede encontrarse en:
-link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores soportados].
+link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores soportados]
+(xref:S_ImportDiveComputer[Importar nueva información desde un ordenador de buceo])
 
-3. Importar información de inmersiones de otra base de datos o formato de
+2. Importar información de inmersiones de otra base de datos o formato de
 archivo. Si se tienen diarios guardados con otro software, a menudo podrán
-importarse a _Subsurface_.Esto se comentará con detalle más adelante.
+importarse a _Subsurface_. (xref:S_ImportingAlienDiveLogs[Importar información de inmersiones de otras fuentes u otros formatos de datos]).
 
 [[S_EnterData]]
 === Introducir información de buceo a mano
@@ -1047,19 +1063,21 @@ inmersiones importadas aparecerán en el panel *Lista de Inmersiones*.
 
 image::images/Divelogs1.jpg["FIGURE:Descargar desde Divelogs.de",align="center"]
 
+[[S_ImportingCSVData]]
+==== Importar datos en formato CSV
 
-[[S_ImportingCSV]]
+Se puede utilizar un archivo .csv (valores separados por comas) para importar
+información de buceo así como perfiles de inmersión (como en el caso de los
+CCRs APD Inspiration o el Evolution) o como metadatos de buceo (en caso de que
+el usuario guarde los datos en una hoja de cálculo).
+
+[[S_ImportingCSVDives]]
 ==== Importar inmersiones en formato CSV
 
-En ocasiones, los ordenadores de buceo exportan la información en ficheros con
-_comma separated values_ (.CSV, valores separados por comas). Por ejemplo, los
-sistemas CCR Inspiration y Evolution de APD exportan ficheros en formato CSV que
-contienen datos de una sola inmersión. Estos archivos pueden importarse
-fácilmente en _Subsurface_. Los archivos CSV están organizados en una única
-línea que proporciona los nombres de las columnas de datos, seguida de los datos
-a un registro por línea. Los archivos CSV pueden abrirse con cualquier editor de
-texto. A continuación un ejemplo muy simplificado y acortado de un archivo CSV
-de un rebreather aPD:
+Los archivos CSV están organizados en una única línea que proporciona los
+nombres de las columnas de datos, seguida de los datos a un registro por línea.
+Los archivos CSV pueden abrirse con cualquier editor de texto. A continuación
+un ejemplo muy simplificado y acortado de un archivo CSV de un rebreather aPD:
 
 	Dive Time (s)   Depth (m)       pO2 - Setpoint (Bar)   pO2 - C1 ...
 	0       0.0     0.70    0.81    13.1
@@ -1125,9 +1143,11 @@ en la *Lista de Inmersiones* de _Subsurface_.
 
 Si uno mantiene sus diarios en una hoja de cálculo, también hay una opción para
 importarlos. Los datos de la hoja de cálculo, exportados a un archivo CSV,
-pueden ser importados a _Subsurface_. Al importar registros mantenidos
-manualmente, la información necesaria es un poco diferente, ya que estamos
-importando metadatos, no muestras del perfil.
+pueden ser importados a _Subsurface_. Se proporciona información sobre como
+convertir los datos guardados en una hoja de cálculo a un archivo CSV en
+xref:_apendice_e_crear_un_archivo_csv_con_libreoffice_calc[APÉNDICE E]).
+Al importar registros mantenidos manualmente, la información necesaria es un
+poco diferente, ya que estamos importando metadatos, no muestras del perfil.
 Al igual que al importar buceos en formato CSV, se necesita conocer el formato
 interno de los datos a importar.
 
@@ -3334,3 +3354,54 @@ realmente has estado buceando 45 minutos). Es mucho más notable si haces cosas
 como actuar de instructor en inmersiones de curso, donde puedes estar en el agua
 mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
 querrás que te cuente como algún tipo de inmersión larga.
+
+== APENDICE E: Crear un archivo CSV con Libreoffice Calc
+
+Muchos buceadores guardan un diario en algún tipo de archivo digital, habitualmente
+una hoja de cálculo con varios campos de información. Estos registros pueden ser
+importados con facilidad a _Subsurface_
+(xref:S_ImportingManualCSV[Importar buceos desde archivos CSV mantenidos manualmente]),
+después de que la hoja haya sido convertida en archivo CSV.
+Esta sección explica la forma de convertir un diario guardado en una hoja de cálculo
+en un archivo .CSV que luego se importará a _Subsurface_.
+Crear un .CSV es tarea facil, aunque el procedimiento pueda diferir algo en función
+de que programa de hoja de cálculo se utilice.
+En este ejemplo se utilizará LibreOffice Calc, pero el procedimiento debería ser
+el mismo en OpenOffice. El procedimiento para usuarios de Microsoft Excel también
+debería ser similar.
+
+=== Organizar los datos en la hoja de cálculo
+El primer paso es organizar los datos de buceo en la hoja de cálculo, de forma
+que la primera fila contenga los nombres de cada campo y que cada inmersión se
+guarde en una sola fila._Subsurface_ no requiere ningún campo en particular,
+pero soporta varios (Nº inmersión, Fecha, Hora, Duración, Ubicación, GPS, Prof.
+Máxima, Prof. Media, Compañero, Notas, Lastre y Etiquetas).
+El usuario puede organizar los metadatos de acuerdo a unas sencillas reglas:
+
+1. Fecha: Se debería utilizar uno  de los siguientes formatos: aaaa-mm-dd,
+dd.mm.aaaa, mm/dd/aaaa.
+2. Duración: El formato debería ser minutos:segundos. En Libreffice Calc
+esto sería [mm]:ss
+3. Sistema de unidades: Solo debe usarse un sistema de unidades (sin mezclar,
+por ejemplo, imperial y métrico).
+4. Etiquetas y compañeros: Los nombres deben separarse con una ",".
+5. Posiciones GPS: El usuario debe usar grados decimales, p.e. 30.22496 30.821798
+
+image::images/spreadsheetdata.jpg["FIGURA: Datos de una hoja de cáculo",align="center"]
+
+=== Crear el archivo .CSV
+Cuando los datos estén organizados en la hoja de cálculo, es el momento de
+exportarlos a un archivo CSV.  Para ello, el usuario debe hacer clic en _Archivo_
+y _Guardar como_. En el diálogo que aparecerá, se selecciona "_Text CSC (.csv)_"
+como tipo de archivo y se selecciona "_Editar configuración de filtros_".
+
+image::images/save_as_options.jpg["FIGURA: Opciones de guardar como ...",align="center"]
+
+Tras pulsar _Guardar_, se selecciona el delimitador de campos adecuado
+(preferible {tab} para prevenir conflictos con las "comas") y se pulsa _OK_.
+
+image::images/field_options.jpg["FIGURA: Opciones de campos",align="center"]
+
+Ya debería estar, se puede comprobar el archivo .CSV abriéndolo con un editor
+de texto, y luego importarlo como se explica en la sección
+xref:S_ImportingManualCSV[Importar inmersiones desde archivos CSV hechos a mano].
