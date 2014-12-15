@@ -146,10 +146,8 @@ void RenumberDialog::renumberOnlySelected(bool selected)
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		qDebug() << "Renumbering.";
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
 		renumber_dives(ui.spinBox->value(), selectedOnly);
-	}
 }
 
 RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(false)
@@ -176,10 +174,8 @@ void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		qDebug() << time << (int)(1000.0 * ui.spinbox->value());
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
 		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
-	}
 	mark_divelist_changed(true);
 	MainWindow::instance()->graphics()->replot();
 
