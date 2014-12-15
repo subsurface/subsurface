@@ -71,7 +71,21 @@ sudo yum install git gcc-c++ make autoconf automake libtool cmake \
 	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
 	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel
 
-FIXME -- Debian package names needed
+Package names are sadly different on OpenSUSE
+
+sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-devel \
+	libxml2-devel libxslt-devel sqlite3-devel libgit2-devel libusb-1_0-devel \
+	libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
+	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
+	libqt5-qtscript-devel libqt5-qtdeclarative-devel
+
+On Debian Jessie this seems to work
+
+sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
+	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
+	libusb-1.0-0-dev libgit2-dev \
+	qt5-default qtchooser qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev \
+	libqt5qml5 libqt5quick5 libqt5declarative5 qtscript5-dev
 
 On Debian style distributions you can install the required development
 packages by running (once Qt version of subsurface is available in your
@@ -80,11 +94,6 @@ $ sudo apt-get build-dep subsurface
 but on many of them this will give you the build dependencies for the
 official package (which is often way out of date). So be careful that this
 doesn't get you a Qt4 based environment
-
-If you want to install the required packages individually instead you
-need libqt4-dev, qt4-qmake, libxml2-dev, libxslt1-dev, zlib1g-dev,
-libzip-dev, libmarble-dev, libsqlite3-dev, libqtwebkit-dev
-(and libusb-1.0-0-dev if you're going to compile libdivecomputer).
 
 
 First you need to compile our version of libdivecomputer:
@@ -127,7 +136,7 @@ $ cd subsurface
 $ cd git checkout v4.3   # this get's you the last release
                          # skip this step to build the latest development
 			 # version
-$ qmake SPECIAL_MARBLE_PREFIX=1  # on Fedora you need qmake-qt5
+$ qmake SPECIAL_MARBLE_PREFIX=1  # on Fedora/OpenSUSE you need qmake-qt5
 $ make
 $ sudo make install    # [optionally, add: prefix=/usr/local]
 
