@@ -171,8 +171,7 @@ SetpointDialog *SetpointDialog::instance()
 void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 {
 	dc = divecomputer;
-	time = second;
-	qDebug() << second << time;
+	time = second < 0 ? 0 : second;
 }
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
