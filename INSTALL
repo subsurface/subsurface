@@ -42,6 +42,8 @@ The following options are recognized when passed to qmake:
  V=1                  Disable the "silent" build mode
  LIBDCDEVEL=1         Search for libdivecomputer in ../libdivecomputer
  LIBMARBLEDEVEL=path  Search for marble library and includes in path
+ SPECIAL_MARBLE_PREFIX=1 Use libssrfmarblewidget as library name
+                      This is needed when building with our marble branch
  LIBGIT2DEVEL=path    Search for libgit2 library and includes in path
  INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
 		      (pass the actual path, without -I)
@@ -125,7 +127,7 @@ $ cd subsurface
 $ cd git checkout v4.3   # this get's you the last release
                          # skip this step to build the latest development
 			 # version
-$ qmake  # on Fedora you need qmake-qt5
+$ qmake SPECIAL_MARBLE_PREFIX=1  # on Fedora you need qmake-qt5
 $ make
 $ sudo make install    # [optionally, add: prefix=/usr/local]
 
