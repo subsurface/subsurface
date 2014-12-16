@@ -41,6 +41,11 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	needResetZoom(false),
 	editingDiveLocation(false)
 {
+#ifdef MARBLE_SUBSURFACE_BRANCH
+	// we need to make sure this gets called after the command line arguments have
+	// been processed but before we initialize the rest of Marble
+	Marble::MarbleDebug::setEnabled(verbose);
+#endif
 	// check if Google Sat Maps are installed
 	// if not, check if they are in a known location
 	MapThemeManager mtm;
@@ -85,7 +90,6 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	connect(fixZoomTimer, SIGNAL(timeout()), this, SLOT(fixZoom()));
 	fixZoomTimer->setSingleShot(true);
 	installEventFilter(this);
-	Marble::MarbleDebug::setEnabled(verbose);
 }
 
 bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
