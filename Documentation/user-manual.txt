@@ -154,22 +154,36 @@ open logbook, the user is asked whether the open logbook should be
 saved before a new logbook is created.
 
 [[S_GetInformation]]
-== How to store dive information in the user's logbook
+== Storing dive information in the logbook
 
-There are several ways in which dive information can be added to a logbook:
+Now that a new logbook was created, it is simple to add dive data to it.
+_Subsurface_ allows several ways of adding dive data to a logbook, detailed
+in the following sections.
 
-1. Enter dive information by hand. This is typically useful if the diver did not
-use a dive computer and dives were recorded in a written logbook.
+1) If the user has a handwritten divelog, a spreadsheet or another form of
+manually maintained divelog, dive data can be added to the logbook using
+one of these approaches:
 
-2. Import dive information directly from a dive computer if it is supported by
-_Subsurface_. The latest list of dive computers supported by _Subsurface_ can
-be found at:
-link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
-Supported dive computers].
+- Enter dive information by hand. This is useful if the diver did not
+use a dive computer and dives were recorded in a written logbook. See:
+xref:S_EnterData[Entering dive information by hand]
 
-3. Import dive information from another database or file format. If you
-have kept your dive logs with other log software, these logs can often
-be imported to subsurface. This is discussed in more detail below.
+- Import dive log information that has been maintained either as a spreadsheet
+or as a CSV file. Refer to: xref:S_ImportingManualCSV[Importing dives from
+manually created CSV files] and xref:_appendix_e_creating_a_csv_file_from_libreoffice_calc[APPENDIX E]
+
+2) If one has dives recorded using a dive computer, the depth profile of the
+dive and a large amount of additional information can be accessed. These dives
+can be imported from:
+
+- The divecomputer itself. See: xref:S_ImportDiveComputer[Importing new dive information from a Dive Computer] or
+
+- Proprietary software distributed by manufacturers of dive computers. Refer
+to: xref:S_ImportingAlienDiveLogs[Importing dive information from other digital data sources or other data formats].
+
+- Import from spreadsheet or CSV files containing dive profiles.
+See: xref:S_ImportingCSVDives[Importing dives in CSV format]
+
 
 [[S_EnterData]]
 === Entering dive information by hand
@@ -1076,31 +1090,13 @@ closed circuit rebreather (CCR) systems export dive information in a CSV
 formatted file that normally contains information for a single dive only. These
 files can easily be imported into _Subsurface_.
 CSV files are normally organised into
-a single line that provides the headers of the data columns, followed by the
-data, one record per line. CSV files can be opened with a normal text editor.
-Following is a highly simplified and shortened example of a CSV file from an
-APD rebreather:
+a single line that provides the headers (or _field names_) of the data columns, followed by the
+data, one record per line. CSV files can be opened with a normal text editor. For
+an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introduction To CSV Files].
+For information of how to export aspreadsheet in CSV format see xref:S_Appendix_D[APPENDIX D:
+Exporting a spreadsheet to CSV format].
 
-	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar)	pO₂ - C1 Cell
-1 (Bar)	Ambient temp. (Celsius)
-	0	0.0	0.70	0.81	13.1
-	0	1.2	0.70	0.71	13.1
-	0	0.0	0.70	0.71	13.1
-	0	1.2	0.70	0.71	13.2
-	0	1.2	0.70	0.71	13.1
-	10	1.6	0.70	0.72	12.7
-	20	1.6	0.70	0.71	12.6
-	30	1.7	0.70	0.71	12.6
-	40	1.8	0.70	0.68	12.5
-	50	1.6	0.70	0.68	12.5
-	60	2.4	0.70	0.69	12.5
-	70	3.5	0.70	0.69	12.4
-	80	4.2	0.70	0.72	12.5
-	90	4.0	0.70	0.71	12.4
-
-Note that each title may comprise more than one word; for instance
-'Dive Time (s)' in the above data example. Before being able to import the data
-to _Subsurface_ one first needs to know:
+Before being able to import the data to _Subsurface_ one needs to know:
 
 a. Which character separates the different columns within a single line of
 data? This field separator should be either a comma (,) or a TAB character.
@@ -1113,13 +1109,9 @@ in the above example).
 
 b. Which data columns need to be imported into _Subsurface_? The Dive Time and
 Depth columns are always required. Open the file using a text editor and note
-the titles of the columns to be imported and their column positions. For
-instance for the above example:
+the titles of the columns to be imported and their column positions.
 
-	Time:		column 1
-	Depth:		column 2
-	Temperature:	column 5
-	pO₂:		column 4
+c. Is the numeric information (e.g. dive depth) in metric or in imperial unis?
 
 Armed with this information, importing the data into _Subsurface_ is
 straightforward. Select
@@ -1130,67 +1122,135 @@ files with a CSV extension:
 
 image::images/Import_CSV1.jpg["FIGURE: CSV download dialogue",align="center"]
 
-
 There are pre-configured definitions for some dive computers, e.g. the APD
 rebreathers. If the user's dive computer is on this list, it should be selected
 using the dropdown
-box labeled _Pre-configured imports_. Select the button at the bottom right
-to indicate whether the dive data are in metric of imperial units.
-Finally _OK_ should be clicked and
-the dive will be imported and listed in the *Dive List* tab of _Subsurface_.
+box labeled _Pre-configured imports_.
 
 If the dive computer is not on the pre-configured list, the user must
 select the _Field
 Separator_ (TAB or comma) for the particular CSV file, using the appropriate
-dropdown list. and indicate which columns in the CSV file
-contain which data
-variables. For each data column used for import, the user must check the
+dropdown list. For each data column used for import, the user must check the
 appropriate check box
-and indicate in which column these data are found. For instance, the image above
-corresponds to the dialogue that would apply to the CSV data set described above
-the image. After completing the column specification, select the _OK_ button
-and the dive will be imported and listed in the *Dive List* tab of _Subsurface_.
+and indicate in which column these data are found.
+
+Finally _OK_ should be clicked and
+the dive(s) are imported and listed in the *Dive List* tab of _Subsurface_.
 
 
 [[S_ImportingManualCSV]]
-==== Importing dives from manually kept CSV file
+==== Importing dives from a manually kept CSV file or a spreadsheet
+
+[[S_CSV_Intro]]
+****
+*A Diver's Introduction To CSV Files*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+CSV is an abbreviation for a data file format: _Comma-Separated Variables_. It is a
+file format allowing someone to view or edit the information using a text editor such
+as Notebook (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
+the CSV format is that the data are easily editable as text without any proprietary software
+and ensuring all information is human-readable, not being obscured by the any custom or
+proprietary attributes that proprietary software insert into files.
+Because of its simplicity the CSV format is used
+as an interchange format between many software packages, e.g. between
+spreadsheet, statistical, graphics, database and diving software. Within _Subsurface_, CSV files can also
+be used to import information from other sources such as spreadsheet-based dive logs and
+even from some dive computers.
+
+CSV files can be created or edited with a normal text editor. The most important attribute of a
+CSV file is the _field separator_, the character used to separate fields within a single line. The
+field separator is frequently a comma, a colon, a SPACE character or a TAB character. When exporting data from
+spreadsheet software, the field separator needs to be specified in order to create the CSV file. CSV files are
+normally organised into a single line that provides the headers (or _field names_) of the data columns,
+followed by the data, one record per line. Note that each field name
+may comprise more than one word separated by spaces; for instance _Dive site_, below. Here is an example of
+dive information for four dives using a comma as a field separator:
+
+	Dive site,Dive date,Time,Dive_duration, Dive_depth,Dive buddy
+	Illovo Beach,2012-11-23,10:45,46:15,18.4,John Smith
+	Key Largo,2012-11-24,09:12,34:15,20.4,Jason McDonald
+	Wismar Baltic,2012-12-01,10:13,35:27,15.4,Dieter Albrecht
+	Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo
+
+In this format the data are not easily read by a human. Here is the same information in TAB-delimited format:
+
+	Dive site	Dive date	Time	Dive_duration	Dive_depth	Dive buddy
+	Illovo Beach	2012-11-23	10:45	46:15	18.4	John Smith
+	Key Largo	2012-11-24	09:12	34:15	20.4	Jason McDonald
+	Wismar Baltic	2012-12-01	10:13	35:27	15.4	Dieter Albrecht
+	Pulau Weh	2012-12-20	09:46	55:56	38.6	Karaeng Bontonompo
+
+It is clear why many people prefer the TAB-delimited format to the comma-delimited format. The
+disadvantage is that one cannot see
+the TAB characters. For instance, the space between _Dive_ and _date_ in the top line may be
+a SPACE character or a TAB character (in this case it is a SPACE character: the tabs are before and
+after _Dive date_). If the field names in the first line are long, the alignment with data in the other lines
+cannot be maintained. Here is a highly simplified and shortened TAB-delimited example of a CSV dive log
+from an APD closed-circuit rebreather (CCR) dive computer:
+
+	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar) 	pO₂ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
+	0       0.0     0.70    0.81    13.1
+	0       1.2     0.70    0.71    13.1
+	0       0.0     0.70    0.71    13.1
+	0       1.2     0.70    0.71    13.2
+	0       1.2     0.70    0.71    13.1
+	10      1.6     0.70    0.72    12.7
+	20      1.6     0.70    0.71    12.6
+	30      1.7     0.70    0.71    12.6
+	40      1.8     0.70    0.68    12.5
+
+CSV files can therefore be used in many contexts for importing data into a _Subsurface_ dive log.
+
+An important aspect of the CSV format required by _Subsurface_ is the _Column Mapping_. In the example
+from different dive sites above, each line of data is organised as follows:
+
+	Column 1:	Dive site (location)
+	Column 2:	Dive date
+	Column 3:	Dive time
+	Column 4:	Dive duration
+	Column 5:	Maximum dive depth (m)
+	Column 6:	Name of dive buddy
+
+_Subsurface_ requires the column number of each of these data items. For these data the
+column specification may look like this:
+
+image::images/CSV_column_definition.jpg["FIGURE: CSV column definition",align="center"]
+
+Knowledge of a few basic things about he content of the CSV file allows a smooth import
+of the dives into _Subsurface_.
+
+****
 
 If one keeps dive logs in a spreadsheet, there is an option to import
-those dives as well. Spreadsheet data, exported as a CSV file, can
-be imported to _Subsurface_. When importing manually
-kept log files, the information needed is quite different as we are
-importing only metadata, not profile samples.
+those dives, exported as a CSV file. See xref:S_Appendix_D[APPENDIX D:
+Exporting a spreadsheet to CSV format]
+for information of how to export a spreadsheet in CSV format.
+When importing manually kept log files into _Subsurface_, the information
+needed is quite different from that accessible using a dive computer, as we are
+importing only summary data, not depth profile samples.
 
-Similarly to importing dives in CSV format (see above), one needs to
-know the internal format
-of the CSV data to import.
+When importing dives in CSV format (see above), one needs to
+know the internal format of the CSV data to import.
 
 a. Which character separates the different columns within a single line of
-data? This
-should be either a comma (,), semicolon (;) or a TAB
-character, and could be determined by opening the file with a text
-editor. If it is comma-delimited, then the comma
-characters between the values are clearly visible. If no commas are evident and
-the data
-are in clear columns, the file
-is probably TAB-delimited (i.e. it uses a TAB as a field separator, as in the
-above example).
-A recommended field separator for the export is tab, as commas might be part of
-the
-field values themselves. Therefore the use of an appropriate field separator
-in very important.
+data?
+A recommended field separator for the export is TAB, as commas might be part of
+the decimal data values themselves. Therefore the use of an appropriate field separator
+is very important. When exporting data from a spreadsheet it is likely to
+request the user to supply an appropriate field separator character.
 
-b. Which columns need to be imported into _Subsurface_? We do not
-currently have any mandatory input fields, but some, e.g. dive duration
+b. Which columns need to be imported into _Subsurface_? Currently there
+are not any mandatory input fields, but some, e.g. dive duration
 are crucial for the log file to make any sense. Possible options
-can be seen in the image below and one should include all the
-fields available in both your log file and in the _Subsurface_
-import.
+can be seen in the image below and one should include as many as possible of the
+fields available in the original log file.
 
 c. Units used for depth, weight and temperature. We consider depth to be
 either feet or meters, weight kilograms or pounds and temperature either
 Celsius or Fahrenheit. However, the users can select _Metric_ or
-_Imperial_ in the _Preferences_ tab of _Subsurface_. No mixture of unit
+_Imperial_ in the *Preferences* tab of _Subsurface_. No mixture of unit
 systems is allowed for the different fields.
 
 Importing manually kept CSV log files is quite straight forward, but
@@ -1204,6 +1264,10 @@ _Manual dives_ tab that will bring up the following configuration dialog:
 
 image::images/Import_CSV2.jpg["FIGURE: Download dialog for Manual CSV logs",align="center"]
 
+Check the check boxes corresponding to the data in the original import file.
+For each of the checked data items, a corresponding column number needs to be
+entered. For instance in the image above, the name of the dive site (i.e. location)
+is located as the 11th item (or column) on each line of the CSV import file.
 The input fields can be configured as appropriate, and when everything is done
 the _OK_ button should be selected to perform the import. New dives should
 appear in the *Dive List* area of _Subsurface_.
@@ -3216,8 +3280,79 @@ button). Then do the following:
 2. Select the dives to export
 3. Click on the export button and select the filename
 
+[[S_Appendix_D]]
+== APPENDIX D: Exporting a spreadsheet to CSV format
 
-== APPENDIX D: FAQs.
+Many divers keep a diving log in some form of a digital file, commonly a spreadsheet
+with various fields of information. These logs can be easily imported into _Subsurface_
+(xref:S_ImportingManualCSV[Importing dives from_manually kept CSV file]), after the
+spreadsheet is converted in a .CSV file.
+This section explains the procedure to convert a diving logbook stored in a spreadsheet
+to a .CSV file that will later be imported from _Subsurface_.
+Creating a .CSV is a straightforward task, although the procedure is somewhat different
+according to which spreadsheet program is used.
+
+The first step is to organize the diving data in the spreadsheet, so that the first row
+contains the names (or titles) of each column and the information for each dive is stored in a single row.
+_Subsurface_ supports many data items (Dive #, Date,
+Time, Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight and Tags).
+The user can organize dive data following a few simple rules:
+
+1. Date: use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy
+2. Duration: the format should be minutes:seconds.
+3. Unit system: only one unit system shold be used (i.e., no mixture between imperial and metric units)
+4. Tags and buddies: values should be separated using a comma.
+5. GPS position: users must use decimal degrees, e.g. 30.22496 30.821798
+
+=== _LibreOffice Calc_ and _OpenOffice Calc_
+
+These are open source spreadsheet applications forming parts of larger open source office suite applications. The user interaction with _LibreOffice_ and _OpenOffice_ is very similar.
+In Libreoffice Calc the time format should be set to minutes:seconds - [mm]:ss and dates should be set to one of: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy. A typical dive log may look like this:
+
+image::images/LOffice_spreadsheetdata.jpg["FIGURE: Spreadsheet data",align="center"]
+
+To export the data as a .CSV file from within LibreOffice click _File -> Save As_. On the dialogue that comes up, select the _Text CSV (.csv)_ as the file type and select the option _Edit filter settings_.
+
+image::images/LOffice_save_as_options.jpg["FIGURE: Save as options",align="center"]
+
+After selecting _Save_, select the appropriate field delimiter (choose _Tab_ to prevent conflicts with the comma when using this as a decimal point), then select _OK_.
+
+image::images/LOffice_field_options.jpg["FIGURE: Field options",align="center"]
+
+One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCS[Importing dives from manually kept CSV files].
+
+=== Microsoft _Excel_
+
+The field delimiter (called "_list separator_" in Microsoft manuals) is not accessible
+from within _Excel_ and needs to be set through the _Microsoft Control Panel_. After changing the
+separator character, all software on the Windows machine use the new character as a separator.
+One can change the character back to the default character by following the same procedure, outlined below.
+
+- In Microsoft Windows, click the *Start* button, and then select _Control Panel_ from the list on the right-hand side.
+- Open the _Regional and Language Options_ dialog box.
+- Do one of the following:
+** In Windows 7, click the _Formats_ tab, and then click _Customize this format_.
+** In Windows XP, click the _Regional Options_ tab, and then click _Customize_.
+- Type a new separator in the _List separator_ box. To use a TAB-delimited file, type the word TAB in the box.
+- Click _OK_ twice.
+
+Below is an image of the _Control Panel_:
+
+image::images/Win_SaveCSV2.jpg["FIGURE: Win List separator",align="center"]
+
+To export the dive log in CSV format:
+
+With the dive log opened in _Excel_, select the round Windows button at the top left, then _Save As_.
+
+image::images/Win_SaveCSV1.jpg["FIGURE: Excel save as option",align="center"]
+
+Click on the left-hand part of the _Save as_ option, NOT on the arrow on the right-hand. This brings up a dialogue for saving the spreadsheet in an alternative format. From the dropdown list at the bottom of the dialogue, marked _Save as Type:_, select _CSV(Comma delimited) (*.CSV)_. Ensure that the appropriate folder has been selected to save the CSV file into.
+
+image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialogue",align="center"]
+
+Select the _Save_ button. The CSV-formatted file is saved into the folder that was selected. One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCS[Importing dives from manually kept CSV files].
+
+== APPENDIX E: FAQs.
 
 === Subsurface appears to miscalculate gas consumption and SAC
 [[SAC_CALCULATION]]
