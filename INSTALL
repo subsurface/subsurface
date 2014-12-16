@@ -136,7 +136,8 @@ $ cd subsurface
 $ cd git checkout v4.3   # this get's you the last release
                          # skip this step to build the latest development
 			 # version
-$ qmake SPECIAL_MARBLE_PREFIX=1  # on Fedora/OpenSUSE you need qmake-qt5
+$ qmake MARBLE_SUBSURFACE_BRANCH=1 SPECIAL_MARBLE_PREFIX=1
+# on Fedora/OpenSUSE you need qmake-qt5
 $ make
 $ sudo make install    # [optionally, add: prefix=/usr/local]
 
@@ -323,7 +324,7 @@ $ cd subsurface
 $ cd git checkout v4.3   # this get's you the last release
                          # skip this step to build the latest development
 			 # version
-$ packagin/windows/mingw-make.sh Qt5 SPECIAL_MARBLE_PREFIX=1  # on Fedora/OpenSUSE you need qmake-qt5
+$ packagin/windows/mingw-make.sh Qt5 MARBLE_SUBSURFACE_BRANCH=1 SPECIAL_MARBLE_PREFIX=1
 $ packaging/windows/mingw-make.sh install
 $ packaging/windows/mingw-make.sh installer
 
