@@ -140,10 +140,11 @@ $ qmake SPECIAL_MARBLE_PREFIX=1  # on Fedora/OpenSUSE you need qmake-qt5
 $ make
 $ sudo make install    # [optionally, add: prefix=/usr/local]
 
-At least on Fedora you need to make sure that /usr/local/lib is searched
-for shared libraries (this is where the steps above installed
-libdivecomputer and libmarblewidget in oder not to conflict with system
+At least on Fedora and OpenSUSE you need to make sure that /usr/local/lib
+is searched for shared libraries (this is where the steps above installed
+libdivecomputer and libmarblewidget in order not to conflict with system
 pacakges). So you need to do the following:
+
 $ sudo echo "/usr/local/lib" > /etc/ld.so.conf.d/local.conf
 $ sudo ldconfig
 
@@ -263,57 +264,88 @@ Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
 
 Subsurface builds nicely with MinGW - the official builds are done as
-cross builds under Linux (currently on Fedora 19). A shell script to do
+cross builds under Linux (currently on Fedora 20). A shell script to do
 that (plus the .nsi file to create the installer with makensis) are
 included in the packaging/windows directory.
+
+Everywhere below the mingw64- prefix is used for the cross tools. If you
+really need a 32bit binary you need to use mingw32- as prefix and you may
+also run into issues creating an installable binary with Qt5 (i.e., you
+may have to go back to Qt4).
 
 The best way to get libdivecomputer to build appears to be
 
 $ mkdir -p ~/src
-$ git clone git://git.libdivecomputer.org/libdivecomputer ~/src/libdivecomputer
-$ cd ~/src/libdivecomputer
-$ git checkout release-0.4
-$ mingw32-configure --disable-shared
-$ mingw32-make
-$ sudo mingw32-make install
+$ cd ~/src
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
+       # or -b Subsurface-testing to get the testing version - careful,
+       #                          careful - this gets rebased and may be broken
+
+$ cd libdivecomputer
+$ autoreconf --install
+$ mingw64-configure --disable-shared
+$ mingw64-make
+$ sudo mingw64-make install
 
 To compile Marble, use:
 
-$ mkdir -p ~/src/marble/build
-$ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
-$ cd ~/src/marble/build
-$ mingw32-cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE ../sources
- - or -
-$ mingw32-cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE ../sources
-$ mingw32-make -j4
-$ mingw32-make install
+$ cd ~/src
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/marble marble-source
+       # or -b Subsurface-testing to get the testing version - careful,
+       #                          careful - this gets rebased and may be broken
+
+$ mkdir marble-build
+$ cd marble-build
+$ mingg64-cmake -DQTONLY=ON -DQT5BUILD=ON \
+	-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
+	-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
+	-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
+	-DBUILD_WITH_DBUS=OFF ../marble-source
+$ mingw64-make # <- this step will take quite a while... if you have more cores
+               #    try ming64-make -j8 or something like that
+$ sudo mingw64-make install
+
 
 To compile libgit2, use:
 
 $ mkdir -p ~/src/libgit2/build
 $ git clone git://github.com/libgit2/libgit2 ~/src/libgit2
 $ cd ~/src/libgit2/build
-$ mingw32-cmake ..
-$ mingw32-cmake --build .
+$ mingw64-cmake ..
+$ mingw64-make
+$ sudo mingw64-make install
 
 To compile Subsurface, use:
 
-$ mkdir -p ~/src/subsurface
-$ git clone git://subsurface-divelog.org/subsurface.git ~/src/subsurface
-$ cd ~/src/subsurface
-$ packaging/windows/mingw-make.sh
+$ cd ~/src
+$ git clone git://subsurface-divelog.org/subsurface.git
+$ cd subsurface
+$ cd git checkout v4.3   # this get's you the last release
+                         # skip this step to build the latest development
+			 # version
+$ packagin/windows/mingw-make.sh Qt5 SPECIAL_MARBLE_PREFIX=1  # on Fedora/OpenSUSE you need qmake-qt5
 $ packaging/windows/mingw-make.sh install
 $ packaging/windows/mingw-make.sh installer
 
 The last step assumes that you have a link from packaging/windows/dll to
 the correct directory in your MinGW installation. On my machine that is
-/usr/i686-w64-mingw32/sys-root/mingw/bin
+/usr/i686-w64-mingw64/sys-root/mingw/bin
 Similarly, the paths used in packaging/windows/mingw-make.sh may need to
 be adjusted according to your distributions layout
+
+Also, at least one version of Qt DLLs shipping with Fedora was
+self-inconsistent at caused random crashes at startup. Unless you have
+good reasons to build your own binaries, on Windows you may be better off
+with the pre-compiled binaries we provide.
 
 
 Building Subsurface on Windows
 ------------------------------
+
+This is NOT RECOMMENDED. To the best of our knowledge there is one single
+person who regularly does this (and he provided these instructions). The
+Subsurface team does not provide support for Windows binary build from
+sources...
 
 1) Install msys-git:
 http://msysgit.github.io
