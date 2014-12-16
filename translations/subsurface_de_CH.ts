@@ -36,7 +36,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Tauchcomputerdetails erfolgreich gelesen</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1161"/>
         <source>Setpoint fallback</source>
-        <translation type="unfinished"/>
+        <translation>Standardsetpoint</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1184"/>
@@ -684,24 +684,24 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2122"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2207"/>
         <source>%O₂</source>
-        <translation type="unfinished"/>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1124"/>
         <source>O₂ in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ im Kalibrierungsgas</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1290"/>
@@ -952,7 +952,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="79"/>
@@ -1642,7 +1642,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="322"/>
         <source>Choose day, month and year order for date format. The field separator can be any of the characters .-/.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte Reihenfolge von Tag, Monat und Jahr im Datumsformat wählen. Das Trennzeichen kann eines aus .-/ sein.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="325"/>
@@ -1652,17 +1652,17 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="338"/>
         <source>dd.mm.yyyy</source>
-        <translation type="unfinished"/>
+        <translation>tt.mm.jjjj</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="343"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>mm/tt/jjjj</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="348"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>jjjj-mm-tt</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="363"/>
@@ -1673,7 +1673,7 @@
         <location filename="../qt-ui/divelogimportdialog.ui" line="397"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="410"/>
         <source>Date in dd.mm.yyyy, yyyy-mm-dd or mm/dd/yyyy format</source>
-        <translation type="unfinished"/>
+        <translation>Datum als tt.mm.jjjj, jjjj-mm-tt oder mm/tt/jjjj</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="400"/>
@@ -1684,7 +1684,7 @@
         <location filename="../qt-ui/divelogimportdialog.ui" line="471"/>
         <location filename="../qt-ui/divelogimportdialog.ui" line="484"/>
         <source>Dive duration in seconds or in min:sec format</source>
-        <translation type="unfinished"/>
+        <translation>Tauchgangsdauer in Sekunden oder als min:sec</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="474"/>
@@ -1694,7 +1694,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="545"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="562"/>
@@ -2622,7 +2622,7 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="99"/>
         <source>Add weight system</source>
-        <translation type="unfinished"/>
+        <translation>Gewicht hinzufügen</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="262"/>
@@ -2758,7 +2758,7 @@ den folgenden Gasen gemischt werden:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="627"/>
         <source>Export dive logs</source>
-        <translation type="unfinished"/>
+        <translation>Logbücher exportieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="682"/>
@@ -3047,12 +3047,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="658"/>
         <source>Toggle pO₂ graph</source>
-        <translation type="unfinished"/>
+        <translation>pO₂-Plot umschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="670"/>
         <source>Toggle pN₂ graph</source>
-        <translation type="unfinished"/>
+        <translation>pN₂-Plot umschalten</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="814"/>
@@ -3551,7 +3551,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="837"/>
         <source>Proxy type</source>
-        <translation>Proxy Typ</translation>
+        <translation>Proxy-Typ</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="850"/>
@@ -3646,7 +3646,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="525"/>
         <source>lbs</source>
-        <translation>US Pfund</translation>
+        <translation>US-Pfund</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="540"/>
@@ -3671,7 +3671,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="776"/>
         <source>GFLow at max depth</source>
-        <translation>GF low bei maximaler Tiefe anwenden</translation>
+        <translation>GF niedrig bei maximaler Tiefe anwenden</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="736"/>
@@ -3726,12 +3726,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/preferences.ui" line="742"/>
         <source>GFLow</source>
-        <translation>GF low</translation>
+        <translation>GF niedrig</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="759"/>
         <source>GFHigh</source>
-        <translation>GF high</translation>
+        <translation>GF hoch</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="23"/>
@@ -3986,7 +3986,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="605"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation type="unfinished"/>
+        <translation>Null-/Auftauchzeitberechnung wegen Zeitüberschreitung abgebrochen</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1104"/>
@@ -4011,7 +4011,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1131"/>
         <source>Add set-point change</source>
-        <translation type="unfinished"/>
+        <translation>Set-Point-Wechsel hinzufügen</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1133"/>
@@ -4037,7 +4037,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1178"/>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1185"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
-        <translation type="unfinished"/>
+        <translation>Druck in Flasche %1 (momentan zu %2 interpoliert)</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1200"/>
@@ -4246,7 +4246,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
         <source>New set-point (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Neuer Set-Point (0 für offenes System)</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
@@ -4475,7 +4475,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="144"/>
         <source>Empty tags</source>
-        <translation type="unfinished"/>
+        <translation>Leere Tags</translation>
     </message>
 </context>
 <context>
@@ -4537,17 +4537,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="59"/>
         <source>You are using the latest version of Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Dies ist die neuste Subsurfaceversion.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="61"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Es gibt eine neue Subsurface-Version.&lt;br/&gt;Klick hier:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; zum Download.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="68"/>
         <source>A new version of Subsurface is available.</source>
-        <translation type="unfinished"/>
+        <translation>Es gibt eine neue Version von Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="69"/>
@@ -5027,7 +5027,7 @@ Durchschnitt</translation>
         <location filename="../file.c" line="368"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation type="unfinished"/>
+        <translation>Kann CSV-Datei %s nicht öffnen; bitte verwenden Sie den Dialog Protokolldatei importieren</translation>
     </message>
     <message>
         <location filename="../file.c" line="582"/>
@@ -5037,22 +5037,22 @@ Durchschnitt</translation>
     <message>
         <location filename="../file.c" line="611"/>
         <source>Mouth piece position OC</source>
-        <translation type="unfinished"/>
+        <translation>Mundstücksposition offenes System</translation>
     </message>
     <message>
         <location filename="../file.c" line="615"/>
         <source>Mouth piece position CC</source>
-        <translation type="unfinished"/>
+        <translation>Mundstücksposition geschlossenes System</translation>
     </message>
     <message>
         <location filename="../file.c" line="619"/>
         <source>Mouth piece position unknown</source>
-        <translation type="unfinished"/>
+        <translation>Mundstücksposition unbekannt</translation>
     </message>
     <message>
         <location filename="../file.c" line="623"/>
         <source>Mouth piece position not connected</source>
-        <translation type="unfinished"/>
+        <translation>Mundstücksposition nicht angeschlossen</translation>
     </message>
     <message>
         <location filename="../file.c" line="629"/>
@@ -5062,13 +5062,13 @@ Durchschnitt</translation>
     <message>
         <location filename="../file.c" line="689"/>
         <source>O₂ calibration failed</source>
-        <translation type="unfinished"/>
+        <translation>O₂-Kalibrierung fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../file.c" line="691"/>
         <location filename="../file.c" line="700"/>
         <source>O₂ calibration</source>
-        <translation type="unfinished"/>
+        <translation>O₂-Kalibrierung</translation>
     </message>
     <message>
         <location filename="../file.c" line="768"/>
@@ -5446,7 +5446,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="540"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
-        <translation>basierend auf GFlow = %d und GFhigh = %d</translation>
+        <translation>basierend auf GF niedrig = %d und GF hoch = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="543"/>
@@ -5476,7 +5476,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="593"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation type="unfinished"/>
+        <translation>Auf-/Abstieg bis %.*f %s in %d:%02d min - Runtime %d:%02u mit %s (Setpoint = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="601"/>
@@ -5486,7 +5486,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="614"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation type="unfinished"/>
+        <translation>Auf %.*f %s bleiben für %d:%02d min - Runtime %d:%02u mit %s (Setpoint = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="621"/>
@@ -5565,12 +5565,12 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="732"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation>%.0f%s/%.0f%s %s (%.0f%s/%.0f%s während geplantem Aufstieg)</translation>
+        <translation>%.0f%s/%.0f%s %s (%.0f%s/%.0f%s im berechneten Aufstieg)</translation>
     </message>
     <message>
         <location filename="../planner.c" line="734"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
-        <translation>%.0f%s (%.0f%s während des geplanten Aufstiegs) von %s</translation>
+        <translation>%.0f%s (%.0f%s im berechneten Aufstiegs) von %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="749"/>
@@ -6195,7 +6195,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="853"/>
         <source>Initialise communication</source>
-        <translation type="unfinished"/>
+        <translation>Kommunikation einleiten</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="855"/>
@@ -6210,72 +6210,72 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../uemis.c" line="196"/>
         <source>Safety stop violation</source>
-        <translation type="unfinished"/>
+        <translation>Sicherheitsstopp verletzt</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="198"/>
         <source>Speed alarm</source>
-        <translation type="unfinished"/>
+        <translation>Geschwindigkeitsalarm</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>
         <source>Speed warning</source>
-        <translation type="unfinished"/>
+        <translation>Geschwindigkeitswarnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="203"/>
         <source>pO₂ green warning</source>
-        <translation type="unfinished"/>
+        <translation>Warnung: pO₂ Grün</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="206"/>
         <source>pO₂ ascend warning</source>
-        <translation type="unfinished"/>
+        <translation>pO₂-Aufstiegswarnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="208"/>
         <source>pO₂ ascend alarm</source>
-        <translation type="unfinished"/>
+        <translation>pO₂-Aufstiegsalarm</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="212"/>
         <source>Tank pressure info</source>
-        <translation type="unfinished"/>
+        <translation>Flaschendruckinformation</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="214"/>
         <source>RGT warning</source>
-        <translation type="unfinished"/>
+        <translation>Gasmengenwarnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="216"/>
         <source>RGT alert</source>
-        <translation type="unfinished"/>
+        <translation>Gasmengenalarm</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="218"/>
         <source>Tank change suggested</source>
-        <translation type="unfinished"/>
+        <translation>Flaschenwechsel vorgeschlagen</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="220"/>
         <source>Depth limit exceeded</source>
-        <translation type="unfinished"/>
+        <translation>Tiefenbegrenzung überschritten</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="222"/>
         <source>Max deco time warning</source>
-        <translation type="unfinished"/>
+        <translation>Maximale Dekozeit-Warnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="224"/>
         <source>Dive time info</source>
-        <translation type="unfinished"/>
+        <translation>Grundzeitsinformation</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="226"/>
         <source>Dive time alert</source>
-        <translation type="unfinished"/>
+        <translation>Grundzeitswarnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="228"/>
@@ -6285,17 +6285,17 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../uemis.c" line="230"/>
         <source>No tank data</source>
-        <translation type="unfinished"/>
+        <translation>Keine Flaschendaten</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="232"/>
         <source>Low battery warning</source>
-        <translation type="unfinished"/>
+        <translation>Batteriewarnung</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="234"/>
         <source>Low battery alert</source>
-        <translation type="unfinished"/>
+        <translation>Batteriealarm</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="434"/>
@@ -6447,7 +6447,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../save-html.c" line="484"/>
         <source>Min. depth</source>
-        <translation type="unfinished"/>
+        <translation>Min. Tiefe</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="485"/>
@@ -6457,27 +6457,27 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../save-html.c" line="487"/>
         <source>Min. SAC</source>
-        <translation type="unfinished"/>
+        <translation>Min. SAC</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="488"/>
         <source>Max. SAC</source>
-        <translation type="unfinished"/>
+        <translation>Max. SAC</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="489"/>
         <source>Average temp.</source>
-        <translation type="unfinished"/>
+        <translation>Durchschnittstemp.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="490"/>
         <source>Min. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Min. Temp.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="491"/>
         <source>Max. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Max. Temp.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="492"/>
@@ -6593,17 +6593,17 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max. depth:</source>
-        <translation type="unfinished"/>
+        <translation>Max. Tiefe:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
         <source>Air temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Lufttemp.:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="48"/>
         <source>Water temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Wassertemp.:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
@@ -6689,7 +6689,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>GF low</source>
-        <translation>GF low</translation>
+        <translation>GF niedrig</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="275"/>
@@ -6700,7 +6700,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
         <source>GF high</source>
-        <translation>GF high</translation>
+        <translation>GF hoch</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="308"/>
@@ -6771,7 +6771,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="528"/>
         <source>Verbatim dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Ausführlicher Tauchplan</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="387"/>
@@ -6807,7 +6807,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="518"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation>Zeige Aufstiege im Tauchplen oder behandle sie als Implizit</translation>
+        <translation>Zeige Aufstiege im Tauchplen oder behandle sie als implizit</translation>
     </message>
 </context>
 </TS>

@@ -4559,12 +4559,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="75"/>
         <source>Newest release version is </source>
-        <translation>Najnowsza wersja to</translation>
+        <translation>Najnowsza wersja to </translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="76"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation>Wystapił błąd podczas sprawdzania dostępności aktualizaji.&lt;br/&gt;&lt;br/&gt;%1</translation>
+        <translation>Wystąpił błąd podczas sprawdzania dostępności aktualizacji.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>
@@ -4724,7 +4724,7 @@ Architektura OS CPU: %1</translation>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="137"/>
         <source>There was an error while trying to check for updates.&lt;br/&gt;&lt;br/&gt;%1</source>
-        <translation>Wystapił błąd podczas sprawdzania dostępności aktualizaji.&lt;br/&gt;&lt;br/&gt;%1</translation>
+        <translation>Wystąpił błąd podczas sprawdzania dostępności aktualizacji.&lt;br/&gt;&lt;br/&gt;%1</translation>
     </message>
 </context>
 <context>

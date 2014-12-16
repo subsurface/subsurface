@@ -587,7 +587,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1086"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2282"/>
         <source>Set point [cbar]</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un point [cbar]</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1091"/>
@@ -644,7 +644,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2323"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2339"/>
         <source> cbar</source>
-        <translation type="unfinished"/>
+        <translation>cbar</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
@@ -2332,7 +2332,7 @@
     <message>
         <location filename="../qt-ui/listfilter.ui" line="22"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="32"/>
@@ -5050,12 +5050,12 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="619"/>
         <source>Mouth piece position unknown</source>
-        <translation type="unfinished"/>
+        <translation>Embout de position inconnu</translation>
     </message>
     <message>
         <location filename="../file.c" line="623"/>
         <source>Mouth piece position not connected</source>
-        <translation type="unfinished"/>
+        <translation>Embout de position non connecté</translation>
     </message>
     <message>
         <location filename="../file.c" line="629"/>
@@ -5076,7 +5076,7 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="768"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Pas trouvé d&apos;ordinateur de plongée pour le fichier &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="852"/>
@@ -6476,7 +6476,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../save-html.c" line="490"/>
         <source>Min. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp. min.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="491"/>
