@@ -50,7 +50,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QRadioButton" name="tech">
+  <widget class="QCheckBox" name="tech">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -62,11 +62,8 @@
    <property name="text">
     <string>Technical Diver</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">diverButtonGroup</string>
-   </attribute>
   </widget>
-  <widget class="QRadioButton" name="recreational">
+  <widget class="QCheckBox" name="recreational">
    <property name="geometry">
     <rect>
      <x>180</x>
@@ -78,11 +75,8 @@
    <property name="text">
     <string>Recreational Diver</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">diverButtonGroup</string>
-   </attribute>
   </widget>
-  <widget class="QRadioButton" name="planning">
+  <widget class="QCheckBox" name="planning">
    <property name="geometry">
     <rect>
      <x>380</x>
@@ -94,9 +88,6 @@
    <property name="text">
     <string>Dive Planner</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">diverButtonGroup</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="download">
    <property name="geometry">
@@ -301,7 +292,4 @@
  </tabstops>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="diverButtonGroup"/>
- </buttongroups>
 </ui>
