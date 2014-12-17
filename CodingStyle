@@ -110,6 +110,37 @@ Basic rules
   in C++ we are a bit less strict about this - but still, try not to go
   crazy.
 
+- text strings
+  The default language of subsurface is US English so please use US English
+  spelling and terminology.
+  Where at all possible strings should be passed to the tr() function to enable
+  translation into other languages.
+
+  -- like this
+	QString msgTitle = tr("Submit user survey.");
+
+  -- rather than
+	QString msgTitle = "Submit user survey.";
+
+
+- UI text style
+  These guidleines are designed to ensure consitency in presentation within
+  Subsurface.
+  Only the first word of multi-word text strings should be captalized unless
+  a word would normally be capitalized mid-sentance, like Africa. This applies
+  to all UI text including menus, menu items, tool-tips, button text and label
+  text etc. e.g. "Check for updates" rather than "Check for Updates".
+  We also captialize Subsurface (NOTE: not SubSurface) when referring to the
+  application itself.
+  Abbreviations should end with a period, e.g. "temp." not "temp" for
+  temperature
+  Numerals in chemical formulae should use subscript characters e.g. O₂ not O2
+  Partial pressures in Subsurface are, by convention, abbreviated with a single
+  "p" rather than 2, as in pO₂ not ppO₂
+  Where more than one term exists for something, please choose the one already
+  in use within Subsurface e.g. Cylinder vs. Tank.
+
+
 Sample Settings
 ===============
 
