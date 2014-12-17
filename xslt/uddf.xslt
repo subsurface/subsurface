@@ -247,13 +247,6 @@
         </xsl:if>
       </temperature>
 
-
-      <divecomputer deviceid="ffffffff">
-        <xsl:attribute name="model">
-          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
-        </xsl:attribute>
-      </divecomputer>
-
       <xsl:if test="equipment_used/tank_used != ''">
         <xsl:for-each select="equipment_used/tank_used">
           <cylinder>
@@ -317,6 +310,12 @@
           </xsl:if>
         </cylinder>
       </xsl:for-each>
+
+
+      <divecomputer deviceid="ffffffff">
+        <xsl:attribute name="model">
+          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
+        </xsl:attribute>
 
       <depth>
         <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
@@ -542,6 +541,7 @@
           </xsl:if>
         </sample>
       </xsl:for-each>
+      </divecomputer>
     </dive>
   </xsl:template>
 
