@@ -278,6 +278,21 @@
         </xsl:for-each>
       </xsl:if>
 
+      <xsl:if test="/uddf/gasdefinitions != ''">
+        <xsl:for-each select="/uddf/gasdefinitions/mix">
+          <cylinder description="{name}">
+            <xsl:attribute name="o2">
+              <xsl:value-of select="concat(o2 * 100, '%')"/>
+            </xsl:attribute>
+            <xsl:if test="he &gt; 0">
+              <xsl:attribute name="he">
+                <xsl:value-of select="concat(he * 100, '%')"/>
+              </xsl:attribute>
+            </xsl:if>
+          </cylinder>
+        </xsl:for-each>
+      </xsl:if>
+
       <xsl:for-each select="tankdata|u:tankdata|u1:tankdata">
         <cylinder>
           <xsl:variable name="gas">
