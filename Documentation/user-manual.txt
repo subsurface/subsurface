@@ -169,8 +169,8 @@ use a dive computer and dives were recorded in a written logbook. See:
 xref:S_EnterData[Entering dive information by hand]
 
 - Import dive log information that has been maintained either as a spreadsheet
-or as a CSV file. Refer to: xref:S_ImportingManualCSV[Importing dives from
-manually created CSV files] and xref:_appendix_e_creating_a_csv_file_from_libreoffice_calc[APPENDIX E]
+or as a CSV file. Refer to: xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet to CSV format]
+and the text about xref:S_ImportingManualCSV[Importing dives from manually created CSV files] and
 
 2) If one has dives recorded using a dive computer, the depth profile of the
 dive and a large amount of additional information can be accessed. These dives
@@ -182,7 +182,7 @@ can be imported from:
 to: xref:S_ImportingAlienDiveLogs[Importing dive information from other digital data sources or other data formats].
 
 - Import from spreadsheet or CSV files containing dive profiles.
-See: xref:S_ImportingCSVDives[Importing dives in CSV format]
+See: xref:S_ImportingCSVDives[Importing dives in CSV format from dive computers or other dive log software]
 
 
 [[S_EnterData]]
@@ -209,7 +209,11 @@ displayed in all the panels under Dive notes and Equipment when in *Editing Mode
 
 image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
 
-The _Save_ button should only be selected after all the parts of a dive have been entered. When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed before saving the information. By selecting the _Save_ button, a local copy of the information for this specific dive is saved in memory. When one closes Subsurface, the program will ask again, this time whether the complete dive log should be saved on disk or not.
+The _Save_ button should only be selected after all the parts of a dive have been entered.
+When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed
+before saving the information. By selecting the _Save_ button, a local copy of the information
+for this specific dive is saved in memory. When one closes Subsurface, the program will
+ask again, this time whether the complete dive log should be saved on disk or not.
 
 ==== Dive Notes
 
@@ -890,7 +894,8 @@ typed into the *Dive Notes* and *Equipment* tabs. Then, from the main menu, sele
 A box is presented with a selection of check boxes for most of the fields in the *Dive Notes* and *Equipment* tabs.
 Select the fields to be copied from the currently selected dive, then select _OK_. Now, in the *Dive List*,
 select the dives
-into which this information is to be pasted. Then, from the main menu, select _Log -> Paste dive components_. All the selected dives now contain the data initially selected in the original source dive log.
+into which this information is to be pasted. Then, from the main menu, select _Log -> Paste dive components_.
+All the selected dives now contain the data initially selected in the original source dive log.
 
 ==== Adding Bookmarks to a dive
 
@@ -1083,16 +1088,16 @@ image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 [[S_ImportingCSVData]]
 ==== Importing data in CSV format
 
-A comma-separated file (.csv) can be used to import dive information either as dive profiles (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive metadata (in case the user keeps dive data in a spreadsheet).
+A comma-separated file (.csv) can be used to import dive information either as dive profiles (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive metadata (in case the user keeps dive data in a spreadsheet). For
+an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introduction To CSV Files].
 
 [[S_ImportingCSVDives]]
-===== Importing dives in CSV format
+===== Importing dives in CSV format from dive computers or other dive log software
 
 CSV files are normally organised into
 a single line that provides the headers (or _field names_) of the data columns, followed by the
-data, one record per line. CSV files can be opened with a normal text editor. For
-an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introduction To CSV Files].
-For information of how to export aspreadsheet in CSV format see xref:S_Appendix_D[APPENDIX D:
+data, one record per line. CSV files can be opened with a normal text editor.
+For information of how to export a spreadsheet in CSV format see xref:S_Appendix_D[APPENDIX D:
 Exporting a spreadsheet to CSV format].
 
 Before being able to import the data to _Subsurface_ one needs to know:
@@ -1882,14 +1887,14 @@ Bookmarks or Gas Change Event markers or manual CCR set-point changes other than
 imported from a Dive Computer. Markers are placed against the depth profile line
 and with the time of the event set by where the mouse cursor was when the right
 mouse button was initially clicked to bring up the menu. Gas Change events
-open a further selection of which gas is being switched to, the list based on
+involve a selection of which gas is being switched to, the list of choices being based on
 the available gases defined in the Equipment Tab. Set-point change
 events open a dialog allowing to choose the next set-point value. As
 in the planner, a set-point value of zero indicates the diver is
 breathing from an open circuit system while any non-zero value
-indicates the use of a closed circuit reprether (CCR).
+indicates the use of a closed circuit rebreather (CCR).
 By right-clicking while over
-an existing marker, the menu extends adding options to allow deletion of the
+an existing marker a menu appears, adding options to allow deletion of the
 marker or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.
 
@@ -2047,7 +2052,7 @@ The context menu is used in many manipulations described below.
 
 ==== Customising the information showed in the *Dive List* panel
 
-image::images/DiveListOptions.jpg["Example: Dive list info options",align="left"]
+image::images/DiveListOptions.jpg["Example: Dive list info options",align="center"]
 
 The default information in the *Dive List* includes, for each dive, Dive_number, Date, Rating, Dive_depth,
 Dive_duration and Dive_location. This information can be controlled and changed by right-clicking on the
@@ -2591,7 +2596,7 @@ planning.
 
 The planning is performed in three stages:
 
-- *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
+*a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
@@ -2615,7 +2620,7 @@ is activated, then the descent phase of the planned dive will be at the maximal 
 in the _Rates_ section of the dive setup.
 
 
-- *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
+*b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
 pressure for oxygen needs to be specified for the
 bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
 The most commonly
@@ -2625,7 +2630,7 @@ _Available Gases_ dialog. Normally the planner decides on switching to a new gas
 ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
 
-- *c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
+*c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
 cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in
@@ -2639,7 +2644,7 @@ if one exceeds the total amount of gas available. Good practice demands that one
 the limit of the gas supply but that an appropriate reserve is kept for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 
-- Now (at last) one can start the detailed time-depth planning of the dive. _Subsurface_ offers a unique
+Now (at last) one can start the detailed time-depth planning of the dive. _Subsurface_ offers a unique
 graphical interface for performing this part of the planning. The mechanics of doing this is
 similar to hand-entering a dive profile in the dive log part of _Subsurface_. Upon activating the
 planner, a default dive of depth 15 m for 40 min is offered in the green design surface to the top
@@ -2650,7 +2655,7 @@ the depth and duration of the dive.
 If any of the management limits (for nitrogen, oxygen or gas) is exceeded, the surface
 above the dive profile changes from BLUE to RED.
 
-- Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
+Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
 left of the dive planner panel. Ensure that the _Used Gas_ value in each row
 of that table corresponds to one of the gas mixtures specified in the table with
 _Available Gases_ immediately above the Dive Planner Points. Add new waypoints
@@ -2658,15 +2663,12 @@ until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
 waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
 computes additional way points in order to fulfil decompression requirements for that
-dive.
-
-- A waypoint can be moved by selecting that waypoint and by using the arrow keys.
-
-- The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
+dive. A waypoint can be moved by selecting that waypoint and by using the arrow keys.
+The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
 order to obtain a precise presentation of the dive plan. In fact, one can create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
 
-- Indicate any changes in gas cylinder used by indicating gas changes as explained
+Indicate any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
 If two or more gases are used, automatic gas switches will be suggested during the ascent to
@@ -2674,15 +2676,14 @@ the surface. However, these changes can be deleted by right-clicking the gas cha
 manually creating a gas change by right-clicking on the appropriate
 waypoint.
 
-- By entering a non-zero value in the "CC set point" column of the
-  dive planner points table that segment is assumed to use a closed
-  circuit rebreather (CCR) with the given set-point for oxygen partial
-  pressure. If the last manually entered segment is such a CCR
-  segment, the decompression phase is also computed assuming the diver
-  uses a CCR with the same set-point. If the last segment (however
-  short) is on open circuit (OC) indicated by a zero set-point the
-  decompression is comuted in OC mode. The planner only considers gas
-  changes in OC mode.
+A non-zero value in the "CC set point" column of the table of dive planner points
+indicates a valid setpoint for oxygen partial pressure and that the segment
+is dived using a closed circuit rebreather (CCR). If the last manually entered
+segment is a CCR segment, the decompression phase is computed assuming the diver
+uses a CCR with the specified set-point. If the last segment (however
+short) is on open circuit (OC, indicated by a zero set-point) the
+decompression is computed in OC mode. The planner only considers gas
+changes in OC mode.
 
 Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
 and using the settings as described above.
@@ -2721,7 +2722,7 @@ In addition there is the option "Save new". This keeps the original
 planned dive and adds a (possibly modified) copy to the dive list. If
 that copy is saved with the same start time as the original, the two
 dives are considered two versions of the same dive and do not
-influence each others decompression calculation (see next section).
+influence other each during decompression calculation (see next section).
 
 === Planning for repetitive dives
 
