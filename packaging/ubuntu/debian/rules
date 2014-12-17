@@ -35,7 +35,7 @@ override_dh_auto_configure:
 
 override_dh_installchangelogs:
 	dh_installchangelogs
-	dh_installchangelogs ReleaseNotes.txt 
+	dh_installchangelogs ReleaseNotes/ReleaseNotes.txt
 	txt2html Documentation/user-manual.txt > Documentation/user-manual.html
 	mkdir -p debian/subsurface/usr/share/doc/subsurface
 	cp Documentation/user-manual.txt debian/subsurface/usr/share/doc/subsurface/
