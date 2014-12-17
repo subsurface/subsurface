@@ -18,7 +18,9 @@
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
 #include <marble/GeoDataLineString.h>
+#ifdef MARBLE_SUBSURFACE_BRANCH
 #include <marble/MarbleDebug.h>
+#endif
 #if INCOMPLETE_MARBLE
 #include "marble/GeoDataTreeModel.h"
 #else
