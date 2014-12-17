@@ -57,7 +57,7 @@ We added support for several new dive computers including the Suunto EON
 Steel, Aeris A300 CD, and Aeris F11.
 
 _Subsurface_ can now import dive logs from Liquivision and Cochran software
-as well as the new Suuntu DM5.
+as well as the new Suunto DM5.
 
 We made many improvements for UDDF and CSV import, UDDF export now
 complies with the latest version of the standard.
