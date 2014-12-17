@@ -14,13 +14,14 @@ _Subsurface_ can be found at: http://_Subsurface_-divelog.org
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-_Subsurface_ now supports flexible filtering of the dive list. One can
+_Subsurface_ now supports flexible filtering of the dive list. When the filter
+is opened,one can
 specify a combination of different criteria like tags, people who were on
 the dive, dive site, suit, etc. While filtering one can see how many dives
 match any of the criteria, and how many dives match the combination of the
-selected criteria (see image below)
+selected criteria (see the panel below the main menu in the image below)
 
-image::images/V4.3_Filter.jpg["Filter panel",align="center"]
+image::images/V4.3_Subsurface_filter.jpg["Subsurface panel",align="center"]
 
 When editing a dive, one can now copy information about a dive
 and paste it into one or more other dives. This makes it easy to add the
@@ -102,7 +103,7 @@ image::images/V4.3_CCR.jpg["CCR dive profile",align="center"]
   until after a restart
 
 _Subsurface_ 4.2
---------------
+----------------
 
 The _Subsurface_ developer team is proud to announce the release of the
 next update of _Subsurface_.
