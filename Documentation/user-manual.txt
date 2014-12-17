@@ -1878,12 +1878,17 @@ during the dive. For more information external to this manual see:
 
 The context menu for the Dive Profile is accessed by right-clicking while the
 mouse cursor is over the Dive Profile panel. The menu allows the creation of
-Bookmarks or Gas Change Event markers other than the ones that might have been
+Bookmarks or Gas Change Event markers or manual CCR set-point changes other than the ones that might have been
 imported from a Dive Computer. Markers are placed against the depth profile line
 and with the time of the event set by where the mouse cursor was when the right
 mouse button was initially clicked to bring up the menu. Gas Change events
 open a further selection of which gas is being switched to, the list based on
-the available gases defined in the Equipment Tab. By right-clicking while over
+the available gases defined in the Equipment Tab. Set-point change
+events open a dialog allowing to choose the next set-point value. As
+in the planner, a set-point value of zero indicates the diver is
+breathing from an open circuit system while any non-zero value
+indicates the use of a closed circuit reprether (CCR).
+By right-clicking while over
 an existing marker, the menu extends adding options to allow deletion of the
 marker or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.
@@ -2666,7 +2671,18 @@ in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes s
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
 If two or more gases are used, automatic gas switches will be suggested during the ascent to
 the surface. However, these changes can be deleted by right-clicking the gas change and by
-manually creating a gas change by right-clicking on the appropriate waypoint.
+manually creating a gas change by right-clicking on the appropriate
+waypoint.
+
+- By entering a non-zero value in the "CC set point" column of the
+  dive planner points table that segment is assumed to use a closed
+  circuit rebreather (CCR) with the given set-point for oxygen partial
+  pressure. If the last manually entered segment is such a CCR
+  segment, the decompression phase is also computed assuming the diver
+  uses a CCR with the same set-point. If the last segment (however
+  short) is on open circuit (OC) indicated by a zero set-point the
+  decompression is comuted in OC mode. The planner only considers gas
+  changes in OC mode.
 
 Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
 and using the settings as described above.
@@ -2701,6 +2717,12 @@ To perform changes to a dive plan, select it on the *Dive List*. Then, in the ma
 select _Log -> Re-plan dive_. This will open the selected dive plan within the dive planner,
 allowing changes to be made and saved as usual.
 
+In addition there is the option "Save new". This keeps the original
+planned dive and adds a (possibly modified) copy to the dive list. If
+that copy is saved with the same start time as the original, the two
+dives are considered two versions of the same dive and do not
+influence each others decompression calculation (see next section).
+
 === Planning for repetitive dives
 
 Repetitive dives can easily be planned if the dates and start times of the
@@ -2733,7 +2755,8 @@ the _Print_ button in the dive planner. This prints the dive details and gas cal
 in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
 represented in a way very similar to a dive log and the gas calculations cannot be
 accessed in the same way as during the planning process. The only way to print the
-dive plan is to use the _File->Print_ facility on the main menu in the same way as for dive logs.
+dive plan is to use the _File->Print_ facility on the main menu in the
+same way as for dive logs or by copy and paste to a word processor.
 
 [[S_Configure]]
 == Configuring a dive computer
