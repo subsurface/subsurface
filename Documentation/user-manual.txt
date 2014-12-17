@@ -3430,33 +3430,3 @@ It's even more noticeable if you do things like divemastering the initial OW div
 you may stay in the water for a long time, but spend most of it at the surface. And then
 you don't want that to count as some kind of long dive”.
 
-== APPENDIX E: Creating a .CSV file from Libreoffice Calc.
-
-Many divers keep a diving log in some form of a digital file, commonly a spreadsheet with various fields of information. These logs can be easily imported into _Subsurface_ (xref:S_ImportingManualCSV[Importing dives from_manually kept CSV file]), after the spreadsheet is converted in a .CSV file.
-This section explains the procedure to convert a diving logbook stored in a spreadsheet to a .CSV file that will later be imported from _Subsurface_.
-Creating a .CSV is a straightforward task, although the procedure will somewhat be different according to which spreadsheet program is used.
-In this example, Libreoffice Calc will be used, but the procedure should be the same in OpenOffice. The procedure for Microsoft Excel users should also be similar.
-
-=== Organize data on the spreadsheet
-The first step is to organize the diving data on the spreadsheet, so that the first row contains the names of each field and all each dive is stored on a single row.
-_Subsurface_ does not require any particular fields, but supports several (Dive #, Date, Time, Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight and Tags).
-The user can organize diving metadata according to a few simple rules:
-
-1. Date: the users should use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy
-2. Duration: the format should be minutes:seconds. In Libreoffice Calc this should be: [mm]:ss
-3. Unit system: only one unit system shold be used (i.e., no mixture between imperial and metric units)
-4. Tags and buddies: values should be separated with a “,”
-5. GPS position: users must use decimal degrees, e.g. 30.22496 30.821798
-
-image::images/spreadsheetdata.jpg["FIGURE: Spreadsheet data",align="center"]
-
-=== Creating the .CSV file
-When the data is organized on the spreadsheet, it's time to export it as .CSV file. In order to do that, user must click _File_ and _Save As_. On the dialogue that comes up, select the “_Text CSV (.csv)_” as the file type and select the option “_Edit filter settings_”.
-
-image::images/save_as_options.jpg["FIGURE: Save as options",align="center"]
-
-After clicking _Save_, select the appropriate field delimiter (choose {Tab} to prevent conflicts with the “comma”) and select _OK_.
-
-image::images/field_options.jpg["FIGURE: Field options",align="center"]
-
-That should be it. You can double check the .CSV file by opening it with a text editor, and then import you diving data as explained on the section xref:S_ImportingManualCS[Importing dives from_manually kept CSV file].
