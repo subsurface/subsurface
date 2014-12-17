@@ -55,6 +55,9 @@
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
+#ifndef NO_USERSURVEY
+#include "usersurvey.h"
+#endif
 #include <QNetworkProxy>
 
 MainWindow *MainWindow::m_Instance = NULL;
@@ -118,6 +121,10 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
+#ifdef NO_USERSURVEY
+	ui.menuHelp->removeAction(ui.actionUserSurvey);
+#endif
+
 #ifdef NO_PRINTING
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
@@ -745,6 +752,16 @@ void MainWindow::on_actionUserManual_triggered()
 #endif
 }
 
+void MainWindow::on_actionUserSurvey_triggered()
+{
+#ifndef NO_USERSURVEY
+	if(!survey) {
+		survey = new UserSurvey();
+	}
+	survey->show();
+#endif
+}
+
 QString MainWindow::filter()
 {
 	QString f;
@@ -944,6 +961,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		helpView->deleteLater();
 	}
 #endif
+
+
+#ifndef NO_USERSURVEY
+	if (survey && survey->isVisible()) {
+		survey->close();
+		survey->deleteLater();
+	}
+#endif
+
 
 	if (unsaved_changes() && (askSaveChanges() == false)) {
 		event->ignore();

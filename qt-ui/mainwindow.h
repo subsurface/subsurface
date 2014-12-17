@@ -118,6 +118,7 @@ slots:
 	/* other menu actions */
 	void on_actionAboutSubsurface_triggered();
 	void on_actionUserManual_triggered();
+	void on_actionUserSurvey_triggered();
 	void on_actionDivePlanner_triggered();
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();

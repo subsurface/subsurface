@@ -249,7 +249,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1682</width>
-     <height>36</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -314,6 +314,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionAboutSubsurface"/>
     <addaction name="action_Check_for_Updates"/>
     <addaction name="actionUserManual"/>
+    <addaction name="actionUserSurvey"/>
    </widget>
    <widget class="QMenu" name="menuImport">
     <property name="title">
@@ -859,6 +860,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Toggle tissue graph</string>
+   </property>
+  </action>
+  <action name="actionUserSurvey">
+   <property name="text">
+    <string>User &amp;Survey</string>
    </property>
   </action>
  </widget>
