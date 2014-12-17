@@ -2950,6 +2950,8 @@ verifies that
 the appropriate group membership has been created. The +dialout+ group should
 be listed
 among the different IDs.
+ - Under some circumstances this change takes only effect (eg. on Ubuntu) after
+one logs out and then logs in again.
 
 With the appropriate device name (e.g. +dev/ttyUSB3+) and with write permission
 to the USB
