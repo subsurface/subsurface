@@ -1,63 +1,84 @@
-			Subsurface 4.3
-			==============
+// _Subsurface_ 4.3 Release Notes
 
-Some of the changes since Subsurface 4.2
+_Subsurface_ 4.3 - released December 2014
+---------------------------------------
 
-Subsurface now supports flexible filtering of the dive list. You can
+The _Subsurface_ development team proudly announces
+release 4.3 of _Subsurface_, an open source divelog and dive planning
+program for Windows, Mac and Linux.
+
+License: GPLv2
+
+_Subsurface_ can be found at: http://_Subsurface_-divelog.org
+
+Some of the changes since _Subsurface_ 4.2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+_Subsurface_ now supports flexible filtering of the dive list. One can
 specify a combination of different criteria like tags, people who were on
-the dive, location, suit, etc. While filtering you can see how many dives
+the dive, dive site, suit, etc. While filtering one can see how many dives
 match any of the criteria, and how many dives match the combination of the
-criteria that you selected.
+selected criteria (see image below)
 
-When editing dive, you can now cut and paste selected components of a dive
-and paste them into one or more other dives. This makes it easy to add the
-same equipment, buddies, tags or other aspects of a dive into others
+image::images/V4.3_Filter.jpg["Filter panel",align="center"]
 
-The information overlay on the profile now offers an easy to understand
-tissue saturation visualization that shows your tissue saturation at any
-point of the dive.
+When editing a dive, one can now copy information about a dive
+and paste it into one or more other dives. This makes it easy to add the
+same equipment, buddies, tags or other aspects of a dive into a group of
+dives with similar characteristics.
+
+The dive profile now offers an easy to understand
+tissue saturation graph that shows tissue saturation at any
+point during the dive. (See image below)
+
+image::images/V4.3_CylBars.jpg["Cylinder bars and tissue saturation graph",align="center"]
+
+In the dive profile one can turn on an improved visualization of the
+gas combinations used during a dive (aka "tank bar" with different gases represented
+by different colours, see image above).
 
 Owners of the Heinrichs & Weikamp OSTC 2 and 3 as well as dive computers
 in the popular Suunto Vyper family of dive computers can configure the
-settings of their dive computers with Subsurface.
+settings of their dive computers using _Subsurface_.
 
-For a number of dive computers Subsurface now downloads additinal data and
+For a number of dive computers _Subsurface_ now downloads additional data and
 shows them in a new tab on the screen. This includes (depending on the
 dive computer) information like battery levels, no fly times, Gradient
 Factors used during the dive, etc. This feature is enabled in all official
-Subsurface binaries; when building from source this requires a custom
-version of libdivecomputer (as explained in the INSTALL file) oder a Uemis
-Zurich SDA.
+_Subsurface_ binaries and includes the Uemis Zurich SDA. When building
+from source this requires a custom
+version of libdivecomputer (as explained in the INSTALL file).
 
-In the dive profile you can now turn on an improved visualization of the
-gases used during a dive (aka "tank bar").
-
-The dive planner now offers the ability to re-plan dives and copy dive
-plans in order to plan multiple scenarios.
+The dive planner now offers the ability to re-plan dives and to create duplicate
+dive plans in order to plan multiple scenarios.
 
 We added support for several new dive computers including the Suunto EON
 Steel, Aeris A300 CD, and Aeris F11.
 
-Subsurface can now import dive logs from Liquivision and Cochran software
+_Subsurface_ can now import dive logs from Liquivision and Cochran software
 as well as the new Suuntu DM5.
-
-Additionally, dive logs from the Poseidon Mk6 CCR can be imported as well.
 
 We made many improvements for UDDF and CSV import, UDDF export now
 complies with the latest version of the standard.
 
 Many issues with the HTML export were addressed.
 
-Initial support for CCR and pSCR was added. Visualization of dive logs as
+Initial support for closed circuit rebreathers (CCR) and pSCR was added.
+Dive logs from the Poseidon MkVI
+CCR can be imported. Visualization of dive logs as
 well as dive planning should work - but this feature is fairly early in
 its development and we assume that there may be a few bugs and
-mis-features hidden in this area.
+mis-features hidden in this area. Here is a dive profile for a Poseidon MkVI:
 
-Other, notable improvements:
+image::images/V4.3_CCR.jpg["CCR dive profile",align="center"]
+
+*Other notable improvements*
+
 - Import of manually logged dives (e.g., from an existing paper logbook)
   is now much better documented in the user manual. Instead of having to
   individually enter each dive with the graphical profile editor users can
-  add all their dives in a spreadsheet and import the data from there
+  add all their dives in a spreadsheet and import the data from there into
+  _Subsurface_ in one single operation.
 - Many other small improvements to the planner
 - Many small UI changes for better use on small displays (tighter columns
   and column headers on the dive list, the toolbox of icons no longer
@@ -68,59 +89,59 @@ Other, notable improvements:
   editing tags)
 - For the (rather unusual) dive computers that send a heading event in
   every sample we automatically declutter the profile display now
-- The Windows installer are smarter: the 64bit installer refuses to
+- The Windows installer is smarter: the 64bit installer refuses to
   install its binaries on a 32bit OS and conversely the installer warns
   you when installing 32bit binaries on a 64bit OS
 - Better synchronization with divelogs.de, including support for multiple
   tanks
 
-Known bugs
+*Known bugs*
 
-- this appears to be a bug in Qt. When changing the password needed
-  authenticate with a proxy, Subsurface will not use the new password
+- There appears to be a bug in Qt: when changing the password needed
+  authenticate with a proxy, _Subsurface_ will not use the new password
   until after a restart
 
-			Subsurface 4.2
-			==============
+_Subsurface_ 4.2
+--------------
 
-The Subsurface developer team is proud to announce the release of the
-next update of Subsurface.
+The _Subsurface_ developer team is proud to announce the release of the
+next update of _Subsurface_.
 
-Subsurface is an open source divelog program that runs on Windows, Mac
+_Subsurface_ is an open source divelog program that runs on Windows, Mac
 and Linux.
 
-With Subsurface the user can download dive information directly from a
-large number of supported dive computers. Subsurface is able to track
+With _Subsurface_ the user can download dive information directly from a
+large number of supported dive computers. _Subsurface_ is able to track
 single- and multi-tank dives using air, Nitrox or TriMix. It displays
 a dive profile with all related information including air consumption
 and alarms. It also allows logging of information like weights and
 exposure protection used, dive masters and dive buddies, and enables
 the user to rate dives and provide additional dive notes.
 
-With Subsurface the user can track dive locations including GPS
+With _Subsurface_ the user can track dive locations including GPS
 coordinates (which can also be conveniently entered using a map
-interface). Subsurface calculates a wide variety of statistics of the
+interface). _Subsurface_ calculates a wide variety of statistics of the
 user's diving and keeps track of information like the user's SAC rate,
 partial pressures of O2, N2 and He, calculated deco information, and
 many more.
 
-Subsurface allows the user to print out a detailed log book including
+_Subsurface_ allows the user to print out a detailed log book including
 dive profiles and other relevant information. The program is localized
 in about 20 languages and well supported by an active developer
 community. This community also made new and shiny offline manuals in
 Spanish and Russian possible.
 
-One of the major strengths of Subsurface is its support of a wide range
+One of the major strengths of _Subsurface_ is its support of a wide range
 of dive computers (most common dive computers are supported with the help
 of libdivecomputer); a detailed list is in the SupportedDivecomputers.txt
-file. Subsurface can also import existing dive logs from several sources
+file. _Subsurface_ can also import existing dive logs from several sources
 including MacDive, Suunto DM3/DM4, JDiveLog and divelogs.de. Another
 strength is its ability to visualize the depth profile (and, if
 available, the tank pressure curve) in very innovative ways that give
 the user additional information on relative velocity (and momentary
 air consumption) during the dive through the coloring of the graphs.
 
-Some of the changes since 4.1
+*Some of the changes since 4.1*
 
 - The Windows installer is now a 64bit installer including Qt5
 - There is still a deprecated 32bit installer including Qt4, but that has
@@ -150,17 +171,17 @@ Some of the changes since 4.1
 - improved and extended user manuals
 - new translated user manuals in Spanish and Russian
 
-Known issues:
+*Known issues:*
 
 - (Windows specific) Many Windows fonts don't support specific characters,
-  specifically subscript "2" (eg in pO₂). New installations of Subsurface
+  specifically subscript "2" (eg in pO₂). New installations of _Subsurface_
   will automatically pick a font that contains this character, but if you
-  had Subsurface installed on a specific system before, it likely has
+  had _Subsurface_ installed on a specific system before, it likely has
   saved the previous font in its settings. In that case the best solution
   is to manually change the font to one that contains this character,
   e.g. Calibri.
 
-- (Windows specific) When upgrading from Subsurface 4.1, after saving of a
+- (Windows specific) When upgrading from _Subsurface_ 4.1, after saving of a
   logfile the logfile's name may be listed a second time in the files menu
   because of a change in the representation of logfiles filename in the
   Windows registry.
@@ -172,7 +193,7 @@ Known issues:
   same coordinates or edit the dives individually.
 
 - (Windows specific - only 64bit) If an ad blocker is used and set to
-  offline mode, the manual check for an update crashes subsurface.
+  offline mode, the manual check for an update crashes _Subsurface_.
 
 - When using the globe / map widget to edit dive locations, double clicks
   some times fail to set the correct position.
@@ -183,8 +204,8 @@ Known issues:
   while.
 
 
-New in version 4.1 (compared to Subsurface 4.0.3):
---------------------------------------------------
+New in version 4.1 (compared to _Subsurface_ 4.0.3):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - new and improved profile widget with animations, better info box, and
   a new toolbox to turn on and off many of the additional graphs and
@@ -210,22 +231,22 @@ New in version 4.1 (compared to Subsurface 4.0.3):
 - experimental undocumented alternative storage format
 
 
-New in version 4.0.3 (compared to Subsurface 4.0.2):
-----------------------------------------------------
+New in version 4.0.3 (compared to _Subsurface_ 4.0.2):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - fixed unitinialized variable bug that caused errors downloading from
   divecomputers
 
-New in version 4.0.2 (compared to Subsurface 4.0.1):
-----------------------------------------------------
+New in version 4.0.2 (compared to _Subsurface_ 4.0.1):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - fixed potential crash when importing dive data without dive computer
   model information
 - improve parsing of equipment data; this now accepts localized units
   as well as input in units that are not the display units (so if you
-  run Subsurface in metric, but went diving in a place where weights
+  run _Subsurface_ in metric, but went diving in a place where weights
   are in US Pounds (lbs), you can now enter the weight in lbs and
-  Subsurface does the right thing)
+  _Subsurface_ does the right thing)
 - fix temperature conversion when downloading data from Uemis SDA
 - improve autocompletion to always be case insensitive
 - improve selection handling in the dive list
@@ -233,8 +254,8 @@ New in version 4.0.2 (compared to Subsurface 4.0.1):
 - improve profiles generated for dives with no depth samples and no
   average depth
 
-New in version 4.0.1 (compared to Subsurface 4.0):
---------------------------------------------------
+New in version 4.0.1 (compared to _Subsurface_ 4.0):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - fixed several bugs handling non-ASCII text both in dive info text
   fields as well as in Windows file names
@@ -251,12 +272,12 @@ New in version 4.0.1 (compared to Subsurface 4.0):
 - support older versions of Mac OS/X with default DMG (>= 10.5)
 - enable https in Windows binaries
 
-New in version 4.0 (compared to Subsurface 3.1):
-------------------------------------------------
+New in version 4.0 (compared to _Subsurface_ 3.1):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With version 4.0 the Subsurface team switched to a different UI
+With version 4.0 the _Subsurface_ team switched to a different UI
 toolkit. This caused the need to do a complete rewrite of a large
-chunk of the Subsurface code base. We decided to keep much of the
+chunk of the _Subsurface_ code base. We decided to keep much of the
 logic and core of the existing code around, but used the opportunity
 for quite a bit of cleanup and many improvements.
 
@@ -265,7 +286,7 @@ same, but trying to create a concise list of changes that summarizes
 the more than 1600 commits that have gone in since version 3.1 seems a
 daunting task.
 
-Here are some of the highlights:
+*Here are some of the highlights:*
 
 - new map widget with a spinning globe to visualize dive locations
 - much more "native" look and feel under Windows and Mac
@@ -285,7 +306,7 @@ Here are some of the highlights:
   external browser window
 - better statistics (with per-trip statistics available)
 
-Known issues:
+*Known issues:*
 
 - Filter->Select Events is not implemented
 - Dive planner has been disabled for now
@@ -293,8 +314,8 @@ Known issues:
 
 
 
-New in version 3.1 (compared to Subsurface 3.0.2):
---------------------------------------------------
+New in version 3.1 (compared to _Subsurface_ 3.0.2):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - track tags for dives (things like 'boat', 'shore', 'deep', etc)
 - enable filtering by tags
@@ -311,13 +332,13 @@ New in version 3.1 (compared to Subsurface 3.0.2):
 
 
 
-New in version 3.0.2 (compared to Subsurface 3.0.1):
-----------------------------------------------------
+New in version 3.0.2 (compared to _Subsurface_ 3.0.1):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This update was mainly triggered by a bug in the handling of pO₂
 values read from CCR / rebreather dive computers. This bug can lead to
-incorrect data being stored in the Subsurface XML file. Installing
-Subsurface 3.0.2 and re-downloading the dives will correct the
+incorrect data being stored in the _Subsurface_ XML file. Installing
+_Subsurface_ 3.0.2 and re-downloading the dives will correct the
 incorrect data. In order to re-download the dives connect your dive
 computer (this should only affect people with certain tec dive
 computers like the Shearwater Petrel or Predator that store pO₂ values
@@ -327,31 +348,31 @@ dives. After you save your data file the correct pO₂ data should be
 stored in the samples.
 
 If you are using one of those dive computers, have saved data files
-with Subsurface 3.0 or 3.0.1 and have since deleted those dives from
+with _Subsurface_ 3.0 or 3.0.1 and have since deleted those dives from
 your dive computers, please contact the developers as we also have an
 experimental script that should be able to fix incorrect XML files -
 but re-downloading the data is the much more reliable way to address
 this issue.
 
 In addition to this bug fix, 3.0.2 brings a number of other improvements:
- - A Portuguese localization of Subsurface was added.
- - Subsurface now remembers its window size and pane layout the next time
+- A Portuguese localization of _Subsurface_ was added.
+- _Subsurface_ now remembers its window size and pane layout the next time
    it is started.
- - Several importers for data for third party dive software were improved.
- - Dives from the Heinrichs & Weikamp DR5 and from kenozooid can now be
-   imported into Subsurface.
- - A crash with localized versions of Subsurface on Mac was resolved.
- - The map provider for the GPS maps is now configurable.
- - The layout of some dialog boxes was changed to improve usability on
+- Several importers for data for third party dive software were improved.
+- Dives from the Heinrichs & Weikamp DR5 and from kenozooid can now be
+   imported into _Subsurface_.
+- A crash with localized versions of _Subsurface_ on Mac was resolved.
+- The map provider for the GPS maps is now configurable.
+- The layout of some dialog boxes was changed to improve usability on
    small screens.
- - It is now easier to edit date and time of existing dives (and you can
+- It is now easier to edit date and time of existing dives (and you can
    now edit duration, maximum and average depth for dives that were
    manually entered).
- - Several small bugs were addressed.
+- Several small bugs were addressed.
 
 
-New in version 3.0.1 (compared to Subsurface 3.0):
---------------------------------------------------
+New in version 3.0.1 (compared to _Subsurface_ 3.0):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Several bug fixes for importing log files from other divelog software;
   especially imports from DivingLog should work much better now, but
@@ -363,8 +384,8 @@ New in version 3.0.1 (compared to Subsurface 3.0):
 - random other bug fixes
 
 
-New in version 3.0 (compared to Subsurface 2.1):
-------------------------------------------------
+New in version 3.0 (compared to _Subsurface_ 2.1):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Many new divecomputers supported, bugfixes for existing divecomputers
   - Cressi Leonardo, Seemann XP5, Mares Matrix, Mares Puck Pro, Mares
@@ -393,8 +414,3 @@ New in version 3.0 (compared to Subsurface 2.1):
   - Optional pO₂, pN₂ and pHe graphs
   - CNS tracking for supported divecomputers
 - Lots of bug fixes
-
-
-License: GPLv2
-
-Subsurface can be found at http://subsurface-divelog.org
