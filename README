@@ -1,13 +1,17 @@
-This is the README file for Subsurface 4.3 RC
+This is the README file for Subsurface 4.3
 
 Please check the ReleaseNotes.txt for details about new features and
 changes since Subsurface 4.2
 
+Subsurface can be found at http://subsurface-divelog.org
+
+Our user forum is at http://subsurface-divelog.org/user-forum/
+We also try to respond to questions in the ScubaBoard.com dive software
+forum at http://www.scubaboard.com/forums/dive-software/
+
 Report bugs and issues at http://trac.subsurface-divelog.org
 
 License: GPLv2
-
-Subsurface can be found at http://subsurface-divelog.org
 
 You can get the sources to the latest development version from the git
 repository:
@@ -20,12 +24,13 @@ If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
-git checkout v4.2  (or whatever the last release is)
+git checkout v4.3  (or whatever the last release is)
 
 or download a tar ball from:
 
-http://subsurface-divelog.org/downloads/Subsurface-4.2.tgz
+http://subsurface-divelog.org/downloads/Subsurface-4.3.tgz
 
+Detailed build instructions can be found in the INSTALL file.
 
 Basic Usage:
 ============
@@ -123,4 +128,4 @@ provides advanced visualization of the key information provided by a
 modern dive computer and allows the user to track a wide variety of data
 about their diving.
 
-In fall of 2012 Dirk Hohndel took over as maintainer of Subsurface
+In fall of 2012 Dirk Hohndel took over as maintainer of Subsurface.

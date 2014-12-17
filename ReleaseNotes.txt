@@ -1,45 +1,78 @@
-			Subsurface 4.3 RC
-			=================
+			Subsurface 4.3
+			==============
 
 Some of the changes since Subsurface 4.2
 
-- Multi filter: filter the dive list by many criteria including tags,
-  people who were on the dive, location, suit, etc
-- Cut and paste support when editing dives: copy selected components
-  of a dive and paste them into one or more other dives. This makes
-  it easy to add the same equipment, buddies, tags or other aspects
-  of a dive into others
-- Tissue saturation visualization
-- Configuration of the OSTC 2 and 3 as well as the Suunto Vyper
-  family of dive computers
-- Support for extra data that can be downloaded from some dive
-  computers, including information like battery levels, no fly times,
-  Gradient Factors used during the dive, etc (only as supported by the
-  dive computer, at the time of this writing this requires a custom
-  version of libdivecomputer oder a Uemis Zurich SDA)
-- Better visualization of the gases used during a dive ("tank bar")
-- Ability to re-plan dives
-- Support for several new dive computers including the Suunto EON Steel,
-  Aeris A300 CD, Aeris F11
-- Import dive logs from Liquivision and Cochran software
-- Import dive logs from the Poseidon Mk6 CCR
-- Import dive logs from Suunto DM5
-- Many improvements for UDDF and CSV import
-- Many improvements to HTML export
-- Many small improvements to the planner
+Subsurface now supports flexible filtering of the dive list. You can
+specify a combination of different criteria like tags, people who were on
+the dive, location, suit, etc. While filtering you can see how many dives
+match any of the criteria, and how many dives match the combination of the
+criteria that you selected.
+
+When editing dive, you can now cut and paste selected components of a dive
+and paste them into one or more other dives. This makes it easy to add the
+same equipment, buddies, tags or other aspects of a dive into others
+
+The information overlay on the profile now offers an easy to understand
+tissue saturation visualization that shows your tissue saturation at any
+point of the dive.
+
+Owners of the Heinrichs & Weikamp OSTC 2 and 3 as well as dive computers
+in the popular Suunto Vyper family of dive computers can configure the
+settings of their dive computers with Subsurface.
+
+For a number of dive computers Subsurface now downloads additinal data and
+shows them in a new tab on the screen. This includes (depending on the
+dive computer) information like battery levels, no fly times, Gradient
+Factors used during the dive, etc. This feature is enabled in all official
+Subsurface binaries; when building from source this requires a custom
+version of libdivecomputer (as explained in the INSTALL file) oder a Uemis
+Zurich SDA.
+
+In the dive profile you can now turn on an improved visualization of the
+gases used during a dive (aka "tank bar").
+
+The dive planner now offers the ability to re-plan dives and copy dive
+plans in order to plan multiple scenarios.
+
+We added support for several new dive computers including the Suunto EON
+Steel, Aeris A300 CD, and Aeris F11.
+
+Subsurface can now import dive logs from Liquivision and Cochran software
+as well as the new Suuntu DM5.
+
+Additionally, dive logs from the Poseidon Mk6 CCR can be imported as well.
+
+We made many improvements for UDDF and CSV import, UDDF export now
+complies with the latest version of the standard.
+
+Many issues with the HTML export were addressed.
+
+Initial support for CCR and pSCR was added. Visualization of dive logs as
+well as dive planning should work - but this feature is fairly early in
+its development and we assume that there may be a few bugs and
+mis-features hidden in this area.
+
+Other, notable improvements:
+- Import of manually logged dives (e.g., from an existing paper logbook)
+  is now much better documented in the user manual. Instead of having to
+  individually enter each dive with the graphical profile editor users can
+  add all their dives in a spreadsheet and import the data from there
+- Many other small improvements to the planner
 - Many small UI changes for better use on small displays (tighter columns
   and column headers on the dive list, the toolbox of icons no longer
   forces a minimum height of the profile, etc)
 - Improvements on HiDPI displays
-- Fix annoying bug where when starting to edit a dive the pop-up with
-  completions would cover the edit line (this usually happened when
+- We fixed an annoying bug where when starting to edit a dive the pop-up
+  with completions would cover the edit line (this usually happened when
   editing tags)
-- Declutter profile for dive computers that send a heading event in every
-  sample
-- on Windows, prevent installation of 64bit binaries on 32bit OS and warn
-  when installing 32bit binaries on 64bit OS
-- support multiple tanks when syncing with divelogs.de
-- Experimental CCR and PSCR support: (someone explain what does and does not work, please)
+- For the (rather unusual) dive computers that send a heading event in
+  every sample we automatically declutter the profile display now
+- The Windows installer are smarter: the 64bit installer refuses to
+  install its binaries on a 32bit OS and conversely the installer warns
+  you when installing 32bit binaries on a 64bit OS
+- Better synchronization with divelogs.de, including support for multiple
+  tanks
 
 Known bugs
 
