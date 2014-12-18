@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "dive.h"
 #include "qt-gui.h"
 #include "subsurfacestartup.h"
 #include "qt-ui/mainwindow.h"
@@ -66,6 +67,7 @@ int main(int argc, char **argv)
 	if (!quit)
 		run_ui();
 	exit_ui();
+	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
 	free_prefs();
