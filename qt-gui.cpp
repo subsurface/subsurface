@@ -189,6 +189,8 @@ void exit_ui(void)
 	delete window;
 	delete application;
 	free((void *)existing_filename);
+	free((void *)default_dive_computer_vendor);
+	free((void *)default_dive_computer_product);
 	free((void *)default_dive_computer_device);
 }
 
