@@ -1217,9 +1217,6 @@ QVariant DiveItem::data(int column, int role) const
 		case CYLINDER:
 			retVal = QString(dive->cylinder[0].type.description);
 			break;
-		case GAS:
-			retVal = QString(get_dive_gas_string(dive));
-			break;
 		case SAC:
 			retVal = displaySac();
 			break;
@@ -1231,6 +1228,11 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case LOCATION:
 			retVal = QString(dive->location);
+			break;
+		case GAS:
+			const char *gas_string = get_dive_gas_string(dive);
+			retVal = QString(gas_string);
+			free((void*)gas_string);
 			break;
 		}
 		break;
