@@ -2461,6 +2461,12 @@ static inline void taglist_free_divetag(struct divetag *tag)
 	free(tag);
 }
 
+static inline void tag_entry_free(struct tag_entry *tag_entry)
+{
+	taglist_free_divetag(tag_entry->tag);
+	free(tag_entry);
+}
+
 /* Add a tag to the tag_list, keep the list sorted */
 static struct divetag *taglist_add_divetag(struct tag_entry **tag_list, struct divetag *tag)
 {
@@ -2529,7 +2535,7 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 
 void taglist_free(struct tag_entry *entry)
 {
-	STRUCTURED_LIST_FREE(struct tag_entry, entry, free)
+	STRUCTURED_LIST_FREE(struct tag_entry, entry, tag_entry_free)
 }
 
 /* Merge src1 and src2, write to *dst */
