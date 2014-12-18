@@ -33,6 +33,13 @@ TankItem::TankItem(QObject *parent) :
 	memset(&diveCylinderStore, 0, sizeof(diveCylinderStore));
 }
 
+TankItem::~TankItem()
+{
+	// Should this be clear_dive(diveCylinderStore)?
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		free((void *)diveCylinderStore.cylinder[i].type.description);
+}
+
 void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, struct dive *d)
 {
 	free(pInfoEntry);
