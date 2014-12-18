@@ -68,5 +68,6 @@ int main(int argc, char **argv)
 	exit_ui();
 	parse_xml_exit();
 	subsurface_console_exit();
+	free_prefs();
 	return 0;
 }
