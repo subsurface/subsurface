@@ -120,6 +120,8 @@ int evn_foreach (void (*callback)(const char *, bool *, void *), void *data) {
 
 void clear_events(void)
 {
+	for (int i = 0; i < evn_used; i++)
+		free(ev_namelist[i].ev_name);
 	evn_used = 0;
 }
 
