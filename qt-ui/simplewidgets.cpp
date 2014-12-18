@@ -611,7 +611,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 	QWidget *expandedWidget = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
 
-	TagFilter *tagFilter = new TagFilter();
+	TagFilter *tagFilter = new TagFilter(this);
 	int minimumHeight = tagFilter->ui.filterInternalList->height() +
 			tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
 
