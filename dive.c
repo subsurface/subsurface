@@ -2749,6 +2749,8 @@ void set_save_userid_local(short value)
 
 void set_userid(char *rUserId)
 {
+	if (prefs.userid)
+		free(prefs.userid);
 	prefs.userid = strdup(rUserId);
 	if (strlen(prefs.userid) > 30)
 		prefs.userid[30]='\0';
