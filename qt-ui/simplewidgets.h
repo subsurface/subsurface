@@ -14,6 +14,7 @@ class QAbstractButton;
 #include "ui_shiftimagetimes.h"
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
+#include "ui_filterwidget.h"
 #include "exif.h"
 #include <dive.h>
 
@@ -163,7 +164,7 @@ slots:
 
 public:
 	MultiFilter(QWidget *parent);
-	Ui::FilterWidget2 *ui;
+	Ui::FilterWidget2 ui;
 };
 
 class TagFilter : public QWidget {

@@ -606,8 +606,7 @@ void SuitFilter::hideEvent(QHideEvent *event)
 
 MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 {
-	ui = new Ui::FilterWidget2();
-	ui->setupUi(this);
+	ui.setupUi(this);
 
 	QWidget *expandedWidget = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
@@ -620,9 +619,9 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 	QStringListModel *dummy = new QStringListModel(QStringList() << "Dummy Text");
 	dummyList->setModel(dummy);
 
-	connect(ui->close, SIGNAL(clicked(bool)), this, SLOT(closeFilter()));
-	connect(ui->clear, SIGNAL(clicked(bool)), MultiFilterSortModel::instance(), SLOT(clearFilter()));
-	connect(ui->maximize, SIGNAL(clicked(bool)), this, SLOT(adjustHeight()));
+	connect(ui.close, SIGNAL(clicked(bool)), this, SLOT(closeFilter()));
+	connect(ui.clear, SIGNAL(clicked(bool)), MultiFilterSortModel::instance(), SLOT(clearFilter()));
+	connect(ui.maximize, SIGNAL(clicked(bool)), this, SLOT(adjustHeight()));
 
 	l->addWidget(tagFilter);
 	l->addWidget(new BuddyFilter());
@@ -632,21 +631,21 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 	l->setSpacing(0);
 	expandedWidget->setLayout(l);
 
-	ui->scrollArea->setWidget(expandedWidget);
+	ui.scrollArea->setWidget(expandedWidget);
 	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
-	ui->scrollArea->setMinimumHeight(expandedWidget->height() + 5);
+	ui.scrollArea->setMinimumHeight(expandedWidget->height() + 5);
 
 	connect(MultiFilterSortModel::instance(), SIGNAL(filterFinished()), this, SLOT(filterFinished()));
 }
 
 void MultiFilter::filterFinished()
 {
-	ui->filterText->setText(tr("Filter shows %1 (of %2) dives").arg(MultiFilterSortModel::instance()->divesDisplayed).arg(dive_table.nr));
+	ui.filterText->setText(tr("Filter shows %1 (of %2) dives").arg(MultiFilterSortModel::instance()->divesDisplayed).arg(dive_table.nr));
 }
 
 void MultiFilter::adjustHeight()
 {
-	ui->scrollArea->setVisible(!ui->scrollArea->isVisible());
+	ui.scrollArea->setVisible(!ui.scrollArea->isVisible());
 }
 
 void MultiFilter::closeFilter()
