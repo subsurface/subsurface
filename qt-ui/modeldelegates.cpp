@@ -289,9 +289,8 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	return delegate;
 }
 
-TankUseDelegate::TankUseDelegate(QObject *parent)
+TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
-
 }
 
 QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
