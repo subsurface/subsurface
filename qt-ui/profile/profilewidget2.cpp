@@ -141,6 +141,37 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #endif
 }
 
+
+ProfileWidget2::~ProfileWidget2()
+{
+	delete background;
+	delete toolTipItem;
+	delete profileYAxis;
+	delete gasYAxis;
+	delete temperatureAxis;
+	delete timeAxis;
+	delete diveProfileItem;
+	delete temperatureItem;
+	delete cylinderPressureAxis;
+	delete gasPressureItem;
+	delete meanDepth;
+	delete diveComputerText;
+	delete diveCeiling;
+	delete reportedCeiling;
+	delete pn2GasItem;
+	delete pheGasItem;
+	delete po2GasItem;
+	delete heartBeatAxis;
+	delete heartBeatItem;
+	delete percentageAxis;
+	delete ambPressureItem;
+	delete gflineItem;
+	delete mouseFollowerVertical;
+	delete mouseFollowerHorizontal;
+	delete rulerItem;
+	delete tankItem;
+}
+
 #define SUBSURFACE_OBJ_DATA 1
 #define SUBSURFACE_OBJ_DC_TEXT 0x42
 

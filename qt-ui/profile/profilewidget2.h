@@ -120,6 +120,7 @@ slots: // Necessary to call from QAction's signals.
 	void divePlannerHandlerClicked();
 	void divePlannerHandlerReleased();
 protected:
+	virtual ~ProfileWidget2();
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
