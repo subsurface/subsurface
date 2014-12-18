@@ -446,7 +446,7 @@ void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAx
 
 void ProfileWidget2::setupSceneAndFlags()
 {
-	setScene(new QGraphicsScene());
+	setScene(new QGraphicsScene(this));
 	scene()->setSceneRect(0, 0, 100, 100);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
