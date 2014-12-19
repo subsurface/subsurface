@@ -280,7 +280,7 @@
 
       <xsl:if test="/uddf/gasdefinitions != ''">
         <xsl:for-each select="/uddf/gasdefinitions/mix">
-          <cylinder description="{name}">
+          <cylinder description="unknown">
             <xsl:attribute name="o2">
               <xsl:value-of select="concat(o2 * 100, '%')"/>
             </xsl:attribute>
