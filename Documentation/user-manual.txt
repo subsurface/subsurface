@@ -1649,6 +1649,37 @@ In addition the _Photos_ tab only shows the file names of the photos. This is no
 If, later, the external drive with the photos is connected again, the photos can be seen in the normal way.
 
 
+=== Logging special types of dives
+
+==== Sidemount dives
+
+_Subsurface_ easily handles dives involving more than one cylinder. Sidemount dive logging involves
+three steps:
+
+- *During the dive, recording cylinder switch events*. Since sidemount diving normally involves two
+cylinders with air or with the same gas mixture, _Subsurface_ distinguishes among these different
+cylinders. In contrast, most dive computers that allow gas switching only distinguish among different
+_gases_ used, not among different _cylinders_ used. This means that when sidemount dives are downloaded
+from these dive computers, the events of switching between cylinders with the same gas are not downloaded. This may mean
+that one may have to keep a written log of cylinder switch times using a slate, or (if the dive computer
+has this facility) marking each cylinder switch with a bookmark that can be retrieved later. Returning
+from a dive with the information about cylinder changes is the only tricky part of logging sidemount dives.
+- *Within _Subsurface_ describe the cylinders used during the dive*. The diver needs to provide the
+specifications of the different cylinders, using the *Equipment* tab of the *Dive Info Panel* (see
+image below where two 12 litre cylinder were used).
+- *Indicate cylinder change events on the _Subsurface_ dive profile*. Once the dive log has been imported
+from a dive computer into _Subsurface_, the cylinder switch events need to be indicated on the dive profile.
+Cylinder changes are recorded by right-clicking at the appropriate point on the dive profile and then
+selecting _Add gas change_. A list of the appropriate cylinders is shown with the
+currently used cylinder greyed out. In the image below Tank 1 is greyed out, leaving only Tank 2
+to be selected. Select the appropriate cylinder. The cylinder change is then indicated on the dive
+profile with a cylinder symbol. If the *Tank Bar* is activated using the toolbar to the left of the
+profile, then the cylinder change is also indicated on the Tank Bar (see image below). After all
+the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
+for both cylinders are shown on the dive profile, as inthe image below.
+
+image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
+
 == Obtaining more information about dives entered into the logbook
 
 === The *Dive Info* tab (for individual dives)
