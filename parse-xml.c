@@ -2390,7 +2390,7 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 
 	/* Cobalt stores the pressures, not the depth */
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = atoi(data[6]) * 10000 / atoi(data[8]);
+		cur_dive->dc.maxdepth.mm = atoi(data[6]);
 
 	if (data[7])
 		cur_dive->dc.duration.seconds = atoi(data[7]);
@@ -2455,7 +2455,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,MaxDepthPressure,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive";
+	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive";
 
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, handle, &err);
 
