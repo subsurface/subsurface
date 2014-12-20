@@ -2338,6 +2338,26 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	return SQLITE_OK;
 }
 
+extern int cobalt_cylinders(void *handle, int columns, char **data, char **column)
+{
+	cylinder_start();
+	if (data[0])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[0]) * 10;
+	if (data[1])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[1]) * 10;
+	if (data[2])
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = psi_to_mbar(atoi(data[2]));
+	if (data[3])
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = psi_to_mbar(atoi(data[3]));
+	if (data[4])
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = atoi(data[4]) * 100;
+	if (data[5])
+		cur_dive->cylinder[cur_cylinder_index].gas_used.mliter = atoi(data[5]) * 1000;
+	cylinder_end();
+
+	return 0;
+}
+
 
 extern int cobalt_dive(void *param, int columns, char **data, char **column)
 {
@@ -2345,6 +2365,7 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
 	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
+	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 group by FO2,FHe";
 	char get_buffer[1024];
 
 	dive_start();
@@ -2387,6 +2408,13 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	cur_settings.dc.deviceid = 0xffffffff;
 	dc_settings_end();
 	settings_end();
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		return 1;
+	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, 0, &err);
