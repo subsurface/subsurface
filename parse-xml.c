@@ -2219,6 +2219,22 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 	return 0;
 }
 
+
+extern int cobalt_profile_sample(void *handle, int columns, char **data, char **column)
+{
+	sample_start();
+	if (data[0])
+		cur_sample->time.seconds = atoi(data[0]);
+	if (data[1])
+		cur_sample->depth.mm = atoi(data[1]);
+	if (data[2])
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+	sample_end();
+
+	return 0;
+}
+
+
 extern int shearwater_profile_sample(void *handle, int columns, char **data, char **column)
 {
 	sample_start();
@@ -2323,6 +2339,68 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 }
 
 
+extern int cobalt_dive(void *param, int columns, char **data, char **column)
+{
+	int retval = 0;
+	sqlite3 *handle = (sqlite3 *)param;
+	char *err = NULL;
+	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
+	char get_buffer[1024];
+
+	dive_start();
+	cur_dive->number = atoi(data[0]);
+
+	cur_dive->when = (time_t)(atol(data[1]));
+
+	if (data[2])
+		utf8_string(data[2], &cur_dive->location);
+	if (data[3])
+		utf8_string(data[3], &cur_dive->buddy);
+	if (data[4])
+		utf8_string(data[4], &cur_dive->notes);
+
+	/* data[5] should have information on Units used, but I cannot
+	 * parse it at all based on the sample log I have received. The
+	 * temperatures in the samples are all Imperial, so let's go by
+	 * that.
+	 */
+
+	metric = 0;
+
+	/* Cobalt stores the pressures, not the depth */
+	if (data[6])
+		cur_dive->dc.maxdepth.mm = atoi(data[6]) * 10000 / atoi(data[8]);
+
+	if (data[7])
+		cur_dive->dc.duration.seconds = atoi(data[7]);
+
+	if (data[8])
+		cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+	/*
+	 * TODO: the deviceid hash should be calculated here.
+	 */
+	settings_start();
+	dc_settings_start();
+	if (data[9])
+		utf8_string(data[9], &cur_settings.dc.serial_nr);
+
+	cur_settings.dc.deviceid = 0xffffffff;
+	dc_settings_end();
+	settings_end();
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_profile_sample failed.\n"));
+		return 1;
+	}
+
+	dive_end();
+
+	return SQLITE_OK;
+}
+
+
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
@@ -2333,6 +2411,25 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	char get_dives[] = "select i.diveId,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
+
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		return 1;
+	}
+
+	return 0;
+}
+
+int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
+			    struct dive_table *table)
+{
+	int retval;
+	char *err = NULL;
+	target_table = table;
+
+	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,MaxDepthPressure,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive";
+
+	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);

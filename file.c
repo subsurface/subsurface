@@ -165,6 +165,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
 	char dm5_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%SampleBlob%'";
 	char shearwater_test[] = "select count(*) from sqlite_master where type='table' and name='system' and sql like '%dbVersion%'";
+	char cobalt_test[] = "select count(*) from sqlite_master where type='table' and name='TrackPoints' and sql like '%DepthPressure%'";
 	int retval;
 
 	retval = sqlite3_open(filename, &handle);
@@ -194,6 +195,14 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
 	if (!retval) {
 		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		sqlite3_close(handle);
+		return retval;
+	}
+
+	/* Testing if DB schema resembles Atomic Cobalt database format */
+	retval = sqlite3_exec(handle, cobalt_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
 		sqlite3_close(handle);
 		return retval;
 	}
