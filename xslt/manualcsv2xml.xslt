@@ -166,9 +166,9 @@
 
       <divecomputerid deviceid="ffffffff" model="csv" />
 
-      <xsl:if test="$locationField != '' or $gpsField != ''">
+      <xsl:if test="$locationField &gt;= 0 or $gpsField &gt;= 0">
         <location>
-          <xsl:if test="$gpsField != ''">
+          <xsl:if test="$gpsField &gt;= 0">
             <xsl:attribute name="gps">
               <xsl:call-template name="getFieldByIndex">
                 <xsl:with-param name="index" select="$gpsField"/>
@@ -176,7 +176,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-          <xsl:if test="$locationField != ''">
+          <xsl:if test="$locationField &gt;= 0">
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$locationField"/>
               <xsl:with-param name="line" select="$line"/>
