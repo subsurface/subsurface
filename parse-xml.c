@@ -1986,14 +1986,14 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_events failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_events failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_tags failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_tags failed.\n"));
 		return 1;
 	}
 
@@ -2134,14 +2134,14 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_events failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_events failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_tags failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_tags failed.\n"));
 		return 1;
 	}
 
@@ -2315,21 +2315,21 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_cylinders failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_changes failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_changes failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_profile_sample failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_profile_sample failed.\n"));
 		return 1;
 	}
 
@@ -2448,42 +2448,42 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_cylinders failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_buddy_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_buddies failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_visibility failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_location failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_location (site) failed.\n"));
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_profile_sample failed.\n"));
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_profile_sample failed.\n"));
 		return 1;
 	}
 
