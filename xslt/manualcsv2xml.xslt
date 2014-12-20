@@ -19,6 +19,8 @@
   <xsl:param name="notesField" select="notesField"/>
   <xsl:param name="weightField" select="weightField"/>
   <xsl:param name="dateformat" select="dateformat"/>
+  <xsl:param name="airtempField" select="airtempField"/>
+  <xsl:param name="watertempField" select="watertempField"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -183,6 +185,27 @@
             </xsl:call-template>
           </xsl:if>
         </location>
+      </xsl:if>
+
+      <xsl:if test="$airtempField &gt;= 0 or $watertempField &gt;= 0">
+        <temperature>
+          <xsl:if test="$airtempField &gt;= 0">
+            <xsl:attribute name="air">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$airtempField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="$watertempField &gt;= 0">
+            <xsl:attribute name="water">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$watertempField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+        </temperature>
       </xsl:if>
 
       <xsl:if test="$maxDepthField >= 0 or $meanDepthField >= 0">
