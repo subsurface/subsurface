@@ -21,6 +21,11 @@
   <xsl:param name="dateformat" select="dateformat"/>
   <xsl:param name="airtempField" select="airtempField"/>
   <xsl:param name="watertempField" select="watertempField"/>
+  <xsl:param name="cylindersizeField" select="cylindersizeField"/>
+  <xsl:param name="startpressureField" select="startpressureField"/>
+  <xsl:param name="endpressureField" select="endpressureField"/>
+  <xsl:param name="o2Field" select="o2Field"/>
+  <xsl:param name="heField" select="heField"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -206,6 +211,51 @@
             </xsl:attribute>
           </xsl:if>
         </temperature>
+      </xsl:if>
+
+      <xsl:if test="$cylindersizeField &gt; 0 or $startpressureField &gt; 0 or $endpressureField &gt; 0 or o2Field &gt;0 or heField &gt; 0">
+        <cylinder>
+          <xsl:if test="$cylindersizeField &gt; 0">
+            <xsl:attribute name="size">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$cylindersizeField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="$startpressureField &gt; 0">
+            <xsl:attribute name="start">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$startpressureField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="$endpressureField &gt; 0">
+            <xsl:attribute name="end">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$endpressureField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="$o2Field &gt; 0">
+            <xsl:attribute name="o2">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$o2Field"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="$heField &gt; 0">
+            <xsl:attribute name="he">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$heField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+        </cylinder>
       </xsl:if>
 
       <xsl:if test="$maxDepthField >= 0 or $meanDepthField >= 0">
