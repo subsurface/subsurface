@@ -2366,6 +2366,16 @@ extern int cobalt_buddies(void *handle, int columns, char **data, char **column)
 	return 0;
 }
 
+/*
+ * We still need to figure out how to map free text visibility to
+ * Subsurface star rating.
+ */
+
+extern int cobalt_visibility(void *handle, int columns, char **data, char **column)
+{
+	return 0;
+}
+
 
 extern int cobalt_dive(void *param, int columns, char **data, char **column)
 {
@@ -2375,6 +2385,7 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
 	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 group by FO2,FHe";
 	char get_buddy_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=4";
+	char get_visibility_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=3";
 	char get_buffer[1024];
 
 	dive_start();
@@ -2427,6 +2438,13 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_buddy_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		return 1;
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
 		return 1;
