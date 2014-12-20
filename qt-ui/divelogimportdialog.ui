@@ -1084,5 +1084,47 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>CylinderSizeCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>CylinderSize</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>StartPressureCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>StartPressure</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>EndPressureCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>EndPressure</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>O2Check</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>O2</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>HeCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>He</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>AirTempCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>AirTemp</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>WaterTempCheck</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>WaterTemp</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
  </connections>
 </ui>
