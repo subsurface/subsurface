@@ -1,15 +1,24 @@
-// _Subsurface_ 4.3 Release Notes
+// _Subsurface_ 4.4 Release Notes
 
-_Subsurface_ 4.3 - released December 2014
+_Subsurface_ 4.4 - released sometime early 2015
 ---------------------------------------
 
 The _Subsurface_ development team proudly announces
-release 4.3 of _Subsurface_, an open source divelog and dive planning
-program for Windows, Mac and Linux.
+the release of version 4.4 Beta 1 of _Subsurface_, an open source divelog
+and dive planning program for Windows, Mac and Linux.
 
 License: GPLv2
 
 _Subsurface_ can be found at: http://_Subsurface_-divelog.org
+
+Some of the changes since _Subsurface_ 4.3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We have added more capabilities to the CSV import for manually kept dive
+logs; this now includes start and end pressure for the main tank as well
+as air and water temperatures.
+
+Subsurface can now import dive databases from the Cobalt divelog program.
 
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
