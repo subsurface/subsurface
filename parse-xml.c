@@ -2376,6 +2376,24 @@ extern int cobalt_visibility(void *handle, int columns, char **data, char **colu
 	return 0;
 }
 
+extern int cobalt_location(void *handle, int columns, char **data, char **column)
+{
+	if (data[0]) {
+		if (cur_dive->location) {
+			char *tmp = malloc(strlen(cur_dive->location) + strlen(data[0]) + 4);
+			if (!tmp)
+				return -1;
+			sprintf(tmp, "%s / %s", cur_dive->location, data[0]);
+			free(cur_dive->location);
+			cur_dive->location = tmp;
+		} else {
+			utf8_string(data[0], &cur_dive->location);
+		}
+	}
+
+	return 0;
+}
+
 
 extern int cobalt_dive(void *param, int columns, char **data, char **column)
 {
@@ -2386,6 +2404,8 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 group by FO2,FHe";
 	char get_buddy_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=4";
 	char get_visibility_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=3";
+	char get_location_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=0";
+	char get_site_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=1";
 	char get_buffer[1024];
 
 	dive_start();
@@ -2441,6 +2461,20 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		return 1;
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
+		return 1;
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", translate("gettextFromC", "Database query get_cylinders failed.\n"));
 		return 1;
