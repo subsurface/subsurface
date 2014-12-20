@@ -522,14 +522,14 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="WeightCheck">
             <property name="text">
              <string>Weight</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="3">
+          <item row="6" column="1">
            <widget class="QSpinBox" name="Weight">
             <property name="enabled">
              <bool>false</bool>
@@ -556,14 +556,14 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
+          <item row="4" column="2">
            <widget class="QCheckBox" name="TagsCheck">
             <property name="text">
              <string>Tags</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="3">
+          <item row="4" column="3">
            <widget class="QSpinBox" name="Tags">
             <property name="enabled">
              <bool>false</bool>
@@ -573,6 +573,127 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="0">
+           <widget class="QCheckBox" name="CylinderSizeCheck">
+            <property name="text">
+             <string>Cyl size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QSpinBox" name="CylinderSize">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QCheckBox" name="AirTempCheck">
+            <property name="text">
+             <string>Air temp</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QSpinBox" name="AirTemp">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="StartPressureCheck">
+            <property name="text">
+             <string>Start Pressure</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QSpinBox" name="StartPressure">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QCheckBox" name="WaterTempCheck">
+            <property name="text">
+             <string>Water temp</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QSpinBox" name="WaterTemp">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+
+          <item row="9" column="0">
+           <widget class="QCheckBox" name="EndPressureCheck">
+            <property name="text">
+             <string>End Press</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QSpinBox" name="EndPressure">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QCheckBox" name="O2Check">
+            <property name="text">
+             <string>O₂</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <widget class="QSpinBox" name="O2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QCheckBox" name="HeCheck">
+            <property name="text">
+             <string>He</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="3">
+           <widget class="QSpinBox" name="He">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+
          </layout>
         </widget>
        </item>
