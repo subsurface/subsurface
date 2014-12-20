@@ -960,11 +960,11 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return ret;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf)
+int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[35];
+	char *params[49];
 	char numberbuf[MAXCOLDIGITS];
 	char datebuf[MAXCOLDIGITS];
 	char timebuf[MAXCOLDIGITS];
@@ -980,13 +980,20 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	char separator_index[MAXCOLDIGITS];
 	char unit[MAXCOLDIGITS];
 	char datefmt[MAXCOLDIGITS];
+	char cylsizebuf[MAXCOLDIGITS];
+	char startpresbuf[MAXCOLDIGITS];
+	char endpresbuf[MAXCOLDIGITS];
+	char o2buf[MAXCOLDIGITS];
+	char hebuf[MAXCOLDIGITS];
+	char airtempbuf[MAXCOLDIGITS];
+	char watertempbuf[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
 	char curtime[6];
 	int ret;
 
-	if (numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS)
+	if (numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS || cylsizef >= MAXCOLS || startpresf >= MAXCOLS || endpresf >= MAXCOLS || o2f >= MAXCOLS || hef >= MAXCOLS || airtempf >= MAXCOLS || watertempf >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
 	snprintf(numberbuf, MAXCOLDIGITS, "%d", numberf);
@@ -1004,6 +1011,13 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unit, MAXCOLDIGITS, "%d", units);
 	snprintf(datefmt, MAXCOLDIGITS, "%d", dateformat);
+	snprintf(cylsizebuf, MAXCOLDIGITS, "%d", cylsizef);
+	snprintf(startpresbuf, MAXCOLDIGITS, "%d", startpresf);
+	snprintf(endpresbuf, MAXCOLDIGITS, "%d", endpresf);
+	snprintf(o2buf, MAXCOLDIGITS, "%d", o2f);
+	snprintf(hebuf, MAXCOLDIGITS, "%d", hef);
+	snprintf(airtempbuf, MAXCOLDIGITS, "%d", airtempf);
+	snprintf(watertempbuf, MAXCOLDIGITS, "%d", watertempf);
 	time(&now);
 	timep = localtime(&now);
 	strftime(curdate, DATESTR, "%Y%m%d", timep);
@@ -1046,6 +1060,20 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	params[pnr++] = unit;
 	params[pnr++] = "datefmt";
 	params[pnr++] = datefmt;
+	params[pnr++] = "cylindersizeField";
+	params[pnr++] = cylsizebuf;
+	params[pnr++] = "startpressureField";
+	params[pnr++] = startpresbuf;
+	params[pnr++] = "endpressureField";
+	params[pnr++] = endpresbuf;
+	params[pnr++] = "o2Field";
+	params[pnr++] = o2buf;
+	params[pnr++] = "heField";
+	params[pnr++] = hebuf;
+	params[pnr++] = "airtempField";
+	params[pnr++] = airtempbuf;
+	params[pnr++] = "watertempField";
+	params[pnr++] = watertempbuf;
 	params[pnr++] = NULL;
 
 	if (filename == NULL)

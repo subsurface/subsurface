@@ -114,7 +114,11 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					  VALUE_IF_CHECKED(Gps), VALUE_IF_CHECKED(MaxDepth),
 					  VALUE_IF_CHECKED(MeanDepth), VALUE_IF_CHECKED(Buddy),
 					  VALUE_IF_CHECKED(Notes), VALUE_IF_CHECKED(Weight),
-					  VALUE_IF_CHECKED(Tags));
+					  VALUE_IF_CHECKED(Tags),
+					  VALUE_IF_CHECKED(CylinderSize), VALUE_IF_CHECKED(StartPressure),
+					  VALUE_IF_CHECKED(EndPressure), VALUE_IF_CHECKED(O2),
+					  VALUE_IF_CHECKED(He), VALUE_IF_CHECKED(AirTemp),
+					  VALUE_IF_CHECKED(WaterTemp));
 		}
 	}
 
