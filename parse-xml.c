@@ -2393,10 +2393,6 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 
 	cur_dive->when = (time_t)(atol(data[1]));
 
-	if (data[2])
-		utf8_string(data[2], &cur_dive->location);
-	if (data[3])
-		utf8_string(data[3], &cur_dive->buddy);
 	if (data[4])
 		utf8_string(data[4], &cur_dive->notes);
 
