@@ -11,7 +11,7 @@
 :numbered:
 // :website: http://subsurface-divelog.org
 
-image::images/Subsurface4Banner.png["Banner",align="center"]
+image::images/Subsurface4Banner.jpg["Banner",align="center"]
 
 [big]#USER MANUAL#
 
