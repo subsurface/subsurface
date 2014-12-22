@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>413</height>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -166,7 +166,17 @@
           <item>
            <widget class="QRadioButton" name="exportCSV">
             <property name="text">
-             <string>CSV</string>
+             <string>CSV samples</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">exportGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="exportCSVDetails">
+            <property name="text">
+             <string>CSV dive details</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -440,7 +450,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="exportGroup"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

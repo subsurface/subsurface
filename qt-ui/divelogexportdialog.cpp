@@ -272,6 +272,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			stylesheet = "xml2csv.xslt";
 			filename = QFileDialog::getSaveFileName(this, tr("Export CSV file as"), lastDir,
 								tr("CSV files (*.csv *.CSV)"));
+		} else if (ui->exportCSVDetails->isChecked()) {
+			stylesheet = "xml2manualcsv.xslt";
+			filename = QFileDialog::getSaveFileName(this, tr("Export CSV file as"), lastDir,
+								tr("CSV files (*.csv *.CSV)"));
 		} else if (ui->exportDivelogs->isChecked()) {
 			DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
 		} else if (ui->exportDiveshare->isChecked()) {

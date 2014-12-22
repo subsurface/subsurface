@@ -647,6 +647,9 @@ int export_dives_xslt(const char *filename, const bool selected, const char *exp
 	xmlDoc *transformed;
 	int res = 0;
 
+	if (verbose)
+		fprintf(stderr, "export_dives_xslt with stylesheet %s\n", export_xslt);
+
 	if (!filename)
 		return report_error("No filename for export");
 
