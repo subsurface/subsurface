@@ -53,6 +53,12 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:apply-templates select="location"/>
+    <xsl:if test="string-length(location) = 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+    </xsl:if>
     <xsl:apply-templates select="divemaster"/>
     <xsl:apply-templates select="buddy"/>
     <xsl:apply-templates select="suit"/>
