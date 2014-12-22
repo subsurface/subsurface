@@ -37,7 +37,21 @@
         <xsl:apply-templates select="divecomputer[1]/temperature"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-templates select="cylinder"/>
+    <xsl:choose>
+      <xsl:when test="cylinder/@start|cylinder/@end != ''">
+        <xsl:apply-templates select="cylinder"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="divecomputer[1]/sample[@pressure]/@pressure"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+        <xsl:text>&quot;</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates select="location"/>
     <xsl:apply-templates select="divemaster"/>
     <xsl:apply-templates select="buddy"/>
