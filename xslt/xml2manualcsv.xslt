@@ -29,7 +29,14 @@
     <xsl:value-of select="@duration"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:apply-templates select="divecomputer/depth"/>
-    <xsl:apply-templates select="divetemperature"/>
+    <xsl:choose>
+      <xsl:when test="divetemperature/@air|divetemperature/@water != ''">
+        <xsl:apply-templates select="divetemperature"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="divecomputer[1]/temperature"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates select="cylinder"/>
     <xsl:apply-templates select="location"/>
     <xsl:apply-templates select="divemaster"/>
@@ -57,7 +64,7 @@
     <xsl:value-of select="@mean"/>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
-  <xsl:template match="divetemperature">
+  <xsl:template match="divetemperature|temperature">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@air"/>
