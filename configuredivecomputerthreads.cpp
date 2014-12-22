@@ -1380,9 +1380,8 @@ void FirmwareUpdateThread::run()
 		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
-			//Not Yet supported
-			//supported = true;
-			//rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+			supported = true;
+			rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
