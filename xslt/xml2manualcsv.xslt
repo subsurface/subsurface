@@ -60,8 +60,20 @@
       <xsl:text>&quot;&quot;</xsl:text>
     </xsl:if>
     <xsl:apply-templates select="divemaster"/>
+    <xsl:if test="string-length(divemaster) = 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+    </xsl:if>
     <xsl:apply-templates select="buddy"/>
+    <xsl:if test="string-length(buddy) = 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+    </xsl:if>
     <xsl:apply-templates select="suit"/>
+    <xsl:if test="string-length(suit) = 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+    </xsl:if>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@rating"/>
@@ -71,6 +83,10 @@
     <xsl:value-of select="@visibility"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:apply-templates select="notes"/>
+    <xsl:if test="string-length(notes) = 0">
+      <xsl:value-of select="$fs"/>
+      <xsl:text>&quot;&quot;</xsl:text>
+    </xsl:if>
     <xsl:text>
 </xsl:text>
   </xsl:template>
