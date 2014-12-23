@@ -7,8 +7,10 @@ if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivec
 fi
 
 GITVERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v//')
+GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
+
 #
 #
 echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
@@ -18,7 +20,10 @@ if [[ -d subsurface_$VERSION ]]; then
 	mv subsurface_$VERSION.bak subsurface_$VERSION.bak.prev
 	mv subsurface_$VERSION subsurface_$VERSION.bak
 fi
+rm -f subsurface-$VERSION
+
 mkdir subsurface_$VERSION
+ln -s subsurface_$VERSION subsurface-$VERSION
 #
 #
 echo "copying sources"
@@ -32,8 +37,9 @@ echo $LIBDCREVISION > libdivecomputer/revision
 # rm debian/*.ex debian/*.EX debian/README.*
 #
 #
-echo "creating source tar file"
+echo "creating source tar file for OBS and Ununtu PPA"
 #
+(cd .. ; tar ch subsurface-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
 tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 #
 #
@@ -50,7 +56,7 @@ cp ../debian.changelog debian/changelog
 #tail -1 debian/autocl >> debian/changelog
 #rm -f debian/autocl
 
-dch -v $VERSION-1~trusty -D trusty -M
+dch -v $VERSION-1~trusty -D trusty -M -m "next daily build"
 mv ~/src/debian.changelog ~/src/debian.changelog.previous
 cp debian/changelog ~/src/debian.changelog
 
@@ -61,3 +67,14 @@ prev=trusty
 rel=utopic
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
+
+cd ..
+
+if [[ "$1x" = "postx" ]] ; then
+	dput ppa:subsurface/subsurface-daily subsurface_$VERSION*.changes
+	cd home:Subsurface-Divelog/Subsurface-daily
+	osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
+	osc add subsurface-$VERSION.orig.tar.xz
+	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurface.spec
+	osc commit -m "next daily build"
+fi
