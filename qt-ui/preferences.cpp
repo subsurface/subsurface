@@ -33,7 +33,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
 		"&response_type=token");
 
-	ui.facebookWebView->setUrl(urlLogin);
+	QSettings settings;
+	settings.beginGroup("WebApps");
+	settings.beginGroup("Facebook");
+	if(settings.allKeys().contains("ConnectToken")){
+		ui.facebookWebView->setHtml("You are connected on Facebook, yey.");
+	} else {
+		ui.facebookWebView->setUrl(urlLogin);
+	}
 
 	connect(ui.facebookWebView, &QWebView::urlChanged, this, &PreferencesDialog::facebookLoginResponse);
 
