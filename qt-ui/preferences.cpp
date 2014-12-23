@@ -45,10 +45,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	settings.beginGroup("Facebook");
 	if(settings.allKeys().contains("ConnectToken")){
 		ui.facebookWebView->setHtml("You are connected on Facebook, yey.");
-		ui.btnDisconnectFacebook->show();
+		ui.fbConnected->show();
 	} else {
 		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
-		ui.btnDisconnectFacebook->hide();
+		ui.fbConnected->hide();
 	}
 
 	connect(ui.facebookWebView, &QWebView::urlChanged, this, &PreferencesDialog::facebookLoginResponse);
@@ -83,9 +83,11 @@ void PreferencesDialog::facebookLoginResponse(const QUrl &url)
 		QNetworkAccessManager *getUserID = new QNetworkAccessManager();
 		connect(getUserID, &QNetworkAccessManager::finished, this, &PreferencesDialog::facebookGetUserId);
 		getUserID->get(QNetworkRequest(QUrl("https://graph.facebook.com/me?fields=id&access_token=" + securityToken)));
-
 		ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
-		ui.btnDisconnectFacebook->show();
+		ui.fbConnected->show();
+
+		// only enable when we get the reply for the user_id.
+		setDisabled(true);
 	}
 }
 
@@ -99,6 +101,7 @@ void PreferencesDialog::facebookGetUserId(QNetworkReply *reply)
 		s.beginGroup("Facebook");
 		s.setValue("UserId", obj.value("id").toVariant());
 	}
+	setEnabled(true);
 }
 
 void PreferencesDialog::facebookDisconnect()
@@ -109,7 +112,7 @@ void PreferencesDialog::facebookDisconnect()
 		settings.remove("ConnectToken");
 		ui.facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
 		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
-		ui.btnDisconnectFacebook->hide();
+		ui.fbConnected->hide();
 }
 
 
@@ -212,10 +215,11 @@ void PreferencesDialog::setUiFromPrefs()
 	s.beginGroup("WebApps");
 	s.beginGroup("Facebook");
 	if(s.allKeys().contains("ConnectToken")){
-		ui.btnDisconnectFacebook->show();
+		ui.fbConnected->show();
 	} else {
-		ui.btnDisconnectFacebook->hide();
+		ui.fbConnected->hide();
 	}
+	ui.facebookAlbum->setText(s.value("Album", "subsurface").toString());
 }
 
 void PreferencesDialog::restorePrefs()
@@ -361,6 +365,13 @@ void PreferencesDialog::syncSettings()
 	s.setValue("proxy_pass", ui.proxyPassword->text());
 	s.endGroup();
 
+	// Facebook
+	s.beginGroup("WebApps");
+	s.beginGroup("Facebook");
+	s.setValue("Album", ui.facebookAlbum->text());
+	s.endGroup();
+	s.endGroup();
+
 	loadSettings();
 	emit settingsChanged();
 }
@@ -465,6 +476,15 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("proxy_user", proxy_user);
 	GET_TXT("proxy_pass", proxy_pass);
 	s.endGroup();
+
+	s.beginGroup("WebApps");
+	s.beginGroup("Facebook");
+	GET_TXT("UserId", facebook.user_id);
+	GET_TXT("ConnectToken", facebook.access_token);
+	GET_TXT("AlbumName", facebook.album_name);
+	s.endGroup();
+	s.endGroup();
+	qDebug() << prefs.facebook.user_id << prefs.facebook.access_token << prefs.facebook.album_name;
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)

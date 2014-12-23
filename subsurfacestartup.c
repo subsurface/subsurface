@@ -48,7 +48,12 @@ struct preferences default_prefs = {
 	.o2consumption = 1000,
 	.pscr_ratio = 100,
 	.show_pictures_in_profile = true,
-	.tankbar = false
+	.tankbar = false,
+	.facebook = {
+		.user_id = "",
+		.album_name = "subsurface",
+		.access_token = ""
+	}
 };
 
 int run_survey;

@@ -983,10 +983,43 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnDisconnectFacebook">
-           <property name="text">
-            <string>Disconnect from facebook</string>
-           </property>
+          <widget class="QWidget" name="fbConnected" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <layout class="QHBoxLayout" name="connectedLayout">
+              <item>
+               <widget class="QLabel" name="label_26">
+                <property name="text">
+                 <string>Facebook Album for Subsurface Uploads</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="facebookAlbum"/>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnDisconnectFacebook">
+                <property name="text">
+                 <string>Disconnect from facebook</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

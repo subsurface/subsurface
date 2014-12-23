@@ -18,6 +18,12 @@ typedef struct
 	double phe_threshold;
 } partial_pressure_graphs_t;
 
+typedef struct {
+	char *user_id;
+	char *access_token;
+	char *album_name;
+} facebook_prefs_t;
+
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
@@ -71,6 +77,7 @@ struct preferences {
 	int pscr_ratio; // dump ratio times 1000
 	bool show_pictures_in_profile;
 	bool use_default_file;
+	facebook_prefs_t facebook;
 };
 enum unit_system_values {
 	METRIC,
