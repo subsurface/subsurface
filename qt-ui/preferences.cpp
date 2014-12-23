@@ -14,7 +14,8 @@ static QString facebookConnectUrl =
 		"https://www.facebook.com/dialog/oauth?"
 		"client_id=427722490709000"
 		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
-		"&response_type=token";
+		"&response_type=token"
+		"&scope=publish_actions";
 
 PreferencesDialog *PreferencesDialog::instance()
 {
