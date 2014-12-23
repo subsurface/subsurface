@@ -8,7 +8,10 @@
 #include <QShortcut>
 #include <QNetworkProxy>
 #include <QNetworkCookieJar>
+#include <QNetworkReply>
 #include <QWebView>
+#include <QJsonDocument>
+
 
 static QString facebookConnectUrl =
 		"https://www.facebook.com/dialog/oauth?"
@@ -76,8 +79,25 @@ void PreferencesDialog::facebookLoginResponse(const QUrl &url)
 		settings.beginGroup("WebApps");
 		settings.beginGroup("Facebook");
 		settings.setValue("ConnectToken", securityToken);
+
+		QNetworkAccessManager *getUserID = new QNetworkAccessManager();
+		connect(getUserID, &QNetworkAccessManager::finished, this, &PreferencesDialog::facebookGetUserId);
+		getUserID->get(QNetworkRequest(QUrl("https://graph.facebook.com/me?fields=id&access_token=" + securityToken)));
+
 		ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
 		ui.btnDisconnectFacebook->show();
+	}
+}
+
+void PreferencesDialog::facebookGetUserId(QNetworkReply *reply)
+{
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+	QJsonObject obj = jsonDoc.object();
+	if (obj.keys().contains("id")){
+		QSettings s;
+		s.beginGroup("WebApps");
+		s.beginGroup("Facebook");
+		s.setValue("UserId", obj.value("id").toVariant());
 	}
 }
 

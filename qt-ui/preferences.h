@@ -32,7 +32,7 @@ slots:
 	void on_btnUseDefaultFile_toggled(bool toggle);
 	void facebookLoginResponse(const QUrl& url);
 	void facebookDisconnect();
-
+	void facebookGetUserId(QNetworkReply *reply);
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();
