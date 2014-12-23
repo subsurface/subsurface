@@ -169,12 +169,10 @@ void GroupedLineEdit::keyPressEvent(QKeyEvent *e)
 
 void GroupedLineEdit::paintEvent(QPaintEvent *e)
 {
-#if !defined __APPLE__
-	// for reasons we don't understand, yet, touching the painter
+#if QT_VERSION >= 0x050000 || !defined __APPLE__
+	// for reasons we don't understand, touching the painter
 	// here (even drawing the fill rect) causes the QPlainTextEdit
-	// paintEvent to not draw the text on MacOS.
-	// So as a workaround until this is better understood we need
-	// to disable the eye candy
+	// paintEvent to not draw the text on Qt4 & MacOS.
 	QTextLine line = document()->findBlock(0).layout()->lineAt(0);
 	QPainter painter(viewport());
 
