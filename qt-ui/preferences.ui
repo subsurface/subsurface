@@ -6,6 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
+    <width>562</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,6 +130,11 @@
          </iconset>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Facebook</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -139,7 +146,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="page_2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -964,6 +971,19 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="page_6">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QWebView" name="facebookWebView">
+           <property name="url">
+            <url>
+             <string>about:blank</string>
+            </url>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -980,6 +1000,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -1320,12 +1347,12 @@
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

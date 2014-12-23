@@ -7,6 +7,7 @@
 #include <QSortFilterProxyModel>
 #include <QShortcut>
 #include <QNetworkProxy>
+#include <QWebView>
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -25,6 +26,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->addItem(tr("HTTP proxy"), QNetworkProxy::HttpProxy);
 	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
 	ui.proxyType->setCurrentIndex(-1);
+
+	// Facebook stuff:
+	QUrl urlLogin("https://www.facebook.com/dialog/oauth?"
+		"client_id=427722490709000"
+		"&redirect_uri=http://www.facebook.com/connect/login_success.html");
+
+	ui.facebookWebView->setUrl(urlLogin);
+
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
