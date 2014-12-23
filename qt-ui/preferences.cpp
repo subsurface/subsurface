@@ -30,9 +30,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	// Facebook stuff:
 	QUrl urlLogin("https://www.facebook.com/dialog/oauth?"
 		"client_id=427722490709000"
-		"&redirect_uri=http://www.facebook.com/connect/login_success.html");
+		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
+		"&response_type=token");
 
 	ui.facebookWebView->setUrl(urlLogin);
+
+	connect(ui.facebookWebView, &QWebView::urlChanged, this, &PreferencesDialog::facebookLoginResponse);
 
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -45,6 +48,22 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	loadSettings();
 	setUiFromPrefs();
 	rememberPrefs();
+}
+
+void PreferencesDialog::facebookLoginResponse(const QUrl &url)
+{
+	QString result = url.toString();
+	if (result.contains("access_token")){ // Login Successfull.
+		int from = result.indexOf("access_token=") + strlen("access_token=");
+		int to = result.indexOf("&expires_in");
+		QString securityToken = result.mid(from, to-from);
+
+		QSettings settings;
+		settings.beginGroup("WebApps");
+		settings.beginGroup("Facebook");
+		settings.setValue("ConnectToken", securityToken);
+		ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
+	}
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""

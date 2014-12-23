@@ -30,7 +30,7 @@ slots:
 	void gfhighChanged(int gf);
 	void proxyType_changed(int idx);
 	void on_btnUseDefaultFile_toggled(bool toggle);
-
+	void facebookLoginResponse(const QUrl& url);
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();
