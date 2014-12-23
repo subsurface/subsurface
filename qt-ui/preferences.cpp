@@ -7,7 +7,14 @@
 #include <QSortFilterProxyModel>
 #include <QShortcut>
 #include <QNetworkProxy>
+#include <QNetworkCookieJar>
 #include <QWebView>
+
+static QString facebookConnectUrl =
+		"https://www.facebook.com/dialog/oauth?"
+		"client_id=427722490709000"
+		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
+		"&response_type=token";
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -28,21 +35,20 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->setCurrentIndex(-1);
 
 	// Facebook stuff:
-	QUrl urlLogin("https://www.facebook.com/dialog/oauth?"
-		"client_id=427722490709000"
-		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
-		"&response_type=token");
 
 	QSettings settings;
 	settings.beginGroup("WebApps");
 	settings.beginGroup("Facebook");
 	if(settings.allKeys().contains("ConnectToken")){
 		ui.facebookWebView->setHtml("You are connected on Facebook, yey.");
+		ui.btnDisconnectFacebook->show();
 	} else {
-		ui.facebookWebView->setUrl(urlLogin);
+		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
+		ui.btnDisconnectFacebook->hide();
 	}
 
 	connect(ui.facebookWebView, &QWebView::urlChanged, this, &PreferencesDialog::facebookLoginResponse);
+	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, this, &PreferencesDialog::facebookDisconnect);
 
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -70,8 +76,21 @@ void PreferencesDialog::facebookLoginResponse(const QUrl &url)
 		settings.beginGroup("Facebook");
 		settings.setValue("ConnectToken", securityToken);
 		ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
+		ui.btnDisconnectFacebook->show();
 	}
 }
+
+void PreferencesDialog::facebookDisconnect()
+{
+		QSettings settings;
+		settings.beginGroup("WebApps");
+		settings.beginGroup("Facebook");
+		settings.remove("ConnectToken");
+		ui.facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
+		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
+		ui.btnDisconnectFacebook->hide();
+}
+
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
 void PreferencesDialog::gflowChanged(int gf)
@@ -168,6 +187,14 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.proxyPassword->setText(prefs.proxy_pass);
 	ui.proxyType->setCurrentIndex(ui.proxyType->findData(prefs.proxy_type));
 	ui.btnUseDefaultFile->setChecked(prefs.use_default_file);
+
+	s.beginGroup("WebApps");
+	s.beginGroup("Facebook");
+	if(s.allKeys().contains("ConnectToken")){
+		ui.btnDisconnectFacebook->show();
+	} else {
+		ui.btnDisconnectFacebook->hide();
+	}
 }
 
 void PreferencesDialog::restorePrefs()

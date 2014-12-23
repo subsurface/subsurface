@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
+    <width>924</width>
     <height>718</height>
    </rect>
   </property>
@@ -972,13 +972,20 @@
         </layout>
        </widget>
        <widget class="QWidget" name="page_6">
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <layout class="QVBoxLayout" name="verticalLayout_8">
          <item>
           <widget class="QWebView" name="facebookWebView">
            <property name="url">
             <url>
              <string>about:blank</string>
             </url>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnDisconnectFacebook">
+           <property name="text">
+            <string>Disconnect from facebook</string>
            </property>
           </widget>
          </item>
