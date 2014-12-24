@@ -11,14 +11,7 @@
 #include <QNetworkReply>
 #include <QWebView>
 #include <QJsonDocument>
-
-
-static QString facebookConnectUrl =
-		"https://www.facebook.com/dialog/oauth?"
-		"client_id=427722490709000"
-		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
-		"&response_type=token"
-		"&scope=publish_actions,user_photos";
+#include "socialnetworks.h"
 
 PreferencesDialog *PreferencesDialog::instance()
 {
@@ -39,20 +32,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->setCurrentIndex(-1);
 
 	// Facebook stuff:
-
-	QSettings settings;
-	settings.beginGroup("WebApps");
-	settings.beginGroup("Facebook");
-	if(settings.allKeys().contains("ConnectToken")){
+	FacebookManager *fb = FacebookManager::instance();
+	if(fb->loggedIn()){
 		ui.facebookWebView->setHtml("You are connected on Facebook, yey.");
-		ui.fbConnected->show();
 	} else {
-		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
-		ui.fbConnected->hide();
+		ui.facebookWebView->setUrl(fb->connectUrl());
 	}
-
-	connect(ui.facebookWebView, &QWebView::urlChanged, this, &PreferencesDialog::facebookLoginResponse);
-	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, this, &PreferencesDialog::facebookDisconnect);
+	fb->setDesiredAlbumName(ui.facebookAlbum->text());
+	connect(ui.facebookAlbum, &QLineEdit::textChanged, fb, &FacebookManager::setDesiredAlbumName);
+	connect(ui.facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
+	connect(fb, &FacebookManager::justLoggedIn, this, &PreferencesDialog::facebookLoggedIn);
+	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);
+	connect(fb, &FacebookManager::justLoggedOut, this, &PreferencesDialog::facebookDisconnect);
 
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -67,54 +58,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	rememberPrefs();
 }
 
-void PreferencesDialog::facebookLoginResponse(const QUrl &url)
+void PreferencesDialog::facebookLoggedIn()
 {
-	QString result = url.toString();
-	if (result.contains("access_token")){ // Login Successfull.
-		int from = result.indexOf("access_token=") + strlen("access_token=");
-		int to = result.indexOf("&expires_in");
-		QString securityToken = result.mid(from, to-from);
-
-		QSettings settings;
-		settings.beginGroup("WebApps");
-		settings.beginGroup("Facebook");
-		settings.setValue("ConnectToken", securityToken);
-
-		QNetworkAccessManager *getUserID = new QNetworkAccessManager();
-		connect(getUserID, &QNetworkAccessManager::finished, this, &PreferencesDialog::facebookGetUserId);
-		getUserID->get(QNetworkRequest(QUrl("https://graph.facebook.com/me?fields=id&access_token=" + securityToken)));
-		ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
-		ui.fbConnected->show();
-
-		// only enable when we get the reply for the user_id.
-		setDisabled(true);
-	}
-}
-
-void PreferencesDialog::facebookGetUserId(QNetworkReply *reply)
-{
-	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
-	QJsonObject obj = jsonDoc.object();
-	if (obj.keys().contains("id")){
-		QSettings s;
-		s.beginGroup("WebApps");
-		s.beginGroup("Facebook");
-		s.setValue("UserId", obj.value("id").toVariant());
-	}
-	setEnabled(true);
+	ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
+	ui.fbConnected->show();
 }
 
 void PreferencesDialog::facebookDisconnect()
 {
-		QSettings settings;
-		settings.beginGroup("WebApps");
-		settings.beginGroup("Facebook");
-		settings.remove("ConnectToken");
-		ui.facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
-		ui.facebookWebView->setUrl(QUrl(facebookConnectUrl));
-		ui.fbConnected->hide();
+	ui.facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
+	ui.facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
+	ui.fbConnected->hide();
 }
-
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
 void PreferencesDialog::gflowChanged(int gf)
@@ -211,15 +166,6 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.proxyPassword->setText(prefs.proxy_pass);
 	ui.proxyType->setCurrentIndex(ui.proxyType->findData(prefs.proxy_type));
 	ui.btnUseDefaultFile->setChecked(prefs.use_default_file);
-
-	s.beginGroup("WebApps");
-	s.beginGroup("Facebook");
-	if(s.allKeys().contains("ConnectToken")){
-		ui.fbConnected->show();
-	} else {
-		ui.fbConnected->hide();
-	}
-	ui.facebookAlbum->setText(s.value("Album", "subsurface").toString());
 }
 
 void PreferencesDialog::restorePrefs()
@@ -365,13 +311,6 @@ void PreferencesDialog::syncSettings()
 	s.setValue("proxy_pass", ui.proxyPassword->text());
 	s.endGroup();
 
-	// Facebook
-	s.beginGroup("WebApps");
-	s.beginGroup("Facebook");
-	s.setValue("Album", ui.facebookAlbum->text());
-	s.endGroup();
-	s.endGroup();
-
 	loadSettings();
 	emit settingsChanged();
 }
@@ -476,15 +415,6 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("proxy_user", proxy_user);
 	GET_TXT("proxy_pass", proxy_pass);
 	s.endGroup();
-
-	s.beginGroup("WebApps");
-	s.beginGroup("Facebook");
-	GET_TXT("UserId", facebook.user_id);
-	GET_TXT("ConnectToken", facebook.access_token);
-	GET_TXT("AlbumName", facebook.album_name);
-	s.endGroup();
-	s.endGroup();
-	qDebug() << prefs.facebook.user_id << prefs.facebook.access_token << prefs.facebook.album_name;
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)

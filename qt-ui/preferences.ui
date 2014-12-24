@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>924</width>
-    <height>718</height>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -995,7 +995,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="facebookAlbum"/>
+               <widget class="QLineEdit" name="facebookAlbum">
+                <property name="text">
+                 <string>subsurface</string>
+                </property>
+               </widget>
               </item>
               <item>
                <spacer name="horizontalSpacer_2">

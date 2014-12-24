@@ -19,9 +19,9 @@ typedef struct
 } partial_pressure_graphs_t;
 
 typedef struct {
-	char *user_id;
 	char *access_token;
-	char *album_name;
+	char *user_id;
+	char *album_id;
 } facebook_prefs_t;
 
 struct preferences {

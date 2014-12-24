@@ -214,15 +214,6 @@ private:
 	Ui::FilterWidget ui;
 };
 
-class FacebookManager : public QObject {
-	Q_OBJECT
-public:
-	FacebookManager();
-	bool checkAlbumExists();
-	void createAlbum();
-signals:
-	void requestFinished(const QString& result);
-};
 bool isGnome3Session();
 QImage grayImage(const QImage &coloredImg);
 

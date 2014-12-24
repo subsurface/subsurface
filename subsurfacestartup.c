@@ -50,9 +50,9 @@ struct preferences default_prefs = {
 	.show_pictures_in_profile = true,
 	.tankbar = false,
 	.facebook = {
-		.user_id = "",
-		.album_name = "subsurface",
-		.access_token = ""
+		.user_id = NULL,
+		.album_id = NULL,
+		.access_token = NULL
 	}
 };
 

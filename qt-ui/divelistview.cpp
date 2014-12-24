@@ -27,6 +27,7 @@
 #include <QFileDialog>
 #include <string>
 #include <iostream>
+#include "socialnetworks.h"
 #include "../qthelper.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
@@ -842,8 +843,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 
 void DiveListView::publishFacebook()
 {
-	FacebookManager manager;
-	manager.checkAlbumExists();
+	FacebookManager *fb = FacebookManager::instance();
 }
 
 void DiveListView::shiftTimes()
