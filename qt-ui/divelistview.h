@@ -51,6 +51,7 @@ slots:
 	void renumberDives();
 	void shiftTimes();
 	void loadImages();
+	void publishFacebook();
 	static QString lastUsedImageDir();
 
 signals:

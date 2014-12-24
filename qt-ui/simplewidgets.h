@@ -3,6 +3,7 @@
 
 class MinMaxAvgWidgetPrivate;
 class QAbstractButton;
+class QNetworkReply;
 
 #include <QWidget>
 #include <QDialog>
@@ -17,6 +18,7 @@ class QAbstractButton;
 #include "ui_filterwidget.h"
 #include "exif.h"
 #include <dive.h>
+
 
 class MinMaxAvgWidget : public QWidget {
 	Q_OBJECT
@@ -212,6 +214,15 @@ private:
 	Ui::FilterWidget ui;
 };
 
+class FacebookManager : public QObject {
+	Q_OBJECT
+public:
+	FacebookManager();
+	bool checkAlbumExists();
+	void createAlbum();
+signals:
+	void requestFinished(const QString& result);
+};
 bool isGnome3Session();
 QImage grayImage(const QImage &coloredImg);
 

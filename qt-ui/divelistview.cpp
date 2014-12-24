@@ -824,6 +824,10 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("Shift times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("Load images"), this, SLOT(loadImages()));
 	}
+	if (prefs.facebook.user_id) {
+		popup.addAction(tr("Publish on Facebook"), this, SLOT(publishFacebook()));
+	}
+
 	// "collapse all" really closes all trips,
 	// "collapse" keeps the trip with the selected dive open
 	QAction *actionTaken = popup.exec(event->globalPos());
@@ -834,6 +838,12 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		this->setAnimated(true);
 	}
 	event->accept();
+}
+
+void DiveListView::publishFacebook()
+{
+	FacebookManager manager;
+	manager.checkAlbumExists();
 }
 
 void DiveListView::shiftTimes()
