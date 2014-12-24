@@ -2875,8 +2875,8 @@ simmultaneously.
 - <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
 - _Yearly Statistics_ - Display summary statistics about dives during this and past
 years.
-- _Prev DC_ - Switch to next dive computer.
-- _Next DC_ - Switch to previous dive computer.
+- _Prev DC_ - Switch to previous dive computer.
+- _Next DC_ - Switch to next dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
 
 === Help
