@@ -11,8 +11,10 @@
 #include <QHttpMultiPart>
 #include <QSettings>
 #include <QFile>
+#include <QBuffer>
 #include <QDebug>
-
+#include "mainwindow.h"
+#include "profile/profilewidget2.h"
 #include "pref.h"
 
 #define GET_TXT(name, field)                                             \
@@ -183,22 +185,24 @@ void FacebookManager::setDesiredAlbumName(const QString& a)
 	albumName = a;
 }
 
-/*
-
-
-*/
-
+/* to be changed to export the currently selected dive as shown on the profile.
+ * Much much easier, and its also good to people do not select all the dives
+ * and send erroniously *all* of them to facebook. */
 void FacebookManager::sendDive(int divenr)
 {
+	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+	QPixmap pix = QPixmap::grabWidget(profile);
 
+	QByteArray bytes;
+	QBuffer buffer(&bytes);
+	buffer.open(QIODevice::WriteOnly);
+	pix.save(&buffer, "PNG");
 	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image");
 
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
-	QFile file("subsurfaceuploadtest.png");
-	file.open(QIODevice::ReadOnly);
 	QNetworkRequest request(url);
 
 	QString bound="margin";
@@ -208,9 +212,9 @@ void FacebookManager::sendDive(int divenr)
 	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
 	data.append("https://graph.facebook.com/v2.2/\r\n");
 	data.append("--" + bound + "\r\n");   //according to rfc 1867
-	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"subsurfaceuploadtest.png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
+	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
-	data.append(file.readAll());   //let's read the file
+	data.append(bytes);   //let's read the file
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
 
