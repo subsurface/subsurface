@@ -169,51 +169,66 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 
 2) Install needed dependencies
 
-$ brew install asciidoc libzip qt sqlite cmake libusb pkg-config
+$ brew install asciidoc libzip sqlite cmake libusb pkg-config
 
 3) Make the brew version of sqlite the default
 
 $ brew link --force sqlite
 
-4) Install Marble
+4) Download Qt from http://www.qt.io/download-open-source/
 
-$ mkdir -p ~/src/marble/build
-$ git clone -b KDE/4.11 git://anongit.kde.org/marble ~/src/marble/sources
-$ cd ~/src/marble/build
-$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
- - or -
-$ cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DCMAKE_INSTALL_PREFIX=/usr/local ../sources
-$ cd src/lib
+In the installer, chose an install folder (e.g., /home/username/Qt5), in
+"Select components" select the most recent version and be sure you also
+install the "Source Components".
+
+Build it (takes a long time)
+
+$ cd ~/Qt5/5.4/Src/
+
+$ ./configure -prefix /usr/local -opensource
+
 $ make -j4
-$ install_name_tool -id /usr/local/lib/`echo libmarblewidget.??.dylib` libmarblewidget.dylib
-$ cp *dylib /usr/local/lib/
-$ mkdir -p /usr/local/include/marble
-$ cd ../../../sources/src/lib
-$ cp $(find . -name '*.h') /usr/local/include/marble/
+
+$ make install
+
+5) Install custom subsurface Marble
+
+$ cd ~/src
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/marble marble-source
+$ cd marble-source
+$ mkdir marble-build
+$ cd marble-build
+$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DWITH_PHONON=OFF \
+	-DQT5BUILD=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../../marble-source
+$ cd src/lib/marble
+$ make -j4
 
 5) Install Libdivecomputer
 
 $ brew install automake libtool
 $ cd ~/src
-$ git clone git://git.libdivecomputer.org/libdivecomputer
+$ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
 $ cd libdivecomputer
-$ git checkout release-0.4
 $ autoreconf --install
 $ ./configure --disable-shared
-$ make
+$ make -j4
 $ make install
+
 
 6) Compile Subsurface
 
 $ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ qmake
-$ make
+$ qmake SPECIAL_MARBLE_PREFIX=1 INCLUDEPATH+=/usr/local/include \
+	LIBS+=-L/usr/local/lib \
+	LIBS+='-L/usr/local/Cellar/libzip/0.11.2/lib -lzip -lz' \
+	INCLUDEPATH+=/usr/local/Cellar/libzip/0.11.2/include V=1 \
+	LIBMARBLEDEVEL=../marble-source/marble-build/
+$ make -j4
 $ make install_mac_bundle
 
-After the above is done, Subsurface will be installed to
-/Applications.
+After the above is done, Subsurface will be installed to /Applications.
 
 Another option is to create a .dmg for distribution:
 
@@ -221,45 +236,6 @@ $ qmake
 $ make
 $ make mac-create-dmg
 
-NOTES: macdeployqt assumes that the plugins are located "next" to the
-frameworks. The frameworks are linked from /usr/local/lib - but the
-plugins are not in /usr/local/plugins.
-The easiest workaround is to create a symbolic link from
-/usr/local/plugins to /usr/local/Cellar/qt/4.8.5/plugins (or whatever
-version of Qt you have built earlier).
-
-Building the Qt version under MacOSX (using MacPorts)
------------------------------------------------------
-
-1)  Install MacPorts
-
-Please refer to http://www.macports.org/install.php
-
-2)  Install needed dependencies
-
-$ sudo port -vp install asciidoc libzip libusb sqlite cmake qt4-mac marble libdivecomputer libgit2
-
-3)  Check dependencies' versions
-
-$ port installed qt4-mac libdivecomputer marble libzip asciidoc libusb sqlite cmake
-The following ports are currently installed:
-  asciidoc @8.6.9_1 (active)
-  cmake @2.8.12_3 (active)
-  libdivecomputer @0.4.1_0 (active)
-  libgit2 @0.20.0_0 (active)
-  libusb @1.0.18_0 (active)
-  libzip @0.11.1_0 (active)
-  marble @4.12.2_0 (active)
-  qt4-mac @4.8.5_1 (active)
-
-4) Compile Subsurface
-
-$ cd ~/src
-$ git clone git://subsurface-divelog.org/subsurface.git
-$ cd subsurface
-$ qmake
-$ make
-$ make install_mac_bundle
 
 Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
