@@ -21,6 +21,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 {
 	ui->setupUi(this);
 	fileNames = *fn;
+	column = 0;
 
 	/* Add indexes of XSLTs requiring special handling to the list */
 	specialCSV << 3;
@@ -53,6 +54,28 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 	connect(ui->stopdepthCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
 	connect(ui->CSVpressure, SIGNAL(valueChanged(int)), this, SLOT(unknownImports()));
 	connect(ui->pressureCheckBox, SIGNAL(clicked(bool)), this, SLOT(unknownImports()));
+
+	/* manually import CSV file */
+	connect(ui->DiveNumberCheck, SIGNAL(clicked(bool)), this, SLOT(manualDiveNumber()));
+	connect(ui->DateCheck, SIGNAL(clicked(bool)), this, SLOT(manualDate()));
+	connect(ui->TimeCheck, SIGNAL(clicked(bool)), this, SLOT(manualTime()));
+	connect(ui->LocationCheck, SIGNAL(clicked(bool)), this, SLOT(manualLocation()));
+	connect(ui->GpsCheck, SIGNAL(clicked(bool)), this, SLOT(manualGps()));
+	connect(ui->MaxDepthCheck, SIGNAL(clicked(bool)), this, SLOT(manualMaxDepth()));
+	connect(ui->MeanDepthCheck, SIGNAL(clicked(bool)), this, SLOT(manualMeanDepth()));
+	connect(ui->BuddyCheck, SIGNAL(clicked(bool)), this, SLOT(manualBuddy()));
+	connect(ui->NotesCheck, SIGNAL(clicked(bool)), this, SLOT(manualNotes()));
+	connect(ui->TagsCheck, SIGNAL(clicked(bool)), this, SLOT(manualTags()));
+	connect(ui->WeightCheck, SIGNAL(clicked(bool)), this, SLOT(manualWeight()));
+	connect(ui->DurationCheck, SIGNAL(clicked(bool)), this, SLOT(manualDuration()));
+	connect(ui->CylinderSizeCheck, SIGNAL(clicked(bool)), this, SLOT(manualCylinderSize()));
+	connect(ui->StartPressureCheck, SIGNAL(clicked(bool)), this, SLOT(manualStartPressure()));
+	connect(ui->EndPressureCheck, SIGNAL(clicked(bool)), this, SLOT(manualEndPressure()));
+	connect(ui->O2Check, SIGNAL(clicked(bool)), this, SLOT(manualO2()));
+	connect(ui->HeCheck, SIGNAL(clicked(bool)), this, SLOT(manualHe()));
+	connect(ui->AirTempCheck, SIGNAL(clicked(bool)), this, SLOT(manualAirTemp()));
+	connect(ui->WaterTempCheck, SIGNAL(clicked(bool)), this, SLOT(manualWaterTemp()));
+
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
@@ -107,7 +130,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			parse_manual_file(fileNames[i].toUtf8().data(),
 					  ui->ManualSeparator->currentIndex(),
 					  ui->Units->currentIndex(),
-                                          ui->DateFormat->currentIndex(),
+					  ui->DateFormat->currentIndex(),
 					  VALUE_IF_CHECKED(DiveNumber),
 					  VALUE_IF_CHECKED(Date), VALUE_IF_CHECKED(Time),
 					  VALUE_IF_CHECKED(Duration), VALUE_IF_CHECKED(Location),
@@ -167,4 +190,108 @@ void DiveLogImportDialog::unknownImports()
 {
 	if (!specialCSV.contains(ui->knownImports->currentIndex()))
 		ui->knownImports->setCurrentIndex(0);
+}
+
+#define SET_COLUMN(CHECK, VALUE) ({\
+	if (ui->CHECK->isChecked()) {\
+		ui->VALUE->setEnabled(true);\
+		ui->VALUE->setValue(++column);\
+	} else {\
+		ui->VALUE->setEnabled(false);\
+		--column;}\
+	})
+
+void DiveLogImportDialog::manualDiveNumber()
+{
+	SET_COLUMN(DiveNumberCheck, DiveNumber);
+}
+
+void DiveLogImportDialog::manualDate()
+{
+	SET_COLUMN(DateCheck, Date);
+}
+
+void DiveLogImportDialog::manualTime()
+{
+	SET_COLUMN(TimeCheck, Time);
+}
+
+void DiveLogImportDialog::manualLocation()
+{
+	SET_COLUMN(LocationCheck, Location);
+}
+
+void DiveLogImportDialog::manualGps()
+{
+	SET_COLUMN(GpsCheck, Gps);
+}
+
+void DiveLogImportDialog::manualMaxDepth()
+{
+	SET_COLUMN(MaxDepthCheck, MaxDepth);
+}
+
+void DiveLogImportDialog::manualMeanDepth()
+{
+	SET_COLUMN(MeanDepthCheck, MeanDepth);
+}
+
+void DiveLogImportDialog::manualBuddy()
+{
+	SET_COLUMN(BuddyCheck, Buddy);
+}
+
+void DiveLogImportDialog::manualNotes()
+{
+	SET_COLUMN(NotesCheck, Notes);
+}
+
+void DiveLogImportDialog::manualTags()
+{
+	SET_COLUMN(TagsCheck, Tags);
+}
+
+void DiveLogImportDialog::manualWeight()
+{
+	SET_COLUMN(WeightCheck, Weight);
+}
+
+void DiveLogImportDialog::manualDuration()
+{
+	SET_COLUMN(DurationCheck, Duration);
+}
+
+void DiveLogImportDialog::manualCylinderSize()
+{
+	SET_COLUMN(CylinderSizeCheck, CylinderSize);
+}
+
+void DiveLogImportDialog::manualStartPressure()
+{
+	SET_COLUMN(StartPressureCheck, StartPressure);
+}
+
+void DiveLogImportDialog::manualEndPressure()
+{
+	SET_COLUMN(EndPressureCheck, EndPressure);
+}
+
+void DiveLogImportDialog::manualO2()
+{
+	SET_COLUMN(O2Check, O2);
+}
+
+void DiveLogImportDialog::manualHe()
+{
+	SET_COLUMN(HeCheck, He);
+}
+
+void DiveLogImportDialog::manualAirTemp()
+{
+	SET_COLUMN(AirTempCheck, AirTemp);
+}
+
+void DiveLogImportDialog::manualWaterTemp()
+{
+	SET_COLUMN(WaterTempCheck, WaterTemp);
 }

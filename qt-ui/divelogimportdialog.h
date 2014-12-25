@@ -23,11 +23,32 @@ slots:
 	void on_knownImports_currentIndexChanged(int index);
 	void unknownImports();
 
+	void manualDiveNumber();
+	void manualDate();
+	void manualTime();
+	void manualLocation();
+	void manualGps();
+	void manualMaxDepth();
+	void manualMeanDepth();
+	void manualBuddy();
+	void manualNotes();
+	void manualTags();
+	void manualWeight();
+	void manualDuration();
+	void manualCylinderSize();
+	void manualStartPressure();
+	void manualEndPressure();
+	void manualO2();
+	void manualHe();
+	void manualAirTemp();
+	void manualWaterTemp();
+
 private:
 	bool selector;
 	QStringList fileNames;
 	Ui::DiveLogImportDialog *ui;
 	QList<int> specialCSV;
+	int column;
 
 	struct CSVAppConfig {
 		QString name;
