@@ -27,6 +27,7 @@
 #include <QFileDialog>
 #include <string>
 #include <iostream>
+#include <QHttpMultiPart>
 #include "socialnetworks.h"
 #include "../qthelper.h"
 
@@ -844,6 +845,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 void DiveListView::publishFacebook()
 {
 	FacebookManager *fb = FacebookManager::instance();
+	fb->sendDive(1);
 }
 
 void DiveListView::shiftTimes()

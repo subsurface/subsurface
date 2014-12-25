@@ -8,7 +8,9 @@
 #include <QNetworkAccessManager>
 #include <QUrlQuery>
 #include <QEventLoop>
+#include <QHttpMultiPart>
 #include <QSettings>
+#include <QFile>
 #include <QDebug>
 
 #include "pref.h"
@@ -179,4 +181,46 @@ void FacebookManager::requestUserId()
 void FacebookManager::setDesiredAlbumName(const QString& a)
 {
 	albumName = a;
+}
+
+/*
+
+
+*/
+
+void FacebookManager::sendDive(int divenr)
+{
+
+	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
+		 "&access_token=" + QString(prefs.facebook.access_token) +
+		 "&source=image");
+
+
+	QNetworkAccessManager *am = new QNetworkAccessManager(this);
+	QFile file("subsurfaceuploadtest.png");
+	file.open(QIODevice::ReadOnly);
+	QNetworkRequest request(url);
+
+	QString bound="margin";
+
+	//according to rfc 1867 we need to put this string here:
+	QByteArray data(QString("--" + bound + "\r\n").toLocal8Bit());
+	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
+	data.append("https://graph.facebook.com/v2.2/\r\n");
+	data.append("--" + bound + "\r\n");   //according to rfc 1867
+	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"subsurfaceuploadtest.png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
+	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
+	data.append(file.readAll());   //let's read the file
+	data.append("\r\n");
+	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
+
+	request.setRawHeader(QString("Content-Type").toLocal8Bit(),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
+	request.setRawHeader(QString("Content-Length").toLocal8Bit(), QString::number(data.length()).toLocal8Bit());
+	QNetworkReply *reply = am->post(request,data);
+
+	QEventLoop loop;
+	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	loop.exec();
+
+	qDebug() << reply->readAll();
 }

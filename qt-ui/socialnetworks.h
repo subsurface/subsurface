@@ -22,6 +22,7 @@ public slots:
 	void tryLogin(const QUrl& loginResponse);
 	void logout();
 	void setDesiredAlbumName(const QString& albumName);
+	void sendDive(int divenr);
 
 private:
 	explicit FacebookManager(QObject *parent = 0);
