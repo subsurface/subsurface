@@ -38,8 +38,8 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
-      <xsl:when test="cylinder/@start|cylinder/@end != ''">
-        <xsl:apply-templates select="cylinder"/>
+      <xsl:when test="cylinder[1]/@start|cylinder[1]/@end != ''">
+        <xsl:apply-templates select="cylinder[1]"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$fs"/>
