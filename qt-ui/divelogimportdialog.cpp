@@ -12,6 +12,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "XP5", 1, 2, 10, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 1, 2, 6, -1, -1, 3, 4, 5, 7, ";" },
+	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, }
 };
 
@@ -25,6 +26,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 
 	/* Add indexes of XSLTs requiring special handling to the list */
 	specialCSV << 3;
+	specialCSV << 5;
 
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
@@ -160,8 +162,10 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 {
 	if (specialCSV.contains(index)) {
 		ui->groupBox_3->setEnabled(false);
+		ui->CSVUnits->setEnabled(false);
 	} else {
 		ui->groupBox_3->setEnabled(true);
+		ui->CSVUnits->setEnabled(true);
 	}
 	if (index == 0)
 		return;

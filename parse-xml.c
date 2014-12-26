@@ -2558,6 +2558,7 @@ static struct xslt_files {
 	  { "Divinglog", "DivingLog.xslt", NULL },
 	  { "csv", "csv2xml.xslt", NULL },
 	  { "sensuscsv", "sensuscsv.xslt", NULL },
+	  { "SubsurfaceCSV", "subsurfacecsv.xslt", NULL },
 	  { "manualcsv", "manualcsv2xml.xslt", NULL },
 	  { NULL, }
   };

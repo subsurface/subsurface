@@ -45,6 +45,7 @@
         <file>xslt/xml2manualcsv.xslt</file>
         <file>xslt/uddf.xslt</file>
         <file>xslt/sensuscsv.xslt</file>
+        <file>xslt/subsurfacecsv.xslt</file>
         <file>xslt/manualcsv2xml.xslt</file>
         <file>xslt/shearwater.xslt</file>
         <file alias="icon_lung">icons/gas.png</file>
