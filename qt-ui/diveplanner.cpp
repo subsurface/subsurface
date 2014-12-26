@@ -394,6 +394,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.setupUi(this);
 
 	QSettings s;
+	QStringList rebreater_modes;
 	s.beginGroup("Planner");
 	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
 	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
@@ -415,6 +416,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
+	rebreater_modes << "Open circuit" << "pSCR" << "CCR";
+	ui.rebreathermode->insertItems(0, rebreater_modes);
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
@@ -441,6 +444,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
+	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(QString)), plannerModel, SLOT(setRebreatherMode(QString)));
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
@@ -777,6 +781,18 @@ void DivePlannerPointsModel::setGFLow(const int ghflow)
 {
 	tempGFLow = ghflow;
 	triggerGFLow();
+}
+
+void DivePlannerPointsModel::setRebreatherMode(QString mode)
+{
+	qDebug() << mode << "selected, was" << displayed_dive.dc.dctype;
+	if (mode == "OC")
+		displayed_dive.dc.dctype = OC;
+	else if (mode == "pSCR")
+		displayed_dive.dc.dctype = PSCR;
+	else if (mode == "CCR")
+		displayed_dive.dc.dctype = CCR;
+	plannerModel->emitDataChanged();
 }
 
 void DivePlannerPointsModel::triggerGFLow()

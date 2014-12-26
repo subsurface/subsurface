@@ -251,7 +251,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	int oldpo2 = 0;
 	int lasttime = 0;
 	int lastdepth = 0;
-	enum dive_comp_type type = OC;
+	enum dive_comp_type type = displayed_dive.dc.dctype;
 
 	if (!diveplan || !diveplan->dp)
 		return;
