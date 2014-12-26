@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xt="http://www.jclark.com/xt"
+  extension-element-prefixes="xt" version="1.0">
   <xsl:strip-space elements="*"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
   <xsl:variable name="fs">,</xsl:variable>
 
   <xsl:template match="/divelog/dives">
-    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth&quot;', $fs, '&quot;avgdepth&quot;', $fs, '&quot;airtemp&quot;', $fs, '&quot;watertemp&quot;', $fs, '&quot;cylinder size&quot;', $fs, '&quot;startpressure&quot;', $fs, '&quot;endpressure&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;')"/>
+    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth&quot;', $fs, '&quot;avgdepth&quot;', $fs, '&quot;airtemp&quot;', $fs, '&quot;watertemp&quot;', $fs, '&quot;cylinder size&quot;', $fs, '&quot;startpressure&quot;', $fs, '&quot;endpressure&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight&quot;')"/>
     <xsl:text>
 </xsl:text>
     <xsl:apply-templates select="dive|trip/dive"/>
@@ -99,6 +101,21 @@
       <xsl:value-of select="$fs"/>
       <xsl:text>&quot;&quot;</xsl:text>
     </xsl:if>
+
+    <xsl:variable name="trimmedweightlist">
+      <xsl:for-each select="weightsystem">
+        <weight>
+          <xsl:value-of select="substring-before(@weight, ' ')"/>
+        </weight>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:value-of select="$fs"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:if test="weightsystem">
+      <xsl:value-of select="concat(sum(xt:node-set($trimmedweightlist)/node()), ' kg')"/>
+    </xsl:if>
+    <xsl:text>&quot;</xsl:text>
+
     <xsl:text>
 </xsl:text>
   </xsl:template>
