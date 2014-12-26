@@ -9,6 +9,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
+#include <QWebElement>
+#include <QWebFrame>
+#include <QWebPage>
+
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
@@ -183,6 +187,16 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	}
 	settings.endGroup();
 	settings.endGroup();
+
+	hwVersionPage.mainFrame()->load(QUrl("http://www.heinrichsweikamp.com/?id=162"));
+	connect(&hwVersionPage, SIGNAL(loadFinished(bool)), this, SLOT(findVersion()));
+}
+
+void ConfigureDiveComputerDialog::findVersion()
+{
+	QWebElement parse = hwVersionPage.mainFrame()->documentElement();
+	QWebElement result = parse.findFirst("div[id=content_firmware_headline_typ0]");
+	qDebug() << "Version" << result.toPlainText();
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()

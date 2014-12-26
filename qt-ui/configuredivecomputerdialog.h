@@ -7,6 +7,7 @@
 #include "../libdivecomputer.h"
 #include "configuredivecomputer.h"
 #include <QStyledItemDelegate>
+#include <QWebPage>
 
 class GasSpinBoxItemDelegate : public QStyledItemDelegate
 {
@@ -73,6 +74,8 @@ private slots:
 	void on_updateFirmwareButton_clicked();
 
 	void on_DiveComputerList_currentRowChanged(int currentRow);
+	void findVersion();
+
 
 private:
 	Ui::ConfigureDiveComputerDialog ui;
@@ -99,6 +102,8 @@ private:
 
 	QString selected_vendor;
 	QString selected_product;
+	QWebPage hwVersionPage;
+
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H
