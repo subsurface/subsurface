@@ -6,7 +6,7 @@
   <xsl:variable name="fs">,</xsl:variable>
 
   <xsl:template match="/divelog/dives">
-    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth&quot;', $fs, '&quot;avgdepth&quot;', $fs, '&quot;airtemp&quot;', $fs, '&quot;watertemp&quot;', $fs, '&quot;startpressure&quot;', $fs, '&quot;endpressure&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;')"/>
+    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth&quot;', $fs, '&quot;avgdepth&quot;', $fs, '&quot;airtemp&quot;', $fs, '&quot;watertemp&quot;', $fs, '&quot;cylinder size&quot;', $fs, '&quot;startpressure&quot;', $fs, '&quot;endpressure&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;')"/>
     <xsl:text>
 </xsl:text>
     <xsl:apply-templates select="dive|trip/dive"/>
@@ -44,11 +44,23 @@
       <xsl:otherwise>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="cylinder[1]/@size"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="divecomputer[1]/sample[@pressure]/@pressure"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="cylinder[1]/@o2"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;</xsl:text>
+        <xsl:value-of select="cylinder[1]/@he"/>
         <xsl:text>&quot;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
@@ -113,11 +125,23 @@
   <xsl:template match="cylinder">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="@size"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="$fs"/>
+    <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@start"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@end"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="$fs"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="@o2"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="$fs"/>
+    <xsl:text>&quot;</xsl:text>
+    <xsl:value-of select="@he"/>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="location">
