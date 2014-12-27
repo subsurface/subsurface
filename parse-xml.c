@@ -2531,6 +2531,34 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	return 0;
 }
 
+int parse_dlf_buffer(char *buffer, size_t size)
+{
+	char *ptr = (char *)buffer;
+	bool event;
+
+	/* Skipping the dive header for now */
+	ptr += 32;
+
+	dive_start();
+
+	while (ptr < buffer + size) {
+		event = ptr[0] & 0x0f;
+		if (event == 1) {
+			/* dive event */
+		} else {
+			sample_start();
+			cur_sample->time.seconds = ((ptr[0] >> 4) & 0x0f) +
+				((ptr[1] << 4) & 0xff0) +
+				(ptr[2] & 0x0f) * 3600; /* hours */
+			cur_sample->depth.mm = ((ptr[4] & 0xff) + ((ptr[5] << 8) & 0xff00)) * 10;
+			sample_end();
+		}
+		ptr += 16;
+	}
+	dive_end();
+}
+
+
 void parse_xml_init(void)
 {
 	LIBXML_TEST_VERSION

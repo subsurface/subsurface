@@ -442,6 +442,15 @@ int parse_file(const char *filename)
 		}
 	}
 
+	/* Divesoft Freedom */
+	if (fmt && (!strcasecmp(fmt + 1, "DLF"))) {
+		if (!parse_dlf_buffer(mem.buffer, mem.size)) {
+			free(mem.buffer);
+			return 0;
+		}
+		return -1;
+	}
+
 	ret = parse_file_buffer(filename, &mem);
 	free(mem.buffer);
 	return ret;
