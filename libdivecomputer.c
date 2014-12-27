@@ -733,16 +733,8 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		/* really, serial and firmware version are NOT numbers. We'll try to save them here
 		 * in something that might work, but this really needs to be handled with the
 		 * DC_FIELD_STRING interface instead */
-		if (serial != 0) {
-			snprintf(buffer, sizeof(buffer), "%04u-%04u", serial / 10000, serial % 10000);
-			devdata->serial = strdup(buffer);
-			fprintf(stderr, "libdc devinfo serial nr converted to %s\n", devdata->serial);
-		}
-		if (devinfo->firmware != 0) {
-			snprintf(buffer, sizeof(buffer), "%02u.%02u", devinfo->firmware / 100, devinfo->firmware % 100);
-			devdata->firmware = strdup(buffer);
-			fprintf(stderr, "libdc devinfo firmware version converted to %s\n", devdata->firmware);
-		}
+		devdata->libdc_serial = devinfo->serial;
+		devdata->libdc_firmware = devinfo->firmware;
 		break;
 	case DC_EVENT_CLOCK:
 		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
