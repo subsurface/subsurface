@@ -74,8 +74,6 @@ private slots:
 	void on_updateFirmwareButton_clicked();
 
 	void on_DiveComputerList_currentRowChanged(int currentRow);
-	void findVersion();
-
 
 private:
 	Ui::ConfigureDiveComputerDialog ui;
@@ -102,8 +100,20 @@ private:
 
 	QString selected_vendor;
 	QString selected_product;
-	QWebPage hwVersionPage;
+};
 
+class OstcFirmwareCheck : QObject
+{
+	Q_OBJECT
+public:
+	explicit OstcFirmwareCheck();
+	void checkLatest(uint32_t firmwareOnDevice);
+public
+slots:
+	void parseOstcFwVersion();
+private:
+	QWebPage hwVersionPage;
+	QString latestFirmwareAvailable;
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H

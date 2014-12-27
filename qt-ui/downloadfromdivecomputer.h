@@ -6,7 +6,8 @@
 #include <QHash>
 #include <QMap>
 
-#include "../libdivecomputer.h"
+#include "libdivecomputer.h"
+#include "configuredivecomputerdialog.h"
 #include "ui_downloadfromdivecomputer.h"
 
 class QStringListModel;
@@ -75,6 +76,7 @@ private:
 	QString dumpFile;
 	QTimer *timer;
 	bool dumpWarningShown;
+	OstcFirmwareCheck *ostcFirmwareCheck;
 
 public:
 	bool preferDownloaded();

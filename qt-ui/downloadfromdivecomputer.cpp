@@ -1,11 +1,11 @@
 #include "downloadfromdivecomputer.h"
-#include "../divecomputer.h"
-#include "../libdivecomputer.h"
-#include "../helpers.h"
-#include "../display.h"
-#include "../divelist.h"
-
+#include "divecomputer.h"
+#include "libdivecomputer.h"
+#include "helpers.h"
+#include "display.h"
+#include "divelist.h"
 #include "mainwindow.h"
+
 #include <cstdlib>
 #include <QThread>
 #include <QDebug>
@@ -46,7 +46,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	productModel(0),
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
-	currentState(INITIAL)
+	currentState(INITIAL),
+	ostcFirmwareCheck(0)
 {
 	ui.setupUi(this);
 	ui.progressBar->hide();
@@ -302,6 +303,9 @@ void DownloadFromDCWidget::on_ok_clicked()
 	previousLast = dive_table.nr;
 
 	thread->start();
+
+	if (ui.product->currentText() == "OSTC 3" || ui.product->currentText() == "OSTC sport")
+		ostcFirmwareCheck = new OstcFirmwareCheck();
 }
 
 bool DownloadFromDCWidget::preferDownloaded()
@@ -397,6 +401,9 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			// (but not visible as selected)
 			MainWindow::instance()->dive_list()->unselectDives();
 			MainWindow::instance()->dive_list()->selectDive(idx, true);
+			QString dcName = data.devname;
+			if (ostcFirmwareCheck)
+				ostcFirmwareCheck->checkLatest(data.libdc_firmware);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {

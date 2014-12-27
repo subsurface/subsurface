@@ -187,16 +187,32 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	}
 	settings.endGroup();
 	settings.endGroup();
-
-	hwVersionPage.mainFrame()->load(QUrl("http://www.heinrichsweikamp.com/?id=162"));
-	connect(&hwVersionPage, SIGNAL(loadFinished(bool)), this, SLOT(findVersion()));
 }
 
-void ConfigureDiveComputerDialog::findVersion()
+OstcFirmwareCheck::OstcFirmwareCheck()
+{
+	hwVersionPage.mainFrame()->load(QUrl("http://www.heinrichsweikamp.com/?id=162"));
+	connect(&hwVersionPage, SIGNAL(loadFinished(bool)), this, SLOT(parseOstcFwVersion()));
+}
+
+void OstcFirmwareCheck::parseOstcFwVersion()
 {
 	QWebElement parse = hwVersionPage.mainFrame()->documentElement();
 	QWebElement result = parse.findFirst("div[id=content_firmware_headline_typ0]");
-	qDebug() << "Version" << result.toPlainText();
+	latestFirmwareAvailable = result.toPlainText().trimmed();
+	qDebug() << "Latest OSTC 3 Version" << latestFirmwareAvailable;
+}
+
+void OstcFirmwareCheck::checkLatest(uint32_t firmwareOnDevice)
+{
+	// for now libdivecomputer gives us the firmware on device undecoded as integer
+	// for the OSTC that means highbyte.lowbyte is the version number
+	QString firmware;
+	firmware = QString("%1.%2").arg(firmwareOnDevice / 256). arg(firmwareOnDevice % 256);
+	if (!latestFirmwareAvailable.isEmpty() && latestFirmwareAvailable != firmware) {
+		qDebug() << "you should update your firmware: you have" << firmware <<
+			    "but the latest stable version is" << latestFirmwareAvailable;
+	}
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
