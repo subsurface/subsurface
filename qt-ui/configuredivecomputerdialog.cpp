@@ -145,21 +145,21 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	settings.beginGroup("ConfigureDiveComputerDialog");
 	settings.beginGroup("ostc3GasTable");
 	for (int i = 0; i < ui.ostc3GasTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3GasTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostc3DilTable");
 	for (int i = 0; i < ui.ostc3DilTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3DilTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostc3SetPointTable");
 	for (int i = 0; i < ui.ostc3SetPointTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3SetPointTable->setColumnWidth(i, width.toInt());
 	}
@@ -167,21 +167,21 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 
 	settings.beginGroup("ostcGasTable");
 	for (int i = 0; i < ui.ostcGasTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcGasTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostcDilTable");
 	for (int i = 0; i < ui.ostcDilTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcDilTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostcSetPointTable");
 	for (int i = 0; i < ui.ostcSetPointTable->columnCount(); i++) {
-        QVariant width = settings.value(QString("colwidth%1").arg(i));
+	QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcSetPointTable->setColumnWidth(i, width.toInt());
 	}
