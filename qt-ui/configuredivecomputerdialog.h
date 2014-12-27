@@ -107,7 +107,7 @@ class OstcFirmwareCheck : QObject
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck();
-	void checkLatest(uint32_t firmwareOnDevice);
+	void checkLatest(QWidget *parent, uint32_t firmwareOnDevice);
 public
 slots:
 	void parseOstcFwVersion();

@@ -403,7 +403,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			MainWindow::instance()->dive_list()->selectDive(idx, true);
 			QString dcName = data.devname;
 			if (ostcFirmwareCheck)
-				ostcFirmwareCheck->checkLatest(data.libdc_firmware);
+				ostcFirmwareCheck->checkLatest(this, data.libdc_firmware);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {

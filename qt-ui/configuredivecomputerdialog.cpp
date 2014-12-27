@@ -199,19 +199,32 @@ void OstcFirmwareCheck::parseOstcFwVersion()
 {
 	QWebElement parse = hwVersionPage.mainFrame()->documentElement();
 	QWebElement result = parse.findFirst("div[id=content_firmware_headline_typ0]");
-	latestFirmwareAvailable = result.toPlainText().trimmed();
+	latestFirmwareAvailable = result.toPlainText().trimmed().replace("stable", "");
 	qDebug() << "Latest OSTC 3 Version" << latestFirmwareAvailable;
 }
 
-void OstcFirmwareCheck::checkLatest(uint32_t firmwareOnDevice)
+void OstcFirmwareCheck::checkLatest(QWidget *parent, uint32_t firmwareOnDevice)
 {
 	// for now libdivecomputer gives us the firmware on device undecoded as integer
 	// for the OSTC that means highbyte.lowbyte is the version number
 	QString firmware;
 	firmware = QString("%1.%2").arg(firmwareOnDevice / 256). arg(firmwareOnDevice % 256);
 	if (!latestFirmwareAvailable.isEmpty() && latestFirmwareAvailable != firmware) {
-		qDebug() << "you should update your firmware: you have" << firmware <<
-			    "but the latest stable version is" << latestFirmwareAvailable;
+		QMessageBox response(parent);
+		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
+				.arg(firmware).arg(latestFirmwareAvailable);
+		response.addButton(tr("Not now"), QMessageBox::RejectRole);
+		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
+		response.setText(message);
+		response.setWindowTitle(tr("Firmware upgrade notice"));
+		response.setIcon(QMessageBox::Question);
+		response.setWindowModality(Qt::WindowModal);
+		int ret = response.exec();
+		if (ret == QMessageBox::Accepted) {
+			qDebug() << "go to firmware upgrade";
+		} else {
+			qDebug() << "no upgrade";
+		}
 	}
 }
 
