@@ -2537,13 +2537,43 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	bool event, found;
 	unsigned int time = 0;
 	int i;
+	char serial[6];
 
 	target_table = &dive_table;
 
-	/* Skipping the dive header for now */
-	ptr += 32;
-
 	dive_start();
+	divecomputer_start();
+
+	cur_dc->model = strdup("DLF import");
+	// (ptr[7] << 8) + ptr[6] Is "Serial"
+	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
+	cur_dc->serial = strdup(serial);
+	// Dive start time in seconds since 2000-01-01 12:00 UTC +0
+	cur_dc->when = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + ptr[8] + 946728000;
+	cur_dive->when = cur_dc->when;
+
+	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
+
+	// ptr[15] is dive type
+	if (0xc8 <= ptr[15] && ptr[15] <= 0xcf)
+		cur_dc->dctype = OC;
+	else if (0xd0 <= ptr[15] && ptr[15] <= 0xd7)
+		cur_dc->dctype = CCR;
+	else if (0xd8 <= ptr[15] && ptr[15] <= 0xdf)
+		cur_dc->dctype = CCR; // mCCR
+	else if (0xe0 <= ptr[15] && ptr[15] <= 0xe7)
+		cur_dc->dctype = OC; // Free diving
+	else if (0xe8 <= ptr[15] && ptr[15] <= 0xef)
+		cur_dc->dctype = OC; // Gauge
+	else if (0xf0 <= ptr[15] && ptr[15] <= 0xf7)
+		cur_dc->dctype = PSCR; // ASCR
+	else if (0xf8 <= ptr[15] && ptr[15] <= 0xff)
+		cur_dc->dctype = PSCR;
+
+	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
+
+	/* Done with parsing what we know about the dive header */
+	ptr += 32;
 
 	while (ptr < buffer + size) {
 		time = ((ptr[0] >> 4) & 0x0f) +
@@ -2585,6 +2615,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 		}
 		ptr += 16;
 	}
+	divecomputer_end();
 	dive_end();
 	return 0;
 }
