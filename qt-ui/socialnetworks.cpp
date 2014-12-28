@@ -18,6 +18,7 @@
 #include "mainwindow.h"
 #include "profile/profilewidget2.h"
 #include "pref.h"
+#include "ui_socialnetworksdialog.h"
 
 #define GET_TXT(name, field)                                             \
 	v = s.value(QString(name));                                      \
@@ -191,13 +192,12 @@ void FacebookManager::setDesiredAlbumName(const QString& a)
  * and send erroniously *all* of them to facebook. */
 void FacebookManager::sendDive()
 {
-	bool ok;
-	albumName = QInputDialog::getText(qApp->activeWindow(), tr("Enter Facebook Album"),
-					      tr("Facebook Album:"), QLineEdit::Normal,
-					      "Subsurface", &ok);
-	if (!ok)
+	SocialNetworkDialog dialog(qApp->activeWindow());
+	if (dialog.exec() != QDialog::Accepted)
 		return;
 
+
+	setDesiredAlbumName(dialog.album());
 	requestAlbumId();
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
@@ -210,7 +210,7 @@ void FacebookManager::sendDive()
 	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
-		 "&message=" + QString(d->notes).toHtmlEscaped());
+		 "&message=" + dialog.text());
 
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
@@ -237,11 +237,60 @@ void FacebookManager::sendDive()
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 
-	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+	QByteArray response = reply->readAll();
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
-		QMessageBox::
+		QMessageBox::information(qApp->activeWindow(),
+			tr("Photo Upload Sucessfull"),
+			tr("Your dive profile was updated to facebook."),
+		QMessageBox::Ok);
 	} else {
-
+		QMessageBox::information(qApp->activeWindow(),
+			tr("Photo Upload Failed"),
+			tr("Your dive profile was not updated to facebook, \n "
+			   "please send the following to the developer. \n"
+			   + response),
+		QMessageBox::Ok);
 	}
+}
+
+SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) : QDialog(parent)
+      , ui( new Ui::SocialnetworksDialog())
+{
+	ui->setupUi(this);
+	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+}
+
+void SocialNetworkDialog::selectionChanged() {
+	struct dive *d = current_dive;
+	QString fullText;
+	if (ui->date->isChecked()) {
+		fullText += tr("Dive Date: %1 \n").arg(d->when);
+	}
+	if (ui->Buddy->isChecked()) {
+		fullText += tr("Buddy: %1 \n").arg(d->buddy);
+	}
+	if (ui->Divemaster->isChecked()) {
+		fullText += tr("Divemaster: %1 \n").arg(d->divemaster);
+	}
+	if (ui->Location->isChecked()) {
+		fullText += tr("Dive Location: %1 \n").arg(d->location);
+	}
+	if (ui->Notes->isChecked()) {
+		fullText += tr("\n %1").arg(d->notes);
+	}
+	ui->text->setPlainText(fullText);
+}
+
+QString SocialNetworkDialog::text() const {
+	return ui->text->toPlainText().toHtmlEscaped();
+}
+
+QString SocialNetworkDialog::album() const {
+	return ui->album->text().toHtmlEscaped();
 }

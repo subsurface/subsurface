@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QDialog>
 
 class FacebookManager : public QObject
 {
@@ -29,4 +30,19 @@ private:
 	QString albumName;
 };
 
+namespace  Ui {
+	class SocialnetworksDialog;
+}
+
+class SocialNetworkDialog : public QDialog {
+	Q_OBJECT
+public:
+	SocialNetworkDialog(QWidget *parent);
+	QString text() const;
+	QString album() const;
+public slots:
+	void selectionChanged();
+private:
+	Ui::SocialnetworksDialog *ui;
+};
 #endif // FACEBOOKMANAGER_H
