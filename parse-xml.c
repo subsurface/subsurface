@@ -2534,7 +2534,8 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 int parse_dlf_buffer(char *buffer, size_t size)
 {
 	char *ptr = (char *)buffer;
-	bool event;
+	bool event, found;
+	int i;
 
 	/* Skipping the dive header for now */
 	ptr += 32;
@@ -2545,6 +2546,33 @@ int parse_dlf_buffer(char *buffer, size_t size)
 		event = ptr[0] & 0x0f;
 		if (event == 1) {
 			/* dive event */
+			switch(ptr[4]) {
+			case 5:
+				event_start();
+				cur_event.time.seconds = ((ptr[0] >> 4) & 0x0f) +
+					((ptr[1] << 4) & 0xff0) +
+					(ptr[2] & 0x0f) * 3600; /* hours */
+				strcpy(cur_event.name, "gaschange");
+				cur_event.type = 25;
+				cur_event.value = ptr[6];
+				event_end();
+
+				found = false;
+				for (i = 0; i < cur_cylinder_index; ++i) {
+					if (cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10)
+						found = true;
+						break;
+				}
+				if (!found) {
+					cylinder_start();
+					cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = ptr[6] * 10;
+					cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = ptr[7] * 10;
+					cylinder_end();
+				}
+				break;
+			default:
+				fprintf(stderr, "DEBUG (event): %d\n", ptr[4]);
+			}
 		} else {
 			sample_start();
 			cur_sample->time.seconds = ((ptr[0] >> 4) & 0x0f) +
