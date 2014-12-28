@@ -775,6 +775,7 @@ QString MainWindow::filter()
 	f += "*.udcf *.UDCF ";
 	f += "*.uddf *.UDDF ";
 	f += "*.xml *.XML ";
+	f += "*.dlf *.DLF ";
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
@@ -786,6 +787,7 @@ QString MainWindow::filter()
 	f += "UDCF (*.udcf *.UDCF);;";
 	f += "UDDF (*.uddf *.UDDF);;";
 	f += "XML (*.xml *.XML)";
+	f += "Divesoft (*.dlf *.DLF)";
 
 	return f;
 }
@@ -1304,7 +1306,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt);;"
+		tr("Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;"
 			"Cochran files (*.can);;"
 			"CSV files (*.csv);;"
 			"DiveLog.de files (*.dld);;"
@@ -1312,6 +1314,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"Liquivision files (*.lvd);;"
 			"MkVI files (*.txt);;"
 			"Suunto files (*.sde *.db);;"
+			"Divesoft files (*.dlf);;"
 			"UDDF/UDCF files (*.uddf *.udcf);;"
 			"XML files (*.xml);;"
 			"All files (*)"));
