@@ -12,6 +12,7 @@
 #include <QWebElement>
 #include <QWebFrame>
 #include <QWebPage>
+#include <QDebug>
 
 struct product {
 	const char *product;
