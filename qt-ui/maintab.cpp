@@ -190,6 +190,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	FacebookManager *fb = FacebookManager::instance();
 	connect(fb, &FacebookManager::justLoggedIn, ui.facebookPublish, &QPushButton::show);
 	connect(fb, &FacebookManager::justLoggedOut, ui.facebookPublish, &QPushButton::hide);
+	connect(ui.facebookPublish, &QPushButton::clicked, fb, &FacebookManager::sendDive);
 	ui.facebookPublish->setVisible(fb->loggedIn());
 }
 

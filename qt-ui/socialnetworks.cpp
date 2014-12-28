@@ -13,6 +13,8 @@
 #include <QFile>
 #include <QBuffer>
 #include <QDebug>
+#include <QMessageBox>
+#include <QInputDialog>
 #include "mainwindow.h"
 #include "profile/profilewidget2.h"
 #include "pref.h"
@@ -85,8 +87,6 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	sync();
 	requestUserId();
 	sync();
-	requestAlbumId();
-	sync();
 	emit justLoggedIn();
 	qDebug() << "End try login";
 }
@@ -150,6 +150,7 @@ void FacebookManager::requestAlbumId()
 	if (album.contains("id")) {
 		s.setValue("AlbumId", album.value("id").toString());
 		qDebug() << "Got album ID";
+		sync();
 		return;
 	}
 
@@ -188,18 +189,28 @@ void FacebookManager::setDesiredAlbumName(const QString& a)
 /* to be changed to export the currently selected dive as shown on the profile.
  * Much much easier, and its also good to people do not select all the dives
  * and send erroniously *all* of them to facebook. */
-void FacebookManager::sendDive(int divenr)
+void FacebookManager::sendDive()
 {
+	bool ok;
+	albumName = QInputDialog::getText(qApp->activeWindow(), tr("Enter Facebook Album"),
+					      tr("Facebook Album:"), QLineEdit::Normal,
+					      "Subsurface", &ok);
+	if (!ok)
+		return;
+
+	requestAlbumId();
+
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 	QPixmap pix = QPixmap::grabWidget(profile);
-
+	struct dive* d = current_dive;
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
 	pix.save(&buffer, "PNG");
 	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
-		 "&source=image");
+		 "&source=image" +
+		 "&message=" + QString(d->notes).toHtmlEscaped());
 
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
@@ -226,5 +237,11 @@ void FacebookManager::sendDive(int divenr)
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 
-	qDebug() << reply->readAll();
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+	QJsonObject obj = jsonDoc.object();
+	if (obj.keys().contains("id")){
+		QMessageBox::
+	} else {
+
+	}
 }
