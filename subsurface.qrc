@@ -70,5 +70,6 @@
         <file>icons/ostc2n.png</file>
         <file>icons/ostc3.png</file>
         <file>icons/suunto_vyper.png</file>
+        <file alias="facebook">icons/facebook.png</file>
     </qresource>
 </RCC>

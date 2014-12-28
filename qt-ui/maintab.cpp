@@ -16,6 +16,7 @@
 #include "qthelper.h"
 #include "display.h"
 #include "divepicturewidget.h"
+#include "socialnetworks.h"
 
 #include <QLabel>
 #include <QCompleter>
@@ -185,6 +186,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.photosView->addAction(deletePhoto);
 	ui.photosView->setSelectionMode(QAbstractItemView::SingleSelection);
 	connect(deletePhoto, SIGNAL(triggered(bool)), this, SLOT(removeSelectedPhotos()));
+
+	FacebookManager *fb = FacebookManager::instance();
+	connect(fb, &FacebookManager::justLoggedIn, ui.facebookPublish, &QPushButton::show);
+	connect(fb, &FacebookManager::justLoggedOut, ui.facebookPublish, &QPushButton::hide);
+	ui.facebookPublish->setVisible(fb->loggedIn());
 }
 
 MainTab::~MainTab()
