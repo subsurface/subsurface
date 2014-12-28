@@ -603,6 +603,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->stopdepth = sample->stopdepth.mm;
 		entry->stoptime = sample->stoptime.seconds;
 		entry->ndl = sample->ndl.seconds;
+		entry->tts = sample->tts.seconds;
 		pi->has_ndl |= sample->ndl.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
