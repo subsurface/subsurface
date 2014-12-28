@@ -2537,6 +2537,8 @@ int parse_dlf_buffer(char *buffer, size_t size)
 	bool event, found;
 	int i;
 
+	target_table = &dive_table;
+
 	/* Skipping the dive header for now */
 	ptr += 32;
 
