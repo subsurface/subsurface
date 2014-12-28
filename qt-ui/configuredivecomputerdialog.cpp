@@ -190,18 +190,26 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	settings.endGroup();
 }
 
-OstcFirmwareCheck::OstcFirmwareCheck()
+OstcFirmwareCheck::OstcFirmwareCheck(QString product)
 {
-	hwVersionPage.mainFrame()->load(QUrl("http://www.heinrichsweikamp.com/?id=162"));
+	QUrl url;
+	if (product == "OSTC 3")
+		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
+	else if (product == "OSTC Sport")
+		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
+	else // not one of the known dive computers
+		return;
+	hwVersionPage.mainFrame()->load(url);
 	connect(&hwVersionPage, SIGNAL(loadFinished(bool)), this, SLOT(parseOstcFwVersion()));
 }
 
 void OstcFirmwareCheck::parseOstcFwVersion()
 {
-	QWebElement parse = hwVersionPage.mainFrame()->documentElement();
-	QWebElement result = parse.findFirst("div[id=content_firmware_headline_typ0]");
-	latestFirmwareAvailable = result.toPlainText().trimmed().replace("stable", "");
-	qDebug() << "Latest OSTC 3 Version" << latestFirmwareAvailable;
+	QString parse = hwVersionPage.mainFrame()->toPlainText();
+	int firstOpenBracket = parse.indexOf('[');
+	int firstCloseBracket = parse.indexOf(']');
+	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket -1);
+	qDebug() << "latest firmware available" << latestFirmwareAvailable;
 }
 
 void OstcFirmwareCheck::checkLatest(QWidget *parent, uint32_t firmwareOnDevice)
