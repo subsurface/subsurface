@@ -7,7 +7,7 @@
 #include "../libdivecomputer.h"
 #include "configuredivecomputer.h"
 #include <QStyledItemDelegate>
-#include <QWebPage>
+#include <QNetworkAccessManager>
 
 class GasSpinBoxItemDelegate : public QStyledItemDelegate
 {
@@ -107,13 +107,19 @@ class OstcFirmwareCheck : QObject
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(QString product);
-	void checkLatest(QWidget *parent, uint32_t firmwareOnDevice);
+	void checkLatest(QWidget *parent, device_data_t *data);
 public
 slots:
-	void parseOstcFwVersion();
+	void parseOstcFwVersion(QNetworkReply *reply);
+	void saveOstcFirmware(QNetworkReply * reply);
 private:
-	QWebPage hwVersionPage;
+	void upgradeFirmware();
+	device_data_t devData;
 	QString latestFirmwareAvailable;
+	QString latestFirmwareHexFile;
+	QString storeFirmware;
+	QWidget *parent;
+	QNetworkAccessManager manager;
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H
