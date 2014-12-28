@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>924</width>
-    <height>735</height>
+    <height>742</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -988,20 +988,6 @@
             <item>
              <layout class="QHBoxLayout" name="connectedLayout">
               <item>
-               <widget class="QLabel" name="label_26">
-                <property name="text">
-                 <string>Facebook Album for Subsurface Uploads</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="facebookAlbum">
-                <property name="text">
-                 <string>subsurface</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <spacer name="horizontalSpacer_2">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -1048,7 +1034,7 @@
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -1391,12 +1377,12 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="verticalSpeed"/>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup_6"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="verticalSpeed"/>
  </buttongroups>
 </ui>

@@ -38,8 +38,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	} else {
 		ui.facebookWebView->setUrl(fb->connectUrl());
 	}
-	fb->setDesiredAlbumName(ui.facebookAlbum->text());
-	connect(ui.facebookAlbum, &QLineEdit::textChanged, fb, &FacebookManager::setDesiredAlbumName);
 	connect(ui.facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
 	connect(fb, &FacebookManager::justLoggedIn, this, &PreferencesDialog::facebookLoggedIn);
 	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);

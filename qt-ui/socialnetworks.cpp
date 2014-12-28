@@ -196,7 +196,6 @@ void FacebookManager::sendDive()
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
-
 	setDesiredAlbumName(dialog.album());
 	requestAlbumId();
 
