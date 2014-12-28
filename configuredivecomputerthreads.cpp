@@ -819,8 +819,8 @@ unsupported_dc_error:
 }
 
 WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data)
-	: QThread(parent), m_data(data) {
-
+	: QThread(parent), m_data(data)
+{
 }
 
 void WriteSettingsThread::setDeviceDetails(DeviceDetails *details)
@@ -1366,9 +1366,8 @@ void WriteSettingsThread::run()
 
 
 FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName)
-: QThread(parent), m_data(data), m_fileName(fileName)
+	: QThread(parent), m_data(data), m_fileName(fileName)
 {
-
 }
 
 void FirmwareUpdateThread::run()
@@ -1409,7 +1408,7 @@ void FirmwareUpdateThread::run()
 
 
 ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data)
-: QThread(parent), m_data(data)
+	: QThread(parent), m_data(data)
 {
 }
 
