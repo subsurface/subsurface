@@ -2531,9 +2531,9 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	return 0;
 }
 
-int parse_dlf_buffer(char *buffer, size_t size)
+int parse_dlf_buffer(unsigned char *buffer, size_t size)
 {
-	char *ptr = (char *)buffer;
+	unsigned char *ptr = buffer;
 	bool event, found;
 	int i;
 
