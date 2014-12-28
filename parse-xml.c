@@ -2586,6 +2586,7 @@ int parse_dlf_buffer(char *buffer, size_t size)
 		ptr += 16;
 	}
 	dive_end();
+	return 0;
 }
 
 
