@@ -2604,6 +2604,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 					cylinder_end();
 				}
 				break;
+			case 6:
+				event_start();
+				cur_event.time.seconds = time;
+				strcpy(cur_event.name, "start");
+				event_end();
+				break;
 			default:
 				fprintf(stderr, "DEBUG (event): %d at time %d\n", ptr[4], time);
 			}
