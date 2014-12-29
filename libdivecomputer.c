@@ -700,7 +700,6 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	const dc_event_vendor_t *vendor = data;
 	device_data_t *devdata = userdata;
 	unsigned int serial;
-	char buffer[16];
 
 	switch (event) {
 	case DC_EVENT_WAITING:
