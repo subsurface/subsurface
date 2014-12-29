@@ -1083,6 +1083,308 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	return rc;
 }
 
+static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+{
+	dc_status_t rc;
+	unsigned char data[256] = {};
+	unsigned char max_CF = 0;
+
+	// Because we write whole memory blocks, we read all the current
+	// values out and then change then ones we should change.
+	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//Byte5-6:
+	//Gas 1 default (%O2=21, %He=0)
+	gas gas1 = m_deviceDetails->gas1();
+	data[6] = gas1.oxygen;
+	data[7] = gas1.helium;
+	//Byte9-10:
+	//Gas 2 default (%O2=21, %He=0)
+	gas gas2 = m_deviceDetails->gas2();
+	data[10] = gas2.oxygen;
+	data[11] = gas2.helium;
+	//Byte13-14:
+	//Gas 3 default (%O2=21, %He=0)
+	gas gas3 = m_deviceDetails->gas3();
+	data[14] = gas3.oxygen;
+	data[15] = gas3.helium;
+	//Byte17-18:
+	//Gas 4 default (%O2=21, %He=0)
+	gas gas4 = m_deviceDetails->gas4();
+	data[18] = gas4.oxygen;
+	data[19] = gas4.helium;
+	//Byte21-22:
+	//Gas 5 default (%O2=21, %He=0)
+	gas gas5 = m_deviceDetails->gas5();
+	data[22] = gas5.oxygen;
+	data[23] = gas5.helium;
+	//Byte25-26:
+	//Gas 6 current (%O2, %He)
+	data[26] = m_deviceDetails->salinity();
+	// Gas types, 0=Disabled, 1=Active, 2=Fist
+	// Active Gas Flag Register
+	data[27] = 0;
+	if (gas1.type)
+		data[27] ^= 0x01;
+	if (gas2.type)
+		data[27] ^= 0x02;
+	if (gas3.type)
+		data[27] ^= 0x04;
+	if (gas4.type)
+		data[27] ^= 0x08;
+	if (gas5.type)
+		data[27] ^= 0x10;
+
+	// Gas switch depths
+	data[28] = gas1.depth;
+	data[29] = gas2.depth;
+	data[30] = gas3.depth;
+	data[31] = gas4.depth;
+	data[32] = gas5.depth;
+	// 33 which gas is Fist gas
+	if (gas1.type == 2)
+		data[33] = 1;
+	else if (gas2.type == 2)
+		data[33] = 2;
+	else if (gas3.type == 2)
+		data[33] = 3;
+	else if (gas4.type == 2)
+		data[33] = 4;
+	else if (gas5.type == 2)
+		data[33] = 5;
+	else
+		// FIXME: No gas was First?
+		// Set gas 1 to first
+		data[33] = 1;
+
+	data[34] = m_deviceDetails->decoType();
+	//Byte36:
+	//Use O2 Sensor Module in CC Modes (0= OFF, 1= ON) (Only available in old OSTC1 - unused for OSTC Mk.2/2N)
+	//m_deviceDetails->setCcrMode(data[35]);
+	data[36] = m_deviceDetails->sp1().sp;
+	data[37] = m_deviceDetails->sp2().sp;
+	data[38] = m_deviceDetails->sp3().sp;
+	// Byte41-42:
+	// Lowest Battery voltage seen (in mV)
+	// Byte43:
+	// Lowest Battery voltage seen at (Month)
+	// Byte44:
+	// Lowest Battery voltage seen at (Day)
+	// Byte45:
+	// Lowest Battery voltage seen at (Year)
+	// Byte46-47:
+	// Lowest Battery voltage seen at (Temperature in 0.1 °C)
+	// Byte48:
+	// Last complete charge at (Month)
+	// Byte49:
+	// Last complete charge at (Day)
+	// Byte50:
+	// Last complete charge at (Year)
+	// Byte51-52:
+	// Total charge cycles
+	// Byte53-54:
+	// Total complete charge cycles
+	// Byte55-56:
+	// Temperature Extrema minimum (Temperature in 0.1 °C)
+	// Byte57:
+	// Temperature Extrema minimum at (Month)
+	// Byte58:
+	// Temperature Extrema minimum at (Day)
+	// Byte59:
+	// Temperature Extrema minimum at (Year)
+	// Byte60-61:
+	// Temperature Extrema maximum (Temperature in 0.1 °C)
+	// Byte62:
+	// Temperature Extrema maximum at (Month)
+	// Byte63:
+	// Temperature Extrema maximum at (Day)
+	// Byte64:
+	// Temperature Extrema maximum at (Year)
+	// Byte65:
+	// Custom Text active (=1), Custom Text Disabled (<>1)
+	// Byte66-90:
+	// (25Bytes): Custom Text for Surfacemode (Real text must end with "}")
+	// Example: "OSTC Dive Computer}" (19 Characters incl. "}") Bytes 85-90 will be ignored.
+	if (m_deviceDetails->customText() == "") {
+		data[64] = 0;
+	} else {
+		data[64] = 1;
+		// Copy the string to the right place in the memory, padded with 0x20 (" ")
+		strncpy((char *)data + 65, QString("%1").arg(m_deviceDetails->customText(), -23, QChar(' ')).toUtf8().data(), 23);
+		// And terminate the string.
+		if (m_deviceDetails->customText().length() <= 23)
+			data[65 + m_deviceDetails->customText().length()] = '}';
+		else
+			data[90] = '}';
+	}
+	// Byte91:
+	// Dim OLED in Divemode (>0), Normal mode (=0)
+	// Byte92:
+	// Date format for all outputs:
+	// =0: MM/DD/YY
+	// =1: DD/MM/YY
+	// =2: YY/MM/DD
+	data[91] = m_deviceDetails->dateFormat();
+	// Byte93:
+	// Total number of CF used in installed firmware
+	max_CF = data[92];
+	// Byte94:
+	// Last selected view for customview area in surface mode
+	// Byte95:
+	// Last selected view for customview area in dive mode
+	// Byte96-97:
+	// Diluent 1 Default (%O2,%He)
+	// Byte98-99:
+	// Diluent 1 Current (%O2,%He)
+	gas dil1 = m_deviceDetails->dil1();
+	data[97] = dil1.oxygen;
+	data[98] = dil1.helium;
+	// Byte100-101:
+	// Gasuent 2 Default (%O2,%He)
+	// Byte102-103:
+	// Gasuent 2 Current (%O2,%He)
+	gas dil2 = m_deviceDetails->dil2();
+	data[101] = dil2.oxygen;
+	data[102] = dil2.helium;
+	// Byte104-105:
+	// Gasuent 3 Default (%O2,%He)
+	// Byte106-107:
+	// Gasuent 3 Current (%O2,%He)
+	gas dil3 = m_deviceDetails->dil3();
+	data[105] = dil3.oxygen;
+	data[106] = dil3.helium;
+	// Byte108-109:
+	// Gasuent 4 Default (%O2,%He)
+	// Byte110-111:
+	// Gasuent 4 Current (%O2,%He)
+	gas dil4 = m_deviceDetails->dil4();
+	data[109] = dil4.oxygen;
+	data[110] = dil4.helium;
+	// Byte112-113:
+	// Gasuent 5 Default (%O2,%He)
+	// Byte114-115:
+	// Gasuent 5 Current (%O2,%He)
+	gas dil5 = m_deviceDetails->dil5();
+	data[113] = dil5.oxygen;
+	data[114] = dil5.helium;
+	// Byte116:
+	// First Diluent (1-5)
+	if (dil1.type == 2)
+		data[115] = 1;
+	else if (dil2.type == 2)
+		data[115] = 2;
+	else if (dil3.type == 2)
+		data[115] = 3;
+	else if (dil4.type == 2)
+		data[115] = 4;
+	else if (dil5.type == 2)
+		data[115] = 5;
+	else
+		// FIXME: No first diluent?
+		// Set gas 1 to fist
+		data[115] = 1;
+
+	// Byte117-128:
+	// not used/reserved
+	// Byte129-256:
+	// 32 custom Functions (CF0-CF31)
+
+	// Write the relevant ones
+	// CF11: Factor for saturation processes
+	write_ostc_cf(data, 11, max_CF, m_deviceDetails->saturation());
+	// CF12: Factor for desaturation processes
+	write_ostc_cf(data, 12, max_CF, m_deviceDetails->desaturation());
+	// CF17: Lower threshold for ppO2 warning
+	write_ostc_cf(data, 17, max_CF, m_deviceDetails->ppO2Min());
+	// CF18: Upper threshold for ppO2 warning
+	write_ostc_cf(data, 18, max_CF, m_deviceDetails->ppO2Max());
+	// CF20: Depth sampling rate for Profile storage
+	write_ostc_cf(data, 20, max_CF, m_deviceDetails->samplingRate());
+	// CF29: Depth of last decompression stop
+	write_ostc_cf(data, 29, max_CF, m_deviceDetails->lastDeco());
+
+#ifdef DEBUG_OSTC_CF
+	for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
+		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
+	rc = hw_ostc_device_eeprom_write(device, 0, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	rc = hw_ostc_device_eeprom_read(device, 1, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	// Byte1:
+	// Logbook version indicator (Not writable!)
+	// Byte2-3:
+	// Last Firmware installed, 1st Byte.2nd Byte (e.g. „1.90“) (Not writable!)
+	// Byte4:
+	// OLED brightness (=0: Eco, =1 High) (Not writable!)
+	// Byte5-11:
+	// Time/Date vault during firmware updates
+	// Byte12-128
+	// not used/reserved
+	// Byte129-256:
+	// 32 custom Functions (CF 32-63)
+
+	// Decode the relevant ones
+	// CF32: Gradient Factor low
+	write_ostc_cf(data, 32, max_CF, m_deviceDetails->gfLow());
+	// CF33: Gradient Factor high
+	write_ostc_cf(data, 33, max_CF, m_deviceDetails->gfHigh());
+	// CF58: Future time to surface setFutureTTS
+	write_ostc_cf(data, 58, max_CF, m_deviceDetails->futureTTS());
+#ifdef DEBUG_OSTC_CF
+	for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
+		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
+	rc = hw_ostc_device_eeprom_write(device, 1, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	rc = hw_ostc_device_eeprom_read(device, 2, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	// Byte1-4:
+	// not used/reserved (Not writable!)
+	// Byte5-128:
+	// not used/reserved
+	// Byte129-256:
+	// 32 custom Functions (CF 64-95)
+
+	// Decode the relevant ones
+	// CF65: Show safety stop
+	write_ostc_cf(data, 65, max_CF, m_deviceDetails->safetyStop());
+	// CF67: Alternaitve Gradient Factor low
+	write_ostc_cf(data, 67, max_CF, m_deviceDetails->aGFLow());
+	// CF68: Alternative Gradient Factor high
+	write_ostc_cf(data, 68, max_CF, m_deviceDetails->aGFHigh());
+	// CF69: Allow Gradient Factor change
+	write_ostc_cf(data, 69, max_CF, m_deviceDetails->aGFSelectable());
+#ifdef DEBUG_OSTC_CF
+	for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
+		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
+#endif
+	rc = hw_ostc_device_eeprom_write(device, 2, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	//sync date and time
+	if (m_deviceDetails->syncTime()) {
+		QDateTime timeToSet = QDateTime::currentDateTime();
+		dc_datetime_t time;
+		time.year = timeToSet.date().year();
+		time.month = timeToSet.date().month();
+		time.day = timeToSet.date().day();
+		time.hour = timeToSet.time().hour();
+		time.minute = timeToSet.time().minute();
+		time.second = timeToSet.time().second();
+		rc = hw_ostc_device_clock(device, &time);
+	}
+	return rc;
+}
+
 void ReadSettingsThread::run()
 {
 	bool supported = false;
@@ -1187,309 +1489,12 @@ void WriteSettingsThread::run()
 #ifdef DEBUG_OSTC
 		case DC_FAMILY_NULL:
 #endif
-		case DC_FAMILY_HW_OSTC: {
+		case DC_FAMILY_HW_OSTC:
 			supported = true;
-			unsigned char data[256] = {};
-			unsigned char max_CF = 0;
-
-			// Because we write whole memory blocks, we read all the current
-			// values out and then change then ones we should change.
-			rc = hw_ostc_device_eeprom_read(m_data->device, 0, data, sizeof(data));
-			if (rc == DC_STATUS_SUCCESS) {
-				//Byte5-6:
-				//Gas 1 default (%O2=21, %He=0)
-				gas gas1 = m_deviceDetails->gas1();
-				data[6] = gas1.oxygen;
-				data[7] = gas1.helium;
-				//Byte9-10:
-				//Gas 2 default (%O2=21, %He=0)
-				gas gas2 = m_deviceDetails->gas2();
-				data[10] = gas2.oxygen;
-				data[11] = gas2.helium;
-				//Byte13-14:
-				//Gas 3 default (%O2=21, %He=0)
-				gas gas3 = m_deviceDetails->gas3();
-				data[14] = gas3.oxygen;
-				data[15] = gas3.helium;
-				//Byte17-18:
-				//Gas 4 default (%O2=21, %He=0)
-				gas gas4 = m_deviceDetails->gas4();
-				data[18] = gas4.oxygen;
-				data[19] = gas4.helium;
-				//Byte21-22:
-				//Gas 5 default (%O2=21, %He=0)
-				gas gas5 = m_deviceDetails->gas5();
-				data[22] = gas5.oxygen;
-				data[23] = gas5.helium;
-				//Byte25-26:
-				//Gas 6 current (%O2, %He)
-				data[26] = m_deviceDetails->salinity();
-				// Gas types, 0=Disabled, 1=Active, 2=Fist
-				// Active Gas Flag Register
-				data[27] = 0;
-				if (gas1.type)
-					data[27] ^= 0x01;
-				if (gas2.type)
-					data[27] ^= 0x02;
-				if (gas3.type)
-					data[27] ^= 0x04;
-				if (gas4.type)
-					data[27] ^= 0x08;
-				if (gas5.type)
-					data[27] ^= 0x10;
-
-				// Gas switch depths
-				data[28] = gas1.depth;
-				data[29] = gas2.depth;
-				data[30] = gas3.depth;
-				data[31] = gas4.depth;
-				data[32] = gas5.depth;
-				// 33 which gas is Fist gas
-				if (gas1.type == 2)
-					data[33] = 1;
-				else if (gas2.type == 2)
-					data[33] = 2;
-				else if (gas3.type == 2)
-					data[33] = 3;
-				else if (gas4.type == 2)
-					data[33] = 4;
-				else if (gas5.type == 2)
-					data[33] = 5;
-				else
-					// FIXME: No gas was First?
-					// Set gas 1 to first
-					data[33] = 1;
-
-				data[34] = m_deviceDetails->decoType();
-				//Byte36:
-				//Use O2 Sensor Module in CC Modes (0= OFF, 1= ON) (Only available in old OSTC1 - unused for OSTC Mk.2/2N)
-				//m_deviceDetails->setCcrMode(data[35]);
-				data[36] = m_deviceDetails->sp1().sp;
-				data[37] = m_deviceDetails->sp2().sp;
-				data[38] = m_deviceDetails->sp3().sp;
-				// Byte41-42:
-				// Lowest Battery voltage seen (in mV)
-				// Byte43:
-				// Lowest Battery voltage seen at (Month)
-				// Byte44:
-				// Lowest Battery voltage seen at (Day)
-				// Byte45:
-				// Lowest Battery voltage seen at (Year)
-				// Byte46-47:
-				// Lowest Battery voltage seen at (Temperature in 0.1 °C)
-				// Byte48:
-				// Last complete charge at (Month)
-				// Byte49:
-				// Last complete charge at (Day)
-				// Byte50:
-				// Last complete charge at (Year)
-				// Byte51-52:
-				// Total charge cycles
-				// Byte53-54:
-				// Total complete charge cycles
-				// Byte55-56:
-				// Temperature Extrema minimum (Temperature in 0.1 °C)
-				// Byte57:
-				// Temperature Extrema minimum at (Month)
-				// Byte58:
-				// Temperature Extrema minimum at (Day)
-				// Byte59:
-				// Temperature Extrema minimum at (Year)
-				// Byte60-61:
-				// Temperature Extrema maximum (Temperature in 0.1 °C)
-				// Byte62:
-				// Temperature Extrema maximum at (Month)
-				// Byte63:
-				// Temperature Extrema maximum at (Day)
-				// Byte64:
-				// Temperature Extrema maximum at (Year)
-				// Byte65:
-				// Custom Text active (=1), Custom Text Disabled (<>1)
-				// Byte66-90:
-				// (25Bytes): Custom Text for Surfacemode (Real text must end with "}")
-				// Example: OSTC Dive Computer} (19 Characters incl. "}") Bytes 85-90 will be ignored.
-				if (m_deviceDetails->customText() == "") {
-					data[64] = 0;
-				} else {
-					data[64] = 1;
-					// Copy the string to the right place in the memory, padded with 0x20 (" ")
-					strncpy((char *)data + 65, QString("%1").arg(m_deviceDetails->customText(), -23, QChar(' ')).toUtf8().data(), 23);
-					// And terminate the string.
-					if (m_deviceDetails->customText().length() <= 23)
-						data[65 + m_deviceDetails->customText().length()] = '}';
-					else
-						data[90] = '}';
-				}
-				// Byte91:
-				// Dim OLED in Divemode (>0), Normal mode (=0)
-				// Byte92:
-				// Date format for all outputs:
-				// =0: MM/DD/YY
-				// =1: DD/MM/YY
-				// =2: YY/MM/DD
-				data[91] = m_deviceDetails->dateFormat();
-				// Byte93:
-				// Total number of CF used in installed firmware
-				max_CF = data[92];
-				// Byte94:
-				// Last selected view for customview area in surface mode
-				// Byte95:
-				// Last selected view for customview area in dive mode
-				// Byte96-97:
-				// Diluent 1 Default (%O2,%He)
-				// Byte98-99:
-				// Diluent 1 Current (%O2,%He)
-				gas dil1 = m_deviceDetails->dil1();
-				data[97] = dil1.oxygen;
-				data[98] = dil1.helium;
-				// Byte100-101:
-				// Gasuent 2 Default (%O2,%He)
-				// Byte102-103:
-				// Gasuent 2 Current (%O2,%He)
-				gas dil2 = m_deviceDetails->dil2();
-				data[101] = dil2.oxygen;
-				data[102] = dil2.helium;
-				// Byte104-105:
-				// Gasuent 3 Default (%O2,%He)
-				// Byte106-107:
-				// Gasuent 3 Current (%O2,%He)
-				gas dil3 = m_deviceDetails->dil3();
-				data[105] = dil3.oxygen;
-				data[106] = dil3.helium;
-				// Byte108-109:
-				// Gasuent 4 Default (%O2,%He)
-				// Byte110-111:
-				// Gasuent 4 Current (%O2,%He)
-				gas dil4 = m_deviceDetails->dil4();
-				data[109] = dil4.oxygen;
-				data[110] = dil4.helium;
-				// Byte112-113:
-				// Gasuent 5 Default (%O2,%He)
-				// Byte114-115:
-				// Gasuent 5 Current (%O2,%He)
-				gas dil5 = m_deviceDetails->dil5();
-				data[113] = dil5.oxygen;
-				data[114] = dil5.helium;
-				// Byte116:
-				// First Diluent (1-5)
-				if (dil1.type == 2)
-					data[115] = 1;
-				else if (dil2.type == 2)
-					data[115] = 2;
-				else if (dil3.type == 2)
-					data[115] = 3;
-				else if (dil4.type == 2)
-					data[115] = 4;
-				else if (dil5.type == 2)
-					data[115] = 5;
-				else
-					// FIXME: No first diluent?
-					// Set gas 1 to fist
-					data[115] = 1;
-
-				// Byte117-128:
-				// not used/reserved
-				// Byte129-256:
-				// 32 custom Functions (CF0-CF31)
-
-				// Write the relevant ones
-				// CF11: Factor for saturation processes
-				write_ostc_cf(data, 11, max_CF, m_deviceDetails->saturation());
-				// CF12: Factor for desaturation processes
-				write_ostc_cf(data, 12, max_CF, m_deviceDetails->desaturation());
-				// CF17: Lower threshold for ppO2 warning
-				write_ostc_cf(data, 17, max_CF, m_deviceDetails->ppO2Min());
-				// CF18: Upper threshold for ppO2 warning
-				write_ostc_cf(data, 18, max_CF, m_deviceDetails->ppO2Max());
-				// CF20: Depth sampling rate for Profile storage
-				write_ostc_cf(data, 20, max_CF, m_deviceDetails->samplingRate());
-				// CF29: Depth of last decompression stop
-				write_ostc_cf(data, 29, max_CF, m_deviceDetails->lastDeco());
-
-#ifdef DEBUG_OSTC_CF
-				for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
-					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
-#endif
-				rc = hw_ostc_device_eeprom_write(m_data->device, 0, data, sizeof(data));
-				if (rc != DC_STATUS_SUCCESS) {
-					//FIXME: ERROR!
-				}
-			}
-			rc = hw_ostc_device_eeprom_read(m_data->device, 1, data, sizeof(data));
-			if (rc == DC_STATUS_SUCCESS) {
-				// Byte1:
-				// Logbook version indicator (Not writable!)
-				// Byte2-3:
-				// Last Firmware installed, 1st Byte.2nd Byte (e.g. „1.90“) (Not writable!)
-				// Byte4:
-				// OLED brightness (=0: Eco, =1 High) (Not writable!)
-				// Byte5-11:
-				// Time/Date vault during firmware updates
-				// Byte12-128
-				// not used/reserved
-				// Byte129-256:
-				// 32 custom Functions (CF 32-63)
-
-				// Decode the relevant ones
-				// CF32: Gradient Factor low
-				write_ostc_cf(data, 32, max_CF, m_deviceDetails->gfLow());
-				// CF33: Gradient Factor high
-				write_ostc_cf(data, 33, max_CF, m_deviceDetails->gfHigh());
-				// CF58: Future time to surface setFutureTTS
-				write_ostc_cf(data, 58, max_CF, m_deviceDetails->futureTTS());
-#ifdef DEBUG_OSTC_CF
-				for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
-					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
-#endif
-				rc = hw_ostc_device_eeprom_write(m_data->device, 1, data, sizeof(data));
-				if (rc != DC_STATUS_SUCCESS) {
-					//FIXME: ERROR!
-				}
-			}
-			rc = hw_ostc_device_eeprom_read(m_data->device, 2, data, sizeof(data));
-			if (rc == DC_STATUS_SUCCESS) {
-				// Byte1-4:
-				// not used/reserved (Not writable!)
-				// Byte5-128:
-				// not used/reserved
-				// Byte129-256:
-				// 32 custom Functions (CF 64-95)
-
-				// Decode the relevant ones
-				// CF65: Show safety stop
-				write_ostc_cf(data, 65, max_CF, m_deviceDetails->safetyStop());
-				// CF67: Alternaitve Gradient Factor low
-				write_ostc_cf(data, 67, max_CF, m_deviceDetails->aGFLow());
-				// CF68: Alternative Gradient Factor high
-				write_ostc_cf(data, 68, max_CF, m_deviceDetails->aGFHigh());
-				// CF69: Allow Gradient Factor change
-				write_ostc_cf(data, 69, max_CF, m_deviceDetails->aGFSelectable());
-#ifdef DEBUG_OSTC_CF
-				for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
-					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
-#endif
-				rc = hw_ostc_device_eeprom_write(m_data->device, 2, data, sizeof(data));
-				if (rc != DC_STATUS_SUCCESS) {
-					//FIXME: ERROR!
-				}
-			}
-			//sync date and time
-			if (m_deviceDetails->syncTime()) {
-				QDateTime timeToSet = QDateTime::currentDateTime();
-				dc_datetime_t time;
-				time.year = timeToSet.date().year();
-				time.month = timeToSet.date().month();
-				time.day = timeToSet.date().day();
-				time.hour = timeToSet.time().hour();
-				time.minute = timeToSet.time().minute();
-				time.second = timeToSet.time().second();
-				rc = hw_ostc_device_clock(m_data->device, &time);
-				if (rc != DC_STATUS_SUCCESS) {
-					//FIXME: ERROR!
-				}
-			}
+			rc = write_ostc_settings(m_data->device, m_deviceDetails);
+			if (rc != DC_STATUS_SUCCESS)
+				emit error(tr("Failed!"));
 			break;
-		}
 		default:
 			supported = false;
 			break;
