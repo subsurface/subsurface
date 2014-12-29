@@ -1,6 +1,5 @@
 #include "configuredivecomputerthreads.h"
 #include "libdivecomputer/hw.h"
-#include <QDebug>
 #include <QDateTime>
 #include <QStringList>
 
@@ -101,7 +100,6 @@ static dc_status_t local_hw_ostc_device_eeprom_write(void *ignored, unsigned cha
 
 static dc_status_t local_hw_ostc_device_clock(void *ignored, dc_datetime_t *time)
 {
-	qDebug() << "Setting OSTC time";
 	return DC_STATUS_SUCCESS;
 }
 #endif
@@ -1518,17 +1516,14 @@ FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data,
 
 void FirmwareUpdateThread::run()
 {
-	qDebug() << "in FirmwareUpdateThread::run";
 	bool supported = false;
 	dc_status_t rc;
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-	qDebug() << "got" << rc << "as return for dc_device_open of" << m_data->devname;
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
-			qDebug() << "it's an OSTC3, let's do it!";
 			rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
 		case DC_FAMILY_HW_OSTC:
