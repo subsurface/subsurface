@@ -2541,6 +2541,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 
 	target_table = &dive_table;
 
+	// Check for the correct file magic
+	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')
+		return -1;
+
 	dive_start();
 	divecomputer_start();
 
