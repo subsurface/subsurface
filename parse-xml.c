@@ -2600,8 +2600,8 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			switch (ptr[4]) {
 			case 5:
 				strcpy(cur_event.name, "gaschange");
-				cur_event.type = 25;
-				cur_event.value = ptr[6];
+				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				cur_event.value = ptr[7] << 8 ^ ptr[6];
 
 				found = false;
 				for (i = 0; i < cur_cylinder_index; ++i) {
