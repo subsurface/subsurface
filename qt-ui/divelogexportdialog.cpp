@@ -76,6 +76,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Generic format that is used for data exchange between a variety of diving related programs."));
 	} else if (ui->exportCSV->isChecked()) {
 		ui->description->setText(tr("Comma separated values that include the most relevant information of the dive profile."));
+	} else if (ui->exportCSVDetails->isChecked()) {
+		ui->description->setText(tr("Comma separated values of the dive information. This includes most of the dive details but no profile information."));
 	} else if (ui->exportDivelogs->isChecked()) {
 		ui->description->setText(tr("Send the dive data to divelogs.de website."));
 	} else if (ui->exportDiveshare->isChecked()) {
