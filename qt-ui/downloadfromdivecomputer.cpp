@@ -46,8 +46,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	productModel(0),
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
-	currentState(INITIAL),
-	ostcFirmwareCheck(0)
+	ostcFirmwareCheck(0),
+	currentState(INITIAL)
 {
 	ui.setupUi(this);
 	ui.progressBar->hide();
