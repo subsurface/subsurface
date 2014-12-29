@@ -52,7 +52,6 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	QIcon plusIcon(":plus");
 	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
-	plusBtn->setToolTip(tr("Add cylinder"));
 
 	/* now determine the icon and button size. Since the button will be
 	 * placed in the label, make sure that we do not overflow, as it might
