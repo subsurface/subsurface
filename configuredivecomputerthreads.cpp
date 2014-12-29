@@ -263,6 +263,75 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	return DC_STATUS_SUCCESS;
 }
 
+static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+{
+	dc_status_t rc;
+	unsigned char data;
+	unsigned char data2[2];
+	int time;
+	// Maybee we should read the model from the device to sanity check it here too..
+	// For now we just check that we actually read a device before writing to one.
+	if (m_deviceDetails->model() == "")
+		return DC_STATUS_UNSUPPORTED;
+
+	rc = dc_device_write(device, SUUNTO_VYPER_CUSTOM_TEXT,
+			// Convert the customText to a 30 char wide padded with " "
+			(const unsigned char *)QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
+			SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->samplingRate();
+	rc = dc_device_write(device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->personalSafety() << 2 ^ m_deviceDetails->altitude();
+	rc = dc_device_write(device, SUUNTO_VYPER_ALTITUDE_SAFETY, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->timeFormat();
+	rc = dc_device_write(device, SUUNTO_VYPER_TIMEFORMAT, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->units();
+	rc = dc_device_write(device, SUUNTO_VYPER_UNITS, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->diveMode();
+	rc = dc_device_write(device, SUUNTO_VYPER_MODEL, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->lightEnabled() << 7 ^ (m_deviceDetails->light() & 0x7F);
+	rc = dc_device_write(device, SUUNTO_VYPER_LIGHT, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data = m_deviceDetails->alarmDepthEnabled() << 1 ^ m_deviceDetails->alarmTimeEnabled();
+	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	// The stinger stores alarm time in seconds instead of minutes.
+	time = m_deviceDetails->alarmTime();
+	if (m_deviceDetails->model() == "Stinger")
+		time *= 60;
+	data2[0] = time >> 8;
+	data2[1] = time & 0xFF;
+	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_TIME, data2, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) >> 8;
+	data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
+	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
+	return rc;
+}
+
 void ReadSettingsThread::run()
 {
 	bool supported = false;
@@ -864,44 +933,14 @@ void WriteSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
-			unsigned char data;
-			unsigned char data2[2];
-			int time;
-			// Maybee we should read the model from the device to sanity check it here too..
-			// For now we just check that we actually read a device before writing to one.
-			if (m_deviceDetails->model() == "")
-				break;
-			else
+			rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails);
+			if (rc == DC_STATUS_SUCCESS) {
 				supported = true;
-
-			dc_device_write(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT,
-					// Convert the customText to a 30 char wide padded with " "
-					(const unsigned char *)QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
-					SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
-			data = m_deviceDetails->samplingRate();
-			dc_device_write(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
-			data = m_deviceDetails->personalSafety() << 2 ^ m_deviceDetails->altitude();
-			dc_device_write(m_data->device, SUUNTO_VYPER_ALTITUDE_SAFETY, &data, 1);
-			data = m_deviceDetails->timeFormat();
-			dc_device_write(m_data->device, SUUNTO_VYPER_TIMEFORMAT, &data, 1);
-			data = m_deviceDetails->units();
-			dc_device_write(m_data->device, SUUNTO_VYPER_UNITS, &data, 1);
-			data = m_deviceDetails->diveMode();
-			dc_device_write(m_data->device, SUUNTO_VYPER_MODEL, &data, 1);
-			data = m_deviceDetails->lightEnabled() << 7 ^ (m_deviceDetails->light() & 0x7F);
-			dc_device_write(m_data->device, SUUNTO_VYPER_LIGHT, &data, 1);
-			data = m_deviceDetails->alarmDepthEnabled() << 1 ^ m_deviceDetails->alarmTimeEnabled();
-			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
-			// The stinger stores alarm time in seconds instead of minutes.
-			time = m_deviceDetails->alarmTime();
-			if (m_deviceDetails->model() == "Stinger")
-				time *= 60;
-			data2[0] = time >> 8;
-			data2[1] = time & 0xFF;
-			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_TIME, data2, 2);
-			data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) >> 8;
-			data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
-			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
+			} else if (rc == DC_STATUS_UNSUPPORTED) {
+				supported = false;
+			} else {
+				emit error(tr("Failed!"));
+			}
 			break;
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3: {
