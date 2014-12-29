@@ -547,6 +547,234 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	return rc;
 }
 
+static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+{
+	dc_status_t rc;
+	//write gas values
+	unsigned char gas1Data[4] = {
+	    m_deviceDetails->gas1().oxygen,
+	    m_deviceDetails->gas1().helium,
+	    m_deviceDetails->gas1().type,
+	    m_deviceDetails->gas1().depth
+	};
+
+	unsigned char gas2Data[4] = {
+	    m_deviceDetails->gas2().oxygen,
+	    m_deviceDetails->gas2().helium,
+	    m_deviceDetails->gas2().type,
+	    m_deviceDetails->gas2().depth
+	};
+
+	unsigned char gas3Data[4] = {
+	    m_deviceDetails->gas3().oxygen,
+	    m_deviceDetails->gas3().helium,
+	    m_deviceDetails->gas3().type,
+	    m_deviceDetails->gas3().depth
+	};
+
+	unsigned char gas4Data[4] = {
+	    m_deviceDetails->gas4().oxygen,
+	    m_deviceDetails->gas4().helium,
+	    m_deviceDetails->gas4().type,
+	    m_deviceDetails->gas4().depth
+	};
+
+	unsigned char gas5Data[4] = {
+	    m_deviceDetails->gas5().oxygen,
+	    m_deviceDetails->gas5().helium,
+	    m_deviceDetails->gas5().type,
+	    m_deviceDetails->gas5().depth
+	};
+	//gas 1
+	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//gas 2
+	rc = hw_ostc3_device_config_write(device, OSTC3_GAS2, gas2Data, sizeof(gas2Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//gas 3
+	rc = hw_ostc3_device_config_write(device, OSTC3_GAS3, gas3Data, sizeof(gas3Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//gas 4
+	rc = hw_ostc3_device_config_write(device, OSTC3_GAS4, gas4Data, sizeof(gas4Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//gas 5
+	rc = hw_ostc3_device_config_write(device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	//write set point values
+	unsigned char sp1Data[2] = {
+	    m_deviceDetails->sp1().sp,
+	    m_deviceDetails->sp1().depth
+	};
+
+	unsigned char sp2Data[2] = {
+	    m_deviceDetails->sp2().sp,
+	    m_deviceDetails->sp2().depth
+	};
+
+	unsigned char sp3Data[2] = {
+	    m_deviceDetails->sp3().sp,
+	    m_deviceDetails->sp3().depth
+	};
+
+	unsigned char sp4Data[2] = {
+	    m_deviceDetails->sp4().sp,
+	    m_deviceDetails->sp4().depth
+	};
+
+	unsigned char sp5Data[2] = {
+	    m_deviceDetails->sp5().sp,
+	    m_deviceDetails->sp5().depth
+	};
+
+	//sp 1
+	rc = hw_ostc3_device_config_write(device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//sp 2
+	rc = hw_ostc3_device_config_write(device, OSTC3_SP2, sp2Data, sizeof(sp2Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//sp 3
+	rc = hw_ostc3_device_config_write(device, OSTC3_SP3, sp3Data, sizeof(sp3Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//sp 4
+	rc = hw_ostc3_device_config_write(device, OSTC3_SP4, sp4Data, sizeof(sp4Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//sp 5
+	rc = hw_ostc3_device_config_write(device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	//write dil values
+	unsigned char dil1Data[4] = {
+	    m_deviceDetails->dil1().oxygen,
+	    m_deviceDetails->dil1().helium,
+	    m_deviceDetails->dil1().type,
+	    m_deviceDetails->dil1().depth
+	};
+
+	unsigned char dil2Data[4] = {
+	    m_deviceDetails->dil2().oxygen,
+	    m_deviceDetails->dil2().helium,
+	    m_deviceDetails->dil2().type,
+	    m_deviceDetails->dil2().depth
+	};
+
+	unsigned char dil3Data[4] = {
+	    m_deviceDetails->dil3().oxygen,
+	    m_deviceDetails->dil3().helium,
+	    m_deviceDetails->dil3().type,
+	    m_deviceDetails->dil3().depth
+	};
+
+	unsigned char dil4Data[4] = {
+	    m_deviceDetails->dil4().oxygen,
+	    m_deviceDetails->dil4().helium,
+	    m_deviceDetails->dil4().type,
+	    m_deviceDetails->dil4().depth
+	};
+
+	unsigned char dil5Data[4] = {
+	    m_deviceDetails->dil5().oxygen,
+	    m_deviceDetails->dil5().helium,
+	    m_deviceDetails->dil5().type,
+	    m_deviceDetails->dil5().depth
+	};
+	//dil 1
+	rc = hw_ostc3_device_config_write(device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//dil 2
+	rc = hw_ostc3_device_config_write(device, OSTC3_DIL2, dil2Data, sizeof(dil2Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//dil 3
+	rc = hw_ostc3_device_config_write(device, OSTC3_DIL3, dil3Data, sizeof(dil3Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//dil 4
+	rc = hw_ostc3_device_config_write(device, OSTC3_DIL4, dil4Data, sizeof(dil4Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	//dil 5
+	rc = hw_ostc3_device_config_write(device, OSTC3_DIL5, dil5Data, sizeof(dil5Data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	//write general settings
+	//custom text
+	rc = hw_ostc3_device_customtext(device, m_deviceDetails->customText().toUtf8().data());
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	unsigned char data[1] = {0};
+#define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL) \
+	do { \
+		data[0] = m_deviceDetails->_DEVICE_DETAIL(); \
+		rc = hw_ostc3_device_config_write(device, _OSTC3_SETTING, data, sizeof(data)); \
+		if (rc != DC_STATUS_SUCCESS) \
+			return rc; \
+	} while (0)
+
+	WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
+	WRITE_SETTING(OSTC3_SATURATION, saturation);
+	WRITE_SETTING(OSTC3_DESATURATION, desaturation);
+	WRITE_SETTING(OSTC3_LAST_DECO, lastDeco);
+	WRITE_SETTING(OSTC3_BRIGHTNESS, brightness);
+	WRITE_SETTING(OSTC3_UNITS, units);
+	WRITE_SETTING(OSTC3_SAMPLING_RATE, samplingRate);
+	WRITE_SETTING(OSTC3_SALINITY, salinity);
+	WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
+	WRITE_SETTING(OSTC3_LANGUAGE, language);
+	WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat);
+	WRITE_SETTING(OSTC3_COMPASS_GAIN, compassGain);
+	WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop);
+	WRITE_SETTING(OSTC3_GF_HIGH, gfHigh);
+	WRITE_SETTING(OSTC3_GF_LOW, gfLow);
+	WRITE_SETTING(OSTC3_PPO2_MIN, ppO2Min);
+	WRITE_SETTING(OSTC3_PPO2_MAX, ppO2Max);
+	WRITE_SETTING(OSTC3_FUTURE_TTS, futureTTS);
+	WRITE_SETTING(OSTC3_CCR_MODE, ccrMode);
+	WRITE_SETTING(OSTC3_DECO_TYPE, decoType);
+	WRITE_SETTING(OSTC3_AGF_SELECTABLE, aGFSelectable);
+	WRITE_SETTING(OSTC3_AGF_HIGH, aGFHigh);
+	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
+	WRITE_SETTING(OSTC3_CALIBRATION_GAS_O2, calibrationGas);
+	WRITE_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
+	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+
+#undef WRITE_SETTING
+
+	// OSTC3 stores the pressureSensorOffset in two-complement
+	data[0] = (unsigned char) m_deviceDetails->pressureSensorOffset();
+	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	//sync date and time
+	if (m_deviceDetails->syncTime()) {
+		QDateTime timeToSet = QDateTime::currentDateTime();
+		dc_datetime_t time;
+		time.year = timeToSet.date().year();
+		time.month = timeToSet.date().month();
+		time.day = timeToSet.date().day();
+		time.hour = timeToSet.time().hour();
+		time.minute = timeToSet.time().minute();
+		time.second = timeToSet.time().second();
+		rc = hw_ostc3_device_clock(device, &time);
+	}
+
+	return rc;
+}
+
 static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
 {
 	dc_status_t rc;
@@ -948,168 +1176,14 @@ void WriteSettingsThread::run()
 				emit error(tr("Failed!"));
 			}
 			break;
-#if DC_VERSION_CHECK(0, 5, 0)
-		case DC_FAMILY_HW_OSTC3: {
+#if DC_VERSION_CHECK(0,5,0)
+		case DC_FAMILY_HW_OSTC3:
 			supported = true;
-			//write gas values
-			unsigned char gas1Data[4] = { m_deviceDetails->gas1().oxygen,
-						      m_deviceDetails->gas1().helium,
-						      m_deviceDetails->gas1().type,
-						      m_deviceDetails->gas1().depth };
-
-			unsigned char gas2Data[4] = { m_deviceDetails->gas2().oxygen,
-						      m_deviceDetails->gas2().helium,
-						      m_deviceDetails->gas2().type,
-						      m_deviceDetails->gas2().depth };
-
-			unsigned char gas3Data[4] = { m_deviceDetails->gas3().oxygen,
-						      m_deviceDetails->gas3().helium,
-						      m_deviceDetails->gas3().type,
-						      m_deviceDetails->gas3().depth };
-
-			unsigned char gas4Data[4] = { m_deviceDetails->gas4().oxygen,
-						      m_deviceDetails->gas4().helium,
-						      m_deviceDetails->gas4().type,
-						      m_deviceDetails->gas4().depth };
-
-			unsigned char gas5Data[4] = { m_deviceDetails->gas5().oxygen,
-						      m_deviceDetails->gas5().helium,
-						      m_deviceDetails->gas5().type,
-						      m_deviceDetails->gas5().depth };
-			//gas 1
-			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
-			//gas 2
-			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS2, gas2Data, sizeof(gas2Data));
-			//gas 3
-			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS3, gas3Data, sizeof(gas3Data));
-			//gas 4
-			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS4, gas4Data, sizeof(gas4Data));
-			//gas 5
-			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
-
-			//write set point values
-			unsigned char sp1Data[2] = { m_deviceDetails->sp1().sp,
-						     m_deviceDetails->sp1().depth };
-
-			unsigned char sp2Data[2] = { m_deviceDetails->sp2().sp,
-						     m_deviceDetails->sp2().depth };
-
-			unsigned char sp3Data[2] = { m_deviceDetails->sp3().sp,
-						     m_deviceDetails->sp3().depth };
-
-			unsigned char sp4Data[2] = { m_deviceDetails->sp4().sp,
-						     m_deviceDetails->sp4().depth };
-
-			unsigned char sp5Data[2] = { m_deviceDetails->sp5().sp,
-						     m_deviceDetails->sp5().depth };
-
-			//sp 1
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
-			//sp 2
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SP2, sp2Data, sizeof(sp2Data));
-			//sp 3
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SP3, sp3Data, sizeof(sp3Data));
-			//sp 4
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SP4, sp4Data, sizeof(sp4Data));
-			//sp 5
-			hw_ostc3_device_config_write(m_data->device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
-
-			//write dil values
-			unsigned char dil1Data[4] = { m_deviceDetails->dil1().oxygen,
-						      m_deviceDetails->dil1().helium,
-						      m_deviceDetails->dil1().type,
-						      m_deviceDetails->dil1().depth };
-
-			unsigned char dil2Data[4] = { m_deviceDetails->dil2().oxygen,
-						      m_deviceDetails->dil2().helium,
-						      m_deviceDetails->dil2().type,
-						      m_deviceDetails->dil2().depth };
-
-			unsigned char dil3Data[4] = { m_deviceDetails->dil3().oxygen,
-						      m_deviceDetails->dil3().helium,
-						      m_deviceDetails->dil3().type,
-						      m_deviceDetails->dil3().depth };
-
-			unsigned char dil4Data[4] = { m_deviceDetails->dil4().oxygen,
-						      m_deviceDetails->dil4().helium,
-						      m_deviceDetails->dil4().type,
-						      m_deviceDetails->dil4().depth };
-
-			unsigned char dil5Data[4] = { m_deviceDetails->dil5().oxygen,
-						      m_deviceDetails->dil5().helium,
-						      m_deviceDetails->dil5().type,
-						      m_deviceDetails->dil5().depth };
-			//dil 1
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
-			//dil 2
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL2, dil2Data, sizeof(dil2Data));
-			//dil 3
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL3, dil3Data, sizeof(dil3Data));
-			//dil 4
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL4, dil4Data, sizeof(dil4Data));
-			//dil 5
-			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL5, dil5Data, sizeof(dil5Data));
-
-
-			//write general settings
-			//custom text
-			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
-
-			unsigned char data[1] = { 0 };
-#define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL)                                             \
-	do {                                                                                      \
-		data[0] = m_deviceDetails->_DEVICE_DETAIL();                                      \
-		hw_ostc3_device_config_write(m_data->device, _OSTC3_SETTING, data, sizeof(data)); \
-	} while (0)
-
-			WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
-			WRITE_SETTING(OSTC3_SATURATION, saturation);
-			WRITE_SETTING(OSTC3_DESATURATION, desaturation);
-			WRITE_SETTING(OSTC3_LAST_DECO, lastDeco);
-			WRITE_SETTING(OSTC3_BRIGHTNESS, brightness);
-			WRITE_SETTING(OSTC3_UNITS, units);
-			WRITE_SETTING(OSTC3_SAMPLING_RATE, samplingRate);
-			WRITE_SETTING(OSTC3_SALINITY, salinity);
-			WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
-			WRITE_SETTING(OSTC3_LANGUAGE, language);
-			WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat);
-			WRITE_SETTING(OSTC3_COMPASS_GAIN, compassGain);
-			WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop);
-			WRITE_SETTING(OSTC3_GF_HIGH, gfHigh);
-			WRITE_SETTING(OSTC3_GF_LOW, gfLow);
-			WRITE_SETTING(OSTC3_PPO2_MIN, ppO2Min);
-			WRITE_SETTING(OSTC3_PPO2_MAX, ppO2Max);
-			WRITE_SETTING(OSTC3_FUTURE_TTS, futureTTS);
-			WRITE_SETTING(OSTC3_CCR_MODE, ccrMode);
-			WRITE_SETTING(OSTC3_DECO_TYPE, decoType);
-			WRITE_SETTING(OSTC3_AGF_SELECTABLE, aGFSelectable);
-			WRITE_SETTING(OSTC3_AGF_HIGH, aGFHigh);
-			WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
-			WRITE_SETTING(OSTC3_CALIBRATION_GAS_O2, calibrationGas);
-			WRITE_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
-			WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
-
-#undef WRITE_SETTING
-
-			// OSTC3 stores the pressureSensorOffset in two-complement
-			data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset();
-			hw_ostc3_device_config_write(m_data->device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
-
-			//sync date and time
-			if (m_deviceDetails->syncTime()) {
-				QDateTime timeToSet = QDateTime::currentDateTime();
-				dc_datetime_t time;
-				time.year = timeToSet.date().year();
-				time.month = timeToSet.date().month();
-				time.day = timeToSet.date().day();
-				time.hour = timeToSet.time().hour();
-				time.minute = timeToSet.time().minute();
-				time.second = timeToSet.time().second();
-				hw_ostc3_device_clock(m_data->device, &time);
-			}
+			rc = write_ostc3_settings(m_data->device, m_deviceDetails);
+			if (rc != DC_STATUS_SUCCESS)
+				emit error(tr("Failed!"));
 			break;
-		}
-#endif // divecomputer 0.5.0
+#endif	// divecomputer 0.5.0
 #ifdef DEBUG_OSTC
 		case DC_FAMILY_NULL:
 #endif
