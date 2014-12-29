@@ -42,6 +42,7 @@ public:
 	QString album() const;
 public slots:
 	void selectionChanged();
+	void albumChanged();
 private:
 	Ui::SocialnetworksDialog *ui;
 };

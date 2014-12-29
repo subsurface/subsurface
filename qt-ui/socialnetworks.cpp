@@ -259,15 +259,24 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) : QDialog(parent)
       , ui( new Ui::SocialnetworksDialog())
 {
 	ui->setupUi(this);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->album, SIGNAL(textChanged(QString)), this, SLOT(albumChanged()));
 }
 
-void SocialNetworkDialog::selectionChanged() {
+void SocialNetworkDialog::albumChanged()
+{
+	QAbstractButton *button = ui->buttonBox->button(QDialogButtonBox::Ok);
+	button->setEnabled(!ui->album->text().isEmpty());
+}
+
+void SocialNetworkDialog::selectionChanged()
+{
 	struct dive *d = current_dive;
 	QString fullText;
 	if (ui->date->isChecked()) {
@@ -288,7 +297,7 @@ void SocialNetworkDialog::selectionChanged() {
 		fullText += tr("Divemaster: %1 \n").arg(d->divemaster);
 	}
 	if (ui->Notes->isChecked()) {
-		fullText += tr("\n %1").arg(d->notes);
+		fullText += tr("\n%1").arg(d->notes);
 	}
 	ui->text->setPlainText(fullText);
 }
