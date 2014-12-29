@@ -2625,6 +2625,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			}
 			event_end();
 			break;
+		case 7:
+			/* Po2 sample? Solenoid inject? */
+			//fprintf(stderr, "%02X %02X%02X %02X%02X\n", ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
+			break;
 		default:
 			/* Unknown... */
 			break;
