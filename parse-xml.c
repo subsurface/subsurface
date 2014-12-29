@@ -2534,7 +2534,8 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 int parse_dlf_buffer(unsigned char *buffer, size_t size)
 {
 	unsigned char *ptr = buffer;
-	bool event, found;
+	unsigned char event;
+	bool found;
 	unsigned int time = 0;
 	int i;
 	char serial[6];
@@ -2584,16 +2585,23 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			((ptr[1] << 4) & 0xff0) +
 			(ptr[2] & 0x0f) * 3600; /* hours */
 		event = ptr[0] & 0x0f;
-		if (event == 1) {
+		switch (event) {
+		case 0:
+			/* Regular sample */
+			sample_start();
+			cur_sample->time.seconds = time;
+			cur_sample->depth.mm = ((ptr[4] & 0xff) + ((ptr[5] << 8) & 0xff00)) * 10;
+			sample_end();
+			break;
+		case 1:
 			/* dive event */
-			switch(ptr[4]) {
+			event_start();
+			cur_event.time.seconds = time;
+			switch (ptr[4]) {
 			case 5:
-				event_start();
-				cur_event.time.seconds = time;
 				strcpy(cur_event.name, "gaschange");
 				cur_event.type = 25;
 				cur_event.value = ptr[6];
-				event_end();
 
 				found = false;
 				for (i = 0; i < cur_cylinder_index; ++i) {
@@ -2609,19 +2617,17 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				}
 				break;
 			case 6:
-				event_start();
-				cur_event.time.seconds = time;
 				strcpy(cur_event.name, "start");
-				event_end();
 				break;
 			default:
 				fprintf(stderr, "DEBUG (event): %d at time %d\n", ptr[4], time);
+				break;
 			}
-		} else {
-			sample_start();
-			cur_sample->time.seconds = time;
-			cur_sample->depth.mm = ((ptr[4] & 0xff) + ((ptr[5] << 8) & 0xff00)) * 10;
-			sample_end();
+			event_end();
+			break;
+		default:
+			/* Unknown... */
+			break;
 		}
 		ptr += 16;
 	}
