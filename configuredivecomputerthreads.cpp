@@ -106,10 +106,6 @@ static dc_status_t local_hw_ostc_device_clock(void *ignored, dc_datetime_t *time
 }
 #endif
 
-ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
-{
-}
-
 static int read_ostc_cf(unsigned char data[], unsigned char cf)
 {
 	return data[128 + (cf % 32) * 4 + 3] << 8 ^ data[128 + (cf % 32) * 4 + 2];
@@ -1383,6 +1379,10 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 		rc = hw_ostc_device_clock(device, &time);
 	}
 	return rc;
+}
+
+ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
+{
 }
 
 void ReadSettingsThread::run()
