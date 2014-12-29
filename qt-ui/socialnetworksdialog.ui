@@ -28,9 +28,9 @@
     <widget class="QPlainTextEdit" name="text"/>
    </item>
    <item row="5" column="0">
-    <widget class="QCheckBox" name="time">
+    <widget class="QCheckBox" name="duration">
      <property name="text">
-      <string>Time</string>
+      <string>Duration</string>
      </property>
     </widget>
    </item>
@@ -58,7 +58,7 @@
    <item row="4" column="0">
     <widget class="QCheckBox" name="date">
      <property name="text">
-      <string>date</string>
+      <string>Date and time</string>
      </property>
     </widget>
    </item>

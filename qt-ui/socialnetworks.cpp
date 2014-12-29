@@ -18,6 +18,7 @@
 #include "mainwindow.h"
 #include "profile/profilewidget2.h"
 #include "pref.h"
+#include "helpers.h"
 #include "ui_socialnetworksdialog.h"
 
 #define GET_TXT(name, field)                                             \
@@ -259,6 +260,7 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) : QDialog(parent)
 {
 	ui->setupUi(this);
 	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
 	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
@@ -269,16 +271,21 @@ void SocialNetworkDialog::selectionChanged() {
 	struct dive *d = current_dive;
 	QString fullText;
 	if (ui->date->isChecked()) {
-		fullText += tr("Dive Date: %1 \n").arg(d->when);
+		fullText += tr("Dive Date: %1 \n").arg(get_short_dive_date_string(d->when));
+	}
+	if (ui->duration->isChecked()) {
+		fullText += tr("Duration: %1 \n").arg(get_dive_duration_string(d->duration.seconds,
+									       tr("h:", "abbreviation for hours plus separator"),
+									       tr("min", "abbreviation for minutes")));
+	}
+	if (ui->Location->isChecked()) {
+		fullText += tr("Dive Location: %1 \n").arg(d->location);
 	}
 	if (ui->Buddy->isChecked()) {
 		fullText += tr("Buddy: %1 \n").arg(d->buddy);
 	}
 	if (ui->Divemaster->isChecked()) {
 		fullText += tr("Divemaster: %1 \n").arg(d->divemaster);
-	}
-	if (ui->Location->isChecked()) {
-		fullText += tr("Dive Location: %1 \n").arg(d->location);
 	}
 	if (ui->Notes->isChecked()) {
 		fullText += tr("\n %1").arg(d->notes);

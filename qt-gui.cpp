@@ -416,6 +416,22 @@ int parseTemperatureToMkelvin(const QString &text)
 	return mkelvin;
 }
 
+QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
+{
+	int hrs, mins;
+	mins = (when + 59) / 60;
+	hrs = mins / 60;
+	mins -= hrs * 60;
+
+	QString displayTime;
+	if (hrs)
+		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(minutesText);
+	else
+		displayTime = QString("%1%2").arg(mins).arg(minutesText);
+
+	return displayTime;
+}
+
 QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
