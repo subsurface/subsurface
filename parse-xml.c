@@ -2598,6 +2598,45 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			event_start();
 			cur_event.time.seconds = time;
 			switch (ptr[4]) {
+			case 1:
+				strcpy(cur_event.name, "Setpoint Manual");
+				// There is a setpoint value somewhere...
+				break;
+			case 2:
+				strcpy(cur_event.name, "Setpoint Auto");
+				// There is a setpoint value somewhere...
+				switch (ptr[7]) {
+				case 0:
+					strcat(cur_event.name, " Manual");
+					break;
+				case 1:
+					strcat(cur_event.name, " Auto Start");
+					break;
+				case 2:
+					strcat(cur_event.name, " Auto Hypox");
+					break;
+				case 3:
+					strcat(cur_event.name, " Auto Timeout");
+					break;
+				case 4:
+					strcat(cur_event.name, " Auto Ascent");
+					break;
+				case 5:
+					strcat(cur_event.name, " Auto Stall");
+					break;
+				case 6:
+					strcat(cur_event.name, " Auto SP Low");
+					break;
+				default:
+					break;
+				}
+				break;
+			case 3:
+				strcpy(cur_event.name, "OC");
+				break;
+			case 4:
+				// None
+				break;
 			case 5:
 				strcpy(cur_event.name, "gaschange");
 				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
@@ -2617,10 +2656,109 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				}
 				break;
 			case 6:
-				strcpy(cur_event.name, "start");
+				strcpy(cur_event.name, "Start");
+				break;
+			case 7:
+				strcpy(cur_event.name, "Too Fast");
+				break;
+			case 8:
+				strcpy(cur_event.name, "Above Ceiling");
+				break;
+			case 9:
+				strcpy(cur_event.name, "Toxic");
+				break;
+			case 10:
+				strcpy(cur_event.name, "Hypox");
+				break;
+			case 11:
+				strcpy(cur_event.name, "Critical");
+				break;
+			case 12:
+				strcpy(cur_event.name, "Sensor Disabled");
+				break;
+			case 13:
+				strcpy(cur_event.name, "Sensor Enabled");
+				break;
+			case 14:
+				strcpy(cur_event.name, "O2 Backup");
+				break;
+			case 15:
+				strcpy(cur_event.name, "Peer Down");
+				break;
+			case 16:
+				strcpy(cur_event.name, "HS Down");
+				break;
+			case 17:
+				strcpy(cur_event.name, "Inconsistent");
+				break;
+			case 18:
+				// Gets hidden?
+				break;
+			case 19:
+				// None
+				break;
+			case 20:
+				strcpy(cur_event.name, "Above Stop");
+				break;
+			case 21:
+				strcpy(cur_event.name, "Safety Miss");
+				break;
+			case 22:
+				strcpy(cur_event.name, "Fatal");
+				break;
+			case 23:
+				strcpy(cur_event.name, "Diluent");
+				break;
+			case 24:
+				strcpy(cur_event.name, "gaschange");
+				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				cur_event.value = ptr[7] << 8 ^ ptr[6];
+				event_end();
+				// This is both a mode change and a gas change event
+				// so we encode it as two separate events.
+				event_start();
+				strcpy(cur_event.name, "Change Mode");
+				switch (ptr[8]) {
+				case 1:
+					strcat(cur_event.name, ": OC");
+					break;
+				case 2:
+					strcat(cur_event.name, ": CCR");
+					break;
+				case 3:
+					strcat(cur_event.name, ": mCCR");
+					break;
+				case 4:
+					strcat(cur_event.name, ": Free");
+					break;
+				case 5:
+					strcat(cur_event.name, ": Gauge");
+					break;
+				case 6:
+					strcat(cur_event.name, ": ASCR");
+					break;
+				case 7:
+					strcat(cur_event.name, ": PSCR");
+					break;
+				default:
+					break;
+				}
+				event_end();
+				break;
+			case 27:
+				snprintf(cur_event.name, MAX_EVENT_NAME, "GF Switch (%d/%d)", ptr[7], ptr[8]);
+				break;
+			case 28:
+				strcpy(cur_event.name, "Peer Up");
+				break;
+			case 29:
+				strcpy(cur_event.name, "HS Up");
+				break;
+			case 30:
+				strcpy(cur_event.name, "CNS");
 				break;
 			default:
-				fprintf(stderr, "DEBUG (event): %d at time %d\n", ptr[4], time);
+				// No values above 30 had any description
 				break;
 			}
 			event_end();
