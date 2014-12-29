@@ -125,6 +125,144 @@ static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char 
 	data[128 + (cf % 32) * 4 + 2] = (value & 0x00ff);
 }
 
+static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+{
+	unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
+	dc_status_t rc;
+	rc = dc_device_read(device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
+	if (rc == DC_STATUS_SUCCESS) {
+		const char *model;
+		// FIXME: grab this info from libdivecomputer descriptor
+		// instead of hard coded here
+		switch(data[0]) {
+		case 0x03:
+			model = "Stinger";
+			break;
+		case 0x04:
+			model = "Mosquito";
+			break;
+		case 0x05:
+			model = "D3";
+			break;
+		case 0x0A:
+			model = "Vyper";
+			break;
+		case 0x0B:
+			model = "Vytec";
+			break;
+		case 0x0C:
+			model = "Cobra";
+			break;
+		case 0x0D:
+			model = "Gekko";
+			break;
+		case 0x16:
+			model = "Zoop";
+			break;
+		case 20:
+		case 30:
+		case 60:
+			// Suunto Spyder have there sample interval at this position
+			// Fallthrough
+		default:
+			return DC_STATUS_UNSUPPORTED;
+		}
+		// We found a supported device
+		// we can safely proceed with reading/writing to this device.
+		m_deviceDetails->setModel(model);
+	}
+	rc = dc_device_read(device, SUUNTO_VYPER_MAXDEPTH, data, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	// in ft * 128.0
+	int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+	m_deviceDetails->setMaxDepth(depth);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	int total_time = data[0] << 8 ^ data[1];
+	m_deviceDetails->setTotalTime(total_time);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_NUMBEROFDIVES, data, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	int number_of_dives = data[0] << 8 ^ data[1];
+	m_deviceDetails->setNumberOfDives(number_of_dives);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_FIRMWARE, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setFirmwareVersion(QString::number(data[0]) + ".0.0");
+
+	rc = dc_device_read(device, SUUNTO_VYPER_SERIALNUMBER, data, 4);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	int serial_number = data[0] * 1000000 + data[1] * 10000 + data[2] * 100 + data[3];
+	m_deviceDetails->setSerialNo(QString::number(serial_number));
+
+	rc = dc_device_read(device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
+	m_deviceDetails->setCustomText((const char *)data);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setSamplingRate((int)data[0]);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setAltitude(data[0] & 0x03);
+	m_deviceDetails->setPersonalSafety(data[0] >> 2 & 0x03);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_TIMEFORMAT, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setTimeFormat(data[0] & 0x01);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_UNITS, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setUnits(data[0] & 0x01);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_MODEL, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setDiveMode(data[0] & 0x03);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_LIGHT, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setLightEnabled(data[0] >> 7);
+	m_deviceDetails->setLight(data[0] & 0x7F);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, data, 1);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	m_deviceDetails->setAlarmTimeEnabled(data[0] & 0x01);
+	m_deviceDetails->setAlarmDepthEnabled(data[0] >> 1 & 0x01);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_TIME, data, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	int time = data[0] << 8 ^ data[1];
+	// The stinger stores alarm time in seconds instead of minutes.
+	if (m_deviceDetails->model() == "Stinger")
+		time /= 60;
+	m_deviceDetails->setAlarmTime(time);
+
+	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+	m_deviceDetails->setAlarmDepth(depth);
+
+	return DC_STATUS_SUCCESS;
+}
+
 void ReadSettingsThread::run()
 {
 	bool supported = false;
@@ -138,129 +276,17 @@ void ReadSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
-		case DC_FAMILY_SUUNTO_VYPER: {
-			unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
+		case DC_FAMILY_SUUNTO_VYPER:
+			rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails);
 			if (rc == DC_STATUS_SUCCESS) {
-				const char *model;
-				// FIXME: grab this info from libdivecomputer descriptor
-				// instead of hard coded here
-				switch (data[0]) {
-				case 0x03:
-					model = "Stinger";
-					break;
-				case 0x04:
-					model = "Mosquito";
-					break;
-				case 0x05:
-					model = "D3";
-					break;
-				case 0x0A:
-					model = "Vyper";
-					break;
-				case 0x0B:
-					model = "Vytec";
-					break;
-				case 0x0C:
-					model = "Cobra";
-					break;
-				case 0x0D:
-					model = "Gekko";
-					break;
-				case 0x16:
-					model = "Zoop";
-					break;
-				case 20:
-				case 30:
-				case 60:
-					// Suunto Spyder have there sample interval at this position
-					// Fallthrough
-				default:
-					supported = false;
-					goto unsupported_dc_error;
-				}
-				// We found a supported device
-				// we can safely proceed with reading/writing to this device.
 				supported = true;
-				m_deviceDetails->setModel(model);
+				emit devicedetails(m_deviceDetails);
+			} else if (rc == DC_STATUS_UNSUPPORTED) {
+				supported = false;
+			} else {
+				emit error("Failed!");
 			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_MAXDEPTH, data, 2);
-			if (rc == DC_STATUS_SUCCESS) {
-				// in ft * 128.0
-				int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-				m_deviceDetails->setMaxDepth(depth);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
-			if (rc == DC_STATUS_SUCCESS) {
-				int total_time = data[0] << 8 ^ data[1];
-				m_deviceDetails->setTotalTime(total_time);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_NUMBEROFDIVES, data, 2);
-			if (rc == DC_STATUS_SUCCESS) {
-				int number_of_dives = data[0] << 8 ^ data[1];
-				m_deviceDetails->setNumberOfDives(number_of_dives);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_FIRMWARE, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setFirmwareVersion(QString::number(data[0]) + ".0.0");
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_SERIALNUMBER, data, 4);
-			if (rc == DC_STATUS_SUCCESS) {
-				int serial_number = data[0] * 1000000 + data[1] * 10000 + data[2] * 100 + data[3];
-				m_deviceDetails->setSerialNo(QString::number(serial_number));
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
-			if (rc == DC_STATUS_SUCCESS) {
-				data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
-				m_deviceDetails->setCustomText((const char *)data);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setSamplingRate((int)data[0]);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setAltitude(data[0] & 0x03);
-				m_deviceDetails->setPersonalSafety(data[0] >> 2 & 0x03);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_TIMEFORMAT, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setTimeFormat(data[0] & 0x01);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_UNITS, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setUnits(data[0] & 0x01);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_MODEL, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setDiveMode(data[0] & 0x03);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_LIGHT, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setLightEnabled(data[0] >> 7);
-				m_deviceDetails->setLight(data[0] & 0x7F);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_DEPTH_TIME, data, 1);
-			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setAlarmTimeEnabled(data[0] & 0x01);
-				m_deviceDetails->setAlarmDepthEnabled(data[0] >> 1 & 0x01);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_TIME, data, 2);
-			if (rc == DC_STATUS_SUCCESS) {
-				int time = data[0] << 8 ^ data[1];
-				// The stinger stores alarm time in seconds instead of minutes.
-				if (m_deviceDetails->model() == "Stinger")
-					time /= 60;
-				m_deviceDetails->setAlarmTime(time);
-			}
-			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
-			if (rc == DC_STATUS_SUCCESS) {
-				int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-				m_deviceDetails->setAlarmDepth(depth);
-			}
-			emit devicedetails(m_deviceDetails);
 			break;
-		}
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3: {
 			supported = true;
@@ -809,7 +835,6 @@ void ReadSettingsThread::run()
 		// So we don't trigger the "unsupported" clause later..
 		supported = true;
 	}
-unsupported_dc_error:
 	dc_device_close(m_data->device);
 
 	if (!supported) {
