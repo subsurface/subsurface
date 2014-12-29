@@ -403,7 +403,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			MainWindow::instance()->dive_list()->unselectDives();
 			MainWindow::instance()->dive_list()->selectDive(idx, true);
 			QString dcName = data.devname;
-			if (ostcFirmwareCheck)
+			if (ostcFirmwareCheck && currentState == DONE)
 				ostcFirmwareCheck->checkLatest(this, &data);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
