@@ -9,8 +9,7 @@
 #include <QStringList>
 #include <QXmlStreamWriter>
 
-ConfigureDiveComputer::ConfigureDiveComputer(QObject *parent) :
-	QObject(parent),
+ConfigureDiveComputer::ConfigureDiveComputer() :
 	readThread(0),
 	writeThread(0),
 	resetThread(0),

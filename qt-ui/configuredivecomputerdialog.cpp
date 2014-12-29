@@ -117,7 +117,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	ui.setupUi(this);
 
 	deviceDetails = new DeviceDetails(this);
-	config = new ConfigureDiveComputer(this);
+	config = new ConfigureDiveComputer();
 	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
 	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
@@ -275,7 +275,7 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	file.open(QIODevice::WriteOnly);
 	file.write(firmwareData);
 	file.close();
-	ConfigureDiveComputer *config = new ConfigureDiveComputer(MainWindow::instance());
+	ConfigureDiveComputer *config = new ConfigureDiveComputer();
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
 

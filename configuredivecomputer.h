@@ -14,7 +14,7 @@ class ConfigureDiveComputer : public QObject
 {
 	Q_OBJECT
 public:
-	explicit ConfigureDiveComputer(QObject *parent = 0);
+	explicit ConfigureDiveComputer();
 	void readSettings(device_data_t *data);
 
 	enum states {
