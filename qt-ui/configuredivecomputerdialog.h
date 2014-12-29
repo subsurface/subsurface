@@ -9,8 +9,7 @@
 #include <QStyledItemDelegate>
 #include <QNetworkAccessManager>
 
-class GasSpinBoxItemDelegate : public QStyledItemDelegate
-{
+class GasSpinBoxItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 
 public:
@@ -25,12 +24,12 @@ public:
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
 	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+
 private:
 	column_type type;
 };
 
-class GasTypeComboBoxItemDelegate : public QStyledItemDelegate
-{
+class GasTypeComboBoxItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 
 public:
@@ -45,19 +44,20 @@ public:
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
 	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+
 private:
 	computer_type type;
 };
 
-class ConfigureDiveComputerDialog : public QDialog
-{
+class ConfigureDiveComputerDialog : public QDialog {
 	Q_OBJECT
 
 public:
 	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
 
-private slots:
+private
+slots:
 	void readSettings();
 	void resetSettings();
 	void configMessage(QString msg);
@@ -102,8 +102,7 @@ private:
 	QString selected_product;
 };
 
-class OstcFirmwareCheck : QObject
-{
+class OstcFirmwareCheck : QObject {
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(QString product);
@@ -111,7 +110,8 @@ public:
 public
 slots:
 	void parseOstcFwVersion(QNetworkReply *reply);
-	void saveOstcFirmware(QNetworkReply * reply);
+	void saveOstcFirmware(QNetworkReply *reply);
+
 private:
 	void upgradeFirmware();
 	device_data_t devData;

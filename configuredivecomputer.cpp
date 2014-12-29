@@ -9,8 +9,7 @@
 #include <QStringList>
 #include <QXmlStreamWriter>
 
-ConfigureDiveComputer::ConfigureDiveComputer() :
-	readThread(0),
+ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 	writeThread(0),
 	resetThread(0),
 	firmwareThread(0)
@@ -29,8 +28,8 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 	connect(readThread, SIGNAL(finished()),
 		this, SLOT(readThreadFinished()), Qt::QueuedConnection);
 	connect(readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(readThread, SIGNAL(devicedetails(DeviceDetails*)), this,
-		SIGNAL(deviceDetailsChanged(DeviceDetails*)));
+	connect(readThread, SIGNAL(devicedetails(DeviceDetails *)), this,
+		SIGNAL(deviceDetailsChanged(DeviceDetails *)));
 
 	readThread->start();
 }
@@ -69,35 +68,30 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("CustomText", details->customText());
 	//Add gasses
 	QString gas1 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->gas1().oxygen),
-			     QString::number(details->gas1().helium),
-			     QString::number(details->gas1().type),
-			     QString::number(details->gas1().depth)
-			     );
+			       .arg(QString::number(details->gas1().oxygen),
+				    QString::number(details->gas1().helium),
+				    QString::number(details->gas1().type),
+				    QString::number(details->gas1().depth));
 	QString gas2 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->gas2().oxygen),
-			     QString::number(details->gas2().helium),
-			     QString::number(details->gas2().type),
-			     QString::number(details->gas2().depth)
-			     );
+			       .arg(QString::number(details->gas2().oxygen),
+				    QString::number(details->gas2().helium),
+				    QString::number(details->gas2().type),
+				    QString::number(details->gas2().depth));
 	QString gas3 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->gas3().oxygen),
-			     QString::number(details->gas3().helium),
-			     QString::number(details->gas3().type),
-			     QString::number(details->gas3().depth)
-			     );
+			       .arg(QString::number(details->gas3().oxygen),
+				    QString::number(details->gas3().helium),
+				    QString::number(details->gas3().type),
+				    QString::number(details->gas3().depth));
 	QString gas4 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->gas4().oxygen),
-			     QString::number(details->gas4().helium),
-			     QString::number(details->gas4().type),
-			     QString::number(details->gas4().depth)
-			     );
+			       .arg(QString::number(details->gas4().oxygen),
+				    QString::number(details->gas4().helium),
+				    QString::number(details->gas4().type),
+				    QString::number(details->gas4().depth));
 	QString gas5 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->gas5().oxygen),
-			     QString::number(details->gas5().helium),
-			     QString::number(details->gas5().type),
-			     QString::number(details->gas5().depth)
-			     );
+			       .arg(QString::number(details->gas5().oxygen),
+				    QString::number(details->gas5().helium),
+				    QString::number(details->gas5().type),
+				    QString::number(details->gas5().depth));
 	writer.writeTextElement("Gas1", gas1);
 	writer.writeTextElement("Gas2", gas2);
 	writer.writeTextElement("Gas3", gas3);
@@ -106,35 +100,30 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	//
 	//Add dil values
 	QString dil1 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->dil1().oxygen),
-			     QString::number(details->dil1().helium),
-			     QString::number(details->dil1().type),
-			     QString::number(details->dil1().depth)
-			     );
+			       .arg(QString::number(details->dil1().oxygen),
+				    QString::number(details->dil1().helium),
+				    QString::number(details->dil1().type),
+				    QString::number(details->dil1().depth));
 	QString dil2 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->dil2().oxygen),
-			     QString::number(details->dil2().helium),
-			     QString::number(details->dil2().type),
-			     QString::number(details->dil2().depth)
-			     );
+			       .arg(QString::number(details->dil2().oxygen),
+				    QString::number(details->dil2().helium),
+				    QString::number(details->dil2().type),
+				    QString::number(details->dil2().depth));
 	QString dil3 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->dil3().oxygen),
-			     QString::number(details->dil3().helium),
-			     QString::number(details->dil3().type),
-			     QString::number(details->dil3().depth)
-			     );
+			       .arg(QString::number(details->dil3().oxygen),
+				    QString::number(details->dil3().helium),
+				    QString::number(details->dil3().type),
+				    QString::number(details->dil3().depth));
 	QString dil4 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->dil4().oxygen),
-			     QString::number(details->dil4().helium),
-			     QString::number(details->dil4().type),
-			     QString::number(details->dil4().depth)
-			     );
+			       .arg(QString::number(details->dil4().oxygen),
+				    QString::number(details->dil4().helium),
+				    QString::number(details->dil4().type),
+				    QString::number(details->dil4().depth));
 	QString dil5 = QString("%1,%2,%3,%4")
-			.arg(QString::number(details->dil5().oxygen),
-			     QString::number(details->dil5().helium),
-			     QString::number(details->dil5().type),
-			     QString::number(details->dil5().depth)
-			     );
+			       .arg(QString::number(details->dil5().oxygen),
+				    QString::number(details->dil5().helium),
+				    QString::number(details->dil5().type),
+				    QString::number(details->dil5().depth));
 	writer.writeTextElement("Dil1", dil1);
 	writer.writeTextElement("Dil2", dil2);
 	writer.writeTextElement("Dil3", dil3);
@@ -143,25 +132,20 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	//
 	//Add set point values
 	QString sp1 = QString("%1,%2")
-			.arg(QString::number(details->sp1().sp),
-			     QString::number(details->sp1().depth)
-			     );
+			      .arg(QString::number(details->sp1().sp),
+				   QString::number(details->sp1().depth));
 	QString sp2 = QString("%1,%2")
-			.arg(QString::number(details->sp2().sp),
-			     QString::number(details->sp2().depth)
-			     );
+			      .arg(QString::number(details->sp2().sp),
+				   QString::number(details->sp2().depth));
 	QString sp3 = QString("%1,%2")
-			.arg(QString::number(details->sp3().sp),
-			     QString::number(details->sp3().depth)
-			     );
+			      .arg(QString::number(details->sp3().sp),
+				   QString::number(details->sp3().depth));
 	QString sp4 = QString("%1,%2")
-			.arg(QString::number(details->sp4().sp),
-			     QString::number(details->sp4().depth)
-			     );
+			      .arg(QString::number(details->sp4().sp),
+				   QString::number(details->sp4().depth));
 	QString sp5 = QString("%1,%2")
-			.arg(QString::number(details->sp5().sp),
-			     QString::number(details->sp5().depth)
-			     );
+			      .arg(QString::number(details->sp5().sp),
+				   QString::number(details->sp5().depth));
 	writer.writeTextElement("SetPoint1", sp1);
 	writer.writeTextElement("SetPoint2", sp2);
 	writer.writeTextElement("SetPoint3", sp3);
@@ -224,7 +208,7 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	QFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly)) {
 		lastError = tr("Could not save the backup file %1. Error Message: %2")
-				.arg(fileName, file.errorString());
+				    .arg(fileName, file.errorString());
 		return false;
 	}
 	//file open successful. write data and save.
@@ -513,7 +497,6 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data)
 {
 	setState(FWUPDATE);
-
 	if (firmwareThread)
 		firmwareThread->deleteLater();
 
@@ -521,7 +504,6 @@ void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t 
 	connect(firmwareThread, SIGNAL(finished()),
 		this, SLOT(firmwareThreadFinished()), Qt::QueuedConnection);
 	connect(firmwareThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-
 	firmwareThread->start();
 }
 

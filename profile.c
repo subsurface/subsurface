@@ -435,7 +435,7 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 	do {
 		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
 		setpoint.mbar = ev->value;
-		if(setpoint.mbar)
+		if (setpoint.mbar)
 			dc->dctype = CCR;
 		ev = get_next_event(ev->next, "SP change");
 	} while (ev);
@@ -608,15 +608,15 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		if (dc->dctype == CCR) {
-			entry->o2pressure.mbar = sample->setpoint.mbar;      // for rebreathers
-			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar;  // for up to three rebreather O2 sensors
+			entry->o2pressure.mbar = sample->setpoint.mbar;     // for rebreathers
+			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
 			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
 			entry->o2sensor[2].mbar = sample->o2sensor[2].mbar;
 		} else {
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
 		/* FIXME! sensor index -> cylinder index translation! */
-//		entry->cylinderindex = sample->sensor;
+		//		entry->cylinderindex = sample->sensor;
 		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
 		O2CYLINDER_PRESSURE(entry) = sample->o2cylinderpressure.mbar;
 		if (sample->temperature.mkelvin)
@@ -773,7 +773,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
 			tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
-						       &dive->cylinder[cylinderindex].gasmix, time_stepsize,  entry->o2pressure.mbar , dive, prefs.bottomsac);
+						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
 		}
 		/* we don't need to calculate anything else */
 		return;
@@ -785,7 +785,7 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
 		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->o2pressure.mbar , dive, prefs.decosac);
+					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
 	}
 	ascent_depth = next_stop;
@@ -829,9 +829,11 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
 		int time_stepsize = 20;
 
-		entry->ambpressure = (double) depth_to_mbar(entry->depth, dive) / 1000.0;
-		entry->gfline = MAX((double) prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
-				(prefs.gflow - prefs.gfhigh) + prefs.gfhigh) * (100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
+		entry->ambpressure = (double)depth_to_mbar(entry->depth, dive) / 1000.0;
+		entry->gfline = MAX((double)prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
+									 (prefs.gflow - prefs.gfhigh) +
+								 prefs.gfhigh) *
+					(100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
 		if (t0 != t1 && t1 - t0 < time_stepsize)
 			time_stepsize = t1 - t0;
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
@@ -888,12 +890,13 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
  * calculates the po2 value from the sensor data. Several rules are applied, depending on how many o2 sensors
  * there are and the differences among the readings from these sensors.
  */
-static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc) {
+static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
+{
 	int sump = 0, minp = 999999, maxp = -999999;
 	int diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
 	int i, np = 0;
 
-	for (i=0; i < dc->no_o2sensors; i++)
+	for (i = 0; i < dc->no_o2sensors; i++)
 		if (entry->o2sensor[i].mbar) { // Valid reading
 			++np;
 			sump += entry->o2sensor[i].mbar;
@@ -907,14 +910,14 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc) {
 		return sump;
 	case 2: // Take the average
 		return sump / 2;
-	case 3: // Voting logic
+	case 3:						   // Voting logic
 		if (2 * maxp - sump + minp < diff_limit) { // Upper difference acceptable...
-			if (2 * minp - sump + maxp)        // ...and lower difference acceptable
+			if (2 * minp - sump + maxp)	// ...and lower difference acceptable
 				return sump / 3;
 			else
 				return (sump - minp) / 2;
 		} else {
-			if (2 * minp - sump + maxp)        // ...but lower difference acceptable
+			if (2 * minp - sump + maxp) // ...but lower difference acceptable
 				return (sump - maxp) / 2;
 			else
 				return sump / 3;
@@ -938,8 +941,8 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 
 		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.dctype, entry->sac);
-		fn2 = (int) (1000.0 * entry->pressures.n2 / amb_pressure);
-		fhe = (int) (1000.0 * entry->pressures.he / amb_pressure);
+		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
+		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
@@ -982,21 +985,21 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		if (dc->dctype == CCR) {
-			if (i == 0) {	// For 1st iteration, initialise the last_sensor values
+			if (i == 0) { // For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j].mbar = pi->entry->o2sensor[j].mbar;
-			} else {	// Now re-insert the missing oxygen pressure values
+			} else { // Now re-insert the missing oxygen pressure values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					if (entry->o2sensor[j].mbar)
 						last_sensor[j].mbar = entry->o2sensor[j].mbar;
 					else
 						entry->o2sensor[j].mbar = last_sensor[j].mbar;
-			}		// having initialised the empty o2 sensor values for this point on the profile,
+			} // having initialised the empty o2 sensor values for this point on the profile,
 			amb_pressure.mbar = depth_to_mbar(entry->depth, dive);
-			o2pressure.mbar = calculate_ccr_po2(entry,dc);	// ...calculate the po2 based on the sensor data
+			o2pressure.mbar = calculate_ccr_po2(entry, dc); // ...calculate the po2 based on the sensor data
 			entry->o2pressure.mbar = MIN(o2pressure.mbar, amb_pressure.mbar);
 		} else {
-			entry->o2pressure.mbar = 0;  // initialise po2 to zero for dctype = OC
+			entry->o2pressure.mbar = 0; // initialise po2 to zero for dctype = OC
 		}
 	}
 }
@@ -1010,9 +1013,9 @@ static void debug_print_profiledata(struct plot_info *pi)
 	FILE *f1;
 	struct plot_data *entry;
 	int i;
-	if (!(f1 = fopen("debug_print_profiledata.dat", "w")))
+	if (!(f1 = fopen("debug_print_profiledata.dat", "w"))) {
 		printf("File open error for: debug_print_profiledata.dat\n");
-	else {
+	} else {
 		fprintf(f1, "id t1 gas gasint t2 t3 dil dilint t4 t5 setpoint sensor1 sensor2 sensor3 t6 po2 fo2\n");
 		for (i = 0; i < pi->nr; i++) {
 			entry = pi->entry + i;
@@ -1050,18 +1053,18 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	}
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 
-	check_gas_change_events(dive, dc, pi);			/* Populate the gas index from the gas change events */
-	check_setpoint_events(dive, dc, pi);			/* Populate setpoints */
-	setup_gas_sensor_pressure(dive, dc, pi);		/* Try to populate our gas pressure knowledge */
+	check_gas_change_events(dive, dc, pi);   /* Populate the gas index from the gas change events */
+	check_setpoint_events(dive, dc, pi);     /* Populate setpoints */
+	setup_gas_sensor_pressure(dive, dc, pi); /* Try to populate our gas pressure knowledge */
 	if (!fast) {
 		populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
-		if (dc->dctype == CCR)					/* For CCR dives.. */
+		if (dc->dctype == CCR)					   /* For CCR dives.. */
 			populate_pressure_information(dive, dc, pi, true); /* .. calculate missing o2 gas pressure entries */
 	}
-	fill_o2_values(dc, pi, dive);				/* .. and insert the O2 sensor data having 0 values. */
-	calculate_sac(dive, pi); /* Calculate sac */
+	fill_o2_values(dc, pi, dive);			 /* .. and insert the O2 sensor data having 0 values. */
+	calculate_sac(dive, pi);			 /* Calculate sac */
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
-	calculate_gas_information_new(dive, pi); /* Calculate gas partial pressures */
+	calculate_gas_information_new(dive, pi);	 /* Calculate gas partial pressures */
 
 #ifdef DEBUG_GAS
 	debug_print_profiledata(pi);

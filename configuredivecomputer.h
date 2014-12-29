@@ -10,24 +10,23 @@
 
 #include "libxml/xmlreader.h"
 
-class ConfigureDiveComputer : public QObject
-{
+class ConfigureDiveComputer : public QObject {
 	Q_OBJECT
 public:
 	explicit ConfigureDiveComputer();
 	void readSettings(device_data_t *data);
 
 	enum states {
-			INITIAL,
-			READING,
-			WRITING,
-			RESETTING,
-			FWUPDATE,
-			CANCELLING,
-			CANCELLED,
-			ERROR,
-			DONE,
-		};
+		INITIAL,
+		READING,
+		WRITING,
+		RESETTING,
+		FWUPDATE,
+		CANCELLING,
+		CANCELLED,
+		ERROR,
+		DONE,
+	};
 
 	QString lastError;
 	states currentState;
@@ -50,7 +49,8 @@ private:
 	ResetSettingsThread *resetThread;
 	FirmwareUpdateThread *firmwareThread;
 	void setState(states newState);
-private slots:
+private
+slots:
 	void readThreadFinished();
 	void writeThreadFinished();
 	void resetThreadFinished();

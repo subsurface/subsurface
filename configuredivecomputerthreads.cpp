@@ -106,17 +106,17 @@ static dc_status_t local_hw_ostc_device_clock(void *ignored, dc_datetime_t *time
 }
 #endif
 
-ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data)
-	: QThread(parent), m_data(data)
+ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
 {
-
 }
 
-static int read_ostc_cf(unsigned char data[], unsigned char cf) {
+static int read_ostc_cf(unsigned char data[], unsigned char cf)
+{
 	return data[128 + (cf % 32) * 4 + 3] << 8 ^ data[128 + (cf % 32) * 4 + 2];
 }
 
-static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char max_CF, unsigned int value) {
+static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char max_CF, unsigned int value)
+{
 	// Only write settings supported by this firmware.
 	if (cf > max_CF)
 		return;
@@ -134,7 +134,7 @@ void ReadSettingsThread::run()
 		rc = DC_STATUS_SUCCESS;
 	else
 #endif
-	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+		rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
@@ -145,7 +145,7 @@ void ReadSettingsThread::run()
 				const char *model;
 				// FIXME: grab this info from libdivecomputer descriptor
 				// instead of hard coded here
-				switch(data[0]) {
+				switch (data[0]) {
 				case 0x03:
 					model = "Stinger";
 					break;
@@ -212,11 +212,11 @@ void ReadSettingsThread::run()
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
 			if (rc == DC_STATUS_SUCCESS) {
 				data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
-				m_deviceDetails->setCustomText((const char*) data);
+				m_deviceDetails->setCustomText((const char *)data);
 			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
 			if (rc == DC_STATUS_SUCCESS) {
-				m_deviceDetails->setSamplingRate((int) data[0]);
+				m_deviceDetails->setSamplingRate((int)data[0]);
 			}
 			rc = dc_device_read(m_data->device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
 			if (rc == DC_STATUS_SUCCESS) {
@@ -271,7 +271,7 @@ void ReadSettingsThread::run()
 			gas gas4;
 			gas gas5;
 			//Gas 1
-			unsigned char gasData[4] = {0,0,0,0};
+			unsigned char gasData[4] = { 0, 0, 0, 0 };
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_GAS1, gasData, sizeof(gasData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Gas data read successful
@@ -330,7 +330,7 @@ void ReadSettingsThread::run()
 			gas dil4;
 			gas dil5;
 			//Dil 1
-			unsigned char dilData[4] = {0,0,0,0};
+			unsigned char dilData[4] = { 0, 0, 0, 0 };
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_DIL1, dilData, sizeof(dilData));
 			if (rc == DC_STATUS_SUCCESS) {
 				//Data read successful
@@ -389,7 +389,7 @@ void ReadSettingsThread::run()
 			setpoint sp4;
 			setpoint sp5;
 
-			unsigned char spData[2] = {0,0};
+			unsigned char spData[2] = { 0, 0 };
 
 			//Sp 1
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_SP1, spData, sizeof(spData));
@@ -434,14 +434,14 @@ void ReadSettingsThread::run()
 			m_deviceDetails->setSp5(sp5);
 
 			//Read other settings
-			unsigned char uData[1] = {0};
+			unsigned char uData[1] = { 0 };
 
-#define READ_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL) \
-			do { \
-				rc = hw_ostc3_device_config_read(m_data->device, _OSTC3_SETTING, uData, sizeof(uData)); \
-				if (rc == DC_STATUS_SUCCESS) \
-					m_deviceDetails->_DEVICE_DETAIL(uData[0]); \
-			} while (0)
+#define READ_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL)                                                    \
+	do {                                                                                            \
+		rc = hw_ostc3_device_config_read(m_data->device, _OSTC3_SETTING, uData, sizeof(uData)); \
+		if (rc == DC_STATUS_SUCCESS)                                                            \
+			m_deviceDetails->_DEVICE_DETAIL(uData[0]);                                      \
+	} while (0)
 
 			READ_SETTING(OSTC3_DIVE_MODE, setDiveMode);
 			READ_SETTING(OSTC3_SATURATION, setSaturation);
@@ -449,9 +449,9 @@ void ReadSettingsThread::run()
 			READ_SETTING(OSTC3_LAST_DECO, setLastDeco);
 			READ_SETTING(OSTC3_BRIGHTNESS, setBrightness);
 			READ_SETTING(OSTC3_UNITS, setUnits);
-			READ_SETTING(OSTC3_SAMPLING_RATE,setSamplingRate);
+			READ_SETTING(OSTC3_SAMPLING_RATE, setSamplingRate);
 			READ_SETTING(OSTC3_SALINITY, setSalinity);
-			READ_SETTING(OSTC3_DIVEMODE_COLOR,setDiveModeColor);
+			READ_SETTING(OSTC3_DIVEMODE_COLOR, setDiveModeColor);
 			READ_SETTING(OSTC3_LANGUAGE, setLanguage);
 			READ_SETTING(OSTC3_DATE_FORMAT, setDateFormat);
 			READ_SETTING(OSTC3_COMPASS_GAIN, setCompassGain);
@@ -475,12 +475,12 @@ void ReadSettingsThread::run()
 			rc = hw_ostc3_device_config_read(m_data->device, OSTC3_PRESSURE_SENSOR_OFFSET, uData, sizeof(uData));
 			if (rc == DC_STATUS_SUCCESS) {
 				// OSTC3 stores the pressureSensorOffset in two-complement
-				m_deviceDetails->setPressureSensorOffset((signed char) uData[0]);
+				m_deviceDetails->setPressureSensorOffset((signed char)uData[0]);
 			}
 
 			//read firmware settings
-			unsigned char fData[64] = {0};
-			rc = hw_ostc3_device_version (m_data->device, fData, sizeof (fData));
+			unsigned char fData[64] = { 0 };
+			rc = hw_ostc3_device_version(m_data->device, fData, sizeof(fData));
 			if (rc == DC_STATUS_SUCCESS) {
 				int serial = fData[0] + (fData[1] << 8);
 				m_deviceDetails->setSerialNo(QString::number(serial));
@@ -492,7 +492,7 @@ void ReadSettingsThread::run()
 			emit devicedetails(m_deviceDetails);
 			break;
 		}
-#endif	// divecomputer 0.5.0
+#endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
 		case DC_FAMILY_NULL:
 #endif
@@ -549,25 +549,25 @@ void ReadSettingsThread::run()
 				gas4.depth = data[31];
 				gas5.depth = data[32];
 				// 33 which gas is Fist gas
-				switch(data[33]) {
-					case 1:
-						gas1.type = 2;
-						break;
-					case 2:
-						gas2.type = 2;
-						break;
-					case 3:
-						gas3.type = 2;
-						break;
-					case 4:
-						gas4.type = 2;
-						break;
-					case 5:
-						gas5.type = 2;
-						break;
-					default:
-						//Error?
-						break;
+				switch (data[33]) {
+				case 1:
+					gas1.type = 2;
+					break;
+				case 2:
+					gas2.type = 2;
+					break;
+				case 3:
+					gas3.type = 2;
+					break;
+				case 4:
+					gas4.type = 2;
+					break;
+				case 5:
+					gas5.type = 2;
+					break;
+				default:
+					//Error?
+					break;
 				}
 				// Data filled up, set the gases.
 				m_deviceDetails->setGas1(gas1);
@@ -637,10 +637,10 @@ void ReadSettingsThread::run()
 					// Make shure the data is null-terminated
 					data[89] = 0;
 					// Find the internal termination and replace it with 0
-					char *term = strchr((char *) data + 65, (int)'}');
+					char *term = strchr((char *)data + 65, (int)'}');
 					if (term)
 						*term = 0;
-					m_deviceDetails->setCustomText((const char*) data + 65);
+					m_deviceDetails->setCustomText((const char *)data + 65);
 				}
 				// Byte91:
 				// Dim OLED in Divemode (>0), Normal mode (=0)
@@ -696,25 +696,25 @@ void ReadSettingsThread::run()
 				dil5.helium = data[114];
 				// Byte116:
 				// First Diluent (1-5)
-				switch(data[115]) {
-					case 1:
-						dil1.type = 2;
-						break;
-					case 2:
-						dil2.type = 2;
-						break;
-					case 3:
-						dil3.type = 2;
-						break;
-					case 4:
-						dil4.type = 2;
-						break;
-					case 5:
-						dil5.type = 2;
-						break;
-					default:
-						//Error?
-						break;
+				switch (data[115]) {
+				case 1:
+					dil1.type = 2;
+					break;
+				case 2:
+					dil2.type = 2;
+					break;
+				case 3:
+					dil3.type = 2;
+					break;
+				case 4:
+					dil4.type = 2;
+					break;
+				case 5:
+					dil5.type = 2;
+					break;
+				default:
+					//Error?
+					break;
 				}
 				m_deviceDetails->setDil1(dil1);
 				m_deviceDetails->setDil2(dil2);
@@ -741,7 +741,7 @@ void ReadSettingsThread::run()
 				m_deviceDetails->setLastDeco(read_ostc_cf(data, 29));
 
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 0; cf <= 31 && cf <= max_CF; cf++)
+				for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 			}
@@ -769,7 +769,7 @@ void ReadSettingsThread::run()
 				// CF58: Future time to surface setFutureTTS
 				m_deviceDetails->setFutureTTS(read_ostc_cf(data, 58));
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 32; cf <= 63 && cf <= max_CF; cf++)
+				for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 			}
@@ -792,7 +792,7 @@ void ReadSettingsThread::run()
 				// CF69: Allow Gradient Factor change
 				m_deviceDetails->setAGFSelectable(read_ostc_cf(data, 69));
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 64; cf <= 95 && cf <= max_CF; cf++)
+				for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 			}
@@ -818,8 +818,7 @@ unsupported_dc_error:
 	}
 }
 
-WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data)
-	: QThread(parent), m_data(data)
+WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
 {
 }
 
@@ -852,7 +851,7 @@ void WriteSettingsThread::run()
 
 			dc_device_write(m_data->device, SUUNTO_VYPER_CUSTOM_TEXT,
 					// Convert the customText to a 30 char wide padded with " "
-					(const unsigned char *) QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
+					(const unsigned char *)QString("%1").arg(m_deviceDetails->customText(), -30, QChar(' ')).toUtf8().data(),
 					SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
 			data = m_deviceDetails->samplingRate();
 			dc_device_write(m_data->device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
@@ -879,34 +878,34 @@ void WriteSettingsThread::run()
 			data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
 			dc_device_write(m_data->device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
 			break;
-#if DC_VERSION_CHECK(0,5,0)
+#if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3: {
 			supported = true;
 			//write gas values
-			unsigned char gas1Data[4] = {m_deviceDetails->gas1().oxygen,
-						     m_deviceDetails->gas1().helium,
-						     m_deviceDetails->gas1().type,
-						     m_deviceDetails->gas1().depth};
+			unsigned char gas1Data[4] = { m_deviceDetails->gas1().oxygen,
+						      m_deviceDetails->gas1().helium,
+						      m_deviceDetails->gas1().type,
+						      m_deviceDetails->gas1().depth };
 
-			unsigned char gas2Data[4] = {m_deviceDetails->gas2().oxygen,
-						     m_deviceDetails->gas2().helium,
-						     m_deviceDetails->gas2().type,
-						     m_deviceDetails->gas2().depth};
+			unsigned char gas2Data[4] = { m_deviceDetails->gas2().oxygen,
+						      m_deviceDetails->gas2().helium,
+						      m_deviceDetails->gas2().type,
+						      m_deviceDetails->gas2().depth };
 
-			unsigned char gas3Data[4] = {m_deviceDetails->gas3().oxygen,
-						     m_deviceDetails->gas3().helium,
-						     m_deviceDetails->gas3().type,
-						     m_deviceDetails->gas3().depth};
+			unsigned char gas3Data[4] = { m_deviceDetails->gas3().oxygen,
+						      m_deviceDetails->gas3().helium,
+						      m_deviceDetails->gas3().type,
+						      m_deviceDetails->gas3().depth };
 
-			unsigned char gas4Data[4] = {m_deviceDetails->gas4().oxygen,
-						     m_deviceDetails->gas4().helium,
-						     m_deviceDetails->gas4().type,
-						     m_deviceDetails->gas4().depth};
+			unsigned char gas4Data[4] = { m_deviceDetails->gas4().oxygen,
+						      m_deviceDetails->gas4().helium,
+						      m_deviceDetails->gas4().type,
+						      m_deviceDetails->gas4().depth };
 
-			unsigned char gas5Data[4] = {m_deviceDetails->gas5().oxygen,
-						     m_deviceDetails->gas5().helium,
-						     m_deviceDetails->gas5().type,
-						     m_deviceDetails->gas5().depth};
+			unsigned char gas5Data[4] = { m_deviceDetails->gas5().oxygen,
+						      m_deviceDetails->gas5().helium,
+						      m_deviceDetails->gas5().type,
+						      m_deviceDetails->gas5().depth };
 			//gas 1
 			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
 			//gas 2
@@ -919,20 +918,20 @@ void WriteSettingsThread::run()
 			hw_ostc3_device_config_write(m_data->device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
 
 			//write set point values
-			unsigned char sp1Data[2] = {m_deviceDetails->sp1().sp,
-						     m_deviceDetails->sp1().depth};
+			unsigned char sp1Data[2] = { m_deviceDetails->sp1().sp,
+						     m_deviceDetails->sp1().depth };
 
-			unsigned char sp2Data[2] = {m_deviceDetails->sp2().sp,
-						     m_deviceDetails->sp2().depth};
+			unsigned char sp2Data[2] = { m_deviceDetails->sp2().sp,
+						     m_deviceDetails->sp2().depth };
 
-			unsigned char sp3Data[2] = {m_deviceDetails->sp3().sp,
-						     m_deviceDetails->sp3().depth};
+			unsigned char sp3Data[2] = { m_deviceDetails->sp3().sp,
+						     m_deviceDetails->sp3().depth };
 
-			unsigned char sp4Data[2] = {m_deviceDetails->sp4().sp,
-						     m_deviceDetails->sp4().depth};
+			unsigned char sp4Data[2] = { m_deviceDetails->sp4().sp,
+						     m_deviceDetails->sp4().depth };
 
-			unsigned char sp5Data[2] = {m_deviceDetails->sp5().sp,
-						     m_deviceDetails->sp5().depth};
+			unsigned char sp5Data[2] = { m_deviceDetails->sp5().sp,
+						     m_deviceDetails->sp5().depth };
 
 			//sp 1
 			hw_ostc3_device_config_write(m_data->device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
@@ -946,30 +945,30 @@ void WriteSettingsThread::run()
 			hw_ostc3_device_config_write(m_data->device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
 
 			//write dil values
-			unsigned char dil1Data[4] = {m_deviceDetails->dil1().oxygen,
-						     m_deviceDetails->dil1().helium,
-						     m_deviceDetails->dil1().type,
-						     m_deviceDetails->dil1().depth};
+			unsigned char dil1Data[4] = { m_deviceDetails->dil1().oxygen,
+						      m_deviceDetails->dil1().helium,
+						      m_deviceDetails->dil1().type,
+						      m_deviceDetails->dil1().depth };
 
-			unsigned char dil2Data[4] = {m_deviceDetails->dil2().oxygen,
-						     m_deviceDetails->dil2().helium,
-						     m_deviceDetails->dil2().type,
-						     m_deviceDetails->dil2().depth};
+			unsigned char dil2Data[4] = { m_deviceDetails->dil2().oxygen,
+						      m_deviceDetails->dil2().helium,
+						      m_deviceDetails->dil2().type,
+						      m_deviceDetails->dil2().depth };
 
-			unsigned char dil3Data[4] = {m_deviceDetails->dil3().oxygen,
-						     m_deviceDetails->dil3().helium,
-						     m_deviceDetails->dil3().type,
-						     m_deviceDetails->dil3().depth};
+			unsigned char dil3Data[4] = { m_deviceDetails->dil3().oxygen,
+						      m_deviceDetails->dil3().helium,
+						      m_deviceDetails->dil3().type,
+						      m_deviceDetails->dil3().depth };
 
-			unsigned char dil4Data[4] = {m_deviceDetails->dil4().oxygen,
-						     m_deviceDetails->dil4().helium,
-						     m_deviceDetails->dil4().type,
-						     m_deviceDetails->dil4().depth};
+			unsigned char dil4Data[4] = { m_deviceDetails->dil4().oxygen,
+						      m_deviceDetails->dil4().helium,
+						      m_deviceDetails->dil4().type,
+						      m_deviceDetails->dil4().depth };
 
-			unsigned char dil5Data[4] = {m_deviceDetails->dil5().oxygen,
-						     m_deviceDetails->dil5().helium,
-						     m_deviceDetails->dil5().type,
-						     m_deviceDetails->dil5().depth};
+			unsigned char dil5Data[4] = { m_deviceDetails->dil5().oxygen,
+						      m_deviceDetails->dil5().helium,
+						      m_deviceDetails->dil5().type,
+						      m_deviceDetails->dil5().depth };
 			//dil 1
 			hw_ostc3_device_config_write(m_data->device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
 			//dil 2
@@ -986,12 +985,12 @@ void WriteSettingsThread::run()
 			//custom text
 			hw_ostc3_device_customtext(m_data->device, m_deviceDetails->customText().toUtf8().data());
 
-			unsigned char data[1] = {0};
-#define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL) \
-			do { \
-				data[0] = m_deviceDetails->_DEVICE_DETAIL(); \
-				hw_ostc3_device_config_write(m_data->device, _OSTC3_SETTING, data, sizeof(data)); \
-			} while (0)
+			unsigned char data[1] = { 0 };
+#define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL)                                             \
+	do {                                                                                      \
+		data[0] = m_deviceDetails->_DEVICE_DETAIL();                                      \
+		hw_ostc3_device_config_write(m_data->device, _OSTC3_SETTING, data, sizeof(data)); \
+	} while (0)
 
 			WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
 			WRITE_SETTING(OSTC3_SATURATION, saturation);
@@ -1023,7 +1022,7 @@ void WriteSettingsThread::run()
 #undef WRITE_SETTING
 
 			// OSTC3 stores the pressureSensorOffset in two-complement
-			data[0] = (unsigned char) m_deviceDetails->pressureSensorOffset();
+			data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset();
 			hw_ostc3_device_config_write(m_data->device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
 
 			//sync date and time
@@ -1040,7 +1039,7 @@ void WriteSettingsThread::run()
 			}
 			break;
 		}
-#endif	// divecomputer 0.5.0
+#endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
 		case DC_FAMILY_NULL:
 #endif
@@ -1112,11 +1111,11 @@ void WriteSettingsThread::run()
 					data[33] = 4;
 				else if (gas5.type == 2)
 					data[33] = 5;
-				else {
+				else
 					// FIXME: No gas was First?
 					// Set gas 1 to first
 					data[33] = 1;
-				}
+
 				data[34] = m_deviceDetails->decoType();
 				//Byte36:
 				//Use O2 Sensor Module in CC Modes (0= OFF, 1= ON) (Only available in old OSTC1 - unused for OSTC Mk.2/2N)
@@ -1165,12 +1164,12 @@ void WriteSettingsThread::run()
 				// Byte66-90:
 				// (25Bytes): Custom Text for Surfacemode (Real text must end with "}")
 				// Example: OSTC Dive Computer} (19 Characters incl. "}") Bytes 85-90 will be ignored.
-				if (m_deviceDetails->customText() == "")
+				if (m_deviceDetails->customText() == "") {
 					data[64] = 0;
-				else {
+				} else {
 					data[64] = 1;
 					// Copy the string to the right place in the memory, padded with 0x20 (" ")
-					strncpy((char *) data + 65, QString("%1").arg(m_deviceDetails->customText(), -23, QChar(' ')).toUtf8().data(), 23);
+					strncpy((char *)data + 65, QString("%1").arg(m_deviceDetails->customText(), -23, QChar(' ')).toUtf8().data(), 23);
 					// And terminate the string.
 					if (m_deviceDetails->customText().length() <= 23)
 						data[65 + m_deviceDetails->customText().length()] = '}';
@@ -1239,11 +1238,11 @@ void WriteSettingsThread::run()
 					data[115] = 4;
 				else if (dil5.type == 2)
 					data[115] = 5;
-				else {
+				else
 					// FIXME: No first diluent?
 					// Set gas 1 to fist
 					data[115] = 1;
-				}
+
 				// Byte117-128:
 				// not used/reserved
 				// Byte129-256:
@@ -1264,7 +1263,7 @@ void WriteSettingsThread::run()
 				write_ostc_cf(data, 29, max_CF, m_deviceDetails->lastDeco());
 
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 0; cf <= 31 && cf <= max_CF; cf++)
+				for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 				rc = hw_ostc_device_eeprom_write(m_data->device, 0, data, sizeof(data));
@@ -1295,7 +1294,7 @@ void WriteSettingsThread::run()
 				// CF58: Future time to surface setFutureTTS
 				write_ostc_cf(data, 58, max_CF, m_deviceDetails->futureTTS());
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 32; cf <= 63 && cf <= max_CF; cf++)
+				for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 				rc = hw_ostc_device_eeprom_write(m_data->device, 1, data, sizeof(data));
@@ -1322,7 +1321,7 @@ void WriteSettingsThread::run()
 				// CF69: Allow Gradient Factor change
 				write_ostc_cf(data, 69, max_CF, m_deviceDetails->aGFSelectable());
 #ifdef DEBUG_OSTC_CF
-				for(int cf = 64; cf <= 95 && cf <= max_CF; cf++)
+				for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
 					printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 				rc = hw_ostc_device_eeprom_write(m_data->device, 2, data, sizeof(data));
@@ -1357,36 +1356,37 @@ void WriteSettingsThread::run()
 			lastError = tr("This feature is not yet available for the selected dive computer.");
 			emit error(lastError);
 		}
-	}
-	else {
+	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
 		emit error(lastError);
 	}
 }
 
 
-FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName)
-	: QThread(parent), m_data(data), m_fileName(fileName)
+FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName) : QThread(parent), m_data(data), m_fileName(fileName)
 {
 }
 
 void FirmwareUpdateThread::run()
 {
+	qDebug() << "in FirmwareUpdateThread::run";
 	bool supported = false;
 	dc_status_t rc;
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+	qDebug() << "got" << rc << "as return for dc_device_open of" << m_data->devname;
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
+			qDebug() << "it's an OSTC3, let's do it!";
 			rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
 			rc = hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
 			break;
-#endif	// divecomputer 0.5.0
+#endif // divecomputer 0.5.0
 		default:
 			supported = false;
 			break;
@@ -1399,16 +1399,14 @@ void FirmwareUpdateThread::run()
 		} else if (rc != DC_STATUS_SUCCESS) {
 			lastError = tr("Firmware update failed!");
 		}
-	}
-	else {
+	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
 		emit error(lastError);
 	}
 }
 
 
-ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data)
-	: QThread(parent), m_data(data)
+ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
 {
 }
 
@@ -1423,15 +1421,14 @@ void ResetSettingsThread::run()
 			supported = true;
 			hw_ostc3_device_config_reset(m_data->device);
 		}
-#endif	// divecomputer 0.5.0
+#endif // divecomputer 0.5.0
 		dc_device_close(m_data->device);
 
 		if (!supported) {
 			lastError = tr("This feature is not yet available for the selected dive computer.");
 			emit error(lastError);
 		}
-	}
-	else {
+	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
 		emit error(lastError);
 	}

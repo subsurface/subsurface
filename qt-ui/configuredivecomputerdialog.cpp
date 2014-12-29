@@ -37,10 +37,14 @@ struct mydescriptor {
 	unsigned int model;
 };
 
-GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type) { }
-GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate() { }
+GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
+{
+}
+GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate()
+{
+}
 
-QWidget* GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	// Create the spinbox and give it it's settings
 	QSpinBox *sb = new QSpinBox(parent);
@@ -58,7 +62,7 @@ QWidget* GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptio
 
 void GasSpinBoxItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-	if(QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
+	if (QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
 		sb->setValue(index.data(Qt::EditRole).toInt());
 	else
 		QStyledItemDelegate::setEditorData(editor, index);
@@ -67,16 +71,20 @@ void GasSpinBoxItemDelegate::setEditorData(QWidget *editor, const QModelIndex &i
 
 void GasSpinBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-	if(QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
+	if (QSpinBox *sb = qobject_cast<QSpinBox *>(editor))
 		model->setData(index, sb->value(), Qt::EditRole);
 	else
 		QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-GasTypeComboBoxItemDelegate::GasTypeComboBoxItemDelegate(QObject *parent, computer_type type) : QStyledItemDelegate(parent), type(type) { }
-GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate() { }
+GasTypeComboBoxItemDelegate::GasTypeComboBoxItemDelegate(QObject *parent, computer_type type) : QStyledItemDelegate(parent), type(type)
+{
+}
+GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate()
+{
+}
 
-QWidget* GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	// Create the combobox and populate it
 	QComboBox *cb = new QComboBox(parent);
@@ -94,7 +102,7 @@ QWidget* GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyle
 
 void GasTypeComboBoxItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-	if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
+	if (QComboBox *cb = qobject_cast<QComboBox *>(editor))
 		cb->setCurrentIndex(index.data(Qt::EditRole).toInt());
 	else
 		QStyledItemDelegate::setEditorData(editor, index);
@@ -103,14 +111,13 @@ void GasTypeComboBoxItemDelegate::setEditorData(QWidget *editor, const QModelInd
 
 void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-	if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
+	if (QComboBox *cb = qobject_cast<QComboBox *>(editor))
 		model->setData(index, cb->currentIndex(), Qt::EditRole);
 	else
 		QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
-	QDialog(parent),
+ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
 	config(0),
 	deviceDetails(0)
 {
@@ -120,8 +127,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	config = new ConfigureDiveComputer();
 	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
-	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails*)),
-		 this, SLOT(deviceDetailsReceived(DeviceDetails*)));
+	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails *)),
+		this, SLOT(deviceDetailsReceived(DeviceDetails *)));
 	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 	connect(ui.resetButton, SIGNAL(clicked()), this, SLOT(resetSettings()));
 
@@ -150,21 +157,21 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 	settings.beginGroup("ConfigureDiveComputerDialog");
 	settings.beginGroup("ostc3GasTable");
 	for (int i = 0; i < ui.ostc3GasTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3GasTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostc3DilTable");
 	for (int i = 0; i < ui.ostc3DilTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3DilTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostc3SetPointTable");
 	for (int i = 0; i < ui.ostc3SetPointTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostc3SetPointTable->setColumnWidth(i, width.toInt());
 	}
@@ -172,21 +179,21 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) :
 
 	settings.beginGroup("ostcGasTable");
 	for (int i = 0; i < ui.ostcGasTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcGasTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostcDilTable");
 	for (int i = 0; i < ui.ostcDilTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcDilTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.beginGroup("ostcSetPointTable");
 	for (int i = 0; i < ui.ostcSetPointTable->columnCount(); i++) {
-	QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcSetPointTable->setColumnWidth(i, width.toInt());
 	}
@@ -216,9 +223,9 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	QString parse = reply->readAll();
 	int firstOpenBracket = parse.indexOf('[');
 	int firstCloseBracket = parse.indexOf(']');
-	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket -1);
+	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
 	qDebug() << "latest firmware available" << latestFirmwareAvailable;
-	disconnect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseOstcFwVersion(QNetworkReply*)));
+	disconnect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseOstcFwVersion(QNetworkReply *)));
 }
 
 void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
@@ -229,11 +236,12 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 	// for the OSTC that means highbyte.lowbyte is the version number
 	int firmwareOnDevice = devData.libdc_firmware;
 	QString firmware;
-	firmware = QString("%1.%2").arg(firmwareOnDevice / 256). arg(firmwareOnDevice % 256);
+	firmware = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
 	if (!latestFirmwareAvailable.isEmpty() && latestFirmwareAvailable != firmware) {
 		QMessageBox response(parent);
 		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
-				.arg(firmware).arg(latestFirmwareAvailable);
+					  .arg(firmware)
+					  .arg(latestFirmwareAvailable);
 		response.addButton(tr("Not now"), QMessageBox::RejectRole);
 		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
 		response.setText(message);
@@ -275,7 +283,9 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	file.open(QIODevice::WriteOnly);
 	file.write(firmwareData);
 	file.close();
+	qDebug() << "file closed";
 	ConfigureDiveComputer *config = new ConfigureDiveComputer();
+	qDebug() << "created config object, calling the firwmware uploader";
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
 
@@ -368,7 +378,7 @@ void ConfigureDiveComputerDialog::fill_computer_list()
 
 void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
-	switch(ui.dcStackedWidget->currentIndex()) {
+	switch (ui.dcStackedWidget->currentIndex()) {
 	case 0:
 		populateDeviceDetailsOSTC3();
 		break;
@@ -468,7 +478,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	dil2.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(1, 1), 21);
 	dil2.helium = GET_INT_FROM(ui.ostc3DilTable->item(1, 2), 0);
 	dil2.type = GET_INT_FROM(ui.ostc3DilTable->item(1, 3), 0);
-	dil2.depth = GET_INT_FROM(ui.ostc3DilTable->item(1, 4),0);
+	dil2.depth = GET_INT_FROM(ui.ostc3DilTable->item(1, 4), 0);
 
 	dil3.oxygen = GET_INT_FROM(ui.ostc3DilTable->item(2, 1), 21);
 	dil3.helium = GET_INT_FROM(ui.ostc3DilTable->item(2, 2), 0);
@@ -594,7 +604,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	dil2.oxygen = GET_INT_FROM(ui.ostcDilTable->item(1, 1), 21);
 	dil2.helium = GET_INT_FROM(ui.ostcDilTable->item(1, 2), 0);
 	dil2.type = GET_INT_FROM(ui.ostcDilTable->item(1, 3), 0);
-	dil2.depth = GET_INT_FROM(ui.ostcDilTable->item(1, 4),0);
+	dil2.depth = GET_INT_FROM(ui.ostcDilTable->item(1, 4), 0);
 
 	dil3.oxygen = GET_INT_FROM(ui.ostcDilTable->item(2, 1), 21);
 	dil3.helium = GET_INT_FROM(ui.ostcDilTable->item(2, 2), 0);
@@ -728,7 +738,7 @@ void ConfigureDiveComputerDialog::reloadValues()
 	ui.saveSettingsPushButton->setEnabled(true);
 	ui.backupButton->setEnabled(true);
 
-	switch(ui.dcStackedWidget->currentIndex()) {
+	switch (ui.dcStackedWidget->currentIndex()) {
 	case 0:
 		reloadValuesOSTC3();
 		break;
@@ -775,64 +785,64 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback());
 
 	//load gas 1 values
-	ui.ostc3GasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
-	ui.ostc3GasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
-	ui.ostc3GasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
-	ui.ostc3GasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
+	ui.ostc3GasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
+	ui.ostc3GasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
+	ui.ostc3GasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
 
 	//load gas 2 values
-	ui.ostc3GasTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
-	ui.ostc3GasTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
-	ui.ostc3GasTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
-	ui.ostc3GasTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+	ui.ostc3GasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
+	ui.ostc3GasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
+	ui.ostc3GasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
+	ui.ostc3GasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
 
 	//load gas 3 values
-	ui.ostc3GasTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
-	ui.ostc3GasTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
-	ui.ostc3GasTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
-	ui.ostc3GasTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+	ui.ostc3GasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
+	ui.ostc3GasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
+	ui.ostc3GasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
+	ui.ostc3GasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
 
 	//load gas 4 values
-	ui.ostc3GasTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
-	ui.ostc3GasTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
-	ui.ostc3GasTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
-	ui.ostc3GasTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+	ui.ostc3GasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
+	ui.ostc3GasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
+	ui.ostc3GasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
+	ui.ostc3GasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
 
 	//load gas 5 values
-	ui.ostc3GasTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
-	ui.ostc3GasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
-	ui.ostc3GasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
-	ui.ostc3GasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+	ui.ostc3GasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
+	ui.ostc3GasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
+	ui.ostc3GasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
+	ui.ostc3GasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
 
 	//load dil 1 values
-	ui.ostc3DilTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
-	ui.ostc3DilTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
-	ui.ostc3DilTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
-	ui.ostc3DilTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+	ui.ostc3DilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
+	ui.ostc3DilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
+	ui.ostc3DilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
+	ui.ostc3DilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
 
 	//load dil 2 values
-	ui.ostc3DilTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
-	ui.ostc3DilTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
-	ui.ostc3DilTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
-	ui.ostc3DilTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+	ui.ostc3DilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
+	ui.ostc3DilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
+	ui.ostc3DilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
+	ui.ostc3DilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
 
 	//load dil 3 values
-	ui.ostc3DilTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
-	ui.ostc3DilTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
-	ui.ostc3DilTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
-	ui.ostc3DilTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+	ui.ostc3DilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
+	ui.ostc3DilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
+	ui.ostc3DilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
+	ui.ostc3DilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
 
 	//load dil 4 values
-	ui.ostc3DilTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
-	ui.ostc3DilTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
-	ui.ostc3DilTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
-	ui.ostc3DilTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+	ui.ostc3DilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
+	ui.ostc3DilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
+	ui.ostc3DilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
+	ui.ostc3DilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
 
 	//load dil 5 values
-	ui.ostc3DilTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
-	ui.ostc3DilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
-	ui.ostc3DilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
-	ui.ostc3DilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+	ui.ostc3DilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
+	ui.ostc3DilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
+	ui.ostc3DilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
+	ui.ostc3DilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
 
 	//load set point 1 values
 	ui.ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
@@ -857,7 +867,7 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC()
 {
-/*
+	/*
 # Not in OSTC
 setBrightness
 setCalibrationGas
@@ -880,7 +890,7 @@ setNumberOfDives
 	ui.desaturationSpinBox_3->setValue(deviceDetails->desaturation());
 	ui.lastDecoSpinBox_3->setValue(deviceDetails->lastDeco());
 	ui.samplingRateSpinBox_3->setValue(deviceDetails->samplingRate());
-	ui.salinityDoubleSpinBox_3->setValue((double) deviceDetails->salinity() / 100.0);
+	ui.salinityDoubleSpinBox_3->setValue((double)deviceDetails->salinity() / 100.0);
 	ui.dateFormatComboBox_3->setCurrentIndex(deviceDetails->dateFormat());
 	ui.safetyStopCheckBox_3->setChecked(deviceDetails->safetyStop());
 	ui.gfHighSpinBox_3->setValue(deviceDetails->gfHigh());
@@ -895,64 +905,64 @@ setNumberOfDives
 	ui.numberOfDivesSpinBox_3->setValue(deviceDetails->numberOfDives());
 
 	//load gas 1 values
-	ui.ostcGasTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
-	ui.ostcGasTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
-	ui.ostcGasTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
-	ui.ostcGasTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+	ui.ostcGasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
+	ui.ostcGasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
+	ui.ostcGasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
+	ui.ostcGasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
 
 	//load gas 2 values
-	ui.ostcGasTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
-	ui.ostcGasTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
-	ui.ostcGasTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
-	ui.ostcGasTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+	ui.ostcGasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
+	ui.ostcGasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
+	ui.ostcGasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
+	ui.ostcGasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
 
 	//load gas 3 values
-	ui.ostcGasTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
-	ui.ostcGasTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
-	ui.ostcGasTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
-	ui.ostcGasTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+	ui.ostcGasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
+	ui.ostcGasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
+	ui.ostcGasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
+	ui.ostcGasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
 
 	//load gas 4 values
-	ui.ostcGasTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
-	ui.ostcGasTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
-	ui.ostcGasTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
-	ui.ostcGasTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+	ui.ostcGasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
+	ui.ostcGasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
+	ui.ostcGasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
+	ui.ostcGasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
 
 	//load gas 5 values
-	ui.ostcGasTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
-	ui.ostcGasTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
-	ui.ostcGasTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
-	ui.ostcGasTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+	ui.ostcGasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
+	ui.ostcGasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
+	ui.ostcGasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
+	ui.ostcGasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
 
 	//load dil 1 values
-	ui.ostcDilTable->setItem(0,1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
-	ui.ostcDilTable->setItem(0,2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
-	ui.ostcDilTable->setItem(0,3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
-	ui.ostcDilTable->setItem(0,4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+	ui.ostcDilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
+	ui.ostcDilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
+	ui.ostcDilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
+	ui.ostcDilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
 
 	//load dil 2 values
-	ui.ostcDilTable->setItem(1,1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
-	ui.ostcDilTable->setItem(1,2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
-	ui.ostcDilTable->setItem(1,3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
-	ui.ostcDilTable->setItem(1,4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+	ui.ostcDilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
+	ui.ostcDilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
+	ui.ostcDilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
+	ui.ostcDilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
 
 	//load dil 3 values
-	ui.ostcDilTable->setItem(2,1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
-	ui.ostcDilTable->setItem(2,2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
-	ui.ostcDilTable->setItem(2,3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
-	ui.ostcDilTable->setItem(2,4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+	ui.ostcDilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
+	ui.ostcDilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
+	ui.ostcDilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
+	ui.ostcDilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
 
 	//load dil 4 values
-	ui.ostcDilTable->setItem(3,1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
-	ui.ostcDilTable->setItem(3,2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
-	ui.ostcDilTable->setItem(3,3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
-	ui.ostcDilTable->setItem(3,4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+	ui.ostcDilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
+	ui.ostcDilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
+	ui.ostcDilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
+	ui.ostcDilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
 
 	//load dil 5 values
-	ui.ostcDilTable->setItem(4,1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
-	ui.ostcDilTable->setItem(4,2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
-	ui.ostcDilTable->setItem(4,3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
-	ui.ostcDilTable->setItem(4,4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+	ui.ostcDilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
+	ui.ostcDilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
+	ui.ostcDilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
+	ui.ostcDilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
 
 	//load set point 1 values
 	ui.ostcSetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
@@ -1007,21 +1017,18 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
-							  filename, tr("Backup files (*.xml)")
-							  );
+							  filename, tr("Backup files (*.xml)"));
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
 		getDeviceData();
 		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data)) {
 			QMessageBox::critical(this, tr("XML backup error"),
 					      tr("An error occurred while saving the backup file.\n%1")
-					      .arg(config->lastError)
-					      );
+						      .arg(config->lastError));
 		} else {
 			QMessageBox::information(this, tr("Backup succeeded"),
 						 tr("Your settings have been saved to: %1")
-						 .arg(backupPath)
-						 );
+							 .arg(backupPath));
 		}
 	}
 }
@@ -1032,21 +1039,18 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
-							   filename, tr("Backup files (*.xml)")
-							   );
+							   filename, tr("Backup files (*.xml)"));
 	if (!restorePath.isEmpty()) {
 		if (!config->restoreXMLBackup(restorePath, deviceDetails)) {
 			QMessageBox::critical(this, tr("XML restore error"),
 					      tr("An error occurred while restoring the backup file.\n%1")
-					      .arg(config->lastError)
-					      );
+						      .arg(config->lastError));
 		} else {
 			reloadValues();
 			//getDeviceData();
 			//config->saveDeviceDetails(deviceDetails, &device_data);
 			QMessageBox::information(this, tr("Restore succeeded"),
-						 tr("Your settings have been restored successfully.")
-						 );
+						 tr("Your settings have been restored successfully."));
 		}
 	}
 }
@@ -1057,14 +1061,12 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath();
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
-							  filename, tr("All files (*.*)")
-							  );
+							    filename, tr("All files (*.*)"));
 	if (!firmwarePath.isEmpty()) {
 		getDeviceData();
 		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
 }
-
 
 
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
