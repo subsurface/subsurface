@@ -925,3 +925,13 @@ void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert
 	normalColor = normal;
 	alertColor = alert;
 }
+
+InstantMeanDepthLine::InstantMeanDepthLine()
+{
+
+}
+
+void InstantMeanDepthLine::mouseMoved(int time, int depth)
+{
+
+}

@@ -204,6 +204,14 @@ private:
 	DiveTextItem *rightText;
 };
 
+class InstantMeanDepthLine : public MeanDepthLine {
+	Q_OBJECT
+public:
+	InstantMeanDepthLine();
+public slots:
+	void mouseMoved(int time, int depth);
+};
+
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
