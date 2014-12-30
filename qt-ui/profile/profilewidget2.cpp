@@ -117,7 +117,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addItemsToScene();
 	scene()->installEventFilter(this);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-
+	connect(this, SIGNAL(mouseMoved(int,int)), instantMeanDepth, SLOT(mouseMoved(int,int)));
 	QAction *action = NULL;
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
@@ -606,6 +606,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(currentdc->duration.seconds), 0);
 	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(plotInfo.meandepth));
 
+	instantMeanDepth->vAxis = profileYAxis;
+	instantMeanDepth->hAxis = timeAxis;
 	instantMeanDepth->setVisible(prefs.show_average_depth);
 	instantMeanDepth->setModel(dataModel);
 

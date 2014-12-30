@@ -812,7 +812,7 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)), rightText(new DiveTextItem(this))
+MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)), rightText(new DiveTextItem(this)), model(NULL)
 {
 	leftText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	leftText->setBrush(getColor(MEAN_DEPTH));
@@ -930,12 +930,23 @@ void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert
 	alertColor = alert;
 }
 
-InstantMeanDepthLine::InstantMeanDepthLine()
+InstantMeanDepthLine::InstantMeanDepthLine(): vAxis(NULL), hAxis(NULL)
 {
 
 }
 
 void InstantMeanDepthLine::mouseMoved(int time, int depth)
 {
+	if (model == NULL || scene() == NULL || vAxis == NULL || hAxis == NULL)
+		return;
 
+	int count = model->data().nr;
+	for(int i = 0; i < count; i++){
+		struct plot_data pI = model->data().entry[i];
+		if (pI.sec == time) {
+			setMeanDepth(pI.running_sum / time);
+			setLine(0, 0, hAxis->posAtValue(time), 0);
+			setPos(pos().x(), vAxis->posAtValue(pI.running_sum / time));
+		}
+	}
 }

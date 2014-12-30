@@ -209,6 +209,8 @@ protected:
 class InstantMeanDepthLine : public MeanDepthLine {
 	Q_OBJECT
 public:
+	DiveCartesianAxis *hAxis;
+	DiveCartesianAxis *vAxis;
 	InstantMeanDepthLine();
 public slots:
 	void mouseMoved(int time, int depth);
