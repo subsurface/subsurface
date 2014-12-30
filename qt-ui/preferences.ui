@@ -134,6 +134,11 @@
         <property name="text">
          <string>Facebook</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/facebook</normalon>
+         </iconset>
+        </property>
        </item>
       </widget>
      </item>
