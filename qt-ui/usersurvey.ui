@@ -89,7 +89,7 @@
     <string>Dive Planner</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="download">
+  <widget class="QCheckBox" name="download">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -102,7 +102,7 @@
     <string>Supported Dive Computer</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="divecomputer">
+  <widget class="QCheckBox" name="divecomputer">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -115,7 +115,7 @@
     <string>Other software/sources</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="manual">
+  <widget class="QCheckBox" name="manual">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -128,7 +128,7 @@
     <string>Manually entering dives</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="companion">
+  <widget class="QCheckBox" name="companion">
    <property name="geometry">
     <rect>
      <x>10</x>
