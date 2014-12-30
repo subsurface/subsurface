@@ -864,7 +864,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionUserSurvey">
    <property name="text">
-    <string>User &amp;Survey</string>
+    <string>User &amp;survey</string>
    </property>
   </action>
  </widget>
