@@ -283,6 +283,10 @@ void MainWindow::closeCurrentFile()
 	mark_divelist_changed(false);
 
 	clear_events();
+
+	QList<DiveComputerNode> values = dcList.dcMap.values();
+	for (int i = 0; i < values.size(); i++)
+		dcList.rmDC(values.at(i).model, values.at(i).deviceId);
 }
 
 void MainWindow::on_actionClose_triggered()
