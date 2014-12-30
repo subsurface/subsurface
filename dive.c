@@ -567,19 +567,22 @@ int nr_weightsystems(struct dive *dive)
 /* copy the equipment data part of the cylinders */
 void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 {
-	int i;
+	int i,j;
 	if (!s || !d)
 		return;
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		free((void *)d->cylinder[i].type.description);
 		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
+	}
+	for (i = j = 0; i < MAX_CYLINDERS; i++) {
 		if (!used_only || is_cylinder_used(s, i)) {
-			d->cylinder[i].type = s->cylinder[i].type;
-			d->cylinder[i].type.description = copy_string(s->cylinder[i].type.description);
-			d->cylinder[i].gasmix = s->cylinder[i].gasmix;
-			d->cylinder[i].depth = s->cylinder[i].depth;
-			d->cylinder[i].cylinder_use = s->cylinder[i].cylinder_use;
-			d->cylinder[i].manually_added = true;
+			d->cylinder[j].type = s->cylinder[i].type;
+			d->cylinder[j].type.description = copy_string(s->cylinder[i].type.description);
+			d->cylinder[j].gasmix = s->cylinder[i].gasmix;
+			d->cylinder[j].depth = s->cylinder[i].depth;
+			d->cylinder[j].cylinder_use = s->cylinder[i].cylinder_use;
+			d->cylinder[j].manually_added = true;
+			j++;
 		}
 	}
 }
