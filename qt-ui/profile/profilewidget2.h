@@ -179,6 +179,7 @@ private:
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
 	TankItem *tankItem;
+	InstantMeanDepthLine *instantMeanDepth;
 	bool isGrayscale;
 	bool printMode;
 

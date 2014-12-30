@@ -102,6 +102,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 	tankItem(new TankItem()),
+	instantMeanDepth(new InstantMeanDepthLine()),
 	isGrayscale(false),
 	printMode(false),
 	shouldCalculateMaxTime(true),
@@ -170,6 +171,7 @@ ProfileWidget2::~ProfileWidget2()
 	delete mouseFollowerHorizontal;
 	delete rulerItem;
 	delete tankItem;
+	delete instantMeanDepth;
 }
 
 #define SUBSURFACE_OBJ_DATA 1
@@ -208,6 +210,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(tankItem);
 	scene()->addItem(mouseFollowerHorizontal);
 	scene()->addItem(mouseFollowerVertical);
+	scene()->addItem(instantMeanDepth);
 	QPen pen(QColor(Qt::red).lighter());
 	pen.setWidth(0);
 	mouseFollowerHorizontal->setPen(pen);
@@ -272,6 +275,12 @@ void ProfileWidget2::setupItemOnScene()
 	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
 	meanDepth->setZValue(1);
 	meanDepth->setAxis(profileYAxis);
+
+	instantMeanDepth->setLine(0, 0, 96, 0);
+	instantMeanDepth->setX(3);
+	instantMeanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
+	instantMeanDepth->setZValue(1);
+	instantMeanDepth->setAxis(profileYAxis);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
@@ -596,6 +605,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	meanDepth->setMeanDepth(plotInfo.meandepth);
 	meanDepth->setLine(0, 0, timeAxis->posAtValue(currentdc->duration.seconds), 0);
 	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(plotInfo.meandepth));
+
+	instantMeanDepth->setVisible(prefs.show_average_depth);
+	instantMeanDepth->setModel(dataModel);
 
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
