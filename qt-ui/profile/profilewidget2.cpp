@@ -848,6 +848,11 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 		&& timeAxis->minimum() <= hValue){
 		mouseFollowerVertical->setPos(pos.x(), profileYAxis->line().y1());
 	}
+	if ( timeAxis->maximum() >= hValue
+	     && timeAxis->minimum() <= hValue
+	     && profileYAxis->maximum() >= vValue
+	     && profileYAxis->minimum() <= vValue )
+		emit mouseMoved(hValue, vValue);
 }
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
