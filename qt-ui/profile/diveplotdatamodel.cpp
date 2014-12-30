@@ -129,6 +129,8 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("Ambient pressure");
 	case HEARTBEAT:
 		return tr("Heart Beat");
+	case GFLINE:
+		return tr("Gradient Factor");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);
