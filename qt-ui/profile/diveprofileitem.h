@@ -199,7 +199,7 @@ public
 slots:
 	void axisLineChanged();
 
-private:
+protected:
 	int meanDepth;
 	DiveTextItem *leftText;
 	DiveTextItem *rightText;
