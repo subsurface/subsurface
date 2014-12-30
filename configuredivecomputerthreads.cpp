@@ -71,6 +71,16 @@
 #define hw_ostc_device_clock local_hw_ostc_device_clock
 #define OSTC_FILE "../OSTC-data-dump.bin"
 
+// Fake the open function.
+static dc_status_t local_dc_device_open(dc_device_t **out, dc_context_t *context, dc_descriptor_t *descriptor, const char *name)
+{
+	if (strcmp(dc_descriptor_get_vendor(descriptor), "Heinrichs Weikamp") == 0 &&strcmp(dc_descriptor_get_product(descriptor), "OSTC 2N") == 0)
+		return DC_STATUS_SUCCESS;
+	else
+		return dc_device_open(out, context, descriptor, name);
+}
+#define dc_device_open local_dc_device_open
+
 static dc_status_t local_hw_ostc_device_eeprom_read(void *ignored, unsigned char bank, unsigned char data[], unsigned int data_size)
 {
 	FILE *f;
@@ -1387,12 +1397,8 @@ void ReadSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-#ifdef DEBUG_OSTC
-	if (strcmp(m_data->vendor, "Heinrichs Weikamp") == 0 && strcmp(m_data->product, "OSTC 2N") == 0)
-		rc = DC_STATUS_SUCCESS;
-	else
-#endif
-		rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
+
+	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
@@ -1459,11 +1465,8 @@ void WriteSettingsThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
-#ifdef DEBUG_OSTC
-	rc = DC_STATUS_SUCCESS;
-#else
+
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-#endif
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
