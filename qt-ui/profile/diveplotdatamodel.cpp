@@ -58,6 +58,8 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return AMB_PERCENTAGE;
 		case GFLINE:
 			return item.gfline;
+		case INSTANT_MEANDEPTH:
+			return item.running_sum;
 		}
 	}
 
@@ -131,6 +133,8 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("Heart Beat");
 	case GFLINE:
 		return tr("Gradient Factor");
+	case INSTANT_MEANDEPTH:
+		return tr("Mean Depth/s");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);

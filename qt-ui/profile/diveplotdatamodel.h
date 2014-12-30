@@ -62,6 +62,7 @@ public:
 		HEARTBEAT,
 		AMBPRESSURE,
 		GFLINE,
+		INSTANT_MEANDEPTH,
 		COLUMNS
 	};
 	explicit DivePlotDataModel(QObject *parent = 0);
