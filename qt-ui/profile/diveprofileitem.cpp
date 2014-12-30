@@ -822,6 +822,10 @@ MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)),
 	rightText->setPos(line().length(), 0);
 }
 
+void MeanDepthLine::setModel(DivePlotDataModel *m){
+	model = m;
+}
+
 void MeanDepthLine::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
 {
 	QGraphicsLineItem::setLine(x1, y1, x2, y2);
