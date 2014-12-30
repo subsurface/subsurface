@@ -104,6 +104,9 @@ $ cd ~/src
 $ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
        # or -b Subsurface-testing to get the testing version - careful,
        #                          careful - this gets rebased and may be broken
+       # -> when not building a release version of Subsurface but the
+       #    latest master, it may be necessary to build against the
+       #    Subsurface-testing branch
 
 $ cd libdivecomputer
 $ autoreconf --install
@@ -209,6 +212,9 @@ $ make -j4
 $ brew install automake libtool
 $ cd ~/src
 $ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
+       # -> when not building a release version of Subsurface but the
+       #    latest master, it may be necessary to build against the
+       #    Subsurface-testing branch
 $ cd libdivecomputer
 $ autoreconf --install
 $ ./configure --disable-shared
@@ -258,6 +264,9 @@ $ cd ~/src
 $ git clone -b Subsurface-4.3 git://subsurface-divelog.org/libdc libdivecomputer
        # or -b Subsurface-testing to get the testing version - careful,
        #                          careful - this gets rebased and may be broken
+       # -> when not building a release version of Subsurface but the
+       #    latest master, it may be necessary to build against the
+       #    Subsurface-testing branch
 
 $ cd libdivecomputer
 $ autoreconf --install
@@ -274,7 +283,7 @@ $ git clone -b Subsurface-4.3 git://subsurface-divelog.org/marble marble-source
 
 $ mkdir marble-build
 $ cd marble-build
-$ mingg64-cmake -DQTONLY=ON -DQT5BUILD=ON \
+$ mingw64-cmake -DQTONLY=ON -DQT5BUILD=ON \
 	-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
 	-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
 	-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
