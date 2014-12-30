@@ -202,7 +202,6 @@ void FacebookManager::sendDive()
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 	QPixmap pix = QPixmap::grabWidget(profile);
-	struct dive* d = current_dive;
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
