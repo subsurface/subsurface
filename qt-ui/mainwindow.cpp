@@ -748,7 +748,7 @@ void MainWindow::on_actionUserManual_triggered()
 void MainWindow::on_actionUserSurvey_triggered()
 {
 	if(!survey) {
-		survey = new UserSurvey();
+		survey = new UserSurvey(this);
 	}
 	survey->show();
 }
