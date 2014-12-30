@@ -218,9 +218,27 @@
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:variable>
+
+        <!--  ALxxx -> xxx cuft at 3000 psi
+              LPxxx -> xxx cuft at 2400 psi
+              HPxxx -> xxx cuft at 3440 psi -->
+
         <xsl:if test="$size != ''">
           <xsl:attribute name="size">
-            <xsl:value-of select="$size"/>
+            <xsl:choose>
+              <xsl:when test="substring($size, 1, 2) = 'AL'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:when test="substring($size, 1, 2) = 'LP'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 2400) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:when test="substring($size, 1, 2) = 'HP'">
+                <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3440) div 0.035315, '#.#')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$size"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="$start != ''">
