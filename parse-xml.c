@@ -2653,6 +2653,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 					cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = ptr[6] * 10;
 					cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = ptr[7] * 10;
 					cylinder_end();
+					cur_event.gas.index = cur_cylinder_index;
+				} else {
+					cur_event.gas.index = i;
 				}
 				break;
 			case 6:
