@@ -162,10 +162,8 @@ void DiveLogImportDialog::on_knownImports_currentIndexChanged(int index)
 {
 	if (specialCSV.contains(index)) {
 		ui->groupBox_3->setEnabled(false);
-		ui->CSVUnits->setEnabled(false);
 	} else {
 		ui->groupBox_3->setEnabled(true);
-		ui->CSVUnits->setEnabled(true);
 	}
 	if (index == 0)
 		return;

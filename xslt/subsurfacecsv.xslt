@@ -124,12 +124,26 @@
         </xsl:variable>
         <xsl:if test="$max != ''">
           <xsl:attribute name="max">
-            <xsl:value-of select="$max"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$max"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($max, ' ') * 0.3048), '#.##'), ' m')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="$mean != ''">
           <xsl:attribute name="mean">
-            <xsl:value-of select="$mean"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$mean"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($mean, ' ') * 0.3048), '#.##'), ' m')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
       </depth>
@@ -149,12 +163,26 @@
         </xsl:variable>
         <xsl:if test="$air != ''">
           <xsl:attribute name="air">
-            <xsl:value-of select="$air"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$air"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($air, ' ') - 32) * 5 div 9, '0.0'), ' C')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="$water != ''">
           <xsl:attribute name="water">
-            <xsl:value-of select="$water"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$water"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($water, ' ') - 32) * 5 div 9, '0.0'), ' C')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
       </divetemperature>
@@ -197,12 +225,26 @@
         </xsl:if>
         <xsl:if test="$start != ''">
           <xsl:attribute name="start">
-            <xsl:value-of select="$start"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$start"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($start, ' ') div 14.5037738007), '#'), ' bar')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="$end != ''">
           <xsl:attribute name="end">
-            <xsl:value-of select="$end"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$end"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($end, ' ') div 14.5037738007), '#'), ' bar')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="$o2 != ''">
@@ -297,7 +339,14 @@
       <xsl:if test="$weight != ''">
         <weightsystem description="unknown">
           <xsl:attribute name="weight">
-            <xsl:value-of select="$weight"/>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$weight"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number((substring-before($weight, ' ') * 0.453592), '#.##'), ' kg')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </weightsystem>
       </xsl:if>
