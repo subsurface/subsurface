@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:strip-space elements="*"/>
+  <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
   <xsl:variable name="fs">,</xsl:variable>
@@ -31,16 +32,37 @@
       <xsl:value-of select="$fs"/>
       <xsl:value-of select="concat('&quot;', substring-before(@time, ' '), '&quot;')"/>
       <xsl:value-of select="$fs"/>
-      <xsl:value-of select="concat('&quot;', substring-before(@depth, ' '), '&quot;')"/>
+      <xsl:choose>
+        <xsl:when test="$units = 1">
+          <xsl:value-of select="concat('&quot;', format-number((substring-before(@depth, ' ') div 0.3048), '#.#'), ' ft&quot;')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('&quot;', substring-before(@depth, ' '), '&quot;')"/>
+        </xsl:otherwise>
+      </xsl:choose>
 
       <xsl:value-of select="$fs"/>
       <xsl:if test="@temp != ''">
-        <xsl:value-of select="concat('&quot;', substring-before(@temp, ' '), '&quot;')"/>
+        <xsl:choose>
+          <xsl:when test="$units = 1">
+            <xsl:value-of select="concat('&quot;', format-number((substring-before(@temp, ' ') * 1.8) + 32, '#.#'), ' F&quot;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('&quot;', substring-before(@temp, ' '), '&quot;')"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
 
       <xsl:value-of select="$fs"/>
       <xsl:if test="@pressure != ''">
-        <xsl:value-of select="concat('&quot;', substring-before(@pressure, ' '), '&quot;')"/>
+        <xsl:choose>
+          <xsl:when test="$units = 1">
+            <xsl:value-of select="concat('&quot;', format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), ' psi&quot;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('&quot;', substring-before(@pressure, ' '), '&quot;')"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
 
       <xsl:text>
