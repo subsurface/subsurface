@@ -156,11 +156,21 @@
       </xsl:if>
 
       <xsl:if test="$durationField >= 0">
-        <xsl:attribute name="duration">
+        <xsl:variable name="duration">
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="$durationField"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
+        </xsl:variable>
+        <xsl:attribute name="duration">
+          <xsl:choose>
+            <xsl:when test="substring-before($duration, ':') = '' and $duration &lt; 600">
+              <xsl:value-of select="$duration * 60"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$duration"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:attribute>
       </xsl:if>
 
