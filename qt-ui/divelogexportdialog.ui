@@ -233,6 +233,9 @@
           </layout>
          </widget>
          <widget class="QGroupBox" name="groupBox">
+           <property name="enabled">
+             <bool>false</bool>
+           </property>
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -508,6 +511,18 @@
      <y>274</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+    <sender>exportCSV</sender>
+    <signal>toggled(bool)</signal>
+    <receiver>groupBox</receiver>
+    <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+    <sender>exportCSVDetails</sender>
+    <signal>toggled(bool)</signal>
+    <receiver>groupBox</receiver>
+    <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
  <buttongroups>
