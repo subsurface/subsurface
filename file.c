@@ -969,11 +969,11 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return ret;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
+int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[49];
+	char *params[51];
 	char numberbuf[MAXCOLDIGITS];
 	char datebuf[MAXCOLDIGITS];
 	char timebuf[MAXCOLDIGITS];
@@ -989,6 +989,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	char separator_index[MAXCOLDIGITS];
 	char unit[MAXCOLDIGITS];
 	char datefmt[MAXCOLDIGITS];
+	char durationfmt[MAXCOLDIGITS];
 	char cylsizebuf[MAXCOLDIGITS];
 	char startpresbuf[MAXCOLDIGITS];
 	char endpresbuf[MAXCOLDIGITS];
@@ -1020,6 +1021,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unit, MAXCOLDIGITS, "%d", units);
 	snprintf(datefmt, MAXCOLDIGITS, "%d", dateformat);
+	snprintf(durationfmt, MAXCOLDIGITS, "%d", durationformat);
 	snprintf(cylsizebuf, MAXCOLDIGITS, "%d", cylsizef);
 	snprintf(startpresbuf, MAXCOLDIGITS, "%d", startpresf);
 	snprintf(endpresbuf, MAXCOLDIGITS, "%d", endpresf);
@@ -1069,6 +1071,8 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	params[pnr++] = unit;
 	params[pnr++] = "datefmt";
 	params[pnr++] = datefmt;
+	params[pnr++] = "durationfmt";
+	params[pnr++] = durationfmt;
 	params[pnr++] = "cylindersizeField";
 	params[pnr++] = cylsizebuf;
 	params[pnr++] = "startpressureField";
