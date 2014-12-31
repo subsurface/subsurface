@@ -75,6 +75,6 @@ if [[ "$1x" = "postx" ]] ; then
 	cd home:Subsurface-Divelog/Subsurface-daily
 	osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
 	osc add subsurface-$VERSION.orig.tar.xz
-	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurface.spec
+	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
 	osc commit -m "next daily build"
 fi
