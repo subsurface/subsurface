@@ -638,7 +638,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	return error;
 }
 
-int export_dives_xslt(const char *filename, const bool selected, const char *export_xslt)
+int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt)
 {
 	FILE *f;
 	struct membuffer buf = { 0 };
@@ -646,6 +646,9 @@ int export_dives_xslt(const char *filename, const bool selected, const char *exp
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
 	int res = 0;
+	char *params[3];
+	int pnr = 0;
+	char unitstr[3];
 
 	if (verbose)
 		fprintf(stderr, "export_dives_xslt with stylesheet %s\n", export_xslt);
@@ -671,7 +674,12 @@ int export_dives_xslt(const char *filename, const bool selected, const char *exp
 	if (!xslt)
 		return report_error("Failed to open export conversion stylesheet");
 
-	transformed = xsltApplyStylesheet(xslt, doc, NULL);
+	snprintf(unitstr, 3, "%d", units);
+	params[pnr++] = "units";
+	params[pnr++] = unitstr;
+	params[pnr++] = NULL;
+
+	transformed = xsltApplyStylesheet(xslt, doc, (const char **)params);
 	xmlFreeDoc(doc);
 
 	/* Write the transformed export to file */
