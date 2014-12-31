@@ -164,7 +164,7 @@
         </xsl:variable>
         <xsl:attribute name="duration">
           <xsl:choose>
-            <xsl:when test="substring-before($duration, ':') = '' and $duration &lt; 600">
+            <xsl:when test="$durationfmt = 1">
               <xsl:value-of select="$duration * 60"/>
             </xsl:when>
             <xsl:otherwise>

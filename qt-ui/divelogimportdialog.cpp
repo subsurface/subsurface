@@ -133,6 +133,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					  ui->ManualSeparator->currentIndex(),
 					  ui->Units->currentIndex(),
 					  ui->DateFormat->currentIndex(),
+					  ui->DurationFormat->currentIndex(),
 					  VALUE_IF_CHECKED(DiveNumber),
 					  VALUE_IF_CHECKED(Date), VALUE_IF_CHECKED(Time),
 					  VALUE_IF_CHECKED(Duration), VALUE_IF_CHECKED(Location),
