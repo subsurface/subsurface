@@ -20,10 +20,10 @@ if [[ -d subsurface_$VERSION ]]; then
 	mv subsurface_$VERSION.bak subsurface_$VERSION.bak.prev
 	mv subsurface_$VERSION subsurface_$VERSION.bak
 fi
-rm -f subsurface-$VERSION
+rm -f subsurfacedaily-$VERSION
 
 mkdir subsurface_$VERSION
-ln -s subsurface_$VERSION subsurface-$VERSION
+ln -s subsurface_$VERSION subsurfacedaily-$VERSION
 #
 #
 echo "copying sources"
@@ -39,7 +39,7 @@ echo $LIBDCREVISION > libdivecomputer/revision
 #
 echo "creating source tar file for OBS and Ununtu PPA"
 #
-(cd .. ; tar ch subsurface-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
 tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 #
 #
