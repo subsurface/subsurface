@@ -241,6 +241,11 @@
             </xsl:choose>
           </xsl:attribute>
         </xsl:if>
+        <xsl:if test="substring($size, 1, 2) = 'AL' or substring($size, 1, 2) = 'LP' or substring($size, 1, 2) = 'HP'">
+          <xsl:attribute name="description">
+            <xsl:value-of select="$size"/>
+          </xsl:attribute>
+        </xsl:if>
         <xsl:if test="$start != ''">
           <xsl:attribute name="start">
             <xsl:choose>
