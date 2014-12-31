@@ -1199,6 +1199,11 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		put_format(b, translate("gettextFromC", "heartbeat: %d\n"), entry->heartbeat);
 	if (entry->bearing)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
+	if (entry->running_sum) {
+		depthvalue = get_depth_units(entry->running_sum / 1000, NULL, &depth_unit);
+		put_format(b, translate("gettextFromC", "mean depth to here %.1f%s\n"), depthvalue, depth_unit);
+	}
+
 	strip_mb(b);
 }
 
