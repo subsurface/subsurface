@@ -55,6 +55,7 @@
 
   <xsl:call-template name="printFields">
     <xsl:with-param name="line" select="$line"/>
+    <xsl:with-param name="remaining" select="$remaining"/>
   </xsl:call-template>
 
   <xsl:if test="$remaining != ''">
@@ -67,6 +68,7 @@
 
   <xsl:template name="printFields">
     <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
 
     <xsl:variable name="number">
       <xsl:choose>
@@ -313,6 +315,7 @@
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="$notesField"/>
             <xsl:with-param name="line" select="$line"/>
+            <xsl:with-param name="remaining" select="$remaining"/>
           </xsl:call-template>
         </notes>
       </xsl:if>
@@ -345,6 +348,7 @@
   <xsl:template name="getFieldByIndex">
     <xsl:param name="index"/>
     <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
     <xsl:choose>
       <xsl:when test="$index > 0">
         <xsl:choose>
@@ -352,12 +356,14 @@
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$index -1"/>
               <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$index -1"/>
               <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
@@ -370,8 +376,8 @@
                 <xsl:value-of select="substring-before($line,'&quot;$fs')"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="substring-after($line, '&quot;$fs') = ''">
-                  <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
+                <xsl:if test="substring-after(substring-after($line, '&quot;'), '&quot;') = ''">
+                  <xsl:value-of select="concat(substring-after($line, '&quot;'), substring-before($remaining, '&quot;'))"/>
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>
