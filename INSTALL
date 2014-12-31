@@ -137,7 +137,7 @@ Finally you can compile Subsurface:
 $ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ cd git checkout v4.3   # this get's you the last release
+$ git checkout v4.3      # this get's you the last release
                          # skip this step to build the latest development
 			 # version
 $ qmake SPECIAL_MARBLE_PREFIX=1
