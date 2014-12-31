@@ -54,7 +54,7 @@ mac {
 	WINDOWSPACKAGING = $$PWD/packaging/windows
 	NSIFILE = $$WINDOWSSTAGING/subsurface.nsi
 	NSIINPUTFILE = $$WINDOWSPACKAGING/subsurface.nsi.in
-	MAKENSIS = /usr/bin/makensis
+	isEmpty(MAKENSIS) MAKENSIS = /usr/bin/makensis
 
 	doc.path = $$WINDOWSSTAGING/Documentation
 	CONFIG -= copy_dir_files
