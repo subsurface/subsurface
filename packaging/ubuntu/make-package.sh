@@ -23,7 +23,7 @@ fi
 rm -f subsurface-$VERSION
 
 mkdir subsurface_$VERSION
-ln -s subsurface_$VERSION subsurface-$VERSION
+ln -s subsurface_$VERSION subsurfacedaily-$VERSION
 #
 #
 echo "copying sources"
@@ -39,7 +39,7 @@ echo $LIBDCREVISION > libdivecomputer/revision
 #
 echo "creating source tar file for OBS and Ununtu PPA"
 #
-(cd .. ; tar ch subsurface-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurfacedaily-$VERSION.orig.tar.xz) &
 tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 #
 #
@@ -74,7 +74,7 @@ if [[ "$1x" = "postx" ]] ; then
 	dput ppa:subsurface/subsurface-daily subsurface_$VERSION*.changes
 	cd home:Subsurface-Divelog/Subsurface-daily
 	osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
-	osc add subsurface-$VERSION.orig.tar.xz
-	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurface.spec
+	osc add subsurfacedaily-$VERSION.orig.tar.xz
+	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
 	osc commit -m "next daily build"
 fi
