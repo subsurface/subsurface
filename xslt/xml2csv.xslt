@@ -23,7 +23,7 @@
     <xsl:variable name="time">
       <xsl:value-of select="@time"/>
     </xsl:variable>
-    <xsl:for-each select="divecomputer/sample|sample">
+    <xsl:for-each select="divecomputer[1]/sample|sample">
       <xsl:value-of select="concat('&quot;', $number, '&quot;')"/>
       <xsl:value-of select="$fs"/>
       <xsl:value-of select="concat('&quot;', $date, '&quot;')"/>
