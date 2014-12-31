@@ -3,6 +3,7 @@
   xmlns:xt="http://www.jclark.com/xt"
   extension-element-prefixes="xt" version="1.0">
   <xsl:strip-space elements="*"/>
+  <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
   <xsl:variable name="fs">,</xsl:variable>
@@ -46,15 +47,36 @@
       <xsl:otherwise>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:value-of select="cylinder[1]/@size"/>
+        <xsl:choose>
+          <xsl:when test="$units = 1">
+            <xsl:value-of select="cylinder/@description"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="cylinder[1]/@size"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:value-of select="divecomputer[1]/sample[@pressure]/@pressure"/>
+        <xsl:choose>
+          <xsl:when test="$units = 1">
+            <xsl:value-of select="concat(format-number((substring-before(divecomputer[1]/sample[@pressure]/@pressure, ' ') * 14.5037738007), '#'), ' psi')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="divecomputer[1]/sample[@pressure]/@pressure"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:value-of select="divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+        <xsl:choose>
+          <xsl:when test="$units = 1">
+            <xsl:value-of select="concat(format-number((substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 14.5037738007), '#'), ' psi')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
@@ -127,21 +149,49 @@
   <xsl:template match="divecomputer/depth">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@max"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@max, ' ') div 0.3048), '#.#'), ' ft')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@max"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@mean"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@mean, ' ') div 0.3048), '#.#'), ' ft')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@mean"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="divetemperature|temperature">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@air"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@air, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@air"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@water"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@water, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@water"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="cylinder">
@@ -151,11 +201,25 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@start"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@start, ' ') * 14.5037738007), '#'), ' psi')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@start"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@end"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before(@end, ' ') * 14.5037738007), '#'), ' psi')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@end"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
