@@ -107,7 +107,7 @@ bool imported = false;
 
 static void print_version()
 {
-	printf("Subsurface v%s, ", VERSION_STRING);
+	printf("Subsurface v%s, ", GIT_VERSION_STRING);
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 }
 
