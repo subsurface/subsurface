@@ -15,6 +15,10 @@ exists(.git/HEAD): {
 	VERSION_STRING = $$system("sh scripts/get-version linux $$FULL_VERSION || echo $${VERSION}-git")
 	version_h.depends = $$VERSION_SCRIPT $$PWD/.git/$$system("$$SET_GIT_DIR=$$PWD/.git git rev-parse --symbolic-full-name HEAD")
 	version_h.commands = echo \\$${LITERAL_HASH}define VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT $$VER_OS || echo $$VERSION-git`\\\" > ${QMAKE_FILE_OUT}
+	version_h.commands += $$escape_expand(\\n)$$escape_expand(\\t)
+	version_h.commands += echo \\$${LITERAL_HASH}define GIT_VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT linux || echo $$VERSION-git`\\\" >> ${QMAKE_FILE_OUT}
+	version_h.commands += $$escape_expand(\\n)$$escape_expand(\\t)
+	version_h.commands += echo \\$${LITERAL_HASH}define CANONICAL_VERSION_STRING \\\"`GIT_DIR=$$PWD/.git $$VERSION_SCRIPT full || echo $$VERSION-git`\\\" >> ${QMAKE_FILE_OUT}
 	version_h.input = GIT_HEAD
 	version_h.output = $$VERSION_FILE
 	version_h.variable_out = GENERATED_FILES
@@ -27,6 +31,10 @@ exists(.git/HEAD): {
 	} else {
 		FULL_VERSION = $$VERSION
 	}
-	system(echo \\$${LITERAL_HASH}define VERSION_STRING \\\"$$FULL_VERSION\\\" > $$VERSION_FILE)
+	CANONICAL_VERSION = $$system("sh scripts/get-version full $$FULL_VERSION")
+	OS_USABLE_VERSION = $$system("sh scripts/get-version $$VER_OS $$FULL_VERSION")
+	system(echo \\$${LITERAL_HASH}define VERSION_STRING \\\"$$OS_USABLE_VERSION\\\" > $$VERSION_FILE)
+	system(echo \\$${LITERAL_HASH}define GIT_VERSION_STRING \\\"$$FULL_VERSION\\\" >> $$VERSION_FILE)
+	system(echo \\$${LITERAL_HASH}define CANONICAL_VERSION_STRING \\\"$$CANONICAL_VERSION\\\" >> $$VERSION_FILE)
 	QMAKE_CLEAN += $$VERSION_FILE
 }
