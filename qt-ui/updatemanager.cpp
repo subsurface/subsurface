@@ -73,7 +73,7 @@ void UpdateManager::requestReceived()
 			// strings that it is likely to send back
 			if (responseBody.contains("Newest release version is "))
 				responseBody.replace("Newest release version is ", tr("Newest release version is "));
-			msgText = tr("There was an error while trying to check for updates.<br/><br/>%1").arg(responseBody);
+			msgText = tr("The server returned the following information:").append("<br/><br/>").append(responseBody);
 			msgbox.setIcon(QMessageBox::Warning);
 		}
 	}
