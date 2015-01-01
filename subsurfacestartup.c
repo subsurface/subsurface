@@ -55,6 +55,7 @@ struct preferences default_prefs = {
 		.album_id = NULL,
 		.access_token = NULL
 	}
+	.defaultsetpoint = 1100
 };
 
 int run_survey;

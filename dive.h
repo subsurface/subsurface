@@ -47,7 +47,7 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-enum dive_comp_type {OC, CCR, PSCR, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
@@ -850,6 +850,7 @@ extern void set_save_userid_local(short value);
 extern void set_userid(char *user_id);
 
 extern const char *get_dive_date_c_string(timestamp_t when);
+extern void update_setpoint_events(struct divecomputer *dc);
 #ifdef __cplusplus
 }
 #endif

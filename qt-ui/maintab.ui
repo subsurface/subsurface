@@ -175,28 +175,28 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="RatingLabel">
+           <widget class="StarWidget" name="rating" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text">
-             <string>Rating</string>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="visibilityLabel">
+           <widget class="StarWidget" name="visibility" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text">
-             <string>Visibility</string>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
             </property>
            </widget>
           </item>
@@ -236,28 +236,28 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="StarWidget" name="rating" native="true">
+           <widget class="QLabel" name="RatingLabel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+            <property name="text">
+             <string>Rating</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="StarWidget" name="visibility" native="true">
+           <widget class="QLabel" name="visibilityLabel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+            <property name="text">
+             <string>Visibility</string>
             </property>
            </widget>
           </item>
@@ -301,6 +301,16 @@
            <bool>false</bool>
           </property>
          </widget>
+          <item>
+           <widget class="QComboBox" name="DiveType">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
         </item>
         <item row="13" column="0" colspan="3">
          <layout class="QHBoxLayout" name="notesAndSocialNetworksLayout">
@@ -1019,7 +1029,6 @@
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
   <tabstop>location</tabstop>
-  <tabstop>coordinates</tabstop>
   <tabstop>divemaster</tabstop>
   <tabstop>buddy</tabstop>
   <tabstop>rating</tabstop>

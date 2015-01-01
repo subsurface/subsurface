@@ -86,6 +86,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.dateEdit->installEventFilter(this);
 	ui.timeEdit->installEventFilter(this);
 	ui.tagWidget->installEventFilter(this);
+	ui.DiveType->installEventFilter(this);
 
 	Q_FOREACH (QObject *obj, ui.statisticsTab->children()) {
 		QLabel *label = qobject_cast<QLabel *>(obj);
@@ -99,6 +100,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setTitle(tr("Weights"));
 	ui.weights->setBtnToolTip(tr("Add weight system"));
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
+
+	// This needs to be the same order as enum dive_comp_type in dive.h!
+	ui.DiveType->insertItems(0, QStringList() << "OC" << "CCR" << "pSCR" << "Freedive");
+	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_divetype_Changed(int)));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
@@ -425,6 +430,7 @@ void MainTab::updateDiveInfo(bool clear)
 	UPDATE_TEXT(displayed_dive, buddy);
 	UPDATE_TEMP(displayed_dive, airtemp);
 	UPDATE_TEMP(displayed_dive, watertemp);
+	ui.DiveType->setCurrentIndex(displayed_dive.dc.dctype);
 
 	if (!clear) {
 		updateGpsCoordinates(&displayed_dive);
@@ -454,6 +460,8 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.TagLabel->setVisible(false);
 			ui.airTempLabel->setVisible(false);
 			ui.airtemp->setVisible(false);
+			ui.DiveType->setVisible(false);
+			ui.TypeLabel->setVisible(false);
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
@@ -483,6 +491,8 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.tagWidget->setVisible(true);
 			ui.airTempLabel->setVisible(true);
 			ui.airtemp->setVisible(true);
+			ui.TypeLabel->setVisible(true);
+			ui.DiveType->setVisible(true);
 			ui.waterTempLabel->setVisible(true);
 			ui.watertemp->setVisible(true);
 			/* and fill them from the dive */
@@ -504,6 +514,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
 		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
 		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
+		ui.DiveType->setCurrentIndex(current_dc->dctype);
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
 		QString volumes;
@@ -761,6 +772,8 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
+		if (displayed_dive.dc.dctype != cd->dc.dctype)
+			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.dctype));
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
 		if (displayed_dive.when != cd->when) {
@@ -887,6 +900,7 @@ void MainTab::resetPallete()
 	ui.divemaster->setPalette(p);
 	ui.suit->setPalette(p);
 	ui.airtemp->setPalette(p);
+	ui.DiveType->setPalette(p);
 	ui.watertemp->setPalette(p);
 	ui.dateEdit->setPalette(p);
 	ui.timeEdit->setPalette(p);
@@ -996,6 +1010,15 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 	displayed_dive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.airtemp);
 	validate_temp_field(ui.airtemp, text);
+}
+
+void MainTab::on_divetype_Changed(const int &index)
+{
+	if (editMode == IGNORE)
+		return;
+	displayed_dive.dc.dctype = (enum dive_comp_type) index;
+	update_setpoint_events(&displayed_dive.dc);
+	markChangedWidget(ui.DiveType);
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)

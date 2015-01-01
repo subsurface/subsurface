@@ -29,7 +29,7 @@ static const char *default_tags[] = {
 const char *cylinderuse_text[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen")
 };
-const char *dctype_text[] = { "OC", "CCR", "PSCR" };
+const char *dctype_text[] = { "OC", "CCR", "PSCR", "Freedive" };
 
 int event_is_gaschange(struct event *ev)
 {
@@ -870,6 +870,26 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 		return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
 	else
 		return 0;
+}
+
+void update_setpoint_events(struct divecomputer *dc)
+{
+	struct event *ev = get_next_event(dc->events, "SP change");
+	bool changed = false;
+	int new_setpoint = 0;
+
+	if (dc->dctype == CCR)
+	    new_setpoint = prefs.defaultsetpoint;
+
+	while (ev) {
+		if (ev->time.seconds == 0) {
+			ev->value = new_setpoint;
+			changed = true;
+		}
+		ev = get_next_event(ev->next, "SP change");
+	}
+	if (!changed)
+		add_event(dc, 0, SAMPLE_EVENT_PO2, 0, new_setpoint, "SP change");
 }
 
 void sanitize_gasmix(struct gasmix *mix)

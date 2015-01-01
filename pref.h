@@ -76,6 +76,7 @@ struct preferences {
 	int decosac;
 	int o2consumption; // ml per min
 	int pscr_ratio; // dump ratio times 1000
+	int defaultsetpoint; // default setpoint in mbar
 	bool show_pictures_in_profile;
 	bool use_default_file;
 	facebook_prefs_t facebook;

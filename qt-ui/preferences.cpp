@@ -367,6 +367,7 @@ void PreferencesDialog::loadSettings()
 	GET_BOOL("show_sac", show_sac);
 	GET_BOOL("display_unused_tanks", display_unused_tanks);
 	GET_BOOL("show_average_depth", show_average_depth);
+	GET_INT("default_setpoint", defaultsetpoint);
 	s.endGroup();
 
 	s.beginGroup("GeneralSettings");
