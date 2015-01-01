@@ -86,7 +86,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	temperatureItem(new DiveTemperatureItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	gasPressureItem(new DiveGasPressureItem()),
-        meanDepth(new MeanDepthLine()),
         meanDepthItem(new DiveMeanDepthItem()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
@@ -157,7 +156,6 @@ ProfileWidget2::~ProfileWidget2()
         delete meanDepthItem;
 	delete cylinderPressureAxis;
 	delete gasPressureItem;
-	delete meanDepth;
 	delete diveComputerText;
 	delete diveCeiling;
 	delete reportedCeiling;
@@ -192,7 +190,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(temperatureItem);
         scene()->addItem(meanDepthItem);
 	scene()->addItem(gasPressureItem);
-	scene()->addItem(meanDepth);
 	// I cannot seem to figure out if an object that I find with itemAt() on the scene
 	// is the object I am looking for - my guess is there's a simple way in Qt to do that
 	// but nothing I tried worked.
@@ -273,11 +270,6 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
-	meanDepth->setLine(0, 0, 96, 0);
-	meanDepth->setX(3);
-	meanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-	meanDepth->setZValue(1);
-	meanDepth->setAxis(profileYAxis);
 
 	instantMeanDepth->setLine(0, 0, 96, 0);
 	instantMeanDepth->setX(3);
@@ -607,10 +599,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	rulerItem->setPlotInfo(plotInfo);
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
-	meanDepth->setVisible(prefs.show_average_depth);
-	meanDepth->setMeanDepth(plotInfo.meandepth);
-	meanDepth->setLine(0, 0, timeAxis->posAtValue(currentdc->duration.seconds), 0);
-	Animations::moveTo(meanDepth,3, profileYAxis->posAtValue(plotInfo.meandepth));
 
 	instantMeanDepth->vAxis = profileYAxis;
 	instantMeanDepth->hAxis = timeAxis;
@@ -894,7 +882,6 @@ void ProfileWidget2::setEmptyState()
 	temperatureAxis->setVisible(false);
 	cylinderPressureAxis->setVisible(false);
 	toolTipItem->setVisible(false);
-	meanDepth->setVisible(false);
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
 	reportedCeiling->setVisible(false);
@@ -1007,7 +994,6 @@ void ProfileWidget2::setProfileState()
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	heartBeatItem->setVisible(prefs.hrgraph);
-	meanDepth->setVisible(true);
         meanDepthItem->setVisible(prefs.show_average_depth);
 
 	diveComputerText->setVisible(true);

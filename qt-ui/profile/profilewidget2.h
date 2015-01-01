@@ -165,7 +165,6 @@ private:
         DiveMeanDepthItem   *meanDepthItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
-	MeanDepthLine *meanDepth;
 	QList<DiveEventItem *> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveCalculatedCeiling *diveCeiling;
