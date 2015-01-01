@@ -71,5 +71,8 @@
         <file>icons/ostc3.png</file>
         <file>icons/suunto_vyper.png</file>
         <file alias="facebook">icons/facebook.png</file>
+	<file alias="filter-reset">icons/edit-undo.svg</file>
+	<file alias="filter-hide">icons/go-top.svg</file>
+	<file alias="filter-close">icons/process-stop.svg</file>
     </qresource>
 </RCC>

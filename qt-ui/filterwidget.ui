@@ -74,7 +74,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:/plus</normaloff>:/plus</iconset>
+         <normaloff>:/filter-reset</normaloff>:/filter-reset</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -88,7 +88,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:/average</normaloff>:/average</iconset>
+         <normaloff>:/filter-hide</normaloff>:/filter-hide</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -102,7 +102,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:/flag</normaloff>:/flag</iconset>
+         <normaloff>:/filter-close</normaloff>:/filter-close</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
