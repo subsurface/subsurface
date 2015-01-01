@@ -84,6 +84,18 @@ private:
 	QColor profileColor;
 };
 
+class DiveMeanDepthItem : public AbstractProfilePolygonItem {
+	Q_OBJECT
+public:
+	DiveMeanDepthItem();
+	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	virtual void settingsChanged();
+private:
+	QString visibilityKey;
+
+};
+
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:

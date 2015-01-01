@@ -23,6 +23,7 @@ struct dive;
 struct plot_info;
 class ToolTipItem;
 class MeanDepthLine;
+class DiveMeanDepth;
 class DiveReportedCeiling;
 class DiveTextItem;
 class TemperatureAxis;
@@ -161,6 +162,7 @@ private:
 	TimeAxis *timeAxis;
 	DiveProfileItem *diveProfileItem;
 	DiveTemperatureItem *temperatureItem;
+        DiveMeanDepthItem   *meanDepthItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
 	MeanDepthLine *meanDepth;

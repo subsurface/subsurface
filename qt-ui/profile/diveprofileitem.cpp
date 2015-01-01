@@ -568,6 +568,53 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
+DiveMeanDepthItem::DiveMeanDepthItem()
+{
+	QPen pen;
+	pen.setBrush(QBrush(getColor(::MEAN_DEPTH)));
+	pen.setCosmetic(true);
+	pen.setWidth(2);
+	setPen(pen);
+        settingsChanged();
+}
+
+void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	double meandepthvalue;
+	// We don't have enougth data to calculate things, quit.
+	if (!shouldCalculateStuff(topLeft, bottomRight))
+            return;
+
+	QPolygonF poly;
+        plot_data *entry = dataModel->data().entry;
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++, entry++) {
+            // Ignore empty values
+            if (entry->running_sum == 0 || entry->sec == 0)
+                    continue;
+
+            meandepthvalue = entry->running_sum / entry->sec ;
+            QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(meandepthvalue));
+            poly.append(point);
+	}
+
+	setPolygon(poly);
+}
+
+
+void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	if (polygon().isEmpty())
+		return;
+	painter->save();
+	painter->setPen(pen());
+	painter->drawPolyline(polygon());
+	painter->restore();
+}
+
+void DiveMeanDepthItem::settingsChanged()
+{
+	setVisible(prefs.show_average_depth);
+}
 void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	// We don't have enougth data to calculate things, quit.

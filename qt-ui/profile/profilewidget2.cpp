@@ -86,7 +86,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	temperatureItem(new DiveTemperatureItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	gasPressureItem(new DiveGasPressureItem()),
-	meanDepth(new MeanDepthLine()),
+        meanDepth(new MeanDepthLine()),
+        meanDepthItem(new DiveMeanDepthItem()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
 	reportedCeiling(new DiveReportedCeiling()),
@@ -153,6 +154,7 @@ ProfileWidget2::~ProfileWidget2()
 	delete timeAxis;
 	delete diveProfileItem;
 	delete temperatureItem;
+        delete meanDepthItem;
 	delete cylinderPressureAxis;
 	delete gasPressureItem;
 	delete meanDepth;
@@ -188,6 +190,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(diveProfileItem);
 	scene()->addItem(cylinderPressureAxis);
 	scene()->addItem(temperatureItem);
+        scene()->addItem(meanDepthItem);
 	scene()->addItem(gasPressureItem);
 	scene()->addItem(meanDepth);
 	// I cannot seem to figure out if an object that I find with itemAt() on the scene
@@ -304,6 +307,9 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(ambPressureItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
 	setupItem(gflineItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
+        setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
+
+
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
@@ -1002,6 +1008,7 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	heartBeatItem->setVisible(prefs.hrgraph);
 	meanDepth->setVisible(true);
+        meanDepthItem->setVisible(prefs.show_average_depth);
 
 	diveComputerText->setVisible(true);
 	diveComputerText->setPos(itemPos.dcLabel.on);
