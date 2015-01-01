@@ -943,7 +943,7 @@ void InstantMeanDepthLine::mouseMoved(int time, int depth)
 	int count = model->data().nr;
 	for(int i = 0; i < count; i++){
 		struct plot_data pI = model->data().entry[i];
-		if (pI.sec == time) {
+		if (pI.sec == time && pI.sec != 0) {
 			setMeanDepth(pI.running_sum / time);
 			setLine(0, 0, hAxis->posAtValue(time), 0);
 			setPos(pos().x(), vAxis->posAtValue(pI.running_sum / time));
