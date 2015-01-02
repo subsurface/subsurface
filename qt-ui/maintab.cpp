@@ -157,9 +157,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		}
 	}
 	// QLineEdit and QLabels should have minimal margin on the left and right but not waste vertical space
-	QMargins margins(1, 0, 1, 0);
-	ui.location->setContentsMargins(margins);
-	ui.suit->setContentsMargins(margins);
+	QMargins margins(3, 2, 1, 0);
 	Q_FOREACH (QLabel *label, findChildren<QLabel *>()) {
 		label->setContentsMargins(margins);
 	}
