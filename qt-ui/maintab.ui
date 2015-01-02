@@ -17,7 +17,7 @@
    <attribute name="title">
     <string>Dive notes</string>
    </attribute>
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="diveNotesLayout">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -56,7 +56,7 @@
          <height>770</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="diveNotesScrollAreaLayout">
         <property name="leftMargin">
          <number>6</number>
         </property>
@@ -327,7 +327,7 @@
          </widget>
         </item>
         <item row="13" column="0" colspan="3">
-         <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <layout class="QHBoxLayout" name="notesAndSocialNetworksLayout">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -340,7 +340,7 @@
           </item>
           <item>
            <widget class="QWidget" name="socialNetworks" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_4">
+            <layout class="QVBoxLayout" name="socialNetworksLayout">
              <property name="spacing">
               <number>0</number>
              </property>
@@ -404,7 +404,7 @@
    <attribute name="title">
     <string>Equipment</string>
    </attribute>
-   <layout class="QGridLayout" name="gridLayout_4">
+   <layout class="QGridLayout" name="equiptmentTabLayout">
     <item row="0" column="0">
      <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
     </item>
@@ -428,7 +428,7 @@
          <height>752</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_5">
+       <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -446,7 +446,7 @@
         </property>
         <item row="1" column="0">
          <widget class="QWidget" name="widget" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="cylinderWeightsLayout">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -484,7 +484,7 @@
    <attribute name="title">
     <string>Dive info</string>
    </attribute>
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="diveInfoLayout">
     <item row="0" column="0">
      <widget class="KMessageWidget" name="diveInfoMessage" native="true"/>
     </item>
@@ -508,7 +508,7 @@
          <height>752</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_6">
+       <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -529,7 +529,7 @@
           <property name="title">
            <string>Date</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <layout class="QHBoxLayout" name="diveInfoDateLayout">
            <item>
             <widget class="QLabel" name="dateText">
              <property name="text">
@@ -548,7 +548,7 @@
           <property name="title">
            <string>Interval</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_13">
+          <layout class="QHBoxLayout" name="diveInfoSurfintervallLayout">
            <item>
             <widget class="QLabel" name="surfaceIntervalText">
              <property name="text">
@@ -567,7 +567,7 @@
           <property name="title">
            <string>Gases used</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <layout class="QHBoxLayout" name="diveInfoGasesUsedLayout">
            <item>
             <widget class="QLabel" name="oxygenHeliumText">
              <property name="text">
@@ -586,7 +586,7 @@
           <property name="title">
            <string>Gas consumed</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <layout class="QHBoxLayout" name="diveInfoGasConsumedLayout">
            <item>
             <widget class="QLabel" name="gasUsedText">
              <property name="text">
@@ -605,7 +605,7 @@
           <property name="title">
            <string>SAC</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="diveInfoSacLayout">
            <item>
             <widget class="QLabel" name="sacText">
              <property name="text">
@@ -624,7 +624,7 @@
           <property name="title">
            <string>CNS</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_14">
+          <layout class="QHBoxLayout" name="diveInfoCnsLayout">
            <item>
             <widget class="QLabel" name="maxcnsText">
              <property name="text">
@@ -643,7 +643,7 @@
           <property name="title">
            <string>OTU</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="diveInfoOtuLayout">
            <item>
             <widget class="QLabel" name="otuText">
              <property name="text">
@@ -662,7 +662,7 @@
           <property name="title">
            <string>Max. depth</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <layout class="QHBoxLayout" name="diveInfoMaxDepthLayout">
            <item>
             <widget class="QLabel" name="maximumDepthText">
              <property name="text">
@@ -681,7 +681,7 @@
           <property name="title">
            <string>Avg. depth</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <layout class="QHBoxLayout" name="diveInfoAvgDepthLayout">
            <item>
             <widget class="QLabel" name="averageDepthText">
              <property name="text">
@@ -700,7 +700,7 @@
           <property name="title">
            <string>Air pressure</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <layout class="QHBoxLayout" name="diveInfoAirPressureLayout">
            <item>
             <widget class="QLabel" name="airPressureText">
              <property name="text">
@@ -719,7 +719,7 @@
           <property name="title">
            <string>Air temp.</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <layout class="QHBoxLayout" name="diveInfoAirTempLayout">
            <item>
             <widget class="QLabel" name="airTemperatureText">
              <property name="text">
@@ -738,7 +738,7 @@
           <property name="title">
            <string>Water temp.</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <layout class="QHBoxLayout" name="diveInfoWaterTempLayout">
            <item>
             <widget class="QLabel" name="waterTemperatureText">
              <property name="text">
@@ -757,7 +757,7 @@
           <property name="title">
            <string>Dive time</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <layout class="QHBoxLayout" name="diveInfoDiveTimeLayout">
            <item>
             <widget class="QLabel" name="diveTimeText">
              <property name="text">
@@ -776,7 +776,7 @@
           <property name="title">
            <string>Salinity</string>
           </property>
-          <layout class="QHBoxLayout">
+          <layout class="QHBoxLayout" name="diveInfoSalinityLayout">
            <item>
             <widget class="QLabel" name="salinityText">
              <property name="alignment">
@@ -813,7 +813,7 @@
    <attribute name="title">
     <string>Stats</string>
    </attribute>
-   <layout class="QGridLayout" name="gridLayout1">
+   <layout class="QGridLayout" name="statsLayout">
     <item row="0" column="1">
      <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
     </item>
@@ -837,7 +837,7 @@
          <height>752</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_7">
+       <layout class="QGridLayout" name="statsScrollAreaLayout">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -858,7 +858,7 @@
           <property name="title">
            <string>Depth</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2b">
+          <layout class="QHBoxLayout" name="statsDepthLayout">
            <item>
             <widget class="MinMaxAvgWidget" name="depthLimits" native="true"/>
            </item>
@@ -870,7 +870,7 @@
           <property name="title">
            <string>Temperature</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_5b">
+          <layout class="QHBoxLayout" name="statsTempLayout">
            <item>
             <widget class="MinMaxAvgWidget" name="tempLimits" native="true"/>
            </item>
@@ -882,7 +882,7 @@
           <property name="title">
            <string>SAC</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_10b">
+          <layout class="QHBoxLayout" name="statsSacLayout">
            <item>
             <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
            </item>
@@ -890,13 +890,13 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <layout class="QVBoxLayout" name="vl0">
+         <layout class="QVBoxLayout" name="statsOuterDurationLayout">
           <item>
            <widget class="QGroupBox" name="groupBox_14">
             <property name="title">
              <string>Duration</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_12b">
+            <layout class="QHBoxLayout" name="statsDurationLayout">
              <item>
               <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
              </item>
@@ -922,13 +922,13 @@
          </layout>
         </item>
         <item row="1" column="1">
-         <layout class="QVBoxLayout" name="vl1">
+         <layout class="QVBoxLayout" name="statsOuterTotalTimeDivesLayout">
           <item>
            <widget class="QGroupBox" name="groupBox_11b">
             <property name="title">
              <string>Total time</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_11b">
+            <layout class="QHBoxLayout" name="statsTotalTimeLayout">
              <item>
               <widget class="QLabel" name="totalTimeAllText">
                <property name="text">
@@ -947,7 +947,7 @@
             <property name="title">
              <string>Dives</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <layout class="QHBoxLayout" name="statsDivesLayout">
              <item>
               <widget class="QLabel" name="divesAllText">
                <property name="text">
@@ -980,13 +980,13 @@
          </layout>
         </item>
         <item row="1" column="2">
-         <layout class="QVBoxLayout" name="vl2">
+         <layout class="QVBoxLayout" name="statsOuterGasConsumptionLayout">
           <item>
            <widget class="QGroupBox" name="groupBox_13">
             <property name="title">
              <string>Gas consumption</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_15b">
+            <layout class="QHBoxLayout" name="statsGasConsumptionLayout">
              <item>
               <widget class="QLabel" name="gasConsumption">
                <property name="text">
@@ -1031,7 +1031,7 @@
    <attribute name="title">
     <string>Photos</string>
    </attribute>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="photosLayout">
     <item>
      <widget class="DivePictureWidget" name="photosView">
       <property name="viewMode">
@@ -1045,13 +1045,13 @@
    <attribute name="title">
     <string>Extra data</string>
    </attribute>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="extraDataOuterLayout">
     <item>
      <widget class="QGroupBox" name="groupBox_16">
       <property name="title">
        <string>Additional data from dive computer</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="extraDataLayout">
        <item>
         <widget class="QTableView" name="extraData"/>
        </item>
