@@ -86,7 +86,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	temperatureItem(new DiveTemperatureItem()),
 	cylinderPressureAxis(new DiveCartesianAxis()),
 	gasPressureItem(new DiveGasPressureItem()),
-        meanDepthItem(new DiveMeanDepthItem()),
+	meanDepthItem(new DiveMeanDepthItem()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
 	reportedCeiling(new DiveReportedCeiling()),
@@ -117,7 +117,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addItemsToScene();
 	scene()->installEventFilter(this);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-	connect(this, SIGNAL(mouseMoved(int,int)), instantMeanDepth, SLOT(mouseMoved(int,int)));
+	connect(this, SIGNAL(mouseMoved(int, int)), instantMeanDepth, SLOT(mouseMoved(int, int)));
 	QAction *action = NULL;
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
@@ -153,7 +153,7 @@ ProfileWidget2::~ProfileWidget2()
 	delete timeAxis;
 	delete diveProfileItem;
 	delete temperatureItem;
-        delete meanDepthItem;
+	delete meanDepthItem;
 	delete cylinderPressureAxis;
 	delete gasPressureItem;
 	delete diveComputerText;
@@ -188,7 +188,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(diveProfileItem);
 	scene()->addItem(cylinderPressureAxis);
 	scene()->addItem(temperatureItem);
-        scene()->addItem(meanDepthItem);
+	scene()->addItem(meanDepthItem);
 	scene()->addItem(gasPressureItem);
 	// I cannot seem to figure out if an object that I find with itemAt() on the scene
 	// is the object I am looking for - my guess is there's a simple way in Qt to do that
@@ -299,8 +299,7 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(ambPressureItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
 	setupItem(gflineItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
-        setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
-
+	setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
 
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS, VISIBILITY_SETTINGS)              \
@@ -440,8 +439,8 @@ void ProfileWidget2::setupItemSizes()
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
-	DiveCartesianAxis *vAxis, DivePlotDataModel *model,
-	int vData, int hData, int zValue)
+			       DiveCartesianAxis *vAxis, DivePlotDataModel *model,
+			       int vData, int hData, int zValue)
 {
 	item->setHorizontalAxis(hAxis);
 	item->setVerticalAxis(vAxis);
@@ -537,7 +536,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 */
 	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth);
-	if(shouldCalculateMaxTime)
+	if (shouldCalculateMaxTime)
 		maxtime = get_maxtime(&plotInfo);
 
 	/* Only update the max depth if it's bigger than the current ones
@@ -545,7 +544,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 * otherwhise, update normally.
 	 */
 	int newMaxDepth = get_maxdepth(&plotInfo);
-	if(!shouldCalculateMaxDepth) {
+	if (!shouldCalculateMaxDepth) {
 		if (maxdepth < newMaxDepth) {
 			maxdepth = newMaxDepth;
 		}
@@ -727,7 +726,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);
-	if(currentState == PLAN)
+	if (currentState == PLAN)
 		shouldCalculateMaxTime = false;
 }
 
@@ -746,7 +745,7 @@ void ProfileWidget2::divePlannerHandlerReleased()
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
-	if(currentState == PLAN){
+	if (currentState == PLAN) {
 		shouldCalculateMaxTime = true;
 		replot();
 	}
@@ -770,7 +769,7 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 	if (currentState == EMPTY)
 		return;
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
-	if(event->buttons() == Qt::LeftButton)
+	if (event->buttons() == Qt::LeftButton)
 		return;
 	if (event->delta() > 0 && zoomLevel < 20) {
 		scale(zoomFactor, zoomFactor);
@@ -836,18 +835,13 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 	QPointF pos = mapToScene(event->pos());
 	qreal vValue = profileYAxis->valueAt(pos);
 	qreal hValue = timeAxis->valueAt(pos);
-	if ( profileYAxis->maximum() >= vValue
-		&& profileYAxis->minimum() <= vValue){
+	if (profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue) {
 		mouseFollowerHorizontal->setPos(timeAxis->pos().x(), pos.y());
 	}
-	if ( timeAxis->maximum() >= hValue
-		&& timeAxis->minimum() <= hValue){
+	if (timeAxis->maximum() >= hValue && timeAxis->minimum() <= hValue) {
 		mouseFollowerVertical->setPos(pos.x(), profileYAxis->line().y1());
 	}
-	if ( timeAxis->maximum() >= hValue
-	     && timeAxis->minimum() <= hValue
-	     && profileYAxis->maximum() >= vValue
-	     && profileYAxis->minimum() <= vValue )
+	if (timeAxis->maximum() >= hValue && timeAxis->minimum() <= hValue && profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue)
 		emit mouseMoved(hValue, vValue);
 }
 
@@ -895,14 +889,14 @@ void ProfileWidget2::setEmptyState()
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 
-	#define HIDE_ALL(TYPE, CONTAINER) \
+#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 	HIDE_ALL(DiveCalculatedTissue, allTissues);
 	HIDE_ALL(DivePercentageItem, allPercentages);
 	HIDE_ALL(DiveEventItem, eventItems);
 	HIDE_ALL(DiveHandler, handles);
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
-	#undef HIDE_ALL
+#undef HIDE_ALL
 }
 
 void ProfileWidget2::setProfileState()
@@ -913,8 +907,8 @@ void ProfileWidget2::setProfileState()
 
 	disconnectTemporaryConnections();
 	connect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
-	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
-	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 	/* show the same stuff that the profile shows. */
 
 	//TODO: Move the DC handling to another method.
@@ -994,7 +988,7 @@ void ProfileWidget2::setProfileState()
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	heartBeatItem->setVisible(prefs.hrgraph);
-        meanDepthItem->setVisible(prefs.show_average_depth);
+	meanDepthItem->setVisible(prefs.show_average_depth);
 
 	diveComputerText->setVisible(true);
 	diveComputerText->setPos(itemPos.dcLabel.on);
@@ -1021,11 +1015,11 @@ void ProfileWidget2::setProfileState()
 	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);
 
-	#define HIDE_ALL(TYPE, CONTAINER) \
+#define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 	HIDE_ALL(DiveHandler, handles);
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
-	#undef HIDE_ALL
+#undef HIDE_ALL
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 }
@@ -1399,8 +1393,8 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
 	isGrayscale = mode ? grayscale : false;
-	mouseFollowerHorizontal->setVisible( !mode );
-	mouseFollowerVertical->setVisible( !mode );
+	mouseFollowerHorizontal->setVisible(!mode);
+	mouseFollowerVertical->setVisible(!mode);
 }
 
 void ProfileWidget2::setFontPrintScale(double scale)
@@ -1704,7 +1698,7 @@ void ProfileWidget2::keyEscAction()
 
 void ProfileWidget2::plotPictures()
 {
-	Q_FOREACH(DivePictureItem *item, pictures){
+	Q_FOREACH (DivePictureItem *item, pictures) {
 		item->hide();
 		item->deleteLater();
 	}
@@ -1716,14 +1710,14 @@ void ProfileWidget2::plotPictures()
 	double x, y, lastX = -1.0, lastY = -1.0;
 	DivePictureModel *m = DivePictureModel::instance();
 	for (int i = 0; i < m->rowCount(); i++) {
-		int offsetSeconds = m->index(i,1).data(Qt::UserRole).value<int>();
+		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
 		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
 		// information area.
 		if (!offsetSeconds)
 			continue;
 		DivePictureItem *item = new DivePictureItem();
-		item->setPixmap(m->index(i,0).data(Qt::DecorationRole).value<QPixmap>());
-		item->setFileUrl(m->index(i,1).data().toString());
+		item->setPixmap(m->index(i, 0).data(Qt::DecorationRole).value<QPixmap>());
+		item->setFileUrl(m->index(i, 1).data().toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(offsetSeconds);

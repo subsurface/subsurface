@@ -575,7 +575,7 @@ DiveMeanDepthItem::DiveMeanDepthItem()
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
-        settingsChanged();
+	settingsChanged();
 }
 
 void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -583,18 +583,18 @@ void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 	double meandepthvalue;
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
-            return;
+		return;
 
 	QPolygonF poly;
-        plot_data *entry = dataModel->data().entry;
+	plot_data *entry = dataModel->data().entry;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++, entry++) {
-            // Ignore empty values
-            if (entry->running_sum == 0 || entry->sec == 0)
-                    continue;
+		// Ignore empty values
+		if (entry->running_sum == 0 || entry->sec == 0)
+			continue;
 
-            meandepthvalue = entry->running_sum / entry->sec ;
-            QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(meandepthvalue));
-            poly.append(point);
+		meandepthvalue = entry->running_sum / entry->sec;
+		QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(meandepthvalue));
+		poly.append(point);
 	}
 
 	setPolygon(poly);
@@ -686,7 +686,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 			if (!seen_cyl[cyl]) {
 				plotPressureValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
 				plotGasValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
-					       displayed_dive.cylinder[cyl].gasmix);
+					     displayed_dive.cylinder[cyl].gasmix);
 				seen_cyl[cyl] = true;
 			}
 		}
@@ -869,7 +869,8 @@ MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)),
 	rightText->setPos(line().length(), 0);
 }
 
-void MeanDepthLine::setModel(DivePlotDataModel *m){
+void MeanDepthLine::setModel(DivePlotDataModel *m)
+{
 	model = m;
 }
 
@@ -977,9 +978,8 @@ void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert
 	alertColor = alert;
 }
 
-InstantMeanDepthLine::InstantMeanDepthLine(): vAxis(NULL), hAxis(NULL)
+InstantMeanDepthLine::InstantMeanDepthLine() : vAxis(NULL), hAxis(NULL)
 {
-
 }
 
 void InstantMeanDepthLine::mouseMoved(int time, int depth)
@@ -988,7 +988,7 @@ void InstantMeanDepthLine::mouseMoved(int time, int depth)
 		return;
 
 	int count = model->data().nr;
-	for(int i = 0; i < count; i++){
+	for (int i = 0; i < count; i++) {
 		struct plot_data pI = model->data().entry[i];
 		if (pI.sec == time && pI.sec != 0) {
 			setMeanDepth(pI.running_sum / time);

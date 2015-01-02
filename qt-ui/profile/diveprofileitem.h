@@ -78,6 +78,7 @@ public:
 	virtual void settingsChanged();
 	void plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
 	int maxCeiling(int row);
+
 private:
 	unsigned int show_reported_ceiling;
 	unsigned int reported_ceiling_in_red;
@@ -91,9 +92,9 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void settingsChanged();
+
 private:
 	QString visibilityKey;
-
 };
 
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
@@ -114,6 +115,7 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	virtual void settingsChanged();
+
 private:
 	void createTextItem(int seconds, int hr);
 	QString visibilityKey;
@@ -126,6 +128,7 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	virtual void settingsChanged();
+
 private:
 	QString visibilityKey;
 };
@@ -137,6 +140,7 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	virtual void settingsChanged();
+
 private:
 	QString visibilityKey;
 };
@@ -148,6 +152,7 @@ public:
 	virtual void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	virtual void settingsChanged();
+
 private:
 	QString visibilityKey;
 };
@@ -224,7 +229,8 @@ public:
 	DiveCartesianAxis *hAxis;
 	DiveCartesianAxis *vAxis;
 	InstantMeanDepthLine();
-public slots:
+public
+slots:
 	void mouseMoved(int time, int depth);
 };
 

@@ -123,6 +123,7 @@ slots: // Necessary to call from QAction's signals.
 
 	void divePlannerHandlerClicked();
 	void divePlannerHandlerReleased();
+
 protected:
 	virtual ~ProfileWidget2();
 	virtual void resizeEvent(QResizeEvent *event);
@@ -162,7 +163,7 @@ private:
 	TimeAxis *timeAxis;
 	DiveProfileItem *diveProfileItem;
 	DiveTemperatureItem *temperatureItem;
-        DiveMeanDepthItem   *meanDepthItem;
+	DiveMeanDepthItem *meanDepthItem;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
 	QList<DiveEventItem *> eventItems;
@@ -190,7 +191,7 @@ private:
 	//specifics for ADD and PLAN
 	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
-	QList<DivePictureItem*> pictures;
+	QList<DivePictureItem *> pictures;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;
