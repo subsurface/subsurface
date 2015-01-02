@@ -571,7 +571,7 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 DiveMeanDepthItem::DiveMeanDepthItem()
 {
 	QPen pen;
-	pen.setBrush(QBrush(getColor(::MEAN_DEPTH)));
+	pen.setBrush(QBrush(getColor(::HR_AXIS)));
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
