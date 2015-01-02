@@ -80,25 +80,6 @@
 
     !insertmacro MUI_LANGUAGE "English"
 
-#--------------------------------
-# Default installer section
-
-Function .onInit
-    !include x64.nsh
-    ${If} 64BITBUILDTOKEN
-        ${IfNot} ${RunningX64}
-            MessageBox MB_OK "You cannot install the 64bit version of Subsurface on a 32bit version of Windows"
-                Abort "Please download the 32bit version of the Subsurface installer"
-        ${EndIf}
-    ${Else}
-        ${If} ${RunningX64}
-            MessageBox MB_YESNO "Do you really want to install the 32bit version of Subsurface on your 64bit version of Windows?" IDYES goforit
-                Abort "Please download the 64bit version of the Subsurface installer"
-            goforit:
-        ${EndIf}
-    ${Endif}
-FunctionEnd
-
 Section
     SetShellVarContext all
 
