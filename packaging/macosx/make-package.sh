@@ -20,17 +20,17 @@ VERSION=$(./scripts/get-version linux)
 
 
 # first build and install Subsurface and then clean up the staging area
-sudo rm -rf ./Subsurface.app
-make
-sudo make mac-deploy
-sudo install_name_tool -change /Users/hohndel/src/marble/install/libssrfmarblewidget.0.19.2.dylib @executable_path/../Frameworks/libssrfmarblewidget.0.19.2.dylib Subsurface.app/Contents/MacOS/Subsurface
+rm -rf ./Subsurface.app
+make -j8
+make mac-deploy
+install_name_tool -change /Users/hohndel/src/marble/install/libssrfmarblewidget.0.19.2.dylib @executable_path/../Frameworks/libssrfmarblewidget.0.19.2.dylib Subsurface.app/Contents/MacOS/Subsurface
 
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
 mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
-sudo sh ./packaging/macosx/sign
+sh ./packaging/macosx/sign
 
 if [ -f ./Subsurface-$VERSION.dmg ]; then
 	rm ./Subsurface-$VERSION.dmg.bak
