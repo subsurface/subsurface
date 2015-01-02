@@ -919,7 +919,7 @@ void MainWindow::checkSurvey(QSettings *s)
 	}
 	// wait a week for production versions, but not at all for non-tagged builds
 	QString ver(VERSION_STRING);
-	int waitTime = ver.contains('-') ? -1 : 7;
+	int waitTime = 7;
 	QDate firstUse42 = s->value("FirstUse42").toDate();
 	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s->contains("SurveyDone"))) {
 		if (!survey)
