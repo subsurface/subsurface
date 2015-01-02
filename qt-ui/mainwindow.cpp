@@ -64,7 +64,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionPreviousDive(0),
 	helpView(0),
 	state(VIEWALL),
-	updateManager(0),
 	survey(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -136,6 +135,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	QLayoutItem *p = ui.gridLayout->takeAt(0);
 	ui.gridLayout->addWidget(toolBar, 0, 0);
 	ui.gridLayout->addItem(p, 0, 1);
+	updateManager = new UpdateManager(this);
 }
 
 MainWindow::~MainWindow()
