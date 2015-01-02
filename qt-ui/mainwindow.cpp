@@ -135,6 +135,26 @@ MainWindow::MainWindow() : QMainWindow(),
 	QLayoutItem *p = ui.gridLayout->takeAt(0);
 	ui.gridLayout->addWidget(toolBar, 0, 0);
 	ui.gridLayout->addItem(p, 0, 1);
+
+	// and now for some layout hackery
+	// this gets us consistent margins everywhere and a much more balanced look
+	QMargins margins(5, 5, 5, 5);
+	QList<QString> dontChange;
+	dontChange << "notesAndSocialNetworksLayout" << ui.gridLayout->objectName();
+	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
+		// lots of internally used layouts by Qt have no names
+		// don't mess with those (or scroll bars look terrible, among other things
+		if (layout->objectName().isEmpty())
+			continue;
+		// this allows us to exclude specific layouts where the one size fits all
+		// doesn't fit
+		if (dontChange.contains(layout->objectName()))
+			continue;
+		layout->setContentsMargins(margins);
+	}
+	margins = QMargins(0, 5, 5, 5);
+	ui.gridLayout->setContentsMargins(margins);
+
 	updateManager = new UpdateManager(this);
 }
 
