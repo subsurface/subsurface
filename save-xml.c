@@ -213,7 +213,10 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 {
 	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " depth='", sample->depth.mm, " m'");
-	put_temperature(b, sample->temperature, " temp='", " C'");
+	if (sample->temperature.mkelvin && sample->temperature.mkelvin != old->temperature.mkelvin) {
+		put_temperature(b, sample->temperature, " temp='", " C'");
+		old->temperature = sample->temperature;
+	}
 	put_pressure(b, sample->cylinderpressure, " pressure='", " bar'");
 	put_pressure(b, sample->o2cylinderpressure, " o2pressure='", " bar'");
 
