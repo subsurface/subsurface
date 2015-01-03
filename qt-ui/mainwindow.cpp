@@ -141,13 +141,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
 	margins = QMargins(5, 5, 5, 5);
-	QList<QString> dontChange;
-	dontChange << "notesAndSocialNetworksLayout" <<
-		      "mainTabOuterLayout" <<
-		      "ratingVisibilityWidgets" <<
-		      "temperatureLabels" <<
-		      "airWaterTempLayout" <<
-		      "profileInnerLayout";
+	QMargins zeroMargin(0, 0, 0, 0);
+	QList<QString> noMarginList;
+	noMarginList << "notesAndSocialNetworksLayout" <<
+			"mainTabOuterLayout" <<
+			"ratingVisibilityWidgets" <<
+			"temperatureLabels" <<
+			"airWaterTempLayout" <<
+			"profileOuterLayout";
 	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
 		// lots of internally used layouts by Qt have no names
 		// don't mess with those (or scroll bars look terrible, among other things
@@ -155,15 +156,13 @@ MainWindow::MainWindow() : QMainWindow(),
 			continue;
 		// this allows us to exclude specific layouts where the one size fits all
 		// doesn't fit
-		if (dontChange.contains(layout->objectName()))
-			continue;
-		layout->setContentsMargins(margins);
+		if (noMarginList.contains(layout->objectName()))
+			layout->setContentsMargins(zeroMargin);
+		else
+			layout->setContentsMargins(margins);
 	}
 	margins = QMargins(0, 5, 5, 5);
 	ui.profileInnerLayout->setContentsMargins(margins);
-	margins = QMargins(0, 0, 0, 0);
-	ui.profileOuterLayout->setContentsMargins(margins);
-
 	updateManager = new UpdateManager(this);
 }
 
