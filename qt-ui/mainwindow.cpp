@@ -127,6 +127,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_FOREACH (QAction *a, profileToolbarActions)
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
+	QMargins margins(5, 5, -5, 5);
+	toolBar->setContentsMargins(margins);
 
 	// since I'm adding the toolBar by hand, because designer
 	// has no concept of "toolbar" for a non-mainwindow widget (...)
@@ -138,11 +140,13 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
-	QMargins margins(5, 5, 5, 5);
+	margins = QMargins(5, 5, 5, 5);
 	QList<QString> dontChange;
 	dontChange << "notesAndSocialNetworksLayout" <<
 		      "mainTabOuterLayout" <<
 		      "ratingVisibilityWidgets" <<
+		      "temperatureLabels" <<
+		      "airWaterTempLayout" <<
 		      "profileInnerLayout";
 	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
 		// lots of internally used layouts by Qt have no names
@@ -157,7 +161,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	}
 	margins = QMargins(0, 5, 5, 5);
 	ui.profileInnerLayout->setContentsMargins(margins);
-	margins = QMargins(5, 5, 0, 5);
+	margins = QMargins(0, 0, 0, 0);
 	ui.profileOuterLayout->setContentsMargins(margins);
 
 	updateManager = new UpdateManager(this);
