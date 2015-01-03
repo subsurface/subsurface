@@ -523,6 +523,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	*entry = entry[-1];         \
 	entry->sec = _time;         \
 	entry->depth = _depth;      \
+	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
 	SENSOR_PRESSURE(entry) = 0; \
 	entry++;                    \
 	idx++
@@ -599,7 +600,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->sec = time;
 		entry->depth = depth;
 
-		entry->running_sum = (entry - 1)->running_sum + (time - lasttime) * (depth + lastdepth) / 2;
+		entry->running_sum = (entry - 1)->running_sum + (time - (entry - 1)->sec) * (depth + (entry - 1)->depth) / 2;
 		entry->stopdepth = sample->stopdepth.mm;
 		entry->stoptime = sample->stoptime.seconds;
 		entry->ndl = sample->ndl.seconds;
