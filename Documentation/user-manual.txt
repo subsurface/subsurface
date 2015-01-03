@@ -3375,7 +3375,7 @@ After selecting _Save_, select the appropriate field delimiter (choose _Tab_ to 
 
 image::images/LOffice_field_options.jpg["FIGURE: Field options",align="center"]
 
-One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCS[Importing dives from manually kept CSV files].
+One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCSV[Importing dives from manually kept CSV files].
 
 === Microsoft _Excel_
 
@@ -3406,7 +3406,7 @@ Click on the left-hand part of the _Save as_ option, NOT on the arrow on the rig
 
 image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialogue",align="center"]
 
-Select the _Save_ button. The CSV-formatted file is saved into the folder that was selected. One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCS[Importing dives from manually kept CSV files].
+Select the _Save_ button. The CSV-formatted file is saved into the folder that was selected. One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCSV[Importing dives from manually kept CSV files].
 
 == APPENDIX E: FAQs.
 
