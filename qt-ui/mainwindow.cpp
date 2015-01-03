@@ -141,6 +141,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	QMargins margins(5, 5, 5, 5);
 	QList<QString> dontChange;
 	dontChange << "notesAndSocialNetworksLayout" <<
+		      "mainTabOuterLayout" <<
+		      "ratingVisibilityWidgets" <<
 		      "profileInnerLayout";
 	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
 		// lots of internally used layouts by Qt have no names
@@ -155,6 +157,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	}
 	margins = QMargins(0, 5, 5, 5);
 	ui.profileInnerLayout->setContentsMargins(margins);
+	margins = QMargins(5, 5, 0, 5);
+	ui.profileOuterLayout->setContentsMargins(margins);
 
 	updateManager = new UpdateManager(this);
 }

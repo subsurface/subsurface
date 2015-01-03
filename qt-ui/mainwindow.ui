@@ -15,18 +15,6 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
     <item>
      <widget class="MultiFilter" name="multiFilter" native="true"/>
     </item>
@@ -48,18 +36,6 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
           <item>
            <widget class="MainTab" name="InfoWidget" native="true"/>
           </item>
@@ -70,21 +46,6 @@
           <bool>true</bool>
          </property>
          <layout class="QHBoxLayout" name="profileOuterLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
           <item>
            <widget class="DivePlannerWidget" name="divePlannerWidget" native="true">
             <property name="enabled">
@@ -97,21 +58,6 @@
        </widget>
        <widget class="QWidget" name="ProfileWidget">
         <layout class="QGridLayout" name="profileInnerLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
          <item row="0" column="0" rowspan="3">
           <widget class="ProfileWidget2" name="newProfile"/>
          </item>
