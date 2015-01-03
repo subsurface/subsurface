@@ -12,18 +12,25 @@ UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 	// is this the first time this version was run?
 	QSettings settings;
 	settings.beginGroup("UpdateManager");
-	if (settings.contains("LastVersionUsed") && settings.value("LastVersionUsed").toString() == GIT_VERSION_STRING) {
-		// this is the version we've been using
+	if (settings.contains("DontCheckForUpdates") && settings.value("DontCheckForUpdates") == "TRUE")
+		return;
+	if (settings.contains("LastVersionUsed")) {
+		// we have checked at least once before
+		if (settings.value("LastVersionUsed").toString() != GIT_VERSION_STRING) {
+			// we have just updated - wait two weeks before you check again
+			settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
+			settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
+			return;
+		}
+		// is it time to check again?
 		QString nextCheckString = settings.value("NextCheck").toString();
 		QDateTime nextCheck = QDateTime::fromString(nextCheckString, Qt::ISODate);
 		if (nextCheck > QDateTime::currentDateTime())
 			return;
 	}
 	settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
-	if (settings.contains("DontCheckForUpdates") && settings.value("DontCheckForUpdates") == "TRUE")
-		return;
-	checkForUpdates(true);
 	settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
+	checkForUpdates(true);
 }
 
 void UpdateManager::checkForUpdates(bool automatic)
