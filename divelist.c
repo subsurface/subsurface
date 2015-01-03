@@ -655,7 +655,6 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 {
 	if (dive->divetrip == trip)
 		return;
-	assert(trip->when);
 	remove_dive_from_trip(dive, false);
 	trip->nrdives++;
 	dive->divetrip = trip;
