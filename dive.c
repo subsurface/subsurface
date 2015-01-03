@@ -1183,6 +1183,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	int maxdepth = dc->maxdepth.mm;
 	int mintemp = 0;
 	int lastdepth = 0;
+	int lasttemp = 0;
 	int lastpressure = 0, lasto2pressure = 0;
 	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
 	int first_cylinder;
@@ -1247,6 +1248,16 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			fixup_pressure(dive, sample, OXYGEN);
 
 		if (temp) {
+			/*
+			 * If we have consecutive identical
+			 * temperature readings, throw away
+			 * the redundant ones.
+			 */
+			if (lasttemp == temp)
+				sample->temperature.mkelvin = 0;
+			else
+				lasttemp = temp;
+
 			if (!mintemp || temp < mintemp)
 				mintemp = temp;
 		}
