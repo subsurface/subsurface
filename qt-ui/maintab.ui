@@ -18,18 +18,6 @@
     <string>Dive notes</string>
    </attribute>
    <layout class="QGridLayout" name="diveNotesLayout">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
     <property name="spacing">
      <number>0</number>
     </property>
@@ -57,18 +45,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="diveNotesScrollAreaLayout">
-        <property name="leftMargin">
-         <number>6</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>6</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <property name="spacing">
          <number>0</number>
         </property>
@@ -344,18 +320,6 @@
              <property name="spacing">
               <number>0</number>
              </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
              <item>
               <spacer name="verticalSpacer">
                <property name="orientation">
@@ -429,18 +393,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <property name="spacing">
          <number>2</number>
         </property>
@@ -448,18 +400,6 @@
          <widget class="QWidget" name="widget" native="true">
           <layout class="QVBoxLayout" name="cylinderWeightsLayout">
            <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -509,18 +449,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <property name="spacing">
          <number>2</number>
         </property>
@@ -838,18 +766,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="statsScrollAreaLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <property name="spacing">
          <number>2</number>
         </property>
