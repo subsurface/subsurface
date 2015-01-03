@@ -11,7 +11,7 @@
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="fullWindowLayout">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -44,7 +44,7 @@
          <number>0</number>
         </property>
         <widget class="QWidget" name="page">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="mainTabOuterLayout">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -69,7 +69,7 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="profileOuterLayout">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -96,7 +96,7 @@
         </widget>
        </widget>
        <widget class="QWidget" name="ProfileWidget">
-        <layout class="QGridLayout" name="gridLayout">
+        <layout class="QGridLayout" name="profileInnerLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -127,7 +127,7 @@
          <number>0</number>
         </property>
         <widget class="QWidget" name="page_3">
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="diveListLayout">
           <item>
            <widget class="DiveListView" name="ListWidget">
             <property name="selectionMode">
@@ -150,7 +150,7 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="globeLayout">
           <item>
            <widget class="GlobeGPS" name="globe" native="true"/>
           </item>
@@ -165,7 +165,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
+           <layout class="QHBoxLayout" name="divePlanLayout">
             <item>
              <widget class="QLabel" name="divePlanOutputLabel">
               <property name="maximumSize">

@@ -132,15 +132,16 @@ MainWindow::MainWindow() : QMainWindow(),
 	// has no concept of "toolbar" for a non-mainwindow widget (...)
 	// I need to take the current item that's in the toolbar Position
 	// and reposition it alongside the grid layout.
-	QLayoutItem *p = ui.gridLayout->takeAt(0);
-	ui.gridLayout->addWidget(toolBar, 0, 0);
-	ui.gridLayout->addItem(p, 0, 1);
+	QLayoutItem *p = ui.profileInnerLayout->takeAt(0);
+	ui.profileInnerLayout->addWidget(toolBar, 0, 0);
+	ui.profileInnerLayout->addItem(p, 0, 1);
 
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
 	QMargins margins(5, 5, 5, 5);
 	QList<QString> dontChange;
-	dontChange << "notesAndSocialNetworksLayout" << ui.gridLayout->objectName();
+	dontChange << "notesAndSocialNetworksLayout" <<
+		      "profileInnerLayout";
 	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
 		// lots of internally used layouts by Qt have no names
 		// don't mess with those (or scroll bars look terrible, among other things
@@ -153,7 +154,7 @@ MainWindow::MainWindow() : QMainWindow(),
 		layout->setContentsMargins(margins);
 	}
 	margins = QMargins(0, 5, 5, 5);
-	ui.gridLayout->setContentsMargins(margins);
+	ui.profileInnerLayout->setContentsMargins(margins);
 
 	updateManager = new UpdateManager(this);
 }
