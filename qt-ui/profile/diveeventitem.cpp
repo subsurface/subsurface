@@ -106,7 +106,7 @@ void DiveEventItem::setupToolTipString()
 
 			/* Do we have an explicit cylinder index?  Show it. */
 			if (internalEvent->gas.index >= 0)
-				name += QString(" (cyl %1)").arg(internalEvent->gas.index);
+				name += QString(" (cyl %1)").arg(internalEvent->gas.index+1);
 		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {

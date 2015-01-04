@@ -57,6 +57,7 @@ int event_gasmix_redundant(struct event *ev)
 
 struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
 {
+	int gas_index = -1;
 	struct event *ev, **p;
 	unsigned int size, len = strlen(name);
 
@@ -79,11 +80,15 @@ struct event *add_event(struct divecomputer *dc, int time, int type, int flags, 
 	case SAMPLE_EVENT_GASCHANGE2:
 		/* High 16 bits are He percentage */
 		ev->gas.mix.he.permille = (value >> 16) * 10;
+
+		/* Extension to the GASCHANGE2 format: cylinder index in 'flags' */
+		if (flags > 0 && flags <= MAX_CYLINDERS)
+			gas_index = flags-1;
 	/* Fallthrough */
 	case SAMPLE_EVENT_GASCHANGE:
 		/* Low 16 bits are O2 percentage */
 		ev->gas.mix.o2.permille = (value & 0xffff) * 10;
-		ev->gas.index = -1;
+		ev->gas.index = gas_index;
 		break;
 	}
 
