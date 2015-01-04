@@ -243,7 +243,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 					  .arg(firmware)
 					  .arg(latestFirmwareAvailable);
 		if (strcmp(data->product, "OSTC Sport") == 0)
-			message += tr("\n\nPlease start bluetooth on your OSTC Sport and do the same perparations as for a loogbook download before continuing with the update");
+			message += tr("\n\nPlease start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update");
 		response.addButton(tr("Not now"), QMessageBox::RejectRole);
 		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
 		response.setText(message);
