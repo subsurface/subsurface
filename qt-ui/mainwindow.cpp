@@ -127,9 +127,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_FOREACH (QAction *a, profileToolbarActions)
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
-	QMargins margins(5, 5, -5, 5);
-	toolBar->setContentsMargins(margins);
-
+	toolBar->setIconSize(QSize(24,24));
 	// since I'm adding the toolBar by hand, because designer
 	// has no concept of "toolbar" for a non-mainwindow widget (...)
 	// I need to take the current item that's in the toolbar Position
@@ -140,7 +138,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
-	margins = QMargins(5, 5, 5, 5);
+	QMargins margins(5, 5, 5, 5);
 	QMargins zeroMargin(0, 0, 0, 0);
 	QList<QString> noMarginList;
 	noMarginList << "notesAndSocialNetworksLayout" <<
