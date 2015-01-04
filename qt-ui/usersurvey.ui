@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>User Survey</string>
+   <string>User survey</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Subsurface User Survey</string>
+    <string>Subsurface user survey</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -60,7 +60,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Technical Diver</string>
+    <string>Technical diver</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="recreational">
@@ -73,7 +73,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Recreational Diver</string>
+    <string>Recreational diver</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="planning">
@@ -86,7 +86,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Dive Planner</string>
+    <string>Dive planner</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="download">
@@ -99,7 +99,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Supported Dive Computer</string>
+    <string>Supported dive computer</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="divecomputer">
@@ -138,7 +138,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Android Companion App</string>
+    <string>Android companion app</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -151,7 +151,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Any Suggestions? (In English)</string>
+    <string>Any suggestions? (in English)</string>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="suggestions">
