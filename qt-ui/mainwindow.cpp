@@ -147,7 +147,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
 	QMargins margins(5, 5, 5, 5);
-	QMargins zeroMargin(0, 0, 0, 0);
+	QMargins zeroMargins(0, 0, 0, 0);
 	QList<QString> noMarginList;
 	noMarginList << "notesAndSocialNetworksLayout" <<
 			"mainTabOuterLayout" <<
@@ -164,12 +164,15 @@ MainWindow::MainWindow() : QMainWindow(),
 		// this allows us to exclude specific layouts where the one size fits all
 		// doesn't fit
 		if (noMarginList.contains(layout->objectName()))
-			layout->setContentsMargins(zeroMargin);
+			layout->setContentsMargins(zeroMargins);
 		else
 			layout->setContentsMargins(margins);
 	}
 	margins = QMargins(0, 5, 5, 5);
 	ui.profileInnerLayout->setContentsMargins(margins);
+	ui.profileInnerLayout->setSpacing(0);
+	toolBar->setContentsMargins(zeroMargins);
+
 	updateManager = new UpdateManager(this);
 }
 
