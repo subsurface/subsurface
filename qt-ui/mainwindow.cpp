@@ -148,6 +148,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			"ratingVisibilityWidgets" <<
 			"temperatureLabels" <<
 			"airWaterTempLayout" <<
+			"fullWindowLayout" <<
 			"profileOuterLayout";
 	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
 		// lots of internally used layouts by Qt have no names
