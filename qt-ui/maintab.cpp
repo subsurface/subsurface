@@ -701,6 +701,8 @@ void MainTab::acceptChanges()
 	int i, addedId = -1;
 	struct dive *d;
 	bool do_replot = false;
+
+	acceptingEdit = true;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
 	ui.dateEdit->setEnabled(true);
@@ -870,6 +872,7 @@ void MainTab::acceptChanges()
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
+	acceptingEdit = false;
 }
 
 void MainTab::resetPallete()
@@ -960,7 +963,7 @@ void MainTab::markChangedWidget(QWidget *w)
 
 void MainTab::on_buddy_textChanged()
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
@@ -973,7 +976,7 @@ void MainTab::on_buddy_textChanged()
 
 void MainTab::on_divemaster_textChanged()
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
@@ -986,7 +989,7 @@ void MainTab::on_divemaster_textChanged()
 
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	displayed_dive.airtemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.airtemp);
@@ -995,7 +998,7 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 
 void MainTab::on_watertemp_textChanged(const QString &text)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	displayed_dive.watertemp.mkelvin = parseTemperatureToMkelvin(text);
 	markChangedWidget(ui.watertemp);
@@ -1032,7 +1035,7 @@ void MainTab::validate_temp_field(QLineEdit *tempField, const QString &text)
 
 void MainTab::on_dateEdit_dateChanged(const QDate &date)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	markChangedWidget(ui.dateEdit);
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -1044,7 +1047,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 
 void MainTab::on_timeEdit_timeChanged(const QTime &time)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	markChangedWidget(ui.timeEdit);
 	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -1074,14 +1077,14 @@ void MainTab::saveTags()
 
 void MainTab::on_tagWidget_textChanged()
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	markChangedWidget(ui.tagWidget);
 }
 
 void MainTab::on_location_textChanged(const QString &text)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	if (currentTrip) {
 		free(displayedTrip.location);
@@ -1119,7 +1122,7 @@ void MainTab::on_location_editingFinished()
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	free(displayed_dive.suit);
 	displayed_dive.suit = strdup(text.toUtf8().data());
@@ -1128,7 +1131,7 @@ void MainTab::on_suit_textChanged(const QString &text)
 
 void MainTab::on_notes_textChanged()
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	if (currentTrip) {
 		free(displayedTrip.notes);
@@ -1145,7 +1148,7 @@ void MainTab::on_notes_textChanged()
 
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	bool gpsChanged = false;
 	bool parsed = false;
@@ -1162,6 +1165,8 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 
 void MainTab::on_rating_valueChanged(int value)
 {
+	if (acceptingEdit == true)
+		return;
 	if (displayed_dive.rating != value) {
 		displayed_dive.rating = value;
 		modified = true;
@@ -1171,6 +1176,8 @@ void MainTab::on_rating_valueChanged(int value)
 
 void MainTab::on_visibility_valueChanged(int value)
 {
+	if (acceptingEdit == true)
+		return;
 	if (displayed_dive.visibility != value) {
 		displayed_dive.visibility = value;
 		modified = true;

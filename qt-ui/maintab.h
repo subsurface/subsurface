@@ -112,6 +112,7 @@ private:
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
+	bool acceptingEdit;
 };
 
 #endif // MAINTAB_H
