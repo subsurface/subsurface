@@ -45,7 +45,7 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
-         <layout class="QHBoxLayout" name="profileOuterLayout">
+         <layout class="QHBoxLayout" name="divePlannerLayout">
           <item>
            <widget class="DivePlannerWidget" name="divePlannerWidget" native="true">
             <property name="enabled">
