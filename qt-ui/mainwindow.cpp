@@ -70,10 +70,18 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_Instance = this;
 	ui.setupUi(this);
 	ui.multiFilter->hide();
-	profileToolbarActions << ui.profCalcAllTissues << ui.profCalcCeiling << ui.profDcCeiling << ui.profEad <<
-		    ui.profHR << ui.profIncrement3m << ui.profMod << ui.profNdl_tts << ui.profNdl_tts <<
-		    ui.profPhe << ui.profPn2 << ui.profPO2 << ui.profRuler << ui.profSAC << ui.profScaled <<
-		    ui.profTogglePicture << ui.profTankbar << ui.profTissues;
+	// what is a sane order for those icons? we should have the ones the user is
+	// most likely to want towards the top so they are always visible
+	// and the ones that someone likely sets and then never touches again towards the bottom
+	profileToolbarActions << ui.profCalcCeiling << ui.profCalcAllTissues << // start with various ceilings
+				 ui.profIncrement3m << ui.profDcCeiling <<
+				 ui.profPhe << ui.profPn2 << ui.profPO2 << // partial pressure graphs
+				 ui.profRuler << ui.profScaled << // measuring and scaling
+				 ui.profTogglePicture << ui.profTankbar <<
+				 ui.profMod << ui.profNdl_tts << // various values that a user is either interested in or not
+				 ui.profEad << ui.profSAC <<
+				 ui.profHR << // very few dive computers support this
+				 ui.profTissues; // maybe less frequently used
 	setWindowIcon(QIcon(":subsurface-icon"));
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
