@@ -310,6 +310,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
+		memset(&displayedTrip, 0, sizeof(displayedTrip));
 		currentTrip = current_dive->divetrip;
 		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
