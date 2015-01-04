@@ -978,7 +978,7 @@ void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert
 	alertColor = alert;
 }
 
-InstantMeanDepthLine::InstantMeanDepthLine() : vAxis(NULL), hAxis(NULL)
+InstantMeanDepthLine::InstantMeanDepthLine() : hAxis(NULL), vAxis(NULL)
 {
 }
 
