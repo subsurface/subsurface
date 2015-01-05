@@ -2868,12 +2868,12 @@ mixed from Air and using:
         <translation> and </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="908"/>
+        <location filename="../qt-ui/maintab.cpp" line="911"/>
         <source>Discard the changes?</source>
         <translation>Discard the changes?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="909"/>
+        <location filename="../qt-ui/maintab.cpp" line="912"/>
         <source>You are about to discard your changes.</source>
         <translation>You are about to discard your changes.</translation>
     </message>
@@ -3020,7 +3020,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="296"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="252"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="255"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
@@ -3380,90 +3380,90 @@ p, li { white-space: pre-wrap; }
         <translation>F11</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="249"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="252"/>
         <source>Open file</source>
         <translation>Open file</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="253"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="256"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="329"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="332"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Please save or cancel the current dive edit before closing the file.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="441"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Please save or cancel the current dive edit before trying to add a dive.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="488"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="491"/>
         <source>Print runtime table</source>
         <translation>Print runtime table</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="831"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="834"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Do you want to save the changes that you made in the file %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="833"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="836"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Do you want to save the changes that you made in the data file?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="841"/>
         <source>Save changes?</source>
         <translation>Save changes?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1193"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1196"/>
         <source>Save file as</source>
         <translation>Save file as</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1334"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1337"/>
         <source>Open dive log file</source>
         <translation>Open dive log file</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="839"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="842"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Changes will be lost if you don&apos;t save them.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="297"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="441"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1375"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="300"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="444"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1378"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="243"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1177"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="246"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1180"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Please save or cancel the current dive edit before opening a new file.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="622"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="625"/>
         <source>Yearly statistics</source>
         <translation>Yearly statistics</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1194"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1197"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML files (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1335"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1338"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1375"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1378"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Please, first finish the current edition before trying to do another.</translation>
     </message>
@@ -3487,10 +3487,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="246"/>
         <source>
 
-Please start bluetooth on your OSTC Sport and do the same perparations as for a loogbook download before continuing with the update</source>
-        <translation>
-
-Please start bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</translation>
+Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -4926,42 +4924,42 @@ Please start bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User survey</source>
-        <translation type="unfinished"/>
+        <translation>User survey</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="31"/>
         <source>Subsurface user survey</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface user survey</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="63"/>
         <source>Technical diver</source>
-        <translation type="unfinished"/>
+        <translation>Technical diver</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="76"/>
         <source>Recreational diver</source>
-        <translation type="unfinished"/>
+        <translation>Recreational diver</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
         <source>Dive planner</source>
-        <translation type="unfinished"/>
+        <translation>Dive planner</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Supported dive computer</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android companion app</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
         <source>Any suggestions? (in English)</source>
-        <translation type="unfinished"/>
+        <translation>Any suggestions? (in English)</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="177"/>

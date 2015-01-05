@@ -2866,12 +2866,12 @@ mixas av luft och:
         <translation>och</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="908"/>
+        <location filename="../qt-ui/maintab.cpp" line="911"/>
         <source>Discard the changes?</source>
         <translation>Kassera ändringarna?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="909"/>
+        <location filename="../qt-ui/maintab.cpp" line="912"/>
         <source>You are about to discard your changes.</source>
         <translation>Du är påväg att kasta bort dina förändringar</translation>
     </message>
@@ -3018,7 +3018,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="296"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="252"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="255"/>
         <source>Open</source>
         <translation>Öppna</translation>
     </message>
@@ -3378,90 +3378,90 @@ p, li { white-space: pre-wrap; }
         <translation>F11</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="249"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="252"/>
         <source>Open file</source>
         <translation>Öppna fil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="253"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="256"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="329"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="332"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du stänger filen.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="441"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker lägga till ett dyk.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="488"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="491"/>
         <source>Print runtime table</source>
         <translation>Skriv ut körtidstabell</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="831"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="834"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Vill du spara ändringarna som du gjort i filen %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="833"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="836"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Vill du spara ändringarna som du gjort i filen?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="841"/>
         <source>Save changes?</source>
         <translation>Spara ändringar?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1193"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1196"/>
         <source>Save file as</source>
         <translation>Spara fil som</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1334"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1337"/>
         <source>Open dive log file</source>
         <translation>Öppna dyklogg</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="839"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="842"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Ändringar förloras om du inte sparar dom.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="297"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="441"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1375"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="300"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="444"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1378"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="243"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1177"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="246"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1180"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker öppna en ny fil.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="622"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="625"/>
         <source>Yearly statistics</source>
         <translation>Årsstatistik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1194"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1197"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML filer (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1335"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1338"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation>Dykloggfiler Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1375"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1378"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Först avsluta den aktuella ändringen innan du försöker göra en annan.</translation>
     </message>
@@ -3485,10 +3485,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="246"/>
         <source>
 
-Please start bluetooth on your OSTC Sport and do the same perparations as for a loogbook download before continuing with the update</source>
-        <translation>
-
-Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som för loggboks nerladdning innan du fortsätter med uppdateringen</translation>
+Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -4929,17 +4927,17 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="31"/>
         <source>Subsurface user survey</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface användarundersökning</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="63"/>
         <source>Technical diver</source>
-        <translation type="unfinished"/>
+        <translation>Teknisk dykare</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="76"/>
         <source>Recreational diver</source>
-        <translation type="unfinished"/>
+        <translation>Sportdykare</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
