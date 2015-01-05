@@ -1094,7 +1094,7 @@ an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introducti
 [icon="images/icons/important.png"]
 [IMPORTANT]
 The CSV import has a couple of caveats. You should avoid some special characters
-like ampersand (&) and double quotes ("), the latter if quoting text cells. The
+like ampersand (&), less than (<), greater than (>) and double quotes ("), the latter if quoting text cells. The
 file should use UTF-8 character set, if having non-ASCII characters. Also the
 size of the CSV file might cause problems. Importing 100 dives at a time
 (without dive profile) has worked previously, but larger files might exceed
