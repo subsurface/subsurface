@@ -766,9 +766,9 @@ int parse_txt_file(const char *filename, const char *csv)
 						QT_TRANSLATE_NOOP("gettextFromC", "gaschange"));
 			if (!has_depth)
 				add_sample_data(sample, POSEIDON_DEPTH, prev_depth);
-			if (!has_setpoint)
+			if (!has_setpoint && prev_setpoint >= 0)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
-			if (!has_ndl)
+			if (!has_ndl && prev_ndl >= 0)
 				add_sample_data(sample, POSEIDON_NDL, prev_ndl);
 			if (cylinder_pressure)
 				dive->cylinder[1].sample_end.mbar = cylinder_pressure * 1000;
