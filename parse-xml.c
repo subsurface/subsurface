@@ -2590,7 +2590,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			/* Regular sample */
 			sample_start();
 			cur_sample->time.seconds = time;
-			cur_sample->depth.mm = ((ptr[4] & 0xff) + ((ptr[5] << 8) & 0xff00)) * 10;
+			cur_sample->depth.mm = ((ptr[5] << 8) + ptr[4]) * 10;
 			sample_end();
 			break;
 		case 1:
