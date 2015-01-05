@@ -991,7 +991,7 @@ void ProfileWidget2::setProfileState()
 	}
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	o2SetpointGasItem->setVisible(true);
+	o2SetpointGasItem->setVisible((current_dc->dctype == CCR) && (prefs.show_ccr_setpoint));
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
 	timeAxis->setPos(itemPos.time.pos.on);
