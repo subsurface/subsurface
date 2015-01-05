@@ -79,8 +79,10 @@ void get_gas_string(const struct gasmix *gasmix, char *text, int len)
 {
 	if (gasmix_is_air(gasmix))
 		snprintf(text, len, "%s", translate("gettextFromC", "air"));
-	else if (get_he(gasmix) == 0)
+	else if (get_he(gasmix) == 0 && get_o2(gasmix) < 1000)
 		snprintf(text, len, translate("gettextFromC", "EAN%d"), (get_o2(gasmix) + 5) / 10);
+	else if (get_he(gasmix) == 0 && get_o2(gasmix) == 1000)
+		snprintf(text, len, "%s", translate("gettextFromC", "oxygen"));
 	else
 		snprintf(text, len, "(%d/%d)", (get_o2(gasmix) + 5) / 10, (get_he(gasmix) + 5) / 10);
 }
