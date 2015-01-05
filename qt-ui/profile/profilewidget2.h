@@ -174,6 +174,7 @@ private:
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
+	PartialPressureGasItem *o2SetpointGasItem;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
 	DiveCartesianAxis *percentageAxis;

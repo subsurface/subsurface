@@ -37,6 +37,7 @@ typedef enum {
 	PN2_ALERT,
 	PHE,
 	PHE_ALERT,
+	O2SETPOINT,
 	PP_LINES,
 
 	/* Other colors */

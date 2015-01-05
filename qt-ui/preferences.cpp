@@ -100,6 +100,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 	ui.gf_low_at_maxdepth->setChecked(prefs.gf_low_at_maxdepth);
+	ui.show_ccr_setpoint->setChecked(prefs.show_ccr_setpoint);
 
 	// units
 	if (prefs.unit_system == METRIC)
@@ -251,6 +252,7 @@ void PreferencesDialog::syncSettings()
 	SAVE_OR_REMOVE("gflow", default_prefs.gflow, ui.gflow->value());
 	SAVE_OR_REMOVE("gfhigh", default_prefs.gfhigh, ui.gfhigh->value());
 	SAVE_OR_REMOVE("gf_low_at_maxdepth", default_prefs.gf_low_at_maxdepth, ui.gf_low_at_maxdepth->isChecked());
+	SAVE_OR_REMOVE("show_ccr_setpoint", default_prefs.show_ccr_setpoint, ui.show_ccr_setpoint->isChecked());
 	SAVE_OR_REMOVE("display_unused_tanks", default_prefs.display_unused_tanks, ui.display_unused_tanks->isChecked());
 	SAVE_OR_REMOVE("show_average_depth", default_prefs.show_average_depth, ui.show_average_depth->isChecked());
 	s.endGroup();
@@ -364,6 +366,7 @@ void PreferencesDialog::loadSettings()
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
 	GET_BOOL("zoomed_plot", zoomed_plot);
 	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 	GET_BOOL("show_sac", show_sac);

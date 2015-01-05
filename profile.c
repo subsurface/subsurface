@@ -17,7 +17,6 @@
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
 
-
 //#define DEBUG_GAS 1
 
 int selected_dive = -1; /* careful: 0 is a valid value */
@@ -609,7 +608,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		if (dc->dctype == CCR) {
-			entry->o2pressure.mbar = sample->setpoint.mbar;     // for rebreathers
+			entry->o2pressure.mbar = entry->o2setpoint.mbar = sample->setpoint.mbar;     // for rebreathers
 			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
 			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
 			entry->o2sensor[2].mbar = sample->o2sensor[2].mbar;

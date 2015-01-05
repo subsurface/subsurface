@@ -93,6 +93,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	pn2GasItem(new PartialPressureGasItem()),
 	pheGasItem(new PartialPressureGasItem()),
 	po2GasItem(new PartialPressureGasItem()),
+	o2SetpointGasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
 	percentageAxis(new DiveCartesianAxis()),
@@ -162,6 +163,7 @@ ProfileWidget2::~ProfileWidget2()
 	delete pn2GasItem;
 	delete pheGasItem;
 	delete po2GasItem;
+	delete o2SetpointGasItem;
 	delete heartBeatAxis;
 	delete heartBeatItem;
 	delete percentageAxis;
@@ -201,6 +203,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
+	scene()->addItem(o2SetpointGasItem);
 	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(heartBeatItem);
@@ -313,6 +316,7 @@ void ProfileWidget2::setupItemOnScene()
 	CREATE_PP_GAS(pn2GasItem, PN2, PN2, PN2_ALERT, &prefs.pp_graphs.pn2_threshold, "pn2graph");
 	CREATE_PP_GAS(pheGasItem, PHE, PHE, PHE_ALERT, &prefs.pp_graphs.phe_threshold, "phegraph");
 	CREATE_PP_GAS(po2GasItem, PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "po2graph");
+	CREATE_PP_GAS(o2SetpointGasItem, O2SETPOINT, PO2_ALERT, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "po2graph");
 #undef CREATE_PP_GAS
 
 	temperatureAxis->setTextVisible(false);
@@ -526,6 +530,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	if (!currentdc || !currentdc->samples) {
 		currentdc = fake_dc(currentdc);
 	}
+
+	if ((current_dc->dctype == CCR) && (prefs.show_ccr_setpoint))
+		o2SetpointGasItem->setVisible(true);
+	else
+		o2SetpointGasItem->setVisible(false);
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -883,6 +892,7 @@ void ProfileWidget2::setEmptyState()
 	tankItem->setVisible(false);
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
+	o2SetpointGasItem->setVisible(false);
 	pheGasItem->setVisible(false);
 	ambPressureItem->setVisible(false);
 	gflineItem->setVisible(false);
@@ -981,6 +991,7 @@ void ProfileWidget2::setProfileState()
 	}
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
+	o2SetpointGasItem->setVisible(true);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
 	timeAxis->setPos(itemPos.time.pos.on);

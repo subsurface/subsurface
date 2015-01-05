@@ -52,6 +52,8 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.pressures.he;
 		case PO2:
 			return item.pressures.o2;
+		case O2SETPOINT:
+			return item.o2setpoint.mbar / 1000.0;
 		case HEARTBEAT:
 			return item.heartbeat;
 		case AMBPRESSURE:
@@ -127,6 +129,8 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("pHe");
 	case PO2:
 		return tr("pO₂");
+	case O2SETPOINT:
+		return tr("Setpoint");
 	case AMBPRESSURE:
 		return tr("Ambient pressure");
 	case HEARTBEAT:

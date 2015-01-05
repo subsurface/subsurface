@@ -29,6 +29,7 @@ struct preferences default_prefs = {
 	.gfhigh = 75,
 	.animation_speed = 500,
 	.gf_low_at_maxdepth = false,
+	.show_ccr_setpoint = false,
 	.font_size = -1,
 	.display_invalid_dives = false,
 	.show_sac = false,

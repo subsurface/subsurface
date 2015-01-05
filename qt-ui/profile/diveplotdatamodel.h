@@ -59,6 +59,7 @@ public:
 		PN2,
 		PHE,
 		PO2,
+		O2SETPOINT,
 		HEARTBEAT,
 		AMBPRESSURE,
 		GFLINE,

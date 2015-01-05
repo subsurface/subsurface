@@ -43,6 +43,7 @@ struct plot_data {
 	struct gas_pressures pressures;
 	pressure_t o2pressure;  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.
 	pressure_t o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
+	pressure_t o2setpoint;
 	double mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
