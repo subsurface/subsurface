@@ -2605,6 +2605,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			cur_sample->temperature.mkelvin = (((ptr[11] & 0x0F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
 			// ptr[11] & 0xF0 is unknown, and always 0xC in all checked files
 			cur_sample->stopdepth.mm = ((ptr[13] << 8) + ptr[12]) * 10;
+			//ptr[14] and ptr[15] is unknown, always zero in checked files
 			sample_end();
 			break;
 		case 1:
