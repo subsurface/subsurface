@@ -23,6 +23,7 @@ TankItem::TankItem(QObject *parent) :
 	nitroxGradient.setColorAt(0.5, yellow);
 	nitroxGradient.setColorAt(1.0, yellow);
 	nitrox = nitroxGradient;
+	oxygen = green;
 	QLinearGradient trimixGradient(QPointF(0, 0), QPointF(0, height));
 	trimixGradient.setColorAt(0.0, green);
 	trimixGradient.setColorAt(0.49, green);
@@ -63,6 +64,8 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 		rect->setBrush(air);
 	else if (gas->he.permille)
 		rect->setBrush(trimix);
+	else if (gas->o2.permille == 1000)
+		rect->setBrush(oxygen);
 	else
 		rect->setBrush(nitrox);
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle

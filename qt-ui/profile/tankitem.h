@@ -33,7 +33,7 @@ private:
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
 	qreal yPos, height;
-	QBrush air, nitrox, trimix;
+	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
 };
 
