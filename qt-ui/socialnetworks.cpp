@@ -242,12 +242,12 @@ void FacebookManager::sendDive()
 	if (obj.keys().contains("id")){
 		QMessageBox::information(qApp->activeWindow(),
 			tr("Photo Upload Sucessfull"),
-			tr("Your dive profile was updated to facebook."),
+			tr("Your dive profile was updated to Facebook."),
 		QMessageBox::Ok);
 	} else {
 		QMessageBox::information(qApp->activeWindow(),
 			tr("Photo Upload Failed"),
-			tr("Your dive profile was not updated to facebook, \n "
+			tr("Your dive profile was not updated to Facebook, \n "
 			   "please send the following to the developer. \n"
 			   + response),
 		QMessageBox::Ok);
