@@ -2602,6 +2602,8 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			cur_sample->ndl.seconds = ptr[8] * 60;
 			// Guessed unit here.. looks good.
 			cur_sample->tts.seconds = ((ptr[10] & 0x0F) << 4) + ptr[9] * 20;
+			cur_sample->temperature.mkelvin = (((ptr[11] & 0x0F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
+			// ptr[11] & 0xF0 is unknown, and always 0xC in all checked files
 			sample_end();
 			break;
 		case 1:
