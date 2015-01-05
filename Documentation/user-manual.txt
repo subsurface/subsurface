@@ -1091,6 +1091,16 @@ image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 A comma-separated file (.csv) can be used to import dive information either as dive profiles (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive metadata (in case the user keeps dive data in a spreadsheet). For
 an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introduction To CSV Files].
 
+[icon="images/icons/important.png"]
+[IMPORTANT]
+The CSV import has a couple of caveats. You should avoid some special characters
+like ampersand (&) and double quotes ("), the latter if quoting text cells. The
+file should use UTF-8 character set, if having non-ASCII characters. Also the
+size of the CSV file might cause problems. Importing 100 dives at a time
+(without dive profile) has worked previously, but larger files might exceed
+limits of the parser used. When having problems with CSV imports, try first with
+a smaller sample to make sure everything works.
+
 [[S_ImportingCSVDives]]
 ===== Importing dives in CSV format from dive computers or other dive log software
 
