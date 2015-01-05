@@ -2591,6 +2591,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			sample_start();
 			cur_sample->time.seconds = time;
 			cur_sample->depth.mm = ((ptr[5] << 8) + ptr[4]) * 10;
+			// Crazy precision on these stored values...
+			// Only store value if we're in CCR/PSCR mode,
+			// because we rather calculate ppo2 our selfs.
+			if (cur_dc->dctype == CCR || cur_dc->dctype == PSCR)
+				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
 			sample_end();
 			break;
 		case 1:
