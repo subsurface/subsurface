@@ -130,11 +130,11 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case AMBPRESSURE:
 		return tr("Ambient pressure");
 	case HEARTBEAT:
-		return tr("Heart Beat");
+		return tr("Heart beat");
 	case GFLINE:
-		return tr("Gradient Factor");
+		return tr("Gradient factor");
 	case INSTANT_MEANDEPTH:
-		return tr("Mean Depth/s");
+		return tr("Mean depth/s");
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);

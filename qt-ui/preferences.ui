@@ -1008,7 +1008,7 @@
               <item>
                <widget class="QPushButton" name="btnDisconnectFacebook">
                 <property name="text">
-                 <string>Disconnect from facebook</string>
+                 <string>Disconnect from Facebook</string>
                 </property>
                </widget>
               </item>
@@ -1382,12 +1382,12 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="verticalSpeed"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

@@ -279,7 +279,7 @@ void SocialNetworkDialog::selectionChanged()
 	struct dive *d = current_dive;
 	QString fullText;
 	if (ui->date->isChecked()) {
-		fullText += tr("Dive Date: %1 \n").arg(get_short_dive_date_string(d->when));
+		fullText += tr("Dive date: %1 \n").arg(get_short_dive_date_string(d->when));
 	}
 	if (ui->duration->isChecked()) {
 		fullText += tr("Duration: %1 \n").arg(get_dive_duration_string(d->duration.seconds,
@@ -287,7 +287,7 @@ void SocialNetworkDialog::selectionChanged()
 									       tr("min", "abbreviation for minutes")));
 	}
 	if (ui->Location->isChecked()) {
-		fullText += tr("Dive Location: %1 \n").arg(d->location);
+		fullText += tr("Dive location: %1 \n").arg(d->location);
 	}
 	if (ui->Buddy->isChecked()) {
 		fullText += tr("Buddy: %1 \n").arg(d->buddy);
