@@ -33,6 +33,7 @@
 
     <xsl:call-template name="printFields">
       <xsl:with-param name="line" select="$line"/>
+      <xsl:with-param name="remaining" select="$remaining"/>
     </xsl:call-template>
 
     <xsl:if test="$remaining != ''">
@@ -45,8 +46,15 @@
 
   <xsl:template name="printFields">
     <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
 
-
+    <xsl:variable name="number">
+      <xsl:call-template name="getFieldByIndex">
+        <xsl:with-param name="index" select="0"/>
+        <xsl:with-param name="line" select="$line"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="$number >= 0">
     <dive>
       <xsl:attribute name="date">
         <xsl:call-template name="getFieldByIndex">
@@ -63,10 +71,7 @@
       </xsl:attribute>
 
       <xsl:attribute name="number">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="0"/>
-          <xsl:with-param name="line" select="$line"/>
-        </xsl:call-template>
+        <xsl:value-of select="$number"/>
       </xsl:attribute>
 
       <xsl:attribute name="duration">
@@ -345,6 +350,7 @@
         <xsl:call-template name="getFieldByIndex">
           <xsl:with-param name="index" select="20"/>
           <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="remaining" select="$remaining"/>
         </xsl:call-template>
       </xsl:variable>
       <xsl:if test="$notes != ''">
@@ -375,11 +381,13 @@
       </xsl:if>
 
     </dive>
+  </xsl:if>
   </xsl:template>
 
   <xsl:template name="getFieldByIndex">
     <xsl:param name="index"/>
     <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
     <xsl:choose>
       <xsl:when test="$index > 0">
         <xsl:choose>
@@ -387,12 +395,14 @@
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$index -1"/>
               <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$index -1"/>
               <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
@@ -405,9 +415,14 @@
                 <xsl:value-of select="substring-before($line,'&quot;$fs')"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="substring-after($line, '&quot;$fs') = ''">
-                  <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
-                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="substring-after(substring-after($line, '&quot;'), '&quot;') = ''">
+                    <xsl:value-of select="concat(substring-after($line, '&quot;'), $lf, substring-before($remaining, '&quot;'))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
