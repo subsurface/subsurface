@@ -31,13 +31,31 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@duration"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:apply-templates select="divecomputer[1]/depth"/>
+    <xsl:choose>
+      <xsl:when test="divecomputer[1]/depth != ''">
+        <xsl:apply-templates select="divecomputer[1]/depth"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;&quot;</xsl:text>
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;&quot;</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:choose>
       <xsl:when test="divetemperature/@air|divetemperature/@water != ''">
         <xsl:apply-templates select="divetemperature"/>
       </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="divecomputer[1]/temperature != ''">
         <xsl:apply-templates select="divecomputer[1]/temperature"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- empty air temperature -->
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;&quot;</xsl:text>
+        <!-- water temperature -->
+        <xsl:value-of select="$fs"/>
+        <xsl:text>&quot;&quot;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
