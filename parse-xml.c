@@ -2596,6 +2596,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			// because we rather calculate ppo2 our selfs.
 			if (cur_dc->dctype == CCR || cur_dc->dctype == PSCR)
 				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
+			if (!ptr[8] && ptr[9])
+				cur_sample->in_deco = true;
+			// Guessed unit here.. looks good.
+			cur_sample->ndl.seconds = ptr[8] * 60;
+			// Guessed unit here.. looks good.
+			cur_sample->tts.seconds = ((ptr[10] & 0x0F) << 4) + ptr[9] * 20;
 			sample_end();
 			break;
 		case 1:
