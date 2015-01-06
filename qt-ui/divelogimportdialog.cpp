@@ -11,6 +11,8 @@
 #include <QMimeData>
 #include <QFile>
 
+static QString subsurface_mimedata = "subsurface/csvcolumns";
+
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
 	{ "", },
@@ -88,14 +90,14 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
-	mimeData->setText(atClick.data().toString());
+	mimeData->setData(subsurface_mimedata, atClick.data().toByteArray());
 	model()->removeRow(atClick.row());
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() == Qt::IgnoreAction){
 		model()->insertRow(model()->rowCount());
 		QModelIndex idx = model()->index(model()->rowCount()-1, 0);
-		model()->setData(idx, mimeData->text());
+		model()->setData(idx, mimeData->data(subsurface_mimedata));
 	}
 }
 
@@ -105,20 +107,23 @@ void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
 
 void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
 {
-	event->acceptProposedAction();
+	if(event->mimeData()->data(subsurface_mimedata).count())
+		event->acceptProposedAction();
 }
 
 void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 {
-	event->acceptProposedAction();
+	if (event->mimeData()->data(subsurface_mimedata).count())
+		event->acceptProposedAction();
 }
 
 void ColumnNameView::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasText()) {
+	if (mimeData->data(subsurface_mimedata).count()) {
+		QVariant value = QString(mimeData->data(subsurface_mimedata));
 		model()->insertRow(model()->rowCount());
-		model()->setData(model()->index(model()->rowCount()-1, 0), QVariant(mimeData->text()));
+		model()->setData(model()->index(model()->rowCount()-1, 0), value);
 	}
 }
 
@@ -153,8 +158,9 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 
 	event->acceptProposedAction();
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->hasText()) {
-		model()->setData(curr, QVariant(mimeData->text()));
+	if (mimeData->data(subsurface_mimedata).count()) {
+		QVariant value = QString(mimeData->data(subsurface_mimedata));
+		model()->setData(curr, value);
 	}
 }
 
