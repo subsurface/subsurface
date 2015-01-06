@@ -18,7 +18,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ NULL, }
 };
 
-ColumnNameProvider::ColumnNameProvider(QObject *parent)
+ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl size") << tr("Start Pressure")
 		    << tr("End Press") << tr("Max depth") << tr("Mean depth") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp") << tr("Water temp")
@@ -74,6 +74,9 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 
 	ui->CSVSeparator->addItems( QStringList() << tr("Separator") << tr("Tab") << ";" << ",");
 	ui->knownImports->setCurrentIndex(1);
+
+	ColumnNameProvider *provider = new ColumnNameProvider(this);
+	ui->avaliableColumns->setModel(provider);
 
 	/* manually import CSV file */
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
