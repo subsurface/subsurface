@@ -5,6 +5,7 @@
 #include <QAbstractListModel>
 #include <QListView>
 #include <QDragLeaveEvent>
+#include <QTableView>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -38,6 +39,19 @@ protected:
 	void dropEvent(QDropEvent *event);
 private:
 	int currentDraggedIndex;
+};
+
+class ColumnDropCSVView : public QTableView {
+	Q_OBJECT
+public:
+	ColumnDropCSVView(QWidget *parent);
+protected:
+	void dragLeaveEvent(QDragLeaveEvent *leave);
+	void dragEnterEvent(QDragEnterEvent *event);
+	void dragMoveEvent(QDragMoveEvent *event);
+	void dropEvent(QDropEvent *event);
+private:
+	QStringList columns;
 };
 
 class DiveLogImportDialog : public QDialog {

@@ -96,7 +96,6 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 
 void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
 {
-
 }
 
 void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
@@ -118,6 +117,30 @@ void ColumnNameView::dropEvent(QDropEvent *event)
 	}
 }
 
+ColumnDropCSVView::ColumnDropCSVView(QWidget *parent)
+{
+
+}
+
+void ColumnDropCSVView::dragLeaveEvent(QDragLeaveEvent *leave)
+{
+
+}
+
+void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
+{
+
+}
+
+void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
+{
+
+}
+
+void ColumnDropCSVView::dropEvent(QDropEvent *event)
+{
+
+}
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),
