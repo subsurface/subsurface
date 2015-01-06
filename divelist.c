@@ -106,7 +106,7 @@ int trip_has_selected_dives(dive_trip_t *trip)
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
+void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
@@ -121,8 +121,8 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 			continue;
 		if (cylinder_none(cyl))
 			continue;
-		if (o2 < mino2)
-			mino2 = o2;
+		if (o2 > maxo2)
+			maxo2 = o2;
 		if (he > maxhe)
 			goto newmax;
 		if (he < maxhe)
@@ -131,14 +131,14 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
 			continue;
 	newmax:
 		maxhe = he;
-		maxo2 = o2;
+		mino2 = o2;
 	}
 	/* All air? Show/sort as "air"/zero */
 	if (!maxhe && maxo2 == O2_IN_AIR && mino2 == maxo2)
 		maxo2 = mino2 = 0;
-	*o2_p = maxo2;
+	*o2_p = mino2;
 	*he_p = maxhe;
-	*o2low_p = mino2;
+	*o2max_p = maxo2;
 }
 
 int total_weight(struct dive *dive)
@@ -444,22 +444,25 @@ void update_cylinder_related_info(struct dive *dive)
 /* callers needs to free the string */
 char *get_dive_gas_string(struct dive *dive)
 {
-	int o2, he, o2low;
+	int o2, he, o2max;
 	char *buffer = malloc(MAX_GAS_STRING);
 
 	if (buffer) {
-		get_dive_gas(dive, &o2, &he, &o2low);
+		get_dive_gas(dive, &o2, &he, &o2max);
 		o2 = (o2 + 5) / 10;
 		he = (he + 5) / 10;
-		o2low = (o2low + 5) / 10;
+		o2max = (o2max + 5) / 10;
 
 		if (he)
-			snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
+			if (o2 == o2max)
+				snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
+			else
+				snprintf(buffer, MAX_GAS_STRING, "%d/%d" UTF8_ELLIPSIS "%d%%", o2, he, o2max);
 		else if (o2)
-			if (o2 == o2low)
+			if (o2 == o2max)
 				snprintf(buffer, MAX_GAS_STRING, "%d%%", o2);
 			else
-				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d%%", o2low, o2);
+				snprintf(buffer, MAX_GAS_STRING, "%d" UTF8_ELLIPSIS "%d%%", o2, o2max);
 		else
 			strcpy(buffer, translate("gettextFromC", "air"));
 	}
