@@ -34,7 +34,7 @@ bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &paren
 
 bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
 {
-
+	qDebug() << "Calling";
 }
 
 bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -61,7 +61,8 @@ int ColumnNameProvider::rowCount(const QModelIndex &parent) const
 
 ColumnNameView::ColumnNameView(QWidget *parent)
 {
-
+	setAcceptDrops(true);
+	setDragEnabled(true);
 }
 
 void ColumnNameView::mousePressEvent(QMouseEvent *press)
@@ -76,7 +77,29 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	mimeData->setText(atClick.data().toString());
 	drag->setMimeData(mimeData);
 	drag->exec();
+	currentDraggedIndex = atClick.row();
 }
+
+void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
+{
+	model()->removeRow(currentDraggedIndex);
+}
+
+void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
+{
+
+}
+
+void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
+{
+
+}
+
+void ColumnNameView::dropEvent(QDropEvent *event)
+{
+
+}
+
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),

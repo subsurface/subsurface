@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QAbstractListModel>
 #include <QListView>
+#include <QDragLeaveEvent>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -31,6 +32,12 @@ public:
 	ColumnNameView(QWidget *parent);
 protected:
 	void mousePressEvent(QMouseEvent *press);
+	void dragLeaveEvent(QDragLeaveEvent *leave);
+	void dragEnterEvent(QDragEnterEvent *event);
+	void dragMoveEvent(QDragMoveEvent *event);
+	void dropEvent(QDropEvent *event);
+private:
+	int currentDraggedIndex;
 };
 
 class DiveLogImportDialog : public QDialog {
