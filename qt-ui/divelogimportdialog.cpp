@@ -92,8 +92,11 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	model()->removeRow(atClick.row());
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
-	drag->exec();
-
+	if (drag->exec() == Qt::IgnoreAction){
+		model()->insertRow(model()->rowCount());
+		QModelIndex idx = model()->index(model()->rowCount()-1, 0);
+		model()->setData(idx, mimeData->text());
+	}
 }
 
 void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
