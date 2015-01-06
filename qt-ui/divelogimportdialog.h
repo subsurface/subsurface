@@ -58,6 +58,7 @@ class ColumnDropCSVView : public QTableView {
 public:
 	ColumnDropCSVView(QWidget *parent);
 protected:
+	void mousePressEvent(QMouseEvent *press);
 	void dragLeaveEvent(QDragLeaveEvent *leave);
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dragMoveEvent(QDragMoveEvent *event);

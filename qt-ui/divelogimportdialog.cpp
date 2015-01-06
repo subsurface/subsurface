@@ -211,6 +211,27 @@ void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 	endInsertRows();
 }
 
+void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
+{
+	QModelIndex atClick = indexAt(press->pos());
+	if (!atClick.isValid() || atClick.row())
+		return;
+
+	QRect indexRect = visualRect(atClick);
+	QPixmap pix(indexRect.width(), indexRect.height());
+	pix.fill(QColor(0,0,0,0));
+	render(&pix, QPoint(0, 0),QRegion(indexRect));
+
+	QDrag *drag = new QDrag(this);
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData(subsurface_mimedata, atClick.data().toByteArray());
+	drag->setPixmap(pix);
+	drag->setMimeData(mimeData);
+	if (drag->exec() != Qt::IgnoreAction){
+		// Do stuff here.
+	}
+}
+
 DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)
