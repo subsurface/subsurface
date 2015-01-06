@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>709</width>
-    <height>646</height>
+    <width>586</width>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,7 +102,7 @@
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>150</height>
+             <height>100</height>
             </size>
            </property>
            <property name="viewMode">
@@ -118,7 +118,14 @@
           </widget>
          </item>
          <item>
-          <widget class="ColumnDropCSVView" name="tableView"/>
+          <widget class="ColumnDropCSVView" name="tableView">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>200</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QDialogButtonBox" name="buttonBox">
