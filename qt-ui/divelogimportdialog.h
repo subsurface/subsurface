@@ -2,6 +2,7 @@
 #define DIVELOGIMPORTDIALOG_H
 
 #include <QDialog>
+#include <QAbstractListModel>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -9,6 +10,19 @@
 namespace Ui {
 	class DiveLogImportDialog;
 }
+
+class ColumnNameProvider : public QAbstractListModel {
+	Q_OBJECT
+public:
+	ColumnNameProvider(QObject *parent);
+	bool insertRows(int row, int count, const QModelIndex &parent);
+	bool removeRows(int row, int count, const QModelIndex &parent);
+	bool setData(const QModelIndex &index, const QVariant &value, int role);
+	QVariant data(const QModelIndex &index, int role) const;
+	int rowCount(const QModelIndex &parent) const;
+private:
+	QStringList columnNames;
+};
 
 class DiveLogImportDialog : public QDialog {
 	Q_OBJECT

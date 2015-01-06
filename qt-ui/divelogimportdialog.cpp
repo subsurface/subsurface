@@ -4,6 +4,8 @@
 #include "divelogimportdialog.h"
 #include "mainwindow.h"
 #include "ui_divelogimportdialog.h"
+#include <QAbstractListModel>
+#include <QAbstractTableModel>
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
@@ -15,6 +17,36 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, }
 };
+
+ColumnNameProvider::ColumnNameProvider(QObject *parent)
+{
+
+}
+
+bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
+{
+
+}
+
+bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
+{
+
+}
+
+bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+
+}
+
+QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
+{
+
+}
+
+int ColumnNameProvider::rowCount(const QModelIndex &parent) const
+{
+
+}
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),
