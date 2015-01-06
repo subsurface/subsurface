@@ -34,12 +34,18 @@ bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &paren
 
 bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
 {
-	qDebug() << "Calling";
+	beginRemoveRows(QModelIndex(), row, row);
+	columnNames.removeAt(row);
+	qDebug() << "Removing row" << row;
+	endRemoveRows();
 }
 
 bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-
+	if (role == Qt::EditRole) {
+		columnNames[index.row()] = value.toString();
+	}
+	dataChanged(index, index);
 }
 
 QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
@@ -75,29 +81,35 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setText(atClick.data().toString());
+	model()->removeRow(atClick.row());
 	drag->setMimeData(mimeData);
 	drag->exec();
-	currentDraggedIndex = atClick.row();
+
 }
 
 void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
 {
-	model()->removeRow(currentDraggedIndex);
+
 }
 
 void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
 {
-
+	event->acceptProposedAction();
 }
 
 void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 {
-
+	event->acceptProposedAction();
 }
 
 void ColumnNameView::dropEvent(QDropEvent *event)
 {
-
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasText()) {
+		model()->insertRow(model()->rowCount());
+		model()->setData(model()->index(model()->rowCount()-1, 0), QVariant(mimeData->text()));
+		qDebug() << "model -> rowcount() " << model()->rowCount();
+	}
 }
 
 
