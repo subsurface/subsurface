@@ -29,7 +29,9 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
 {
-
+	beginInsertRows(QModelIndex(), row, row);
+	columnNames.append(QString());
+	endInsertRows();
 }
 
 bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
