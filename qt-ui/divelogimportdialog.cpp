@@ -100,32 +100,6 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	}
 }
 
-void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
-{
-}
-
-void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
-{
-	if(event->mimeData()->data(subsurface_mimedata).count())
-		event->acceptProposedAction();
-}
-
-void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
-{
-	if (event->mimeData()->data(subsurface_mimedata).count())
-		event->acceptProposedAction();
-}
-
-void ColumnNameView::dropEvent(QDropEvent *event)
-{
-	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->data(subsurface_mimedata).count()) {
-		QVariant value = QString(mimeData->data(subsurface_mimedata));
-		model()->insertRow(model()->rowCount());
-		model()->setData(model()->index(model()->rowCount()-1, 0), value);
-	}
-}
-
 ColumnDropCSVView::ColumnDropCSVView(QWidget *parent)
 {
 	setAcceptDrops(true);

@@ -49,10 +49,6 @@ public:
 	ColumnNameView(QWidget *parent);
 protected:
 	void mousePressEvent(QMouseEvent *press);
-	void dragLeaveEvent(QDragLeaveEvent *leave);
-	void dragEnterEvent(QDragEnterEvent *event);
-	void dragMoveEvent(QDragMoveEvent *event);
-	void dropEvent(QDropEvent *event);
 private:
 	int currentDraggedIndex;
 };
