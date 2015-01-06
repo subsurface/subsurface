@@ -142,6 +142,31 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 
 }
 
+ColumnNameResult::ColumnNameResult(QObject *parent)
+{
+
+}
+
+bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+
+}
+
+QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
+{
+
+}
+
+int ColumnNameResult::rowCount(const QModelIndex &parent) const
+{
+
+}
+
+int ColumnNameResult::columnCount(const QModelIndex &parent) const
+{
+
+}
+
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)

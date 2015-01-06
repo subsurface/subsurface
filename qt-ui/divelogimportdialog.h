@@ -6,6 +6,7 @@
 #include <QListView>
 #include <QDragLeaveEvent>
 #include <QTableView>
+#include <QAbstractTableModel>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -24,6 +25,19 @@ public:
 	QVariant data(const QModelIndex &index, int role) const;
 	int rowCount(const QModelIndex &parent) const;
 private:
+	QStringList columnNames;
+};
+
+class ColumnNameResult : public QAbstractTableModel {
+	Q_OBJECT
+public:
+	ColumnNameResult(QObject *parent);
+	bool setData(const QModelIndex &index, const QVariant &value, int role);
+	QVariant data(const QModelIndex &index, int role) const;
+	int rowCount(const QModelIndex &parent) const;
+	int columnCount(const QModelIndex &parent) const;
+private:
+	QList<QStringList> columnValues;
 	QStringList columnNames;
 };
 
