@@ -98,7 +98,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QListView" name="avaliableColumns">
+          <widget class="ColumnNameView" name="avaliableColumns">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -138,6 +138,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ColumnNameView</class>
+   <extends>QListView</extends>
+   <header>divelogimportdialog.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>buttonBox</tabstop>
  </tabstops>

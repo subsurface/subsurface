@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QAbstractListModel>
+#include <QListView>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -22,6 +23,14 @@ public:
 	int rowCount(const QModelIndex &parent) const;
 private:
 	QStringList columnNames;
+};
+
+class ColumnNameView : public QListView {
+	Q_OBJECT
+public:
+	ColumnNameView(QWidget *parent);
+protected:
+	void mousePressEvent(QMouseEvent *press);
 };
 
 class DiveLogImportDialog : public QDialog {

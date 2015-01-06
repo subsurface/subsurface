@@ -57,6 +57,16 @@ int ColumnNameProvider::rowCount(const QModelIndex &parent) const
 	return columnNames.count();
 }
 
+ColumnNameView::ColumnNameView(QWidget *parent)
+{
+
+}
+
+void ColumnNameView::mousePressEvent(QMouseEvent *press)
+{
+
+}
+
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)
