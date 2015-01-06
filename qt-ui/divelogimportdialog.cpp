@@ -79,11 +79,16 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	if (!atClick.isValid())
 		return;
 
-	qDebug() << atClick.data();
+	QRect indexRect = visualRect(atClick);
+	QPixmap pix(indexRect.width(), indexRect.height());
+	pix.fill(QColor(0,0,0,0));
+	render(&pix, QPoint(0, 0),QRegion(indexRect));
+
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setText(atClick.data().toString());
 	model()->removeRow(atClick.row());
+	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	drag->exec();
 
@@ -110,7 +115,6 @@ void ColumnNameView::dropEvent(QDropEvent *event)
 	if (mimeData->hasText()) {
 		model()->insertRow(model()->rowCount());
 		model()->setData(model()->index(model()->rowCount()-1, 0), QVariant(mimeData->text()));
-		qDebug() << "model -> rowcount() " << model()->rowCount();
 	}
 }
 
