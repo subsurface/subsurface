@@ -37,6 +37,7 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	void setColumnValues(QList<QStringList> columns);
+	QStringList result() const;
 private:
 	QList<QStringList> columnValues;
 	QStringList columnNames;
@@ -79,8 +80,6 @@ public:
 private
 slots:
 	void on_buttonBox_accepted();
-	void on_knownImports_currentIndexChanged(int index);
-	void unknownImports();
 	void loadFileContents();
 private:
 	bool selector;
