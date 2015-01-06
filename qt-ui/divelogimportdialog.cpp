@@ -144,7 +144,15 @@ void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 
 void ColumnDropCSVView::dropEvent(QDropEvent *event)
 {
+	QModelIndex curr = indexAt(event->pos());
+	if (!curr.isValid() || curr.row() != 0)
+		return;
 
+	event->acceptProposedAction();
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasText()) {
+		model()->setData(curr, QVariant(mimeData->text()));
+	}
 }
 
 ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent)
