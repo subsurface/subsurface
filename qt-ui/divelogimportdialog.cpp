@@ -6,7 +6,9 @@
 #include "ui_divelogimportdialog.h"
 #include <QAbstractListModel>
 #include <QAbstractTableModel>
-
+#include <QMouseEvent>
+#include <QDrag>
+#include <QMimeData>
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
 	{ "", },
@@ -64,7 +66,16 @@ ColumnNameView::ColumnNameView(QWidget *parent)
 
 void ColumnNameView::mousePressEvent(QMouseEvent *press)
 {
+	QModelIndex atClick = indexAt(press->pos());
+	if (!atClick.isValid())
+		return;
 
+	qDebug() << atClick.data();
+	QDrag *drag = new QDrag(this);
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setText(atClick.data().toString());
+	drag->setMimeData(mimeData);
+	drag->exec();
 }
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
