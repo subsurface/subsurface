@@ -36,6 +36,7 @@ public:
 	QVariant data(const QModelIndex &index, int role) const;
 	int rowCount(const QModelIndex &parent) const;
 	int columnCount(const QModelIndex &parent) const;
+	void setColumnValues(QList<QStringList> columns);
 private:
 	QList<QStringList> columnValues;
 	QStringList columnNames;

@@ -167,6 +167,11 @@ int ColumnNameResult::columnCount(const QModelIndex &parent) const
 
 }
 
+void ColumnNameResult::setColumnValues(QList<QStringList> columns)
+{
+
+}
+
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)
@@ -187,6 +192,9 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
 	ui->avaliableColumns->setModel(provider);
+
+	ColumnNameResult *result = new ColumnNameResult(this);
+	ui->tableView->setModel(result);
 
 	/* manually import CSV file */
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
