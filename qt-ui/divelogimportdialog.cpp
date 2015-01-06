@@ -20,7 +20,9 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent)
 {
-
+	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl size") << tr("Start Pressure")
+		    << tr("End Press") << tr("Max depth") << tr("Mean depth") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp") << tr("Water temp")
+		    << tr("O₂") << tr("He");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -40,12 +42,19 @@ bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value
 
 QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
 {
+	if (!index.isValid())
+		return QVariant();
 
+	if (role != Qt::DisplayRole)
+		return QVariant();
+
+	return QVariant(columnNames[index.row()]);
 }
 
 int ColumnNameProvider::rowCount(const QModelIndex &parent) const
 {
-
+	Q_UNUSED(parent)
+	return columnNames.count();
 }
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
