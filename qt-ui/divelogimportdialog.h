@@ -73,7 +73,7 @@ class DiveLogImportDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit DiveLogImportDialog(QStringList *fn, QWidget *parent = 0);
+	explicit DiveLogImportDialog(QStringList fn, QWidget *parent = 0);
 	~DiveLogImportDialog();
 
 private
@@ -81,7 +81,7 @@ slots:
 	void on_buttonBox_accepted();
 	void on_knownImports_currentIndexChanged(int index);
 	void unknownImports();
-
+	void loadFileContents();
 private:
 	bool selector;
 	QStringList fileNames;

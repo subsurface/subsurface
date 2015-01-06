@@ -9,6 +9,8 @@
 #include <QMouseEvent>
 #include <QDrag>
 #include <QMimeData>
+#include <QFile>
+
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
 	{ "", },
@@ -172,12 +174,12 @@ void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 
 }
 
-DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDialog(parent),
+DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDialog(parent),
 	selector(true),
 	ui(new Ui::DiveLogImportDialog)
 {
 	ui->setupUi(this);
-	fileNames = *fn;
+	fileNames = fn;
 	column = 0;
 
 	/* Add indexes of XSLTs requiring special handling to the list */
@@ -196,6 +198,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 	ColumnNameResult *result = new ColumnNameResult(this);
 	ui->tableView->setModel(result);
 
+	loadFileContents();
+
 	/* manually import CSV file */
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
@@ -206,6 +210,11 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList *fn, QWidget *parent) : QDi
 DiveLogImportDialog::~DiveLogImportDialog()
 {
 	delete ui;
+}
+
+void DiveLogImportDialog::loadFileContents() {
+	QFile f(fileNames.first());
+
 }
 
 #define VALUE_IF_CHECKED(x) (ui->x->isEnabled() ? ui->x->value() - 1 : -1)
