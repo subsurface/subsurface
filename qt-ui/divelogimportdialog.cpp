@@ -144,7 +144,7 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 
 }
 
-ColumnNameResult::ColumnNameResult(QObject *parent)
+ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent)
 {
 
 }
