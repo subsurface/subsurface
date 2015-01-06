@@ -156,7 +156,15 @@ bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, 
 
 QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 {
+	if (!index.isValid())
+		return QVariant();
+	if (role != Qt::DisplayRole)
+		return QVariant();
 
+	if (index.row() == 0) {
+		return (columnNames[index.column()]);
+	}
+	return QVariant(columnValues[index.row() -1][index.column()]);
 }
 
 int ColumnNameResult::rowCount(const QModelIndex &parent) const
@@ -211,7 +219,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
 
-	ui->CSVSeparator->addItems( QStringList() << tr("Separator") << tr("Tab") << ";" << ",");
+	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << ";" << ",");
 	ui->knownImports->setCurrentIndex(1);
 
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -227,6 +235,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+
+	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(loadFileContents()));
 }
 
 DiveLogImportDialog::~DiveLogImportDialog()
@@ -243,7 +253,9 @@ void DiveLogImportDialog::loadFileContents() {
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
 		QString currLine = f.readLine();
-		currColumns = currLine.split( ui->CSVSeparator->currentText() );
+		QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t"
+				: ui->CSVSeparator->currentText();
+		currColumns = currLine.split(separator);
 		fileColumns.append(currColumns);
 		rows += 1;
 	}
