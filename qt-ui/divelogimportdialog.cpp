@@ -161,17 +161,39 @@ QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 
 int ColumnNameResult::rowCount(const QModelIndex &parent) const
 {
-
+	Q_UNUSED(parent);
+	return columnValues.count() + 1; // +1 == the header.
 }
 
 int ColumnNameResult::columnCount(const QModelIndex &parent) const
 {
-
+	Q_UNUSED(parent);
+	return columnNames.count();
 }
 
 void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 {
+	if (rowCount() != 1) {
+		beginRemoveRows(QModelIndex(), 1, rowCount()-1);
+		columnValues.clear();
+		endRemoveRows();
+	}
+	if (columnCount() != 0) {
+		beginRemoveColumns(QModelIndex(), 0, columnCount()-1);
+		columnNames.clear();
+		endRemoveColumns();
+	}
 
+	QStringList first = columns.first();
+	beginInsertColumns(QModelIndex(), 0, first.count()-1);
+	for(int i = 0; i < first.count(); i++){
+		columnNames.append(QString());
+	}
+	endInsertColumns();
+
+	beginInsertRows(QModelIndex(), 0, columns.count()-1);
+	columnValues = columns;
+	endInsertRows();
 }
 
 DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDialog(parent),
