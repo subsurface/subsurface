@@ -42,7 +42,6 @@ bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &paren
 {
 	beginRemoveRows(QModelIndex(), row, row);
 	columnNames.removeAt(row);
-	qDebug() << "Removing row" << row;
 	endRemoveRows();
 }
 
