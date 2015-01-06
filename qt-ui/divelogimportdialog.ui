@@ -105,6 +105,9 @@
              <height>150</height>
             </size>
            </property>
+           <property name="viewMode">
+            <enum>QListView::IconMode</enum>
+           </property>
           </widget>
          </item>
          <item>
