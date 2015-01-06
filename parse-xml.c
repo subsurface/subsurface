@@ -2590,6 +2590,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	/* Done with parsing what we know about the dive header */
 	ptr += 32;
 
+	// We're going to interpret ppO2 saved as a sensor value in these modes.
+	if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
+		cur_dc->no_o2sensors = 1;
+
 	while (ptr < buffer + size) {
 		time = ((ptr[0] >> 4) & 0x0f) +
 			((ptr[1] << 4) & 0xff0) +
