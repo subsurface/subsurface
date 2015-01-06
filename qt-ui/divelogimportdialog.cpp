@@ -121,22 +121,25 @@ void ColumnNameView::dropEvent(QDropEvent *event)
 
 ColumnDropCSVView::ColumnDropCSVView(QWidget *parent)
 {
-
+	setAcceptDrops(true);
 }
 
 void ColumnDropCSVView::dragLeaveEvent(QDragLeaveEvent *leave)
 {
-
+	Q_UNUSED(leave);
 }
 
 void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
 {
-
+	event->acceptProposedAction();
 }
 
 void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 {
-
+	QModelIndex curr = indexAt(event->pos());
+	if (!curr.isValid() || curr.row() != 0)
+		return;
+	event->acceptProposedAction();
 }
 
 void ColumnDropCSVView::dropEvent(QDropEvent *event)
