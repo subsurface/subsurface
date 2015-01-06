@@ -36,6 +36,7 @@ bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &paren
 	beginInsertRows(QModelIndex(), row, row);
 	columnNames.append(QString());
 	endInsertRows();
+	return true;
 }
 
 bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
@@ -43,6 +44,7 @@ bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &paren
 	beginRemoveRows(QModelIndex(), row, row);
 	columnNames.removeAt(row);
 	endRemoveRows();
+	return true;
 }
 
 bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -51,6 +53,7 @@ bool ColumnNameProvider::setData(const QModelIndex &index, const QVariant &value
 		columnNames[index.row()] = value.toString();
 	}
 	dataChanged(index, index);
+	return true;
 }
 
 QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
@@ -150,6 +153,7 @@ bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, 
 		columnNames[index.column()] = value.toString();
 		dataChanged(index, index);
 	}
+	return true;
 }
 
 QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
