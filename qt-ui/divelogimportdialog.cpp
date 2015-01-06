@@ -151,7 +151,12 @@ ColumnNameResult::ColumnNameResult(QObject *parent)
 
 bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-
+	if (!index.isValid() || index.row() != 0)
+		return false;
+	if (role == Qt::EditRole) {
+		columnNames[index.column()] = value.toString();
+		dataChanged(index, index);
+	}
 }
 
 QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
