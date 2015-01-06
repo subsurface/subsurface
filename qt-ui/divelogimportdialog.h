@@ -88,6 +88,7 @@ private:
 	Ui::DiveLogImportDialog *ui;
 	QList<int> specialCSV;
 	int column;
+	ColumnNameResult *resultModel;
 
 	struct CSVAppConfig {
 		QString name;

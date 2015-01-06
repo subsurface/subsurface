@@ -195,8 +195,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
 	ui->avaliableColumns->setModel(provider);
 
-	ColumnNameResult *result = new ColumnNameResult(this);
-	ui->tableView->setModel(result);
+	resultModel = new ColumnNameResult(this);
+	ui->tableView->setModel(resultModel);
 
 	loadFileContents();
 
@@ -214,7 +214,18 @@ DiveLogImportDialog::~DiveLogImportDialog()
 
 void DiveLogImportDialog::loadFileContents() {
 	QFile f(fileNames.first());
+	QList<QStringList> fileColumns;
+	QStringList currColumns;
 
+	f.open(QFile::ReadOnly);
+	int rows = 0;
+	while (rows < 10 || !f.atEnd()) {
+		QString currLine = f.readLine();
+		currColumns = currLine.split( ui->CSVSeparator->currentText() );
+		fileColumns.append(currColumns);
+		rows += 1;
+	}
+	resultModel->setColumnValues(fileColumns);
 }
 
 #define VALUE_IF_CHECKED(x) (ui->x->isEnabled() ? ui->x->value() - 1 : -1)
