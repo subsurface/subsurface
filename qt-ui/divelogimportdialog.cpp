@@ -12,6 +12,7 @@
 #include <QFile>
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
+static QString subsurface_index = "subsurface/csvindex";
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
@@ -182,8 +183,8 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 		return;
 
 	if (event->source() == this ) {
-		QString value_old = QString(mimeData->data(subsurface_mimedata));
-		QString value_new = curr.data().toString();
+		int value_old = mimeData->data(subsurface_index).toInt();
+		int value_new = curr.column();
 		ColumnNameResult *m = qobject_cast<ColumnNameResult*>(model());
 		m->swapValues(value_old, value_new);
 		event->acceptProposedAction();
@@ -202,10 +203,11 @@ ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent
 
 }
 
-void ColumnNameResult::swapValues(const QString &one, const QString &other) {
-	int firstIndex = columnNames.indexOf(one);
-	int secondIndex = columnNames.indexOf(other);
-	setData(index(0, firstIndex), QVariant(other), Qt::EditRole);
+void ColumnNameResult::swapValues(int firstIndex, int secondIndex) {
+	qDebug() << firstIndex << secondIndex;
+	QString one = columnNames[firstIndex];
+	QString two = columnNames[secondIndex];
+	setData(index(0, firstIndex), QVariant(two), Qt::EditRole);
 	setData(index(0, secondIndex), QVariant(one), Qt::EditRole);
 }
 
@@ -295,6 +297,7 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData(subsurface_mimedata, atClick.data().toByteArray());
+	mimeData->setData(subsurface_index, QString::number(atClick.column()).toLocal8Bit());
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() != Qt::IgnoreAction){

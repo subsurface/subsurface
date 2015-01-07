@@ -40,7 +40,7 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	void setColumnValues(QList<QStringList> columns);
 	QStringList result() const;
-	void swapValues(const QString& one, const QString& other);
+	void swapValues(int firstIndex, int secondIndex);
 private:
 	QList<QStringList> columnValues;
 	QStringList columnNames;
