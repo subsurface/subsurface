@@ -175,7 +175,6 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 			ColumnNameResult *m = qobject_cast<ColumnNameResult*>(model());
 			m->swapValues(value_old, value_new);
 		}
-
 	}
 }
 
@@ -187,15 +186,15 @@ ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent
 void ColumnNameResult::swapValues(const QString &one, const QString &other) {
 	int firstIndex = columnNames.indexOf(one);
 	int secondIndex = columnNames.indexOf(other);
-	columnNames[firstIndex] = other;
-	columnNames[secondIndex] = one;
-	dataChanged(index(0,0), index(0, columnCount()-1));
+	setData(index(0, firstIndex), QVariant(other), Qt::EditRole);
+	setData(index(0, secondIndex), QVariant(one), Qt::EditRole);
 }
 
 bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (!index.isValid() || index.row() != 0)
+	if (!index.isValid() || index.row() != 0) {
 		return false;
+	}
 	if (role == Qt::EditRole) {
 		columnNames[index.column()] = value.toString();
 		dataChanged(index, index);
@@ -275,7 +274,12 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() != Qt::IgnoreAction){
-		if (drag->target() != drag->source()) {
+		QObject *target = drag->target();
+		if (target->objectName() ==  "qt_scrollarea_viewport")
+			target = target->parent();
+
+
+		if (target != drag->source()) {
 			model()->setData(atClick, QString());
 		}
 	}
