@@ -135,14 +135,30 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 	event->acceptProposedAction();
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->data(subsurface_mimedata).count()) {
-		QVariant value = QString(mimeData->data(subsurface_mimedata));
-		model()->setData(curr, value);
+		if (event->source() != this) {
+			QVariant value = QString(mimeData->data(subsurface_mimedata));
+			model()->setData(curr, value);
+		} else {
+			QString value_old = QString(mimeData->data(subsurface_mimedata));
+			QString value_new = curr.data().toString();
+			ColumnNameResult *m = qobject_cast<ColumnNameResult*>(model());
+			m->swapValues(value_old, value_new);
+		}
+
 	}
 }
 
 ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent)
 {
 
+}
+
+void ColumnNameResult::swapValues(const QString &one, const QString &other) {
+	int firstIndex = columnNames.indexOf(one);
+	int secondIndex = columnNames.indexOf(other);
+	columnNames[firstIndex] = other;
+	columnNames[secondIndex] = one;
+	dataChanged(index(0,0), index(0, columnCount()-1));
 }
 
 bool ColumnNameResult::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -228,7 +244,6 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() != Qt::IgnoreAction){
-		// Do stuff here.
 	}
 }
 
