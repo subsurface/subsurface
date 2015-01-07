@@ -341,11 +341,26 @@ void DiveLogImportDialog::loadFileContents() {
 	QStringList currColumns;
 
 	f.open(QFile::ReadOnly);
+	// guess the separator
+	QString firstLine = f.readLine();
+	QString separator;
+	int tabs = firstLine.count('\t');
+	int commas = firstLine.count(',');
+	int semis = firstLine.count(';');
+	if (tabs > commas && tabs > semis)
+		separator = "\t";
+	else if (commas > tabs && commas > semis)
+		separator = ",";
+	else if (semis > tabs && semis > commas)
+		separator = ";";
+	else
+		separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
+	if (ui->CSVSeparator->currentText() != separator)
+		ui->CSVSeparator->setCurrentText(separator);
+	f.reset();
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
 		QString currLine = f.readLine();
-		QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t"
-				: ui->CSVSeparator->currentText();
 		currColumns = currLine.split(separator);
 		fileColumns.append(currColumns);
 		rows += 1;
