@@ -257,9 +257,9 @@ void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 
 	QStringList first = columns.first();
 	beginInsertColumns(QModelIndex(), 0, first.count()-1);
-	for(int i = 0; i < first.count(); i++){
+	for(int i = 0; i < first.count(); i++)
 		columnNames.append(QString());
-	}
+
 	endInsertColumns();
 
 	beginInsertRows(QModelIndex(), 0, columns.count()-1);
@@ -339,6 +339,7 @@ void DiveLogImportDialog::loadFileContents() {
 	QFile f(fileNames.first());
 	QList<QStringList> fileColumns;
 	QStringList currColumns;
+	QStringList headers;
 
 	f.open(QFile::ReadOnly);
 	// guess the separator
@@ -357,6 +358,23 @@ void DiveLogImportDialog::loadFileContents() {
 		separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	if (ui->CSVSeparator->currentText() != separator)
 		ui->CSVSeparator->setCurrentText(separator);
+
+	// now try and guess the columns
+	currColumns = firstLine.split(separator);
+	Q_FOREACH (QString columnText, currColumns) {
+		ColumnNameProvider *model = (ColumnNameProvider *)ui->avaliableColumns->model();
+		columnText.replace("\"", "");
+		columnText.replace("number", "#", Qt::CaseInsensitive);
+		QModelIndexList matches = model->match(model->index(0, 0), Qt::DisplayRole, columnText, Qt::MatchFixedString);
+		if (!matches.isEmpty()) {
+			QString foundHeading = model->data(matches.first(), Qt::DisplayRole).toString();
+			model->removeRow(matches.first().row());
+			headers.append(foundHeading);
+		} else {
+			headers.append("");
+		}
+
+	}
 	f.reset();
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
@@ -366,6 +384,9 @@ void DiveLogImportDialog::loadFileContents() {
 		rows += 1;
 	}
 	resultModel->setColumnValues(fileColumns);
+	for (int i = 0; i < headers.count(); i++)
+		if (!headers.at(i).isEmpty())
+			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
 }
 
 void DiveLogImportDialog::on_buttonBox_accepted()
