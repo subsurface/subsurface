@@ -7,6 +7,7 @@
 #include <QDragLeaveEvent>
 #include <QTableView>
 #include <QAbstractTableModel>
+#include <QStyledItemDelegate>
 
 #include "../dive.h"
 #include "../divelist.h"
@@ -108,6 +109,14 @@ private:
 
 #define CSVAPPS 7
 	static const CSVAppConfig CSVApps[CSVAPPS];
+};
+
+class TagDragDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+public:
+	TagDragDelegate(QObject *parent);
+	QSize	sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
+	void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
 #endif // DIVELOGIMPORTDIALOG_H

@@ -480,3 +480,17 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	process_dives(true, false);
 	MainWindow::instance()->refreshDisplay();
 }
+
+TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)
+{
+}
+
+QSize	TagDragDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
+{
+	return QStyledItemDelegate::sizeHint(option, index);
+}
+
+void TagDragDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
+{
+	QStyledItemDelegate::paint(painter, option, index);
+}
