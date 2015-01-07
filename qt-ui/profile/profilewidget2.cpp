@@ -610,7 +610,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	instantMeanDepth->vAxis = profileYAxis;
 	instantMeanDepth->hAxis = timeAxis;
-	instantMeanDepth->setVisible(prefs.show_average_depth);
+	instantMeanDepth->setVisible(prefs.show_average_depth && !printMode);
 	instantMeanDepth->setModel(dataModel);
 
 	dataModel->emitDataChanged();
