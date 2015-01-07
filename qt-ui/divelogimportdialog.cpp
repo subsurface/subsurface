@@ -26,8 +26,8 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
-	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl size") << tr("Start Pressure")
-		    << tr("End Press") << tr("Max depth") << tr("Mean depth") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp") << tr("Water temp")
+	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure")
+		    << tr("End press") << tr("Max depth") << tr("Mean depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.")
 		    << tr("O₂") << tr("He");
 }
 
@@ -361,13 +361,13 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			if (ui->knownImports->currentText() == "Seabear CSV") {
 				parse_seabear_csv_file(fileNames[i].toUtf8().data(),
 					r.indexOf(tr("Time")),
-					r.indexOf(tr("Max Depth")),
-					r.indexOf(tr("Water temp")),
+					r.indexOf(tr("Max depth")),
+					r.indexOf(tr("Water temp.")),
 					r.indexOf(tr("PO₂")),
 					r.indexOf(tr("CNS")),
 					r.indexOf(tr("NDL")),
 					r.indexOf(tr("TTS")),
-					r.indexOf(tr("Stopped Depth")),
+					r.indexOf(tr("Stopped depth")),
 					r.indexOf(tr("Pressure")),
 					ui->CSVSeparator->currentIndex(),
 					specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
@@ -384,13 +384,13 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			} else {
 				parse_csv_file(fileNames[i].toUtf8().data(),
 					r.indexOf(tr("Time")),
-					r.indexOf(tr("Max Depth")),
-					r.indexOf(tr("Water temp")),
+					r.indexOf(tr("Max depth")),
+					r.indexOf(tr("Water temp.")),
 					r.indexOf(tr("PO₂")),
 					r.indexOf(tr("CNS")),
 					r.indexOf(tr("NDL")),
 					r.indexOf(tr("TTS")),
-					r.indexOf(tr("Stopped Depth")),
+					r.indexOf(tr("Stopped depth")),
 					r.indexOf(tr("Pressure")),
 					ui->CSVSeparator->currentIndex(),
 					specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
@@ -418,13 +418,13 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				r.indexOf(tr("Notes")),
 				r.indexOf(tr("Weight")),
 				r.indexOf(tr("Tags")),
-				r.indexOf(tr("Cyl size")),
-				r.indexOf(tr("Start Pressure")),
-				r.indexOf(tr("End Pressure")),
+				r.indexOf(tr("Cyl. size")),
+				r.indexOf(tr("Start pressure")),
+				r.indexOf(tr("End pressure")),
 				r.indexOf(tr("O₂")),
 				r.indexOf(tr("He")),
-				r.indexOf(tr("Air Temp")),
-				r.indexOf(tr("Water Temp"))
+				r.indexOf(tr("Air temp.")),
+				r.indexOf(tr("Water temp."))
 			);
 		}
 	}
