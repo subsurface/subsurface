@@ -392,8 +392,10 @@ void DiveLogImportDialog::loadFileContents() {
 			headers.append("");
 		}
 	}
-	if (matchedSome)
+	if (matchedSome) {
 		ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
+		ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
+	}
 	f.reset();
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
