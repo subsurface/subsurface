@@ -27,7 +27,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure")
-		    << tr("End press") << tr("Max depth") << tr("Mean depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.")
+		    << tr("End pressure") << tr("Max depth") << tr("Avg depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.")
 		    << tr("O₂") << tr("He");
 }
 
@@ -60,7 +60,6 @@ QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
-
 	if (role != Qt::DisplayRole)
 		return QVariant();
 
@@ -72,6 +71,21 @@ int ColumnNameProvider::rowCount(const QModelIndex &parent) const
 	Q_UNUSED(parent)
 	return columnNames.count();
 }
+
+int ColumnNameProvider::mymatch(QString value) const
+{
+	QString searchString = value.toLower();
+	searchString.replace("\"", "").replace(" ", "").replace(".", "").replace("\n","");
+	for (int i = 0; i < columnNames.count(); i++) {
+		QString name = columnNames.at(i).toLower();
+		name.replace("\"", "").replace(" ", "").replace(".", "").replace("\n","");
+		if (searchString == name.toLower())
+			return i;
+	}
+	return -1;
+}
+
+
 
 ColumnNameView::ColumnNameView(QWidget *parent)
 {
@@ -365,15 +379,14 @@ void DiveLogImportDialog::loadFileContents() {
 		ColumnNameProvider *model = (ColumnNameProvider *)ui->avaliableColumns->model();
 		columnText.replace("\"", "");
 		columnText.replace("number", "#", Qt::CaseInsensitive);
-		QModelIndexList matches = model->match(model->index(0, 0), Qt::DisplayRole, columnText, Qt::MatchFixedString);
-		if (!matches.isEmpty()) {
-			QString foundHeading = model->data(matches.first(), Qt::DisplayRole).toString();
-			model->removeRow(matches.first().row());
+		int idx = model->mymatch(columnText);
+		if (idx >= 0) {
+			QString foundHeading = model->data(model->index(idx, 0), Qt::DisplayRole).toString();
+			model->removeRow(idx);
 			headers.append(foundHeading);
 		} else {
 			headers.append("");
 		}
-
 	}
 	f.reset();
 	int rows = 0;
