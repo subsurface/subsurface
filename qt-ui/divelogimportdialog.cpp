@@ -329,7 +329,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
 	ui->avaliableColumns->setModel(provider);
-
+	ui->avaliableColumns->setItemDelegate(new TagDragDelegate(ui->avaliableColumns));
 	resultModel = new ColumnNameResult(this);
 	ui->tableView->setModel(resultModel);
 
@@ -487,7 +487,8 @@ TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 QSize	TagDragDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-	return QStyledItemDelegate::sizeHint(option, index);
+	QSize originalSize = QStyledItemDelegate::sizeHint(option, index);
+	return originalSize + QSize(5,5);
 }
 
 void TagDragDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
