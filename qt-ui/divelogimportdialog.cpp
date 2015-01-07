@@ -493,5 +493,10 @@ QSize	TagDragDelegate::sizeHint(const QStyleOptionViewItem & option, const QMode
 
 void TagDragDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
+	painter->save();
+	painter->setRenderHints(QPainter::Antialiasing);
+	painter->drawRoundedRect(option.rect.adjusted(4,4,-4,-4), 5, 5);
+	painter->restore();
 	QStyledItemDelegate::paint(painter, option, index);
 }
+
