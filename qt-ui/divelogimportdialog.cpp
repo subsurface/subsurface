@@ -16,12 +16,12 @@ static QString subsurface_index = "subsurface/csvindex";
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
-	{ "Manual Import", },
+	{ "Manual import", },
 	{ "APD Log Viewer", 1, 2, 16, 7, 18, -1, -1, 19, -1, "Tab" },
 	{ "XP5", 1, 2, 10, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 1, 2, 6, -1, -1, 3, 4, 5, 7, ";" },
-	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "Subsurface CSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, }
 };
 
