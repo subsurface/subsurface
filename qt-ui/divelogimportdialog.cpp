@@ -163,18 +163,23 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 
-	event->acceptProposedAction();
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->data(subsurface_mimedata).count()) {
-		if (event->source() != this) {
-			QVariant value = QString(mimeData->data(subsurface_mimedata));
-			model()->setData(curr, value);
-		} else {
-			QString value_old = QString(mimeData->data(subsurface_mimedata));
-			QString value_new = curr.data().toString();
-			ColumnNameResult *m = qobject_cast<ColumnNameResult*>(model());
-			m->swapValues(value_old, value_new);
-		}
+	if (!mimeData->data(subsurface_mimedata).count())
+		return;
+
+	if (event->source() == this ) {
+		QString value_old = QString(mimeData->data(subsurface_mimedata));
+		QString value_new = curr.data().toString();
+		ColumnNameResult *m = qobject_cast<ColumnNameResult*>(model());
+		m->swapValues(value_old, value_new);
+		event->acceptProposedAction();
+		return;
+	}
+
+	if (curr.data().toString().isEmpty()) {
+		QVariant value = QString(mimeData->data(subsurface_mimedata));
+		model()->setData(curr, value);
+		event->acceptProposedAction();
 	}
 }
 
