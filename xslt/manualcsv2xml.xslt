@@ -15,6 +15,7 @@
   <xsl:param name="gpsField" select="gpsField"/>
   <xsl:param name="maxDepthField" select="maxDepthField"/>
   <xsl:param name="meanDepthField" select="meanDepthField"/>
+  <xsl:param name="divemasterField" select="divemasterField"/>
   <xsl:param name="buddyField" select="buddyField"/>
   <xsl:param name="notesField" select="notesField"/>
   <xsl:param name="weightField" select="weightField"/>
@@ -309,6 +310,15 @@
             </xsl:attribute>
           </xsl:if>
         </depth>
+      </xsl:if>
+
+      <xsl:if test="$divemasterField >= 0">
+        <divemaster>
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$divemasterField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </divemaster>
       </xsl:if>
 
       <xsl:if test="$buddyField >= 0">

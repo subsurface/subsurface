@@ -969,7 +969,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return ret;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
+int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int divemasterf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
 {
 	struct memblock mem;
 	int pnr = 0;
@@ -982,6 +982,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	char gpsbuf[MAXCOLDIGITS];
 	char maxdepthbuf[MAXCOLDIGITS];
 	char meandepthbuf[MAXCOLDIGITS];
+	char divemasterbuf[MAXCOLDIGITS];
 	char buddybuf[MAXCOLDIGITS];
 	char notesbuf[MAXCOLDIGITS];
 	char weightbuf[MAXCOLDIGITS];
@@ -1014,6 +1015,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	snprintf(gpsbuf, MAXCOLDIGITS, "%d", gpsf);
 	snprintf(maxdepthbuf, MAXCOLDIGITS, "%d", maxdepthf);
 	snprintf(meandepthbuf, MAXCOLDIGITS, "%d", meandepthf);
+	snprintf(divemasterbuf, MAXCOLDIGITS, "%d", divemasterf);
 	snprintf(buddybuf, MAXCOLDIGITS, "%d", buddyf);
 	snprintf(notesbuf, MAXCOLDIGITS, "%d", notesf);
 	snprintf(weightbuf, MAXCOLDIGITS, "%d", weightf);
@@ -1053,6 +1055,8 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	params[pnr++] = maxdepthbuf;
 	params[pnr++] = "meanDepthField";
 	params[pnr++] = meandepthbuf;
+	params[pnr++] = "divemasterField";
+	params[pnr++] = divemasterbuf;
 	params[pnr++] = "buddyField";
 	params[pnr++] = buddybuf;
 	params[pnr++] = "notesField";
