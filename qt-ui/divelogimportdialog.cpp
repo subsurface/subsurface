@@ -217,7 +217,12 @@ QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 	if (index.row() == 0) {
 		return (columnNames[index.column()]);
 	}
-	return QVariant(columnValues[index.row() -1][index.column()]);
+	// make sure the element exists before returning it - this might get called before the
+	// model is correctly set up again (e.g., when changing separators)
+	if (columnValues.count() > index.row() - 1 && columnValues[index.row() - 1].count() > index.column())
+		return QVariant(columnValues[index.row() - 1][index.column()]);
+	else
+		return QVariant();
 }
 
 int ColumnNameResult::rowCount(const QModelIndex &parent) const
