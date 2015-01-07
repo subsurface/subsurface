@@ -204,7 +204,6 @@ ColumnNameResult::ColumnNameResult(QObject *parent) : QAbstractTableModel(parent
 }
 
 void ColumnNameResult::swapValues(int firstIndex, int secondIndex) {
-	qDebug() << firstIndex << secondIndex;
 	QString one = columnNames[firstIndex];
 	QString two = columnNames[secondIndex];
 	setData(index(0, firstIndex), QVariant(two), Qt::EditRole);
@@ -304,11 +303,8 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 		QObject *target = drag->target();
 		if (target->objectName() ==  "qt_scrollarea_viewport")
 			target = target->parent();
-
-
-		if (target != drag->source()) {
+		if (target != drag->source())
 			model()->setData(atClick, QString());
-		}
 	}
 }
 
@@ -335,7 +331,6 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	ui->avaliableColumns->setItemDelegate(new TagDragDelegate(ui->avaliableColumns));
 	resultModel = new ColumnNameResult(this);
 	ui->tableView->setModel(resultModel);
-
 	loadFileContents();
 
 	/* manually import CSV file */
