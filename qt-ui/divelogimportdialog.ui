@@ -120,7 +120,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="dragInstructions">
            <property name="text">
             <string>Drag the tags above to each corresponding column below</string>
            </property>

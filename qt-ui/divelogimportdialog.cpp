@@ -352,6 +352,7 @@ void DiveLogImportDialog::loadFileContents() {
 	QList<QStringList> fileColumns;
 	QStringList currColumns;
 	QStringList headers;
+	bool matchedSome = false;
 
 	f.open(QFile::ReadOnly);
 	// guess the separator
@@ -382,10 +383,13 @@ void DiveLogImportDialog::loadFileContents() {
 			QString foundHeading = model->data(model->index(idx, 0), Qt::DisplayRole).toString();
 			model->removeRow(idx);
 			headers.append(foundHeading);
+			matchedSome = true;
 		} else {
 			headers.append("");
 		}
 	}
+	if (matchedSome)
+		ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
 	f.reset();
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
