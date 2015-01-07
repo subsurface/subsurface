@@ -275,6 +275,9 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() != Qt::IgnoreAction){
+		if (drag->target() != drag->source()) {
+			model()->setData(atClick, QString());
+		}
 	}
 }
 
