@@ -51,6 +51,7 @@
 #define ROYALBLUE2 QColor::fromRgbF(0.2, 0.2, 0.9, 1)
 #define ROYALBLUE2_LOW_TRANS QColor::fromRgbF(0.2, 0.2, 0.9, 0.75)
 #define AIR_BLUE QColor::fromRgbF(0.25, 0.75, 1.0, 1)
+#define AIR_BLUE_TRANS QColor::fromRgbF(0.25, 0.75, 1.0, 0.5)
 
 // Yellows / BROWNS
 #define SPRINGWOOD1 QColor::fromRgbF(0.95, 0.95, 0.9, 1)

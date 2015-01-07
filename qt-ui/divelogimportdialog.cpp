@@ -501,7 +501,8 @@ void TagDragDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 {
 	painter->save();
 	painter->setRenderHints(QPainter::Antialiasing);
-	painter->drawRoundedRect(option.rect.adjusted(4,4,-4,-4), 5, 5);
+	painter->setBrush(QBrush(AIR_BLUE_TRANS));
+	painter->drawRoundedRect(option.rect.adjusted(2,2,-2,-2), 5, 5);
 	painter->restore();
 	QStyledItemDelegate::paint(painter, option, index);
 }
