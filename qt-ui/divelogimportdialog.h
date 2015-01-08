@@ -80,11 +80,14 @@ class DiveLogImportDialog : public QDialog {
 public:
 	explicit DiveLogImportDialog(QStringList fn, QWidget *parent = 0);
 	~DiveLogImportDialog();
-
+	enum whatChanged { INITIAL, SEPARATOR, KNOWNTYPES };
 private
 slots:
 	void on_buttonBox_accepted();
-	void loadFileContents();
+	void loadFileContentsSeperatorSelected(int value);
+	void loadFileContentsKnownTypesSelected(int value);
+	void loadFileContents(int value, enum whatChanged triggeredBy);
+
 private:
 	bool selector;
 	QStringList fileNames;

@@ -330,14 +330,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 		ui->knownImports->addItem(CSVApps[i].name);
 
 	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << ";" << ",");
-	ui->knownImports->setCurrentIndex(1);
 
-	ColumnNameProvider *provider = new ColumnNameProvider(this);
-	ui->avaliableColumns->setModel(provider);
-	ui->avaliableColumns->setItemDelegate(new TagDragDelegate(ui->avaliableColumns));
-	resultModel = new ColumnNameResult(this);
-	ui->tableView->setModel(resultModel);
-	loadFileContents();
+	loadFileContents(-1, INITIAL);
 
 	/* manually import CSV file */
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -345,7 +339,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
-	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(loadFileContents()));
+	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(loadFileContentsSeperatorSelected(int)));
+	connect(ui->knownImports, SIGNAL(currentIndexChanged(int)), this, SLOT(loadFileContentsKnownTypesSelected(int)));
 }
 
 DiveLogImportDialog::~DiveLogImportDialog()
@@ -353,51 +348,112 @@ DiveLogImportDialog::~DiveLogImportDialog()
 	delete ui;
 }
 
-void DiveLogImportDialog::loadFileContents() {
+void DiveLogImportDialog::loadFileContentsSeperatorSelected(int value)
+{
+	loadFileContents(value, SEPARATOR);
+}
+
+void DiveLogImportDialog::loadFileContentsKnownTypesSelected(int value)
+{
+	loadFileContents(value, KNOWNTYPES);
+}
+
+void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+{
 	QFile f(fileNames.first());
 	QList<QStringList> fileColumns;
 	QStringList currColumns;
 	QStringList headers;
 	bool matchedSome = false;
 
-	f.open(QFile::ReadOnly);
-	// guess the separator
-	QString firstLine = f.readLine();
-	QString separator;
-	int tabs = firstLine.count('\t');
-	int commas = firstLine.count(',');
-	int semis = firstLine.count(';');
-	if (tabs > commas && tabs > semis)
-		separator = "\t";
-	else if (commas > tabs && commas > semis)
-		separator = ",";
-	else if (semis > tabs && semis > commas)
-		separator = ";";
-	else
-		separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
-	if (ui->CSVSeparator->currentText() != separator)
-		ui->CSVSeparator->setCurrentText(separator);
+	// reset everything
+	ColumnNameProvider *provider = new ColumnNameProvider(this);
+	ui->avaliableColumns->setModel(provider);
+	ui->avaliableColumns->setItemDelegate(new TagDragDelegate(ui->avaliableColumns));
+	resultModel = new ColumnNameResult(this);
+	ui->tableView->setModel(resultModel);
 
-	// now try and guess the columns
+	f.open(QFile::ReadOnly);
+	QString firstLine = f.readLine();
+	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	currColumns = firstLine.split(separator);
-	Q_FOREACH (QString columnText, currColumns) {
-		ColumnNameProvider *model = (ColumnNameProvider *)ui->avaliableColumns->model();
-		columnText.replace("\"", "");
-		columnText.replace("number", "#", Qt::CaseInsensitive);
-		int idx = model->mymatch(columnText);
-		if (idx >= 0) {
-			QString foundHeading = model->data(model->index(idx, 0), Qt::DisplayRole).toString();
-			model->removeRow(idx);
-			headers.append(foundHeading);
-			matchedSome = true;
-		} else {
-			headers.append("");
+	if (triggeredBy == INITIAL) {
+		// guess the separator
+		int tabs = firstLine.count('\t');
+		int commas = firstLine.count(',');
+		int semis = firstLine.count(';');
+		if (tabs > commas && tabs > semis)
+			separator = "\t";
+		else if (commas > tabs && commas > semis)
+			separator = ",";
+		else if (semis > tabs && semis > commas)
+			separator = ";";
+		if (ui->CSVSeparator->currentText() != separator) {
+			blockSignals(true);
+			ui->CSVSeparator->setCurrentText(separator);
+			blockSignals(false);
+			currColumns = firstLine.split(separator);
 		}
 	}
-	if (matchedSome) {
-		ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
-		ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
+	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == 0) || triggeredBy == SEPARATOR) {
+		// now try and guess the columns
+		Q_FOREACH (QString columnText, currColumns) {
+			ColumnNameProvider *model = (ColumnNameProvider *)ui->avaliableColumns->model();
+			columnText.replace("\"", "");
+			columnText.replace("number", "#", Qt::CaseInsensitive);
+			int idx = model->mymatch(columnText);
+			if (idx >= 0) {
+				QString foundHeading = model->data(model->index(idx, 0), Qt::DisplayRole).toString();
+				model->removeRow(idx);
+				headers.append(foundHeading);
+				matchedSome = true;
+			} else {
+				headers.append("");
+			}
+		}
+		if (matchedSome) {
+			ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
+			if (triggeredBy != KNOWNTYPES) {
+				blockSignals(true);
+				ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
+				blockSignals(false);
+			}
+		}
 	}
+	if (triggeredBy == KNOWNTYPES && value != 0) {
+		// an actual known type
+		separator = CSVApps[value].separator;
+		if (ui->CSVSeparator->currentText() != separator) {
+			blockSignals(true);
+			ui->CSVSeparator->setCurrentText(separator);
+			blockSignals(false);
+			if (separator == "Tab")
+				separator = "\t";
+			currColumns = firstLine.split(separator);
+		}
+		// now set up time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
+		for (int i = 0; i < currColumns.count(); i++)
+			headers.append("");
+		if (CSVApps[value].time != -1)
+			headers.replace(CSVApps[value].time, tr("Sample time"));
+		if (CSVApps[value].depth != -1)
+			headers.replace(CSVApps[value].depth, tr("Sample depth"));
+		if (CSVApps[value].temperature != -1)
+			headers.replace(CSVApps[value].temperature, tr("Sample temperature"));
+		if (CSVApps[value].po2 != -1)
+			headers.replace(CSVApps[value].po2, tr("Sample po2"));
+		if (CSVApps[value].cns != -1)
+			headers.replace(CSVApps[value].cns, tr("Sample cns"));
+		if (CSVApps[value].ndl != -1)
+			headers.replace(CSVApps[value].ndl, tr("Sample ndl"));
+		if (CSVApps[value].tts != -1)
+			headers.replace(CSVApps[value].tts, tr("Sample tts"));
+		if (CSVApps[value].stopdepth != -1)
+			headers.replace(CSVApps[value].stopdepth, tr("Sample stopdepth"));
+		if (CSVApps[value].pressure != -1)
+			headers.replace(CSVApps[value].pressure, tr("Samples pressure"));
+	}
+
 	f.reset();
 	int rows = 0;
 	while (rows < 10 || !f.atEnd()) {
