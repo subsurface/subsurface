@@ -1,16 +1,11 @@
 #include "preferences.h"
 #include "mainwindow.h"
 #include <QSettings>
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QSortFilterProxyModel>
 #include <QShortcut>
 #include <QNetworkProxy>
 #include <QNetworkCookieJar>
-#include <QNetworkReply>
-#include <QWebView>
-#include <QJsonDocument>
 #include "socialnetworks.h"
 
 PreferencesDialog *PreferencesDialog::instance()
