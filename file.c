@@ -973,7 +973,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 {
 	struct memblock mem;
 	int pnr = 0;
-	char *params[51];
+	char *params[53];
 	char numberbuf[MAXCOLDIGITS];
 	char datebuf[MAXCOLDIGITS];
 	char timebuf[MAXCOLDIGITS];
