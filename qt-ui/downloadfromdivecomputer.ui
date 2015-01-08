@@ -150,7 +150,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="startDownload">
            <property name="text">
             <string>Download</string>
            </property>
