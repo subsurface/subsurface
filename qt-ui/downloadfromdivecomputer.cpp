@@ -422,7 +422,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	// (but not visible as selected)
 	MainWindow::instance()->dive_list()->unselectDives();
 	MainWindow::instance()->dive_list()->selectDive(idx, true);
-	QString dcName = data.devname;
+
 	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, &data);
 }
