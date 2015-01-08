@@ -42,6 +42,8 @@ public:
 public
 slots:
 	void changeSelected(QModelIndex index);
+	void selectAll();
+	void selectNone();
 
 private:
 	int firstIndex;

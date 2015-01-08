@@ -77,6 +77,10 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
+	ui.selectAllButton->setEnabled(false);
+	ui.unselectAllButton->setEnabled(false);
+	connect(ui.selectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectAll()));
+	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
 	vendorModel = new QStringListModel(vendorList);
 	ui.vendor->setModel(vendorModel);
 	if (default_dive_computer_vendor) {
@@ -455,6 +459,8 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 	ui.dumpToFile->setDisabled(true);
 	ui.chooseLogFile->setDisabled(true);
 	ui.chooseDumpFile->setDisabled(true);
+	ui.selectAllButton->setDisabled(true);
+	ui.unselectAllButton->setDisabled(true);
 }
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
@@ -472,6 +478,8 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.dumpToFile->setDisabled(false);
 	ui.chooseLogFile->setDisabled(false);
 	ui.chooseDumpFile->setDisabled(false);
+	ui.selectAllButton->setDisabled(false);
+	ui.unselectAllButton->setDisabled(false);
 }
 
 static void fillDeviceList(const char *name, void *data)
@@ -596,6 +604,18 @@ void DiveImportedModel::changeSelected(QModelIndex index)
 {
 	checkStates[index.row()] = !checkStates[index.row()];
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
+}
+
+void DiveImportedModel::selectAll()
+{
+	memset(checkStates, true, lastIndex - firstIndex);
+	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
+}
+
+void DiveImportedModel::selectNone()
+{
+	memset(checkStates, false, lastIndex - firstIndex);
+	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
