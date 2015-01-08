@@ -500,7 +500,8 @@ void DownloadThread::run()
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	lastIndex(0),
-	firstIndex(0)
+	firstIndex(0),
+	checkStates(0)
 {
 }
 
@@ -525,13 +526,17 @@ QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
 	struct dive* d = get_dive( index.row() + firstIndex);
 	if (role == Qt::DisplayRole) {
 		switch(index.column()){
-			case 0 : return QVariant(d->when);
-			case 1 : return QVariant(d->duration);
-			case 2 : return QVariant(d->maxdepth);
-			case 3 : return QVariant(d->latitude);
-			case 4 : return QVariant(d->longitude);
+			case 0 : return QVariant((int) d->when);
+			case 1 : return QVariant(d->duration.seconds);
+			case 2 : return QVariant(d->maxdepth.mm);
+			case 3 : return QVariant(d->latitude.udeg);
+			case 4 : return QVariant(d->longitude.udeg);
 		}
 	}
+	if (role == Qt::CheckStateRole) {
+		return checkStates[index.row() + firstIndex] ? Qt::Checked : Qt::Unchecked;
+	}
+	return QVariant();
 }
 
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
@@ -541,5 +546,7 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	beginInsertRows(QModelIndex(), 0, last - first);
 	lastIndex = last;
 	firstIndex = first;
+	delete[] checkStates;
+	checkStates = new bool[last-first];
 	endInsertRows();
 }

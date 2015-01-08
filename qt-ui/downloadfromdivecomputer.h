@@ -37,6 +37,7 @@ public:
 private:
 	int firstIndex;
 	int lastIndex;
+	bool *checkStates;
 };
 
 class DownloadFromDCWidget : public QDialog {
