@@ -165,6 +165,12 @@
        <property name="title">
         <string>Downloaded Dives</string>
        </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QHBoxLayout" name="downloadedViewLayout">
         <item>
          <widget class="QTableView" name="downloadedView"/>
