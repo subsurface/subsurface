@@ -521,5 +521,10 @@ QVariant DiveImportedModel::data(const QModelIndex& model, int role) const
 
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 {
-
+	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
+	endRemoveRows();
+	beginInsertRows(QModelIndex(), 0, last - first);
+	lastIndex = last;
+	firstIndex = first;
+	endInsertRows();
 }
