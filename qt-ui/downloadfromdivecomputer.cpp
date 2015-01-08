@@ -570,7 +570,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	}
 	if (role == Qt::CheckStateRole) {
 		if (index.column() == 0)
-			return checkStates[index.row() + firstIndex] ? Qt::Checked : Qt::Unchecked;
+			return checkStates[index.row()] ? Qt::Checked : Qt::Unchecked;
 	}
 	return QVariant();
 }
@@ -586,7 +586,7 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 	if (role != Qt::CheckStateRole)
 		return false;
 
-	checkStates[index.row() + firstIndex] = value.toBool();
+	checkStates[index.row()] = value.toBool();
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
 	return true;
 }
