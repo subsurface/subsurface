@@ -16,20 +16,22 @@ static QString subsurface_index = "subsurface/csvindex";
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
+	// indices are 0 based, -1 means the column doesn't exist
 	{ "Manual import", },
-	{ "APD Log Viewer", 1, 2, 16, 7, 18, -1, -1, 19, -1, "Tab" },
-	{ "XP5", 1, 2, 10, -1, -1, -1, -1, -1, -1, "Tab" },
-	{ "SensusCSV", 10, 11, -1, -1, -1, -1, -1, -1, -1, "," },
-	{ "Seabear CSV", 1, 2, 6, -1, -1, 3, 4, 5, 7, ";" },
+	{ "APD Log Viewer", 0, 1, 15, 6, 17, -1, -1, 18, -1, "Tab" },
+	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, "Tab" },
+	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "Seabear CSV", 0, 1, 5, -1, -1, 2, 3, 4, 6, ";" },
 	{ "Subsurface CSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, }
 };
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
-	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure")
-		    << tr("End pressure") << tr("Max depth") << tr("Avg depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.")
-		    << tr("O₂") << tr("He");
+	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
+		       tr("End pressure") << tr("Max depth") << tr("Avg depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
+		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample po2") << tr("Sample cns") << tr("Sample ndl") <<
+		       tr("Sample tts") << tr("Sample stopdepth") << tr("Sample pressure");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -417,19 +419,19 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
 				parse_seabear_csv_file(fileNames[i].toUtf8().data(),
-					r.indexOf(tr("Time")),
-					r.indexOf(tr("Max depth")),
-					r.indexOf(tr("Water temp.")),
-					r.indexOf(tr("PO₂")),
-					r.indexOf(tr("CNS")),
-					r.indexOf(tr("NDL")),
-					r.indexOf(tr("TTS")),
-					r.indexOf(tr("Stopped depth")),
-					r.indexOf(tr("Pressure")),
-					ui->CSVSeparator->currentIndex(),
-					specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					ui->CSVUnits->currentIndex()
-				);
+						       r.indexOf(tr("Sample time")),
+						       r.indexOf(tr("Sample depth")),
+						       r.indexOf(tr("Sample temperature")),
+						       r.indexOf(tr("Sample po2")),
+						       r.indexOf(tr("Sample cns")),
+						       r.indexOf(tr("Sample ndl")),
+						       r.indexOf(tr("Sample tts")),
+						       r.indexOf(tr("Sample stopdepth")),
+						       r.indexOf(tr("Sample pressure")),
+						       ui->CSVSeparator->currentIndex(),
+						       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+						       ui->CSVUnits->currentIndex()
+						       );
 
 				// Seabear CSV stores NDL and TTS in Minutes, not seconds
 				struct dive *dive = dive_table.dives[dive_table.nr - 1];
@@ -440,49 +442,49 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				}
 			} else {
 				parse_csv_file(fileNames[i].toUtf8().data(),
-					r.indexOf(tr("Time")),
-					r.indexOf(tr("Max depth")),
-					r.indexOf(tr("Water temp.")),
-					r.indexOf(tr("PO₂")),
-					r.indexOf(tr("CNS")),
-					r.indexOf(tr("NDL")),
-					r.indexOf(tr("TTS")),
-					r.indexOf(tr("Stopped depth")),
-					r.indexOf(tr("Pressure")),
-					ui->CSVSeparator->currentIndex(),
-					specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					ui->CSVUnits->currentIndex()
-				);
+					       r.indexOf(tr("Sample time")),
+					       r.indexOf(tr("Sample depth")),
+					       r.indexOf(tr("Sample temperature")),
+					       r.indexOf(tr("Sample po2")),
+					       r.indexOf(tr("Sample cns")),
+					       r.indexOf(tr("Sample ndl")),
+					       r.indexOf(tr("Sample tts")),
+					       r.indexOf(tr("Sample stopdepth")),
+					       r.indexOf(tr("Sample pressure")),
+					       ui->CSVSeparator->currentIndex(),
+					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+					       ui->CSVUnits->currentIndex()
+					       );
 			}
 		}
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			parse_manual_file(fileNames[i].toUtf8().data(),
-				ui->CSVSeparator->currentIndex(),
-				ui->CSVUnits->currentIndex(),
-				ui->DateFormat->currentIndex(),
-				ui->DurationFormat->currentIndex(),
-				r.indexOf(tr("Dive #")),
-				r.indexOf(tr("Date")),
-				r.indexOf(tr("Time")),
-				r.indexOf(tr("Duration")),
-				r.indexOf(tr("Location")),
-				r.indexOf(tr("GPS")),
-				r.indexOf(tr("Max depth")),
-				r.indexOf(tr("Mean depth")),
-				r.indexOf(tr("Divemaster")),
-				r.indexOf(tr("Buddy")),
-				r.indexOf(tr("Notes")),
-				r.indexOf(tr("Weight")),
-				r.indexOf(tr("Tags")),
-				r.indexOf(tr("Cyl. size")),
-				r.indexOf(tr("Start pressure")),
-				r.indexOf(tr("End pressure")),
-				r.indexOf(tr("O₂")),
-				r.indexOf(tr("He")),
-				r.indexOf(tr("Air temp.")),
-				r.indexOf(tr("Water temp."))
-			);
+					  ui->CSVSeparator->currentIndex(),
+					  ui->CSVUnits->currentIndex(),
+					  ui->DateFormat->currentIndex(),
+					  ui->DurationFormat->currentIndex(),
+					  r.indexOf(tr("Dive #")),
+					  r.indexOf(tr("Date")),
+					  r.indexOf(tr("Time")),
+					  r.indexOf(tr("Duration")),
+					  r.indexOf(tr("Location")),
+					  r.indexOf(tr("GPS")),
+					  r.indexOf(tr("Max depth")),
+					  r.indexOf(tr("Mean depth")),
+					  r.indexOf(tr("Divemaster")),
+					  r.indexOf(tr("Buddy")),
+					  r.indexOf(tr("Notes")),
+					  r.indexOf(tr("Weight")),
+					  r.indexOf(tr("Tags")),
+					  r.indexOf(tr("Cyl. size")),
+					  r.indexOf(tr("Start pressure")),
+					  r.indexOf(tr("End pressure")),
+					  r.indexOf(tr("O₂")),
+					  r.indexOf(tr("He")),
+					  r.indexOf(tr("Air temp.")),
+					  r.indexOf(tr("Water temp."))
+					  );
 		}
 	}
 	process_dives(true, false);
