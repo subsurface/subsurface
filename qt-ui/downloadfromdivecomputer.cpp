@@ -427,6 +427,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, &data);
+	accept();
 }
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
