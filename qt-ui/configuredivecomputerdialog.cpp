@@ -227,15 +227,22 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 {
 	devData = *data;
 	parent = _parent;
+	// If we didn't find a current firmware version stop this hole thing here.
+	if (latestFirmwareAvailable.isEmpty())
+		return;
+
 	// for now libdivecomputer gives us the firmware on device undecoded as integer
 	// for the OSTC that means highbyte.lowbyte is the version number
 	int firmwareOnDevice = devData.libdc_firmware;
-	QString firmware;
-	firmware = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
-	if (!latestFirmwareAvailable.isEmpty() && latestFirmwareAvailable != firmware) {
+	QString firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
+
+	// Convert the latestFirmwareAvailable to a integear we can compare with
+	QStringList fwParts = latestFirmwareAvailable.split(".");
+	int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+	if (latestFirmwareAvailableNumber > firmwareOnDevice) {
 		QMessageBox response(parent);
 		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
-					  .arg(firmware)
+					  .arg(firmwareOnDeviceString)
 					  .arg(latestFirmwareAvailable);
 		if (strcmp(data->product, "OSTC Sport") == 0)
 			message += tr("\n\nPlease start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update");
