@@ -584,8 +584,8 @@ void DiveImportedModel::removeUnused() {
 	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 	endRemoveRows();
 
-	for(int i = lastIndex; i >= firstIndex; i-- ){
-		if(!checkStates[firstIndex - i]) {
+	for (int i = lastIndex; i >= firstIndex; i-- ) {
+		if (!checkStates[i - firstIndex]) {
 			delete_single_dive(i);
 		}
 	}
