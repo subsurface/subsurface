@@ -103,7 +103,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	ui.DiveType->insertItems(0, QStringList() << "OC" << "CCR" << "pSCR" << "Freedive");
-	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_divetype_Changed(int)));
+	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
@@ -772,8 +772,10 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
-		if (displayed_dive.dc.dctype != cd->dc.dctype)
+		if (displayed_dive.dc.dctype != cd->dc.dctype) {
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.dctype));
+			MODIFY_SELECTED_DIVES(update_setpoint_events(&mydive->dc));
+		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
 		if (displayed_dive.when != cd->when) {
@@ -1012,10 +1014,11 @@ void MainTab::on_airtemp_textChanged(const QString &text)
 	validate_temp_field(ui.airtemp, text);
 }
 
-void MainTab::on_divetype_Changed(const int &index)
+void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
+	qDebug() << "Changing divetype to " << dctype_text[index];
 	displayed_dive.dc.dctype = (enum dive_comp_type) index;
 	update_setpoint_events(&displayed_dive.dc);
 	markChangedWidget(ui.DiveType);

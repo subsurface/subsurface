@@ -71,7 +71,7 @@ slots:
 	void on_suit_textChanged(const QString &text);
 	void on_notes_textChanged();
 	void on_airtemp_textChanged(const QString &text);
-	void on_divetype_Changed(const int &index);
+	void divetype_Changed(int);
 	void on_watertemp_textChanged(const QString &text);
 	void validate_temp_field(QLineEdit *tempField, const QString &text);
 	void on_dateEdit_dateChanged(const QDate &date);

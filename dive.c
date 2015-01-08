@@ -888,8 +888,10 @@ void update_setpoint_events(struct divecomputer *dc)
 		}
 		ev = get_next_event(ev->next, "SP change");
 	}
-	if (!changed)
-		add_event(dc, 0, SAMPLE_EVENT_PO2, 0, new_setpoint, "SP change");
+	if (!changed) {
+		if (!add_event(dc, 0, SAMPLE_EVENT_PO2, 0, new_setpoint, "SP change"))
+			printf("Could not add setpoint change event\n");
+	}
 }
 
 void sanitize_gasmix(struct gasmix *mix)
