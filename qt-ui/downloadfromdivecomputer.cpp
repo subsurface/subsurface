@@ -402,8 +402,9 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 		updateState(CANCELLED);
 	}
 }
-/*
- * This needs to get moved somewhere else.
+
+void DownloadFromDCWidget::on_ok_clicked()
+{
 	int uniqId, idx;
 	// remember the last downloaded dive (on most dive computers this will be the chronologically
 	// first new dive) and select it again after processing all the dives
@@ -421,8 +422,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	QString dcName = data.devname;
 	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, &data);
-
-*/
+}
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
 {
