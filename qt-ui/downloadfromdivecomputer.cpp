@@ -514,9 +514,24 @@ int DiveImportedModel::rowCount(const QModelIndex& model) const
 	return lastIndex - firstIndex;
 }
 
-QVariant DiveImportedModel::data(const QModelIndex& model, int role) const
+QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
 {
+	if (!index.isValid())
+		return QVariant();
 
+	if (index.row() + firstIndex > lastIndex)
+		return QVariant();
+
+	struct dive* d = get_dive( index.row() + firstIndex);
+	if (role == Qt::DisplayRole) {
+		switch(index.column()){
+			case 0 : return QVariant(d->when);
+			case 1 : return QVariant(d->duration);
+			case 2 : return QVariant(d->maxdepth);
+			case 3 : return QVariant(d->latitude);
+			case 4 : return QVariant(d->longitude);
+		}
+	}
 }
 
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
