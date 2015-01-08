@@ -512,7 +512,7 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 
 int DiveImportedModel::columnCount(const QModelIndex& model ) const
 {
-	return 5;
+	return 3;
 }
 
 int DiveImportedModel::rowCount(const QModelIndex& model) const
@@ -531,11 +531,9 @@ QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
 	struct dive* d = get_dive( index.row() + firstIndex);
 	if (role == Qt::DisplayRole) {
 		switch(index.column()){
-			case 0 : return QVariant((int) d->when);
-			case 1 : return QVariant(d->duration.seconds);
-			case 2 : return QVariant(d->maxdepth.mm);
-			case 3 : return QVariant(d->latitude.udeg);
-			case 4 : return QVariant(d->longitude.udeg);
+			case 0 : return QVariant(get_short_dive_date_string(d->when));
+			case 1 : return QVariant(get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")));
+			case 2 : return QVariant(get_depth_string(d->maxdepth.mm, true, false));
 		}
 	}
 	if (role == Qt::CheckStateRole) {
