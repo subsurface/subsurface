@@ -554,6 +554,12 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
 }
 
+Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const {
+	if (index.column() != 0)
+		return QAbstractTableModel::flags(index);
+	return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 {
 	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
