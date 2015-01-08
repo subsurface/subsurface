@@ -555,6 +555,7 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 
 	checkStates[index.row() + firstIndex ] = value.toBool();
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
+	return true;
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const {
