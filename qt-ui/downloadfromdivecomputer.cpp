@@ -405,6 +405,9 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
+	if (currentState != DONE)
+		return;
+
 	// remove all unselected dives from the dive-list.
 	diveImportedModel->removeUnused();
 
