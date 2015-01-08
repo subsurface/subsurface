@@ -405,6 +405,9 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
+	// remove all unselected dives from the dive-list.
+	diveImportedModel->removeUnused();
+
 	int uniqId, idx;
 	// remember the last downloaded dive (on most dive computers this will be the chronologically
 	// first new dive) and select it again after processing all the dives
@@ -572,4 +575,19 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	checkStates = new bool[last-first];
 	memset(checkStates, true, last-first);
 	endInsertRows();
+}
+
+void DiveImportedModel::removeUnused() {
+	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+	endRemoveRows();
+
+	for(int i = lastIndex; i >= firstIndex; i-- ){
+		if(!checkStates[firstIndex - i]) {
+			delete_single_dive(i);
+		}
+	}
+
+	lastIndex = 0;
+	firstIndex = 0;
+	delete[] checkStates;
 }

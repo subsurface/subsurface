@@ -36,6 +36,7 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role);
 	void setImportedDivesIndexes(int first, int last);
 	Qt::ItemFlags flags(const QModelIndex &index) const;
+	void removeUnused();
 private:
 	int firstIndex;
 	int lastIndex;
