@@ -398,13 +398,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == 0) || triggeredBy == SEPARATOR) {
 		// now try and guess the columns
 		Q_FOREACH (QString columnText, currColumns) {
-			ColumnNameProvider *model = (ColumnNameProvider *)ui->avaliableColumns->model();
 			columnText.replace("\"", "");
 			columnText.replace("number", "#", Qt::CaseInsensitive);
-			int idx = model->mymatch(columnText);
+			int idx = provider->mymatch(columnText);
 			if (idx >= 0) {
-				QString foundHeading = model->data(model->index(idx, 0), Qt::DisplayRole).toString();
-				model->removeRow(idx);
+				QString foundHeading = provider->data(provider->index(idx, 0), Qt::DisplayRole).toString();
+				provider->removeRow(idx);
 				headers.append(foundHeading);
 				matchedSome = true;
 			} else {
