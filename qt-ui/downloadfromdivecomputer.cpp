@@ -53,6 +53,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.progressBar->hide();
 	ui.progressBar->setMinimum(0);
 	ui.progressBar->setMaximum(100);
+	diveImportedModel = new DiveImportedModel(this);
 
 	progress_bar_text = "";
 
@@ -388,23 +389,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			for (int i = dive_table.nr - 1; i >= previousLast; i--)
 				delete_single_dive(i);
 		} else if (dive_table.nr) {
-			int uniqId, idx;
-			// remember the last downloaded dive (on most dive computers this will be the chronologically
-			// first new dive) and select it again after processing all the dives
-			MainWindow::instance()->dive_list()->unselectDives();
-			uniqId = get_dive(dive_table.nr - 1)->id;
-			process_dives(true, preferDownloaded());
-			// after process_dives does any merging or resorting needed, we need
-			// to recreate the model for the dive list so we can select the newest dive
-			MainWindow::instance()->recreateDiveList();
-			idx = get_idx_by_uniq_id(uniqId);
-			// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
-			// (but not visible as selected)
-			MainWindow::instance()->dive_list()->unselectDives();
-			MainWindow::instance()->dive_list()->selectDive(idx, true);
-			QString dcName = data.devname;
-			if (ostcFirmwareCheck && currentState == DONE)
-				ostcFirmwareCheck->checkLatest(this, &data);
+			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr-1);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {
@@ -416,6 +401,27 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 		updateState(CANCELLED);
 	}
 }
+/*
+ * This needs to get moved somewhere else.
+	int uniqId, idx;
+	// remember the last downloaded dive (on most dive computers this will be the chronologically
+	// first new dive) and select it again after processing all the dives
+	MainWindow::instance()->dive_list()->unselectDives();
+	uniqId = get_dive(dive_table.nr - 1)->id;
+	process_dives(true, preferDownloaded());
+	// after process_dives does any merging or resorting needed, we need
+	// to recreate the model for the dive list so we can select the newest dive
+	MainWindow::instance()->recreateDiveList();
+	idx = get_idx_by_uniq_id(uniqId);
+	// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
+	// (but not visible as selected)
+	MainWindow::instance()->dive_list()->unselectDives();
+	MainWindow::instance()->dive_list()->selectDive(idx, true);
+	QString dcName = data.devname;
+	if (ostcFirmwareCheck && currentState == DONE)
+		ostcFirmwareCheck->checkLatest(this, &data);
+
+*/
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
 {
@@ -490,4 +496,29 @@ void DownloadThread::run()
 		errorText = do_libdivecomputer_import(data);
 	if (errorText)
 		error = str_error(errorText, data->devname, data->vendor, data->product);
+}
+
+DiveImportedModel::DiveImportedModel(QObject *o)
+{
+
+}
+
+int DiveImportedModel::columnCount(const QModelIndex& model ) const
+{
+
+}
+
+int DiveImportedModel::rowCount(const QModelIndex& model) const
+{
+
+}
+
+QVariant DiveImportedModel::data(const QModelIndex& model, int role) const
+{
+
+}
+
+void DiveImportedModel::setImportedDivesIndexes(int first, int last)
+{
+
 }

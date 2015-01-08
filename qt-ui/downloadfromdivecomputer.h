@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QHash>
 #include <QMap>
+#include <QAbstractTableModel>
 
 #include "libdivecomputer.h"
 #include "configuredivecomputerdialog.h"
@@ -22,6 +23,20 @@ public:
 
 private:
 	device_data_t *data;
+};
+
+class DiveImportedModel : public QAbstractTableModel
+{
+	Q_OBJECT
+public:
+	DiveImportedModel(QObject *o);
+	int columnCount(const QModelIndex& index = QModelIndex()) const;
+	int rowCount(const QModelIndex& index = QModelIndex()) const;
+	QVariant data(const QModelIndex& index, int role) const;
+	void setImportedDivesIndexes(int first, int last);
+private:
+	int firstIndex;
+	int lastIndex;
 };
 
 class DownloadFromDCWidget : public QDialog {
@@ -77,6 +92,7 @@ private:
 	QTimer *timer;
 	bool dumpWarningShown;
 	OstcFirmwareCheck *ostcFirmwareCheck;
+	DiveImportedModel *diveImportedModel;
 
 public:
 	bool preferDownloaded();
