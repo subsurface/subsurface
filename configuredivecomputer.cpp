@@ -1,6 +1,6 @@
 #include "configuredivecomputer.h"
 #include "libdivecomputer/hw.h"
-#include <QDebug>
+#include <QTextStream>
 #include <QFile>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
