@@ -389,7 +389,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			for (int i = dive_table.nr - 1; i >= previousLast; i--)
 				delete_single_dive(i);
 		} else if (dive_table.nr) {
-			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr-1);
+			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr - 1);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {
@@ -512,17 +512,17 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 {
 }
 
-int DiveImportedModel::columnCount(const QModelIndex& model ) const
+int DiveImportedModel::columnCount(const QModelIndex &model) const
 {
 	return 3;
 }
 
-int DiveImportedModel::rowCount(const QModelIndex& model) const
+int DiveImportedModel::rowCount(const QModelIndex &model) const
 {
 	return lastIndex - firstIndex;
 }
 
-QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
+QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
@@ -530,12 +530,15 @@ QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
 	if (index.row() + firstIndex > lastIndex)
 		return QVariant();
 
-	struct dive* d = get_dive( index.row() + firstIndex);
+	struct dive *d = get_dive(index.row() + firstIndex);
 	if (role == Qt::DisplayRole) {
-		switch(index.column()){
-			case 0 : return QVariant(get_short_dive_date_string(d->when));
-			case 1 : return QVariant(get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")));
-			case 2 : return QVariant(get_depth_string(d->maxdepth.mm, true, false));
+		switch (index.column()) {
+		case 0:
+			return QVariant(get_short_dive_date_string(d->when));
+		case 1:
+			return QVariant(get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")));
+		case 2:
+			return QVariant(get_depth_string(d->maxdepth.mm, true, false));
 		}
 	}
 	if (role == Qt::CheckStateRole) {
@@ -556,12 +559,13 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 	if (role != Qt::CheckStateRole)
 		return false;
 
-	checkStates[index.row() + firstIndex ] = value.toBool();
+	checkStates[index.row() + firstIndex] = value.toBool();
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
 	return true;
 }
 
-Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
+{
 	if (index.column() != 0)
 		return QAbstractTableModel::flags(index);
 	return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
@@ -575,16 +579,17 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	lastIndex = last;
 	firstIndex = first;
 	delete[] checkStates;
-	checkStates = new bool[last-first];
-	memset(checkStates, true, last-first);
+	checkStates = new bool[last - first];
+	memset(checkStates, true, last - first);
 	endInsertRows();
 }
 
-void DiveImportedModel::removeUnused() {
-	beginRemoveRows(QModelIndex(), 0, rowCount()-1);
+void DiveImportedModel::removeUnused()
+{
+	beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 	endRemoveRows();
 
-	for (int i = lastIndex; i >= firstIndex; i-- ) {
+	for (int i = lastIndex; i >= firstIndex; i--) {
 		if (!checkStates[i - firstIndex]) {
 			delete_single_dive(i);
 		}
