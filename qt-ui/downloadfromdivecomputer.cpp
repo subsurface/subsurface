@@ -569,5 +569,6 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	firstIndex = first;
 	delete[] checkStates;
 	checkStates = new bool[last-first];
+	memset(checkStates, true, last-first);
 	endInsertRows();
 }
