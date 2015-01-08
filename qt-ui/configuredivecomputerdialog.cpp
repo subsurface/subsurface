@@ -13,7 +13,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QDebug>
 
 struct product {
 	const char *product;
@@ -221,7 +220,6 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	int firstOpenBracket = parse.indexOf('[');
 	int firstCloseBracket = parse.indexOf(']');
 	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
-	qDebug() << "latest firmware available" << latestFirmwareAvailable;
 	disconnect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseOstcFwVersion(QNetworkReply *)));
 }
 
@@ -282,9 +280,7 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	file.open(QIODevice::WriteOnly);
 	file.write(firmwareData);
 	file.close();
-	qDebug() << "file closed";
 	ConfigureDiveComputer *config = new ConfigureDiveComputer();
-	qDebug() << "created config object, calling the firwmware uploader";
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
 
