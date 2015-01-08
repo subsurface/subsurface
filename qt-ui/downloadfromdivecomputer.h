@@ -38,6 +38,11 @@ public:
 	void setImportedDivesIndexes(int first, int last);
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	void removeUnused();
+
+public
+slots:
+	void changeSelected(QModelIndex index);
+
 private:
 	int firstIndex;
 	int lastIndex;

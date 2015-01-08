@@ -61,6 +61,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadedView->setColumnWidth(0, startingWidth * 20);
 	ui.downloadedView->setColumnWidth(1, startingWidth * 15);
 	ui.downloadedView->setColumnWidth(2, startingWidth * 10);
+	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), diveImportedModel, SLOT(changeSelected(QModelIndex)));
 	QRect mainGeometry = parent->geometry();
 	int width = mainGeometry.width() * 0.8;
 	int height = mainGeometry.height() * 0.8;
@@ -589,6 +590,12 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 	checkStates[index.row()] = value.toBool();
 	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
 	return true;
+}
+
+void DiveImportedModel::changeSelected(QModelIndex index)
+{
+	checkStates[index.row()] = !checkStates[index.row()];
+	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
