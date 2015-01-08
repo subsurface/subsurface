@@ -18,9 +18,9 @@
     <normalon>:/subsurface-icon</normalon>
    </iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="vendorProductLabelLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="vendorProductLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -44,11 +44,11 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QHBoxLayout" name="mainDialogLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="leftOfMainLayout">
        <item>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="choicesLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
@@ -135,7 +135,7 @@
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="startDownloadLayout">
          <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -165,7 +165,7 @@
        <property name="title">
         <string>Downloaded Dives</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="downloadedViewLayout">
         <item>
          <widget class="QTableView" name="downloadedView"/>
         </item>
@@ -175,7 +175,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="buttonBoxLayout">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
