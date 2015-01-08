@@ -54,6 +54,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.progressBar->setMinimum(0);
 	ui.progressBar->setMaximum(100);
 	diveImportedModel = new DiveImportedModel(this);
+	ui.downloadedView->setModel(diveImportedModel);
 
 	progress_bar_text = "";
 
@@ -270,7 +271,7 @@ void DownloadFromDCWidget::on_cancel_clicked()
 	updateState(CANCELLING);
 }
 
-void DownloadFromDCWidget::on_ok_clicked()
+void DownloadFromDCWidget::on_startDownload_clicked()
 {
 	updateState(DOWNLOADING);
 
