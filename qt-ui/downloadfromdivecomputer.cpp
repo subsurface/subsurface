@@ -134,9 +134,8 @@ void DownloadFromDCWidget::updateState(states state)
 	}
 
 	// DOWNLOAD is finally done, but we don't know if there was an error as libdivecomputer doesn't pass
-	// that information on to us
-	// so check the progressBar text and if no error was reported, close the dialog and go back to the main window
-	// otherwise treat this as if the download was cancelled
+	// that information on to us.
+	// If we find an error, offer to retry, otherwise continue the interaction to pick the dives the user wants
 	else if (currentState == DOWNLOADING && state == DONE) {
 		timer->stop();
 		if (QString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
@@ -148,7 +147,6 @@ void DownloadFromDCWidget::updateState(states state)
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 			ui.ok->setText(tr("OK"));
-			accept();
 		}
 	}
 
