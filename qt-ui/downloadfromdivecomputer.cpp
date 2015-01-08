@@ -447,39 +447,39 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
 {
-	ui.device->setDisabled(true);
-	ui.vendor->setDisabled(true);
-	ui.product->setDisabled(true);
-	ui.forceDownload->setDisabled(true);
-	ui.createNewTrip->setDisabled(true);
-	ui.preferDownloaded->setDisabled(true);
-	ui.ok->setDisabled(true);
-	ui.search->setDisabled(true);
-	ui.logToFile->setDisabled(true);
-	ui.dumpToFile->setDisabled(true);
-	ui.chooseLogFile->setDisabled(true);
-	ui.chooseDumpFile->setDisabled(true);
-	ui.selectAllButton->setDisabled(true);
-	ui.unselectAllButton->setDisabled(true);
+	ui.device->setEnabled(false);
+	ui.vendor->setEnabled(false);
+	ui.product->setEnabled(false);
+	ui.forceDownload->setEnabled(false);
+	ui.createNewTrip->setEnabled(false);
+	ui.preferDownloaded->setEnabled(false);
+	ui.ok->setEnabled(false);
+	ui.search->setEnabled(false);
+	ui.logToFile->setEnabled(false);
+	ui.dumpToFile->setEnabled(false);
+	ui.chooseLogFile->setEnabled(false);
+	ui.chooseDumpFile->setEnabled(false);
+	ui.selectAllButton->setEnabled(false);
+	ui.unselectAllButton->setEnabled(false);
 }
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
 {
-	ui.device->setDisabled(false);
-	ui.vendor->setDisabled(false);
-	ui.product->setDisabled(false);
-	ui.forceDownload->setDisabled(false);
-	ui.createNewTrip->setDisabled(false);
-	ui.preferDownloaded->setDisabled(false);
-	ui.ok->setDisabled(false);
-	ui.cancel->setDisabled(false);
-	ui.search->setDisabled(false);
-	ui.logToFile->setDisabled(false);
-	ui.dumpToFile->setDisabled(false);
-	ui.chooseLogFile->setDisabled(false);
-	ui.chooseDumpFile->setDisabled(false);
-	ui.selectAllButton->setDisabled(false);
-	ui.unselectAllButton->setDisabled(false);
+	ui.device->setEnabled(true);
+	ui.vendor->setEnabled(true);
+	ui.product->setEnabled(true);
+	ui.forceDownload->setEnabled(true);
+	ui.createNewTrip->setEnabled(true);
+	ui.preferDownloaded->setEnabled(true);
+	ui.ok->setEnabled(true);
+	ui.cancel->setEnabled(true);
+	ui.search->setEnabled(true);
+	ui.logToFile->setEnabled(true);
+	ui.dumpToFile->setEnabled(true);
+	ui.chooseLogFile->setEnabled(true);
+	ui.chooseDumpFile->setEnabled(true);
+	ui.selectAllButton->setEnabled(true);
+	ui.unselectAllButton->setEnabled(true);
 }
 
 static void fillDeviceList(const char *name, void *data)
