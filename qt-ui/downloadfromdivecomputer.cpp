@@ -539,6 +539,21 @@ QVariant DiveImportedModel::data(const QModelIndex& index, int role) const
 	return QVariant();
 }
 
+bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (!index.isValid())
+		return false;
+
+	if (index.row() + firstIndex > lastIndex)
+		return false;
+
+	if (role != Qt::CheckStateRole)
+		return false;
+
+	checkStates[index.row() + firstIndex ] = value.toBool();
+	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
+}
+
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 {
 	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
