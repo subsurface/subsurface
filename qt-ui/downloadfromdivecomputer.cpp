@@ -498,19 +498,20 @@ void DownloadThread::run()
 		error = str_error(errorText, data->devname, data->vendor, data->product);
 }
 
-DiveImportedModel::DiveImportedModel(QObject *o)
+DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
+	lastIndex(0),
+	firstIndex(0)
 {
-
 }
 
 int DiveImportedModel::columnCount(const QModelIndex& model ) const
 {
-
+	return 5;
 }
 
 int DiveImportedModel::rowCount(const QModelIndex& model) const
 {
-
+	return lastIndex - firstIndex;
 }
 
 QVariant DiveImportedModel::data(const QModelIndex& model, int role) const
