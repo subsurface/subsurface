@@ -522,6 +522,23 @@ int DiveImportedModel::rowCount(const QModelIndex &model) const
 	return lastIndex - firstIndex;
 }
 
+QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (orientation == Qt::Vertical)
+		return QVariant();
+	if (role == Qt::DisplayRole) {
+		switch (section) {
+		case 0:
+			return QVariant(tr("Date/time"));
+		case 1:
+			return QVariant(tr("Duration"));
+		case 2:
+			return QVariant(tr("Depth"));
+		}
+	}
+	return QVariant();
+}
+
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
