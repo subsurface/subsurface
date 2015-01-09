@@ -602,10 +602,10 @@ bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-void DiveImportedModel::changeSelected(QModelIndex index)
+void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 {
-	checkStates[index.row()] = !checkStates[index.row()];
-	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
+	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
+	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()), QVector<int>() << Qt::CheckStateRole);
 }
 
 void DiveImportedModel::selectAll()

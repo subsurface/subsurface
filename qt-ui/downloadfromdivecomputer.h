@@ -41,7 +41,7 @@ public:
 
 public
 slots:
-	void changeSelected(QModelIndex index);
+	void changeSelected(QModelIndex clickedIndex);
 	void selectAll();
 	void selectNone();
 
