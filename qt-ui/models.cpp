@@ -1138,6 +1138,8 @@ QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
+	if (!dive)
+		return QVariant();
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
