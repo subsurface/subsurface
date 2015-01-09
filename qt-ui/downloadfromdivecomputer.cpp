@@ -102,6 +102,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	ui.ok->setEnabled(false);
+	ui.startDownload->setEnabled(true);
 }
 
 void DownloadFromDCWidget::updateProgressBar()
@@ -406,6 +407,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 		} else if (dive_table.nr && previousLast < dive_table.nr) {
 			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr - 1);
 		}
+		ui.startDownload->setEnabled(false);
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
 		if (import_thread_cancelled) {
 			// walk backwards so we don't keep moving the dives
