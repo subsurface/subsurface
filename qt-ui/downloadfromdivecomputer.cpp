@@ -399,26 +399,12 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			updateState(DONE);
 		else
 			updateState(ERROR);
-
-		// I'm not sure if we should really call process_dives even
-		// if there's an error
-		if (import_thread_cancelled) {
-			// walk backwards so we don't keep moving the dives
-			// down in the dive_table
-			for (int i = dive_table.nr - 1; i >= previousLast; i--)
-				delete_single_dive(i);
-		} else if (dive_table.nr && previousLast < dive_table.nr) {
-			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr - 1);
-		}
-		ui.startDownload->setEnabled(false);
-	} else if (currentState == CANCELLING || currentState == CANCELLED) {
-		if (import_thread_cancelled) {
-			// walk backwards so we don't keep moving the dives
-			// down in the dive_table
-			for (int i = dive_table.nr - 1; i >= previousLast; i--)
-				delete_single_dive(i);
-		}
-		updateState(CANCELLED);
+	} else if (currentState == CANCELLING) {
+		updateState(DONE);
+	}
+	// regardless, if we got dives, we should show them to the user
+	if (downloadTable.nr) {
+		diveImportedModel->setImportedDivesIndexes(0, downloadTable.nr - 1);
 	}
 }
 
@@ -427,8 +413,13 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (currentState != DONE)
 		return;
 
-	// remove all unselected dives from the dive-list.
-	diveImportedModel->removeUnused();
+	// record all the dives in the 'real' dive_table
+	for (int i = 0; i < downloadTable.nr; i++) {
+		if (diveImportedModel->data(diveImportedModel->index(i, 0),Qt::CheckStateRole) == Qt::Checked)
+			record_dive(downloadTable.dives[i]);
+		downloadTable.dives[i] = NULL;
+	}
+	downloadTable.nr = 0;
 
 	int uniqId, idx;
 	// remember the last downloaded dive (on most dive computers this will be the chronologically
@@ -521,6 +512,7 @@ void DownloadThread::run()
 {
 	const char *errorText;
 	import_thread_cancelled = false;
+	data->download_table = &downloadTable;
 	if (!strcmp(data->vendor, "Uemis"))
 		errorText = do_uemis_import(data);
 	else
@@ -571,7 +563,9 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (index.row() + firstIndex > lastIndex)
 		return QVariant();
 
-	struct dive *d = get_dive(index.row() + firstIndex);
+	struct dive *d = get_dive_from_table(index.row() + firstIndex, &downloadTable);
+	if (!d)
+		return QVariant();
 	if (role == Qt::DisplayRole) {
 		switch (index.column()) {
 		case 0:
@@ -626,20 +620,4 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	checkStates = new bool[last - first + 1];
 	memset(checkStates, true, last - first + 1);
 	endInsertRows();
-}
-
-void DiveImportedModel::removeUnused()
-{
-	beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-	endRemoveRows();
-
-	for (int i = lastIndex; i >= firstIndex; i--) {
-		if (!checkStates[i - firstIndex]) {
-			delete_single_dive(i);
-		}
-	}
-
-	lastIndex = 0;
-	firstIndex = 0;
-	delete[] checkStates;
 }

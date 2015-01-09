@@ -128,7 +128,7 @@ static void record_uemis_dive(device_data_t *devdata, struct dive *dive)
 		else
 			add_dive_to_trip(dive, devdata->trip);
 	}
-	record_dive(dive);
+	record_dive_to_table(dive, devdata->download_table);
 }
 
 /* send text to the importer progress bar */

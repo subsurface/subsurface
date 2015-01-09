@@ -597,7 +597,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	dive->downloaded = true;
-	record_dive(dive);
+	record_dive_to_table(dive, devdata->download_table);
 	mark_divelist_changed(true);
 	return true;
 
