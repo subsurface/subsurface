@@ -527,7 +527,7 @@ void DownloadThread::run()
 }
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
-	lastIndex(0),
+	lastIndex(-1),
 	firstIndex(0),
 	checkStates(0)
 {
@@ -540,7 +540,7 @@ int DiveImportedModel::columnCount(const QModelIndex &model) const
 
 int DiveImportedModel::rowCount(const QModelIndex &model) const
 {
-	return lastIndex - firstIndex;
+	return lastIndex - firstIndex + 1;
 }
 
 QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
