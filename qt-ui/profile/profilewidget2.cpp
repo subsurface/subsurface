@@ -531,10 +531,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc);
 	}
 
-	if (current_dive && (currentdc->dctype == CCR) && (prefs.show_ccr_setpoint))
-		o2SetpointGasItem->setVisible(true);
-	else
-		o2SetpointGasItem->setVisible(false);
+	o2SetpointGasItem->setVisible(current_dive && (currentdc->dctype == CCR) && prefs.show_ccr_setpoint && prefs.pp_graphs.po2);
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -991,7 +988,7 @@ void ProfileWidget2::setProfileState()
 	}
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	o2SetpointGasItem->setVisible(current_dive && (current_dc->dctype == CCR) && (prefs.show_ccr_setpoint));
+	o2SetpointGasItem->setVisible(current_dive && prefs.pp_graphs.po2 && (current_dc->dctype == CCR) && (prefs.show_ccr_setpoint));
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
 	timeAxis->setPos(itemPos.time.pos.on);
