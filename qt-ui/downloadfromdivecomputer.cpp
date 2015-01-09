@@ -105,7 +105,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	ui.ok->setEnabled(false);
-	ui.startDownload->setEnabled(true);
+	ui.downloadCancelRetryButton->setEnabled(true);
+	ui.downloadCancelRetryButton->setText(tr("Download"));
 }
 
 void DownloadFromDCWidget::updateProgressBar()
@@ -133,21 +134,19 @@ void DownloadFromDCWidget::updateState(states state)
 	// tries to cancel an on going download
 	else if (currentState == DOWNLOADING && state == CANCELLING) {
 		import_thread_cancelled = true;
-		ui.cancel->setEnabled(false);
+		ui.downloadCancelRetryButton->setEnabled(false);
 	}
 
 	// user pressed cancel but the application isn't doing anything.
 	// means close the window
-	else if ((currentState == INITIAL || currentState == CANCELLED || currentState == DONE || currentState == ERROR) && state == CANCELLING) {
+	else if ((currentState == INITIAL || currentState == DONE || currentState == ERROR) && state == CANCELLING) {
 		timer->stop();
 		reject();
-		ui.ok->setText(tr("OK"));
 	}
 
 	// the cancelation process is finished
-	else if (currentState == CANCELLING && (state == DONE || state == CANCELLED)) {
+	else if (currentState == CANCELLING && state == DONE) {
 		timer->stop();
-		state = CANCELLED;
 		ui.progressBar->setValue(0);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
@@ -162,11 +161,9 @@ void DownloadFromDCWidget::updateState(states state)
 			updateProgressBar();
 			markChildrenAsEnabled();
 			progress_bar_text = "";
-			ui.ok->setText(tr("Retry"));
 		} else {
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
-			ui.ok->setText(tr("OK"));
 		}
 	}
 
@@ -185,7 +182,6 @@ void DownloadFromDCWidget::updateState(states state)
 
 		markChildrenAsEnabled();
 		ui.progressBar->hide();
-		ui.ok->setText(tr("Retry"));
 	}
 
 	// properly updating the widget state
@@ -284,14 +280,17 @@ void DownloadFromDCWidget::on_search_clicked()
 	}
 }
 
-void DownloadFromDCWidget::on_cancel_clicked()
+void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 {
-	updateState(CANCELLING);
-}
-
-void DownloadFromDCWidget::on_startDownload_clicked()
-{
+	if (currentState == DOWNLOADING) {
+		updateState(CANCELLING);
+		return;
+	}
 	updateState(DOWNLOADING);
+
+	// you cannot cancel the dialog, just the download
+	ui.cancel->setEnabled(false);
+	ui.downloadCancelRetryButton->setText("Cancel download");
 
 	// I don't really think that create/destroy the thread
 	// is really necessary.
@@ -402,10 +401,23 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	} else if (currentState == CANCELLING) {
 		updateState(DONE);
 	}
+	ui.downloadCancelRetryButton->setText(tr("Retry"));
+	ui.downloadCancelRetryButton->setEnabled(true);
 	// regardless, if we got dives, we should show them to the user
 	if (downloadTable.nr) {
 		diveImportedModel->setImportedDivesIndexes(0, downloadTable.nr - 1);
 	}
+
+}
+
+void DownloadFromDCWidget::on_cancel_clicked()
+{
+	if (currentState == DOWNLOADING || currentState == CANCELLING)
+		return;
+
+	// now discard all the dives
+	clear_table(&downloadTable);
+	done(-1);
 }
 
 void DownloadFromDCWidget::on_ok_clicked()

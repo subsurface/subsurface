@@ -135,7 +135,7 @@
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="startDownloadLayout">
+        <layout class="QHBoxLayout" name="downloadCancelRetryLayout">
          <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -150,7 +150,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="startDownload">
+          <widget class="QPushButton" name="downloadCancelRetryButton">
            <property name="text">
             <string>Download</string>
            </property>

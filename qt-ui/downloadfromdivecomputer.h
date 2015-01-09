@@ -60,14 +60,13 @@ public:
 		INITIAL,
 		DOWNLOADING,
 		CANCELLING,
-		CANCELLED,
 		ERROR,
 		DONE,
 	};
 
 public
 slots:
-	void on_startDownload_clicked();
+	void on_downloadCancelRetryButton_clicked();
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void on_search_clicked();
