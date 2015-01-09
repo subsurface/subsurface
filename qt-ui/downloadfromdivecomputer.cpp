@@ -629,14 +629,15 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 {
+	Q_ASSERT(last >= first);
 	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
 	endRemoveRows();
 	beginInsertRows(QModelIndex(), 0, last - first);
 	lastIndex = last;
 	firstIndex = first;
 	delete[] checkStates;
-	checkStates = new bool[last - first];
-	memset(checkStates, true, last - first);
+	checkStates = new bool[last - first + 1];
+	memset(checkStates, true, last - first + 1);
 	endInsertRows();
 }
 
