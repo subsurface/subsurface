@@ -439,14 +439,15 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->dc.deviceid = devdata->deviceid;
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
-	tm.tm_year = dt.year;
-	tm.tm_mon = dt.month - 1;
-	tm.tm_mday = dt.day;
-	tm.tm_hour = dt.hour;
-	tm.tm_min = dt.minute;
-	tm.tm_sec = dt.second;
-	dive->when = dive->dc.when = utc_mktime(&tm);
-
+	if (rc == DC_STATUS_SUCCESS) {
+		tm.tm_year = dt.year;
+		tm.tm_mon = dt.month - 1;
+		tm.tm_mday = dt.day;
+		tm.tm_hour = dt.hour;
+		tm.tm_min = dt.minute;
+		tm.tm_sec = dt.second;
+		dive->when = dive->dc.when = utc_mktime(&tm);
+	}
 	// Parse the divetime.
 	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, get_dive_date_c_string(dive->when));
 	unsigned int divetime = 0;
@@ -455,7 +456,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
 		goto error_exit;
 	}
-	dive->dc.duration.seconds = divetime;
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	double maxdepth = 0.0;
@@ -464,7 +466,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
 		goto error_exit;
 	}
-	dive->dc.maxdepth.mm = rint(maxdepth * 1000);
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.maxdepth.mm = rint(maxdepth * 1000);
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 	// if this is defined then we have a fairly late version of libdivecomputer
@@ -482,15 +485,16 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 			dev_info(devdata, translate("gettextFromC", "Error parsing temperature"));
 			goto error_exit;
 		}
-		switch(i) {
-		case 0:
-			dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
-			break;
-		case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
-		case 2:
-			dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
-			break;
-		}
+		if (rc == DC_STATUS_SUCCESS)
+			switch(i) {
+			case 0:
+				dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
+				break;
+			case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
+			case 2:
+				dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
+				break;
+			}
 	}
 #endif
 
@@ -513,7 +517,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
 		goto error_exit;
 	}
-	dive->dc.salinity = rint(salinity.density * 10.0);
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.salinity = rint(salinity.density * 10.0);
 
 	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
@@ -521,7 +526,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
 		goto error_exit;
 	}
-	dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
 #endif
 
 #ifdef DC_FIELD_STRING
@@ -545,16 +551,17 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dev_info(devdata, translate("gettextFromC", "Error obtaining divemode"));
 		goto error_exit;
 	}
-	switch(divemode) {
-	case DC_DIVEMODE_FREEDIVE:
-	case DC_DIVEMODE_GAUGE:
-	case DC_DIVEMODE_OC: /* Open circuit */
-		dive->dc.dctype = OC;
-		break;
-	case DC_DIVEMODE_CC:  /* Closed circuit */
-		dive->dc.dctype = CCR;
-		break;
-	}
+	if (rc == DC_STATUS_SUCCESS)
+		switch(divemode) {
+		case DC_DIVEMODE_FREEDIVE:
+		case DC_DIVEMODE_GAUGE:
+		case DC_DIVEMODE_OC: /* Open circuit */
+			dive->dc.dctype = OC;
+			break;
+		case DC_DIVEMODE_CC:  /* Closed circuit */
+			dive->dc.dctype = CCR;
+			break;
+		}
 #endif
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
