@@ -403,7 +403,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 			// down in the dive_table
 			for (int i = dive_table.nr - 1; i >= previousLast; i--)
 				delete_single_dive(i);
-		} else if (dive_table.nr) {
+		} else if (dive_table.nr && previousLast < dive_table.nr) {
 			diveImportedModel->setImportedDivesIndexes(previousLast, dive_table.nr - 1);
 		}
 	} else if (currentState == CANCELLING || currentState == CANCELLED) {
