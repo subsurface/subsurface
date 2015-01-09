@@ -506,6 +506,13 @@ static inline struct dive *get_dive(int nr)
 	return dive_table.dives[nr];
 }
 
+static inline struct dive *get_dive_from_table(int nr, struct dive_table *dt)
+{
+	if (nr >= dt->nr || nr < 0)
+		return NULL;
+	return dt->dives[nr];
+}
+
 static inline unsigned int number_of_computers(struct dive *dive)
 {
 	unsigned int total_number = 0;
@@ -677,11 +684,14 @@ extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
+extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(struct dive *s, struct dive *d);
 extern void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what, bool clear);
 extern struct dive *clone_dive(struct dive *s);
+
+extern void clear_table(struct dive_table *table);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);

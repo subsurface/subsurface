@@ -49,9 +49,19 @@ int trimspace(char *buffer) {
 }
 
 /*
+ * Clear a dive_table
+ */
+void clear_table(struct dive_table *table)
+{
+	for (int i = 0; i < table->nr; i++)
+		free(table->dives[i]);
+	table->nr = 0;
+}
+
+/*
  * Add a dive into the dive_table array
  */
-static void record_dive_to_table(struct dive *dive, struct dive_table *table)
+void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
 	assert(table != NULL);
 	int nr = table->nr, allocated = table->allocated;

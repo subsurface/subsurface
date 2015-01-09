@@ -99,15 +99,6 @@ static bool merge_locations_into_dives(void)
 	return changed > 0;
 }
 
-//TODO: C-code.
-static void clear_table(struct dive_table *table)
-{
-	int i;
-	for (i = 0; i < table->nr; i++)
-		free(table->dives[i]);
-	table->nr = 0;
-}
-
 // TODO: This looks like should be ported to C code. or a big part of it.
 bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
