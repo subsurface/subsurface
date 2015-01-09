@@ -586,22 +586,6 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool DiveImportedModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (!index.isValid())
-		return false;
-
-	if (index.row() + firstIndex > lastIndex)
-		return false;
-
-	if (role != Qt::CheckStateRole)
-		return false;
-
-	checkStates[index.row()] = value.toBool();
-	dataChanged(index, index, QVector<int>() << Qt::CheckStateRole);
-	return true;
-}
-
 void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 {
 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
