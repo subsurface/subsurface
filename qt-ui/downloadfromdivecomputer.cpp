@@ -38,6 +38,8 @@ namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
+struct dive_table downloadTable;
+
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	thread(0),
 	downloading(false),
@@ -49,6 +51,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ostcFirmwareCheck(0),
 	currentState(INITIAL)
 {
+	clear_table(&downloadTable);
 	ui.setupUi(this);
 	ui.progressBar->hide();
 	ui.progressBar->setMinimum(0);
