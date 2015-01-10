@@ -1,6 +1,7 @@
 #include "preferences.h"
 #include "mainwindow.h"
 #include <QSettings>
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QShortcut>
@@ -42,6 +43,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
+//	connect(ui.defaultSetpoint, SIGNAL(valueChanged(double)), this, SLOT(defaultSetpointChanged(double)));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
@@ -96,6 +98,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.gfhigh->setValue(prefs.gfhigh);
 	ui.gf_low_at_maxdepth->setChecked(prefs.gf_low_at_maxdepth);
 	ui.show_ccr_setpoint->setChecked(prefs.show_ccr_setpoint);
+	ui.defaultSetpoint->setValue((double)prefs.defaultsetpoint / 1000.0);
 
 	// units
 	if (prefs.unit_system == METRIC)
@@ -270,6 +273,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("default_filename", ui.defaultfilename->text());
 	s.setValue("default_cylinder", ui.default_cylinder->currentText());
 	s.setValue("use_default_file", ui.btnUseDefaultFile->isChecked());
+	s.setValue("defaultsetpoint", (int) (ui.defaultSetpoint->value() * 1000.0));
 	s.endGroup();
 
 	s.beginGroup("Display");
@@ -312,7 +316,7 @@ void PreferencesDialog::syncSettings()
 
 void PreferencesDialog::loadSettings()
 {
-	// This code was on the mainwindow, it should belong nowhere, but since we dind't
+	// This code was on the mainwindow, it should belong nowhere, but since we didn't
 	// correctly fixed this code yet ( too much stuff on the code calling preferences )
 	// force this here.
 
@@ -374,6 +378,7 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("default_filename", default_filename);
 	GET_TXT("default_cylinder", default_cylinder);
 	GET_BOOL("use_default_file", use_default_file);
+	GET_INT("defaultsetpoint", defaultsetpoint);
 	s.endGroup();
 
 	s.beginGroup("Display");
