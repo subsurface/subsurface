@@ -775,6 +775,7 @@ void MainTab::acceptChanges()
 		if (displayed_dive.dc.dctype != cd->dc.dctype) {
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.dctype));
 			MODIFY_SELECTED_DIVES(update_setpoint_events(&mydive->dc));
+			do_replot = true;
 		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
@@ -1018,7 +1019,6 @@ void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
-	qDebug() << "Changing divetype to " << dctype_text[index];
 	displayed_dive.dc.dctype = (enum dive_comp_type) index;
 	update_setpoint_events(&displayed_dive.dc);
 	markChangedWidget(ui.DiveType);
