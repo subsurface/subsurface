@@ -54,7 +54,7 @@ struct preferences default_prefs = {
 		.user_id = NULL,
 		.album_id = NULL,
 		.access_token = NULL
-	}
+	},
 	.defaultsetpoint = 1100
 };
 

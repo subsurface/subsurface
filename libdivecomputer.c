@@ -556,10 +556,10 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		case DC_DIVEMODE_FREEDIVE:
 		case DC_DIVEMODE_GAUGE:
 		case DC_DIVEMODE_OC: /* Open circuit */
-			dive->dc.dctype = OC;
+			dive->dc.divemode = OC;
 			break;
 		case DC_DIVEMODE_CC:  /* Closed circuit */
-			dive->dc.dctype = CCR;
+			dive->dc.divemode = CCR;
 			break;
 		}
 #endif

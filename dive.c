@@ -29,7 +29,7 @@ static const char *default_tags[] = {
 const char *cylinderuse_text[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen")
 };
-const char *dctype_text[] = { "OC", "CCR", "PSCR", "Freedive" };
+const char *divemode_text[] = { "OC", "CCR", "PSCR", "Freedive" };
 
 int event_is_gaschange(struct event *ev)
 {
@@ -736,7 +736,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		mean[explicit_first_cylinder(dive, dc)] = dc->meandepth.mm;
 		duration[explicit_first_cylinder(dive, dc)] = dc->duration.seconds;
 
-		if (dc->dctype == CCR) {
+		if (dc->divemode == CCR) {
 			// Do the same for the  O2 cylinder
 			int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
 			if (o2_cyl < 0)
@@ -866,7 +866,7 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 	struct event *ev = get_next_event(dc->events, "gaschange");
 	if (ev && dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
 		return get_cylinder_index(dive, ev);
-	else if (dc->dctype == CCR)
+	else if (dc->divemode == CCR)
 		return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
 	else
 		return 0;
@@ -878,7 +878,7 @@ void update_setpoint_events(struct divecomputer *dc)
 	bool changed = false;
 	int new_setpoint = 0;
 
-	if (dc->dctype == CCR)
+	if (dc->divemode == CCR)
 	    new_setpoint = prefs.defaultsetpoint;
 
 	while (ev) {
@@ -1271,7 +1271,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		}
 
 		fixup_pressure(dive, sample, OC_GAS);
-		if (dive->dc.dctype == CCR)
+		if (dive->dc.divemode == CCR)
 			fixup_pressure(dive, sample, OXYGEN);
 
 		if (temp) {
@@ -1665,7 +1665,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			*mix = structure containing cylinder gas mixture information.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type dctype, int sac)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode, int sac)
 {
 	if (!sac) {
 		/* The SAC has not yet been computer, so use the default *
@@ -1686,7 +1686,7 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 			}
 		}
 	} else {
-		if (dctype == PSCR) { /* The steady state approximation should be good enough */
+		if (divemode == PSCR) { /* The steady state approximation should be good enough */
 			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (sac * prefs.pscr_ratio / 1000.0);
 			pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
 			pressures->n2 = (amb_pressure - pressures->o2) * (1000 - get_o2(mix) - get_he(mix)) / (1000.0 - get_o2(mix));

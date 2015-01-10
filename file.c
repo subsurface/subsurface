@@ -540,7 +540,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		value = parse_mkvi_value(memtxt.buffer, "Rig Serial number");
 		dive->dc.deviceid = atoi(value);
 		free(value);
-		dive->dc.dctype = CCR;
+		dive->dc.divemode = CCR;
 		dive->dc.no_o2sensors = 2;
 
 		dive->cylinder[cur_cylinder_index].cylinder_use = OXYGEN;

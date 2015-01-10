@@ -133,7 +133,7 @@ static duration_t get_duration(const char *line)
 static enum dive_comp_type get_dctype(const char *line)
 {
 	for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
-		if (strcmp(line, dctype_text[i]) == 0)
+		if (strcmp(line, divemode_text[i]) == 0)
 			return i;
 	}
 	return 0;
@@ -528,7 +528,7 @@ static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
 
 static void parse_dc_dctype(char *line, struct membuffer *str, void *_dc)
-{ struct divecomputer *dc = _dc; dc->dctype = get_dctype(line); }
+{ struct divecomputer *dc = _dc; dc->divemode = get_dctype(line); }
 
 static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
 { struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }

@@ -570,7 +570,7 @@ static void get_dc_type(char *buffer, enum dive_comp_type *dct)
 {
 	if (trimspace(buffer)) {
 		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
-			if (strcmp(buffer, dctype_text[i]) == 0)
+			if (strcmp(buffer, divemode_text[i]) == 0)
 				*dct = i;
 		}
 	}
@@ -875,7 +875,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH("diveid", hex_value, &dc->diveid))
 		return;
-	if (MATCH("dctype", get_dc_type, &dc->dctype))
+	if (MATCH("dctype", get_dc_type, &dc->divemode))
 		return;
 	if (MATCH("no_o2sensors", get_sensor, &dc->no_o2sensors))
 		return;
@@ -934,7 +934,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2])) // up to 3 CCR sensors
 		return;
 	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint)) {
-		cur_dive->dc.dctype = CCR;
+		cur_dive->dc.divemode = CCR;
 		return;
 	}
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
@@ -2256,7 +2256,7 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
 	if (data[3]) {
 		cur_sample->setpoint.mbar = atof(data[3]) * 1000;
-		cur_dive->dc.dctype = CCR;
+		cur_dive->dc.divemode = CCR;
 	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -2571,19 +2571,19 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 
 	// ptr[15] is dive type
 	if (0xc8 <= ptr[15] && ptr[15] <= 0xcf)
-		cur_dc->dctype = OC;
+		cur_dc->divemode = OC;
 	else if (0xd0 <= ptr[15] && ptr[15] <= 0xd7)
-		cur_dc->dctype = CCR;
+		cur_dc->divemode = CCR;
 	else if (0xd8 <= ptr[15] && ptr[15] <= 0xdf)
-		cur_dc->dctype = CCR; // mCCR
+		cur_dc->divemode = CCR; // mCCR
 	else if (0xe0 <= ptr[15] && ptr[15] <= 0xe7)
-		cur_dc->dctype = OC; // Free diving
+		cur_dc->divemode = OC; // Free diving
 	else if (0xe8 <= ptr[15] && ptr[15] <= 0xef)
-		cur_dc->dctype = OC; // Gauge
+		cur_dc->divemode = OC; // Gauge
 	else if (0xf0 <= ptr[15] && ptr[15] <= 0xf7)
-		cur_dc->dctype = PSCR; // ASCR
+		cur_dc->divemode = PSCR; // ASCR
 	else if (0xf8 <= ptr[15] && ptr[15] <= 0xff)
-		cur_dc->dctype = PSCR;
+		cur_dc->divemode = PSCR;
 
 	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
 
@@ -2604,7 +2604,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			// Crazy precision on these stored values...
 			// Only store value if we're in CCR/PSCR mode,
 			// because we rather calculate ppo2 our selfs.
-			if (cur_dc->dctype == CCR || cur_dc->dctype == PSCR)
+			if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
 				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
 			if (!ptr[8] && ptr[9])
 				cur_sample->in_deco = true;

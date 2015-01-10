@@ -624,14 +624,14 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	int o2mbar;
 	QPolygonF boundingPoly, o2Poly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
 	polygons.clear();
-	if (displayed_dive.dc.dctype == CCR)
+	if (displayed_dive.dc.divemode == CCR)
 		polygons.append(o2Poly);
 
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		o2mbar = 0;
 		plot_data *entry = dataModel->data().entry + i;
 		int mbar = GET_PRESSURE(entry);
-		if (displayed_dive.dc.dctype == CCR)
+		if (displayed_dive.dc.divemode == CCR)
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (entry->cylinderindex != last_index) {
@@ -665,7 +665,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		entry = dataModel->data().entry + i;
 		mbar = GET_PRESSURE(entry);
-		if (displayed_dive.dc.dctype == CCR && displayed_dive.oxygen_cylinder_index >= 0)
+		if (displayed_dive.dc.divemode == CCR && displayed_dive.oxygen_cylinder_index >= 0)
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (o2mbar) {

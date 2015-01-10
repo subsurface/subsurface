@@ -51,7 +51,7 @@ enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE};	// Flags (Open-circu
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
-extern const char *dctype_text[];
+extern const char *divemode_text[];
 
 struct gasmix {
 	fraction_t o2;
@@ -267,7 +267,7 @@ struct divecomputer {
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
-	enum dive_comp_type dctype;	// dive computer type: OC(default) or CCR
+	enum dive_comp_type divemode;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors;		// rebreathers: number of O2 sensors used
 	int salinity; 			// kg per 10000 l
 	const char *model, *serial, *fw_version;

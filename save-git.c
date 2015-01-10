@@ -355,8 +355,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 		show_date(b, dc->when);
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
 		put_duration(b, dc->duration, "duration ", "min\n");
-	if (dc->dctype != OC) {
-		put_format(b, "dctype %s\n", dctype_text[dc->dctype]);
+	if (dc->divemode != OC) {
+		put_format(b, "dctype %s\n", divemode_text[dc->divemode]);
 	put_format(b, "numberofoxygensensors %d\n",dc->no_o2sensors);
 	}
 

@@ -430,7 +430,7 @@ void MainTab::updateDiveInfo(bool clear)
 	UPDATE_TEXT(displayed_dive, buddy);
 	UPDATE_TEMP(displayed_dive, airtemp);
 	UPDATE_TEMP(displayed_dive, watertemp);
-	ui.DiveType->setCurrentIndex(displayed_dive.dc.dctype);
+	ui.DiveType->setCurrentIndex(displayed_dive.dc.divemode);
 
 	if (!clear) {
 		updateGpsCoordinates(&displayed_dive);
@@ -514,7 +514,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
 		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
 		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
-		ui.DiveType->setCurrentIndex(current_dc->dctype);
+		ui.DiveType->setCurrentIndex(current_dc->divemode);
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
 		QString volumes;
@@ -650,7 +650,7 @@ void MainTab::updateDiveInfo(bool clear)
 	}
 	editMode = NONE;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
-	if (get_dive_dc(&displayed_dive, dc_number)->dctype == CCR)
+	if (get_dive_dc(&displayed_dive, dc_number)->divemode == CCR)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
@@ -772,8 +772,8 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
-		if (displayed_dive.dc.dctype != cd->dc.dctype) {
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.dctype));
+		if (displayed_dive.dc.divemode != cd->dc.divemode) {
+			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.divemode));
 			MODIFY_SELECTED_DIVES(update_setpoint_events(&mydive->dc));
 			do_replot = true;
 		}
@@ -1019,7 +1019,7 @@ void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
-	displayed_dive.dc.dctype = (enum dive_comp_type) index;
+	displayed_dive.dc.divemode = (enum dive_comp_type) index;
 	update_setpoint_events(&displayed_dive.dc);
 	markChangedWidget(ui.DiveType);
 }

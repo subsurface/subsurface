@@ -785,13 +785,13 @@ void DivePlannerPointsModel::setGFLow(const int ghflow)
 
 void DivePlannerPointsModel::setRebreatherMode(QString mode)
 {
-	qDebug() << mode << "selected, was" << displayed_dive.dc.dctype;
+	qDebug() << mode << "selected, was" << displayed_dive.dc.divemode;
 	if (mode == "OC")
-		displayed_dive.dc.dctype = OC;
+		displayed_dive.dc.divemode = OC;
 	else if (mode == "pSCR")
-		displayed_dive.dc.dctype = PSCR;
+		displayed_dive.dc.divemode = PSCR;
 	else if (mode == "CCR")
-		displayed_dive.dc.dctype = CCR;
+		displayed_dive.dc.divemode = CCR;
 	plannerModel->emitDataChanged();
 }
 

@@ -308,7 +308,7 @@ bool is_cylinder_used(struct dive *dive, int idx)
 				return true;
 			event = get_next_event(event->next, "gaschange");
 		}
-		if (dc->dctype == CCR && (idx == dive->diluent_cylinder_index || idx == dive->oxygen_cylinder_index))
+		if (dc->divemode == CCR && (idx == dive->diluent_cylinder_index || idx == dive->oxygen_cylinder_index))
 			return true;
 	}
 	if (idx == 0 && !firstGasExplicit)

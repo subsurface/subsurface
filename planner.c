@@ -251,7 +251,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	int oldpo2 = 0;
 	int lasttime = 0;
 	int lastdepth = 0;
-	enum dive_comp_type type = displayed_dive.dc.dctype;
+	enum dive_comp_type type = displayed_dive.dc.divemode;
 
 	if (!diveplan || !diveplan->dp)
 		return;
@@ -346,7 +346,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		finish_sample(dc);
 		dp = dp->next;
 	}
-	dc->dctype = type;
+	dc->divemode = type;
 #if DEBUG_PLAN & 32
 	save_dive(stdout, &displayed_dive);
 #endif
@@ -699,7 +699,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "OTU"));
 	len += snprintf(buffer + len, sizeof(buffer) - len, "<br>%s: %i</div>", temp, dive->otu);
 
-	if (dive->dc.dctype == CCR)
+	if (dive->dc.divemode == CCR)
 		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption (CCR legs excluded):"));
 	else
 		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "Gas consumption:"));

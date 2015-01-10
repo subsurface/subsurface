@@ -435,7 +435,7 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
 		setpoint.mbar = ev->value;
 		if (setpoint.mbar)
-			dc->dctype = CCR;
+			dc->divemode = CCR;
 		ev = get_next_event(ev->next, "SP change");
 	} while (ev);
 	set_setpoint(pi, i, setpoint.mbar, ~0u);
@@ -607,7 +607,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		pi->has_ndl |= sample->ndl.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
-		if (dc->dctype == CCR) {
+		if (dc->divemode == CCR) {
 			entry->o2pressure.mbar = entry->o2setpoint.mbar = sample->setpoint.mbar;     // for rebreathers
 			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
 			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
@@ -940,7 +940,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 
-		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.dctype, entry->sac);
+		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode, entry->sac);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 
@@ -984,7 +984,8 @@ void fill_o2_values(struct divecomputer *dc, struct plot_info *pi, struct dive *
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		if (dc->dctype == CCR) {
+
+		if (dc->divemode == CCR) {
 			if (i == 0) { // For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j].mbar = pi->entry->o2sensor[j].mbar;
@@ -1058,7 +1059,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	setup_gas_sensor_pressure(dive, dc, pi); /* Try to populate our gas pressure knowledge */
 	if (!fast) {
 		populate_pressure_information(dive, dc, pi, false);	/* .. calculate missing pressure entries for all gasses except o2 */
-		if (dc->dctype == CCR)					   /* For CCR dives.. */
+		if (dc->divemode == CCR)					/* For CCR dives.. */
 			populate_pressure_information(dive, dc, pi, true); /* .. calculate missing o2 gas pressure entries */
 	}
 	fill_o2_values(dc, pi, dive);			 /* .. and insert the O2 sensor data having 0 values. */
