@@ -202,10 +202,11 @@ $ git clone -b Subsurface-4.3 git://subsurface-divelog.org/marble marble-source
 $ cd marble-source
 $ mkdir marble-build
 $ cd marble-build
-$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE -DWITH_PHONON=OFF \
+$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE \
 	-DQT5BUILD=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../../marble-source
 $ cd src/lib/marble
 $ make -j4
+$ make install
 
 5) Install Libdivecomputer
 
