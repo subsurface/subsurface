@@ -286,6 +286,12 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		updateState(CANCELLING);
 		return;
 	}
+	if (currentState == DONE) {
+		// this means we are retrying - so we better clean out the partial
+		// list of downloaded dives from the last attempt
+		diveImportedModel->clearTable();
+		clear_table(&downloadTable);
+	}
 	updateState(DOWNLOADING);
 
 	// you cannot cancel the dialog, just the download
@@ -618,6 +624,14 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 	if (index.column() != 0)
 		return QAbstractTableModel::flags(index);
 	return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
+void DiveImportedModel::clearTable()
+{
+	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
+	lastIndex = -1;
+	firstIndex = 0;
+	endRemoveRows();
 }
 
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
