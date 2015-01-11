@@ -514,7 +514,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
 		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
 		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
-		ui.DiveType->setCurrentIndex(current_dc->divemode);
+		ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
 		QString volumes;
