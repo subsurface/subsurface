@@ -103,7 +103,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 	tankItem(new TankItem()),
-	instantMeanDepth(new InstantMeanDepthLine()),
 	isGrayscale(false),
 	printMode(false),
 	shouldCalculateMaxTime(true),
@@ -118,7 +117,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addItemsToScene();
 	scene()->installEventFilter(this);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
-	connect(this, SIGNAL(mouseMoved(int, int)), instantMeanDepth, SLOT(mouseMoved(int, int)));
 	QAction *action = NULL;
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
@@ -173,7 +171,6 @@ ProfileWidget2::~ProfileWidget2()
 	delete mouseFollowerHorizontal;
 	delete rulerItem;
 	delete tankItem;
-	delete instantMeanDepth;
 }
 
 #define SUBSURFACE_OBJ_DATA 1
@@ -213,7 +210,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(tankItem);
 	scene()->addItem(mouseFollowerHorizontal);
 	scene()->addItem(mouseFollowerVertical);
-	scene()->addItem(instantMeanDepth);
 	QPen pen(QColor(Qt::red).lighter());
 	pen.setWidth(0);
 	mouseFollowerHorizontal->setPen(pen);
@@ -273,12 +269,6 @@ void ProfileWidget2::setupItemOnScene()
 	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
-
-	instantMeanDepth->setLine(0, 0, 96, 0);
-	instantMeanDepth->setX(3);
-	instantMeanDepth->setPen(QPen(QBrush(Qt::red), 0, Qt::SolidLine));
-	instantMeanDepth->setZValue(1);
-	instantMeanDepth->setAxis(profileYAxis);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
@@ -605,11 +595,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	rulerItem->setPlotInfo(plotInfo);
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
 
-	instantMeanDepth->vAxis = profileYAxis;
-	instantMeanDepth->hAxis = timeAxis;
-	instantMeanDepth->setVisible(prefs.show_average_depth && !printMode);
-	instantMeanDepth->setModel(dataModel);
-
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
@@ -847,8 +832,6 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 	if (timeAxis->maximum() >= hValue && timeAxis->minimum() <= hValue) {
 		mouseFollowerVertical->setPos(pos.x(), profileYAxis->line().y1());
 	}
-	if (timeAxis->maximum() >= hValue && timeAxis->minimum() <= hValue && profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue)
-		emit mouseMoved(hValue, vValue);
 }
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)

@@ -977,23 +977,3 @@ void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert
 	normalColor = normal;
 	alertColor = alert;
 }
-
-InstantMeanDepthLine::InstantMeanDepthLine() : hAxis(NULL), vAxis(NULL)
-{
-}
-
-void InstantMeanDepthLine::mouseMoved(int time, int depth)
-{
-	if (model == NULL || scene() == NULL || vAxis == NULL || hAxis == NULL)
-		return;
-
-	int count = model->data().nr;
-	for (int i = 0; i < count; i++) {
-		struct plot_data pI = model->data().entry[i];
-		if (pI.sec == time && pI.sec != 0) {
-			setMeanDepth(pI.running_sum / time);
-			setLine(0, 0, hAxis->posAtValue(time), 0);
-			setPos(pos().x(), vAxis->posAtValue(pI.running_sum / time));
-		}
-	}
-}

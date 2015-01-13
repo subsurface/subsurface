@@ -85,9 +85,6 @@ public:
 	void clearHandlers();
 	State currentState;
 
-signals:
-	void mouseMoved(int time, int depth);
-
 public
 slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
@@ -185,7 +182,6 @@ private:
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
 	TankItem *tankItem;
-	InstantMeanDepthLine *instantMeanDepth;
 	bool isGrayscale;
 	bool printMode;
 
