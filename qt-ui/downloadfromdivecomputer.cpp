@@ -239,6 +239,8 @@ void DownloadFromDCWidget::fill_computer_list()
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
 	}
 	dc_iterator_free(iterator);
+	Q_FOREACH (QString vendor, vendorList)
+		qSort(productList[vendor]);
 
 	/* and add the Uemis Zurich which we are handling internally
 	   THIS IS A HACK as we magically have a data structure here that
