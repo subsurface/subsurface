@@ -9,6 +9,10 @@
 #include <QNetworkCookieJar>
 #include "socialnetworks.h"
 
+#ifndef Q_OS_ANDROID
+#include <QWebView>
+#endif
+
 PreferencesDialog *PreferencesDialog::instance()
 {
 	static PreferencesDialog *dialog = new PreferencesDialog(MainWindow::instance());
@@ -20,6 +24,20 @@ PreferencesDialog *PreferencesDialog::instance()
 PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
+
+#ifdef Q_OS_ANDROID
+	for (int i = 0; i < ui.listWidget->count(); i++) {
+		if (ui.listWidget->item(i)->text() == "Facebook")
+			delete ui.listWidget->item(i);
+	}
+#else
+	facebookWebView = new QWebView(this);
+	QVBoxLayout fbLayout(ui.facebook_page);
+	fbLayout.addWidget(facebookWebView);
+	fbLayout.addWidget(ui.fbConnected);
+	ui.facebook_page->setLayout(&fbLayout);
+#endif
+
 	ui.proxyType->clear();
 	ui.proxyType->addItem(tr("No proxy"), QNetworkProxy::NoProxy);
 	ui.proxyType->addItem(tr("System proxy"), QNetworkProxy::DefaultProxy);
@@ -28,22 +46,24 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->setCurrentIndex(-1);
 
 	// Facebook stuff:
+#ifndef Q_OS_ANDROID
 	FacebookManager *fb = FacebookManager::instance();
 	if(fb->loggedIn()){
-		ui.facebookWebView->setHtml("You are connected on Facebook, yey.");
+		facebookWebView->setHtml("You are connected on Facebook, yey.");
 	} else {
-		ui.facebookWebView->setUrl(fb->connectUrl());
+		facebookWebView->setUrl(fb->connectUrl());
 	}
-	connect(ui.facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
+	connect(facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
 	connect(fb, &FacebookManager::justLoggedIn, this, &PreferencesDialog::facebookLoggedIn);
 	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);
 	connect(fb, &FacebookManager::justLoggedOut, this, &PreferencesDialog::facebookDisconnect);
+#endif
 
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), this, SLOT(gfhighChanged(int)));
-//	connect(ui.defaultSetpoint, SIGNAL(valueChanged(double)), this, SLOT(defaultSetpointChanged(double)));
+	//	connect(ui.defaultSetpoint, SIGNAL(valueChanged(double)), this, SLOT(defaultSetpointChanged(double)));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
@@ -55,15 +75,19 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 
 void PreferencesDialog::facebookLoggedIn()
 {
-	ui.facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
+#ifndef Q_OS_ANDROID
+	facebookWebView->setHtml("We need a better 'you re connected' page. but, YEY. ");
 	ui.fbConnected->show();
+#endif
 }
 
 void PreferencesDialog::facebookDisconnect()
 {
-	ui.facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
-	ui.facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
+#ifndef Q_OS_ANDROID
+	facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
+	facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
 	ui.fbConnected->hide();
+#endif
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""

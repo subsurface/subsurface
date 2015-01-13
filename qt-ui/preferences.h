@@ -6,6 +6,10 @@
 
 #include "ui_preferences.h"
 
+#ifndef Q_OS_ANDROID
+	class QWebView;
+#endif
+
 class QAbstractButton;
 
 class PreferencesDialog : public QDialog {
@@ -37,6 +41,9 @@ private:
 	void setUiFromPrefs();
 	Ui::PreferencesDialog ui;
 	struct preferences oldPrefs;
+    #ifndef Q_OS_ANDROID
+	QWebView *facebookWebView;
+    #endif
 };
 
 #endif // PREFERENCES_H
