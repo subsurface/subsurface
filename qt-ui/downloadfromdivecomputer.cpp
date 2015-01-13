@@ -62,13 +62,9 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadedView->setSelectionMode(QAbstractItemView::SingleSelection);
 	int startingWidth = defaultModelFont().pointSize();
 	ui.downloadedView->setColumnWidth(0, startingWidth * 20);
-	ui.downloadedView->setColumnWidth(1, startingWidth * 15);
+	ui.downloadedView->setColumnWidth(1, startingWidth * 10);
 	ui.downloadedView->setColumnWidth(2, startingWidth * 10);
 	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), diveImportedModel, SLOT(changeSelected(QModelIndex)));
-	QRect mainGeometry = parent->geometry();
-	int width = mainGeometry.width() * 0.8;
-	int height = mainGeometry.height() * 0.8;
-	resize(width, height);
 
 	progress_bar_text = "";
 
