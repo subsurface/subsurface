@@ -50,6 +50,7 @@ slots:
 private:
 	typedef QPair<QGraphicsPixmapItem *, QGraphicsSimpleTextItem *> ToolTip;
 	QVector<ToolTip> toolTips;
+	ToolTip entryToolTip;
 	QGraphicsPathItem *background;
 	QGraphicsLineItem *separator;
 	QGraphicsSimpleTextItem *title;

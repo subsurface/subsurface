@@ -23,27 +23,27 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QP
 {
 	const IconMetrics& iconMetrics = defaultIconMetrics();
 
-	QGraphicsPixmapItem *iconItem = 0, *pixmapItem = 0;
+	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (ToolTip t, toolTips) {
 		yValue += t.second->boundingRect().height();
 	}
-	if (!icon.isNull()) {
-		iconItem = new QGraphicsPixmapItem(icon.pixmap(iconMetrics.sz_small, iconMetrics.sz_small), this);
-		iconItem->setPos(iconMetrics.spacing, yValue);
-	} else {
-		if (!pixmap.isNull()) {
-			pixmapItem = new QGraphicsPixmapItem(pixmap, this);
-			pixmapItem->setPos(iconMetrics.spacing, yValue);
-		}
+	if (entryToolTip.second) {
+		yValue += entryToolTip.second->boundingRect().height();
 	}
+	iconItem = new QGraphicsPixmapItem(this);
+	if (!icon.isNull()) {
+		iconItem->setPixmap(icon.pixmap(iconMetrics.sz_small, iconMetrics.sz_small));
+	} else if (!pixmap.isNull()) {
+		iconItem->setPixmap(pixmap);
+	}
+	iconItem->setPos(iconMetrics.spacing, yValue);
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
 	textItem->setPos(iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
 	toolTips.push_back(qMakePair(iconItem, textItem));
-	expand();
 }
 
 void ToolTipItem::clear()
@@ -111,11 +111,18 @@ void ToolTipItem::expand()
 	const IconMetrics& iconMetrics = defaultIconMetrics();
 
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (ToolTip t, toolTips) {
+	Q_FOREACH (const ToolTip& t, toolTips) {
 		if (t.second->boundingRect().width() > width)
 			width = t.second->boundingRect().width();
 		height += t.second->boundingRect().height();
 	}
+
+	if (entryToolTip.first) {
+		if (entryToolTip.second->boundingRect().width() > width)
+			width = entryToolTip.second->boundingRect().width();
+		height += entryToolTip.second->boundingRect().height();
+	}
+
 	/*       Left padding, Icon Size,   space, right padding */
 	width += iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing + iconMetrics.spacing;
 
@@ -148,10 +155,22 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	lastTime(-1)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
-
+	entryToolTip.first = NULL;
+	entryToolTip.second = NULL;
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
 	updateTitlePosition();
 	setZValue(99);
+
+	addToolTip(QString(), QIcon(), QPixmap(16,60));
+	entryToolTip = toolTips.first();
+	toolTips.clear();
+
+	separator->setFlag(ItemIgnoresTransformations);
+	separator->setPen(QPen(Qt::white));
+
+	title->setFlag(ItemIgnoresTransformations);
+	title->setPen(QPen(Qt::white, 1));
+	title->setBrush(Qt::white);
 }
 
 ToolTipItem::~ToolTipItem()
@@ -170,23 +189,13 @@ void ToolTipItem::updateTitlePosition()
 	}
 
 	title->setPos(boundingRect().width() / 2 - title->boundingRect().width() / 2 - 1, 0);
-	title->setFlag(ItemIgnoresTransformations);
-	title->setPen(QPen(Qt::white, 1));
-	title->setBrush(Qt::white);
 
-	if (toolTips.size() > 0) {
-		double x1 = 3;
-		double y1 = title->pos().y() + iconMetrics.spacing / 2 + title->boundingRect().height();
-		double x2 = boundingRect().width() - 10;
-		double y2 = y1;
+	double x1 = 3;
+	double y1 = title->pos().y() + iconMetrics.spacing / 2 + title->boundingRect().height();
+	double x2 = boundingRect().width() - 10;
+	double y2 = y1;
 
-		separator->setLine(x1, y1, x2, y2);
-		separator->setFlag(ItemIgnoresTransformations);
-		separator->setPen(QPen(Qt::white));
-		separator->show();
-	} else {
-		separator->hide();
-	}
+	separator->setLine(x1, y1, x2, y2);
 }
 
 bool ToolTipItem::isExpanded() const
@@ -234,7 +243,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const QPointF &pos)
 {
-	int i;
 	struct plot_data *entry;
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
@@ -263,10 +271,11 @@ void ToolTipItem::refresh(const QPointF &pos)
 		painter.drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
 				16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
 		painter.setPen(QColor(0, 0, 0, 127));
-		for (i=0; i<16; i++) {
+		for (int i=0; i<16; i++) {
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
 		}
-		addToolTip(QString::fromUtf8(mb.buffer, mb.len),QIcon(), tissues);
+		entryToolTip.first->setPixmap(tissues);
+		entryToolTip.second->setText(QString::fromUtf8(mb.buffer, mb.len));
 	}
 
 	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemBoundingRect
@@ -274,6 +283,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
 	}
+	expand();
 }
 
 void ToolTipItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
