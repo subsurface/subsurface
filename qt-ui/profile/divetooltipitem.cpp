@@ -264,7 +264,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 	}
 	free_buffer(&mb);
 
-	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemShape
+	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemBoundingRect
 		,Qt::DescendingOrder, scene()->views().first()->transform())) {
 		if (!item->toolTip().isEmpty())
 			addToolTip(item->toolTip());
