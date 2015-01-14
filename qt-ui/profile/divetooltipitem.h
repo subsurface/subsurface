@@ -34,7 +34,7 @@ public:
 	void collapse();
 	void expand();
 	void clear();
-	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon(), const QPixmap *pixmap = NULL);
+	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon(), const QPixmap &pixmap = QPixmap());
 	void refresh(const QPointF &pos);
 	bool isExpanded() const;
 	void persistPos();
