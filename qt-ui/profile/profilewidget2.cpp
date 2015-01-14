@@ -814,16 +814,16 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 
 void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
-	toolTipItem->refresh(mapToScene(event->pos()));
-	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
+	QPointF pos = mapToScene(event->pos());
+	toolTipItem->refresh(pos);
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);
 	} else {
+		QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 		scrollViewTo(event->pos());
 		toolTipItem->setPos(mapToScene(toolTipPos));
 	}
 
-	QPointF pos = mapToScene(event->pos());
 	qreal vValue = profileYAxis->valueAt(pos);
 	qreal hValue = timeAxis->valueAt(pos);
 	if (profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue) {
