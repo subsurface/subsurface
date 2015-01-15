@@ -14,11 +14,17 @@ _Subsurface_ can be found at: http://_Subsurface_-divelog.org
 Some of the changes since _Subsurface_ 4.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+_Subsurface_ now allows the user to select which of the dives downloaded
+from a dive computer will be added to the dive list.
+
 We have added more capabilities to the CSV import for manually kept dive
 logs; this now includes start and end pressure for the main tank as well
 as air and water temperatures.
 
-Subsurface can now import dive databases from the Cobalt divelog program.
+_Subsurface_ can now import dive databases from the Cobalt divelog program.
+
+_Subsurface_ profile drawing has been sped up significantly which also improved
+the situation when using the visual editor to add dives or plan dives.
 
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
