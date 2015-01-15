@@ -224,11 +224,15 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	volume_t gas_used;
 	pressure_t delta_p;
 	depth_t mean_depth;
+	int factor = 1000;
+
+	if (d->dc.divemode == PSCR)
+		factor = prefs.pscr_ratio;
 
 	if (!cyl)
 		return;
 	mean_depth.mm = (old_depth + new_depth) / 2;
-	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration;
+	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration * factor / 1000;
 	cyl->gas_used.mliter += gas_used.mliter;
 	if (in_deco)
 		cyl->deco_gas_used.mliter += gas_used.mliter;
@@ -740,23 +744,37 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s<br>", temp, warning);
 	}
 	dp = diveplan->dp;
-	while (dp) {
-		if (dp->time != 0) {
-			int pO2 = depth_to_atm(dp->depth, dive) * get_o2(&dp->gasmix);
+	if (dive->dc.divemode != CCR) {
+		while (dp) {
+			if (dp->time != 0) {
+				struct gas_pressures pressures;
+				fill_pressures(&pressures, depth_to_atm(dp->depth, dive), &dp->gasmix, 0.0, dive->dc.divemode);
 
-			if (pO2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2)) {
-				const char *depth_unit;
-				int decimals;
-				double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
-				len = strlen(buffer);
-				snprintf(temp, sizeof(temp),
-					 translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-					 pO2 / 1000.0, FRACTION(dp->time, 60), gasname(&dp->gasmix), decimals, depth_value, depth_unit);
-				len += snprintf(buffer + len, sizeof(buffer) - len, "<span style='color: red;'>%s </span> %s<br>",
-						translate("gettextFromC", "Warning:"), temp);
+				if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
+					const char *depth_unit;
+					int decimals;
+					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
+					len = strlen(buffer);
+					snprintf(temp, sizeof(temp),
+						 translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+						 pressures.o2, FRACTION(dp->time, 60), gasname(&dp->gasmix), decimals, depth_value, depth_unit);
+					len += snprintf(buffer + len, sizeof(buffer) - len, "<span style='color: red;'>%s </span> %s<br>",
+							translate("gettextFromC", "Warning:"), temp);
+				} else if (pressures.o2 < 0.16) {
+					const char *depth_unit;
+					int decimals;
+					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
+					len = strlen(buffer);
+					snprintf(temp, sizeof(temp),
+						 translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+						 pressures.o2, FRACTION(dp->time, 60), gasname(&dp->gasmix), decimals, depth_value, depth_unit);
+					len += snprintf(buffer + len, sizeof(buffer) - len, "<span style='color: red;'>%s </span> %s<br>",
+							translate("gettextFromC", "Warning:"), temp);
+
+				}
 			}
+			dp = dp->next;
 		}
-		dp = dp->next;
 	}
 	snprintf(buffer + len, sizeof(buffer) - len, "</div>");
 	dive->notes = strdup(buffer);
