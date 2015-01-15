@@ -234,14 +234,16 @@ void ToolTipItem::refresh(const QPointF &pos)
 	struct plot_data *entry;
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
+	static struct membuffer mb = { 0 };
+
 	int time = timeAxis->valueAt(pos);
 	if (time == lastTime)
 		return;
 
 	lastTime = time;
 	clear();
-	struct membuffer mb = { 0 };
 
+	mb.len = 0;
 	entry = get_plot_details_new(&pInfo, time, &mb);
 	if (entry) {
 		tissues.fill();
@@ -262,7 +264,6 @@ void ToolTipItem::refresh(const QPointF &pos)
 		}
 		addToolTip(QString::fromUtf8(mb.buffer, mb.len),QIcon(), tissues);
 	}
-	free_buffer(&mb);
 
 	Q_FOREACH (QGraphicsItem *item, scene()->items(pos, Qt::IntersectsItemBoundingRect
 		,Qt::DescendingOrder, scene()->views().first()->transform())) {
