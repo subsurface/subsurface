@@ -60,11 +60,8 @@ void ToolTipItem::setRect(const QRectF &r)
 	if( r == rectangle ) {
 		return;
 	}
-	delete background;
 
 	rectangle = r;
-	setBrush(QBrush(Qt::white));
-	setPen(QPen(Qt::black, 0.5));
 
 	// Creates a 2pixels border
 	QPainterPath border;
@@ -75,17 +72,7 @@ void ToolTipItem::setRect(const QRectF &r)
 	QPainterPath bg;
 	bg.addRoundedRect(-1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
 
-	QColor c = QColor(Qt::black);
-	c.setAlpha(155);
-
-	QGraphicsPathItem *b = new QGraphicsPathItem(bg, this);
-	b->setFlag(ItemStacksBehindParent);
-	b->setFlag(ItemIgnoresTransformations);
-	b->setBrush(c);
-	b->setPen(QPen(QBrush(Qt::transparent), 0));
-	b->setZValue(-10);
-	background = b;
-
+	background->setPath(bg);
 	updateTitlePosition();
 }
 
@@ -158,6 +145,16 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	entryToolTip.first = NULL;
 	entryToolTip.second = NULL;
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
+
+	QColor c = QColor(Qt::black);
+	c.setAlpha(155);
+	background = new QGraphicsPathItem(this);
+	background->setFlag(ItemStacksBehindParent);
+	background->setFlag(ItemIgnoresTransformations);
+	background->setBrush(c);
+	background->setPen(QPen(QBrush(Qt::transparent), 0));
+	background->setZValue(-10);
+
 	updateTitlePosition();
 	setZValue(99);
 
@@ -171,6 +168,9 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
 	title->setFlag(ItemIgnoresTransformations);
 	title->setPen(QPen(Qt::white, 1));
 	title->setBrush(Qt::white);
+
+	setBrush(QBrush(Qt::white));
+	setPen(QPen(Qt::black, 0.5));
 }
 
 ToolTipItem::~ToolTipItem()
