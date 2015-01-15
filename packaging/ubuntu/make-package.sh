@@ -68,6 +68,14 @@ rel=utopic
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
+# and now for precise
+prev=utopic
+rel=precise
+sed -i "s/${prev}/${rel}/g" debian/changelog
+cp debian/12.04.control debian/control
+cp debian/12.04.rules debian/rules
+debuild -S
+
 cd ..
 
 if [[ "$1x" = "postx" ]] ; then
