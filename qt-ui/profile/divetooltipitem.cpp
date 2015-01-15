@@ -126,11 +126,13 @@ void ToolTipItem::expand()
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
 
-	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
-	animation->setDuration(100);
-	animation->setStartValue(rectangle);
-	animation->setEndValue(nextRectangle);
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	if (nextRectangle != rectangle) {
+		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
+		animation->setDuration(100);
+		animation->setStartValue(rectangle);
+		animation->setEndValue(nextRectangle);
+		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	}
 
 	status = EXPANDED;
 }
