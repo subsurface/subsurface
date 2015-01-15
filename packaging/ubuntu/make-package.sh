@@ -56,7 +56,15 @@ cp ../debian.changelog debian/changelog
 #tail -1 debian/autocl >> debian/changelog
 #rm -f debian/autocl
 
-dch -v $VERSION-1~trusty -D trusty -M -m "next daily build"
+rev=0
+while [ $rev -le "99" ]
+do
+rev=$(($rev+1))
+	if [[ ! $(grep $VERSION-$rev debian/changelog) ]] ; then
+		break
+	fi
+done
+dch -v $VERSION-$rev~trusty -D trusty -M -m "next daily build"
 mv ~/src/debian.changelog ~/src/debian.changelog.previous
 cp debian/changelog ~/src/debian.changelog
 
@@ -79,7 +87,7 @@ debuild -S
 cd ..
 
 if [[ "$1x" = "postx" ]] ; then
-	dput ppa:subsurface/subsurface-daily subsurface_$VERSION*.changes
+	dput ppa:subsurface/subsurface-daily subsurface_$VERSION-$rev~*.changes
 	cd home:Subsurface-Divelog/Subsurface-daily
 	osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
 	osc add subsurface-$VERSION.orig.tar.xz
