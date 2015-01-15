@@ -57,7 +57,9 @@ void ToolTipItem::clear()
 
 void ToolTipItem::setRect(const QRectF &r)
 {
-	// qDeleteAll(childItems());
+	if( r == rectangle ) {
+		return;
+	}
 	delete background;
 
 	rectangle = r;
