@@ -62,10 +62,6 @@ void ToolTipItem::setRect(const QRectF &r)
 	}
 
 	QGraphicsRectItem::setRect(r);
-	QPainterPath bg;
-	bg.addRoundedRect(-1, -1, rect().width() + 3, rect().height() + 4, 3, 3);
-
-	background->setPath(bg);
 	updateTitlePosition();
 }
 
@@ -127,8 +123,6 @@ void ToolTipItem::expand()
 }
 
 ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
-	background(0),
-	separator(new QGraphicsLineItem(this)),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
 	status(COLLAPSED),
 	timeAxis(0),
@@ -141,22 +135,14 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 
 	QColor c = QColor(Qt::black);
 	c.setAlpha(155);
-	background = new QGraphicsPathItem(this);
-	background->setFlag(ItemStacksBehindParent);
-	background->setFlag(ItemIgnoresTransformations);
-	background->setBrush(c);
-	background->setPen(QPen(QBrush(Qt::transparent), 0));
-	background->setZValue(-10);
+	setBrush(c);
+	setPen(QPen(QBrush(Qt::transparent), 0));
 
-	updateTitlePosition();
 	setZValue(99);
 
 	addToolTip(QString(), QIcon(), QPixmap(16,60));
 	entryToolTip = toolTips.first();
 	toolTips.clear();
-
-	separator->setFlag(ItemIgnoresTransformations);
-	separator->setPen(QPen(Qt::white));
 
 	title->setFlag(ItemIgnoresTransformations);
 	title->setPen(QPen(Qt::white, 1));
@@ -182,13 +168,6 @@ void ToolTipItem::updateTitlePosition()
 	}
 
 	title->setPos(boundingRect().width() / 2 - title->boundingRect().width() / 2 - 1, 0);
-
-	double x1 = 3;
-	double y1 = title->pos().y() + iconMetrics.spacing / 2 + title->boundingRect().height();
-	double x2 = boundingRect().width() - 10;
-	double y2 = y1;
-
-	separator->setLine(x1, y1, x2, y2);
 }
 
 bool ToolTipItem::isExpanded() const
