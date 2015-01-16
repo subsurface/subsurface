@@ -12,6 +12,7 @@
 #include <QGraphicsScene>
 #include <QSettings>
 #include <QGraphicsView>
+#include <QStyleOptionGraphicsItem>
 #include <QDebug>
 
 #define PORT_IN_PROGRESS 1
@@ -182,6 +183,17 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	Q_FOREACH (QGraphicsItem *item, oldSelection) {
 		item->setSelected(true);
 	}
+}
+
+void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	Q_UNUSED(widget);
+	painter->save();
+	painter->setClipRect(option->rect);
+	painter->setPen(pen());
+	painter->setBrush(brush());
+	painter->drawRoundedRect(rect(), 10, 10, Qt::AbsoluteSize);
+	painter->restore();
 }
 
 void ToolTipItem::persistPos()
