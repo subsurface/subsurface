@@ -32,7 +32,7 @@ override_dh_auto_configure:
 		mkdir include ; cd include ; for i in `find ../../marble-source -name \*.h` ; do ln -s $$i . ; done ; \
 		ln -s . marble )
 	patch -p1 < packaging/ubuntu/0001-Make-build-with-Qt4.patch
-	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 LIBGIT2STATIC=1 LIBMARBLEDEVEL=./marble-build SPECIAL_MARBLE_PREFIX=1 subsurface.pro
+	qmake-qt4 LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 LIBGIT2STATIC=1 LIBMARBLEDEVEL=./marble-build SPECIAL_MARBLE_PREFIX=1 subsurface.pro
 
 override_dh_installchangelogs:
 	dh_installchangelogs
