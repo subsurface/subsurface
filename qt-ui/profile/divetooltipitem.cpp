@@ -137,7 +137,6 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 	QColor c = QColor(Qt::black);
 	c.setAlpha(155);
 	setBrush(c);
-	setPen(QPen(QBrush(Qt::transparent), 0));
 
 	setZValue(99);
 
@@ -149,8 +148,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 	title->setPen(QPen(Qt::white, 1));
 	title->setBrush(Qt::white);
 
-	setBrush(QBrush(Qt::white));
-	setPen(QPen(Qt::black, 0.5));
+	setPen(QPen(Qt::white, 2));
 }
 
 ToolTipItem::~ToolTipItem()
