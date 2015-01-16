@@ -25,8 +25,6 @@ private:
 	QGraphicsPathItem *textBackgroundItem;
 	QGraphicsPathItem *textItem;
 	QString internalText;
-	color_indice_t colorIndex;
-	QBrush brush;
 	double scale;
 };
 

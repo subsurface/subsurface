@@ -14,13 +14,11 @@ DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(new QGraphicsPathItem(this)),
 	textItem(new QGraphicsPathItem(this)),
-	colorIndex(SAC_DEFAULT),
 	scale(1.0)
 {
 	setFlag(ItemIgnoresTransformations);
 	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
 	textBackgroundItem->setPen(Qt::NoPen);
-	textItem->setBrush(brush);
 	textItem->setPen(Qt::NoPen);
 }
 
@@ -32,8 +30,7 @@ void DiveTextItem::setAlignment(int alignFlags)
 
 void DiveTextItem::setBrush(const QBrush &b)
 {
-	brush = b;
-	updateText();
+	textItem->setBrush(b);
 }
 
 void DiveTextItem::setScale(double newscale)
