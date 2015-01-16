@@ -70,11 +70,15 @@ void ToolTipItem::collapse()
 {
 	int dim = defaultIconMetrics().sz_small;
 
-	QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
-	animation->setDuration(100);
-	animation->setStartValue(nextRectangle);
-	animation->setEndValue(QRect(0, 0, dim, dim));
-	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	if (prefs.animation_speed) {
+		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
+		animation->setDuration(100);
+		animation->setStartValue(nextRectangle);
+		animation->setEndValue(QRect(0, 0, dim, dim));
+		animation->start(QAbstractAnimation::DeleteWhenStopped);
+	} else {
+		setRect(nextRectangle);
+	}
 	clear();
 
 	status = COLLAPSED;
@@ -115,11 +119,15 @@ void ToolTipItem::expand()
 	nextRectangle.setHeight(height);
 
 	if (nextRectangle != rect()) {
-		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
-		animation->setDuration(100);
-		animation->setStartValue(rect());
-		animation->setEndValue(nextRectangle);
-		animation->start(QAbstractAnimation::DeleteWhenStopped);
+		if (prefs.animation_speed) {
+			QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
+			animation->setDuration(prefs.animation_speed);
+			animation->setStartValue(rect());
+			animation->setEndValue(nextRectangle);
+			animation->start(QAbstractAnimation::DeleteWhenStopped);
+		} else {
+			setRect(nextRectangle);
+		}
 	}
 
 	status = EXPANDED;
