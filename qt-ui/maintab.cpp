@@ -1022,6 +1022,7 @@ void MainTab::divetype_Changed(int index)
 	displayed_dive.dc.divemode = (enum dive_comp_type) index;
 	update_setpoint_events(&displayed_dive.dc);
 	markChangedWidget(ui.DiveType);
+	MainWindow::instance()->graphics()->replot();
 }
 
 void MainTab::on_watertemp_textChanged(const QString &text)

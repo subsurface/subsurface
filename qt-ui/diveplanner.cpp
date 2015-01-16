@@ -905,7 +905,11 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 			/* The depth to change to that gas is given by the depth where its pO₂ is 1.6 bar.
 			 * The user should be able to change this depth manually. */
 			pressure_t modpO2;
-			modpO2.mbar = prefs.decopo2;
+			if (displayed_dive.dc.divemode == PSCR)
+				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(&mix)) * SURFACE_PRESSURE *
+						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
+			else
+				modpO2.mbar = prefs.decopo2;
 			cyl->depth = gas_mod(&mix, modpO2, M_OR_FT(3,10));
 
 
