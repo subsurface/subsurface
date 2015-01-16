@@ -1,7 +1,7 @@
 #ifndef DIVETOOLTIPITEM_H
 #define DIVETOOLTIPITEM_H
 
-#include <QGraphicsPathItem>
+#include <QGraphicsRectItem>
 #include <QVector>
 #include <QPair>
 #include <QRectF>
@@ -17,10 +17,10 @@ struct graphics_context;
 /* To use a tooltip, simply ->setToolTip on the QGraphicsItem that you want
  * or, if it's a "global" tooltip, set it on the mouseMoveEvent of the ProfileGraphicsView.
  */
-class ToolTipItem : public QObject, public QGraphicsPathItem {
+class ToolTipItem : public QObject, public QGraphicsRectItem {
 	Q_OBJECT
 	void updateTitlePosition();
-	Q_PROPERTY(QRectF rect READ boundingRect WRITE setRect)
+	Q_PROPERTY(QRectF rect READ rect WRITE setRect)
 
 public:
 	enum Status {

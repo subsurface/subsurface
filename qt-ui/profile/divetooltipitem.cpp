@@ -57,20 +57,13 @@ void ToolTipItem::clear()
 
 void ToolTipItem::setRect(const QRectF &r)
 {
-	if( r == rectangle ) {
+	if( r == rect() ) {
 		return;
 	}
 
-	rectangle = r;
-
-	// Creates a 2pixels border
-	QPainterPath border;
-	border.addRoundedRect(-4, -4, rectangle.width() + 8, rectangle.height() + 10, 3, 3);
-	border.addRoundedRect(-1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
-	setPath(border);
-
+	QGraphicsRectItem::setRect(r);
 	QPainterPath bg;
-	bg.addRoundedRect(-1, -1, rectangle.width() + 3, rectangle.height() + 4, 3, 3);
+	bg.addRoundedRect(-1, -1, rect().width() + 3, rect().height() + 4, 3, 3);
 
 	background->setPath(bg);
 	updateTitlePosition();
@@ -122,10 +115,10 @@ void ToolTipItem::expand()
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
 
-	if (nextRectangle != rectangle) {
+	if (nextRectangle != rect()) {
 		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
 		animation->setDuration(100);
-		animation->setStartValue(rectangle);
+		animation->setStartValue(rect());
 		animation->setEndValue(nextRectangle);
 		animation->start(QAbstractAnimation::DeleteWhenStopped);
 	}
@@ -133,7 +126,7 @@ void ToolTipItem::expand()
 	status = EXPANDED;
 }
 
-ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsPathItem(parent),
+ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 	background(0),
 	separator(new QGraphicsLineItem(this)),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
@@ -181,8 +174,8 @@ ToolTipItem::~ToolTipItem()
 void ToolTipItem::updateTitlePosition()
 {
 	const IconMetrics& iconMetrics = defaultIconMetrics();
-	if (rectangle.width() < title->boundingRect().width() + iconMetrics.spacing * 4) {
-		QRectF newRect = rectangle;
+	if (rect().width() < title->boundingRect().width() + iconMetrics.spacing * 4) {
+		QRectF newRect = rect();
 		newRect.setWidth(title->boundingRect().width() + iconMetrics.spacing * 4);
 		newRect.setHeight((newRect.height() && isExpanded()) ? newRect.height() : iconMetrics.sz_small);
 		setRect(newRect);
@@ -206,7 +199,7 @@ bool ToolTipItem::isExpanded() const
 void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	persistPos();
-	QGraphicsPathItem::mouseReleaseEvent(event);
+	QGraphicsRectItem::mouseReleaseEvent(event);
 	Q_FOREACH (QGraphicsItem *item, oldSelection) {
 		item->setSelected(true);
 	}
