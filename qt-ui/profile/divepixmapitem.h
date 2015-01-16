@@ -31,6 +31,8 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 private:
 	QString fileUrl;
+	QGraphicsRectItem *canvas;
+	QGraphicsRectItem *shadow;
 };
 
 class DiveButtonItem : public DivePixmapItem {

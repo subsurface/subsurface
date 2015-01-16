@@ -45,17 +45,26 @@ void CloseButtonItem::show()
 	DiveButtonItem::show();
 }
 
-DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent)
+DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
+	canvas(new QGraphicsRectItem(this)),
+	shadow(new QGraphicsRectItem(this))
 {
 	setFlag(ItemIgnoresTransformations);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	setAcceptsHoverEvents(true);
-#else
 	setAcceptHoverEvents(true);
-#endif
 	setScale(0.2);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 	setVisible(prefs.show_pictures_in_profile);
+
+	canvas->setPen(Qt::NoPen);
+	canvas->setBrush(QColor(Qt::white));
+	canvas->setFlag(ItemStacksBehindParent);
+	canvas->setZValue(-1);
+
+	shadow->setPos(5,5);
+	shadow->setPen(Qt::NoPen);
+	shadow->setBrush(QColor(Qt::lightGray));
+	shadow->setFlag(ItemStacksBehindParent);
+	shadow->setZValue(-2);
 }
 
 void DivePictureItem::settingsChanged()
@@ -67,18 +76,8 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 {
 	DivePixmapItem::setPixmap(pix);
 	QRectF r = boundingRect();
-	QGraphicsRectItem *rect = new QGraphicsRectItem(0 - 10, 0 -10, r.width() + 20, r.height() + 20, this);
-	rect->setPen(Qt::NoPen);
-	rect->setBrush(QColor(Qt::white));
-	rect->setFlag(ItemStacksBehindParent);
-	rect->setZValue(-1);
-
-	QGraphicsRectItem *shadow = new QGraphicsRectItem(rect->boundingRect(), this);
-	shadow->setPos(5,5);
-	shadow->setPen(Qt::NoPen);
-	shadow->setBrush(QColor(Qt::lightGray));
-	shadow->setFlag(ItemStacksBehindParent);
-	shadow->setZValue(-2);
+	canvas->setRect(0 - 10, 0 -10, r.width() + 20, r.height() + 20);
+	shadow->setRect(canvas->rect());
 }
 
 CloseButtonItem *button = NULL;
