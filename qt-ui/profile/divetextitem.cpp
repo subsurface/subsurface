@@ -12,12 +12,16 @@
 
 DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
-	textBackgroundItem(NULL),
-	textItem(NULL),
+	textBackgroundItem(new QGraphicsPathItem(this)),
+	textItem(new QGraphicsPathItem(this)),
 	colorIndex(SAC_DEFAULT),
 	scale(1.0)
 {
 	setFlag(ItemIgnoresTransformations);
+	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
+	textBackgroundItem->setPen(Qt::NoPen);
+	textItem->setBrush(brush);
+	textItem->setPen(Qt::NoPen);
 }
 
 void DiveTextItem::setAlignment(int alignFlags)
@@ -51,10 +55,6 @@ const QString &DiveTextItem::text()
 void DiveTextItem::updateText()
 {
 	double size;
-	delete textItem;
-	textItem = NULL;
-	delete textBackgroundItem;
-	textBackgroundItem = NULL;
 	if (internalText.isEmpty()) {
 		return;
 	}
@@ -76,21 +76,16 @@ void DiveTextItem::updateText()
 
 	QRectF rect = fm.boundingRect(internalText);
 	yPos = (internalAlignFlags & Qt::AlignTop) ? 0 :
-						     (internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
-											      /*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
+		(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
+		/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
 
 	xPos = (internalAlignFlags & Qt::AlignLeft) ? -rect.width() :
-						      (internalAlignFlags & Qt::AlignHCenter) ? -rect.width() / 2 :
-												/* (internalAlignFlags & Qt::AlignRight) */ 0;
+		(internalAlignFlags & Qt::AlignHCenter) ? -rect.width() / 2 :
+		/* (internalAlignFlags & Qt::AlignRight) */ 0;
 
 	textPath.addText(xPos, yPos, fnt, internalText);
 	QPainterPathStroker stroker;
 	stroker.setWidth(3);
-	textBackgroundItem = new QGraphicsPathItem(stroker.createStroke(textPath), this);
-	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
-	textBackgroundItem->setPen(Qt::NoPen);
-
-	textItem = new QGraphicsPathItem(textPath, this);
-	textItem->setBrush(brush);
-	textItem->setPen(Qt::NoPen);
+	textBackgroundItem->setPath(stroker.createStroke(textPath));
+	textItem->setPath(textPath);
 }
