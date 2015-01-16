@@ -6,6 +6,7 @@
 #include <QPair>
 #include <QRectF>
 #include <QIcon>
+#include <QTime>
 #include "display.h"
 
 class DiveCartesianAxis;
@@ -59,7 +60,7 @@ private:
 	DiveCartesianAxis *timeAxis;
 	plot_info pInfo;
 	int lastTime;
-
+	QTime refreshTime;
 	QList<QGraphicsItem*> oldSelection;
 };
 

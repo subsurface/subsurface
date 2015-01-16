@@ -159,6 +159,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
 	title->setBrush(Qt::white);
 
 	setPen(QPen(Qt::white, 2));
+	refreshTime.start();
 }
 
 ToolTipItem::~ToolTipItem()
@@ -239,6 +240,10 @@ void ToolTipItem::refresh(const QPointF &pos)
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
 	static struct membuffer mb = { 0 };
+
+	if(refreshTime.elapsed() < 40)
+		return;
+	refreshTime.start();
 
 	int time = timeAxis->valueAt(pos);
 	if (time == lastTime)
