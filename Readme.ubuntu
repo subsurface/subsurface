@@ -2,12 +2,15 @@ Building Ubuntu packages of Subsurface
 --------------------------------------
 
 These steps describe roughly, how one can create Ubuntu packages out of
-Subsurface and publish them in Launchpad. Steps are from our latest beta
-release and pushed to subsurface-beta. You need quite a bit of packages
-installed for all this to work, but that is not described here. The
-contents of control, rules and other files edited can be spied from the
-previous packages. GPG is used to sign the changes file and SSH keys are
-required for the upload to Launchpad.
+Subsurface and publish them in Launchpad.
+
+We have a more complete shell script now under packaging/ubuntu, but the
+details in this file are still helpful to understand how all this works.
+
+You need quite a bit of packages installed for all this to work, but that is
+not described here. The contents of control, rules and other files edited can
+be based on the files under packaging/ubuntu/debian.  GPG is used to sign the
+changes file and SSH keys are required for the upload to Launchpad.
 
 ---8<---
 # First we need to create a source directory and have the sources of the
