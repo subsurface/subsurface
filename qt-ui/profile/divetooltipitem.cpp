@@ -89,15 +89,17 @@ void ToolTipItem::expand()
 
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
 	Q_FOREACH (const ToolTip& t, toolTips) {
-		if (t.second->boundingRect().width() > width)
-			width = t.second->boundingRect().width();
-		height += t.second->boundingRect().height();
+		QRectF sRect = t.second->boundingRect();
+		if (sRect.width() > width)
+			width = sRect.width();
+		height += sRect.height();
 	}
 
 	if (entryToolTip.first) {
-		if (entryToolTip.second->boundingRect().width() > width)
-			width = entryToolTip.second->boundingRect().width();
-		height += entryToolTip.second->boundingRect().height();
+		QRectF sRect = entryToolTip.second->boundingRect();
+		if (sRect.width() > width)
+			width = sRect.width();
+		height += sRect.height();
 	}
 
 	/*       Left padding, Icon Size,   space, right padding */
@@ -166,7 +168,7 @@ void ToolTipItem::updateTitlePosition()
 		setRect(newRect);
 	}
 
-	title->setPos(boundingRect().width() / 2 - title->boundingRect().width() / 2 - 1, 0);
+	title->setPos(rect().width() / 2 - title->boundingRect().width() / 2 - 1, 0);
 }
 
 bool ToolTipItem::isExpanded() const
