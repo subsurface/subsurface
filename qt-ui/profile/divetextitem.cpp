@@ -24,8 +24,10 @@ DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 
 void DiveTextItem::setAlignment(int alignFlags)
 {
-	internalAlignFlags = alignFlags;
-	updateText();
+	if (alignFlags != internalAlignFlags) {
+		internalAlignFlags = alignFlags;
+		updateText();
+	}
 }
 
 void DiveTextItem::setBrush(const QBrush &b)
@@ -35,13 +37,18 @@ void DiveTextItem::setBrush(const QBrush &b)
 
 void DiveTextItem::setScale(double newscale)
 {
-	scale = newscale;
+	if (scale != newscale) {
+		scale = newscale;
+		updateText();
+	}
 }
 
 void DiveTextItem::setText(const QString &t)
 {
-	internalText = t;
-	updateText();
+	if (internalText != t) {
+		internalText = t;
+		updateText();
+	}
 }
 
 const QString &DiveTextItem::text()
