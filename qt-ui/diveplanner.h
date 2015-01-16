@@ -90,7 +90,7 @@ slots:
 	void deleteTemporaryPlan();
 	void loadFromDive(dive *d);
 	void emitDataChanged();
-	void setRebreatherMode(QString mode);
+	void setRebreatherMode(int mode);
 
 signals:
 	void planCreated();

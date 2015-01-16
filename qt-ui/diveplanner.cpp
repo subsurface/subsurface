@@ -416,7 +416,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
-	rebreater_modes << "Open circuit" << "pSCR" << "CCR";
+	// should be the same order as in dive_comp_type!
+	rebreater_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
 	ui.rebreathermode->insertItems(0, rebreater_modes);
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
@@ -444,7 +445,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
-	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(QString)), plannerModel, SLOT(setRebreatherMode(QString)));
+	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
@@ -783,16 +784,13 @@ void DivePlannerPointsModel::setGFLow(const int ghflow)
 	triggerGFLow();
 }
 
-void DivePlannerPointsModel::setRebreatherMode(QString mode)
+void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
-	qDebug() << mode << "selected, was" << displayed_dive.dc.divemode;
-	if (mode == "OC")
-		displayed_dive.dc.divemode = OC;
-	else if (mode == "pSCR")
-		displayed_dive.dc.divemode = PSCR;
-	else if (mode == "CCR")
-		displayed_dive.dc.divemode = CCR;
-	plannerModel->emitDataChanged();
+	int i;
+	displayed_dive.dc.divemode = (dive_comp_type) mode;
+	for (i=0; i < rowCount(); i++)
+		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::triggerGFLow()
