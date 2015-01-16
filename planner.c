@@ -278,6 +278,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	oldgasmix = cyl->gasmix;
 	sample = prepare_sample(dc);
 	sample->setpoint.mbar = dp->setpoint;
+	sample->sac.mliter = prefs.bottomsac;
 	oldpo2 = dp->setpoint;
 	if (track_gas && cyl->type.workingpressure.mbar)
 		sample->cylinderpressure.mbar = cyl->end.mbar;
@@ -323,6 +324,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			sample->time.seconds = lasttime + 1;
 			sample->depth.mm = lastdepth;
 			sample->manually_entered = dp->entered;
+			sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 			if (track_gas && cyl->type.workingpressure.mbar)
 				sample->cylinderpressure.mbar = cyl->sample_end.mbar;
 			finish_sample(dc);
@@ -337,6 +339,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample->time.seconds = lasttime = time;
 		sample->depth.mm = lastdepth = depth;
 		sample->manually_entered = dp->entered;
+		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
 			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);

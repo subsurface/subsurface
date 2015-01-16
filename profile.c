@@ -518,12 +518,13 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 /* copy the previous entry (we know this exists), update time and depth
  * and zero out the sensor pressure (since this is a synthetic entry)
  * increment the entry pointer and the count of synthetic entries. */
-#define INSERT_ENTRY(_time, _depth) \
+#define INSERT_ENTRY(_time, _depth, _sac) \
 	*entry = entry[-1];         \
 	entry->sec = _time;         \
 	entry->depth = _depth;      \
 	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
 	SENSOR_PRESSURE(entry) = 0; \
+	entry->sac = _sac;          \
 	entry++;                    \
 	idx++
 
@@ -562,6 +563,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		int time = sample->time.seconds;
 		int offset, delta;
 		int depth = sample->depth.mm;
+		int sac = sample->sac.mliter;
 
 		/* Add intermediate plot entries if required */
 		delta = time - lasttime;
@@ -575,12 +577,12 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 			/* Add events if they are between plot entries */
 			while (ev && ev->time.seconds < lasttime + offset) {
-				INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta));
+				INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
 				ev = ev->next;
 			}
 
 			/* now insert the time interpolated entry */
-			INSERT_ENTRY(lasttime + offset, interpolate(lastdepth, depth, offset, delta));
+			INSERT_ENTRY(lasttime + offset, interpolate(lastdepth, depth, offset, delta), sac);
 
 			/* skip events that happened at this time */
 			while (ev && ev->time.seconds == lasttime + offset)
@@ -589,7 +591,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 		/* Add events if they are between plot entries */
 		while (ev && ev->time.seconds < time) {
-			INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta));
+			INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
 			ev = ev->next;
 		}
 
@@ -625,6 +627,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			entry->temperature = lasttemp;
 		entry->heartbeat = sample->heartbeat;
 		entry->bearing = sample->bearing.degrees;
+		entry->sac = sample->sac.mliter;
 
 		/* skip events that happened at this time */
 		while (ev && ev->time.seconds == time)
@@ -689,6 +692,8 @@ static void calculate_sac(struct dive *dive, struct plot_info *pi)
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
+		if (entry->sac)
+			continue;
 		if (!last_entry || last_entry->cylinderindex != entry->cylinderindex) {
 			last = i;
 			last_entry = entry;

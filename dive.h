@@ -191,6 +191,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	uint8_t sensor;                // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
 	uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
 	uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
+	volume_t sac;                  //            4  ml/min                predefined SAC
 	bool in_deco;                  // bool       1    y/n      y/n        this sample is part of deco
 	bool manually_entered;         // bool       1    y/n      y/n        this sample was entered by the user,
 				       //                                     not calculated when planning a dive
