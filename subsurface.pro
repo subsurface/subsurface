@@ -104,8 +104,7 @@ HEADERS = \
 	qt-ui/statistics/statisticsbar.h \
 	qt-ui/statistics/yearstatistics.h \
 	qt-ui/diveshareexportdialog.h \
-	qt-ui/filtermodels.h \
-	qt-ui/socialnetworks.h
+	qt-ui/filtermodels.h
 
 android: HEADERS -= \
 	qt-ui/usermanual.h \
@@ -199,8 +198,7 @@ SOURCES =  \
 	qt-ui/statistics/statisticsbar.cpp \
 	qt-ui/statistics/monthstatistics.cpp \
 	qt-ui/diveshareexportdialog.cpp \
-	qt-ui/filtermodels.cpp \
-	qt-ui/socialnetworks.cpp
+	qt-ui/filtermodels.cpp
 
 android: SOURCES += android.cpp
 else: win32: SOURCES += windows.c
@@ -237,11 +235,17 @@ FORMS = \
 	qt-ui/configuredivecomputerdialog.ui \
 	qt-ui/listfilter.ui \
 	qt-ui/diveshareexportdialog.ui \
-	qt-ui/filterwidget.ui \
-	qt-ui/socialnetworksdialog.ui
+	qt-ui/filterwidget.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui
+
+FBSUPPORT: {
+FORMS += qt-ui/socialnetworksdialog.ui
+SOURCES += qt-ui/socialnetworks.cpp
+HEADERS += qt-ui/socialnetworks.h
+DEFINES += FBSUPPORT
+}
 
 RESOURCES = subsurface.qrc
 

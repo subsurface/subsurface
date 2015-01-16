@@ -7,7 +7,10 @@
 #include <QShortcut>
 #include <QNetworkProxy>
 #include <QNetworkCookieJar>
+
+#if defined(FBSUPPORT)
 #include "socialnetworks.h"
+#endif
 
 #ifndef Q_OS_ANDROID
 #include <QWebView>
@@ -25,7 +28,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 {
 	ui.setupUi(this);
 
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) || !defined(FBSUPPORT)
 	for (int i = 0; i < ui.listWidget->count(); i++) {
 		if (ui.listWidget->item(i)->text() == "Facebook")
 			delete ui.listWidget->item(i);
@@ -46,7 +49,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->setCurrentIndex(-1);
 
 	// Facebook stuff:
-#ifndef Q_OS_ANDROID
+#if !defined(Q_OS_ANDROID) && defined(FBSUPPRORT)
 	FacebookManager *fb = FacebookManager::instance();
 	if(fb->loggedIn()){
 		facebookWebView->setHtml("You are connected on Facebook, yey.");
@@ -83,7 +86,7 @@ void PreferencesDialog::facebookLoggedIn()
 
 void PreferencesDialog::facebookDisconnect()
 {
-#ifndef Q_OS_ANDROID
+#if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
 	facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
 	ui.fbConnected->hide();
