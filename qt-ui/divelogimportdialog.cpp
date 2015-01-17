@@ -1,15 +1,9 @@
-#include <QtDebug>
-#include <QFileDialog>
-#include <QShortcut>
 #include "divelogimportdialog.h"
 #include "mainwindow.h"
 #include "ui_divelogimportdialog.h"
-#include <QAbstractListModel>
-#include <QAbstractTableModel>
-#include <QMouseEvent>
+#include <QShortcut>
 #include <QDrag>
 #include <QMimeData>
-#include <QFile>
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";

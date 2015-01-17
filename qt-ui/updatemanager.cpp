@@ -2,7 +2,6 @@
 #include "usersurvey.h"
 #include <QtNetwork>
 #include <QMessageBox>
-#include <QDateTime>
 #include "subsurfacewebservices.h"
 #include "ssrf-version.h"
 #include "mainwindow.h"

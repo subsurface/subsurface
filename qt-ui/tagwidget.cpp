@@ -1,10 +1,6 @@
 #include "tagwidget.h"
-#include <QPair>
-#include <QAbstractItemView>
-#include <QSettings>
-#include <QCompleter>
-#include <QFont>
 #include "mainwindow.h"
+#include <QCompleter>
 
 TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL), lastFinishedTag(false)
 {

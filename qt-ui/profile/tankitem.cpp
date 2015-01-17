@@ -2,8 +2,6 @@
 #include "diveplotdatamodel.h"
 #include "divetextitem.h"
 #include "profile.h"
-#include <QGradient>
-#include <QDebug>
 #include <QPen>
 
 TankItem::TankItem(QObject *parent) :

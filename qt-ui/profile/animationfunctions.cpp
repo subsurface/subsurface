@@ -1,8 +1,6 @@
 #include "animationfunctions.h"
-#include "dive.h"
 #include "pref.h"
 #include <QPropertyAnimation>
-#include <QPointF>
 
 namespace Animations {
 

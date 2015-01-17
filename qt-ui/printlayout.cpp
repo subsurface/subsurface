@@ -1,20 +1,11 @@
 #include <QtCore/qmath.h>
-#include <QDebug>
-#include <QPainter>
 #include <QDesktopWidget>
-#include <QApplication>
-#include <QTableView>
-#include <QHeaderView>
-#include <QPointer>
 #include <QPicture>
 #include <QMessageBox>
 
 #include "mainwindow.h"
-#include "../dive.h"
-#include "../display.h"
 #include "printdialog.h"
 #include "printlayout.h"
-#include "models.h"
 #include "modeldelegates.h"
 
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct print_options *optionsPtr)

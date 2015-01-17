@@ -1,17 +1,10 @@
 #include "configuredivecomputerdialog.h"
 
-#include "divecomputer.h"
-#include "libdivecomputer.h"
 #include "helpers.h"
-#include "display.h"
-#include "divelist.h"
-#include "configuredivecomputer.h"
 #include "mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
 
 struct product {

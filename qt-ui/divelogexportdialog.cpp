@@ -1,21 +1,13 @@
 #include <QFileDialog>
-#include <QString>
 #include <QShortcut>
-#include <QAbstractButton>
-#include <QTextStream>
 #include <QSettings>
-#include <QDir>
-#include <QDebug>
 
-#include "mainwindow.h"
 #include "divelogexportdialog.h"
 #include "diveshareexportdialog.h"
 #include "ui_divelogexportdialog.h"
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
 #include "save-html.h"
-#include "helpers.h"
-#include "statistics.h"
 
 #define GET_UNIT(name, field, f, t)                   \
 	v = settings.value(QString(name));            \

@@ -1,14 +1,7 @@
 #include "globe.h"
 #ifndef NO_MARBLE
-#include "kmessagewidget.h"
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "dive.h"
-#include "divelist.h"
 #include "helpers.h"
-#include "display.h"
-
-#include <QDebug>
 #include <QTimer>
 
 #include <marble/AbstractFloatItem.h>
@@ -17,7 +10,7 @@
 #include <marble/MarbleModel.h>
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
-#include <marble/GeoDataLineString.h>
+
 #ifdef MARBLE_SUBSURFACE_BRANCH
 #include <marble/MarbleDebug.h>
 #endif
@@ -26,8 +19,6 @@
 #else
 #include <marble/GeoDataTreeModel.h>
 #endif
-#include <QMouseEvent>
-#include <QMessageBox>
 
 // as of Marble 4.10 (which has MARBLE_VERSION 0x001000) zoomView is
 // deprecated and has been replaced by setZoom with the same function signature

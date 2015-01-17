@@ -1,21 +1,10 @@
 #include "ruleritem.h"
-#include "divetextitem.h"
-#include "profilewidget2.h"
 #include "preferences.h"
 #include "mainwindow.h"
 
-#include <QFont>
-#include <QFontMetrics>
-#include <QPainter>
-#include <QGraphicsScene>
-#include <QGraphicsView>
 #include <qgraphicssceneevent.h>
-#include <QDebug>
-
-#include <stdint.h>
 
 #include "profile.h"
-#include "display.h"
 
 RulerNodeItem2::RulerNodeItem2() : entry(NULL), ruler(NULL)
 {

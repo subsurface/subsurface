@@ -5,31 +5,12 @@
  *
  */
 #include "divelistview.h"
-#include "models.h"
 #include "filtermodels.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
-#include "subsurfacewebservices.h"
-#include "divelogexportdialog.h"
-#include "../display.h"
-#include "exif.h"
-#include "../file.h"
-#include <QApplication>
-#include <QHeaderView>
-#include <QDebug>
 #include <QSettings>
-#include <QKeyEvent>
-#include <QSortFilterProxyModel>
-#include <QAction>
-#include <QLineEdit>
-#include <QKeyEvent>
-#include <QMenu>
 #include <QFileDialog>
-#include <string>
-#include <iostream>
-#include <QHttpMultiPart>
-#include "socialnetworks.h"
-#include "../qthelper.h"
+#include "qthelper.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};

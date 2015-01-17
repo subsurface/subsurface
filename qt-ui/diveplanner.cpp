@@ -1,30 +1,13 @@
 #include "diveplanner.h"
-#include "graphicsview-common.h"
-#include "models.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
-#include "maintab.h"
-#include "tableview.h"
-
-#include "dive.h"
-#include "divelist.h"
 #include "planner.h"
-#include "display.h"
 #include "helpers.h"
 
-#include <QMouseEvent>
-#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
-#include <QListView>
-#include <QModelIndex>
 #include <QSettings>
-#include <QTableView>
-#include <QColor>
 #include <QShortcut>
-
-#include <algorithm>
-#include <string.h>
 
 #define TIME_INITIAL_MAX 30
 

@@ -1,13 +1,7 @@
 #include "starwidget.h"
 #include "metrics.h"
 #include <QSvgRenderer>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QDebug>
 #include <QMouseEvent>
-#include <unistd.h>
-#include <QStyle>
-#include <QStyleOption>
 #include "simplewidgets.h"
 
 QImage StarWidget::activeStar;

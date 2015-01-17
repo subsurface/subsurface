@@ -1,7 +1,6 @@
 #include <QDesktopServices>
 #include <QShortcut>
 #include <QFile>
-#include <QDebug>
 
 #include "usermanual.h"
 

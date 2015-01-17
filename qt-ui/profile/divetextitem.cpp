@@ -1,14 +1,5 @@
 #include "divetextitem.h"
-#include "animationfunctions.h"
 #include "mainwindow.h"
-
-#include <QPropertyAnimation>
-#include <QApplication>
-#include <QFont>
-#include <QFontMetrics>
-#include <QBrush>
-#include <QPen>
-#include <QDebug>
 
 DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),

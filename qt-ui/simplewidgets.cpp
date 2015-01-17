@@ -1,31 +1,14 @@
 #include "simplewidgets.h"
 #include "filtermodels.h"
 
-#include <QLabel>
 #include <QProcess>
-#include <QStringList>
-#include <QDebug>
 #include <QFileDialog>
 #include <QShortcut>
 #include <QCalendarWidget>
-#include <QSortFilterProxyModel>
-#include <QToolButton>
-#include <QToolBar>
-#include <QUrlQuery>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QNetworkAccessManager>
-#include "exif.h"
-#include "dive.h"
+
 #include "file.h"
-#include "display.h"
 #include "mainwindow.h"
 #include "helpers.h"
-#include "ui_filterwidget.h"
 #include "libdivecomputer/parser.h"
 
 

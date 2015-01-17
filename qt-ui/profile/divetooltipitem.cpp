@@ -1,19 +1,13 @@
 #include "divetooltipitem.h"
 #include "divecartesianaxis.h"
-#include "profilewidget2.h"
 #include "dive.h"
 #include "profile.h"
 #include "membuffer.h"
 #include "metrics.h"
 #include <QPropertyAnimation>
-#include <QGraphicsSceneMouseEvent>
-#include <QPen>
-#include <QBrush>
-#include <QGraphicsScene>
 #include <QSettings>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
-#include <QDebug>
 
 #define PORT_IN_PROGRESS 1
 #ifdef PORT_IN_PROGRESS

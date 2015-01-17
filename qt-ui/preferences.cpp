@@ -1,7 +1,6 @@
 #include "preferences.h"
 #include "mainwindow.h"
 #include <QSettings>
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QShortcut>

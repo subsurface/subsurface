@@ -2,11 +2,10 @@
 #include "ui_diveshareexportdialog.h"
 #include "mainwindow.h"
 #include "save-html.h"
-#include "qt-ui/usersurvey.h"
-#include "qt-ui/subsurfacewebservices.h"
+#include "usersurvey.h"
+#include "subsurfacewebservices.h"
 
 #include <QDesktopServices>
-#include <QUrl>
 #include <QSettings>
 
 DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
