@@ -1,26 +1,9 @@
 #include "modeldelegates.h"
 #include "dive.h"
-#include "divelist.h"
-#include "starwidget.h"
-#include "models.h"
-#include "diveplanner.h"
-#include "simplewidgets.h"
 #include "gettextfromc.h"
-#include "profile/profilewidget2.h"
 #include "mainwindow.h"
 
-#include <QtDebug>
-#include <QPainter>
-#include <QSortFilterProxyModel>
-#include <QStyle>
-#include <QStyleOption>
-#include <QComboBox>
 #include <QCompleter>
-#include <QLineEdit>
-#include <QKeyEvent>
-#include <QAbstractItemView>
-#include <QApplication>
-#include <QTextDocument>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {

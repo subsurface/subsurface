@@ -3,16 +3,10 @@
 #include "printlayout.h"
 #include "mainwindow.h"
 
-#include <QDebug>
-#include <QPushButton>
 #include <QProgressBar>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 #include <QShortcut>
-#include <QPrinterInfo>
-#include <QMessageBox>
 #include <QSettings>
 
 #if QT_VERSION >= 0x050300

@@ -3,11 +3,7 @@
 #include "modeldelegates.h"
 
 #include <QPushButton>
-#include <QLayout>
-#include <QFile>
-#include <QTextStream>
 #include <QSettings>
-#include <QStyle>
 
 TableView::TableView(QWidget *parent) : QGroupBox(parent)
 {

@@ -6,28 +6,16 @@
  */
 #include "maintab.h"
 #include "mainwindow.h"
-#include "../helpers.h"
-#include "../statistics.h"
-#include "divelistview.h"
+#include "helpers.h"
+#include "statistics.h"
 #include "modeldelegates.h"
-#include "globe.h"
-#include "diveplanner.h"
-#include "divelist.h"
-#include "qthelper.h"
-#include "display.h"
-#include "divepicturewidget.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
 
-#include <QLabel>
 #include <QCompleter>
-#include <QDebug>
-#include <QSet>
 #include <QSettings>
-#include <QTableView>
-#include <QPalette>
 #include <QScrollBar>
 #include <QShortcut>
 #include <QMessageBox>

@@ -28,19 +28,9 @@
 
 #include "groupedlineedit.h"
 
-#include <QStyleOptionFrameV3>
-#include <QFontMetrics>
-#include <QApplication>
 #include <QScrollBar>
-#include <QTextDocument>
 #include <QTextBlock>
-#include <QTextLayout>
-#include <QTextLine>
 #include <QPainter>
-#include <QPainterPath>
-#include <QBrush>
-#include <QColor>
-#include <QPalette>
 
 struct GroupedLineEdit::Private {
 	struct Block {

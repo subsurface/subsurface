@@ -1,17 +1,10 @@
 #include "divecartesianaxis.h"
-#include "divelineitem.h"
 #include "divetextitem.h"
 #include "helpers.h"
 #include "preferences.h"
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
 #include "mainwindow.h"
-#include <QPen>
-#include <QGraphicsScene>
-#include <QDebug>
-#include <QGraphicsView>
-#include <QStyleOption>
-#include <QSettings>
 
 static QPen gridPen()
 {

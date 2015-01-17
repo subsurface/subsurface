@@ -3,12 +3,7 @@
 #include <divepicturewidget.h>
 #include <preferences.h>
 
-#include <QPen>
-#include <QBrush>
-#include <QGraphicsDropShadowEffect>
 #include <QDesktopServices>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QUrl>
 

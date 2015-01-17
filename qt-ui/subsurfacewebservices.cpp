@@ -2,24 +2,15 @@
 #include "webservice.h"
 #include "mainwindow.h"
 #include "usersurvey.h"
-#include <libxml/parser.h>
-#include <zip.h>
 #include <errno.h>
 
 #include <QDir>
 #include <QHttpMultiPart>
 #include <QMessageBox>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QDebug>
 #include <QSettings>
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
 #include <QShortcut>
-
-#include "dive.h"
-#include "divelist.h"
-#include "display.h"
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)

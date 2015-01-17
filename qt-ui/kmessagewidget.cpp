@@ -19,7 +19,6 @@
  */
 #include "kmessagewidget.h"
 
-#include <QEvent>
 #include <QGridLayout>
 #include <QDialogButtonBox>
 #include <QLabel>

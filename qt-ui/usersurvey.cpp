@@ -1,6 +1,5 @@
 #include <QShortcut>
 #include <QMessageBox>
-#include <QDebug>
 #include <QSettings>
 
 #include "usersurvey.h"

@@ -1,24 +1,15 @@
 #include "diveprofileitem.h"
 #include "diveplotdatamodel.h"
 #include "divecartesianaxis.h"
-#include "graphicsview-common.h"
 #include "divetextitem.h"
-#include "profilewidget2.h"
 #include "animationfunctions.h"
 #include "dive.h"
 #include "profile.h"
 #include "preferences.h"
 #include "helpers.h"
-#include "diveplanner.h"
 #include "libdivecomputer/parser.h"
 #include "mainwindow.h"
 
-#include <QPen>
-#include <QPainter>
-#include <QLinearGradient>
-#include <QDebug>
-#include <QApplication>
-#include <QGraphicsItem>
 #include <QSettings>
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsPolygonItem(), hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)

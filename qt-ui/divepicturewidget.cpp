@@ -1,11 +1,9 @@
 #include "divepicturewidget.h"
 #include "metrics.h"
-
-#include <dive.h>
-#include <divelist.h>
+#include "dive.h"
+#include "divelist.h"
 #include <QtConcurrentMap>
 #include <QDir>
-#include <QHash>
 
 DivePictureModel *DivePictureModel::instance()
 {

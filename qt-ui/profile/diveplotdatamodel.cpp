@@ -1,10 +1,8 @@
 #include "diveplotdatamodel.h"
 #include "dive.h"
-#include "display.h"
 #include "profile.h"
 #include "graphicsview-common.h"
 #include "divelist.h"
-#include <QDebug>
 
 DivePlotDataModel::DivePlotDataModel(QObject *parent) : QAbstractTableModel(parent), diveId(0)
 {

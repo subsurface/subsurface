@@ -3,10 +3,7 @@
 #include "divecartesianaxis.h"
 #include "animationfunctions.h"
 #include "libdivecomputer.h"
-#include "dive.h"
-#include "planner.h"
 #include "profile.h"
-#include <QDebug>
 #include "gettextfromc.h"
 #include "metrics.h"
 

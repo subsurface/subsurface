@@ -1,8 +1,5 @@
 #include "filtermodels.h"
-#include "dive.h"
-#include "models.h"
 #include "mainwindow.h"
-#include "display.h"
 
 #define CREATE_INSTANCE_METHOD( CLASS ) \
 CLASS *CLASS::instance() \
