@@ -15,6 +15,7 @@
 #include <QtCore/qmath.h>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QDebug>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
