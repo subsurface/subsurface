@@ -50,7 +50,7 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	memcpy(pInfoEntry, plotInfo->entry, size);
 	copy_cylinders(d, &diveCylinderStore, false);
 	dataModel = model;
-	connect(dataModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)));
+	connect(dataModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
 	modelDataChanged();
 }
 
