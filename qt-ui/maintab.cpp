@@ -1178,7 +1178,7 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 	bool parsed = false;
 	QPalette p;
 	ui.coordinates->setPalette(p); // reset palette
-	gpsChanged = gpsHasChanged(&displayed_dive, current_dive, text, &parsed);
+	gpsChanged = gpsHasChanged(&displayed_dive, &displayed_dive, text, &parsed);
 	if (gpsChanged)
 		markChangedWidget(ui.coordinates); // marks things yellow
 	if (!parsed) {
