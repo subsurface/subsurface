@@ -187,9 +187,13 @@ void GlobeGPS::repopulateLabels()
 	loadedDives = new GeoDataDocument;
 	QMap<QString, GeoDataPlacemark *> locationMap;
 
-	int idx = 0;
+	int idx = -2;
 	struct dive *dive;
-	for_each_dive (idx, dive) {
+	// normally we use for_each_dive (idx, dive) to loop over all dives,
+	// but we need to include the displayed_dive while things are
+	// edited, so let's hand roll this loop
+	while (++idx < dive_table.nr) {
+		dive = (idx == -1 ? &displayed_dive : get_dive(idx));
 		if (dive_has_gps_location(dive)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
