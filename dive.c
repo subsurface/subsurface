@@ -1683,8 +1683,12 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 	} else {
 		if (divemode == PSCR) { /* The steady state approximation should be good enough */
 			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio / 1000.0);
-			pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
-			pressures->n2 = (amb_pressure - pressures->o2) * (1000 - get_o2(mix) - get_he(mix)) / (1000.0 - get_o2(mix));
+			if (get_o2(mix) != 1000) {
+				pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
+				pressures->n2 = (amb_pressure - pressures->o2) * (1000 - get_o2(mix) - get_he(mix)) / (1000.0 - get_o2(mix));
+			} else {
+				pressures->he = pressures->n2 = 0;
+			}
 		} else {
 			// Open circuit dives: no gas pressure values available, they need to be calculated
 			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
