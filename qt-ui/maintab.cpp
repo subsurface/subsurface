@@ -1246,6 +1246,9 @@ void MainTab::updateCoordinatesText(qreal lat, qreal lon)
 
 void MainTab::updateGpsCoordinates()
 {
+	if (editMode == NONE)
+		enableEdition();
+
 	ui.coordinates->setText(printGPSCoords(displayed_dive.latitude.udeg, displayed_dive.longitude.udeg));
 	ui.coordinates->setModified(displayed_dive.latitude.udeg || displayed_dive.longitude.udeg);
 }

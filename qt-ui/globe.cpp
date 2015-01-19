@@ -307,21 +307,14 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 		lon = lon * 180 / M_PI;
 		lat = lat * 180 / M_PI;
 	}
-
-	// right now we try to only ever do this with one dive selected,
-	// but we keep the code here that changes the coordinates for each selected dive
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (!dive->selected)
-			continue;
-		dive->latitude.udeg = lrint(lat * 1000000.0);
-		dive->longitude.udeg = lrint(lon * 1000000.0);
-	}
 	centerOn(lon, lat, true);
+
+	// change the location of the displayed_dive and put the UI in edit mode
+	displayed_dive.latitude.udeg = lrint(lat * 1000000.0);
+	displayed_dive.longitude.udeg = lrint(lon * 1000000.0);
+	emit(coordinatesChanged());
+	repopulateLabels();
 	editingDiveLocation = false;
-	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent *event)
