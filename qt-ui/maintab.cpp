@@ -428,7 +428,7 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.DiveType->setCurrentIndex(displayed_dive.dc.divemode);
 
 	if (!clear) {
-		updateGpsCoordinates(&displayed_dive);
+		updateGpsCoordinates();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -750,7 +750,7 @@ void MainTab::acceptChanges()
 		}
 		struct dive *cd = current_dive;
 		//Reset coordinates field, in case it contains garbage.
-		updateGpsCoordinates(&displayed_dive);
+		updateGpsCoordinates();
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.buddy, cd->buddy))
@@ -1137,7 +1137,7 @@ void MainTab::on_location_editingFinished()
 				displayed_dive.latitude = dive->latitude;
 				displayed_dive.longitude = dive->longitude;
 				MainWindow::instance()->globe()->reload();
-				updateGpsCoordinates(&displayed_dive);
+				updateGpsCoordinates();
 				break;
 			}
 		}
@@ -1244,14 +1244,10 @@ void MainTab::updateCoordinatesText(qreal lat, qreal lon)
 	ui.coordinates->setText(printGPSCoords(ulat, ulon));
 }
 
-void MainTab::updateGpsCoordinates(const struct dive *dive)
+void MainTab::updateGpsCoordinates()
 {
-	if (dive) {
-		ui.coordinates->setText(printGPSCoords(dive->latitude.udeg, dive->longitude.udeg));
-		ui.coordinates->setModified(dive->latitude.udeg || dive->longitude.udeg);
-	} else {
-		ui.coordinates->clear();
-	}
+	ui.coordinates->setText(printGPSCoords(displayed_dive.latitude.udeg, displayed_dive.longitude.udeg));
+	ui.coordinates->setModified(displayed_dive.latitude.udeg || displayed_dive.longitude.udeg);
 }
 
 void MainTab::escDetected()
@@ -1300,7 +1296,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.gps)
-		updateGpsCoordinates(&displayed_dive);
+		updateGpsCoordinates();
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
