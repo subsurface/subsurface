@@ -194,6 +194,10 @@ void GlobeGPS::repopulateLabels()
 	// edited, so let's hand roll this loop
 	while (++idx < dive_table.nr) {
 		dive = (idx == -1 ? &displayed_dive : get_dive(idx));
+		if (dive == current_dive)
+			// don't show that flag, it's either already shown as displayed_dive
+			// or it's the one that we are moving right now...
+			continue;
 		if (dive_has_gps_location(dive)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
