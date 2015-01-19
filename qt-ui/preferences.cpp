@@ -125,6 +125,8 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.gf_low_at_maxdepth->setChecked(prefs.gf_low_at_maxdepth);
 	ui.show_ccr_setpoint->setChecked(prefs.show_ccr_setpoint);
 	ui.defaultSetpoint->setValue((double)prefs.defaultsetpoint / 1000.0);
+	ui.psro2rate->setValue(prefs.o2consumption / 1000.0);
+	ui.pscrfactor->setValue(rint(1000.0 / prefs.pscr_ratio));
 
 	// units
 	if (prefs.unit_system == METRIC)
@@ -299,7 +301,9 @@ void PreferencesDialog::syncSettings()
 	s.setValue("default_filename", ui.defaultfilename->text());
 	s.setValue("default_cylinder", ui.default_cylinder->currentText());
 	s.setValue("use_default_file", ui.btnUseDefaultFile->isChecked());
-	s.setValue("defaultsetpoint", (int) (ui.defaultSetpoint->value() * 1000.0));
+	s.setValue("defaultsetpoint", rint(ui.defaultSetpoint->value() * 1000.0));
+	s.setValue("o2consumption", rint(ui.psro2rate->value() *1000.0));
+	s.setValue("pscr_ratio", rint(1000.0 / ui.pscrfactor->value()));
 	s.endGroup();
 
 	s.beginGroup("Display");
@@ -397,7 +401,6 @@ void PreferencesDialog::loadSettings()
 	GET_BOOL("show_sac", show_sac);
 	GET_BOOL("display_unused_tanks", display_unused_tanks);
 	GET_BOOL("show_average_depth", show_average_depth);
-	GET_INT("default_setpoint", defaultsetpoint);
 	s.endGroup();
 
 	s.beginGroup("GeneralSettings");
@@ -405,6 +408,8 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("default_cylinder", default_cylinder);
 	GET_BOOL("use_default_file", use_default_file);
 	GET_INT("defaultsetpoint", defaultsetpoint);
+	GET_INT("o2consumption", o2consumption);
+	GET_INT("pscr_ratio", pscr_ratio);
 	s.endGroup();
 
 	s.beginGroup("Display");
