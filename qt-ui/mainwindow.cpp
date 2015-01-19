@@ -96,6 +96,8 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_MARBLE
 	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
+#else
+	connect(ui.globe, SIGNAL(coordinatesChanged()), ui.InfoWidget, SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);

@@ -133,6 +133,8 @@ public
 slots:
 	void selfRemove();
 	void changeGas();
+private:
+	QTime t;
 };
 
 #include "ui_diveplanner.h"

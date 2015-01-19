@@ -92,6 +92,8 @@ slots:
 	void escDetected(void);
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
+	void updateGpsCoordinates();
+
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
@@ -109,7 +111,6 @@ private:
 	bool copyPaste;
 	void resetPallete();
 	void saveTags();
-	void updateGpsCoordinates(const struct dive *dive);
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;

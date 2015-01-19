@@ -181,6 +181,7 @@ DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 	setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 	setBrush(Qt::white);
 	setZValue(2);
+	t.start();
 }
 
 int DiveHandler::parentIndex()
@@ -225,9 +226,14 @@ void DiveHandler::changeGas()
 
 void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (t.elapsed() < 40)
+		return;
+	t.start();
+
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
 	if(view->isPointOutOfBoundaries(event->scenePos()))
 		return;
+
 	QGraphicsEllipseItem::mouseMoveEvent(event);
 	emit moved();
 }

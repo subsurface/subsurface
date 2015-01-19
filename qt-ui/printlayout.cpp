@@ -2,6 +2,7 @@
 #include <QDesktopWidget>
 #include <QPicture>
 #include <QMessageBox>
+#include <QPointer>
 
 #include "mainwindow.h"
 #include "printdialog.h"

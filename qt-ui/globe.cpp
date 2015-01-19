@@ -187,9 +187,17 @@ void GlobeGPS::repopulateLabels()
 	loadedDives = new GeoDataDocument;
 	QMap<QString, GeoDataPlacemark *> locationMap;
 
-	int idx = 0;
+	int idx = -2;
 	struct dive *dive;
-	for_each_dive (idx, dive) {
+	// normally we use for_each_dive (idx, dive) to loop over all dives,
+	// but we need to include the displayed_dive while things are
+	// edited, so let's hand roll this loop
+	while (++idx < dive_table.nr) {
+		dive = (idx == -1 ? &displayed_dive : get_dive(idx));
+		if (dive == current_dive)
+			// don't show that flag, it's either already shown as displayed_dive
+			// or it's the one that we are moving right now...
+			continue;
 		if (dive_has_gps_location(dive)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
 			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
@@ -307,21 +315,14 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 		lon = lon * 180 / M_PI;
 		lat = lat * 180 / M_PI;
 	}
-
-	// right now we try to only ever do this with one dive selected,
-	// but we keep the code here that changes the coordinates for each selected dive
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		if (!dive->selected)
-			continue;
-		dive->latitude.udeg = lrint(lat * 1000000.0);
-		dive->longitude.udeg = lrint(lon * 1000000.0);
-	}
 	centerOn(lon, lat, true);
+
+	// change the location of the displayed_dive and put the UI in edit mode
+	displayed_dive.latitude.udeg = lrint(lat * 1000000.0);
+	displayed_dive.longitude.udeg = lrint(lon * 1000000.0);
+	emit(coordinatesChanged());
+	repopulateLabels();
 	editingDiveLocation = false;
-	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent *event)

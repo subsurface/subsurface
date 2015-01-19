@@ -39,6 +39,9 @@ private:
 	bool editingDiveLocation;
 	bool doubleClick;
 
+signals:
+	void coordinatesChanged(void);
+
 public
 slots:
 	void changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit);
