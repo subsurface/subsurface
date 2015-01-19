@@ -190,7 +190,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 	int ci;
 	struct gas_pressures pressures;
 
-	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode, sac);
+	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
 
 	if (buehlmann_config.gf_low_at_maxdepth && pressure > gf_low_pressure_this_dive)
 		gf_low_pressure_this_dive = pressure;

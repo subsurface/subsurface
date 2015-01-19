@@ -442,9 +442,8 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 }
 
 
-struct plot_info calculate_max_limits_new(struct dive *dive)
+struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *dc)
 {
-	struct divecomputer *dc = &dive->dc;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
@@ -946,7 +945,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 
 		amb_pressure = depth_to_mbar(entry->depth, dive) / 1000.0;
 
-		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode, entry->sac);
+		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 

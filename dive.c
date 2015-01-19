@@ -1665,13 +1665,8 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			*mix = structure containing cylinder gas mixture information.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode, int sac)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode)
 {
-	if (!sac) {
-		/* The SAC has not yet been computer, so use the default *
-		 * We might try harder...                                */
-		sac = prefs.bottomsac;
-	}
 	if (po2) {	// This is probably a CCR dive where pressures->o2 is defined
 		if (po2 >= amb_pressure) {
 			pressures->o2 = amb_pressure;
@@ -1687,14 +1682,14 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 		}
 	} else {
 		if (divemode == PSCR) { /* The steady state approximation should be good enough */
-			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (sac * prefs.pscr_ratio / 1000.0);
+			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio / 1000.0);
 			pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
 			pressures->n2 = (amb_pressure - pressures->o2) * (1000 - get_o2(mix) - get_he(mix)) / (1000.0 - get_o2(mix));
 		} else {
-		// Open circuit dives: no gas pressure values available, they need to be calculated
-		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
-		pressures->he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
-		pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
+			// Open circuit dives: no gas pressure values available, they need to be calculated
+			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
+			pressures->he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
+			pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
 		}
 	}
 }
