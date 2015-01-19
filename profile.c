@@ -442,8 +442,9 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 }
 
 
-struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *dc)
+struct plot_info calculate_max_limits_new(struct dive *dive)
 {
+	struct divecomputer *dc = &dive->dc;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
