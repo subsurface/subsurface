@@ -1545,8 +1545,15 @@ void FirmwareUpdateThread::run()
 {
 	bool supported = false;
 	dc_status_t rc;
+
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
+		rc = dc_device_set_events(m_data->device, DC_EVENT_PROGRESS, DeviceThread::event_cb, this);
+		if (rc != DC_STATUS_SUCCESS) {
+			emit error("Error registering the event handler.");
+			dc_device_close(m_data->device);
+			return;
+		}
 		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
