@@ -38,6 +38,7 @@ public:
 	void startFirmwareUpdate(QString fileName, device_data_t *data);
 	void resetSettings(device_data_t *data);
 signals:
+	void progress(int percent);
 	void message(QString msg);
 	void error(QString err);
 	void stateChanged(states newState);
@@ -51,6 +52,7 @@ private:
 	void setState(states newState);
 private
 slots:
+	void progressEvent(int percent);
 	void readThreadFinished();
 	void writeThreadFinished();
 	void resetThreadFinished();

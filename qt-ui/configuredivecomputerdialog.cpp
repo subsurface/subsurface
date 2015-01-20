@@ -114,6 +114,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	deviceDetails = new DeviceDetails(this);
 	config = new ConfigureDiveComputer();
+	connect(config, SIGNAL(progress(int)), ui.progressBar, SLOT(setValue(int)));
 	connect(config, SIGNAL(error(QString)), this, SLOT(configError(QString)));
 	connect(config, SIGNAL(message(QString)), this, SLOT(configMessage(QString)));
 	connect(config, SIGNAL(deviceDetailsChanged(DeviceDetails *)),
@@ -676,6 +677,7 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
+	ui.progressBar->reset();
 	config->readSettings(&device_data);
 }
 
@@ -686,6 +688,7 @@ void ConfigureDiveComputerDialog::resetSettings()
 	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
+	ui.progressBar->reset();
 	config->resetSettings(&device_data);
 }
 
@@ -1069,6 +1072,7 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		ui.progressBar->setTextVisible(true);
 
 		getDeviceData();
+		ui.progressBar->reset();
 		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
 }
