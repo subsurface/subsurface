@@ -3488,7 +3488,9 @@ p, li { white-space: pre-wrap; }
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wykonaj na komputerze nurkowym te same kroki co przy przygotowywaniu się do zgrania danych z logbooka.</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>

@@ -3488,7 +3488,9 @@ p, li { white-space: pre-wrap; }
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC Sport -laitteessasi ja tehdä samat toimenpiteet kuin lokikirjan latauksessa</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -4925,7 +4927,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User survey</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjäkysely</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="31"/>
@@ -4945,22 +4947,22 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
         <source>Dive planner</source>
-        <translation type="unfinished"/>
+        <translation>Sukellussuunnittelija</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Tuettu sukellustietokone</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android apusovellus</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
         <source>Any suggestions? (in English)</source>
-        <translation type="unfinished"/>
+        <translation>Kehitysideoita? (Mielellään englanniksi)</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="177"/>

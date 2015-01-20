@@ -661,7 +661,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Общее время</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
@@ -676,7 +676,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1264"/>
         <source>Safety level</source>
-        <translation type="unfinished"/>
+        <translation>Уровень безопасности</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="916"/>
@@ -912,7 +912,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1066"/>
         <source>All files (*.*)</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы (*.*)</translation>
     </message>
 </context>
 <context>
@@ -1003,7 +1003,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="60"/>
         <source>GPS coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Координаты GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="67"/>
@@ -1755,12 +1755,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="693"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="710"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="742"/>
@@ -2733,12 +2733,12 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="55"/>
         <source>Apply changes</source>
-        <translation type="unfinished"/>
+        <translation>Применить изменения</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="59"/>
         <source>Discard changes</source>
-        <translation type="unfinished"/>
+        <translation>Отменить изменения</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="96"/>
@@ -2748,7 +2748,7 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="100"/>
         <source>Add weight system</source>
-        <translation type="unfinished"/>
+        <translation>Добавить грузовую систему</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="274"/>
@@ -3597,7 +3597,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="135"/>
         <source>Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="167"/>
@@ -4578,13 +4578,15 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="293"/>
         <source>Buddy: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Партнер: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="296"/>
         <source>Divemaster: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Дайвмастер: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="299"/>
@@ -4608,7 +4610,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
         <source>Album</source>
-        <translation type="unfinished"/>
+        <translation>Альбом</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="77"/>
@@ -4623,7 +4625,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="91"/>
         <source>Date and time</source>
-        <translation type="unfinished"/>
+        <translation>Дата и время</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="98"/>
@@ -4857,7 +4859,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="105"/>
         <source>The server returned the following information:</source>
-        <translation type="unfinished"/>
+        <translation>Сервер вернул следующую информацию:</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="122"/>
@@ -4877,7 +4879,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="126"/>
         <source>Automatic check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Автоматическая проверка обновлений</translation>
     </message>
 </context>
 <context>
@@ -5400,7 +5402,7 @@ Maximum</source>
         <location filename="../file.c" line="709"/>
         <location filename="../file.c" line="718"/>
         <source>O₂ calibration</source>
-        <translation type="unfinished"/>
+        <translation>Калибровка O₂</translation>
     </message>
     <message>
         <location filename="../file.c" line="785"/>
@@ -6812,12 +6814,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="483"/>
         <source>Average depth</source>
-        <translation type="unfinished"/>
+        <translation>Сред. глуб.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="484"/>
         <source>Min. depth</source>
-        <translation type="unfinished"/>
+        <translation>Мин. глуб.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="485"/>
@@ -6827,32 +6829,32 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="487"/>
         <source>Min. SAC</source>
-        <translation type="unfinished"/>
+        <translation>Мин. SAC</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="488"/>
         <source>Max. SAC</source>
-        <translation type="unfinished"/>
+        <translation>Макс. SAC</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="489"/>
         <source>Average temp.</source>
-        <translation type="unfinished"/>
+        <translation>Сред. темп.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="490"/>
         <source>Min. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Мин. темп.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="491"/>
         <source>Max. temp.</source>
-        <translation type="unfinished"/>
+        <translation>Макс. темп.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="492"/>
         <source>Back to list</source>
-        <translation type="unfinished"/>
+        <translation>Вернуться к списку</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="498"/>
@@ -6862,17 +6864,17 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="501"/>
         <source>Work pressure</source>
-        <translation type="unfinished"/>
+        <translation>Раб. давл.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="502"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Нач. давл.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="503"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Кон. давл.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="511"/>
@@ -6963,17 +6965,17 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../worldmap-save.c" line="43"/>
         <source>Max. depth:</source>
-        <translation type="unfinished"/>
+        <translation>Макс. глуб.:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="46"/>
         <source>Air temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Темп. возд.:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="48"/>
         <source>Water temp.:</source>
-        <translation type="unfinished"/>
+        <translation>Темп. воды:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
@@ -7141,7 +7143,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="528"/>
         <source>Verbatim dive plan</source>
-        <translation type="unfinished"/>
+        <translation>Подробный план:</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="387"/>

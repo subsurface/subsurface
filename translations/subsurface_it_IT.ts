@@ -3488,7 +3488,9 @@ p, li { white-space: pre-wrap; }
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiornamento, esegui le stesse operazioni che fai per scaricare il logbook</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -6348,12 +6350,12 @@ EADD: %d%s
     <message>
         <location filename="../statistics.c" line="220"/>
         <source>%dd %dh %dmin</source>
-        <translation>%dt %dst %dmin</translation>
+        <translation>%dg %dh %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="222"/>
         <source>%dh %dmin</source>
-        <translation>%dst %dmin</translation>
+        <translation>%dg %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="234"/>

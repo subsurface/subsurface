@@ -3488,7 +3488,9 @@ p, li { white-space: pre-wrap; }
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que para a descarga de um logbook antes de continuar com a actualização</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>

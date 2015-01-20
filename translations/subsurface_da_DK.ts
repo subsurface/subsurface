@@ -406,7 +406,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="597"/>
         <source>Reset device to default settings</source>
-        <translation>Set enheden til fabriksindstilleringer</translation>
+        <translation>Sæt enheden til fabriksindstilllingen</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
@@ -995,7 +995,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="46"/>
         <source>Location</source>
-        <translation>Lokation</translation>
+        <translation>Placering</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="53"/>
@@ -1206,7 +1206,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1283"/>
         <source>Location</source>
-        <translation>Lokation</translation>
+        <translation>Placering</translation>
     </message>
 </context>
 <context>
@@ -1732,7 +1732,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="608"/>
         <source>Cyl size</source>
-        <translation type="unfinished"/>
+        <translation>Flaske størrelse</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="625"/>
@@ -1742,7 +1742,7 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="642"/>
         <source>Start Pressure</source>
-        <translation type="unfinished"/>
+        <translation>Start Tryk</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="659"/>
@@ -1752,27 +1752,27 @@ fjerne den valgte dykkercomputer?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="676"/>
         <source>End Press</source>
-        <translation type="unfinished"/>
+        <translation>Slut Tryk</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="693"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="710"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="742"/>
         <source>Choose duration format.</source>
-        <translation type="unfinished"/>
+        <translation>Vælg varighed format.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="745"/>
         <source>Duration format</source>
-        <translation type="unfinished"/>
+        <translation>Varighed format</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="758"/>
@@ -3491,7 +3491,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
         <source>Not now</source>
-        <translation type="unfinished"/>
+        <translation>Ikke nu</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="248"/>
@@ -3511,7 +3511,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
         <source>HEX files (*.hex)</source>
-        <translation type="unfinished"/>
+        <translation>HEX filer (*.hex)</translation>
     </message>
 </context>
 <context>
@@ -3599,7 +3599,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="135"/>
         <source>Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="167"/>
@@ -4550,19 +4550,21 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="282"/>
         <source>Dive Date: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Dyk Dato: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="285"/>
         <source>Duration: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Varighed: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
         <source>h:</source>
         <comment>abbreviation for hours plus separator</comment>
-        <translation type="unfinished"/>
+        <translation>h:</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
@@ -4580,7 +4582,8 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="293"/>
         <source>Buddy: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Makker: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="296"/>
@@ -4610,7 +4613,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
         <source>Album</source>
-        <translation type="unfinished"/>
+        <translation>Album</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="77"/>
@@ -4625,7 +4628,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="91"/>
         <source>Date and time</source>
-        <translation type="unfinished"/>
+        <translation>Dato og tid</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="98"/>

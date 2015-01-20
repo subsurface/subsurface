@@ -2434,7 +2434,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Your dive profile was updated to facebook.</source>
-        <translation>El perfil de la inmersión se ha subido a facebook</translation>
+        <translation>El perfil de la inmersión se ha subido a Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
@@ -2446,7 +2446,7 @@ el ordenador de buceo seleccionado?</translation>
         <source>Your dive profile was not updated to facebook, 
  please send the following to the developer. 
 </source>
-        <translation>El perfil no se ha subido a facebook,
+        <translation>El perfil de inmersión no se ha subido a Facebook,
 por favor envía lo siguiente al equipo de desarrollo.
 </translation>
     </message>
@@ -3489,7 +3489,9 @@ p, li { white-space: pre-wrap; }
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos que para descargar, antes de seguir con la actualización</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -3767,7 +3769,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1011"/>
         <source>Disconnect from facebook</source>
-        <translation>Desconectar de facebook</translation>
+        <translation>Desconectar de Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="824"/>
@@ -4614,7 +4616,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="57"/>
         <source>The text to the right will be posted as the description with your profile picture to Facebook. The album name is required (the profile picture will be posted to that album).</source>
-        <translation>El texto a la derecha se publicará en Facebook como descripción del perfil. Se requiere el nombre de album (el perfil se enviará a ese album).</translation>
+        <translation>El texto a la derecha se publicará en Facebook como descripción del perfil de inmersión. Se requiere el nombre de album (el perfil se enviará a ese album).</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
@@ -4925,7 +4927,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User survey</source>
-        <translation type="unfinished"/>
+        <translation>Encuesta de usuario</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="31"/>
@@ -4945,22 +4947,22 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
         <source>Dive planner</source>
-        <translation type="unfinished"/>
+        <translation>Planificador de inmersiones</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Ordenador de buceo soportado</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android companion app</source>
-        <translation type="unfinished"/>
+        <translation>App Android companion</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
         <source>Any suggestions? (in English)</source>
-        <translation type="unfinished"/>
+        <translation>¿Alguna sugerencia?  (en inglés, por favor)</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="177"/>
