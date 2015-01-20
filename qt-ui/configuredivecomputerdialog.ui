@@ -2373,18 +2373,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="errorLabel">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(242, 19, 25);</string>
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
+      <number>0</number>
      </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="statusLabel">
-     <property name="text">
+     <property name="format">
       <string/>
      </property>
     </widget>

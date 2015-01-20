@@ -670,8 +670,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 
 void ConfigureDiveComputerDialog::readSettings()
 {
-	ui.statusLabel->clear();
-	ui.errorLabel->clear();
+	// Disable the retrieve button while read thread is running
+	ui.progressBar->setValue(0);
+	ui.progressBar->setFormat("%p%");
+	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
 	config->readSettings(&device_data);
@@ -679,8 +681,9 @@ void ConfigureDiveComputerDialog::readSettings()
 
 void ConfigureDiveComputerDialog::resetSettings()
 {
-	ui.statusLabel->clear();
-	ui.errorLabel->clear();
+	ui.progressBar->setValue(0);
+	ui.progressBar->setFormat("%p%");
+	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
 	config->resetSettings(&device_data);
@@ -688,13 +691,12 @@ void ConfigureDiveComputerDialog::resetSettings()
 
 void ConfigureDiveComputerDialog::configMessage(QString msg)
 {
-	ui.statusLabel->setText(msg);
+	ui.progressBar->setFormat(msg);
 }
 
 void ConfigureDiveComputerDialog::configError(QString err)
 {
-	ui.statusLabel->setText("");
-	ui.errorLabel->setText(err);
+	ui.progressBar->setFormat("Error: " + err);
 }
 
 void ConfigureDiveComputerDialog::getDeviceData()
@@ -716,6 +718,10 @@ void ConfigureDiveComputerDialog::on_cancel_clicked()
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 {
+	ui.progressBar->setValue(0);
+	ui.progressBar->setFormat("%p%");
+	ui.progressBar->setTextVisible(true);
+
 	populateDeviceDetails();
 	getDeviceData();
 	config->saveDeviceDetails(deviceDetails, &device_data);
@@ -1058,6 +1064,10 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
 							    filename, tr("All files (*.*)"));
 	if (!firmwarePath.isEmpty()) {
+		ui.progressBar->setValue(0);
+		ui.progressBar->setFormat("%p%");
+		ui.progressBar->setTextVisible(true);
+
 		getDeviceData();
 		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
