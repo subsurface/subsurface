@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QNetworkReply>
+#include <QProgressDialog>
 
 struct product {
 	const char *product;
@@ -281,7 +282,13 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	file.open(QIODevice::WriteOnly);
 	file.write(firmwareData);
 	file.close();
+	QProgressDialog *dialog = new QProgressDialog("Updating firmware", "", 0, 100);
+	dialog->setCancelButton(0);
+	dialog->setAutoClose(true);
 	ConfigureDiveComputer *config = new ConfigureDiveComputer();
+	connect(config, SIGNAL(message(QString)), dialog, SLOT(setLabelText(QString)));
+	connect(config, SIGNAL(error(QString)), dialog, SLOT(setLabelText(QString)));
+	connect(config, SIGNAL(progress(int)), dialog, SLOT(setValue(int)));
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
 
