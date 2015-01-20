@@ -1393,6 +1393,26 @@ DeviceThread::DeviceThread(QObject *parent, device_data_t *data) : QThread(paren
 {
 }
 
+void DeviceThread::progressCB(int percent)
+{
+	emit progress(percent);
+}
+
+void DeviceThread::event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
+{
+	const dc_event_progress_t *progress = (dc_event_progress_t *) data;
+	DeviceThread *dt = static_cast<DeviceThread*>(userdata);
+
+	switch (event) {
+	case DC_EVENT_PROGRESS:
+		dt->progressCB(100.0 * (double)progress->current / (double)progress->maximum);
+		break;
+	default:
+		emit dt->error("Unexpected event recived");
+		break;
+	}
+}
+
 ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
 {
 }

@@ -18,8 +18,11 @@ public:
 signals:
 	void error(QString err);
 	void message(QString msg);
+	void progress(int value);
 protected:
 	device_data_t *m_data;
+	void progressCB(int value);
+	static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata);
 };
 
 class ReadSettingsThread : public DeviceThread {
