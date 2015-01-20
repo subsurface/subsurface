@@ -1487,6 +1487,7 @@ void ReadSettingsThread::run()
 				emit devicedetails(m_deviceDetails);
 			else
 				emit error("Failed!");
+			emit progress(100);
 			break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
@@ -1499,6 +1500,7 @@ void ReadSettingsThread::run()
 				emit devicedetails(m_deviceDetails);
 			else
 				emit error("Failed!");
+			emit progress(100);
 			break;
 		default:
 			supported = false;
@@ -1551,6 +1553,7 @@ void WriteSettingsThread::run()
 			rc = write_ostc3_settings(m_data->device, m_deviceDetails);
 			if (rc != DC_STATUS_SUCCESS)
 				emit error(tr("Failed!"));
+			emit progress(100);
 			break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
@@ -1561,6 +1564,7 @@ void WriteSettingsThread::run()
 			rc = write_ostc_settings(m_data->device, m_deviceDetails);
 			if (rc != DC_STATUS_SUCCESS)
 				emit error(tr("Failed!"));
+			emit progress(100);
 			break;
 		default:
 			supported = false;
@@ -1640,6 +1644,7 @@ void ResetSettingsThread::run()
 		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
 			supported = true;
 			hw_ostc3_device_config_reset(m_data->device);
+			emit progress(100);
 		}
 #endif // divecomputer 0.5.0
 		dc_device_close(m_data->device);
