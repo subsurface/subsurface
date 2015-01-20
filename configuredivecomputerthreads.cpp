@@ -1389,7 +1389,11 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	return rc;
 }
 
-ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
+DeviceThread::DeviceThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
+{
+}
+
+ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
 {
 }
 
@@ -1452,7 +1456,7 @@ void ReadSettingsThread::run()
 	}
 }
 
-WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
+WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
 {
 }
 
@@ -1513,7 +1517,7 @@ void WriteSettingsThread::run()
 }
 
 
-FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName) : QThread(parent), m_data(data), m_fileName(fileName)
+FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName) : DeviceThread(parent, data), m_fileName(fileName)
 {
 }
 
@@ -1553,7 +1557,7 @@ void FirmwareUpdateThread::run()
 }
 
 
-ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
+ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
 {
 }
 

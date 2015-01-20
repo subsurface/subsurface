@@ -8,66 +8,55 @@
 #include <QDateTime>
 #include "devicedetails.h"
 
-class ReadSettingsThread : public QThread {
+class DeviceThread : public QThread {
 	Q_OBJECT
 public:
-	ReadSettingsThread(QObject *parent, device_data_t *data);
-	virtual void run();
+	DeviceThread(QObject *parent, device_data_t *data);
+	virtual void run() = 0;
 	QString result;
 	QString lastError;
 signals:
 	void error(QString err);
-	void devicedetails(DeviceDetails *newDeviceDetails);
-
-private:
+	void message(QString msg);
+protected:
 	device_data_t *m_data;
 };
 
-class WriteSettingsThread : public QThread {
+class ReadSettingsThread : public DeviceThread {
+	Q_OBJECT
+public:
+	ReadSettingsThread(QObject *parent, device_data_t *data);
+	void run();
+signals:
+	void devicedetails(DeviceDetails *newDeviceDetails);
+};
+
+class WriteSettingsThread : public DeviceThread {
 	Q_OBJECT
 public:
 	WriteSettingsThread(QObject *parent, device_data_t *data);
 	void setDeviceDetails(DeviceDetails *details);
-	virtual void run();
-	QString result;
-	QString lastError;
-signals:
-	void error(QString err);
+	void run();
 
 private:
-	device_data_t *m_data;
 	DeviceDetails *m_deviceDetails;
 };
 
-class FirmwareUpdateThread : public QThread {
+class FirmwareUpdateThread : public DeviceThread {
 	Q_OBJECT
 public:
 	FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName);
-	virtual void run();
-	QString lastError;
-signals:
-	void progress(int percent);
-	void message(QString msg);
-	void error(QString err);
+	void run();
 
 private:
-	device_data_t *m_data;
 	QString m_fileName;
 };
 
-class ResetSettingsThread : public QThread {
+class ResetSettingsThread : public DeviceThread {
 	Q_OBJECT
 public:
 	ResetSettingsThread(QObject *parent, device_data_t *data);
-	virtual void run();
-	QString lastError;
-signals:
-	void progress(int percent);
-	void message(QString msg);
-	void error(QString err);
-
-private:
-	device_data_t *m_data;
+	void run();
 };
 
 #endif // CONFIGUREDIVECOMPUTERTHREADS_H
