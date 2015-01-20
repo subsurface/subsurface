@@ -21,10 +21,21 @@ We have added more capabilities to the CSV import for manually kept dive
 logs; this now includes start and end pressure for the main tank as well
 as air and water temperatures.
 
+There is also a new interactive dialog that makes it much easier to
+identify the meaning of various columns in CSV import.
+
 _Subsurface_ can now import dive databases from the Cobalt divelog program.
 
 _Subsurface_ profile drawing has been sped up significantly which also improved
 the situation when using the visual editor to add dives or plan dives.
+
+We have made more progress with PSCR support - still not fully functional,
+but getting closer. It is now possible to select the type of a dive (OC,
+CCR, PSCR) in the UI.
+
+Changes to a dive location on the globe now trigger dive edit mode and can
+be rejected. GPS coordinates are shown immediately when selecting a dive
+site on the globe.
 
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
