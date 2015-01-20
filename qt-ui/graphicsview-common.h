@@ -38,6 +38,9 @@ typedef enum {
 	PHE,
 	PHE_ALERT,
 	O2SETPOINT,
+	CCRSENSOR1,
+	CCRSENSOR2,
+	CCRSENSOR3,
 	PP_LINES,
 
 	/* Other colors */

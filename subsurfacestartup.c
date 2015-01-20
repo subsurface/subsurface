@@ -30,6 +30,7 @@ struct preferences default_prefs = {
 	.animation_speed = 500,
 	.gf_low_at_maxdepth = false,
 	.show_ccr_setpoint = false,
+	.show_ccr_sensors = false,
 	.font_size = -1,
 	.display_invalid_dives = false,
 	.show_sac = false,

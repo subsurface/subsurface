@@ -84,6 +84,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	pheGasItem(new PartialPressureGasItem()),
 	po2GasItem(new PartialPressureGasItem()),
 	o2SetpointGasItem(new PartialPressureGasItem()),
+	ccrsensor1GasItem(new PartialPressureGasItem()),
+	ccrsensor2GasItem(new PartialPressureGasItem()),
+	ccrsensor3GasItem(new PartialPressureGasItem()),
 	heartBeatAxis(new DiveCartesianAxis()),
 	heartBeatItem(new DiveHeartrateItem()),
 	percentageAxis(new DiveCartesianAxis()),
@@ -152,6 +155,9 @@ ProfileWidget2::~ProfileWidget2()
 	delete pheGasItem;
 	delete po2GasItem;
 	delete o2SetpointGasItem;
+	delete ccrsensor1GasItem;
+	delete ccrsensor2GasItem;
+	delete ccrsensor3GasItem;
 	delete heartBeatAxis;
 	delete heartBeatItem;
 	delete percentageAxis;
@@ -191,6 +197,9 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
 	scene()->addItem(o2SetpointGasItem);
+	scene()->addItem(ccrsensor1GasItem);
+	scene()->addItem(ccrsensor2GasItem);
+	scene()->addItem(ccrsensor3GasItem);
 	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(heartBeatItem);
@@ -297,6 +306,9 @@ void ProfileWidget2::setupItemOnScene()
 	CREATE_PP_GAS(pheGasItem, PHE, PHE, PHE_ALERT, &prefs.pp_graphs.phe_threshold, "phegraph");
 	CREATE_PP_GAS(po2GasItem, PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "po2graph");
 	CREATE_PP_GAS(o2SetpointGasItem, O2SETPOINT, PO2_ALERT, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "po2graph");
+	CREATE_PP_GAS(ccrsensor1GasItem, CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "ccrsensorgraph");
+	CREATE_PP_GAS(ccrsensor2GasItem, CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "ccrsensorgraph");
+	CREATE_PP_GAS(ccrsensor3GasItem, CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold, "ccrsensorgraph");
 #undef CREATE_PP_GAS
 
 	temperatureAxis->setTextVisible(false);
@@ -509,7 +521,10 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc);
 	}
 
-	o2SetpointGasItem->setVisible(current_dive && (currentdc->divemode == CCR) && prefs.show_ccr_setpoint && prefs.pp_graphs.po2);
+	o2SetpointGasItem->setVisible(prefs.show_ccr_setpoint && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
+	ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
+	ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
+	ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && (currentdc->no_o2sensors > 2) && current_dive);
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -860,6 +875,9 @@ void ProfileWidget2::setEmptyState()
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	o2SetpointGasItem->setVisible(false);
+	ccrsensor1GasItem->setVisible(false);
+	ccrsensor2GasItem->setVisible(false);
+	ccrsensor3GasItem->setVisible(false);
 	pheGasItem->setVisible(false);
 	ambPressureItem->setVisible(false);
 	gflineItem->setVisible(false);
@@ -957,8 +975,11 @@ void ProfileWidget2::setProfileState()
 	}
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	o2SetpointGasItem->setVisible(current_dive && prefs.pp_graphs.po2 && (current_dc->divemode == CCR) && (prefs.show_ccr_setpoint));
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
+	o2SetpointGasItem->setVisible(current_dive && prefs.pp_graphs.po2 && (current_dc->divemode == CCR) && (prefs.show_ccr_setpoint));
+	ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
+	ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && (current_dc->no_o2sensors > 1) && current_dive);
+	ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && (current_dc->no_o2sensors > 2) && current_dive);
 
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);

@@ -60,6 +60,9 @@ public:
 		PHE,
 		PO2,
 		O2SETPOINT,
+		CCRSENSOR1,
+		CCRSENSOR2,
+		CCRSENSOR3,
 		HEARTBEAT,
 		AMBPRESSURE,
 		GFLINE,
@@ -78,6 +81,7 @@ public:
 	double pheMax();
 	double pn2Max();
 	double po2Max();
+	double CCRMax();
 	void emitDataChanged();
 	void calculateDecompression();
 

@@ -172,6 +172,9 @@ private:
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
 	PartialPressureGasItem *o2SetpointGasItem;
+	PartialPressureGasItem *ccrsensor1GasItem;
+	PartialPressureGasItem *ccrsensor2GasItem;
+	PartialPressureGasItem *ccrsensor3GasItem;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
 	DiveCartesianAxis *percentageAxis;

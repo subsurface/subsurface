@@ -52,6 +52,12 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.pressures.o2;
 		case O2SETPOINT:
 			return item.o2setpoint.mbar / 1000.0;
+		case CCRSENSOR1:
+			return item.o2sensor[0].mbar / 1000.0;
+		case CCRSENSOR2:
+			return item.o2sensor[1].mbar / 1000.0;
+		case CCRSENSOR3:
+			return item.o2sensor[2].mbar / 1000.0;
 		case HEARTBEAT:
 			return item.heartbeat;
 		case AMBPRESSURE:
@@ -129,6 +135,12 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("pO₂");
 	case O2SETPOINT:
 		return tr("Setpoint");
+	case CCRSENSOR1:
+		return tr("Sensor1");
+	case CCRSENSOR2:
+		return tr("Sensor2");
+	case CCRSENSOR3:
+		return tr("Sensor3");
 	case AMBPRESSURE:
 		return tr("Ambient pressure");
 	case HEARTBEAT:
@@ -185,9 +197,23 @@ unsigned int DivePlotDataModel::dcShown() const
 		return ret;                                           \
 	}
 
+#define MAX_SENSOR_GAS_FUNC(GASFUNC) \
+	double DivePlotDataModel::GASFUNC()	/* CCR: This function finds the largest measured po2 value */ \
+	{					/* by scanning the readings from the three individual o2 sensors. */ \
+		double ret = -1; 		/* This is used for scaling the Y-axis for partial pressures */ \
+		for (int s = 0; s < 3; s++) {	/* when displaying the graphs for individual o2 sensors */ \
+			for (int i = 0, count = rowCount(); i < count; i++) {   /* POTENTIAL PROBLEM: the '3' (no_sensors) is hard-coded here */\
+				if (pInfo.entry[i].o2sensor[s].mbar > ret)      \
+					ret = pInfo.entry[i].o2sensor[s].mbar;  \
+			}							\
+		}								\
+		return (ret / 1000.0);		/* mbar -> bar conversion */				\
+	}
+
 MAX_PPGAS_FUNC(he, pheMax);
 MAX_PPGAS_FUNC(n2, pn2Max);
 MAX_PPGAS_FUNC(o2, po2Max);
+MAX_SENSOR_GAS_FUNC(CCRMax);
 
 void DivePlotDataModel::emitDataChanged()
 {

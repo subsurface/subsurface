@@ -44,6 +44,7 @@ struct preferences {
 	int animation_speed;
 	bool gf_low_at_maxdepth;
 	bool show_ccr_setpoint;
+	bool show_ccr_sensors;
 	short display_invalid_dives;
 	short unit_system;
 	struct units units;
