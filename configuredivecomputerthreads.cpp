@@ -129,10 +129,19 @@ static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char 
 	data[128 + (cf % 32) * 4 + 2] = (value & 0x00ff);
 }
 
-static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+#define EMIT_PROGRESS()	do { \
+		progress.current++; \
+		progress_cb(device, DC_EVENT_PROGRESS, &progress, userdata); \
+	} while (0)
+
+static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 16;
+
 	rc = dc_device_read(device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
 	if (rc == DC_STATUS_SUCCESS) {
 		const char *model;
@@ -175,79 +184,94 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		// we can safely proceed with reading/writing to this device.
 		m_deviceDetails->setModel(model);
 	}
+	EMIT_PROGRESS();
+
 	rc = dc_device_read(device, SUUNTO_VYPER_MAXDEPTH, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// in ft * 128.0
 	int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
 	m_deviceDetails->setMaxDepth(depth);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int total_time = data[0] << 8 ^ data[1];
 	m_deviceDetails->setTotalTime(total_time);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_NUMBEROFDIVES, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int number_of_dives = data[0] << 8 ^ data[1];
 	m_deviceDetails->setNumberOfDives(number_of_dives);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_FIRMWARE, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setFirmwareVersion(QString::number(data[0]) + ".0.0");
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_SERIALNUMBER, data, 4);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int serial_number = data[0] * 1000000 + data[1] * 10000 + data[2] * 100 + data[3];
 	m_deviceDetails->setSerialNo(QString::number(serial_number));
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
 	m_deviceDetails->setCustomText((const char *)data);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setSamplingRate((int)data[0]);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setAltitude(data[0] & 0x03);
 	m_deviceDetails->setPersonalSafety(data[0] >> 2 & 0x03);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_TIMEFORMAT, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setTimeFormat(data[0] & 0x01);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_UNITS, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setUnits(data[0] & 0x01);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_MODEL, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setDiveMode(data[0] & 0x03);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_LIGHT, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setLightEnabled(data[0] >> 7);
 	m_deviceDetails->setLight(data[0] & 0x7F);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	m_deviceDetails->setAlarmTimeEnabled(data[0] & 0x01);
 	m_deviceDetails->setAlarmDepthEnabled(data[0] >> 1 & 0x01);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_TIME, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
@@ -257,22 +281,28 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	if (m_deviceDetails->model() == "Stinger")
 		time /= 60;
 	m_deviceDetails->setAlarmTime(time);
+	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
 	m_deviceDetails->setAlarmDepth(depth);
+	EMIT_PROGRESS();
 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 10;
 	unsigned char data;
 	unsigned char data2[2];
 	int time;
+
 	// Maybee we should read the model from the device to sanity check it here too..
 	// For now we just check that we actually read a device before writing to one.
 	if (m_deviceDetails->model() == "")
@@ -284,41 +314,49 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 			     SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->samplingRate();
 	rc = dc_device_write(device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->personalSafety() << 2 ^ m_deviceDetails->altitude();
 	rc = dc_device_write(device, SUUNTO_VYPER_ALTITUDE_SAFETY, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->timeFormat();
 	rc = dc_device_write(device, SUUNTO_VYPER_TIMEFORMAT, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->units();
 	rc = dc_device_write(device, SUUNTO_VYPER_UNITS, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->diveMode();
 	rc = dc_device_write(device, SUUNTO_VYPER_MODEL, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->lightEnabled() << 7 ^ (m_deviceDetails->light() & 0x7F);
 	rc = dc_device_write(device, SUUNTO_VYPER_LIGHT, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data = m_deviceDetails->alarmDepthEnabled() << 1 ^ m_deviceDetails->alarmTimeEnabled();
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	// The stinger stores alarm time in seconds instead of minutes.
 	time = m_deviceDetails->alarmTime();
@@ -329,12 +367,16 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_TIME, data2, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) >> 8;
 	data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth()) * 128) & 0x0FF;
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
+	EMIT_PROGRESS();
 	return rc;
 }
+
+#undef EMIT_PROGRESS
 
 static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
 {
@@ -1427,7 +1469,7 @@ void ReadSettingsThread::run()
 		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
-			rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails);
+			rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc == DC_STATUS_SUCCESS) {
 				supported = true;
 				emit devicedetails(m_deviceDetails);
@@ -1494,7 +1536,7 @@ void WriteSettingsThread::run()
 	if (rc == DC_STATUS_SUCCESS) {
 		switch (dc_device_get_type(m_data->device)) {
 		case DC_FAMILY_SUUNTO_VYPER:
-			rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails);
+			rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc == DC_STATUS_SUCCESS) {
 				supported = true;
 			} else if (rc == DC_STATUS_UNSUPPORTED) {
