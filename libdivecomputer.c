@@ -552,6 +552,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	if (rc == DC_STATUS_SUCCESS)
 		switch(divemode) {
 		case DC_DIVEMODE_FREEDIVE:
+			dive->dc.divemode = FREEDIVE;
+			break;
 		case DC_DIVEMODE_GAUGE:
 		case DC_DIVEMODE_OC: /* Open circuit */
 			dive->dc.divemode = OC;

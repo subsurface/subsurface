@@ -2577,7 +2577,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	else if (0xd8 <= ptr[15] && ptr[15] <= 0xdf)
 		cur_dc->divemode = CCR; // mCCR
 	else if (0xe0 <= ptr[15] && ptr[15] <= 0xe7)
-		cur_dc->divemode = OC; // Free diving
+		cur_dc->divemode = FREEDIVE;
 	else if (0xe8 <= ptr[15] && ptr[15] <= 0xef)
 		cur_dc->divemode = OC; // Gauge
 	else if (0xf0 <= ptr[15] && ptr[15] <= 0xf7)
