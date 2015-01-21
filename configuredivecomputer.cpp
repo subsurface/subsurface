@@ -30,7 +30,7 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 	connect(readThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
 	connect(readThread, SIGNAL(devicedetails(DeviceDetails *)), this,
 		SIGNAL(deviceDetailsChanged(DeviceDetails *)));
-	connect(readThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)));
+	connect(readThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
 
 	readThread->start();
 }
@@ -46,7 +46,7 @@ void ConfigureDiveComputer::saveDeviceDetails(DeviceDetails *details, device_dat
 	connect(writeThread, SIGNAL(finished()),
 		this, SLOT(writeThreadFinished()), Qt::QueuedConnection);
 	connect(writeThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(writeThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)));
+	connect(writeThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
 
 	writeThread->setDeviceDetails(details);
 	writeThread->start();
@@ -506,7 +506,7 @@ void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t 
 	connect(firmwareThread, SIGNAL(finished()),
 		this, SLOT(firmwareThreadFinished()), Qt::QueuedConnection);
 	connect(firmwareThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(firmwareThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)));
+	connect(firmwareThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
 
 	firmwareThread->start();
 }
@@ -522,7 +522,7 @@ void ConfigureDiveComputer::resetSettings(device_data_t *data)
 	connect(resetThread, SIGNAL(finished()),
 		this, SLOT(resetThreadFinished()), Qt::QueuedConnection);
 	connect(resetThread, SIGNAL(error(QString)), this, SLOT(setError(QString)));
-	connect(resetThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)));
+	connect(resetThread, SIGNAL(progress(int)), this, SLOT(progressEvent(int)), Qt::QueuedConnection);
 
 	resetThread->start();
 }
