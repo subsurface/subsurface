@@ -26,6 +26,14 @@
   #define git_reference_set_target(out,ref,target,signature,log_message) \
 	git_reference_set_target(out,ref,target)
 #endif
+/*
+ * api break in libgit2 revision 0.22
+ */
+#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
+  #define git_treebuilder_new(out, repo, source) git_treebuilder_create(out, source)
+#else
+  #define git_treebuilder_write(id, repo, bld)   git_treebuilder_write(id, bld)
+#endif
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
@@ -464,7 +472,7 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
  * set the "unique" flag, which will then append the SHA1
  * of the directory to the name when it is written.
  */
-static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
+static struct dir *new_directory(git_repository *repo, struct dir *parent, struct membuffer *namebuf)
 {
 	struct dir *subdir;
 	const char *name = mb_cstring(namebuf);
@@ -477,7 +485,7 @@ static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
 	 * and an empty treebuilder list of files.
 	 */
 	subdir->subdirs = NULL;
-	git_treebuilder_create(&subdir->files, NULL);
+	git_treebuilder_new(&subdir->files, repo, NULL);
 	memcpy(subdir->name, name, len);
 	subdir->unique = 0;
 	subdir->name[len] = 0;
@@ -489,7 +497,7 @@ static struct dir *new_directory(struct dir *parent, struct membuffer *namebuf)
 	return subdir;
 }
 
-static struct dir *mktree(struct dir *dir, const char *fmt, ...)
+static struct dir *mktree(git_repository *repo, struct dir *dir, const char *fmt, ...)
 {
 	struct membuffer buf = { 0 };
 	struct dir *subdir;
@@ -504,7 +512,7 @@ static struct dir *mktree(struct dir *dir, const char *fmt, ...)
 			break;
 	}
 	if (!subdir)
-		subdir = new_directory(dir, &buf);
+		subdir = new_directory(repo, dir, &buf);
 	free_buffer(&buf);
 	return subdir;
 }
@@ -595,7 +603,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
 {
 	if (dive->picture_list) {
-		dir = mktree(dir, "Pictures");
+		dir = mktree(repo, dir, "Pictures");
 		FOR_EACH_PICTURE(dive) {
 			save_one_picture(repo, dir, picture);
 		}
@@ -612,7 +620,7 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 
 	/* Create dive directory */
 	create_dive_name(dive, &name, tm);
-	subdir = new_directory(tree, &name);
+	subdir = new_directory(repo, tree, &name);
 	subdir->unique = 1;
 	free_buffer(&name);
 
@@ -738,7 +746,7 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 
 	/* Create trip directory */
 	create_trip_name(trip, &name, tm);
-	subdir = new_directory(tree, &name);
+	subdir = new_directory(repo, tree, &name);
 	subdir->unique = 1;
 	free_buffer(&name);
 
@@ -837,8 +845,8 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		/* Create the date-based hierarchy */
 		utc_mkdate(trip ? trip->when : dive->when, &tm);
-		tree = mktree(root, "%04d", tm.tm_year + 1900);
-		tree = mktree(tree, "%02d", tm.tm_mon + 1);
+		tree = mktree(repo, root, "%04d", tm.tm_year + 1900);
+		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 
 		if (trip) {
 			/* Did we already save this trip? */
@@ -1072,7 +1080,7 @@ static int do_git_save(git_repository *repo, const char *branch, bool select_onl
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
-	if (git_treebuilder_create(&tree.files, NULL))
+	if (git_treebuilder_new(&tree.files, repo, NULL))
 		return report_error("git treebuilder failed");
 
 	/* Populate our tree data structure */
