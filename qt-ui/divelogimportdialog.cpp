@@ -359,6 +359,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QStringList currColumns;
 	QStringList headers;
 	bool matchedSome = false;
+	bool seabear = false;
 
 	// reset everything
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -369,6 +370,10 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 	f.open(QFile::ReadOnly);
 	QString firstLine = f.readLine();
+	if (firstLine.contains("SEABEAR")) {
+		seabear = true;
+		firstLine = "Time;Depth;NDT;TTS;Ceiling;Temperature;Pressure";
+	}
 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	currColumns = firstLine.split(separator);
 	if (triggeredBy == INITIAL) {
@@ -449,6 +454,23 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 	f.reset();
 	int rows = 0;
+
+	/* Skipping the header of Seabear CSV file. */
+	if (seabear) {
+		/*
+		 * First set of data on Seabear CSV file is metadata
+		 * that is separated by an empty line (windows line
+		 * termination might be encountered.
+		 */
+		while (strlen(f.readLine()) > 2 && !f.atEnd());
+		/*
+		 * Next we have description of the fields and two dummy
+		 * lines. Separated again with an empty line from the
+		 * actual data.
+		 */
+		while (strlen(f.readLine()) > 2 && !f.atEnd());
+	}
+
 	while (rows < 10 || !f.atEnd()) {
 		QString currLine = f.readLine();
 		currColumns = currLine.split(separator);
