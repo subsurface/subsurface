@@ -323,7 +323,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
 
-	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << ";" << ",");
+	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << "," << ";");
 
 	loadFileContents(-1, INITIAL);
 
