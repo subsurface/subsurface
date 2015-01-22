@@ -373,6 +373,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	if (firstLine.contains("SEABEAR")) {
 		seabear = true;
 		firstLine = "Sample time;Sample depth;Sample ndl;Sample tts;Sample stopdepth;Sample temperature;Sample pressure";
+		blockSignals(true);
+		ui->knownImports->setCurrentText("Seabear CSV");
+		blockSignals(false);
 	}
 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	currColumns = firstLine.split(separator);
@@ -411,7 +414,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		}
 		if (matchedSome) {
 			ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
-			if (triggeredBy != KNOWNTYPES) {
+			if (triggeredBy != KNOWNTYPES && !seabear) {
 				blockSignals(true);
 				ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
 				blockSignals(false);
