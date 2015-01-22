@@ -16,7 +16,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, 2, 3, 4, 6, ";" },
-	{ "Subsurface CSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, }
 };
 
