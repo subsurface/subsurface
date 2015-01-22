@@ -32,7 +32,7 @@
     <xsl:value-of select="@duration"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
-      <xsl:when test="divecomputer[1]/depth != ''">
+      <xsl:when test="divecomputer[1]/depth/@mean|divecomputer[1]/depth/@max != ''">
         <xsl:apply-templates select="divecomputer[1]/depth"/>
       </xsl:when>
       <xsl:otherwise>
@@ -46,7 +46,7 @@
       <xsl:when test="divetemperature/@air|divetemperature/@water != ''">
         <xsl:apply-templates select="divetemperature"/>
       </xsl:when>
-      <xsl:when test="divecomputer[1]/temperature != ''">
+      <xsl:when test="divecomputer[1]/temperature/@air|divecomputer[1]/temperature/@water != ''">
         <xsl:apply-templates select="divecomputer[1]/temperature"/>
       </xsl:when>
       <xsl:otherwise>
