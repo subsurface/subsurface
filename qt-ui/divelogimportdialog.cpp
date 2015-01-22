@@ -372,7 +372,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QString firstLine = f.readLine();
 	if (firstLine.contains("SEABEAR")) {
 		seabear = true;
-		firstLine = "Time;Depth;NDT;TTS;Ceiling;Temperature;Pressure";
+		firstLine = "Sample time;Sample depth;Sample ndl;Sample tts;Sample stopdepth;Sample temperature;Sample pressure";
 	}
 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	currColumns = firstLine.split(separator);
