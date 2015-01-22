@@ -486,7 +486,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	QStringList r = resultModel->result();
-	if (ui->knownImports->currentText() != "Manual Import") {
+	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
 				parse_seabear_csv_file(fileNames[i].toUtf8().data(),
