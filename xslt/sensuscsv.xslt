@@ -71,11 +71,12 @@
             </xsl:call-template>
           </xsl:attribute>
 
-          <divecomputerid deviceid="ffffffff" model="SensusCSV" />
-          <xsl:call-template name="printLine">
-            <xsl:with-param name="line" select="substring-before(//SensusCSV, $lf)"/>
-            <xsl:with-param name="remaining" select="substring-after(//SensusCSV, $lf)"/>
-          </xsl:call-template>
+          <divecomputer deviceid="ffffffff" model="SensusCSV">
+            <xsl:call-template name="printLine">
+              <xsl:with-param name="line" select="substring-before(//SensusCSV, $lf)"/>
+              <xsl:with-param name="remaining" select="substring-after(//SensusCSV, $lf)"/>
+            </xsl:call-template>
+          </divecomputer>
         </dive>
       </dives>
     </divelog>
