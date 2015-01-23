@@ -521,10 +521,12 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc);
 	}
 
-	o2SetpointGasItem->setVisible(prefs.show_ccr_setpoint && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
-	ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
-	ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
-	ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && (currentdc->no_o2sensors > 2) && current_dive);
+	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
+	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
+	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
+	ccrsensor1GasItem->setVisible(sensorflag);
+	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
+	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -976,10 +978,13 @@ void ProfileWidget2::setProfileState()
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
-	o2SetpointGasItem->setVisible(current_dive && prefs.pp_graphs.po2 && (current_dc->divemode == CCR) && (prefs.show_ccr_setpoint));
-	ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive);
-	ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && (current_dc->no_o2sensors > 1) && current_dive);
-	ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && (current_dc->no_o2sensors > 2) && current_dive);
+
+	bool setpointflag = (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
+	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
+	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
+	ccrsensor1GasItem->setVisible(sensorflag);
+	ccrsensor2GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 1));
+	ccrsensor3GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 2));
 
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
