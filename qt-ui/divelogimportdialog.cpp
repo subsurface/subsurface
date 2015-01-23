@@ -360,6 +360,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QStringList headers;
 	bool matchedSome = false;
 	bool seabear = false;
+	bool xp5 = false;
 
 	// reset everything
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -375,6 +376,13 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		firstLine = "Sample time;Sample depth;Sample ndl;Sample tts;Sample stopdepth;Sample temperature;Sample pressure";
 		blockSignals(true);
 		ui->knownImports->setCurrentText("Seabear CSV");
+		blockSignals(false);
+	} else if (firstLine.contains("Tauchgangs-Nr.:")) {
+		xp5 = true;
+		//"Abgelaufene Tauchzeit (Std:Min.)\tTiefe\tStickstoff Balkenanzeige\tSauerstoff Balkenanzeige\tAufstiegsgeschwindigkeit\tRestluftzeit\tRestliche Tauchzeit\tDekompressionszeit (Std:Min)\tDekostopp-Tiefe\tTemperatur\tPO2\tPressluftflasche\tLesen des Druckes\tStatus der Verbindung\tTauchstatus";
+		firstLine = "Sample time\tSample depth\t\t\t\t\t\t\t\tSample temperature\t";
+		blockSignals(true);
+		ui->knownImports->setCurrentText("XP5");
 		blockSignals(false);
 	}
 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
@@ -414,7 +422,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		}
 		if (matchedSome) {
 			ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
-			if (triggeredBy != KNOWNTYPES && !seabear) {
+			if (triggeredBy != KNOWNTYPES && !seabear && !xp5) {
 				blockSignals(true);
 				ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
 				blockSignals(false);
@@ -458,20 +466,20 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	f.reset();
 	int rows = 0;
 
-	/* Skipping the header of Seabear CSV file. */
-	if (seabear) {
+	/* Skipping the header of Seabear and XP5 CSV files. */
+	if (seabear || xp5) {
 		/*
 		 * First set of data on Seabear CSV file is metadata
 		 * that is separated by an empty line (windows line
 		 * termination might be encountered.
 		 */
-		while (strlen(f.readLine()) > 2 && !f.atEnd());
+		while (strlen(f.readLine()) > 3 && !f.atEnd());
 		/*
 		 * Next we have description of the fields and two dummy
 		 * lines. Separated again with an empty line from the
 		 * actual data.
 		 */
-		while (strlen(f.readLine()) > 2 && !f.atEnd());
+		while (strlen(f.readLine()) > 3 && !f.atEnd());
 	}
 
 	while (rows < 10 || !f.atEnd()) {
