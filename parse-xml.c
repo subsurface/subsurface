@@ -2598,6 +2598,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	}
 
 	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
+	cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
 	/* Done with parsing what we know about the dive header */
 	ptr += 32;
