@@ -2661,10 +2661,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				}
 				break;
 			case 3:
+				// obsolete
 				strcpy(cur_event.name, "OC");
 				break;
 			case 4:
-				// None
+				// obsolete
+				strcpy(cur_event.name, "CCR");
 				break;
 			case 5:
 				strcpy(cur_event.name, "gaschange");
@@ -2724,10 +2726,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "Inconsistent");
 				break;
 			case 18:
-				// Gets hidden?
+				// key pressed - probably not
+				// interesting to view on profile
 				break;
 			case 19:
-				// None
+				// obsolete
+				strcpy(cur_event.name, "SCR");
 				break;
 			case 20:
 				strcpy(cur_event.name, "Above Stop");
@@ -2776,6 +2780,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 					break;
 				}
 				event_end();
+				break;
+			case 25:
+				strcpy(cur_event.name, "CCR O2 solenoid opened/closed");
+				break;
+			case 26:
+				strcpy(cur_event.name, "User mark");
 				break;
 			case 27:
 				snprintf(cur_event.name, MAX_EVENT_NAME, "GF Switch (%d/%d)", ptr[7], ptr[8]);
