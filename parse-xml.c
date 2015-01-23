@@ -2569,21 +2569,33 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 
 	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
 
-	// ptr[15] is dive type
-	if (0xc8 <= ptr[15] && ptr[15] <= 0xcf)
+	// ptr[14] >> 1 is scrubber used in %
+
+	// 3 bit dive type
+	switch((ptr[15] & 0x30) >> 3) {
+	case 0: // unknown
+	case 1:
 		cur_dc->divemode = OC;
-	else if (0xd0 <= ptr[15] && ptr[15] <= 0xd7)
+		break;
+	case 2:
 		cur_dc->divemode = CCR;
-	else if (0xd8 <= ptr[15] && ptr[15] <= 0xdf)
+		break;
+	case 3:
 		cur_dc->divemode = CCR; // mCCR
-	else if (0xe0 <= ptr[15] && ptr[15] <= 0xe7)
+		break;
+	case 4:
 		cur_dc->divemode = FREEDIVE;
-	else if (0xe8 <= ptr[15] && ptr[15] <= 0xef)
+		break;
+	case 5:
 		cur_dc->divemode = OC; // Gauge
-	else if (0xf0 <= ptr[15] && ptr[15] <= 0xf7)
+		break;
+	case 6:
 		cur_dc->divemode = PSCR; // ASCR
-	else if (0xf8 <= ptr[15] && ptr[15] <= 0xff)
+		break;
+	case 7:
 		cur_dc->divemode = PSCR;
+		break;
+	}
 
 	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
 
