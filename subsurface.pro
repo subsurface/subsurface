@@ -124,6 +124,7 @@ SOURCES =  \
 	equipment.c \
 	file.c \
 	gettextfromc.cpp \
+	git-access.c \
 	libdivecomputer.c \
 	liquivision.c \
 	load-git.c \

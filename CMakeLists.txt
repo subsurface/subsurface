@@ -103,6 +103,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	divelist.c
 	equipment.c
 	file.c
+	git-access.c
 	libdivecomputer.c
 	liquivision.c
 	load-git.c
