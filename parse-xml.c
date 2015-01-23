@@ -2813,7 +2813,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "HS Up");
 				break;
 			case 30:
-				strcpy(cur_event.name, "CNS");
+				snprintf(cur_event.name, MAX_EVENT_NAME, "CNS %d%%", ptr[6]);
 				break;
 			default:
 				// No values above 30 had any description
