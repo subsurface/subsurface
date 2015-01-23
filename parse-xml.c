@@ -2623,16 +2623,18 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			// because we rather calculate ppo2 our selfs.
 			if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
 				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
-			if (!ptr[8] && ptr[9])
-				cur_sample->in_deco = true;
-			// Guessed unit here.. looks good.
-			cur_sample->ndl.seconds = ptr[8] * 60;
-			// Guessed unit here.. looks good.
-			cur_sample->tts.seconds = ((ptr[10] & 0x0F) << 4) + ptr[9] * 20;
-			cur_sample->temperature.mkelvin = (((ptr[11] & 0x0F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
+			// NDL in minutes, 10 bit
+			cur_sample->ndl.seconds = (((ptr[9] & 0x03) << 8) + ptr[8]) * 60;
+			// TTS in minutes, 10 bit
+			cur_sample->tts.seconds = (((ptr[10] & 0x0F) << 6) + (ptr[9] >> 2)) * 60;
+			// Temperature in 1/10 C, 10 bit signed
+			cur_sample->temperature.mkelvin = ((ptr[11] & 0x20) ? -1 : 1)  * (((ptr[11] & 0x1F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
 			// ptr[11] & 0xF0 is unknown, and always 0xC in all checked files
 			cur_sample->stopdepth.mm = ((ptr[13] << 8) + ptr[12]) * 10;
-			//ptr[14] and ptr[15] is unknown, always zero in checked files
+			if (cur_sample->stopdepth.mm)
+				cur_sample->in_deco = true;
+			//ptr[14] is helium content, always zero?
+			//ptr[15] is setpoint, always zero?
 			sample_end();
 			break;
 		case 1: /* dive event */
