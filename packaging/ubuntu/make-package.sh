@@ -20,10 +20,15 @@ if [[ -d subsurface_$VERSION ]]; then
 	mv subsurface_$VERSION.bak subsurface_$VERSION.bak.prev
 	mv subsurface_$VERSION subsurface_$VERSION.bak
 fi
-rm -f subsurfacedaily-$VERSION
-
 mkdir subsurface_$VERSION
-ln -s subsurface_$VERSION subsurfacedaily-$VERSION
+if [[ "x$GITREVISION" != "x" ]] ; then
+	rm -f subsurfacedaily-$VERSION
+	ln -s subsurface_$VERSION subsurfacedaily-$VERSION
+else
+	rm -f subsurfacebeta-$VERSION
+	ln -s subsurface_$VERSION subsurfacebeta-$VERSION
+fi
+
 #
 #
 echo "copying sources"
@@ -39,7 +44,11 @@ echo $LIBDCREVISION > libdivecomputer/revision
 #
 echo "creating source tar file for OBS and Ununtu PPA"
 #
-(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+if [[ "x$GITREVISION" != "x" ]] ; then
+	(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+else
+	(cd .. ; tar ch subsurfacebeta-$VERSION | xz > home:Subsurface-Divelog/Subsurface-beta/subsurface-$VERSION.orig.tar.xz) &
+fi
 tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 #
 #
@@ -87,10 +96,23 @@ debuild -S
 cd ..
 
 if [[ "$1x" = "postx" ]] ; then
-	dput ppa:subsurface/subsurface-daily subsurface_$VERSION-$rev~*.changes
-	cd home:Subsurface-Divelog/Subsurface-daily
-	osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
-	osc add subsurface-$VERSION.orig.tar.xz
-	sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
-	osc commit -m "next daily build"
+	# daily vs. beta vs. release
+	if [[ "x$GITREVISION" == "x" ]] ; then
+		# this is a beta or a release; assume beta for now and deal with release later :-)
+		dput ppa:subsurface/subsurface-beta subsurface_$VERSION-$rev~*.changes
+		cd home:Subsurface-Divelog/Subsurface-beta
+		osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
+		osc add subsurface-$VERSION.orig.tar.xz
+		sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurfacebeta.spec
+		sed -i "s/%define gitVersion .*/%define gitVersion 0/" subsurfacebeta.spec
+		osc commit -m "next beta build"
+	else
+		dput ppa:subsurface/subsurface-daily subsurface_$VERSION-$rev~*.changes
+		cd home:Subsurface-Divelog/Subsurface-daily
+		osc rm $(ls subsurface*.tar.xz | grep -v $VERSION)
+		osc add subsurface-$VERSION.orig.tar.xz
+		sed -i "s/%define latestVersion.*/%define latestVersion $VERSION/" subsurfacedaily.spec
+		sed -i "s/%define gitVersion .*/%define gitVersion $GITREVISION/" subsurfacedaily.spec
+		osc commit -m "next daily build"
+	fi
 fi
