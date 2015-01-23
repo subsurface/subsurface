@@ -2622,8 +2622,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			//ptr[14] and ptr[15] is unknown, always zero in checked files
 			sample_end();
 			break;
-		case 1:
-			/* dive event */
+		case 1: /* dive event */
+		case 2: /* automatic parameter change */
+		case 3: /* diver error */
+		case 4: /* internal error */
+		case 5: /* device activity log */
 			event_start();
 			cur_event.time.seconds = time;
 			switch (ptr[4]) {
@@ -2805,7 +2808,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			}
 			event_end();
 			break;
+		case 6:
+			/* device configuration */
+			break;
 		case 7:
+			/* measure record */
 			/* Po2 sample? Solenoid inject? */
 			//fprintf(stderr, "%02X %02X%02X %02X%02X\n", ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
 			break;
