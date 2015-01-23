@@ -442,9 +442,10 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 }
 
 
-struct plot_info calculate_max_limits_new(struct dive *dive)
+struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc)
 {
 	struct divecomputer *dc = &(dive->dc);
+	bool seen = false;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
 	int maxtime = 0;
@@ -465,6 +466,8 @@ struct plot_info calculate_max_limits_new(struct dive *dive)
 
 	/* Then do all the samples from all the dive computers */
 	do {
+		if (dc == given_dc)
+			seen = true;
 		int i = dc->samples;
 		int lastdepth = 0;
 		struct sample *s = dc->sample;
@@ -497,7 +500,12 @@ struct plot_info calculate_max_limits_new(struct dive *dive)
 			lastdepth = depth;
 			s++;
 		}
-	} while ((dc = dc->next) != NULL);
+		dc = dc->next;
+		if (dc == NULL && !seen) {
+			dc = given_dc;
+			seen = true;
+		}
+	} while (dc != NULL);
 
 	if (minpressure > maxpressure)
 		minpressure = 0;

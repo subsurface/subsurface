@@ -68,7 +68,7 @@ struct ev_select {
 	bool plot_ev;
 };
 
-struct plot_info calculate_max_limits_new(struct dive *dive);
+struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc);
 void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int bufsize, int sum);
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi);
 struct plot_info *analyze_plot_info(struct plot_info *pi);
