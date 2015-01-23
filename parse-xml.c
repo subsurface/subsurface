@@ -2804,7 +2804,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "User mark");
 				break;
 			case 27:
-				snprintf(cur_event.name, MAX_EVENT_NAME, "GF Switch (%d/%d)", ptr[7], ptr[8]);
+				snprintf(cur_event.name, MAX_EVENT_NAME, "%sGF Switch (%d/%d)", ptr[6] ? "Bailout, ": "", ptr[7], ptr[8]);
 				break;
 			case 28:
 				strcpy(cur_event.name, "Peer Up");
