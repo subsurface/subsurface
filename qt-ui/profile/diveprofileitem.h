@@ -165,8 +165,8 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 private:
-	void plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align);
-	void plotGasValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, struct gasmix gasmix);
+	void plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double offset);
+	void plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double offset);
 	QVector<QPolygonF> polygons;
 };
 

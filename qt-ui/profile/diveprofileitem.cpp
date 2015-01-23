@@ -627,7 +627,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (entry->cylinderindex != last_index) {
-			polygons.append(QPolygonF()); // this is the polygon that will be actually drawned on screen.
+			polygons.append(QPolygonF()); // this is the polygon that will be actually drawn on screen.
 			last_index = entry->cylinderindex;
 		}
 		if (!mbar) {
@@ -654,6 +654,18 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 	cyl = -1;
 	o2mbar = 0;
+
+	double print_y_offset[8][2] = { { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } ,{ 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } };
+	// CCR dives: These are offset values used to print the gas lables and pressures on a CCR dive profile at
+	// appropriate Y-coordinates: One doublet of values for each of 8 cylinders.
+	// Order of offsets within a doublet: gas lable offset; gas pressure offset.
+	// The array is initialised with default values that apply to non-CCR dives.
+
+	bool offsets_initialised = false;
+	int o2cyl = -1, dilcyl = -1;
+	QFlags<Qt::AlignmentFlag> alignVar, align_dil = Qt::AlignBottom, align_o2 = Qt::AlignBottom;
+	double axisRange = (vAxis->maximum() - vAxis->minimum())/1000;
+	double axisLog = log10(log10(axisRange));
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		entry = dataModel->data().entry + i;
 		mbar = GET_PRESSURE(entry);
@@ -661,57 +673,93 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
 		if (o2mbar) {
-			if (!seen_cyl[displayed_dive.oxygen_cylinder_index]) {
-				plotPressureValue(o2mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom);
-				plotGasValue(o2mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom, displayed_dive.cylinder[displayed_dive.oxygen_cylinder_index].gasmix);
+			// The first time an o2 value is detected, see if the oxygen cyl pressure graph starts above or below the dil graph
+			if (!offsets_initialised) {	// Initialise the parameters for placing the text correctly near the graph line:
+				o2cyl = displayed_dive.oxygen_cylinder_index;
+				dilcyl = displayed_dive.diluent_cylinder_index;
+				if ((o2mbar > mbar)) {	// If above, write o2 start cyl pressure above graph and diluent pressure below graph:
+					print_y_offset[o2cyl][0] = -7 * axisLog; // y offset for oxygen gas lable (above)
+					print_y_offset[o2cyl][1] = -0.5;	 // y offset for oxygen start pressure value (above)
+					print_y_offset[dilcyl][0] = 5 * axisLog; // y offset for diluent gas lable (below)
+					print_y_offset[dilcyl][1] = 0;		 // y offset for diluent start pressure value (below)
+					align_dil = Qt::AlignBottom;
+					align_o2  = Qt::AlignTop;
+				} else {					// ... else write o2 start cyl pressure below graph:
+					print_y_offset[o2cyl][0]  = 5 * axisLog; // o2 lable & pressure below graph,
+					print_y_offset[o2cyl][1]  = 0;
+					print_y_offset[dilcyl][0] = -7 * axisLog;  // and diluent lable above graph.
+					print_y_offset[dilcyl][1] = -0.5;	// and diluent pressure above graph.
+					align_dil = Qt::AlignTop;
+					align_o2  = Qt::AlignBottom;
+				}
+				offsets_initialised = true;
+			}
+
+			if (!seen_cyl[displayed_dive.oxygen_cylinder_index]) {	//For o2, on the left of profile, write lable and pressure
+				plotPressureValue(o2mbar, entry->sec, align_o2, print_y_offset[o2cyl][1]);
+				plotGasValue(o2mbar, entry->sec, displayed_dive.cylinder[displayed_dive.oxygen_cylinder_index].gasmix, align_o2, print_y_offset[o2cyl][0]);
 				seen_cyl[displayed_dive.oxygen_cylinder_index] = true;
 			}
 			last_pressure[displayed_dive.oxygen_cylinder_index] = o2mbar;
 			last_time[displayed_dive.oxygen_cylinder_index] = entry->sec;
+			alignVar = align_dil;
+		} else {
+			alignVar = Qt::AlignBottom;
+			align_dil = Qt::AlignTop;
 		}
-
 
 		if (!mbar)
 			continue;
-		if (cyl != entry->cylinderindex) {
-			cyl = entry->cylinderindex;
+
+		if (cyl != entry->cylinderindex) {	// Pressure value near the left hand edge of the profile - other cylinders:
+			cyl = entry->cylinderindex;	// For each other cylinder, write the gas lable and pressure
 			if (!seen_cyl[cyl]) {
-				plotPressureValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignTop);
-				plotGasValue(mbar, entry->sec, Qt::AlignRight | Qt::AlignBottom,
-					     displayed_dive.cylinder[cyl].gasmix);
+				plotPressureValue(mbar, entry->sec, alignVar, print_y_offset[cyl][0]);
+				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, align_dil, print_y_offset[cyl][1]);
 				seen_cyl[cyl] = true;
 			}
 		}
 		last_pressure[cyl] = mbar;
 		last_time[cyl] = entry->sec;
 	}
+						// Now, for the cylinder pressure written near the right edge of the profile:
+	if ((o2cyl >= 0) && (dilcyl >= 0)) {	// At first, skip uninitialised values of o2cyl and dilcyl
+		if (last_pressure[o2cyl] > last_pressure[dilcyl]) { // If oxygen cyl pressure graph ends above diluent graph:
+			align_dil =  Qt::AlignTop;	// initialise to write diluent cyl end pressure underneath the graph
+			align_o2  =  Qt::AlignBottom;
+		} else {
+			align_dil =  Qt::AlignBottom;	// else initialise to write diluent cyl end pressure above the graph
+			align_o2  =  Qt::AlignTop;
+		}
+	}
 
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {	// For each cylinder, on right hand side of profile, write cylinder pressure
+		alignVar = ((o2cyl >= 0) && (cyl == displayed_dive.oxygen_cylinder_index)) ? align_o2 : align_dil;
 		if (last_time[cyl]) {
-			plotPressureValue(last_pressure[cyl], last_time[cyl], Qt::AlignLeft | Qt::AlignTop);
+			plotPressureValue(last_pressure[cyl], last_time[cyl], (alignVar | Qt::AlignLeft), print_y_offset[cyl][0]);
 		}
 	}
 }
 
-void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags)
+void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double pressure_offset)
 {
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
 	DiveTextItem *text = new DiveTextItem(this);
-	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar) - 0.5);
+	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar) + pressure_offset );
 	text->setText(QString("%1 %2").arg(pressure).arg(unit));
-	text->setAlignment(flags);
+	text->setAlignment(align);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }
 
-void DiveGasPressureItem::plotGasValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> flags, struct gasmix gasmix)
+void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
 	QString gas = gasToStr(gasmix);
 	DiveTextItem *text = new DiveTextItem(this);
-	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar));
+	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar) + gasname_offset );
 	text->setText(gas);
-	text->setAlignment(flags);
+	text->setAlignment(align);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }
