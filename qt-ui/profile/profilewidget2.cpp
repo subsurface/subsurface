@@ -981,7 +981,7 @@ void ProfileWidget2::setProfileState()
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
 
-	bool setpointflag = (current_dc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
+	bool setpointflag = current_dive && (current_dc->divemode == CCR) && prefs.pp_graphs.po2;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
 	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
 	ccrsensor1GasItem->setVisible(sensorflag);
