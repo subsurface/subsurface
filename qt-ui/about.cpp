@@ -9,13 +9,16 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 	ui.setupUi(this);
 
 	setWindowModality(Qt::ApplicationModal);
+	QString versionString(GIT_VERSION_STRING);
+	if (versionString == "4.3.950")
+		versionString = "4.4 Beta 1";
 
 	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>"
 				  "Subsurface %1 </span><br><br>"
 				  "Multi-platform divelog software<br>"
 				  "<span style='font-size: 8pt'>"
 				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2015"
-				  "</span>").arg(GIT_VERSION_STRING));
+				  "</span>").arg(versionString));
 
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
