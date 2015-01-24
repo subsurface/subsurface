@@ -432,7 +432,8 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	if (triggeredBy == KNOWNTYPES && value != 0) {
 		// an actual known type
 		separator = CSVApps[value].separator;
-		if (ui->CSVSeparator->currentText() != separator) {
+
+		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
 			blockSignals(true);
 			ui->CSVSeparator->setCurrentText(separator);
 			blockSignals(false);
