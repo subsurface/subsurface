@@ -49,19 +49,15 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	 * to generate proper error messages.
 	 */
 	*branchp = filename;
-	loc = malloc(flen+1);
+	loc = format_string("%.*s", flen, filename);
 	if (!loc)
 		return dummy_git_repository;
-	memcpy(loc, filename, flen);
-	loc[flen] = 0;
 
-	branch = malloc(blen+1);
+	branch = format_string("%.*s", blen, filename+flen+1);
 	if (!branch) {
 		free(loc);
 		return dummy_git_repository;
 	}
-	memcpy(branch, filename+flen+1, blen);
-	branch[blen] = 0;
 
 	if (stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		free(loc);
