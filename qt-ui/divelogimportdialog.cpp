@@ -385,6 +385,15 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		ui->knownImports->setCurrentText("XP5");
 		blockSignals(false);
 	}
+
+	// Special handling for APD Log Viewer
+	if (triggeredBy == KNOWNTYPES && value == 1) {
+		firstLine = "Sample time\tSample depth\t\t\t\t\tSample po2\t\t\t\t\t\t\t\t\tSample temperature\t\tSample cns\tSample stopdetph";
+		blockSignals(true);
+		ui->CSVSeparator->setCurrentText(tr("Tab"));
+		blockSignals(false);
+	}
+
 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
 	currColumns = firstLine.split(separator);
 	if (triggeredBy == INITIAL) {
