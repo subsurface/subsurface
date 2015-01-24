@@ -1,0 +1,127 @@
+From 5bb7449724646df61cef72a4cee25e786c067cd2 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sat, 17 Jan 2015 12:44:05 +1300
+Subject: [PATCH] Make build with Qt4
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ qt-ui/divelogimportdialog.cpp      | 26 ++++++++++++++++++++++++++
+ qt-ui/downloadfromdivecomputer.cpp | 12 ++++++++++++
+ qt-ui/plannerSettings.ui           |  4 ++--
+ 3 files changed, 40 insertions(+), 2 deletions(-)
+
+diff --git a/qt-ui/divelogimportdialog.cpp b/qt-ui/divelogimportdialog.cpp
+index 08e5dd110104..a528b56bdff0 100644
+--- a/qt-ui/divelogimportdialog.cpp
++++ b/qt-ui/divelogimportdialog.cpp
+@@ -375,14 +375,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 		seabear = true;
+ 		firstLine = "Sample time;Sample depth;Sample ndl;Sample tts;Sample stopdepth;Sample temperature;Sample pressure";
+ 		blockSignals(true);
++#if QT_VERSION >= 0x050000
+ 		ui->knownImports->setCurrentText("Seabear CSV");
++#else
++		ui->knownImports->setCurrentIndex(4);
++#endif
+ 		blockSignals(false);
+ 	} else if (firstLine.contains("Tauchgangs-Nr.:")) {
+ 		xp5 = true;
+ 		//"Abgelaufene Tauchzeit (Std:Min.)\tTiefe\tStickstoff Balkenanzeige\tSauerstoff Balkenanzeige\tAufstiegsgeschwindigkeit\tRestluftzeit\tRestliche Tauchzeit\tDekompressionszeit (Std:Min)\tDekostopp-Tiefe\tTemperatur\tPO2\tPressluftflasche\tLesen des Druckes\tStatus der Verbindung\tTauchstatus";
+ 		firstLine = "Sample time\tSample depth\t\t\t\t\t\t\t\tSample temperature\t";
+ 		blockSignals(true);
++#if QT_VERSION >= 0x050000
+ 		ui->knownImports->setCurrentText("XP5");
++#else
++		ui->knownImports->setCurrentIndex(2);
++#endif
+ 		blockSignals(false);
+ 	}
+ 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
+@@ -400,7 +408,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 			separator = ";";
+ 		if (ui->CSVSeparator->currentText() != separator) {
+ 			blockSignals(true);
++#if QT_VERSION >= 0x050000
+ 			ui->CSVSeparator->setCurrentText(separator);
++#else
++			if (separator == "Tab")
++				ui->CSVSeparator->setCurrentIndex(0);
++			else if (separator == ",")
++				ui->CSVSeparator->setCurrentIndex(1);
++			else
++				ui->CSVSeparator->setCurrentIndex(2);
++#endif
+ 			blockSignals(false);
+ 			currColumns = firstLine.split(separator);
+ 		}
+@@ -434,7 +451,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 		separator = CSVApps[value].separator;
+ 		if (ui->CSVSeparator->currentText() != separator) {
+ 			blockSignals(true);
++#if QT_VERSION >= 0x050000
+ 			ui->CSVSeparator->setCurrentText(separator);
++#else
++			if (separator == "Tab")
++				ui->CSVSeparator->setCurrentIndex(0);
++			else if (separator == ",")
++				ui->CSVSeparator->setCurrentIndex(1);
++			else
++				ui->CSVSeparator->setCurrentIndex(2);
++#endif
+ 			blockSignals(false);
+ 			if (separator == "Tab")
+ 				separator = "\t";
+diff --git a/qt-ui/downloadfromdivecomputer.cpp b/qt-ui/downloadfromdivecomputer.cpp
+index c6679255088c..a4d953ffe947 100644
+--- a/qt-ui/downloadfromdivecomputer.cpp
++++ b/qt-ui/downloadfromdivecomputer.cpp
+@@ -594,19 +594,31 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
+ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
+ {
+ 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
++#if QT_VERSION >= 0x050000
+ 	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()), QVector<int>() << Qt::CheckStateRole);
++#else
++	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()));
++#endif
+ }
+ 
+ void DiveImportedModel::selectAll()
+ {
+ 	memset(checkStates, true, lastIndex - firstIndex);
++#if QT_VERSION >= 0x050000
+ 	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
++#else
++	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1));
++#endif
+ }
+ 
+ void DiveImportedModel::selectNone()
+ {
+ 	memset(checkStates, false, lastIndex - firstIndex);
++#if QT_VERSION >= 0x050000
+ 	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
++#else
++	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1));
++#endif
+ }
+ 
+ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
+diff --git a/qt-ui/plannerSettings.ui b/qt-ui/plannerSettings.ui
+index af03fd1fbfb9..aaf99750e26f 100644
+--- a/qt-ui/plannerSettings.ui
++++ b/qt-ui/plannerSettings.ui
+@@ -338,8 +338,8 @@
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="rebreathermode">
+-            <property name="currentText">
+-             <string/>
++            <property name="currentIndex">
++		    <number>0</number>
+             </property>
+             <property name="maxVisibleItems">
+              <number>6</number>
+-- 
+1.8.0.rc0.18.gf84667d
+
