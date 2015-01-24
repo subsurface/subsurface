@@ -16,7 +16,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, 2, 3, 4, 6, ";" },
-	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ NULL, }
 };
 
@@ -440,7 +440,21 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 	if (triggeredBy == KNOWNTYPES && value != 0) {
 		// an actual known type
-		separator = CSVApps[value].separator;
+		if (value == 5) {
+			/*
+			 * Subsurface CSV file needs separator detection
+			 * as we used to default to comma but switched
+			 * to tab.
+			 */
+			int tabs = firstLine.count('\t');
+			int commas = firstLine.count(',');
+			if (tabs > commas)
+				separator = "Tab";
+			else
+				separator = ",";
+		} else {
+			separator = CSVApps[value].separator;
+		}
 
 		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
 			ui->CSVSeparator->blockSignals(true);
