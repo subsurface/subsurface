@@ -6,7 +6,9 @@
   <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="fs">,</xsl:variable>
+  <xsl:variable name="fs"><xsl:text>	</xsl:text></xsl:variable>
+  <xsl:variable name="lf"><xsl:text>
+</xsl:text></xsl:variable>
 
   <xsl:template match="/divelog/dives">
     <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth&quot;', $fs, '&quot;avgdepth&quot;', $fs, '&quot;airtemp&quot;', $fs, '&quot;watertemp&quot;', $fs, '&quot;cylinder size&quot;', $fs, '&quot;startpressure&quot;', $fs, '&quot;endpressure&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight&quot;', $fs, '&quot;tags&quot;')"/>
@@ -279,7 +281,7 @@
   <xsl:template match="notes">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="."/>
+    <xsl:value-of select="translate(translate(., $fs, ' '), $lf, ' ')"/>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
 </xsl:stylesheet>
