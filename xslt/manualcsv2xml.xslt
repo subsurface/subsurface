@@ -396,7 +396,15 @@
                 <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="concat(substring-after($line, '&quot;'), substring-before($remaining, '&quot;'))"/>
+                <xsl:choose>
+                  <!-- quoted string has new line -->
+                  <xsl:when test="string-length(substring-after($line, '&quot;')) = string-length(translate(substring-after($line, '&quot;'), '&#34;', ''))">
+                    <xsl:value-of select="concat(substring-after($line, '&quot;'), substring-before($remaining, '&quot;'))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="''"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
