@@ -419,6 +419,8 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		Q_FOREACH (QString columnText, currColumns) {
 			columnText.replace("\"", "");
 			columnText.replace("number", "#", Qt::CaseInsensitive);
+			columnText.replace("2", "₂", Qt::CaseInsensitive);
+			columnText.replace("cylinder", "cyl.", Qt::CaseInsensitive);
 			int idx = provider->mymatch(columnText);
 			if (idx >= 0) {
 				QString foundHeading = provider->data(provider->index(idx, 0), Qt::DisplayRole).toString();
