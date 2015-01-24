@@ -6,12 +6,18 @@
 #include "dive.h"
 #include "membuffer.h"
 
-void free_buffer(struct membuffer *b)
+char *detach_buffer(struct membuffer *b)
 {
-	free(b->buffer);
+	char *result = b->buffer;
 	b->buffer = NULL;
 	b->len = 0;
 	b->alloc = 0;
+	return result;
+}
+
+void free_buffer(struct membuffer *b)
+{
+	free(detach_buffer(b));
 }
 
 void flush_buffer(struct membuffer *b, FILE *f)
@@ -98,6 +104,26 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 
 		room = len + 1;
 	}
+}
+
+/* Silly helper using membuffer */
+char *vformat_string(const char *fmt, va_list args)
+{
+	struct membuffer mb = { 0 };
+	put_vformat(&mb, fmt, args);
+	mb_cstring(&mb);
+	return detach_buffer(&mb);
+}
+
+char *format_string(const char *fmt, ...)
+{
+	va_list args;
+	char *result;
+
+	va_start(args, fmt);
+	result = vformat_string(fmt, args);
+	va_end(args);
+	return result;
 }
 
 void put_format(struct membuffer *b, const char *fmt, ...)
