@@ -116,13 +116,13 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 	 *
 	 * Tag markers take: strlen("<></>") = 5
 	 */
-	buf = realloc(mem->buffer, mem->size + 6 + strlen(tag) * 2);
+	buf = realloc(mem->buffer, mem->size + 7 + strlen(tag) * 2);
 	if (buf != NULL) {
 		char *starttag = NULL;
 		char *endtag = NULL;
 
 		starttag = malloc(3 + strlen(tag));
-		endtag = malloc(4 + strlen(tag));
+		endtag = malloc(5 + strlen(tag));
 
 		if (starttag == NULL || endtag == NULL) {
 			/* this is fairly silly - so the malloc fails, but we strdup the error?
@@ -135,12 +135,12 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 		}
 
 		sprintf(starttag, "<%s>", tag);
-		sprintf(endtag, "</%s>", tag);
+		sprintf(endtag, "\n</%s>", tag);
 
 		memmove(buf + 2 + strlen(tag), buf, mem->size);
 		memcpy(buf, starttag, 2 + strlen(tag));
-		memcpy(buf + mem->size + 2 + strlen(tag), endtag, 4 + strlen(tag));
-		mem->size += (5 + 2 * strlen(tag));
+		memcpy(buf + mem->size + 2 + strlen(tag), endtag, 5 + strlen(tag));
+		mem->size += (6 + 2 * strlen(tag));
 		mem->buffer = buf;
 
 		free(starttag);
