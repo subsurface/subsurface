@@ -85,7 +85,7 @@
       </xsl:choose>
     </xsl:variable>
 
-    <xsl:if test="$number >= 0">
+    <xsl:if test="number($number) = $number">
     <dive>
       <xsl:attribute name="date">
         <xsl:choose>
