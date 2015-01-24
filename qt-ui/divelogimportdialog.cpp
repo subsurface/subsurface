@@ -551,32 +551,48 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		}
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
-			parse_manual_file(fileNames[i].toUtf8().data(),
-					  ui->CSVSeparator->currentIndex(),
-					  ui->CSVUnits->currentIndex(),
-					  ui->DateFormat->currentIndex(),
-					  ui->DurationFormat->currentIndex(),
-					  r.indexOf(tr("Dive #")),
-					  r.indexOf(tr("Date")),
-					  r.indexOf(tr("Time")),
-					  r.indexOf(tr("Duration")),
-					  r.indexOf(tr("Location")),
-					  r.indexOf(tr("GPS")),
-					  r.indexOf(tr("Max depth")),
-					  r.indexOf(tr("Mean depth")),
-					  r.indexOf(tr("Divemaster")),
-					  r.indexOf(tr("Buddy")),
-					  r.indexOf(tr("Notes")),
-					  r.indexOf(tr("Weight")),
-					  r.indexOf(tr("Tags")),
-					  r.indexOf(tr("Cyl. size")),
-					  r.indexOf(tr("Start pressure")),
-					  r.indexOf(tr("End pressure")),
-					  r.indexOf(tr("O₂")),
-					  r.indexOf(tr("He")),
-					  r.indexOf(tr("Air temp.")),
-					  r.indexOf(tr("Water temp."))
-					  );
+			if (r.indexOf(tr("Sample time")) < 0)
+				parse_manual_file(fileNames[i].toUtf8().data(),
+						ui->CSVSeparator->currentIndex(),
+						ui->CSVUnits->currentIndex(),
+						ui->DateFormat->currentIndex(),
+						ui->DurationFormat->currentIndex(),
+						r.indexOf(tr("Dive #")),
+						r.indexOf(tr("Date")),
+						r.indexOf(tr("Time")),
+						r.indexOf(tr("Duration")),
+						r.indexOf(tr("Location")),
+						r.indexOf(tr("GPS")),
+						r.indexOf(tr("Max depth")),
+						r.indexOf(tr("Mean depth")),
+						r.indexOf(tr("Divemaster")),
+						r.indexOf(tr("Buddy")),
+						r.indexOf(tr("Notes")),
+						r.indexOf(tr("Weight")),
+						r.indexOf(tr("Tags")),
+						r.indexOf(tr("Cyl. size")),
+						r.indexOf(tr("Start pressure")),
+						r.indexOf(tr("End pressure")),
+						r.indexOf(tr("O₂")),
+						r.indexOf(tr("He")),
+						r.indexOf(tr("Air temp.")),
+						r.indexOf(tr("Water temp."))
+							);
+			else
+				parse_csv_file(fileNames[i].toUtf8().data(),
+					       r.indexOf(tr("Sample time")),
+					       r.indexOf(tr("Sample depth")),
+					       r.indexOf(tr("Sample temperature")),
+					       r.indexOf(tr("Sample po2")),
+					       r.indexOf(tr("Sample cns")),
+					       r.indexOf(tr("Sample ndl")),
+					       r.indexOf(tr("Sample tts")),
+					       r.indexOf(tr("Sample stopdepth")),
+					       r.indexOf(tr("Sample pressure")),
+					       ui->CSVSeparator->currentIndex(),
+					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+					       ui->CSVUnits->currentIndex()
+					       );
 		}
 	}
 	process_dives(true, false);
