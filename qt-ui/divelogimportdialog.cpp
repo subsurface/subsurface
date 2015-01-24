@@ -443,9 +443,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		separator = CSVApps[value].separator;
 
 		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
-			blockSignals(true);
+			ui->CSVSeparator->blockSignals(true);
 			ui->CSVSeparator->setCurrentText(separator);
-			blockSignals(false);
+			ui->CSVSeparator->blockSignals(false);
 			if (separator == "Tab")
 				separator = "\t";
 			currColumns = firstLine.split(separator);
