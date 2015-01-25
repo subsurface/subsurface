@@ -2,6 +2,7 @@
 #include "usersurvey.h"
 #include <QtNetwork>
 #include <QMessageBox>
+#include <QUuid>
 #include "subsurfacewebservices.h"
 #include "ssrf-version.h"
 #include "mainwindow.h"
@@ -47,13 +48,30 @@ void UpdateManager::checkForUpdates(bool automatic)
 #endif
 	isAutomaticCheck = automatic;
 	QString version = CANONICAL_VERSION_STRING;
-	QString url = QString("http://subsurface-divelog.org/updatecheck.html?os=%1&version=%2").arg(os, version);
+	QString uuidString = getUUID();
+	QString url = QString("http://subsurface-divelog.org/updatecheck.html?os=%1&version=%2&uuid=%3").arg(os, version, uuidString);
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
 	QString userAgent = UserSurvey::getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
+}
+
+QString UpdateManager::getUUID()
+{
+	QString uuidString;
+	QSettings settings;
+	settings.beginGroup("UpdateManager");
+	if (settings.contains("UUID")) {
+		uuidString = settings.value("UUID").toString();
+	} else {
+		QUuid uuid = QUuid::createUuid();
+		uuidString = uuid.toString();
+		settings.setValue("UUID", uuidString);
+	}
+	uuidString.replace("{", "").replace("}", "");
+	return uuidString;
 }
 
 void UpdateManager::requestReceived()
