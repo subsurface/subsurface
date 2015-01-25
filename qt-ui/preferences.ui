@@ -792,14 +792,14 @@
             <item row="5" column="0">
              <widget class="QCheckBox" name="show_ccr_setpoint">
               <property name="text">
-               <string>CCR: Show setpoints when viewing pO₂</string>
+               <string>CCR: show setpoints when viewing pO₂</string>
               </property>
              </widget>
             </item>
              <item row="6" column="0">
              <widget class="QCheckBox" name="show_ccr_sensors">
               <property name="text">
-               <string>CCR: Show individual O₂ sensor values when viewing pO₂</string>
+               <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
               </property>
              </widget>
             </item>
