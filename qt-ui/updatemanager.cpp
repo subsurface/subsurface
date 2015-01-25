@@ -19,13 +19,13 @@ UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 			// we have just updated - wait two weeks before you check again
 			settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
 			settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
-			return;
+		} else {
+			// is it time to check again?
+			QString nextCheckString = settings.value("NextCheck").toString();
+			QDateTime nextCheck = QDateTime::fromString(nextCheckString, Qt::ISODate);
+			if (nextCheck > QDateTime::currentDateTime())
+				return;
 		}
-		// is it time to check again?
-		QString nextCheckString = settings.value("NextCheck").toString();
-		QDateTime nextCheck = QDateTime::fromString(nextCheckString, Qt::ISODate);
-		if (nextCheck > QDateTime::currentDateTime())
-			return;
 	}
 	settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
 	settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
@@ -45,7 +45,6 @@ void UpdateManager::checkForUpdates(bool automatic)
 #else
 	os = "unknown";
 #endif
-	qDebug() << "checking for update";
 	isAutomaticCheck = automatic;
 	QString version = CANONICAL_VERSION_STRING;
 	QString url = QString("http://subsurface-divelog.org/updatecheck.html?os=%1&version=%2").arg(os, version);
@@ -54,7 +53,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 	request.setRawHeader("Accept", "text/xml");
 	QString userAgent = UserSurvey::getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
-	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()));
+	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
 }
 
 void UpdateManager::requestReceived()
@@ -98,7 +97,8 @@ void UpdateManager::requestReceived()
 		} else {
 			// the webservice backend doesn't localize - but it's easy enough to just replace the
 			// strings that it is likely to send back
-			haveNewVersion = true;
+			if (!responseBody.contains("newer"))
+				haveNewVersion = true;
 			if (responseBody.contains("Newest release version is "))
 				responseBody.replace("Newest release version is ", tr("Newest release version is "));
 			msgText = tr("The server returned the following information:").append("<br/><br/>").append(responseBody);
