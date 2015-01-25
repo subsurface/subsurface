@@ -3306,6 +3306,17 @@ Making a backup copy of the Suunto DM4/DM5 database:
 5. The dives are now exported to the file DM4.bak (or DM5.bak)
 
 
+=== Exporting from Atomic Logbook
+[[Atomic_Export]]
+
+[NOTE]
+Atomic Logbook is a Windows software by Atomic Aquatics. It allows
+downloading of dive information from Cobalt and Cobalt 2 dive computers.
+The divelog is kept in a SQlite database at
+C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
+be directly imported to Subsurface.
+
+
 === Exporting from Mares Dive Organiser V2.1
 [[Mares_Export]]
 
