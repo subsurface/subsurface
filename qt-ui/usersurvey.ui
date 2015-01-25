@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>538</width>
-    <height>650</height>
+    <height>714</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,14 +37,14 @@
      <x>9</x>
      <y>36</y>
      <width>521</width>
-     <height>63</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;We would love to learn more about our users, their preferences and their usage habits. Please spare a minute to fill out this form and submit it to the Subsurface team.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -54,7 +54,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>190</y>
      <width>161</width>
      <height>26</height>
     </rect>
@@ -67,7 +67,7 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>150</y>
+     <y>190</y>
      <width>181</width>
      <height>26</height>
     </rect>
@@ -80,7 +80,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>150</y>
+     <y>190</y>
      <width>141</width>
      <height>26</height>
     </rect>
@@ -93,8 +93,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
-     <width>386</width>
+     <y>270</y>
+     <width>481</width>
      <height>26</height>
     </rect>
    </property>
@@ -106,8 +106,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>260</y>
-     <width>364</width>
+     <y>300</y>
+     <width>491</width>
      <height>26</height>
     </rect>
    </property>
@@ -119,8 +119,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>290</y>
-     <width>218</width>
+     <y>330</y>
+     <width>501</width>
      <height>26</height>
     </rect>
    </property>
@@ -132,8 +132,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>320</y>
-     <width>393</width>
+     <y>360</y>
+     <width>491</width>
      <height>26</height>
     </rect>
    </property>
@@ -145,8 +145,8 @@
    <property name="geometry">
     <rect>
      <x>9</x>
-     <y>370</y>
-     <width>368</width>
+     <y>410</y>
+     <width>501</width>
      <height>21</height>
     </rect>
    </property>
@@ -157,8 +157,8 @@
   <widget class="QPlainTextEdit" name="suggestions">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>400</y>
+     <x>10</x>
+     <y>440</y>
      <width>521</width>
      <height>71</height>
     </rect>
@@ -168,20 +168,23 @@
    <property name="geometry">
     <rect>
      <x>9</x>
-     <y>490</y>
-     <width>461</width>
-     <height>21</height>
+     <y>520</y>
+     <width>511</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>The following information about your system will also be submitted.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="system">
    <property name="geometry">
     <rect>
      <x>9</x>
-     <y>520</y>
+     <y>590</y>
      <width>521</width>
      <height>71</height>
     </rect>
@@ -200,10 +203,13 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>610</y>
+     <y>670</y>
      <width>176</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -216,8 +222,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
-     <width>231</width>
+     <y>160</y>
+     <width>451</width>
      <height>21</height>
     </rect>
    </property>
@@ -229,7 +235,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
+     <y>140</y>
      <width>511</width>
      <height>20</height>
     </rect>
@@ -242,7 +248,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>220</y>
      <width>511</width>
      <height>20</height>
     </rect>
@@ -255,8 +261,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
-     <width>271</width>
+     <y>240</y>
+     <width>491</width>
      <height>21</height>
     </rect>
    </property>
@@ -268,7 +274,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>350</y>
+     <y>390</y>
      <width>511</width>
      <height>20</height>
     </rect>
@@ -279,8 +285,8 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>recreational</tabstop>
   <tabstop>tech</tabstop>
+  <tabstop>recreational</tabstop>
   <tabstop>planning</tabstop>
   <tabstop>download</tabstop>
   <tabstop>divecomputer</tabstop>
