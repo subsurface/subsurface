@@ -241,12 +241,12 @@ void FacebookManager::sendDive()
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
 		QMessageBox::information(qApp->activeWindow(),
-			tr("Photo Upload Sucessfull"),
+			tr("Photo upload sucessfull"),
 			tr("Your dive profile was updated to Facebook."),
 		QMessageBox::Ok);
 	} else {
 		QMessageBox::information(qApp->activeWindow(),
-			tr("Photo Upload Failed"),
+			tr("Photo upload failed"),
 			tr("Your dive profile was not updated to Facebook, \n "
 			   "please send the following to the developer. \n"
 			   + response),
