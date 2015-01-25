@@ -414,6 +414,9 @@
               <xsl:when test="substring-before($line,'&quot;$fs') != ''">
                 <xsl:value-of select="substring-before($line,'&quot;$fs')"/>
               </xsl:when>
+              <xsl:when test="substring-before(substring-after($line, '&quot;'), '&quot;') != '' and substring-after(substring-after($line, '&quot;'), '&quot;') = ''">
+                <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
+              </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="substring-after(substring-after($line, '&quot;'), '&quot;') = ''">
