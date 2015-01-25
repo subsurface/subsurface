@@ -1,11 +1,11 @@
 // _Subsurface_ 4.4 Release Notes
 
-_Subsurface_ 4.4 - released sometime early 2015
+_Subsurface_ 4.4 Beta 2 - January 2015
 ---------------------------------------
 
 The _Subsurface_ development team proudly announces
-the release of version 4.4 Beta 1 of _Subsurface_, an open source divelog
-and dive planning program for Windows, Mac and Linux.
+the release of version 4.4 Beta 2 (aka 4.3.960) of _Subsurface_, an open
+source divelog and dive planning program for Windows, Mac and Linux.
 
 License: GPLv2
 
@@ -36,6 +36,12 @@ CCR, PSCR) in the UI.
 Changes to a dive location on the globe now trigger dive edit mode and can
 be rejected. GPS coordinates are shown immediately when selecting a dive
 site on the globe.
+
+For owners of the Heinrichs & Weikamp OSTC 3 and OSTC Sport  _Subsurface_
+now supports updating the firmware and informs users of new firmware
+releases.
+
+Add support for importing logs from the Divesoft Freedom
 
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
