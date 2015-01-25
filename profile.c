@@ -1052,12 +1052,12 @@ static void debug_print_profiledata(struct plot_info *pi)
  */
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast)
 {
-	int o2, he, o2low;
+	int o2, he, o2max;
 	init_decompression(dive);
 	/* Create the new plot data */
 	free((void *)last_pi_entry_new);
 
-	get_dive_gas(dive, &o2, &he, &o2low);
+	get_dive_gas(dive, &o2, &he, &o2max);
 	if (he > 0) {
 		pi->dive_type = TRIMIX;
 	} else {

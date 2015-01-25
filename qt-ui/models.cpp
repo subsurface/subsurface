@@ -1105,8 +1105,8 @@ QVariant TripItem::data(int column, int role) const
 
 static int nitrox_sort_value(struct dive *dive)
 {
-	int o2, he, o2low;
-	get_dive_gas(dive, &o2, &he, &o2low);
+	int o2, he, o2max;
+	get_dive_gas(dive, &o2, &he, &o2max);
 	return he * 1000 + o2;
 }
 
