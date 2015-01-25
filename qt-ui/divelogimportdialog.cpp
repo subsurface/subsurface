@@ -24,7 +24,7 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
 		       tr("End pressure") << tr("Max depth") << tr("Avg depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
-		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample po2") << tr("Sample cns") << tr("Sample ndl") <<
+		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample cns") << tr("Sample ndl") <<
 		       tr("Sample tts") << tr("Sample stopdepth") << tr("Sample pressure");
 }
 
@@ -388,7 +388,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 	// Special handling for APD Log Viewer
 	if (triggeredBy == KNOWNTYPES && value == 1) {
-		firstLine = "Sample time\tSample depth\t\t\t\t\tSample po2\t\t\t\t\t\t\t\t\tSample temperature\t\tSample cns\tSample stopdetph";
+		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample cns\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
 		blockSignals(false);
@@ -476,7 +476,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		if (CSVApps[value].temperature != -1 && CSVApps[value].temperature < currColumns.count())
 			headers.replace(CSVApps[value].temperature, tr("Sample temperature"));
 		if (CSVApps[value].po2 != -1 && CSVApps[value].po2 < currColumns.count())
-			headers.replace(CSVApps[value].po2, tr("Sample po2"));
+			headers.replace(CSVApps[value].po2, tr("Sample pO₂"));
 		if (CSVApps[value].cns != -1 && CSVApps[value].cns < currColumns.count())
 			headers.replace(CSVApps[value].cns, tr("Sample cns"));
 		if (CSVApps[value].ndl != -1 && CSVApps[value].ndl < currColumns.count())
@@ -530,7 +530,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       r.indexOf(tr("Sample time")),
 						       r.indexOf(tr("Sample depth")),
 						       r.indexOf(tr("Sample temperature")),
-						       r.indexOf(tr("Sample po2")),
+						       r.indexOf(tr("Sample pO₂")),
 						       r.indexOf(tr("Sample cns")),
 						       r.indexOf(tr("Sample ndl")),
 						       r.indexOf(tr("Sample tts")),
@@ -553,7 +553,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample time")),
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
-					       r.indexOf(tr("Sample po2")),
+					       r.indexOf(tr("Sample pO₂")),
 					       r.indexOf(tr("Sample cns")),
 					       r.indexOf(tr("Sample ndl")),
 					       r.indexOf(tr("Sample tts")),
@@ -599,7 +599,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample time")),
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
-					       r.indexOf(tr("Sample po2")),
+					       r.indexOf(tr("Sample pO₂")),
 					       r.indexOf(tr("Sample cns")),
 					       r.indexOf(tr("Sample ndl")),
 					       r.indexOf(tr("Sample tts")),
