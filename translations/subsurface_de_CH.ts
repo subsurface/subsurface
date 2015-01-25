@@ -26,37 +26,37 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Tauchgang Nr.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Zeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Dauer</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Location</source>
-        <translation type="unfinished"/>
+        <translation>Ort</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Gewicht</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -66,17 +66,17 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Anfangsdruck</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Enddruck</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Max depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
@@ -86,32 +86,32 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Divemaster</source>
-        <translation type="unfinished"/>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Buddy</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Notizen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Stichwörter</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Lufttemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Wassertemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
@@ -140,22 +140,22 @@
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
-        <source>Sample po2</source>
+        <source>Sample pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
-        <source>Sample cns</source>
+        <source>Sample CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
-        <source>Sample ndl</source>
+        <source>Sample NDL</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
-        <source>Sample tts</source>
+        <source>Sample TTS</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1268,12 +1268,12 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="558"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Dauer</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="560"/>
         <source>Depth</source>
-        <translation type="unfinished"/>
+        <translation>Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="582"/>
@@ -1283,7 +1283,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="582"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>min</translation>
     </message>
 </context>
 <context>
@@ -1745,7 +1745,7 @@
         <translation>HTML-Datei exportieren als</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogexportdialog.cpp" line="345"/>
+        <location filename="../qt-ui/divelogexportdialog.cpp" line="346"/>
         <source>Can&apos;t open file %s</source>
         <translation>Kann Datei %s nicht öffnen</translation>
     </message>
@@ -1758,7 +1758,7 @@
         <translation>Tauchprotokolldatei importieren</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="551"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="578"/>
         <source>Time</source>
         <translation>Zeit</translation>
     </message>
@@ -1793,37 +1793,37 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="549"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="576"/>
         <source>Dive #</source>
         <translation>Tauchgang Nr.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="550"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="577"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="552"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="579"/>
         <source>Duration</source>
         <translation>Dauer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="581"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="561"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="588"/>
         <source>Tags</source>
         <translation>Stichwörter</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="565"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="592"/>
         <source>O₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="566"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="593"/>
         <source>He</source>
         <translation type="unfinished"/>
     </message>
@@ -1843,142 +1843,165 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="553"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="580"/>
         <source>Location</source>
         <translation>Ort</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="555"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="582"/>
         <source>Max depth</source>
         <translation>Max. Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="326"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="388"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="393"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="397"/>
         <source>Tab</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="424"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="435"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="447"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="504"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="527"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="473"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="530"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="553"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="570"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="599"/>
         <source>Sample time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="449"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="505"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="528"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="475"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="531"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="600"/>
         <source>Sample depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="451"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="506"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="529"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="477"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="532"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="555"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="601"/>
         <source>Sample temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="453"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="507"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="530"/>
-        <source>Sample po2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="455"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="508"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="531"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="534"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="557"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="603"/>
         <source>Sample cns</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="457"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="509"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="532"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="535"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="558"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="604"/>
         <source>Sample ndl</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="459"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="510"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="533"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="536"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="559"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="605"/>
         <source>Sample tts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="461"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="511"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="534"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="487"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="537"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="560"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="606"/>
         <source>Sample stopdepth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="463"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="479"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="533"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="556"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="602"/>
+        <source>Sample pO₂</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="481"/>
+        <source>Sample CNS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="483"/>
+        <source>Sample NDL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="485"/>
+        <source>Sample TTS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="489"/>
         <source>Samples pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="512"/>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="535"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="538"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="561"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="607"/>
         <source>Sample pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="556"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="583"/>
         <source>Mean depth</source>
         <translation>Mittlere Tiefe</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="557"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="584"/>
         <source>Divemaster</source>
-        <translation type="unfinished"/>
+        <translation>Divemaster</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="558"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="585"/>
         <source>Buddy</source>
         <translation>Buddy</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="559"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="586"/>
         <source>Notes</source>
         <translation>Notizen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="560"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="587"/>
         <source>Weight</source>
         <translation>Gewicht</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="562"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="589"/>
         <source>Cyl. size</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="563"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="590"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Anfangsdruck</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="564"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="591"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Enddruck</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="567"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="594"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Lufttemp.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/divelogimportdialog.cpp" line="568"/>
+        <location filename="../qt-ui/divelogimportdialog.cpp" line="595"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Wassertemp.</translation>
     </message>
 </context>
 <context>
@@ -2485,7 +2508,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="97"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="346"/>
@@ -2560,7 +2583,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="138"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="182"/>
@@ -2580,12 +2603,12 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Alle auswählen</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="224"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Alle abwählen</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
@@ -2620,7 +2643,7 @@
     <name>FacebookManager</name>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="244"/>
-        <source>Photo Upload Sucessfull</source>
+        <source>Photo upload sucessfull</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2629,15 +2652,15 @@
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
+        <source>Photo upload failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
         <source>Your dive profile was not updated to Facebook, 
  please send the following to the developer. 
 </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
-        <source>Photo Upload Failed</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2771,7 +2794,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="74"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Tauchmodus</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="102"/>
@@ -3932,12 +3955,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="795"/>
-        <source>CCR: Show setpoints when viewing pO₂</source>
+        <source>CCR: show setpoints when viewing pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="802"/>
-        <source>CCR: Show individual O₂ sensor values when viewing pO₂</source>
+        <source>CCR: show individual O₂ sensor values when viewing pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3958,7 +3981,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="846"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="859"/>
@@ -4930,7 +4953,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>Schliessen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/about.cpp" line="13"/>
+        <location filename="../qt-ui/about.cpp" line="16"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2015&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -5061,42 +5084,42 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>UpdateManager</name>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="64"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="63"/>
         <source>Check for updates.</source>
         <translation>Neue Version suchen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="65"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="64"/>
         <source>Subsurface was unable to check for updates.</source>
         <translation>Subsurface konnte nicht nach neuen Versionen suchen.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="70"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="69"/>
         <source>The following error occurred:</source>
         <translation>Fehlermeldung erhalten:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="71"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="70"/>
         <source>Please check your internet connection.</source>
         <translation>Bitte Überprüfen Sie Ihre Internetverbindung.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="84"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="83"/>
         <source>You are using the latest version of Subsurface.</source>
         <translation>Dies ist die neuste Subsurfaceversion.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="87"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="86"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
         <translation>Es gibt eine neue Subsurface-Version.&lt;br/&gt;Klick hier:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; zum Download.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="95"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="94"/>
         <source>A new version of Subsurface is available.</source>
         <translation>Es gibt eine neue Version von Subsurface.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="96"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="95"/>
         <source>Latest version is %1, please check with your OS vendor for updates.</source>
         <translation>Die aktuellste Version ist %1, bitte den Betriebssystem Hersteller kontaktieren.</translation>
     </message>
@@ -5135,8 +5158,8 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <name>UserManual</name>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="54"/>
-        <source>User Manual</source>
-        <translation>Benutzerhandbuch</translation>
+        <source>User manual</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="71"/>
@@ -5220,16 +5243,20 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="41"/>
         <source>
-Operating System: %1</source>
-        <translation>
-Betriebssystem: %1</translation>
+Operating system: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="43"/>
         <source>
-CPU Architecture: %1</source>
-        <translation>
-Prozessor Architektur: %1</translation>
+CPU architecture: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/usersurvey.cpp" line="45"/>
+        <source>
+OS CPU architecture: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="46"/>
@@ -5267,13 +5294,6 @@ Sprache: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="17"/>
         <source>Send</source>
         <translation>Senden</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/usersurvey.cpp" line="45"/>
-        <source>
-OS CPU Architecture: %1</source>
-        <translation>
-Prozessor Architektur (laut Betriebsystem): %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="116"/>
@@ -5566,7 +5586,7 @@ Durchschnitt</translation>
         <translation>(%s) oder (%s)</translation>
     </message>
     <message>
-        <location filename="../divelist.c" line="467"/>
+        <location filename="../divelist.c" line="468"/>
         <location filename="../equipment.c" line="81"/>
         <location filename="../planner.c" line="1081"/>
         <location filename="../planner.c" line="1084"/>
@@ -5791,12 +5811,6 @@ Durchschnitt</translation>
         <translation>OLF</translation>
     </message>
     <message>
-        <location filename="../cochran.c" line="354"/>
-        <location filename="../cochran.c" line="400"/>
-        <source>PO2</source>
-        <translation>PO₂</translation>
-    </message>
-    <message>
         <location filename="../libdivecomputer.c" line="124"/>
         <source>airtime</source>
         <translation>verbleibende Atemzeit</translation>
@@ -5812,6 +5826,8 @@ Durchschnitt</translation>
         <translation>Richtung</translation>
     </message>
     <message>
+        <location filename="../cochran.c" line="354"/>
+        <location filename="../cochran.c" line="400"/>
         <location filename="../libdivecomputer.c" line="124"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
@@ -6716,31 +6732,6 @@ EADD: %d%s
         <translation>Dez</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="24"/>
-        <source>Uemis Zurich: File System is almost full
-Disconnect/reconnect the dive computer
-and click &apos;Retry&apos;</source>
-        <translation>Uemis Zürich: Dateisystem beinahe voll
-Bitte den Tauchcomputer ausstecken, wieder einstecken
-und erneut versuchen</translation>
-    </message>
-    <message>
-        <location filename="../uemis-downloader.c" line="25"/>
-        <source>Uemis Zurich: File System is full
-Disconnect/reconnect the dive computer
-and try again</source>
-        <translation>Uemis Zürich: Dateisystem ist voll.
-Bitte den Tauchcomputer ausstecken, wieder einstecken
-und erneut versuchen</translation>
-    </message>
-    <message>
-        <location filename="../uemis-downloader.c" line="26"/>
-        <source>Short write to req.txt file
-Is the Uemis Zurich plugged in correctly?</source>
-        <translation>Unvollständiger Schreibvorgang der req.txt Datei
-Ist der Uemis Zürich korrekt verbunden?</translation>
-    </message>
-    <message>
         <location filename="../uemis-downloader.c" line="111"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
@@ -6754,6 +6745,26 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
         <location filename="../uemis-downloader.c" line="411"/>
         <source>%s %s</source>
         <translation>%s %s</translation>
+    </message>
+    <message>
+        <location filename="../uemis-downloader.c" line="24"/>
+        <source>Uemis Zurich: the file system is almost full.
+Disconnect/reconnect the dive computer
+and click &apos;Retry&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../uemis-downloader.c" line="25"/>
+        <source>Uemis Zurich: the file system is full.
+Disconnect/reconnect the dive computer
+and try again</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../uemis-downloader.c" line="26"/>
+        <source>Short write to req.txt file.
+Is the Uemis Zurich plugged in correctly?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="452"/>
