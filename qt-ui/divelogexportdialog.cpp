@@ -336,7 +336,8 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 				depth.mm = s->depth.mm;
 				s++;
 			}
-			put_format(&buf, "%s\t%.1f%s\n", picture->filename, get_depth_units(depth.mm, NULL, &unit), unit);
+			put_format(&buf, "%s\t%.1f", picture->filename, get_depth_units(depth.mm, NULL, &unit));
+			put_format(&buf, "%s\n", unit);
 		}
 	}
 
