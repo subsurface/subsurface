@@ -134,7 +134,8 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 		mino2 = o2;
 	}
 	/* All air? Show/sort as "air"/zero */
-	if (!maxhe && maxo2 == O2_IN_AIR && mino2 == maxo2)
+	if ((!maxhe && maxo2 == O2_IN_AIR && mino2 == maxo2) ||
+			(maxo2 == -1 && maxhe == -1 && mino2 == 1000))
 		maxo2 = mino2 = 0;
 	*o2_p = mino2;
 	*he_p = maxhe;
