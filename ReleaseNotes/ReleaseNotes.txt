@@ -43,6 +43,10 @@ releases.
 
 Add support for importing logs from the Divesoft Freedom
 
+Dropped the 64bit Windows binary and went back to a single 32bit binary
+that works on all versions of Windows, 32 or 64bit, all the way back to
+Windows XP.
+
 Some of the changes since _Subsurface_ 4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
