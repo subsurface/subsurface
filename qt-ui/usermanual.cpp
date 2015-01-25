@@ -51,7 +51,7 @@ UserManual::UserManual(QWidget *parent) : QWidget(parent)
 	actionHideSearch->setShortcutContext(Qt::WindowShortcut);
 	addAction(actionHideSearch);
 
-	setWindowTitle(tr("User Manual"));
+	setWindowTitle(tr("User manual"));
 	setWindowIcon(QIcon(":/subsurface-icon"));
 
 
