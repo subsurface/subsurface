@@ -24,8 +24,8 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
 		       tr("End pressure") << tr("Max depth") << tr("Avg depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
-		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample cns") << tr("Sample ndl") <<
-		       tr("Sample tts") << tr("Sample stopdepth") << tr("Sample pressure");
+		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
+		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -478,11 +478,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		if (CSVApps[value].po2 != -1 && CSVApps[value].po2 < currColumns.count())
 			headers.replace(CSVApps[value].po2, tr("Sample pO₂"));
 		if (CSVApps[value].cns != -1 && CSVApps[value].cns < currColumns.count())
-			headers.replace(CSVApps[value].cns, tr("Sample cns"));
+			headers.replace(CSVApps[value].cns, tr("Sample CNS"));
 		if (CSVApps[value].ndl != -1 && CSVApps[value].ndl < currColumns.count())
-			headers.replace(CSVApps[value].ndl, tr("Sample ndl"));
+			headers.replace(CSVApps[value].ndl, tr("Sample NDL"));
 		if (CSVApps[value].tts != -1 && CSVApps[value].tts < currColumns.count())
-			headers.replace(CSVApps[value].tts, tr("Sample tts"));
+			headers.replace(CSVApps[value].tts, tr("Sample TTS"));
 		if (CSVApps[value].stopdepth != -1 && CSVApps[value].stopdepth < currColumns.count())
 			headers.replace(CSVApps[value].stopdepth, tr("Sample stopdepth"));
 		if (CSVApps[value].pressure != -1 && CSVApps[value].pressure < currColumns.count())
