@@ -351,7 +351,7 @@ static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
 	case 0xC8:	// PPO2 alarm begin
 		add_event(dc, seconds, SAMPLE_EVENT_PO2,
 			SAMPLE_FLAGS_BEGIN, 0,
-			QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
+			QT_TRANSLATE_NOOP("gettextFromC", "pO₂"));
 		break;
 	case 0xCC:	// Low cylinder 1 pressure";
 		break;
@@ -397,7 +397,7 @@ static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
 	case 0xE8:	// PO2 too low alarm
 		add_event(dc, seconds, SAMPLE_EVENT_PO2,
 			SAMPLE_FLAGS_BEGIN, 0,
-			QT_TRANSLATE_NOOP("gettextFromC", "PO2"));
+			QT_TRANSLATE_NOOP("gettextFromC", "pO₂"));
 		break;
 	case 0xEE:	// NDL alarm end
 		add_event(dc, seconds, SAMPLE_EVENT_RBT,
