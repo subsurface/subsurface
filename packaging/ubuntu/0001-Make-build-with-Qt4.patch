@@ -1,17 +1,17 @@
-From 5bb7449724646df61cef72a4cee25e786c067cd2 Mon Sep 17 00:00:00 2001
+From 82dccbcff56fc32775dc715cecd7e1fc359d08aa Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
-Date: Sat, 17 Jan 2015 12:44:05 +1300
+Date: Sun, 25 Jan 2015 14:26:25 -0800
 Subject: [PATCH] Make build with Qt4
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
 ---
- qt-ui/divelogimportdialog.cpp      | 26 ++++++++++++++++++++++++++
+ qt-ui/divelogimportdialog.cpp      | 30 ++++++++++++++++++++++++++++++
  qt-ui/downloadfromdivecomputer.cpp | 12 ++++++++++++
  qt-ui/plannerSettings.ui           |  4 ++--
- 3 files changed, 40 insertions(+), 2 deletions(-)
+ 3 files changed, 44 insertions(+), 2 deletions(-)
 
 diff --git a/qt-ui/divelogimportdialog.cpp b/qt-ui/divelogimportdialog.cpp
-index 08e5dd110104..a528b56bdff0 100644
+index 1b37258b2a47..114b275d985d 100644
 --- a/qt-ui/divelogimportdialog.cpp
 +++ b/qt-ui/divelogimportdialog.cpp
 @@ -375,14 +375,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
@@ -36,8 +36,20 @@ index 08e5dd110104..a528b56bdff0 100644
 +#endif
  		blockSignals(false);
  	}
- 	QString separator = ui->CSVSeparator->currentText() == tr("Tab") ? "\t" : ui->CSVSeparator->currentText();
-@@ -400,7 +408,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 
+@@ -390,7 +398,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 	if (triggeredBy == KNOWNTYPES && value == 1) {
+ 		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample cns\tSample stopdepth";
+ 		blockSignals(true);
++#if QT_VERSION >= 0x050000
+ 		ui->CSVSeparator->setCurrentText(tr("Tab"));
++#else
++		us->CSVSeparator->setCurrentIndex(0);
++#endif
+ 		blockSignals(false);
+ 	}
+ 
+@@ -409,7 +421,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  			separator = ";";
  		if (ui->CSVSeparator->currentText() != separator) {
  			blockSignals(true);
@@ -54,10 +66,10 @@ index 08e5dd110104..a528b56bdff0 100644
  			blockSignals(false);
  			currColumns = firstLine.split(separator);
  		}
-@@ -434,7 +451,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
- 		separator = CSVApps[value].separator;
- 		if (ui->CSVSeparator->currentText() != separator) {
- 			blockSignals(true);
+@@ -460,7 +481,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 
+ 		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
+ 			ui->CSVSeparator->blockSignals(true);
 +#if QT_VERSION >= 0x050000
  			ui->CSVSeparator->setCurrentText(separator);
 +#else
@@ -68,7 +80,7 @@ index 08e5dd110104..a528b56bdff0 100644
 +			else
 +				ui->CSVSeparator->setCurrentIndex(2);
 +#endif
- 			blockSignals(false);
+ 			ui->CSVSeparator->blockSignals(false);
  			if (separator == "Tab")
  				separator = "\t";
 diff --git a/qt-ui/downloadfromdivecomputer.cpp b/qt-ui/downloadfromdivecomputer.cpp
