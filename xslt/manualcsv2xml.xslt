@@ -136,10 +136,23 @@
       <xsl:attribute name="time">
         <xsl:choose>
           <xsl:when test="$timeField >= 0">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$timeField"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
+            <xsl:variable name="timef">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$timeField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="contains($timef, 'AM')">
+                <xsl:value-of select="concat(substring-before($timef, ':') mod 12, ':', translate(substring-after($timef, ':'), ' AM', ''))"/>
+              </xsl:when>
+              <xsl:when test="contains($timef, 'PM')">
+                <xsl:value-of select="concat(substring-before($timef, ':') mod 12 + 12, ':', translate(substring-after($timef, ':'), ' PM', ''))"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$timef"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
