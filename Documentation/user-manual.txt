@@ -1690,6 +1690,116 @@ three steps:
 
 image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
+This section gives an example of the versatility of _Subsurface_ as a give logging tool.
+
+[[S_CCR_dives]]
+==== Closed circuit rebreather (CCR) dives
+
+[icon="images/APD.jpg"]
+[NOTE]
+Closed system rebreathers use advanced technology to recirculate
+gas that has been breathed while doing two things to maintain a
+breathable oxygen concentration:
+a) remove carbon dioxide from the gas that has been exhaled
+b) regulate the oxygen concentration to remain within safe diving limits.
+Currently, within _Subsurface_, the Poseidon MkVI Discovery is the best
+supported CCR dive computer. The CCR interface of _Subsurface_ is currently experimental
+and under active development. In contrast to a conventional recreational
+dive computer, a CCR system computer does not allow the download of a log
+containing multiple dives. Rather, each dive is stored independently. This
+means that _Subsurface_ cannot download a dive log directly from a CCR
+dive computer, but that it imports CCR dive logs in the same way that it
+imports dive log data from other digital databases.
+
+===== Import a CCR dive
+
+See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+digital sources]. From the main menu of _Subsurface_, select _Import->Import
+log files_ to bring up the xref:Unified_import[universal import dialogue]. As
+explained in that section, the bottom right
+hand of the import dialogue contains a dropdown list of appropriate devices
+that currently includes an option for (Poseidon) MkVI files (import for other
+CCR equipment is under active development). Having selected  the appropriate CCR format and
+the directory where the original dive logs have been stored from the CCR dive
+computer, one can select a particular dive log file (in the case of the MkVI
+it is a file with a .txt extension). After selecting the appropriate dive log,
+activate the _Open_ button at the bottom right hand of the universal import dialogue.
+
+===== Displayed information for a CCR dive
+
+_Partial pressures of gases_: The graph of oxygen partial pressure shows the
+information from the oxygen sensors of the CCR equipment. In contrast to recreational
+equipment (where pO~2~ values are calculated based on gas composition and dive depth),
+CCR equipment provide actual measurements of pO~2~, derived from oxygen sensors.
+In this case the graph for oxygen partial pressure
+should be fairly flat, reflecting the setpoint settings during the dive. The mean
+pO~2~ is NOT the mean oxygen partial pressure as given by the CCR equipment, but
+a value xalculated by _Subsurface_ as follows:
+
+- For TWO O~2~ sensors the mean value of the two sensors are given.
+
+- For THREE-sensor systems (e.g. APD), the mean value is also used. However
+  differences of more than 0,1 bar in the simultaneous readings of different sensors are
+  treated as spurious. If one of the three sensors provides spurious data, it is ignored.
+
+The mean pO~2~ of the sensors is indicated with a green line,
+
+The oxygen setpoint values as well as the readings from the individual
+oxygen sensors can be shown. The display of additional CCR information is turned on by
+checking the appropriate checkboxes in the _Preferences_ panel (accessible by
+selecting xref:S_CCR_options[_File ->  Preferences ->  Graph_]). This part of
+the _Preferences_ panel look like this, representing two checkboxes that modify
+the display of pO~2~ when the appropriate toolbar button on the Dive Profile
+has been activated.
+
+image::images/CCR_preferences.jpg["FIGURE: CCR preferences panel",align="center"]
+
+Checking any of the check boxes allows the display of additional oxygen-related
+information whenever the pO~2~ toolbar button on the _Profile_ panel is activated.
+The first checkbox allows the display of setpoint information. This is a red line
+superimposed on the green oxygen partial pressure graph and allows a comparison of the
+mean measured oxygen partial pressure and the setpoint values, as in the image below.
+
+image::images/CCR_setpoint.jpg["FIGURE: CCR setpoint and po2 graph",align="center"]
+
+The second checkbox allows the display of the data from each individual oxygen sensor
+of the CCR equipment. The data for each sensor is colour-coded as follows:
+
+- Sensor 1: grey
+- Sensor 2: blue
+- Sensor 3: brown
+
+The mean oxygen pO~2~ is indicated by the green line. This allows the direct comparison
+of data from each of the oxygen sensors, useful for detecting abnormally low or erratic
+readings from a particular sensor.
+
+image::images/CCR_sensor_data.jpg["FIGURE: CCR sensor data graph",align="center"]
+
+The setpoint data can be overlaid on the oxygen sensor data by activating both of the above
+check boxes. Partial pressures for nitrogen (and helium, if applicable) are shown in the
+usual way as for open circuit dives.
+
+_Events_: Several events are logged, e.g. switching the mouthpiece to open circuit.
+These events are indicated by yellow triangles and, if one hovers over a triangle,
+a description of that event is given as the bottom line in the xref:S_InfoBox[Information Box].
+
+_Cylinder pressures_: Some CCR dive computers like the Poseidon MkVI record the
+pressures of the oxygen and diluent cylinders. The pressures of these two cylinders
+are shown as green lines overlapping the depth profile. In addition, start and
+end pressures for both oxygen and diluent cylinders are shown in the _Equipment Tab_.
+Below is a dive profile for a CCR dive, including an overaly
+of setpoint and oxygen sensor data, as well as the cylinder pressure data. In this
+case there is good agreement from the readings of the two oxygen sensors.
+
+image::images/CCR_dive_profile.jpg["FIGURE: CCR dive profile",align="center"]
+
+_Equipment-specific information_: Equipment-specific information gathered by
+_Subsurface_ is shown in the xref:S_ExtraTab[Extra data tab]. This may include setup information
+or metadata about the dive.
+
+More equipment-specific information for downloading CCR dive logs for
+Poseidon MkVI and APD equipment can be found in xref:S_PoseidonMkVI[Appendix B].
+
 == Obtaining more information about dives entered into the logbook
 
 === The *Dive Info* tab (for individual dives)
@@ -2296,20 +2406,37 @@ A dive log or part of it can be saved in three formats:
   one needs a user-ID as well as a password for _Divelogs.de_. Log into _http://en.divelogs.de_
   and subscribe to this service in order to upload dive log data from _Subsurface_.
 
-* _CSV_ format, that includes the most critical information of the dive
-  profile. Included information of a dive is: dive number, date, time,
-  duration, depth, temperature and pressure.
+* _DiveShare_ is also a dive log repostory on the Internet focusing on the recreational
+  dives. In order to upload dives one has to provide a used ID, so registration with
+  _http://scubadiveshare.com_ is required.
+
+* _CSV dive profile_, that includes a large amount of detail for each dive, including
+  the depth profile, temperature and pressure information of each dive.
+
+* _CSV dive details_, that includes the most critical information of the dive
+  profile. Included information of a dive is: dive number, date, time, buddy,
+  duration, depth, temperature and pressure: in short, most of the information
+  that recreational divers enter into written log books.
 
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
   some information about it are indicated. This map is not editable.
 
+* _Image depths_, which creates a text file that contains the file names of all
+  photos or images  attached
+  to any of the selected dives in the _Dive List_, together with the depth under water where
+  of each of those photos were taken.
+
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable
   with an Internet browser. Most modern web browsers are supported, but JavaScript
-  must be enabled. This generated HTML file is not intended to be edited
+  must be enabled. This HTML file is not intended to be edited
   by the users.
   The HTML dive log contains most of the information and also contains a search
   option to search the dive log. HTML export is specified on the second tab of the
-  Export dialog (image *B* above).
+  Export dialog (image *B* above). A typical use of this option is to export all one's
+  dives to a smartphone or a tablet where it would serve as a very portable record
+  of dives useful for dive companies that wish to verify the dive history of a diver.
+  This does away with the need to carry one's original logbook with one
+  when doing dives with dive companies.
 
 * _General Settings_, under the HTML tab, provides the following options:
 
@@ -2492,6 +2619,7 @@ Alternatively, if one selects the *Personalise* radio button, units can be selec
 independently, with some units in the metric system and others in imperial.
 
 === Graph
+[[S_CCR_options]]
 image::images/Pref3.jpg["FIGURE: Preferences Graph page",align="center"]
 
 [[S_GradientFactors]]
@@ -2529,9 +2657,31 @@ This panel allows two type of selections:
    deepest depth of a dive. If this box is not checked, GF_Low is applied at
    all depths deeper than the first deco stop. For more information see:
 
- ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+
+ ** _CCR: Show setpoints when viewing pO2:_ With this checkbox ativated, the pO~2~
+    graph on the dive profile has an overlay in red which inticates the CCR setpoint
+    values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+ ** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+ *  *Configuring dive planning using rebreather equipment:*
+
+ ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
+    CCR dive plan. This determines the pO~2~ that will be maintained
+    during a particular dive.
+
+ ** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, this is the
+    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning.
+
+ ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. Set this value for a
+    pSCR dive plan.
+
 
 === Language
 Choose a language that _Subsurface_ will use.
@@ -2566,9 +2716,10 @@ through the proxy server to access the Internet.
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
-Dive planning is an advanced feature of _Subsurface_, accessible by selecting _Log -> Plan Dive_ from the main menu. It allows calculation of
-nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition of gradient factors as
-implemented by Erik Baker.
+Dive planning is an advanced feature of _Subsurface_, accessible by selecting
+_Log -> Plan Dive_ from the main menu. It allows calculation of
+nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition
+of gradient factors as implemented by Erik Baker.
 
 ****
 [icon="images/icons/warning2.png"]
