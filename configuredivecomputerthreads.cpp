@@ -378,6 +378,7 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 
 #undef EMIT_PROGRESS
 
+#if DC_VERSION_CHECK(0, 5, 0)
 static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
 {
 	dc_status_t rc;
@@ -820,6 +821,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	return rc;
 }
+#endif /* DC_VERSION_CHECK(0, 5, 0) */
 
 static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
 {
