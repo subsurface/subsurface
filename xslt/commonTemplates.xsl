@@ -205,4 +205,66 @@
 
     <xsl:value-of select="concat($year, '-', $month, '-', $day, ' ', $time)"/>
   </xsl:template>
+
+  <xsl:template name="getFieldByIndex">
+    <xsl:param name="index"/>
+    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
+    <xsl:choose>
+      <xsl:when test="$index > 0">
+        <xsl:choose>
+          <xsl:when test="substring($line, 1, 1) = '&quot;'">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$index -1"/>
+              <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$index -1"/>
+              <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+              <xsl:with-param name="remaining" select="$remaining"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="substring($line, 1, 1) = '&quot;'">
+            <xsl:choose>
+              <xsl:when test="substring-before(substring-after($line, '&quot;'), '&quot;') != ''">
+                <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <!-- quoted string has new line -->
+                  <xsl:when test="string-length(substring-after($line, '&quot;')) = string-length(translate(substring-after($line, '&quot;'), '&#34;', ''))">
+                    <xsl:value-of select="concat(substring-after($line, '&quot;'), substring-before($remaining, '&quot;'))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="''"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="substring-before($line,$fs) != ''">
+                <xsl:value-of select="substring-before($line,$fs)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:if test="substring-after($line, $fs) = ''">
+                  <xsl:value-of select="$line"/>
+                </xsl:if>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
