@@ -678,7 +678,6 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 
 void ConfigureDiveComputerDialog::readSettings()
 {
-	// Disable the retrieve button while read thread is running
 	ui.progressBar->setValue(0);
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
