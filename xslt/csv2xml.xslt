@@ -241,28 +241,4 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="getFieldByIndex">
-    <xsl:param name="index"/>
-    <xsl:param name="line"/>
-    <xsl:choose>
-      <xsl:when test="$index > 0">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$index -1"/>
-          <xsl:with-param name="line" select="substring-after($line, $fs)"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="substring-before($line,$fs) != ''">
-            <xsl:value-of select="substring-before($line,$fs)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:if test="substring-after($line, $fs) = ''">
-              <xsl:value-of select="$line"/>
-            </xsl:if>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 </xsl:stylesheet>
