@@ -234,7 +234,7 @@ specific dive is saved in memory. When one closes Subsurface, the program
 will ask again, this time whether the complete dive log should be saved on
 disk or not.
 
-==== Dive Notes
+==== Notes de plongée
 
 This panel contains the date, time and place information for a particular
 dive, environmental conditions, co-divers and buddies, as well as some
@@ -667,7 +667,7 @@ be added in order to have a fuller record of the dives. To do this, the
 *Dive Notes* and the *Equipment* tabs on the top left hand of the
 _Subsurface_ window should be used.
 
-==== Dive Notes
+==== Notes de plongée
 
 The date and time of the dive, gas mixture and (often) water temperature is
 shown as obtained from the dive computer, but the user needs to add
@@ -1699,6 +1699,126 @@ cylinder. Sidemount dive logging involves three steps:
 
 image::images/sidemount1.jpg["FIGURE: Sidemount profile", align="center"]
 
+This section gives an example of the versatility of _Subsurface_ as a give
+logging tool.
+
+[[S_CCR_dives]]
+==== Closed circuit rebreather (CCR) dives
+
+[icon="images/APD.jpg"]
+[NOTE]
+Closed system rebreathers use advanced technology to recirculate gas that
+has been breathed while doing two things to maintain a breathable oxygen
+concentration:
+a) remove carbon dioxide from the gas that has been exhaled
+regulate the oxygen concentration to remain within safe diving limits.
+Currently, within _Subsurface_, the Poseidon MkVI Discovery is the best
+supported CCR dive computer. The CCR interface of _Subsurface_ is currently
+experimental and under active development. In contrast to a conventional
+recreational dive computer, a CCR system computer does not allow the
+download of a log containing multiple dives. Rather, each dive is stored
+independently. This means that _Subsurface_ cannot download a dive log
+directly from a CCR dive computer, but that it imports CCR dive logs in the
+same way that it imports dive log data from other digital databases.
+
+===== Import a CCR dive
+
+See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive
+information from other digital sources]. From the main menu of _Subsurface_,
+select _Import->Import log files_ to bring up the
+xref:Unified_import[universal import dialogue]. As explained in that
+section, the bottom right hand of the import dialogue contains a dropdown
+list of appropriate devices that currently includes an option for (Poseidon)
+MkVI files (import for other CCR equipment is under active
+development). Having selected the appropriate CCR format and the directory
+where the original dive logs have been stored from the CCR dive computer,
+one can select a particular dive log file (in the case of the MkVI it is a
+file with a .txt extension). After selecting the appropriate dive log,
+activate the _Open_ button at the bottom right hand of the universal import
+dialogue.
+
+===== Displayed information for a CCR dive
+
+_Partial pressures of gases_: The graph of oxygen partial pressure shows the
+information from the oxygen sensors of the CCR equipment. In contrast to
+recreational equipment (where pO~2~ values are calculated based on gas
+composition and dive depth), CCR equipment provide actual measurements of
+pO~2~, derived from oxygen sensors.  In this case the graph for oxygen
+partial pressure should be fairly flat, reflecting the setpoint settings
+during the dive. The mean pO~2~ is NOT the mean oxygen partial pressure as
+given by the CCR equipment, but a value xalculated by _Subsurface_ as
+follows:
+
+- For TWO O~2~ sensors the mean value of the two sensors are given.
+
+- For THREE-sensor systems (e.g. APD), the mean value is also used. However
+  differences of more than 0,1 bar in the simultaneous readings of different
+  sensors are treated as spurious. If one of the three sensors provides
+  spurious data, it is ignored.
+
+The mean pO~2~ of the sensors is indicated with a green line,
+
+The oxygen setpoint values as well as the readings from the individual
+oxygen sensors can be shown. The display of additional CCR information is
+turned on by checking the appropriate checkboxes in the _Preferences_ panel
+(accessible by selecting xref:S_CCR_options[_File -> Preferences ->
+Graph_]). This part of the _Preferences_ panel look like this, representing
+two checkboxes that modify the display of pO~2~ when the appropriate toolbar
+button on the Dive Profile has been activated.
+
+image::images/CCR_preferences.jpg["FIGURE: CCR preferences panel", align="center"]
+
+Checking any of the check boxes allows the display of additional
+oxygen-related information whenever the pO~2~ toolbar button on the
+_Profile_ panel is activated.  The first checkbox allows the display of
+setpoint information. This is a red line superimposed on the green oxygen
+partial pressure graph and allows a comparison of the mean measured oxygen
+partial pressure and the setpoint values, as in the image below.
+
+image::images/CCR_setpoint.jpg["FIGURE: CCR setpoint and po2 graph", align="center"]
+
+The second checkbox allows the display of the data from each individual
+oxygen sensor of the CCR equipment. The data for each sensor is colour-coded
+as follows:
+
+- Sensor 1: grey
+- Sensor 2: blue
+- Sensor 3: brown
+
+The mean oxygen pO~2~ is indicated by the green line. This allows the direct
+comparison of data from each of the oxygen sensors, useful for detecting
+abnormally low or erratic readings from a particular sensor.
+
+image::images/CCR_sensor_data.jpg["FIGURE: CCR sensor data graph", align="center"]
+
+The setpoint data can be overlaid on the oxygen sensor data by activating
+both of the above check boxes. Partial pressures for nitrogen (and helium,
+if applicable) are shown in the usual way as for open circuit dives.
+
+_Events_: Several events are logged, e.g. switching the mouthpiece to open
+circuit.  These events are indicated by yellow triangles and, if one hovers
+over a triangle, a description of that event is given as the bottom line in
+the xref:S_InfoBox[Information Box].
+
+_Cylinder pressures_: Some CCR dive computers like the Poseidon MkVI record
+the pressures of the oxygen and diluent cylinders. The pressures of these
+two cylinders are shown as green lines overlapping the depth profile. In
+addition, start and end pressures for both oxygen and diluent cylinders are
+shown in the _Equipment Tab_.  Below is a dive profile for a CCR dive,
+including an overaly of setpoint and oxygen sensor data, as well as the
+cylinder pressure data. In this case there is good agreement from the
+readings of the two oxygen sensors.
+
+image::images/CCR_dive_profile.jpg["FIGURE: CCR dive profile", align="center"]
+
+_Equipment-specific information_: Equipment-specific information gathered by
+_Subsurface_ is shown in the xref:S_ExtraTab[Extra data tab]. This may
+include setup information or metadata about the dive.
+
+More equipment-specific information for downloading CCR dive logs for
+Poseidon MkVI and APD equipment can be found in xref:S_PoseidonMkVI[Appendix
+B].
+
 == Obtaining more information about dives entered into the logbook
 
 === The *Dive Info* tab (for individual dives)
@@ -2338,19 +2458,37 @@ A dive log or part of it can be saved in three formats:
   _Divelogs.de_. Log into _http://en.divelogs.de_ and subscribe to this
   service in order to upload dive log data from _Subsurface_.
 
-* _CSV_ format, that includes the most critical information of the dive
-  profile. Included information of a dive is: dive number, date, time,
-  duration, depth, temperature and pressure.
+* _DiveShare_ is also a dive log repostory on the Internet focusing on the
+  recreational dives. In order to upload dives one has to provide a used ID,
+  so registration with _http://scubadiveshare.com_ is required.
+
+* _CSV dive profile_, that includes a large amount of detail for each dive,
+  including the depth profile, temperature and pressure information of each
+  dive.
+
+* _CSV dive details_, that includes the most critical information of the dive
+  profile. Included information of a dive is: dive number, date, time, buddy,
+  duration, depth, temperature and pressure: in short, most of the information
+  that recreational divers enter into written log books.
 
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
   some information about it are indicated. This map is not editable.
 
+* _Image depths_, which creates a text file that contains the file names of
+  all photos or images attached to any of the selected dives in the _Dive
+  List_, together with the depth under water where of each of those photos
+  were taken.
+
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable with
   an Internet browser. Most modern web browsers are supported, but JavaScript
-  must be enabled. This generated HTML file is not intended to be edited by
-  the users.  The HTML dive log contains most of the information and also
-  contains a search option to search the dive log. HTML export is specified on
-  the second tab of the Export dialog (image *B* above).
+  must be enabled. This HTML file is not intended to be edited by the users.
+  The HTML dive log contains most of the information and also contains a
+  search option to search the dive log. HTML export is specified on the second
+  tab of the Export dialog (image *B* above). A typical use of this option is
+  to export all one's dives to a smartphone or a tablet where it would serve
+  as a very portable record of dives useful for dive companies that wish to
+  verify the dive history of a diver.  This does away with the need to carry
+  one's original logbook with one when doing dives with dive companies.
 
 * _General Settings_, under the HTML tab, provides the following options:
 
@@ -2536,6 +2674,7 @@ button, units can be selected independently, with some units in the metric
 system and others in imperial.
 
 === Graph
+[[S_CCR_options]]
 image::images/Pref3.jpg["FIGURE: Preferences Graph page", align="center"]
 
 [[S_GradientFactors]]
@@ -2573,9 +2712,31 @@ the dive profile:
    deepest depth of a dive. If this box is not checked, GF_Low is applied at
    all depths deeper than the first deco stop. For more information see:
 
- ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+
+ ** _CCR: Show setpoints when viewing pO2:_ With this checkbox ativated, the pO~2~
+    graph on the dive profile has an overlay in red which inticates the CCR setpoint
+    values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+ ** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+ *  *Configuring dive planning using rebreather equipment:*
+
+ ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
+    CCR dive plan. This determines the pO~2~ that will be maintained
+    during a particular dive.
+
+ ** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, this is the
+    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning.
+
+ ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. Set this value for a
+    pSCR dive plan.
+
 
 === Language
 Choose a language that _Subsurface_ will use.
@@ -2876,98 +3037,111 @@ l'ordinateur de plongée est connu. Voir
 <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX
 A>> pour plus d'informations sur la manière de procéder.
 
-Once the dive computer is connected to the _Subsurface_ computer, select
-_File->Configure dive computer_ from the _Main Menu_. Provide the
-appropriate device name in the text box at the top of the configuration
-panel that opens and select the appropriate dive computer model from the
-panel on the lefthand (see image below).
+Une fois que l'ordinateur de plongée est connecté à _Subsurface_,
+sélectionner _Fichier -> Configurer l'ordinateur de plongée_, à partir du
+menu principal. Fournir le nom du périphérique dans le champ en haut du
+panneau de configuration qui ouvre et sélectionne le bon modèle d'ordinateur
+de plongée à partir du panneau à gauche (voir l'image ci-dessous).
 
 image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer", align="center"]
 
-Using the appropriate buttons on the configuration panel, the following
-actions can be performed:
+En utilisant les boutons appropriés du panneau de configuration, les actions
+suivantes peuvent être réalisées :
 
- - *Retrieve available details*. This loads the existing configuration from the dive computer
-   to _Subsurface_, showing this in the configuration panel.
- - *Save changes to device*. This changes the configuration of the
-   dive computer to correspond to the information shown in the configuration panel.
- - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
-   a file location and file name for the saved information.
- - *Restore backup*. This loads the information from a backup file and displays it
-   in the configuration panel.
- - *Update firmware*. If new firmware is available for the dive computer, this is
-   loaded into the dive computer.
+ - *Récupérer les détails disponibles*. Cela charge la configuration existante à partir de l'ordinateur de plongée
+   dans _Subsurface_, en l'affichant dans le panneau de configuration.
+ - *Enregistrer les modifications sur le périphérique*. Cela change la configuration de l'ordinateur
+   de plongée pour correspondre aux informations affichées dans le panneau de configuration.
+ - *Sauvegarder*. Cela enregistre la configuration dans un fichier. _Subsurface_ demande
+   l'emplacement et le nom du fichier pour enregistrer les informations.
+ - *Restaurer une sauvegarde*. Cela charge les informations à partir d'un fichier de sauvegarde et l'affiche
+   dans le panneau de configuration.
+ - *Mettre à jour le firmware*. Si un nouveau firmware est disponible pour l'ordinateur de plongée,
+   il sera chargé dans l'ordinateur de plongée.
 
-== Description of the Subsurface Main Menu items
+== Description des éléments du menu principal de Subsurface
 
-This section describes the functions and operation of the items in the Main
-Menu of Subsurface. Several of the items below are links to sections of this
-manual dealing with the appropriate operations.
+Cette section décrit les fonctions et les opérations des éléments du menu
+principal de Subsurface. Plusieurs éléments ci-dessous sont des liens vers
+des sections de ce manuel traitant des opérations relatives.
 
 === Fichier
-- <<S_NewLogbook,_New Logbook_>> - Close the currently open dive logbook and
-  clear all dive information.
-- _Open logbook_ - This opens the file manager in order to select a dive
-  logbook to open.
-- _Save_ - Save the dive logbook that is currently open.
-- _Save as_ - Save the current logbook under a different file name.
-- _Close_ - Close the dive logbook that is currently open.
-- <<S_ExportLog,_Export_>> - Export the currently open dive logbook (or the
-  selected dives in the logbook) to one of several formats.
-- <<S_PrintDivelog,_Print_>> - Print the currently open logbook.
-- <<S_Preferences,_Preferences_>> - Set the _Subsurface_ preferences.
-- <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive
-  computer.
-- _Quit_ - Quit _Subsurface_.
+- <<S_NewLogbook,_Nouveau carnet de plongée_>> - Fermer le carnet de plongée
+  actuellement ouvert et supprime toutes les informations de plongées.
+- _Ouvrir un carnet de plongée_ - Cela ouvre une fenêtre pour sélectionner le
+  carnet de plongée à ouvrir.
+- _Sauvegarder_ - Enregistrer le carnet de plongée qui est actuellement
+  ouvert.
+- _Enregsitrer sous_ - Enregistrer le carnet actuel sous un nom différent.
+- _Fermer_ - Fermer le carnet de plongée actuellement ouvert.
+- <<S_ExportLog,_Exporter_>> - Exporter le carnet de plongée actuellement
+  ouvert (ou les plongées sélectionnées dans le carnet) vers un des nombreux
+  formats.
+- <<S_PrintDivelog,_Imprimer_>> - Imprimer le carnet de plongée actuellement
+  ouvert.
+- <<S_Preferences,_Préférences_>> - Définir les  préférences de _Subsurface_.
+- <<S_Configure,_Configurer l'ordinateur de plongée_>> - Modifier la
+  configuration d'un ordinateur de plongée.
+- _Quitter_ - Quitter _Subsurface_.
 
-=== Import
-- <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive
-  information from a dive computer.
-- <<Unified_import,_Import Log Files_>> - Import dive information from a file
-  in in a _Subsurface_-compatible format.
-- <<S_Companion,_Import GPS data from Subsurface web service_>> - Load GPS
-  coordinates from the _Subsurface_ mobile phone app.
-- <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive
-  information from _www.Divelogs.de_.
+=== Importer
+- <<S_ImportDiveComputer,_Importer depuis un l'ordinateur de plongée_>> -
+  Importer des informations de plongées à partir de l'ordinateur de plongée.
+- <<Unified_import,_Importer des fichiers de log_>> - Importer des
+  informations de plongées à partir d'un fichier d'un format compatible avec
+  _Subsurface_.
+- <<S_Companion,_Importer les données GPS depis le service web Subsurface_>> -
+  Charge les coordonnées GPS à partir de l'application mobile _Subsurface_
+  (téléphones et tablettes).
+- <<S_ImportingDivelogsDe,_Importer depuis Divelogs.de_>> - Importer des
+  informations de plongées à partir de _www.Divelogs.de_.
 
-=== Log
-- <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List*
-  panel.
-- <<S_DivePlanner,_Plan Dive_>> - This feature allows the planning of dives.
-- <<S_Replan,_Re-plan dive_>> - Edit a dive plan that has been saved into the
-  *Dive List*.
-- <<S_CopyComponents,_Copy dive components_>> - By selecting this option, one
-  can copy information from several fields of a dive log onto the clipboard.
-- _Paste dive components_ - Paste, into the selected dives in the *Dive List*,
-  the information copied using the _Copy dive components_ option.
-- <<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List*
-  panel.
-- <<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into
-  dive trips.
-- <<S_DeviceNames,_Edit Device Names_>> - Edit the names of dive computers to
-  facilitate your logs.
-- <<S_Filter,_Filter divelist_>> - Select only some dives, based on specific
-  tags or dive criteria.
+=== Journal (log)
+- <<S_EnterData,_Ajouter une plongée_>> -  Ajouter manuellement une nouvelle
+  plongée au panneau de la *liste des plongées*.
+- <<S_DivePlanner,_Planifier une plongée_>> - Cette fonctionnalité permet de
+  planifier des plongées.
+- <<S_Replan,_Replanifier une plongée_>> - Modifier une plongée planifiée qui
+  a été enregistrée dans la *liste des plongées*.
+- <<S_CopyComponents,_Copier les composants de la plongée_>> - En
+  sélectionnant cette option, vous pouvez copier les informations de plusieurs
+  champs d'un journal de plongée vers le presse-papier.
+- _Coller les composants de la plongée_  - Colle, dans les plongées
+  sélectionnées dans la *liste des plongées*, les informations copiées au
+  préalable avec l'option _Copier les composants de la plongée_.
+- <<S_Renumber,_Renuméroter_>> - Renuméroter les plongées sélectionnées dans
+  le panneau de la *liste des plongées*.
+- <<S_Group,_Grouper automatiquement_>> - Grouper les plongées du panneau de
+  *liste des plongées* dans des voyages de plongées.
+- <<S_DeviceNames,_Editer les noms des ordinateurs de plongée_>> - Modifier
+  les noms des ordinateurs de plongée pour faciliter vos journaux (logs).
+- <<S_Filter,_Filtrer la liste des plongées_>> - Sélectionner seulement
+  certaines plongées, à partir de tags ou de critères de plongées.
 
-=== View
-- <<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels
-  simmultaneously.
-- <<S_ViewPanels,_Dive List_>> - View only the *Dive List* panel.
-- <<S_ViewPanels,_Profile_>> - View only the *Dive Profile* panel.
-- <<S_ViewPanels,_Info_>> - View only the *Dive Notes* panel.
-- <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
-- _Yearly Statistics_ - Display summary statistics about dives during this and
-  past years.
-- _Prev DC_ - Switch to previous dive computer.
-- _Next DC_ - Switch to next dive computer.
-- _Full Screen_ - Toggles Full Screen mode.
+=== Vue
+- <<S_ViewPanels,_Tout_>> - Affiche les quatre panneaux principaux de
+  _Subsurface_ simultanément.
+- <<S_ViewPanels,_Liste des plongées_>> - Affiche uniquement le panneau de la
+  *liste des plongées*.
+- <<S_ViewPanels,_Profil_>> - Affiche uniquement le panneau du *profil de la
+  plongée*.
+- <<S_ViewPanels,_Info_>> - Affiche uniquement le panneau des *notes de
+  plongée*.
+- <<S_ViewPanels,_Globe_>> - Affiche uniquement le panneau de la *carte
+  mondiale*.
+- _Statistiques annuelles_  - Affiche par année le résumé des statistiques des
+  plongées effectuées.
+- _Ordinateur précédent_  - Passer à l'ordinateur de plongée précédent.
+- _Ordinateur suivant_  - Passer à l'ordinateur de plongée suivant.
+- _Plein écran_  - Passer en mode plein écran.
 
 === Aide
-- _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
-  well as licensing information.
-- _Check for updates_ - Find out whether a newer version of Subsurface is
-  available on the http://subsurface-divelog.org/[_Subsurface_ web site].
-- _User Manual_ - Open a window showing this user manual.
+- _À propos de Subsurface_  - Affiche un panneau avec le numéro de version de
+  _Subsurface_ ainsi que les informations de licence.
+- _Vérifier les mises à jour_  - Vérifier si une nouvelle version de
+  Subsurface est disponible sur le http://subsurface-divelog.org/[site web de
+  _Subsurface_ ].
+- _Manuel utilisateur_  - Ouvre une fenêtre affichant ce manuel utilisateur.
 
 
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
@@ -3370,6 +3544,17 @@ Making a backup copy of the Suunto DM4/DM5 database:
    DM4 (or DM5) in here with the default extension .bak
 4. Click 'Save'
 5. The dives are now exported to the file DM4.bak (or DM5.bak)
+
+
+=== Exporting from Atomic Logbook
+[[Atomic_Export]]
+
+[NOTE]
+Atomic Logbook is a Windows software by Atomic Aquatics. It allows
+downloading of dive information from Cobalt and Cobalt 2 dive computers.
+The divelog is kept in a SQlite database at
+C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can be
+directly imported to Subsurface.
 
 
 === Exporting from Mares Dive Organiser V2.1
