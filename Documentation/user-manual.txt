@@ -992,60 +992,6 @@ Selecting the appropriate file in the file list of the dialogue opens
 the imported dive log in the _Subsurface_ *Dive List*. Some other formats, not
 accessible through the Import dialogue are also supported, as explained below.
 
-==== Importing dive logs from closed circuit rebreather (CCR) systems
-
-[icon="images/APD.jpg"]
-[NOTE]
-Closed system rebreathers use advanced technology to recirculate
-gas that has been breathed while doing two things to maintain a
-breathable oxygen concentration:
-a) remove carbon dioxide from the gas that has been exhaled
-b) regulate the oxygen concentration to remain within safe diving limits.
-   Currently, within _Subsurface_, the Poseidon MkVI Discovery is the best
-   supported CCR dive computer. The CCR interface of _Subsurface_ is currently experimental
-   and under active development. In contrast to a conventional open circuit
-   dive computer, a CCR system computer does not allow the download of a log
-   containing multiple dives. Rather, each dive is stored independently. This
-   means that _Subsurface_ cannot download a dive log directly from a CCR
-   dive computer, but that it imports CCR dive logs in the same way that it
-   imports dive log data from other databases.
-
-===== Import a CCR dive
-
-See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
-digital sources]. From the main menu of _Subsurface_, select _Import->Import
-log files_ to bring up the xref:Unified_import[universal import dialogue]. As
-explained in the previous section, the bottom right
-hand of the import dialogue contains a dropdown list of appropriate devices
-that currently includes an option for MkVI files. Having selected the appropriate CCR format and
-the directory where the original dive logs have been stored from the CCR dive
-computer, one can select a particular dive log file (in the case of the MkVI
-it is a file with a .txt extension). After selecting the appropriate dive log,
-activate the _Open_ button at the bottom right hand of the universal import dialogue.
-
-===== Displayed information for a  dive
-
-_Partial pressures of gases_: The graph of oxygen partial pressure shows the
-information from the oxygen sensors of the CCR equipment. In the case of the
-Poseidon MKVI, the mean value of the two oxygen sensors are shown. In the case
-of the APD equipment, the mean of the three oxygen sensors are shown. If one
-sensor shows a very different oxygen PO2 reading compared to the others, the
-divergent sensor is ignored. For CCR dives the graph for oxygen partial pressure
-should be fairly flat, reflecting the setpoint settings during the dive.
-Partial pressures for nitrogen (and helium,
-if applicable) are shown in the usual way as for other dives.
-
-_Cylinder pressures_: CCR dive computers like the Poseidon MkVI record the
-pressures of the oxygen and diluent cylinders. The pressure of the oxygen cylinder
-is shown on the dive profile. In addition, start and end pressures for both oxygen
-and diluent cylinders are shown in the _Equipment Tab_.
-
-_Equipment-specific information_: Equipment-specific information gathered by
-_Subsurface_ is shown in the _Extra data_ tab. This may include setup information
-or metadata about the dive.
-
-More equipment-specific information for downloading CCR dive logs can be found in xref:S_PoseidonMkVI[Appendix B].
-
 ==== Importing from Mares Dive Organiser V2.1
 
 Since Mares utilise proprietary Windows software not compatible with
@@ -1088,29 +1034,42 @@ image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de",align="center"]
 [[S_ImportingCSVData]]
 ==== Importing data in CSV format
 
-A comma-separated file (.csv) can be used to import dive information either as dive profiles (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive metadata (in case the user keeps dive data in a spreadsheet). For
-an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's Introduction To CSV Files].
-
-[icon="images/icons/important.png"]
-[IMPORTANT]
-The CSV import has a couple of caveats. You should avoid some special characters
-like ampersand (&), less than (<), greater than (>) and double quotes ("), the latter if quoting text cells. The
-file should use UTF-8 character set, if having non-ASCII characters. Also the
-size of the CSV file might cause problems. Importing 100 dives at a time
-(without dive profile) has worked previously, but larger files might exceed
-limits of the parser used. When having problems with CSV imports, try first with
-a smaller sample to make sure everything works.
+A comma-separated file (.csv) can be used to import dive information either as dive profiles
+(as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive
+metadata (in case the user keeps dive data in a spreadsheet). The _CSV_ format is a universal
+simplified format that allows for easy information exchange between different computers or
+software packages. For an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's
+Introduction To CSV Files]. _Subsurface_ dive logs can also be exported in _CSV_ format to
+other software that reads this format. See xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet
+to CSV format] for information that may be helpful for importing spreadsheet-based data
+into _Subsurface_.
 
 [[S_ImportingCSVDives]]
 ===== Importing dives in CSV format from dive computers or other dive log software
 
-CSV files are normally organised into
-a single line that provides the headers (or _field names_) of the data columns, followed by the
-data, one record per line. CSV files can be opened with a normal text editor.
-For information of how to export a spreadsheet in CSV format see xref:S_Appendix_D[APPENDIX D:
-Exporting a spreadsheet to CSV format].
+One can view a _CSV_ file by using an ordinary text editor. It is normally organised into
+a single line that provides the headers (or _field names_ or _column headings_) of the data
+columns, followed by the data, one record per line.
 
-Before being able to import the data to _Subsurface_ one needs to know:
+There are two types of _CSV_ dive logs that can be imported into _Subsurface_:
+
+1. _CSV dive details_: This dive log format contains similar information to that of a
+   typical written dive log, e.g. dive date and time, dive depth, dive duration, names of
+   buddy and dive master and perhaps some information about cylinder pressures before and
+   after the dive, as well as a comment or two about the dive. All the data for a single
+   dive go on a single line of text, following the order of the column headings.
+
+2. _CSV dive profile_: This dive log format includes much more information about a single
+   dive. For instance there may be information at 30-second intervals, indicating depth, water
+   temperature at that depth, and cylinder pressure at that moment in time. Each line contains
+   the information for a single instant in time during the dive, 30 seconds after that
+   of the previous instant. Many lines
+   are required to complete the depth profile information for a single dive. This is a common
+   export format used by closed-circuit rebreather (CCR) dive equipment and many software
+   packages that handle dive computer data and/or dive logs.
+
+Before being able to import the _CSV_ data to _Subsurface_ *one needs to know a few
+things about the data being imported*:
 
 a. Which character separates the different columns within a single line of
    data? This field separator should be either a comma (,) or a TAB character.
@@ -1118,65 +1077,76 @@ a. Which character separates the different columns within a single line of
    comma-delimited, then the comma
    characters between the values are clearly visible. If no commas are evident and
    the numbers are aligned in columns,
-   the file is probably TAB-delimited (i.e. it uses a TAB as a field separator, as
-   in the above example).
+   the file is probably TAB-delimited (i.e. it uses a TAB as a field separator).
 
-b. Which data columns need to be imported into _Subsurface_? The Dive Time and
-   Depth columns are always required. Open the file using a text editor and note
+b. Which data columns need to be imported into _Subsurface_? Is it a _CSV dive details_
+   file or a _CSV dive profile_ file? Open the file using a text editor and note
    the titles of the columns to be imported and their column positions.
 
 c. Is the numeric information (e.g. dive depth) in metric or in imperial unis?
 
 Armed with this information, importing the data into _Subsurface_ is
 straightforward. Select
-_Import->Import Log Files_ from the main menu. In the resulting file
-selection menu, select _CSV files_, after which a common configuration dialog
-appears for all the
-files with a CSV extension:
+_Import ->  Import Log Files_ from the main menu. In the resulting file
+selection menu, select _CSV files_ (towards the bottom right). This shows all .CSV files in the selected
+directory. Select the file that needs to be imported. A configuration panel
+appears as depicted below:
 
-image::images/Import_CSV1.jpg["FIGURE: CSV download dialogue",align="center"]
+image::images/csv_import1.jpg["FIGURE: CSV download dialogue 1",align="center"]
 
-There are pre-configured definitions for some dive computers, e.g. the APD
-rebreathers. If the user's dive computer is on this list, it should be selected
-using the dropdown
-box labeled _Pre-configured imports_.
+Notice that, at the top left, there is a dropdown list containing pre-configured
+settings for some of the more common dive computers and software packages
+encountered by divers. If the _CSV_ file being imported originated from any of
+these pre-configured items, then select it. Otherwise use the _Manual Import_
+option. The configuration panel also has dropdown lists for the specification of the appropriate
+field separator (Tab, comma or semicolon), the date format used in the _CSV_ file,
+the time units (seconds, minutes or minutes:seconds), as well as the unit system
+(metric or imperial). Selecting the appropriate options among these is critical for
+the successful import of the data.
 
-If the dive computer is not on the pre-configured list, the user must
-select the _Field
-Separator_ (TAB or comma) for the particular CSV file, using the appropriate
-dropdown list. For each data column used for import, the user must check the
-appropriate check box
-and indicate in which column these data are found.
+The last remaining task is to ensure that all the data columns have the appropriate
+column headings. The top line of the white part of the data table contains the column
+headings found in the _CSV_ data file. The blue row of cells immediately above these
+contains the names understood by _Subsurface_. The white area below the dropdown
+lists contains all the field names that _Subsurface_ recognises. These names are
+in blue balloons and can be moved using a drag-and-frop action. For
+instance, _Subsurface_ expects the column heading for Dive number (" # ") to be "Dive # ". If
+the column heading that _Subsurface_ expects is not in the blue cells, then drag the
+appropriate column heading from the upper area and drop it in the appropriate blue
+cell at the top of the table. To indicate the correct column for "Dive #", drag
+the ballooned item labelled "Dive # " and drop it in the blue
+cell immediately above the white cell containing " # ". This is depicted in
+the image below.
 
-Finally _OK_ should be clicked and
-the dive(s) are imported and listed in the *Dive List* tab of _Subsurface_.
+image::images/csv_import2.jpg["FIGURE: CSV download dialogue 2",align="center"]
 
-
-[[S_ImportingManualCSV]]
-==== Importing dives from a manually kept CSV file or a spreadsheet
+Continue in this way to ensure that all the column headings in the blue row of
+cells correspond to the headings listed in the top part of the dialogue. Having
+completed this task, select the _OK_ button to the bottom right og the dialogue.
+The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 
 [[S_CSV_Intro]]
 ****
-*A Diver's Introduction To CSV Files*
+*A Diver's Introduction To _CSV_ Files*
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-CSV is an abbreviation for a data file format: _Comma-Separated Variables_. It is a
+_CSV_ is an abbreviation for a data file format: _Comma-Separated Variables_. It is a
 file format allowing someone to view or edit the information using a text editor such
 as Notebook (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
-the CSV format is that the data are easily editable as text without any proprietary software
-and ensuring all information is human-readable, not being obscured by the any custom or
+the _CSV_ format is that the data are easily editable as text without any proprietary software
+and ensuring all information is human-readable, not being obscured by any custom or
 proprietary attributes that proprietary software insert into files.
-Because of its simplicity the CSV format is used
+Because of its simplicity the _CSV_ format is used
 as an interchange format between many software packages, e.g. between
-spreadsheet, statistical, graphics, database and diving software. Within _Subsurface_, CSV files can also
+spreadsheet, statistical, graphics, database and diving software. Within _Subsurface_, _CSV_ files can also
 be used to import information from other sources such as spreadsheet-based dive logs and
 even from some dive computers.
 
-CSV files can be created or edited with a normal text editor. The most important attribute of a
-CSV file is the _field separator_, the character used to separate fields within a single line. The
+_CSV_ files can be created or edited with a normal text editor. The most important attribute of a
+_CSV_ file is the _field separator_, the character used to separate fields within a single line. The
 field separator is frequently a comma, a colon, a SPACE character or a TAB character. When exporting data from
-spreadsheet software, the field separator needs to be specified in order to create the CSV file. CSV files are
+spreadsheet software, the field separator needs to be specified in order to create the _CSV_ file. _CSV_ files are
 normally organised into a single line that provides the headers (or _field names_) of the data columns,
 followed by the data, one record per line. Note that each field name
 may comprise more than one word separated by spaces; for instance _Dive site_, below. Here is an example of
@@ -1201,7 +1171,7 @@ disadvantage is that one cannot see
 the TAB characters. For instance, the space between _Dive_ and _date_ in the top line may be
 a SPACE character or a TAB character (in this case it is a SPACE character: the tabs are before and
 after _Dive date_). If the field names in the first line are long, the alignment with data in the other lines
-cannot be maintained. Here is a highly simplified and shortened TAB-delimited example of a CSV dive log
+cannot be maintained. Here is a highly simplified and shortened TAB-delimited example of a _CSV_ dive log
 from an APD closed-circuit rebreather (CCR) dive computer:
 
 	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar) 	pO₂ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
@@ -1215,76 +1185,25 @@ from an APD closed-circuit rebreather (CCR) dive computer:
 	30      1.7     0.70    0.71    12.6
 	40      1.8     0.70    0.68    12.5
 
-CSV files can therefore be used in many contexts for importing data into a _Subsurface_ dive log.
-
-An important aspect of the CSV format required by _Subsurface_ is the _Column Mapping_. In the example
-from different dive sites above, each line of data is organised as follows:
-
-	Column 1:	Dive site (location)
-	Column 2:	Dive date
-	Column 3:	Dive time
-	Column 4:	Dive duration
-	Column 5:	Maximum dive depth (m)
-	Column 6:	Name of dive buddy
-
-_Subsurface_ requires the column number of each of these data items. For these data the
-column specification may look like this:
-
-image::images/CSV_column_definition.jpg["FIGURE: CSV column definition",align="center"]
-
-Knowledge of a few basic things about he content of the CSV file allows a smooth import
+When a _CSV_ file is selected for import, _Subsurface_ displays the column headers as well as some of the data
+in the first few lines of the _CSV_ file, making it much easier to work with _CSV_ files.
+_CSV_ files can therefore be used in many contexts for importing data into a _Subsurface_ dive log.
+Knowledge of a few basic things about the content of the _CSV_ file allows a smooth import
 of the dives into _Subsurface_.
 
 ****
 
-If one keeps dive logs in a spreadsheet, there is an option to import
-those dives, exported as a CSV file. See xref:S_Appendix_D[APPENDIX D:
-Exporting a spreadsheet to CSV format]
-for information of how to export a spreadsheet in CSV format.
-When importing manually kept log files into _Subsurface_, the information
-needed is quite different from that accessible using a dive computer, as we are
-importing only summary data, not depth profile samples.
 
-When importing dives in CSV format (see above), one needs to
-know the internal format of the CSV data to import.
-
-a. Which character separates the different columns within a single line of
-   data?
-   A recommended field separator for the export is TAB, as commas might be part of
-   the decimal data values themselves. Therefore the use of an appropriate field separator
-   is very important. When exporting data from a spreadsheet it is likely to
-   request the user to supply an appropriate field separator character.
-
-b. Which columns need to be imported into _Subsurface_? Currently there
-   are not any mandatory input fields, but some, e.g. dive duration
-   are crucial for the log file to make any sense. Possible options
-   can be seen in the image below and one should include as many as possible of the
-   fields available in the original log file.
-
-c. Units used for depth, weight and temperature. We consider depth to be
-   either feet or meters, weight kilograms or pounds and temperature either
-   Celsius or Fahrenheit. However, the users can select _Metric_ or
-   _Imperial_ in the *Preferences* tab of _Subsurface_. No mixture of unit
-   systems is allowed for the different fields.
-
-Importing manually kept CSV log files is quite straight forward, but
-there might be many fields and counting the field numbers is error
-prone. Therefore validation of the data to be imported is critical.
-
-To import the dives, select _Import->Import Log Files_ from the menu
-bar. If the CSV option in the dropdown list is selected and the file list
-includes file names ending with .CSV, one can select the
-_Manual dives_ tab that will bring up the following configuration dialog:
-
-image::images/Import_CSV2.jpg["FIGURE: Download dialog for Manual CSV logs",align="center"]
-
-Check the check boxes corresponding to the data in the original import file.
-For each of the checked data items, a corresponding column number needs to be
-entered. For instance in the image above, the name of the dive site (i.e. location)
-is located as the 11th item (or column) on each line of the CSV import file.
-The input fields can be configured as appropriate, and when everything is done
-the _OK_ button should be selected to perform the import. New dives should
-appear in the *Dive List* area of _Subsurface_.
+[icon="images/icons/important.png"]
+[IMPORTANT]
+The _CSV_ import has a couple of caveats. One should avoid some special characters
+like ampersand (&), less than (<), greater than (>) and double quotes (") as part
+of the numbers or text within a cell. The
+file should use UTF-8 character set, if using non-ASCII characters. Also the
+size of the _CSV_ file might cause problems. Importing 100 dives at a time
+(_CSV dive details_) works, but larger files might exceed
+limits of the parser used. When encountering problems with _CSV_ imports, first try with
+a smaller file to make sure everything works.
 
 
 [[S_Companion]]
@@ -1878,7 +1797,9 @@ placed adjacent to significant changes.
 
 The dive profile can include graphs of the *partial pressures*
 of O2, N2, and He during the dive (see figure above) as well as a calculated and dive computer
-reported deco ceilings (only visible for deep, long, or repetitive dives). Partial pressures of oxygen are indicated in green, those of nitrogen in black, and those of helium in dark red. These
+reported deco ceilings (only visible for deep, long, or repetitive dives).
+Partial pressures of oxygen are indicated in green, those of nitrogen in black,
+and those of helium in dark red. These
 partial pressure graphs are shown below the profile data.
 
 [icon="images/icons/O2.jpg"]
