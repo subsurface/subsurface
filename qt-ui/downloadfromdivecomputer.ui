@@ -207,7 +207,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Downloaded Dives</string>
+            <string>Downloaded dives</string>
            </property>
           </widget>
          </item>
