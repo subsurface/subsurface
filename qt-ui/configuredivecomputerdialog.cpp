@@ -683,7 +683,6 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
-	ui.progressBar->reset();
 	config->readSettings(&device_data);
 }
 
@@ -694,7 +693,6 @@ void ConfigureDiveComputerDialog::resetSettings()
 	ui.progressBar->setTextVisible(true);
 
 	getDeviceData();
-	ui.progressBar->reset();
 	config->resetSettings(&device_data);
 }
 
@@ -1078,7 +1076,6 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		ui.progressBar->setTextVisible(true);
 
 		getDeviceData();
-		ui.progressBar->reset();
 		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
 }
