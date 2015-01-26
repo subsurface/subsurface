@@ -88,30 +88,25 @@ void UpdateManager::requestReceived()
 				+ "<br/><br/><b>" + tr("Please check your internet connection.") + "</b>";
 	} else {
 		//No network error
-		QString response(reply->readAll());
-		QString responseBody;
-		if (response.contains('"'))
-			responseBody = response.split("\"").at(1);
-		else
-			responseBody = response;
+		QString responseBody(reply->readAll());
+		QString responseLink;
+		if (responseBody.contains('"'))
+			responseLink = responseBody.split("\"").at(1);
 
 		msgbox.setIcon(QMessageBox::Information);
-
 		if (responseBody == "OK") {
 			msgText = tr("You are using the latest version of Subsurface.");
-		} else if (responseBody.startsWith("http")) {
+		} else if (responseBody.startsWith("[\"http")) {
 			haveNewVersion = true;
 			msgText = tr("A new version of Subsurface is available.<br/>Click on:<br/><a href=\"%1\">%1</a><br/> to download it.")
-					.arg(responseBody);
+					.arg(responseLink);
 		} else if (responseBody.startsWith("Latest version")) {
 			// the webservice backend doesn't localize - but it's easy enough to just replace the
 			// strings that it is likely to send back
 			haveNewVersion = true;
-			responseBody.replace("Latest version is ", "");
-			responseBody.replace(". please check with your OS vendor for updates.", "");
 			msgText = QString("<b>") + tr("A new version of Subsurface is available.") + QString("</b><br/><br/>") +
-					tr("Latest version is %1, please check with your OS vendor for updates.")
-					.arg(responseBody);
+					tr("Latest version is %1, please check %2 our download page %3 for information in how to update.")
+					.arg(responseLink).arg("<a href=\"http://subsurface-divelog.org/download\">").arg("</a>");
 		} else {
 			// the webservice backend doesn't localize - but it's easy enough to just replace the
 			// strings that it is likely to send back
