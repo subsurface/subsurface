@@ -144,7 +144,7 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case AMBPRESSURE:
 		return tr("Ambient pressure");
 	case HEARTBEAT:
-		return tr("Heart beat");
+		return tr("Heart rate");
 	case GFLINE:
 		return tr("Gradient factor");
 	case INSTANT_MEANDEPTH:
