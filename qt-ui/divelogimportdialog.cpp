@@ -634,4 +634,3 @@ void TagDragDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 	painter->restore();
 	QStyledItemDelegate::paint(painter, option, index);
 }
-
