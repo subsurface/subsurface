@@ -599,14 +599,14 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 
 void DiveImportedModel::selectAll()
 {
-	memset(checkStates, true, lastIndex - firstIndex);
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
+	memset(checkStates, true, lastIndex - firstIndex + 1);
+	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
 }
 
 void DiveImportedModel::selectNone()
 {
-	memset(checkStates, false, lastIndex - firstIndex);
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex - 1), QVector<int>() << Qt::CheckStateRole);
+	memset(checkStates, false, lastIndex - firstIndex + 1);
+	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
