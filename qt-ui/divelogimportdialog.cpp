@@ -373,7 +373,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QString firstLine = f.readLine();
 	if (firstLine.contains("SEABEAR")) {
 		seabear = true;
-		firstLine = "Sample time;Sample depth;Sample ndl;Sample tts;Sample stopdepth;Sample temperature;Sample pressure";
+		firstLine = "Sample time;Sample depth;Sample NDL;Sample TTS;Sample stopdepth;Sample temperature;Sample pressure";
 		blockSignals(true);
 		ui->knownImports->setCurrentText("Seabear CSV");
 		blockSignals(false);
@@ -388,7 +388,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 	// Special handling for APD Log Viewer
 	if (triggeredBy == KNOWNTYPES && value == 1) {
-		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample cns\tSample stopdepth";
+		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
 		blockSignals(false);
@@ -531,9 +531,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       r.indexOf(tr("Sample depth")),
 						       r.indexOf(tr("Sample temperature")),
 						       r.indexOf(tr("Sample pO₂")),
-						       r.indexOf(tr("Sample cns")),
-						       r.indexOf(tr("Sample ndl")),
-						       r.indexOf(tr("Sample tts")),
+						       r.indexOf(tr("Sample CNS")),
+						       r.indexOf(tr("Sample NDL")),
+						       r.indexOf(tr("Sample TTS")),
 						       r.indexOf(tr("Sample stopdepth")),
 						       r.indexOf(tr("Sample pressure")),
 						       ui->CSVSeparator->currentIndex(),
@@ -554,9 +554,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
 					       r.indexOf(tr("Sample pO₂")),
-					       r.indexOf(tr("Sample cns")),
-					       r.indexOf(tr("Sample ndl")),
-					       r.indexOf(tr("Sample tts")),
+					       r.indexOf(tr("Sample CNS")),
+					       r.indexOf(tr("Sample NDL")),
+					       r.indexOf(tr("Sample TTS")),
 					       r.indexOf(tr("Sample stopdepth")),
 					       r.indexOf(tr("Sample pressure")),
 					       ui->CSVSeparator->currentIndex(),
@@ -600,9 +600,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
 					       r.indexOf(tr("Sample pO₂")),
-					       r.indexOf(tr("Sample cns")),
-					       r.indexOf(tr("Sample ndl")),
-					       r.indexOf(tr("Sample tts")),
+					       r.indexOf(tr("Sample CNS")),
+					       r.indexOf(tr("Sample NDL")),
+					       r.indexOf(tr("Sample TTS")),
 					       r.indexOf(tr("Sample stopdepth")),
 					       r.indexOf(tr("Sample pressure")),
 					       ui->CSVSeparator->currentIndex(),
