@@ -136,11 +136,11 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	case O2SETPOINT:
 		return tr("Setpoint");
 	case CCRSENSOR1:
-		return tr("Sensor1");
+		return tr("Sensor 1");
 	case CCRSENSOR2:
-		return tr("Sensor2");
+		return tr("Sensor 2");
 	case CCRSENSOR3:
-		return tr("Sensor3");
+		return tr("Sensor 3");
 	case AMBPRESSURE:
 		return tr("Ambient pressure");
 	case HEARTBEAT:
