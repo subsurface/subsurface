@@ -418,6 +418,8 @@ void DownloadFromDCWidget::on_cancel_clicked()
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
+	struct dive *dive;
+
 	if (currentState != DONE)
 		return;
 
@@ -433,16 +435,20 @@ void DownloadFromDCWidget::on_ok_clicked()
 	// remember the last downloaded dive (on most dive computers this will be the chronologically
 	// first new dive) and select it again after processing all the dives
 	MainWindow::instance()->dive_list()->unselectDives();
-	uniqId = get_dive(dive_table.nr - 1)->id;
-	process_dives(true, preferDownloaded());
-	// after process_dives does any merging or resorting needed, we need
-	// to recreate the model for the dive list so we can select the newest dive
-	MainWindow::instance()->recreateDiveList();
-	idx = get_idx_by_uniq_id(uniqId);
-	// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
-	// (but not visible as selected)
-	MainWindow::instance()->dive_list()->unselectDives();
-	MainWindow::instance()->dive_list()->selectDive(idx, true);
+
+	dive = get_dive(dive_table.nr - 1);
+	if (dive != NULL) {
+		uniqId = get_dive(dive_table.nr - 1)->id;
+		process_dives(true, preferDownloaded());
+		// after process_dives does any merging or resorting needed, we need
+		// to recreate the model for the dive list so we can select the newest dive
+		MainWindow::instance()->recreateDiveList();
+		idx = get_idx_by_uniq_id(uniqId);
+		// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
+		// (but not visible as selected)
+		MainWindow::instance()->dive_list()->unselectDives();
+		MainWindow::instance()->dive_list()->selectDive(idx, true);
+	}
 
 	if (ostcFirmwareCheck && currentState == DONE)
 		ostcFirmwareCheck->checkLatest(this, &data);
