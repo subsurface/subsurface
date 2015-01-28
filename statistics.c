@@ -292,6 +292,8 @@ void get_selected_dives_text(char *buffer, int size)
 	}
 }
 
+#define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
+
 bool is_cylinder_used(struct dive *dive, int idx)
 {
 	struct divecomputer *dc;
@@ -299,6 +301,8 @@ bool is_cylinder_used(struct dive *dive, int idx)
 	if (cylinder_none(&dive->cylinder[idx]))
 		return false;
 
+	if ((dive->cylinder[idx].start.mbar - dive->cylinder[idx].end.mbar) > SOME_GAS)
+		return true;
 	for_each_dc(dive, dc) {
 		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
