@@ -189,6 +189,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.facebookPublish->setVisible(fb->loggedIn());
 #else
 	ui.facebookPublish->setVisible(false);
+	ui.socialNetworks->setVisible(false);
 #endif
 
 	acceptingEdit = false;
