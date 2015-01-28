@@ -609,19 +609,20 @@ void DiveMeanDepthItem::settingsChanged()
 	setVisible(prefs.show_average_depth);
 }
 
-void DiveMeanDepthItem::createTextItem(){
+void DiveMeanDepthItem::createTextItem() {
 	plot_data *entry = dataModel->data().entry;
 	int sec = entry[dataModel->rowCount()-1].sec;
 	qDeleteAll(texts);
 	texts.clear();
 	int decimals;
-	double d = get_depth_units(lastRunningSum, &decimals, NULL);
+	const char *unitText;
+	double d = get_depth_units(lastRunningSum, &decimals, &unitText);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	text->setBrush(getColor(TEMP_TEXT));
-	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(lastRunningSum)));
+	text->setPos(QPointF(hAxis->posAtValue(sec) + 1, vAxis->posAtValue(lastRunningSum)));
 	text->setScale(0.8); // need to call this BEFORE setText()
-	text->setText(QString("%1").arg(d, 0, 'f', 1));
+	text->setText(QString("%1%2").arg(d, 0, 'f', 1).arg(*unitText));
 	texts.append(text);
 }
 
