@@ -22,9 +22,7 @@
      <number>0</number>
     </property>
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true">
-      <zorder>scrollArea</zorder>
-     </widget>
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -374,7 +372,7 @@
          </layout>
         </item>
         <item row="7" column="0" colspan="3">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="coordinatesDiveTypeLayout">
           <item>
            <widget class="QLineEdit" name="coordinates">
             <property name="readOnly">

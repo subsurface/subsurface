@@ -127,6 +127,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	QMargins zeroMargins(0, 0, 0, 0);
 	QList<QString> noMarginList;
 	noMarginList << "notesAndSocialNetworksLayout" <<
+			"coordinatesDiveTypeLayout" <<
 			"mainTabOuterLayout" <<
 			"ratingVisibilityWidgets" <<
 			"temperatureLabels" <<
