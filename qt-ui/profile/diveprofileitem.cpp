@@ -588,8 +588,9 @@ void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 		QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(meandepthvalue));
 		poly.append(point);
 	}
-
+	lastRunningSum = meandepthvalue;
 	setPolygon(poly);
+	createTextItem();
 }
 
 
@@ -607,6 +608,23 @@ void DiveMeanDepthItem::settingsChanged()
 {
 	setVisible(prefs.show_average_depth);
 }
+
+void DiveMeanDepthItem::createTextItem(){
+	plot_data *entry = dataModel->data().entry;
+	int sec = entry[dataModel->rowCount()-1].sec;
+	qDeleteAll(texts);
+	texts.clear();
+	int decimals;
+	double d = get_depth_units(lastRunningSum, &decimals, NULL);
+	DiveTextItem *text = new DiveTextItem(this);
+	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	text->setBrush(getColor(TEMP_TEXT));
+	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(lastRunningSum)));
+	text->setScale(0.8); // need to call this BEFORE setText()
+	text->setText(QString("%1").arg(d, 0, 'f', 1));
+	texts.append(text);
+}
+
 void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	// We don't have enougth data to calculate things, quit.

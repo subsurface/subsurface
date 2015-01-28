@@ -94,6 +94,8 @@ public:
 	virtual void settingsChanged();
 
 private:
+	void createTextItem();
+	double lastRunningSum;
 	QString visibilityKey;
 };
 
