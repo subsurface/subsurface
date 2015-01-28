@@ -3,7 +3,7 @@
 #include <QFile>
 
 #include "usermanual.h"
-
+#include "mainwindow.h"
 #include "helpers.h"
 
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
@@ -122,3 +122,27 @@ void UserManual::linkClickedSlot(const QUrl& url)
 {
 	QDesktopServices::openUrl(url);
 }
+
+#ifdef Q_OS_MAC
+void UserManual::showEvent(QShowEvent *e) {
+	filterAction = NULL;
+	closeAction = NULL;
+	MainWindow *m = MainWindow::instance();
+	Q_FOREACH (QObject *o, m->children()) {
+		if (o->objectName() == "actionFilterTags") {
+			filterAction = qobject_cast<QAction*>(o);
+			filterAction->setShortcut(QKeySequence());
+		} else if (o->objectName() == "actionClose") {
+			closeAction  = qobject_cast<QAction*>(o);
+			closeAction->setShortcut(QKeySequence());
+		}
+	}
+}
+void UserManual::hideEvent(QHideEvent *e) {
+	if (closeAction != NULL)
+		closeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
+	if (filterAction != NULL)
+		filterAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+	closeAction = filterAction = NULL;
+}
+#endif

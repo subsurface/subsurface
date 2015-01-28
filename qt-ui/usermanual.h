@@ -26,6 +26,15 @@ class UserManual : public QWidget {
 
 public:
 	explicit UserManual(QWidget *parent = 0);
+
+#ifdef Q_OS_MAC
+protected:
+	void showEvent(QShowEvent *e);
+	void hideEvent(QHideEvent *e);
+	QAction *closeAction;
+	QAction *filterAction;
+#endif
+
 private
 slots:
 	void searchTextChanged(const QString& s);
