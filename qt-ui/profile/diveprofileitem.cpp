@@ -899,46 +899,6 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-MeanDepthLine::MeanDepthLine() : meanDepth(0), leftText(new DiveTextItem(this)), rightText(new DiveTextItem(this)), model(NULL)
-{
-	leftText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-	leftText->setBrush(getColor(MEAN_DEPTH));
-	rightText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	rightText->setBrush(getColor(MEAN_DEPTH));
-	leftText->setPos(0, 0);
-	rightText->setPos(line().length(), 0);
-}
-
-void MeanDepthLine::setModel(DivePlotDataModel *m)
-{
-	model = m;
-}
-
-void MeanDepthLine::setLine(qreal x1, qreal y1, qreal x2, qreal y2)
-{
-	QGraphicsLineItem::setLine(x1, y1, x2, y2);
-	leftText->setPos(x1, 0);
-	rightText->setPos(x2, 0);
-}
-
-void MeanDepthLine::setMeanDepth(int value)
-{
-	leftText->setText(get_depth_string(value, true, true));
-	rightText->setText(get_depth_string(value, true, true));
-	meanDepth = value;
-}
-
-void MeanDepthLine::setAxis(DiveCartesianAxis *a)
-{
-	connect(a, SIGNAL(sizeChanged()), this, SLOT(axisLineChanged()));
-}
-
-void MeanDepthLine::axisLineChanged()
-{
-	DiveCartesianAxis *axis = qobject_cast<DiveCartesianAxis *>(sender());
-	Animations::moveTo(this, x(), axis->posAtValue(meanDepth));
-}
-
 void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	//AbstractProfilePolygonItem::modelDataChanged();

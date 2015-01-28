@@ -204,25 +204,6 @@ public:
 	virtual void settingsChanged();
 };
 
-class MeanDepthLine : public DiveLineItem {
-	Q_OBJECT
-public:
-	MeanDepthLine();
-	void setMeanDepth(int value);
-	void setLine(qreal x1, qreal y1, qreal x2, qreal y2);
-	void setAxis(DiveCartesianAxis *a);
-	void setModel(DivePlotDataModel *m);
-public
-slots:
-	void axisLineChanged();
-
-protected:
-	int meanDepth;
-	DiveTextItem *leftText;
-	DiveTextItem *rightText;
-	DivePlotDataModel *model;
-};
-
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:

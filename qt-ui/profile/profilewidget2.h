@@ -22,7 +22,6 @@ class RulerItem2;
 struct dive;
 struct plot_info;
 class ToolTipItem;
-class MeanDepthLine;
 class DiveMeanDepth;
 class DiveReportedCeiling;
 class DiveTextItem;
