@@ -47,7 +47,7 @@ index 5cda9036eb94..57648e081050 100644
 +#if QT_VERSION >= 0x050000
  		ui->CSVSeparator->setCurrentText(tr("Tab"));
 +#else
-+		us->CSVSeparator->setCurrentIndex(0);
++		ui->CSVSeparator->setCurrentIndex(0);
 +#endif
  		blockSignals(false);
  	}
