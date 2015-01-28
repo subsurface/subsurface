@@ -259,8 +259,8 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionAboutSubsurface"/>
     <addaction name="action_Check_for_Updates"/>
-    <addaction name="actionUserManual"/>
     <addaction name="actionUserSurvey"/>
+    <addaction name="actionUserManual"/>
    </widget>
    <widget class="QMenu" name="menuImport">
     <property name="title">

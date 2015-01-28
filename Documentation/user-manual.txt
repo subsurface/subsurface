@@ -63,7 +63,6 @@ Divers
 toc::[]
 
 [[S_UserSurvey]]
-
 Using this manual
 -----------------
 When opened from within _Subsurface_, this manual does not have external controls. However,
@@ -2344,7 +2343,7 @@ the Export dialog. This dialog always gives two options: save ALL dives, or save
 the dives selected in *Dive List* panel of _Subsurface_. Click the appropriate
 radio button (see images below).
 
-image::images/Export.jpg["Figure: Export dialog",align="center"]
+image::images/Export_f20.jpg["Figure: Export dialog",align="center"]
 
 A dive log or part of it can be saved in three formats:
 
@@ -3002,7 +3001,8 @@ dealing with the appropriate operations.
   well as licensing information.
 - _Check for updates_ - Find out whether a newer version of Subsurface is available
   on the http://subsurface-divelog.org/[_Subsurface_ web site].
-- _User Manual_ - Open a window showing this user manual.
+- <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey.
+- _User manual_ - Open a window showing this user manual.
 
 
 
