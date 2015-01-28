@@ -3275,6 +3275,21 @@ factors in the _Graph Settings_ in _Subsurface_ to generate a deco overlay in th
 _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the DR5.
 
+
+[[S_ImportingXDeep]]
+=== Importing dives from xDEEP BLACK
+
+[icon="images/icons/HW_xdeepblack.jpg"]
+[NOTE]
+Each dive has to be individually saved as UDDF file using "Export UDDF" option in BLACK's logbook menu.
+When mounted as a USB drive UDDF files are available in LOGBOOK directory.
+Note: The xDEEP BLACK saves NDL time but does not seem to store gradient factors nor deco information, so
+for _Subsurface_ it is not possible to display them. Adjust the gradient
+factors in the _Graph Settings_ in _Subsurface_ to generate a deco overlay in the
+_Subsurface_ *Dive Profile* panel but please note that the deco calculated by
+_Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
+
+
 === Import from Shearwater Predator using Bluetooth
 
 [icon="images/icons/predator.jpg"]
