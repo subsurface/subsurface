@@ -507,7 +507,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
-	rulerItem->setVisible(prefs.rulergraph && !printMode);
+	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != ADD);
 
 	if (currentState == EMPTY)
 		setProfileState();
