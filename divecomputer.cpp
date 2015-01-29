@@ -79,13 +79,6 @@ void DiveComputerList::addDC(const QString &m, uint32_t d, const QString &n, con
 	dcMap.insert(m, newNode);
 }
 
-void DiveComputerList::rmDC(const QString &m, uint32_t d)
-{
-	const DiveComputerNode *existNode = this->getExact(m, d);
-	dcMap.remove(m, *existNode);
-}
-
-
 extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
 {
 	dcList.addDC(model, deviceid, nickname, serial, firmware);

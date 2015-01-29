@@ -26,7 +26,6 @@ public:
 	const DiveComputerNode *getExact(const QString &m, uint32_t d);
 	const DiveComputerNode *get(const QString &m);
 	void addDC(const QString &m, uint32_t d, const QString &n = QString(), const QString &s = QString(), const QString &f = QString());
-	void rmDC(const QString &m, uint32_t d);
 	DiveComputerNode matchDC(const QString &m, uint32_t d);
 	DiveComputerNode matchModel(const QString &m);
 	QMultiMap<QString, DiveComputerNode> dcMap;
