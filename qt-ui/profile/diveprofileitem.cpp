@@ -572,7 +572,7 @@ DiveMeanDepthItem::DiveMeanDepthItem()
 
 void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	double meandepthvalue;
+	double meandepthvalue = 0.0;
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
