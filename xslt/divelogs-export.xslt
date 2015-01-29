@@ -119,7 +119,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <xsl:if test="following-sibling::divecomputer/event[@name='gaschange' and @value=$gas]">
+        <xsl:if test="following-sibling::divecomputer/event[@name='gaschange' and @value=$gas] or substring-before(@start, ' ') - 5 &gt; substring-before(@end, ' ')">
           <xsl:variable name="cur_cyl">
             <xsl:value-of select="position()"/>
           </xsl:variable>
