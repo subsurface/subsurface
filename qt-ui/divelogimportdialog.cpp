@@ -469,23 +469,23 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		// now set up time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
 		for (int i = 0; i < currColumns.count(); i++)
 			headers.append("");
-		if (CSVApps[value].time != -1 && CSVApps[value].time < currColumns.count())
+		if (CSVApps[value].time > -1 && CSVApps[value].time < currColumns.count())
 			headers.replace(CSVApps[value].time, tr("Sample time"));
-		if (CSVApps[value].depth != -1 && CSVApps[value].depth < currColumns.count())
+		if (CSVApps[value].depth > -1 && CSVApps[value].depth < currColumns.count())
 			headers.replace(CSVApps[value].depth, tr("Sample depth"));
-		if (CSVApps[value].temperature != -1 && CSVApps[value].temperature < currColumns.count())
+		if (CSVApps[value].temperature > -1 && CSVApps[value].temperature < currColumns.count())
 			headers.replace(CSVApps[value].temperature, tr("Sample temperature"));
-		if (CSVApps[value].po2 != -1 && CSVApps[value].po2 < currColumns.count())
+		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
 			headers.replace(CSVApps[value].po2, tr("Sample pO₂"));
-		if (CSVApps[value].cns != -1 && CSVApps[value].cns < currColumns.count())
+		if (CSVApps[value].cns > -1 && CSVApps[value].cns < currColumns.count())
 			headers.replace(CSVApps[value].cns, tr("Sample CNS"));
-		if (CSVApps[value].ndl != -1 && CSVApps[value].ndl < currColumns.count())
+		if (CSVApps[value].ndl > -1 && CSVApps[value].ndl < currColumns.count())
 			headers.replace(CSVApps[value].ndl, tr("Sample NDL"));
-		if (CSVApps[value].tts != -1 && CSVApps[value].tts < currColumns.count())
+		if (CSVApps[value].tts > -1 && CSVApps[value].tts < currColumns.count())
 			headers.replace(CSVApps[value].tts, tr("Sample TTS"));
-		if (CSVApps[value].stopdepth != -1 && CSVApps[value].stopdepth < currColumns.count())
+		if (CSVApps[value].stopdepth > -1 && CSVApps[value].stopdepth < currColumns.count())
 			headers.replace(CSVApps[value].stopdepth, tr("Sample stopdepth"));
-		if (CSVApps[value].pressure != -1 && CSVApps[value].pressure < currColumns.count())
+		if (CSVApps[value].pressure > -1 && CSVApps[value].pressure < currColumns.count())
 			headers.replace(CSVApps[value].pressure, tr("Sample pressure"));
 	}
 
