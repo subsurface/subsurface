@@ -2531,7 +2531,7 @@ leave the settings panel by selecting *OK*.
 
 There are several settings in the *Defaults* panel:
 
-image::images/Pref1.jpg["FIGURE: Preferences defaults page",align="center"]
+image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
 
   ** *Lists and tables*: Here one can specify the font type and font size of the
      *Dive Table* panel. By decreasing the font size of the *Dive Table*, users can see more dives on a screen.
@@ -2566,7 +2566,7 @@ image::images/Pref1.jpg["FIGURE: Preferences defaults page",align="center"]
      cleared and set to default values.
 
 === Units
-image::images/Pref2.jpg["FIGURE: Preferences Units page",align="center"]
+image::images/Pref2_f20.jpg["FIGURE: Preferences Units page",align="center"]
 
 Here user can choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
@@ -2642,7 +2642,7 @@ This panel allows two type of selections:
 === Language
 Choose a language that _Subsurface_ will use.
 
-image::images/Pref4.jpg["FIGURE: Preferences Language page",align="center"]
+image::images/Pref4_f20.jpg["FIGURE: Preferences Language page",align="center"]
 
 A checkbox allows one to use the _System Default_ language which in most cases
 will be the correct setting; with this _Subsurface_ simply runs in the same
@@ -2656,7 +2656,7 @@ effect.
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
 
-image::images/Pref5.jpg["FIGURE: Preferences Network page",align="center"]
+image::images/Pref5_f20.jpg["FIGURE: Preferences Network page",align="center"]
 
 This is important, for instance, when _Subsurface_ needs to communicate with Internet
 services such as the <<S_Companion,_Subsurface Companion app_>> or data export/import
