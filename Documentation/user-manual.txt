@@ -2711,7 +2711,7 @@ At the bottom right is a text panel with a heading of _Dive Plan Details_. This 
 the dive plan are provided in a way that can easily be copied to other software. This is also where
 any warning messages about the dive plan are printed.
 
-image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="center"]
+image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align="center"]
 
 
 === Initiating dive planning
@@ -2836,7 +2836,7 @@ changes in OC mode.
 Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
 and using the settings as described above.
 
-image::images/DivePlanner2.jpg["FIGURE: Planning a dive: setup",align="center"]
+image::images/DivePlanner2_f20.jpg["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above has been completed, one can save it by clicking the _Save_ button
 towards the bottom left of the green design panel. The saved dive plan will appear
