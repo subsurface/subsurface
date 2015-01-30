@@ -1683,13 +1683,15 @@ CCR equipment provide actual measurements of pO~2~, derived from oxygen sensors.
 In this case the graph for oxygen partial pressure
 should be fairly flat, reflecting the setpoint settings during the dive. The mean
 pO~2~ is NOT the mean oxygen partial pressure as given by the CCR equipment, but
-a value xalculated by _Subsurface_ as follows:
+a value calculated by _Subsurface_ as follows:
 
 - For TWO O~2~ sensors the mean value of the two sensors are given.
 
 - For THREE-sensor systems (e.g. APD), the mean value is also used. However
   differences of more than 0,1 bar in the simultaneous readings of different sensors are
   treated as spurious. If one of the three sensors provides spurious data, it is ignored.
+
+- If no sensor data is available, the pO~2~ value is assumed to be equal to the setpoint.
 
 The mean pO~2~ of the sensors is indicated with a green line,
 
@@ -2629,10 +2631,13 @@ This panel allows two type of selections:
 
  ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
     CCR dive plan. This determines the pO~2~ that will be maintained
-    during a particular dive.
+    during a particular dive. This is the setpoint that is used at the start
+    of any CCR dive. Setpoint changes during the dive can be added via the
+    profile context menu.
 
  ** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, this is the
-    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning.
+    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning
+    and decompression calculations.
 
  ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
     environment to that of the gas recirculated to the diver. Set this value for a
@@ -2856,6 +2861,25 @@ If the option _Display segment duration_ is checked, then the duration of each d
 level is indicated in the _Dive Plan Details_. This duration INCLUDES the transition
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
+
+=== Planning rebreather dives
+
+To plan a dive using a passive semi-closed rebreather (pSCR), select "pSCR" rather than
+"Open circuit" in the Planning tab. This takes the oxygen drop in the rebreather into account.
+The parameters of the pSCR can be set in the preferences in the Graph tab. A warning apears
+in the dive plan details, if the pO~2~ drops below what is considered a save value. For pSCR dives,
+the gas consumption calculation takes into account the pSCR ratio (default 10:1).
+
+To plan a dive using a closed circuit rebreather (CCR), select the "CCR" option in the PLannig tab.
+This makes all user entered segments use the default setpoint value (configured in the Preferences
+in the Graph tab). The gases from the gas list are considered to be diluent gases (the oxygen tank is
+implicitely assumed to be present).
+
+Then, individual setpoints can be set for dive segments in the "Dive planner points" table. A zero setpoint
+means the diver bails out to open circuit mode for that segment. The decompression is always calculated
+with the setpoint of the last manually entered segment. So, to plan an bail out ascent for a
+CCR dive, add a one minute dive segment in the end with a setpoint value of 0. The decompresseion
+algorithm does not switch decogases automatically in CCR mode (but of course for bail out ascents).
 
 [[S_Replan]]
 === Modifying an existing dive plan
