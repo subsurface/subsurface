@@ -648,6 +648,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	}
 }
 
+void ProfileWidget2::recalcCeiling()
+{
+	diveCeiling->recalc();
+}
+
 void ProfileWidget2::settingsChanged()
 {
 	// if we are showing calculated ceilings then we have to replot()

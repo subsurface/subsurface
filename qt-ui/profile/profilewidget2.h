@@ -82,6 +82,7 @@ public:
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 	void clearHandlers();
+	void recalcCeiling();
 	void setToolTipVisibile(bool visible);
 	State currentState;
 
