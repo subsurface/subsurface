@@ -1159,9 +1159,13 @@ void MainTab::on_notes_textChanged()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	if (currentTrip) {
+		if (same_string(displayedTrip.notes, ui.notes->toPlainText().toUtf8().data()))
+			return;
 		free(displayedTrip.notes);
 		displayedTrip.notes = strdup(ui.notes->toPlainText().toUtf8().data());
 	} else {
+		if (same_string(displayed_dive.notes, ui.notes->toPlainText().toUtf8().data()))
+			return;
 		free(displayed_dive.notes);
 		if (ui.notes->toHtml().indexOf("<table") != -1)
 			displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
