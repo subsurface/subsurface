@@ -19,7 +19,6 @@ DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
 DiveShareExportDialog::~DiveShareExportDialog()
 {
 	delete ui;
-	delete reply;
 }
 
 void DiveShareExportDialog::UIDFromBrowser()
