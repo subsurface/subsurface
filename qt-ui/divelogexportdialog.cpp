@@ -1,6 +1,7 @@
 #include <QFileDialog>
 #include <QShortcut>
 #include <QSettings>
+#include <QtConcurrent>
 
 #include "divelogexportdialog.h"
 #include "diveshareexportdialog.h"
@@ -310,7 +311,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		settings.endGroup();
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty())
-			export_dives_xslt(filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
+			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
 	}
 }
 
