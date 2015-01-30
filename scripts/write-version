@@ -1,0 +1,49 @@
+#!/bin/sh
+
+#
+# arguments:
+#	$1 - target H file
+#	$2 - fallback version string
+#	$3 - os name {linux|darwin|win}
+#
+# doesn't have much error checking!
+# should be started from where .git is!
+#
+
+if [ "$#" -lt 3 ]; then
+	echo "ERROR: missing arguments";
+	exit 1;
+fi
+
+# set OS and TARGET
+TARGET=$1
+TARGET_TEMP=$TARGET.tmp
+VERSION=$2
+OS=$3
+
+# get the full version: git based or hardcoded from .gitversion or the fallback version string
+if gitpwd=`git rev-parse --show-toplevel 2> /dev/null`; then
+	FULL_VER=`sh "$gitpwd/scripts/get-version" linux`
+else
+	FULL_VER=`cat .gitversion 2> /dev/null || echo $VERSION`
+fi
+
+# grab some strings from get-version
+CANONICAL_VER=`sh ./scripts/get-version full $FULL_VER`
+OS_USABLE_VER=`sh ./scripts/get-version $OS $FULL_VER`
+
+# write to a temp file
+echo "#define VERSION_STRING \"$OS_USABLE_VER\"" > $TARGET_TEMP
+echo "#define GIT_VERSION_STRING \"$FULL_VER\"" >> $TARGET_TEMP
+echo "#define CANONICAL_VERSION_STRING \"$CANONICAL_VER\"" >> $TARGET_TEMP
+
+# if the target file is missing create it
+if [ ! -f $TARGET ]; then
+	CMD=`touch $TARGET`
+fi
+
+# if the temp file and the target file differ, replace the target file with the temp file
+CMD=`diff -q $TARGET $TARGET_TEMP || cp $TARGET_TEMP $TARGET`
+
+# remove the temp file
+CMD=`rm -f $TARGET_TEMP`

@@ -20,8 +20,12 @@ else: TARGET = subsurface
 QMAKE_CLEAN += $$TARGET
 
 VERSION = 4.4
+VERSION_FILE = $$OUT_PWD/ssrf-version.h
+# create a blank VERSION_FILE if missing
+system(cat $$VERSION_FILE > /dev/null 2>&1 || touch $$VERSION_FILE)
 
 HEADERS = \
+	$$VERSION_FILE \
 	cochran.h \
 	color.h \
 	deco.h \
