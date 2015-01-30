@@ -2711,6 +2711,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
+	MERGE_NONZERO(res, a, b, picture_list);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	merge_equipment(res, a, b);
 	merge_airtemps(res, a, b);
