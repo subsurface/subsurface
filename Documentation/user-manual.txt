@@ -2545,6 +2545,37 @@ the output for one particular page.
 image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
 
+[[S_Configure]]
+== Configuring a dive computer
+
+_Subsurface_ enables one to configure a dive computer. Currently the Heinrichs-Weikamp (OSTC 2, OSTC 3) and
+Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
+Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
+can be read and changed to different values. As a first step, ensure that the appropriate hardware driver
+is installed for the dive computer and that the device name of the dive computer is known.
+See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
+
+Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
+computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
+top of the configuration panel that opens and select the appropriate dive
+computer model from the panel on the lefthand (see image below).
+
+image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer",align="center"]
+
+Using the appropriate buttons on the configuration panel, the following actions can be performed:
+
+ - *Retrieve available details*. This loads the existing configuration from the dive computer
+   to _Subsurface_, showing this in the configuration panel.
+ - *Save changes to device*. This changes the configuration of the
+   dive computer to correspond to the information shown in the configuration panel.
+ - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
+   a file location and file name for the saved information.
+ - *Restore backup*. This loads the information from a backup file and displays it
+   in the configuration panel.
+ - *Update firmware*. If new firmware is available for the dive computer, this is
+   loaded into the dive computer.
+
+
 [[S_Preferences]]
 == Setting user _Preferences_ for _Subsurface_
 
@@ -2701,6 +2732,7 @@ be provided. If the proxy server uses authentication, the appropriate userID and
 password also needs to be provided so that _Subsurface_ can automatically pass
 through the proxy server to access the Internet.
 
+
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
 Dive planning is an advanced feature of _Subsurface_, accessible by selecting
@@ -2745,16 +2777,14 @@ any warning messages about the dive plan are printed.
 image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align="center"]
 
 
-=== Initiating dive planning
+=== Open circuit dives as an example of dive planning
 
-The dive planner comprises two parts: *constructing a dive plan* and *evaluating*
-that dive plan. To perform dive planning, perform these steps:
+-  Towards the left bottom of the planner (circled in blue in the image below) is a dropbox with three options. Select the appropriate one of these:
+ ** Open Circuit (the default)
+ ** CCR
+ ** pSCR
 
-- Clear the existing dive log by creating a new planning log. This is achieved by selecting
-  _File ->  New logbook_ from the main menu. This way, dive plans are kept separate
-  from the existing dive log of completed dives.
-
-- In the top left-hand area of the screen, ensure that the constant dive parameters are
+- In the top left-hand area of the planning screen, ensure that the constant dive parameters are
   appropriate. These are: Start date and time of the dive, Atmospheric Pressure and Altitude
   above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
   in metres, assuming an atmospheric pressure of 1.013 bar.
@@ -2764,35 +2794,33 @@ that dive plan. To perform dive planning, perform these steps:
   <<S_CylinderData,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
   pressure of this cylinder. By leaving the oxygen concentration (O2%) filed empty,
-  the dive gas is assumed to be air. Otherwise enter the oxygen and/or helium
+  the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
   concentration in the boxes provided in this dialogue. Add additional cylinders by using the
   "+" icon to the top righthand of the dialogue.
 
 - The dialogue indicating _Dive Planner Points_ is usually not used at this stage of the dive
   planning.
 
-=== Managing nitrogen, oxygen and gas consumption
-
-The planning is performed in three stages:
+*The planning is performed in three stages*
 
 *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
-used without changing the original specifications in the _Preferences_. Gradient Factor settings strongly affect the calculated ceilings and their depths.
+used without changing the original values in the _Preferences_. Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings about decompression stops early on during the dive.
  ** For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
 For more information external to this manual see:
 
- *** link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
- *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
- *** link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+ * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 An excellent non-technical review.
 
- ** The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
+The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
 for several depth ranges, utilising the average (or mean) depth as a yardstick. The mean depth
-of the dive plan is indicated on the dive profile in the green panel of the dive planner. Ascent rates
+of the dive plan is indicated by a light grey line on the dive profile. Ascent rates
 at deeper levels are often in the range of 8-12 m/min, while ascent rates near the surface are
 often in the range of 4-9 m/min. The descent rate is also specified. If the option _Drop to first depth_
 is activated, then the descent phase of the planned dive will be at the maximal descent rate specified
@@ -2806,19 +2834,18 @@ The most commonly
 used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
 stages. Normally, a partial pressure of 1.6 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
 _Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
-ascent, the partial pressure of the new gas has decreased to 1.6 bar.
+ascent, the partial pressure of the new gas has increased to 1.6 bar.
 
-
-*c) Gas management*: One needs keep within the limits of the amount of gas contained in the dive
-cylinder(s), allowing for an appropriate margin for safe return to the surface, possibly
+*c) Gas management*: With open-circuit dives this is a primary consideration. One needs to keep within the limits of the amount of gas within the dive
+cylinder(s), allowing for an appropriate margin for a safe return to the surface, possibly
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in
 litres/min (for the time being, only SI units are supported).  Specify the SAC during the
 bottom part of the dive (_bottom SAC_) as well as during the decompression or safety stops of the
-dive (_deco SAC_). Values of 20-30 l/min are common. For good gas management, a thumbsuck guess
+dive (_deco SAC_). Values of 15-30 l/min are common. For good gas management, a thumbsuck guess
 is not sufficient and one needs to
 monitor one's gas consumption on a regular basis, dependent on different dive conditions and/or equipment.
-The planner will calculate the total volume of gas used during the dive and will issue a warning
+The planner calculates the total volume of gas used during the dive and issues a warning
 if one exceeds the total amount of gas available. Good practice demands that one does not dive to
 the limit of the gas supply but that an appropriate reserve is kept for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
@@ -2826,19 +2853,19 @@ For technical diving, this reserve can be up to 66% of the total available gas.
 Now (at last) one can start the detailed time-depth planning of the dive. _Subsurface_ offers a unique
 graphical interface for performing this part of the planning. The mechanics of doing this is
 similar to hand-entering a dive profile in the dive log part of _Subsurface_. Upon activating the
-planner, a default dive of depth 15 m for 40 min is offered in the green design surface to the top
+planner, a default dive of depth 15 m for 40 min is offered in the bue design surface to the top
 right hand of the screen. The white dots (waypoints) on the
 profile can be dragged with a mouse. Create more waypoints by double-clicking on the profile
 line and ensuring that the profile reflects the intended dive. Drag the waypoints to represent
-the depth and duration of the dive.
+the depth and duration of the dive. It is NOt necessary to specify the ascent part of the dive
+since the planner calculates this, based on the settings that have been specified.
 If any of the management limits (for nitrogen, oxygen or gas) is exceeded, the surface
 above the dive profile changes from BLUE to RED.
 
 Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
 left of the dive planner panel. Ensure that the _Used Gas_ value in each row
-of that table corresponds to one of the gas mixtures specified in the table with
-_Available Gases_ immediately above the Dive Planner Points. Add new waypoints
-until the main features of the dive have been completed, e.g. the
+of that table corresponds to one of the gas mixtures specified in the _Available Gases_ table.
+Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
 waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
 computes additional way points in order to fulfil decompression requirements for that
@@ -2870,10 +2897,10 @@ and using the settings as described above.
 image::images/DivePlanner2_f20.jpg["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above has been completed, one can save it by clicking the _Save_ button
-towards the bottom left of the green design panel. The saved dive plan will appear
+towards the top middle of the planner. The saved dive plan will appear
 in the *Dive List* panel of _Subsurface_.
 
-=== The dive plan details
+*The dive plan details*
 
 On the bottom right of the dive planner, under _Dive Plan Details_, the exact details
 of the dive plan are provided. These details may be modified by checking any of the
@@ -2888,24 +2915,48 @@ level is indicated in the _Dive Plan Details_. This duration INCLUDES the transi
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
 
-=== Planning rebreather dives
+=== Planning CCR dives
 
-To plan a dive using a passive semi-closed rebreather (pSCR), select "pSCR" rather than
-"Open circuit" in the Planning tab. This takes the oxygen drop in the rebreather into account.
-The parameters of the pSCR can be set in the preferences in the Graph tab. A warning apears
-in the dive plan details, if the pO~2~ drops below what is considered a save value. For pSCR dives,
-the gas consumption calculation takes into account the pSCR ratio (default 10:1).
+To plan a dive using a closed circuit rebreather, select the _CCR_ option in the dropdown
+list, circled in blue in the image below.
 
-To plan a dive using a closed circuit rebreather (CCR), select the "CCR" option in the PLannig tab.
-This makes all user entered segments use the default setpoint value (configured in the Preferences
-in the Graph tab). The gases from the gas list are considered to be diluent gases (the oxygen tank is
-implicitely assumed to be present).
+*Available gases*: In the _Available gases_ table, enter the cylinder information for the
+diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
+cylinder since it is implied when the _CCR_ dropdown selection is made.
 
-Then, individual setpoints can be set for dive segments in the "Dive planner points" table. A zero setpoint
+*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Graph_ from the main menu. All user-entered segments in the _Dive planner points_ table
+use the default setpoint value. Then, different setpoints can be specified for dive segments
+in the _Dive planner points_ table. A zero setpoint
 means the diver bails out to open circuit mode for that segment. The decompression is always calculated
-with the setpoint of the last manually entered segment. So, to plan an bail out ascent for a
-CCR dive, add a one minute dive segment in the end with a setpoint value of 0. The decompresseion
-algorithm does not switch decogases automatically in CCR mode (but of course for bail out ascents).
+using the setpoint of the last manually entered segment. So, to plan a bail out ascent for a
+CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
+algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but, of course, this is calculated for bail out ascents.
+
+The dive profile for a CCR dive may look something like the image below.
+
+image::images/Planner_CCR1_f20.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
+
+Note that, in the _Dive plan details_, the gas consumption for a CCR segment is not calculated,
+so gas consumptions of 0 litres are the norm.
+
+=== Planning pSCR dives
+
+To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
+_Open circuit_ in the dropdown list.
+The parameters of the pSCR diver can be set by selecting  _File ->   Preferences ->   Graph_
+from the main menu, where the gas consumption calculation takes into account the pSCR dump
+ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
+accross the mouthpiece of the rebreather into account. If the
+pO~2~ drops below what is considered a save value, a warning apears in the _Dive plan
+details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
+cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
+are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
+are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
+to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
+in the loop due to the oxygen drop accross the mouthpiece of the pSCR equipment.
+
+image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
 
 [[S_Replan]]
 === Modifying an existing dive plan
@@ -2956,36 +3007,6 @@ represented in a way very similar to a dive log and the gas calculations cannot 
 accessed in the same way as during the planning process. The only way to print the
 dive plan is to use the _File ->  Print_ facility on the main menu in the
 same way as for dive logs or by copy and paste to a word processor.
-
-[[S_Configure]]
-== Configuring a dive computer
-
-_Subsurface_ enables one to configure a dive computer. Currently the Heinrichs-Weikamp (OSTC 2, OSTC 3) and
-Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
-Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
-can be read and changed to different values. As a first step, ensure that the appropriate hardware driver
-is installed for the dive computer and that the device name of the dive computer is known.
-See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
-
-Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
-computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
-top of the configuration panel that opens and select the appropriate dive
-computer model from the panel on the lefthand (see image below).
-
-image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer",align="center"]
-
-Using the appropriate buttons on the configuration panel, the following actions can be performed:
-
- - *Retrieve available details*. This loads the existing configuration from the dive computer
-   to _Subsurface_, showing this in the configuration panel.
- - *Save changes to device*. This changes the configuration of the
-   dive computer to correspond to the information shown in the configuration panel.
- - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
-   a file location and file name for the saved information.
- - *Restore backup*. This loads the information from a backup file and displays it
-   in the configuration panel.
- - *Update firmware*. If new firmware is available for the dive computer, this is
-   loaded into the dive computer.
 
 == Description of the Subsurface Main Menu items
 
