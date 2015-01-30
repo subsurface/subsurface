@@ -2149,27 +2149,27 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Capteur 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Capteur 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Capteur 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Freq. cardiaque</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Prof. moyenne @ s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
@@ -2584,7 +2584,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Plongées téléchargées</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
@@ -5116,7 +5116,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="108"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation type="unfinished"/>
+        <translation>La dernière version est %1, vérifiez %2 notre page de téléchargement %3 pour savoir comment mettre à jour.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="116"/>

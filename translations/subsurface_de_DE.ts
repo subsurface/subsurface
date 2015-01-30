@@ -126,47 +126,47 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Segment Zeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Segment Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Segment Temperatur</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Segment pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Segment CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Segment Nullzeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Segment Aufstiegszeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Segment Stopptiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Segment Flaschendruck</translation>
     </message>
 </context>
 <context>
@@ -1871,7 +1871,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="570"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="599"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Segment Dauer</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="475"/>
@@ -1879,7 +1879,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="600"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Segment Tiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="477"/>
@@ -1887,7 +1887,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="555"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="601"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Segment Temperatur</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="487"/>
@@ -1895,7 +1895,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="560"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="606"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Segment Stopptiefe</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="479"/>
@@ -1903,7 +1903,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="556"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="602"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Segment pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="481"/>
@@ -1911,7 +1911,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="557"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="603"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Segment CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="483"/>
@@ -1919,7 +1919,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="558"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="604"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Segment Nullzeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="485"/>
@@ -1927,7 +1927,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="559"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="605"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Segment Aufstiegszeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="489"/>
@@ -1935,7 +1935,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="561"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="607"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Segment Flaschendruck</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="583"/>
@@ -2147,27 +2147,27 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Pulsrate</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Mittlere Tiefe @ s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
@@ -2582,7 +2582,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Heruntergeladene Tauchgänge</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
@@ -5115,7 +5115,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="108"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation type="unfinished"/>
+        <translation>Die aktuellste Version ist %1, bitte auf unserer %2 Programme herunterladen %3 Seite nachlesen, wo diese Version verfügbar ist.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="116"/>
@@ -6220,7 +6220,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="769"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>niedriger pO₂ Wert %.2f auf %d:%02u mit Gas %s in Tiefe %.*f %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="1085"/>
@@ -6426,7 +6426,7 @@ EADD: %d%s
         <location filename="../profile.c" line="1219"/>
         <source>mean depth to here %.1f%s
 </source>
-        <translation>Durchschnittstiefe bus hier %.1f%s
+        <translation>Durchschnittstiefe bis hier %.1f%s
 </translation>
     </message>
     <message>

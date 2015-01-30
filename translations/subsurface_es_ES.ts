@@ -2149,27 +2149,27 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo cardiaco</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Profundidad/es media/s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
@@ -2584,7 +2584,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Inmersiones descargadas</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
@@ -5117,7 +5117,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="108"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation type="unfinished"/>
+        <translation>La última versión es %1, por favor comprueba %2 nuestra página de descargas %3 para informarte sobre como actualizar.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="116"/>

@@ -10,7 +10,7 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="523"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Поиск партнеров и инструкторов</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Объем баллона</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -126,47 +126,47 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Выборка времени</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Выборка глубины</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Выборка температуры</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Выборка pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Выборка CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Выборка NDL</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Выборка TTS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Выборка остановки</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Выборка давления</translation>
     </message>
 </context>
 <context>
@@ -174,32 +174,32 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="212"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно сохранить резервную копию %1. Ошибка: %2</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="228"/>
         <source>Could not open backup file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно открыть резервную копию: %1</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="552"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Параметры дайвкомпьютера загружены успешно</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Setting successfully written to device</source>
-        <translation type="unfinished"/>
+        <translation>Настройки успешно сохранены в устройстве</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
         <source>Device firmware successfully updated</source>
-        <translation type="unfinished"/>
+        <translation>Прошивка устройства обновлена успешно</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="579"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Настройки устройства сброшены успешно</translation>
     </message>
 </context>
 <context>
@@ -493,12 +493,12 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="64"/>
         <source>Read settings from backup file or from device before writing to the device</source>
-        <translation type="unfinished"/>
+        <translation>Загрузить настройки из резервной копии или устройства перед сохранением в устройство</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="90"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation type="unfinished"/>
+        <translation>Загрузить настройки из резервной копии или устройства перед сохранением в резервный файл</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="189"/>
@@ -798,13 +798,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1429"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (средний)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1434"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (высокий)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1473"/>
@@ -837,7 +837,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1124"/>
         <source>O₂ in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ в калибровочном газе</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
@@ -854,7 +854,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1290"/>
         <source>Altitude range</source>
-        <translation type="unfinished"/>
+        <translation>Диапазон высот</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1297"/>
@@ -876,7 +876,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1424"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P0 (отсутствует)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1442"/>
@@ -901,7 +901,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1480"/>
         <source>Computer model</source>
-        <translation type="unfinished"/>
+        <translation>Модель</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1497"/>
@@ -947,12 +947,12 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1579"/>
         <source>Depth alarm</source>
-        <translation type="unfinished"/>
+        <translation>Тревога: глубина</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1599"/>
         <source>Time alarm</source>
-        <translation type="unfinished"/>
+        <translation>Тревога: время</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1624"/>
@@ -998,7 +998,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1028"/>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1050"/>
         <source>Backup files (*.xml)</source>
-        <translation type="unfinished"/>
+        <translation>Резервные копии (*.xml)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1034"/>
@@ -1009,53 +1009,54 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1037"/>
         <source>Backup succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Резервная копия создана</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1038"/>
         <source>Your settings have been saved to: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ваши настройки сохранены в %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1027"/>
         <source>Backup dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Создать рез. копию настроек</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1033"/>
         <source>XML backup error</source>
-        <translation type="unfinished"/>
+        <translation>XML-ошибка при создании рез. копии</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1049"/>
         <source>Restore dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Восстановить настройки дайвкомпьютера</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1053"/>
         <source>XML restore error</source>
-        <translation type="unfinished"/>
+        <translation>XML-ошибка при восстановлении</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1054"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при восстановлении из рез. копии.
+%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1060"/>
         <source>Restore succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Восстановление успешно</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1061"/>
         <source>Your settings have been restored successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Настройки были успешно восстановлены.</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1071"/>
         <source>Select firmware file</source>
-        <translation type="unfinished"/>
+        <translation>Выберите файл прошивки</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1072"/>
@@ -1262,7 +1263,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="562"/>
         <source>Date/time</source>
-        <translation type="unfinished"/>
+        <translation>Дата/время</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="564"/>
@@ -1533,17 +1534,17 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="130"/>
         <source>DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>DiveShare</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="140"/>
         <source>CSV dive profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль в CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="150"/>
         <source>CSV dive details</source>
-        <translation type="unfinished"/>
+        <translation>Погружение в CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="170"/>
@@ -1553,7 +1554,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="248"/>
         <source>CSV units</source>
-        <translation type="unfinished"/>
+        <translation>Система мер</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="261"/>
@@ -1578,7 +1579,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="318"/>
         <source>Export yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Выгружать статистику за год</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="344"/>
@@ -1669,12 +1670,12 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="70"/>
         <source>Comma separated values describing the dive profile.</source>
-        <translation type="unfinished"/>
+        <translation>Профиль погружения в виде значений, разделенных запятой.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="72"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
-        <translation type="unfinished"/>
+        <translation>Информация о погружении в виде значений, разделенных запятой. Включает почти все детали кроме профиля.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="74"/>
@@ -1684,7 +1685,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="76"/>
         <source>Send the dive data to dive-share.appspot.com website</source>
-        <translation type="unfinished"/>
+        <translation>Отправить данные погружения на сайт dive-share.appspot.com</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="78"/>
@@ -1774,22 +1775,22 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="59"/>
         <source>dd.mm.yyyy</source>
-        <translation>dd.mm.yyyy</translation>
+        <translation>дд.мм.гггг</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="64"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>мм/дд/гггг</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="69"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>гггг-мм-дд</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="125"/>
         <source>Drag the tags above to each corresponding column below</source>
-        <translation type="unfinished"/>
+        <translation>Перетащите метки на соответствующие колонки ниже</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="576"/>
@@ -1839,7 +1840,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="88"/>
         <source>Minutes:seconds</source>
-        <translation type="unfinished"/>
+        <translation>Минуты:секунды</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="580"/>
@@ -1856,7 +1857,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="393"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="397"/>
         <source>Tab</source>
-        <translation type="unfinished"/>
+        <translation>Tab</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="435"/>
@@ -1870,7 +1871,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="570"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="599"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Выборка времени</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="475"/>
@@ -1878,7 +1879,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="600"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Выборка глубины</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="477"/>
@@ -1886,7 +1887,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="555"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="601"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Выборка температуры</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="487"/>
@@ -1894,7 +1895,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="560"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="606"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Выборка остановки</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="479"/>
@@ -1902,7 +1903,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="556"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="602"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Выборка pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="481"/>
@@ -1910,7 +1911,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="557"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="603"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Выборка CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="483"/>
@@ -1918,7 +1919,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="558"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="604"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Выборка NDL</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="485"/>
@@ -1926,7 +1927,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="559"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="605"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Выборка TTS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="489"/>
@@ -1934,7 +1935,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="561"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="607"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Выборка давления</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="583"/>
@@ -1964,7 +1965,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="589"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Объем баллона</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="590"/>
@@ -2146,37 +2147,37 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Сенсор 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Сенсор 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Сенсор 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Пульс</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Средняя глубина @ s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
         <source>Ambient pressure</source>
-        <translation type="unfinished"/>
+        <translation>Внешнее давление</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="149"/>
         <source>Gradient factor</source>
-        <translation type="unfinished"/>
+        <translation>Градиент-фактор</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="125"/>
@@ -2229,22 +2230,22 @@
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="67"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Not using a UserID means that you will need to manually keep bookmarks to your dives, to find them again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt;Если вы не используете идентификатор, то вам придется вручную сохранить закладки для погружений, чтобы заново найти их в будущем.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="80"/>
         <source>Private dives will not appear in &quot;related dives&quot; lists, and will only be accessible if their URL is known.</source>
-        <translation type="unfinished"/>
+        <translation>Личные прогружения не буду отображаться в списке &quot;связанных&quot; погружений и будут доступны только если известен URL.</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="83"/>
         <source>Keep dives private</source>
-        <translation type="unfinished"/>
+        <translation>Сделать погружения личными</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="105"/>
         <source>Upload dive data</source>
-        <translation type="unfinished"/>
+        <translation>Выгрузить данные погружения</translation>
     </message>
 </context>
 <context>
@@ -2581,7 +2582,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Загруженные</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
@@ -2606,7 +2607,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Download into new trip</source>
-        <translation type="unfinished"/>
+        <translation>Загружать в новую поездку</translation>
     </message>
 </context>
 <context>
@@ -2614,12 +2615,12 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="2286"/>
         <source>Key</source>
-        <translation type="unfinished"/>
+        <translation>Ключ</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="2286"/>
         <source>Value</source>
-        <translation type="unfinished"/>
+        <translation>Значение</translation>
     </message>
 </context>
 <context>
@@ -2627,24 +2628,26 @@
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="244"/>
         <source>Photo upload sucessfull</source>
-        <translation type="unfinished"/>
+        <translation>Выгрузка фото успешна!</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Your dive profile was updated to Facebook.</source>
-        <translation type="unfinished"/>
+        <translation>Профиль погружения обновлен на Facebook.</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
         <source>Photo upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Выгрузка фото не удалась!</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
         <source>Your dive profile was not updated to Facebook, 
  please send the following to the developer. 
 </source>
-        <translation type="unfinished"/>
+        <translation>Не удалось обновить профиль погружения на Facebook.
+Отправьте нижеследующую информацию разработчикам.
+</translation>
     </message>
 </context>
 <context>
@@ -2657,12 +2660,12 @@
     <message>
         <location filename="../qt-ui/listfilter.ui" line="22"/>
         <source>Text label</source>
-        <translation type="unfinished"/>
+        <translation>Текстовая метка</translation>
     </message>
     <message>
         <location filename="../qt-ui/listfilter.ui" line="32"/>
         <source>Filter this list</source>
-        <translation type="unfinished"/>
+        <translation>Отфильтровать список</translation>
     </message>
 </context>
 <context>
@@ -2670,17 +2673,17 @@
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="73"/>
         <source>Reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить фильтры</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="87"/>
         <source>Show/hide filters</source>
-        <translation type="unfinished"/>
+        <translation>Спрятать/показать фильтры</translation>
     </message>
     <message>
         <location filename="../qt-ui/filterwidget.ui" line="101"/>
         <source>Close and reset filters</source>
-        <translation type="unfinished"/>
+        <translation>Закрыть и сбросить фильтры</translation>
     </message>
 </context>
 <context>
@@ -2688,17 +2691,17 @@
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1623"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Эта функция пока недоступна для выбранного дайвкомпьютера.</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1626"/>
         <source>Firmware update failed!</source>
-        <translation type="unfinished"/>
+        <translation>Обонвление прошивки не удалось!</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1629"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно установить соединение с дайвкомпьютером.</translation>
     </message>
 </context>
 <context>
@@ -2847,12 +2850,12 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="989"/>
         <source>Extra data</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="995"/>
         <source>Additional data from dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные данные из дайвкомпьютера</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="81"/>
@@ -3013,47 +3016,47 @@
     <message>
         <location filename="../qt-ui/maintab.cpp" line="578"/>
         <source>Highest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Наибольший SAC за погружение</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="579"/>
         <source>Lowest total SAC of a dive</source>
-        <translation type="unfinished"/>
+        <translation>Наименьший SAC за погружение</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="580"/>
         <source>Average total SAC of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Общий средний SAC выбранных погружений</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="591"/>
         <source>Highest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Наивысшая температура</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="592"/>
         <source>Lowest temperature</source>
-        <translation type="unfinished"/>
+        <translation>Наименьшая температура</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="593"/>
         <source>Average temperature of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Средняя температура выбранных погружений</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="603"/>
         <source>Longest dive</source>
-        <translation type="unfinished"/>
+        <translation>Наидольшее погружение</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="604"/>
         <source>Shortest dive</source>
-        <translation type="unfinished"/>
+        <translation>Кратчайшее погружение</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="605"/>
         <source>Average length of all selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Средня длительность выбранных погружений</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="629"/>
@@ -3090,7 +3093,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="574"/>
         <source>Export dive logs</source>
-        <translation type="unfinished"/>
+        <translation>Экспорт </translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="629"/>
@@ -3394,12 +3397,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="773"/>
         <source>Toggle pictures</source>
-        <translation type="unfinished"/>
+        <translation>Фотографии</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="785"/>
         <source>Toggle tank bar</source>
-        <translation type="unfinished"/>
+        <translation>Замена смесей</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="793"/>
@@ -3409,12 +3412,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="808"/>
         <source>Toggle tissue graph</source>
-        <translation type="unfinished"/>
+        <translation>Насыщение тканей</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="813"/>
         <source>User &amp;survey</source>
-        <translation type="unfinished"/>
+        <translation>Опрос пользователей</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="796"/>
@@ -3662,7 +3665,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1316"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Файлы журналов (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Файлы Cochran (*.can);;CSV files (*.csv);;Файлы DiveLog.de (*.dld);;Файлы JDiveLog (*.jlb);;Файлы Liquivision (*.lvd);;Файлы MkVI (*.txt);;Файлы Suunto (*.sde *.db);;Файлы Divesoft (*.dlf);;Файлы UDDF/UDCF (*.uddf *.udcf);;Файлы XML (*.xml);;Все файлы (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1356"/>
@@ -3683,19 +3686,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="239"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
-        <translation type="unfinished"/>
+        <translation>Вам следует обновить прошивку дайвкомпьютера: текущая версия %1, а последняя стабильная версия %2</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="243"/>
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+Включите Bluetooth на OSTC Sport и выполните такие же приготовления, что и для загрузки журнала, прежде чем продолжать обновление.</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="244"/>
         <source>Not now</source>
-        <translation type="unfinished"/>
+        <translation>Не сейчас</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="245"/>
@@ -3705,17 +3710,17 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
         <source>Firmware upgrade notice</source>
-        <translation type="unfinished"/>
+        <translation>Примечание по обновлению прошивки</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>Save the downloaded firmware as</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить загруженную прошивку как</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
         <source>HEX files (*.hex)</source>
-        <translation type="unfinished"/>
+        <translation>Файлы HEX (*.hex)</translation>
     </message>
 </context>
 <context>
@@ -3723,17 +3728,17 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="409"/>
         <source>Open circuit</source>
-        <translation type="unfinished"/>
+        <translation>Открытый цикл</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="409"/>
         <source>CCR</source>
-        <translation type="unfinished"/>
+        <translation>CCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="409"/>
         <source>pSCR</source>
-        <translation type="unfinished"/>
+        <translation>pSCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="480"/>
@@ -3939,27 +3944,27 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="795"/>
         <source>CCR: show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>CCR: показывать установки при просмотре pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="802"/>
         <source>CCR: show individual O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>CCR: показывать значения сенсора O₂ при просмотре pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="809"/>
         <source>Default CCR set-point for dive planning</source>
-        <translation type="unfinished"/>
+        <translation>Установка CCR по умолчанию для планировщика</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="832"/>
         <source>pSCR O₂ metabolism rate</source>
-        <translation type="unfinished"/>
+        <translation>pSCR уровень метаболизма O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="839"/>
         <source>pSCR ratio</source>
-        <translation type="unfinished"/>
+        <translation>pSCR отношение</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="846"/>
@@ -3969,7 +3974,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="859"/>
         <source>1:</source>
-        <translation type="unfinished"/>
+        <translation>1:</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="875"/>
@@ -4014,7 +4019,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1079"/>
         <source>Disconnect from Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Отключиться от Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="895"/>
@@ -4280,7 +4285,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="63"/>
         <source>Subsurface cannot find a usable printer on this system!</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface не может найти принтеры в вашей системе!</translation>
     </message>
 </context>
 <context>
@@ -4424,12 +4429,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="630"/>
         <source>Unknown dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестный дайвкомпьютер</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="647"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation type="unfinished"/>
+        <translation>Отображение NDL/TTS отключено из-за большого времени расчета</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1168"/>
@@ -4454,7 +4459,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1195"/>
         <source>Add set-point change</source>
-        <translation type="unfinished"/>
+        <translation>Добавить замену установки</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1197"/>
@@ -4533,7 +4538,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="22"/>
         <source>OXYGEN</source>
-        <translation type="unfinished"/>
+        <translation>КИСЛОРОД</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="208"/>
@@ -4631,12 +4636,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1520"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Эта функция пока недоступна для выбранного дайвкомпьютера.</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1512"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно установить соединение с дайвкомпьютером.</translation>
     </message>
 </context>
 <context>
@@ -4663,12 +4668,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1655"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Эта функция пока недоступна для выбранного дайвкомпьютера.</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1659"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно установить соединение с дайвкомпьютером.</translation>
     </message>
 </context>
 <context>
@@ -4689,7 +4694,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
         <source>New set-point (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Новая установка (0 для ОЦ)</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
@@ -4849,7 +4854,8 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="299"/>
         <source>
 %1</source>
-        <translation type="unfinished"/>
+        <translation>
+%1</translation>
     </message>
 </context>
 <context>
@@ -4940,7 +4946,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/about.cpp" line="18"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2015&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Кроссплатформенный журнал погружений&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвальдс, Дирк Хёндел, Томас Канабрава и другие, 2011-2015&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -5091,27 +5097,27 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="98"/>
         <source>You are using the latest version of Subsurface.</source>
-        <translation type="unfinished"/>
+        <translation>Вы используете актуальную версию Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="101"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая верся Subsurface.&lt;br/&gt;Кликинте по:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt;, чтобы скачать.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="107"/>
         <source>A new version of Subsurface is available.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая версия Subsurface.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="108"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation type="unfinished"/>
+        <translation>Последняя версия %1, передите на %2 нашу страницу загрузки %3 чтобы узнать как обновиться.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="116"/>
         <source>Newest release version is </source>
-        <translation type="unfinished"/>
+        <translation>Последняя версия</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="117"/>
@@ -5121,12 +5127,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="134"/>
         <source>Subsurface is checking every two weeks if a new version is available. If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface проверяет наличие новых версий каждые две недели. Если вы не желаете выполнять эти проверки, нажмите Отказаться.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="135"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Отказаться</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="136"/>
@@ -5144,7 +5150,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="54"/>
         <source>User manual</source>
-        <translation type="unfinished"/>
+        <translation>Руководство пользователя</translation>
     </message>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="71"/>
@@ -5158,90 +5164,93 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="44"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;We would love to learn more about our users, their preferences and their usage habits. Please spare a minute to fill out this form and submit it to the Subsurface team.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Мы хотели бы узнать наших пользователей и их предпочтения. Пожалуйста, потратьте минуту, чтобы заполнить эту форму и отправить ее команде Subsurface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="115"/>
         <source>Other software/sources</source>
-        <translation type="unfinished"/>
+        <translation>Другие программы/источники</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="128"/>
         <source>Manually entering dives</source>
-        <translation type="unfinished"/>
+        <translation>Ручной ввод погружений</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
         <source>User survey</source>
-        <translation type="unfinished"/>
+        <translation>Опрос пользователей</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="31"/>
         <source>Subsurface user survey</source>
-        <translation>Опрос пользователей Subsurface</translation>
+        <translation>Анкета Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="63"/>
         <source>Technical diver</source>
-        <translation>Технический дайвер</translation>
+        <translation>Технический</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="76"/>
         <source>Recreational diver</source>
-        <translation>Рекреационный дайвер</translation>
+        <translation>Рекреационный</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
         <source>Dive planner</source>
-        <translation type="unfinished"/>
+        <translation>Планировщик</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Из дайвкомпьютера</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android-приложение </translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
         <source>Any suggestions? (in English)</source>
-        <translation type="unfinished"/>
+        <translation>Ваши предложения (на английском)</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="177"/>
         <source>The following information about your system will also be submitted.</source>
-        <translation type="unfinished"/>
+        <translation>Также будет отправлена следующая информация</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="231"/>
         <source>What kind of diver are you?</source>
-        <translation type="unfinished"/>
+        <translation>Какой вы дайвер?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="270"/>
         <source>Where are you importing data from?</source>
-        <translation type="unfinished"/>
+        <translation>Откуда вы загружаете данные?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="43"/>
         <source>
 Operating system: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Операционная система: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="45"/>
         <source>
 CPU architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Архитектура ЦПУ: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="47"/>
         <source>
 OS CPU architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Архитектура ЦПУ ОС: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="48"/>
@@ -5369,7 +5378,7 @@ Language: %1</source>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="268"/>
         <source>Transferring data...</source>
-        <translation type="unfinished"/>
+        <translation>Передача данных...</translation>
     </message>
 </context>
 <context>
@@ -5402,12 +5411,12 @@ Language: %1</source>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1578"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Эта функция пока недоступна для выбранного дайвкомпьютера.</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1582"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно установить соединение с дайвкомпьютером.</translation>
     </message>
 </context>
 <context>
@@ -5650,7 +5659,7 @@ Maximum</source>
     <message>
         <location filename="../file.c" line="707"/>
         <source>O₂ calibration failed</source>
-        <translation type="unfinished"/>
+        <translation>Калибровка O₂ не удалась</translation>
     </message>
     <message>
         <location filename="../file.c" line="709"/>
@@ -5687,7 +5696,7 @@ Maximum</source>
         <location filename="../cochran.c" line="338"/>
         <location filename="../file.c" line="653"/>
         <source>battery</source>
-        <translation type="unfinished"/>
+        <translation>батарея</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="366"/>
@@ -5954,68 +5963,79 @@ Maximum</source>
         <location filename="../parse-xml.c" line="2147"/>
         <source>Database query dm4_events failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД dm4_events не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2006"/>
         <location filename="../parse-xml.c" line="2154"/>
         <source>Database query dm4_tags failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД dm4_tags не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2328"/>
         <source>Database query shearwater_cylinders failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД shearwater_cylinders не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2335"/>
         <source>Database query shearwater_changes failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД shearwater_changes не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2342"/>
         <source>Database query shearwater_profile_sample failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД shearwater_profile_sample не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2461"/>
         <source>Database query cobalt_cylinders failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_cylinders не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2468"/>
         <source>Database query cobalt_buddies failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_buddies не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2475"/>
         <source>Database query cobalt_visibility failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_visibility не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2482"/>
         <source>Database query cobalt_location failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_location не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2489"/>
         <source>Database query cobalt_location (site) failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_location (site) не удался.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2496"/>
         <source>Database query cobalt_profile_sample failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Запрос БД cobalt_profile_sample не удался.
+</translation>
     </message>
     <message>
         <location filename="../file.c" line="174"/>
@@ -6167,7 +6187,7 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="530"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ / ВНИМАНИЕ: В ПЛАНИРОВЩИКЕ ИСПОЛЬЗУЕТСЯ НОВАЯ РЕАЛИЗАЦИЯ АЛГОРИТМА БЮЛЬМАНА, КОТОРАЯ БЫЛА НЕДОСТАТОЧНО ПРОТЕСТИРОВАНА. МЫ НАСТОЯТЕЛЬНО РЕКОМЕНДУЕМ НЕ ПЛАНИРОВАТЬ ПОГРУЖЕНИЯ ТОЛЬКО НА ОСНОВЕ ЭТИХ РЕЗУЛЬТАТОВ.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="733"/>
@@ -6197,7 +6217,7 @@ Maximum</source>
     <message>
         <location filename="../planner.c" line="769"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>Низкое значение pO₂ %.2f в %d:%02u на смеси %s на глубине %.*f %s</translation>
     </message>
     <message>
         <location filename="../planner.c" line="1085"/>
@@ -6403,7 +6423,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1219"/>
         <source>mean depth to here %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>средная глубина здесь %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1314"/>
@@ -6558,18 +6579,18 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="30"/>
         <source>OC-gas</source>
-        <translation type="unfinished"/>
+        <translation>ОЦ-смесь</translation>
     </message>
     <message>
         <location filename="../dive.c" line="30"/>
         <source>diluent</source>
-        <translation type="unfinished"/>
+        <translation>дилуент</translation>
     </message>
     <message>
         <location filename="../dive.c" line="30"/>
         <location filename="../equipment.c" line="85"/>
         <source>oxygen</source>
-        <translation type="unfinished"/>
+        <translation>кислород</translation>
     </message>
     <message>
         <location filename="../dive.c" line="237"/>
@@ -6729,21 +6750,25 @@ EADD: %d%s
     <message>
         <location filename="../uemis-downloader.c" line="411"/>
         <source>%s %s</source>
-        <translation type="unfinished"/>
+        <translation>%s %s</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="24"/>
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: Файловая система почти заполнена
+Отсоедините и подключите дайв-компьютер
+и нажмите &quot;Повторить&quot;</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="25"/>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and try again</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: Файловая система заполнена
+Отсоедините и подключите дайв-компьютер
+и попробуйте заново</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="26"/>
@@ -6834,17 +6859,17 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="196"/>
         <source>Safety stop violation</source>
-        <translation type="unfinished"/>
+        <translation>Нарушение остановки безопасности</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="198"/>
         <source>Speed alarm</source>
-        <translation type="unfinished"/>
+        <translation>Тревога: скорость</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>
         <source>Speed warning</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: скорость</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="203"/>
@@ -6869,12 +6894,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="214"/>
         <source>RGT warning</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="216"/>
         <source>RGT alert</source>
-        <translation type="unfinished"/>
+        <translation>Тревога: RGT</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="218"/>
@@ -6914,12 +6939,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../uemis.c" line="232"/>
         <source>Low battery warning</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: заряд батареи</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="234"/>
         <source>Low battery alert</source>
-        <translation type="unfinished"/>
+        <translation>Тревога: заряд батареи</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="434"/>
@@ -6996,7 +7021,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="461"/>
         <source>Trips</source>
-        <translation type="unfinished"/>
+        <translation>Поездки</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="463"/>
@@ -7051,7 +7076,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="480"/>
         <source>Average time</source>
-        <translation type="unfinished"/>
+        <translation>Среднее время</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="481"/>
@@ -7187,7 +7212,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="509"/>
         <source>Value</source>
-        <translation type="unfinished"/>
+        <translation>Значение</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="510"/>
