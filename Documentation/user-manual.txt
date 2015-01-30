@@ -3219,10 +3219,10 @@ For downloading dives in _Subsurface_ specify the device name connected to the M
 address in the last step above, e.g. _/dev/rfcomm0_.
 
 
-== APPENDIX B: Dive Computer specific information for importing dive information.
+== APPENDIX B: Dive Computer specific information for importing dive data.
 
 [[S_ImportUemis]]
-=== Import from a Uemis Zurich
+=== Importing from Uemis Zurich
 
 [icon="images/icons/iumis.jpg"]
 [NOTE]
@@ -3257,7 +3257,7 @@ may have to do this more than once, depending on how many dives are
 stored on the dive computer.
 
 [[S_ImportingGalileo]]
-=== Importing dives from the Uwatec Galileo
+=== Importing from Uwatec Galileo
 
 [icon="images/icons/Galileo.jpg"]
 [NOTE]
@@ -3286,7 +3286,7 @@ For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
 
 [[S_ImportingDR5]]
-=== Importing dives from Heinrichs Weikamp DR5
+=== Importing from Heinrichs Weikamp DR5
 
 [icon="images/icons/HW_DR5.jpg"]
 [NOTE]
@@ -3301,7 +3301,7 @@ _Subsurface_ will most likely differ from the one displayed on the DR5.
 
 
 [[S_ImportingXDeep]]
-=== Importing dives from xDEEP BLACK
+=== Importing from xDEEP BLACK
 
 [icon="images/icons/HW_xdeepblack.jpg"]
 [NOTE]
@@ -3314,7 +3314,7 @@ _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
 
 
-=== Import from Shearwater Predator using Bluetooth
+=== Importing from Shearwater Predator using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]
@@ -3331,7 +3331,7 @@ this, but it is reported to be solved sometimes by one of these steps:
  * switch off WiFi while using Bluetooth
 
 [[S_PoseidonMkVI]]
-=== Importing dive logs from the Poseidon MkVI Discovery
+=== Importing from Poseidon MkVI Discovery
 
 [icon="images/MkVI.jpeg"]
 [NOTE]
@@ -3351,7 +3351,7 @@ can be downloaded at a time, comprising three files:
 _Subsurface_ accesses the .txt and the .csv files to obtain dive log information.
 
 
-=== Importing dive logs from the APD Inspiration CCR
+=== Importing from APD Inspiration CCR
 
 [icon="images/APDComputer.jpg"]
 [NOTE]
@@ -3398,7 +3398,7 @@ data from foreign
 dive log software. The procedures below mostly apply to Linux and/or Windows.
 
 [[S_ImportingDivesSuunto]]
-=== Exporting dives from *Suunto Divemanager (DM3, DM4 or DM5)*
+=== Exporting from *Suunto Divemanager (DM3, DM4 or DM5)*
 [icon="images/icons/suuntologo.jpg"]
 [NOTE]
 DiveManager is a MS Windows application for Suunto dive computers.
@@ -3488,7 +3488,7 @@ which can be imported into _Subsurface_.
 4. The password for accessing the .zip file is _mares_.
 
 [[S_ImportingDivingLog]]
-=== Exporting dives from *DivingLog 5.0*
+=== Exporting from *DivingLog 5.0*
 
 [icon="images/icons/divingloglogo.jpg"]
 [NOTE]
