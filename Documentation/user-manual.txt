@@ -1769,7 +1769,7 @@ case there is good agreement from the readings of the two oxygen sensors.
 image::images/CCR_dive_profile_f20.jpg["FIGURE: CCR dive profile",align="center"]
 
 _Equipment-specific information_: Equipment-specific information gathered by
-_Subsurface_ is shown in the xref:S_ExtraTab[Extra data tab]. This may include setup information
+_Subsurface_ is shown in the xref:S_ExtraDataTab[Extra data tab]. This may include setup information
 or metadata about the dive.
 
 More equipment-specific information for downloading CCR dive logs for
@@ -1792,6 +1792,7 @@ _Subsurface_ calculates SAC and Gas consumption taking in account gas
 incompressibility, particularly at tank pressures above 200 bar, making them more accurate.
 Users should refer to xref:SAC_CALCULATION[Appendix D] for more information.
 
+[[S_ExtraDataTab]]
 === The *Extra Data* tab (usually for individual dives)
 
 When using a dive computer, it often reports several data items that cannot easily be
@@ -2026,6 +2027,7 @@ an existing marker a menu appears, adding options to allow deletion of the
 marker or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.
 
+[[S_InfoBox]]
 === The *Information Box*
 
 The Information box displays a large range of information pertaining to the dive
@@ -3242,6 +3244,7 @@ manually by running:
 For downloading dives in _Subsurface_ specify the device name connected to the MAC
 address in the last step above, e.g. _/dev/rfcomm0_.
 
+[[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
 
 == APPENDIX B: Dive Computer specific information for importing dive data.
 
@@ -3532,8 +3535,7 @@ button). Then do the following:
 == APPENDIX D: Exporting a spreadsheet to CSV format
 
 Many divers keep a diving log in some form of a digital file, commonly a spreadsheet
-with various fields of information. These logs can be easily imported into _Subsurface_
-(xref:S_ImportingManualCSV[Importing dives from_manually kept CSV file]), after the
+with various fields of information. These logs can be easily imported into _Subsurface_ after the
 spreadsheet is converted in a .CSV file.
 This section explains the procedure to convert a diving logbook stored in a spreadsheet
 to a .CSV file that will later be imported from _Subsurface_.
@@ -3567,7 +3569,7 @@ After selecting _Save_, select the appropriate field delimiter (choose _Tab_ to 
 
 image::images/LOffice_field_options.jpg["FIGURE: Field options",align="center"]
 
-One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCSV[Importing dives from manually kept CSV files].
+One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingCSVDives[Importing CSV dives].
 
 === Microsoft _Excel_
 
@@ -3598,7 +3600,7 @@ Click on the left-hand part of the _Save as_ option, NOT on the arrow on the rig
 
 image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialogue",align="center"]
 
-Select the _Save_ button. The CSV-formatted file is saved into the folder that was selected. One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingManualCSV[Importing dives from manually kept CSV files].
+Select the _Save_ button. The CSV-formatted file is saved into the folder that was selected. One can double check the .CSV file by opening it with a text editor, and then import the dive data as explained on the section xref:S_ImportingCSVDives[Importing CSV dives].
 
 == APPENDIX E: FAQs.
 
