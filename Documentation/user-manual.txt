@@ -261,7 +261,7 @@ a. One can find the coordinates on the world map in the bottom right hand
    stored.
 
 b. The coordinates can be obtained from the _Subsurface_ Companion app if the
-   user has an Android device with GPS and if the coordinates of the dive site
+   user has an Android or iPhone device with GPS and if the coordinates of the dive site
    were stored using that device.
    xref:S_Companion[Click here for more information]
 
@@ -741,7 +741,7 @@ a. The user can find the coordinates on the world map in the bottom right hand
    stored.
 
 b. The user can obtain the coordinates from the _Subsurface_ Companion app if
-   an Android device with GPS was used and if the coordinates of the dive site
+   an Android or iPhone device with GPS was used and if the coordinates of the dive site
    were stored using that device.
    xref:S_Companion[Click here for more information]
 
@@ -1239,7 +1239,8 @@ a smaller file to make sure everything works.
 [[S_Companion]]
 === Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
-Using the *Subsurface Companion App* on an Android device with a GPS, the coordinates
+Using the *Subsurface Companion App* on an Android device with a GPS or
+iPhone, the coordinates
 for the diving
 location can be automatically passed to the _Subsurface_
 dive log. The Companion App stores the dive locations on
@@ -1259,7 +1260,7 @@ To do this:
   or from
   http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
-==== Using the Subsurface companion app on a smartphone
+==== Using the Subsurface companion app on an Android smartphone
 
 On first use the app has three options:
 
@@ -1438,6 +1439,29 @@ of another registered diver.
 ===== Send all locations
 
 This option sends all locations stored in the Android device to the server.
+
+
+==== Using the Subsurface companion app on an iPhone smartphone
+
+The iPhone interface is quite simple. One needs to add the user ID given
+during the registration to the space reserved for it as shown on left
+part of the image below.
+
+image::images/iphone.png["FIGURE: Using iPhone companion application",align="center",width=640]
+
+Next step is to click "Dive in" and start collecting location
+information. Dive can be added automatically or manually. The difference
+seems to be whether user is asked for site name or not. When user adds a
+dive, location service is started and there is a red bar at the bottom
+of the screen indicating that. After the dive one can click on the red
+bar to end the dive/location service. Note that when the location
+service is running, one can add dives only manually.
+
+It is possible to change the site name afterwards by selecting the dive
+in question from the dive list and clicking on the site name. Other
+modifications doesn't seem to be possible. The dive list is uploaded
+automatically to webservice and there does not seem to be an option to
+trigger it manually.
 
 
 ==== Downloading dive locations to the _Subsurface_ divelog
