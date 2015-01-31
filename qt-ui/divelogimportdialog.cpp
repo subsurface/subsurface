@@ -579,7 +579,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						r.indexOf(tr("Duration")),
 						r.indexOf(tr("Location")),
 						r.indexOf(tr("GPS")),
-						r.indexOf(tr("Max depth")),
+						r.indexOf(tr("Max. depth")),
 						r.indexOf(tr("Mean depth")),
 						r.indexOf(tr("Divemaster")),
 						r.indexOf(tr("Buddy")),
