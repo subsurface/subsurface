@@ -110,7 +110,7 @@ void UpdateManager::requestReceived()
 		} else {
 			// the webservice backend doesn't localize - but it's easy enough to just replace the
 			// strings that it is likely to send back
-			if (!responseBody.contains("newer") && !responseBody.contains("beta", Qt::CaseInsensitive))
+			if (!responseBody.contains("latest development") && !responseBody.contains("newer") && !responseBody.contains("beta", Qt::CaseInsensitive))
 				haveNewVersion = true;
 			if (responseBody.contains("Newest release version is "))
 				responseBody.replace("Newest release version is ", tr("Newest release version is "));
