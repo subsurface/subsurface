@@ -1,20 +1,70 @@
-From 6c59f4c0fa925d1254668390f32229da93b44c75 Mon Sep 17 00:00:00 2001
+From f4637480501bb82884b719624d8d179b5d3016c2 Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
 Date: Wed, 28 Jan 2015 14:42:12 -0800
 Subject: [PATCH] Make build with Qt4
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
-
-Conflicts:
-	qt-ui/downloadfromdivecomputer.cpp
 ---
+ qt-ui/divelogexportdialog.cpp      |  7 ++++++-
+ qt-ui/divelogexportdialog.h        |  4 ++++
  qt-ui/divelogimportdialog.cpp      | 30 ++++++++++++++++++++++++++++++
  qt-ui/downloadfromdivecomputer.cpp | 12 ++++++++++++
  qt-ui/plannerSettings.ui           |  4 ++--
- 3 files changed, 44 insertions(+), 2 deletions(-)
+ 5 files changed, 54 insertions(+), 3 deletions(-)
 
+diff --git a/qt-ui/divelogexportdialog.cpp b/qt-ui/divelogexportdialog.cpp
+index aff0265de616..24ac2942ac36 100644
+--- a/qt-ui/divelogexportdialog.cpp
++++ b/qt-ui/divelogexportdialog.cpp
+@@ -1,8 +1,9 @@
+ #include <QFileDialog>
+ #include <QShortcut>
+ #include <QSettings>
++#if QT_VERSION >= 0x050000
+ #include <QtConcurrent>
+-
++#endif
+ #include "divelogexportdialog.h"
+ #include "diveshareexportdialog.h"
+ #include "ui_divelogexportdialog.h"
+@@ -311,7 +312,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
+ 		settings.endGroup();
+ 		// the non XSLT exports are called directly above, the XSLT based ons are called here
+ 		if (!stylesheet.isEmpty())
++#if QT_VERSION >= 0x050000
+ 			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
++#else
++			export_dives_xslt(filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
++#endif
+ 	}
+ }
+ 
+diff --git a/qt-ui/divelogexportdialog.h b/qt-ui/divelogexportdialog.h
+index 14f8f453980f..524416414a8e 100644
+--- a/qt-ui/divelogexportdialog.h
++++ b/qt-ui/divelogexportdialog.h
+@@ -3,7 +3,9 @@
+ 
+ #include <QDialog>
+ #include <QTextStream>
++#if QT_VERSION >= 0x050000
+ #include <QFuture>
++#endif
+ #include "helpers.h"
+ #include "statistics.h"
+ 
+@@ -28,7 +30,9 @@ slots:
+ 	void on_exportGroup_buttonClicked(QAbstractButton *);
+ 
+ private:
++#if QT_VERSION >= 0x050000
+ 	QFuture<int> future;
++#endif
+ 	Ui::DiveLogExportDialog *ui;
+ 	void showExplanation();
+ 	void exportHtmlInit(const QString &filename);
 diff --git a/qt-ui/divelogimportdialog.cpp b/qt-ui/divelogimportdialog.cpp
-index 5cda9036eb94..57648e081050 100644
+index c79b9df953eb..25fd75d15d0e 100644
 --- a/qt-ui/divelogimportdialog.cpp
 +++ b/qt-ui/divelogimportdialog.cpp
 @@ -375,14 +375,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
