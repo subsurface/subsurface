@@ -138,7 +138,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Android companion app</string>
+   <string>Android/iPhone companion app</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
