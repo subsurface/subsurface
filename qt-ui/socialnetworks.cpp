@@ -202,7 +202,9 @@ void FacebookManager::sendDive()
 	requestAlbumId();
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+	profile->setToolTipVisibile(false);
 	QPixmap pix = QPixmap::grabWidget(profile);
+	profile->setToolTipVisibile(true);
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);

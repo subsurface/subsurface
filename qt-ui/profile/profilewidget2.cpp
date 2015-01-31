@@ -1039,6 +1039,11 @@ void ProfileWidget2::clearHandlers()
 	}
 }
 
+void ProfileWidget2::setToolTipVisibile(bool visible)
+{
+	toolTipItem->setVisible(visible);
+}
+
 void ProfileWidget2::setAddState()
 {
 	if (currentState == ADD)
