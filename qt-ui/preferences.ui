@@ -151,7 +151,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="defaults_page">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -788,7 +788,7 @@
                <string>GFLow at max depth</string>
               </property>
              </widget>
-     </item>
+            </item>
             <item row="5" column="0">
              <widget class="QCheckBox" name="show_ccr_setpoint">
               <property name="text">
@@ -796,7 +796,7 @@
               </property>
              </widget>
             </item>
-             <item row="6" column="0">
+            <item row="6" column="0">
              <widget class="QCheckBox" name="show_ccr_sensors">
               <property name="text">
                <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
@@ -1048,42 +1048,32 @@
         </layout>
        </widget>
        <widget class="QWidget" name="facebook_page">
-        <widget class="QWidget" name="fbConnected" native="true">
-         <property name="geometry">
-          <rect>
-           <x>9</x>
-           <y>355</y>
-           <width>265</width>
-           <height>47</height>
-          </rect>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <item>
-           <layout class="QHBoxLayout" name="connectedLayout">
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnDisconnectFacebook">
-              <property name="text">
-               <string>Disconnect from Facebook</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QVBoxLayout" name="fbLayout">
+         <item>
+          <widget class="QLabel" name="FBLabel">
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="fbConnected" native="true">
+           <widget class="QPushButton" name="btnDisconnectFacebook">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>229</width>
+              <height>28</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Disconnect from Facebook</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </item>
@@ -1441,12 +1431,12 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="verticalSpeed"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="verticalSpeed"/>
  </buttongroups>
 </ui>
