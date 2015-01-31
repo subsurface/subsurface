@@ -240,7 +240,7 @@ FORMS = \
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui
 
-FBSUPPORT: {
+greaterThan(QT_MAJOR_VERSION, 4) {
 FORMS += qt-ui/socialnetworksdialog.ui
 SOURCES += qt-ui/socialnetworks.cpp
 HEADERS += qt-ui/socialnetworks.h

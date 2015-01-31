@@ -48,7 +48,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->setCurrentIndex(-1);
 
 	// Facebook stuff:
-#if !defined(Q_OS_ANDROID) && defined(FBSUPPRORT)
+#if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	FacebookManager *fb = FacebookManager::instance();
 	if(fb->loggedIn()){
 		facebookWebView->setHtml("You are connected on Facebook, yey.");
