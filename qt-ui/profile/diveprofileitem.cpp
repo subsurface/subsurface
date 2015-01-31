@@ -622,7 +622,7 @@ void DiveMeanDepthItem::createTextItem() {
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis->posAtValue(sec) + 1, vAxis->posAtValue(lastRunningSum)));
 	text->setScale(0.8); // need to call this BEFORE setText()
-	text->setText(QString("%1%2").arg(d, 0, 'f', 1).arg(*unitText));
+	text->setText(QString("%1%2").arg(d, 0, 'f', 1).arg(unitText));
 	texts.append(text);
 }
 
