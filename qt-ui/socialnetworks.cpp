@@ -212,8 +212,7 @@ void FacebookManager::sendDive()
 	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
-		 "&message=" + dialog.text());
-
+		 "&message=" + dialog.text().replace("&quot;", "%22"));
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
 	QNetworkRequest request(url);
