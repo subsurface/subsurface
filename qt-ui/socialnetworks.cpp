@@ -21,12 +21,14 @@
 #include "helpers.h"
 #include "ui_socialnetworksdialog.h"
 
+#if SAVE_FB_CREDENTIALS
 #define GET_TXT(name, field)                                             \
 	v = s.value(QString(name));                                      \
 	if (v.isValid())                                                 \
 		prefs.field = strdup(v.toString().toUtf8().constData()); \
 	else                                                             \
 		prefs.field = default_prefs.field
+#endif
 
 FacebookManager *FacebookManager::instance()
 {
@@ -55,6 +57,7 @@ bool FacebookManager::loggedIn() {
 
 void FacebookManager::sync()
 {
+#if SAVE_FB_CREDENTIALS
 	qDebug() << "Sync Active";
 	QSettings s;
 	s.beginGroup("WebApps");
@@ -68,6 +71,7 @@ void FacebookManager::sync()
 	qDebug() << "Connection Token" << prefs.facebook.access_token;
 	qDebug() << "User ID" << prefs.facebook.user_id;
 	qDebug() << "Album ID" << prefs.facebook.album_id;
+#endif
 }
 
 void FacebookManager::tryLogin(const QUrl& loginResponse)
@@ -83,10 +87,15 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
 
+#if SAVE_FB_CREDENTIALS
 	QSettings settings;
 	settings.beginGroup("WebApps");
 	settings.beginGroup("Facebook");
 	settings.setValue("ConnectToken", securityToken);
+#else
+	prefs.facebook.access_token = copy_string(securityToken.toUtf8().data());
+	qDebug() << "Got access token" << prefs.facebook.access_token;
+#endif
 	sync();
 	requestUserId();
 	sync();
@@ -97,6 +106,7 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 void FacebookManager::logout()
 {
 	qDebug() << "Logging out";
+#if SAVE_FB_CREDENTIALS
 	QSettings settings;
 	settings.beginGroup("WebApps");
 	settings.beginGroup("Facebook");
@@ -104,6 +114,14 @@ void FacebookManager::logout()
 	settings.remove("UserId");
 	settings.remove("AlbumId");
 	sync();
+#else
+	free(prefs.facebook.access_token);
+	free(prefs.facebook.album_id);
+	free(prefs.facebook.user_id);
+	prefs.facebook.access_token = NULL;
+	prefs.facebook.album_id = NULL;
+	prefs.facebook.user_id = NULL;
+#endif
 	emit justLoggedOut();
 }
 
@@ -119,9 +137,11 @@ void FacebookManager::requestAlbumId()
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 
+#if SAVE_FB_CREDENTIALS
 	QSettings s;
 	s.beginGroup("WebApps");
 	s.beginGroup("Facebook");
+#endif
 
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
@@ -129,7 +149,11 @@ void FacebookManager::requestAlbumId()
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
 			qDebug() << "Album already Exists, using it's id";
+#if SAVE_FB_CREDENTIALS
 			s.setValue("AlbumId", obj.value("id").toString());
+#else
+			prefs.facebook.album_id = copy_string(obj.value("id").toString().toUtf8().data());
+#endif
 			qDebug() << "Got album ID";
 			return;
 		}
@@ -151,7 +175,11 @@ void FacebookManager::requestAlbumId()
 	albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
 	if (album.contains("id")) {
+#if SAVE_FB_CREDENTIALS
 		s.setValue("AlbumId", album.value("id").toString());
+#else
+		prefs.facebook.album_id = copy_string(album.value("id").toString().toUtf8().data());
+#endif
 		qDebug() << "Got album ID";
 		sync();
 		return;
@@ -174,10 +202,14 @@ void FacebookManager::requestUserId()
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
+#if SAVE_FB_CREDENTIALS
 		QSettings s;
 		s.beginGroup("WebApps");
 		s.beginGroup("Facebook");
 		s.setValue("UserId", obj.value("id").toVariant());
+#else
+		prefs.facebook.user_id = copy_string(obj.value("id").toString().toUtf8().data());
+#endif
 		qDebug() << "Got user id.";
 		return;
 	}
@@ -213,6 +245,7 @@ void FacebookManager::sendDive()
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
 		 "&message=" + dialog.text().replace("&quot;", "%22"));
+	qDebug() << "About to post using access token" << prefs.facebook.access_token;
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
 	QNetworkRequest request(url);
