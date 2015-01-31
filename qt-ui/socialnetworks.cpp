@@ -44,6 +44,7 @@ QUrl FacebookManager::connectUrl() {
 		"client_id=427722490709000"
 		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
 		"&response_type=token"
+		"&display=popup"
 		"&scope=publish_actions,user_photos"
 	);
 }
