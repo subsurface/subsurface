@@ -2627,22 +2627,22 @@
 <context>
     <name>FacebookManager</name>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="244"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Photo upload sucessfull</source>
         <translation>Успешно качване на снимка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="246"/>
         <source>Your dive profile was updated to Facebook.</source>
         <translation>Гмуркаческия профил бе качен във Facebook</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
         <source>Photo upload failed</source>
         <translation>Грешка при качването на снимката</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="251"/>
         <source>Your dive profile was not updated to Facebook, 
  please send the following to the developer. 
 </source>
@@ -3596,80 +3596,80 @@ p, li { white-space: pre-wrap; }
         <translation>Отмяна</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="310"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="308"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Моля затворете текущата редакция на гмуркане преди да затворите файла.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="422"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="420"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Моля запишете или отменете текущата редакция на гмуркане преди да добавите гмуркане.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="469"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="467"/>
         <source>Print runtime table</source>
         <translation>Напечатай рунтайм таблица</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="812"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="810"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Желаете ли да запишете промените във файла %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="814"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="812"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Желаете ли да запишете промените във файла с данни?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="819"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="817"/>
         <source>Save changes?</source>
         <translation>Запиши промените?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1174"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1172"/>
         <source>Save file as</source>
         <translation>Запиши файла като</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1315"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1313"/>
         <source>Open dive log file</source>
         <translation>Отвори регистър файл</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="820"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="818"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Промените ще бъдат изгубени ако не ги запишете.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="278"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="422"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1356"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="420"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1354"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="224"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1158"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1156"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Моля запишете или отменете текущата редакция на гмуркане преди да отворите нов файл.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="603"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="601"/>
         <source>Yearly statistics</source>
         <translation>Годишни статистики</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1175"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1173"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML файлове (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1316"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1314"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation>Регистър файлове (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran файлове (*.can);;CSV файлове (*.csv);;DiveLog.de файлове (*.dld);;JDiveLog файлове (*.jlb);;Liquivision файлове (*.lvd);;MkVI файлове (*.txt);;Suunto файлове (*.sde *.db);;Divesoft файлове (*.dlf);;UDDF/UDCF файлове (*.uddf *.udcf);;XML файлове (*.xml);;Всички файлове (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1356"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1354"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Моля, първо приключете с редакцията преди да започнете нова.</translation>
     </message>
@@ -4018,7 +4018,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>Парола</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1079"/>
+        <location filename="../qt-ui/preferences.ui" line="1071"/>
         <source>Disconnect from Facebook</source>
         <translation>Прекъсване на връзката с Facebook</translation>
     </message>
@@ -4178,52 +4178,62 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>GFHigh</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="44"/>
+        <location filename="../qt-ui/preferences.cpp" line="38"/>
         <source>No proxy</source>
         <translation>Без прокси</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="45"/>
+        <location filename="../qt-ui/preferences.cpp" line="39"/>
         <source>System proxy</source>
         <translation>Системно прокси</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="46"/>
+        <location filename="../qt-ui/preferences.cpp" line="40"/>
         <source>HTTP proxy</source>
         <translation>HTTP прокси</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="47"/>
+        <location filename="../qt-ui/preferences.cpp" line="41"/>
         <source>SOCKS proxy</source>
         <translation>SOCKS прокси</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="324"/>
+        <location filename="../qt-ui/preferences.cpp" line="80"/>
+        <source>To disconnect Subsurface from your Facebook account, use the button below</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.cpp" line="94"/>
+        <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.cpp" line="333"/>
         <source>Restart required</source>
         <translation>Нужен рестарт</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="325"/>
+        <location filename="../qt-ui/preferences.cpp" line="334"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
         <translation>За да смените успешно език е необходим рестарт на Subsurface.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="494"/>
+        <location filename="../qt-ui/preferences.cpp" line="503"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
         <translation>Ако изберете OK, всички настройки на Subsurface ще бъдат върнати по подразбиране. Това ще бъде изпълнено веднага.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="480"/>
+        <location filename="../qt-ui/preferences.cpp" line="489"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML файлове (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="480"/>
+        <location filename="../qt-ui/preferences.cpp" line="489"/>
         <source>Open default log file</source>
         <translation>Отвори файла по подразбиране</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="493"/>
+        <location filename="../qt-ui/preferences.cpp" line="502"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -4808,54 +4818,54 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>SocialNetworkDialog</name>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="282"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="283"/>
         <source>Dive date: %1 
 </source>
         <translation>Дата на гмуркане: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="285"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
         <source>Duration: %1 
 </source>
         <translation>Времетраене: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
         <source>h:</source>
         <comment>abbreviation for hours plus separator</comment>
         <translation>ч:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="288"/>
         <source>min</source>
         <comment>abbreviation for minutes</comment>
         <translation>мин</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="290"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="291"/>
         <source>Dive location: %1 
 </source>
         <translation>Местонахождение: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="293"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="294"/>
         <source>Buddy: %1 
 </source>
         <translation>Партньор: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="296"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="297"/>
         <source>Divemaster: %1 
 </source>
         <translation>Водач: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="299"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="300"/>
         <source>
 %1</source>
         <translation>
@@ -5119,32 +5129,32 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>Последната версия е %1, моля проверете %2 нашата страница %3 за информация как да обновите.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="116"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="118"/>
         <source>Newest release version is </source>
         <translation>Най-новата весия е</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="117"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="119"/>
         <source>The server returned the following information:</source>
         <translation>Сървъра върна следната информация:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="134"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="136"/>
         <source>Subsurface is checking every two weeks if a new version is available. If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface проверява всеки две седмици ако нова версия е налична. Ако не искате тази проверка да продължи моля изберете Decline/Oткажи.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="135"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="137"/>
         <source>Decline</source>
         <translation>Откажи</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="136"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="138"/>
         <source>Accept</source>
         <translation>Приеми</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="138"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="140"/>
         <source>Automatic check for updates</source>
         <translation>Автоматична проверка за обновления</translation>
     </message>
@@ -5212,8 +5222,8 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
-        <source>Android companion app</source>
-        <translation>Android спътник приложение</translation>
+        <source>Android/iPhone companion app</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>

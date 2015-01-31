@@ -2627,22 +2627,22 @@ il computer selezionato?</translation>
 <context>
     <name>FacebookManager</name>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="244"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Photo upload sucessfull</source>
         <translation>Caricamento delle foto eseguito con successo</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="246"/>
         <source>Your dive profile was updated to Facebook.</source>
         <translation>Il profilo della tua immersione è stato aggiornato su Facebook.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="249"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
         <source>Photo upload failed</source>
         <translation>Upload delle foto fallito</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="251"/>
         <source>Your dive profile was not updated to Facebook, 
  please send the following to the developer. 
 </source>
@@ -3596,80 +3596,80 @@ p, li { white-space: pre-wrap; }
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="310"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="308"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Per favore, salva o cancella le modifiche all&apos;immersione prima di chiudere il file.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="422"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="420"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Per favore, salva o cancella le modifiche all&apos;immersione prima di aggiungerne un&apos;altra.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="469"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="467"/>
         <source>Print runtime table</source>
         <translation>Stampa la tabella con il runtime</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="812"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="810"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Vuoi salvare le modifiche fatte nel file %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="814"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="812"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Vuoi salvare le modifiche fatte nel file di dati?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="819"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="817"/>
         <source>Save changes?</source>
         <translation>Salvo le modifiche?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1174"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1172"/>
         <source>Save file as</source>
         <translation>Apri file come</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1315"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1313"/>
         <source>Open dive log file</source>
         <translation>Apri file di log immersioni</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="820"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="818"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Le modifiche saranno perse se tu non le salvi.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="278"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="422"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1356"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="420"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1354"/>
         <source>Warning</source>
         <translation>Avviso</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="224"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1158"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1156"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Per favore, salva o cancella le modifiche all&apos;immersione prima di aprire un nuovo file.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="603"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="601"/>
         <source>Yearly statistics</source>
         <translation>Statistiche Annuali</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1175"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1173"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>File XML Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1316"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1314"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
         <translation>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1356"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1354"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Per favore, prima completa le modifiche corrente prima di aggiungerne altre.</translation>
     </message>
@@ -4018,7 +4018,7 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1079"/>
+        <location filename="../qt-ui/preferences.ui" line="1071"/>
         <source>Disconnect from Facebook</source>
         <translation>Disconnetti da Facebook</translation>
     </message>
@@ -4178,52 +4178,62 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <translation>GFHigh</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="44"/>
+        <location filename="../qt-ui/preferences.cpp" line="38"/>
         <source>No proxy</source>
         <translation>Nessun proxy</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="45"/>
+        <location filename="../qt-ui/preferences.cpp" line="39"/>
         <source>System proxy</source>
         <translation>Proxy di sistema</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="46"/>
+        <location filename="../qt-ui/preferences.cpp" line="40"/>
         <source>HTTP proxy</source>
         <translation>Proxy HTTP</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="47"/>
+        <location filename="../qt-ui/preferences.cpp" line="41"/>
         <source>SOCKS proxy</source>
         <translation>Proxy SOCKS</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="324"/>
+        <location filename="../qt-ui/preferences.cpp" line="80"/>
+        <source>To disconnect Subsurface from your Facebook account, use the button below</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.cpp" line="94"/>
+        <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/preferences.cpp" line="333"/>
         <source>Restart required</source>
         <translation>Richiesto riavvio</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="325"/>
+        <location filename="../qt-ui/preferences.cpp" line="334"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
         <translation>Per caricare correttamente la nuova lingua è richiesto il riavvio di Subsurface.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="494"/>
+        <location filename="../qt-ui/preferences.cpp" line="503"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
         <translation>Se clicchi OK, tutte le impostazionei di Subsurface verranno riportate ai loro valori di default. La modifica sarà immediata.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="480"/>
+        <location filename="../qt-ui/preferences.cpp" line="489"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>File XML Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="480"/>
+        <location filename="../qt-ui/preferences.cpp" line="489"/>
         <source>Open default log file</source>
         <translation>Apri il log delle immersioni di default</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="493"/>
+        <location filename="../qt-ui/preferences.cpp" line="502"/>
         <source>Warning</source>
         <translation>Avviso</translation>
     </message>
@@ -4808,54 +4818,54 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
 <context>
     <name>SocialNetworkDialog</name>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="282"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="283"/>
         <source>Dive date: %1 
 </source>
         <translation>Data dell&apos;immersione: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="285"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
         <source>Duration: %1 
 </source>
         <translation>Durata: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
         <source>h:</source>
         <comment>abbreviation for hours plus separator</comment>
         <translation>h:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="288"/>
         <source>min</source>
         <comment>abbreviation for minutes</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="290"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="291"/>
         <source>Dive location: %1 
 </source>
         <translation>Luogo immersione: %1
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="293"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="294"/>
         <source>Buddy: %1 
 </source>
         <translation>Compagno: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="296"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="297"/>
         <source>Divemaster: %1 
 </source>
         <translation>Divemaster: %1 
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/socialnetworks.cpp" line="299"/>
+        <location filename="../qt-ui/socialnetworks.cpp" line="300"/>
         <source>
 %1</source>
         <translation>
@@ -5119,32 +5129,32 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <translation>La versione più recente è %1, per favore controlla %2 la nostra pagina di download %3 per le informazioni su come aggiornare.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="116"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="118"/>
         <source>Newest release version is </source>
         <translation>La versione più recente è</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="117"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="119"/>
         <source>The server returned the following information:</source>
         <translation>Il server ha restituito le seguenti informazioni:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="134"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="136"/>
         <source>Subsurface is checking every two weeks if a new version is available. If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface controlla la disponibilità di una nuova versione ogni due settimane. Se non vuoi che Subsurface continui a controllare, per favore fai clic su Rifiuta</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="135"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="137"/>
         <source>Decline</source>
         <translation>Rifiuta</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="136"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="138"/>
         <source>Accept</source>
         <translation>Accetta</translation>
     </message>
     <message>
-        <location filename="../qt-ui/updatemanager.cpp" line="138"/>
+        <location filename="../qt-ui/updatemanager.cpp" line="140"/>
         <source>Automatic check for updates</source>
         <translation>Controllo automatico degli aggiornamenti</translation>
     </message>
@@ -5212,8 +5222,8 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
-        <source>Android companion app</source>
-        <translation>Android companion app</translation>
+        <source>Android/iPhone companion app</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
