@@ -93,7 +93,6 @@ void PreferencesDialog::facebookDisconnect()
 	ui.fbConnected->hide();
 	ui.FBLabel->setText(tr("To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline"));
 	if (facebookWebView) {
-		facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
 		facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
 		facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
 		facebookWebView->show();
