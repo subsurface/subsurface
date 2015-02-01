@@ -58,7 +58,6 @@ bool FacebookManager::loggedIn() {
 void FacebookManager::sync()
 {
 #if SAVE_FB_CREDENTIALS
-	qDebug() << "Sync Active";
 	QSettings s;
 	s.beginGroup("WebApps");
 	s.beginGroup("Facebook");
@@ -67,22 +66,15 @@ void FacebookManager::sync()
 	GET_TXT("ConnectToken", facebook.access_token);
 	GET_TXT("UserId", facebook.user_id);
 	GET_TXT("AlbumId", facebook.album_id);
-
-	qDebug() << "Connection Token" << prefs.facebook.access_token;
-	qDebug() << "User ID" << prefs.facebook.user_id;
-	qDebug() << "Album ID" << prefs.facebook.album_id;
 #endif
 }
 
 void FacebookManager::tryLogin(const QUrl& loginResponse)
 {
-	qDebug() << "Trying to Login.";
 	QString result = loginResponse.toString();
-	if (!result.contains("access_token")) {
+	if (!result.contains("access_token"))
 		return;
-	}
 
-	qDebug() << "Login Sucessfull";
 	int from = result.indexOf("access_token=") + strlen("access_token=");
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
@@ -92,20 +84,17 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	settings.beginGroup("WebApps");
 	settings.beginGroup("Facebook");
 	settings.setValue("ConnectToken", securityToken);
+	sync();
 #else
 	prefs.facebook.access_token = copy_string(securityToken.toUtf8().data());
-	qDebug() << "Got access token" << prefs.facebook.access_token;
 #endif
-	sync();
 	requestUserId();
 	sync();
 	emit justLoggedIn();
-	qDebug() << "End try login";
 }
 
 void FacebookManager::logout()
 {
-	qDebug() << "Logging out";
 #if SAVE_FB_CREDENTIALS
 	QSettings settings;
 	settings.beginGroup("WebApps");
@@ -127,8 +116,6 @@ void FacebookManager::logout()
 
 void FacebookManager::requestAlbumId()
 {
-	qDebug() << "Requesting Album ID";
-
 	QUrl albumListUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
 	QNetworkAccessManager *manager = new QNetworkAccessManager();
 	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl));
@@ -148,20 +135,16 @@ void FacebookManager::requestAlbumId()
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
-			qDebug() << "Album already Exists, using it's id";
 #if SAVE_FB_CREDENTIALS
 			s.setValue("AlbumId", obj.value("id").toString());
 #else
 			prefs.facebook.album_id = copy_string(obj.value("id").toString().toUtf8().data());
 #endif
-			qDebug() << "Got album ID";
 			return;
 		}
 	}
 
-	qDebug() << "Album doesn't exists, creating one.";
 	QUrlQuery params;
-	qDebug() << "TRYING TO SET NAME" << albumName;
 	params.addQueryItem("name", albumName );
 	params.addQueryItem("description", "Subsurface Album");
 	params.addQueryItem("privacy", "{'value': 'SELF'}");
@@ -180,17 +163,13 @@ void FacebookManager::requestAlbumId()
 #else
 		prefs.facebook.album_id = copy_string(album.value("id").toString().toUtf8().data());
 #endif
-		qDebug() << "Got album ID";
 		sync();
 		return;
 	}
-
-	qDebug() << "Error getting album id" << album;
 }
 
 void FacebookManager::requestUserId()
 {
-	qDebug() << "trying to get user Id";
 	QUrl userIdRequest("https://graph.facebook.com/me?fields=id&access_token=" + QString(prefs.facebook.access_token));
 	QNetworkAccessManager *getUserID = new QNetworkAccessManager();
 	QNetworkReply *reply = getUserID->get(QNetworkRequest(userIdRequest));
@@ -210,10 +189,8 @@ void FacebookManager::requestUserId()
 #else
 		prefs.facebook.user_id = copy_string(obj.value("id").toString().toUtf8().data());
 #endif
-		qDebug() << "Got user id.";
 		return;
 	}
-	qDebug() << "error getting user id" << obj;
 }
 
 void FacebookManager::setDesiredAlbumName(const QString& a)
@@ -245,7 +222,6 @@ void FacebookManager::sendDive()
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
 		 "&message=" + dialog.text().replace("&quot;", "%22"));
-	qDebug() << "About to post using access token" << prefs.facebook.access_token;
 
 	QNetworkAccessManager *am = new QNetworkAccessManager(this);
 	QNetworkRequest request(url);
