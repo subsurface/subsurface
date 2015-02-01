@@ -980,6 +980,10 @@ void MainTab::on_buddy_textChanged()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
+
+	if (same_string(displayed_dive.buddy, ui.buddy->toPlainText().toUtf8().data()))
+		return;
+
 	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
@@ -993,6 +997,10 @@ void MainTab::on_divemaster_textChanged()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
+
+	if (same_string(displayed_dive.divemaster, ui.divemaster->toPlainText().toUtf8().data()))
+		return;
+
 	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
 	for (int i = 0; i < text_list.size(); i++)
 		text_list[i] = text_list[i].trimmed();
@@ -1102,8 +1110,15 @@ void MainTab::saveTags()
 
 void MainTab::on_tagWidget_textChanged()
 {
+	char buf[1024];
+
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
+
+	taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
+	if (same_string(buf, ui.tagWidget->toPlainText().toUtf8().data()))
+		return;
+
 	markChangedWidget(ui.tagWidget);
 }
 
