@@ -12,7 +12,7 @@
 :ascii-ids:
 // :website: http://subsurface-divelog.org
 
-image::images/Subsurface4Banner.png["Banner",align="center"]
+image::images/Subsurface4Banner.jpg["Banner",align="center"]
 
 [big]#MANUAL DE USUARIO#
 
@@ -166,35 +166,31 @@ guardar el diario abierto antes de crear uno nuevo.
 [[S_GetInformation]]
 == Guardar información en el diario de buceo
 
-Ahora que se ha creado un nuevo diario, el usuario puede empezar a añadirle sus
-datos. _Subsurface_ permite al usuario añadir datos a sus registros de varias
-maneras distintas, todas las cuales las veremos en detalle en las secciones
-siguientes. Si el usuario tiene un diario en papel, una hoja de cálculo u otra
+Ahora que se ha creado un nuevo diario, es simple añadirle datos de buceo.
+_Subsurface_ permite varias maneras distintas de añadir información a un diario,
+todas las cuales las veremos en detalle en las secciones
+siguientes.
+
+1) Si el usuario tiene un diario en papel, una hoja de cálculo u otra
 forma de diario manual, se pueden añadir los datos de una de estas formas:
 
-1. Introducir la información de buceo a mano directamente en la pestaña
-_Notas de la Inmersión_ seleccionando la opción del menú general _Registro ->
-Añadir inmersión_ (xref:S_EnterData[Introducir información de buceo a mano])
+ - Introducir la información de buceo a mano. Esto es útil si el buceador no
+usa un ordenador de buceo y las inmersiones se guardaban en un diario
+escrito.  Ver xref:S_EnterData[Introducir información de buceo a mano].
 
-2. Importar datos de archivos CSV que contengan perfiles de inmersión
-(xref:S_ImportingCSVDives[Importar inmersiones en formato CSV])
+ - Importar datos de buceo que se han guardado bien como hoja de cálculo o
+bien como un archivo CSV. Ver el xref:S_Appendix_D[APÉNDICE D: Exportar una hoja de cáculo a formato CSV]
+y el texto xref:S_ImportingManualCSV[Importar buceos de archivos CSV creados a mano].
 
-3. Importar metadatos de buceo de una hoja de cálculo vía CSV
-(xref:S_ImportingManualCSV[Importar buceos de archivos CSV creados a mano]
-y xref:_apendice_e_crear_un_archivo_csv_con_libreoffice_calc[APÉNDICE E]).
+2) Si el usuario ya tiene inmersiones registradas con un ordenador de buceo,
+el perfil de profundidad del buceo y otra gran cantidad de información ya está
+disponible.Estas inmersiones pueden importarse de las siguientes formas:
 
-Si el usuario ya tiene inmersiones registradas con un ordenador de buceo, estos
-buceos pueden importarse de las siguientes formas:
+ - El propio ordenador de buceo. Ver xref:S_ImportDiveComputer[Importar nueva información desde un ordenador de buceo])
 
-1. Importar información de la inmersión directamente de un ordenador de buceo si
-está soportado por _Subsurface_. La lista más actualizada de ordenadores
-soportados por _Subsurface_ puede encontrarse en:
-link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores soportados]
-(xref:S_ImportDiveComputer[Importar nueva información desde un ordenador de buceo])
-
-2. Importar información de inmersiones de otra base de datos o formato de
-archivo. Si se tienen diarios guardados con otro software, a menudo podrán
-importarse a _Subsurface_. (xref:S_ImportingAlienDiveLogs[Importar información de inmersiones de otras fuentes u otros formatos de datos]).
+ - Software propietario distribuido por los fabricantes de los ordenadores de
+ buceo.
+ Ver xref:S_ImportingAlienDiveLogs[Importar información de inmersiones de otras fuentes u otros formatos de datos].
 
 [[S_EnterData]]
 === Introducir información de buceo a mano
@@ -261,17 +257,17 @@ fácil si se bucea frecuentemente en los mismos sitios.
 provenir de tres orígenes:
 
 a. Se pueden encontrar las coordenadas en el mapamundi situado abajo a la
-derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
-"Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
-doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
-quedan grabadas
+   derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
+   "Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
+   doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
+   quedan grabadas
 
 b. Las coordenadas pueden obtenerse desde la app _Subsurface Companion_ si se
-tiene de un dispositivo android con GPS y se guardaron las coordenadas del punto
-de buceo usando ese dispositivo. xref:S_Companion[Pulsa aquí para más información.]
+   tiene de un dispositivo android con GPS y se guardaron las coordenadas del punto
+   de buceo usando ese dispositivo. xref:S_Companion[Pulsa aquí para más información.]
 
 c. Si se conocen, las coordenadas pueden introducirse a mano usando uno de los
-cuatro formatos siguientes, con la latitud seguida de la longitud:
+   cuatro formatos siguientes, con la latitud seguida de la longitud:
 
       Formato ISO 6709 Annex D, p.e. 30°13'28.9"N 30°49'1.5"E
       Grados y minutos decimales, p.e. N30º 13.49760', E30º 49.30788'
@@ -505,13 +501,13 @@ Ahora es el momento de conectar el ordenador de buceo al PC del usuario, para
 lo que hay que seguir estos pasos:
 
 1. Conectar el cable de conexión a un puerto USB libre (o activar la conexión
-infrarroja o bluetooth como describiremos más adelante en este manual).
+   infrarroja o bluetooth como describiremos más adelante en este manual).
 
 2. Poner el ordenador de buceo en modo de comunicación con PC. El usuario debe
-consultar el manual de su ordenador de buceo en concreto.
+   consultar el manual de su ordenador de buceo en concreto.
 
 3. En _Subsurface_, desde el Menú principal, seleccionar Importar → Importar del
-ordenador de buceo. Aparecerá el diálogo *A* en la figura a continuación:
+   ordenador de buceo. Aparecerá el diálogo *A* en la figura a continuación:
 
 image::images/ImportFromDC1_f20.jpg["FIGURA: Diálogo de descarga 1",align="center"]
 
@@ -525,61 +521,61 @@ algún motivo, el usuario quisiera importar todas las inmersiones del ordenador
 de buceo aunque algunas puede que ya estén en el registro, se puede marcar la
 casilla llamada Forzar descarga de todas las inmersiones.
 
-- El diálogo tiene dos listas desplegables, *Vendedor* y *Ordenador de buceo*.
-En la lista desplegable *Vendedor* se selecciona la marca del ordenador, p.e.
-Suunto, Oceanic, Uwatec, Mares. En el desplegable *Ordenador de buceo*, se
-selecciona el modelo del ordenador, p.e. D4 (Suunto), Veo200 (Oceanic) o Puck
-(Mares).
+ - El diálogo tiene dos listas desplegables, *Vendedor* y *Ordenador de buceo*.
+   En la lista desplegable *Vendedor* se selecciona la marca del ordenador, p.e.
+   Suunto, Oceanic, Uwatec, Mares. En el desplegable *Ordenador de buceo*, se
+   selecciona el modelo del ordenador, p.e. D4 (Suunto), Veo200 (Oceanic) o Puck
+   (Mares).
 
-- El desplegable *Dispositivo o punto de montaje* contiene el nombre del puerto
-USB o Bluetooth que _Subsurface_ necesita conocer para comunicarse con el
-ordenador de buceo. Debe seleccionarse el nombre de puerto apropiado. Consultar
-el
-xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
-y xref:_apendice_b_informacion_especifica_por_ordenadores_de_buceo[Apéndice B]
-para detalles técnicos de como encontrar la información apropiada sobre
-puertos, para un ordenador en concreto y, en algunos casos, como hacer los
-ajustes correctos al Sistema Operativo del ordenador que ejecuta _Subsurface_.
+ - El desplegable *Dispositivo o punto de montaje* contiene el nombre del puerto
+   USB o Bluetooth que _Subsurface_ necesita conocer para comunicarse con el
+   ordenador de buceo. Debe seleccionarse el nombre de puerto apropiado. Consultar
+   el
+   xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
+   y xref:_apendice_b_informacion_especifica_por_ordenadores_de_buceo[Apéndice B]
+   para detalles técnicos de como encontrar la información apropiada sobre
+   puertos, para un ordenador en concreto y, en algunos casos, como hacer los
+   ajustes correctos al Sistema Operativo del ordenador que ejecuta _Subsurface_.
 
-- Si todas las inmersiones del ordenador de buceo han de descargarse, hay que
-seleccionar la casilla Forzar descarga de todas las inmersiones. Normalmente
-_Subsurface_ solo descarga las inmersiones posteriores a la fecha/hora de la
-última inmersión del panel *Lista de inmersiones*. Si una o más de sus
-inmersiones en _Subsurface_ se han borrado accidentalmente o si hay buceos más
-antiguos que todavía necesitan descargarse del ordenador de buceo, debe
-activarse esta casilla. Algunos ordenadores (p.e. Mares Puck) no facilitan una
-lista de contenido antes de la descarga para poder seleccionar solo las
-inmersiones nuevas. En consecuencia, para estos ordenadores de buceo, se
-descarga la totalidad de los buceos.
+ - Si todas las inmersiones del ordenador de buceo han de descargarse, hay que
+   seleccionar la casilla Forzar descarga de todas las inmersiones. Normalmente
+   _Subsurface_ solo descarga las inmersiones posteriores a la fecha/hora de la
+   última inmersión del panel *Lista de inmersiones*. Si una o más de sus
+   inmersiones en _Subsurface_ se han borrado accidentalmente o si hay buceos más
+   antiguos que todavía necesitan descargarse del ordenador de buceo, debe
+   activarse esta casilla. Algunos ordenadores (p.e. Mares Puck) no facilitan una
+   lista de contenido antes de la descarga para poder seleccionar solo las
+   inmersiones nuevas. En consecuencia, para estos ordenadores de buceo, se
+   descarga la totalidad de los buceos.
 
-- Si se ha seleccionado la casilla _Preferir siempre inmersiones descargadas_ y,
-durante la descarga, existen inmersiones con idénticas fechas/horas en el
-ordenador de buceo y en el panel *Lista de inmersiones* de _Subsurface_ , se
-sobrescribirá el registro de _Subsurface_ con los datos del ordenador de buceo.
+ - Si se ha seleccionado la casilla _Preferir siempre inmersiones descargadas_ y,
+   durante la descarga, existen inmersiones con idénticas fechas/horas en el
+   ordenador de buceo y en el panel *Lista de inmersiones* de _Subsurface_ , se
+   sobrescribirá el registro de _Subsurface_ con los datos del ordenador de buceo.
 
-- *NO* seleccionar las casillas etiquetadas _Guardar registro de
-libdivecomputer_ y _Guardar volcado de libdivecomputer_. Estas opciones se
-utilizan como herramientas diagnósticas cuando se experimentan problemas con las
-descargas (ver a continuación).
+ - *NO* seleccionar las casillas etiquetadas _Guardar registro de
+   libdivecomputer_ y _Guardar volcado de libdivecomputer_. Estas opciones se
+   utilizan como herramientas diagnósticas cuando se experimentan problemas con las
+   descargas (ver a continuación).
 
  - Pulsar el botón _Aceptar_ y aparecerá el diálogo *B* de la figura anterior.
 
-- Con la comunicación establecida puede verse como se transfiere la información
-del ordenador de buceo. Dependiendo del ordenador de buceo y/o el número de
-inmersiones guardadas, esto podría llevar algún tiempo. El usuario debe ser
-paciente. El diálogo _Descarga_ muestra una barra de progreso en la parte
-inferior de la ventana (en algunos ordenadores de buceo la información del
-progreso puede ser imprecisa al no poder determinarse cuantos datos había hasta
-haberse descargado). Cuando se ha completado la descarga de la información de
-buceo, todas las inmersiones importadas aparecen en la *Lista de inmersiones*
-ordenadas por fecha y hora. Es el momento de desconectar y apagar el ordenador
-de buceo para ahorrar batería. Si se selecciona un buceo, el panel *Perfil*
-muestra un gráfico informativo de profundidad/tiempo para esa inmersión
-concreta.
+ - Con la comunicación establecida puede verse como se transfiere la información
+   del ordenador de buceo. Dependiendo del ordenador de buceo y/o el número de
+   inmersiones guardadas, esto podría llevar algún tiempo. El usuario debe ser
+   paciente. El diálogo _Descarga_ muestra una barra de progreso en la parte
+   inferior de la ventana (en algunos ordenadores de buceo la información del
+   progreso puede ser imprecisa al no poder determinarse cuantos datos había hasta
+   haberse descargado). Cuando se ha completado la descarga de la información de
+   buceo, todas las inmersiones importadas aparecen en la *Lista de inmersiones*
+   ordenadas por fecha y hora. Es el momento de desconectar y apagar el ordenador
+   de buceo para ahorrar batería. Si se selecciona un buceo, el panel *Perfil*
+   muestra un gráfico informativo de profundidad/tiempo para esa inmersión
+   concreta.
 
-- Si hubiera algún problema de comunicación con el ordenador de buceo, se
-mostraría un mensaje de error similar a este: "No puedo abrir /dev/ttyUSB0 Mares
-(Puck Pro)". Ver el texto en la figura a continuación.
+ - Si hubiera algún problema de comunicación con el ordenador de buceo, se
+   mostraría un mensaje de error similar a este: "No puedo abrir /dev/ttyUSB0 Mares
+   (Puck Pro)". Ver el texto en la figura a continuación.
 
 
 ****
@@ -588,22 +584,22 @@ mostraría un mensaje de error similar a este: "No puedo abrir /dev/ttyUSB0 Mare
 [IMPORTANT]
 Comprueba lo siguiente:
 
-- ¿ Está el ordenador de buceo todavía en modo "PC-Communication" o "Upload" ?
+ - ¿ Está el ordenador de buceo todavía en modo "PC-Communication" o "Upload" ?
 
-- ¿ Está completamente cargada la batería del ordenador de buceo ? Si nó debe
-cargarse o ser reemplazada.
+ - ¿ Está completamente cargada la batería del ordenador de buceo ? Si nó debe
+   cargarse o ser reemplazada.
 
-- ¿ Falla el cable ? ¿ Funciona bien el cable usando otro software ? ¿ Ha
-funcionado antes o es la primera vez que se usa ? ¿ Están limpios los contactos
-entre el cable y el ordenador de buceo ?
+ - ¿ Falla el cable ? ¿ Funciona bien el cable usando otro software ? ¿ Ha
+   funcionado antes o es la primera vez que se usa ? ¿ Están limpios los contactos
+   entre el cable y el ordenador de buceo ?
 
-- Consultar el
-xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
-y asegurarse de que se especificó el punto de montaje correcto.
+ - Consultar el
+   xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A]
+   y asegurarse de que se especificó el punto de montaje correcto.
 
-- En sistemas operativos tipo unix, comprobar que el usuario tiene permisos de
-escritura en el puerto USB. Si nó, consultar el
-xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A].
+ - En sistemas operativos tipo unix, comprobar que el usuario tiene permisos de
+   escritura en el puerto USB. Si nó, consultar el
+   xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A].
 
 Si el PC con _Subsurface_ no reconoce el adaptador USB mostrando un nombre de
 dispositivo correcto, existe la posibilidad de que fallen el cable o el
@@ -700,17 +696,17 @@ mismos sitios.
 provenir de tres orígenes:
 
 a. El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
-derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
-"Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
-doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
-quedan grabadas
+   derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
+   "Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
+   doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
+   quedan grabadas
 
 b. Se pueden obtener las coordenadas desde la app _Subsurface_ Companion si se
-dispone de un dispositivo android con GPS y se guardaron las coordenadas del
-punto de buceo usando ese dispositivo. xref:S_Companion[Pulsa aquí para más información]
+   dispone de un dispositivo android con GPS y se guardaron las coordenadas del
+   punto de buceo usando ese dispositivo. xref:S_Companion[Pulsa aquí para más información]
 
 c. Se pueden introducir las coordenadas a mano, si son conocidas, usando uno de
-estos cuatro formatos, con la latitud seguida de la longitud:
+   estos cuatro formatos, con la latitud seguida de la longitud:
 
       Formato ISO 6709 Annex D, p.e. 30°13'28.9"N 30°49'1.5"E
       Grados y minutos decimales, p.e. N30º 13.49760', E30º 49.30788'
@@ -882,18 +878,18 @@ concretos durante el buceo, p.e. "Avistamos delfines" o "Lanzada boya deco".
 Esto se hace fácilmente:
 
  - Clic derecho sobre el punto adecuado del perfil de inmersión, se desplegará
-el menú contextual del perfil. Se selecciona _Añadir marca_. Una bandera roja
-aparecerá sobre el perfil en el punto inicialmente seleccionado (ver *A* a
-continuación).
+   el menú contextual del perfil. Se selecciona _Añadir marca_. Una bandera roja
+   aparecerá sobre el perfil en el punto inicialmente seleccionado (ver *A* a
+   continuación).
  - Clic derecho sobre la bandera roja. Se desplegará el menú contextual (ver
-*B* a continuación). Se selecciona _Editar nombre_.
+   *B* a continuación). Se selecciona _Editar nombre_.
 
  - Se mostrará una casilla de texto. Se teclea en ella el texto oportuno para la
-marca (ver *C* a continuación). Se selecciona _Aceptar_, con lo que se guarda el
-texto asociado a la marca.
+   marca (ver *C* a continuación). Se selecciona _Aceptar_, con lo que se guarda el
+   texto asociado a la marca.
 
  - Cuando el ratón pase sobre el marcador rojo, el texto guardado se mostrará en
- la parte de debajo del cajetín de información (ver *D* a continuación).
+   la parte de debajo del cajetín de información (ver *D* a continuación).
 
 image::images/Bookmarks.jpg["FIGURA: Diálogo de marcadores",align="center"]
 
@@ -979,14 +975,14 @@ reciclar el gas expirado, llevando a cabo dos acciones para mantener una
 concentración de oxígeno respirable:
 a) Eliminan dióxido de carbono del gas que ha sido exhalado.
 b) Regulan la concentración de oxígeno para que sea segura en la inmersión.
-Actualmente, en _Subsurface_, el Poseidon MKVI Discovery es el ordenador de
-buceo mejor soportado. El interfaz CCR de _Subsurface_ es todavía experimental
-y se halla bajo desarrollo activo.  En contraste con un ordenador de circuito
-abierto convencional, el ordenador de un sistema CCR no permite la descarga de
-un diario que contenga múltiples inmersiones. En su lugar, cada buceo se guarda
-independientemente. Esto supone que _Subsurface_ no pueda descargar un diario
-directamente del ordenador CCR, sino que se importa de la misma manera que se
-importan los diarios de otras bases de datos.
+   Actualmente, en _Subsurface_, el Poseidon MKVI Discovery es el ordenador de
+   buceo mejor soportado. El interfaz CCR de _Subsurface_ es todavía experimental
+   y se halla bajo desarrollo activo.  En contraste con un ordenador de circuito
+   abierto convencional, el ordenador de un sistema CCR no permite la descarga de
+   un diario que contenga múltiples inmersiones. En su lugar, cada buceo se guarda
+   independientemente. Esto supone que _Subsurface_ no pueda descargar un diario
+   directamente del ordenador CCR, sino que se importa de la misma manera que se
+   importan los diarios de otras bases de datos.
 
 ==== Importar una inmersión con CCR
 
@@ -1038,15 +1034,15 @@ tres pasos, utilizando _www.divelogs.de_ como mecanismo para extraer la
 información.
 
 1. Los datos del Mares Dive Organiser necesitan exportarse al escritorio del
-usuario utilizando una extensión de archivo _.sdf_. Dirigirse a
-xref:Mares_Export[Apendice C] para más información.
+   usuario utilizando una extensión de archivo _.sdf_. Dirigirse a
+   xref:Mares_Export[Apendice C] para más información.
 2. Los datos deben ser importados entonces desde _www.divelogs.de_. Se necesita
-crear una cuenta de usuario en _www.divelogs.de_, entrar a la página, entonces
-seleccionar _Import Logbook → Dive Organiser_ en el menú de la izquierda. Hay
-que seguir cuidadosamente las instrucciones para transferir la información (en
-formato _.sdf_) desde la base de datos de Dive Organiser a _www.divelogs.de_.
+   crear una cuenta de usuario en _www.divelogs.de_, entrar a la página, entonces
+   seleccionar _Import Logbook → Dive Organiser_ en el menú de la izquierda. Hay
+   que seguir cuidadosamente las instrucciones para transferir la información (en
+   formato _.sdf_) desde la base de datos de Dive Organiser a _www.divelogs.de_.
 3. Finalmente importar las inmersiones desde _divelogs.de_ a _Subsurface_,
-utilizando las instrucciones a continuación.
+   utilizando las instrucciones a continuación.
 
 [[S_ImportingDivelogsDe]]
 ==== Importar inmersiones desde *divelogs.de*
@@ -1069,51 +1065,41 @@ image::images/Divelogs1.jpg["FIGURE:Descargar desde Divelogs.de",align="center"]
 Se puede utilizar un archivo .csv (valores separados por comas) para importar
 información de buceo así como perfiles de inmersión (como en el caso de los
 CCRs APD Inspiration o el Evolution) o como metadatos de buceo (en caso de que
-el usuario guarde los datos en una hoja de cálculo).
+el usuario guarde los datos en una hoja de cálculo). Para una introducción a
+archivos en formato CSV ver xref:S_CSV_Intro[Introducción de un buceador a los archivos CSV]
+
+[icon="images/icons/important.png"]
+[IMPORTANT]
+Al importar CSV hay que tener en cuenta un par de advertencias. Se deben evitar
+algunos caracteres especiales como el "&", "menor que" (<), "mayor que" (>) y
+las comillas excepto para acotar casillas de texto. El archivo debe estar
+codificado en UTF-8 si contiene caracteres no ASCII. El tamaño del archivo
+también puede causar problemas. Importar 100 inmersiones de una vez (sin perfil)
+funciona, pero los archivos mayores pueden exceder la capacidad del analizador.
+Si se tienen problemas al importar archivos CSV, conviene probar con una muestra
+mas pequeña para asegurarse de que funciona.
 
 [[S_ImportingCSVDives]]
-==== Importar inmersiones en formato CSV
+==== Importar inmersiones en formato CSV desde ordenadores u otro software
 
 Los archivos CSV están organizados en una única línea que proporciona los
 nombres de las columnas de datos, seguida de los datos a un registro por línea.
-Los archivos CSV pueden abrirse con cualquier editor de texto. A continuación
-un ejemplo muy simplificado y acortado de un archivo CSV de un rebreather aPD:
+Los archivos CSV pueden abrirse con cualquier editor de texto.
 
-	Dive Time (s)   Depth (m)       pO2 - Setpoint (Bar)   pO2 - C1 ...
-	0       0.0     0.70    0.81    13.1
-	0       1.2     0.70    0.71    13.1
-	0       0.0     0.70    0.71    13.1
-	0       1.2     0.70    0.71    13.2
-	0       1.2     0.70    0.71    13.1
-	10      1.6     0.70    0.72    12.7
-	20      1.6     0.70    0.71    12.6
-	30      1.7     0.70    0.71    12.6
-	40      1.8     0.70    0.68    12.5
-	50      1.6     0.70    0.68    12.5
-	60      2.4     0.70    0.69    12.5
-	70      3.5     0.70    0.69    12.4
-	80      4.2     0.70    0.72    12.5
-	90      4.0     0.70    0.71    12.4
+Para información de como exportar una hoja de cálculo en formato CSV ver
+xref:S_Appendix_D[APÉNDICE D: Exportar una hoja de cálculo a formato CSV].
 
-fíjate en que un título puede estar formado por más de una palabra, por ejemplo
-'Dive Time (s)' en el ejemplo. Antes de poder importar los datos en _Subsurface_
-se necesita saber:
+Antes de poder importar los datos a _Subsurface_ se necesita saber:
 
 a. ¿ Que carácter separa las distintas columnas en una línea de datos ? Este
-separador de campos debería ser una coma (,) o un tabulador. Puede averiguarse
-abriendo el archivo con un editor de textos. Si se trata de una coma, el
-carácter será claramente visible entre valores. Si no hay comas a la vista,
-seguramente esté delimitado por tabuladores como en el ejemplo anterior.
+   separador de campos debería ser una coma (,) o un tabulador. Puede averiguarse
+   abriendo el archivo con un editor de textos. Si se trata de una coma, el
+   carácter será claramente visible entre valores. Si no hay comas a la vista,
+   seguramente esté delimitado por tabuladores como en el ejemplo anterior.
 
 b. ¿ Que columnas de datos necesitamos importar a _Subsurface_ ? Las columnas de
-la hora y la profundidad son indispensables. Abre el archivo con un editor de
-textos y anota los títulos de las columnas a importar y sus posiciones, en el
-ejemplo anterior:
-
-      Time:           columna 1
-      Depth:          columna 2
-      Temperature:    columna 5
-      pO2:           columna 4
+   la hora y la profundidad son indispensables. Abre el archivo con un editor de
+   textos y anota los títulos de las columnas a importar y sus posiciones.
 
 Armado con esta información, importar en _Subsurface_ es muy fácil. Selecciona
 _Importar→Importar CSV_ en el menú principal. Aparecerá el siguiente dialogo:
@@ -1123,54 +1109,131 @@ image::images/Import_CSV1.jpg["FIGURA: diálogo de descarga CSV",align="center"]
 Hay definiciones preconfiguradas para algunos ordenadores de buceo, p.e. los
 rebreathers APD. Si el ordenador de buceo del usuario está en la lista, hay que
 seleccionarlo utilizando el desplegable etiquetado _Importaciones
-preconfiguradas_. Selecciona el botón de abajo a la derecha para indicar si los
-datos están en el Sistema Métrico o Imperial. Finalmente clicar _Aceptar_ y la
-inmersión será importada y aparecerá en la pestaña *Lista de inmersiones* de
-_Subsurface_.
+preconfiguradas_.
 
 Si el ordenador de buceo no está en la lista preconfigurada, el usuario ha de
 seleccionar el _Separador de campos_ (tabulador o coma) de su archivo CSV
-utilizando el desplegable apropiado e indicar qué columnas del archivo CSV
-contienen qué variables de datos. Para cada columna usada al importar, el
+utilizando el desplegable apropiado. Para cada columna usada al importar, el
 usuario ha de seleccionar la casilla adecuada e indicar en que columna de datos
-se encuentran. Por ejemplo, la imagen anterior corresponde al diálogo que se
-aplicaría al conjunto de datos del ejemplo. Tras haber especificado las
-columnas, se selecciona el botón _Aceptar_ y el buceo será importado y aparecerá
-en la *Lista de Inmersiones* de _Subsurface_.
+se encuentran.
 
 [[S_ImportingManualCSV]]
 ==== Importar inmersiones de archivos CSV mantenidos manualmente
 
+[[S_CSV_Intro]]
+****
+*Introducción de un buceador a los archivos CSV*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+CSV es una abreviatura para un formato de archivo de datos: _Comma-Separated
+Variables_ en inglés. Es un formato de archivo que permite visualizar o editar
+la información usando un editor de textos como el Bloc de Notas (Windows),
+Gedit (linux) o TextWrangler (OS/X). Las dos principales ventajas del formato
+CSV son que los datos son fácilmente editables como texto sin usar ningún
+software propietario y asegurando que toda la información es legible, no siendo
+ofuscada por ningún atributo de los que el software propietario inserta en los
+archivos.
+A causa de su simplicidad, el formato CSV se utiliza como formato de intercambio
+entre muchos paquetes de software, por ejemplo entre hojas de cálculo,
+estadísticas, gráficos, bases de datos y software de buceo. En _Subsurface_, los
+archivos CSV también se pueden usar para importar información de otras fuentes
+tales como diarios basados en hojas de cálculo o, incluso, de algunos ordenadores.
+
+El atributo más importante de un archivo CSV es el _separador de campos_, esto
+es, el carácter utilizado para separar campos dentro de una línea. El separador
+de campos es, habitualmente, una coma, un punto y coma, un espacio o un
+tabulador. Al exportar datos desde una hoja de cálculo, se necesita especificar
+el carácter separador para poder crear el archivo CSV. Los archivos CSV están,
+normalmente, organizados en una sola línea que proporciona las cabeceras (o
+_nombres de campos_) de las columnas de datos, seguido por los datos, a un
+registro por línea. Nótese que cada nombre de campo puede estar formado por más
+de una palabra separadas por espacios; por ejemplo _Punto de buceo_. A
+continuación, un ejemplo de información de cuatro inmersiones utilizando la coma
+como separador de campos:
+
+	Dive site,Dive date,Time,Dive_duration, Dive_depth,Dive buddy
+	Illovo Beach,2012-11-23,10:45,46:15,18.4,John Smith
+	Key Largo,2012-11-24,09:12,34:15,20.4,Jason McDonald
+	Wismar Baltic,2012-12-01,10:13,35:27,15.4,Dieter Albrecht
+	Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo
+
+En este formato los datos no son legibles con facilidad para los humanos. A
+continuación los mismos datos usando el tabulador como separador:
+
+	Dive site	Dive date	Time	Dive_duration	Dive_depth	Dive buddy
+	Illovo Beach	2012-11-23	10:45	46:15	18.4	John Smith
+	Key Largo	2012-11-24	09:12	34:15	20.4	Jason McDonald
+	Wismar Baltic	2012-12-01	10:13	35:27	15.4	Dieter Albrecht
+	Pulau Weh	2012-12-20	09:46	55:56	38.6	Karaeng Bontonompo
+
+Es obvio por qué mucha gente prefiere el formato con tabulador al separado por
+comas. La desventaja es que los tabuladores no se pueden ver. Por ejemplo el
+espacio entre _Dive_ y _date_ en la primera línea puede ser un espacio o un
+tabulador (en este caso un espacio). Si los nombres de campo de la primera línea
+son largos, no se puede mantener la alineación con los otros campos de datos.
+A continuación un ejemplo muy simplificado y recortado de un diario CSV del
+ordenador de buceo de un rebreather CCR APD:
+
+	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar) 	pO₂ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
+	0       0.0     0.70    0.81    13.1
+	0       1.2     0.70    0.71    13.1
+	0       0.0     0.70    0.71    13.1
+	0       1.2     0.70    0.71    13.2
+	0       1.2     0.70    0.71    13.1
+	10      1.6     0.70    0.72    12.7
+	20      1.6     0.70    0.71    12.6
+	30      1.7     0.70    0.71    12.6
+	40      1.8     0.70    0.68    12.5
+
+Un aspecto importante  del formato CSV necesitado por _Subsurface_ es el _Mapa de
+Columnas_. En el ejemplo anterior  de diferentes puntos de buceo, cada línea se
+organiza como sigue:
+
+	Column 1:	Dive site (location)
+	Column 2:	Dive date
+	Column 3:	Dive time
+	Column 4:	Dive duration
+	Column 5:	Maximum dive depth (m)
+	Column 6:	Name of dive buddy
+
+_Subsurface_ necesita el número de columna de cada uno de estos datos. Para ello
+la especificación de columnas puede parecerse a esto:
+
+image::images/CSV_column_definition.jpg["FIGURE: CSV definición de columnas",align="center"]
+
+Conocer algunas cosas básicas sobre el contenido del archivo CSV permite una
+importación mejor de las inmersiones a _Subsurface_.
+
+****
+
+
 Si uno mantiene sus diarios en una hoja de cálculo, también hay una opción para
-importarlos. Los datos de la hoja de cálculo, exportados a un archivo CSV,
-pueden ser importados a _Subsurface_. Se proporciona información sobre como
-convertir los datos guardados en una hoja de cálculo a un archivo CSV en
-xref:_apendice_e_crear_un_archivo_csv_con_libreoffice_calc[APÉNDICE E]).
+importarlos. Véase xref:S_Appendix_D[APÉNDICE D: Exportar una hoja de cálcula a formato CSV].
 Al importar registros mantenidos manualmente, la información necesaria es un
 poco diferente, ya que estamos importando metadatos, no muestras del perfil.
+
 Al igual que al importar buceos en formato CSV, se necesita conocer el formato
 interno de los datos a importar.
 
-a. ¿ Que carácter separa las distintas columnas en una línea de datos ? Este
-separador de campos debería ser una coma (,) o un tabulador. Puede averiguarse
-abriendo el archivo con un editor de textos. Si se trata de una coma, el
-carácter será claramente visible entre valores. Si no hay comas a la vista,
-seguramente esté delimitado por tabuladores como en el ejemplo anterior. Un
-separador de campos recomendado para exportar es el tabulador, ya que las comas
-pueden formar parte de los propios campos. Así pues, el uso de un separador de
-campos apropiado es muy importante.
+a. ¿ Que carácter separa las distintas columnas en una línea de datos ? Un
+   separador de campos recomendado para exportar es el tabulador, ya que las comas
+   pueden formar parte de los propios campos. Así pues, el uso de un separador de
+   campos apropiado es muy importante. Al exportar datos desde una hoja de cálculo
+   lo más probable es que se solicite al usuario que elija el carácter que se usará
+   como separador de campo.
 
 b. ¿ Que columnas necesitan importarse a _Subsurface_ ? Actualmente no hay
-ningún campo de entrada obligatorio, pero algunos, p.e. la duración de la
-inmersión, son cruciales para que el diario tenga algún sentido. En la imagen de
-abajo pueden verse posibles opciones y deberían incluirse todos los campos que
-estén disponibles tanto en _Subsurface_ como en el registro.
+   ningún campo de entrada obligatorio, pero algunos, p.e. la duración de la
+   inmersión, son cruciales para que el diario tenga algún sentido. En la imagen de
+   abajo pueden verse posibles opciones y deberían incluirse todos los campos que
+   estén disponibles tanto en _Subsurface_ como en el registro.
 
 c. Las unidades utilizadas para profundidad, peso y temperatura. Consideramos
-que la profundidad debe estar en pies o metros, el peso en libras o kilogramos y
-la temperatura en Fahrenheit o Celsius. Sin embargo, los usuarios pueden
-seleccionar _Métrico_ o _Imperial_ en la pestaña Preferencias de _Subsurface_.
-No se permite la mezcla de sistemas de unidades para los diferentes campos.
+   que la profundidad debe estar en pies o metros, el peso en libras o kilogramos y
+   la temperatura en Fahrenheit o Celsius. Sin embargo, los usuarios pueden
+   seleccionar _Métrico_ o _Imperial_ en la pestaña Preferencias de _Subsurface_.
+   No se permite la mezcla de sistemas de unidades para los diferentes campos.
 
 Importar archivos CSV mantenidos a mano es bastante fácil, pero puede haber
 muchos campos y contar el número de estos es propenso a errores. Así pues, la
@@ -1182,6 +1245,9 @@ manuales_ que traerá el siguiente diálogo de configuración:
 
 image::images/Import_CSV2.jpg["FIGURE: Diálogo de descarga de archivos CSV manuales",align="center"]
 
+Activa las casillas seleccionables correspondientes a los datos del archivo a
+importar. Se necesitará introducir un número de columna correspondiente a cada
+uno de los datos seleccionados.
 Los campos de entrada pueden configurarse como corresponda, y cuando todo esté
 terminado, se selecciona el botón Aceptar para llevar a cabo la acción. Los
 nuevos buceos deberían aparecer en el área Lista de inmersiones de _Subsurface_.
@@ -1200,15 +1266,15 @@ Para hacer esto:
 
 ==== Crear una cuenta para la app Companion
 
-- Registrarse en la http://api.hohndel.org/login/[página web de _Subsurface_
-companion]. Se recibirá un correo de confirmación con instrucciones y un
-*DIVERID* personal, un largo número que te dará acceso a las capacidades de la
-app Companion.
+ - Registrarse en la http://api.hohndel.org/login/[página web de _Subsurface_
+   companion]. Se recibirá un correo de confirmación con instrucciones y un
+   *DIVERID* personal, un largo número que te dará acceso a las capacidades de la
+   app Companion.
 
-- Descargar la app desde
-https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
-o desde
-http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
+ - Descargar la app desde
+   https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
+   o desde
+   http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
 
 ==== Utilizar _Subsurface_ companion en un smartphone
@@ -1216,17 +1282,17 @@ http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-
 La primera vez que se utiliza, la app tiene tres opciones:
 
 * _Create a new account_. Equivalente a registrase en la página de _Subsurface_
-companion utilizando un navegador de internet. Se puede solicitar un *DIVERID*
-con esta opción que se recibirá vía correo electrónico y se confirmará a través
-de la http://api.hohndel.org/login/[_página web de Subsurface companion] para
-activar la cuenta.
+  companion utilizando un navegador de internet. Se puede solicitar un *DIVERID*
+  con esta opción que se recibirá vía correo electrónico y se confirmará a través
+  de la http://api.hohndel.org/login/[_página web de Subsurface companion] para
+  activar la cuenta.
 
 * _Retrieve an account_. Si el usuario olvidó su *DIVERID* recibirá un correo
-para recuperar el número.
+  para recuperar el número.
 
 * _Use an existing account_. Se pide el *DIVERID*. La app conserva el *DIVERID*
-y no lo vuelve a pedir, a menos que se utilice la opción _Disconnect_ en el menú
-(ver a continuación).
+  y no lo vuelve a pedir, a menos que se utilice la opción _Disconnect_ en el menú
+  (ver a continuación).
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -1245,26 +1311,26 @@ Tocando el icono "+" de arriba a la derecha se abrirá un menú con tres opcione
 
 
 * Current: Se pedirá un nombre para el lugar (o que se active el GPS si estaba
-apagado). Tras lo cual se guardará la posición actual.
+  apagado). Tras lo cual se guardará la posición actual.
 
 * Use map: Esta opción permite al usuario fijar una posición buscándola en un
-mapamundi. Se muestra un mapamundi(ver *B* a continuación) sobre el cual indicar
-la posición con una pulsación larga en la pantalla táctil (si la posición
-marcada es errónea, simplemente se indica una nueva). A continuación hay que
-seleccionar el símbolo de chequeo arriba a la derecha. Se mostrará un dialogo
-que permitirá introducir un nombre para el punto seleccionado y la fecha y hora
-del buceo (ver *C* abajo). De cara a importar esta posición de buceo a
-_Subsurface_ es recomendable fijar la misma hora de inmersión que la marcada por
-el ordenador de buceo.
+  mapamundi. Se muestra un mapamundi(ver *B* a continuación) sobre el cual indicar
+  la posición con una pulsación larga en la pantalla táctil (si la posición
+  marcada es errónea, simplemente se indica una nueva). A continuación hay que
+  seleccionar el símbolo de chequeo arriba a la derecha. Se mostrará un dialogo
+  que permitirá introducir un nombre para el punto seleccionado y la fecha y hora
+  del buceo (ver *C* abajo). De cara a importar esta posición de buceo a
+  _Subsurface_ es recomendable fijar la misma hora de inmersión que la marcada por
+  el ordenador de buceo.
 
 image::images/Companion_5.jpg["FIGURA: Companion App, añadir posición usando e mapa",align="center"]
 
 * Importar desde archivos GPX: El dispositivo android buscará archivos .gpx y
-mostrará los que se localicen. El archivo que se seleccione se abrirá y se
-mostrarán las posiciones que contiene. Ahora hay que elegir las ubicaciones
-correctas y luego seleccionar el símbolo de chequeo arriba ala derecha, tras lo
-cual las posiciones se enviarán al servicio web y se añadirán a la lista del
-dispositivo android.
+  mostrará los que se localicen. El archivo que se seleccione se abrirá y se
+  mostrarán las posiciones que contiene. Ahora hay que elegir las ubicaciones
+  correctas y luego seleccionar el símbolo de chequeo arriba ala derecha, tras lo
+  cual las posiciones se enviarán al servicio web y se añadirán a la lista del
+  dispositivo android.
 
 ==== Listas de ubicaciones de buceo
 
@@ -1290,7 +1356,7 @@ el nombre del punto, la fecha y hora y las coordenadas GPS, con dos opciones
 arriba de la pantalla:
 
 - Edit (lapiz): Permite cambiar el nombre u otras características del punto de
-buceo.
+  buceo.
 
 - Maps: Muestra el punto de buceo sobre un mapa.
 
@@ -1322,19 +1388,20 @@ Seleccionar la opción Settings del menú, resulta en la imagen B de arriba a la
 derecha.
 
 ===== Server and account
-- _Web-service URL_. Esta está predefinida (http://api.hohndel.org/)
+ - _Web-service URL_. Esta está predefinida (http://api.hohndel.org/)
 
-- _User ID._ El DIVERID obtenido al registrarse como indicábamos antes. La forma
-más fácil de introducirlo es simplemente copiar y pegar desde el correo de
-confirmación pero, desde luego, el usuario teclearlo carácter a carácter.
+ - _User ID._ El DIVERID obtenido al registrarse como indicábamos antes. La forma
+   más fácil de introducirlo es simplemente copiar y pegar desde el correo de
+   confirmación pero, desde luego, el usuario teclearlo carácter a carácter.
 
 ===== Synchronization
-- _Synchronize on startup_. Si se selecciona, los puntos de buceo del
-dispositivo android y los del servicio web se sincronizarán cada vez que se
-inicie la app.
 
-- _Upload new dives_. Si se selecciona, cada vez que el usuario añada una
-ubicación de buceo, se enviará automáticamente al servidor.
+ - _Synchronize on startup_. Si se selecciona, los puntos de buceo del
+   dispositivo android y los del servicio web se sincronizarán cada vez que se
+   inicie la app.
+
+ - _Upload new dives_. Si se selecciona, cada vez que el usuario añada una
+   ubicación de buceo, se enviará automáticamente al servidor.
 
 ===== Background service
 
@@ -1344,13 +1411,13 @@ continuamente posiciones GPS
 
 Los ajustes, a continuación, definirán el comportamiento del servicio:
 
-- _Min duration_. En minutos. La app intentará tomar una posición cada X minutos
-hasta que el usuario la detenga.
+ - _Min duration_. En minutos. La app intentará tomar una posición cada X minutos
+   hasta que el usuario la detenga.
 
  - _Min distance_. En metros. Distancia mínima entre dos posiciones.
 
-- _Name template_. La plantilla de nombre que usará la app cuando guarde las
-posiciones.
+ - _Name template_. La plantilla de nombre que usará la app cuando guarde las
+   posiciones.
 
 [icon="images/icons/info.jpg"]
 [TIP]
@@ -1364,8 +1431,8 @@ mueve, puede llegar a tener una traza de su viaje al guardar una ubicación cada
 50 metros.
 
 ===== Other
-- _Mailing List_. El buzón de correo de _Subsurface_. El usuario enviar mails a
-la lista de correo de _Subsurface_.
+ - _Mailing List_. El buzón de correo de _Subsurface_. El usuario enviar mails a
+   la lista de correo de _Subsurface_.
 
  - _Subsurface  website_. Un link a la URL de la página de _Subsurface_.
 
@@ -1438,20 +1505,20 @@ de estos, y luego volver a cambiarla a la correcta *después* de la descarga.
 [NOTE]
 SUGERENCIAS:
 
-- El servicio en segundo plano es una herramienta poderosa, pero puede llenar la
-lista de localizaciones con muchas posiciones innecesarias que no correspondan a
-los puntos exactos de buceo, sino a la ruta seguida por el barco. Actualmente,
-borrar estas posiciones del servidor resulta difícil. En algunas situaciones
-resulta, pues, prudente limpiar la lista del dispositivo android antes de enviar
-los puntos al servidor simplemente borrando los que no sean correctos. Esto
-puede ser necesario, por ejemplo, si se desea mantener limpia la lista de
-ubicaciones para poder visualizarlas en el mapa del servidor o del dispositivo
-android.
+ - El servicio en segundo plano es una herramienta poderosa, pero puede llenar la
+   lista de localizaciones con muchas posiciones innecesarias que no correspondan a
+   los puntos exactos de buceo, sino a la ruta seguida por el barco. Actualmente,
+   borrar estas posiciones del servidor resulta difícil. En algunas situaciones
+   resulta, pues, prudente limpiar la lista del dispositivo android antes de enviar
+   los puntos al servidor simplemente borrando los que no sean correctos. Esto
+   puede ser necesario, por ejemplo, si se desea mantener limpia la lista de
+   ubicaciones para poder visualizarlas en el mapa del servidor o del dispositivo
+   android.
 
-- También tendría sentido proporcionar nombres significativos a las
-localizaciones enviadas al servidor o, al menos, usar tal nombre en el ajuste
-_Name Template_ si se va a ejecutar el background service, especialmente durante
-los viajes de buceo con muchas inmersiones y puntos de buceo.
+ - También tendría sentido proporcionar nombres significativos a las
+   localizaciones enviadas al servidor o, al menos, usar tal nombre en el ajuste
+   _Name Template_ si se va a ejecutar el background service, especialmente durante
+   los viajes de buceo con muchas inmersiones y puntos de buceo.
 
 [[S_LoadImage]]
 
@@ -1484,35 +1551,35 @@ posicionarlas en el perfil de la inmersión.
 
 _Subsurface_ puede conseguir esta sincronización de dos maneras:
 
-- *Manualmente*: Si el usuario anotó la hora exacta de la cámara al inicio de la
-inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
-En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
-la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
-la diferencia en el diálogo de _Desplazamiento horario_. En la parte de arriba
-del diálogo hay una herramienta para indicar tiempos, evidente en la figura *A*
-a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
-de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
-sufijo "AM" o "PM". Seleccionamos el botón _OK_ y se habrá obtenido la
-sincronización. Hay que marcar _Más pronto_ o _Más tarde_ según corresponda. En
-el ejemplo a continuación, la opción _Más pronto_ es la correcta ya que la
-cámara de fotos va 7 minutos por delante del ordenador de buceo.
+ - *Manualmente*: Si el usuario anotó la hora exacta de la cámara al inicio de la
+   inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
+   En realidad, si no se han variado los ajustes horarios, se pueden conseguir tras
+   la inmersión o, incluso, al final del día. Entonces se puede indicar manualmente
+   la diferencia en el diálogo de _Desplazamiento horario_. En la parte de arriba
+   del diálogo hay una herramienta para indicar tiempos, evidente en la figura *A*
+   a continuación. Si la cámara lleva un adelanto de 7 minutos sobre el ordenador
+   de buceo, fijamos en la herramienta un valor de 00:07. Se ignora cualquier
+   sufijo "AM" o "PM". Seleccionamos el botón _OK_ y se habrá obtenido la
+   sincronización. Hay que marcar _Más pronto_ o _Más tarde_ según corresponda. En
+   el ejemplo a continuación, la opción _Más pronto_ es la correcta ya que la
+   cámara de fotos va 7 minutos por delante del ordenador de buceo.
 
 image::images//LoadImage3b_f20.jpg["FIGURA: Diálogo de sincronización",align="center"]
 
-- *Por fotografía*: Hay una forma muy cómoda de conseguir sincronización. Si se
-toma una foto de la pantalla del ordenador mostrando la hora, _Subsurface_ puede
-obtener la hora exacta a la que se tomó la foto usando los metadatos que la
-cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
-_Desplazamiento horario_. Si se selecciona la barra horizontal titulada
-"_Selecciona la imagen del ordenador de buceo mostrando la hora_", aparece un
-navegador de archivos. Se selecciona la fotografía y se pulsa _Abrir_. La foto
-del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
-_Subsurface_ sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
-el diálogo a la izquierda de la foto para que refleje los de la pantalla del
-ordenador. Tras el ajuste _Subsurface_ conoce exactamente cual es la diferencia
-entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
-fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
-y hora de la imagen *B* anterior.
+ - *Por fotografía*: Hay una forma muy cómoda de conseguir sincronización. Si se
+   toma una foto de la pantalla del ordenador mostrando la hora, _Subsurface_ puede
+   obtener la hora exacta a la que se tomó la foto usando los metadatos que la
+   cámara guarda en cada foto. Para ello se utiliza la mitad inferior del diálogo
+   _Desplazamiento horario_. Si se selecciona la barra horizontal titulada
+   "_Selecciona la imagen del ordenador de buceo mostrando la hora_", aparece un
+   navegador de archivos. Se selecciona la fotografía y se pulsa _Abrir_. La foto
+   del ordenador de buceo aparecerá en el recuadro inferior del diálogo.
+   _Subsurface_ sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
+   el diálogo a la izquierda de la foto para que refleje los de la pantalla del
+   ordenador. Tras el ajuste _Subsurface_ conoce exactamente cual es la diferencia
+   entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
+   fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
+   y hora de la imagen *B* anterior.
 
 Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
 perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.
@@ -1523,7 +1590,7 @@ Después que las imágenes han sido cargadas aparecen en dos lugares:
 
  - La pestaña _Fotos_ del panel _Notas de la inmersión_.
  - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
- que relejan la hora en que se tomó cada fotografía. Ver a continuación:
+   que relejan la hora en que se tomó cada fotografía. Ver a continuación:
 
 image::images/LoadImage4_f20.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
 
@@ -1574,6 +1641,157 @@ pestaña _Fotos_ solo mostrará los nombres de los archivos de las imágenes. Es
 es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
 se vuelve a conectar, las fotos se visualizarán normalmente.
 
+=== Registrar tipos de inmersión especiales
+
+==== Inmersiones en montaje lateral (sidemount)
+
+_Subsurface maneja fácilmente buceos en los que se use más de una botella.
+Registrar inmersiones en lateral se hace en tres pasos:
+
+- *Durante el buceo, registrar los eventos de cambio de botella". Ya que bucear
+  en lateral supone, normalmente, usar 2 botellas con aire o con la misma mezcla,
+  _Subsurface_ distingue entre estas botellas. En comparación, la mayoría de
+  ordenadores de buceo que contemplan cambios de gas solo distinguen entre
+  diferentes _gases_ usados, no entre diferentes _botellas_ usadas. Esto supone
+  que, cuando se descargan inmersiones en sidemount desde estos ordenadores, los
+  eventos de cambio entre las diferentes botellas no se descargan. Esto puede
+  suponer  que se tenga que guardar un registro manual de cambios de botella o
+  (si el ordenador tiene esta posibilidad) marcando cada cambio de botella con
+  una marca que se pueda descargar posteriormente. Regresar de una inmersión
+  en lateral con la información de cambios de botella es la única parte con
+  truco en cuanto a registrar buceos en sidemount.
+- *En _Subsurface_ detalla las botellas usadas en la inmersión*. El usuario
+  registra las especificaciones para las diferentes botellas usando la pestaña
+  *Equipo* del *Panel de información* (véase imagen a continuación en la que se
+  usó una botella de 12 litros).
+- *Indicar eventos de cambio de botella sobre el perfil de _Subsurface_*. Una
+  vez que se ha importado la inmersión desde el ordenador de buceo, es necesario
+  indicar los eventos de cambio de botella sobre el perfil. Los cambios se
+  anotan haciendo clic-derecho en el punto correspondiente del perfil y entonces
+  seleccionando _Añadir cambio de gas_. Se muestra una lista de las botellas con
+  la que se está utilizando en gris. En la imagen a continuación, Tank 1 está en
+  gris, permitiendo solo la selección de Tank 2. Tras seleccionar la botella
+  correspondiente el cambio se indicará sobre el perfil con un icono de una
+  botella. Si está activada la *Barra de botellas* también se indicará el cambio
+  sobre ella (ver imagen a continuación). Una vez que todos los cambios de
+  botella han sido registrados sobre el perfil, las presiones correctas de ambas
+  botellas se mostrarán en el perfil, como en la imagen de ejemplo.
+
+image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
+
+Esta sección es un ejemplo de la versatilidad de _Subsurface_ como herramienta
+de registro de inmersiones.
+
+[[S_CCR_dives]]
+==== Inmersiones con rebreather de circuito cerrado (CCR)
+
+[icon="images/APD.jpg"]
+[NOTE]
+Los rebreathers de circuito cerrado utilizan tecnología avanzada para
+reciclar el gas que se ha respirado, mientras mantienen una concentración de
+oxígeno respirable llevando a cabo dos acciones:
+a) Eliminan dióxido de carbono del gas que se ha exhalado.
+b) Regulan la concentración de oxígeno para que permanezca en los límites.
+En la actualidad, en _Subsurface_ el Poseidon MKVI Discovery es el ordenador
+de buceo CCR mejor soportado. El interfaz CCR de _Subsurface_ es, ahora mismo,
+experimental y está bajo desarrollo activo.  En contraste con un ordenador
+de buceo recreativo convencional, el ordenador de un sistema CCR no permite
+descargar un diario que contenga múltiples inmersiones. En su lugar, cada buceo
+se guarda independientemente. Esto significa que _SUbsurface_ no puede descargar
+el diario directamente desde un CCR, sino que lo importa de la misma manera que
+se importan datos de otras fuentes digitales.
+
+==== Importar una inmersión con CCR
+
+Véase la sección que trata de  xref:S_ImportingAlienDiveLogs[Importar información de buceo de otras fuentes digitales].
+Desde el menú principal de _Subsurface_, seleccionar _Import -> Importar archivos
+de registro_ para desplegar el xref:Unified_import[Diálogo de importación universal].
+Como se explicaba en esa sección, en la parte de abajo a la derecha hay una lista
+desplegable de dispositivos que incluye una opción para los archivos del
+(Poseidon) MKVI (la funcionalidad para otros dispositivos CCR está en desarrollo
+actualmente). Tras haber seleccionado el dispositivo y el directorio donde se
+hallan los archivos originales del ordenador CCR, se puede seleccionar un
+archivo concreto (en el caso del MKVI es un archivo con extensión .txt). Tras
+seleccionar el archivo, activar el botón _Abrir_ de abajo a la derecha.
+
+==== Información mostrada para un buceo con CCR
+
+_Presiones parciales de los gases_: El gráfico de presión parcial de oxígeno
+muestra la información de los sensores de oxígeno del equipo CCR. A diferencia
+del equipo de circuito abierto (donde los valores de pO~2~ se calculan en base
+a la composición del gas y la profundidad), los equipos CCR proporcionan
+mediciones instantáneas de pO~2~, a partir de sensores de oxígeno. En este
+caso el gráfico de presión parcial de oxígeno debería se bastante plano,
+reflejando el ajuste del setpoint  durante la inmersión. La pO~2~ media no es
+la media de presiones parciales de oxígeno que facilita el equipo CCR, sino
+un valor calculado por _Subsurface_ de la siguiente forma:
+
+- Para DOS sensores de O~2~ se da en valor medio de ambos sensores.
+
+- Para sistemas de TRES sensores (p.e. APD), también se usa la media. Sin
+  embargo las lecturas simultaneas de diferentes sensores con diferencias de
+  más de 0,1 bar, se consideran falsas y se ignoran.
+
+La pO~2~ media de los sensores se indica con una línea verde.
+
+El valor del setpoint así como las lecturas de de los sensores de oxígeno
+individuales puede mostrarse. La presentación en pantalla de información CCR
+adicional se activa seleccionando las opciones adecuadas en el panel _Preferencias_
+(accesible seleccionando xref:S_CCR_options[_Archivo ->  Preferencias ->  Gráfico_]).
+Esta parte del panel _Preferencias_ se presenta como dos casillas seleccionables
+que modifican la presentación de la pO~2~ cuando se halla activada la opción
+correspondiente de la barra de herramientas del Perfil de Inmersión.
+
+image::images/CCR_preferences.jpg["FIGURA: Panel de preferencias de CCR",align="center"]
+
+Clicar cualquiera de las casillas seleccionables permite mostrar información
+adicional relativa al oxígeno, siempre que el botón pO~2~ de la barra de
+herramientas del panel _Perfil_ esté activado.
+
+La primera casilla permite mostrar información del setpoint. Esta es una línea
+roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
+comparar la media de presiones parciales de oxígeno medidas, frente al valor
+del setpoint, como en la imagen a continuación.
+
+image::images/CCR_setpoint.jpg["FIGURA: Gráfico de pO2 y setpoint del CCR",align="center"]
+
+La segunda casilla permite mostrar datos de cada sensor de oxígeno individual
+del equipo CCR. Los datos de cada sensor se colorean de la siguiente forma:
+
+- Sensor 1: gris
+- Sensor 2: azul
+- Sensor 3: marrón
+
+La media de pO~2~ se indica por la línea verde. Así se pueden comparar los
+datos de cada uno de los sensores de oxígeno, lo cual es útil para detectar
+lecturas erráticas o anormalmente bajas de un sensor en particular.
+
+image::images/CCR_sensor_data.jpg["FIGURA: Gráfico de datos de los sensores del CCR",align="center"]
+
+El dato del setpoint puede ser superpuesto sobre los datos de los sensores de
+oxígeno activando ambas casillas. Las presiones parciales del nitrógeno y del
+helio (en su caso) se muestran de la forma habitual para las inmersiones OC.
+
+_Eventos_: Se registran diversos eventos, p.e. los cambios a circuito abierto
+de la boquilla.  Estos eventos se muestran como triángulos amarillos y, si se
+pasa el ratón sobre el icono, se da una descripción del evento en la línea
+inferior del xref:S_InfoBox[Recuadro de información].
+
+_Presiones de las botellas_: Algunos ordenadores de buceo CCR, como el MKVI de
+Poseidon, registran las presiones de las botellas de oxígeno y diluyente. Las
+presiones de estas dos botellas se muestran como líneas verdes sobre el perfil
+de la inmersión. Además, las presiones iniciales y finales de ambas botellas se
+muestran en la pestaña _Equipo_. A continuación, un perfil de inmersión con CCR
+incluyendo capas con el setpoint, las lecturas de los sensores de oxígeno y la
+información de presión de las botellas. En este caso hay una buena coincidencia
+entre las lecturas de los dos sensores de oxígeno.
+
+image::images/CCR_dive_profile.jpg["FIGURA: Perfil de inmersión con CCR",align="center"]
+
+_Información especifica del equipo_: _Subsurface_ recoge información que puede
+ser especifica de un tipo de equipo concreto. Se muestra en la xref:S_ExtraDataTab[pestaña Otros Datos].
+Puede incluir información de ajustes o metadatos sobre la inmersión.
+
 == Obtener más información sobre inmersiones guardadas en el diario
 
 === La pestaña Información de la inmersión (para inmersiones individuales)
@@ -1592,6 +1810,7 @@ teniendo en cuenta la incompresibilidad de los gases, particularmente a
 presiones en las botellas superiores a 200 bar, haciéndolos más precisos. Los
 usuarios deberían consultar el Apendice_D para más información.
 
+[[S_ExtraDataTab]]
 === La pestaña *Otros datos* (para inmersiones individuales)
 
 Cuando se utiliza un ordenador de buceo, a menudo facilita determinadas
@@ -1609,7 +1828,7 @@ image::images/ExtraDataTab_f20.jpg["FIGURA: Pestaña Otros datos",align="center"
 
 La pestaña Estadísticas facilita información resumida para más de una inmersión,
 suponiendo que se haya seleccionado más de un buceo en la *Lista de inmersiones*
-con los estándares "Ctrl+clic" o "Shift+clic" del ratón. Si solo se ha
+tcon los estándares "Ctrl+clic" o "Shift+clic" del ratón. Si solo se ha
 seleccionado una los cálculos se efectuarán solo para esa inmersión. Esta
 pestaña muestra el número de inmersiones seleccionadas, el tiempo total de buceo
 para estas inmersiones, así como los máximos, mínimos y medios para la duración,
@@ -1824,16 +2043,21 @@ detallada de los factores de gradiente, consultar los siguientes links:
 
 Se accede al menú contextual del Perfil de Inmersión haciendo clic-derecho
 mientras el cursor del ratón está sobre el panel del Perfil de Inmersión. El
-menú permite la creación de marcadores o eventos de cambio de gas aparte de los
-que se hayan podido importar del ordenador de buceo. Las marcas se sitúan contra
-la línea de profundidad del perfil y con el tiempo fijado donde estaba el cursor
-cuando el botón derecho se clicó para desplegar el menú. Los eventos de cambio
-de gas abren otra selección sobre el gas al que se esta cambiando, basada en la
-lista de gases definida en la pestaña Equipo. Si hacemos clic-derecho mientras
-estamos sobre un marcador preexistente, el menú se extiende añadiendo opciones
-para permitir el borrado del marcador o permitir ocultar todos los marcadores de
-ese tipo.
+menú permite la creación de marcadores, eventos de cambio de gas o cambios
+manuales en setpoint de un CCR, aparte de los que se hayan podido importar del
+ordenador de buceo. Las marcas se sitúan contra la línea de profundidad del
+perfil y con el tiempo fijado donde estaba el cursor cuando el botón derecho
+se clicó para desplegar el menú. Los eventos de cambio de gas suponen una
+selección sobre el gas al que estamos cambiando, habiendo sido definida la lista
+de posibilidades en la pestaña *Equipo*. Los eventos de cambio de setpoint
+abren un diálogo en el que se permite elegir el valor del próximo setpoint. Como
+en el planificador, un setpoint cero indica que el buceador está respirando en
+circuito abierto, mientras cualquier valor diferente de  cero indica el uso de
+circuito cerrado. Si hacemos clic-derecho mientras estamos sobre
+un marcador preexistente, el menú se extiende añadiendo opciones para permitir
+el borrado del marcador o permitir ocultar todos los marcadores de ese tipo.
 
+[[S_InfoBox]]
 === El *Recuadro Información*
 
 El recuadro de Información muestra una amplia gama de información del *perfil de
@@ -1919,64 +2143,64 @@ de las diferentes partes del gráfico de barras.
 
 image::images/GasPressureBarGraph.jpg["FIGURE:Gráfico de barras de presiones de gases",align="center"]
 
-El área verde claro indica el gas total, con el margen superior de esta zona
-indicando la presión total de gas inhalada por el buceador y medida desde el
-fondo del gráfico a la parte superior. Esta presión tiene un valor _relativo_
-en el gráfico y no indica presión absoluta.
+- El área verde claro indica el gas total, con el margen superior de esta zona
+  indicando la presión total de gas inhalada por el buceador y medida desde el
+  fondo del gráfico a la parte superior. Esta presión tiene un valor _relativo_
+  en el gráfico y no indica presión absoluta.
 
-La línea negra horizontal por debajo de la zona verde claro indica la presión de
-equilibrio de los gases inertes respirados, habitualmente nitrógeno. En el caso
-del  trimix, es la presión combinada del helio y el nitrógeno. En este ejemplo,
-el usuario esta buceando con EAN32, por lo tanto la presión del gas inerte está
-al 68% de la distancia desde el fondo del gráfico hasta el valor de la presión
-total.
+- La línea negra horizontal por debajo de la zona verde claro indica la presión de
+  equilibrio de los gases inertes respirados, habitualmente nitrógeno. En el caso
+  del  trimix, es la presión combinada del helio y el nitrógeno. En este ejemplo,
+  el usuario esta buceando con EAN32, por lo tanto la presión del gas inerte está
+  al 68% de la distancia desde el fondo del gráfico hasta el valor de la presión
+  total.
 
-La zona verde oscura en la parte baja del gráfico representa las presiones de
-los gases inertes en cada uno de los 16 compartimentos de tejidos, según el
-algoritmo de Bühlmann, estando los tejidos rápidos en el lado izquierdo.
+- La zona verde oscura en la parte baja del gráfico representa las presiones de
+  los gases inertes en cada uno de los 16 compartimentos de tejidos, según el
+  algoritmo de Bühlmann, estando los tejidos rápidos en el lado izquierdo.
 
-La línea horizontal negra superior indica el factor de gradiente que se aplica
-a la profundidad del buceador para el punto concreto del *Perfil de Inmersión*.
-Este factor de gradiente es una interpolación entre el GFbajo y el GFalto que
-se hayan especificado en la pestaña Gráfico del *Panel de preferencias* de
-_Subsurface_.
+- La línea horizontal negra superior indica el factor de gradiente que se aplica
+  a la profundidad del buceador para el punto concreto del *Perfil de Inmersión*.
+  Este factor de gradiente es una interpolación entre el GFbajo y el GFalto que
+  se hayan especificado en la pestaña Gráfico del *Panel de preferencias* de
+  _Subsurface_.
 
-El margen inferior de la zona roja del gráfico indica el valor M derivado de
-Bühlman, o sea el valor de la presión de gases inertes a partir de la cual la
-formación de burbujas se espera que sea severa, resultando en una enfermedad
-descompresiva.
+- El margen inferior de la zona roja del gráfico indica el valor M derivado de
+  Bühlman, o sea el valor de la presión de gases inertes a partir de la cual la
+  formación de burbujas se espera que sea severa, resultando en una enfermedad
+  descompresiva.
 
 Estos cinco valores se indican a la izquierda en la figura anterior. La forma
 en que el gráfico de barras cambia durante una inmersión, se representa en el
 lado derecho de la figura anterior, para un buceador usando EAN32.
 
 - El gráfico *A* indica la situación al inicio de una inmersión, con el buzo
-en superficie. Las presiones en los compartimentos de tejidos todavía están
-a la presión de equilibrio ya que aún no se ha buceado.
+  en superficie. Las presiones en los compartimentos de tejidos todavía están
+  a la presión de equilibrio ya que aún no se ha buceado.
 
 - El gráfico *B* indica la situación tras un descenso a 30 metros. Pocos de
-los compartimentos de tejidos han tenido tiempo de responder al descenso, las
-presiones de los gases muy por debajo de presión de equilibrio.
+  los compartimentos de tejidos han tenido tiempo de responder al descenso, las
+  presiones de los gases muy por debajo de presión de equilibrio.
 
 - El gráfico *C* representa las presiones tras 30 minutos a 30 metros. Los
-compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
-de la línea negra que indica la presión de equilibrio). Los compartimentos más
-lentos (hacia la derecha) no han alcanzado el equilibrio y están en proceso de
-incrementar lentamente la presión.
+  compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
+  de la línea negra que indica la presión de equilibrio). Los compartimentos más
+  lentos (hacia la derecha) no han alcanzado el equilibrio y están en proceso de
+  incrementar lentamente la presión.
 
 - El gráfico *D* muestra las presiones tras ascender a una profundidad de 4.5
-metros. Ya que, durante el ascenso, la presión total del gas inhalado ha caído
-mucho, de 4 bares a 1.45 bares, las presiones en los diferentes compartimentos
-de tejidos sobrepasan la presión total del gas y se aproximan al factor de
-gradiente (la línea negra superior en la imagen). Continuar el ascenso haría
-que rebasáramos el valor del factor de gradiente (GFalto), poniendo en peligro
-al buceador.
+  metros. Ya que, durante el ascenso, la presión total del gas inhalado ha caído
+  mucho, de 4 bares a 1.45 bares, las presiones en los diferentes compartimentos
+  de tejidos sobrepasan la presión total del gas y se aproximan al factor de
+  gradiente (la línea negra superior en la imagen). Continuar el ascenso haría
+  que rebasáramos el valor del factor de gradiente (GFalto), poniendo en peligro
+  al buceador.
 
 - El gráfico *E* indica la situación después de permanecer a 4.5 metros durante
-10 minutos. Los compartimentos rápidos han bajado su presión. Como era de
-esperar, las presiones en los compartimentos lentos no han variado mucho. Las
-presiones en los compartimentos rápidos ya no se acercan al valor de GFalto y
-el buceador está más seguro que en la situación expuesta en el gráfico *D*.
+  10 minutos. Los compartimentos rápidos han bajado su presión. Como era de
+  esperar, las presiones en los compartimentos lentos no han variado mucho. Las
+  presiones en los compartimentos rápidos ya no se acercan al valor de GFalto y
+  el buceador está más seguro que en la situación expuesta en el gráfico *D*.
 
 == Organizar el registro (Manipular grupos de inmersiones)
 
@@ -2192,36 +2416,49 @@ Un registro de buceo puede guardarse en tres formatos:
 
 
 * Universal Dive Data format (UDDF). Ver http://uddf.org para más información.
-UDDF es un formato genérico que permite la comunicación entre muchos ordenadores
-de buceo y programas de de ordenador.
+  UDDF es un formato genérico que permite la comunicación entre muchos ordenadores
+  de buceo y programas de de ordenador.
 * _Divelogs.de_, un registro de inmersiones basado en internet. Para enviar
-buceos a _Divelogs.de_, se necesita un usuario y una password de _Divelogs.de_.
-Hay que registrarse en _htttp://es.divelogs.de_ y suscribir el servicio para
-poder enviar datos de inmersiones desde _Subsurface_.
-* Formato CSV, que incluye la información más crítica del perfil de la
-inmersión. La información que se incluye es número, fecha, hora, duración,
-profundidad, temperatura y presión.
+  buceos a _Divelogs.de_, se necesita un usuario y una password de _Divelogs.de_.
+  Hay que registrarse en _htttp://es.divelogs.de_ y suscribir el servicio para
+  poder enviar datos de inmersiones desde _Subsurface_.
+* _DiveShare_ es también un repositorio de inmersiones basado en internet que se
+  dirige a inmersiones recreativas. Para subir inmersiones se necesita una
+  identificación de usuario, por lo que es necesario registrase en _http://scubadiveshare.com_.
+* _Perfil de inmersión CSV_, que incluye una gran cantidad de detalles para
+  cada inmersión, entre ellos el perfil de profundidad, temperaturas
+  e información de presiones para cada inmersión.
+* _Detalles de inmersión CSV_, que incluye la información más crítica del perfil de la
+  inmersión. La información que se incluye es número, fecha, hora, duración,
+  profundidad, temperatura y presión. En resumen, la mayoría de la información
+  que un buceador recreativo conserva en un registro escrito.
 * Formato _mapamundi_, un archivo HTML con un mapa del mundo en el que quedará
-marcada cada inmersión y alguna información sobre ella. El mapa *NO* es
-editable.
+  marcada cada inmersión y alguna información sobre ella. El mapa *NO* es
+  editable.
+* _Profundidad de imágenes_, que crea un fichero de texto que contiene los
+  nombres de todos los archivos de imágenes añadidos a cualquiera de los buceos
+  seleccionados del la _Lista de inmersiones_, junto con la profundidad a la
+  fue tomada la fotografía.
 * Formato _HTML_, en el cual los buceos se guardan en archivos HTML,
-visualizables con un navegador de internet.Se soportan la mayoría de navegadores
-modernos, pero debe estar activado Javascript. Este archivo *NO* es editable. El
-registro de inmersiones en HTML contiene la mayor parte de la información y
-dispone de una opción de búsqueda que permite rastrear el diario. La exportación
-a HTML se especifica en la segunda pestaña del diálogo de exportación (imagen
-*B* anterior).
+  visualizables con un navegador de internet.Se soportan la mayoría de navegadores
+  modernos, pero debe estar activado Javascript. Este archivo *NO* es editable. El
+  registro de inmersiones en HTML contiene la mayor parte de la información y
+  dispone de una opción de búsqueda que permite rastrear el diario. La exportación
+  a HTML se especifica en la segunda pestaña del diálogo de exportación (imagen
+  *B* anterior). Un uso típico de esta opción es exportar todas nuestros buceos
+  a un smartphone o tablet donde nos serviría de registro portátil, util para
+  compañías a las que les gusta verificar el historial de un buceador.
 * _Ajustes generales_, en la pestaña HTML, se proporcionan las siguientes
-opciones:
+  opciones:
 ** Numeración de Subsurface: Si se activa esta opción, las inmersiones se
-exportan con la misma numeración que tienen asociada en _Subsurface_. De lo
-contrario, los buceos se numerarán a partir de 1.
+   exportan con la misma numeración que tienen asociada en _Subsurface_. De lo
+   contrario, los buceos se numerarán a partir de 1.
 ** Exportar estadísticas anuales: Si se selecciona esta opción, se anexará una
-tabla con estadísticas anuales a los datos exportados a HTML.
+   tabla con estadísticas anuales a los datos exportados a HTML.
 ** Solo exportar lista: Solo se exportará una lista de inmersiones. No se
-dispondrá de información detallada de los buceos.
+   dispondrá de información detallada de los buceos.
 * _Opciones de estilo_: Algunas opciones relativas al estilo de visualización
-en el navegador, como el tamaño de la letra o el tema aplicado.
+  en el navegador, como el tamaño de la letra o el tema aplicado.
 
 [[S_Cloud_access]]
 == Guardar un diario de _Subsurface_ en la Nube
@@ -2283,11 +2520,11 @@ otra información.
 Antes de imprimir, se deben tomar dos decisiones:
 
 - ¿ Se desea imprimir el registro completo o solo parte de él ? Si solo se desea
-parte del registro, entonces el usuario selecciona los buceos deseados en el
-panel *Lista de inmersiones*.
+  parte del registro, entonces el usuario selecciona los buceos deseados en el
+  panel *Lista de inmersiones*.
 - ¿ Que información sobre presiones parciales de los gases se desea tener en el
-perfil ? El usuario activaría los botones apropiados de la barra de la izquierda
-del perfil.
+  perfil ? El usuario activaría los botones apropiados de la barra de la izquierda
+  del perfil.
 
 Ahora habra que seleccionar las opciones de impresión. Para ello se selecciona
 _Archivo → Imprimir_ desde el menú principal. Aparecerá el siguiente diálogo
@@ -2299,18 +2536,18 @@ En Tipo de impresión habrá que seleccionar una de las cuatro opciones
 
 - Imprimir la lista de inmersiones. Para ello se selecciona Impresión de tabla.
 - Imprimir los registros de buceo completos (perfiles y resto de información) a
-6 inmersiones por página. Para ello se selecciona _6 inmersiones por página_.
+  6 inmersiones por página. Para ello se selecciona _6 inmersiones por página_.
 - Imprimir los registros de buceo completos (perfiles y resto de información) a
-2 inmersiones por página. Para ello se selecciona _2 inmersiones por página_.
+  2 inmersiones por página. Para ello se selecciona _2 inmersiones por página_.
 - Imprimir los registros de buceo completos (perfiles y resto de información) a
-1 inmersión por página. Para ello se selecciona  _1 inmersión por página_.
+  1 inmersión por página. Para ello se selecciona  _1 inmersión por página_.
 
 En Opciones de impresión habrá que seleccionar:
 
 - Imprimir solo los buceos que han sido seleccionados de la lista de inmersiones
-antes de activar el diálogo de impresión. Para ello se activa la opción
-_Imprimir solo inmersiones seleccionadas_.
- - Imprimir en color. Para ello se selecciona la opción _Impresión en color_.
+  antes de activar el diálogo de impresión. Para ello se activa la opción
+  _Imprimir solo inmersiones seleccionadas_.
+- Imprimir en color. Para ello se selecciona la opción _Impresión en color_.
 
 La opción _Ordenar_ afecta a la disposición de la página (o parte de ella) para
 cada inmersión. El perfil de buceo puede imprimirse en la parte alta de cada
@@ -2353,40 +2590,40 @@ Hay varios ajustes en el panel *Predeterminados*:
 image::images/Pref1.jpg["FIGURA: Pantalla de Predeterminados en Preferencias",align="center"]
 
 ** *Listas y tablas*: Aquí se pueden elegir el tipo de fuente y el tamaño de la
-misma en el panel *Lista de inmersiones*. Reduciendo el tamaño de la fuente, se
-pueden ver más buceos en una sola pantalla.
+    misma en el panel *Lista de inmersiones*. Reduciendo el tamaño de la fuente, se
+    pueden ver más buceos en una sola pantalla.
 
 ** *Inmersiones*: En este bloque se especifica la carpeta y nombre de archivo
-del registro de buceo electrónico. Es un archivo con extensión .xml. Al iniciar
-_Subsurface_ sin argumentos cargará automáticamente el registro especificado
-aquí.
+    del registro de buceo electrónico. Es un archivo con extensión .xml. Al iniciar
+    _Subsurface_ sin argumentos cargará automáticamente el registro especificado
+    aquí.
 
 ** *Mostrar invalidas*: Las inmersiones pueden marcarse como "invalidas" (cuando
-el usuario desea ocultar buceos que no considere validos, p.e. en piscina, pero
-aún quiera mantenerlos registrados en el diario). Esta opción controla si estas
-inmersiones se muestran en la lista.
+    el usuario desea ocultar buceos que no considere validos, p.e. en piscina, pero
+    aún quiera mantenerlos registrados en el diario). Esta opción controla si estas
+    inmersiones se muestran en la lista.
 
 ** *Botella por defecto*: Se puede especificar una botella por defecto de las
-que aparecen listadas en la pestaña *Equipo* del panel *Notas de la inmersión*.
-Es muy cómodo si se bucea habitualmente con el mismo tipo de botella, asigna a
-cada nueva inmersión una botella del tipo aquí definido.
+    que aparecen listadas en la pestaña *Equipo* del panel *Notas de la inmersión*.
+    Es muy cómodo si se bucea habitualmente con el mismo tipo de botella, asigna a
+    cada nueva inmersión una botella del tipo aquí definido.
 
 ** *Animaciones*: Algunas acciones, al mostrar el perfil, se ejecutan utilizando
-animaciones. Por ejemplo, los valores de los ejes para la profundidad y el
-tiempo cambian de una inmersión a otra. Al visualizar inmersiones distintas
-estos cambios en las características de los ejes no suceden de forma
-instantánea, sino que son animados. La _Velocidad_ de las animaciones puede
-controlarse ajustando esta regleta, con mayor velocidad a la izquierda y
-significando "0" ninguna animación en absoluto.
+    animaciones. Por ejemplo, los valores de los ejes para la profundidad y el
+    tiempo cambian de una inmersión a otra. Al visualizar inmersiones distintas
+    estos cambios en las características de los ejes no suceden de forma
+    instantánea, sino que son animados. La _Velocidad_ de las animaciones puede
+    controlarse ajustando esta regleta, con mayor velocidad a la izquierda y
+    significando "0" ninguna animación en absoluto.
 
 ** *Servicio web de Subsurface*: Cuando uno se suscribe al <<S_Companion,
-servicio web de Subsurface>>, se proporciona una ID de usuario muy larga y
-difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
-opción _¿Guardar localmente la ID de usuario?_ nos aseguramos de que se guarda
-una copia de dicha ID en el ordenador.
+    servicio web de Subsurface>>, se proporciona una ID de usuario muy larga y
+    difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
+    opción _¿Guardar localmente la ID de usuario?_ nos aseguramos de que se guarda
+    una copia de dicha ID en el ordenador.
 
 ** *Borrar todos los ajustes* Tal como se indica en el botón bajo esta cabecera,
-se borran todos los ajustes y se reinician con los valores por defecto.
+    se borran todos los ajustes y se reinician con los valores por defecto.
 
 === Unidades
 
@@ -2402,63 +2639,86 @@ velocidades de ascenso/descenso se muestren en m/s o en m/min. Los buzos con
 botella, habitualmente, manejan velocidades en m/min, sin embargo, los apneístas
 ascienden mucho más deprisa por lo que suelen utilizar velocidades en m/s.
 
-[[S_GradientFactors]]
+
 === Gráfico
+[[S_CCR_options]]
 
 image::images/Pref3.jpg["FIGURA: Página de Preferencias del gráfico",align="center"]
 
+[[S_GradientFactors]]
 Este panel permite dos tipos de selecciones:
 
 * *Mostrar*: Aquí los usuarios eligen la cantidad de información que se muestra
-como parte del perfil de la inmersión:
+   como parte del perfil de la inmersión:
 
 ** Umbrales: _Subsurface_ puede mostrar las presiones parciales de nitrógeno,
-oxígeno y helio durante el buceo. Se activan utilizando la barra de herramientas
-de la izquierda de panel *Perfil de inmersión*. Para cada uno de estos gases,
-los usuarios puede especifica un valor umbral a la derecha en el panel de
-Preferencias. Si cualquiera de los gráficos sube por encima de este nivel,
-entonces el gráfico se resalta en rojo, indicando que se ha excedido dicho
-umbral.
+   oxígeno y helio durante el buceo. Se activan utilizando la barra de herramientas
+   de la izquierda de panel *Perfil de inmersión*. Para cada uno de estos gases,
+   los usuarios puede especifica un valor umbral a la derecha en el panel de
+   Preferencias. Si cualquiera de los gráficos sube por encima de este nivel,
+   entonces el gráfico se resalta en rojo, indicando que se ha excedido dicho
+   umbral.
 
 ** _Trazar en rojo el techo informado por el ordenador de buceo_: Esta casilla
-seleccionable permite exactamente lo que dice. No todos los ordenadores de buceo
-facilitan los valores de los techos. Si el ordenador de buceo lo facilita, puede
-diferir de los techos calculados por _Subsurface_. Esto se debe al uso de
-diferentes algoritmos, diferentes factores de gradiente y a la forma dinámica en
-que los ordenadores de buceo calculan los techos durante la inmersión.
+   seleccionable permite exactamente lo que dice. No todos los ordenadores de buceo
+   facilitan los valores de los techos. Si el ordenador de buceo lo facilita, puede
+   diferir de los techos calculados por _Subsurface_. Esto se debe al uso de
+   diferentes algoritmos, diferentes factores de gradiente y a la forma dinámica en
+   que los ordenadores de buceo calculan los techos durante la inmersión.
 
 ** _Mostrar botellas no usadas en la pestaña equipo_: Esta casilla seleccionable
-permite mostrar información sobre botellas que no se han utilizado durante la
-inmersión, en la pestaña Equipo. Por el contrario, si la casilla no está
-seleccionada, cualquier botella que se haya registrado en la pestaña Equipo y no
-haya sido utilizada (p.e. botellas de bail-out) se omiten en la lista mostrada
-aunque siguen estando guardadas.
+   permite mostrar información sobre botellas que no se han utilizado durante la
+   inmersión, en la pestaña Equipo. Por el contrario, si la casilla no está
+   seleccionada, cualquier botella que se haya registrado en la pestaña Equipo y no
+   haya sido utilizada (p.e. botellas de bail-out) se omiten en la lista mostrada
+   aunque siguen estando guardadas.
 
 ** _Mostrar la profundidad media_: Activar esta casilla hace que _Subsurface_
-trace una línea roja a través del perfil, indicando la profundidad media del
-buceo.
+   trace una línea roja a través del perfil, indicando la profundidad media del
+   buceo.
 
 * *Varios*:
 
 ** Factores de gradiente*: Aquí los usuarios puede fijar los _factores
-de gradiente_ usados en la inmersión. El GF_bajo es el factor de gradiente a
-mayores profundidades y el GF_alto se usa justo debajo de la superficie. A
-profundidades intermedias se usan factores entre GF_bajo y GF_alto. Los factores
-de gradiente añaden conservadurismo a la exposición al nitrógeno durante un
-buceo, del mismo modo que muchos ordenadores de buceo tienen un ajuste del
-conservadurismo. Cuanto menor sea el valor de un factor de gradiente, más
-conservativos son los cálculos en relación a la carga de nitrógeno y más
-profundos serán los techos durante el ascenso. Factores de gradiente de 20/60
-son considerados conservadores y valores de 60/90 se consideran agresivos.
-Seleccionar la casilla *GF bajo a la máxima profundidad* hace que se use el
-GF_bajo en la mayor profundidad de la inmersión. Si no se selecciona, GF_bajo se
-aplica a todas las profundidades mayores que la primera parada deco. Para más
-información, ver:
+   de gradiente_ usados en la inmersión. El GF_bajo es el factor de gradiente a
+   mayores profundidades y el GF_alto se usa justo debajo de la superficie. A
+   profundidades intermedias se usan factores entre GF_bajo y GF_alto. Los factores
+   de gradiente añaden conservadurismo a la exposición al nitrógeno durante un
+   buceo, del mismo modo que muchos ordenadores de buceo tienen un ajuste del
+   conservadurismo. Cuanto menor sea el valor de un factor de gradiente, más
+   conservativos son los cálculos en relación a la carga de nitrógeno y más
+   profundos serán los techos durante el ascenso. Factores de gradiente de 20/60
+   son considerados conservadores y valores de 60/90 se consideran agresivos.
+   Seleccionar la casilla *GF bajo a la máxima profundidad* hace que se use el
+   GF_bajo en la mayor profundidad de la inmersión. Si no se selecciona, GF_bajo se
+   aplica a todas las profundidades mayores que la primera parada deco. Para más
+   información, ver:
 
-** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+*** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
-** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+*** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
+** _CCR: Mostrar setpoints al visualizar pO~2~_: Con esta casilla activada, el
+   gráfico de pO~2~ del perfil mostrará una línea en rojo que indicará los
+   valores de setpoint del CCR. Véase la sección en xref:S_CCR_dives[Inmersiones con rebreather de circuito cerrado].
+
+** _CCR: Mostrar los valores de los sensores de O~2~ al visualizar la pO~2~_:
+   Muestra los valores de pO~2~ asociados con cada uno de los sensores de
+   oxígeno de un sistema CCR. Ver la sección xref:S_CCR_dives[Inmersiones con rebreather de circuito cerrado].
+
+*  *Configurar la planificación de inmersiones usando equipo de rebreather*:
+
+** _Setpoint del CCR por defecto para la planificación de inmersiones_:
+   Especifica el setpoint de O~2~ para planificar buceos con CCR. Este valor
+   determinará la pO~2~ a mantener durante una inmersión.
+
+** _pSCR Ratio de O~2~ en el metabolismo_: Para un rebreather semicerrado (pSCR)
+   este es el volumen de oxígeno usado por el buceador cada minuto. Fija este
+   valor para planificar buceos con pSCR.
+
+** _pSCR Ratio_: En equipos pSCR el ratio de vertido es la cantidad de gas
+   expulsada del circuito frente a la cantidad de gas recirculada en el circuito.
+   Fija este valor para planificar buceos con pSCR.
 
 === Lenguaje
 
@@ -2509,17 +2769,17 @@ con el interfaz de _Subsurface_. Se utiliza *EXPLICITAMENTE* bajo las siguientes
 condiciones:
 
 - El usuario está versado en la planificación de inmersiones y tiene el
-entrenamiento necesario para planificar inmersiones.
+  entrenamiento necesario para planificar inmersiones.
 - El usuario planifica buceos dentro de los límites para los que está
-certificado.
+  certificado.
 - La planificación de inmersiones hace grandes suposiciones sobre las
-características de la _persona media_ y no puede compensar las características
-fisiológicas individuales , de salud o de estilos de vida.
+  características de la _persona media_ y no puede compensar las características
+  fisiológicas individuales , de salud o de estilos de vida.
 - La seguridad de un plan de buceo depende mucho de la forma en que se use el
-planificador.
+  planificador.
 - El usuario esta familiarizado con la interfaz de usuario de _Subsurface_.
 - Un usuario que no este completamente seguro de cualquiera de los requisitos
-anteriores, no debería utilizar esta capacidad de _Subsurface_.
+  anteriores, no debería utilizar esta capacidad de _Subsurface_.
 ****
 
 === La pantalla del planificador de _Subsurface_
@@ -2548,34 +2808,34 @@ El Planificador comprende dos partes: *construir un plan de buceo* y *evaluar*
 dicho plan. Para llevar a cabo planificación de inmersiones, sigue estos pasos:
 
 - Cerrar el diario de buceo actual y crear uno nuevo para planificar. Esto se
-hace seleccionando _Archivo -> Nuevo registro_ en el menú principal. De esta
-manera, los planes se mantienen separados del registro de inmersiones
-completadas.
+  hace seleccionando _Archivo -> Nuevo registro_ en el menú principal. De esta
+  manera, los planes se mantienen separados del registro de inmersiones
+  completadas.
 
 - En el area de arriba a la izquierda de la pantalla, hay que asegurarse de que
-los parámetros constantes son correctos. Son: Fecha y hora de inicio de la
-inmersión, Presión atmosférica, y altura sobre el nivel del mar. Estos dos
-últimos están relacionados, variando uno se modifica el otro. La presión
-atmosférica por defecto son 1.013 bar.
+  los parámetros constantes son correctos. Son: Fecha y hora de inicio de la
+  inmersión, Presión atmosférica, y altura sobre el nivel del mar. Estos dos
+  últimos están relacionados, variando uno se modifica el otro. La presión
+  atmosférica por defecto son 1.013 bar.
 
 - En la tabla etiquetada como _Gases disponibles_, añadir la información de las
-botellas que se han de utilizar y la composición de los gases de cada botella.
-Esto se hace de forma similar a <<S_CylinderData,como se rellena la información
-de botellas en un diario>>. Se elige el tipo de botella de la lista desplegable
-y se especifica la presión de trabajo de la botella. Si dejamos en blanco la
-concentración de oxígeno (O2%) se asume que el gas que contiene es aire. En otro
-caso, se introducen las concentraciones de oxígeno y/o helio en las casillas del
-diálogo. Si es necesario , se añaden botellas utilizando el icono "+" de arriba
-a la derecha.
+  botellas que se han de utilizar y la composición de los gases de cada botella.
+  Esto se hace de forma similar a <<S_CylinderData,como se rellena la información
+  de botellas en un diario>>. Se elige el tipo de botella de la lista desplegable
+  y se especifica la presión de trabajo de la botella. Si dejamos en blanco la
+  concentración de oxígeno (O2%) se asume que el gas que contiene es aire. En otro
+  caso, se introducen las concentraciones de oxígeno y/o helio en las casillas del
+  diálogo. Si es necesario , se añaden botellas utilizando el icono "+" de arriba
+  a la derecha.
 
 - El diálogo llamado _Puntos del planificador_ no se utiliza, normalmente, en
-esta etapa de la planificación.
+  esta etapa de la planificación.
 
 === Controlar los gases inertes, el oxígeno y el consumo de gas
 
 La planificación se efectúa en tres pasos:
 
-- *a) Control de gases inertes*: Esto se consigue especificando las velocidades
+*a) Control de gases inertes*: Esto se consigue especificando las velocidades
 de descenso y ascenso, así como los factores de gradiente (GF bajo y GF alto)
 bajo los encabezamientos _Velocidades_ y _Planificar_ en la parte inferior de la
 pantalla de planificación. En principio se utilizan los factores de gradiente
@@ -2601,7 +2861,7 @@ a 1 m/min. La velocidad de descenso también se especifica. Si activamos la
 opción _Caer a la primera profundidad_ , la fase de descenso se efectuará a la
 máxima velocidad indicada en la sección _Velocidades_ de los ajustes.
 
-- *b) Control del oxígeno*: En las _Opciones de gases_ es necesario
+*b) Control del oxígeno*: En las _Opciones de gases_ es necesario
 especificar la máxima presión parcial de oxígeno para la parte del fondo
 (_pO2 en fondo_ ) y también para la fase de descompresión (_pO2 en deco_).
 Los valores más comunes son 1.4 bar para el fondo de la inmersión y 1.6 bar
@@ -2611,7 +2871,7 @@ de gases también pueden editarse en el diálogo _Gases disponibles_. Normalment
 el planificador decide el cambio a otro gas cuando, durante el ascenso, la
 presión parcial del nuevo gas se sitúa por debajo de 1.6 bar.
 
-- *c) Control del gas*: Es necesario mantenerse en los límites de la cantidad
+*c) Control del gas*: Es necesario mantenerse en los límites de la cantidad
 de gas de la botella, manteniendo un margen de seguridad apropiado para regresar
 a superficie, posiblemente compartiendo gas con un compañero. En las _Opciones
 de gases_ especifica la mejor (pero conservativa) estimación de tu "consumo de
@@ -2649,9 +2909,6 @@ fondo y paradas profundas (si se implementan). Se dejan los restantes puntos del
 ascenso a _Subsurface_. En la mayoría de los casos _Subsurface_ calcula puntos
 de paso adicionales para completar los requisitos de descompresión de la
 inmersión.
-
-Un punto de paso puede moverse seleccionándolo y utilizando las teclas de
-flechas.
 
 Los puntos de paso relacionados en el diálogo _Puntos del planificador_ pueden
 editarse a mano para obtener una representación precisa del plan. De hecho
@@ -2784,71 +3041,71 @@ de este manual que describen las operaciones con más detalle.
 === Archivo
 
 - <<S_NewLogbook,_NuevoRegistro_>> - Cierra el diario abierto en estos momentos
-y limpia toda la información.
+  y limpia toda la información.
 - _Abrir Registro_ - Abre el navegador de archivos para seleccionar un archivo
-de registro que abrir.
+  de registro que abrir.
 - _Guardar_ - Guarda el diario abierto en estos momentos.
 - _Guardar como_ - Guarda el diario actual con un nombre de archivo diferente.
 - _Cerrar_ - Cierra el registro de inmersiones abierto en estos momentos.
 - <<S_ExportLog,_Exportar_>> - Exporta el diario abierto actualmente (o las
-inmersiones seleccionadas en el diario) a algún otro formato.
+  inmersiones seleccionadas en el diario) a algún otro formato.
 - <<S_PrintDivelog,_Imprimir_>> - Imprime el registro de inmersiones abierto.
 - <<S_Preferences, _Preferencias_>> - Fija las preferencias del usuario de
-_Subsurface_.
+  _Subsurface_.
 - <<S_Configure, _Configurar ordenador de buceo_>> - Edita la configuración de
-un ordenador de buceo.
+  un ordenador de buceo.
 - _Salir_ - Sale de _Subsurface_.
 
 === Importar
 - <<S_ImportDiveComputer,_Importar del ordenador de buceo_>> - Descarga
-información desde un ordenador de buceo.
+  información desde un ordenador de buceo.
 - <<Unified_import,_Importar Archivos de registro_>> - Importa información de
-buceo desde un fichero que esté en un formato compatible con _Subsurface_.
+  buceo desde un fichero que esté en un formato compatible con _Subsurface_.
 - <<S_Companion,_Importar datos GPS del Servicio web de Subsurface_>> - Carga
-coordenadas GPS desde la app para teléfonos móviles.
+  coordenadas GPS desde la app para teléfonos móviles.
 - <<S_ImportingDivelogsDe,_Importar desde Divelogs.de_>> - Importa información
-de buceo desde www.divelogs.de.
+  de buceo desde www.divelogs.de.
 
 === Registro
 - <<S_EnterData,_Añadir inmersión_>> - Añade manualmente una nueva inmersión al
-panel Lista de inmersiones.
+  panel Lista de inmersiones.
 - <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
-planificar inmersiones.
+  planificar inmersiones.
 - <<S_Replan,_Re-planificar inmersión_>> - Edita un plan de buceo que se ha
-guardado en la *Lista de Inmersiones*.
+  guardado en la *Lista de Inmersiones*.
 - <<S_CopyComponents,_Copiar componentes_>> - Al seleccionar esta opción se
-se puede copiar información de varios campos de una inmersión al portapapeles.
+  se puede copiar información de varios campos de una inmersión al portapapeles.
 - _Pegar componentes_ - Pega, en las inmersiones previamente seleccionadas de
-la *Lista de Inmersiones*, la información copiada previamente usando la opción
-_Copiar componentes_.
+  la *Lista de Inmersiones*, la información copiada previamente usando la opción
+  _Copiar componentes_.
 - <<S_Renumber,_Renumerar_>> - Renumera las inmersiones listadas en el panel
-Lista de inmersiones.
+  Lista de inmersiones.
 - <<S_Group,_Auto agrupar_>> - Agrupa automáticamente los buceos de la Lista de
-inmersiones en viajes de buceo.
+  inmersiones en viajes de buceo.
 - <<S_DeviceNames,_Editar nombres de dispositivos_>> - Edita los nombres
-asignados a los ordenadores de buceo.
+  asignados a los ordenadores de buceo.
 - <<S_Filter, _Filtrar la lista de inmersiones_>> - Seleccionar únicamente
-algunas inmersiones, basándose en criterios específicos.
+  algunas inmersiones, basándose en criterios específicos.
 
 === Vista
 - <<S_ViewPanels,_Todo_>> - Se presentan los cuatro paneles principales de
-_Subsurface_ simultáneamente.
+  _Subsurface_ simultáneamente.
 - <<S_ViewPanels,_Lista_de_inmersiones_>> - Se visualiza solo el panel Lista de
-inmersiones.
+  inmersiones.
 - <<S_ViewPanels,_Perfil_>> - Se visualiza solo el panel Perfil de inmersión.
 - <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas de la inmersión.
 - <<S_ViewPanels,_Globo_>> - Se presenta solo el panel Mapamundi.
-_Estadísticas anuales_ - Muestra estadísticas anuales resumidas sobre las
-inmersiones efectuadas en este año y los pasados.
+- _Estadísticas anuales_ - Muestra estadísticas anuales resumidas sobre las
+  inmersiones efectuadas en este año y los pasados.
 - _Anterior ordenador_ - Cambia al siguiente ordenador de buceo.
 - _Siguiente ordenador_ - Cambia al anterior ordenador de buceo.
 - _Pantalla completa_ - Activa el modo de pantalla completa.
 
 === Ayuda
 - _Acerca de Subsurface_ - Muestra un panel con el número de versión de
-_Subsurface_ e información de la licencia.
+  _Subsurface_ e información de la licencia.
 - _Comprobar si hay actualizaciones_ - Encuentra si hay disponible una nueva
-versión de _Subsurface_ en la  http://subsurface-divelog.org/[página web de _Subsurface_].
+  versión de _Subsurface_ en la  http://subsurface-divelog.org/[página web de _Subsurface_].
 - _Manual de usuario_ - Abre una ventana que muestra este manual.
 
 == APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.
@@ -2941,6 +3198,8 @@ usermod -a -G dialout johnB+) . Esto hace a johnB miembro del grupo +dialout+.
 - Teclea: +id johnB+ Esto listará todos los grupos a los que pertenece johnB y
 verifica que se ha creado la pertenencia correcta al grupo. El grupo +dialout+
 debería aparecer entre los diferentes IDs.
+- En algunas circunstancias, este cambio solo tiene efecto (p.e. en Ubuntu) tras
+cerrar sesión y reiniciarla.
 
 Con el nombre de dispositivo apropiado (p.e. +/dev/ttyUSB3+) y con permisos de
 escritura para el puerto USB, el interface del ordenador de buceo puede
@@ -3012,24 +3271,24 @@ ejecuta algo como +sudo rc.config start bluetoothd+ o +sudo
 
 También se puede usar una aproximación manual utilizando estos comandos:
 
-* +sudo hciconfig+ muestra los dispositivos bluetooth disponibles en tu pc,
-seguramente verás un hci0, si no intenta sudo +hcitool -a+ para buscar
-dispositivos inactivos y prueba +sudo hciconfig hci0 up+ para activarlo.
+ * +sudo hciconfig+ muestra los dispositivos bluetooth disponibles en tu pc,
+   seguramente verás un hci0, si no intenta sudo +hcitool -a+ para buscar
+   dispositivos inactivos y prueba +sudo hciconfig hci0 up+ para activarlo.
 
-* +sudo hcitool scanning+ usa esto para tener una lista de clientes activos,
-busca tu ordenador de buceo y recuerda la dirección MAC que aparecerá.
+ * +sudo hcitool scanning+ usa esto para tener una lista de clientes activos,
+   busca tu ordenador de buceo y recuerda la dirección MAC que aparecerá.
 
-* +sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4+ esto emparejará tu ordenador
-de buceo con la pila bluetooth de tu PC, copia/pega la dirección MAC de la
-salida del anterior 'sudo hcitool scanning'.
+ * +sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4+ esto emparejará tu ordenador
+   de buceo con la pila bluetooth de tu PC, copia/pega la dirección MAC de la
+   salida del anterior 'sudo hcitool scanning'.
 
 Desafortunadamente, en Linux el enlace con un dispositivo de comunicaciones ha
 de hacerse manualmente ejecutando:
 
-* +sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ enlaza el ordenador de buceo
-a un dispositivo de comunicaciones de tu PC, en caso de que rfcomm ya esté en
-uso, simplemente usa rfcomm1 o 2 … IMPORTANT: copia/pega la dirección MAC de la
-salida de hcitool scanning, la de aquí solo es un ejemplo.
+ * +sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ enlaza el ordenador de buceo
+   a un dispositivo de comunicaciones de tu PC, en caso de que rfcomm ya esté en
+   uso, simplemente usa rfcomm1 o 2 … IMPORTANT: copia/pega la dirección MAC de la
+   salida de hcitool scanning, la de aquí solo es un ejemplo.
 
 Para descargar ahora en _Subsurface_ tendrás que especificar el nombre de
 dispositivo conectado a la dirección MAC, en el ejemplo anterior _/dev/rfcomm0_,
@@ -3121,8 +3380,8 @@ operativos distintos de Linux y utilizando otro sofware de buceo. No tenemos
 idea del origen del problema o como solucionarlo, pero se ha informado que, en
 ocasiones, se puede resolver siguiendo estos pasos:
 
-* Utilizar el receptor bluetooth que viene con el Shearwater Predator en lugar
-del incorporado en el PC.
+ * Utilizar el receptor bluetooth que viene con el Shearwater Predator en lugar
+   del incorporado en el PC.
  * Cambiar a drivers bluetooth distintos para hardware del PC
  * Apagar Wi-Fi mientras se utiliza bluetooth
 
@@ -3140,7 +3399,7 @@ Solo se pueden descargar datos de una inmersión cada vez e incluyen tres
 archivos:
 
 - Configuración de ajustes para la inmersión y parámetros clave de la misma (es
-el archivo con extensión .txt).
+  el archivo con extensión .txt).
 - Detalles del diario (archivo con extensión .csv).
 - Diario en formato Redbook (archivo con extensión .cvsr). Es una versión
 comprimida del diario utilizando un formato propio.
@@ -3162,19 +3421,19 @@ como sigue:
 - Abrir una inmersión con el _AP Log Viewer_.
 - Seleccionar la pestaña llamada _Datos_ (_Data_).
 - Si se muestran en la pantalla los datos del diario "en crudo", pulsar en
-_Copiar al portapapeles_.
+  _Copiar al portapapeles_.
 - Abrir un editor de texto (p.e. Notepad en windows o TextWrangler en Mac).
 - Copiar el contenido del portapapeles al editor y guardar el archivo de texto
-con extensión de archivo .csv.
+  con extensión de archivo .csv.
 - Desde Subsurface, seleccionar _Importar -> Importar archivos de registro_
-para abrir el xref:Unified_import[diálogo de importación universal].
+  para abrir el xref:Unified_import[diálogo de importación universal].
 - En la lista desplegable de abajo del diálogo seleccionar _Archivos CSV_.
 - En la lista de nombres de archivo, seleccionar el archivo .CSV que acabamos
-de crear y se abrirá un diálogo de importación.
+  de crear y se abrirá un diálogo de importación.
 - En la lista desplegable llamada _Importaciones pre-configuradas_, seleccionar
-el _APD Log Viewer_.
+  el _APD Log Viewer_.
 - Asegurarse que los otros ajustes del diario APD son correctas y pulsar
-_Aceptar_.
+  _Aceptar_.
 
 El diario de APD aparecerá en _Subsurface_.
 
@@ -3188,7 +3447,7 @@ xref:Unified_import[aquí] . Sin embargo, en algunos casos, puede ser necesario
 efectuar dos pasos:
 
 1. Exportar los datos del diario externo a un formato accesible por
-_Subsurface_.
+   _Subsurface_.
 2. Importar el diario accesible a _Subsurface_.
 
 Este apéndice proporciona algo de información sobre como exportar datos de
@@ -3208,25 +3467,25 @@ nomenclaturas de archivos al exportar datos.
 *Divemanager 3 (DM3):*
 
 1. Iniciar 'Suunto Divemanager 3' y registrarse con el nombre que contiene los
-diarios.
-2. Do iniciar el ayudante de importación para importar inmersiones desde el
-ordenador de buceo.
+   diarios.
+2. No iniciar el ayudante de importación para importar inmersiones desde el
+   ordenador de buceo.
 3. En el árbol de la izquierda de la ventana del programa, seleccionar las
-inmersiones que correspondan.
+   inmersiones que correspondan.
 4. De la lista de buceos, seleccionar las inmersiones que se deseará descargar
-después:
-* Para seleccionar alguna: mantén pulsada la tecla 'ctrl' y haz clic en la
-inmersión.
-* Para seleccionarlas todas: Selecciona la primera, mantén pulsada la tecla
-'shift' y haz clic en la última inmersión.
+   después:
+	* Para seleccionar alguna: mantén pulsada la tecla 'ctrl' y haz clic en la
+	  inmersión.
+	* Para seleccionarlas todas: Selecciona la primera, mantén pulsada la tecla
+	  'shift' y haz clic en la última inmersión.
 5. Con las inmersiones marcadas se usa el menú _File → Export_
 6. Se mostrará el desplegable de exportación. En este desplegable hay un campo
-llamado Export Path.
+   llamado Export Path.
 	* Haz clic en el botón browse junto al campo Export Path
-		* Se despliega un navegador de archivos
-* Navega a la carpeta donde quieras que se guarde el archivo Divelog.SDE
-                * Opcionalmente cambia el nombre del archivo a guardar.
-                * Clica 'Save'.
+		** Se despliega un navegador de archivos
+	* Navega a la carpeta donde quieras que se guarde el archivo Divelog.SDE
+                ** Opcionalmente cambia el nombre del archivo a guardar.
+                ** Clica 'Save'.
         * De vuelta en el desplegable de exportación, pulsa el botón 'Export'.
 7. Las inmersiones han quedado exportadas en el archivo Divelogs.SDE.
 
@@ -3243,10 +3502,10 @@ Localizar la base de datos Suunto DM4 (o DM5):
 1. Iniciar Suunto DM4/DM5
 2. Seleccionar 'Help → About' (Ayuda → Acerca de)
 3. Hacer clic en el botón 'Copy' (Copiar) tras el texto 'Copy log folder path to
-clipboard' (Copiar la ruta a la carpeta del registro al portapapeles)
+   clipboard' (Copiar la ruta a la carpeta del registro al portapapeles)
 4. Abrir el explorador de Windows
 5. Pegar la ruta en la casilla de direcciones en la parte de arriba del
-explorador
+   explorador
 6. La base de datos se llama DM4.db o DM5.db
 
 Hacer una copia de respaldo de la base de datos de Suunto DM4/DM5:
@@ -3257,6 +3516,15 @@ Hacer una copia de respaldo de la base de datos de Suunto DM4/DM5:
 aquí usaremos DM4 (o DM5) con la extensión por defecto .bak
 4. Clicar 'Save' (Guardar)
 5. Los buceos se han exportado al archivo DM4.bak (o DM5.bak)
+
+[[Atomic_Export]]
+=== Exportar desde Atomic Logbook
+
+[NOTE]
+Atomic Logbook es un software en Windows de Atomics Aquatics. Permite descargar
+información de buceo de los ordenadores Cobalt y Cobalt 2. El archivo se guarda
+en una base de datos SQlite en C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db.
+Este archivo se puede importar directamente a _Subsurface_.
 
 [[Mares_Export]]
 === Exportar desde Mares Dive Organiser V2.1
@@ -3272,10 +3540,10 @@ exportar la información a otro formato compatible que pueda ser importado a
 _Subsurface_.
 
 1. En el Dive Organiser, selecciona _Database → Backup_ en el menú principal y
-haz una copia de seguridad de la base de datos en el escritorio. Esto creará un
-archivo comprimido DiveOrganiserxxxxx.dbf
+   haz una copia de seguridad de la base de datos en el escritorio. Esto creará un
+   archivo comprimido DiveOrganiserxxxxx.dbf
 2. Cambia el nombre del archivo a DiveOrganiserxxxxx.zip. Dentro de una carpeta
-comprimida en el archivo .zip, hay otro archivo llamado _DiveOrganiser.sdf_.
+   comprimida en el archivo .zip, hay otro archivo llamado _DiveOrganiser.sdf_.
 3. Extrae a tu escritorio el archivo _.sdf_ desde la carpeta comprimida.
 4. La password para acceder al archivo .zip es _mares_.
 
@@ -3296,7 +3564,105 @@ se hace lo siguiente:
 2. Seleccionar las inmersiones a exportar
 3. Hacer clic en el botón de exportar y seleccionar un nombre de archivo.
 
-== APENDICE D: Preguntas Frecuentes.
+[[S_Appendix_D]]
+== APÉNDICE D: Exportar una hoja de cálculo a formato CSV
+
+Muchos buceadores mantienen un diario en alguna forma de archivo digital, en
+muchos casos en una hoja de cálculo con varios campos de información. Estos
+registros se pueden importar con facilidad a _Subsurface_
+(xref:S_ImportingManualCSV[Importar inmersiones desde un archivo CSV manual]),
+una vez que la hoja de cálculo se ha convertido a archivo .CSV .
+Esta sección explica el procedimiento para convertir un diario de buceo que
+se haya conservado en una hoja de cálculo en un archivo .CSV que se pueda,
+posteriormente, importar a _Subsurface_.
+Crear un .CSV es una tarea sencilla, aunque el procedimiento es algo distinto
+según el programa de hojas de cálculo que se utilice.
+
+El primer paso consiste en organizar los datos en la hoja de cálculo, de forma
+que la primera fila contenga los nombres (o títulos) de cada columna y que la
+información de cada inmersión ocupe una sola fila.
+_Subsurface_ soporta muchos tipos de datos (Número, Fecha, Hora, Duración,
+Ubicación, GPS, Prof. máxima, Prof. media, Compañero, Notas, Lastre y Etiquetas).
+El usuario puede organizar los datos siguiendo unas sencillas reglas:
+
+1. Fecha: Usar uno de los siguientes formatos: aaaa-mm-dd, dd.mm.aaaa o
+   mm/dd/aaaa
+2. Duración:  El formato debería ser minutos:segundos
+3. Sistema de unidades: Solo debe usarse un sistema. Evitar la mezcla sistemas.
+4. Etiquetas y compañeros: los valores deben separarse usando una coma.
+5. Posición GPS: Se deben utilizar grados decimales, p.e. 30.22496 30.821798
+
+=== _LibreOffice Calc_ y _OpenOffice Calc_
+
+Son aplicaciones de hojas de cálculo de código abierto que forman parte de
+suits mayores que, a su vez, también son código abierto. La interacción del
+usuario con _LibreOffice Calc_ y _OpenOffice Calc_es muy similar.
+
+En LibreOffice Calc el formato de tiempo debe ajustarse a minutos:segundos -
+[mm]:ss y las fechas se deben ajustar a  aaaa-mm-dd, dd.mm.aaaa o mm/dd/aaaa.
+Un diario típico codría parecerse a esto:
+
+image::images/LOffice_spreadsheetdata.jpg["FIGURA: Datos de una hoja de cálculo",align="center"]
+
+Para exportar los datos en archivo .CSV, desde LibreOffice clicar _Archivo ->
+ Guardar como_. En el diálogo que se desplegará, seleccionar _Texto CSV (.csv)_
+como tipo de archivo y seleccionar la opción _Editar ajustes de filtros_.
+
+image::images/LOffice_save_as_options.jpg["FIGURA: Opciones de Guardar como",align="center"]
+
+Tras seleccionar _Guardar_, seleccionar el delimitador de campos apropiado
+(selecciona _TABULADOR_ para evitar conflictos con las comas cuando estas se
+usen como coma decimal), luego seleccionar _OK_.
+
+image::images/LOffice_field_options.jpg["FIGURA: Opciones de campos",align="center"]
+
+Se puede verificar el archivo .CSV abriéndolo con un editor de textos y luego
+se importaría como se explicó en xref:S_ImportingManualCSV[Importar inmersiones desde archivos CSV manuales].
+
+=== Microsoft _Excel_
+
+El delimitador de campos (llamado "separador de listas" en los manuales de
+Microsoft) no está accesible desde _Excel_ y debe ajustarse desde el _Panel de
+Control_. Tras cambiar el carácter separador todo el software del ordenador con
+Windows usará el nuevo carácter como separador.
+Se puede volver a cambiar el carácter al inicial siguiendo el mismo sistema.
+
+- En Microsoft Windows, pulsar el botón *Inicio* y seleccionar el _Panel de
+  Control_ de la lista de la izquierda.
+- Abrir el diálogo _Opciones de región y lenguaje_.
+- Hacer una de las dos siguientes acciones:
+  ** En Windows 7, clicar la pestaña _Formatos_ y luego _Personalizar este
+     formato_
+  ** En Windows XP, clicar la pestaña _Opciones de región_ y luego _Personalizar_.
+- Teclear un nuevo separador en el _Separador de listas_. Para utilizar un
+  tabulador teclea  "TAB" en la casilla de texto.
+- Pulsar _OK_ dos veces.
+
+A continuación, una imagen del _Panel de Control_:
+
+image::images/Win_SaveCSV2.jpg["FIGURA: Separador de listas en Win",align="center"]
+
+Para exportar el archivo en formato CSV:
+
+Con el diario abierto en _Excel_, seleccionar el botón redondo de Windows de
+arriba a la izquierda, luego _Guardar como_.
+
+image::images/Win_SaveCSV1.jpg["FIGURA: Opción Guardar como en Excel",align="center"]
+
+Clicar en la parte izquierda de la opción _Guardar como_, *NO* sobre la flecha
+de la derecha. Esto desplegará un diálogo para guardar la hoja de cálculo en un
+formato alternativo. De la lista desplegable abajo en el diálogo, seleccionar
+_CSV(delimitado por comas) (*.CSV)_. Asegurarse de que se ha seleccionado la
+carpeta correcta para guardar el archivo.
+
+image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialogue",align="center"]
+
+Seleccionar el botón _Guardar_. El archivo formateado en CSV se guardará en la
+carpeta que se hubiera seleccionado. Se puede verificar el archivo creado con
+un editor de textos y luego importar los datos de buceo como se explicó en
+xref:S_ImportingManualCSV[Importar inmersiones desde archivos CSV manuales].
+
+== APENDICE E: Preguntas Frecuentes.
 
 === _Subsurface_ parece calcular mal el consumo de gas y el CAS
 [[SAC_CALCULATION]]
@@ -3355,53 +3721,3 @@ como actuar de instructor en inmersiones de curso, donde puedes estar en el agua
 mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
 querrás que te cuente como algún tipo de inmersión larga.
 
-== APENDICE E: Crear un archivo CSV con Libreoffice Calc
-
-Muchos buceadores guardan un diario en algún tipo de archivo digital, habitualmente
-una hoja de cálculo con varios campos de información. Estos registros pueden ser
-importados con facilidad a _Subsurface_
-(xref:S_ImportingManualCSV[Importar buceos desde archivos CSV mantenidos manualmente]),
-después de que la hoja haya sido convertida en archivo CSV.
-Esta sección explica la forma de convertir un diario guardado en una hoja de cálculo
-en un archivo .CSV que luego se importará a _Subsurface_.
-Crear un .CSV es tarea facil, aunque el procedimiento pueda diferir algo en función
-de que programa de hoja de cálculo se utilice.
-En este ejemplo se utilizará LibreOffice Calc, pero el procedimiento debería ser
-el mismo en OpenOffice. El procedimiento para usuarios de Microsoft Excel también
-debería ser similar.
-
-=== Organizar los datos en la hoja de cálculo
-El primer paso es organizar los datos de buceo en la hoja de cálculo, de forma
-que la primera fila contenga los nombres de cada campo y que cada inmersión se
-guarde en una sola fila._Subsurface_ no requiere ningún campo en particular,
-pero soporta varios (Nº inmersión, Fecha, Hora, Duración, Ubicación, GPS, Prof.
-Máxima, Prof. Media, Compañero, Notas, Lastre y Etiquetas).
-El usuario puede organizar los metadatos de acuerdo a unas sencillas reglas:
-
-1. Fecha: Se debería utilizar uno  de los siguientes formatos: aaaa-mm-dd,
-dd.mm.aaaa, mm/dd/aaaa.
-2. Duración: El formato debería ser minutos:segundos. En Libreffice Calc
-esto sería [mm]:ss
-3. Sistema de unidades: Solo debe usarse un sistema de unidades (sin mezclar,
-por ejemplo, imperial y métrico).
-4. Etiquetas y compañeros: Los nombres deben separarse con una ",".
-5. Posiciones GPS: El usuario debe usar grados decimales, p.e. 30.22496 30.821798
-
-image::images/spreadsheetdata.jpg["FIGURA: Datos de una hoja de cáculo",align="center"]
-
-=== Crear el archivo .CSV
-Cuando los datos estén organizados en la hoja de cálculo, es el momento de
-exportarlos a un archivo CSV.  Para ello, el usuario debe hacer clic en _Archivo_
-y _Guardar como_. En el diálogo que aparecerá, se selecciona "_Text CSC (.csv)_"
-como tipo de archivo y se selecciona "_Editar configuración de filtros_".
-
-image::images/save_as_options.jpg["FIGURA: Opciones de guardar como ...",align="center"]
-
-Tras pulsar _Guardar_, se selecciona el delimitador de campos adecuado
-(preferible {tab} para prevenir conflictos con las "comas") y se pulsa _OK_.
-
-image::images/field_options.jpg["FIGURA: Opciones de campos",align="center"]
-
-Ya debería estar, se puede comprobar el archivo .CSV abriéndolo con un editor
-de texto, y luego importarlo como se explica en la sección
-xref:S_ImportingManualCSV[Importar inmersiones desde archivos CSV hechos a mano].
