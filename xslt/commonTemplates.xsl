@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:u="http://www.streit.cc/uddf/3.2/"
+  xmlns:u1="http://www.streit.cc/uddf/3.1/"
+  >
 
   <!-- Convert ISO 8601 time format to "standard" date and time format
        -->
@@ -142,13 +145,13 @@
     <xsl:param name="units"/>
     <xsl:choose>
       <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="count(descendant::temperature[. != 32])"/>
+        <xsl:value-of select="count(descendant::temperature[. != 32]|descendant::u:temperature[. != 32]|descendant::u1:temperature[. != 32])"/>
       </xsl:when>
       <xsl:when test="$units = 'Kelvin'">
-        <xsl:value-of select="count(descendant::temperature[. != 273.15])"/>
+        <xsl:value-of select="count(descendant::temperature[. != 273.15]|descendant::u:temperature[. != 273.15]|descendant::u1:temperature[. != 273.15])"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="count(descendant::temperature[. != 0])"/>
+        <xsl:value-of select="count(descendant::temperature[. != 0]|descendant::u:temperature[. != 0]|descendant::u1:temperature[. != 0])"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
