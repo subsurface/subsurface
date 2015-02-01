@@ -85,6 +85,14 @@ void TagWidget::reparse()
 	if (pos.first >= 0 && pos.second > 0)
 		currentText = text().mid(pos.first, pos.second - pos.first).trimmed();
 
+	/*
+	 * Do not show the completer when not in edit mode - basically
+	 * this returns when we are accepting or discarding the changes.
+	 */
+	if (MainWindow::instance()->information()->isEditing() == false || currentText.length() == 0) {
+		return;
+	}
+
 	if (m_completer) {
 		m_completer->setCompletionPrefix(currentText);
 		if (m_completer->completionCount() == 1) {
