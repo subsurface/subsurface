@@ -14,12 +14,12 @@ Subsurface natively under Windows, we have some hints how to do so
 here as well.
 
 As of Subsurface 4.3 all of the prebuilt binaries that we provide (right
-now Windows64, Windows32, Mac, Ubuntu and LinuxMint) are built using our
-own custom "flavors" of libdivecomputer and libmarblewidget. You can get
-these from
+now Windows, Mac, Ubuntu/Debian/LinuxMint, and openSUSE/Fedora) are built
+using our own custom "flavors" of libdivecomputer and libmarblewidget. You
+can get these from
 
-git://git.subsurface-divelog.org/marble (in the Subsurface-4.3 branch)
-git://git.subsurface-divelog.org/libdc (in the Subsurface-4.3 branch)
+git://git.subsurface-divelog.org/marble (in the Subsurface-4.4 branch)
+git://git.subsurface-divelog.org/libdc (in the Subsurface-4.4 branch)
 
 Both of these repositories also have a Subsurface-testing branch. That
 branch is explicitly marked as NOT STABLE and will receive force pushes.
@@ -27,9 +27,12 @@ The rationale for this is that we have no intention of forking either of
 these two projects. We simply are adding a few patches on top of their
 latest versions and so those testing branches get frequently rebased.
 
-Also, all of the prebuilt binaries (with the exception of the Windows32
+Also, all of the prebuilt binaries (with the exception of the Ubuntu 12.04
 build) are now Qt5 based and Qt5 is considered the stable and supported
-framework to use for building Subsurface.
+framework to use for building Subsurface. The sources contain a best
+effort patch in packaging/ubuntu/0001-Make-build-with-Qt4.patch that
+attempts to continue to allow building with Qt4, but that is not
+officially supported and will result in missing functionality.
 
 Build options for Subsurface
 ----------------------------
