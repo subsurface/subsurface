@@ -526,7 +526,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
-				parse_seabear_csv_file(fileNames[i].toUtf8().data(),
+				if (parse_seabear_csv_file(fileNames[i].toUtf8().data(),
 						       r.indexOf(tr("Sample time")),
 						       r.indexOf(tr("Sample depth")),
 						       r.indexOf(tr("Sample temperature")),
@@ -539,7 +539,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       ui->CSVSeparator->currentIndex(),
 						       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 						       ui->CSVUnits->currentIndex()
-						       );
+						       ) < 0)
+					return;
 
 				// Seabear CSV stores NDL and TTS in Minutes, not seconds
 				struct dive *dive = dive_table.dives[dive_table.nr - 1];

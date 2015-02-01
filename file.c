@@ -932,6 +932,13 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		NL = "\r\n";
 	}
 
+	/*
+	 * If file does not contain empty lines, it is not a valid
+	 * Seabear CSV file.
+	 */
+	if (!ptr)
+		return -1;
+
 	if (!ptr_old) {
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
