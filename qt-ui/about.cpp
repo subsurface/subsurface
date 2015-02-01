@@ -11,7 +11,8 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 	setWindowModality(Qt::ApplicationModal);
 	QString versionString(GIT_VERSION_STRING);
 	QStringList readableVersions = QStringList() << "4.3.950" << "4.4 Beta 1" <<
-				       "4.3.960" << "4.4 Beta 2";
+							"4.3.960" << "4.4 Beta 2" <<
+							"4.3.970" << "4.4 Beta 3";
 	if (readableVersions.contains(versionString))
 		versionString = readableVersions[readableVersions.indexOf(versionString) + 1];
 
