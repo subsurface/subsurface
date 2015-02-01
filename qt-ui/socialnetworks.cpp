@@ -45,7 +45,7 @@ QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
 		"client_id=427722490709000"
 		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
-		"&response_type=token"
+		"&response_type=token,granted_scopes"
 		"&display=popup"
 		"&scope=publish_actions,user_photos"
 	);
@@ -75,6 +75,10 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	if (!result.contains("access_token"))
 		return;
 
+	if (result.contains("denied_scopes=publish_actions") || result.contains("denied_scopes=user_photos")) {
+		qDebug() << "user did not allow us access" << result;
+		return;
+	}
 	int from = result.indexOf("access_token=") + strlen("access_token=");
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
