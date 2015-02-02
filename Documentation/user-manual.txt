@@ -2374,32 +2374,31 @@ There are two routes for the export of dive information from Subsurface:
 Export of dives to _Facebook_ is handled differently from other types of export. This is because
 export to _Facebook_ needs a connection to _Facebook_, requiring a _Facebook_ userID and password.
 If, from the Main Menu, one selects _File ->  Preferences ->  Facebook_, a login screen is presented
-(see image *A* to the left, below). Ensure that there is not another active _Facebook_ session
-using an Internet browser outside of _Subsurface_. Provide a _Facebook_ userID and password.
+(see image *A* to the left, below).  Provide your _Facebook_ userID and password.
 Once successful login to _Facebook_ has been achieved, the panel
 in image *B*, below is presented. This panel has a button that needs to be selected in order to close the
 _Facebook_ connection.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
-*Important:* By default the login to _Facebook_ is terminated when _Subsurface_ is closed. However,
-the checkbox labelled "Keep me logged in to Subsurface" in image *A*, above allows one to keep the
-connection even after _Subsurface_ has been closed. This allows one to launch _Subsurface_ at a later
-stage and transfer more dive profiles to _Facebook_ without first having to log into _Facebook_. Keeping the
-_Facebook_ connection open has two penalties: a) a security risk for the open connection to be exploited by
-unwanted outside parties; b) the Internet bandwith required can be increased when a _Facebook_ connection
-is kept open.
-
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
 A _Facebook_ icon appears in the *Dive Notes* panel of _Subsurface_ (See image *A* below). Ensure that the dive
-that needs to be transferred to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
+that you want to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
 _Facebook_ icon, and a dialogue is shown, determining the amount of additional information transferred
 with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album needs to be provided. The checkboxes on the lefthand side allow one to determine how much
 additional information should be transferred with the dive profile. This information is shown in the text box
-on the right hand side of the panel (see image *B*, below). Having specified the additional information, select
+on the right hand side of the panel (see image *B*, below). You can easily edit the message that will be posted
+right there in the text box. Having specified the additional information and verified the text you want to post, select
 the _OK_ button which triggers the transfer to _Facebook_. After a while, an acknowledgement dialogue appears,
 indicating successful transfer to _Facebook_.
+
+Both the Album created and the post to your time line will be marked as
+private. In order for friends to be able to see the post you have to
+change its permissions from a regular Facebook login either in a browser
+or a Facebook app. While this is an extra step the developers felt that
+this was the better solution to avoid having unwanted posts in your public
+timeline.
 
 image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
 
@@ -2780,10 +2779,10 @@ from Subsurface to Facefook.
 image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
 
 If one provides a valid Facebook userID and password, a
-connection to Facebook is created. By default, the connection to Facebook is closed when one
-closes down Subsurface. If one checks the checkbox labelled "Keep connection to Subsurface",
-then the connection to Facefoob is kept so that, if one launches Subsurface again at al later stage,
-one does not need to log into Facebook again. See the section xref:S_facebook[Exporting dive profiles to Facebook]
+connection to Facebook is created. The connection to Facebook is closed when one
+closes down Subsurface. At this point the checkbox labelled "Keep connection to Subsurface",
+on the login screen has no effect.
+See the section xref:S_facebook[Exporting dive profiles to Facebook]
 for more information.
 
 [[S_DivePlanner]]
