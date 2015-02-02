@@ -52,6 +52,11 @@ The following options are recognized when passed to qmake:
 		      (pass the actual path, without -I)
  LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
 		      recognized.
+ DEFINES+=SHOW_PLOT_INFO_TABLE=1
+		      Only available in debug builds, this creates a
+		      second window that shows all elements in the
+		      plot_info structure as a table - very useful when
+		      debugging issues with the profile
 
 The INCLUDEPATH and LIBS options are useful to tell the buildsystem
 about non-standard installation paths for the dependencies (such as

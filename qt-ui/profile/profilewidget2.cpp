@@ -127,7 +127,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
 
-#ifndef QT_NO_DEBUG
+#if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
 	QTableView *diveDepthTableView = new QTableView();
 	diveDepthTableView->setModel(dataModel);
 	diveDepthTableView->show();
