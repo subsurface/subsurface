@@ -2870,7 +2870,7 @@ void dive_add_picture(struct dive *d, struct picture *newpic)
 {
 	struct picture **pic_ptr = &d->picture_list;
 	/* let's keep the list sorted by time */
-	while (*pic_ptr && (*pic_ptr)->offset.seconds < newpic->offset.seconds)
+	while (*pic_ptr && (*pic_ptr)->offset.seconds <= newpic->offset.seconds)
 		pic_ptr = &(*pic_ptr)->next;
 	newpic->next = *pic_ptr;
 	*pic_ptr = newpic;
