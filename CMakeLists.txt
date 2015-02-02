@@ -1,8 +1,5 @@
 project(Subsurface)
-cmake_minimum_required(VERSION 2.8)
-
-#options
-SET(SUBSURFACE_QT_VERSION "4")
+cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
@@ -42,23 +39,20 @@ IF(NOT (insource OR insourcedir))
 	add_custom_target(link_marble_data ALL COMMAND rm -f marbledata && ln -s ${${PROJECT_NAME}_SOURCE_DIR}/marbledata ${${PROJECT_NAME}_BINARY_DIR}/marbledata)
 ENDIF()
 
-#configure Qt version.
-IF(${SUBSURFACE_QT_VERSION} MATCHES "4")
-	SET(QT_USE_QTNETWORK TRUE)
-	SET(QT_USE_QTXML TRUE)
-	SET(QT_USE_QTSVG TRUE)
-	SET(QT_USE_QTTEST TRUE)
-	SET(QT_USE_QTWEBKIT TRUE)
-	FIND_PACKAGE(Qt4 REQUIRED)
-	INCLUDE(${QT_USE_FILE})
-	ADD_DEFINITIONS(${QT_DEFINITIONS})
-	FIND_PACKAGE(Marble REQUIRED)
-	INCLUDE_DIRECTORIES(${MARBLE_INCLUDE_DIR})
-ELSEIF(${SUBSURFACE_QT_VERSION} MATCHES "5")
-	ADD_DEFINITIONS(-DNO_MARBLE)
-ELSE()
-	message( FATAL_ERROR "Qt version should be 4 or 5" )
-ENDIF()
+#configure Qt.
+FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5Concurrent REQUIRED)
+FIND_PACKAGE(Qt5Widgets REQUIRED)
+FIND_PACKAGE(Qt5Network REQUIRED)
+FIND_PACKAGE(Qt5WebKitWidgets REQUIRED)
+FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+FIND_PACKAGE(Qt5Svg REQUIRED)
+FIND_PACKAGE(Qt5Test REQUIRED)
+SET(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
+SET(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
+
+FIND_PACKAGE(Marble REQUIRED)
+INCLUDE_DIRECTORIES(${MARBLE_INCLUDE_DIR})
 
 # Generate the ssrf-config.h every 'make'
 FILE(WRITE ${CMAKE_BINARY_DIR}/version.h.in "\#define VERSION_STRING \"4.1.\"@VERSION@\n")
@@ -186,29 +180,25 @@ SET(SUBSURFACE_APP
 )
 
 FILE(GLOB SUBSURFACE_UI qt-ui/*.ui)
-# to be replaced by QT_WRAP_UI on CMake 3.
-IF(${SUBSURFACE_QT_VERSION} MATCHES "4")
-    QT4_WRAP_UI( SUBSURFACE_UI_HDRS ${SUBSURFACE_UI} )
-    QT4_ADD_RESOURCES( SUBSURFACE_QRC_HRDS subsurface.qrc )
-ELSEIF(${SUBSURFACE_QT_VERSION} MATCHES "5")
-    QT5_WRAP_UI( SUBSURFACE_UI_HDRS ${SUBSURFACE_UI} )
-ENDIF()
+QT5_WRAP_UI( SUBSURFACE_UI_HDRS ${SUBSURFACE_UI} )
 
 ADD_LIBRARY(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
+TARGET_LINK_LIBRARIES(subsurface_corelib ${QT_LIBRARIES})
 ADD_LIBRARY(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
+TARGET_LINK_LIBRARIES(subsurface_profile ${QT_LIBRARIES})
 ADD_LIBRARY(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
+TARGET_LINK_LIBRARIES(subsurface_statistics ${QT_LIBRARIES})
 ADD_LIBRARY(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
 ADD_LIBRARY(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
-ADD_EXECUTABLE(subsurface ${SUBSURFACE_APP} ${SUBSURFACE_QRC_HRDS} )
+TARGET_LINK_LIBRARIES(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
+ADD_EXECUTABLE(subsurface ${SUBSURFACE_APP} ${SUBSURFACE_QRC_HRDS} )
 target_link_libraries( subsurface
   subsurface_generated_ui
   subsurface_interface
   subsurface_profile
   subsurface_statistics
   subsurface_corelib
-  ${QT_LIBRARIES}
-  ${MARBLE_LIBRARIES}
   ${SUBSURFACE_LINK_LIBRARIES}
   -ldivecomputer
   -lzip
@@ -221,10 +211,10 @@ ADD_DEPENDENCIES(subsurface_generated_ui version)
 ADD_DEPENDENCIES(subsurface_corelib version)
 
 ENABLE_TESTING()
-ADD_EXECUTABLE( TestUnitConversion tests/testunitconversion.cpp )
-TARGET_LINK_LIBRARIES( TestUnitConversion ${QT_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer subsurface_corelib)
-ADD_TEST( NAME TestUnitConversion COMMAND TestUnitConversion)
+ADD_EXECUTABLE(TestUnitConversion tests/testunitconversion.cpp)
+TARGET_LINK_LIBRARIES(TestUnitConversion subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer)
+ADD_TEST(NAME TestUnitConversion COMMAND TestUnitConversion)
 
-ADD_EXECUTABLE( TestProfile tests/testprofile.cpp )
-TARGET_LINK_LIBRARIES( TestProfile ${QT_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer subsurface_corelib)
-ADD_TEST( NAME TestProfile COMMAND TestProfile)
+ADD_EXECUTABLE(TestProfile tests/testprofile.cpp)
+TARGET_LINK_LIBRARIES(TestProfile subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer)
+ADD_TEST(NAME TestProfile COMMAND TestProfile)

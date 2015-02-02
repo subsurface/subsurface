@@ -86,7 +86,7 @@ void PreferencesDialog::facebookLoggedIn()
 void PreferencesDialog::facebookDisconnect()
 {
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
-	// remove the disconnect button
+	// remove the connect/disconnect button
 	// and instead add the login view
 	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
 	ui.fbLayout->addWidget(facebookWebView);
