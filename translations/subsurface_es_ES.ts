@@ -1859,7 +1859,7 @@ el ordenador de buceo seleccionado?</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="393"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="397"/>
         <source>Tab</source>
-        <translation>Pestaña</translation>
+        <translation>Tabulador</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="435"/>
@@ -4201,12 +4201,12 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Para desconectar Subsurface de su cuenta en Facebook, use el botón de abajo</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Para conectar con Facebook, por favor inicie sesión. Esto permitirá a Subsurface publicar inmersiones en su historial.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -5224,7 +5224,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>App companion para Android/iPhone</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>

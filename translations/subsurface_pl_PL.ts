@@ -2780,7 +2780,7 @@ Prześlij proszę poniższą informację programistom Subsurface.</translation>
     <message>
         <location filename="../qt-ui/maintab.ui" line="72"/>
         <source>Dive mode</source>
-        <translation>Tryb pracy</translation>
+        <translation>Rodzaj</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="100"/>
@@ -4200,12 +4200,12 @@ Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wyko
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Użyj przycisku poniżej, żeby odłączyć Subsurface od swojego konta na Facebooku</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Zaloguj się, aby połączyć się z Facebookiem. Pozwoli to Subsurface publikować nurkowania na Twojej osi czasu.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -5223,7 +5223,7 @@ Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wyko
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Z aplikacji Subsurface dla Androida lub iPhone&apos;a</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>

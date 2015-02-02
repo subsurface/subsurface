@@ -4200,12 +4200,12 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Per disconnettere Subsurface dal tuo account Facebook, usa il bottone in basso</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Per connetterti a Facebook, per favere inserisci le tue credenziali. Questo permette a Subsurface di pubblicare le immersioni sulla tua bacheca</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -5223,7 +5223,7 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android/iPhone companion app</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>

@@ -4200,12 +4200,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Pour déconnecter Subsurface de votre compte Facebook, utilisez le bouton ci-dessous</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Pour se connecter à Facebook, veuillez vous identifiez. Cela permet à Subsurface de publier vos plongées sur votre profil</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -4882,7 +4882,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="57"/>
         <source>The text to the right will be posted as the description with your profile picture to Facebook. The album name is required (the profile picture will be posted to that album).</source>
-        <translation>Le texte situé à droite sera ajouté à la description de votre photo de profile sur Facebook. Le nom de l&apos;album est requis (la photo de profile sera ajoutée dans cet album).</translation>
+        <translation>Le texte situé à droite sera ajouté à la description de votre photo de profil sur Facebook. Le nom de l&apos;album est requis (la photo de profil sera ajoutée dans cet album).</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
@@ -4892,7 +4892,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="77"/>
         <source>The profile picture will be posted in this album (required)</source>
-        <translation>La photo de profile sera ajoutée dans cet album (requis).</translation>
+        <translation>La photo de profil sera ajoutée dans cet album (requis).</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="84"/>
@@ -5223,7 +5223,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Application Android/iPhone</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
