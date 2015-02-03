@@ -1003,6 +1003,12 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in,
 
 void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 {
+	/*
+	 * When moving divepoints rigorously, we might end up with index
+	 * out of range, thus returning the last one instead.
+	 */
+	if (row >= divepoints.count())
+		return;
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
@@ -1015,6 +1021,12 @@ int DivePlannerPointsModel::size()
 
 divedatapoint DivePlannerPointsModel::at(int row)
 {
+	/*
+	 * When moving divepoints rigorously, we might end up with index
+	 * out of range, thus returning the last one instead.
+	 */
+	if (row >= divepoints.count())
+		return divepoints.at(divepoints.count() - 1);
 	return divepoints.at(row);
 }
 
