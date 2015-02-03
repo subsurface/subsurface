@@ -268,7 +268,7 @@ void MainWindow::cleanUpEmpty()
 	ui.globe->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
-	disableDcShortcuts();
+	disableShortcuts();
 }
 
 bool MainWindow::okToClose(QString message)
@@ -342,21 +342,26 @@ void MainWindow::on_actionPrint_triggered()
 #endif
 }
 
-void MainWindow::disableDcShortcuts()
+void MainWindow::disableShortcuts(bool disablePaste)
 {
 	ui.actionPreviousDC->setShortcut(QKeySequence());
 	ui.actionNextDC->setShortcut(QKeySequence());
+	ui.copy->setShortcut(QKeySequence());
+	if (disablePaste)
+		ui.paste->setShortcut(QKeySequence());
 }
 
-void MainWindow::enableDcShortcuts()
+void MainWindow::enableShortcuts()
 {
 	ui.actionPreviousDC->setShortcut(Qt::Key_Left);
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
+	ui.copy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+	ui.paste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
 }
 
 void MainWindow::showProfile()
 {
-	enableDcShortcuts();
+	enableShortcuts();
 	ui.newProfile->setProfileState();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 }
@@ -1359,14 +1364,14 @@ void MainWindow::editCurrentDive()
 	QString defaultDC(d->dc.model);
 	DivePlannerPointsModel::instance()->clear();
 	if (defaultDC == "manually added dive") {
-		disableDcShortcuts();
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		ui.newProfile->setAddState();
 		ui.infoPane->setCurrentIndex(MAINTAB);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
-		disableDcShortcuts();
+		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
 		// and I'm sleepy now, so I think I should not try to fix right away.

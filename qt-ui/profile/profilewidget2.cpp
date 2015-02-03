@@ -916,7 +916,7 @@ void ProfileWidget2::setProfileState()
 	/* show the same stuff that the profile shows. */
 
 	//TODO: Move the DC handling to another method.
-	MainWindow::instance()->enableDcShortcuts();
+	MainWindow::instance()->enableShortcuts();
 
 	currentState = PROFILE;
 	MainWindow::instance()->setEnabledToolbar(true);
@@ -1061,7 +1061,7 @@ void ProfileWidget2::setAddState()
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	//TODO: Move this method to another place, shouldn't be on mainwindow.
-	MainWindow::instance()->disableDcShortcuts();
+	MainWindow::instance()->disableShortcuts(false);
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
@@ -1094,7 +1094,7 @@ void ProfileWidget2::setPlanState()
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	//TODO: Move this method to another place, shouldn't be on mainwindow.
-	MainWindow::instance()->disableDcShortcuts();
+	MainWindow::instance()->disableShortcuts();
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);

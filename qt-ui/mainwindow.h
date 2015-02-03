@@ -67,10 +67,10 @@ public:
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 
-	// The 'Change DC Shortcuts' should only be enabled
-	// when the profile's visible.
-	void disableDcShortcuts();
-	void enableDcShortcuts();
+	// Some shortcuts like "change DC" or "copy/paste dive components"
+	// should only be enabled when the profile's visible.
+	void disableShortcuts(bool disablePaste = true);
+	void enableShortcuts();
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
 	void importTxtFiles(const QStringList fileNames);
