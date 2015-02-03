@@ -613,9 +613,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 							 gasname(&gasmix));
 
 					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
-					newdepth = dp->depth;
-					lasttime = dp->time;
 				}
+				newdepth = dp->depth;
+				lasttime = dp->time;
 			} else {
 				if (dp->depth != nextdp->depth || gasmix_distance(&gasmix, &newgasmix) != 0 || dp->setpoint != nextdp->setpoint) {
 					if (dp->setpoint)
