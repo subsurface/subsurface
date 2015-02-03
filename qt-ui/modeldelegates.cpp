@@ -87,6 +87,7 @@ struct CurrSelected {
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	MainWindow *m = MainWindow::instance();
 	QComboBox *comboDelegate = new QComboBox(parent);
 	comboDelegate->setModel(model);
 	comboDelegate->setEditable(true);
@@ -95,6 +96,8 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
+	if ((m->graphics()->currentState != ProfileWidget2::PROFILE))
+		comboDelegate->lineEdit()->setEnabled(false);
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
 	comboPopup->setMouseTracking(true);
