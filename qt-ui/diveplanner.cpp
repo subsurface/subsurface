@@ -41,6 +41,16 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 	int firstRow = rowCount() - rows.count();
 	QVector<int> v2 = rows;
 	std::sort(v2.begin(), v2.end(), intLessThan);
+
+	/*
+	 * If we end up having divepoints that are not within the dive
+	 * profile, we need to just skip the removal to prevent
+	 * crashing due to index out of range.
+	 */
+
+	if (rowCount() >= divepoints.count())
+		return;
+
 	beginRemoveRows(QModelIndex(), firstRow, rowCount() - 1);
 	for (int i = v2.count() - 1; i >= 0; i--) {
 		divepoints.remove(v2[i]);
