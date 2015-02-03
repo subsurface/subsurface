@@ -115,8 +115,6 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			if ((cyl->start.mbar && !cyl->end.mbar) ||
 			    (cyl->end.mbar && cyl->start.mbar <= cyl->end.mbar))
 				ret = REDORANGE1_HIGH_TRANS;
-			else
-				ret = WHITE1;
 			break;
 		}
 		break;
