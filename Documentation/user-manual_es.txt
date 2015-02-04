@@ -2387,7 +2387,59 @@ en las que aparezcan las etiquetas "cueva" _O_ "barco", solas o conjuntamente.
 [[S_ExportLog]]
 == Exportar el registro de inmersiones o parte del mismo
 
-Se llega a la función de exportación seleccionando _Archivo -> Exportar_ lo que
+Hay dos posibilidades de exportar información de buceo desde _Subsurface_:
+
+- Exportar información de buceo a _Facebook_
+
+- xref:S_Export_other[Exportar información de buceo a otros destinos o formatos]
+
+[[S_facebook]]
+=== Exportar información de buceo a _Facebook_
+
+La exportación de inmersiones a _Facebook_ se maneja de forma diferente a otros
+tipos de exportación. Esto es debido a que exportar a _Facebook_ requiere una
+conexión a esta red social y necesita un usuario de _Facebook_ y su password.
+Si, desde el menú principal, seleccionamos _Archivo -> Preferencias ->
+Facebook_, se nos presentará una pantalla de acceso (ver imagen *A* de la
+izquierda a continuación). Introducimos nuestro usuario y password de
+_Facebook_. Una vez que nos hemos conectado a _Facebook_, se nos presenta el
+panel de la imagen *B* a continuación. Este panel tiene un botón que habrá que
+seleccionar para cerrar la conexión a _Facebook_.
+
+image::images/facebook1_f20.jpg["Figure: Acceso a Facebook",align="center"]
+
+Tras haber establecido una conexión con _Facebook_, transferir un perfil de
+inmersión a nuestro perfil de _Facebook_ es sencillo. Un icono de _Facebook_
+aparece en  el panel *Notas de la inmersión* de _Subsurface_ (ver imagen *A* a
+continuación). Asegúrate de que la inmersión que quieres transferir al historial
+es la que se muestra en el panel *Perfil de la inmersión*. Selecciona el icono
+de _Facebook_ y se mostrará un icono que determinará la cantidad de información
+transferida junto al perfil (ver imagen *B*, a continuación). Se necesita
+proporcionar el nombre de un álbum de _Facebook_ para poder enviar el perfil de
+inmersión. Las casillas seleccionables de la izquierda nos permiten seleccionar
+la información que vamos a enviar. Esta información se muestra en la ventana de
+texto de la derecha (ver imagen *B* a continuación). El mensaje que se va a
+enviar se puede editar directamente en esta ventana de texto. Tras haber elegido
+la información y verificado lo que se va a subir, se selecciona el botón _OK_
+lo que inicia la transferencia a _Facebook_. Unos momentos después aparecerá
+un mensaje indicando una transferencia correcta.
+
+El álbum creado y el post al historial se marcarán como privados. Para que
+los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
+normal a _Facebook_ desde un navegador o desde la app de _Facebook_. Aunque
+esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
+solución para evitar subidas no deseadas en el historial público.
+
+image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
+
+Si se considera necesario, cierra la conexión a _Facebook_, bien cerrando
+_Subsurface_ o bien seleccionando _Archivo -> Preferencias -> Facebook_ desde
+el menú principal, clicando el botón correspondiente en el panel _Facebook_.
+
+[[S_Export_other]]
+=== Exportar información de buceo a otros destinos o formatos
+Para exportar a otros destinos,
+se llega a la función de exportación seleccionando _Archivo -> Exportar_ lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
 guardar TODAS las inmersiones, o guardar solo las inmersiones seleccionadas en
 el panel *Lista de Inmersiones* de _Subsurface_. Marca la casilla seleccionable
@@ -2780,6 +2832,19 @@ lo cual debe facilitarse la dirección IP del servidor y el número de puerto. S
 el servidor proxy utiliza autenticación también han de indicarse el usuario y su
 password para que _Subsurface_ pueda pasar automáticamente a través del proxy
 para acceder a internet.
+
+=== Acceso a Facebook
+Este panel nos permite acceder a una cuenta de _Facebook_ para poder enviar
+información desde _Subsurface_.
+
+image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
+
+Si se proporciona un usuario y una clave validos, se crea una conexión a
+_Facebook_. La conexión se cierra cuando al cerrar _Subsurface_. La casilla
+seleccionable "No cerrar sesión con Subsurface" de la pantalla de acceso no
+tiene ningún efecto, en estos momentos.
+Ver la sección xref:S_facebook[Exportar perfiles de inmersión a Facebook]
+para más información.
 
 [[S_DivePlanner]]
 == El Planificador de _Subsurface_
