@@ -800,7 +800,7 @@ derecha).
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
-image::images/DC_gas_dialogue1_f20_jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
+image::images/DC_gas-dialogue1_f20.jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
 
 En la mayoría de los casos _Subsurface_ obtiene el gas usado del ordenador de
 buceo e inserta automáticamente la composición (% oxigeno) en la tabla. El botón
@@ -814,7 +814,7 @@ Se empieza por seleccionar un tipo de botella. Para ello hay que hacer clic en
 la casilla *Tipo de botella*. Esto hará aparecer un botón que puede usarse para
 mostrar una lista desplegable de botellas.
 
-image::images/DC_gas_dialogue2_f20_jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
+image::images/DC_gas-dialogue2_f20.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
 
 La lista desplegable puede usarse para seleccionar el tipo de botella que
 utilizó en esta inmersión, o el usuario puede empezar a teclear en la casilla,
@@ -977,7 +977,7 @@ universal que se activa seleccionando Importar desde el menú principal y
 haciendo clic en _Importar archivos de registro_. Con ello se mostrará el
 dialogo *A* a continuación.
 
-image::images/Import1_f20_jpg["FIGURA: Importar: paso 1",align="center"]
+image::images/Import1_f20.jpg["FIGURA: Importar: paso 1",align="center"]
 
 Abajo a la derecha hay un desplegable con una etiqueta por defecto Archivos de
 registro que da acceso a los diferentes tipos de archivo disponibles para
