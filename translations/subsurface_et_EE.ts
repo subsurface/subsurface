@@ -4018,7 +4018,7 @@ väärtused</translation>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1071"/>
         <source>Disconnect from Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta ühendus Facebookiga</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="895"/>
@@ -4198,12 +4198,12 @@ väärtused</translation>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Facebookiga ühenduse katkestamiseks kasuta all olevat nuppu </translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Facebookiga ühenduse loomiseks logi sinna sise. See võimaldab Suibsurface&apos;l avaldada sukeldumisi sinu ajajoonel</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -4958,7 +4958,7 @@ väärtused</translation>
     <message>
         <location filename="../qt-ui/about.cpp" line="18"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2015&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Sukeldumislogi tarkvara paljudele opsüsteemidele&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, ja paljud teised, 2011-2015&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -5124,7 +5124,7 @@ väärtused</translation>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="108"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation type="unfinished"/>
+        <translation>Viimane versioon on %1, vaata %2 allalaadimise lehte %3 kuidas uuendada.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="118"/>
@@ -5975,7 +5975,8 @@ Max</translation>
         <location filename="../parse-xml.c" line="2147"/>
         <source>Database query dm4_events failed.
 </source>
-        <translation type="unfinished"/>
+        <translation>Andmebaasi päring dm4_events ebaõnnestus.
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2006"/>
@@ -6169,7 +6170,7 @@ Max</translation>
     <message>
         <location filename="../planner.c" line="710"/>
         <source>Gas consumption (CCR legs excluded):</source>
-        <translation type="unfinished"/>
+        <translation>Gaasikulu (CCR lõigud välja arvatud):</translation>
     </message>
     <message>
         <location filename="../planner.c" line="712"/>

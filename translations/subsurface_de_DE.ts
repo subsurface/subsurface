@@ -2646,7 +2646,7 @@
  please send the following to the developer. 
 </source>
         <translation>Ihr Tauchprofil auf Facebook wurde nicht aktualisiert, 
-bitte senden Sie Folgendes an die Entwickler. 
+bitte senden Sie das Folgende an die Entwickler. 
 </translation>
     </message>
 </context>
@@ -3798,7 +3798,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/preferences.ui" line="85"/>
         <source>Defaults</source>
-        <translation>Standardeinstellungen</translation>
+        <translation>Stdeinstellungen</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="95"/>
@@ -4204,7 +4204,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation>Um Subsurface mit Facebook zu verbinden, bitte einloggen. Damit ist es möglich, Tauchgänge auf Facebook zu posten.</translation>
+        <translation>Um Subsurface mit Facebook zu verbinden, bitte einloggen. Dadurch ist es möglich, Tauchgänge auf Facebook zu posten.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>

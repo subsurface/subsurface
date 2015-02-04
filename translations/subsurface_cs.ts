@@ -61,7 +61,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Velikost láhve</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -116,57 +116,57 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Čas vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>NDL vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>TTS vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka zastavení vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="28"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tlak vzorku</translation>
     </message>
 </context>
 <context>
@@ -881,7 +881,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1442"/>
         <source>Sample rate</source>
-        <translation>Rychlost snímání</translation>
+        <translation>Míra vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1455"/>
@@ -1263,7 +1263,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="562"/>
         <source>Date/time</source>
-        <translation type="unfinished"/>
+        <translation>Datum/Čas</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="564"/>
@@ -1278,7 +1278,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="588"/>
         <source>h:</source>
-        <translation type="unfinished"/>
+        <translation>h:</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="588"/>
@@ -1539,12 +1539,12 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="140"/>
         <source>CSV dive profile</source>
-        <translation type="unfinished"/>
+        <translation>Profil potápění CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="150"/>
         <source>CSV dive details</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti potápění CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="170"/>
@@ -1554,7 +1554,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="248"/>
         <source>CSV units</source>
-        <translation type="unfinished"/>
+        <translation>Jednotky CSV</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="261"/>
@@ -1820,12 +1820,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="592"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="593"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="78"/>
@@ -1840,7 +1840,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="88"/>
         <source>Minutes:seconds</source>
-        <translation type="unfinished"/>
+        <translation>Minuty:sekundy</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="580"/>
@@ -1871,7 +1871,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="570"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="599"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Čas vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="475"/>
@@ -1879,7 +1879,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="600"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="477"/>
@@ -1887,7 +1887,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="555"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="601"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="487"/>
@@ -1895,7 +1895,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="560"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="606"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka zastavení vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="479"/>
@@ -1903,7 +1903,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="556"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="602"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="481"/>
@@ -1911,7 +1911,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="557"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="603"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="483"/>
@@ -1919,7 +1919,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="558"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="604"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>NDL vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="485"/>
@@ -1927,7 +1927,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="559"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="605"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>TTS vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="489"/>
@@ -1935,7 +1935,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="561"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="607"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tlak vzorku</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="583"/>
@@ -1965,7 +1965,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="589"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Velikost láhve</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="590"/>
@@ -2147,27 +2147,27 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Srdeční rytmus</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation type="unfinished"/>
+        <translation>Průměrná hloubka @ s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
@@ -2582,17 +2582,17 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Stažená potápění</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Označit vše</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="224"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Odznačit vše</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
@@ -2628,17 +2628,17 @@
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Photo upload sucessfull</source>
-        <translation type="unfinished"/>
+        <translation>Fotografie nahrána úspěšně</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="246"/>
         <source>Your dive profile was updated to Facebook.</source>
-        <translation type="unfinished"/>
+        <translation>Váš potápěcí profil byl aktualizován na Facebooku.</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="250"/>
         <source>Photo upload failed</source>
-        <translation type="unfinished"/>
+        <translation>Nahrání fotografie se nezdařilo</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="251"/>
@@ -2694,7 +2694,7 @@
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1626"/>
         <source>Firmware update failed!</source>
-        <translation type="unfinished"/>
+        <translation>Obnova firmware selhala!</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1629"/>
@@ -2818,7 +2818,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="580"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="618"/>
@@ -3135,7 +3135,7 @@ ze vzduchu a následujících plynů:</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="689"/>
         <source>Toggle heart rate</source>
-        <translation>Zapnout/Vypnout tep</translation>
+        <translation>Zapnout/Vypnout srdeční rytmus</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="701"/>
@@ -3213,7 +3213,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="288"/>
         <source>Ctrl+N</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+N</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="293"/>
@@ -3274,7 +3274,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="332"/>
         <source>Ctrl+W</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="345"/>
@@ -3284,12 +3284,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="375"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"/>
+        <translation>Zavedení dat &amp;GPS ze stránek Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="396"/>
         <source>&amp;Copy dive components</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kopírovat součásti potápění</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="399"/>
@@ -3389,7 +3389,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="761"/>
         <source>Scale graph</source>
-        <translation type="unfinished"/>
+        <translation>Měřítko grafu</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="773"/>
@@ -3414,7 +3414,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="813"/>
         <source>User &amp;survey</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelský &amp;průzkum.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="796"/>
@@ -3594,27 +3594,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="308"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
-        <translation type="unfinished"/>
+        <translation>Uložte, prosím, nebo zrušte nynější upravování potápění před zavřením souboru.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="420"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation type="unfinished"/>
+        <translation>Uložte, prosím, nebo zrušte nynější upravování potápění před pokusem o přidání potápění.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="467"/>
         <source>Print runtime table</source>
-        <translation type="unfinished"/>
+        <translation>Vypsat provozní tabulku</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="810"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete uložit změny provedené v souboru %1?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="812"/>
         <source>Do you want to save the changes that you made in the data file?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete uložit změny provedené v souboru s daty?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="817"/>
@@ -3647,7 +3647,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/mainwindow.cpp" line="224"/>
         <location filename="../qt-ui/mainwindow.cpp" line="1156"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation type="unfinished"/>
+        <translation>Uložte, prosím, nebo zrušte nynější upravování potápění před otevřením nového souboru.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="601"/>
@@ -3662,12 +3662,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1314"/>
         <source>Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;Cochran files (*.can);;CSV files (*.csv);;DiveLog.de files (*.dld);;JDiveLog files (*.jlb);;Liquivision files (*.lvd);;MkVI files (*.txt);;Suunto files (*.sde *.db);;Divesoft files (*.dlf);;UDDF/UDCF files (*.uddf *.udcf);;XML files (*.xml);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Soubory se záznamy o potápění (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt* .dlf);;Cochran files (*.can);;CSV files (*.csv);;Soubory DiveLog.de (*.dld);;Soubory JDiveLog (*.jlb);;Soubory Liquivision (*.lvd);;MkVI files (*.txt);;Soubory Suunto (*.sde *.db);;Soubory Divesoft (*.dlf);;Soubory UDDF/UDCF (*.uddf *.udcf);;Soubory XML (*.xml);;Všechny soubory (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1354"/>
         <source>Please, first finish the current edition before trying to do another.</source>
-        <translation type="unfinished"/>
+        <translation>Nejprve, prosím, skončete nynější upravování před pokusem o provádění dalších úprav.</translation>
     </message>
 </context>
 <context>
@@ -3695,7 +3695,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="244"/>
         <source>Not now</source>
-        <translation type="unfinished"/>
+        <translation>Teď ne</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="245"/>
@@ -3715,7 +3715,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
         <source>HEX files (*.hex)</source>
-        <translation type="unfinished"/>
+        <translation>Soubory HEX (*.hex)</translation>
     </message>
 </context>
 <context>
@@ -3728,12 +3728,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="409"/>
         <source>CCR</source>
-        <translation type="unfinished"/>
+        <translation>CCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="409"/>
         <source>pSCR</source>
-        <translation type="unfinished"/>
+        <translation>pSCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="480"/>
@@ -3959,7 +3959,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="839"/>
         <source>pSCR ratio</source>
-        <translation type="unfinished"/>
+        <translation>Poměr pSCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="846"/>
@@ -3969,7 +3969,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="859"/>
         <source>1:</source>
-        <translation type="unfinished"/>
+        <translation>1:</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="875"/>
@@ -4014,7 +4014,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1071"/>
         <source>Disconnect from Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Odpojit od Facebooku</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="895"/>
@@ -4434,7 +4434,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="630"/>
         <source>Unknown dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Neznámý potápěcí počítač</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="647"/>
@@ -4815,19 +4815,21 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="283"/>
         <source>Dive date: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Datum potápění: %1 
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="286"/>
         <source>Duration: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Doba trvání: %1 min
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
         <source>h:</source>
         <comment>abbreviation for hours plus separator</comment>
-        <translation type="unfinished"/>
+        <translation>h:</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="288"/>
@@ -4839,25 +4841,29 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="291"/>
         <source>Dive location: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Místo potápění: %1 min
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="294"/>
         <source>Buddy: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Společník při potápění: %1
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="297"/>
         <source>Divemaster: %1 
 </source>
-        <translation type="unfinished"/>
+        <translation>Vedoucí skupiny potápečů: %1
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="300"/>
         <source>
 %1</source>
-        <translation type="unfinished"/>
+        <translation>
+%1</translation>
     </message>
 </context>
 <context>
@@ -4875,7 +4881,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
         <source>Album</source>
-        <translation type="unfinished"/>
+        <translation>Album</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="77"/>
@@ -4885,12 +4891,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="84"/>
         <source>Include</source>
-        <translation type="unfinished"/>
+        <translation>Zahrnout</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="91"/>
         <source>Date and time</source>
-        <translation type="unfinished"/>
+        <translation>Datum a čas</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="98"/>
@@ -5134,17 +5140,17 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="137"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Odmítnout</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="138"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Přijmout</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="140"/>
         <source>Automatic check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Automatická kontrola aktualizací</translation>
     </message>
 </context>
 <context>
@@ -5152,7 +5158,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="54"/>
         <source>User manual</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelská příručka</translation>
     </message>
     <message>
         <location filename="../qt-ui/usermanual.cpp" line="71"/>
@@ -5171,7 +5177,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="115"/>
         <source>Other software/sources</source>
-        <translation type="unfinished"/>
+        <translation>Jiné programy/zdroje</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="128"/>
@@ -5191,96 +5197,100 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="63"/>
         <source>Technical diver</source>
-        <translation type="unfinished"/>
+        <translation>Technický potápěč</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="76"/>
         <source>Recreational diver</source>
-        <translation type="unfinished"/>
+        <translation>Rekreační potápěč</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="89"/>
         <source>Dive planner</source>
-        <translation type="unfinished"/>
+        <translation>Plánovač potápění</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Podporovaný potápěcí počítač</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Program průvodce Android/iPhone</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
         <source>Any suggestions? (in English)</source>
-        <translation type="unfinished"/>
+        <translation>Návrhy? (v angličtině)</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="177"/>
         <source>The following information about your system will also be submitted.</source>
-        <translation type="unfinished"/>
+        <translation>Budou odeslány i následující údaje o vašem systému.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="231"/>
         <source>What kind of diver are you?</source>
-        <translation type="unfinished"/>
+        <translation>Jakým druhem potápěče jste?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="270"/>
         <source>Where are you importing data from?</source>
-        <translation type="unfinished"/>
+        <translation>Odkud zavádíte data?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="43"/>
         <source>
 Operating system: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Operační systém: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="45"/>
         <source>
 CPU architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Architektura CPU: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="47"/>
         <source>
 OS CPU architecture: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Architektura CPU OS: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="48"/>
         <source>
 Language: %1</source>
-        <translation type="unfinished"/>
+        <translation>
+Jazyk: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="95"/>
         <source>Should we ask you later?</source>
-        <translation type="unfinished"/>
+        <translation>Máme se zeptat později?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="96"/>
         <source>Don&apos;t ask me again</source>
-        <translation type="unfinished"/>
+        <translation>Už se mě neptejte</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="97"/>
         <source>Ask later</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se později</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="117"/>
         <source>Submit user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Odeslat uživatelský průzkum.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="98"/>
         <source>Ask again?</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se znovu?</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="18"/>
@@ -5290,7 +5300,7 @@ Language: %1</source>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="118"/>
         <source>Subsurface was unable to submit the user survey.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nedokázal odeslat uživatelský průzkum.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="123"/>
@@ -5305,7 +5315,7 @@ Language: %1</source>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="133"/>
         <source>Survey successfully submitted.</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelský průzkum úspěšně odeslán.</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="138"/>
@@ -5404,7 +5414,7 @@ Language: %1</source>
         <location filename="../configuredivecomputerthreads.cpp" line="1557"/>
         <location filename="../configuredivecomputerthreads.cpp" line="1568"/>
         <source>Failed!</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se!</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1578"/>
@@ -5657,7 +5667,7 @@ Průměr</translation>
     <message>
         <location filename="../file.c" line="707"/>
         <source>O₂ calibration failed</source>
-        <translation type="unfinished"/>
+        <translation>Kalibrace O₂ se nezdařila</translation>
     </message>
     <message>
         <location filename="../file.c" line="709"/>
@@ -5927,7 +5937,7 @@ Průměr</translation>
     <message>
         <location filename="../libdivecomputer.c" line="811"/>
         <source>Dive data import error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při zavádění dat o potápění</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="850"/>
@@ -5937,7 +5947,7 @@ Průměr</translation>
     <message>
         <location filename="../libdivecomputer.c" line="857"/>
         <source>Unable to open %s %s (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Nelze otevřít %s %s (%s)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="865"/>
@@ -5953,7 +5963,7 @@ Průměr</translation>
     <message>
         <location filename="../parse-xml.c" line="1770"/>
         <source>Failed to parse &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se zpracovat &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="1999"/>
@@ -6142,7 +6152,7 @@ Průměr</translation>
     <message>
         <location filename="../planner.c" line="704"/>
         <source>CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS</translation>
     </message>
     <message>
         <location filename="../planner.c" line="706"/>
