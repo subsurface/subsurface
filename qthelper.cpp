@@ -1,19 +1,17 @@
 #include "qthelper.h"
-#include "qt-gui.h"
 #include "gettextfromc.h"
-#include "dive.h"
 #include "statistics.h"
 #include <exif.h>
 #include "file.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
-#include <QMap>
 #include <QDebug>
 #include <QSettings>
 #include <libxslt/documents.h>
 
 #define translate(_context, arg) trGettext(arg)
+static const QString DEGREE_SIGNS("dD" UTF8_DEGREE);
 
 QString weight_string(int weight_in_grams)
 {
@@ -47,10 +45,10 @@ QString printGPSCoords(int lat, int lon)
 	lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
 	lat = abs(lat);
 	lon = abs(lon);
-	latdeg = lat / 1000000;
-	londeg = lon / 1000000;
-	latmin = (lat % 1000000) * 60;
-	lonmin = (lon % 1000000) * 60;
+	latdeg = lat / 1000000U;
+	londeg = lon / 1000000U;
+	latmin = (lat % 1000000U) * 60U;
+	lonmin = (lon % 1000000U) * 60U;
 	latsec = (latmin % 1000000) * 60;
 	lonsec = (lonmin % 1000000) * 60;
 	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
@@ -59,111 +57,112 @@ QString printGPSCoords(int lat, int lon)
 	return result;
 }
 
+static bool parseCoord(const QString& txt, int& pos, const QString& positives,
+		       const QString& negatives, const QString& others,
+		       double& value)
+{
+	bool numberDefined = false, degreesDefined = false,
+		minutesDefined = false, secondsDefined = false;
+	double number = 0.0;
+	int posBeforeNumber = pos;
+	int sign = 0;
+	value = 0.0;
+	while (pos < txt.size()) {
+		if (txt[pos].isDigit()) {
+			if (numberDefined)
+				return false;
+			QRegExp numberRe("(\\d+(?:[\\.,]\\d+)?).*");
+			if (!numberRe.exactMatch(txt.mid(pos)))
+				return false;
+			number = numberRe.cap(1).toDouble();
+			numberDefined = true;
+			posBeforeNumber = pos;
+			pos += numberRe.cap(1).size() - 1;
+		} else if (positives.indexOf(txt[pos].toUpper()) >= 0) {
+			if (sign != 0)
+				return false;
+			sign = 1;
+			if (degreesDefined || numberDefined) {
+				//sign after the degrees =>
+				//at the end of the coordinate
+				++pos;
+				break;
+			}
+		} else if (negatives.indexOf(txt[pos].toUpper()) >= 0) {
+			if (sign != 0) {
+				if (others.indexOf(txt[pos]) >= 0)
+					//special case for the '-' sign => next coordinate
+					break;
+				return false;
+			}
+			sign = -1;
+			if (degreesDefined || numberDefined) {
+				//sign after the degrees =>
+				//at the end of the coordinate
+				++pos;
+				break;
+			}
+		} else if (others.indexOf(txt[pos].toUpper()) >= 0) {
+			//we are at the next coordinate.
+			break;
+		} else if (DEGREE_SIGNS.indexOf(txt[pos]) >= 0) {
+			if (!numberDefined)
+				return false;
+			if (degreesDefined) {
+				//next coordinate => need to put back the number
+				pos = posBeforeNumber;
+				numberDefined = false;
+				break;
+			}
+			value += number;
+			numberDefined = false;
+			degreesDefined = true;
+		} else if (txt[pos] == '\'') {
+			if (!numberDefined || minutesDefined)
+				return false;
+			value += number / 60.0;
+			numberDefined = false;
+			minutesDefined = true;
+		} else if (txt[pos] == '"') {
+			if (!numberDefined || secondsDefined)
+				return false;
+			value += number / 3600.0;
+			numberDefined = false;
+			secondsDefined = true;
+		} else if (txt[pos] == ' ' || txt[pos] == '\t') {
+			//ignore spaces
+		} else {
+			return false;
+		}
+		++pos;
+	}
+	if (!degreesDefined && numberDefined) {
+		value = number; //just a single number => degrees
+		numberDefined = false;
+		degreesDefined = true;
+	}
+	if (!degreesDefined || numberDefined)
+		return false;
+	if (sign == -1) value *= -1.0;
+	return true;
+}
+
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 {
-	enum {
-		ISO6709D,
-		SECONDS,
-		MINUTES,
-		DECIMAL
-	} gpsStyle = ISO6709D;
-	int eastWest = 4;
-	int northSouth = 1;
-	QString trHemisphere[4];
-	trHemisphere[0] = translate("gettextFromC", "N");
-	trHemisphere[1] = translate("gettextFromC", "S");
-	trHemisphere[2] = translate("gettextFromC", "E");
-	trHemisphere[3] = translate("gettextFromC", "W");
-	QString regExp;
-	/* an empty string is interpreted as 0.0,0.0 and therefore "no gps location" */
-	if (gps_text.trimmed().isEmpty()) {
+	const QString trimmed = gps_text.trimmed();
+	if (trimmed.isEmpty()) {
 		*latitude = 0.0;
 		*longitude = 0.0;
 		return true;
 	}
-	// trying to parse all formats in one regexp might be possible, but it seems insane
-	// so handle the four formats we understand separately
-
-	// ISO 6709 Annex D representation
-	// http://en.wikipedia.org/wiki/ISO_6709#Representation_at_the_human_interface_.28Annex_D.29
-	// e.g. 52°49'02.388"N 1°36'17.388"E
-	if (gps_text.at(0).isDigit() && (gps_text.count(",") % 2) == 0) {
-		gpsStyle = ISO6709D;
-		regExp = QString("(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([NS%1%2])"
-				 "\\s*(\\d+)[" UTF8_DEGREE "\\s](\\d+)[\'\\s](\\d+)([,\\.](\\d+))?[\"\\s]([EW%3%4])")
-				 .arg(trHemisphere[0])
-				 .arg(trHemisphere[1])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3]);
-	} else if (gps_text.count(QChar('"')) == 2) {
-		gpsStyle = SECONDS;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
-				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)[\'\\s]+(\\d+)([,\\.](\\d+))?")
-				 .arg(trHemisphere[0])
-				 .arg(trHemisphere[1])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3]);
-	} else if (gps_text.count(QChar('\'')) == 2) {
-		gpsStyle = MINUTES;
-		regExp = QString("\\s*([NS%1%2])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?[^EW%3%4]*"
-				 "([EW%5%6])\\s*(\\d+)[" UTF8_DEGREE "\\s]+(\\d+)([,\\.](\\d+))?")
-				 .arg(trHemisphere[0])
-				 .arg(trHemisphere[1])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3]);
-	} else {
-		gpsStyle = DECIMAL;
-		regExp = QString("\\s*([-NS%1%2]?)\\s*(\\d+)[,\\.](\\d+)[^-EW%3%4\\d]*([-EW%5%6]?)\\s*(\\d+)[,\\.](\\d+)")
-				 .arg(trHemisphere[0])
-				 .arg(trHemisphere[1])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3])
-				 .arg(trHemisphere[2])
-				 .arg(trHemisphere[3]);
-	}
-	QRegExp r(regExp);
-	if (r.indexIn(gps_text) != -1) {
-		// qDebug() << "Hemisphere" << r.cap(1) << "deg" << r.cap(2) << "min" << r.cap(3) << "decimal" << r.cap(4);
-		// qDebug() << "Hemisphere" << r.cap(5) << "deg" << r.cap(6) << "min" << r.cap(7) << "decimal" << r.cap(8);
-		switch (gpsStyle) {
-		case ISO6709D:
-			*latitude = r.cap(1).toInt() + r.cap(2).toInt() / 60.0 +
-				    (r.cap(3) + QString(".") + r.cap(5)).toDouble() / 3600.0;
-			*longitude = r.cap(7).toInt() + r.cap(8).toInt() / 60.0 +
-				     (r.cap(9) + QString(".") + r.cap(11)).toDouble() / 3600.0;
-			northSouth = 6;
-			eastWest = 12;
-			break;
-		case SECONDS:
-			*latitude = r.cap(2).toInt() + r.cap(3).toInt() / 60.0 +
-				    (r.cap(4) + QString(".") + r.cap(6)).toDouble() / 3600.0;
-			*longitude = r.cap(8).toInt() + r.cap(9).toInt() / 60.0 +
-				     (r.cap(10) + QString(".") + r.cap(12)).toDouble() / 3600.0;
-			eastWest = 7;
-			break;
-		case MINUTES:
-			*latitude = r.cap(2).toInt() + (r.cap(3) + QString(".") + r.cap(5)).toDouble() / 60.0;
-			*longitude = r.cap(7).toInt() + (r.cap(8) + QString(".") + r.cap(10)).toDouble() / 60.0;
-			eastWest = 6;
-			break;
-		case DECIMAL:
-		default:
-			*latitude = (r.cap(2) + QString(".") + r.cap(3)).toDouble();
-			*longitude = (r.cap(5) + QString(".") + r.cap(6)).toDouble();
-			break;
-		}
-		if (r.cap(northSouth) == "S" || r.cap(northSouth) == trHemisphere[1] || r.cap(northSouth) == "-")
-			*latitude *= -1.0;
-		if (r.cap(eastWest) == "W" || r.cap(eastWest) == trHemisphere[3] || r.cap(eastWest) == "-")
-			*longitude *= -1.0;
-		// qDebug("%s -> %8.5f / %8.5f", gps_text.toLocal8Bit().data(), *latitude, *longitude);
-		return true;
-	}
-	return false;
+	int pos = 0;
+	static const QString POS_LAT = QString("+N") + translate("gettextFromC", "N");
+	static const QString NEG_LAT = QString("-S") + translate("gettextFromC", "S");
+	static const QString POS_LON = QString("+E") + translate("gettextFromC", "E");
+	static const QString NEG_LON = QString("-W") + translate("gettextFromC", "W");
+	return parseCoord(gps_text, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
+		parseCoord(gps_text, pos, POS_LON, NEG_LON, "", *longitude) &&
+		pos == gps_text.size();
 }
 
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
