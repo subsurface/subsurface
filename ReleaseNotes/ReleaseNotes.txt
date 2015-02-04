@@ -20,12 +20,16 @@ relevant data to a user's timeline on Facebook.
 _Subsurface_ now allows the user to select which of the dives downloaded
 from a dive computer will be added to the dive list.
 
+image::images/subsurface-dive-computer1.png["Subsurface divecomputer download dialog",align="center"]
+
 We have added more capabilities to the CSV import for manually kept dive
 logs; this now includes start and end pressure for the main tank as well
 as air and water temperatures.
 
 There is also a new interactive dialog that makes it much easier to
 identify the meaning of various columns in CSV import.
+
+image::images/subsurface-csv.png["Subsurface csv import dialog",align="center"]
 
 _Subsurface_ can now import dive databases from the Cobalt divelog program.
 
