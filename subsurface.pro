@@ -307,10 +307,8 @@ QTRANSLATIONS += \
 USERMANUALS = \
 	user-manual.html \
 	user-manual_es.html \
-	user-manual_fr.html
-
-# Russian version is no longer current
-#	user-manual_ru.html
+	user-manual_fr.html \
+	user-manual_ru.html
 
 doc.commands += $(CHK_DIR_EXISTS) $$OUT_PWD/Documentation || $(MKDIR) $$OUT_PWD/Documentation $$escape_expand(\\n\\t)$(MAKE) -C $$PWD/Documentation OUT=$$OUT_PWD/Documentation/ doc
 all.depends += usermanual
