@@ -201,9 +201,12 @@ void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
 			out << "\"AVG_SAC\":\"" << get_volume_string(stats_yearly[i].avg_sac) << "\",";
 			out << "\"MIN_SAC\":\"" << get_volume_string(stats_yearly[i].min_sac) << "\",";
 			out << "\"MAX_SAC\":\"" << get_volume_string(stats_yearly[i].max_sac) << "\",";
-			out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
-			out << "\"MIN_TEMP\":\"" << get_temp_units(stats_yearly[i].min_temp, NULL) << "\",";
-			out << "\"MAX_TEMP\":\"" << get_temp_units(stats_yearly[i].max_temp, NULL) << "\",";
+			if ( stats_yearly[i].combined_count )
+				out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
+			else
+				out << "\"AVG_TEMP\":\"0.0\",";
+			out << "\"MIN_TEMP\":\"" << ( stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) << "\",";
+			out << "\"MAX_TEMP\":\"" << ( stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) << "\",";
 			out << "},";
 			total_stats.selection_size += stats_yearly[i].selection_size;
 			total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
