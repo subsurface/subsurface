@@ -294,6 +294,9 @@ Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with
 a *W*, e.g. W07°, or with a negative value, e.g. -7.34323.
 
+Some keyboards don't have the degree sign (°). It can be replaced by a d
+like that: N30d W20d.
+
 Please note that GPS coordinates of a dive site are linked to the Location
 name - so adding coordinates to dives that do not have a location
 description will cause unexpected behaviour (Subsurface will think that all
@@ -813,6 +816,7 @@ indicates that the dive is being edited. This is a highly interactive part
 of _Subsurface_ and the information on cylinders and gases (entered here)
 determines the behaviour of the dive profile (top right-hand panel).
 
+[[cylinder_definitions]]
 *Cylinders*: The cylinder information is entered through a dialogue that looks
 like this:
 
@@ -1651,12 +1655,51 @@ be seen in the normal way.
 
 === Logging special types of dives
 
-==== Sidemount dives
+[[S_MulticylinderDives]]
+==== Multicylinder dives
 
 _Subsurface_ easily handles dives involving more than one
-cylinder. Sidemount dive logging involves three steps:
+cylinder. Multicylinder diving usually happens (a) if a diver does not have
+enough gas for the complete dive in a single cylinder; (b) if the diver
+needs more than one gas mixture because of the depth or the decompression
+needs of the dive. For this reason multicylinder dives are often used by
+technical divers who dive deep or long. As far as _Subsurface_ is concerned,
+there are only two types of information that need to be provided:
 
-- *During the dive, recording cylinder switch events*. Since sidemount diving normally involves two
+- *Describe the cylinders used during the dive* This is performed in the *Equipment tab* of
+  the *Dive Info* panel, as xref:cylinder_definitions[described above]. Enter the cylinders one by one,
+  specifying the characteristics of the cylinder and the gas composition within each cylinder.
+
+- *Record the times at which switches from one cylinder to another was done:* This is information
+  provided by some dive computers (provided the diver indicated these changes to the dive computer
+  by pressing specific buttons). If the dive computer does not provide the information, the diver has to
+  record these changes using a different method, e.g. writing it on a slate.
+
+- *Record the cylinder changes on the dive profile*: If the latter option
+  was followed, the diver needs to indicate the gas change event by right-clicking at the appropriate point
+  in time on the *Dive Profile* panel and indicating the cylinder to which the change was made. After
+  right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
+  those defined during the first step, above (see image below). If the
+  *tank bar* button in the ttolbar has been activated, the cylinder switches are also indicated in the
+  tank bar.
+
+Having performed these tasks, _Subsurface_ indicates the appropriate use of
+cylinders in the dive profile.  Below is a multi-cylinder dive, starting off
+with EAN28, then changing cylinders to EAN50 after 26 minutes to perform
+decompression.
+
+image::images/multicylinder_dive.jpg["FIGURE: Multicylinder profile", align="center"]
+
+==== Sidemount dives
+
+Sidemount diving is just another form of multicylinder diving, often with
+both or all cylinders having the same gas mixture. Although it is a popular
+configuration for cave divers, sidemount diving can be performed by
+recreational divers who have completed the appropriate training. Sidemount
+dive logging involves, exactly as with multicylinder dives, above, three
+steps:
+
+- *During the dive, record cylinder switch events*. Since sidemount diving normally involves two
   cylinders with air or with the same gas mixture, _Subsurface_ distinguishes among these different
   cylinders. In contrast, most dive computers that allow gas switching only distinguish among different
   _gases_ used, not among different _cylinders_ used. This means that when sidemount dives are downloaded
@@ -1682,6 +1725,44 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile", align="center"]
 
 This section gives an example of the versatility of _Subsurface_ as a give
 logging tool.
+
+
+[[S_sSCR_dives]]
+==== Semi-closed circuit rebreather (SCR) dives
+
+[icon="images/halcyon_RB80.jpg"]
+[NOTE]
+Passive semi-closed rebreathers (pSCR) comprise a technical advance in
+diving equipment that recirculates the breathing gas that a diver breathes,
+while removing carbon dioxide from the exhaled gas. While a small amount
+(typically a tenth) of the exhaled breathing gas is released into the water,
+a small amount of fresh gas is released from the back gas cylinder
+(typically containing nitrox).  A diver, using a single cylinder of
+breathing gas can therefore dive for much longer periods than using a
+recreational open-circuit configuration. With pSCR equipment, a very small
+amount of breathing gas is released every time the breather inhales. With
+active SCR (aSCR) equipment, in contrast, a small amount of breathing gas is
+released continuously from the back cylinder.
+
+To log pSCR dives, no special procedures are required, just the normal steps
+outlined above:
+
+- Select pSCR in the _Dive Mode_ dropdown list on the *Dive Info* panel.
+
+- pSCR diving often involves gas changes, requiring an additional cylinder.
+  Define all the appropriate cylinders as described above and indicate the
+  cylinder/gas changes as described above in the section on
+  xref:S_MulticylinderDives[multicylinder dives].
+
+If a pSCR _Dive Mode_ has been selected, the dive ceiling for pSCR dives is
+adjusted for the oxygen drop accross the mouthpiece which often requires
+longer decompression periods. Below is a dive profile of a pSCR dive using
+EAN36 on the back cylinder and oxygen for decompression. Note that this dive
+lasted over two hours.
+
+image::images/pSCR_profile.jpg["FIGURE: pSCR profile", align="center"]
+
+
 
 [[S_CCR_dives]]
 ==== Closed circuit rebreather (CCR) dives
@@ -1868,7 +1949,8 @@ column. This information is given using different colours:
 
 The profile also includes depth readings for the peaks and troughs in the
 graph.  Thus, users should see the depth of the deepest point and other
-peaks. Mean depth is marked with a horizontal red line.
+peaks. Mean depth is plotted as a grey line, indicating mean dive depth up
+to a particular moment during the dive.
 
 [icon="images/icons/scale.jpg"]
 [NOTE]
@@ -2774,8 +2856,10 @@ the dive profile:
 
 ** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 
-** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a red line across
-   the dive profile, indicating the mean depth of the dive.
+** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a grey line across
+   the dive profile, indicating the mean depth of the dive up to a particular point in time during
+   that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+   ascent.
 
 * *Misc*:
 
@@ -3247,47 +3331,49 @@ des sections de ce manuel traitant des opérations relatives.
 - _Vérifier les mises à jour_  - Vérifier si une nouvelle version de
   Subsurface est disponible sur le http://subsurface-divelog.org/[site web de
   _Subsurface_ ].
-- <<S_UserSurvey,_User survey_>> - Help to make _Subsurface_ even better by
-  taking part in our user survey.
+- <<S_UserSurvey,_Sondge utilisateur_>> - Aidez à rendre _Subsurface_ encore
+  meilleur en répondant à notre sondage utilisateur.
 - _Manuel utilisateur_  - Ouvre une fenêtre affichant ce manuel utilisateur.
 
 
 
-== APPENDIX A: Operating system specific information for importing dive information from a dive computer.
+== ANNEXE A : informations spécifiques au système d'exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.
 
-=== Make sure that the OS has the required drivers installed
+=== Assurez-vous que les pilotes (drivers) nécessaires sont installés
 [icon="images/icons/drivers.jpg"]
 [NOTE]
-The operating system of the desktop computer needs the appropriate drivers
-in order to communicate with the dive computer in whichever way the dive
-computer prefers (e.g. bluetooth, USB, infra-red).
+Le système d'exploitation de l'ordinateur nécessite les bons pilotes pour
+communiquer avec l'ordinateur de plongée de la façon utilisée par
+l'ordinateur de plongée (Bluetooth, USB, infra-rouge).
 
-	* On Linux users need to have the correct kernel module loaded. Most
-	  distributions will do this automatically, so the user does not need to load
-	  kernel modules. However, some communication protocols require an additional
-	  driver, especially for rarely used technology such as infra-red.
+	* Sous Linux, les utilisateurs doivent avoir le bon module noyau de chargé. La
+	  plupart des distributions Linux le font automatiquement, de telle sorte que
+	  l'utilisateur n'ait rien à faire de particulier. Cependant, certains
+	  protocoles de communication nécessitent des pilotes additionnels, plus
+	  particulièrement pour certaines technologies telles que l'infra-rouge.
 
-	* On Windows, the OS should offer to download the correct driver once the user
-	  connects the dive computer to the USB port and operating system sees the
-	  equipment for the first time.
+	* Sous Windows, le bon pilote devrait être téléchargé automatiquement la
+	  première fois que l'utilisateur branche son ordinateur de plongée sur le
+	  port USB de son ordinateur de bureau.
 
-On a Mac users sometimes have to manually hunt for the correct driver. For
-example the correct driver for the Mares Puck devices or any other dive
-computer using a USB-to-serial interface based on the Silicon Labs CP2101 or
-similar chip can be found as _Mac_OSX_VCP_Driver.zip_ at the
-http://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[Silicon
-Labs document and software repository].
+Sous Mac, les utilisateurs peuvent parfois avoir besoin d'installer
+manuellement le bon pilote. Par exemple, pour le Mares Puck ou n'importe
+quel autre ordinateur de plongée utilisant une interface USB-série basé sur
+le composant Silicon Labs CP2101 ou similaire, le bon pilote est disponible
+sous _Mac_OSX_VCP_Driver.zip_ sur le
+http://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[dépôt
+de documents et logiciels Silicon Labs].
 
 [[S_HowFindDeviceName]]
-=== How to Find the Device Name for USB devices and set its write permission
+=== Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture
 [icon="images/icons/usb.jpg"]
 [NOTE]
-When a user connects the dive computer by using a USB connector, usually
-_Subsurface_ will either propose a drop down list that contains the correct
-device name (or mount point for the Uemis Zurich), or it will disable the
-device select drop down if no device name is needed at all. In the rare
-cases where this doesn't work, here are some suggestions of ways to find out
-what the device name is:
+Lorsqu'un utilisateur connecte un ordinateur de plongée en utilisant l'USB,
+généralement _Subsurface_ proposera soit une liste déroulante contenant le
+bon nom (ou le point de montage pour un Uemis Zurich) ou la liste sera
+désactivée si aucun nom de périphérique n'est nécessaire. Dans les rares cas
+où cela ne fonctionnerait pas, voici quelques suggestions pour trouver le
+nom de votre périphérique ;
 
 .Sur Windows :
 
@@ -3332,26 +3418,26 @@ détecté et connecté sur +ttyUSB3+. Cette information peut à présent être
 utilisée pour les paramètres d'importation en tant que +/dev/ttyUSB3+ pour
 que Subsurface utilise le bon port USB.
 
-Ensuring that the user has write permission to the USB serial port:
+S'assurer que l'utilisateur possède les droits d'écriture sur le port série
+USB :
 
-On Unix-like operating systems the USB ports can only be accessed by users
-who are members of the +dialout+ group. If one is not root, one may not be a
-member of that group and will not be able to use the USB port. Let us assume
-one's username is 'johnB'.
+Sur les systèmes similaires à Unix, les ports USB ne peuvent être accédés
+que par des utilisateurs membres du groupe +dialout+. Si vous n'êtes pas
+root, vous n'êtes peut-être pas membre de ce groupe et ne pouvez donc pas
+utiliser le port USB. Si votre nom d'utilisateur est 'johnB' :
 
-As root, type: +usermod -a -G dialout johnB+ (Ubuntu users: +sudo usermod -a
--G dialout johnB+)  This makes johnB a member of the +dialout+ group.
-Type: +id johnB+     This lists all the groups that johnB belongs to and
-verifies that
-the appropriate group membership has been created. The +dialout+ group should
-be listed
-among the different IDs.
-Under some circumstances this change takes only effect (eg. on Ubuntu) after
-one logs out and then logs in again.
-
-With the appropriate device name (e.g. +dev/ttyUSB3+) and with write
-permission to the USB port, the dive computer interface can connect and one
-should be able to import dives.
+En tant que root, tapez : usermod -a -G dialout johnB+ (utilisateurs
+d'Ubuntu : +sudo usermod -a -G dialout johnB+)  Cela ajoute johnB au groupe
++dialout+.
+Tapez : +id johnB+     Cela liste tous les groupes auquel johnB appartient et
+vérifiez que
+l'appartenance au groupe est bien effectif. Le groupe +dialout+ devrait
+être listé
+parmi les différents IDs.
+Sous certaines circonstances, les modifications ne prennent effet qu'après une déconnexionpuis reconnexion sur l'ordinateur (sous Ubuntu, par exemple).
+Avec le bon nom de périphérique (par exemple +dev/ttyUSB3+) et avec un accès
+en écriture au port USB, l'ordinateur de plongée devrait se connecter et
+vous devriez pouvoir importer vos plongées.
 
 [[S_HowFindBluetoothDeviceName]]
 === Setting up bluetooth enabled devices
