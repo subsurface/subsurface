@@ -200,8 +200,8 @@ function getlimited(dive)
 	       '<div class="item">' + dive.date + '</div>' +
 	       '<div class="item">' + dive.time + '</div>' +
 	       '<div class="item_large">' + dive.location + '</div>' +
-	       '<div class="item">' + dive.temperature.air + '</div>' +
-	       '<div class="item">' + dive.temperature.water + '</div></div>';
+	       '<div class="item">' + dive.dive_duration + '</div>' +
+	       '<div class="item">' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</div></div>';
 };
 
 function getExpanded(dive)
@@ -266,8 +266,8 @@ each col. sorted asc or des
 var number = true;
 var time = true;
 var date = true;
-var air = true;
-var water = true;
+var duration = true;
+var depth = true;
 var locat = true;
 
 /*
@@ -307,18 +307,18 @@ function list_sort(sortOn)
 			sort_it(sortOn, cmpTimeAsc);
 		}
 		break;
-	case '4': //Air temp
-		if (air) {
-			sort_it(sortOn, cmpAtempDes);
+	case '4': //Duration
+		if (duration) {
+			sort_it(sortOn, cmpDurDes);
 		} else {
-			sort_it(sortOn, cmpAtempAsc);
+			sort_it(sortOn, cmpDurAsc);
 		}
 		break;
-	case '5': //Water temp
-		if (water) {
-			sort_it(sortOn, cmpWtempDes);
+	case '5': //Max Depth
+		if (depth) {
+			sort_it(sortOn, cmpDepthDes);
 		} else {
-			sort_it(sortOn, cmpWtempAsc);
+			sort_it(sortOn, cmpDepthAsc);
 		}
 		break;
 	case '6': //Location
@@ -343,11 +343,11 @@ function toggle_sort_state(sortOn)
 	case '3': //time
 		time = 1 - time;
 		break;
-	case '4': //Air temp
-		air = 1 - air;
+	case '4': //Duration
+		duration = 1 - duration;
 		break;
-	case '5': //Water temp
-		water = 1 - water;
+	case '5': //depth
+		depth = 1 - depth;
 		break;
 	case '6': //Location
 		locat = 1 - locat;
@@ -404,24 +404,24 @@ function cmpDateDes(j, iSmaller)
 	return items[j].date > items[iSmaller].date;
 }
 
-function cmpAtempAsc(j, iSmaller)
+function cmpDurAsc(j, iSmaller)
 {
-	return parseFloat(items[j].temperature.air, 10) < parseFloat(items[iSmaller].temperature.air, 10);
+	return items[j].duration < items[iSmaller].duration;
 }
 
-function cmpAtempDes(j, iSmaller)
+function cmpDurDes(j, iSmaller)
 {
-	return parseFloat(items[j].temperature.air, 10) > parseFloat(items[iSmaller].temperature.air, 10);
+	return items[j].duration > items[iSmaller].duration;
 }
 
-function cmpWtempAsc(j, iSmaller)
+function cmpDepthAsc(j, iSmaller)
 {
-	return parseFloat(items[j].temperature.water, 10) < parseFloat(items[iSmaller].temperature.water, 10);
+	return items[j].maxdepth < items[iSmaller].maxdepth;
 }
 
-function cmpWtempDes(j, iSmaller)
+function cmpDepthDes(j, iSmaller)
 {
-	return parseFloat(items[j].temperature.water, 10) > parseFloat(items[iSmaller].temperature.water, 10);
+	return items[j].maxdepth > items[iSmaller].maxdepth;
 }
 
 function sort_it(sortOn, function_)
@@ -1328,8 +1328,8 @@ function translate_page()
 	document.getElementById("date_header").innerHTML = translate.Date;
 	document.getElementById("time_header").innerHTML = translate.Time;
 	document.getElementById("location_header").innerHTML = translate.Location;
-	document.getElementById("air_temp_header").innerHTML = translate.Air_Temp;
-	document.getElementById("water_temp_header").innerHTML = translate.Water_Temp;
+	document.getElementById("duration_header").innerHTML = translate.Duration;
+	document.getElementById("maxdepth_header").innerHTML = translate.Max_Depth;
 	document.getElementById("adv_srch_sp").innerHTML = translate.Advanced_Search;
 	document.getElementById("expnd_all_btn").innerHTML = translate.Expand_All;
 	document.getElementById("claps_all_btn").innerHTML = translate.Collapse_All;

@@ -121,6 +121,7 @@ window.onload=function(){
 		searchingModules["tags"].Enter_search_tag(items[i].tags,i);
 	}
 
+	set_units();
 	sizeofpage=10;
 	showAllDives();
 	document.getElementById("divePanel").style.display='none';
@@ -131,8 +132,6 @@ window.onload=function(){
 	document.body.style.visibility='visible';
 
 	document.onkeydown = switchDives;
-
-	set_units();
 
 	//translate Page
 	translate_page();
@@ -214,8 +213,8 @@ function changeAdvSearch(e){
 		<div id="date_header" onClick="change_sort_col('2')" class="item">Date</div>
 		<div id="time_header" onClick="change_sort_col('3')" class="item">Time</div>
 		<div id="location_header" onClick="change_sort_col('6')" class="item_large">Location</div>
-		<div id="air_temp_header" onClick="change_sort_col('4')" class="item">Air temp</div>
-		<div id="water_temp_header" onClick="change_sort_col('5')" class="item">Water temp</div>
+		<div id="duration_header" onClick="change_sort_col('4')" class="item">Duration</div>
+		<div id="maxdepth_header" onClick="change_sort_col('5')" class="item">Max Depth</div>
 	</div>
 	<div id="diveslist">
 	</div>
