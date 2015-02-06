@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves
 
-[BLUE]#_Versión 4.4, February 2015_#
+[BLUE]#_Versión 4.4, Febrero 2015_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -283,6 +283,9 @@ c. Si se conocen, las coordenadas pueden introducirse a mano usando uno de los
 Las latitudes del hemisferio sur se dan con una S, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual manera, las longitudes del oeste se dan con
 una W, p.e. W07º, o con un valor negativo, p.e. -7.34323.
+
+Algunos teclados no disponen del signo de grados (°). Puede remplazarse con una
+"d", así:  N30d W20d.
 
 Las coordenadas GPS de un punto de buceo están unidas al nombre de dicho punto
 así, al añadir coordenadas a inmersiones en las que no se ha facilitado una
@@ -797,6 +800,7 @@ altamente interactiva y la información de botellas y gases que se introduzca
 determinará el comportamiento del perfil de la inmersión (panel de arriba a la
 derecha).
 
+[[cylinder_definitions]]
 *Botellas*: La información de las botellas se introduce con un dialogo como
 este:
 
@@ -1628,12 +1632,54 @@ se vuelve a conectar, las fotos se visualizarán normalmente.
 
 === Registrar tipos de inmersión especiales
 
+[[S_MulticylinderDives]]
+==== Inmersiones multi botella
+
+_Subsurface_ maneja fácilmente inmersiones que requieren más de una botella. El
+buceo multi botella se produce habitualmente cuando (a) un buceador no tiene
+bastante gas para completar una inmersión con una sola botella o (b) cuando el
+buceador necesita más de una mezcla de gas a causa de la profundidad o de las
+necesidades descompresivas de la inmersión. Por este motivo, las inmersiones
+multi tanque son empleadas a menudo por los buceadores técnicos ya que bucean
+profundo y durante mucho tiempo. En lo que corresponde a _Subsurface_, solo hay
+dos clases de información que necesitan proporcionarse:
+
+- *Describir las botellas usadas durante el buceo*. Esto se hace en la pestaña
+  *Equipo* del panel *Información de la inmersión* tal como xref:cylinder_definitions[se describe anteriormente].
+  se introducen las botellas una a una, especificando las características de la
+  botella y la composición del gas de cada una de ellas.
+
+- *Registrar los momentos en que se cambia de una botella a otra*. Esta es una
+  información que facilitan algunos ordenadores (siempre y cuando el buceador
+  se la diga al ordenador durante el buceo). Si el ordenador no la proporciona,
+  el buceador necesita registrarla usando un método diferente, p.e. en una
+  pizarra.
+
+- *Indica los cambios de botella en el perfil*. Si se utilizó la última opción,
+  el buceador ha de indicar el evento de cambio de gas haciendo clic derecho en
+  el momento adecuado del panel *Perfil de inmersión* y señalar la botella a la
+  que se cambió. Tras hacer clic derecho, seguir el menú contextual a "Añadir
+  cambio de gas" y seleccionar la botella apropiada entre las definidas en el
+  primer paso (ver imagen a continuación). Si el botón *Barra de botellas* de
+  la barra de herramientas se ha activado, los cambios también se indicarán en
+  la barra.
+
+Habiendo llevado a cabo estas tareas, _Subsurface_ indica en el perfil de buceo
+el uso de diferentes botellas.  A continuación, una inmersión multi botella que
+empieza con EAN28, se cambia a EAN50 despues de 26 minutos para efectuar la
+deco.
+
+image::images/multicylinder_dive.jpg["FIGURa: Perfil multi tanque",align="center"]
+
 ==== Inmersiones en montaje lateral (sidemount)
 
-_Subsurface maneja fácilmente buceos en los que se use más de una botella.
-Registrar inmersiones en lateral se hace en tres pasos:
+El buceo en montaje lateral es solo otra forma de buceo multi tanque, a menudo
+con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
+configuración popular entre los espeleo buceadores, el buceo en lateral se
+puede efectuar por buceadores recreativos que hayan completado el entrenamiento
+adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:
 
-- *Durante el buceo, registrar los eventos de cambio de botella". Ya que bucear
+- *Durante el buceo, se registran los eventos de cambio de botella". Ya que bucear
   en lateral supone, normalmente, usar 2 botellas con aire o con la misma mezcla,
   _Subsurface_ distingue entre estas botellas. En comparación, la mayoría de
   ordenadores de buceo que contemplan cambios de gas solo distinguen entre
@@ -1666,6 +1712,42 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
 Esta sección es un ejemplo de la versatilidad de _Subsurface_ como herramienta
 de registro de inmersiones.
+
+[[S_sSCR_dives]]
+==== Inmersiones con rebreather de circuito semi cerrado (SCR)
+
+[icon="images/halcyon_RB80.jpg"]
+[NOTE]
+Los rebreathers semi cerrados pasivos (pSCR) suponen un avance técnico en el
+equipo de buceo que recircula el gas que el buzo respira, y elimina el dióxido
+de carbono del gas exhalado. Al tiempo que una pequeña cantidad del gas exhalado
+(habitualmente una décima parte) se libera en el agua, una  pequeña cantidad de
+gas de la botella se introduce en el circuito (habitualmente nitrox). Un buzo
+usando una sola botella de gas puede, pues, bucear durante periodos de tiempo
+mucho mayores que utilizando una configuración recreativa de circuito abierto.
+Con los pSCR una cantidad muy pequeña de gas se libera cada vez que el buzo
+inhala. Con los equipos SCR activos (aSCR), en cambio, una pequeña cantidad del
+gas respirado se libera continuamente.
+
+Para registrar inmersiones con pSCR, no se requieren procedimientos especiales,
+solo los pasos normales descritos con anterioridad:
+
+- Seleccionar el modo pSCR en el desplegable _Modo de inmersión_ en el panel
+  *Información de la inmersión*.
+
+- El buceo con pSCR, a menudo, requiere cambios de gas, necesitando una botella
+  adicional. Hay, pues, que describir todas las botellas como se indicó con
+  anterioridad e indicar los cambios de botella/gas como se explicó en la
+  sección xref:S_MulticylinderDives[Inmersiones multi botella].
+
+Si se ha seleccionado pSCR en el _Modo de inmersión_, el techo de buceo para
+inmersiones pSCR se ajusta para la caída de oxígeno a través de la boquilla
+que, a menudo, requiere mayores períodos de descompresión. A continuación un
+perfil de inmersión de un buceo con pSCR usando EAN36 como gas de fondo y
+oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.
+
+image::images/pSCR_profile.jpg["FIGURA: Perfil pSCR",align="center"]
+
 
 [[S_CCR_dives]]
 ==== Inmersiones con rebreather de circuito cerrado (CCR)
@@ -1845,8 +1927,8 @@ recomendadas. Esta información se proporciona utilizando diferentes colores:
 
 El perfil también incluye lecturas de profundidad para los picos y valles del
 gráfico. De esta forma, se debe poder visualizar la profundidad del punto más
-hondo y otros picos. La profundidad media se muestra como una línea roja
-horizontal.
+hondo y otros picos. La profundidad media se muestra como una línea gris que
+indica la profundidad media en cada momento de la inmersión.
 
 [icon="images/icons/scale.jpg"]
 [NOTE]
@@ -2752,8 +2834,9 @@ Este panel permite dos tipos de selecciones:
    aunque siguen estando guardadas.
 
 ** _Mostrar la profundidad media_: Activar esta casilla hace que _Subsurface_
-   trace una línea roja a través del perfil, indicando la profundidad media del
-   buceo.
+   trace una línea gris a través del perfil, indicando la profundidad media del
+   buceo en cada momento de la inmersión. Normalmente es una línea con forma de
+   "u" que indicará la profundidad media mayor justo antes de iniciar el ascenso.
 
 * *Varios*:
 
