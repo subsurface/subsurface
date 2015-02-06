@@ -84,6 +84,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 
 	header()->setStretchLastSection(true);
+
+	installEventFilter(this);
 }
 
 DiveListView::~DiveListView()
@@ -343,6 +345,10 @@ bool DiveListView::eventFilter(QObject *, QEvent *event)
 	if (event->type() != QEvent::KeyPress)
 		return false;
 	QKeyEvent *keyEv = static_cast<QKeyEvent *>(event);
+	if (keyEv->key() == Qt::Key_Delete) {
+		contextMenuIndex = currentIndex();
+		deleteDive();
+	}
 	if (keyEv->key() != Qt::Key_Escape)
 		return false;
 	return true;
