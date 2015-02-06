@@ -129,8 +129,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.min.js", exportFiles + "jqplot.canvasTextRenderer.min.js");
 	copy_and_overwrite(searchPath + "jquery.min.js", exportFiles + "jquery.min.js");
 	copy_and_overwrite(searchPath + "jquery.jqplot.css", exportFiles + "jquery.jqplot.css");
-	copy_and_overwrite(searchPath + (ui->themeSelection->currentText() == "Light" ? "light.css" : "sand.css"),
-			   exportFiles + "theme.css");
+	copy_and_overwrite(searchPath + (ui->themeSelection->currentText() == tr("Light") ? "light.css" : "sand.css"), exportFiles + "theme.css");
 }
 
 void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
