@@ -1316,7 +1316,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf);;"
+		tr("Dive log files (*.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd);;"
 			"Cochran files (*.can);;"
 			"CSV files (*.csv);;"
 			"DiveLog.de files (*.dld);;"
@@ -1327,14 +1327,16 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"Divesoft files (*.dlf);;"
 			"UDDF/UDCF files (*.uddf *.udcf);;"
 			"XML files (*.xml);;"
+			"APD log viewer (*.apd);;"
 			"All files (*)"));
 
 	if (fileNames.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!(csv|txt))", Qt::CaseInsensitive));
+	QStringList logFiles = fileNames.filter(QRegExp("^.*\\.(?!(csv|txt|apd))", Qt::CaseInsensitive));
 	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
+	csvFiles += fileNames.filter(".apd", Qt::CaseInsensitive);
 	QStringList txtFiles = fileNames.filter(".txt", Qt::CaseInsensitive);
 
 	if (logFiles.size()) {
