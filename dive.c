@@ -872,25 +872,33 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 		return 0;
 }
 
+/* this gets called when the dive mode has changed (so OC vs. CC)
+ * there are two places we might have setpoints... events or in the samples
+ */
 void update_setpoint_events(struct divecomputer *dc)
 {
-	struct event *ev = get_next_event(dc->events, "SP change");
-	bool changed = false;
+	struct event *ev;
 	int new_setpoint = 0;
 
 	if (dc->divemode == CCR)
-	    new_setpoint = prefs.defaultsetpoint;
+		new_setpoint = prefs.defaultsetpoint;
 
-	while (ev) {
-		if (ev->time.seconds == 0) {
-			ev->value = new_setpoint;
-			changed = true;
-		}
-		ev = get_next_event(ev->next, "SP change");
-	}
-	if (!changed) {
+	if (dc->divemode == OC)
+		// make sure there's no setpoint in the samples
+		// this is an irreversible change - so switching a dive to OC
+		// by mistake when it's actually CCR is _bad_
+		for (int i = 0; i < dc->samples; i++)
+			dc->sample[i].setpoint.mbar = 0;
+
+	// an "SP change" event at t=0 is currently our marker for OC vs CCR
+	// this will need to change to a saner setup, but for now we can just
+	// check if such an event is there and adjust it, or add that event
+	ev = get_next_event(dc->events, "SP change");
+	if (ev && ev->time.seconds == 0) {
+		ev->value = new_setpoint;
+	} else {
 		if (!add_event(dc, 0, SAMPLE_EVENT_PO2, 0, new_setpoint, "SP change"))
-			printf("Could not add setpoint change event\n");
+			fprintf(stderr, "Could not add setpoint change event\n");
 	}
 }
 
