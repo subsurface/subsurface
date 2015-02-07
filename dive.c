@@ -883,12 +883,28 @@ void update_setpoint_events(struct divecomputer *dc)
 	if (dc->divemode == CCR)
 		new_setpoint = prefs.defaultsetpoint;
 
-	if (dc->divemode == OC)
+	if (dc->divemode == OC && same_string(dc->model, "Shearwater Predator")) {
 		// make sure there's no setpoint in the samples
 		// this is an irreversible change - so switching a dive to OC
 		// by mistake when it's actually CCR is _bad_
-		for (int i = 0; i < dc->samples; i++)
-			dc->sample[i].setpoint.mbar = 0;
+		// So we make sure, this comes from a Predator and we only remove
+		// pO2 values we would have computed anyway.
+		struct event *ev = get_next_event(dc->events, "gaschange");
+		struct gasmix *gasmix = get_gasmix_from_event(ev);
+		struct event *next = get_next_event(ev, "gaschange");
+
+		for (int i = 0; i < dc->samples; i++) {
+			struct gas_pressures pressures;
+			if (next && dc->sample[i].time.seconds >= next->time.seconds) {
+				ev = next;
+				gasmix = get_gasmix_from_event(ev);
+				next = get_next_event(ev, "gaschange");
+			}
+			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, OC);
+			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2) <= 50))
+				dc->sample[i].setpoint.mbar = 0;
+		}
+	}
 
 	// an "SP change" event at t=0 is currently our marker for OC vs CCR
 	// this will need to change to a saner setup, but for now we can just
