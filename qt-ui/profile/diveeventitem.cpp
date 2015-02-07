@@ -66,14 +66,15 @@ void DiveEventItem::setupPixmap()
 		setPixmap(EVENT_PIXMAP(":warning"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":flag"));
-	} else if (strcmp(internalEvent->name, "heading") == 0) {
-		// some dive computers have heading in every sample...
-		// set an "almost invisible" pixmap
-		// so we get the tooltip but not the clutter
-		// create a narrow but somewhat tall, basically transparent pixmap
+	} else if (strcmp(internalEvent->name, "heading") == 0 ||
+		   (same_string(internalEvent->name, "SP change") && internalEvent->time.seconds == 0)) {
+		// 2 cases:
+		// a) some dive computers have heading in every sample
+		// b) at t=0 we might have an "SP change" to indicate dive type
+		// in both cases we want to get the right data into the tooltip but don't want the visual clutter
+		// so set an "almost invisible" pixmap (a narrow but somewhat tall, basically transparent pixmap)
 		// that allows tooltips to work when we don't want to show a specific
 		// pixmap for an event, but want to show the event value in the tooltip
-		// (e.g. if there is heading data in every sample)
 		QPixmap transparentPixmap(4, 20);
 		transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
 		setPixmap(transparentPixmap);
