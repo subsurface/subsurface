@@ -361,6 +361,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	bool matchedSome = false;
 	bool seabear = false;
 	bool xp5 = false;
+	bool apd = false;
 
 	// reset everything
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -387,10 +388,13 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 
 	// Special handling for APD Log Viewer
-	if (triggeredBy == KNOWNTYPES && value == 1) {
+	if ((triggeredBy == KNOWNTYPES && value == 1) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
+		apd=true;
 		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
+		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
+			ui->knownImports->setCurrentText("APD Log Viewer");
 		blockSignals(false);
 	}
 
@@ -433,7 +437,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		}
 		if (matchedSome) {
 			ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
-			if (triggeredBy != KNOWNTYPES && !seabear && !xp5) {
+			if (triggeredBy != KNOWNTYPES && !seabear && !xp5 && !apd) {
 				blockSignals(true);
 				ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
 				blockSignals(false);
