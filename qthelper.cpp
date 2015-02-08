@@ -12,6 +12,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -296,6 +297,20 @@ extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp
 picture_load_exit:
 	free(mem.buffer);
 	return;
+}
+
+extern "C" const char *system_default_directory(void)
+{
+	static char filename[PATH_MAX];
+
+	if (!*filename) {
+		QString name = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first();
+		QDir dir(name);
+		dir.mkpath(name);
+		// Why no "dir.encodeName()"? Crazy Qt
+		strncpy(filename, QFile::encodeName(name), PATH_MAX-1);
+	}
+	return filename;
 }
 
 extern "C" char *get_file_name(const char *fileName)
