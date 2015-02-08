@@ -866,6 +866,11 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char curtime[TIMESTR];
 	int previous;
 
+	/* Increase the limits for recursion and variables on XSLT
+	 * parsing */
+	xsltMaxDepth = 30000;
+	xsltMaxVars = 150000;
+
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
