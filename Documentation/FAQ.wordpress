@@ -100,4 +100,15 @@ Many common programs are already supported and we are always happy to try to add
 
 We support a large number of dive computers already and are always happy to add support for more. Please contact us via the user forums so we can try to help. Some vendors have actively helped us in our work and adding support for new models from those vendors is usually easy. Other vendors are more neutral, some are actively hostile. Without help from the vendor it can be rather challenging to reverse engineer the transfer protocol and the dive encoding, but with sufficient help from you it is often possible to do so.
 
+A good starting point is often to send us a libdivecomputer log and dump (you can pick those in the dive computer download dialog) when connecting to the dive computer using a similar existing model (if possible).
+
+[/expand]
+[expand title="Is there a virus in the Subsurface installer?"]
+
+If you get a warning message or if Subsurface is blocked by your anti virus software, that is almost certainly a false positive. Subsurface is not built on a Windows machine, it is cross built from source on Linux on a well maintained and clean server.
+
+Most/all Windows AV software packages support an "add exception" feature, which skips an executable from being scanned. Try adding Subsurface to the list of non-harmful software. If the Subsurface installer download is detected as malware, please temporary disable your AV software until Subsurface is installed
+
+In either case, please inform your AV software vendor of a "false positive" as we assure your that Subsurface is not malware
+
 [/expand]
