@@ -9,6 +9,7 @@
 #include "modeldelegates.h"
 #include "mainwindow.h"
 #include "divepicturewidget.h"
+#include "display.h"
 #include <QSettings>
 #include <QKeyEvent>
 #include <QFileDialog>

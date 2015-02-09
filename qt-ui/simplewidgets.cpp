@@ -12,6 +12,8 @@
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
 #include "divelistview.h"
+#include "display.h"
+#include "profile/profilewidget2.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -170,7 +172,6 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
 	mark_divelist_changed(true);
 	MainWindow::instance()->graphics()->replot();
-
 }
 
 SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent)

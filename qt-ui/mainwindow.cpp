@@ -21,6 +21,7 @@
 #include "updatemanager.h"
 #include "planner.h"
 #include "filtermodels.h"
+#include "profile/profilewidget2.h"
 #include "globe.h"
 #include "maintab.h"
 #ifndef NO_PRINTING
@@ -96,7 +97,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
-	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
+	connect(information(), SIGNAL(addDiveFinished()), graphics(), SLOT(setProfileState()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(ui.printPlan, SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
@@ -107,7 +108,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 
 	ui.mainErrorMessage->hide();
-	ui.newProfile->setEmptyState();
+	graphics()->setEmptyState();
 	initialUiSetup();
 	readSettings();
 	diveListView->reload(DiveTripModel::TREE);
@@ -139,9 +140,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	// has no concept of "toolbar" for a non-mainwindow widget (...)
 	// I need to take the current item that's in the toolbar Position
 	// and reposition it alongside the grid layout.
-	QLayoutItem *p = ui.profileInnerLayout->takeAt(0);
-	ui.profileInnerLayout->addWidget(toolBar, 0, 0);
-	ui.profileInnerLayout->addItem(p, 0, 1);
+	// TODO: FIX THIS
+	// QLayoutItem *p = ui.profileInnerLayout->takeAt(0);
+	// ui.profileInnerLayout->addWidget(toolBar, 0, 0);
+	// ui.profileInnerLayout->addItem(p, 0, 1);
+	// ui.profileInnerLayout->setContentsMargins(QMargins(0, 5, 5, 5));
+	// ui.profileInnerLayout->setSpacing(0);
 
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
@@ -168,9 +172,6 @@ MainWindow::MainWindow() : QMainWindow(),
 		else
 			layout->setContentsMargins(margins);
 	}
-	margins = QMargins(0, 5, 5, 5);
-	ui.profileInnerLayout->setContentsMargins(margins);
-	ui.profileInnerLayout->setSpacing(0);
 	toolBar->setContentsMargins(zeroMargins);
 
 	updateManager = new UpdateManager(this);
@@ -234,7 +235,7 @@ void MainWindow::current_dive_changed(int divenr)
 		select_dive(divenr);
 		globe()->centerOnCurrentDive();
 	}
-	ui.newProfile->plotDive();
+	graphics()->plotDive();
 	information()->updateDiveInfo();
 }
 
@@ -278,7 +279,7 @@ void MainWindow::on_actionSaveAs_triggered()
 
 ProfileWidget2 *MainWindow::graphics() const
 {
-	return ui.newProfile;
+	return qobject_cast<ProfileWidget2*>(applicationState["Default"].topRight);
 }
 
 void MainWindow::cleanUpEmpty()
@@ -287,7 +288,7 @@ void MainWindow::cleanUpEmpty()
 	information()->clearInfo();
 	information()->clearEquipment();
 	information()->updateDiveInfo(true);
-	ui.newProfile->setEmptyState();
+	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
 	globe()->reload();
 	if (!existing_filename)
@@ -310,7 +311,7 @@ bool MainWindow::okToClose(QString message)
 
 void MainWindow::closeCurrentFile()
 {
-	ui.newProfile->setEmptyState();
+	graphics()->setEmptyState();
 	/* free the dives and trips */
 	clear_git_id();
 	while (dive_table.nr)
@@ -386,7 +387,7 @@ void MainWindow::enableShortcuts()
 void MainWindow::showProfile()
 {
 	enableShortcuts();
-	ui.newProfile->setProfileState();
+	graphics()->setProfileState();
 	setApplicationState("Default");
 }
 
@@ -457,16 +458,16 @@ void MainWindow::planCanceled()
 	// while planning we might have modified the displayed_dive
 	// let's refresh what's shown on the profile
 	showProfile();
-	ui.newProfile->replot();
+	graphics()->replot();
 	refreshDisplay(false);
-	ui.newProfile->plotDive(get_dive(selected_dive));
+	graphics()->plotDive(get_dive(selected_dive));
 	DivePictureModel::instance()->updateDivePictures();
 }
 
 void MainWindow::planCreated()
 {
 	// get the new dive selected and assign a number if reasonable
-	ui.newProfile->setProfileState();
+	graphics()->setProfileState();
 	if (displayed_dive.id == 0) {
 		// we might have added a new dive (so displayed_dive was cleared out by clone_dive()
 		dive_list()->unselectDives();
@@ -527,8 +528,8 @@ void MainWindow::on_actionReplanDive_triggered()
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
-	ui.newProfile->setPlanState();
-	ui.newProfile->clearHandlers();
+	graphics()->setPlanState();
+	graphics()->clearHandlers();
 	setApplicationState("PlanDive");
 	divePlannerWidget()->setReplanButton(true);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
@@ -549,7 +550,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	setApplicationState("PlanDive");
 
-	ui.newProfile->setPlanState();
+	graphics()->setPlanState();
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
@@ -593,9 +594,9 @@ void MainWindow::on_actionAddDive_triggered()
 
 	information()->addDiveStarted();
 
-	ui.newProfile->setAddState();
+	graphics()->setAddState();
 	DivePlannerPointsModel::instance()->createSimpleDive();
-	ui.newProfile->plotDive();
+	graphics()->plotDive();
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -750,7 +751,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
-	ui.newProfile->plotDive();
+	graphics()->plotDive();
 	information()->updateDiveInfo();
 }
 
@@ -758,7 +759,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
-	ui.newProfile->plotDive();
+	graphics()->plotDive();
 	information()->updateDiveInfo();
 }
 
@@ -1396,7 +1397,7 @@ void MainWindow::editCurrentDive()
 	if (defaultDC == "manually added dive") {
 		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-		ui.newProfile->setAddState();
+		graphics()->setAddState();
 		setApplicationState("EditDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);

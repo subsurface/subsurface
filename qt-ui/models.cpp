@@ -14,6 +14,7 @@
 #include "qthelper.h"
 #include "gettextfromc.h"
 #include "display.h"
+#include "color.h"
 
 #include <QCoreApplication>
 #include <QDebug>

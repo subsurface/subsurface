@@ -27,13 +27,6 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QWidget" name="ProfileWidget">
-        <layout class="QGridLayout" name="profileInnerLayout">
-         <item row="0" column="0" rowspan="3">
-          <widget class="ProfileWidget2" name="newProfile"/>
-         </item>
-        </layout>
-       </widget>
       </widget>
       <widget class="QSplitter" name="bottomSplitter">
        <property name="orientation">
@@ -803,11 +796,6 @@ p, li { white-space: pre-wrap; }
    <extends>QWidget</extends>
    <header>kmessagewidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ProfileWidget2</class>
-   <extends>QGraphicsView</extends>
-   <header>qt-ui/profile/profilewidget2.h</header>
   </customwidget>
   <customwidget>
    <class>PlannerSettingsWidget</class>

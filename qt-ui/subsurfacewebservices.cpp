@@ -5,7 +5,7 @@
 #include "divelist.h"
 #include "globe.h"
 #include "maintab.h"
-
+#include "display.h"
 #include <errno.h>
 
 #include <QDir>

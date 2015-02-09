@@ -4,6 +4,7 @@
 #include "helpers.h"
 #include "divelistview.h"
 #include "maintab.h"
+#include "display.h"
 
 #include <QTimer>
 #include <QContextMenuEvent>

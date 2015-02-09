@@ -4,6 +4,7 @@
 #include "planner.h"
 #include "helpers.h"
 #include "models.h"
+#include "profile/profilewidget2.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>

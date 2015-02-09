@@ -5,6 +5,8 @@
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
 #include "mainwindow.h"
+#include "divelineitem.h"
+#include "profilewidget2.h"
 
 static QPen gridPen()
 {

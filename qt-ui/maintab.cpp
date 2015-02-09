@@ -12,6 +12,8 @@
 #include "modeldelegates.h"
 #include "models.h"
 #include "divelistview.h"
+#include "display.h"
+#include "profile/profilewidget2.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"

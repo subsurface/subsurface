@@ -2,6 +2,8 @@
 #include "helpers.h"
 #include "mainwindow.h"
 #include "divelistview.h"
+#include "display.h"
+
 #include <QTimer>
 #include <QFileDialog>
 #include <QMessageBox>

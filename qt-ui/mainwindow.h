@@ -31,6 +31,7 @@ class QSettings;
 class UpdateManager;
 class UserManual;
 class DivePlannerWidget;
+class ProfileWidget2;
 class UndoBuffer;
 
 enum MainWindowTitleFormat {

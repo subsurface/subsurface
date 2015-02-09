@@ -2,6 +2,8 @@
 
 #include "helpers.h"
 #include "mainwindow.h"
+#include "display.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>

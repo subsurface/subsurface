@@ -1,5 +1,6 @@
 #include "divelogimportdialog.h"
 #include "mainwindow.h"
+#include "color.h"
 #include "ui_divelogimportdialog.h"
 #include <QShortcut>
 #include <QDrag>

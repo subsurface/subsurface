@@ -1,6 +1,8 @@
 #include "ruleritem.h"
 #include "preferences.h"
 #include "mainwindow.h"
+#include "profilewidget2.h"
+#include "display.h"
 
 #include <qgraphicssceneevent.h>
 

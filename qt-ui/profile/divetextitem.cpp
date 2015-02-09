@@ -1,5 +1,6 @@
 #include "divetextitem.h"
 #include "mainwindow.h"
+#include "profilewidget2.h"
 
 DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
