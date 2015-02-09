@@ -81,6 +81,7 @@ public:
 	void cleanUpEmpty();
 	void setToolButtonsEnabled(bool enabled);
 	ProfileWidget2 *graphics() const;
+	PlannerDetails *plannerDetails() const;
 	void setLoadedWithFiles(bool filesFromCommandLine);
 	bool filesFromCommandLine() const;
 	void setPlanNotes(const char *notes);

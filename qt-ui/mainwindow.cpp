@@ -67,6 +67,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("EditDive", mainTab, diveListView, profileWidget, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, plannerSettings, profileWidget, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, diveListView, profileWidget, globeGps );
+	setApplicationState("Default");
 
 	ui.multiFilter->hide();
 	// what is a sane order for those icons? we should have the ones the user is
@@ -100,7 +101,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(information(), SIGNAL(addDiveFinished()), graphics(), SLOT(setProfileState()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
-	connect(ui.printPlan, SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
+	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(ui.menu_Edit, SIGNAL(aboutToShow()), this, SLOT(checkForUndoAndRedo()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
@@ -176,12 +177,15 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	updateManager = new UpdateManager(this);
 	undoBuffer = new UndoBuffer(this);
-	setApplicationState("Default");
 }
 
 MainWindow::~MainWindow()
 {
 	m_Instance = NULL;
+}
+
+PlannerDetails *MainWindow::plannerDetails() const {
+	return qobject_cast<PlannerDetails*>(applicationState["PlanDive"].bottomRight);
 }
 
 void MainWindow::setLoadedWithFiles(bool f)
@@ -212,7 +216,8 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 #ifdef NO_MARBLE
 	ui.globePane->hide();
 #endif
-	ui.globePane->setCurrentIndex(0);
+
+	setApplicationState("Default");
 	dive_list()->setEnabled(true);
 	dive_list()->setFocus();
 	WSInfoModel::instance()->updateInfo();
@@ -483,13 +488,13 @@ void MainWindow::planCreated()
 
 void MainWindow::setPlanNotes(const char *notes)
 {
-	ui.divePlanOutput->setHtml(notes);
+	plannerDetails()->divePlanOutput()->setHtml(notes);
 }
 
 void MainWindow::printPlan()
 {
 #ifndef NO_PRINTING
-	QString diveplan = ui.divePlanOutput->toHtml();
+	QString diveplan = plannerDetails()->divePlanOutput()->toHtml();
 	QString withDisclaimer = QString("<img height=50 src=\":subsurface-icon\"> ") + diveplan + QString(disclaimer);
 
 	QPrinter printer;
@@ -498,9 +503,9 @@ void MainWindow::printPlan()
 	if (dialog->exec() != QDialog::Accepted)
 		return;
 
-	ui.divePlanOutput->setHtml(withDisclaimer);
-	ui.divePlanOutput->print(&printer);
-	ui.divePlanOutput->setHtml(diveplan);
+	plannerDetails()->divePlanOutput()->setHtml(withDisclaimer);
+	plannerDetails()->divePlanOutput()->print(&printer);
+	plannerDetails()->divePlanOutput()->setHtml(diveplan);
 #endif
 }
 
@@ -534,8 +539,6 @@ void MainWindow::on_actionReplanDive_triggered()
 	divePlannerWidget()->setReplanButton(true);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
-	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
-	ui.globePane->setCurrentIndex(1);
 #ifdef NO_MARBLE
 	ui.globePane->show();
 #endif
@@ -559,8 +562,6 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePictureModel::instance()->updateDivePictures();
 	divePlannerWidget()->setReplanButton(false);
 
-	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
-	ui.globePane->setCurrentIndex(1);
 #ifdef NO_MARBLE
 	ui.globePane->show();
 #endif

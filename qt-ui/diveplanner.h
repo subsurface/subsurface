@@ -192,6 +192,9 @@ class PlannerDetails : public QWidget {
 	Q_OBJECT
 public:
 	explicit PlannerDetails(QWidget *parent = 0);
+	QPushButton *printPlan() const { return ui.printPlan; }
+	QTextEdit *divePlanOutput() const { return ui.divePlanOutput; }
+
 private:
 	Ui::plannerDetails ui;
 };
