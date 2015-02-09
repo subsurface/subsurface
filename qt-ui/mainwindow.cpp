@@ -81,6 +81,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.menu_Edit, SIGNAL(aboutToShow()), this, SLOT(checkForUndoAndRedo()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
+	ui.menuFile->removeAction(ui.actionPrint);
 #endif
 
 	ui.mainErrorMessage->hide();
@@ -103,9 +104,6 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
-#endif
-#ifdef NO_PRINTING
-	ui.menuFile->removeAction(ui.actionPrint);
 #endif
 	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
