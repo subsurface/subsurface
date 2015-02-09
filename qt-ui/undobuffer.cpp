@@ -39,3 +39,21 @@ void UndoBuffer::recordAfter(dive *affectedDive)
 {
 
 }
+
+
+
+UndoCommand::UndoCommand(QString commandName, dive *affectedDive)
+{
+	name = commandName;
+	stateBefore = affectedDive;
+}
+
+void UndoCommand::undo()
+{
+
+}
+
+void UndoCommand::redo()
+{
+
+}

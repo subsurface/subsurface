@@ -4,6 +4,19 @@
 #include <QObject>
 #include "dive.h"
 
+class UndoCommand {
+private:
+	dive* stateBefore;
+	dive* stateAfter;
+	QString name;
+
+public:
+	explicit UndoCommand(QString commandName, dive* affectedDive);
+	void setStateAfter(dive* affectedDive);
+	void undo();
+	void redo();
+};
+
 class UndoBuffer : public QObject
 {
 	Q_OBJECT
