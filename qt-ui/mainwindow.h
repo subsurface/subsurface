@@ -30,6 +30,7 @@ class QWebView;
 class QSettings;
 class UpdateManager;
 class UserManual;
+class UndoBuffer;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
@@ -82,6 +83,7 @@ public:
 	void setPlanNotes(const char *notes);
 	void printPlan();
 	void checkSurvey(QSettings *s);
+	UndoBuffer *undoBuffer;
 private
 slots:
 	/* file menu action */
@@ -151,6 +153,9 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
+	void on_action_Undo_triggered();
+	void on_action_Redo_triggered();
+	void checkForUndoAndRedo();
 
 protected:
 	void closeEvent(QCloseEvent *);

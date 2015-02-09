@@ -31,6 +31,7 @@
 #include "usermanual.h"
 #endif
 #include <QNetworkProxy>
+#include "undobuffer.h"
 
 MainWindow *MainWindow::m_Instance = NULL;
 
@@ -77,6 +78,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(ui.printPlan, SIGNAL(pressed()), ui.divePlannerWidget, SLOT(printDecoPlan()));
+	connect(ui.menu_Edit, SIGNAL(aboutToShow()), this, SLOT(checkForUndoAndRedo()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
 #endif
@@ -152,6 +154,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	toolBar->setContentsMargins(zeroMargins);
 
 	updateManager = new UpdateManager(this);
+	undoBuffer = new UndoBuffer(this);
 }
 
 MainWindow::~MainWindow()
@@ -1465,4 +1468,20 @@ void MainWindow::on_actionFilterTags_triggered()
 		ui.multiFilter->closeFilter();
 	else
 		ui.multiFilter->setVisible(true);
+}
+
+void MainWindow::on_action_Undo_triggered()
+{
+	undoBuffer->undo();
+}
+
+void MainWindow::on_action_Redo_triggered()
+{
+	undoBuffer->redo();
+}
+
+void MainWindow::checkForUndoAndRedo()
+{
+	ui.action_Undo->setEnabled(undoBuffer->canUndo());
+	ui.action_Redo->setEnabled(undoBuffer->canRedo());
 }
