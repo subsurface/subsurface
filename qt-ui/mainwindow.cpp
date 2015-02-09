@@ -630,16 +630,16 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 #define TOGGLE_COLLAPSABLE( X ) \
 	ui.mainSplitter->setCollapsible(0, X); \
 	ui.mainSplitter->setCollapsible(1, X); \
-	ui.infoProfileSplitter->setCollapsible(0, X); \
-	ui.infoProfileSplitter->setCollapsible(1, X); \
-	ui.listGlobeSplitter->setCollapsible(0, X); \
-	ui.listGlobeSplitter->setCollapsible(1, X);
+	ui.topSplitter->setCollapsible(0, X); \
+	ui.topSplitter->setCollapsible(1, X); \
+	ui.bottomSplitter->setCollapsible(0, X); \
+	ui.bottomSplitter->setCollapsible(1, X);
 
 void MainWindow::on_actionViewList_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(LIST_MAXIMIZED);
-	ui.listGlobeSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.topSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
 
@@ -647,7 +647,7 @@ void MainWindow::on_actionViewProfile_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(PROFILE_MAXIMIZED);
-	ui.infoProfileSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.topSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
@@ -655,7 +655,7 @@ void MainWindow::on_actionViewInfo_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(INFO_MAXIMIZED);
-	ui.infoProfileSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.topSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
@@ -664,7 +664,7 @@ void MainWindow::on_actionViewGlobe_triggered()
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(GLOBE_MAXIMIZED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui.listGlobeSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.bottomSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
 #undef BEHAVIOR
 
@@ -695,26 +695,26 @@ void MainWindow::on_actionViewAll_triggered()
 	settings.beginGroup("MainWindow");
 	if (settings.value("mainSplitter").isValid()) {
 		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-		ui.infoProfileSplitter->restoreState(settings.value("infoProfileSplitter").toByteArray());
-		ui.listGlobeSplitter->restoreState(settings.value("listGlobeSplitter").toByteArray());
+		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
+		ui.bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
 		if (ui.mainSplitter->sizes().first() == 0 || ui.mainSplitter->sizes().last() == 0)
 			ui.mainSplitter->setSizes(mainSizes);
-		if (ui.infoProfileSplitter->sizes().first() == 0 || ui.infoProfileSplitter->sizes().last() == 0)
-			ui.infoProfileSplitter->setSizes(infoProfileSizes);
-		if (ui.listGlobeSplitter->sizes().first() == 0 || ui.listGlobeSplitter->sizes().last() == 0)
-			ui.listGlobeSplitter->setSizes(listGlobeSizes);
+		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
+			ui.topSplitter->setSizes(infoProfileSizes);
+		if (ui.bottomSplitter->sizes().first() == 0 || ui.bottomSplitter->sizes().last() == 0)
+			ui.bottomSplitter->setSizes(listGlobeSizes);
 
 	} else {
 		ui.mainSplitter->setSizes(mainSizes);
-		ui.infoProfileSplitter->setSizes(infoProfileSizes);
-		ui.listGlobeSplitter->setSizes(listGlobeSizes);
+		ui.topSplitter->setSizes(infoProfileSizes);
+		ui.bottomSplitter->setSizes(listGlobeSizes);
 	}
 	ui.mainSplitter->setCollapsible(0, false);
 	ui.mainSplitter->setCollapsible(1, false);
-	ui.infoProfileSplitter->setCollapsible(0, false);
-	ui.infoProfileSplitter->setCollapsible(1, false);
-	ui.listGlobeSplitter->setCollapsible(0,false);
-	ui.listGlobeSplitter->setCollapsible(1,false);
+	ui.topSplitter->setCollapsible(0, false);
+	ui.topSplitter->setCollapsible(1, false);
+	ui.bottomSplitter->setCollapsible(0,false);
+	ui.bottomSplitter->setCollapsible(1,false);
 }
 
 #undef TOGGLE_COLLAPSABLE
@@ -732,8 +732,8 @@ void MainWindow::saveSplitterSizes()
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
-	settings.setValue("infoProfileSplitter", ui.infoProfileSplitter->saveState());
-	settings.setValue("listGlobeSplitter", ui.listGlobeSplitter->saveState());
+	settings.setValue("topSplitter", ui.topSplitter->saveState());
+	settings.setValue("bottomSplitter", ui.bottomSplitter->saveState());
 }
 
 void MainWindow::on_actionPreviousDC_triggered()

@@ -23,7 +23,7 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QSplitter" name="infoProfileSplitter">
+      <widget class="QSplitter" name="topSplitter">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -64,7 +64,7 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QSplitter" name="listGlobeSplitter">
+      <widget class="QSplitter" name="bottomSplitter">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
