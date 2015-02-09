@@ -2,6 +2,7 @@
 #include "webservice.h"
 #include "mainwindow.h"
 #include "usersurvey.h"
+#include "divelist.h"
 #include <errno.h>
 
 #include <QDir>

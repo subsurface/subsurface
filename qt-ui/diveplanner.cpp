@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "planner.h"
 #include "helpers.h"
+#include "models.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>

@@ -10,7 +10,7 @@
 #include "mainwindow.h"
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
-
+#include "divelistview.h"
 
 class MinMaxAvgWidgetPrivate {
 public:

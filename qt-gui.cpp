@@ -19,6 +19,7 @@
 #include "qt-ui/mainwindow.h"
 #include "helpers.h"
 #include "qthelper.h"
+#include "divecomputer.h"
 
 #include <QApplication>
 #include <QFileDialog>

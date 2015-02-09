@@ -1,5 +1,7 @@
 #include "preferences.h"
 #include "mainwindow.h"
+#include "models.h"
+
 #include <QSettings>
 #include <QFileDialog>
 #include <QMessageBox>

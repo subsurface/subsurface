@@ -8,6 +8,7 @@
 #include "printdialog.h"
 #include "printlayout.h"
 #include "modeldelegates.h"
+#include "models.h"
 
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct print_options *optionsPtr)
 {

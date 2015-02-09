@@ -12,6 +12,7 @@
 #include <QShortcut>
 #include <QToolBar>
 #include "ssrf-version.h"
+#include "divelistview.h"
 #include "downloadfromdivecomputer.h"
 #include "preferences.h"
 #include "subsurfacewebservices.h"
@@ -79,10 +80,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}
-	connect(ui.ListWidget, SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
+	connect(dive_list(), SIGNAL(currentDiveChanged(int)), this, SLOT(current_dive_changed(int)));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(update()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.ListWidget, SLOT(reloadHeaderActions()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(update()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.plannerSettingsWidget, SLOT(settingsChanged()));
@@ -105,12 +106,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.newProfile->setEmptyState();
 	initialUiSetup();
 	readSettings();
-	ui.ListWidget->reload(DiveTripModel::TREE);
-	ui.ListWidget->reloadHeaderActions();
-	ui.ListWidget->setFocus();
+	diveListView->reload(DiveTripModel::TREE);
+	diveListView->reloadHeaderActions();
+	diveListView->setFocus();
 	ui.globe->reload();
-	ui.ListWidget->expand(ui.ListWidget->model()->index(0, 0));
-	ui.ListWidget->scrollTo(ui.ListWidget->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
+	diveListView->expand(dive_list()->model()->index(0, 0));
+	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
 	ui.plannerSettingsWidget->settingsChanged();
 #ifdef NO_MARBLE
@@ -207,8 +208,8 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	ui.globePane->hide();
 #endif
 	ui.globePane->setCurrentIndex(0);
-	ui.ListWidget->setEnabled(true);
-	ui.ListWidget->setFocus();
+	dive_list()->setEnabled(true);
+	dive_list()->setFocus();
 	WSInfoModel::instance()->updateInfo();
 	if (amount_selected == 0)
 		cleanUpEmpty();
@@ -216,7 +217,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 
 void MainWindow::recreateDiveList()
 {
-	ui.ListWidget->reload(DiveTripModel::CURRENT);
+	dive_list()->reload(DiveTripModel::CURRENT);
 	TagFilterModel::instance()->repopulate();
 	BuddyFilterModel::instance()->repopulate();
 	LocationFilterModel::instance()->repopulate();
@@ -283,7 +284,7 @@ void MainWindow::cleanUpEmpty()
 	ui.InfoWidget->clearEquipment();
 	ui.InfoWidget->updateDiveInfo(true);
 	ui.newProfile->setEmptyState();
-	ui.ListWidget->reload(DiveTripModel::TREE);
+	dive_list()->reload(DiveTripModel::TREE);
 	ui.globe->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
@@ -1013,7 +1014,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 DiveListView *MainWindow::dive_list()
 {
-	return ui.ListWidget;
+	return qobject_cast<DiveListView*>(applicationState["Default"].bottomLeft);
 }
 
 GlobeGPS *MainWindow::globe()

@@ -1,7 +1,7 @@
 #include "downloadfromdivecomputer.h"
 #include "helpers.h"
 #include "mainwindow.h"
-
+#include "divelistview.h"
 #include <QTimer>
 #include <QFileDialog>
 #include <QMessageBox>

@@ -9,6 +9,8 @@
 #include "helpers.h"
 #include "statistics.h"
 #include "modeldelegates.h"
+#include "models.h"
+#include "divelistview.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"

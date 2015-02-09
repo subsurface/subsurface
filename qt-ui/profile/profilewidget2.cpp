@@ -10,6 +10,8 @@
 #include "ruleritem.h"
 #include "tankitem.h"
 #include "pref.h"
+#include "models.h"
+
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
 #include <QtCore/qmath.h>

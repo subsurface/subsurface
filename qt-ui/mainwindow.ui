@@ -73,15 +73,7 @@
          <number>0</number>
         </property>
         <widget class="QWidget" name="page_3">
-         <layout class="QVBoxLayout" name="diveListLayout">
-          <item>
-           <widget class="DiveListView" name="ListWidget">
-            <property name="selectionMode">
-             <enum>QAbstractItemView::ExtendedSelection</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <layout class="QVBoxLayout" name="diveListLayout"/>
         </widget>
         <widget class="PlannerSettingsWidget" name="plannerSettingsWidget"/>
        </widget>
@@ -850,11 +842,6 @@ p, li { white-space: pre-wrap; }
    <extends>QWidget</extends>
    <header>qt-ui/maintab.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DiveListView</class>
-   <extends>QTreeView</extends>
-   <header>divelistview.h</header>
   </customwidget>
   <customwidget>
    <class>GlobeGPS</class>

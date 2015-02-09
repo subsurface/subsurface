@@ -2,6 +2,7 @@
 #ifndef NO_MARBLE
 #include "mainwindow.h"
 #include "helpers.h"
+#include "divelistview.h"
 #include <QTimer>
 
 #include <marble/AbstractFloatItem.h>

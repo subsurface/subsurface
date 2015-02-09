@@ -2,6 +2,7 @@
 #include "dive.h"
 #include "gettextfromc.h"
 #include "mainwindow.h"
+#include "models.h"
 
 #include <QCompleter>
 
