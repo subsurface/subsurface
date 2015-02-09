@@ -107,6 +107,9 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			 * dive computer, fill in the default tank information (if set) */
 			fill_default_cylinder(&dive->cylinder[i]);
 		}
+		/* whatever happens, make sure there is a name for the cylidner */
+		if (same_string(dive->cylinder[i].type.description, ""))
+			dive->cylinder[i].type.description = strdup(translate("gettextFromC", "unknown"));
 	}
 	return DC_STATUS_SUCCESS;
 }
