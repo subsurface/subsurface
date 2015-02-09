@@ -1266,3 +1266,8 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	setPlanMode(NOTHING);
 	planCreated();
 }
+
+PlannerDetails::PlannerDetails(QWidget *parent) : QWidget(parent)
+{
+	ui.setupUi(this);
+}

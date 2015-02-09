@@ -186,6 +186,17 @@ private:
 	void updateUnitsUI();
 };
 
+#include "ui_plannerDetails.h"
+
+class PlannerDetails : public QWidget {
+	Q_OBJECT
+public:
+	explicit PlannerDetails(QWidget *parent = 0);
+private:
+	Ui::plannerDetails ui;
+};
+
+
 QString dpGasToStr(const divedatapoint &p);
 
 #endif // DIVEPLANNER_H
