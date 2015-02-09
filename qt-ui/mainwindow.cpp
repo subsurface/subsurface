@@ -54,7 +54,13 @@ MainWindow::MainWindow() : QMainWindow(),
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
 	GlobeGPS *globe = new GlobeGPS();
 
+	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
+	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
+	//DivePlannerDetails *plannerDetails = new DivePlannerDetails();
+
 	registerApplicationState("Default", mainTab, diveListView, profileWidget, globe );
+	registerApplicationState("AddDive", mainTab, diveListView, profileWidget, globe );
+	registerApplicationState("PlanDive", plannerWidget, plannerSettings, profileWidget, globe );
 
 	ui.multiFilter->hide();
 	// what is a sane order for those icons? we should have the ones the user is
