@@ -70,7 +70,7 @@
        </property>
        <widget class="QStackedWidget" name="diveListPane">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page_3">
          <layout class="QVBoxLayout" name="diveListLayout"/>
@@ -88,11 +88,7 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="globeLayout">
-          <item>
-           <widget class="GlobeGPS" name="globe" native="true"/>
-          </item>
-         </layout>
+         <layout class="QVBoxLayout" name="globeLayout"/>
         </widget>
         <widget class="QWidget" name="page_5">
          <property name="sizePolicy">
@@ -841,12 +837,6 @@ p, li { white-space: pre-wrap; }
    <class>MainTab</class>
    <extends>QWidget</extends>
    <header>qt-ui/maintab.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>GlobeGPS</class>
-   <extends>QWidget</extends>
-   <header>globe.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

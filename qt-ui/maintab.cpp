@@ -6,6 +6,7 @@
  */
 #include "maintab.h"
 #include "mainwindow.h"
+#include "globe.h"
 #include "helpers.h"
 #include "statistics.h"
 #include "modeldelegates.h"

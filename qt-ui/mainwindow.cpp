@@ -21,6 +21,7 @@
 #include "updatemanager.h"
 #include "planner.h"
 #include "filtermodels.h"
+#include "globe.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
@@ -53,14 +54,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	MainTab *mainTab = new MainTab();
 	DiveListView *diveListView = new DiveListView();
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
-	GlobeGPS *globe = new GlobeGPS();
+	GlobeGPS *globeGps = new GlobeGPS();
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
 
-	registerApplicationState("Default", mainTab, diveListView, profileWidget, globe );
-	registerApplicationState("AddDive", mainTab, diveListView, profileWidget, globe );
+	registerApplicationState("Default", mainTab, diveListView, profileWidget, globeGps );
+	registerApplicationState("AddDive", mainTab, diveListView, profileWidget, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, plannerSettings, profileWidget, plannerDetails );
 
 	ui.multiFilter->hide();
@@ -109,7 +110,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->reload(DiveTripModel::TREE);
 	diveListView->reloadHeaderActions();
 	diveListView->setFocus();
-	ui.globe->reload();
+	globe()->reload();
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	ui.divePlannerWidget->settingsChanged();
@@ -118,7 +119,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
-	connect(ui.globe, SIGNAL(coordinatesChanged()), ui.InfoWidget, SLOT(updateGpsCoordinates()));
+	connect(globe(), SIGNAL(coordinatesChanged()), ui.InfoWidget, SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
@@ -200,7 +201,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	showError(get_error_string());
 	ui.InfoWidget->reload();
 	TankInfoModel::instance()->update();
-	ui.globe->reload();
+	globe()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
 	ui.diveListPane->setCurrentIndex(0); // switch to the dive list
@@ -228,7 +229,7 @@ void MainWindow::current_dive_changed(int divenr)
 {
 	if (divenr >= 0) {
 		select_dive(divenr);
-		ui.globe->centerOnCurrentDive();
+		globe()->centerOnCurrentDive();
 	}
 	ui.newProfile->plotDive();
 	ui.InfoWidget->updateDiveInfo();
@@ -285,7 +286,7 @@ void MainWindow::cleanUpEmpty()
 	ui.InfoWidget->updateDiveInfo(true);
 	ui.newProfile->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
-	ui.globe->reload();
+	globe()->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
@@ -1019,7 +1020,7 @@ DiveListView *MainWindow::dive_list()
 
 GlobeGPS *MainWindow::globe()
 {
-	return ui.globe;
+	return qobject_cast<GlobeGPS*>(applicationState["Default"].bottomRight);
 }
 
 MainTab *MainWindow::information()

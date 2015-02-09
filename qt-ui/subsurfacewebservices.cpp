@@ -3,6 +3,8 @@
 #include "mainwindow.h"
 #include "usersurvey.h"
 #include "divelist.h"
+#include "globe.h"
+
 #include <errno.h>
 
 #include <QDir>
