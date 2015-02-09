@@ -27,32 +27,6 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QStackedWidget" name="infoPane">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="page">
-         <layout class="QHBoxLayout" name="mainTabOuterLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="page_2">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <layout class="QHBoxLayout" name="divePlannerLayout">
-          <item>
-           <widget class="DivePlannerWidget" name="divePlannerWidget" native="true">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
        <widget class="QWidget" name="ProfileWidget">
         <layout class="QGridLayout" name="profileInnerLayout">
          <item row="0" column="0" rowspan="3">
@@ -828,12 +802,6 @@ p, li { white-space: pre-wrap; }
    <class>KMessageWidget</class>
    <extends>QWidget</extends>
    <header>kmessagewidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DivePlannerWidget</class>
-   <extends>QWidget</extends>
-   <header>diveplanner.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

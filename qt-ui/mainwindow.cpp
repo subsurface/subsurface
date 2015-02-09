@@ -63,7 +63,9 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	registerApplicationState("Default", mainTab, diveListView, profileWidget, globeGps );
 	registerApplicationState("AddDive", mainTab, diveListView, profileWidget, globeGps );
+	registerApplicationState("EditDive", mainTab, diveListView, profileWidget, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, plannerSettings, profileWidget, plannerDetails );
+	registerApplicationState("EditPlannedDive", plannerWidget, diveListView, profileWidget, globeGps );
 
 	ui.multiFilter->hide();
 	// what is a sane order for those icons? we should have the ones the user is
@@ -87,7 +89,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), information(), SLOT(updateDiveInfo()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.plannerSettingsWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
 	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
@@ -97,7 +99,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(information(), SIGNAL(addDiveFinished()), ui.newProfile, SLOT(setProfileState()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
-	connect(ui.printPlan, SIGNAL(pressed()), ui.divePlannerWidget, SLOT(printDecoPlan()));
+	connect(ui.printPlan, SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(ui.menu_Edit, SIGNAL(aboutToShow()), this, SLOT(checkForUndoAndRedo()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
@@ -114,7 +116,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	globe()->reload();
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
-	ui.divePlannerWidget->settingsChanged();
+	divePlannerWidget()->settingsChanged();
 	ui.plannerSettingsWidget->settingsChanged();
 #ifdef NO_MARBLE
 	ui.globePane->hide();
@@ -385,7 +387,7 @@ void MainWindow::showProfile()
 {
 	enableShortcuts();
 	ui.newProfile->setProfileState();
-	ui.infoPane->setCurrentIndex(MAINTAB);
+	setApplicationState("Default");
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -527,8 +529,8 @@ void MainWindow::on_actionReplanDive_triggered()
 
 	ui.newProfile->setPlanState();
 	ui.newProfile->clearHandlers();
-	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
-	ui.divePlannerWidget->setReplanButton(true);
+	setApplicationState("PlanDive");
+	divePlannerWidget()->setReplanButton(true);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
@@ -545,22 +547,26 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	setApplicationState("PlanDive");
 
 	ui.newProfile->setPlanState();
-	ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 
 	// create a simple starting dive, using the first gas from the just copied cylidners
 	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	DivePictureModel::instance()->updateDivePictures();
-	ui.divePlannerWidget->setReplanButton(false);
+	divePlannerWidget()->setReplanButton(false);
 
 	ui.diveListPane->setCurrentIndex(1); // switch to the plan output
 	ui.globePane->setCurrentIndex(1);
 #ifdef NO_MARBLE
 	ui.globePane->show();
 #endif
+}
+
+DivePlannerWidget* MainWindow::divePlannerWidget() {
+	return qobject_cast<DivePlannerWidget*>(applicationState["PlanDive"].topLeft);
 }
 
 void MainWindow::on_actionAddDive_triggered()
@@ -573,6 +579,7 @@ void MainWindow::on_actionAddDive_triggered()
 		dive_list()->clearSelection();
 	}
 
+	setApplicationState("AddDive");
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 
 	// setup things so we can later create our starting dive
@@ -585,7 +592,6 @@ void MainWindow::on_actionAddDive_triggered()
 	information()->setCurrentIndex(0);
 
 	information()->addDiveStarted();
-	ui.infoPane->setCurrentIndex(MAINTAB);
 
 	ui.newProfile->setAddState();
 	DivePlannerPointsModel::instance()->createSimpleDive();
@@ -1391,17 +1397,13 @@ void MainWindow::editCurrentDive()
 		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		ui.newProfile->setAddState();
-		ui.infoPane->setCurrentIndex(MAINTAB);
+		setApplicationState("EditDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
 		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-		//TODO: I BROKE THIS BY COMMENTING THE LINE BELOW
-		// and I'm sleepy now, so I think I should not try to fix right away.
-		// we don't setCurrentIndex anymore, we ->setPlanState() or ->setAddState() on the ProfileView.
-		//ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
-		ui.infoPane->setCurrentIndex(PLANNERWIDGET);
+		setApplicationState("EditPlannedDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
@@ -1515,15 +1517,14 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		return;
 
 	// yes, index is zero both times. please don't change it.
-	if (ui.topSplitter->count()) {
+	if (ui.topSplitter->count() >= 2) {
 		ui.topSplitter->widget(0)->setParent(NULL);
 		ui.topSplitter->widget(0)->setParent(NULL);
 	}
-	if (ui.bottomSplitter->count()) {
+	if (ui.bottomSplitter->count() >= 2) {
 		ui.bottomSplitter->widget(0)->setParent(NULL);
 		ui.bottomSplitter->widget(0)->setParent(NULL);
 	}
-
 
 	WidgetForBorder curr = applicationState[state];
 	ui.topSplitter->addWidget(curr.topLeft);

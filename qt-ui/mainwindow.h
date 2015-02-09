@@ -30,6 +30,7 @@ class QWebView;
 class QSettings;
 class UpdateManager;
 class UserManual;
+class DivePlannerWidget;
 class UndoBuffer;
 
 enum MainWindowTitleFormat {
@@ -65,6 +66,7 @@ public:
 	void removeRecentFile(QStringList failedFiles);
 	DiveListView *dive_list();
 	GlobeGPS *globe();
+	DivePlannerWidget *divePlannerWidget();
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 
