@@ -12,7 +12,7 @@ private:
 
 public:
 	explicit UndoCommand(QString commandName, dive* affectedDive);
-	void setStateAfter(dive* affectedDive);
+	void setStateAfter(dive* affectedDive) { stateAfter = affectedDive; }
 	void undo();
 	void redo();
 };
@@ -25,7 +25,9 @@ public:
 	~UndoBuffer();
 	bool canUndo();
 	bool canRedo();
+	UndoCommand *current() const { return list.at(curIdx - 1); }
 private:
+	QList<UndoCommand*> list;
 	int curIdx;
 public slots:
 	void redo();
