@@ -32,6 +32,8 @@ class UpdateManager;
 class UserManual;
 class DivePlannerWidget;
 class ProfileWidget2;
+class PlannerDetails;
+class PlannerSettingsWidget;
 class UndoBuffer;
 
 enum MainWindowTitleFormat {
@@ -68,6 +70,8 @@ public:
 	DiveListView *dive_list();
 	GlobeGPS *globe();
 	DivePlannerWidget *divePlannerWidget();
+	PlannerSettingsWidget *divePlannerSettingsWidget();
+
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 

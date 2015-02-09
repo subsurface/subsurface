@@ -3,6 +3,7 @@
 #include <QPicture>
 #include <QMessageBox>
 #include <QPointer>
+#include <QTableView>
 
 #include "mainwindow.h"
 #include "printdialog.h"

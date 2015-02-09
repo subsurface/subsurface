@@ -14,6 +14,7 @@
 #include "divelistview.h"
 #include "display.h"
 #include "profile/profilewidget2.h"
+#include "diveplanner.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"

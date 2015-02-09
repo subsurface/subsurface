@@ -8,6 +8,7 @@
 
 #include <QCompleter>
 #include <QKeyEvent>
+#include <QTextDocument>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {

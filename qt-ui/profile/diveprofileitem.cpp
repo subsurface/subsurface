@@ -11,6 +11,7 @@
 #include "mainwindow.h"
 #include "maintab.h"
 #include "profile/profilewidget2.h"
+#include "diveplanner.h"
 
 #include <QSettings>
 

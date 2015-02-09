@@ -32,15 +32,6 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QStackedWidget" name="diveListPane">
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <widget class="QWidget" name="page_3">
-         <layout class="QVBoxLayout" name="diveListLayout"/>
-        </widget>
-        <widget class="PlannerSettingsWidget" name="plannerSettingsWidget"/>
-       </widget>
       </widget>
      </widget>
     </item>
@@ -703,12 +694,6 @@
    <class>KMessageWidget</class>
    <extends>QWidget</extends>
    <header>kmessagewidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PlannerSettingsWidget</class>
-   <extends>QWidget</extends>
-   <header>diveplanner.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -24,6 +24,7 @@
 #include "profile/profilewidget2.h"
 #include "globe.h"
 #include "maintab.h"
+#include "diveplanner.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
@@ -92,7 +93,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(reloadHeaderActions()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), information(), SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget(), SLOT(settingsChanged()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.plannerSettingsWidget, SLOT(settingsChanged()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerSettingsWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
 	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
@@ -119,7 +120,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
-	ui.plannerSettingsWidget->settingsChanged();
+	divePlannerSettingsWidget()->settingsChanged();
 #ifdef NO_MARBLE
 	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
@@ -188,6 +189,10 @@ PlannerDetails *MainWindow::plannerDetails() const {
 	return qobject_cast<PlannerDetails*>(applicationState["PlanDive"].bottomRight);
 }
 
+PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
+	return qobject_cast<PlannerSettingsWidget*>(applicationState["PlanDive"].bottomLeft);
+}
+
 void MainWindow::setLoadedWithFiles(bool f)
 {
 	filesAsArguments = f;
@@ -212,7 +217,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	globe()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
-	ui.diveListPane->setCurrentIndex(0); // switch to the dive list
 #ifdef NO_MARBLE
 	ui.globePane->hide();
 #endif

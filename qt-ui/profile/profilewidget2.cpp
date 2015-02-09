@@ -13,6 +13,7 @@
 #include "divepicturewidget.h"
 #include "models.h"
 #include "maintab.h"
+#include "diveplanner.h"
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
