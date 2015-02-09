@@ -22,6 +22,7 @@
 #include "planner.h"
 #include "filtermodels.h"
 #include "globe.h"
+#include "maintab.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include "printdialog.h"
@@ -85,7 +86,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(reloadHeaderActions()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.InfoWidget, SLOT(updateDiveInfo()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), information(), SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), ui.plannerSettingsWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
@@ -119,7 +120,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
-	connect(globe(), SIGNAL(coordinatesChanged()), ui.InfoWidget, SLOT(updateGpsCoordinates()));
+	connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
@@ -199,7 +200,7 @@ MainWindow *MainWindow::instance()
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
 	showError(get_error_string());
-	ui.InfoWidget->reload();
+	information()->reload();
 	TankInfoModel::instance()->update();
 	globe()->reload();
 	if (doRecreateDiveList)
@@ -232,7 +233,7 @@ void MainWindow::current_dive_changed(int divenr)
 		globe()->centerOnCurrentDive();
 	}
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo();
+	information()->updateDiveInfo();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -280,10 +281,10 @@ ProfileWidget2 *MainWindow::graphics() const
 
 void MainWindow::cleanUpEmpty()
 {
-	ui.InfoWidget->clearStats();
-	ui.InfoWidget->clearInfo();
-	ui.InfoWidget->clearEquipment();
-	ui.InfoWidget->updateDiveInfo(true);
+	information()->clearStats();
+	information()->clearInfo();
+	information()->clearEquipment();
+	information()->updateDiveInfo(true);
 	ui.newProfile->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
 	globe()->reload();
@@ -295,7 +296,7 @@ void MainWindow::cleanUpEmpty()
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
+	    information()->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
@@ -394,9 +395,9 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	if (ui.InfoWidget->isEditing()) {
-		ui.InfoWidget->rejectChanges();
-		if (ui.InfoWidget->isEditing())
+	if (information()->isEditing()) {
+		information()->rejectChanges();
+		if (information()->isEditing())
 			// didn't discard the edits
 			return;
 	}
@@ -442,7 +443,7 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 bool MainWindow::plannerStateClean()
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
+	    information()->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
 		return false;
 	}
@@ -472,7 +473,7 @@ void MainWindow::planCreated()
 		set_dive_nr_for_current_dive();
 	}
 	// make sure our UI is in a consistent state
-	ui.InfoWidget->updateDiveInfo();
+	information()->updateDiveInfo();
 	showProfile();
 	refreshDisplay();
 }
@@ -578,12 +579,12 @@ void MainWindow::on_actionAddDive_triggered()
 	setupForAddAndPlan("manually added dive"); // don't translate, stored in the XML file
 
 	// now show the mostly empty main tab
-	ui.InfoWidget->updateDiveInfo();
+	information()->updateDiveInfo();
 
 	// show main tab
-	ui.InfoWidget->setCurrentIndex(0);
+	information()->setCurrentIndex(0);
 
-	ui.InfoWidget->addDiveStarted();
+	information()->addDiveStarted();
 	ui.infoPane->setCurrentIndex(MAINTAB);
 
 	ui.newProfile->setAddState();
@@ -744,7 +745,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo();
+	information()->updateDiveInfo();
 }
 
 void MainWindow::on_actionNextDC_triggered()
@@ -752,7 +753,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	ui.newProfile->plotDive();
-	ui.InfoWidget->updateDiveInfo();
+	information()->updateDiveInfo();
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)
@@ -986,7 +987,7 @@ void MainWindow::writeSettings()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    ui.InfoWidget->isEditing()) {
+	    information()->isEditing()) {
 		on_actionQuit_triggered();
 		event->ignore();
 		return;
@@ -1025,7 +1026,7 @@ GlobeGPS *MainWindow::globe()
 
 MainTab *MainWindow::information()
 {
-	return ui.InfoWidget;
+	return qobject_cast<MainTab*>(applicationState["Default"].topLeft);
 }
 
 void MainWindow::loadRecentFiles(QSettings *s)
@@ -1200,8 +1201,8 @@ int MainWindow::file_save_as(void)
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
-	if (ui.InfoWidget->isEditing())
-		ui.InfoWidget->acceptChanges();
+	if (information()->isEditing())
+		information()->acceptChanges();
 
 	if (save_dives(filename.toUtf8().data())) {
 		showError(get_error_string());
@@ -1223,8 +1224,8 @@ int MainWindow::file_save(void)
 	if (!existing_filename)
 		return file_save_as();
 
-	if (ui.InfoWidget->isEditing())
-		ui.InfoWidget->acceptChanges();
+	if (information()->isEditing())
+		information()->acceptChanges();
 
 	current_default = prefs.default_filename;
 	if (strcmp(existing_filename, current_default) == 0) {
@@ -1392,7 +1393,7 @@ void MainWindow::editCurrentDive()
 		ui.newProfile->setAddState();
 		ui.infoPane->setCurrentIndex(MAINTAB);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
 		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
@@ -1402,7 +1403,7 @@ void MainWindow::editCurrentDive()
 		//ui.stackedWidget->setCurrentIndex(PLANNERPROFILE); // Planner.
 		ui.infoPane->setCurrentIndex(PLANNERWIDGET);
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		ui.InfoWidget->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	}
 }
 
@@ -1477,7 +1478,7 @@ void MainWindow::on_paste_triggered()
 {
 	// take the data in our copyPasteDive and apply it to selected dives
 	selective_copy_dive(&copyPasteDive, &displayed_dive, what, false);
-	ui.InfoWidget->showAndTriggerEditSelective(what);
+	information()->showAndTriggerEditSelective(what);
 }
 
 void MainWindow::on_actionFilterTags_triggered()

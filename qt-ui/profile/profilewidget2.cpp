@@ -10,7 +10,9 @@
 #include "ruleritem.h"
 #include "tankitem.h"
 #include "pref.h"
+#include "divepicturewidget.h"
 #include "models.h"
+#include "maintab.h"
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
@@ -18,6 +20,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDebug>
+#include <QWheelEvent>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>

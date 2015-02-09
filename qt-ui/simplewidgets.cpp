@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QShortcut>
 #include <QCalendarWidget>
+#include <QKeyEvent>
 
 #include "file.h"
 #include "mainwindow.h"

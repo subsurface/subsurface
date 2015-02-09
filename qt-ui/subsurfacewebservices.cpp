@@ -4,6 +4,7 @@
 #include "usersurvey.h"
 #include "divelist.h"
 #include "globe.h"
+#include "maintab.h"
 
 #include <errno.h>
 

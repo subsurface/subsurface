@@ -3,7 +3,11 @@
 #include "mainwindow.h"
 #include "helpers.h"
 #include "divelistview.h"
+#include "maintab.h"
+
 #include <QTimer>
+#include <QContextMenuEvent>
+#include <QMouseEvent>
 
 #include <marble/AbstractFloatItem.h>
 #include <marble/GeoDataPlacemark.h>

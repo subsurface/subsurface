@@ -3,8 +3,10 @@
 #include "gettextfromc.h"
 #include "mainwindow.h"
 #include "models.h"
+#include "starwidget.h"
 
 #include <QCompleter>
+#include <QKeyEvent>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {

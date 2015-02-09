@@ -9,6 +9,7 @@
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
 #include "mainwindow.h"
+#include "maintab.h"
 
 #include <QSettings>
 

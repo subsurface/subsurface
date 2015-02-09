@@ -8,7 +8,9 @@
 #include "filtermodels.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
+#include "divepicturewidget.h"
 #include <QSettings>
+#include <QKeyEvent>
 #include <QFileDialog>
 #include "qthelper.h"
 #include "undobuffer.h"

@@ -36,9 +36,6 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <item>
-           <widget class="MainTab" name="InfoWidget" native="true"/>
-          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="page_2">
@@ -831,12 +828,6 @@ p, li { white-space: pre-wrap; }
    <class>KMessageWidget</class>
    <extends>QWidget</extends>
    <header>kmessagewidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>MainTab</class>
-   <extends>QWidget</extends>
-   <header>qt-ui/maintab.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
