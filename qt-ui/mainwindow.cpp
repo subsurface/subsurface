@@ -1485,3 +1485,8 @@ void MainWindow::checkForUndoAndRedo()
 	ui.action_Undo->setEnabled(undoBuffer->canUndo());
 	ui.action_Redo->setEnabled(undoBuffer->canRedo());
 }
+
+void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
+{
+	applicationState[state] = WidgetForBorder(topLeft, bottomLeft, topRight, bottomRight);
+}

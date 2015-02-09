@@ -190,6 +190,7 @@ private:
 	void saveSplitterSizes();
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
+	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
 
@@ -201,6 +202,8 @@ private:
 	QList<QAction *> profileToolbarActions;
 
 	struct WidgetForBorder {
+		WidgetForBorder(QWidget *tl, QWidget *bl, QWidget *tr, QWidget *br) :
+			topLeft(tl), bottomLeft(bl), topRight(tr), bottomRight(br) {}
 		QWidget *topLeft;
 		QWidget *bottomLeft;
 		QWidget *topRight;
