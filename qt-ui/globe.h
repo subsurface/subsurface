@@ -19,7 +19,7 @@ class GlobeGPS : public MarbleWidget {
 	Q_OBJECT
 public:
 	using MarbleWidget::centerOn;
-	GlobeGPS(QWidget *parent);
+	GlobeGPS(QWidget *parent = 0);
 	void reload();
 	void repopulateLabels();
 	void centerOnCurrentDive();

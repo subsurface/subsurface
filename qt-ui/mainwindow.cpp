@@ -45,6 +45,17 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
 	ui.setupUi(this);
+	// Define the States of the Application Here, Currently the states are situations where the different
+	// widgets will change on the mainwindow.
+
+	// for the "default" mode
+	MainTab *mainTab = new MainTab();
+	DiveListView *diveListView = new DiveListView();
+	ProfileWidget2 *profileWidget = new ProfileWidget2();
+	GlobeGPS *globe = new GlobeGPS();
+
+	registerApplicationState("Default", mainTab, diveListView, profileWidget, globe );
+
 	ui.multiFilter->hide();
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
@@ -1484,7 +1495,7 @@ void MainWindow::checkForUndoAndRedo()
 	ui.action_Redo->setEnabled(undoBuffer->canRedo());
 }
 
-void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
+void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForBorder(topLeft, bottomLeft, topRight, bottomRight);
 }

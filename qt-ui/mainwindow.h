@@ -202,7 +202,7 @@ private:
 	QList<QAction *> profileToolbarActions;
 
 	struct WidgetForBorder {
-		WidgetForBorder(QWidget *tl, QWidget *bl, QWidget *tr, QWidget *br) :
+		WidgetForBorder(QWidget *tl = 0, QWidget *bl = 0, QWidget *tr = 0, QWidget *br = 0) :
 			topLeft(tl), bottomLeft(bl), topRight(tr), bottomRight(br) {}
 		QWidget *topLeft;
 		QWidget *bottomLeft;

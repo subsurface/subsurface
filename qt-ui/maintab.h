@@ -40,7 +40,7 @@ public:
 		IGNORE
 	};
 
-	MainTab(QWidget *parent);
+	MainTab(QWidget *parent = 0);
 	~MainTab();
 	void clearStats();
 	void clearInfo();
