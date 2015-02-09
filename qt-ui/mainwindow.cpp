@@ -170,6 +170,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	updateManager = new UpdateManager(this);
 	undoBuffer = new UndoBuffer(this);
+	setApplicationState("Default");
 }
 
 MainWindow::~MainWindow()
@@ -1504,4 +1505,26 @@ void MainWindow::checkForUndoAndRedo()
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForBorder(topLeft, bottomLeft, topRight, bottomRight);
+}
+
+void MainWindow::setApplicationState(const QByteArray& state) {
+	if (!applicationState.keys().contains(state))
+		return;
+
+	// yes, index is zero both times. please don't change it.
+	if (ui.topSplitter->count()) {
+		ui.topSplitter->widget(0)->setParent(NULL);
+		ui.topSplitter->widget(0)->setParent(NULL);
+	}
+	if (ui.bottomSplitter->count()) {
+		ui.bottomSplitter->widget(0)->setParent(NULL);
+		ui.bottomSplitter->widget(0)->setParent(NULL);
+	}
+
+
+	WidgetForBorder curr = applicationState[state];
+	ui.topSplitter->addWidget(curr.topLeft);
+	ui.topSplitter->addWidget(curr.topRight);
+	ui.bottomSplitter->addWidget(curr.bottomLeft);
+	ui.bottomSplitter->addWidget(curr.bottomRight);
 }

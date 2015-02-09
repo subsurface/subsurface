@@ -83,6 +83,7 @@ public:
 	void setPlanNotes(const char *notes);
 	void printPlan();
 	void checkSurvey(QSettings *s);
+	void setApplicationState(const QByteArray& state);
 	UndoBuffer *undoBuffer;
 private
 slots:
