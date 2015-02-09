@@ -199,6 +199,14 @@ private:
 	struct dive copyPasteDive;
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
+
+	struct WidgetForBorder {
+		QWidget *topLeft;
+		QWidget *bottomLeft;
+		QWidget *topRight;
+		QWidget *bottomRight;
+	};
+	QHash<QByteArray, WidgetForBorder> applicationState;
 };
 
 #endif // MAINWINDOW_H
