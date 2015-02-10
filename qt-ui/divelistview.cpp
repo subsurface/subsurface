@@ -34,6 +34,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
+	setSelectionMode(ExtendedSelection);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	const QFontMetrics metrics(defaultModelFont());
