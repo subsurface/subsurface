@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1682</width>
-    <height>1151</height>
+    <width>861</width>
+    <height>800</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -27,11 +27,15 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <widget class="QStackedWidget" name="topLeft"/>
+       <widget class="QStackedWidget" name="topRight"/>
       </widget>
       <widget class="QSplitter" name="bottomSplitter">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <widget class="QStackedWidget" name="bottomLeft"/>
+       <widget class="QStackedWidget" name="bottomRight"/>
       </widget>
      </widget>
     </item>
@@ -45,8 +49,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1682</width>
-     <height>25</height>
+     <width>861</width>
+     <height>32</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

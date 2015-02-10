@@ -1516,6 +1516,18 @@ void MainWindow::checkForUndoAndRedo()
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForBorder(topLeft, bottomLeft, topRight, bottomRight);
+	if (ui.topLeft->indexOf(topLeft) == -1) {
+		ui.topLeft->addWidget(topLeft);
+	}
+	if (ui.topRight->indexOf(topRight) == -1) {
+		ui.topRight->addWidget(topRight);
+	}
+	if (ui.bottomLeft->indexOf(bottomLeft) == -1) {
+		ui.bottomLeft->addWidget(bottomLeft);
+	}
+	if(ui.bottomRight->indexOf(bottomRight) == -1) {
+		ui.bottomRight->addWidget(bottomRight);
+	}
 }
 
 void MainWindow::setApplicationState(const QByteArray& state) {
@@ -1526,24 +1538,8 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		return;
 
 	currentApplicationState = state;
-	QList<int> topSize = ui.topSplitter->sizes();
-	QList<int> bottomSize = ui.bottomSplitter->sizes();
-
-	// yes, index is zero both times. please don't change it.
-	if (ui.topSplitter->count() >= 2) {
-		ui.topSplitter->widget(0)->setParent(NULL);
-		ui.topSplitter->widget(0)->setParent(NULL);
-	}
-	if (ui.bottomSplitter->count() >= 2) {
-		ui.bottomSplitter->widget(0)->setParent(NULL);
-		ui.bottomSplitter->widget(0)->setParent(NULL);
-	}
-
-	WidgetForBorder curr = applicationState[state];
-	ui.topSplitter->addWidget(curr.topLeft);
-	ui.topSplitter->addWidget(curr.topRight);
-	ui.bottomSplitter->addWidget(curr.bottomLeft);
-	ui.bottomSplitter->addWidget(curr.bottomRight);
-	ui.topSplitter->setSizes(topSize);
-	ui.bottomSplitter->setSizes(bottomSize);
+	ui.topLeft->setCurrentWidget( applicationState[state].topLeft);
+	ui.bottomLeft->setCurrentWidget( applicationState[state].bottomLeft);
+	ui.topRight->setCurrentWidget( applicationState[state].topRight);
+	ui.bottomRight->setCurrentWidget( applicationState[state].bottomRight);
 }
