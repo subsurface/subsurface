@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
+    <width>463</width>
     <height>815</height>
    </rect>
   </property>
@@ -40,20 +40,108 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>397</width>
-         <height>744</height>
+         <width>443</width>
+         <height>758</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="diveNotesScrollAreaLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="4" column="0" colspan="3">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetNoConstraint</enum>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Time</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="airTempLabel">
+            <property name="text">
+             <string>Air temp.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="waterTempLabel">
+            <property name="text">
+             <string>Water temp.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+            <property name="timeSpec">
+             <enum>Qt::UTC</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QTimeEdit" name="timeEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="timeSpec">
+             <enum>Qt::UTC</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="airtemp">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLineEdit" name="watertemp">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="LocationLabel">
+          <property name="text">
+           <string>Location</string>
           </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
+           <widget class="QLineEdit" name="location">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>manage</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
            <widget class="QLabel" name="CoordinatedLabel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -66,87 +154,50 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QLabel" name="TypeLabel">
             <property name="text">
              <string>Dive mode</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Date</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <layout class="QHBoxLayout" name="temperatureLabels">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="airTempLabel">
-            <property name="text">
-             <string>Air temp.</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="waterTempLabel">
-            <property name="text">
-             <string>Water temp.</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="1">
-         <widget class="QTimeEdit" name="timeEdit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="timeSpec">
-           <enum>Qt::UTC</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QDateEdit" name="dateEdit">
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-          <property name="timeSpec">
-           <enum>Qt::UTC</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <layout class="QHBoxLayout" name="airWaterTempLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLineEdit" name="airtemp">
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="coordinates">
             <property name="readOnly">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLineEdit" name="watertemp">
+          <item row="1" column="1">
+           <widget class="QComboBox" name="DiveType"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="DivemasterLabel">
+            <property name="text">
+             <string>Divemaster</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="BuddyLabel">
+            <property name="text">
+             <string>Buddy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="TagWidget" name="divemaster">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="TagWidget" name="buddy">
             <property name="readOnly">
              <bool>false</bool>
             </property>
@@ -154,47 +205,9 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="LocationLabel">
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="DivemasterLabel">
-          <property name="text">
-           <string>Divemaster</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="2">
-         <widget class="QLabel" name="BuddyLabel">
-          <property name="text">
-           <string>Buddy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0" colspan="2">
-         <widget class="TagWidget" name="divemaster">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="2">
-         <widget class="TagWidget" name="buddy">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0" colspan="2">
-         <layout class="QHBoxLayout" name="ratingVisibilityLabels">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
            <widget class="QLabel" name="RatingLabel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -207,7 +220,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QLabel" name="visibilityLabel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -220,28 +233,14 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item row="12" column="2">
-         <widget class="QLabel" name="SuitLabel">
-          <property name="text">
-           <string>Suit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="2">
-         <widget class="QLineEdit" name="suit">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0" colspan="2">
-         <layout class="QHBoxLayout" name="ratingVisibilityWidgets">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="SuitLabel">
+            <property name="text">
+             <string>Suit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
            <widget class="StarWidget" name="rating" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -254,7 +253,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="1">
            <widget class="StarWidget" name="visibility" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -267,23 +266,23 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="suit">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
-        <item row="14" column="0">
+        <item>
          <widget class="QLabel" name="TagLabel">
           <property name="text">
            <string>Tags</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="NotesLabel">
-          <property name="text">
-           <string>Notes</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0" colspan="3">
+        <item>
          <widget class="TagWidget" name="tagWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -308,14 +307,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="3">
-         <widget class="QLineEdit" name="location">
-          <property name="readOnly">
-           <bool>false</bool>
+        <item>
+         <widget class="QLabel" name="NotesLabel">
+          <property name="text">
+           <string>Notes</string>
           </property>
          </widget>
         </item>
-        <item row="17" column="0" colspan="3">
+        <item>
          <layout class="QHBoxLayout" name="notesAndSocialNetworksLayout">
           <property name="spacing">
            <number>0</number>
@@ -371,20 +370,6 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0" colspan="3">
-         <layout class="QHBoxLayout" name="coordinatesDiveTypeLayout">
-          <item>
-           <widget class="QLineEdit" name="coordinates">
-            <property name="readOnly">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="DiveType"/>
-          </item>
-         </layout>
-        </item>
        </layout>
       </widget>
      </widget>
@@ -415,8 +400,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>397</width>
-         <height>734</height>
+         <width>454</width>
+         <height>752</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -471,8 +456,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>397</width>
-         <height>734</height>
+         <width>454</width>
+         <height>752</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -788,8 +773,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>397</width>
-         <height>734</height>
+         <width>454</width>
+         <height>752</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="statsScrollAreaLayout">
