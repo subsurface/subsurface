@@ -2618,6 +2618,24 @@ bool taglist_contains(struct tag_entry *tag_list, const char *tag)
 	return false;
 }
 
+// check if all tags in subtl are included in supertl (so subtl is a subset of supertl)
+static bool taglist_contains_all(struct tag_entry *subtl, struct tag_entry *supertl)
+{
+	while (subtl) {
+		if (!taglist_contains(supertl, subtl->tag->name))
+			return false;
+		subtl = subtl->next;
+	}
+	return true;
+
+}
+
+// if tl1 is both a subset and superset of tl2 they must be the same
+bool taglist_equal(struct tag_entry *tl1, struct tag_entry *tl2)
+{
+	return taglist_contains_all(tl1, tl2) && taglist_contains_all(tl2, tl1);
+}
+
 // count the dives where the tag list contains the given tag
 int count_dives_with_tag(const char *tag)
 {
