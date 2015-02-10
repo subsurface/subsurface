@@ -3629,6 +3629,7 @@ Making a backup copy of the Suunto DM4/DM5 database:
 === Exporting from Atomic Logbook
 [[Atomic_Export]]
 
+[icon="images/icons/atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook is a Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.

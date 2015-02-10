@@ -3732,6 +3732,7 @@ aquí usaremos DM4 (o DM5) con la extensión por defecto .bak
 [[Atomic_Export]]
 === Exportar desde Atomic Logbook
 
+[icon="images/icons/atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook es un software en Windows de Atomics Aquatics. Permite descargar
 información de buceo de los ordenadores Cobalt y Cobalt 2. El archivo se guarda
