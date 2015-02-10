@@ -1099,6 +1099,9 @@ void MainTab::saveTags()
 	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&displayed_dive.tag_list, tag.toUtf8().data());
 	taglist_cleanup(&displayed_dive.tag_list);
+	// we need to check if the tags were changed before just overwriting them
+	if (taglist_equal(displayed_dive.tag_list, cd->tag_list))
+		return;
 	MODIFY_SELECTED_DIVES(
 		QString tag;
 		taglist_free(mydive->tag_list);
