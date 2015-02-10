@@ -63,11 +63,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
 
-	registerApplicationState("Default", mainTab, diveListView, profileWidget, globeGps );
-	registerApplicationState("AddDive", mainTab, diveListView, profileWidget, globeGps );
-	registerApplicationState("EditDive", mainTab, diveListView, profileWidget, globeGps );
-	registerApplicationState("PlanDive", plannerWidget, plannerSettings, profileWidget, plannerDetails );
-	registerApplicationState("EditPlannedDive", plannerWidget, diveListView, profileWidget, globeGps );
+	registerApplicationState("Default", mainTab, profileWidget, diveListView, globeGps );
+	registerApplicationState("AddDive", mainTab, profileWidget, diveListView, globeGps );
+	registerApplicationState("EditDive", mainTab, profileWidget, diveListView, globeGps );
+	registerApplicationState("PlanDive", plannerWidget, profileWidget, plannerSettings, plannerDetails );
+	registerApplicationState("EditPlannedDive", plannerWidget, profileWidget, diveListView, globeGps );
 	setApplicationState("Default");
 
 	ui.multiFilter->hide();
@@ -1513,9 +1513,9 @@ void MainWindow::checkForUndoAndRedo()
 	ui.action_Redo->setEnabled(undoBuffer->canRedo());
 }
 
-void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
+void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
 {
-	applicationState[state] = WidgetForQuadrant(topLeft, bottomLeft, topRight, bottomRight);
+	applicationState[state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
 	if (ui.topLeft->indexOf(topLeft) == -1) {
 		ui.topLeft->addWidget(topLeft);
 	}

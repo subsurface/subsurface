@@ -199,7 +199,7 @@ private:
 	void saveSplitterSizes();
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
-	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight);
+	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
 
@@ -211,11 +211,11 @@ private:
 	QList<QAction *> profileToolbarActions;
 
 	struct WidgetForQuadrant {
-		WidgetForQuadrant(QWidget *tl = 0, QWidget *bl = 0, QWidget *tr = 0, QWidget *br = 0) :
-			topLeft(tl), bottomLeft(bl), topRight(tr), bottomRight(br) {}
+		WidgetForQuadrant(QWidget *tl = 0, QWidget *tr = 0, QWidget *bl = 0, QWidget *br = 0) :
+			topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br) {}
 		QWidget *topLeft;
-		QWidget *bottomLeft;
 		QWidget *topRight;
+		QWidget *bottomLeft;
 		QWidget *bottomRight;
 	};
 	QHash<QByteArray, WidgetForQuadrant> applicationState;
