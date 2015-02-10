@@ -792,12 +792,14 @@ DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientF
 	gradientFactor->setY(0);
 	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
 	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-	connect(MainWindow::instance()->information(), SIGNAL(dateTimeChanged()), this, SLOT(recalc()));
 	settingsChanged();
 }
 
 void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+	if (MainWindow::instance()->information())
+		connect(MainWindow::instance()->information(), SIGNAL(dateTimeChanged()), this, SLOT(recalc()), Qt::UniqueConnection);
+
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
