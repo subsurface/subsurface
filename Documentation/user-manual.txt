@@ -537,7 +537,7 @@ _Subsurface_ only imports dives that have not been uploaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 If, for some reason, the user wishes to import ALL dives from the dive computer,
-even though some may already be in the logbook, then check the check box labelled
+even though some may already be in the logbook, then check the check box labeled
 _Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the
@@ -1143,12 +1143,12 @@ column headings. The top line of the white part of the data table contains the c
 headings found in the _CSV_ data file. The blue row of cells immediately above these
 contains the names understood by _Subsurface_. The white area below the dropdown
 lists contains all the field names that _Subsurface_ recognises. These names are
-in blue balloons and can be moved using a drag-and-frop action. For
+in blue balloons and can be moved using a drag-and-drop action. For
 instance, _Subsurface_ expects the column heading for Dive number (" # ") to be "Dive # ". If
 the column heading that _Subsurface_ expects is not in the blue cells, then drag the
 appropriate column heading from the upper area and drop it in the appropriate blue
 cell at the top of the table. To indicate the correct column for "Dive #", drag
-the ballooned item labelled "Dive # " and drop it in the blue
+the ballooned item labeled "Dive # " and drop it in the blue
 cell immediately above the white cell containing " # ". This is depicted in
 the image below.
 
@@ -1165,9 +1165,9 @@ The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-_CSV_ is an abbreviation for a data file format: _Comma-Separated Variables_. It is a
+_CSV_ is an abbreviation for a data file format: _Comma-Separated Values_. It is a
 file format allowing someone to view or edit the information using a text editor such
-as Notebook (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
+as Notepad (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
 the _CSV_ format is that the data are easily editable as text without any proprietary software
 and ensuring all information is human-readable, not being obscured by any custom or
 proprietary attributes that proprietary software insert into files.
@@ -1659,7 +1659,7 @@ as _Subsurface_ is concerned, there are only two types of information that need 
   in time on the *Dive Profile* panel and indicating the cylinder to which the change was made. After
   right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
   those defined during the first step, above (see image below). If the
-  *tank bar* button in the ttolbar has been activated, the cylinder switches are also indicated in the
+  *tank bar* button in the toolbar has been activated, the cylinder switches are also indicated in the
   tank bar.
 
 Having performed these tasks, _Subsurface_ indicates the appropriate use of cylinders in the dive profile.
@@ -1695,11 +1695,11 @@ dive logging involves, exactly as with multicylinder dives, above, three steps:
   profile with a cylinder symbol. If the *Tank Bar* is activated using the toolbar to the left of the
   profile, then the cylinder change is also indicated on the Tank Bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
-  for both cylinders are shown on the dive profile, as inthe image below.
+  for both cylinders are shown on the dive profile, as in the image below.
 
 image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
-This section gives an example of the versatility of _Subsurface_ as a give logging tool.
+This section gives an example of the versatility of _Subsurface_ as a dive logging tool.
 
 
 [[S_sSCR_dives]]
@@ -1725,7 +1725,7 @@ To log pSCR dives, no special procedures are required, just the normal steps out
   and indicate the cylinder/gas changes as described above in the section on xref:S_MulticylinderDives[multicylinder dives].
 
 If a pSCR _Dive Mode_ has been selected, the dive ceiling for pSCR dives is adjusted for the oxygen
-drop accross the mouthpiece which often requires longer decompression periods. Below is a dive profile
+drop across the mouthpiece which often requires longer decompression periods. Below is a dive profile
 of a pSCR dive using EAN36 on the back cylinder and oxygen for decompression. Note that this dive lasted
 over two hours.
 
@@ -1830,7 +1830,7 @@ _Cylinder pressures_: Some CCR dive computers like the Poseidon MkVI record the
 pressures of the oxygen and diluent cylinders. The pressures of these two cylinders
 are shown as green lines overlapping the depth profile. In addition, start and
 end pressures for both oxygen and diluent cylinders are shown in the _Equipment Tab_.
-Below is a dive profile for a CCR dive, including an overaly
+Below is a dive profile for a CCR dive, including an overlay
 of setpoint and oxygen sensor data, as well as the cylinder pressure data. In this
 case there is good agreement from the readings of the two oxygen sensors.
 
@@ -2166,11 +2166,11 @@ values are dependent on the composition of the breathing gas.  The EAD
 is the depth of a hypothetical air dive that has the same partial
 pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equalling the EAD. The END is the depth of a
+air dive to the depth equaling the EAD. The END is the depth of a
 hypothetical air dive that has the same sum of partial pressures of
 the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equalling the END.
+air diving at a depth equaling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of data.
 
@@ -2495,7 +2495,7 @@ A dive log or part of it can be saved in three formats:
   one needs a user-ID as well as a password for _Divelogs.de_. Log into _http://en.divelogs.de_
   and subscribe to this service in order to upload dive log data from _Subsurface_.
 
-* _DiveShare_ is also a dive log repostory on the Internet focusing on the recreational
+* _DiveShare_ is also a dive log repository on the Internet focusing on the recreational
   dives. In order to upload dives one has to provide a used ID, so registration with
   _http://scubadiveshare.com_ is required.
 
@@ -2913,7 +2913,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
   above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
   in metres, assuming an atmospheric pressure of 1.013 bar.
 
-- In the table labelled _Available Gases_, add the information of the cylinders to be used
+- In the table labeled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <<S_CylinderData,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
@@ -2992,7 +2992,7 @@ of that table corresponds to one of the gas mixtures specified in the _Available
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
 waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
-computes additional way points in order to fulfil decompression requirements for that
+computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can be moved by selecting that waypoint and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
 order to obtain a precise presentation of the dive plan. In fact, one can create the
@@ -3071,13 +3071,13 @@ The parameters of the pSCR diver can be set by selecting  _File ->   Preferences
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
-pO~2~ drops below what is considered a save value, a warning apears in the _Dive plan
+pO~2~ drops below what is considered a save value, a warning appears in the _Dive plan
 details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
 cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
 are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
 to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
-in the loop due to the oxygen drop accross the mouthpiece of the pSCR equipment.
+in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
 
 image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
 
@@ -3544,7 +3544,7 @@ APD inspiration dive logs are imported into _Subsurface_ as follows:
 - In the dropdown list towards the bottom right of the dialogue, select "_CSV files_".
 - On the list of file names select the .CSV file that has been created above. An import
   dialogue opens.
-- In the dropdown list on the middle right labeled '_Pre-configured imports_",
+- In the dropdown list on the top left labeled '_Pre-configured imports_",
   select _APD Log Viewer_.
 - Ensure the other settings for the ADP dive log are appropriate, then select _OK_.
 
@@ -3632,7 +3632,7 @@ Making a backup copy of the Suunto DM4/DM5 database:
 [NOTE]
 Atomic Logbook is a Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.
-The divelog is kept in a SQlite database at
+The divelog is kept in a SQLite database at
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
 be directly imported to Subsurface.
 
@@ -3695,7 +3695,7 @@ The user can organize dive data following a few simple rules:
 
 1. Date: use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy
 2. Duration: the format should be minutes:seconds.
-3. Unit system: only one unit system shold be used (i.e., no mixture between imperial and metric units)
+3. Unit system: only one unit system should be used (i.e., no mixture between imperial and metric units)
 4. Tags and buddies: values should be separated using a comma.
 5. GPS position: users must use decimal degrees, e.g. 30.22496 30.821798
 
