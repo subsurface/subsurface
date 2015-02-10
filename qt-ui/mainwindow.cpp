@@ -1522,6 +1522,8 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 	if (!applicationState.keys().contains(state))
 		return;
 
+	QList<int> topSize = ui.topSplitter->sizes();
+	QList<int> bottomSize = ui.bottomSplitter->sizes();
 	// yes, index is zero both times. please don't change it.
 	if (ui.topSplitter->count() >= 2) {
 		ui.topSplitter->widget(0)->setParent(NULL);
@@ -1537,4 +1539,6 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 	ui.topSplitter->addWidget(curr.topRight);
 	ui.bottomSplitter->addWidget(curr.bottomLeft);
 	ui.bottomSplitter->addWidget(curr.bottomRight);
+	ui.topSplitter->setSizes(topSize);
+	ui.bottomSplitter->setSizes(bottomSize);
 }
