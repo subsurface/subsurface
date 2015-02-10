@@ -883,11 +883,13 @@ void update_setpoint_events(struct divecomputer *dc)
 	if (dc->divemode == CCR)
 		new_setpoint = prefs.defaultsetpoint;
 
-	if (dc->divemode == OC && same_string(dc->model, "Shearwater Predator")) {
+	if (dc->divemode == OC &&
+	    (same_string(dc->model, "Shearwater Predator") ||
+	     same_string(dc->model, "Shearwater Petrel"))) {
 		// make sure there's no setpoint in the samples
 		// this is an irreversible change - so switching a dive to OC
 		// by mistake when it's actually CCR is _bad_
-		// So we make sure, this comes from a Predator and we only remove
+		// So we make sure, this comes from a Predator or Petrel and we only remove
 		// pO2 values we would have computed anyway.
 		struct event *ev = get_next_event(dc->events, "gaschange");
 		struct gasmix *gasmix = get_gasmix_from_event(ev);
