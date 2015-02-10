@@ -48,10 +48,7 @@ public:
 		COLLAPSED,
 		EXPANDED
 	};
-	enum InfoWidgetIndexes {
-		MAINTAB,
-		PLANNERWIDGET
-	};
+
 	enum CurrentState {
 		VIEWALL,
 		GLOBE_MAXIMIZED,
