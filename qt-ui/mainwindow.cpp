@@ -57,7 +57,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	MainTab *mainTab = new MainTab();
 	DiveListView *diveListView = new DiveListView();
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
+
+#ifndef NO_MARBLE
 	GlobeGPS *globeGps = new GlobeGPS();
+#else
+	QWidget *globeGps = NULL;
+#endif
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
@@ -1516,16 +1521,16 @@ void MainWindow::checkForUndoAndRedo()
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
 {
 	applicationState[state] = WidgetForQuadrant(topLeft, topRight, bottomLeft, bottomRight);
-	if (ui.topLeft->indexOf(topLeft) == -1) {
+	if (ui.topLeft->indexOf(topLeft) == -1 && topLeft) {
 		ui.topLeft->addWidget(topLeft);
 	}
-	if (ui.topRight->indexOf(topRight) == -1) {
+	if (ui.topRight->indexOf(topRight) == -1 && topRight) {
 		ui.topRight->addWidget(topRight);
 	}
-	if (ui.bottomLeft->indexOf(bottomLeft) == -1) {
+	if (ui.bottomLeft->indexOf(bottomLeft) == -1 && bottomLeft) {
 		ui.bottomLeft->addWidget(bottomLeft);
 	}
-	if(ui.bottomRight->indexOf(bottomRight) == -1) {
+	if(ui.bottomRight->indexOf(bottomRight) == -1 && bottomRight) {
 		ui.bottomRight->addWidget(bottomRight);
 	}
 }
@@ -1538,8 +1543,17 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		return;
 
 	currentApplicationState = state;
-	ui.topLeft->setCurrentWidget( applicationState[state].topLeft);
-	ui.bottomLeft->setCurrentWidget( applicationState[state].bottomLeft);
-	ui.topRight->setCurrentWidget( applicationState[state].topRight);
-	ui.bottomRight->setCurrentWidget( applicationState[state].bottomRight);
+#define SET_CURRENT_INDEX( X ) \
+	if (applicationState[state].X) { \
+		ui.X->setCurrentWidget( applicationState[state].X); \
+		ui.X->show(); \
+	} else { \
+		ui.X->hide(); \
+	}
+
+	SET_CURRENT_INDEX( topLeft )
+	SET_CURRENT_INDEX( topRight )
+	SET_CURRENT_INDEX( bottomLeft )
+	SET_CURRENT_INDEX( bottomRight )
+#undef SET_CURRENT_INDEX
 }
