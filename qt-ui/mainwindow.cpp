@@ -1515,7 +1515,7 @@ void MainWindow::checkForUndoAndRedo()
 
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *bottomLeft, QWidget *topRight, QWidget *bottomRight)
 {
-	applicationState[state] = WidgetForBorder(topLeft, bottomLeft, topRight, bottomRight);
+	applicationState[state] = WidgetForQuadrant(topLeft, bottomLeft, topRight, bottomRight);
 	if (ui.topLeft->indexOf(topLeft) == -1) {
 		ui.topLeft->addWidget(topLeft);
 	}

@@ -210,15 +210,15 @@ private:
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
 
-	struct WidgetForBorder {
-		WidgetForBorder(QWidget *tl = 0, QWidget *bl = 0, QWidget *tr = 0, QWidget *br = 0) :
+	struct WidgetForQuadrant {
+		WidgetForQuadrant(QWidget *tl = 0, QWidget *bl = 0, QWidget *tr = 0, QWidget *br = 0) :
 			topLeft(tl), bottomLeft(bl), topRight(tr), bottomRight(br) {}
 		QWidget *topLeft;
 		QWidget *bottomLeft;
 		QWidget *topRight;
 		QWidget *bottomRight;
 	};
-	QHash<QByteArray, WidgetForBorder> applicationState;
+	QHash<QByteArray, WidgetForQuadrant> applicationState;
 	QByteArray currentApplicationState;
 };
 
