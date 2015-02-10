@@ -219,6 +219,7 @@ private:
 		QWidget *bottomRight;
 	};
 	QHash<QByteArray, WidgetForBorder> applicationState;
+	QByteArray currentApplicationState;
 };
 
 #endif // MAINWINDOW_H
