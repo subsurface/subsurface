@@ -50,7 +50,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>32</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -130,8 +130,6 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
-    <addaction name="action_Undo"/>
-    <addaction name="action_Redo"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>

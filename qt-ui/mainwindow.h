@@ -34,7 +34,6 @@ class DivePlannerWidget;
 class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
-class UndoBuffer;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
@@ -89,7 +88,6 @@ public:
 	void printPlan();
 	void checkSurvey(QSettings *s);
 	void setApplicationState(const QByteArray& state);
-	UndoBuffer *undoBuffer;
 private
 slots:
 	/* file menu action */
@@ -159,9 +157,6 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
-	void on_action_Undo_triggered();
-	void on_action_Redo_triggered();
-	void checkForUndoAndRedo();
 
 protected:
 	void closeEvent(QCloseEvent *);
