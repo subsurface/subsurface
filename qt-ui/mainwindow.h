@@ -68,7 +68,7 @@ public:
 	GlobeGPS *globe();
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
-
+	LocationInformationWidget *locationInformationWidget();
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 

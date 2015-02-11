@@ -67,12 +67,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
+	LocationInformationWidget *locationInformation = new LocationInformationWidget();
 
 	registerApplicationState("Default", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileWidget, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileWidget, diveListView, globeGps );
+	registerApplicationState("EditDiveSite",locationInformation, profileWidget, diveListView, globeGps );
+
 	setApplicationState("Default");
 
 	ui.multiFilter->hide();
@@ -203,6 +206,10 @@ PlannerDetails *MainWindow::plannerDetails() const {
 
 PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 	return qobject_cast<PlannerSettingsWidget*>(applicationState["PlanDive"].bottomLeft);
+}
+
+LocationInformationWidget *MainWindow::locationInformationWidget() {
+	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
 }
 
 void MainWindow::setLoadedWithFiles(bool f)
