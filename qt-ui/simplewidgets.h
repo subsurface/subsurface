@@ -227,6 +227,11 @@ public slots:
 	void rejectChanges();
 
 	void showEvent(QShowEvent *);
+
+	/* change that to setLocationSite(QUuid diveSiteUid or something later */
+	void setLocationName(const QString& name);
+	void setLocationCoords(const QString& coords);
+
 signals:
 	void informationManagementEnded();
 

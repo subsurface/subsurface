@@ -215,6 +215,8 @@ LocationInformationWidget *MainWindow::locationInformationWidget() {
 }
 
 void MainWindow::enableDiveSiteEdit() {
+	locationInformationWidget()->setLocationName(current_dive->location);
+	locationInformationWidget()->setLocationCoords(printGPSCoords(current_dive->latitude.udeg, current_dive->longitude.udeg));
 	setApplicationState("EditDiveSite");
 }
 

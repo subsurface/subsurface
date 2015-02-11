@@ -665,6 +665,16 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->addAction(action);
 }
 
+void LocationInformationWidget::setLocationName(const QString& name)
+{
+	ui.diveSiteName->setText(name);
+}
+
+void LocationInformationWidget::setLocationCoords(const QString& coords)
+{
+	ui.diveSiteCoordinates->setText(coords);
+}
+
 void LocationInformationWidget::acceptChanges()
 {
 	emit informationManagementEnded();
