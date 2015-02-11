@@ -14,6 +14,7 @@
 #include <QKeyEvent>
 #include <QFileDialog>
 #include "qthelper.h"
+#include "undocommands.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
@@ -731,13 +732,19 @@ void DiveListView::deleteDive()
 	// so instead of using the for_each_dive macro I'm using an explicit for loop
 	// to make this easier to understand
 	int lastDiveNr = -1;
+	QList<struct dive*> deletedDives; //a list of all deleted dives to be stored in the undo command
 	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
+		struct dive* undo_entry = alloc_dive();
+		copy_dive(get_dive(i), undo_entry);
+		deletedDives.append(undo_entry);
 		delete_single_dive(i);
 		i--; // so the next dive isn't skipped... it's now #i
 		lastDiveNr = i;
 	}
+	UndoDeleteDive *undoEntry = new UndoDeleteDive(deletedDives);
+	MainWindow::instance()->undoStack->push(undoEntry);
 	if (amount_selected == 0) {
 		MainWindow::instance()->cleanUpEmpty();
 	}
