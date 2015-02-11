@@ -126,7 +126,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	divePlannerWidget()->settingsChanged();
 	divePlannerSettingsWidget()->settingsChanged();
 #ifdef NO_MARBLE
-	ui.globePane->hide();
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
 	connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
@@ -230,9 +229,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	globe()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
-#ifdef NO_MARBLE
-	ui.globePane->hide();
-#endif
 
 	setApplicationState("Default");
 	dive_list()->setEnabled(true);
@@ -556,9 +552,6 @@ void MainWindow::on_actionReplanDive_triggered()
 	divePlannerWidget()->setReplanButton(true);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
-#ifdef NO_MARBLE
-	ui.globePane->show();
-#endif
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
@@ -578,10 +571,6 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	DivePictureModel::instance()->updateDivePictures();
 	divePlannerWidget()->setReplanButton(false);
-
-#ifdef NO_MARBLE
-	ui.globePane->show();
-#endif
 }
 
 DivePlannerWidget* MainWindow::divePlannerWidget() {
