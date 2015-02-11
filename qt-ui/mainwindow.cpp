@@ -36,6 +36,7 @@
 #include "usermanual.h"
 #endif
 #include <QNetworkProxy>
+#include <QUndoStack>
 
 MainWindow *MainWindow::m_Instance = NULL;
 
@@ -180,6 +181,16 @@ MainWindow::MainWindow() : QMainWindow(),
 	toolBar->setContentsMargins(zeroMargins);
 
 	updateManager = new UpdateManager(this);
+
+	undoStack = new QUndoStack(this);
+	QAction *undoAction = undoStack->createUndoAction(this, tr("&Undo"));
+	QAction *redoAction = undoStack->createRedoAction(this, tr("&Redo"));
+	undoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+	redoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+	QList<QAction*>undoRedoActions;
+	undoRedoActions.append(undoAction);
+	undoRedoActions.append(redoAction);
+	ui.menu_Edit->addActions(undoRedoActions);
 }
 
 MainWindow::~MainWindow()

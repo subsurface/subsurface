@@ -34,6 +34,7 @@ class DivePlannerWidget;
 class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
+class QUndoStack;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
@@ -88,6 +89,7 @@ public:
 	void printPlan();
 	void checkSurvey(QSettings *s);
 	void setApplicationState(const QByteArray& state);
+	QUndoStack *undoStack;
 private
 slots:
 	/* file menu action */
