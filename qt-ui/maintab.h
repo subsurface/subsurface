@@ -55,7 +55,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-
+	void requestDiveSiteEdit();
 public
 slots:
 	void addCylinder_clicked();

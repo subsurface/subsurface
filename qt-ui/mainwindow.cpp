@@ -111,6 +111,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
+	connect(mainTab, SIGNAL(requestDiveSiteEdit()), this, SLOT(enableDiveSiteEdit()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
@@ -210,6 +211,10 @@ PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 
 LocationInformationWidget *MainWindow::locationInformationWidget() {
 	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
+}
+
+void MainWindow::enableDiveSiteEdit() {
+	setApplicationState("EditDiveSite");
 }
 
 void MainWindow::setLoadedWithFiles(bool f)

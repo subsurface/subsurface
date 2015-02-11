@@ -131,7 +131,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="manageDiveSite">
             <property name="text">
              <string>manage</string>
             </property>
@@ -400,7 +400,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
+         <width>443</width>
          <height>752</height>
         </rect>
        </property>
@@ -456,7 +456,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
+         <width>443</width>
          <height>752</height>
         </rect>
        </property>
@@ -773,7 +773,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
+         <width>443</width>
          <height>752</height>
         </rect>
        </property>
