@@ -10,6 +10,7 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QUrl>
+#include <QUuid>
 
 #include "ui_mainwindow.h"
 
@@ -159,7 +160,7 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
-	void enableDiveSiteEdit();
+	void enableDiveSiteEdit(QUuid id);
 	void setDefaultState();
 
 protected:

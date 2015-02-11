@@ -49,7 +49,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	connect(ui.manageDiveSite, SIGNAL(clicked()), this, SIGNAL(requestDiveSiteEdit()));
+	connect(ui.manageDiveSite, SIGNAL(clicked()), this, SLOT(prepareDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -213,6 +213,11 @@ MainTab::~MainTab()
 	}
 }
 
+void MainTab::prepareDiveSiteEdit() {
+	//TODO: GET THE CORRECT DIVESITE UUID HERE
+	QUuid id = QUuid::createUuid();
+	emit requestDiveSiteEdit(id);
+}
 void MainTab::toggleTriggeredColumn()
 {
 	QAction *action = qobject_cast<QAction *>(sender());

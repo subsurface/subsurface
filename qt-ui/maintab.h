@@ -10,6 +10,7 @@
 #include <QTabWidget>
 #include <QDialog>
 #include <QMap>
+#include <QUuid>
 
 #include "ui_maintab.h"
 #include "completionmodels.h"
@@ -55,7 +56,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-	void requestDiveSiteEdit();
+	void requestDiveSiteEdit(QUuid diveSiteId);
 public
 slots:
 	void addCylinder_clicked();
@@ -93,7 +94,7 @@ slots:
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
 	void updateGpsCoordinates();
-
+	void prepareDiveSiteEdit();
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
