@@ -57,11 +57,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	action = new QAction(tr("Discard changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	addMessageAction(action);
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
-
-	addMessageAction(action);
 
 	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);

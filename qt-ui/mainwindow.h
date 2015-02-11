@@ -160,6 +160,7 @@ slots:
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
 	void enableDiveSiteEdit();
+	void setDefaultState();
 
 protected:
 	void closeEvent(QCloseEvent *);

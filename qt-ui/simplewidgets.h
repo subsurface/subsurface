@@ -221,6 +221,15 @@ class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
+
+public slots:
+	void acceptChanges();
+	void rejectChanges();
+
+	void showEvent(QShowEvent *);
+signals:
+	void informationManagementEnded();
+
 private:
 	Ui::LocationInformation ui;
 };

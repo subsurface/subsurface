@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QCalendarWidget>
 #include <QKeyEvent>
+#include <QAction>
 
 #include "file.h"
 #include "mainwindow.h"
@@ -646,7 +647,34 @@ void MultiFilter::closeFilter()
 	MultiFilterSortModel::instance()->clearFilter();
 	hide();
 }
+#include <QDebug>
+#include <QShowEvent>
 
-LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent) {
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent)
+{
 	ui.setupUi(this);
+	ui.diveSiteMessage->setText("You are editing the Dive Site");
+	ui.diveSiteMessage->setCloseButtonVisible(false);
+
+	QAction *action = new QAction(tr("Apply changes"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
+	ui.diveSiteMessage->addAction(action);
+
+	action = new QAction(tr("Discard changes"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	ui.diveSiteMessage->addAction(action);
+}
+
+void LocationInformationWidget::acceptChanges()
+{
+	emit informationManagementEnded();
+}
+
+void LocationInformationWidget::rejectChanges()
+{
+	emit informationManagementEnded();
+}
+
+void LocationInformationWidget::showEvent(QShowEvent *ev) {
+	ui.diveSiteMessage->setCloseButtonVisible(false);
 }
