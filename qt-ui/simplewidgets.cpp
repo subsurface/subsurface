@@ -646,3 +646,7 @@ void MultiFilter::closeFilter()
 	MultiFilterSortModel::instance()->clearFilter();
 	hide();
 }
+
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent) {
+	ui.setupUi(this);
+}
