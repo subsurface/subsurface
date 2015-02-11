@@ -284,6 +284,56 @@
         </xsl:if>
       </informationbeforedive>
 
+      <xsl:for-each select="cylinder">
+        <tankdata>
+          <link>
+            <xsl:attribute name="ref">
+              <xsl:choose>
+                <xsl:when test="@o2 != ''">
+                  <xsl:value-of select="concat('mix', substring-before(@o2, '.'))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="'mix21'"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </link>
+
+          <xsl:if test="@size">
+
+            <tankvolume>
+              <xsl:value-of select="substring-before(@size, ' ')"/>
+            </tankvolume>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="@start">
+              <tankpressurebegin>
+                <xsl:value-of select="substring-before(@start, ' ') * 100000"/>
+              </tankpressurebegin>
+            </xsl:when>
+            <xsl:otherwise>
+              <tankpressurebegin>
+                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure]/@pressure[1], ' ') * 100000"/>
+              </tankpressurebegin>
+            </xsl:otherwise>
+          </xsl:choose>
+
+          <xsl:choose>
+            <xsl:when test="@end">
+              <tankpressureend>
+                <xsl:value-of select="substring-before(@end, ' ') * 100000"/>
+              </tankpressureend>
+            </xsl:when>
+            <xsl:otherwise>
+              <tankpressureend>
+                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 100000"/>
+              </tankpressureend>
+            </xsl:otherwise>
+          </xsl:choose>
+
+        </tankdata>
+      </xsl:for-each>
+
       <samples>
 
         <xsl:for-each select="divecomputer[1]/event | divecomputer[1]/sample">
@@ -482,56 +532,6 @@
           </xsl:choose>
         </xsl:for-each>
       </samples>
-
-      <xsl:for-each select="cylinder">
-        <tankdata>
-          <link>
-            <xsl:attribute name="ref">
-              <xsl:choose>
-                <xsl:when test="@o2 != ''">
-                  <xsl:value-of select="concat('mix', substring-before(@o2, '.'))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="'mix21'"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </link>
-
-          <xsl:if test="@size">
-
-            <tankvolume>
-              <xsl:value-of select="substring-before(@size, ' ')"/>
-            </tankvolume>
-          </xsl:if>
-          <xsl:choose>
-            <xsl:when test="@start">
-                <tankpressurebegin>
-                  <xsl:value-of select="substring-before(@start, ' ') * 100000"/>
-                </tankpressurebegin>
-            </xsl:when>
-            <xsl:otherwise>
-              <tankpressurebegin>
-                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure]/@pressure[1], ' ') * 100000"/>
-              </tankpressurebegin>
-            </xsl:otherwise>
-          </xsl:choose>
-
-          <xsl:choose>
-            <xsl:when test="@end">
-                <tankpressureend>
-                  <xsl:value-of select="substring-before(@end, ' ') * 100000"/>
-                </tankpressureend>
-            </xsl:when>
-            <xsl:otherwise>
-              <tankpressureend>
-                <xsl:value-of select="substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 100000"/>
-              </tankpressureend>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </tankdata>
-      </xsl:for-each>
 
       <informationafterdive>
 		<xsl:variable name="trimmedweightlist">
