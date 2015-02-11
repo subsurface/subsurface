@@ -494,13 +494,6 @@ extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
 #define current_dc (get_dive_dc(current_dive, dc_number))
 
-static inline struct dive *get_gps_location(int nr, struct dive_table *table)
-{
-	if (nr >= table->nr || nr < 0)
-		return NULL;
-	return table->dives[nr];
-}
-
 static inline struct dive *get_dive(int nr)
 {
 	if (nr >= dive_table.nr || nr < 0)

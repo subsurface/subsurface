@@ -42,7 +42,7 @@ static bool merge_locations_into_dives(void)
 
 	for_each_dive (i, dive) {
 		if (!dive_has_gps_location(dive)) {
-			for (j = tracer; (gpsfix = get_gps_location(j, &gps_location_table)) !=NULL; j++) {
+			for (j = tracer; (gpsfix = get_dive_from_table(j, &gps_location_table)) !=NULL; j++) {
 				if (dive_within_time_range (dive, gpsfix->when, SAME_GROUP)) {
 					/*
 					 * If position is fixed during dive. This is the good one.
@@ -57,7 +57,7 @@ static bool merge_locations_into_dives(void)
 						/*
 						 * If it is not, check if there are more position fixes in SAME_GROUP range
 						 */
-						if ((nextgpsfix = get_gps_location(j+1,&gps_location_table)) &&
+						if ((nextgpsfix = get_dive_from_table(j+1,&gps_location_table)) &&
 						    dive_within_time_range (dive, nextgpsfix->when, SAME_GROUP)) {
 							/*
 							 * If distance from gpsfix to end of dive is shorter than distance between
