@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="lineEdit"/>
+    <widget class="QLineEdit" name="diveSiteName"/>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_2">
@@ -38,7 +38,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QLineEdit" name="lineEdit_2"/>
+    <widget class="QLineEdit" name="diveSiteCoordinates"/>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_3">
@@ -48,7 +48,7 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="lineEdit_3"/>
+    <widget class="QLineEdit" name="diveSiteDescription"/>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_4">
@@ -58,7 +58,7 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
    </item>
   </layout>
  </widget>
