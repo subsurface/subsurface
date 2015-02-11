@@ -279,6 +279,20 @@
             <xsl:value-of select="format-number(substring-before(., ' ') + 273.15, '0.00')"/>
           </airtemperature>
         </xsl:for-each>
+        <xsl:variable name="trimmedweightlist">
+          <xsl:for-each select="weightsystem">
+            <weight>
+              <xsl:value-of select="substring-before(@weight, ' ')"/>
+            </weight>
+          </xsl:for-each>
+        </xsl:variable>
+        <xsl:if test="sum(xt:node-set($trimmedweightlist)/node()) >= 0">
+          <equipmentused>
+            <leadquantity>
+              <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/node())"/>
+            </leadquantity>
+          </equipmentused>
+        </xsl:if>
         <xsl:if test="parent::trip">
           <tripmembership ref="trip{generate-id(..)}"/>
         </xsl:if>
@@ -534,14 +548,6 @@
       </samples>
 
       <informationafterdive>
-		<xsl:variable name="trimmedweightlist">
-          <xsl:for-each select="weightsystem">
-            <weight>
-              <xsl:value-of select="substring-before(@weight, ' ')"/>
-            </weight>
-          </xsl:for-each>
-        </xsl:variable>
-
         <xsl:if test="node()/depth/@max != ''">
           <greatestdepth>
             <xsl:value-of select="substring-before(node()/depth/@max, ' ')"/>
@@ -605,14 +611,6 @@
               </xsl:when>
             </xsl:choose>
         </visibility>
-        <equipmentused>
-          <leadquantity>
-            <xsl:if test="sum(xt:node-set($trimmedweightlist)/node()) >= 0">
-              <xsl:value-of select="sum(xt:node-set($trimmedweightlist)/node())"/>
-            </xsl:if>
-          </leadquantity>
-        </equipmentused>
-
       </informationafterdive>
 
     </dive>
