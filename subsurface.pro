@@ -29,6 +29,7 @@ HEADERS = \
 	display.h \
 	dive.h \
 	divelist.h \
+	divesite.h \
 	file.h \
 	gettextfromc.h \
 	gettext.h \
@@ -119,6 +120,7 @@ SOURCES =  \
 	device.c \
 	dive.c \
 	divelist.c \
+	divesite.c \
 	equipment.c \
 	file.c \
 	gettextfromc.cpp \

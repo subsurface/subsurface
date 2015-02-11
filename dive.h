@@ -319,6 +319,7 @@ struct dive {
 	bool downloaded;
 	timestamp_t when;
 	char *location;
+	uint32_t dive_site_uuid;
 	char *notes;
 	char *divemaster, *buddy;
 	int rating;
