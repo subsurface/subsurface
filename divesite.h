@@ -4,6 +4,10 @@
 #include "units.h"
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct dive_site
 {
 	uint32_t uuid;
@@ -53,7 +57,11 @@ static inline uint32_t get_dive_site_uuid_by_name(const char *name)
 }
 
 struct dive_site *alloc_dive_site();
-uint32_t create_dive_site(const char *name, degrees_t latitude, degrees_t longitude);
+uint32_t create_dive_site(const char *name);
+uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude);
 uint32_t dive_site_uuid_by_name(const char *name);
 
+#ifdef __cplusplus
+}
+#endif
 #endif // DIVESITE_H

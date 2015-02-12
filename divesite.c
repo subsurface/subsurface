@@ -37,7 +37,17 @@ struct dive_site *alloc_dive_site()
 }
 
 /* allocate a new site and add it to the table */
-uint32_t create_dive_site(const char *name, degrees_t latitude, degrees_t longitude)
+uint32_t create_dive_site(const char *name)
+{
+	struct dive_site *ds = alloc_dive_site();
+	ds->uuid = dive_site_getUniqId();
+	ds->name = copy_string(name);
+
+	return ds->uuid;
+}
+
+/* same as before, but with GPS data */
+uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude)
 {
 	struct dive_site *ds = alloc_dive_site();
 	ds->uuid = dive_site_getUniqId();
@@ -53,7 +63,7 @@ uint32_t dive_site_uuid_by_name(const char *name)
 {
 	uint32_t id = get_dive_site_uuid_by_name(name);
 	if (id == 0)
-		id = create_dive_site(name, (degrees_t){0}, (degrees_t){0});
+		id = create_dive_site(name);
 
 	return id;
 }
