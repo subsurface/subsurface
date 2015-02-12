@@ -505,6 +505,13 @@ static inline struct dive *get_dive_from_table(int nr, struct dive_table *dt)
 	return dt->dives[nr];
 }
 
+static inline struct dive_site *get_dive_site_for_dive(struct dive *dive)
+{
+	if (dive)
+		return get_dive_site_by_uuid(dive->dive_site_uuid);
+	return NULL;
+}
+
 static inline unsigned int number_of_computers(struct dive *dive)
 {
 	unsigned int total_number = 0;

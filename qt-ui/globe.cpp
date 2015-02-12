@@ -164,10 +164,11 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	QList<int> selectedDiveIds;
 	for_each_dive (idx, dive) {
 		long lat_diff, lon_diff;
-		if (!dive_has_gps_location(dive))
+		struct dive_site *ds = get_dive_site_for_dive(dive);
+		if (!dive_site_has_gps_location(ds))
 			continue;
-		lat_diff = labs(dive->latitude.udeg - lat_udeg);
-		lon_diff = labs(dive->longitude.udeg - lon_udeg);
+		lat_diff = labs(ds->latitude.udeg - lat_udeg);
+		lon_diff = labs(ds->longitude.udeg - lon_udeg);
 		if (lat_diff > 180000000)
 			lat_diff = 360000000 - lat_diff;
 		if (lon_diff > 180000000)
@@ -186,6 +187,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 void GlobeGPS::repopulateLabels()
 {
+	struct dive_site *ds;
 	if (loadedDives) {
 		model()->treeModel()->removeDocument(loadedDives);
 		delete loadedDives;
@@ -204,12 +206,13 @@ void GlobeGPS::repopulateLabels()
 			// don't show that flag, it's either already shown as displayed_dive
 			// or it's the one that we are moving right now...
 			continue;
-		if (dive_has_gps_location(dive)) {
-			GeoDataPlacemark *place = new GeoDataPlacemark(dive->location);
-			place->setCoordinate(dive->longitude.udeg / 1000000.0, dive->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
+		ds = get_dive_site_for_dive(dive);
+		if (dive_site_has_gps_location(ds)) {
+			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
+			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
 			// don't add dive locations twice, unless they are at least 50m apart
-			if (locationMap[QString(dive->location)]) {
-				GeoDataCoordinates existingLocation = locationMap[QString(dive->location)]->coordinate();
+			if (locationMap[QString(ds->name)]) {
+				GeoDataCoordinates existingLocation = locationMap[QString(ds->name)]->coordinate();
 				GeoDataLineString segment = GeoDataLineString();
 				segment.append(existingLocation);
 				GeoDataCoordinates newLocation = place->coordinate();
@@ -220,7 +223,7 @@ void GlobeGPS::repopulateLabels()
 				if (dist < 0.05)
 					continue;
 			}
-			locationMap[QString(dive->location)] = place;
+			locationMap[QString(ds->name)] = place;
 			loadedDives->append(place);
 		}
 	}
@@ -236,23 +239,23 @@ void GlobeGPS::reload()
 
 void GlobeGPS::centerOnCurrentDive()
 {
-	struct dive *dive = current_dive;
+	struct dive_site *ds = get_dive_site_for_dive(current_dive);
 	// dive has changed, if we had the 'editingDive', hide it.
-	if (messageWidget->isVisible() && (!dive || dive_has_gps_location(dive) || amount_selected != 1))
+	if (messageWidget->isVisible() && (!ds || dive_site_has_gps_location(ds) || amount_selected != 1))
 		messageWidget->hide();
 
 	editingDiveLocation = false;
-	if (!dive)
+	if (!ds)
 		return;
 
-	qreal longitude = dive->longitude.udeg / 1000000.0;
-	qreal latitude = dive->latitude.udeg / 1000000.0;
+	qreal longitude = ds->longitude.udeg / 1000000.0;
+	qreal latitude = ds->latitude.udeg / 1000000.0;
 
-	if ((!dive_has_gps_location(dive) || MainWindow::instance()->information()->isEditing()) && amount_selected == 1) {
+	if ((!dive_site_has_gps_location(ds) || MainWindow::instance()->information()->isEditing()) && amount_selected == 1) {
 		prepareForGetDiveCoordinates();
 		return;
 	}
-	if (!dive_has_gps_location(dive)) {
+	if (!dive_site_has_gps_location(ds)) {
 		zoomOutForNoGPS();
 		return;
 	}
@@ -309,8 +312,10 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 	}
 }
 
+// This needs to update the dive site, not just this dive
 void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
+	struct dive_site *ds;
 	messageWidget->hide();
 
 	if (MainWindow::instance()->dive_list()->selectionModel()->selection().isEmpty())
@@ -324,8 +329,9 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	centerOn(lon, lat, true);
 
 	// change the location of the displayed_dive and put the UI in edit mode
-	displayed_dive.latitude.udeg = lrint(lat * 1000000.0);
-	displayed_dive.longitude.udeg = lrint(lon * 1000000.0);
+	ds = get_dive_site_for_dive(&displayed_dive);
+	ds->latitude.udeg = lrint(lat * 1000000.0);
+	ds->longitude.udeg = lrint(lon * 1000000.0);
 	emit(coordinatesChanged());
 	repopulateLabels();
 	editingDiveLocation = false;
