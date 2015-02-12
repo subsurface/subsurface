@@ -104,8 +104,6 @@ static void show_utf8(struct membuffer *b, const char *prefix, const char *value
 
 static void save_overview(struct membuffer *b, struct dive *dive)
 {
-	show_gps(b, dive->latitude, dive->longitude);
-	show_utf8(b, "location ", dive->location, "\n");
 	show_utf8(b, "divemaster ", dive->divemaster, "\n");
 	show_utf8(b, "buddy ", dive->buddy, "\n");
 	show_utf8(b, "suit ", dive->suit, "\n");
@@ -390,6 +388,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	SAVE("visibility", visibility);
 	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
 	save_tags(b, dive->tag_list);
+	cond_put_format(dive->dive_site_uuid, b, "divesiteid %8x\n", dive->dive_site_uuid);
 
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
@@ -804,7 +803,7 @@ static void save_one_device(void *_b, const char *model, uint32_t deviceid,
 	put_string(b, "\n");
 }
 
-#define VERSION 2
+#define VERSION 3
 
 static void save_settings(git_repository *repo, struct dir *tree)
 {
@@ -818,6 +817,27 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	blob_insert(repo, tree, &b, "00-Subsurface");
 }
 
+static void save_divesites(git_repository *repo, struct dir *tree)
+{
+	struct dir *subdir;
+	struct membuffer dirname = { 0 };
+	put_format(&dirname, "01-Divesites");
+	subdir = new_directory(repo, tree, &dirname);
+
+	for (int i = 0; i < dive_site_table.nr; i++) {
+		struct membuffer b = { 0 };
+		struct dive_site *ds = get_dive_site(i);
+		int size = sizeof("Site-012345678");
+		char name[size];
+		snprintf(name, size, "Site-%8x", ds->uuid);
+		show_utf8(&b, "name ", ds->name, "\n");
+		show_utf8(&b, "description ", ds->description, "\n");
+		show_utf8(&b, "notes ", ds->notes, "\n");
+		show_gps(&b, ds->latitude, ds->longitude);
+		blob_insert(repo, subdir, &b, name);
+	}
+}
+
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only)
 {
 	int i;
@@ -825,6 +845,8 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	dive_trip_t *trip;
 
 	save_settings(repo, root);
+
+	save_divesites(repo, root);
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;

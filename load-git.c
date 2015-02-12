@@ -160,6 +160,9 @@ static void parse_dive_suit(char *line, struct membuffer *str, void *_dive)
 static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
 { struct dive *dive = _dive; dive->notes = get_utf8(str); }
 
+static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive)
+{ struct dive *dive = _dive; dive->dive_site_uuid = get_hex(line); }
+
 /*
  * We can have multiple tags in the membuffer. They are separated by
  * NUL bytes.
@@ -204,6 +207,24 @@ static void parse_dive_visibility(char *line, struct membuffer *str, void *_dive
 
 static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
 { struct dive *dive = _dive; dive->tripflag = NO_TRIP; }
+
+static void parse_site_description(char *line, struct membuffer *str, void *_ds)
+{ struct dive_site *ds = _ds; ds->description = strdup(mb_cstring(str)); }
+
+static void parse_site_name(char *line, struct membuffer *str, void *_ds)
+{ struct dive_site *ds = _ds; ds->name = strdup(mb_cstring(str)); }
+
+static void parse_site_notes(char *line, struct membuffer *str, void *_ds)
+{ struct dive_site *ds = _ds; ds->notes = strdup(mb_cstring(str)); }
+
+extern degrees_t parse_degrees(char *buf, char **end);
+static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
+{
+	struct dive_site *ds = _ds;
+
+	ds->latitude = parse_degrees(line, &line);
+	ds->longitude = parse_degrees(line, &line);
+}
 
 /* Parse key=val parts of samples and cylinders etc */
 static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line)
@@ -672,7 +693,7 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
  * *can* do some day. And if we do change the version, this warning will show if
  * you read with a version of subsurface that doesn't know about it.
  */
-#define VERSION 2
+#define VERSION 3
 static void parse_settings_version(char *line, struct membuffer *str, void *_unused)
 {
 	int version = atoi(line);
@@ -783,7 +804,7 @@ static void divecomputer_parser(char *line, struct membuffer *str, void *_dc)
 struct keyword_action dive_action[] = {
 #undef D
 #define D(x) { #x, parse_dive_ ## x }
-	D(airtemp), D(buddy), D(cylinder), D(divemaster), D(duration),
+	D(airtemp), D(buddy), D(cylinder), D(divemaster), D(divesiteid), D(duration),
 	D(gps), D(location), D(notes), D(notrip), D(rating), D(suit),
 	D(tags), D(visibility), D(watertemp), D(weightsystem)
 };
@@ -791,6 +812,18 @@ struct keyword_action dive_action[] = {
 static void dive_parser(char *line, struct membuffer *str, void *_dive)
 {
 	match_action(line, str, _dive, dive_action, ARRAY_SIZE(dive_action));
+}
+
+/* These need to be sorted! */
+struct keyword_action site_action[] = {
+#undef D
+#define D(x) { #x, parse_site_ ## x }
+	D(description), D(gps), D(name), D(notes)
+};
+
+static void site_parser(char *line, struct membuffer *str, void *_ds)
+{
+	match_action(line, str, _ds, site_action, ARRAY_SIZE(site_action));
 }
 
 /* These need to be sorted! */
@@ -1190,6 +1223,9 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	if (!strcmp(name, "Pictures"))
 		return picture_directory(root, name);
 
+	if (!strcmp(name, "01-Divesites"))
+		return GIT_WALK_OK;
+
 	while (isdigit(c = name[digits]))
 		digits++;
 
@@ -1284,6 +1320,20 @@ static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, c
 	return 0;
 }
 
+static int parse_site_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
+{
+	if (*suffix == '\0')
+		return report_error("Dive site without uuid");
+	struct dive_site *ds = alloc_dive_site();
+	ds->uuid = strtol(suffix, NULL, 16);
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	if (!blob)
+		return report_error("Unable to read dive site file");
+	for_each_line(blob, site_parser, ds);
+	git_blob_free(blob);
+	return 0;
+}
+
 static int parse_trip_entry(git_repository *repo, const git_tree_entry *entry)
 {
 	git_blob *blob = git_tree_entry_blob(repo, entry);
@@ -1343,7 +1393,6 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 	struct dive *dive = active_dive;
 	dive_trip_t *trip = active_trip;
 	const char *name = git_tree_entry_name(entry);
-
 	switch (*name) {
 	/* Picture file? They are saved as time offsets in the dive */
 	case '-': case '+':
@@ -1356,6 +1405,9 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 		if (dive && !strncmp(name, "Dive", 4))
 			return parse_dive_entry(repo, entry, name+4);
 		break;
+	case 'S':
+		if (!strncmp(name, "Site", 4))
+			return parse_site_entry(repo, entry, name + 5);
 	case '0':
 		if (trip && !strcmp(name, "00-Trip"))
 			return parse_trip_entry(repo, entry);
