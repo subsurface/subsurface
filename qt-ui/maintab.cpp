@@ -1158,25 +1158,12 @@ void MainTab::on_location_textChanged(const QString &text)
 // If we have GPS data for the location entered, add it.
 void MainTab::on_location_editingFinished()
 {
-	// if we have a location and no GPS data, look up the GPS data;
-	// but if the GPS data was intentionally cleared then don't
-	if (!currentTrip &&
-	    !same_string(displayed_dive.location, "") &&
-	    ui.coordinates->text().trimmed().isEmpty() &&
-	    !(editMode == DIVE && dive_has_gps_location(current_dive))) {
-		struct dive *dive;
-		int i = 0;
-		for_each_dive (i, dive) {
-			if (same_string(displayed_dive.location, dive->location) &&
-			    (dive->latitude.udeg || dive->longitude.udeg)) {
-				displayed_dive.latitude = dive->latitude;
-				displayed_dive.longitude = dive->longitude;
-				MainWindow::instance()->globe()->reload();
-				updateGpsCoordinates();
-				break;
-			}
-		}
-	}
+	// find the dive site or create it
+	const char *name = ui.location->text().toUtf8().data();
+	uint32_t uuid = get_dive_site_uuid_by_name(name);
+	if (!uuid)
+		uuid = create_dive_site(name);
+	displayed_dive.dive_site_uuid = uuid;
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
