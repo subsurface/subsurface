@@ -67,3 +67,17 @@ uint32_t dive_site_uuid_by_name(const char *name)
 
 	return id;
 }
+
+/* if the uuid is valid, just get the site, otherwise create it first;
+ * so you can call this with dive->dive_site_uuid and you'll either get the existing
+ * dive site or it will create a new one - so make sure you assign the uuid back to
+ * dive->dive_site_uuid when using this function! */
+struct dive_site *get_or_create_dive_site_by_uuid(uint32_t uuid)
+{
+	struct dive_site *ds = get_dive_site_by_uuid(uuid);
+
+	if (!ds)
+		ds = alloc_dive_site();
+
+	return ds;
+}

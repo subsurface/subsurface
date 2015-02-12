@@ -23,13 +23,6 @@ struct keyword_action {
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
 extern degrees_t parse_degrees(char *buf, char **end);
-static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
-{
-	struct dive *dive = _dive;
-
-	dive->latitude = parse_degrees(line, &line);
-	dive->longitude = parse_degrees(line, &line);
-}
 
 static char *get_utf8(struct membuffer *b)
 {
@@ -145,8 +138,22 @@ static int get_index(const char *line)
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
+static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
+{
+	struct dive *dive = _dive;
+	struct dive_site *ds = get_or_create_dive_site_by_uuid(dive->dive_site_uuid);
+	dive->dive_site_uuid = ds->uuid;
+	ds->latitude = parse_degrees(line, &line);
+	ds->longitude = parse_degrees(line, &line);
+}
+
 static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
-{ struct dive *dive = _dive; dive->location = get_utf8(str); }
+{
+	struct dive *dive = _dive;
+	struct dive_site *ds = get_or_create_dive_site_by_uuid(dive->dive_site_uuid);
+	dive->dive_site_uuid = ds->uuid;
+	ds->name = get_utf8(str);
+}
 
 static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)
 { struct dive *dive = _dive; dive->divemaster = get_utf8(str); }

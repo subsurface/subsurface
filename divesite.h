@@ -60,6 +60,7 @@ struct dive_site *alloc_dive_site();
 uint32_t create_dive_site(const char *name);
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude);
 uint32_t dive_site_uuid_by_name(const char *name);
+struct dive_site *get_or_create_dive_site_by_uuid(uint32_t uuid);
 
 #ifdef __cplusplus
 }
