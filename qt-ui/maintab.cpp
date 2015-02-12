@@ -430,9 +430,7 @@ void MainTab::updateDiveInfo(bool clear)
 		else
 			ui.notes->setPlainText(tmp);
 	}
-
 	UPDATE_TEXT(displayed_dive, notes);
-	UPDATE_TEXT(displayed_dive, location);
 	UPDATE_TEXT(displayed_dive, suit);
 	UPDATE_TEXT(displayed_dive, divemaster);
 	UPDATE_TEXT(displayed_dive, buddy);
@@ -441,6 +439,9 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.DiveType->setCurrentIndex(displayed_dive.dc.divemode);
 
 	if (!clear) {
+		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		if (ds)
+			ui.location->setText(ds->name);
 		updateGpsCoordinates();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
@@ -655,6 +656,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.rating->setCurrentStars(0);
 		ui.coordinates->clear();
 		ui.visibility->setCurrentStars(0);
+		ui.location->clear();
 	}
 	editMode = NONE;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
