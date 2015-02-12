@@ -131,6 +131,7 @@
 #define ARCH_FULL ARCH_PROCESSOR "-" ARCH_ENDIANNESS "-" ARCH_POINTER ARCH_ABI
 
 // --- end of archdetect.cpp ---
+// copied from Qt 5.4.1's src/corelib/global/qglobal.cpp
 
 #if defined(Q_OS_WIN) || defined(Q_OS_CYGWIN) || defined(Q_OS_WINCE) || defined(Q_OS_WINRT)
 
@@ -139,33 +140,50 @@ QT_BEGIN_INCLUDE_NAMESPACE
 QT_END_INCLUDE_NAMESPACE
 
 #ifndef Q_OS_WINRT
+#  ifndef Q_OS_WINCE
+// Fallback for determining Windows versions >= 8 by looping using the
+// version check macros. Note that it will return build number=0 to avoid
+// inefficient looping.
+static inline void determineWinOsVersionFallbackPost8(OSVERSIONINFO *result)
+{
+	result->dwBuildNumber = 0;
+	DWORDLONG conditionMask = 0;
+	VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);
+	VER_SET_CONDITION(conditionMask, VER_PLATFORMID, VER_EQUAL);
+	OSVERSIONINFOEX checkVersion = { sizeof(OSVERSIONINFOEX), result->dwMajorVersion, 0,
+					 result->dwBuildNumber, result->dwPlatformId, {'\0'}, 0, 0, 0, 0, 0 };
+	for ( ; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMajorVersion)
+		result->dwMajorVersion = checkVersion.dwMajorVersion;
+	conditionMask = 0;
+	checkVersion.dwMajorVersion = result->dwMajorVersion;
+	checkVersion.dwMinorVersion = 0;
+	VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_EQUAL);
+	VER_SET_CONDITION(conditionMask, VER_MINORVERSION, VER_GREATER_EQUAL);
+	VER_SET_CONDITION(conditionMask, VER_PLATFORMID, VER_EQUAL);
+	for ( ; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_MINORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMinorVersion)
+		result->dwMinorVersion = checkVersion.dwMinorVersion;
+}
+
+#  endif // !Q_OS_WINCE
+
 static inline OSVERSIONINFO winOsVersion()
 {
 	OSVERSIONINFO result = { sizeof(OSVERSIONINFO), 0, 0, 0, 0, {'\0'}};
 	// GetVersionEx() has been deprecated in Windows 8.1 and will return
 	// only Windows 8 from that version on.
-#	if defined(_MSC_VER) && _MSC_VER >= 1800
-#		pragma warning( push )
-#		pragma warning( disable : 4996 )
-#	endif
+#  if defined(_MSC_VER) && _MSC_VER >= 1800
+#    pragma warning( push )
+#    pragma warning( disable : 4996 )
+#  endif
 	GetVersionEx(&result);
-#	if defined(_MSC_VER) && _MSC_VER >= 1800
-#		pragma warning( pop )
-#	endif
-#	ifndef Q_OS_WINCE
-		if (result.dwMajorVersion == 6 && result.dwMinorVersion == 2) {
-			// This could be Windows 8.1 or higher. Note that as of Windows 9,
-			// the major version needs to be checked as well.
-			DWORDLONG conditionMask = 0;
-			VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);
-			VER_SET_CONDITION(conditionMask, VER_MINORVERSION, VER_GREATER_EQUAL);
-			VER_SET_CONDITION(conditionMask, VER_PLATFORMID, VER_EQUAL);
-			OSVERSIONINFOEX checkVersion = { sizeof(OSVERSIONINFOEX), result.dwMajorVersion, result.dwMinorVersion,
-							 result.dwBuildNumber, result.dwPlatformId, {'\0'}, 0, 0, 0, 0, 0 };
-			for ( ; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_MINORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMinorVersion)
-				result.dwMinorVersion = checkVersion.dwMinorVersion;
-		}
-#	endif // !Q_OS_WINCE
+#  if defined(_MSC_VER) && _MSC_VER >= 1800
+#    pragma warning( pop )
+#  endif
+#  ifndef Q_OS_WINCE
+	if (result.dwMajorVersion == 6 && result.dwMinorVersion == 2) {
+		determineWinOsVersionFallbackPost8(&result);
+	}
+#  endif // !Q_OS_WINCE
 	return result;
 }
 #endif // !Q_OS_WINRT
