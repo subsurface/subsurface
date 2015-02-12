@@ -678,9 +678,9 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 {
 	dive_trip_t *dive_trip = calloc(1, sizeof(dive_trip_t));
+
 	dive_trip->when = dive->when;
-	if (dive->location)
-		dive_trip->location = strdup(dive->location);
+	dive_trip->location = copy_string(get_dive_location(dive));
 	insert_trip(&dive_trip);
 
 	dive->tripflag = IN_TRIP;
@@ -714,7 +714,7 @@ void autogroup_dives(void)
 			dive_trip_t *trip = lastdive->divetrip;
 			add_dive_to_trip(dive, trip);
 			if (dive->location && !trip->location)
-				trip->location = strdup(dive->location);
+				trip->location = copy_string(get_dive_location(dive));
 			lastdive = dive;
 			continue;
 		}
@@ -745,7 +745,6 @@ void delete_single_dive(int idx)
 	dive_table.dives[--dive_table.nr] = NULL;
 	/* free all allocations */
 	free(dive->dc.sample);
-	free((void *)dive->location);
 	free((void *)dive->notes);
 	free((void *)dive->divemaster);
 	free((void *)dive->buddy);
