@@ -33,6 +33,7 @@ struct dive_site *alloc_dive_site()
 		exit(1);
 	sites[nr] = ds;
 	dive_site_table.nr = nr + 1;
+	ds->uuid = dive_site_getUniqId();
 	return ds;
 }
 
@@ -40,7 +41,6 @@ struct dive_site *alloc_dive_site()
 uint32_t create_dive_site(const char *name)
 {
 	struct dive_site *ds = alloc_dive_site();
-	ds->uuid = dive_site_getUniqId();
 	ds->name = copy_string(name);
 
 	return ds->uuid;
