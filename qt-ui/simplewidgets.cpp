@@ -665,14 +665,13 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->addAction(action);
 }
 
-void LocationInformationWidget::setLocationName(const QString& name)
+void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
-	ui.diveSiteName->setText(name);
-}
-
-void LocationInformationWidget::setLocationCoords(const QString& coords)
-{
-	ui.diveSiteCoordinates->setText(coords);
+	currentDs = get_dive_site_by_uuid(uuid);
+	ui.diveSiteName->setText(currentDs->name);
+	ui.diveSiteDescription->setText(currentDs->description);
+	ui.diveSiteNotes->setPlainText(currentDs->notes);
+	ui.diveSiteCoordinates->setText(printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg));
 }
 
 void LocationInformationWidget::acceptChanges()

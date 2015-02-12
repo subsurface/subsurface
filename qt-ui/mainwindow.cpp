@@ -111,7 +111,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
-	connect(mainTab, SIGNAL(requestDiveSiteEdit(QUuid)), this, SLOT(enableDiveSiteEdit(QUuid)));
+	connect(mainTab, SIGNAL(requestDiveSiteEdit(uint32_t)), this, SLOT(enableDiveSiteEdit(uint32_t)));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
@@ -214,9 +214,8 @@ LocationInformationWidget *MainWindow::locationInformationWidget() {
 	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
 }
 
-void MainWindow::enableDiveSiteEdit(QUuid id) {
-	locationInformationWidget()->setLocationName(current_dive->location);
-	locationInformationWidget()->setLocationCoords(printGPSCoords(current_dive->latitude.udeg, current_dive->longitude.udeg));
+void MainWindow::enableDiveSiteEdit(uint32_t id) {
+	locationInformationWidget()->setLocationId(id);
 	setApplicationState("EditDiveSite");
 }
 

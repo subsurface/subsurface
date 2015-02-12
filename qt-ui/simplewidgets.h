@@ -228,14 +228,13 @@ public slots:
 
 	void showEvent(QShowEvent *);
 
-	/* change that to setLocationSite(QUuid diveSiteUid or something later */
-	void setLocationName(const QString& name);
-	void setLocationCoords(const QString& coords);
+	void setLocationId(uint32_t uuid);
 
 signals:
 	void informationManagementEnded();
 
 private:
+	struct dive_site *currentDs;
 	Ui::LocationInformation ui;
 };
 

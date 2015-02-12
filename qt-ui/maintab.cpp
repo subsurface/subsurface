@@ -214,10 +214,9 @@ MainTab::~MainTab()
 }
 
 void MainTab::prepareDiveSiteEdit() {
-	//TODO: GET THE CORRECT DIVESITE UUID HERE
-	QUuid id = QUuid::createUuid();
-	emit requestDiveSiteEdit(id);
+	emit requestDiveSiteEdit(displayed_dive.dive_site_uuid);
 }
+
 void MainTab::toggleTriggeredColumn()
 {
 	QAction *action = qobject_cast<QAction *>(sender());

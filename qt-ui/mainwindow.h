@@ -160,7 +160,7 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
-	void enableDiveSiteEdit(QUuid id);
+	void enableDiveSiteEdit(uint32_t id);
 	void setDefaultState();
 
 protected:
