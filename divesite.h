@@ -27,10 +27,16 @@ static inline struct dive_site *get_dive_site(int nr)
 	return dive_site_table.dive_sites[nr];
 }
 
+/* iterate over each dive site */
+#define for_each_dive_site(_i, _x) \
+	for ((_i) = 0; ((_x) = get_dive_site(_i)) != NULL; (_i)++)
+
 static inline struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
 {
-	for (int i = 0; i < dive_site_table.nr; i++)
-		if (get_dive_site(i)->uuid == uuid)
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds)
+		if (ds->uuid == uuid)
 			return get_dive_site(i);
 	return NULL;
 }
@@ -38,9 +44,11 @@ static inline struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
 /* there could be multiple sites of the same name - return the first one */
 static inline uint32_t get_dive_site_uuid_by_name(const char *name)
 {
-	for (int i = 0; i < dive_site_table.nr; i++)
-		if (get_dive_site(i)->name == name)
-			return get_dive_site(i)->uuid;
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds)
+		if (ds->name == name)
+			return ds->uuid;
 	return 0;
 }
 
