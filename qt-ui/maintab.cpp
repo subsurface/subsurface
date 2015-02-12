@@ -1286,8 +1286,14 @@ void MainTab::updateGpsCoordinates()
 	if (editMode == NONE)
 		enableEdition();
 
-	ui.coordinates->setText(printGPSCoords(displayed_dive.latitude.udeg, displayed_dive.longitude.udeg));
-	ui.coordinates->setModified(displayed_dive.latitude.udeg || displayed_dive.longitude.udeg);
+	struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+	if (ds && dive_site_has_gps_location(ds)) {
+		ui.coordinates->setText(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg));
+		ui.coordinates->setModified(true);
+	} else if (!ui.coordinates->text().isEmpty()) {
+		ui.coordinates->setModified(true);
+		ui.coordinates->clear();
+	}
 }
 
 void MainTab::escDetected()
