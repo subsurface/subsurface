@@ -8,6 +8,7 @@
 #include <zip.h>
 #include <sqlite3.h>
 #include <string.h>
+#include "divesite.h"
 
 /* Windows has no MIN/MAX macros - so let's just roll our own */
 #define MIN(x, y) ({                \
@@ -387,11 +388,6 @@ extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
 
-static inline int dive_has_gps_location(struct dive *dive)
-{
-	return dive->latitude.udeg || dive->longitude.udeg;
-}
-
 static inline void copy_gps_location(struct dive *from, struct dive *to)
 {
 	if (from && to) {
@@ -605,6 +601,16 @@ static inline int get_idx_by_uniq_id(int id)
 	}
 #endif
 	return i;
+}
+
+static inline bool dive_site_has_gps_location(struct dive_site *ds)
+{
+	return ds && (ds->latitude.udeg || ds->longitude.udeg);
+}
+
+static inline int dive_has_gps_location(struct dive *dive)
+{
+	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
 #ifdef __cplusplus

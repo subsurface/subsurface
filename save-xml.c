@@ -110,38 +110,8 @@ static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 	put_string(b, " />\n");
 }
 
-static void show_location(struct membuffer *b, struct dive *dive)
-{
-	degrees_t latitude = dive->latitude;
-	degrees_t longitude = dive->longitude;
-
-	/* Should we write a location tag at all? */
-	if (!(latitude.udeg || longitude.udeg) && !dive->location)
-		return;
-
-	put_string(b, "  <location");
-
-	/*
-	 * Ok, theoretically I guess you could dive at
-	 * exactly 0,0. But we don't support that. So
-	 * if you do, just fudge it a bit, and say that
-	 * you dove a few meters away.
-	 */
-	if (latitude.udeg || longitude.udeg) {
-		put_degrees(b, latitude, " gps='", " ");
-		put_degrees(b, longitude, "", "'");
-	}
-
-	/* Do we have a location name or should we write a empty tag? */
-	if (dive->location && dive->location[0] != '\0')
-		show_utf8(b, dive->location, ">", "</location>\n", 0);
-	else
-		put_string(b, "/>\n");
-}
-
 static void save_overview(struct membuffer *b, struct dive *dive)
 {
-	show_location(b, dive);
 	show_utf8(b, dive->divemaster, "  <divemaster>", "</divemaster>\n", 0);
 	show_utf8(b, dive->buddy, "  <buddy>", "</buddy>\n", 0);
 	show_utf8(b, dive->notes, "  <notes>", "</notes>\n", 0);
@@ -424,7 +394,8 @@ void save_one_dive(struct membuffer *b, struct dive *dive)
 	if (dive->visibility)
 		put_format(b, " visibility='%d'", dive->visibility);
 	save_tags(b, dive->tag_list);
-
+	if (dive->dive_site_uuid)
+		put_format(b, " divesiteid='%8x'", dive->dive_site_uuid);
 	show_date(b, dive->when);
 	put_format(b, " duration='%u:%02u min'>\n",
 		   FRACTION(dive->dc.duration.seconds, 60));
@@ -507,7 +478,7 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 	put_format(b, "/>\n");
 }
 
-#define VERSION 2
+#define VERSION 3
 
 int save_dives(const char *filename)
 {
@@ -529,8 +500,23 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 	call_for_each_dc(b, save_one_device);
 	if (autogroup)
 		put_format(b, "  <autogroup state='1' />\n");
-	put_format(b, "</settings>\n<dives>\n");
+	put_format(b, "</settings>\n");
 
+	/* save the dive sites */
+	put_format(b, "<divesites>\n");
+	for (i = 0; i < dive_site_table.nr; i++) {
+		struct dive_site *ds = get_dive_site(i);
+		put_format(b, "<site uuid='%8x' ", ds->uuid);
+		show_utf8(b, ds->name, " name='", "'", 1);
+		if (ds->latitude.udeg || ds->longitude.udeg) {
+			put_degrees(b, ds->latitude, " gps='", " ");
+			put_degrees(b, ds->longitude, "", "'");
+		}
+		show_utf8(b, ds->description, " description='", "'", 1);
+		show_utf8(b, ds->notes, " notes='", "'", 1);
+		put_format(b, "/>\n");
+	}
+	put_format(b, "</divesites>\n<dives>\n");
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
 		trip->index = 0;
 

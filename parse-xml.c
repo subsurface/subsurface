@@ -128,6 +128,7 @@ const struct units IMPERIAL_units = IMPERIAL_UNITS;
 #define MAX_EVENT_NAME 128
 static struct divecomputer *cur_dc;
 static struct dive *cur_dive;
+static struct dive_site *cur_dive_site;
 static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
 static struct picture *cur_picture;
@@ -968,22 +969,21 @@ void try_to_fill_userid(const char *name, char *buf)
 
 static const char *country, *city;
 
-static void divinglog_place(char *place, char **location)
+static void divinglog_place(char *place, uint32_t *uuid)
 {
 	char buffer[1024], *p;
 	int len;
 
-	len = snprintf(buffer, sizeof(buffer),
-		       "%s%s%s%s%s",
-		       place,
-		       city ? ", " : "",
-		       city ? city : "",
-		       country ? ", " : "",
-		       country ? country : "");
-
-	p = malloc(len + 1);
-	memcpy(p, buffer, len + 1);
-	*location = p;
+	snprintf(buffer, sizeof(buffer),
+		 "%s%s%s%s%s",
+		 place,
+		 city ? ", " : "",
+		 city ? city : "",
+		 country ? ", " : "",
+		 country ? country : "");
+	*uuid = get_dive_site_uuid_by_name(buffer);
+	if (*uuid == 0)
+		*uuid = create_dive_site(buffer, (degrees_t){0}, (degrees_t){0});
 
 	city = NULL;
 	country = NULL;
@@ -1005,7 +1005,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
 	       MATCH("name.country", utf8_string, &country) ||
 	       MATCH("name.city", utf8_string, &city) ||
-	       MATCH("name.place", divinglog_place, &dive->location) ||
+	       MATCH("name.place", divinglog_place, &dive->dive_site_uuid) ||
 	       0;
 }
 
@@ -1138,12 +1138,64 @@ static void gps_long(char *buffer, struct dive *dive)
 	dive->longitude = parse_degrees(buffer, &end);
 }
 
-static void gps_location(char *buffer, struct dive *dive)
+static void gps_location(char *buffer, struct dive_site *ds)
 {
 	char *end;
 
-	dive->latitude = parse_degrees(buffer, &end);
-	dive->longitude = parse_degrees(end, &end);
+	ds->latitude = parse_degrees(buffer, &end);
+	ds->longitude = parse_degrees(end, &end);
+}
+
+static void gps_in_dive(char *buffer, struct dive *dive)
+{
+	char *end;
+	fprintf(stderr, "called gps_in_dive with buffer |%s|\n", buffer);
+	degrees_t latitude = parse_degrees(buffer, &end);
+	degrees_t longitude = parse_degrees(end, &end);
+	fprintf(stderr, "got lat %f lon %f\n", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
+	uint32_t uuid = dive->dive_site_uuid;
+	if (uuid == 0) {
+		fprintf(stderr, "found no uuid in dive, creating a divesite without name and above GPS\n");
+		dive->dive_site_uuid = create_dive_site("", latitude, longitude);
+	} else {
+		fprintf(stderr, "found uuid in dive, checking to see if we should add GPS\n");
+		struct dive_site *ds = get_dive_site_by_uuid(uuid);
+		if (dive_site_has_gps_location(ds) &&
+		    (latitude.udeg != 0 || longitude.udeg != 0) &&
+		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
+			// Houston, we have a problem
+			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
+				ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0,
+				latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
+		} else {
+			fprintf(stderr, "let's add the gps coordinates to divesite with uuid %8x and name %s\n", ds->uuid, ds->name ?: "(none)");
+			ds->latitude = latitude;
+			ds->longitude = longitude;
+		}
+	}
+}
+
+static void add_dive_site(char *buffer, struct dive *dive)
+{
+	fprintf(stderr, "add_dive_site with name %s\n", buffer);
+	int size;
+	size = trimspace(buffer);
+	if(size) {
+		if (dive->dive_site_uuid) {
+			// we have a uuid, let's hope there's no name
+			struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+			if (!ds) {
+				fprintf(stderr, "dive contains a non-existing dive site uuid %x\n", dive->dive_site_uuid);
+				exit(1);
+			}
+			if (!same_string(ds->name, buffer)) {
+				fprintf(stderr, "dive links to dive site of different name %s / %s\n", ds->name, buffer);
+				exit(1);
+			}
+		} else {
+			dive->dive_site_uuid = create_dive_site(buffer, (degrees_t){0}, (degrees_t){0});
+		}
+	}
 }
 
 static void gps_picture_location(char *buffer, struct picture *pic)
@@ -1173,7 +1225,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	default:
 		break;
 	}
-
+	if (MATCH("divesiteid", hex_value, &dive->dive_site_uuid))
+		return;
 	if (MATCH("number", get_index, &dive->number))
 		return;
 	if (MATCH("tags", divetags, &dive->tag_list))
@@ -1203,9 +1256,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))
 		return;
-	if (MATCH("gps", gps_location, dive))
+	if (MATCH("gps", gps_in_dive, dive))
 		return;
-	if (MATCH("Place", gps_location, dive))
+	if (MATCH("Place", gps_in_dive, dive))
 		return;
 	if (MATCH("latitude", gps_lat, dive))
 		return;
@@ -1219,9 +1272,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("lon", gps_long, dive))
 		return;
-	if (MATCH("location", utf8_string, &dive->location))
+	if (MATCH("location", add_dive_site, dive))
 		return;
-	if (MATCH("name.dive", utf8_string, &dive->location))
+	if (MATCH("name.dive", add_dive_site, dive))
 		return;
 	if (MATCH("suit", utf8_string, &dive->suit))
 		return;
@@ -1290,6 +1343,27 @@ static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *
 	nonmatch("trip", name, buf);
 }
 
+/* We're processing a divesite entry - try to fill the components */
+static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, char *buf)
+{
+	start_match("divesite", name, buf);
+
+	struct dive_site *ds = *ds_p;
+
+	if (MATCH("uuid", hex_value, &ds->uuid))
+		return;
+	if (MATCH("name", utf8_string, &ds->name))
+		return;
+	if (MATCH("description", utf8_string, &ds->description))
+		return;
+	if (MATCH("notes", utf8_string, &ds->notes))
+		return;
+	if (MATCH("gps", gps_location, ds))
+		return;
+
+	nonmatch("divesite", name, buf);
+}
+
 /*
  * While in some formats file boundaries are dive boundaries, in many
  * others (as for example in our native format) there are
@@ -1305,7 +1379,7 @@ static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *
 static bool is_dive(void)
 {
 	return (cur_dive &&
-		(cur_dive->location || cur_dive->when || cur_dive->dc.samples));
+		(cur_dive->dive_site_uuid || cur_dive->when || cur_dive->dc.samples));
 }
 
 static void reset_dc_info(struct divecomputer *dc)
@@ -1348,6 +1422,32 @@ static void dc_settings_end(void)
 			   cur_settings.dc.firmware, cur_settings.dc.nickname);
 	reset_dc_settings();
 }
+
+static void dive_site_start(void)
+{
+	if (cur_dive_site)
+		return;
+	cur_dive_site = calloc(1, sizeof(struct dive_site));
+	fprintf(stderr, "allocated cur_dive_site\n");
+}
+
+static void dive_site_end(void)
+{
+	fprintf(stderr, "done with dive_site\n");
+	if (!cur_dive_site)
+		return;
+	if (cur_dive_site->uuid) {
+		uint32_t tmp = create_dive_site(cur_dive_site->name, cur_dive_site->latitude, cur_dive_site->longitude);
+		struct dive_site *ds = get_dive_site_by_uuid(tmp);
+		ds->uuid = cur_dive_site->uuid;
+		ds->notes = cur_dive_site->notes;
+		ds->description = cur_dive_site->description;
+	}
+	free(cur_dive_site);
+	cur_dive_site = NULL;
+}
+
+// now we need to add the code to parse the parts of the divesite enry
 
 static void dive_start(void)
 {
@@ -1538,6 +1638,10 @@ static void entry(const char *name, char *buf)
 		try_to_match_autogroup(name, buf);
 		return;
 	}
+	if (cur_dive_site) {
+		try_to_fill_dive_site(&cur_dive_site, name, buf);
+		return;
+	}
 	if (!cur_event.deleted) {
 		try_to_fill_event(name, buf);
 		return;
@@ -1666,6 +1770,7 @@ static struct nesting {
 } nesting[] = {
 	  { "divecomputerid", dc_settings_start, dc_settings_end },
 	  { "settings", settings_start, settings_end },
+	  { "site", dive_site_start, dive_site_end },
 	  { "dive", dive_start, dive_end },
 	  { "Dive", dive_start, dive_end },
 	  { "trip", trip_start, trip_end },
@@ -2291,7 +2396,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		utf8_string(data[2], &cur_dive->location);
+		add_dive_site(data[2], cur_dive);
 	if (data[3])
 		utf8_string(data[3], &cur_dive->buddy);
 	if (data[4])
@@ -2388,19 +2493,20 @@ extern int cobalt_visibility(void *handle, int columns, char **data, char **colu
 
 extern int cobalt_location(void *handle, int columns, char **data, char **column)
 {
+	static char *location = NULL;
 	if (data[0]) {
-		if (cur_dive->location) {
-			char *tmp = malloc(strlen(cur_dive->location) + strlen(data[0]) + 4);
+		if (location) {
+			char *tmp = malloc(strlen(location) + strlen(data[0]) + 4);
 			if (!tmp)
 				return -1;
-			sprintf(tmp, "%s / %s", cur_dive->location, data[0]);
-			free(cur_dive->location);
-			cur_dive->location = tmp;
+			sprintf(tmp, "%s / %s", location, data[0]);
+			free(location);
+			location = NULL;
+			cur_dive->dive_site_uuid = create_dive_site(tmp, (degrees_t){0}, (degrees_t){0});
 		} else {
-			utf8_string(data[0], &cur_dive->location);
+			location = strdup(data[0]);
 		}
 	}
-
 	return 0;
 }
 
