@@ -442,6 +442,8 @@ void MainTab::updateDiveInfo(bool clear)
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds)
 			ui.location->setText(ds->name);
+		else
+			ui.location->clear();
 		updateGpsCoordinates();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
