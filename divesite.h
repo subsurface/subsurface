@@ -36,12 +36,16 @@ static inline struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
 }
 
 /* there could be multiple sites of the same name - return the first one */
-static inline struct dive_site *get_dive_site_by_name(const char *name)
+static inline uint32_t get_dive_site_uuid_by_name(const char *name)
 {
 	for (int i = 0; i < dive_site_table.nr; i++)
 		if (get_dive_site(i)->name == name)
-			return get_dive_site(i);
-	return NULL;
+			return get_dive_site(i)->uuid;
+	return 0;
 }
+
+struct dive_site *alloc_dive_site();
+uint32_t create_dive_site(const char *name, degrees_t latitude, degrees_t longitude);
+uint32_t dive_site_uuid_by_name(const char *name);
 
 #endif // DIVESITE_H
