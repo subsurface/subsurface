@@ -58,16 +58,6 @@ uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees
 	return ds->uuid;
 }
 
-/* this either returns the uuid for a site with that name or creates an entry */
-uint32_t dive_site_uuid_by_name(const char *name)
-{
-	uint32_t id = get_dive_site_uuid_by_name(name);
-	if (id == 0)
-		id = create_dive_site(name);
-
-	return id;
-}
-
 /* if the uuid is valid, just get the site, otherwise create it first;
  * so you can call this with dive->dive_site_uuid and you'll either get the existing
  * dive site or it will create a new one - so make sure you assign the uuid back to

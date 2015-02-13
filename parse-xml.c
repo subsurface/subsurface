@@ -982,7 +982,7 @@ static void divinglog_place(char *place, uint32_t *uuid)
 		 city ? city : "",
 		 country ? ", " : "",
 		 country ? country : "");
-	*uuid = get_dive_site_uuid_by_name(buffer);
+	*uuid = get_dive_site_uuid_by_name(buffer, NULL);
 	if (*uuid == 0)
 		*uuid = create_dive_site(buffer);
 
@@ -1165,14 +1165,20 @@ static void gps_location(char *buffer, struct dive_site *ds)
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
 	char *end;
-	fprintf(stderr, "called gps_in_dive with buffer |%s|\n", buffer);
+	struct dive_site *ds = NULL;
 	degrees_t latitude = parse_degrees(buffer, &end);
 	degrees_t longitude = parse_degrees(end, &end);
 	fprintf(stderr, "got lat %f lon %f\n", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
 	uint32_t uuid = dive->dive_site_uuid;
 	if (uuid == 0) {
-		fprintf(stderr, "found no uuid in dive, creating a divesite without name and above GPS\n");
-		dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude);
+		uuid = get_dive_site_uuid_by_gps(latitude, longitude, &ds);
+		if (ds) {
+			fprintf(stderr, "found dive site {%s} with these coordinates\n", ds->name);
+			dive->dive_site_uuid = uuid;
+		} else {
+			fprintf(stderr, "found no uuid in dive, no existing dive site with these coordinates, creating a new divesite without name and above GPS\n");
+			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude);
+		}
 	} else {
 		fprintf(stderr, "found uuid in dive, checking to see if we should add GPS\n");
 		struct dive_site *ds = get_dive_site_by_uuid(uuid);
@@ -1183,6 +1189,13 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
 				ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0,
 				latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
+			int len = ds->notes ? strlen(ds->notes) : 0;
+			len += sizeof("\nalternative coordinates") + 24;
+			char *notes = malloc(len);
+			snprintf(notes, len, "%s\nalternative coordinates %11.6f/%11.6f",
+				 ds->notes ?: "", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
+			free(ds->notes);
+			ds->notes = notes;
 		} else {
 			fprintf(stderr, "let's add the gps coordinates to divesite with uuid %8x and name %s\n", ds->uuid, ds->name ?: "(none)");
 			ds->latitude = latitude;
@@ -1194,21 +1207,30 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 static void add_dive_site(char *buffer, struct dive *dive)
 {
 	fprintf(stderr, "add_dive_site with name %s\n", buffer);
-	int size;
-	size = trimspace(buffer);
+	int size = trimspace(buffer);
 	if(size) {
-		if (dive->dive_site_uuid) {
-			// we have a uuid, let's hope there's no name
-			struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
-			if (!ds) {
-				fprintf(stderr, "dive contains a non-existing dive site uuid %x\n", dive->dive_site_uuid);
-				exit(1);
-			}
-			if (!same_string(ds->name, buffer)) {
-				fprintf(stderr, "dive links to dive site of different name %s / %s\n", ds->name, buffer);
-				exit(1);
+		uint32_t uuid = dive->dive_site_uuid;
+		struct dive_site *ds = get_dive_site_by_uuid(uuid);
+		if (uuid && !ds) {
+			// that's strange - we have a uuid but it doesn't exist - let's just ignore it
+			fprintf(stderr, "dive contains a non-existing dive site uuid %x\n", dive->dive_site_uuid);
+			uuid = 0;
+		}
+		if (!uuid)
+			// if the dive doesn't have a uuid, check if there's already a dive site by this name
+			uuid = get_dive_site_uuid_by_name(buffer, &ds);
+		if (ds) {
+			// we have a uuid, let's hope there isn't a different name
+			fprintf(stderr, "have existing site with name {%s} gps %f/%f ", ds->name, ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0);
+			if (same_string(ds->name, "")) {
+				fprintf(stderr, "so now add name {%s}\n", buffer);
+				ds->name = copy_string(buffer);
+			} else if (!same_string(ds->name, buffer)) {
+				// coin toss, let's just keep the first name we found
+				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s}\n", ds->name, buffer);
 			}
 		} else {
+			fprintf(stderr, "no uuid, create new dive site with name {%s}\n", buffer);
 			dive->dive_site_uuid = create_dive_site(buffer);
 		}
 	}
