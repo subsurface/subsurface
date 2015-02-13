@@ -960,7 +960,7 @@ static void create_commit_message(struct membuffer *msg)
 
 	if (dive) {
 		dive_trip_t *trip = dive->divetrip;
-		const char *location = dive->location ? : "no location";
+		const char *location = get_dive_location(dive) ? : "no location";
 		struct divecomputer *dc = &dive->dc;
 		const char *sep = "\n";
 
