@@ -1147,7 +1147,7 @@ void MainTab::on_location_editingFinished()
 {
 	// find the dive site or create it
 	const char *name = ui.location->text().toUtf8().data();
-	uint32_t uuid = get_dive_site_uuid_by_name(name);
+	uint32_t uuid = get_dive_site_uuid_by_name(name, NULL);
 	if (!uuid)
 		uuid = create_dive_site(name);
 	displayed_dive.dive_site_uuid = uuid;
