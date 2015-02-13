@@ -4,6 +4,36 @@
 
 struct dive_site_table dive_site_table;
 
+/* there could be multiple sites of the same name - return the first one */
+uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp)
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds) {
+		if (same_string(ds->name, name)) {
+			if (dsp)
+				*dsp = ds;
+			return ds->uuid;
+		}
+	}
+	return 0;
+}
+
+/* there could be multiple sites at the same GPS fix - return the first one */
+uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp)
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds) {
+		if (ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg) {
+			if (dsp)
+				*dsp = ds;
+			return ds->uuid;
+		}
+	}
+	return 0;
+}
+
 /* try to create a uniqe ID - fingers crossed */
 static uint32_t dive_site_getUniqId()
 {
@@ -56,18 +86,4 @@ uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees
 	ds->longitude = longitude;
 
 	return ds->uuid;
-}
-
-/* if the uuid is valid, just get the site, otherwise create it first;
- * so you can call this with dive->dive_site_uuid and you'll either get the existing
- * dive site or it will create a new one - so make sure you assign the uuid back to
- * dive->dive_site_uuid when using this function! */
-struct dive_site *get_or_create_dive_site_by_uuid(uint32_t uuid)
-{
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
-
-	if (!ds)
-		ds = alloc_dive_site();
-
-	return ds;
 }

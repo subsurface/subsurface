@@ -140,19 +140,40 @@ static int get_hex(const char *line)
 
 static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
+	uint32_t uuid;
+	degrees_t latitude = parse_degrees(line, &line);
+	degrees_t longitude = parse_degrees(line, &line);
 	struct dive *dive = _dive;
-	struct dive_site *ds = get_or_create_dive_site_by_uuid(dive->dive_site_uuid);
-	dive->dive_site_uuid = ds->uuid;
-	ds->latitude = parse_degrees(line, &line);
-	ds->longitude = parse_degrees(line, &line);
+	struct dive_site *ds = get_dive_site_for_dive(dive);
+	if (!ds) {
+		uuid = get_dive_site_uuid_by_gps(latitude, longitude, NULL);
+		if (!uuid)
+			uuid = create_dive_site_with_gps("", latitude, longitude);
+		dive->dive_site_uuid = uuid;
+	} else {
+		ds->latitude = latitude;
+		ds->longitude = longitude;
+	}
+
 }
 
 static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 {
+	uint32_t uuid;
+	char *name = get_utf8(str);
 	struct dive *dive = _dive;
-	struct dive_site *ds = get_or_create_dive_site_by_uuid(dive->dive_site_uuid);
-	dive->dive_site_uuid = ds->uuid;
-	ds->name = get_utf8(str);
+	struct dive_site *ds = get_dive_site_for_dive(dive);
+	fprintf(stderr, "looking for a site named {%s} ", name);
+	if (!ds) {
+		uuid = get_dive_site_uuid_by_name(name, NULL);
+		if (!uuid) { fprintf(stderr, "found none, creating\n");
+			uuid = create_dive_site(name);
+		} else { fprintf(stderr, "found one with uuid %8x\n", uuid); }
+		dive->dive_site_uuid = uuid;
+	} else {
+		fprintf(stderr, "dive had site with uuid %8x and name {%s}\n", ds->uuid, ds->name);
+		ds->name = name;
+	}
 }
 
 static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)

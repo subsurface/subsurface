@@ -45,40 +45,11 @@ static inline struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
 	return NULL;
 }
 
-/* there could be multiple sites of the same name - return the first one */
-static inline uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp)
-{
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds) {
-		if (ds->name == name) {
-			if (dsp)
-				*dsp = ds;
-			return ds->uuid;
-		}
-	}
-	return 0;
-}
-
-/* there could be multiple sites at the same GPS fix - return the first one */
-static inline uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp)
-{
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds) {
-		if (ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg) {
-			if (dsp)
-				*dsp = ds;
-			return ds->uuid;
-		}
-	}
-	return 0;
-}
-
 struct dive_site *alloc_dive_site();
 uint32_t create_dive_site(const char *name);
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude);
-struct dive_site *get_or_create_dive_site_by_uuid(uint32_t uuid);
+uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp);
+uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp);
 
 #ifdef __cplusplus
 }
