@@ -23,7 +23,6 @@
     </property>
     <item row="2" column="1">
      <widget class="KMessageWidget" name="diveNotesMessage" native="true">
-      <zorder>scrollArea</zorder>
      </widget>
     </item>
     <item row="3" column="1">
@@ -219,7 +218,6 @@
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
-            <zorder>tagWidget</zorder>
            </widget>
           </item>
           <item row="1" column="1">
