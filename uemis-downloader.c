@@ -638,12 +638,12 @@ static void parse_divespot(char *buf)
 	uemis_set_divelocation(divespot, locationstring, latitude, longitude);
 }
 
-static void track_divespot(char *val, int diveid, char **location, degrees_t *latitude, degrees_t *longitude)
+static void track_divespot(char *val, int diveid, uint32_t dive_site_uuid)
 {
 	int id = atoi(val);
 	if (id >= 0 && id > nr_divespots)
 		nr_divespots = id;
-	uemis_mark_divelocation(diveid, id, location, latitude, longitude);
+	uemis_mark_divelocation(diveid, id, dive_site_uuid);
 	return;
 }
 
@@ -783,7 +783,8 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!log && dive && !strcmp(tag, "divespot_id")) {
-			track_divespot(val, dive->dc.diveid, &dive->location, &dive->latitude, &dive->longitude);
+			dive->dive_site_uuid = create_dive_site("from Uemis");
+			track_divespot(val, dive->dc.diveid, dive->dive_site_uuid);
 		} else if (dive) {
 			parse_tag(dive, tag, val);
 		}

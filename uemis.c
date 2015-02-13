@@ -103,9 +103,7 @@ struct uemis_helper {
 	int diveid;
 	int lbs;
 	int divespot;
-	char **location;
-	degrees_t *latitude;
-	degrees_t *longitude;
+	int dive_site_uuid;
 	struct uemis_helper *next;
 };
 static struct uemis_helper *uemis_helper = NULL;
@@ -150,27 +148,22 @@ int uemis_get_weight_unit(int diveid)
 	return 0;
 }
 
-void uemis_mark_divelocation(int diveid, int divespot, char **location, degrees_t *latitude, degrees_t *longitude)
+void uemis_mark_divelocation(int diveid, int divespot, uint32_t dive_site_uuid)
 {
 	struct uemis_helper *hp = uemis_get_helper(diveid);
 	hp->divespot = divespot;
-	hp->location = location;
-	hp->longitude = longitude;
-	hp->latitude = latitude;
+	hp->dive_site_uuid = dive_site_uuid;
 }
 
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
-#if 0 /* seems overkill */
-	if (!g_utf8_validate(text, -1, NULL))
-		return;
-#endif
 	while (hp) {
-		if (hp->divespot == divespot && hp->location) {
-			*hp->location = strdup(text);
-			hp->longitude->udeg = round(longitude * 1000000);
-			hp->latitude->udeg = round(latitude * 1000000);
+		if (hp->divespot == divespot) {
+			struct dive_site *ds = get_dive_site_by_uuid(hp->dive_site_uuid);
+			ds->name = strdup(text);
+			ds->longitude.udeg = round(longitude * 1000000);
+			ds->latitude.udeg = round(latitude * 1000000);
 		}
 		hp = hp->next;
 	}
