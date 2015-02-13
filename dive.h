@@ -389,17 +389,6 @@ extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
 
-static inline void copy_gps_location(struct dive *from, struct dive *to)
-{
-	if (from && to) {
-		to->latitude.udeg = from->latitude.udeg;
-		to->longitude.udeg = from->longitude.udeg;
-		if (!to->location) {
-			to->location = strdup(from->location);
-		}
-	}
-}
-
 static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 {
 	int mbar = dive->surface_pressure.mbar;
