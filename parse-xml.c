@@ -1466,12 +1466,10 @@ static void dive_site_start(void)
 	if (cur_dive_site)
 		return;
 	cur_dive_site = calloc(1, sizeof(struct dive_site));
-	fprintf(stderr, "allocated cur_dive_site\n");
 }
 
 static void dive_site_end(void)
 {
-	fprintf(stderr, "done with dive_site\n");
 	if (!cur_dive_site)
 		return;
 	if (cur_dive_site->uuid) {
@@ -1480,6 +1478,8 @@ static void dive_site_end(void)
 		ds->uuid = cur_dive_site->uuid;
 		ds->notes = cur_dive_site->notes;
 		ds->description = cur_dive_site->description;
+		if (verbose > 3)
+			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
 	}
 	free(cur_dive_site);
 	cur_dive_site = NULL;
