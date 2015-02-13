@@ -27,11 +27,11 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 			if (!dive->selected)
 				continue;
 		}
-		if (dive->latitude.udeg == 0 && dive->longitude.udeg == 0)
+		struct dive_site *ds = get_dive_site_for_dive(dive);
+		if (!ds || !dive_site_has_gps_location(ds))
 			continue;
-
-		put_degrees(b, dive->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
-		put_degrees(b, dive->longitude, ",", ")});\n");
+		put_degrees(b, ds->latitude, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
+		put_degrees(b, ds->longitude, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
 		snprintf(pre, sizeof(pre), "<p>%s ", translate("gettextFromC", "Date:"));
 		put_HTML_date(b, dive, pre, "</p>");
@@ -49,7 +49,7 @@ void writeMarkers(struct membuffer *b, const bool selected_only)
 		put_HTML_watertemp(b, dive, pre, "</p>");
 		snprintf(pre, sizeof(pre), "<p>%s <b>", translate("gettextFromC", "Location:"));
 		put_string(b, pre);
-		put_HTML_quoted(b, dive->location);
+		put_HTML_quoted(b, get_dive_location(dive));
 		put_string(b, "</b></p>");
 		snprintf(pre, sizeof(pre), "<p> %s ", translate("gettextFromC", "Notes:"));
 		put_HTML_notes(b, dive, pre, " </p>");

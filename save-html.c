@@ -172,8 +172,11 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 
 void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
 {
-	degrees_t latitude = dive->latitude;
-	degrees_t longitude = dive->longitude;
+	struct dive_site *ds = get_dive_site_for_dive(dive);
+	if (!ds)
+		return;
+	degrees_t latitude = ds->latitude;
+	degrees_t longitude = ds->longitude;
 
 	//don't put coordinates if in (0,0)
 	if (!latitude.udeg && !longitude.udeg)
@@ -304,7 +307,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 	put_format(b, "\"subsurface_number\":%d,", dive->number);
 	put_HTML_date(b, dive, "\"date\":\"", "\",");
 	put_HTML_time(b, dive, "\"time\":\"", "\",");
-	write_attribute(b, "location", dive->location, ", ");
+	write_attribute(b, "location", get_dive_location(dive), ", ");
 	put_HTML_coordinates(b, dive);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);
