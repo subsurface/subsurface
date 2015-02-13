@@ -1127,15 +1127,30 @@ degrees_t parse_degrees(char *buf, char **end)
 static void gps_lat(char *buffer, struct dive *dive)
 {
 	char *end;
-
-	dive->latitude = parse_degrees(buffer, &end);
+	degrees_t latitude = parse_degrees(buffer, &end);
+	struct dive_site *ds = get_dive_site_for_dive(dive);
+	if (!ds) {
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, latitude, (degrees_t){0});
+	} else {
+		if (ds->latitude.udeg && ds->latitude.udeg != latitude.udeg)
+			fprintf(stderr, "Oops, changing the latitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
+		ds->latitude = latitude;
+	}
 }
 
 static void gps_long(char *buffer, struct dive *dive)
 {
 	char *end;
+	degrees_t longitude = parse_degrees(buffer, &end);
+	struct dive_site *ds = get_dive_site_for_dive(dive);
+	if (!ds) {
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, (degrees_t){0}, longitude);
+	} else {
+		if (ds->longitude.udeg && ds->longitude.udeg != longitude.udeg)
+			fprintf(stderr, "Oops, changing the longitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
+		ds->longitude = longitude;
+	}
 
-	dive->longitude = parse_degrees(buffer, &end);
 }
 
 static void gps_location(char *buffer, struct dive_site *ds)
