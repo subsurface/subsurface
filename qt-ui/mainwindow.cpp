@@ -133,7 +133,10 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_MARBLE
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
-	connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
+	// FIXME
+	// TODO
+	// we need this on the dive sites
+	//connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);

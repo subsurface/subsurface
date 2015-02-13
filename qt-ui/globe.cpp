@@ -347,7 +347,12 @@ void GlobeGPS::mousePressEvent(QMouseEvent *event)
 
 	// there could be two scenarios that got us here; let's check if we are editing a dive
 	if (MainWindow::instance()->information()->isEditing() && clickOnGlobe) {
-		MainWindow::instance()->information()->updateCoordinatesText(lat, lon);
+		//
+		// FIXME
+		// TODO
+		//
+		// this needs to do this on the dive site screen
+		// MainWindow::instance()->information()->updateCoordinatesText(lat, lon);
 		repopulateLabels();
 	} else if (clickOnGlobe) {
 		changeDiveGeoPosition(lon, lat, GeoDataCoordinates::Degree);
