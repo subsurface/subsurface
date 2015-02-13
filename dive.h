@@ -321,12 +321,10 @@ struct dive {
 	bool hidden_by_filter;
 	bool downloaded;
 	timestamp_t when;
-	char *location;
 	uint32_t dive_site_uuid;
 	char *notes;
 	char *divemaster, *buddy;
 	int rating;
-	degrees_t latitude, longitude;
 	int visibility; /* 0 - 5 star rating */
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
