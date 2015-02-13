@@ -67,6 +67,25 @@ struct dive_site *alloc_dive_site()
 	return ds;
 }
 
+void delete_dive_site(uint32_t id)
+{
+	int nr = dive_site_table.nr;
+	for (int i = 0; i < nr; i++) {
+		struct dive_site *ds = get_dive_site(i);
+		if (ds->uuid == id) {
+			free(ds->name);
+			free(ds->notes);
+			free(ds);
+			if (nr - 1 > i)
+				memmove(&dive_site_table.dive_sites[i],
+					&dive_site_table.dive_sites[i+1],
+					(nr - 1 - i) * sizeof(dive_site_table.dive_sites[0]));
+			dive_site_table.nr = nr - 1;
+			break;
+		}
+	}
+}
+
 /* allocate a new site and add it to the table */
 uint32_t create_dive_site(const char *name)
 {
