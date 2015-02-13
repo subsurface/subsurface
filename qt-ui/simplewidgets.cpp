@@ -457,8 +457,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 {
 	ui.setupUi(this);
 	what = _what;
-	UI_FROM_COMPONENT(location);
-	UI_FROM_COMPONENT(gps);
+	UI_FROM_COMPONENT(divesite);
 	UI_FROM_COMPONENT(divemaster);
 	UI_FROM_COMPONENT(buddy);
 	UI_FROM_COMPONENT(rating);
@@ -478,8 +477,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		COMPONENT_FROM_UI(location);
-		COMPONENT_FROM_UI(gps);
+		COMPONENT_FROM_UI(divesite);
 		COMPONENT_FROM_UI(divemaster);
 		COMPONENT_FROM_UI(buddy);
 		COMPONENT_FROM_UI(rating);

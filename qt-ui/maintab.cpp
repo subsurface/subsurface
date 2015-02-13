@@ -1314,7 +1314,6 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	// take the data in our copyPasteDive and apply it to selected dives
 	enableEdition();
 	copyPaste = true;
-	SHOW_SELECTIVE(location);
 	SHOW_SELECTIVE(buddy);
 	SHOW_SELECTIVE(divemaster);
 	SHOW_SELECTIVE(suit);
@@ -1329,8 +1328,8 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 		ui.rating->setCurrentStars(displayed_dive.rating);
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
-	if (what.gps)
-		updateGpsCoordinates();
+	if (what.divesite)
+		ui.location->setText(get_dive_location(&displayed_dive));
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);

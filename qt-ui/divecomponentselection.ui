@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>308</width>
-    <height>263</height>
+    <width>401</width>
+    <height>317</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,9 +41,9 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="location">
+       <widget class="QCheckBox" name="divesite">
         <property name="text">
-         <string>Location</string>
+         <string>Dive site</string>
         </property>
        </widget>
       </item>
@@ -51,34 +51,6 @@
        <widget class="QCheckBox" name="suit">
         <property name="text">
          <string>Suit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="gps">
-        <property name="text">
-         <string>GPS coordinates</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="divemaster">
-        <property name="text">
-         <string>Divemaster</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="buddy">
-        <property name="text">
-         <string>Buddy</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="rating">
-        <property name="text">
-         <string>Rating</string>
         </property>
        </widget>
       </item>
@@ -114,6 +86,27 @@
        <widget class="QCheckBox" name="cylinders">
         <property name="text">
          <string>Cylinders</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="divemaster">
+        <property name="text">
+         <string>Divemaster</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="buddy">
+        <property name="text">
+         <string>Buddy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="rating">
+        <property name="text">
+         <string>Rating</string>
         </property>
        </widget>
       </item>

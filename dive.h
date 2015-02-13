@@ -349,14 +349,13 @@ extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
-	unsigned int location : 1;
+	unsigned int divesite : 1;
 	unsigned int notes : 1;
 	unsigned int divemaster : 1;
 	unsigned int buddy : 1;
 	unsigned int suit : 1;
 	unsigned int rating : 1;
 	unsigned int visibility : 1;
-	unsigned int gps : 1;
 	unsigned int tags : 1;
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;
