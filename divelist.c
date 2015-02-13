@@ -713,7 +713,7 @@ void autogroup_dives(void)
 		if (lastdive && dive->when < lastdive->when + TRIP_THRESHOLD) {
 			dive_trip_t *trip = lastdive->divetrip;
 			add_dive_to_trip(dive, trip);
-			if (dive->location && !trip->location)
+			if (get_dive_location(dive) && !trip->location)
 				trip->location = copy_string(get_dive_location(dive));
 			lastdive = dive;
 			continue;
