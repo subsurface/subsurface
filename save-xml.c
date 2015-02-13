@@ -591,7 +591,15 @@ static void try_to_backup(const char *filename)
 	while (extension[i][0] != '\0') {
 		int elen = strlen(extension[i]);
 		if (strcasecmp(filename + flen - elen, extension[i]) == 0) {
-			save_backup(filename, extension[i], "bak");
+			if (last_xml_version < VERSION) {
+				int se_len = strlen(extension[i]) + 5;
+				char *special_ext = malloc(se_len);
+				snprintf(special_ext, se_len, "%s.v%d", extension[i], last_xml_version);
+				save_backup(filename, extension[i], special_ext);
+				free(special_ext);
+			} else {
+				save_backup(filename, extension[i], "bak");
+			}
 			break;
 		}
 		i++;
