@@ -462,7 +462,7 @@ void PrintLayout::addTablePrintDataRow(TablePrintModel *model, int row, struct d
 	model->setData(model->index(row, 3), di.displayDuration(), Qt::DisplayRole);
 	model->setData(model->index(row, 4), dive->divemaster, Qt::DisplayRole);
 	model->setData(model->index(row, 5), dive->buddy, Qt::DisplayRole);
-	model->setData(model->index(row, 6), dive->location, Qt::DisplayRole);
+	model->setData(model->index(row, 6), get_dive_location(dive), Qt::DisplayRole);
 }
 
 void PrintLayout::addTablePrintHeadingRow(TablePrintModel *model, int row) const
