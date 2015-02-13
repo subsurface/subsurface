@@ -666,19 +666,46 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
 	currentDs = get_dive_site_by_uuid(uuid);
-	ui.diveSiteName->setText(currentDs->name);
-	ui.diveSiteDescription->setText(currentDs->description);
-	ui.diveSiteNotes->setPlainText(currentDs->notes);
-	ui.diveSiteCoordinates->setText(printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg));
+	displayed_dive_site = *currentDs;
+	ui.diveSiteName->setText(displayed_dive_site.name);
+	ui.diveSiteDescription->setText(displayed_dive_site.description);
+	ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+}
+
+void LocationInformationWidget::updateGpsCoordinates()
+{
+	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	MainWindow::instance()->setApplicationState("EditDiveSite");
 }
 
 void LocationInformationWidget::acceptChanges()
 {
+	char *uiString;
+	currentDs->latitude = displayed_dive_site.latitude;
+	currentDs->longitude = displayed_dive_site.longitude;
+	uiString = ui.diveSiteName->text().toUtf8().data();
+	if (!same_string(uiString, currentDs->name)) {
+		free(currentDs->name);
+		currentDs->name = copy_string(uiString);
+	}
+	uiString = ui.diveSiteDescription->text().toUtf8().data();
+	if (!same_string(uiString, currentDs->description)) {
+		free(currentDs->description);
+		currentDs->description = copy_string(uiString);
+	}
+	uiString = ui.diveSiteNotes->document()->toPlainText().toUtf8().data();
+	if (!same_string(uiString, currentDs->notes)) {
+		free(currentDs->notes);
+		currentDs->notes = copy_string(uiString);
+	}
+	mark_divelist_changed(true);
 	emit informationManagementEnded();
 }
 
 void LocationInformationWidget::rejectChanges()
 {
+	setLocationId(currentDs->uuid);
 	emit informationManagementEnded();
 }
 

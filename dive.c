@@ -13,6 +13,7 @@
  * it's used in the UI, but it seems to make the most sense to have it
  * here */
 struct dive displayed_dive;
+struct dive_site displayed_dive_site;
 
 struct tag_entry *g_tag_list = NULL;
 

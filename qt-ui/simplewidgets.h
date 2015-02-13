@@ -229,6 +229,7 @@ public slots:
 	void showEvent(QShowEvent *);
 
 	void setLocationId(uint32_t uuid);
+	void updateGpsCoordinates(void);
 
 signals:
 	void informationManagementEnded();

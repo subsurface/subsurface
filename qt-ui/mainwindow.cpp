@@ -113,6 +113,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(mainTab, SIGNAL(requestDiveSiteEdit(uint32_t)), this, SLOT(enableDiveSiteEdit(uint32_t)));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
+	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(refreshDisplay()));
+
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
@@ -133,10 +135,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_MARBLE
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
-	// FIXME
-	// TODO
-	// we need this on the dive sites
-	//connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
+	connect(globe(), SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
@@ -218,7 +217,6 @@ LocationInformationWidget *MainWindow::locationInformationWidget() {
 }
 
 void MainWindow::enableDiveSiteEdit(uint32_t id) {
-	locationInformationWidget()->setLocationId(id);
 	setApplicationState("EditDiveSite");
 }
 
@@ -276,6 +274,7 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
+	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
 }
 
 void MainWindow::on_actionNew_triggered()

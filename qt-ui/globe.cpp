@@ -206,7 +206,10 @@ void GlobeGPS::repopulateLabels()
 			// don't show that flag, it's either already shown as displayed_dive
 			// or it's the one that we are moving right now...
 			continue;
-		ds = get_dive_site_for_dive(dive);
+		if (idx == -1)
+			ds = &displayed_dive_site;
+		else
+			ds = get_dive_site_for_dive(dive);
 		if (dive_site_has_gps_location(ds)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
 			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
@@ -329,9 +332,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	centerOn(lon, lat, true);
 
 	// change the location of the displayed_dive and put the UI in edit mode
-	ds = get_dive_site_for_dive(&displayed_dive);
-	ds->latitude.udeg = lrint(lat * 1000000.0);
-	ds->longitude.udeg = lrint(lon * 1000000.0);
+	displayed_dive_site.latitude.udeg = lrint(lat * 1000000.0);
+	displayed_dive_site.longitude.udeg = lrint(lon * 1000000.0);
 	emit(coordinatesChanged());
 	repopulateLabels();
 	editingDiveLocation = false;
