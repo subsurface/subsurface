@@ -338,7 +338,8 @@ void MainWindow::cleanUpEmpty()
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    information()->isEditing()) {
+	    information()->isEditing() ||
+	    currentApplicationState == "EditDiveSite") {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
