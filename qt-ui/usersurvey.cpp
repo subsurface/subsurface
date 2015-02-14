@@ -24,10 +24,10 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 
 	os = QString("ssrfVers=%1").arg(VERSION_STRING);
 	os.append(QString("&prettyOsName=%1").arg(SubsurfaceSysInfo::prettyOsName()));
-	QString arch = SubsurfaceSysInfo::cpuArchitecture();
+	QString arch = SubsurfaceSysInfo::buildCpuArchitecture();
 	os.append(QString("&appCpuArch=%1").arg(arch));
 	if (arch == "i386") {
-		QString osArch = SubsurfaceSysInfo::osArch();
+		QString osArch = SubsurfaceSysInfo::currentCpuArchitecture();
 		os.append(QString("&osCpuArch=%1").arg(osArch));
 	}
 	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
@@ -41,10 +41,10 @@ QString UserSurvey::getVersion()
 	// fill in the system data
 	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
 	sysInfo.append(tr("\nOperating system: %1").arg(SubsurfaceSysInfo::prettyOsName()));
-	arch = SubsurfaceSysInfo::cpuArchitecture();
+	arch = SubsurfaceSysInfo::buildCpuArchitecture();
 	sysInfo.append(tr("\nCPU architecture: %1").arg(arch));
 	if (arch == "i386")
-		sysInfo.append(tr("\nOS CPU architecture: %1").arg(SubsurfaceSysInfo::osArch()));
+		sysInfo.append(tr("\nOS CPU architecture: %1").arg(SubsurfaceSysInfo::currentCpuArchitecture()));
 	sysInfo.append(tr("\nLanguage: %1").arg(uiLanguage(NULL)));
 	return sysInfo;
 }
@@ -56,10 +56,10 @@ QString UserSurvey::getUserAgent()
 	// replace all other ':' with ' ' so that this is easy to parse
 	QString userAgent = QString("Subsurface:%1:").arg(VERSION_STRING);
 	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
-	arch = SubsurfaceSysInfo::cpuArchitecture().replace(':', ' ');
+	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
 	userAgent.append(arch);
 	if (arch == "i386")
-		userAgent.append("/" + SubsurfaceSysInfo::osArch());
+		userAgent.append("/" + SubsurfaceSysInfo::currentCpuArchitecture());
 	userAgent.append(":" + uiLanguage(NULL));
 	return userAgent;
 

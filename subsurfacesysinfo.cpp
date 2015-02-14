@@ -42,15 +42,19 @@
 
 #include "subsurfacesysinfo.h"
 #include <QString>
-#include <QFile>
-#include <QSettings>
+
+#ifdef Q_OS_UNIX
+#include <sys/utsname.h>
+#endif
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 
 #ifndef QStringLiteral
 #	define QStringLiteral QString::fromUtf8
 #endif
 
 #ifdef Q_OS_UNIX
-#include <sys/utsname.h>
+#include <qplatformdefs.h>
 #endif
 
 #ifdef __APPLE__
@@ -223,85 +227,217 @@ static const char *winVer_helper()
 #endif
 
 #if defined(Q_OS_UNIX)
-#	if (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || defined(Q_OS_FREEBSD)
-#		define USE_ETC_OS_RELEASE
-#	endif
+#  if (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || defined(Q_OS_FREEBSD)
+#    define USE_ETC_OS_RELEASE
 struct QUnixOSVersion
 {
-	// from uname(2)
-	QString sysName;
-	QString sysNameLower;
-	QString sysRelease;
-
-#  if !defined(Q_OS_ANDROID) && !defined(Q_OS_BLACKBERRY) && !defined(Q_OS_MAC)
-	// from /etc/os-release or guessed
-	QString versionIdentifier;      // ${ID}_$VERSION_ID
-	QString versionText;            // $PRETTY_NAME
-#  endif
+	// from /etc/os-release
+	QString productType;            // $ID
+	QString productVersion;         // $VERSION_ID
+	QString prettyName;             // $PRETTY_NAME
 };
 
+static QString unquote(const char *begin, const char *end)
+{
+    if (*begin == '"') {
+	Q_ASSERT(end[-1] == '"');
+	return QString::fromLatin1(begin + 1, end - begin - 2);
+    }
+    return QString::fromLatin1(begin, end - begin);
+}
 
-#ifdef USE_ETC_OS_RELEASE
 static bool readEtcOsRelease(QUnixOSVersion &v)
 {
-	QFile osRelease("/etc/os-release");
-	if (osRelease.exists()) {
-		QSettings parse("/etc/os-release", QSettings::IniFormat);
-		if (parse.contains("PRETTY_NAME")) {
-			v.versionText = parse.value("PRETTY_NAME").toString();
+	// we're avoiding QFile here
+	int fd = QT_OPEN("/etc/os-release", O_RDONLY);
+	if (fd == -1)
+		return false;
+
+	QT_STATBUF sbuf;
+	if (QT_FSTAT(fd, &sbuf) == -1) {
+		QT_CLOSE(fd);
+		return false;
+	}
+
+	QByteArray buffer(sbuf.st_size, Qt::Uninitialized);
+	buffer.resize(QT_READ(fd, buffer.data(), sbuf.st_size));
+	QT_CLOSE(fd);
+
+	const char *ptr = buffer.constData();
+	const char *end = buffer.constEnd();
+	const char *eol;
+	for ( ; ptr != end; ptr = eol + 1) {
+		static const char idString[] = "ID=";
+		static const char prettyNameString[] = "PRETTY_NAME=";
+		static const char versionIdString[] = "VERSION_ID=";
+
+		// find the end of the line after ptr
+		eol = static_cast<const char *>(memchr(ptr, '\n', end - ptr));
+		if (!eol)
+			eol = end - 1;
+
+		// note: we're doing a binary search here, so comparison
+		// must always be sorted
+		int cmp = strncmp(ptr, idString, strlen(idString));
+		if (cmp < 0)
+			continue;
+		if (cmp == 0) {
+			ptr += strlen(idString);
+			v.productType = unquote(ptr, eol);
+			continue;
 		}
-		return true;
+
+		cmp = strncmp(ptr, prettyNameString, strlen(prettyNameString));
+		if (cmp < 0)
+			continue;
+		if (cmp == 0) {
+			ptr += strlen(prettyNameString);
+			v.prettyName = unquote(ptr, eol);
+			continue;
+		}
+
+		cmp = strncmp(ptr, versionIdString, strlen(versionIdString));
+		if (cmp < 0)
+			continue;
+		if (cmp == 0) {
+			ptr += strlen(versionIdString);
+			v.productVersion = unquote(ptr, eol);
+			continue;
+		}
 	}
-	return false;
+
+	return true;
 }
-#endif // USE_ETC_OS_RELEASE
-
-static QUnixOSVersion detectUnixVersion()
-{
-	QUnixOSVersion v;
-	struct utsname u;
-	if (uname(&u) != -1) {
-		v.sysName = QString::fromLatin1(u.sysname);
-		v.sysNameLower = v.sysName.toLower();
-		v.sysRelease = QString::fromLatin1(u.release);
-	} else {
-		v.sysName = QLatin1String("Detection failed");
-		// leave sysNameLower & sysRelease unset
-	}
-
-#	if !defined(Q_OS_ANDROID) && !defined(Q_OS_BLACKBERRY) && !defined(Q_OS_MAC)
-#		ifdef USE_ETC_OS_RELEASE
-		if (readEtcOsRelease(v))
-			return v;
-#	endif
-
-	if (!v.sysNameLower.isEmpty()) {
-		// will produce "qnx_6.5" or "sunos_5.9"
-		v.versionIdentifier = v.sysNameLower + QLatin1Char('_') + v.sysRelease;
-	}
-#  endif
-
-	return v;
-}
-#endif
+#  endif // USE_ETC_OS_RELEASE
+#endif // Q_OS_UNIX
 
 static QString unknownText()
 {
 	return QStringLiteral("unknown");
 }
 
-QString SubsurfaceSysInfo::cpuArchitecture()
+QString SubsurfaceSysInfo::buildCpuArchitecture()
 {
 	return QStringLiteral(ARCH_PROCESSOR);
 }
 
-QString SubsurfaceSysInfo::fullCpuArchitecture()
+QString SubsurfaceSysInfo::currentCpuArchitecture()
+{
+#if defined(Q_OS_WIN) && !defined(Q_OS_WINCE)
+	// We don't need to catch all the CPU architectures in this function;
+	// only those where the host CPU might be different than the build target
+	// (usually, 64-bit platforms).
+	SYSTEM_INFO info;
+	GetNativeSystemInfo(&info);
+	switch (info.wProcessorArchitecture) {
+#  ifdef PROCESSOR_ARCHITECTURE_AMD64
+	case PROCESSOR_ARCHITECTURE_AMD64:
+		return QStringLiteral("x86_64");
+#  endif
+#  ifdef PROCESSOR_ARCHITECTURE_IA32_ON_WIN64
+	case PROCESSOR_ARCHITECTURE_IA32_ON_WIN64:
+#  endif
+	case PROCESSOR_ARCHITECTURE_IA64:
+		return QStringLiteral("ia64");
+	}
+#elif defined(Q_OS_UNIX)
+	long ret = -1;
+	struct utsname u;
+
+#  if defined(Q_OS_SOLARIS)
+	// We need a special call for Solaris because uname(2) on x86 returns "i86pc" for
+	// both 32- and 64-bit CPUs. Reference:
+	// http://docs.oracle.com/cd/E18752_01/html/816-5167/sysinfo-2.html#REFMAN2sysinfo-2
+	// http://fxr.watson.org/fxr/source/common/syscall/systeminfo.c?v=OPENSOLARIS
+	// http://fxr.watson.org/fxr/source/common/conf/param.c?v=OPENSOLARIS;im=10#L530
+	if (ret == -1)
+		ret = sysinfo(SI_ARCHITECTURE_64, u.machine, sizeof u.machine);
+#  endif
+
+	if (ret == -1)
+		ret = uname(&u);
+
+	// we could use detectUnixVersion() above, but we only need a field no other function does
+	if (ret != -1) {
+		// the use of QT_BUILD_INTERNAL here is simply to ensure all branches build
+		// as we don't often build on some of the less common platforms
+#  if defined(Q_PROCESSOR_ARM) || defined(QT_BUILD_INTERNAL)
+		if (strcmp(u.machine, "aarch64") == 0)
+			return QStringLiteral("arm64");
+		if (strncmp(u.machine, "armv", 4) == 0)
+			return QStringLiteral("arm");
+#  endif
+#  if defined(Q_PROCESSOR_POWER) || defined(QT_BUILD_INTERNAL)
+		// harmonize "powerpc" and "ppc" to "power"
+		if (strncmp(u.machine, "ppc", 3) == 0)
+			return QLatin1String("power") + QLatin1String(u.machine + 3);
+		if (strncmp(u.machine, "powerpc", 7) == 0)
+			return QLatin1String("power") + QLatin1String(u.machine + 7);
+		if (strcmp(u.machine, "Power Macintosh") == 0)
+			return QLatin1String("power");
+#  endif
+#  if defined(Q_PROCESSOR_SPARC) || defined(QT_BUILD_INTERNAL)
+		// Solaris sysinfo(2) (above) uses "sparcv9", but uname -m says "sun4u";
+		// Linux says "sparc64"
+		if (strcmp(u.machine, "sun4u") == 0 || strcmp(u.machine, "sparc64") == 0)
+			return QStringLiteral("sparcv9");
+		if (strcmp(u.machine, "sparc32") == 0)
+			return QStringLiteral("sparc");
+#  endif
+#  if defined(Q_PROCESSOR_X86) || defined(QT_BUILD_INTERNAL)
+		// harmonize all "i?86" to "i386"
+		if (strlen(u.machine) == 4 && u.machine[0] == 'i'
+				&& u.machine[2] == '8' && u.machine[3] == '6')
+			return QStringLiteral("i386");
+		if (strcmp(u.machine, "amd64") == 0) // Solaris
+			return QStringLiteral("x86_64");
+#  endif
+		return QString::fromLatin1(u.machine);
+	}
+#endif
+	return buildCpuArchitecture();
+}
+
+
+QString SubsurfaceSysInfo::buildAbi()
 {
 	return QLatin1String(ARCH_FULL);
 }
 
-QString SubsurfaceSysInfo::osType()
+QString SubsurfaceSysInfo::kernelType()
 {
+#if defined(Q_OS_WINCE)
+	return QStringLiteral("wince");
+#elif defined(Q_OS_WIN)
+	return QStringLiteral("winnt");
+#elif defined(Q_OS_UNIX)
+	struct utsname u;
+	if (uname(&u) == 0)
+		return QString::fromLatin1(u.sysname).toLower();
+#endif
+	return unknownText();
+}
+
+QString SubsurfaceSysInfo::kernelVersion()
+{
+#ifdef Q_OS_WINRT
+	// TBD
+	return QString();
+#elif defined(Q_OS_WIN)
+	const OSVERSIONINFO osver = winOsVersion();
+	return QString::number(int(osver.dwMajorVersion)) + QLatin1Char('.') + QString::number(int(osver.dwMinorVersion))
+			+ QLatin1Char('.') + QString::number(int(osver.dwBuildNumber));
+#else
+	struct utsname u;
+	if (uname(&u) == 0)
+		return QString::fromLatin1(u.release);
+	return QString();
+#endif
+}
+
+QString SubsurfaceSysInfo::productType()
+{
+	// similar, but not identical to QFileSelectorPrivate::platformSelectors
 #if defined(Q_OS_WINPHONE)
 	return QStringLiteral("winphone");
 #elif defined(Q_OS_WINRT)
@@ -318,8 +454,6 @@ QString SubsurfaceSysInfo::osType()
 
 #elif defined(Q_OS_ANDROID)
 	return QStringLiteral("android");
-#elif defined(Q_OS_LINUX)
-	return QStringLiteral("linux");
 
 #elif defined(Q_OS_IOS)
 	return QStringLiteral("ios");
@@ -328,31 +462,16 @@ QString SubsurfaceSysInfo::osType()
 #elif defined(Q_OS_DARWIN)
 	return QStringLiteral("darwin");
 
-#elif defined(Q_OS_FREEBSD_KERNEL)
-	return QStringLiteral("freebsd");
-#elif defined(Q_OS_UNIX)
-	QUnixOSVersion unixOsVersion = detectUnixVersion();
-	if (!unixOsVersion.sysNameLower.isEmpty())
-		return unixOsVersion.sysNameLower;
+#elif defined(USE_ETC_OS_RELEASE) // Q_OS_UNIX
+	QUnixOSVersion unixOsVersion;
+	readEtcOsRelease(unixOsVersion);
+	if (!unixOsVersion.productType.isEmpty())
+		return unixOsVersion.productType;
 #endif
 	return unknownText();
 }
 
-QString SubsurfaceSysInfo::osKernelVersion()
-{
-#ifdef Q_OS_WINRT
-	// TBD
-	return QString();
-#elif defined(Q_OS_WIN)
-	const OSVERSIONINFO osver = winOsVersion();
-	return QString::number(int(osver.dwMajorVersion)) + QLatin1Char('.') + QString::number(int(osver.dwMinorVersion))
-			+ QLatin1Char('.') + QString::number(int(osver.dwBuildNumber));
-#else
-	return detectUnixVersion().sysRelease;
-#endif
-}
-
-QString SubsurfaceSysInfo::osVersion()
+QString SubsurfaceSysInfo::productVersion()
 {
 #if defined(Q_OS_IOS)
 	int major = (int(MacintoshVersion) >> 4) & 0xf;
@@ -389,24 +508,34 @@ QString SubsurfaceSysInfo::osVersion()
 		deviceinfo_free_details(&deviceInfo);
 		return bbVersion;
 	}
-#elif defined(Q_OS_UNIX)
-	QUnixOSVersion unixOsVersion = detectUnixVersion();
-	if (!unixOsVersion.versionIdentifier.isEmpty())
-		return unixOsVersion.versionIdentifier;
+#elif defined(USE_ETC_OS_RELEASE) // Q_OS_UNIX
+	QUnixOSVersion unixOsVersion;
+	readEtcOsRelease(unixOsVersion);
+	if (!unixOsVersion.productVersion.isEmpty())
+		return unixOsVersion.productVersion;
 #endif
 
 	// fallback
 	return unknownText();
 }
 
-QString SubsurfaceSysInfo::prettyOsName()
+QString SubsurfaceSysInfo::prettyProductName()
 {
 #if defined(Q_OS_IOS)
-	return QLatin1String("iOS ") + osVersion();
+	return QLatin1String("iOS ") + productVersion();
 #elif defined(Q_OS_OSX)
 	// get the known codenames
 	const char *basename = 0;
 	switch (int(MacintoshVersion)) {
+	case MV_CHEETAH:
+	case MV_PUMA:
+	case MV_JAGUAR:
+	case MV_PANTHER:
+	case MV_TIGER:
+		// This version of Qt does not run on those versions of OS X
+		// so this case label will never be reached
+		Q_UNREACHABLE();
+		break;
 	case MV_LEOPARD:
 		basename = "Mac OS X Leopard (";
 		break;
@@ -419,73 +548,53 @@ QString SubsurfaceSysInfo::prettyOsName()
 	case MV_MOUNTAINLION:
 		basename = "OS X Mountain Lion (";
 		break;
-#ifdef MV_MAVERICKS
 	case MV_MAVERICKS:
-#else
-	case 0x000B: // MV_MAVERICKS
-#endif
 		basename = "OS X Mavericks (";
 		break;
-#ifdef MV_YOSEMITE
 	case MV_YOSEMITE:
-#else
-	case 0x000C: // MV_YOSEMITE
-#endif
 		basename = "OS X Yosemite (";
 		break;
 	}
 	if (basename)
-		return QLatin1String(basename) + osVersion() + QLatin1Char(')');
+		return QLatin1String(basename) + productVersion() + QLatin1Char(')');
 
 	// a future version of OS X
-	return QLatin1String("OS X ") + osVersion();
+	return QLatin1String("OS X ") + productVersion();
 #elif defined(Q_OS_WINPHONE)
 	return QLatin1String("Windows Phone ") + QLatin1String(winVer_helper());
 #elif defined(Q_OS_WIN)
 	return QLatin1String("Windows ") + QLatin1String(winVer_helper());
 #elif defined(Q_OS_ANDROID)
-	return QLatin1String("Android ") + osVersion();
+	return QLatin1String("Android ") + productVersion();
 #elif defined(Q_OS_BLACKBERRY)
-	return QLatin1String("BlackBerry ") + osVersion();
+	return QLatin1String("BlackBerry ") + productVersion();
 #elif defined(Q_OS_UNIX)
-	QUnixOSVersion unixOsVersion = detectUnixVersion();
-	if (unixOsVersion.versionText.isEmpty())
-		return unixOsVersion.sysName;
-	else
-		return unixOsVersion.sysName + QLatin1String(" (") + unixOsVersion.versionText + QLatin1Char(')');
-#else
-	return unknownText();
+#  ifdef USE_ETC_OS_RELEASE
+	QUnixOSVersion unixOsVersion;
+	readEtcOsRelease(unixOsVersion);
+	if (!unixOsVersion.prettyName.isEmpty())
+		return unixOsVersion.prettyName;
+#  endif
+	struct utsname u;
+	if (uname(&u) == 0)
+		return QString::fromLatin1(u.sysname) + QLatin1Char(' ') + QString::fromLatin1(u.release);
 #endif
+	return unknownText();
 }
 
-// detect if the OS we are running on is 64 or 32bit
-// we only care when building on Intel for 32bit
-QString SubsurfaceSysInfo::osArch()
+#endif // Qt >= 5.4
+
+QString SubsurfaceSysInfo::prettyOsName()
 {
-	QString res = "";
-#if defined(Q_PROCESSOR_X86_32)
-#if defined(Q_OS_UNIX)
+	// Matches the pre-release version of Qt 5.4
+	QString pretty = prettyProductName();
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC) && !defined(Q_OS_ANDROID)
+	// QSysInfo::kernelType() returns lowercase ("linux" instead of "Linux")
 	struct utsname u;
-	if (uname(&u) != -1) {
-		res = u.machine;
-	}
-#elif defined(Q_OS_WIN)
-
-	/* this code is from
-	 * http://mark.koli.ch/reliably-checking-os-bitness-32-or-64-bit-on-windows-with-a-tiny-c-app
-	 * there is no license given, but 5 lines of code should be fine to reuse unless explicitly forbidden */
-	typedef BOOL (WINAPI *IW64PFP)(HANDLE, BOOL *);
-	BOOL os64 = FALSE;
-	IW64PFP IW64P = (IW64PFP)GetProcAddress(
-				GetModuleHandle((LPCSTR)"kernel32"), "IsWow64Process");
-
-	if(IW64P != NULL){
-		IW64P(GetCurrentProcess(), &os64);
-	}
-	res = os64 ? "x86_64" : "i386";
+	if (uname(&u) == 0)
+		return QString::fromLatin1(u.sysname) + QLatin1String(" (") + pretty + QLatin1Char(')');
 #endif
-#endif
-	return res;
+	return pretty;
 }
 
 extern "C" {

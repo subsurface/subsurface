@@ -205,16 +205,18 @@
 
 class SubsurfaceSysInfo : public QSysInfo {
 public:
-#if QT_VERSION <= 0x050400
-	static QString cpuArchitecture();
-	static QString fullCpuArchitecture();
-	static QString osType();
-	static QString osKernelVersion();
-	static QString osVersion();
-	static QString prettyOsName();
+#if QT_VERSION < 0x050400
+	static QString buildCpuArchitecture();
+	static QString currentCpuArchitecture();
+	static QString buildAbi();
 
+	static QString kernelType();
+	static QString kernelVersion();
+	static QString productType();
+	static QString productVersion();
+	static QString prettyProductName();
 #endif
-	static QString osArch();
+	static QString prettyOsName();
 };
 
 
