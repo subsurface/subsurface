@@ -302,7 +302,7 @@ void SocialNetworkDialog::selectionChanged()
 									       tr("min", "abbreviation for minutes")));
 	}
 	if (ui->Location->isChecked()) {
-		fullText += tr("Dive location: %1 \n").arg(d->location);
+		fullText += tr("Dive location: %1 \n").arg(get_dive_location(d));
 	}
 	if (ui->Buddy->isChecked()) {
 		fullText += tr("Buddy: %1 \n").arg(d->buddy);

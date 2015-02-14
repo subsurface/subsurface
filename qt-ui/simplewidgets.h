@@ -6,6 +6,7 @@ class QAbstractButton;
 class QNetworkReply;
 
 #include <QWidget>
+#include <QGroupBox>
 #include <QDialog>
 #include <stdint.h>
 
@@ -212,6 +213,30 @@ public:
 
 private:
 	Ui::FilterWidget ui;
+};
+
+#include "ui_locationInformation.h"
+
+class LocationInformationWidget : public QGroupBox {
+Q_OBJECT
+public:
+	LocationInformationWidget(QWidget *parent = 0);
+
+public slots:
+	void acceptChanges();
+	void rejectChanges();
+
+	void showEvent(QShowEvent *);
+
+	void setLocationId(uint32_t uuid);
+	void updateGpsCoordinates(void);
+
+signals:
+	void informationManagementEnded();
+
+private:
+	struct dive_site *currentDs;
+	Ui::LocationInformation ui;
 };
 
 bool isGnome3Session();

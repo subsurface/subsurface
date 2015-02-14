@@ -49,17 +49,18 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
+	connect(ui.manageDiveSite, SIGNAL(clicked()), this, SLOT(prepareDiveSiteEdit()));
+
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
 	addMessageAction(action);
 
 	action = new QAction(tr("Discard changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	addMessageAction(action);
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
-
-	addMessageAction(action);
 
 	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);
@@ -71,7 +72,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	setEnabled(false);
 
 	ui.location->installEventFilter(this);
-	ui.coordinates->installEventFilter(this);
 	ui.divemaster->installEventFilter(this);
 	ui.buddy->installEventFilter(this);
 	ui.suit->installEventFilter(this);
@@ -210,6 +210,10 @@ MainTab::~MainTab()
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
+}
+
+void MainTab::prepareDiveSiteEdit() {
+	emit requestDiveSiteEdit(displayed_dive.dive_site_uuid);
 }
 
 void MainTab::toggleTriggeredColumn()
@@ -391,6 +395,11 @@ bool MainTab::isEditing()
 	return editMode != NONE;
 }
 
+void MainTab::showLocation()
+{
+	ui.location->setText(get_dive_location(&displayed_dive));
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	// don't execute this while adding / planning a dive
@@ -424,9 +433,7 @@ void MainTab::updateDiveInfo(bool clear)
 		else
 			ui.notes->setPlainText(tmp);
 	}
-
 	UPDATE_TEXT(displayed_dive, notes);
-	UPDATE_TEXT(displayed_dive, location);
 	UPDATE_TEXT(displayed_dive, suit);
 	UPDATE_TEXT(displayed_dive, divemaster);
 	UPDATE_TEXT(displayed_dive, buddy);
@@ -435,7 +442,11 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.DiveType->setCurrentIndex(displayed_dive.dc.divemode);
 
 	if (!clear) {
-		updateGpsCoordinates();
+		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		if (ds)
+			ui.location->setText(ds->name);
+		else
+			ui.location->clear();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -446,8 +457,6 @@ void MainTab::updateDiveInfo(bool clear)
 			setTabText(0, tr("Trip notes"));
 			currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			// only use trip relevant fields
-			ui.coordinates->setVisible(false);
-			ui.CoordinatedLabel->setVisible(false);
 			ui.divemaster->setVisible(false);
 			ui.DivemasterLabel->setVisible(false);
 			ui.buddy->setVisible(false);
@@ -477,8 +486,6 @@ void MainTab::updateDiveInfo(bool clear)
 			setTabText(0, tr("Dive notes"));
 			currentTrip = NULL;
 			// make all the fields visible writeable
-			ui.coordinates->setVisible(true);
-			ui.CoordinatedLabel->setVisible(true);
 			ui.divemaster->setVisible(true);
 			ui.buddy->setVisible(true);
 			ui.suit->setVisible(true);
@@ -647,8 +654,8 @@ void MainTab::updateDiveInfo(bool clear)
 		clearStats();
 		clearEquipment();
 		ui.rating->setCurrentStars(0);
-		ui.coordinates->clear();
 		ui.visibility->setCurrentStars(0);
+		ui.location->clear();
 	}
 	editMode = NONE;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
@@ -756,8 +763,6 @@ void MainTab::acceptChanges()
 			copy_samples(&displayed_dive.dc, &current_dive->dc);
 		}
 		struct dive *cd = current_dive;
-		//Reset coordinates field, in case it contains garbage.
-		updateGpsCoordinates();
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.buddy, cd->buddy))
@@ -785,17 +790,6 @@ void MainTab::acceptChanges()
 			time_t offset = cd->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
-		if (displayed_dive.latitude.udeg != cd->latitude.udeg ||
-		    displayed_dive.longitude.udeg != cd->longitude.udeg)
-			MODIFY_SELECTED_DIVES(
-				if (copyPaste ||
-				    (same_string(mydive->location, cd->location) &&
-				     mydive->latitude.udeg == cd->latitude.udeg &&
-				     mydive->longitude.udeg == cd->longitude.udeg))
-					gpsHasChanged(mydive, cd, ui.coordinates->text(), 0);
-			);
-		if (!same_string(displayed_dive.location, cd->location))
-			MODIFY_SELECTED_DIVES(EDIT_TEXT(location));
 
 		saveTags();
 
@@ -901,7 +895,6 @@ void MainTab::resetPallete()
 	ui.buddy->setPalette(p);
 	ui.notes->setPalette(p);
 	ui.location->setPalette(p);
-	ui.coordinates->setPalette(p);
 	ui.divemaster->setPalette(p);
 	ui.suit->setPalette(p);
 	ui.airtemp->setPalette(p);
@@ -1139,8 +1132,17 @@ void MainTab::on_location_textChanged(const QString &text)
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(ui.location->text().toUtf8().data());
 	} else {
-		free(displayed_dive.location);
-		displayed_dive.location = strdup(ui.location->text().toUtf8().data());
+		// this means we switched dive sites... this requires a lot more thinking
+		//
+		//
+		//  FIXME
+		//
+		// TODO
+		//
+		//
+		//
+		// free(displayed_dive.location);
+		// displayed_dive.location = strdup(ui.location->text().toUtf8().data());
 	}
 	markChangedWidget(ui.location);
 }
@@ -1148,25 +1150,12 @@ void MainTab::on_location_textChanged(const QString &text)
 // If we have GPS data for the location entered, add it.
 void MainTab::on_location_editingFinished()
 {
-	// if we have a location and no GPS data, look up the GPS data;
-	// but if the GPS data was intentionally cleared then don't
-	if (!currentTrip &&
-	    !same_string(displayed_dive.location, "") &&
-	    ui.coordinates->text().trimmed().isEmpty() &&
-	    !(editMode == DIVE && dive_has_gps_location(current_dive))) {
-		struct dive *dive;
-		int i = 0;
-		for_each_dive (i, dive) {
-			if (same_string(displayed_dive.location, dive->location) &&
-			    (dive->latitude.udeg || dive->longitude.udeg)) {
-				displayed_dive.latitude = dive->latitude;
-				displayed_dive.longitude = dive->longitude;
-				MainWindow::instance()->globe()->reload();
-				updateGpsCoordinates();
-				break;
-			}
-		}
-	}
+	// find the dive site or create it
+	const char *name = ui.location->text().toUtf8().data();
+	uint32_t uuid = get_dive_site_uuid_by_name(name, NULL);
+	if (!uuid)
+		uuid = create_dive_site(name);
+	displayed_dive.dive_site_uuid = uuid;
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
@@ -1199,6 +1188,7 @@ void MainTab::on_notes_textChanged()
 	markChangedWidget(ui.notes);
 }
 
+#if 0 // we'll need something like this for the dive site management
 void MainTab::on_coordinates_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
@@ -1215,6 +1205,7 @@ void MainTab::on_coordinates_textChanged(const QString &text)
 		ui.coordinates->setPalette(p); // marks things red
 	}
 }
+#endif
 
 void MainTab::on_rating_valueChanged(int value)
 {
@@ -1266,6 +1257,7 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 		ui.weights->edit(index);
 }
 
+#if 0 // we'll need this for dive sites
 void MainTab::updateCoordinatesText(qreal lat, qreal lon)
 {
 	int ulat = rint(lat * 1000000);
@@ -1278,9 +1270,16 @@ void MainTab::updateGpsCoordinates()
 	if (editMode == NONE)
 		enableEdition();
 
-	ui.coordinates->setText(printGPSCoords(displayed_dive.latitude.udeg, displayed_dive.longitude.udeg));
-	ui.coordinates->setModified(displayed_dive.latitude.udeg || displayed_dive.longitude.udeg);
+	struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+	if (ds && dive_site_has_gps_location(ds)) {
+		ui.coordinates->setText(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg));
+		ui.coordinates->setModified(true);
+	} else if (!ui.coordinates->text().isEmpty()) {
+		ui.coordinates->setModified(true);
+		ui.coordinates->clear();
+	}
 }
+#endif
 
 void MainTab::escDetected()
 {
@@ -1312,7 +1311,6 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	// take the data in our copyPasteDive and apply it to selected dives
 	enableEdition();
 	copyPaste = true;
-	SHOW_SELECTIVE(location);
 	SHOW_SELECTIVE(buddy);
 	SHOW_SELECTIVE(divemaster);
 	SHOW_SELECTIVE(suit);
@@ -1327,8 +1325,8 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 		ui.rating->setCurrentStars(displayed_dive.rating);
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
-	if (what.gps)
-		updateGpsCoordinates();
+	if (what.divesite)
+		ui.location->setText(get_dive_location(&displayed_dive));
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);

@@ -13,6 +13,7 @@
  * it's used in the UI, but it seems to make the most sense to have it
  * here */
 struct dive displayed_dive;
+struct dive_site displayed_dive_site;
 
 struct tag_entry *g_tag_list = NULL;
 
@@ -437,7 +438,6 @@ void clear_dive(struct dive *d)
 	/* free the strings */
 	free(d->buddy);
 	free(d->divemaster);
-	free(d->location);
 	free(d->notes);
 	free(d->suit);
 	/* free tags, additional dive computers, and pictures */
@@ -463,7 +463,6 @@ void copy_dive(struct dive *s, struct dive *d)
 	*d = *s;
 	d->buddy = copy_string(s->buddy);
 	d->divemaster = copy_string(s->divemaster);
-	d->location = copy_string(s->location);
 	d->notes = copy_string(s->notes);
 	d->suit = copy_string(s->suit);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
@@ -500,7 +499,6 @@ void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components 
 {
 	if (clear)
 		clear_dive(d);
-	CONDITIONAL_COPY_STRING(location);
 	CONDITIONAL_COPY_STRING(notes);
 	CONDITIONAL_COPY_STRING(divemaster);
 	CONDITIONAL_COPY_STRING(buddy);
@@ -509,10 +507,8 @@ void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components 
 		d->rating = s->rating;
 	if (what.visibility)
 		d->visibility = s->visibility;
-	if (what.gps) {
-		d->longitude = s->longitude;
-		d->latitude = s->latitude;
-	}
+	if (what.divesite)
+		d->dive_site_uuid = s->dive_site_uuid;
 	if (what.tags)
 		STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
 	if (what.cylinders)
@@ -2699,7 +2695,7 @@ int count_dives_with_location(const char *location)
 	struct dive *d;
 
 	for_each_dive (i, d) {
-		if (same_string(d->location, location))
+		if (same_string(get_dive_location(d), location))
 			counter++;
 	}
 	return counter;
@@ -2744,9 +2740,6 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
-	MERGE_NONZERO(res, a, b, latitude.udeg);
-	MERGE_NONZERO(res, a, b, longitude.udeg);
-	MERGE_TXT(res, a, b, location);
 	MERGE_TXT(res, a, b, notes);
 	MERGE_TXT(res, a, b, buddy);
 	MERGE_TXT(res, a, b, divemaster);
@@ -2766,7 +2759,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
 	else
 		join_dive_computers(&res->dc, &a->dc, &b->dc, 0);
-
+	res->dive_site_uuid = a->dive_site_uuid ?: b->dive_site_uuid;
 	fixup_dive(res);
 	return res;
 }
@@ -2931,9 +2924,10 @@ unsigned int dive_get_picture_count(struct dive *d)
 
 void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
 {
-	if (!d->latitude.udeg && pic->latitude.udeg) {
-		d->latitude = pic->latitude;
-		d->longitude = pic->longitude;
+	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+	if (!dive_site_has_gps_location(ds) && (pic->latitude.udeg || pic->longitude.udeg)) {
+		ds->latitude = pic->latitude;
+		ds->longitude = pic->longitude;
 	}
 }
 

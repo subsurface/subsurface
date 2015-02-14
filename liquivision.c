@@ -121,21 +121,24 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 		// Dive location, assemble Location and Place
 		unsigned int len, place_len;
+		char *location;
 		len = array_uint32_le(buf + ptr);
 		ptr += 4;
 		place_len = array_uint32_le(buf + ptr + len);
 
 		if (len && place_len) {
-			dive->location = malloc(len + place_len + 4);
-			memset(dive->location, 0, len + place_len + 4);
-			memcpy(dive->location, buf + ptr, len);
-			memcpy(dive->location + len, ", ", 2);
-			memcpy(dive->location + len + 2, buf + ptr + len + 4, place_len);
+			location = malloc(len + place_len + 4);
+			memset(location, 0, len + place_len + 4);
+			memcpy(location, buf + ptr, len);
+			memcpy(location + len, ", ", 2);
+			memcpy(location + len + 2, buf + ptr + len + 4, place_len);
 		} else if (len) {
-			dive->location = strndup(buf + ptr, len);
+			location = strndup(buf + ptr, len);
 		} else if (place_len) {
-			dive->location = strndup(buf + ptr + len + 4, place_len);
+			location = strndup(buf + ptr + len + 4, place_len);
 		}
+		dive->dive_site_uuid = create_dive_site(location);
+		free(location);
 
 		ptr += len + 4 + place_len;
 

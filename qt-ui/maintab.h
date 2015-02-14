@@ -10,6 +10,7 @@
 #include <QTabWidget>
 #include <QDialog>
 #include <QMap>
+#include <QUuid>
 
 #include "ui_maintab.h"
 #include "completionmodels.h"
@@ -55,7 +56,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-
+	void requestDiveSiteEdit(uint32_t uuid);
 public
 slots:
 	void addCylinder_clicked();
@@ -65,7 +66,6 @@ slots:
 	void rejectChanges();
 	void on_location_textChanged(const QString &text);
 	void on_location_editingFinished();
-	void on_coordinates_textChanged(const QString &text);
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();
 	void on_suit_textChanged(const QString &text);
@@ -92,7 +92,8 @@ slots:
 	void escDetected(void);
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
-	void updateGpsCoordinates();
+	void prepareDiveSiteEdit();
+	void showLocation();
 
 private:
 	Ui::MainTab ui;

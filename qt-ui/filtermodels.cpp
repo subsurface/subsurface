@@ -249,7 +249,7 @@ bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstrac
 		return true;
 	}
 	// Checked means 'Show', Unchecked means 'Hide'.
-	QString location(d->location);
+	QString location(get_dive_location(d));
 	// only show empty location dives if the user checked that.
 	if (location.isEmpty()) {
 		if (rowCount() > 0)
@@ -277,7 +277,7 @@ void LocationFilterModel::repopulate()
 	struct dive *dive;
 	int i = 0;
 	for_each_dive (i, dive) {
-		QString location(dive->location);
+		QString location(get_dive_location(dive));
 		if (!location.isEmpty() && !list.contains(location)) {
 			list.append(location);
 		}

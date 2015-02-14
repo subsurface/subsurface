@@ -29,7 +29,25 @@
 #endif
 
 struct dive_table gps_location_table;
-static bool merge_locations_into_dives(void);
+
+// we don't overwrite any existing GPS info in the dive
+// so get the dive site and if there is none or there is one without GPS fix, add it
+static void copy_gps_location(struct dive *from, struct dive *to)
+{
+	struct dive_site *ds = get_dive_site_for_dive(to);
+	if (!ds || !dive_site_has_gps_location(ds)) {
+		struct dive_site *gds = get_dive_site_for_dive(from);
+		if (!ds) {
+			// simply link to the one created for the fake dive
+			to->dive_site_uuid = gds->uuid;
+		} else {
+			ds->latitude = gds->latitude;
+			ds->longitude = gds->longitude;
+			if (same_string(ds->name, ""))
+				ds->name = copy_string(gds->name);
+		}
+	}
+}
 
 #define SAME_GROUP 6 * 3600 // six hours
 //TODO: C Code. static functions are not good if we plan to have a test for them.
@@ -42,14 +60,14 @@ static bool merge_locations_into_dives(void)
 
 	for_each_dive (i, dive) {
 		if (!dive_has_gps_location(dive)) {
-			for (j = tracer; (gpsfix = get_gps_location(j, &gps_location_table)) !=NULL; j++) {
+			for (j = tracer; (gpsfix = get_dive_from_table(j, &gps_location_table)) !=NULL; j++) {
 				if (dive_within_time_range (dive, gpsfix->when, SAME_GROUP)) {
 					/*
 					 * If position is fixed during dive. This is the good one.
 					 * Asign and mark position, and end gps_location loop
 					 */
 					if ((dive->when <= gpsfix->when && gpsfix->when <= dive->when + dive->duration.seconds)) {
-						copy_gps_location(gpsfix,dive);
+						copy_gps_location(gpsfix, dive);
 						changed++;
 						tracer = j;
 						break;
@@ -57,7 +75,7 @@ static bool merge_locations_into_dives(void)
 						/*
 						 * If it is not, check if there are more position fixes in SAME_GROUP range
 						 */
-						if ((nextgpsfix = get_gps_location(j+1,&gps_location_table)) &&
+						if ((nextgpsfix = get_dive_from_table(j+1,&gps_location_table)) &&
 						    dive_within_time_range (dive, nextgpsfix->when, SAME_GROUP)) {
 							/*
 							 * If distance from gpsfix to end of dive is shorter than distance between
@@ -65,7 +83,7 @@ static bool merge_locations_into_dives(void)
 							 * If not, simply fail and nextgpsfix will be evaluated in next iteration.
 							 */
 							if ((dive->when + dive->duration.seconds - gpsfix->when) < (nextgpsfix->when - gpsfix->when)) {
-								copy_gps_location(gpsfix,dive);
+								copy_gps_location(gpsfix, dive);
 								tracer = j;
 								break;
 							}
@@ -73,7 +91,7 @@ static bool merge_locations_into_dives(void)
 						 * If no more positions in range, the actual is the one. Asign, mark and end loop.
 						 */
 						} else {
-							copy_gps_location(gpsfix,dive);
+							copy_gps_location(gpsfix, dive);
 							changed++;
 							tracer = j;
 							break;
@@ -329,10 +347,19 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	switch (ui.buttonBox->buttonRole(button)) {
 	case QDialogButtonBox::ApplyRole: {
+		int i;
+		struct dive *d;
+		struct dive_site *ds;
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toLocal8Bit();
 		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
-
+		// make sure we mark all the dive sites that were created
+		for (i = 0; i < gps_location_table.nr; i++) {
+			d = get_dive_from_table(i, &gps_location_table);
+			ds = get_dive_site_by_uuid(d->dive_site_uuid);
+			if (ds)
+				ds->notes = strdup("SubsurfaceWebservice");
+		}
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(true);
@@ -361,6 +388,16 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		hide();
 		close();
 		resetState();
+		/* and now clean up and remove all the extra dive sites that were created */
+		QSet<uint32_t> usedUuids;
+		for_each_dive(i, d) {
+			if (d->dive_site_uuid)
+				usedUuids.insert(d->dive_site_uuid);
+		}
+		for_each_dive_site(i, ds) {
+			if (!usedUuids.contains(ds->uuid) && same_string(ds->notes, "SubsurfaceWebservice"))
+				delete_dive_site(ds->uuid);
+		}
 	} break;
 	case QDialogButtonBox::RejectRole:
 		if (reply != NULL && reply->isOpen()) {

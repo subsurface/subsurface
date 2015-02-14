@@ -165,6 +165,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		pos == gps_text.size();
 }
 
+#if 0 // we'll need something like this for the dive site management, eventually
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
 {
 	double latitude, longitude;
@@ -193,6 +194,7 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 	dive->longitude.udeg = longudeg;
 	return true;
 }
+#endif
 
 QList<int> getDivesInTrip(dive_trip_t *trip)
 {

@@ -10,6 +10,7 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QUrl>
+#include <QUuid>
 
 #include "ui_mainwindow.h"
 
@@ -68,7 +69,7 @@ public:
 	GlobeGPS *globe();
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
-
+	LocationInformationWidget *locationInformationWidget();
 	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 
@@ -159,6 +160,8 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
+	void enableDiveSiteEdit(uint32_t id);
+	void setDefaultState();
 
 protected:
 	void closeEvent(QCloseEvent *);

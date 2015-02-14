@@ -29,6 +29,7 @@ HEADERS = \
 	display.h \
 	dive.h \
 	divelist.h \
+	divesite.h \
 	file.h \
 	gettextfromc.h \
 	gettext.h \
@@ -119,6 +120,7 @@ SOURCES =  \
 	device.c \
 	dive.c \
 	divelist.c \
+	divesite.c \
 	equipment.c \
 	file.c \
 	gettextfromc.cpp \
@@ -238,7 +240,8 @@ FORMS = \
 	qt-ui/listfilter.ui \
 	qt-ui/diveshareexportdialog.ui \
 	qt-ui/filterwidget.ui \
-	qt-ui/plannerDetails.ui
+	qt-ui/plannerDetails.ui \
+	qt-ui/locationInformation.ui
 
 # Nether usermanual or printing is supported on android right now
 android: FORMS -= qt-ui/printoptions.ui

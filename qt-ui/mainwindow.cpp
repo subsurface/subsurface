@@ -67,12 +67,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
+	LocationInformationWidget *locationInformation = new LocationInformationWidget();
 
 	registerApplicationState("Default", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileWidget, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileWidget, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileWidget, diveListView, globeGps );
+	registerApplicationState("EditDiveSite",locationInformation, profileWidget, diveListView, globeGps );
+
 	setApplicationState("Default");
 
 	ui.multiFilter->hide();
@@ -108,6 +111,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
+	connect(mainTab, SIGNAL(requestDiveSiteEdit(uint32_t)), this, SLOT(enableDiveSiteEdit(uint32_t)));
+	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
+	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(refreshDisplay()));
+	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
+
 #ifdef NO_PRINTING
 	ui.printPlan->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
@@ -128,7 +136,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef NO_MARBLE
 	ui.menuView->removeAction(ui.actionViewGlobe);
 #else
-	connect(globe(), SIGNAL(coordinatesChanged()), information(), SLOT(updateGpsCoordinates()));
+	connect(globe(), SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
@@ -205,6 +213,18 @@ PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 	return qobject_cast<PlannerSettingsWidget*>(applicationState["PlanDive"].bottomLeft);
 }
 
+LocationInformationWidget *MainWindow::locationInformationWidget() {
+	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
+}
+
+void MainWindow::enableDiveSiteEdit(uint32_t id) {
+	setApplicationState("EditDiveSite");
+}
+
+void MainWindow::setDefaultState() {
+	setApplicationState("Default");
+}
+
 void MainWindow::setLoadedWithFiles(bool f)
 {
 	filesAsArguments = f;
@@ -255,6 +275,7 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
+	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -334,6 +355,8 @@ void MainWindow::closeCurrentFile()
 	clear_git_id();
 	while (dive_table.nr)
 		delete_single_dive(0);
+	while (dive_site_table.nr)
+		delete_dive_site(get_dive_site(0)->uuid);
 
 	free((void *)existing_filename);
 	existing_filename = NULL;
@@ -532,6 +555,7 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
+	locationInformationWidget()->setLocationId(0);
 }
 
 void MainWindow::on_actionReplanDive_triggered()

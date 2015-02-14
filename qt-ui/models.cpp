@@ -1191,7 +1191,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = dive->maxcns;
 			break;
 		case LOCATION:
-			retVal = QString(dive->location);
+			retVal = QString(get_dive_location(dive));
 			break;
 		}
 		break;
@@ -1232,7 +1232,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = dive->maxcns;
 			break;
 		case LOCATION:
-			retVal = QString(dive->location);
+			retVal = QString(get_dive_location(dive));
 			break;
 		case GAS:
 			const char *gas_string = get_dive_gas_string(dive);
@@ -2110,7 +2110,7 @@ QVariant ProfilePrintModel::data(const QModelIndex &index, int role) const
 		}
 		if (row == 1) {
 			if (col == 0)
-				return QString(dive->location);
+				return QString(get_dive_location(dive));
 			if (col == 3)
 				return QString(tr("Duration: %1 min")).arg(di.displayDuration());
 		}

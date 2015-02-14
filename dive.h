@@ -8,6 +8,7 @@
 #include <zip.h>
 #include <sqlite3.h>
 #include <string.h>
+#include "divesite.h"
 
 /* Windows has no MIN/MAX macros - so let's just roll our own */
 #define MIN(x, y) ({                \
@@ -46,6 +47,8 @@ extern "C" {
 #else
 #include <stdbool.h>
 #endif
+
+extern int last_xml_version;
 
 enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NUM_GAS_USE}; // The different uses for cylinders
@@ -318,11 +321,10 @@ struct dive {
 	bool hidden_by_filter;
 	bool downloaded;
 	timestamp_t when;
-	char *location;
+	uint32_t dive_site_uuid;
 	char *notes;
 	char *divemaster, *buddy;
 	int rating;
-	degrees_t latitude, longitude;
 	int visibility; /* 0 - 5 star rating */
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
@@ -347,14 +349,13 @@ extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
-	unsigned int location : 1;
+	unsigned int divesite : 1;
 	unsigned int notes : 1;
 	unsigned int divemaster : 1;
 	unsigned int buddy : 1;
 	unsigned int suit : 1;
 	unsigned int rating : 1;
 	unsigned int visibility : 1;
-	unsigned int gps : 1;
 	unsigned int tags : 1;
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;
@@ -385,22 +386,6 @@ extern void picture_load_exif_data(struct picture *p, timestamp_t *timestamp);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
-
-static inline int dive_has_gps_location(struct dive *dive)
-{
-	return dive->latitude.udeg || dive->longitude.udeg;
-}
-
-static inline void copy_gps_location(struct dive *from, struct dive *to)
-{
-	if (from && to) {
-		to->latitude.udeg = from->latitude.udeg;
-		to->longitude.udeg = from->longitude.udeg;
-		if (!to->location) {
-			to->location = strdup(from->location);
-		}
-	}
-}
 
 static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 {
@@ -489,17 +474,11 @@ struct dive_table {
 
 extern struct dive_table dive_table;
 extern struct dive displayed_dive;
+extern struct dive_site displayed_dive_site;
 extern int selected_dive;
 extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
 #define current_dc (get_dive_dc(current_dive, dc_number))
-
-static inline struct dive *get_gps_location(int nr, struct dive_table *table)
-{
-	if (nr >= table->nr || nr < 0)
-		return NULL;
-	return table->dives[nr];
-}
 
 static inline struct dive *get_dive(int nr)
 {
@@ -513,6 +492,21 @@ static inline struct dive *get_dive_from_table(int nr, struct dive_table *dt)
 	if (nr >= dt->nr || nr < 0)
 		return NULL;
 	return dt->dives[nr];
+}
+
+static inline struct dive_site *get_dive_site_for_dive(struct dive *dive)
+{
+	if (dive)
+		return get_dive_site_by_uuid(dive->dive_site_uuid);
+	return NULL;
+}
+
+static inline char *get_dive_location(struct dive *dive)
+{
+	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	if (ds && ds->name)
+		return ds->name;
+	return NULL;
 }
 
 static inline unsigned int number_of_computers(struct dive *dive)
@@ -611,6 +605,16 @@ static inline int get_idx_by_uniq_id(int id)
 	}
 #endif
 	return i;
+}
+
+static inline bool dive_site_has_gps_location(struct dive_site *ds)
+{
+	return ds && (ds->latitude.udeg || ds->longitude.udeg);
+}
+
+static inline int dive_has_gps_location(struct dive *dive)
+{
+	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
 #ifdef __cplusplus

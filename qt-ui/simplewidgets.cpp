@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QCalendarWidget>
 #include <QKeyEvent>
+#include <QAction>
 
 #include "file.h"
 #include "mainwindow.h"
@@ -456,8 +457,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 {
 	ui.setupUi(this);
 	what = _what;
-	UI_FROM_COMPONENT(location);
-	UI_FROM_COMPONENT(gps);
+	UI_FROM_COMPONENT(divesite);
 	UI_FROM_COMPONENT(divemaster);
 	UI_FROM_COMPONENT(buddy);
 	UI_FROM_COMPONENT(rating);
@@ -477,8 +477,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		COMPONENT_FROM_UI(location);
-		COMPONENT_FROM_UI(gps);
+		COMPONENT_FROM_UI(divesite);
 		COMPONENT_FROM_UI(divemaster);
 		COMPONENT_FROM_UI(buddy);
 		COMPONENT_FROM_UI(rating);
@@ -645,4 +644,94 @@ void MultiFilter::closeFilter()
 {
 	MultiFilterSortModel::instance()->clearFilter();
 	hide();
+}
+#include <QDebug>
+#include <QShowEvent>
+
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent)
+{
+	ui.setupUi(this);
+	ui.diveSiteMessage->setText("You are editing the Dive Site");
+	ui.diveSiteMessage->setCloseButtonVisible(false);
+
+	QAction *action = new QAction(tr("Apply changes"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
+	ui.diveSiteMessage->addAction(action);
+
+	action = new QAction(tr("Discard changes"), this);
+	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+	ui.diveSiteMessage->addAction(action);
+}
+
+void LocationInformationWidget::setLocationId(uint32_t uuid)
+{
+	currentDs = get_dive_site_by_uuid(uuid);
+
+	if (!currentDs) {
+		currentDs = get_dive_site_by_uuid(create_dive_site(""));
+		displayed_dive.dive_site_uuid = currentDs->uuid;
+		ui.diveSiteName->clear();
+		ui.diveSiteDescription->clear();
+		ui.diveSiteNotes->clear();
+		ui.diveSiteCoordinates->clear();
+	}
+	displayed_dive_site = *currentDs;
+	ui.diveSiteName->setText(displayed_dive_site.name);
+	ui.diveSiteDescription->setText(displayed_dive_site.description);
+	ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+}
+
+void LocationInformationWidget::updateGpsCoordinates()
+{
+	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	MainWindow::instance()->setApplicationState("EditDiveSite");
+}
+
+void LocationInformationWidget::acceptChanges()
+{
+	char *uiString;
+	currentDs->latitude = displayed_dive_site.latitude;
+	currentDs->longitude = displayed_dive_site.longitude;
+	uiString = ui.diveSiteName->text().toUtf8().data();
+	if (!same_string(uiString, currentDs->name)) {
+		free(currentDs->name);
+		currentDs->name = copy_string(uiString);
+	}
+	uiString = ui.diveSiteDescription->text().toUtf8().data();
+	if (!same_string(uiString, currentDs->description)) {
+		free(currentDs->description);
+		currentDs->description = copy_string(uiString);
+	}
+	uiString = ui.diveSiteNotes->document()->toPlainText().toUtf8().data();
+	if (!same_string(uiString, currentDs->notes)) {
+		free(currentDs->notes);
+		currentDs->notes = copy_string(uiString);
+	}
+	if (dive_site_is_empty(currentDs)) {
+		delete_dive_site(currentDs->uuid);
+		displayed_dive.dive_site_uuid = 0;
+		setLocationId(0);
+	} else {
+		setLocationId(currentDs->uuid);
+	}
+	mark_divelist_changed(true);
+	emit informationManagementEnded();
+}
+
+void LocationInformationWidget::rejectChanges()
+{
+	Q_ASSERT(currentDs != NULL);
+	if (dive_site_is_empty(currentDs)) {
+		delete_dive_site(currentDs->uuid);
+		displayed_dive.dive_site_uuid = 0;
+		setLocationId(0);
+	} else {
+		setLocationId(currentDs->uuid);
+	}
+	emit informationManagementEnded();
+}
+
+void LocationInformationWidget::showEvent(QShowEvent *ev) {
+	ui.diveSiteMessage->setCloseButtonVisible(false);
 }

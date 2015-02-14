@@ -22,7 +22,8 @@
      <number>0</number>
     </property>
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true">
+     </widget>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -40,8 +41,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>443</width>
-         <height>758</height>
+         <width>441</width>
+         <height>753</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -131,45 +132,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="manageDiveSite">
             <property name="text">
              <string>manage</string>
             </property>
            </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="CoordinatedLabel">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Coordinates</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="TypeLabel">
-            <property name="text">
-             <string>Dive mode</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLineEdit" name="coordinates">
-            <property name="readOnly">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="DiveType"/>
           </item>
          </layout>
         </item>
@@ -276,36 +243,50 @@
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="TagLabel">
-          <property name="text">
-           <string>Tags</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="TagWidget" name="tagWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-          <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-          <property name="lineWrapMode">
-           <enum>QPlainTextEdit::NoWrap</enum>
-          </property>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="1">
+           <widget class="QComboBox" name="DiveType"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="TagLabel">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="TypeLabel">
+            <property name="text">
+             <string>Dive mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="TagWidget" name="tagWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="lineWrapMode">
+             <enum>QPlainTextEdit::NoWrap</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QLabel" name="NotesLabel">
@@ -400,8 +381,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
-         <height>752</height>
+         <width>68</width>
+         <height>40</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -456,8 +437,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
-         <height>752</height>
+         <width>441</width>
+         <height>363</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -773,8 +754,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>454</width>
-         <height>752</height>
+         <width>446</width>
+         <height>215</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="statsScrollAreaLayout">
@@ -1036,7 +1017,6 @@
   <tabstop>rating</tabstop>
   <tabstop>visibility</tabstop>
   <tabstop>suit</tabstop>
-  <tabstop>tagWidget</tabstop>
   <tabstop>notes</tabstop>
  </tabstops>
  <resources>
