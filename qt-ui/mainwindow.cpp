@@ -329,6 +329,7 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
+	locationInformationWidget()->setLocationId(0);
 	globe()->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
