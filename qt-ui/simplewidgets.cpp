@@ -666,10 +666,16 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
 	currentDs = get_dive_site_by_uuid(uuid);
-	if (currentDs)
-		displayed_dive_site = *currentDs;
-	else
-		memset(&displayed_dive, 0, sizeof(displayed_dive));
+
+	if (!currentDs) {
+		currentDs = get_dive_site_by_uuid(create_dive_site(""));
+		displayed_dive.dive_site_uuid = currentDs->uuid;
+		ui.diveSiteName->clear();
+		ui.diveSiteDescription->clear();
+		ui.diveSiteNotes->clear();
+		ui.diveSiteCoordinates->clear();
+	}
+	displayed_dive_site = *currentDs;
 	ui.diveSiteName->setText(displayed_dive_site.name);
 	ui.diveSiteDescription->setText(displayed_dive_site.description);
 	ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
@@ -708,6 +714,7 @@ void LocationInformationWidget::acceptChanges()
 
 void LocationInformationWidget::rejectChanges()
 {
+	Q_ASSERT(currentDs != NULL);
 	setLocationId(currentDs->uuid);
 	emit informationManagementEnded();
 }
