@@ -39,8 +39,12 @@ static uint32_t dive_site_getUniqId()
 {
 	uint32_t id = 0;
 
-	while (id == 0 || get_dive_site_by_uuid(id))
-		id = random() + random();
+	while (id == 0 || get_dive_site_by_uuid(id)) {
+		id = rand() & 0xff;
+		id |= (rand() & 0xff) << 8;
+		id |= (rand() & 0xff) << 16;
+		id |= (rand() & 0xff) << 24;
+	}
 
 	return id;
 }
