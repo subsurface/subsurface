@@ -354,6 +354,8 @@ void MainWindow::closeCurrentFile()
 	clear_git_id();
 	while (dive_table.nr)
 		delete_single_dive(0);
+	while (dive_site_table.nr)
+		delete_dive_site(get_dive_site(0)->uuid);
 
 	free((void *)existing_filename);
 	existing_filename = NULL;
