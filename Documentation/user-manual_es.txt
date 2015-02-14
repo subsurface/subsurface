@@ -107,7 +107,7 @@ inmersiones.
 mapamundi y aparece centrado en el punto de la última inmersión seleccionada de
 la *Lista de Inmersiones*.
 
-3. La *Información de la inmersión* arriba a la izquierda, presentando
+3. La *Información* arriba a la izquierda, presentando
 información más detallada de la inmersión seleccionada en la *Lista de
 inmersiones*, incluyendo algunas estadísticas de la inmersión seleccionada o de
 todas las inmersiones resaltadas.
@@ -124,8 +124,8 @@ Si se selecciona una inmersión en la *Lista de inmersiones*, se muestra su
 ubicación, información detallada y su perfil en sus paneles respectivos. Por
 otra parte, si uno selecciona más de un buceo, el último resaltado actuará como
 _inmersión seleccionada_, pero los datos resumidos de las _inmersiones
-resaltadas_ se mostrarán en la pestaña *Estadísticas* del panel *Información de
-la inmersión* (máximas, mínimas y medias de profundidades, duraciones,
+resaltadas_ se mostrarán en la pestaña *Estadísticas* del panel *Información*
+(máximas, mínimas y medias de profundidades, duraciones,
 temperaturas del agua, consumos de gases; el tiempo total y el número de
 inmersiones seleccionadas).
 
@@ -209,18 +209,18 @@ buceo o el dive master o el guía, y algunas anotaciones acerca de la inmersión
 _Subsurface_ puede conservar mucha más información por cada inmersión. Para
 añadir una inmersión a un registro de buceo, selecciona _Registro → Añadir
 Inmersión_ en el menú principal. El programa muestra entonces tres paneles para
-introducir información: Dos pestañas en el panel *Información de la Inmersión*
-(*Notas de la inmersión* y *Equipo*), así como el panel perfil que muestra un
+introducir información: Dos pestañas en el panel *Información*
+(*Notas* y *Equipo*), así como el panel perfil que muestra un
 perfil gráfico de cada buceo. Estos paneles estan marcados respectivamente como
 [red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
 las pestañas usadas para introducir la información.
 
 image::images/AddDive1_f20.jpg["FIGURA: Añadir inmersión",align="center"]
 
-Al editar un campo de los paneles _Notas de la Inmersión_ o _Equipo_, _Subsurface_
+Al editar un campo de los paneles _Notas_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
-en la parte de arriba del panel _Notas de la Inmersión_. Este mensaje se
-muestra en todos los paneles dependientes de _Notas de la Inmersión_ mientras
+en la parte de arriba del panel _Notas_. Este mensaje se
+muestra en todos los paneles dependientes de _Notas_ mientras
 se esté en modo de edición.
 
 image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
@@ -233,14 +233,14 @@ en memoria una copia local de la información. Al salir de _Subsurface_, el
 programa preguntará de nuevo, esta vez si se guarda el diario completo en el
 disco o no.
 
-==== Notas de la inmersión
+==== Notas
 
 Este panel contiene la información de fecha, hora y lugar de un buceo concreto,
 condiciones ambientales, compañeros así como alguna información descriptiva. Si
-pulsas en la pestaña *Notas de la inmersión*, los siguientes campos aparecen
+pulsas en la pestaña *Notas*, los siguientes campos aparecen
 visibles:
 
-image::images/AddDive2_f20.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
+image::images/AddDive2_f20.jpg["FIGURA: La pestaña Notas",align="center"]
 
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
@@ -333,9 +333,9 @@ introducirse aquí.
 Los botones *Guardar* y *Cancelar* se utilizan para guardar toda la información
 de los campos del panel de información y del panel de perfil, por lo que no hay
 necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
-ejemplo de panel de Notas de la Inmersión completo:
+ejemplo de panel de Notas completo:
 
-image::images/CompletedDiveInfo_f20.jpg["FIGURA: Una pestaña de Notas de la Inmersión completada",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURA: Una pestaña de Notas completada",align="center"]
 
 ==== Equipo
 
@@ -468,10 +468,10 @@ image::images/DiveProfile4_f20.jpg["FIGURE: Perfil de inmersión completado",ali
 
 ==== Guardar la información introducida a mano
 
-La información introducida en las pestañas *Notas de la inmersión*, Equipo y
+La información introducida en las pestañas *Notas*, Equipo y
 *Perfil de la inmersión* puede guardarse en el registro de inmersiones del
-usuario utilizando los dos botones arriba a la derecha de la pestaña "Notas de
-la Inmersión". Si se pulsa _Guardar_, los datos del buceo se guardan en el
+usuario utilizando los dos botones arriba a la derecha de la pestaña "Notas".
+Si se pulsa _Guardar_, los datos del buceo se guardan en el
 registro actual. Si se pulsa _Cancelar_ los datos recién introducidos serán
 descartados. Al salir de _Subsurface_ al usuario se le pedirá que guarde el
 registro con la nueva(s) inmersión(es).
@@ -682,10 +682,10 @@ lugar del modelo, permitiendo una identificación de dispositivos más fácil.
 Con los buceos descargados en la *Lista de inmersiones*, la información del
 ordenador no está completa y es necesario añadir más detalles para tener un
 registro más detallado de las inmersiones. Para ello se usan las pestañas
-*Notas de la Inmersión* y *Equipo* arriba a la izquierda de la ventana de
+*Notas* y *Equipo* arriba a la izquierda de la ventana de
 _Subsurface_.
 
-==== Notas de la inmersión
+==== Notas
 
 La fecha y hora del buceo, la mezcla de gases y, a menudo, la temperatura del
 agua se muestran al haberse obtenido del ordenador de buceo, pero el usuario
@@ -693,10 +693,10 @@ necesita añadir a mano alguna información para tener un registro más completo
 la inmersión. En algunos casos (p.e. rebreathers APD) también se ha de facilitar
 la fecha y la hora. Si se cambia o edita de alguna manera el contenido de esta
 pestaña, el mensaje de la barra azul arriba del panel indicará que se está
-editando el buceo. Si se pulsa en la pestaña *Notas de la inmersión*, se
+editando el buceo. Si se pulsa en la pestaña *Notas*, se
 visualizan los siguientes campos:
 
-image::images/AddDive3_f20.jpg["FIGURA: La pestaña Notas de la inmersión",align="center"]
+image::images/AddDive3_f20.jpg["FIGURA: La pestaña Notas",align="center"]
 
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
@@ -783,9 +783,9 @@ y *profunda* para que elija entre ellas.
 Los botones *Guardar* y *Cancelar* se utilizan para guardar toda la información
 de los campos del panel de información y del panel de perfil, por lo que no hay
 necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
-ejemplo de panel de Notas de la Inmersión completo:
+ejemplo de panel de Notas completo:
 
-image::images/CompletedDiveInfo_f20.jpg["FIGURA:Una pestaña completa de Notas de la Inmersión",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURA:Una pestaña completa de Notas",align="center"]
 
 ==== Equipo
 
@@ -870,7 +870,7 @@ image::images/WeightsDataEntry3_f20.jpg["FIGURA: Tabla con información de lastr
 
 _METODO 1_: Tras descargar inmersiones de un ordenador de buceo, los perfiles
 de los buceos descargados se mostrarán en el panel "Perfil de la inmersión",
-así como algunas otras informaciones en las pestañas "Notas de la Inmersión" y
+así como algunas otras informaciones en las pestañas "Notas" y
 "Equipo". Sin embargo, otros campos permanecerán vacíos.
 
 Puede resultar útil editar simultáneamente algunos de los campos de las "Notas
@@ -879,7 +879,7 @@ efectuara varias inmersiones en un solo día utilizando el mismo equipo, o en el
 mismo punto de buceo o con el mismo guía o compañero. En lugar de completar la
 información de las inmersiones una por una, se pueden seleccionar todos los
 buceos deseados en la "Lista de Inmersiones" e insertar la información común en
-las "Notas de Inmersión" y "Equipo".
+las "Notas" y "Equipo".
 
 La edición simultánea solo funciona con campos que no contienen aún ninguna
 información. Esto significa que si, para una inmersión en concreto, uno de los
@@ -896,10 +896,10 @@ varios buceos similares.
 
 [[S_CopyComponents]]
 _METODO 2_: Hay una forma diferente de hacer lo mismo. Seleccionamos un buceo
-que contenga toda la información apropiada  en las pestañas *Notas de la
-Inmersión* y *Equipo*. Entonces, desde el menú principal, seleccionamos
+que contenga toda la información apropiada  en las pestañas *Notas* y *Equipo*.
+Entonces, desde el menú principal, seleccionamos
 _Registro -> Copiar componentes_. Aparecerá una ventana con casillas
-seleccionables para la mayoría de campos de las pestañas *Notas de la inmersión*
+seleccionables para la mayoría de campos de las pestañas *Notas*
 y *Equipo*.  Selecciona los campos a copiar desde la inmersión seleccionada,
 luego pulsa _Aceptar_. Ahora selecciona en la *Lista de Inmersiones* los buceos
 a los que pegar esta información. Desde el menú principal, selecciona _Registro
@@ -930,9 +930,8 @@ image::images/Bookmarks.jpg["FIGURA: Diálogo de marcadores",align="center"]
 
 ==== Guardar la información de buceo actualizada
 
-La información introducida en las pestañas Notas de la inmersión y Equipo puede
-guardarse utilizando los dos botones de arriba a la derecha de la pestaña *Notas
-de la Inmersión*. Si se pulsa _Guardar_ los datos del buceo se guardan. Si se
+La información introducida en las pestañas Notas y Equipo puede
+guardarse utilizando los dos botones de arriba a la derecha de la pestaña *Notas*. Si se pulsa _Guardar_ los datos del buceo se guardan. Si se
 pulsa _Cancelar_ los datos de buceo recién introducidos se borran, aunque el
 perfil y los datos descargados del ordenador quedarán retenidos. Cuando el
 usuario salga de _Subsurface_ hay una pregunta final para confirmar si los
@@ -1577,7 +1576,7 @@ perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.
 
 Después que las imágenes han sido cargadas aparecen en dos lugares:
 
- - La pestaña _Fotos_ del panel _Notas de la inmersión_.
+ - La pestaña _Fotos_ del panel _Notas_.
  - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
    que relejan la hora en que se tomó cada fotografía. Ver a continuación:
 
@@ -1645,7 +1644,7 @@ profundo y durante mucho tiempo. En lo que corresponde a _Subsurface_, solo hay
 dos clases de información que necesitan proporcionarse:
 
 - *Describir las botellas usadas durante el buceo*. Esto se hace en la pestaña
-  *Equipo* del panel *Información de la inmersión* tal como xref:cylinder_definitions[se describe anteriormente].
+  *Equipo* del panel *Información* tal como xref:cylinder_definitions[se describe anteriormente].
   se introducen las botellas una a una, especificando las características de la
   botella y la composición del gas de cada una de ellas.
 
@@ -1733,7 +1732,7 @@ Para registrar inmersiones con pSCR, no se requieren procedimientos especiales,
 solo los pasos normales descritos con anterioridad:
 
 - Seleccionar el modo pSCR en el desplegable _Modo de inmersión_ en el panel
-  *Información de la inmersión*.
+  *Información*.
 
 - El buceo con pSCR, a menudo, requiere cambios de gas, necesitando una botella
   adicional. Hay, pues, que describir todas las botellas como se indicó con
@@ -1861,9 +1860,9 @@ Puede incluir información de ajustes o metadatos sobre la inmersión.
 
 == Obtener más información sobre inmersiones guardadas en el diario
 
-=== La pestaña Información de la inmersión (para inmersiones individuales)
+=== La pestaña Información (para inmersiones individuales)
 
-La pestaña Información de la inmersión proporciona alguna información resumida
+La pestaña Información proporciona alguna información resumida
 sobre un buceo en particular que ha sido seleccionado en la *Lista de
 inmersiones*. La información útil incluye el intervalo en superficie antes de la
 inmersión, las profundidades máxima y media, el volumen de gas consumido, el
@@ -2419,8 +2418,8 @@ grabadas por el ordenador y apareciendo como buceos distintos en el panel *Lista
 de inmersiones*. Se pueden unir estos buceos en uno solo seleccionando las
 correspondientes inmersiones y haciendo clic-derecho para mostrar el menú.
 Entonces se selecciona *Mezclar inmersiones seleccionadas*. Puede que sea
-necesario editar la información de la inmersión en el panel *Notas de la
-inmersión* para reflejar situaciones o condiciones que afecten al buceo
+necesario editar la información de la inmersión en el panel *Notas* para
+reflejar situaciones o condiciones que afecten al buceo
 resultante de la fusión. La figura a continuación muestra el perfil de dos
 inmersiones que fueron unidas:
 
@@ -2492,7 +2491,7 @@ image::images/facebook1_f20.jpg["Figure: Acceso a Facebook",align="center"]
 
 Tras haber establecido una conexión con _Facebook_, transferir un perfil de
 inmersión a nuestro perfil de _Facebook_ es sencillo. Un icono de _Facebook_
-aparece en  el panel *Notas de la inmersión* de _Subsurface_ (ver imagen *A* a
+aparece en  el panel *Notas* de _Subsurface_ (ver imagen *A* a
 continuación). Asegúrate de que la inmersión que quieres transferir al historial
 es la que se muestra en el panel *Perfil de la inmersión*. Selecciona el icono
 de _Facebook_ y se mostrará un icono que determinará la cantidad de información
@@ -2764,7 +2763,7 @@ image::images/Pref1_f20.jpg["FIGURA: Pantalla de Predeterminados en Preferencias
     inmersiones se muestran en la lista.
 
 ** *Botella por defecto*: Se puede especificar una botella por defecto de las
-    que aparecen listadas en la pestaña *Equipo* del panel *Notas de la inmersión*.
+    que aparecen listadas en la pestaña *Equipo* del panel *Notas*.
     Es muy cómodo si se bucea habitualmente con el mismo tipo de botella, asigna a
     cada nueva inmersión una botella del tipo aquí definido.
 
@@ -2964,7 +2963,7 @@ Al igual que el diario de _Subsurface_, la pantalla del planificador se divide
 en varias secciones (ver imagen a continuación). Los parámetros de ajuste de una
 inmersión se introducen en las diversas secciones a la izquierda de la pantalla.
 El ajuste se divide en varias secciones: Gases disponibles, Ritmos, Planificar,
-Opciones de gases y Notas de inmersión.
+Opciones de gases y Notas.
 
 Arriba a la derecha hay un *panel de diseño* verde sobre el cual puede
 manipularse directamente el perfil de inmersión arrastrando y haciendo clic como
@@ -3112,7 +3111,7 @@ guardado aparecerá en el panel *Lista de Inmersiones*.
 En la parte inferior derecha del planificador, bajo el encabezamiento _Detalles
 del plan de buceo_, se proporcionan los detalles exactos del plan de inmersión.
 Estos detalles pueden modificarse seleccionando cualquiera de las opciones bajo
-el encabezamiento _Notas de la inmersión_ del planificador, justo a la izquierda
+el encabezamiento _Notas_ del planificador, justo a la izquierda
 del anterior. Si se solicita un _Plan de buceo detallado_, se obtendrá un plan
 detallado al nivel de oraciones. Si cualquiera de los límites especificados se
 sobrepasa, se obtendrá un mensaje de aviso bajo la información del plan.
@@ -3215,7 +3214,7 @@ textos.
 
 Los planes de inmersión tienen muchas características en común con los registros
 de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
-los calculos de gas quedan almacenados en la pestaña *Notas de la inmersión*.
+los calculos de gas quedan almacenados en la pestaña *Notas*.
 Mientras se está diseñando un plan, se puede imprimir utilizando el botón
 _Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
 panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
@@ -3286,7 +3285,7 @@ de este manual que describen las operaciones con más detalle.
 - <<S_ViewPanels,_Lista_de_inmersiones_>> - Se visualiza solo el panel Lista de
   inmersiones.
 - <<S_ViewPanels,_Perfil_>> - Se visualiza solo el panel Perfil de inmersión.
-- <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas de la inmersión.
+- <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas.
 - <<S_ViewPanels,_Globo_>> - Se presenta solo el panel Mapamundi.
 - _Estadísticas anuales_ - Muestra estadísticas anuales resumidas sobre las
   inmersiones efectuadas en este año y los pasados.
@@ -3732,7 +3731,6 @@ aquí usaremos DM4 (o DM5) con la extensión por defecto .bak
 [[Atomic_Export]]
 === Exportar desde Atomic Logbook
 
-[icon="images/icons/atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook es un software en Windows de Atomics Aquatics. Permite descargar
 información de buceo de los ordenadores Cobalt y Cobalt 2. El archivo se guarda
