@@ -102,7 +102,7 @@ between dives. The *Dive List* is an important tool for manipulating a dive log.
 map
 and centred on the site of the last dive selected in the *Dive List*.
 
-3. The *Dive Info* to the top left, giving more detailed information on the
+3. The *Info* to the top left, giving more detailed information on the
 dive selected in the *Dive List*, including some statistics for the selected dive or for all
 highlighted dive(s).
 
@@ -119,7 +119,7 @@ and profile of
 the _selected dive_ are shown in the respective panels. On the other hand, if
 one highlights more than one dive the last highlighted dive is the _selected
 dive_, but summary data of all _highlighted dives_ are shown in the *Stats* tab
-of the *Dive Info* panel (maximum, minimum and average depths, durations, water
+of the *Info* panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).
 
 [[S_ViewPanels]]
@@ -136,7 +136,7 @@ display:
 
 *Profile*: Show only the Dive Profile of the selected dive.
 
-*Info*: Show only the Dive Notes about the last selected dive and statistics for
+*Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
 *Globe*: Show only the world map, centred on the last selected dive.
@@ -201,7 +201,7 @@ depth, the names of your dive buddy and of the dive master or dive guide, and
 some remarks about the dive. _Subsurface_ can store much more information
 than this for each dive. In order to add a dive to a dive log, select _Log
 ->  Add Dive_ from the Main Menu. The program then shows three panels to enter
-information for a dive: two tabs in the *Dive Info* panel (*Dive Notes* and
+information for a dive: two tabs in the *Info* panel (*Notes* and
 *Equipment*), as well as the *Dive Profile* panel that displays a graphical profile
 of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 [red]#C#
@@ -209,9 +209,9 @@ in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1_f20.jpg["FIGURE: Add dive",align="center"]
 
-When one edits a field in Dive notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
-indicated by the message in the blue box at the top of the _Dive Notes_ panel (see the image below). This message is
-displayed in all the panels under Dive notes and Equipment when in *Editing Mode*.
+When one edits a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
+indicated by the message in the blue box at the top of the _Notes_ panel (see the image below). This message is
+displayed in all the panels under Notes and Equipment when in *Editing Mode*.
 
 image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
 
@@ -221,14 +221,14 @@ before saving the information. By selecting the _Save_ button, a local copy of t
 for this specific dive is saved in memory. When one closes Subsurface, the program will
 ask again, this time whether the complete dive log should be saved on disk or not.
 
-==== Dive Notes
+==== Notes
 
 This panel contains the date, time and place information for a particular dive,
 environmental conditions, co-divers and buddies, as well as some descriptive
-information. If one clicks on the *Dive Notes* tab, the following
+information. If one clicks on the *Notes* tab, the following
 fields are visible:
 
-image::images/AddDive2_f20.jpg["FIGURE: The Dive Notes tab",align="center"]
+image::images/AddDive2_f20.jpg["FIGURE: The Notes tab",align="center"]
 
 The *Time* field reflects the date and the time of the dive. By clicking
 the date, a calendar is displayed from which
@@ -323,9 +323,9 @@ shown for the user to choose from.
 The *Save* and *Cancel* buttons are used to save all the information for tabs in
 the info panel and in the dive profile panel, so there's no need to use them
 until ALL other information has been added. Here is an example of a completed
-Dive Notes panel:
+Notes panel:
 
-image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Dive Notes tab",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Notes tab",align="center"]
 
 ==== Equipment
 
@@ -461,10 +461,10 @@ image::images/DiveProfile4_f20.jpg["FIGURE: Completed dive profile",align="cente
 
 ==== Saving the hand-entered dive information
 
-The information entered in the *Dive Notes* tab, the *Equipment* tab as well as
+The information entered in the *Notes* tab, the *Equipment* tab as well as
 the *Dive Profile* can now be saved in the user's logbook by using the two
 buttons
-on the top right hand of the Dive Notes tab. If the _Save_ button is clicked,
+on the top right hand of the Notes tab. If the _Save_ button is clicked,
 the dive data
 are saved in the current logbook. If the _Cancel_ button is clicked, the newly
 entered
@@ -694,10 +694,10 @@ allowing easy identification of devices.
 With the uploaded dives in the *Dive List*, the information from the dive
 computer is not complete and more details must be added in order to have
 a fuller record of the dives. To do this,
-the *Dive Notes* and the *Equipment* tabs on the top left hand of the
+the *Notes* and the *Equipment* tabs on the top left hand of the
 _Subsurface_ window should be used.
 
-==== Dive Notes
+==== Notes
 
 The date and time of the dive, gas mixture and (often) water temperature are usually
 shown as obtained from the dive computer, but the user needs to add
@@ -705,10 +705,10 @@ additional information by hand in order to have a more complete dive record. In 
 (e.g. APD rebreathers) one also has to provide the date and time of the dive.
 If the contents of this tab is changed or edited in any way, the message in a blue box at
 the top of the panel indicates that the dive is being edited. If one
-clicks on the *Dive Notes* tab, the following fields are
+clicks on the *Notes* tab, the following fields are
 visible:
 
-image::images/AddDive3_f20.jpg["FIGURE: The Dive Notes tab",align="center"]
+image::images/AddDive3_f20.jpg["FIGURE: The Notes tab",align="center"]
 
 The *Time* field reflects the date and time of the dive. By clicking
 the date, a calendar is displayed from which
@@ -807,9 +807,9 @@ typed
 The *Save* and *Cancel* buttons are used to save all the information for tabs
 in the info panel and in the dive profile panel, so there's no need to use them
 until ALL other information has been added. Here is an example of a completed
-Dive Notes panel:
+Notes panel:
 
-image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Dive Notes tab",align="center"]
+image::images/CompletedDiveInfo_f20.jpg["FIGURE: A completed Notes tab",align="center"]
 
 ==== Equipment
 
@@ -901,14 +901,14 @@ image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information
 _METHOD 1_: After uploading dives from
 a dive computer, the dive profiles of the uploaded dives are shown in the *Dive profile* tab, as well
 as a few items of information
-in the *Dive Notes* tab (e.g. water temperature) and in the *Equipment* tab (e.g. gas pressures
+in the *Notes* tab (e.g. water temperature) and in the *Equipment* tab (e.g. gas pressures
 and gas composition). However the other fields remain empty.
 It may be useful to simultaneously edit some of the
-fields in the *Dive Notes* and *Equipment* tabs.  For instance, it is possible
+fields in the *Notes* and *Equipment* tabs.  For instance, it is possible
 that a diver performed several dives during a single day, using identical equipment while diving at the same
 dive site or with the same dive master and/or buddy or tags. Instead of completing the information for each
 of these dives separately, one can select all the dives for that day in the *Dive List* and
-insert the same information in the *Dive Notes* and *Equipment* fields that need
+insert the same information in the *Notes* and *Equipment* fields that need
 identical information. This is achieved by editing the dive notes or the equipment for any one
 of the selected dives.
 
@@ -924,8 +924,8 @@ up the completion of the dive log after several similar dives.
 
 [[S_CopyComponents]]
 _METHOD 2_:There is a different way of achieving the same goal. Select a dive with all the appropriate information
-typed into the *Dive Notes* and *Equipment* tabs. Then, from the main menu, select _Log ->  Copy dive components_.
-A box is presented with a selection of check boxes for most of the fields in the *Dive Notes* and *Equipment* tabs.
+typed into the *Notes* and *Equipment* tabs. Then, from the main menu, select _Log ->  Copy dive components_.
+A box is presented with a selection of check boxes for most of the fields in the *Notes* and *Equipment* tabs.
 Select the fields to be copied from the currently selected dive, then select _OK_. Now, in the *Dive List*,
 select the dives
 into which this information is to be pasted. Then, from the main menu, select _Log ->  Paste dive components_.
@@ -954,10 +954,10 @@ image::images/Bookmarks.jpg["FIGURE: Bookmark dialog",align="center"]
 
 ==== Saving the updated dive information
 
-The information entered in the *Dive Notes* tab and the *Equipment* tab can be
+The information entered in the *Notes* tab and the *Equipment* tab can be
 saved by
 using the
-two buttons on the top right hand of the *Dive Notes* tab. If the _Save_ button
+two buttons on the top right hand of the *Notes* tab. If the _Save_ button
 is clicked,
 the dive data are saved. If the _Cancel_ button is clicked, then the newly
 entered dive data are
@@ -1588,7 +1588,7 @@ image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align
 
 After the images have been loaded, they appear in two places:
 
- - the _Photos_ tab of the *Dive Notes* panel.
+ - the _Photos_ tab of the *Notes* panel.
  - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
    each photograph was taken. See below:
 
@@ -1611,7 +1611,7 @@ image::images/LoadImage6_f20.jpg["FIGURE: Full-screen photo on dive profile",ali
 
 ==== The _Photos_ tab
 
-Photographs associated with a dive are shown as thumbnails in the _Photos_ tab of the _Dive Notes_
+Photographs associated with a dive are shown as thumbnails in the _Photos_ tab of the _Notes_
 panel. Photos taken in rapid succession during a dive (therefore sometimes with large
 overlap on the dive profile) can easily be accessed in the _Photos_ tab. This tab serves as
 a tool for individually accessing the photos of a dive, while the stubs on the dive profile
@@ -1646,7 +1646,7 @@ multicylinder dives are often used by technical divers who dive deep or long. As
 as _Subsurface_ is concerned, there are only two types of information that need to be provided:
 
 - *Describe the cylinders used during the dive* This is performed in the *Equipment tab* of
-  the *Dive Info* panel, as xref:cylinder_definitions[described above]. Enter the cylinders one by one,
+  the *Info* panel, as xref:cylinder_definitions[described above]. Enter the cylinders one by one,
   specifying the characteristics of the cylinder and the gas composition within each cylinder.
 
 - *Record the times at which switches from one cylinder to another was done:* This is information
@@ -1684,7 +1684,7 @@ dive logging involves, exactly as with multicylinder dives, above, three steps:
   has this facility) marking each cylinder switch with a bookmark that can be retrieved later. Returning
   from a dive with the information about cylinder changes is the only tricky part of logging sidemount dives.
 - *Within _Subsurface_ describe the cylinders used during the dive*. The diver needs to provide the
-  specifications of the different cylinders, using the *Equipment* tab of the *Dive Info Panel* (see
+  specifications of the different cylinders, using the *Equipment* tab of the *Info Panel* (see
   image below where two 12 litre cylinder were used).
 - *Indicate cylinder change events on the _Subsurface_ dive profile*. Once the dive log has been imported
   from a dive computer into _Subsurface_, the cylinder switch events need to be indicated on the dive profile.
@@ -1718,7 +1718,7 @@ breathing gas is released continuously from the back cylinder.
 
 To log pSCR dives, no special procedures are required, just the normal steps outlined above:
 
-- Select pSCR in the _Dive Mode_ dropdown list on the *Dive Info* panel.
+- Select pSCR in the _Dive Mode_ dropdown list on the *Info* panel.
 
 - pSCR diving often involves gas changes, requiring an additional cylinder.
   Define all the appropriate cylinders as described above
@@ -1845,9 +1845,9 @@ Poseidon MkVI and APD equipment can be found in xref:S_PoseidonMkVI[Appendix B].
 
 == Obtaining more information about dives entered into the logbook
 
-=== The *Dive Info* tab (for individual dives)
+=== The *Info* tab (for individual dives)
 
-The Dive Info tab gives some summary information about a particular dive that
+The Info tab gives some summary information about a particular dive that
 has been selected in the *Dive List*. Useful information here includes the
 surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
@@ -2301,7 +2301,7 @@ now shows only the titles for the trips.
 
 Normally, in the dive list, minimal information is included in the trip title.
 More information about a trip can be added by selecting its trip title from
-the *Dive List*. This shows a *Trip Notes* tab in the *Dive Notes* panel. Here
+the *Dive List*. This shows a *Trip Notes* tab in the *Notes* panel. Here
 users can add or edit information about the date/time, the trip location and any
 other general comments about the trip as a whole (e.g. the dive company that was
 dived with, the general weather and surface conditions during the trip, etc.).
@@ -2388,7 +2388,7 @@ for a few minutes, resulting in two or more dives being recorded by the dive
 computer and appearing as different dives in the *Dive List* panel. Users can
 merge these dives onto a single dive by selecting the appropriate dives,
 right-clicking them to bring up the context menu and then selecting *Merge selected
-dives*. It may be necessary to edit the dive information in the *Dive Notes*
+dives*. It may be necessary to edit the dive information in the *Notes*
 panel to reflect events or conditions that apply to the merged dive. The figure
 below shows the depth profile of two such dives that were merged:
 
@@ -2452,7 +2452,7 @@ _Facebook_ connection.
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
-A _Facebook_ icon appears in the *Dive Notes* panel of _Subsurface_ (See image *A* below). Ensure that the dive
+A _Facebook_ icon appears in the *Notes* panel of _Subsurface_ (See image *A* below). Ensure that the dive
 that you want to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
 _Facebook_ icon, and a dialogue is shown, determining the amount of additional information transferred
 with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
@@ -2716,7 +2716,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
      the dive list.
 
   ** *Default cylinder*: Here users can specify the default cylinder listed in
-     the *Equipment* tab of the *Dive Notes* panel.
+     the *Equipment* tab of the *Notes* panel.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
      animations. For instance, the axis values for depth and time change from dive to
@@ -2888,7 +2888,7 @@ user interface. It is explicitly used under the following conditions:
 
 Like the _Subsurface_ dive log, the planner screen is divided into several sections (see image below). The *setup*
 parameters for a dive are entered into the several sections on the left hand side of the screen.
-The setup is divided into several sections: Available Gases, Rates, Planning, Gas Options and Dive Notes.
+The setup is divided into several sections: Available Gases, Rates, Planning, Gas Options and Notes.
 
 At the top right hand is a green *design panel* upon which the profile of the dive can be
 manipulated directly by dragging and clicking as explained below. This feature makes the
@@ -3028,7 +3028,7 @@ in the *Dive List* panel of _Subsurface_.
 
 On the bottom right of the dive planner, under _Dive Plan Details_, the exact details
 of the dive plan are provided. These details may be modified by checking any of the
-options under the _Dive Notes_ section of the dive planner, immediately to the left
+options under the _Notes_ section of the dive planner, immediately to the left
 of the _Dive Plan Details_. If a _Verbatim diveplan_
 is requested, a detailed sentence-level explanation of the dive plan is given. If any
 of the management specifications have been exceeded during the planning, a warning
@@ -3124,7 +3124,7 @@ inclusion in a text file or word processing document.
 
 Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
 After a dive plan has been saved, the dive details and gas calculations are saved in
-the *Dive Notes* tab. While a dive plan is being designed, it can be printed using
+the *Notes* tab. While a dive plan is being designed, it can be printed using
 the _Print_ button in the dive planner. This prints the dive details and gas calculations
 in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
 represented in a way very similar to a dive log and the gas calculations cannot be
@@ -3183,7 +3183,7 @@ dealing with the appropriate operations.
   simmultaneously.
 - <<S_ViewPanels,_Dive List_>> - View only the *Dive List* panel.
 - <<S_ViewPanels,_Profile_>> - View only the *Dive Profile* panel.
-- <<S_ViewPanels,_Info_>> - View only the *Dive Notes* panel.
+- <<S_ViewPanels,_Info_>> - View only the *Notes* panel.
 - <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
 - _Yearly Statistics_ - Display summary statistics about dives during this and past
   years.

@@ -483,7 +483,7 @@ void MainTab::updateDiveInfo(bool clear)
 			clearEquipment();
 			ui.equipmentTab->setEnabled(false);
 		} else {
-			setTabText(0, tr("Dive notes"));
+			setTabText(0, tr("Notes"));
 			currentTrip = NULL;
 			// make all the fields visible writeable
 			ui.divemaster->setVisible(true);

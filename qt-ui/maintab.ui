@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="notesTab">
    <attribute name="title">
-    <string>Dive notes</string>
+    <string>Notes</string>
    </attribute>
    <layout class="QGridLayout" name="diveNotesLayout">
     <property name="spacing">
@@ -415,7 +415,7 @@
   </widget>
   <widget class="QWidget" name="infoTab">
    <attribute name="title">
-    <string>Dive info</string>
+    <string>Info</string>
    </attribute>
    <layout class="QGridLayout" name="diveInfoLayout">
     <item row="0" column="0">
