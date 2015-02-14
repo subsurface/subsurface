@@ -666,7 +666,10 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
 	currentDs = get_dive_site_by_uuid(uuid);
-	displayed_dive_site = *currentDs;
+	if (currentDs)
+		displayed_dive_site = *currentDs;
+	else
+		memset(&displayed_dive, 0, sizeof(displayed_dive));
 	ui.diveSiteName->setText(displayed_dive_site.name);
 	ui.diveSiteDescription->setText(displayed_dive_site.description);
 	ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
