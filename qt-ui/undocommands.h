@@ -14,4 +14,15 @@ private:
 	QList<struct dive*> dives;
 };
 
+class UndoShiftTime : public QUndoCommand {
+public:
+	UndoShiftTime(QList<int> diveList, int amount);
+	virtual void undo();
+	virtual void redo();
+
+private:
+	QList<int> dives;
+	int timeChanged;
+};
+
 #endif // UNDOCOMMANDS_H

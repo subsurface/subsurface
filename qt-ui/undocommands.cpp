@@ -34,3 +34,31 @@ void UndoDeleteDive::redo()
 	dives.clear();
 	dives = newList;
 }
+
+
+UndoShiftTime::UndoShiftTime(QList<int> diveList, int amount)
+{
+	setText("shift time");
+	dives = diveList;
+	timeChanged = amount;
+}
+
+void UndoShiftTime::undo()
+{
+	for (int i = 0; i < dives.count(); i++) {
+		struct dive* d = get_dive_by_uniq_id(dives.at(i));
+		d->when -= timeChanged;
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}
+
+void UndoShiftTime::redo()
+{
+	for (int i = 0; i < dives.count(); i++) {
+		struct dive* d = get_dive_by_uniq_id(dives.at(i));
+		d->when += timeChanged;
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}

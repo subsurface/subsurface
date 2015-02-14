@@ -15,6 +15,7 @@
 #include "divelistview.h"
 #include "display.h"
 #include "profile/profilewidget2.h"
+#include "undocommands.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -201,7 +202,16 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 			amount *= -1;
 		if (amount != 0) {
 			// DANGER, DANGER - this could get our dive_table unsorted...
-			shift_times(amount);
+			int i;
+			struct dive *dive;
+			QList<int> affectedDives;
+			for_each_dive (i, dive) {
+				if (!dive->selected)
+					continue;
+
+				affectedDives.append(dive->id);
+			}
+			MainWindow::instance()->undoStack->push(new UndoShiftTime(affectedDives, amount));
 			sort_table(&dive_table);
 			mark_divelist_changed(true);
 			MainWindow::instance()->dive_list()->rememberSelection();
