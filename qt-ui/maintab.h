@@ -93,6 +93,8 @@ slots:
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
 	void prepareDiveSiteEdit();
+	void showLocation();
+
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;

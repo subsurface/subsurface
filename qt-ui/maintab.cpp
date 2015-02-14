@@ -395,6 +395,11 @@ bool MainTab::isEditing()
 	return editMode != NONE;
 }
 
+void MainTab::showLocation()
+{
+	ui.location->setText(get_dive_location(&displayed_dive));
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	// don't execute this while adding / planning a dive
