@@ -827,6 +827,17 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
 		struct dive_site *ds = get_dive_site(i);
+		if (dive_site_is_empty(ds)) {
+			int j;
+			struct dive *d;
+			for_each_dive(j, d) {
+				if (d->dive_site_uuid == ds->uuid)
+					d->dive_site_uuid = 0;
+			}
+			delete_dive_site(get_dive_site(i)->uuid);
+			i--; // since we just deleted that one
+			continue;
+		}
 		int size = sizeof("Site-012345678");
 		char name[size];
 		snprintf(name, size, "Site-%08x", ds->uuid);
