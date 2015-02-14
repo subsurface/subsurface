@@ -708,6 +708,13 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->notes);
 		currentDs->notes = copy_string(uiString);
 	}
+	if (dive_site_is_empty(currentDs)) {
+		delete_dive_site(currentDs->uuid);
+		displayed_dive.dive_site_uuid = 0;
+		setLocationId(0);
+	} else {
+		setLocationId(currentDs->uuid);
+	}
 	mark_divelist_changed(true);
 	emit informationManagementEnded();
 }
@@ -715,7 +722,13 @@ void LocationInformationWidget::acceptChanges()
 void LocationInformationWidget::rejectChanges()
 {
 	Q_ASSERT(currentDs != NULL);
-	setLocationId(currentDs->uuid);
+	if (dive_site_is_empty(currentDs)) {
+		delete_dive_site(currentDs->uuid);
+		displayed_dive.dive_site_uuid = 0;
+		setLocationId(0);
+	} else {
+		setLocationId(currentDs->uuid);
+	}
 	emit informationManagementEnded();
 }
 
