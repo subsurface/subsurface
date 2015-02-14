@@ -552,6 +552,7 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
+	locationInformationWidget()->setLocationId(0);
 }
 
 void MainWindow::on_actionReplanDive_triggered()
