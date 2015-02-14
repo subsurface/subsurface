@@ -1226,6 +1226,10 @@ static void add_dive_site(char *buffer, struct dive *dive)
 			} else if (!same_string(ds->name, buffer)) {
 				// coin toss, let's just keep the first name we found
 				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s}\n", ds->name, buffer);
+			} else {
+				// add the existing dive site to the current dive
+				fprintf(stderr, "we have an existing location, using {%s}\n", ds->name);
+				dive->dive_site_uuid = uuid;
 			}
 		} else {
 			fprintf(stderr, "no uuid, create new dive site with name {%s}\n", buffer);
