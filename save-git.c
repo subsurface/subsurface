@@ -388,7 +388,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	SAVE("visibility", visibility);
 	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
 	save_tags(b, dive->tag_list);
-	cond_put_format(dive->dive_site_uuid, b, "divesiteid %8x\n", dive->dive_site_uuid);
+	cond_put_format(dive->dive_site_uuid, b, "divesiteid %08x\n", dive->dive_site_uuid);
 
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
@@ -829,7 +829,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		struct dive_site *ds = get_dive_site(i);
 		int size = sizeof("Site-012345678");
 		char name[size];
-		snprintf(name, size, "Site-%8x", ds->uuid);
+		snprintf(name, size, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
 		show_utf8(&b, "description ", ds->description, "\n");
 		show_utf8(&b, "notes ", ds->notes, "\n");
