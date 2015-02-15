@@ -538,8 +538,8 @@ void DownloadThread::run()
 }
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
-	lastIndex(-1),
 	firstIndex(0),
+	lastIndex(-1),
 	checkStates(0)
 {
 }
