@@ -31,7 +31,7 @@ QString weight_string(int weight_in_grams)
 	return (str);
 }
 
-QString printGPSCoords(int lat, int lon)
+extern "C" const char *printGPSCoords(int lat, int lon)
 {
 	unsigned int latdeg, londeg;
 	unsigned int latmin, lonmin;
@@ -39,7 +39,7 @@ QString printGPSCoords(int lat, int lon)
 	QString lath, lonh, result;
 
 	if (!lat && !lon)
-		return QString();
+		return strdup("");
 
 	lath = lat >= 0 ? translate("gettextFromC", "N") : translate("gettextFromC", "S");
 	lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
@@ -54,7 +54,7 @@ QString printGPSCoords(int lat, int lon)
 	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
 		       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
 		       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
-	return result;
+	return strdup(result.toUtf8().data());
 }
 
 static bool parseCoord(const QString& txt, int& pos, const QString& positives,
