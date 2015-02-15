@@ -517,7 +517,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 			i--; // since we just deleted that one
 			continue;
 		}
-		put_format(b, "<site uuid='%8x' ", ds->uuid);
+		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8(b, ds->name, " name='", "'", 1);
 		if (ds->latitude.udeg || ds->longitude.udeg) {
 			put_degrees(b, ds->latitude, " gps='", " ");
