@@ -304,7 +304,13 @@ extern "C" const char *system_default_directory(void)
 	static char filename[PATH_MAX];
 
 	if (!*filename) {
-		QString name = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first();
+		enum QStandardPaths::StandardLocation location;
+#if QT_VERSION >= 0x050400
+		location = QStandardPaths::AppDataLocation;
+#else
+		location = QStandardPaths::DataLocation;
+#endif
+		QString name = QStandardPaths::standardLocations(location).first();
 		QDir dir(name);
 		dir.mkpath(name);
 		// Why no "dir.encodeName()"? Crazy Qt
