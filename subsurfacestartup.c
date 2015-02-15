@@ -1,5 +1,5 @@
 #include "subsurfacestartup.h"
-#include "ssrf-version.h"
+#include "version.h"
 #include <stdbool.h>
 #include <string.h>
 #include "gettext.h"
@@ -110,7 +110,7 @@ bool imported = false;
 
 static void print_version()
 {
-	printf("Subsurface v%s, ", GIT_VERSION_STRING);
+	printf("Subsurface v%s, ", subsurface_git_version());
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 }
 

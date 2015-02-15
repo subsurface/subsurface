@@ -1,5 +1,5 @@
 #include "about.h"
-#include "ssrf-version.h"
+#include "version.h"
 #include <QDesktopServices>
 #include <QUrl>
 #include <QShortcut>
@@ -9,7 +9,7 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 	ui.setupUi(this);
 
 	setWindowModality(Qt::ApplicationModal);
-	QString versionString(GIT_VERSION_STRING);
+	QString versionString(subsurface_git_version());
 	QStringList readableVersions = QStringList() << "4.3.950" << "4.4 Beta 1" <<
 							"4.3.960" << "4.4 Beta 2" <<
 							"4.3.970" << "4.4 Beta 3";

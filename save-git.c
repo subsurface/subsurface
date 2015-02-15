@@ -13,7 +13,7 @@
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
-#include "ssrf-version.h"
+#include "version.h"
 
 /*
  * handle libgit2 revision 0.20 and earlier
@@ -990,7 +990,7 @@ static void create_commit_message(struct membuffer *msg)
 		} while ((dc = dc->next) != NULL);
 		put_format(msg, "\n");
 	}
-	put_format(msg, "Created by subsurface %s\n", VERSION_STRING);
+	put_format(msg, "Created by subsurface %s\n", subsurface_version());
 }
 
 static int create_new_commit(git_repository *repo, const char *branch, git_oid *tree_id)

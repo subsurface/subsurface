@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QUuid>
 #include "subsurfacewebservices.h"
-#include "ssrf-version.h"
+#include "version.h"
 #include "mainwindow.h"
 
 UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
@@ -16,9 +16,9 @@ UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 		return;
 	if (settings.contains("LastVersionUsed")) {
 		// we have checked at least once before
-		if (settings.value("LastVersionUsed").toString() != GIT_VERSION_STRING) {
+		if (settings.value("LastVersionUsed").toString() != subsurface_git_version()) {
 			// we have just updated - wait two weeks before you check again
-			settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
+			settings.setValue("LastVersionUsed", QString(subsurface_git_version()));
 			settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
 		} else {
 			// is it time to check again?
@@ -28,7 +28,7 @@ UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
 				return;
 		}
 	}
-	settings.setValue("LastVersionUsed", QString(GIT_VERSION_STRING));
+	settings.setValue("LastVersionUsed", QString(subsurface_git_version()));
 	settings.setValue("NextCheck", QDateTime::currentDateTime().addDays(14).toString(Qt::ISODate));
 	checkForUpdates(true);
 }
@@ -47,7 +47,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 	os = "unknown";
 #endif
 	isAutomaticCheck = automatic;
-	QString version = CANONICAL_VERSION_STRING;
+	QString version = subsurface_canonical_version();
 	QString uuidString = getUUID();
 	QString url = QString("http://subsurface-divelog.org/updatecheck.html?os=%1&version=%2&uuid=%3").arg(os, version, uuidString);
 	QNetworkRequest request;

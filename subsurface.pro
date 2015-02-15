@@ -26,6 +26,7 @@ system(cat $$VERSION_FILE > /dev/null 2>&1 || touch $$VERSION_FILE)
 
 HEADERS = \
 	$$VERSION_FILE \
+	version.h \
 	cochran.h \
 	color.h \
 	deco.h \
@@ -119,6 +120,7 @@ android: HEADERS -= \
 	qt-ui/printoptions.h
 
 SOURCES =  \
+	version.c \
 	cochran.c \
 	deco.c \
 	device.c \

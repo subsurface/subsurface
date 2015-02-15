@@ -4,7 +4,7 @@
 
 #include "usersurvey.h"
 #include "ui_usersurvey.h"
-#include "ssrf-version.h"
+#include "version.h"
 #include "subsurfacewebservices.h"
 #include "updatemanager.h"
 
@@ -22,7 +22,7 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 	connect(quitKey, SIGNAL(activated()), parent, SLOT(close()));
 
-	os = QString("ssrfVers=%1").arg(VERSION_STRING);
+	os = QString("ssrfVers=%1").arg(subsurface_version());
 	os.append(QString("&prettyOsName=%1").arg(SubsurfaceSysInfo::prettyOsName()));
 	QString arch = SubsurfaceSysInfo::buildCpuArchitecture();
 	os.append(QString("&appCpuArch=%1").arg(arch));
@@ -39,7 +39,7 @@ QString UserSurvey::getVersion()
 {
 	QString arch;
 	// fill in the system data
-	QString sysInfo = QString("Subsurface %1").arg(VERSION_STRING);
+	QString sysInfo = QString("Subsurface %1").arg(subsurface_version());
 	sysInfo.append(tr("\nOperating system: %1").arg(SubsurfaceSysInfo::prettyOsName()));
 	arch = SubsurfaceSysInfo::buildCpuArchitecture();
 	sysInfo.append(tr("\nCPU architecture: %1").arg(arch));
@@ -54,7 +54,7 @@ QString UserSurvey::getUserAgent()
 	QString arch;
 	// fill in the system data - use ':' as separator
 	// replace all other ':' with ' ' so that this is easy to parse
-	QString userAgent = QString("Subsurface:%1:").arg(VERSION_STRING);
+	QString userAgent = QString("Subsurface:%1:").arg(subsurface_version());
 	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
 	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
 	userAgent.append(arch);

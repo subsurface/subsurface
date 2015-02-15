@@ -11,7 +11,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QToolBar>
-#include "ssrf-version.h"
+#include "version.h"
 #include "divelistview.h"
 #include "downloadfromdivecomputer.h"
 #include "preferences.h"
@@ -999,7 +999,7 @@ void MainWindow::checkSurvey(QSettings *s)
 		s->setValue("FirstUse42", value);
 	}
 	// wait a week for production versions, but not at all for non-tagged builds
-	QString ver(VERSION_STRING);
+	QString ver(subsurface_version());
 	int waitTime = 7;
 	QDate firstUse42 = s->value("FirstUse42").toDate();
 	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s->contains("SurveyDone"))) {
