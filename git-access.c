@@ -23,18 +23,6 @@
   #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote, signature, reflog)
 #endif
 
-static const char *system_git_dir(void)
-{
-	static char pathname[PATH_MAX];
-
-	if (!*pathname) {
-		// This doesn't work on Windows, crap that it is. Somebody needs to fix it.
-		snprintf(pathname, PATH_MAX, "%s/git-caches", system_default_directory());
-		mkdir(pathname, 0777);
-	}
-	return pathname;
-}
-
 static char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
@@ -49,7 +37,7 @@ static char *get_local_dir(const char *remote, const char *branch)
 	SHA1_Final(hash, &ctx);
 
 	return format_string("%s/%02x%02x%02x%02x%02x%02x%02x%02x",
-			system_git_dir(),
+			system_default_directory(),
 			hash[0], hash[1], hash[2], hash[3],
 			hash[4], hash[5], hash[6], hash[7]);
 }
