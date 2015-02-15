@@ -367,7 +367,8 @@ void CylindersModel::copyFromDive(dive *d)
 		return;
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&d->cylinder[i]) && is_cylinder_used(d, i)) {
+		if (!cylinder_none(&d->cylinder[i]) &&
+		    (is_cylinder_used(d, i) || prefs.display_unused_tanks)) {
 			rows = i + 1;
 		}
 	}

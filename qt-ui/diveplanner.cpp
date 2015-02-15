@@ -129,9 +129,9 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 void DivePlannerPointsModel::setupCylinders()
 {
 	if (mode == PLAN && current_dive) {
-		// take the used cylinders from the selected dive as starting point
+		// take the displayed cylinders from the selected dive as starting point
 		CylindersModel::instance()->copyFromDive(current_dive);
-		copy_cylinders(current_dive, &displayed_dive, false);
+		copy_cylinders(current_dive, &displayed_dive, !prefs.display_unused_tanks);
 		reset_cylinders(&displayed_dive, true);
 		return;
 	}
