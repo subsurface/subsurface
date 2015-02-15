@@ -1,0 +1,28 @@
+<divelog program='subsurface' version='2'>
+<settings>
+</settings>
+<dives>
+<dive number='1' date='2015-1-1' time='10:00:00' duration='30:00 min'>
+  <location gps='7.132557 134.224213'>Blue Corner</location>
+  <notes>This dive is at the Blue Corner with the correct coordinates</notes>
+  <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210'>
+  <depth max='30.00 m' mean='17.72 m' />
+  </divecomputer>
+</dive>
+<dive number='2' date='2015-1-2' time='10:00:00' duration='30:00 min'>
+  <location gps='7.132557 134.224213'>Yellow Corner</location>
+  <notes>This dive is at the Yellow Corner but with the coordinates of Blue Corner</notes>
+  <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210'>
+  <depth max='30.00 m' mean='17.72 m' />
+  </divecomputer>
+</dive>
+<dive number='1' date='2015-1-3' time='10:00:00' duration='30:00 min'>
+  <location>Blue Corner</location>
+  <location gps='7.132557 34.224213'>Blue Corner</location>
+  <notes>This dive is at the Blue Corner but the coordinates are wrong. In order to trigger the right behavior here I had to mess with the XML file; it contains two sets of location tags, the first just with the name and only the second then adds the gps coordinates. Otherwise the gps coordinates get parsed first and create a new dive site and we don't even notice the duplicate name.</notes>
+  <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210'>
+  <depth max='30.00 m' mean='17.72 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
