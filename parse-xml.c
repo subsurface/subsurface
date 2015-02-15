@@ -1160,6 +1160,9 @@ static void gps_location(char *buffer, struct dive_site *ds)
 	ds->longitude = parse_degrees(end, &end);
 }
 
+/* this is in qthelper.cpp, so including the .h file is a pain */
+extern const char *printGPSCoords(int lat, int lon);
+
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
 	char *end;
@@ -1187,13 +1190,8 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
 				ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0,
 				latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
-			int len = ds->notes ? strlen(ds->notes) : 0;
-			len += sizeof("\nalternative coordinates") + 24;
-			char *notes = malloc(len);
-			snprintf(notes, len, "%s\nalternative coordinates %11.6f/%11.6f",
-				 ds->notes ?: "", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
-			free(ds->notes);
-			ds->notes = notes;
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"),
+						  printGPSCoords(latitude.udeg, longitude.udeg));
 		} else {
 			fprintf(stderr, "let's add the gps coordinates to divesite with uuid %8x and name %s\n", ds->uuid, ds->name ?: "(none)");
 			ds->latitude = latitude;
@@ -1224,8 +1222,9 @@ static void add_dive_site(char *buffer, struct dive *dive)
 				fprintf(stderr, "so now add name {%s}\n", buffer);
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
-				// coin toss, let's just keep the first name we found
+				// coin toss, let's just keep the first name we found and add the new one to the notes
 				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s}\n", ds->name, buffer);
+				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), buffer);
 			} else {
 				// add the existing dive site to the current dive
 				fprintf(stderr, "we have an existing location, using {%s}\n", ds->name);

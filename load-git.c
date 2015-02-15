@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <git2.h>
 
+#include "gettext.h"
+
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
@@ -138,6 +140,9 @@ static int get_index(const char *line)
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
+/* this is in qthelper.cpp, so including the .h file is a pain */
+extern const char *printGPSCoords(int lat, int lon);
+
 static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
 	uint32_t uuid;
@@ -151,6 +156,12 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 			uuid = create_dive_site_with_gps("", latitude, longitude);
 		dive->dive_site_uuid = uuid;
 	} else {
+		if (dive_site_has_gps_location(ds) &&
+		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
+			// we have a dive site that already has GPS coordinates
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"),
+						  printGPSCoords(latitude.udeg, longitude.udeg));
+		}
 		ds->latitude = latitude;
 		ds->longitude = longitude;
 	}
@@ -171,8 +182,15 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 		} else { fprintf(stderr, "found one with uuid %8x\n", uuid); }
 		dive->dive_site_uuid = uuid;
 	} else {
+		// we already had a dive site linked to the dive
 		fprintf(stderr, "dive had site with uuid %8x and name {%s}\n", ds->uuid, ds->name);
-		ds->name = name;
+		if (same_string(ds->name, "")) {
+			ds->name = name;
+		} else {
+			// and that dive site had a name. that's weird - if our name is different, add it to the notes
+			if (!same_string(ds->name, name))
+				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), name);
+		}
 	}
 }
 
