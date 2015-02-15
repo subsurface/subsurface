@@ -1162,6 +1162,7 @@ static void gps_location(char *buffer, struct dive_site *ds)
 
 /* this is in qthelper.cpp, so including the .h file is a pain */
 extern const char *printGPSCoords(int lat, int lon);
+extern void reverseGeoLookup(degrees_t, degrees_t, uint32_t);
 
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
@@ -1179,10 +1180,11 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 		} else {
 			fprintf(stderr, "found no uuid in dive, no existing dive site with these coordinates, creating a new divesite without name and above GPS\n");
 			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude);
+			ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 		}
 	} else {
 		fprintf(stderr, "found uuid in dive, checking to see if we should add GPS\n");
-		struct dive_site *ds = get_dive_site_by_uuid(uuid);
+		ds = get_dive_site_by_uuid(uuid);
 		if (dive_site_has_gps_location(ds) &&
 		    (latitude.udeg != 0 || longitude.udeg != 0) &&
 		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
@@ -1198,6 +1200,8 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			ds->longitude = longitude;
 		}
 	}
+	if (ds && (!ds->notes || strstr(ds->notes, "countrytag:") == NULL))
+		reverseGeoLookup(latitude, longitude, dive->dive_site_uuid);
 }
 
 static void add_dive_site(char *buffer, struct dive *dive)
