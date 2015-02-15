@@ -14,3 +14,10 @@ silent: version_h.commands = @echo Checking $$VERSION_FILE && $$version_h.comman
 version_h.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += version_h
 QMAKE_CLEAN += $$VERSION_FILE
+
+# some qmake-time variables needed by subsurface-install.pri
+VERSION_SCRIPT = sh scripts/get-version
+FULL_VERSION = $$system("$$VERSION_SCRIPT linux")
+VERSION = $$system("$$VERSION_SCRIPT full || echo $${VERSION}")
+PRODVERSION_STRING = $$system("$$VERSION_SCRIPT win $$FULL_VERSION || echo $${VERSION}.0.0-git")
+VERSION_STRING = $$system("$$VERSION_SCRIPT linux $$FULL_VERSION || echo $${VERSION}-git")
