@@ -524,10 +524,10 @@ important pour manipuler un journal (carnet) de plongée.</p></div>
 <div class="paragraph"><p>La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
 l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
 plongée sélectionnée dans la <strong>liste des plongées</strong>.</p></div>
-<div class="paragraph"><p>Les <strong>informations de plongée</strong> en haut à gauche, fournissent des informations
-détaillées sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont
-des statistiques pour la plongée sélectionnée ou pour toutes les plongées
-mises en surbrillance.</p></div>
+<div class="paragraph"><p>Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
+sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
+statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
+en surbrillance.</p></div>
 <div class="paragraph"><p>Le <strong>profil de plongée</strong> en haut à droite, affiche un profil de plongée
 graphique de la plongée sélectionnée dans la <strong>liste des plongées</strong>.</p></div>
 <div class="paragraph"><p>Les séparateurs entre ces panneaux peuvent être déplacés pour modifier la
@@ -540,9 +540,9 @@ sélectionnée</em> sont affichées dans les panneaux respectifs. D&#8217;autre 
 plus d&#8217;une plongée est mise en surbrillance seule la dernière mise en
 surbrillance est la <em>plongée sélectionnée</em>, mais les données de <em>toutes les
 plongées mises en surbrillances</em> sont affichées dans l&#8217;onglet <strong>Stats</strong> du
-panneau <strong>informations de plongée</strong> (profondeur maximale, minimale et moyenne,
-les durées, les températures de l&#8217;eau et le SAC (air consommé); temps total
-et nombre de plongées sélectionnées).</p></div>
+panneau <strong>informations</strong> (profondeur maximale, minimale et moyenne, les
+durées, les températures de l&#8217;eau et le SAC (air consommé); temps total et
+nombre de plongées sélectionnées).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
 <div class="content">
 <img src="images/main_window_f20.jpg" alt="The Main Window" />
@@ -639,20 +639,20 @@ duration, depth, the names of your dive buddy and of the dive master or dive
 guide, and some remarks about the dive. <em>Subsurface</em> can store much more
 information than this for each dive. In order to add a dive to a dive log,
 select <em>Log &#8594; Add Dive</em> from the Main Menu. The program then shows three
-panels to enter information for a dive: two tabs in the <strong>Dive Info</strong> panel
-(<strong>Dive Notes</strong> and <strong>Equipment</strong>), as well as the <strong>Dive Profile</strong> panel that
-displays a graphical profile of each dive. These panels are respectively
-marked <span class="red">A</span>, <span class="red">B</span> and <span class="red">C</span> in the figure below. Each of these
-tabs will now be explained for data entry.</p></div>
+panels to enter information for a dive: two tabs in the <strong>Info</strong> panel
+(<strong>Notes</strong> and <strong>Equipment</strong>), as well as the <strong>Dive Profile</strong> panel that displays
+a graphical profile of each dive. These panels are respectively marked
+<span class="red">A</span>, <span class="red">B</span> and <span class="red">C</span> in the figure below. Each of these tabs will
+now be explained for data entry.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/AddDive1_f20.jpg" alt="FIGURE: Add dive" />
 </div>
 </div>
-<div class="paragraph"><p>When one edits a field in Dive notes or Equipment panels, <em>Subsurface</em>
-enters <strong>Editing Mode</strong>, indicated by the message in the blue box at the top
-of the <em>Dive Notes</em> panel (see the image below). This message is displayed
-in all the panels under Dive notes and Equipment when in <strong>Editing Mode</strong>.</p></div>
+<div class="paragraph"><p>When one edits a field in Notes or Equipment panels, <em>Subsurface</em> enters
+<strong>Editing Mode</strong>, indicated by the message in the blue box at the top of the
+<em>Notes</em> panel (see the image below). This message is displayed in all the
+panels under Notes and Equipment when in <strong>Editing Mode</strong>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/BlueEditBar_f20.jpg" alt="Blue edit bar" />
@@ -666,14 +666,14 @@ specific dive is saved in memory. When one closes Subsurface, the program
 will ask again, this time whether the complete dive log should be saved on
 disk or not.</p></div>
 <div class="sect3">
-<h4 id="_notes_de_plongée">5.1.1. Notes de plongée</h4>
+<h4 id="_notes">5.1.1. Notes</h4>
 <div class="paragraph"><p>This panel contains the date, time and place information for a particular
 dive, environmental conditions, co-divers and buddies, as well as some
-descriptive information. If one clicks on the <strong>Dive Notes</strong> tab, the
-following fields are visible:</p></div>
+descriptive information. If one clicks on the <strong>Notes</strong> tab, the following
+fields are visible:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/AddDive2_f20.jpg" alt="FIGURE: The Dive Notes tab" />
+<img src="images/AddDive2_f20.jpg" alt="FIGURE: The Notes tab" />
 </div>
 </div>
 <div class="paragraph"><p>The <strong>Time</strong> field reflects the date and the time of the dive. By clicking the
@@ -765,10 +765,10 @@ shown for the user to choose from.</p></div>
 <div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for
 tabs in the info panel and in the dive profile panel, so there&#8217;s no need to
 use them until ALL other information has been added. Here is an example of a
-completed Dive Notes panel:</p></div>
+completed Notes panel:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Dive Notes tab" />
+<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Notes tab" />
 </div>
 </div>
 </div>
@@ -914,13 +914,13 @@ EAN50.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_saving_the_hand_entered_dive_information">5.1.4. Saving the hand-entered dive information</h4>
-<div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab, the <strong>Equipment</strong> tab as well
-as the <strong>Dive Profile</strong> can now be saved in the user&#8217;s logbook by using the
-two buttons on the top right hand of the Dive Notes tab. If the <em>Save</em>
-button is clicked, the dive data are saved in the current logbook. If the
-<em>Cancel</em> button is clicked, the newly entered dive data are discarded. When
-exiting <em>Subsurface</em>, the user will be prompted once more to save the
-logbook with the new dive(s).</p></div>
+<div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab, the <strong>Equipment</strong> tab as well as
+the <strong>Dive Profile</strong> can now be saved in the user&#8217;s logbook by using the two
+buttons on the top right hand of the Notes tab. If the <em>Save</em> button is
+clicked, the dive data are saved in the current logbook. If the <em>Cancel</em>
+button is clicked, the newly entered dive data are discarded. When exiting
+<em>Subsurface</em>, the user will be prompted once more to save the logbook with
+the new dive(s).</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -995,7 +995,7 @@ that have not been uploaded before. This makes the download process faster
 on most dive computers and also saves battery power of the dive computer (at
 least for those not charging while connected via USB).  If, for some reason,
 the user wishes to import ALL dives from the dive computer, even though some
-may already be in the logbook, then check the check box labelled <em>Force
+may already be in the logbook, then check the check box labeled <em>Force
 download of all dives</em>.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1194,22 +1194,22 @@ device instead of the model name, allowing easy identification of devices.</p></
 <h4 id="S_EditDiveInfo">5.2.3. Updating the dive information imported from the dive computer.</h4>
 <div class="paragraph"><p>With the uploaded dives in the <strong>Dive List</strong>, the information from the dive
 computer is not complete and more details must be added in order to have a
-fuller record of the dives. To do this, the <strong>Dive Notes</strong> and the <strong>Equipment</strong>
-tabs on the top left hand of the <em>Subsurface</em> window should be used.</p></div>
+fuller record of the dives. To do this, the <strong>Notes</strong> and the <strong>Equipment</strong> tabs
+on the top left hand of the <em>Subsurface</em> window should be used.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_notes_de_plongée_2">5.2.4. Notes de plongée</h4>
+<h4 id="_notes_2">5.2.4. Notes</h4>
 <div class="paragraph"><p>The date and time of the dive, gas mixture and (often) water temperature are
 usually shown as obtained from the dive computer, but the user needs to add
 additional information by hand in order to have a more complete dive
 record. In a few cases, (e.g. APD rebreathers) one also has to provide the
 date and time of the dive.  If the contents of this tab is changed or edited
 in any way, the message in a blue box at the top of the panel indicates that
-the dive is being edited. If one clicks on the <strong>Dive Notes</strong> tab, the
-following fields are visible:</p></div>
+the dive is being edited. If one clicks on the <strong>Notes</strong> tab, the following
+fields are visible:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/AddDive3_f20.jpg" alt="FIGURE: The Dive Notes tab" />
+<img src="images/AddDive3_f20.jpg" alt="FIGURE: The Notes tab" />
 </div>
 </div>
 <div class="paragraph"><p>The <strong>Time</strong> field reflects the date and time of the dive. By clicking the
@@ -1305,10 +1305,10 @@ typed
 <div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for
 tabs in the info panel and in the dive profile panel, so there&#8217;s no need to
 use them until ALL other information has been added. Here is an example of a
-completed Dive Notes panel:</p></div>
+completed Notes panel:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Dive Notes tab" />
+<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Notes tab" />
 </div>
 </div>
 </div>
@@ -1406,17 +1406,17 @@ weights: integrated as well as a weight belt:</p></div>
 <h4 id="_editing_several_selected_dives_simultaneously">5.2.6. Editing several selected dives simultaneously</h4>
 <div class="paragraph"><p><em>METHOD 1</em>: After uploading dives from a dive computer, the dive profiles of
 the uploaded dives are shown in the <strong>Dive profile</strong> tab, as well as a few
-items of information in the <strong>Dive Notes</strong> tab (e.g. water temperature) and in
-the <strong>Equipment</strong> tab (e.g. gas pressures and gas composition). However the
-other fields remain empty.  It may be useful to simultaneously edit some of
-the fields in the <strong>Dive Notes</strong> and <strong>Equipment</strong> tabs.  For instance, it is
-possible that a diver performed several dives during a single day, using
-identical equipment while diving at the same dive site or with the same dive
-master and/or buddy or tags. Instead of completing the information for each
-of these dives separately, one can select all the dives for that day in the
-<strong>Dive List</strong> and insert the same information in the <strong>Dive Notes</strong> and
-<strong>Equipment</strong> fields that need identical information. This is achieved by
-editing the dive notes or the equipment for any one of the selected dives.</p></div>
+items of information in the <strong>Notes</strong> tab (e.g. water temperature) and in the
+<strong>Equipment</strong> tab (e.g. gas pressures and gas composition). However the other
+fields remain empty.  It may be useful to simultaneously edit some of the
+fields in the <strong>Notes</strong> and <strong>Equipment</strong> tabs.  For instance, it is possible
+that a diver performed several dives during a single day, using identical
+equipment while diving at the same dive site or with the same dive master
+and/or buddy or tags. Instead of completing the information for each of
+these dives separately, one can select all the dives for that day in the
+<strong>Dive List</strong> and insert the same information in the <strong>Notes</strong> and <strong>Equipment</strong>
+fields that need identical information. This is achieved by editing the dive
+notes or the equipment for any one of the selected dives.</p></div>
 <div class="paragraph"><p>The simultaneous editing only works with fields that do not already contain
 information.  This means that, if some fields have been edited for a
 particular dive among the selected dives, these are not changed while
@@ -1428,15 +1428,15 @@ the edited dive is changed, even though several dives have been selected in
 the <strong>Dive List</strong>. This greatly speeds up the completion of the dive log after
 several similar dives.</p></div>
 <div class="paragraph" id="S_CopyComponents"><p><em>METHOD 2</em>:There is a different way of achieving the same goal. Select a
-dive with all the appropriate information typed into the <strong>Dive Notes</strong> and
+dive with all the appropriate information typed into the <strong>Notes</strong> and
 <strong>Equipment</strong> tabs. Then, from the main menu, select <em>Log &#8594; Copy dive
 components</em>.  A box is presented with a selection of check boxes for most of
-the fields in the <strong>Dive Notes</strong> and <strong>Equipment</strong> tabs.  Select the fields to
-be copied from the currently selected dive, then select <em>OK</em>. Now, in the
-<strong>Dive List</strong>, select the dives into which this information is to be
-pasted. Then, from the main menu, select <em>Log &#8594; Paste dive components</em>.
-All the selected dives now contain the data initially selected in the
-original source dive log.</p></div>
+the fields in the <strong>Notes</strong> and <strong>Equipment</strong> tabs.  Select the fields to be
+copied from the currently selected dive, then select <em>OK</em>. Now, in the <strong>Dive
+List</strong>, select the dives into which this information is to be pasted. Then,
+from the main menu, select <em>Log &#8594; Paste dive components</em>.  All the selected
+dives now contain the data initially selected in the original source dive
+log.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_adding_bookmarks_to_a_dive">5.2.7. Adding Bookmarks to a dive</h4>
@@ -1479,13 +1479,13 @@ If one hovers using the mouse over the red bookmark, the appropriate text is
 </div>
 <div class="sect3">
 <h4 id="_saving_the_updated_dive_information">5.2.8. Saving the updated dive information</h4>
-<div class="paragraph"><p>The information entered in the <strong>Dive Notes</strong> tab and the <strong>Equipment</strong> tab can
-be saved by using the two buttons on the top right hand of the <strong>Dive Notes</strong>
-tab. If the <em>Save</em> button is clicked, the dive data are saved. If the
-<em>Cancel</em> button is clicked, then the newly entered dive data are deleted,
-although the dive profile obtained from the dive computer will be
-retained. When the user exits <em>Subsurface</em> there is a final prompt to
-confirm that the new data should be saved.</p></div>
+<div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab and the <strong>Equipment</strong> tab can be
+saved by using the two buttons on the top right hand of the <strong>Notes</strong> tab. If
+the <em>Save</em> button is clicked, the dive data are saved. If the <em>Cancel</em>
+button is clicked, then the newly entered dive data are deleted, although
+the dive profile obtained from the dive computer will be retained. When the
+user exits <em>Subsurface</em> there is a final prompt to confirm that the new data
+should be saved.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -1720,12 +1720,12 @@ table contains the column headings found in the <em>CSV</em> data file. The blue
 row of cells immediately above these contains the names understood by
 <em>Subsurface</em>. The white area below the dropdown lists contains all the field
 names that <em>Subsurface</em> recognises. These names are in blue balloons and can
-be moved using a drag-and-frop action. For instance, <em>Subsurface</em> expects
+be moved using a drag-and-drop action. For instance, <em>Subsurface</em> expects
 the column heading for Dive number (" # ") to be "Dive # ". If the column
 heading that <em>Subsurface</em> expects is not in the blue cells, then drag the
 appropriate column heading from the upper area and drop it in the
 appropriate blue cell at the top of the table. To indicate the correct
-column for "Dive #", drag the ballooned item labelled "Dive # " and drop it
+column for "Dive #", drag the ballooned item labeled "Dive # " and drop it
 in the blue cell immediately above the white cell containing " # ". This is
 depicted in the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -1747,8 +1747,8 @@ in the <strong>Dive List</strong> panel.</p></div>
 <img src="images/icons/important.png" alt="Important" />
 </td>
 <td class="content"><em>CSV</em> is an abbreviation for a data file format: <em>Comma-Separated
-Variables</em>. It is a file format allowing someone to view or edit the
-information using a text editor such as Notebook (Windows), gedit (Linux) or
+Values</em>. It is a file format allowing someone to view or edit the
+information using a text editor such as Notepad (Windows), gedit (Linux) or
 TextWrangler (OS/X). The two main advantages of the <em>CSV</em> format is that the
 data are easily editable as text without any proprietary software and
 ensuring all information is human-readable, not being obscured by any custom
@@ -2310,7 +2310,7 @@ button in the tool bar to the left of the dive profile:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-the <em>Photos</em> tab of the <strong>Dive Notes</strong> panel.
+the <em>Photos</em> tab of the <strong>Notes</strong> panel.
 </p>
 </li>
 <li>
@@ -2348,9 +2348,9 @@ the <em>Photos</em> tab (see text below).</p></div>
 <div class="sect3">
 <h4 id="_the_em_photos_em_tab">5.5.3. The <em>Photos</em> tab</h4>
 <div class="paragraph"><p>Photographs associated with a dive are shown as thumbnails in the <em>Photos</em>
-tab of the <em>Dive Notes</em> panel. Photos taken in rapid succession during a
-dive (therefore sometimes with large overlap on the dive profile) can easily
-be accessed in the <em>Photos</em> tab. This tab serves as a tool for individually
+tab of the <em>Notes</em> panel. Photos taken in rapid succession during a dive
+(therefore sometimes with large overlap on the dive profile) can easily be
+accessed in the <em>Photos</em> tab. This tab serves as a tool for individually
 accessing the photos of a dive, while the stubs on the dive profile give an
 indication of when during a dive a photo was taken. By single-clicking on a
 thumbnail in the <em>Photos</em> panel, a photo is selected. By double-clicking a
@@ -2391,7 +2391,7 @@ there are only two types of information that need to be provided:</p></div>
 <li>
 <p>
 <strong>Describe the cylinders used during the dive</strong> This is performed in the <strong>Equipment tab</strong> of
-  the <strong>Dive Info</strong> panel, as <a href="#cylinder_definitions">described above</a>. Enter the cylinders one by one,
+  the <strong>Info</strong> panel, as <a href="#cylinder_definitions">described above</a>. Enter the cylinders one by one,
   specifying the characteristics of the cylinder and the gas composition within each cylinder.
 </p>
 </li>
@@ -2410,7 +2410,7 @@ there are only two types of information that need to be provided:</p></div>
   in time on the <strong>Dive Profile</strong> panel and indicating the cylinder to which the change was made. After
   right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
   those defined during the first step, above (see image below). If the
-  <strong>tank bar</strong> button in the ttolbar has been activated, the cylinder switches are also indicated in the
+  <strong>tank bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
   tank bar.
 </p>
 </li>
@@ -2449,7 +2449,7 @@ steps:</p></div>
 <li>
 <p>
 <strong>Within <em>Subsurface</em> describe the cylinders used during the dive</strong>. The diver needs to provide the
-  specifications of the different cylinders, using the <strong>Equipment</strong> tab of the <strong>Dive Info Panel</strong> (see
+  specifications of the different cylinders, using the <strong>Equipment</strong> tab of the <strong>Info Panel</strong> (see
   image below where two 12 litre cylinder were used).
 </p>
 </li>
@@ -2464,7 +2464,7 @@ steps:</p></div>
   profile with a cylinder symbol. If the <strong>Tank Bar</strong> is activated using the toolbar to the left of the
   profile, then the cylinder change is also indicated on the Tank Bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
-  for both cylinders are shown on the dive profile, as inthe image below.
+  for both cylinders are shown on the dive profile, as in the image below.
 </p>
 </li>
 </ul></div>
@@ -2473,7 +2473,7 @@ steps:</p></div>
 <img src="images/sidemount1.jpg" alt="FIGURE: Sidemount profile" />
 </div>
 </div>
-<div class="paragraph"><p>This section gives an example of the versatility of <em>Subsurface</em> as a give
+<div class="paragraph"><p>This section gives an example of the versatility of <em>Subsurface</em> as a dive
 logging tool.</p></div>
 </div>
 <div class="sect3">
@@ -2501,7 +2501,7 @@ outlined above:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Select pSCR in the <em>Dive Mode</em> dropdown list on the <strong>Dive Info</strong> panel.
+Select pSCR in the <em>Dive Mode</em> dropdown list on the <strong>Info</strong> panel.
 </p>
 </li>
 <li>
@@ -2514,7 +2514,7 @@ pSCR diving often involves gas changes, requiring an additional cylinder.
 </li>
 </ul></div>
 <div class="paragraph"><p>If a pSCR <em>Dive Mode</em> has been selected, the dive ceiling for pSCR dives is
-adjusted for the oxygen drop accross the mouthpiece which often requires
+adjusted for the oxygen drop across the mouthpiece which often requires
 longer decompression periods. Below is a dive profile of a pSCR dive using
 EAN36 on the back cylinder and oxygen for decompression. Note that this dive
 lasted over two hours.</p></div>
@@ -2658,7 +2658,7 @@ the pressures of the oxygen and diluent cylinders. The pressures of these
 two cylinders are shown as green lines overlapping the depth profile. In
 addition, start and end pressures for both oxygen and diluent cylinders are
 shown in the <em>Equipment Tab</em>.  Below is a dive profile for a CCR dive,
-including an overaly of setpoint and oxygen sensor data, as well as the
+including an overlay of setpoint and oxygen sensor data, as well as the
 cylinder pressure data. In this case there is good agreement from the
 readings of the two oxygen sensors.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2681,12 +2681,12 @@ B</a>.</p></div>
 <h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">6. Obtaining more information about dives entered into the logbook</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_the_strong_dive_info_strong_tab_for_individual_dives">6.1. The <strong>Dive Info</strong> tab (for individual dives)</h3>
-<div class="paragraph"><p>The Dive Info tab gives some summary information about a particular dive
-that has been selected in the <strong>Dive List</strong>. Useful information here includes
-the surface interval before the dive, the maximum and mean depths of the
-dive, the gas volume consumed, the surface air consumption (SAC) and the
-number of oxygen toxicity units (OTU) incurred.</p></div>
+<h3 id="_the_strong_info_strong_tab_for_individual_dives">6.1. The <strong>Info</strong> tab (for individual dives)</h3>
+<div class="paragraph"><p>The Info tab gives some summary information about a particular dive that has
+been selected in the <strong>Dive List</strong>. Useful information here includes the
+surface interval before the dive, the maximum and mean depths of the dive,
+the gas volume consumed, the surface air consumption (SAC) and the number of
+oxygen toxicity units (OTU) incurred.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3131,11 +3131,11 @@ other than air. Their values are dependent on the composition of the
 breathing gas.  The EAD is the depth of a hypothetical air dive that has the
 same partial pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an air
-dive to the depth equalling the EAD. The END is the depth of a hypothetical
+dive to the depth equaling the EAD. The END is the depth of a hypothetical
 air dive that has the same sum of partial pressures of the narcotic gases
 nitrogen and oxygen as the current trimix dive. A trimix diver can expect
-the same narcotic effect as a diver breathing air diving at a depth
-equalling the END.</td>
+the same narcotic effect as a diver breathing air diving at a depth equaling
+the END.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of
@@ -3324,14 +3324,14 @@ List</strong> panel now shows only the titles for the trips.</p></div>
 <h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">7.3.1. Editing the title and associated information for a particular trip</h4>
 <div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip
 title.  More information about a trip can be added by selecting its trip
-title from the <strong>Dive List</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Dive
-Notes</strong> panel. Here users can add or edit information about the date/time,
-the trip location and any other general comments about the trip as a whole
-(e.g. the dive company that was dived with, the general weather and surface
-conditions during the trip, etc.).  After entering this information, users
-should select <strong>Save</strong> from the buttons at the top right of the <strong>Trip Notes</strong>
-tab. The trip title in the <strong>Dive List</strong> panel should now reflect some of the
-edited information.</p></div>
+title from the <strong>Dive List</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Notes</strong>
+panel. Here users can add or edit information about the date/time, the trip
+location and any other general comments about the trip as a whole (e.g. the
+dive company that was dived with, the general weather and surface conditions
+during the trip, etc.).  After entering this information, users should
+select <strong>Save</strong> from the buttons at the top right of the <strong>Trip Notes</strong> tab. The
+trip title in the <strong>Dive List</strong> panel should now reflect some of the edited
+information.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_viewing_the_dives_during_a_particular_trip">7.3.2. Viewing the dives during a particular trip</h4>
@@ -3412,9 +3412,9 @@ the dive computer and appearing as different dives in the <strong>Dive List</str
 panel. Users can merge these dives onto a single dive by selecting the
 appropriate dives, right-clicking them to bring up the context menu and then
 selecting <strong>Merge selected dives</strong>. It may be necessary to edit the dive
-information in the <strong>Dive Notes</strong> panel to reflect events or conditions that
-apply to the merged dive. The figure below shows the depth profile of two
-such dives that were merged:</p></div>
+information in the <strong>Notes</strong> panel to reflect events or conditions that apply
+to the merged dive. The figure below shows the depth profile of two such
+dives that were merged:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/MergedDive.png" alt="Example: Merged dive" />
@@ -3496,10 +3496,10 @@ connexion <em>Facebook</em>.</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Having established a login to <em>Facebook</em>, transfer of a dive profile to
-one&#8217;s <em>Facebook</em> timeline is easy.  A <em>Facebook</em> icon appears in the <strong>Dive
-Notes</strong> panel of <em>Subsurface</em> (See image <strong>A</strong> below). Ensure that the dive
-that you want to transfer to the timeline is depicted in the <em>Subsurface</em>
-<strong>Dive Profile</strong> panel. Select the <em>Facebook</em> icon, and a dialogue is shown,
+one&#8217;s <em>Facebook</em> timeline is easy.  A <em>Facebook</em> icon appears in the <strong>Notes</strong>
+panel of <em>Subsurface</em> (See image <strong>A</strong> below). Ensure that the dive that you
+want to transfer to the timeline is depicted in the <em>Subsurface</em> <strong>Dive
+Profile</strong> panel. Select the <em>Facebook</em> icon, and a dialogue is shown,
 determining the amount of additional information transferred with the dive
 profile (see image <strong>B</strong>, below). In order to transfer a dive profile to
 <em>Facebook</em>, the name of a <em>Facebook</em> album needs to be provided. The
@@ -3561,7 +3561,7 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 </li>
 <li>
 <p>
-<em>DiveShare</em> is also a dive log repostory on the Internet focusing on the
+<em>DiveShare</em> is also a dive log repository on the Internet focusing on the
   recreational dives. In order to upload dives one has to provide a used ID,
   so registration with <em>http://scubadiveshare.com</em> is required.
 </p>
@@ -3898,7 +3898,7 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <li>
 <p>
 <strong>Default cylinder</strong>: Here users can specify the default cylinder listed in
-     the <strong>Equipment</strong> tab of the <strong>Dive Notes</strong> panel.
+     the <strong>Equipment</strong> tab of the <strong>Notes</strong> panel.
 </p>
 </li>
 <li>
@@ -4178,7 +4178,7 @@ A user who is not absolutely sure about any of the above requirements should
 sections (see image below). The <strong>setup</strong> parameters for a dive are entered
 into the several sections on the left hand side of the screen.  The setup is
 divided into several sections: Available Gases, Rates, Planning, Gas Options
-and Dive Notes.</p></div>
+and Notes.</p></div>
 <div class="paragraph"><p>At the top right hand is a green <strong>design panel</strong> upon which the profile of
 the dive can be manipulated directly by dragging and clicking as explained
 below. This feature makes the <em>Subsurface</em> dive planner unique in ease of
@@ -4230,15 +4230,14 @@ In the top left-hand area of the planning screen, ensure that the constant
 </li>
 <li>
 <p>
-In the table labelled <em>Available Gases</em>, add the information of the
-  cylinders to be used as well as the gas composition within that
-  cylinder. This is done in a similar way as for <a href="#S_CylinderData">providing   cylinder data for dive logs</a>. Choose the cylinder type by double clicking
-  the cylinder type and using the dropdown list, then specify the work
-  pressure of this cylinder. By leaving the oxygen concentration (O2%) filed
-  empty, the cylinder is assumed to contain air. Otherwise enter the oxygen
-  and/or helium concentration in the boxes provided in this dialogue. Add
-  additional cylinders by using the "+" icon to the top righthand of the
-  dialogue.
+In the table labeled <em>Available Gases</em>, add the information of the cylinders
+  to be used as well as the gas composition within that cylinder. This is done
+  in a similar way as for <a href="#S_CylinderData">providing cylinder data for dive   logs</a>. Choose the cylinder type by double clicking the cylinder type and
+  using the dropdown list, then specify the work pressure of this cylinder. By
+  leaving the oxygen concentration (O2%) filed empty, the cylinder is assumed
+  to contain air. Otherwise enter the oxygen and/or helium concentration in
+  the boxes provided in this dialogue. Add additional cylinders by using the
+  "+" icon to the top righthand of the dialogue.
 </p>
 </li>
 <li>
@@ -4326,7 +4325,7 @@ specified in the <em>Available Gases</em> table.  Add new waypoints until the ma
 features of the dive have been completed, e.g. the bottom time segment and
 deep stops (if these are implemented). Leave the remaining waypoints on the
 ascent to <em>Subsurface</em>. In most cases <em>Subsurface</em> computes additional way
-points in order to fulfil decompression requirements for that dive. A
+points in order to fulfill decompression requirements for that dive. A
 waypoint can be moved by selecting that waypoint and by using the arrow
 keys.  The waypoints listed in the <em>Dive Planner Points</em> dialogue can be
 edited by hand in order to obtain a precise presentation of the dive
@@ -4360,7 +4359,7 @@ appear in the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p><strong>The dive plan details</strong></p></div>
 <div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the
 exact details of the dive plan are provided. These details may be modified
-by checking any of the options under the <em>Dive Notes</em> section of the dive
+by checking any of the options under the <em>Notes</em> section of the dive
 planner, immediately to the left of the <em>Dive Plan Details</em>. If a <em>Verbatim
 diveplan</em> is requested, a detailed sentence-level explanation of the dive
 plan is given. If any of the management specifications have been exceeded
@@ -4403,13 +4402,13 @@ The parameters of the pSCR diver can be set by selecting  <em>File &#8594;   Pre
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
-pO<sub>2</sub> drops below what is considered a save value, a warning apears in the <em>Dive plan
+pO<sub>2</sub> drops below what is considered a save value, a warning appears in the <em>Dive plan
 details</em>. A typical pSCR configuration is with a single cylinder and one or more bail-out
 cylinders. Therefore the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
 are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
 to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
-in the loop due to the oxygen drop accross the mouthpiece of the pSCR equipment.</p></div>
+in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
@@ -4454,8 +4453,8 @@ Plan Details</em> for wet notes. Alternatively one can cut and paste the <em>Div
 Plan Details</em> for inclusion in a text file or word processing document.</p></div>
 <div class="paragraph"><p>Dive plans have many characteristics in common with dive logs (dive profile,
 dive notes, etc).  After a dive plan has been saved, the dive details and
-gas calculations are saved in the <strong>Dive Notes</strong> tab. While a dive plan is
-being designed, it can be printed using the <em>Print</em> button in the dive
+gas calculations are saved in the <strong>Notes</strong> tab. While a dive plan is being
+designed, it can be printed using the <em>Print</em> button in the dive
 planner. This prints the dive details and gas calculations in the <em>Dive Plan
 Details</em> panel of the dive planner. However, after the plan has been saved,
 it is represented in a way very similar to a dive log and the gas
@@ -4649,8 +4648,7 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_ViewPanels"><em>Info</em></a> - Affiche uniquement le panneau des <strong>notes de
-  plongée</strong>.
+<a href="#S_ViewPanels"><em>Info</em></a> - Affiche uniquement le panneau des <strong>notes</strong>.
 </p>
 </li>
 <li>
@@ -5179,7 +5177,7 @@ On the list of file names select the .CSV file that has been created
 </li>
 <li>
 <p>
-In the dropdown list on the middle right labeled '<em>Pre-configured imports</em>",
+In the dropdown list on the top left labeled '<em>Pre-configured imports</em>",
   select <em>APD Log Viewer</em>.
 </p>
 </li>
@@ -5393,11 +5391,11 @@ The dives are now exported to the file DM4.bak (or DM5.bak)
 <div class="admonitionblock" id="Atomic_Export">
 <table><tr>
 <td class="icon">
-<img src="./images/icons/note.png" alt="Note" />
+<img src="images/icons/atomiclogo.jpg" alt="Note" />
 </td>
 <td class="content">Atomic Logbook is a Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.
-The divelog is kept in a SQlite database at
+The divelog is kept in a SQLite database at
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can be
 directly imported to Subsurface.</td>
 </tr></table>
@@ -5509,7 +5507,7 @@ Duration: the format should be minutes:seconds.
 </li>
 <li>
 <p>
-Unit system: only one unit system shold be used (i.e., no mixture between
+Unit system: only one unit system should be used (i.e., no mixture between
    imperial and metric units)
 </p>
 </li>
@@ -5686,7 +5684,7 @@ dive”.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-06 14:30:55 CET
+Last updated 2015-02-15 14:28:51 CET
 </div>
 </div>
 </body>
