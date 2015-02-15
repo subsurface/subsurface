@@ -970,8 +970,7 @@ static const char *country, *city;
 
 static void divinglog_place(char *place, uint32_t *uuid)
 {
-	char buffer[1024], *p;
-	int len;
+	char buffer[1024];
 
 	snprintf(buffer, sizeof(buffer),
 		 "%s%s%s%s%s",
