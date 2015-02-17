@@ -494,7 +494,7 @@ TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.label->setText(tr("Tags: "));
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050200
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
@@ -521,7 +521,7 @@ BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
 	ui.setupUi(this);
 	ui.label->setText(tr("Person: "));
 	ui.label->setToolTip(tr("Searches for buddies and divemasters"));
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050200
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
@@ -547,7 +547,7 @@ LocationFilter::LocationFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.label->setText(tr("Location: "));
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050200
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
@@ -573,7 +573,7 @@ SuitFilter::SuitFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.label->setText(tr("Suits: "));
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050200
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
