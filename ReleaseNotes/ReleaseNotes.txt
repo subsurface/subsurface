@@ -1,15 +1,36 @@
-// _Subsurface_ 4.4 Release Notes
+// _Subsurface_ 4.4.1 Release Notes
 
-_Subsurface_ 4.4 - February 2015
+_Subsurface_ 4.4.1 - February 2015
 --------------------------------
 
 The _Subsurface_ development team proudly announces
-the release of version 4.4 of _Subsurface_, an open
+the release of version 4.4.1 of _Subsurface_, an open
 source divelog and dive planning program for Windows, Mac and Linux.
 
 License: GPLv2
 
 _Subsurface_ can be found at: http://_Subsurface_-divelog.org
+
+This is just a small update to _Subsurface_ 4.4, mainly intended to update
+the user manual translations to be consistent with 4.4, to fix a small
+number of bugs and to update to the latest libdivecomputer.
+
+Some of the changes since _Subsurface_ 4.4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Spanish, Russian and French translations of the user manual have been
+updated.
+
+Better and more flexible parsing of GPS coordinates.
+
+Small fixes to the HTML export.
+
+Fixed a problem where dives imported from some Shearwater dive computers
+would be considered CCR dives. For dives imported in the past, manually
+setting them to OC works around the issue.
+
+Several fixes to imports from other divelog, including importing from
+MacDive.
 
 Some of the changes since _Subsurface_ 4.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
