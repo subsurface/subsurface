@@ -32,6 +32,10 @@
         <xsl:value-of select="concat(substring-after(substring-after(substring-before(@DateTime, ' '), '/'), '/'), '-', substring-before(@DateTime, '/'), '-', substring-before(substring-after(@DateTime, '/'), '/'))"/>
       </xsl:attribute>
 
+      <xsl:attribute name="time">
+        <xsl:value-of select="substring-after(@DateTime, ' ')"/>
+      </xsl:attribute>
+
       <xsl:attribute name="duration">
         <xsl:call-template name="timeConvert">
           <xsl:with-param name="timeSec" select="@Duration"/>
