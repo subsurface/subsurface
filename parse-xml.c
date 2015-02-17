@@ -2220,11 +2220,11 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	 * TODO: handle multiple cylinders
 	 */
 	cylinder_start();
-	if (data[22] && atoi(data[22]) > 0)
+	if (data[22] && atoi(data[22]) > 0 && atoi(data[22]) < 350000)
 		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[22]);
 	else if (data[10] && atoi(data[10]) > 0)
 		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[10]);
-	if (data[23] && atoi(data[23]) > 0)
+	if (data[23] && atoi(data[23]) > 0 && atoi(data[23]) < 350000)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[23]));
 	if (data[11] && atoi(data[11]) > 0)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
