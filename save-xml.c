@@ -285,7 +285,7 @@ static void save_tags(struct membuffer *b, struct tag_entry *entry)
 			struct divetag *tag = entry->tag;
 			put_string(b, sep);
 			/* If the tag has been translated, write the source to the xml file */
-			quote(b, tag->source ?: tag->name, 0);
+			quote(b, tag->source ?: tag->name, 1);
 			sep = ", ";
 		} while ((entry = entry->next) != NULL);
 		put_string(b, "'");
