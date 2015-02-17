@@ -411,7 +411,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Autores</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves</p></div>
-<div class="paragraph"><p><span class="BLUE"><em>Versión 4.4, February 2015</em></span></p></div>
+<div class="paragraph"><p><span class="BLUE"><em>Versión 4.4, Febrero 2015</em></span></p></div>
 <div class="paragraph"><p>Bienvenido como usuario de <em>Subsurface</em>, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
 interpretarbuceos en apnea o con botella. <em>Subsurface</em> ofrece muchas ventajas
@@ -725,6 +725,8 @@ Grados decimales, p.e. 30.22496 , 30.821798</code></pre>
 <div class="paragraph"><p>Las latitudes del hemisferio sur se dan con una S, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual manera, las longitudes del oeste se dan con
 una W, p.e. W07º, o con un valor negativo, p.e. -7.34323.</p></div>
+<div class="paragraph"><p>Algunos teclados no disponen del signo de grados (°). Puede remplazarse con una
+"d", así:  N30d W20d.</p></div>
 <div class="paragraph"><p>Las coordenadas GPS de un punto de buceo están unidas al nombre de dicho punto
 así, al añadir coordenadas a inmersiones en las que no se ha facilitado una
 descripción de la ubicación se producirá un comportamiento inesperado
@@ -1313,11 +1315,11 @@ mensaje en azul arriba del panel</p></div>
 altamente interactiva y la información de botellas y gases que se introduzca
 determinará el comportamiento del perfil de la inmersión (panel de arriba a la
 derecha).</p></div>
-<div class="paragraph"><p><strong>Botellas</strong>: La información de las botellas se introduce con un dialogo como
+<div class="paragraph" id="cylinder_definitions"><p><strong>Botellas</strong>: La información de las botellas se introduce con un dialogo como
 este:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/DC_gas_dialogue1_f20_jpg" alt="FIGURA: Diálogo de Botellas inicial" />
+<img src="images/DC_gas-dialogue1_f20.jpg" alt="FIGURA: Diálogo de Botellas inicial" />
 </div>
 </div>
 <div class="paragraph"><p>En la mayoría de los casos <em>Subsurface</em> obtiene el gas usado del ordenador de
@@ -1332,7 +1334,7 @@ la casilla <strong>Tipo de botella</strong>. Esto hará aparecer un botón que p
 mostrar una lista desplegable de botellas.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/DC_gas_dialogue2_f20_jpg" alt="FIGURA: Botón del desplegable de la lista de botellas" />
+<img src="images/DC_gas-dialogue2_f20.jpg" alt="FIGURA: Botón del desplegable de la lista de botellas" />
 </div>
 </div>
 <div class="paragraph"><p>La lista desplegable puede usarse para seleccionar el tipo de botella que
@@ -1512,7 +1514,7 @@ haciendo clic en <em>Importar archivos de registro</em>. Con ello se mostrará e
 dialogo <strong>A</strong> a continuación.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Import1_f20_jpg" alt="FIGURA: Importar: paso 1" />
+<img src="images/Import1_f20.jpg" alt="FIGURA: Importar: paso 1" />
 </div>
 </div>
 <div class="paragraph"><p>Abajo a la derecha hay un desplegable con una etiqueta por defecto Archivos de
@@ -2362,13 +2364,67 @@ se vuelve a conectar, las fotos se visualizarán normalmente.</p></div>
 <div class="sect2">
 <h3 id="_registrar_tipos_de_inmersion_especiales">6.3. Registrar tipos de inmersión especiales</h3>
 <div class="sect3">
-<h4 id="_inmersiones_en_montaje_lateral_sidemount">6.3.1. Inmersiones en montaje lateral (sidemount)</h4>
-<div class="paragraph"><p>_Subsurface maneja fácilmente buceos en los que se use más de una botella.
-Registrar inmersiones en lateral se hace en tres pasos:</p></div>
+<h4 id="S_MulticylinderDives">6.3.1. Inmersiones multi botella</h4>
+<div class="paragraph"><p><em>Subsurface</em> maneja fácilmente inmersiones que requieren más de una botella. El
+buceo multi botella se produce habitualmente cuando (a) un buceador no tiene
+bastante gas para completar una inmersión con una sola botella o (b) cuando el
+buceador necesita más de una mezcla de gas a causa de la profundidad o de las
+necesidades descompresivas de la inmersión. Por este motivo, las inmersiones
+multi tanque son empleadas a menudo por los buceadores técnicos ya que bucean
+profundo y durante mucho tiempo. En lo que corresponde a <em>Subsurface</em>, solo hay
+dos clases de información que necesitan proporcionarse:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-*Durante el buceo, registrar los eventos de cambio de botella". Ya que bucear
+<strong>Describir las botellas usadas durante el buceo</strong>. Esto se hace en la pestaña
+  <strong>Equipo</strong> del panel <strong>Información de la inmersión</strong> tal como <a href="#cylinder_definitions">se describe anteriormente</a>.
+  se introducen las botellas una a una, especificando las características de la
+  botella y la composición del gas de cada una de ellas.
+</p>
+</li>
+<li>
+<p>
+<strong>Registrar los momentos en que se cambia de una botella a otra</strong>. Esta es una
+  información que facilitan algunos ordenadores (siempre y cuando el buceador
+  se la diga al ordenador durante el buceo). Si el ordenador no la proporciona,
+  el buceador necesita registrarla usando un método diferente, p.e. en una
+  pizarra.
+</p>
+</li>
+<li>
+<p>
+<strong>Indica los cambios de botella en el perfil</strong>. Si se utilizó la última opción,
+  el buceador ha de indicar el evento de cambio de gas haciendo clic derecho en
+  el momento adecuado del panel <strong>Perfil de inmersión</strong> y señalar la botella a la
+  que se cambió. Tras hacer clic derecho, seguir el menú contextual a "Añadir
+  cambio de gas" y seleccionar la botella apropiada entre las definidas en el
+  primer paso (ver imagen a continuación). Si el botón <strong>Barra de botellas</strong> de
+  la barra de herramientas se ha activado, los cambios también se indicarán en
+  la barra.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Habiendo llevado a cabo estas tareas, <em>Subsurface</em> indica en el perfil de buceo
+el uso de diferentes botellas.  A continuación, una inmersión multi botella que
+empieza con EAN28, se cambia a EAN50 despues de 26 minutos para efectuar la
+deco.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/multicylinder_dive.jpg" alt="FIGURa: Perfil multi tanque" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inmersiones_en_montaje_lateral_sidemount">6.3.2. Inmersiones en montaje lateral (sidemount)</h4>
+<div class="paragraph"><p>El buceo en montaje lateral es solo otra forma de buceo multi tanque, a menudo
+con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
+configuración popular entre los espeleo buceadores, el buceo en lateral se
+puede efectuar por buceadores recreativos que hayan completado el entrenamiento
+adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+*Durante el buceo, se registran los eventos de cambio de botella". Ya que bucear
   en lateral supone, normalmente, usar 2 botellas con aire o con la misma mezcla,
   <em>Subsurface</em> distingue entre estas botellas. En comparación, la mayoría de
   ordenadores de buceo que contemplan cambios de gas solo distinguen entre
@@ -2416,7 +2472,55 @@ Registrar inmersiones en lateral se hace en tres pasos:</p></div>
 de registro de inmersiones.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">6.3.2. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
+<h4 id="S_sSCR_dives">6.3.3. Inmersiones con rebreather de circuito semi cerrado (SCR)</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/halcyon_RB80.jpg" alt="Note" />
+</td>
+<td class="content">Los rebreathers semi cerrados pasivos (pSCR) suponen un avance técnico en el
+equipo de buceo que recircula el gas que el buzo respira, y elimina el dióxido
+de carbono del gas exhalado. Al tiempo que una pequeña cantidad del gas exhalado
+(habitualmente una décima parte) se libera en el agua, una  pequeña cantidad de
+gas de la botella se introduce en el circuito (habitualmente nitrox). Un buzo
+usando una sola botella de gas puede, pues, bucear durante periodos de tiempo
+mucho mayores que utilizando una configuración recreativa de circuito abierto.
+Con los pSCR una cantidad muy pequeña de gas se libera cada vez que el buzo
+inhala. Con los equipos SCR activos (aSCR), en cambio, una pequeña cantidad del
+gas respirado se libera continuamente.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Para registrar inmersiones con pSCR, no se requieren procedimientos especiales,
+solo los pasos normales descritos con anterioridad:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Seleccionar el modo pSCR en el desplegable <em>Modo de inmersión</em> en el panel
+  <strong>Información de la inmersión</strong>.
+</p>
+</li>
+<li>
+<p>
+El buceo con pSCR, a menudo, requiere cambios de gas, necesitando una botella
+  adicional. Hay, pues, que describir todas las botellas como se indicó con
+  anterioridad e indicar los cambios de botella/gas como se explicó en la
+  sección <a href="#S_MulticylinderDives">Inmersiones multi botella</a>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Si se ha seleccionado pSCR en el <em>Modo de inmersión</em>, el techo de buceo para
+inmersiones pSCR se ajusta para la caída de oxígeno a través de la boquilla
+que, a menudo, requiere mayores períodos de descompresión. A continuación un
+perfil de inmersión de un buceo con pSCR usando EAN36 como gas de fondo y
+oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pSCR_profile.jpg" alt="FIGURA: Perfil pSCR" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_CCR_dives">6.3.4. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2439,7 +2543,7 @@ se importan datos de otras fuentes digitales.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_importar_una_inmersion_con_ccr">6.3.3. Importar una inmersión con CCR</h4>
+<h4 id="_importar_una_inmersion_con_ccr">6.3.5. Importar una inmersión con CCR</h4>
 <div class="paragraph"><p>Véase la sección que trata de  <a href="#S_ImportingAlienDiveLogs">Importar información de buceo de otras fuentes digitales</a>.
 Desde el menú principal de <em>Subsurface</em>, seleccionar <em>Import &#8594; Importar archivos
 de registro</em> para desplegar el <a href="#Unified_import">Diálogo de importación universal</a>.
@@ -2452,7 +2556,7 @@ archivo concreto (en el caso del MKVI es un archivo con extensión .txt). Tras
 seleccionar el archivo, activar el botón <em>Abrir</em> de abajo a la derecha.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_informacion_mostrada_para_un_buceo_con_ccr">6.3.4. Información mostrada para un buceo con CCR</h4>
+<h4 id="_informacion_mostrada_para_un_buceo_con_ccr">6.3.6. Información mostrada para un buceo con CCR</h4>
 <div class="paragraph"><p><em>Presiones parciales de los gases</em>: El gráfico de presión parcial de oxígeno
 muestra la información de los sensores de oxígeno del equipo CCR. A diferencia
 del equipo de circuito abierto (donde los valores de pO<sub>2</sub> se calculan en base
@@ -2661,8 +2765,8 @@ cellspacing="0" cellpadding="4">
 </div>
 <div class="paragraph"><p>El perfil también incluye lecturas de profundidad para los picos y valles del
 gráfico. De esta forma, se debe poder visualizar la profundidad del punto más
-hondo y otros picos. La profundidad media se muestra como una línea roja
-horizontal.</p></div>
+hondo y otros picos. La profundidad media se muestra como una línea gris que
+indica la profundidad media en cada momento de la inmersión.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3329,7 +3433,68 @@ en las que aparezcan las etiquetas "cueva" <em>O</em> "barco", solas o conjuntam
 <div class="sect1">
 <h2 id="S_ExportLog">9. Exportar el registro de inmersiones o parte del mismo</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Se llega a la función de exportación seleccionando <em>Archivo &#8594; Exportar</em> lo que
+<div class="paragraph"><p>Hay dos posibilidades de exportar información de buceo desde <em>Subsurface</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Exportar información de buceo a <em>Facebook</em>
+</p>
+</li>
+<li>
+<p>
+<a href="#S_Export_other">Exportar información de buceo a otros destinos o formatos</a>
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="S_facebook">9.1. Exportar información de buceo a <em>Facebook</em></h3>
+<div class="paragraph"><p>La exportación de inmersiones a <em>Facebook</em> se maneja de forma diferente a otros
+tipos de exportación. Esto es debido a que exportar a <em>Facebook</em> requiere una
+conexión a esta red social y necesita un usuario de <em>Facebook</em> y su password.
+Si, desde el menú principal, seleccionamos <em>Archivo &#8594; Preferencias &#8594;
+Facebook</em>, se nos presentará una pantalla de acceso (ver imagen <strong>A</strong> de la
+izquierda a continuación). Introducimos nuestro usuario y password de
+<em>Facebook</em>. Una vez que nos hemos conectado a <em>Facebook</em>, se nos presenta el
+panel de la imagen <strong>B</strong> a continuación. Este panel tiene un botón que habrá que
+seleccionar para cerrar la conexión a <em>Facebook</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/facebook1_f20.jpg" alt="Figure: Acceso a Facebook" />
+</div>
+</div>
+<div class="paragraph"><p>Tras haber establecido una conexión con <em>Facebook</em>, transferir un perfil de
+inmersión a nuestro perfil de <em>Facebook</em> es sencillo. Un icono de <em>Facebook</em>
+aparece en  el panel <strong>Notas de la inmersión</strong> de <em>Subsurface</em> (ver imagen <strong>A</strong> a
+continuación). Asegúrate de que la inmersión que quieres transferir al historial
+es la que se muestra en el panel <strong>Perfil de la inmersión</strong>. Selecciona el icono
+de <em>Facebook</em> y se mostrará un icono que determinará la cantidad de información
+transferida junto al perfil (ver imagen <strong>B</strong>, a continuación). Se necesita
+proporcionar el nombre de un álbum de <em>Facebook</em> para poder enviar el perfil de
+inmersión. Las casillas seleccionables de la izquierda nos permiten seleccionar
+la información que vamos a enviar. Esta información se muestra en la ventana de
+texto de la derecha (ver imagen <strong>B</strong> a continuación). El mensaje que se va a
+enviar se puede editar directamente en esta ventana de texto. Tras haber elegido
+la información y verificado lo que se va a subir, se selecciona el botón <em>OK</em>
+lo que inicia la transferencia a <em>Facebook</em>. Unos momentos después aparecerá
+un mensaje indicando una transferencia correcta.</p></div>
+<div class="paragraph"><p>El álbum creado y el post al historial se marcarán como privados. Para que
+los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
+normal a <em>Facebook</em> desde un navegador o desde la app de <em>Facebook</em>. Aunque
+esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
+solución para evitar subidas no deseadas en el historial público.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/facebook2_f20.jpg" alt="Figure: Facebook login" />
+</div>
+</div>
+<div class="paragraph"><p>Si se considera necesario, cierra la conexión a <em>Facebook</em>, bien cerrando
+<em>Subsurface</em> o bien seleccionando <em>Archivo &#8594; Preferencias &#8594; Facebook</em> desde
+el menú principal, clicando el botón correspondiente en el panel <em>Facebook</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="S_Export_other">9.2. Exportar información de buceo a otros destinos o formatos</h3>
+<div class="paragraph"><p>Para exportar a otros destinos,
+se llega a la función de exportación seleccionando <em>Archivo &#8594; Exportar</em> lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
 guardar TODAS las inmersiones, o guardar solo las inmersiones seleccionadas en
 el panel <strong>Lista de Inmersiones</strong> de <em>Subsurface</em>. Marca la casilla seleccionable
@@ -3454,6 +3619,7 @@ Solo exportar lista: Solo se exportará una lista de inmersiones. No se
 </p>
 </li>
 </ul></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3801,8 +3967,9 @@ Umbrales: <em>Subsurface</em> puede mostrar las presiones parciales de nitrógen
 <li>
 <p>
 <em>Mostrar la profundidad media</em>: Activar esta casilla hace que <em>Subsurface</em>
-   trace una línea roja a través del perfil, indicando la profundidad media del
-   buceo.
+   trace una línea gris a través del perfil, indicando la profundidad media del
+   buceo en cada momento de la inmersión. Normalmente es una línea con forma de
+   "u" que indicará la profundidad media mayor justo antes de iniciar el ascenso.
 </p>
 </li>
 </ul></div>
@@ -3926,6 +4093,22 @@ lo cual debe facilitarse la dirección IP del servidor y el número de puerto. S
 el servidor proxy utiliza autenticación también han de indicarse el usuario y su
 password para que <em>Subsurface</em> pueda pasar automáticamente a través del proxy
 para acceder a internet.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_acceso_a_facebook">13.6. Acceso a Facebook</h3>
+<div class="paragraph"><p>Este panel nos permite acceder a una cuenta de <em>Facebook</em> para poder enviar
+información desde <em>Subsurface</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref6_f20.jpg" alt="FIGURE: Facebook login panel" />
+</div>
+</div>
+<div class="paragraph"><p>Si se proporciona un usuario y una clave validos, se crea una conexión a
+<em>Facebook</em>. La conexión se cierra cuando al cerrar <em>Subsurface</em>. La casilla
+seleccionable "No cerrar sesión con Subsurface" de la pantalla de acceso no
+tiene ningún efecto, en estos momentos.
+Ver la sección <a href="#S_facebook">Exportar perfiles de inmersión a Facebook</a>
+para más información.</p></div>
 </div>
 </div>
 </div>
@@ -5529,7 +5712,7 @@ querrás que te cuente como algún tipo de inmersión larga.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-04 07:44:40 PST
+Last updated 2015-02-17 08:49:01 PST
 </div>
 </div>
 </body>
