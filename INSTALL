@@ -10,8 +10,7 @@ Below are instructions for building Subsurface under some popular
 Linux distributions, for building Subsurface using Homebrew on a Mac,
 and for cross-building Subsurface for Windows. The lack of a working
 package management system for Windows makes it really painful to build
-Subsurface natively under Windows, we have some hints how to do so
-here as well.
+Subsurface natively under Windows, so we don't support that at all.
 
 All of the prebuilt binaries that we provide (right now Windows, Mac,
 Ubuntu/Debian/LinuxMint, and openSUSE/Fedora) are built using our own
@@ -104,6 +103,30 @@ but on many of them this will give you the build dependencies for the
 official package (which is often way out of date). So be careful that this
 doesn't get you a Qt4 based environment
 
+In order to build Subsurface, you have two options:
+
+1. the easy way
+~~~~~~~~~~~~~~~
+
+Use the supplied build script. This should work on most systems that have
+all the prerequisite packages installed...
+
+You should have Subsurface sources checked out in a sane place, something
+like this:
+
+mkdir -p ~/src
+cd ~/src
+git clone -b v4.4.1 git://subsurface-divelog.org/subsurface
+./subsurface/scripts/build.sh # <- this step will take quite a while as it
+                              #    compiles a handful of libraries before
+			      #    building Subsurface
+
+Now you can run Subsurface like this:
+
+./subsurface/scripts/run.sh
+
+2. the harder way
+~~~~~~~~~~~~~~~~~
 
 First you need to compile our version of libdivecomputer:
 
