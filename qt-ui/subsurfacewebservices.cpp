@@ -15,6 +15,7 @@
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
 #include <QShortcut>
+#include <QDebug>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h> // for dup(2)
