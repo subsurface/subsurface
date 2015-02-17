@@ -69,16 +69,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	PlannerDetails *plannerDetails = new PlannerDetails();
 	LocationInformationWidget *locationInformation = new LocationInformationWidget();
 
-	registerApplicationState("Default", mainTab, profileWidget, diveListView, globeGps );
-	registerApplicationState("AddDive", mainTab, profileWidget, diveListView, globeGps );
-	registerApplicationState("EditDive", mainTab, profileWidget, diveListView, globeGps );
-	registerApplicationState("PlanDive", plannerWidget, profileWidget, plannerSettings, plannerDetails );
-	registerApplicationState("EditPlannedDive", plannerWidget, profileWidget, diveListView, globeGps );
-	registerApplicationState("EditDiveSite",locationInformation, profileWidget, diveListView, globeGps );
-
-	setApplicationState("Default");
-
-	ui.multiFilter->hide();
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
 	// and the ones that someone likely sets and then never touches again towards the bottom
@@ -91,6 +81,30 @@ MainWindow::MainWindow() : QMainWindow(),
 				 ui.profEad << ui.profSAC <<
 				 ui.profHR << // very few dive computers support this
 				 ui.profTissues; // maybe less frequently used
+
+	QToolBar *toolBar = new QToolBar();
+	Q_FOREACH (QAction *a, profileToolbarActions)
+		toolBar->addAction(a);
+	toolBar->setOrientation(Qt::Vertical);
+	toolBar->setIconSize(QSize(24,24));
+
+	QWidget *profileContainer = new QWidget();
+	QHBoxLayout *profLayout = new QHBoxLayout();
+	profLayout->addWidget(toolBar);
+	profLayout->addWidget(profileWidget);
+	profileContainer->setLayout(profLayout);
+
+	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
+	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
+	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
+	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
+	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
+	registerApplicationState("EditDiveSite",locationInformation, profileContainer, diveListView, globeGps );
+
+	setApplicationState("Default");
+
+	ui.multiFilter->hide();
+
 	setWindowIcon(QIcon(":subsurface-icon"));
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
@@ -144,21 +158,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
 
-	QToolBar *toolBar = new QToolBar();
-	Q_FOREACH (QAction *a, profileToolbarActions)
-		toolBar->addAction(a);
-	toolBar->setOrientation(Qt::Vertical);
-	toolBar->setIconSize(QSize(24,24));
-	// since I'm adding the toolBar by hand, because designer
-	// has no concept of "toolbar" for a non-mainwindow widget (...)
-	// I need to take the current item that's in the toolbar Position
-	// and reposition it alongside the grid layout.
-	// TODO: FIX THIS
-	// QLayoutItem *p = ui.profileInnerLayout->takeAt(0);
-	// ui.profileInnerLayout->addWidget(toolBar, 0, 0);
-	// ui.profileInnerLayout->addItem(p, 0, 1);
-	// ui.profileInnerLayout->setContentsMargins(QMargins(0, 5, 5, 5));
-	// ui.profileInnerLayout->setSpacing(0);
 
 	// and now for some layout hackery
 	// this gets us consistent margins everywhere and a much more balanced look
@@ -318,7 +317,7 @@ void MainWindow::on_actionSaveAs_triggered()
 
 ProfileWidget2 *MainWindow::graphics() const
 {
-	return qobject_cast<ProfileWidget2*>(applicationState["Default"].topRight);
+	return qobject_cast<ProfileWidget2*>(applicationState["Default"].topRight->layout()->itemAt(1)->widget());
 }
 
 void MainWindow::cleanUpEmpty()
