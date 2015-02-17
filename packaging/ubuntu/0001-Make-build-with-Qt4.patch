@@ -1,19 +1,21 @@
-From f4637480501bb82884b719624d8d179b5d3016c2 Mon Sep 17 00:00:00 2001
+From a5da35bf6fea4424d387ec5d1f94f520834ef77b Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
-Date: Wed, 28 Jan 2015 14:42:12 -0800
+Date: Tue, 17 Feb 2015 13:23:33 -0800
 Subject: [PATCH] Make build with Qt4
+
+This is just a best effort patch - Qt4 is no longer officially supported
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
 ---
  qt-ui/divelogexportdialog.cpp      |  7 ++++++-
  qt-ui/divelogexportdialog.h        |  4 ++++
- qt-ui/divelogimportdialog.cpp      | 30 ++++++++++++++++++++++++++++++
+ qt-ui/divelogimportdialog.cpp      | 34 ++++++++++++++++++++++++++++++++++
  qt-ui/downloadfromdivecomputer.cpp | 12 ++++++++++++
  qt-ui/plannerSettings.ui           |  4 ++--
- 5 files changed, 54 insertions(+), 3 deletions(-)
+ 5 files changed, 58 insertions(+), 3 deletions(-)
 
 diff --git a/qt-ui/divelogexportdialog.cpp b/qt-ui/divelogexportdialog.cpp
-index aff0265de616..24ac2942ac36 100644
+index 43c41550f145..8c6d2899f0f0 100644
 --- a/qt-ui/divelogexportdialog.cpp
 +++ b/qt-ui/divelogexportdialog.cpp
 @@ -1,8 +1,9 @@
@@ -27,7 +29,7 @@ index aff0265de616..24ac2942ac36 100644
  #include "divelogexportdialog.h"
  #include "diveshareexportdialog.h"
  #include "ui_divelogexportdialog.h"
-@@ -311,7 +312,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
+@@ -313,7 +314,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
  		settings.endGroup();
  		// the non XSLT exports are called directly above, the XSLT based ons are called here
  		if (!stylesheet.isEmpty())
@@ -64,10 +66,10 @@ index 14f8f453980f..524416414a8e 100644
  	void showExplanation();
  	void exportHtmlInit(const QString &filename);
 diff --git a/qt-ui/divelogimportdialog.cpp b/qt-ui/divelogimportdialog.cpp
-index c79b9df953eb..25fd75d15d0e 100644
+index bb4701ce36d3..4b9c8f8c0740 100644
 --- a/qt-ui/divelogimportdialog.cpp
 +++ b/qt-ui/divelogimportdialog.cpp
-@@ -375,14 +375,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -376,14 +376,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  		seabear = true;
  		firstLine = "Sample time;Sample depth;Sample NDL;Sample TTS;Sample stopdepth;Sample temperature;Sample pressure";
  		blockSignals(true);
@@ -90,8 +92,8 @@ index c79b9df953eb..25fd75d15d0e 100644
  		blockSignals(false);
  	}
  
-@@ -390,7 +398,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
- 	if (triggeredBy == KNOWNTYPES && value == 1) {
+@@ -392,9 +400,17 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+ 		apd=true;
  		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
  		blockSignals(true);
 +#if QT_VERSION >= 0x050000
@@ -99,10 +101,16 @@ index c79b9df953eb..25fd75d15d0e 100644
 +#else
 +		ui->CSVSeparator->setCurrentIndex(0);
 +#endif
+ 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
++#if QT_VERSION >= 0x050000
+ 			ui->knownImports->setCurrentText("APD Log Viewer");
++#else
++			ui->knownImports->setCurrentIndex(1);
++#endif
  		blockSignals(false);
  	}
  
-@@ -409,7 +421,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -413,7 +429,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  			separator = ";";
  		if (ui->CSVSeparator->currentText() != separator) {
  			blockSignals(true);
@@ -119,7 +127,7 @@ index c79b9df953eb..25fd75d15d0e 100644
  			blockSignals(false);
  			currColumns = firstLine.split(separator);
  		}
-@@ -460,7 +481,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -464,7 +489,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  
  		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
  			ui->CSVSeparator->blockSignals(true);
