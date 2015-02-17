@@ -2011,8 +2011,18 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 			strcpy(cur_event.name, "deco");
 			break;
 		case 22:
+		case 32:
 			/* 22 Mandatory safety stop violation */
+			/* 32 Deep stop violation */
 			strcpy(cur_event.name, "violation");
+			break;
+		case 30:
+			/* Tissue level warning */
+			strcpy(cur_event.name, "tissue warning");
+			break;
+		case 37:
+			/* Tank pressure alarm */
+			strcpy(cur_event.name, "tank pressure");
 			break;
 		case 257:
 			/* 257 Dive active */
@@ -2027,6 +2037,23 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 			} else {
 				strcpy(cur_event.name, "bookmark");
 			}
+			break;
+		case 259:
+			/* Deep stop */
+			strcpy(cur_event.name, "Deep stop");
+			break;
+		case 260:
+			/* Deep stop */
+			strcpy(cur_event.name, "Deep stop cleared");
+			break;
+		case 266:
+			/* Mandatory safety stop activated */
+			strcpy(cur_event.name, "safety stop (mandatory)");
+			break;
+		case 267:
+			/* Mandatory safety stop deactivated */
+			/* DM5 shows this only on event list, not on the
+			 * profile so skipping as well for now */
 			break;
 		default:
 			strcpy(cur_event.name, "unknown");
