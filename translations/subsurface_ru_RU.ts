@@ -7181,7 +7181,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="495"/>
         <source>Dive No.</source>
-        <translation>№ погружения</translation>
+        <translation>Погружение № </translation>
     </message>
     <message>
         <location filename="../save-html.c" line="496"/>
