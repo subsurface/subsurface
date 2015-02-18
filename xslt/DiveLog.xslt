@@ -62,6 +62,9 @@
       <notes>
         <xsl:value-of select="notes"/>
         <xsl:value-of select="concat($lf, 'Weather: ', @Weather, $lf, 'Visibility: ', @Visibility)"/>
+        <xsl:if test="@Boat != '' and @Boat != ' '">
+          <xsl:value-of select="concat($lf, 'Boat: ', @Boat)"/>
+        </xsl:if>
       </notes>
 
       <cylinder>
