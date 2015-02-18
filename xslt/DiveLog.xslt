@@ -156,6 +156,16 @@
           <xsl:value-of select="@Computer"/>
         </xsl:attribute>
 
+        <extradata key="Sample Interval" value="{@SampleInterval}"/>
+
+        <xsl:if test="@AltitudeMode != ''">
+          <extradata key="Altitude Mode" value="{@AltitudeMode}"/>
+        </xsl:if>
+
+        <xsl:if test="@PersonalMode != ''">
+          <extradata key="Personal Mode" value="{@PersonalMode}"/>
+        </xsl:if>
+
       <depth>
         <xsl:attribute name="max">
           <xsl:call-template name="depthConvert">
