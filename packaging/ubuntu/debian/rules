@@ -29,6 +29,7 @@ override_dh_auto_configure:
 			-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
 			-DBUILD_WITH_DBUS=OFF ../marble-source ; \
 		make -j8 ; \
+		ln -s src/lib/marble lib ; \
 		mkdir include ; cd include ; for i in `find ../../marble-source -name \*.h` ; do ln -s $$i . ; done ; \
 		ln -s . marble )
 	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 LIBGIT2STATIC=1 LIBMARBLEDEVEL=./marble-build SPECIAL_MARBLE_PREFIX=1 subsurface.pro
