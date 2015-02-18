@@ -156,7 +156,7 @@ contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE NO_USERMANUAL NO_PRINTIN
 !isEmpty(LIBMARBLEDEVEL) {
 	# find it next to our sources
 	INCLUDEPATH += $$LIBMARBLEDEVEL/include
-	LIBS += -L$$LIBMARBLEDEVEL/src/lib/marble
+	LIBS += -L$$LIBMARBLEDEVEL/lib
 }
 !contains(DEFINES, NO_MARBLE) {
 	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
