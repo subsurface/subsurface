@@ -44,6 +44,7 @@
 #include <QString>
 #include <QFile>
 #include <QSettings>
+#include <QTextStream>
 
 #ifndef QStringLiteral
 #	define QStringLiteral QString::fromUtf8
@@ -231,6 +232,26 @@ static bool readEtcOsRelease(QUnixOSVersion &v)
 		QSettings parse("/etc/os-release", QSettings::IniFormat);
 		if (parse.contains("PRETTY_NAME")) {
 			v.versionText = parse.value("PRETTY_NAME").toString();
+		}
+		return true;
+	}
+	QFile lsbRelease("/etc/lsb-release");
+	if (lsbRelease.exists()) {
+		QSettings parse("/etc/lsb-release", QSettings::IniFormat);
+		if (parse.contains("DISTRIB_DESCRIPTION")) {
+			v.versionText = parse.value("DISTRIB_DESCRIPTION").toString();
+			if (v.versionText == "PCLinuxOS") {
+				QFile release("/etc/release");
+				if (release.exists()) {
+					if (release.open(QFile::ReadOnly | QFile::Text)) {
+						QTextStream in(&release);
+						v.versionText = in.readAll();
+						// need to get rid of the redundant text after '('
+						int i = v.versionText.indexOf('(');
+						v.versionText.remove(i, 1000);
+					}
+				}
+			}
 		}
 		return true;
 	}
