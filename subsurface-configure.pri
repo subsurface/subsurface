@@ -138,6 +138,7 @@ isEmpty(LIBGIT2DEVEL) {
 } else {
 	INCLUDEPATH += $$LIBGIT2DEVEL/include
 	isEmpty(LIBGIT2STATIC) {
+		setRpath: LIBS += -rpath $$LIBGIT2DEVEL/build
 		LIBS += -L$$LIBGIT2DEVEL/build -lgit2 -lz -lcrypto
 	} else {
 		LIBS += $$LIBGIT2DEVEL/build/libgit2.a -Wl,-Bstatic -lz -lssl -lcrypto -Wl,-Bdynamic -ldl
@@ -156,12 +157,13 @@ contains(QMAKE_PLATFORM, android): DEFINES += NO_MARBLE NO_USERMANUAL NO_PRINTIN
 !isEmpty(LIBMARBLEDEVEL) {
 	# find it next to our sources
 	INCLUDEPATH += $$LIBMARBLEDEVEL/include
+	setRpath: LIBS += -rpath $$LIBMARBLEDEVEL/lib
 	LIBS += -L$$LIBMARBLEDEVEL/lib
 }
 !contains(DEFINES, NO_MARBLE) {
 	win32: CONFIG(debug, debug|release): LIBS += -lmarblewidgetd
 	else: !isEmpty(SPECIAL_MARBLE_PREFIX) {
-		LIBS += -L$$LIBMARBLEDEVEL/src/lib/marble -lssrfmarblewidget
+		LIBS += -lssrfmarblewidget
 	} else {
 		LIBS += -lmarblewidget
 	}
