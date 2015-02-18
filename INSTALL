@@ -95,13 +95,12 @@ sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
 	qtscript5-dev
 
-On Debian style distributions you can install the required development
-packages by running (once Qt version of subsurface is available in your
-distribution)
-$ sudo apt-get build-dep subsurface
-but on many of them this will give you the build dependencies for the
-official package (which is often way out of date). So be careful that this
-doesn't get you a Qt4 based environment
+On PCLinuxOS you appear to need the following packages
+
+su -c "apt-get install -y autoconf automake cmake libtool gcc-c++ git \
+lib64usb1.0-devel lib64zip-devel lib64qt5webkitwidgets-devel qttools5 \
+qttranslations5 lib64qt5xml-devel lib64qt5test-devel lib64qtscript-devel \
+lib64qt5svg-devel lib64qt5concurrent-devel"
 
 In order to build Subsurface, you have two options:
 
