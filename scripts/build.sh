@@ -97,6 +97,6 @@ make -j4
 make install
 
 cd $SRC/subsurface
-$QMAKE LIBDCDEVEL=1 LIBMARBLEDEVEL=$SRC/install SPECIAL_MARBLE_PREFIX=1 LIBGIT2DEVEL=$SRC/libgit2 subsurface.pro
+$QMAKE CONFIG+=setRpath LIBDCDEVEL=1 LIBMARBLEDEVEL=$SRC/install SPECIAL_MARBLE_PREFIX=1 LIBGIT2DEVEL=$SRC/libgit2 subsurface.pro
 make -j4
 
