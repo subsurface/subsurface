@@ -128,7 +128,7 @@
         </xsl:if>
       </cylinder>
 
-      <xsl:if test="@Weight != ''">
+      <xsl:if test="@Weight != '' and @Weight != '0.0'">
         <weightsystem>
           <xsl:attribute name="weight">
             <xsl:call-template name="weightConvert">
