@@ -2074,7 +2074,13 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 	if (data[8] && atoi(data[8]) > 0 && atoi(data[8]) < 350000)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[8]));
 	if (data[6])
-		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[6])) * 1000;
+		/* DM5 shows tank size of 12 liters when the actual
+		 * value is 0 (and using metric units). So we just use
+		 * the same 12 liters when size is not available */
+		if (atof(data[6]) == 0.0 && cur_dive->cylinder[cur_cylinder_index].start.mbar)
+			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = 12000;
+		else
+			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[6])) * 1000;
 	if (data[2])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[2]) * 10;
 	if (data[3])
