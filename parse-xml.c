@@ -2066,6 +2066,23 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 	return 0;
 }
 
+extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
+{
+	cylinder_start();
+	if (data[7] && atoi(data[7]) > 0 && atoi(data[7]) < 350000)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[7]);
+	if (data[8] && atoi(data[8]) > 0 && atoi(data[8]) < 350000)
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[8]));
+	if (data[6])
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[6])) * 1000;
+	if (data[2])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[2]) * 10;
+	if (data[3])
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[3]) * 10;
+	cylinder_end();
+}
+
+
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
 	if (data[0])
@@ -2208,6 +2225,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	char *err = NULL;
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
+	char get_cylinders_template[] = "select * from DiveMixture where DiveId = %d";
 	char get_events[64];
 
 	dive_start();
@@ -2246,24 +2264,13 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	/*
 	 * TODO: handle multiple cylinders
 	 */
-	cylinder_start();
-	if (data[22] && atoi(data[22]) > 0 && atoi(data[22]) < 350000)
-		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[22]);
-	else if (data[10] && atoi(data[10]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[10]);
-	if (data[23] && atoi(data[23]) > 0 && atoi(data[23]) < 350000)
-		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[23]));
-	if (data[11] && atoi(data[11]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
-	if (data[12])
-		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[12])) * 1000;
-	if (data[13])
-		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
-	if (data[20])
-		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[20]) * 10;
-	if (data[21])
-		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[21]) * 10;
-	cylinder_end();
+
+	snprintf(get_events, sizeof(get_events) - 1, get_cylinders_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm5_cylinders failed.\n"));
+		return 1;
+	}
 
 	if (data[14])
 		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
