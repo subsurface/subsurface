@@ -2,17 +2,31 @@
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 
+  <xsl:key name="DC" match="dive" use="concat(@ComputerID, ':', @Computer)"/>
+
   <xsl:template match="/">
     <divelog program='subsurface-import' version='2'>
       <settings>
-          <divecomputerid deviceid="ffffffff">
+        <!-- Using the serial number as device ID for now. Once we have
+             a change to get some testing done, we can jump on using
+             extension that provides sha1 function.
+
++  xmlns:crypto="http://exslt.org/crypto"
++  extension-element-prefixes="crypto"
++        <divecomputerid deviceid="{substring(crypto:sha1(concat(@ComputerID, ':', @Computer)), 1, 8)}">
+
+-->
+
+        <xsl:for-each select="logbook/dive[generate-id() = generate-id(key('DC',concat(@ComputerID, ':', @Computer))[1])]">
+          <divecomputerid deviceid="{@ComputerID}">
             <xsl:attribute name="model">
-              <xsl:value-of select="logbook/@program"/>
+              <xsl:value-of select="@Computer"/>
             </xsl:attribute>
             <xsl:attribute name="serial">
-              <xsl:value-of select="logbook/@serialNumber"/>
+              <xsl:value-of select="@ComputerID"/>
             </xsl:attribute>
           </divecomputerid>
+        </xsl:for-each>
       </settings>
       <dives>
         <xsl:apply-templates select="/logbook"/>
@@ -62,6 +76,9 @@
       <notes>
         <xsl:value-of select="notes"/>
         <xsl:value-of select="concat($lf, 'Weather: ', @Weather, $lf, 'Visibility: ', @Visibility)"/>
+        <xsl:if test="@Boat != '' and @Boat != ' '">
+          <xsl:value-of select="concat($lf, 'Boat: ', @Boat)"/>
+        </xsl:if>
       </notes>
 
       <cylinder>
@@ -111,7 +128,7 @@
         </xsl:if>
       </cylinder>
 
-      <xsl:if test="@Weight != ''">
+      <xsl:if test="@Weight != '' and @Weight != '0.0'">
         <weightsystem>
           <xsl:attribute name="weight">
             <xsl:call-template name="weightConvert">
@@ -133,10 +150,21 @@
         <xsl:value-of select="@DiveMaster"/>
       </divemaster>
 
-      <divecomputer deviceid="ffffffff">
+      <divecomputer deviceid="{@ComputerID}">
+
         <xsl:attribute name="model">
           <xsl:value-of select="@Computer"/>
         </xsl:attribute>
+
+        <extradata key="Sample Interval" value="{@SampleInterval}"/>
+
+        <xsl:if test="@AltitudeMode != ''">
+          <extradata key="Altitude Mode" value="{@AltitudeMode}"/>
+        </xsl:if>
+
+        <xsl:if test="@PersonalMode != ''">
+          <extradata key="Personal Mode" value="{@PersonalMode}"/>
+        </xsl:if>
 
       <depth>
         <xsl:attribute name="max">

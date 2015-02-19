@@ -722,6 +722,8 @@ Decimal degrees, e.g. 30.22496 , 30.821798</code></pre>
 <div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323.</p></div>
+<div class="paragraph"><p>Some keyboards don&#8217;t have the degree sign (°). It can be replaced by a d like
+that: N30d W20d.</p></div>
 <div class="paragraph"><p>Please note that GPS coordinates of a dive site are linked to the Location
 name - so adding coordinates to dives that do not have a location description
 will cause unexpected behaviour (Subsurface will think that all of these
@@ -1002,7 +1004,7 @@ the divecomputer allows this,
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 If, for some reason, the user wishes to import ALL dives from the dive computer,
-even though some may already be in the logbook, then check the check box labelled
+even though some may already be in the logbook, then check the check box labeled
 <em>Force download of all dives</em>.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1341,7 +1343,7 @@ message in a blue box at the top of the panel:</p></div>
 <em>Subsurface</em> and the information on
 cylinders and gases (entered here) determines the behaviour of the dive profile
 (top right-hand panel).</p></div>
-<div class="paragraph"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
+<div class="paragraph" id="cylinder_definitions"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
 like this:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -1736,12 +1738,12 @@ column headings. The top line of the white part of the data table contains the c
 headings found in the <em>CSV</em> data file. The blue row of cells immediately above these
 contains the names understood by <em>Subsurface</em>. The white area below the dropdown
 lists contains all the field names that <em>Subsurface</em> recognises. These names are
-in blue balloons and can be moved using a drag-and-frop action. For
+in blue balloons and can be moved using a drag-and-drop action. For
 instance, <em>Subsurface</em> expects the column heading for Dive number (" # ") to be "Dive # ". If
 the column heading that <em>Subsurface</em> expects is not in the blue cells, then drag the
 appropriate column heading from the upper area and drop it in the appropriate blue
 cell at the top of the table. To indicate the correct column for "Dive #", drag
-the ballooned item labelled "Dive # " and drop it in the blue
+the ballooned item labeled "Dive # " and drop it in the blue
 cell immediately above the white cell containing " # ". This is depicted in
 the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -1761,9 +1763,9 @@ The data from the <em>CSV</em> file are imported and shown in the <strong>Dive L
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content"><em>CSV</em> is an abbreviation for a data file format: <em>Comma-Separated Variables</em>. It is a
+<td class="content"><em>CSV</em> is an abbreviation for a data file format: <em>Comma-Separated Values</em>. It is a
 file format allowing someone to view or edit the information using a text editor such
-as Notebook (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
+as Notepad (Windows), gedit (Linux) or TextWrangler (OS/X). The two main advantages of
 the <em>CSV</em> format is that the data are easily editable as text without any proprietary software
 and ensuring all information is human-readable, not being obscured by any custom or
 proprietary attributes that proprietary software insert into files.
@@ -2372,13 +2374,59 @@ If, later, the external drive with the photos is connected again, the photos can
 <div class="sect2">
 <h3 id="_logging_special_types_of_dives">5.6. Logging special types of dives</h3>
 <div class="sect3">
-<h4 id="_sidemount_dives">5.6.1. Sidemount dives</h4>
-<div class="paragraph"><p><em>Subsurface</em> easily handles dives involving more than one cylinder. Sidemount dive logging involves
-three steps:</p></div>
+<h4 id="S_MulticylinderDives">5.6.1. Multicylinder dives</h4>
+<div class="paragraph"><p><em>Subsurface</em> easily handles dives involving more than one cylinder. Multicylinder diving usually happens
+(a) if a diver does not have enough gas for the complete dive in a single cylinder; (b) if the diver
+needs more than one gas mixture because of the depth or the decompression needs of the dive. For this reason
+multicylinder dives are often used by technical divers who dive deep or long. As far
+as <em>Subsurface</em> is concerned, there are only two types of information that need to be provided:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<strong>During the dive, recording cylinder switch events</strong>. Since sidemount diving normally involves two
+<strong>Describe the cylinders used during the dive</strong> This is performed in the <strong>Equipment tab</strong> of
+  the <strong>Dive Info</strong> panel, as <a href="#cylinder_definitions">described above</a>. Enter the cylinders one by one,
+  specifying the characteristics of the cylinder and the gas composition within each cylinder.
+</p>
+</li>
+<li>
+<p>
+<strong>Record the times at which switches from one cylinder to another was done:</strong> This is information
+  provided by some dive computers (provided the diver indicated these changes to the dive computer
+  by pressing specific buttons). If the dive computer does not provide the information, the diver has to
+  record these changes using a different method, e.g. writing it on a slate.
+</p>
+</li>
+<li>
+<p>
+<strong>Record the cylinder changes on the dive profile</strong>: If the latter option
+  was followed, the diver needs to indicate the gas change event by right-clicking at the appropriate point
+  in time on the <strong>Dive Profile</strong> panel and indicating the cylinder to which the change was made. After
+  right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
+  those defined during the first step, above (see image below). If the
+  <strong>tank bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
+  tank bar.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Having performed these tasks, <em>Subsurface</em> indicates the appropriate use of cylinders in the dive profile.
+Below is a multi-cylinder dive, starting off with EAN28, then changing cylinders to EAN50 after 26 minutes
+to perform decompression.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/multicylinder_dive.jpg" alt="FIGURE: Multicylinder profile" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sidemount_dives">5.6.2. Sidemount dives</h4>
+<div class="paragraph"><p>Sidemount diving is just another form of multicylinder diving, often with both or all cylinders having
+the same gas mixture. Although it is a popular configuration for cave divers, sidemount
+diving can be performed by recreational divers who have completed the appropriate training. Sidemount
+dive logging involves, exactly as with multicylinder dives, above, three steps:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>During the dive, record cylinder switch events</strong>. Since sidemount diving normally involves two
   cylinders with air or with the same gas mixture, <em>Subsurface</em> distinguishes among these different
   cylinders. In contrast, most dive computers that allow gas switching only distinguish among different
   <em>gases</em> used, not among different <em>cylinders</em> used. This means that when sidemount dives are downloaded
@@ -2406,7 +2454,7 @@ three steps:</p></div>
   profile with a cylinder symbol. If the <strong>Tank Bar</strong> is activated using the toolbar to the left of the
   profile, then the cylinder change is also indicated on the Tank Bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
-  for both cylinders are shown on the dive profile, as inthe image below.
+  for both cylinders are shown on the dive profile, as in the image below.
 </p>
 </li>
 </ul></div>
@@ -2415,10 +2463,52 @@ three steps:</p></div>
 <img src="images/sidemount1.jpg" alt="FIGURE: Sidemount profile" />
 </div>
 </div>
-<div class="paragraph"><p>This section gives an example of the versatility of <em>Subsurface</em> as a give logging tool.</p></div>
+<div class="paragraph"><p>This section gives an example of the versatility of <em>Subsurface</em> as a dive logging tool.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">5.6.2. Closed circuit rebreather (CCR) dives</h4>
+<h4 id="S_sSCR_dives">5.6.3. Semi-closed circuit rebreather (SCR) dives</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/halcyon_RB80.jpg" alt="Note" />
+</td>
+<td class="content">Passive semi-closed rebreathers (pSCR) comprise a technical advance in diving equipment that
+recirculates the breathing gas that a diver breathes, while removing carbon dioxide from
+the exhaled gas. While a small amount (typically a tenth) of the exhaled breathing gas is released into the water,
+a small amount of fresh gas is released from the back gas cylinder (typically containing nitrox).
+A diver, using a single cylinder of breathing gas can therefore dive for much longer periods than
+using a recreational open-circuit configuration. With pSCR equipment, a very small amount of breathing
+gas is released every time the breather inhales. With active SCR (aSCR) equipment, in contrast, a small amount of
+breathing gas is released continuously from the back cylinder.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>To log pSCR dives, no special procedures are required, just the normal steps outlined above:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Select pSCR in the <em>Dive Mode</em> dropdown list on the <strong>Dive Info</strong> panel.
+</p>
+</li>
+<li>
+<p>
+pSCR diving often involves gas changes, requiring an additional cylinder.
+  Define all the appropriate cylinders as described above
+  and indicate the cylinder/gas changes as described above in the section on <a href="#S_MulticylinderDives">multicylinder dives</a>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>If a pSCR <em>Dive Mode</em> has been selected, the dive ceiling for pSCR dives is adjusted for the oxygen
+drop across the mouthpiece which often requires longer decompression periods. Below is a dive profile
+of a pSCR dive using EAN36 on the back cylinder and oxygen for decompression. Note that this dive lasted
+over two hours.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pSCR_profile.jpg" alt="FIGURE: pSCR profile" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_CCR_dives">5.6.4. Closed circuit rebreather (CCR) dives</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2542,7 +2632,7 @@ a description of that event is given as the bottom line in the <a href="#S_InfoB
 pressures of the oxygen and diluent cylinders. The pressures of these two cylinders
 are shown as green lines overlapping the depth profile. In addition, start and
 end pressures for both oxygen and diluent cylinders are shown in the <em>Equipment Tab</em>.
-Below is a dive profile for a CCR dive, including an overaly
+Below is a dive profile for a CCR dive, including an overlay
 of setpoint and oxygen sensor data, as well as the cylinder pressure data. In this
 case there is good agreement from the readings of the two oxygen sensors.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2668,7 +2758,7 @@ cellspacing="0" cellpadding="4">
 </div>
 <div class="paragraph"><p>The profile also includes depth readings for the peaks and troughs in the graph.
 Thus, users should see the depth of the deepest point and other peaks. Mean depth
-is marked with a horizontal red line.</p></div>
+is plotted as a grey line, indicating mean dive depth up to a particular moment during the dive.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3001,11 +3091,11 @@ values are dependent on the composition of the breathing gas.  The EAD
 is the depth of a hypothetical air dive that has the same partial
 pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equalling the EAD. The END is the depth of a
+air dive to the depth equaling the EAD. The END is the depth of a
 hypothetical air dive that has the same sum of partial pressures of
 the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equalling the END.</td>
+air diving at a depth equaling the END.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of data.</p></div>
@@ -3402,7 +3492,7 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 </li>
 <li>
 <p>
-<em>DiveShare</em> is also a dive log repostory on the Internet focusing on the recreational
+<em>DiveShare</em> is also a dive log repository on the Internet focusing on the recreational
   dives. In order to upload dives one has to provide a used ID, so registration with
   <em>http://scubadiveshare.com</em> is required.
 </p>
@@ -3815,8 +3905,10 @@ Thresholds: <em>Subsurface</em> can display the nitrogen, oxygen and the helium 
 </li>
 <li>
 <p>
-<em>Show average depth</em>: Activating this checkbox causes <em>Subsurface</em> to draw a red line across
-   the dive profile, indicating the mean depth of the dive.
+<em>Show average depth</em>: Activating this checkbox causes <em>Subsurface</em> to draw a grey line across
+   the dive profile, indicating the mean depth of the dive up to a particular point in time during
+   that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+   ascent.
 </p>
 </li>
 </ul></div>
@@ -4064,7 +4156,7 @@ In the top left-hand area of the planning screen, ensure that the constant dive 
 </li>
 <li>
 <p>
-In the table labelled <em>Available Gases</em>, add the information of the cylinders to be used
+In the table labeled <em>Available Gases</em>, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <a href="#S_CylinderData">providing cylinder data for dive logs</a>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
@@ -4154,7 +4246,7 @@ of that table corresponds to one of the gas mixtures specified in the <em>Availa
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
 waypoints on the ascent to <em>Subsurface</em>. In most cases <em>Subsurface</em>
-computes additional way points in order to fulfil decompression requirements for that
+computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can be moved by selecting that waypoint and by using the arrow keys.
 The waypoints listed in the <em>Dive Planner Points</em> dialogue can be edited by hand in
 order to obtain a precise presentation of the dive plan. In fact, one can create the
@@ -4228,13 +4320,13 @@ The parameters of the pSCR diver can be set by selecting  <em>File &#8594;   Pre
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
-pO<sub>2</sub> drops below what is considered a save value, a warning apears in the <em>Dive plan
+pO<sub>2</sub> drops below what is considered a save value, a warning appears in the <em>Dive plan
 details</em>. A typical pSCR configuration is with a single cylinder and one or more bail-out
 cylinders. Therefore the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
 are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
 to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
-in the loop due to the oxygen drop accross the mouthpiece of the pSCR equipment.</p></div>
+in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
@@ -5002,7 +5094,7 @@ On the list of file names select the .CSV file that has been created above. An i
 </li>
 <li>
 <p>
-In the dropdown list on the middle right labeled '<em>Pre-configured imports</em>",
+In the dropdown list on the top left labeled '<em>Pre-configured imports</em>",
   select <em>APD Log Viewer</em>.
 </p>
 </li>
@@ -5220,7 +5312,7 @@ The dives are now exported to the file DM4.bak (or DM5.bak)
 </td>
 <td class="content">Atomic Logbook is a Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.
-The divelog is kept in a SQlite database at
+The divelog is kept in a SQLite database at
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
 be directly imported to Subsurface.</td>
 </tr></table>
@@ -5333,7 +5425,7 @@ Duration: the format should be minutes:seconds.
 </li>
 <li>
 <p>
-Unit system: only one unit system shold be used (i.e., no mixture between imperial and metric units)
+Unit system: only one unit system should be used (i.e., no mixture between imperial and metric units)
 </p>
 </li>
 <li>
@@ -5490,7 +5582,7 @@ you don&#8217;t want that to count as some kind of long dive”.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-04 07:44:40 PST
+Last updated 2015-02-17 08:49:01 PST
 </div>
 </div>
 </body>

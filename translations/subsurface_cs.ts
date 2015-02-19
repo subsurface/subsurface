@@ -46,7 +46,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -388,7 +388,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="796"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1963"/>
         <source>Last deco</source>
-        <translation>Poslední deco zastávka</translation>
+        <translation>Poslední zastavení</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="717"/>
@@ -488,7 +488,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="449"/>
         <source>Compass gain</source>
-        <translation>Zisk kompasu</translation>
+        <translation>Citlivost kompasu</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="64"/>
@@ -560,7 +560,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1819"/>
         <source>Alt GF can be selected underwater</source>
-        <translation type="unfinished"/>
+        <translation>Alt GF lze vybrat pod vodou</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="180"/>
@@ -588,19 +588,19 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="632"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2071"/>
         <source>GFLow</source>
-        <translation>GF nízký</translation>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="655"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2064"/>
         <source>GFHigh</source>
-        <translation>GF vysoký</translation>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="730"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1885"/>
         <source>Decotype</source>
-        <translation>Typ deco</translation>
+        <translation>Typ dekomprese</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="756"/>
@@ -628,13 +628,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="851"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1989"/>
         <source>Alt GFLow</source>
-        <translation>Alternativní GF nízký</translation>
+        <translation>Alternativní GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="858"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2015"/>
         <source>Alt GFHigh</source>
-        <translation>Alternativní GF vysoký</translation>
+        <translation>Alternativní GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="865"/>
@@ -774,7 +774,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1148"/>
         <source>Fixed setpoint</source>
-        <translation>Stálé nastavení bodu</translation>
+        <translation>Stálá nastavovací hodnota</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1153"/>
@@ -784,7 +784,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1161"/>
         <source>Setpoint fallback</source>
-        <translation>Záložní nastavení bodu</translation>
+        <translation>Záložní nastavovací hodnota</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1184"/>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
         <source>kg/ℓ</source>
-        <translation>kg/ℓ</translation>
+        <translation> kg/ℓ</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
@@ -1085,7 +1085,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
         <source>Work press.</source>
-        <translation>Provozní tlak.</translation>
+        <translation>Provozní tlak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
@@ -1095,7 +1095,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
         <source>End press.</source>
-        <translation>Konečný tlak.</translation>
+        <translation>Konečný tlak</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
@@ -1143,7 +1143,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="46"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="53"/>
@@ -1225,7 +1225,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1616"/>
         <source>Device ID</source>
-        <translation>Poznávací znamení zařízení</translation>
+        <translation>Označení zařízení</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1616"/>
@@ -1311,7 +1311,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1257"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation> m</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1257"/>
@@ -1341,7 +1341,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1266"/>
         <source>lbs</source>
-        <translation>Libra US</translation>
+        <translation>libra US</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1269"/>
@@ -1381,7 +1381,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1289"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
 </context>
 <context>
@@ -1639,7 +1639,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="428"/>
         <source>Theme</source>
-        <translation>Motiv</translation>
+        <translation>Vzhled</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="439"/>
@@ -1690,7 +1690,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="78"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
-        <translation>Vyvedení potápěčské lokality do HTML zobrazené na mapě světa.</translation>
+        <translation>Vyvedení potápěčského místa do HTML zobrazené na mapě světa.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="80"/>
@@ -1790,7 +1790,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="125"/>
         <source>Drag the tags above to each corresponding column below</source>
-        <translation type="unfinished"/>
+        <translation>Značky nahoře přetáhněte na odpovídající sloupce dole</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="576"/>
@@ -1845,7 +1845,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="580"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="582"/>
@@ -2013,7 +2013,7 @@
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="179"/>
         <source>mbar</source>
-        <translation>mbar</translation>
+        <translation> mbar</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="198"/>
@@ -2142,7 +2142,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="137"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Nastavovací hodnota</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
@@ -2215,7 +2215,7 @@
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="34"/>
         <source>User ID</source>
-        <translation>Poznávací znamení uživatele</translation>
+        <translation>Označení uživatele</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="48"/>
@@ -2225,7 +2225,7 @@
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="58"/>
         <source>Get user ID</source>
-        <translation>Získat poznávací znamení uživatele</translation>
+        <translation>Získat označení uživatele</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="67"/>
@@ -2254,7 +2254,7 @@
         <location filename="../qt-ui/models.cpp" line="1443"/>
         <location filename="../qt-ui/models.cpp" line="1489"/>
         <source>#</source>
-        <translation>Čís.</translation>
+        <translation>Číslo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1446"/>
@@ -2341,7 +2341,7 @@
         <location filename="../qt-ui/models.cpp" line="1482"/>
         <location filename="../qt-ui/models.cpp" line="1530"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1507"/>
@@ -2367,7 +2367,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="1507"/>
         <source>lbs</source>
-        <translation>Libra US</translation>
+        <translation>libra US</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1476"/>
@@ -2530,7 +2530,7 @@
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="101"/>
         <source>Vendor</source>
-        <translation>Výrobce</translation>
+        <translation>Dodavatel</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="14"/>
@@ -2694,7 +2694,7 @@
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1626"/>
         <source>Firmware update failed!</source>
-        <translation>Obnova firmware selhala!</translation>
+        <translation>Aktualizace firmware selhala!</translation>
     </message>
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1629"/>
@@ -2715,7 +2715,7 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="549"/>
         <source>Location: </source>
-        <translation>Poloha: </translation>
+        <translation>Místo: </translation>
     </message>
 </context>
 <context>
@@ -2723,7 +2723,7 @@
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="283"/>
         <source>No location set</source>
-        <translation>Nestanovena žádná poloha</translation>
+        <translation>Nestanoveno žádné místo</translation>
     </message>
 </context>
 <context>
@@ -2732,7 +2732,7 @@
         <location filename="../qt-ui/maintab.ui" line="160"/>
         <location filename="../qt-ui/maintab.cpp" line="498"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="65"/>
@@ -3105,7 +3105,7 @@ ze vzduchu a následujících plynů:</translation>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="641"/>
         <source>Toggle DC reported ceiling</source>
-        <translation>Zapnout/Vypnout potápěcí počítač pro  horní mez (hranici vynoření)</translation>
+        <translation>Zapnout/Vypnout potápěcí počítač pro horní mez (hranici vynoření)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="653"/>
@@ -3183,7 +3183,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="226"/>
         <source>&amp;Log</source>
-        <translation>Záz&amp;nam</translation>
+        <translation>&amp;Záznam</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="242"/>
@@ -3198,7 +3198,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="267"/>
         <source>&amp;Import</source>
-        <translation>&amp;Zavést</translation>
+        <translation>Za&amp;vedení</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="282"/>
@@ -3705,12 +3705,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
         <source>Firmware upgrade notice</source>
-        <translation type="unfinished"/>
+        <translation>Upozornění na aktualizaci firmware</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>Save the downloaded firmware as</source>
-        <translation type="unfinished"/>
+        <translation>Uložit stažený firmware jako</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
@@ -3738,7 +3738,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="480"/>
         <source>ft/min</source>
-        <translation>st/min</translation>
+        <translation>stop/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="481"/>
@@ -3758,7 +3758,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="485"/>
         <source>m/min</source>
-        <translation>m/min</translation>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="486"/>
@@ -3785,7 +3785,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/diveplanner.cpp" line="500"/>
         <location filename="../qt-ui/diveplanner.cpp" line="501"/>
         <source>ℓ/min</source>
-        <translation>ℓ/min</translation>
+        <translation> ℓ/min</translation>
     </message>
 </context>
 <context>
@@ -3919,7 +3919,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="483"/>
         <source>cu ft</source>
-        <translation>cu st</translation>
+        <translation>cu stopa</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="500"/>
@@ -3939,7 +3939,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="795"/>
         <source>CCR: show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>CCR: Ukazovat nastavovací hodnoty, když se zobrazuje pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="802"/>
@@ -3949,12 +3949,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="809"/>
         <source>Default CCR set-point for dive planning</source>
-        <translation type="unfinished"/>
+        <translation>Výchozí nastavovací hodnota CCR pro plánování potápění</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="832"/>
         <source>pSCR O₂ metabolism rate</source>
-        <translation type="unfinished"/>
+        <translation>pSCR rychlost látkové výměny O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="839"/>
@@ -3964,7 +3964,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="846"/>
         <source>ℓ/min</source>
-        <translation>ℓ/min</translation>
+        <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="859"/>
@@ -4059,12 +4059,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="306"/>
         <source>Default user ID</source>
-        <translation>Výchozí poznávací znamení uživatele</translation>
+        <translation>Výchozí označení uživatele</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
         <source>Save user ID locally?</source>
-        <translation>Uložit poznávací znamení uživatele místně?</translation>
+        <translation>Uložit označení uživatele místně?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="466"/>
@@ -4084,7 +4084,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="537"/>
         <source>lbs</source>
-        <translation>Libra US</translation>
+        <translation>libra US</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="552"/>
@@ -4109,7 +4109,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="788"/>
         <source>GFLow at max depth</source>
-        <translation>Použít GF nízký při největší hloubce</translation>
+        <translation>Použít GFLow při největší hloubce</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="748"/>
@@ -4164,12 +4164,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="754"/>
         <source>GFLow</source>
-        <translation>GF nízký</translation>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="771"/>
         <source>GFHigh</source>
-        <translation>GF vysoký</translation>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="38"/>
@@ -4285,7 +4285,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="26"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/printlayout.cpp" line="63"/>
@@ -4583,7 +4583,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/models.cpp" line="526"/>
         <source>lbs</source>
-        <translation>Libra US</translation>
+        <translation>libra US</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="550"/>
@@ -4593,7 +4593,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/models.cpp" line="551"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation> m</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="574"/>
@@ -4613,7 +4613,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/models.cpp" line="600"/>
         <source>cuft</source>
-        <translation>cu st</translation>
+        <translation>cu stopa</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="513"/>
@@ -4886,7 +4886,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="77"/>
         <source>The profile picture will be posted in this album (required)</source>
-        <translation type="unfinished"/>
+        <translation>Obrázek profilu bude zobrazen v tomto albu (vyžadováno)</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="84"/>
@@ -4906,7 +4906,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="105"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="112"/>
@@ -4992,12 +4992,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="439"/>
         <source>Invalid user identifier!</source>
-        <translation>Neplatné poznávací znamení uživatele!</translation>
+        <translation>Neplatné označení uživatele!</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="312"/>
         <source>Enter User ID and click Download</source>
-        <translation>Zadejte poznávací znamení uživatele a klepněte na Stáhnout</translation>
+        <translation>Zadejte označení uživatele a klepněte na Stáhnout</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="442"/>
@@ -5361,12 +5361,12 @@ Jazyk: %1</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="68"/>
         <source>User ID</source>
-        <translation>Poznávací znamení uživatele</translation>
+        <translation>Označení uživatele</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="85"/>
         <source>Save user ID locally?</source>
-        <translation>Uložit poznávací znamení uživatele místně?</translation>
+        <translation>Uložit označení uživatele místně?</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="92"/>
@@ -5439,7 +5439,7 @@ Jazyk: %1</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1850"/>
         <source>#</source>
-        <translation>Čís.</translation>
+        <translation>Číslo</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1853"/>
@@ -5531,7 +5531,7 @@ Průměr</translation>
     <message>
         <location filename="../dive.c" line="242"/>
         <source>cuft</source>
-        <translation>cu st</translation>
+        <translation>cu stopa</translation>
     </message>
     <message>
         <location filename="../dive.c" line="279"/>
@@ -5539,7 +5539,7 @@ Průměr</translation>
         <location filename="../qt-gui.cpp" line="237"/>
         <location filename="../worldmap-save.c" line="44"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation> m</translation>
     </message>
     <message>
         <location filename="../dive.c" line="284"/>
@@ -5551,7 +5551,7 @@ Průměr</translation>
     <message>
         <location filename="../dive.c" line="307"/>
         <source>m/min</source>
-        <translation>m/min</translation>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="309"/>
@@ -5561,7 +5561,7 @@ Průměr</translation>
     <message>
         <location filename="../dive.c" line="314"/>
         <source>ft/min</source>
-        <translation>st/min</translation>
+        <translation>stop/min</translation>
     </message>
     <message>
         <location filename="../dive.c" line="316"/>
@@ -5573,7 +5573,7 @@ Průměr</translation>
         <location filename="../qt-gui.cpp" line="248"/>
         <location filename="../qt-gui.cpp" line="258"/>
         <source>lbs</source>
-        <translation>Libra US</translation>
+        <translation>libra US</translation>
     </message>
     <message>
         <location filename="../dive.c" line="339"/>
@@ -5922,7 +5922,7 @@ Průměr</translation>
     <message>
         <location filename="../libdivecomputer.c" line="721"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation type="unfinished"/>
+        <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="785"/>
@@ -6076,7 +6076,7 @@ Průměr</translation>
     <message>
         <location filename="../planner.c" line="548"/>
         <source>based on GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>založeno na GFlow = %d a GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="551"/>
@@ -6132,7 +6132,7 @@ Průměr</translation>
         <location filename="../planner.c" line="645"/>
         <location filename="../planner.c" line="649"/>
         <source>%3dmin</source>
-        <translation type="unfinished"/>
+        <translation>%3dmin</translation>
     </message>
     <message>
         <location filename="../planner.c" line="658"/>
@@ -6167,7 +6167,7 @@ Průměr</translation>
     <message>
         <location filename="../planner.c" line="712"/>
         <source>Gas consumption:</source>
-        <translation type="unfinished"/>
+        <translation>Spotreba plynu:</translation>
     </message>
     <message>
         <location filename="../planner.c" line="542"/>
@@ -6326,21 +6326,21 @@ EADD: %d%s
         <location filename="../profile.c" line="1171"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation>Deco: %umin @ %.0f%s
+        <translation>Dekomprese: %umin @ %.0f%s
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1174"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
-        <translation>Deco: neznáma @ %.0f%s
+        <translation>Dekomprese: Neznámý čas @ %.0f%s
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1178"/>
         <source>In deco
 </source>
-        <translation>In deco
+        <translation>Dekomprese
 </translation>
     </message>
     <message>
@@ -6361,14 +6361,14 @@ EADD: %d%s
         <location filename="../profile.c" line="1186"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
-        <translation>Deco: %umin @ %.0f%s (calc)
+        <translation>Dekomprese: %umin @ %.0f%s (spočítáno)
 </translation>
     </message>
     <message>
         <location filename="../profile.c" line="1194"/>
         <source>In deco (calc)
 </source>
-        <translation>V deco (calc)
+        <translation>Dekomprese (spočítáno)
 </translation>
     </message>
     <message>
@@ -6567,7 +6567,7 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="26"/>
         <source>deco</source>
-        <translation>deco</translation>
+        <translation>dekomprese</translation>
     </message>
     <message>
         <location filename="../dive.c" line="30"/>
@@ -6588,7 +6588,7 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="237"/>
         <source>ℓ</source>
-        <translation>ℓ</translation>
+        <translation> ℓ</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="214"/>
@@ -6960,7 +6960,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="455"/>
         <source>Location</source>
-        <translation>Poloha</translation>
+        <translation>Místo</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="456"/>
@@ -7155,7 +7155,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="495"/>
         <source>Dive No.</source>
-        <translation>Potápění čís.</translation>
+        <translation>Číslo potápění</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="496"/>
@@ -7246,7 +7246,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../worldmap-save.c" line="50"/>
         <source>Location:</source>
-        <translation>Poloha:</translation>
+        <translation>Místo:</translation>
     </message>
     <message>
         <location filename="../worldmap-save.c" line="54"/>
@@ -7288,7 +7288,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="56"/>
         <source>Rates</source>
-        <translation type="unfinished"/>
+        <translation>Rychlosti</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="77"/>
@@ -7307,7 +7307,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../qt-ui/plannerSettings.ui" line="156"/>
         <location filename="../qt-ui/plannerSettings.ui" line="202"/>
         <source>m/min</source>
-        <translation>m/min</translation>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="169"/>
@@ -7327,7 +7327,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="281"/>
         <source>GF low</source>
-        <translation>GF nízký</translation>
+        <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
@@ -7338,7 +7338,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
         <source>GF high</source>
-        <translation>GF vysoký</translation>
+        <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="335"/>
@@ -7353,7 +7353,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="295"/>
         <source>Plan backgas breaks</source>
-        <translation>Plánovat přestávky na backgas</translation>
+        <translation>Plánovat vzduchové přestávky</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="355"/>
@@ -7384,7 +7384,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../qt-ui/plannerSettings.ui" line="449"/>
         <location filename="../qt-ui/plannerSettings.ui" line="462"/>
         <source>ℓ/min</source>
-        <translation>ℓ/min</translation>
+        <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="478"/>
@@ -7404,7 +7404,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="531"/>
         <source>Display transitions in deco</source>
-        <translation>Zobrazit přechody mezi deco zastávkami</translation>
+        <translation>Zobrazit přechody mezi zastaveními dekomprese</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="538"/>

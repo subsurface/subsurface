@@ -14,6 +14,9 @@
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>
 
+/* to check XSLT version number */
+#include <libxslt/xsltconfig.h>
+
 /* Crazy windows sh*t */
 #ifndef O_BINARY
 #define O_BINARY 0
@@ -869,7 +872,9 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	/* Increase the limits for recursion and variables on XSLT
 	 * parsing */
 	xsltMaxDepth = 30000;
+#if LIBXSLT_VERSION > 10126
 	xsltMaxVars = 150000;
+#endif
 
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);

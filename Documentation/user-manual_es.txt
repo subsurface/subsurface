@@ -1678,7 +1678,7 @@ configuración popular entre los espeleo buceadores, el buceo en lateral se
 puede efectuar por buceadores recreativos que hayan completado el entrenamiento
 adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:
 
-- *Durante el buceo, se registran los eventos de cambio de botella". Ya que bucear
+- *Durante el buceo, registrar los eventos de cambio de botella". Ya que bucear
   en lateral supone, normalmente, usar 2 botellas con aire o con la misma mezcla,
   _Subsurface_ distingue entre estas botellas. En comparación, la mayoría de
   ordenadores de buceo que contemplan cambios de gas solo distinguen entre
@@ -1711,42 +1711,6 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
 Esta sección es un ejemplo de la versatilidad de _Subsurface_ como herramienta
 de registro de inmersiones.
-
-[[S_sSCR_dives]]
-==== Inmersiones con rebreather de circuito semi cerrado (SCR)
-
-[icon="images/halcyon_RB80.jpg"]
-[NOTE]
-Los rebreathers semi cerrados pasivos (pSCR) suponen un avance técnico en el
-equipo de buceo que recircula el gas que el buzo respira, y elimina el dióxido
-de carbono del gas exhalado. Al tiempo que una pequeña cantidad del gas exhalado
-(habitualmente una décima parte) se libera en el agua, una  pequeña cantidad de
-gas de la botella se introduce en el circuito (habitualmente nitrox). Un buzo
-usando una sola botella de gas puede, pues, bucear durante periodos de tiempo
-mucho mayores que utilizando una configuración recreativa de circuito abierto.
-Con los pSCR una cantidad muy pequeña de gas se libera cada vez que el buzo
-inhala. Con los equipos SCR activos (aSCR), en cambio, una pequeña cantidad del
-gas respirado se libera continuamente.
-
-Para registrar inmersiones con pSCR, no se requieren procedimientos especiales,
-solo los pasos normales descritos con anterioridad:
-
-- Seleccionar el modo pSCR en el desplegable _Modo de inmersión_ en el panel
-  *Información*.
-
-- El buceo con pSCR, a menudo, requiere cambios de gas, necesitando una botella
-  adicional. Hay, pues, que describir todas las botellas como se indicó con
-  anterioridad e indicar los cambios de botella/gas como se explicó en la
-  sección xref:S_MulticylinderDives[Inmersiones multi botella].
-
-Si se ha seleccionado pSCR en el _Modo de inmersión_, el techo de buceo para
-inmersiones pSCR se ajusta para la caída de oxígeno a través de la boquilla
-que, a menudo, requiere mayores períodos de descompresión. A continuación un
-perfil de inmersión de un buceo con pSCR usando EAN36 como gas de fondo y
-oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.
-
-image::images/pSCR_profile.jpg["FIGURA: Perfil pSCR",align="center"]
-
 
 [[S_CCR_dives]]
 ==== Inmersiones con rebreather de circuito cerrado (CCR)
@@ -1860,9 +1824,9 @@ Puede incluir información de ajustes o metadatos sobre la inmersión.
 
 == Obtener más información sobre inmersiones guardadas en el diario
 
-=== La pestaña Información (para inmersiones individuales)
+=== La pestaña Información de la inmersión (para inmersiones individuales)
 
-La pestaña Información proporciona alguna información resumida
+La pestaña Información de la inmersión proporciona alguna información resumida
 sobre un buceo en particular que ha sido seleccionado en la *Lista de
 inmersiones*. La información útil incluye el intervalo en superficie antes de la
 inmersión, las profundidades máxima y media, el volumen de gas consumido, el
@@ -1926,8 +1890,8 @@ recomendadas. Esta información se proporciona utilizando diferentes colores:
 
 El perfil también incluye lecturas de profundidad para los picos y valles del
 gráfico. De esta forma, se debe poder visualizar la profundidad del punto más
-hondo y otros picos. La profundidad media se muestra como una línea gris que
-indica la profundidad media en cada momento de la inmersión.
+hondo y otros picos. La profundidad media se muestra como una línea roja
+horizontal.
 
 [icon="images/icons/scale.jpg"]
 [NOTE]
@@ -2418,8 +2382,8 @@ grabadas por el ordenador y apareciendo como buceos distintos en el panel *Lista
 de inmersiones*. Se pueden unir estos buceos en uno solo seleccionando las
 correspondientes inmersiones y haciendo clic-derecho para mostrar el menú.
 Entonces se selecciona *Mezclar inmersiones seleccionadas*. Puede que sea
-necesario editar la información de la inmersión en el panel *Notas* para
-reflejar situaciones o condiciones que afecten al buceo
+necesario editar la información de la inmersión en el panel *Notas de la
+inmersión* para reflejar situaciones o condiciones que afecten al buceo
 resultante de la fusión. La figura a continuación muestra el perfil de dos
 inmersiones que fueron unidas:
 
@@ -2468,59 +2432,7 @@ en las que aparezcan las etiquetas "cueva" _O_ "barco", solas o conjuntamente.
 [[S_ExportLog]]
 == Exportar el registro de inmersiones o parte del mismo
 
-Hay dos posibilidades de exportar información de buceo desde _Subsurface_:
-
-- Exportar información de buceo a _Facebook_
-
-- xref:S_Export_other[Exportar información de buceo a otros destinos o formatos]
-
-[[S_facebook]]
-=== Exportar información de buceo a _Facebook_
-
-La exportación de inmersiones a _Facebook_ se maneja de forma diferente a otros
-tipos de exportación. Esto es debido a que exportar a _Facebook_ requiere una
-conexión a esta red social y necesita un usuario de _Facebook_ y su password.
-Si, desde el menú principal, seleccionamos _Archivo -> Preferencias ->
-Facebook_, se nos presentará una pantalla de acceso (ver imagen *A* de la
-izquierda a continuación). Introducimos nuestro usuario y password de
-_Facebook_. Una vez que nos hemos conectado a _Facebook_, se nos presenta el
-panel de la imagen *B* a continuación. Este panel tiene un botón que habrá que
-seleccionar para cerrar la conexión a _Facebook_.
-
-image::images/facebook1_f20.jpg["Figure: Acceso a Facebook",align="center"]
-
-Tras haber establecido una conexión con _Facebook_, transferir un perfil de
-inmersión a nuestro perfil de _Facebook_ es sencillo. Un icono de _Facebook_
-aparece en  el panel *Notas* de _Subsurface_ (ver imagen *A* a
-continuación). Asegúrate de que la inmersión que quieres transferir al historial
-es la que se muestra en el panel *Perfil de la inmersión*. Selecciona el icono
-de _Facebook_ y se mostrará un icono que determinará la cantidad de información
-transferida junto al perfil (ver imagen *B*, a continuación). Se necesita
-proporcionar el nombre de un álbum de _Facebook_ para poder enviar el perfil de
-inmersión. Las casillas seleccionables de la izquierda nos permiten seleccionar
-la información que vamos a enviar. Esta información se muestra en la ventana de
-texto de la derecha (ver imagen *B* a continuación). El mensaje que se va a
-enviar se puede editar directamente en esta ventana de texto. Tras haber elegido
-la información y verificado lo que se va a subir, se selecciona el botón _OK_
-lo que inicia la transferencia a _Facebook_. Unos momentos después aparecerá
-un mensaje indicando una transferencia correcta.
-
-El álbum creado y el post al historial se marcarán como privados. Para que
-los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
-normal a _Facebook_ desde un navegador o desde la app de _Facebook_. Aunque
-esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
-solución para evitar subidas no deseadas en el historial público.
-
-image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
-
-Si se considera necesario, cierra la conexión a _Facebook_, bien cerrando
-_Subsurface_ o bien seleccionando _Archivo -> Preferencias -> Facebook_ desde
-el menú principal, clicando el botón correspondiente en el panel _Facebook_.
-
-[[S_Export_other]]
-=== Exportar información de buceo a otros destinos o formatos
-Para exportar a otros destinos,
-se llega a la función de exportación seleccionando _Archivo -> Exportar_ lo que
+Se llega a la función de exportación seleccionando _Archivo -> Exportar_ lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
 guardar TODAS las inmersiones, o guardar solo las inmersiones seleccionadas en
 el panel *Lista de Inmersiones* de _Subsurface_. Marca la casilla seleccionable
@@ -2763,7 +2675,7 @@ image::images/Pref1_f20.jpg["FIGURA: Pantalla de Predeterminados en Preferencias
     inmersiones se muestran en la lista.
 
 ** *Botella por defecto*: Se puede especificar una botella por defecto de las
-    que aparecen listadas en la pestaña *Equipo* del panel *Notas*.
+    que aparecen listadas en la pestaña *Equipo* del panel *Notas de la inmersión*.
     Es muy cómodo si se bucea habitualmente con el mismo tipo de botella, asigna a
     cada nueva inmersión una botella del tipo aquí definido.
 
@@ -2833,9 +2745,8 @@ Este panel permite dos tipos de selecciones:
    aunque siguen estando guardadas.
 
 ** _Mostrar la profundidad media_: Activar esta casilla hace que _Subsurface_
-   trace una línea gris a través del perfil, indicando la profundidad media del
-   buceo en cada momento de la inmersión. Normalmente es una línea con forma de
-   "u" que indicará la profundidad media mayor justo antes de iniciar el ascenso.
+   trace una línea roja a través del perfil, indicando la profundidad media del
+   buceo.
 
 * *Varios*:
 
@@ -2915,19 +2826,6 @@ el servidor proxy utiliza autenticación también han de indicarse el usuario y 
 password para que _Subsurface_ pueda pasar automáticamente a través del proxy
 para acceder a internet.
 
-=== Acceso a Facebook
-Este panel nos permite acceder a una cuenta de _Facebook_ para poder enviar
-información desde _Subsurface_.
-
-image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
-
-Si se proporciona un usuario y una clave validos, se crea una conexión a
-_Facebook_. La conexión se cierra cuando al cerrar _Subsurface_. La casilla
-seleccionable "No cerrar sesión con Subsurface" de la pantalla de acceso no
-tiene ningún efecto, en estos momentos.
-Ver la sección xref:S_facebook[Exportar perfiles de inmersión a Facebook]
-para más información.
-
 [[S_DivePlanner]]
 == El Planificador de _Subsurface_
 La planificación de inmersiones es una característica avanzada de _Subsurface_
@@ -2963,7 +2861,7 @@ Al igual que el diario de _Subsurface_, la pantalla del planificador se divide
 en varias secciones (ver imagen a continuación). Los parámetros de ajuste de una
 inmersión se introducen en las diversas secciones a la izquierda de la pantalla.
 El ajuste se divide en varias secciones: Gases disponibles, Ritmos, Planificar,
-Opciones de gases y Notas.
+Opciones de gases y Notas de inmersión.
 
 Arriba a la derecha hay un *panel de diseño* verde sobre el cual puede
 manipularse directamente el perfil de inmersión arrastrando y haciendo clic como
@@ -3111,7 +3009,7 @@ guardado aparecerá en el panel *Lista de Inmersiones*.
 En la parte inferior derecha del planificador, bajo el encabezamiento _Detalles
 del plan de buceo_, se proporcionan los detalles exactos del plan de inmersión.
 Estos detalles pueden modificarse seleccionando cualquiera de las opciones bajo
-el encabezamiento _Notas_ del planificador, justo a la izquierda
+el encabezamiento _Notas de la inmersión_ del planificador, justo a la izquierda
 del anterior. Si se solicita un _Plan de buceo detallado_, se obtendrá un plan
 detallado al nivel de oraciones. Si cualquiera de los límites especificados se
 sobrepasa, se obtendrá un mensaje de aviso bajo la información del plan.
@@ -3214,7 +3112,7 @@ textos.
 
 Los planes de inmersión tienen muchas características en común con los registros
 de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
-los calculos de gas quedan almacenados en la pestaña *Notas*.
+los calculos de gas quedan almacenados en la pestaña *Notas de la inmersión*.
 Mientras se está diseñando un plan, se puede imprimir utilizando el botón
 _Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
 panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
@@ -3285,7 +3183,7 @@ de este manual que describen las operaciones con más detalle.
 - <<S_ViewPanels,_Lista_de_inmersiones_>> - Se visualiza solo el panel Lista de
   inmersiones.
 - <<S_ViewPanels,_Perfil_>> - Se visualiza solo el panel Perfil de inmersión.
-- <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas.
+- <<S_ViewPanels,_Info_>> - Se visualiza solo el panel Notas de la inmersión.
 - <<S_ViewPanels,_Globo_>> - Se presenta solo el panel Mapamundi.
 - _Estadísticas anuales_ - Muestra estadísticas anuales resumidas sobre las
   inmersiones efectuadas en este año y los pasados.
