@@ -1666,7 +1666,40 @@ needs of the dive. For this reason multicylinder dives are often used by
 technical divers who dive deep or long. As far as _Subsurface_ is concerned,
 there are only two types of information that need to be provided:
 
-- *During the dive, recording cylinder switch events*. Since sidemount diving normally involves two
+- *Describe the cylinders used during the dive* This is performed in the *Equipment tab* of
+  the *Info* panel, as xref:cylinder_definitions[described above]. Enter the cylinders one by one,
+  specifying the characteristics of the cylinder and the gas composition within each cylinder.
+
+- *Record the times at which switches from one cylinder to another was done:* This is information
+  provided by some dive computers (provided the diver indicated these changes to the dive computer
+  by pressing specific buttons). If the dive computer does not provide the information, the diver has to
+  record these changes using a different method, e.g. writing it on a slate.
+
+- *Record the cylinder changes on the dive profile*: If the latter option
+  was followed, the diver needs to indicate the gas change event by right-clicking at the appropriate point
+  in time on the *Dive Profile* panel and indicating the cylinder to which the change was made. After
+  right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
+  those defined during the first step, above (see image below). If the
+  *tank bar* button in the toolbar has been activated, the cylinder switches are also indicated in the
+  tank bar.
+
+Having performed these tasks, _Subsurface_ indicates the appropriate use of
+cylinders in the dive profile.  Below is a multi-cylinder dive, starting off
+with EAN28, then changing cylinders to EAN50 after 26 minutes to perform
+decompression.
+
+image::images/multicylinder_dive.jpg["FIGURE: Multicylinder profile", align="center"]
+
+==== Sidemount dives
+
+Sidemount diving is just another form of multicylinder diving, often with
+both or all cylinders having the same gas mixture. Although it is a popular
+configuration for cave divers, sidemount diving can be performed by
+recreational divers who have completed the appropriate training. Sidemount
+dive logging involves, exactly as with multicylinder dives, above, three
+steps:
+
+- *During the dive, record cylinder switch events*. Since sidemount diving normally involves two
   cylinders with air or with the same gas mixture, _Subsurface_ distinguishes among these different
   cylinders. In contrast, most dive computers that allow gas switching only distinguish among different
   _gases_ used, not among different _cylinders_ used. This means that when sidemount dives are downloaded
@@ -1692,6 +1725,44 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile", align="center"]
 
 This section gives an example of the versatility of _Subsurface_ as a dive
 logging tool.
+
+
+[[S_sSCR_dives]]
+==== Semi-closed circuit rebreather (SCR) dives
+
+[icon="images/halcyon_RB80.jpg"]
+[NOTE]
+Passive semi-closed rebreathers (pSCR) comprise a technical advance in
+diving equipment that recirculates the breathing gas that a diver breathes,
+while removing carbon dioxide from the exhaled gas. While a small amount
+(typically a tenth) of the exhaled breathing gas is released into the water,
+a small amount of fresh gas is released from the back gas cylinder
+(typically containing nitrox).  A diver, using a single cylinder of
+breathing gas can therefore dive for much longer periods than using a
+recreational open-circuit configuration. With pSCR equipment, a very small
+amount of breathing gas is released every time the breather inhales. With
+active SCR (aSCR) equipment, in contrast, a small amount of breathing gas is
+released continuously from the back cylinder.
+
+To log pSCR dives, no special procedures are required, just the normal steps
+outlined above:
+
+- Select pSCR in the _Dive Mode_ dropdown list on the *Info* panel.
+
+- pSCR diving often involves gas changes, requiring an additional cylinder.
+  Define all the appropriate cylinders as described above and indicate the
+  cylinder/gas changes as described above in the section on
+  xref:S_MulticylinderDives[multicylinder dives].
+
+If a pSCR _Dive Mode_ has been selected, the dive ceiling for pSCR dives is
+adjusted for the oxygen drop across the mouthpiece which often requires
+longer decompression periods. Below is a dive profile of a pSCR dive using
+EAN36 on the back cylinder and oxygen for decompression. Note that this dive
+lasted over two hours.
+
+image::images/pSCR_profile.jpg["FIGURE: pSCR profile", align="center"]
+
+
 
 [[S_CCR_dives]]
 ==== Closed circuit rebreather (CCR) dives
