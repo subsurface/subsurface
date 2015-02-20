@@ -2281,7 +2281,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	}
 
 	if (data[14])
-		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
+		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) / 100);
 
 	interval = data[16] ? atoi(data[16]) : 0;
 	sampleBlob = (unsigned const char *)data[24];
