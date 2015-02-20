@@ -2087,6 +2087,7 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 	if (data[3])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atoi(data[3]) * 10;
 	cylinder_end();
+	return 0;
 }
 
 
