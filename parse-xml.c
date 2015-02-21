@@ -2267,12 +2267,13 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	 */
 	settings_start();
 	dc_settings_start();
-	if (data[4])
+	if (data[4]) {
 		utf8_string(data[4], &cur_settings.dc.serial_nr);
+		cur_settings.dc.deviceid = atoi(data[4]);
+	}
 	if (data[5])
 		utf8_string(data[5], &cur_settings.dc.model);
 
-	cur_settings.dc.deviceid = 0xffffffff;
 	dc_settings_end();
 	settings_end();
 
@@ -2283,9 +2284,11 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	if (data[9])
 		cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
-	/*
-	 * TODO: handle multiple cylinders
-	 */
+	if (data[4]) {
+		cur_dive->dc.deviceid = atoi(data[4]);
+	}
+	if (data[5])
+		utf8_string(data[5], &cur_dive->dc.model);
 
 	snprintf(get_events, sizeof(get_events) - 1, get_cylinders_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, 0, &err);
@@ -2404,7 +2407,7 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 
 	/* StartTime is converted from Suunto's nano seconds to standard
 	 * time. We also need epoch, not seconds since year 1. */
-	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure,SampleBlob FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
+	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,coalesce(SourceSerialNumber,SerialNumber),Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure,SampleBlob FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, handle, &err);
 
