@@ -2090,6 +2090,19 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 	return 0;
 }
 
+extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
+{
+	event_start();
+	if (data[0])
+		cur_event.time.seconds = atoi(data[0]);
+	if (data[1]) {
+		strcpy(cur_event.name, "gaschange");
+		cur_event.value = atof(data[1]);
+	}
+	event_end();
+
+	return 0;
+}
 
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
@@ -2234,7 +2247,8 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	char get_events_template[] = "select * from Mark where DiveId = %d";
 	char get_tags_template[] = "select Text from DiveTag where DiveId = %d";
 	char get_cylinders_template[] = "select * from DiveMixture where DiveId = %d";
-	char get_events[64];
+	char get_gaschange_template[] = "select GasChangeTime,Oxygen,Helium from DiveGasChange join DiveMixture on DiveGasChange.DiveMixtureId=DiveMixture.DiveMixtureId where DiveId = %d";
+	char get_events[512];
 
 	dive_start();
 	cur_dive->number = atoi(data[0]);
@@ -2331,6 +2345,13 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 				cur_sample->cylinderpressure.mbar = pressureBlob[i];
 			sample_end();
 		}
+	}
+
+	snprintf(get_events, sizeof(get_events) - 1, get_gaschange_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_events, &dm5_gaschange, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm5_gaschange failed.\n"));
+		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
