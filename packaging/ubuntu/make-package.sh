@@ -77,16 +77,22 @@ dch -v $VERSION-$rev~trusty -D trusty -M -m "next daily build"
 mv ~/src/debian.changelog ~/src/debian.changelog.previous
 cp debian/changelog ~/src/debian.changelog
 
-debuild -S 
+debuild -S
 
-# and now for utopic (precise can't build Qt5 based packages)
+# and now for utopic
 prev=trusty
 rel=utopic
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
-# and now for precise
+# and now for vivid
 prev=utopic
+rel=vivid
+sed -i "s/${prev}/${rel}/g" debian/changelog
+debuild -S
+
+# and now for precise (precise can't build Qt5 based packages)
+prev=vivid
 rel=precise
 sed -i "s/${prev}/${rel}/g" debian/changelog
 cp debian/12.04.control debian/control
