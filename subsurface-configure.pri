@@ -141,7 +141,11 @@ isEmpty(LIBGIT2DEVEL) {
 		setRpath: QMAKE_RPATHDIR += $$LIBGIT2DEVEL/build
 		LIBS += -L$$LIBGIT2DEVEL/build -lgit2 -lz -lcrypto
 	} else {
-		LIBS += $$LIBGIT2DEVEL/build/libgit2.a -Wl,-Bstatic -lz -lssl -lcrypto -Wl,-Bdynamic -ldl
+		contains(LIBGIT2STATIC, "full") {
+			LIBS += $$LIBGIT2DEVEL/build/libgit2.a -Wl,-Bstatic -lz -lssl -lcrypto -Wl,-Bdynamic -ldl
+		} else {
+			LIBS += $$LIBGIT2DEVEL/build/libgit2.a -lz -lssl -lcrypto
+		}
 	}
 }
 
