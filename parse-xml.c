@@ -2746,7 +2746,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive";
+	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";
 
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, handle, &err);
 
