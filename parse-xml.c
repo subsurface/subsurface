@@ -2665,12 +2665,19 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	 */
 	settings_start();
 	dc_settings_start();
-	if (data[9])
+	if (data[9]) {
 		utf8_string(data[9], &cur_settings.dc.serial_nr);
+		cur_settings.dc.deviceid = atoi(data[9]);
+		cur_settings.dc.model = strdup("Cobalt import");
+	}
 
-	cur_settings.dc.deviceid = 0xffffffff;
 	dc_settings_end();
 	settings_end();
+
+	if (data[9]) {
+		cur_dive->dc.deviceid = atoi(data[9]);
+		cur_dive->dc.model = strdup("Cobalt import");
+	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, 0, &err);
