@@ -377,22 +377,14 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		seabear = true;
 		firstLine = "Sample time;Sample depth;Sample NDL;Sample TTS;Sample stopdepth;Sample temperature;Sample pressure";
 		blockSignals(true);
-#if QT_VERSION >= 0x050000
 		ui->knownImports->setCurrentText("Seabear CSV");
-#else
-		ui->knownImports->setCurrentIndex(4);
-#endif
 		blockSignals(false);
 	} else if (firstLine.contains("Tauchgangs-Nr.:")) {
 		xp5 = true;
 		//"Abgelaufene Tauchzeit (Std:Min.)\tTiefe\tStickstoff Balkenanzeige\tSauerstoff Balkenanzeige\tAufstiegsgeschwindigkeit\tRestluftzeit\tRestliche Tauchzeit\tDekompressionszeit (Std:Min)\tDekostopp-Tiefe\tTemperatur\tPO2\tPressluftflasche\tLesen des Druckes\tStatus der Verbindung\tTauchstatus";
 		firstLine = "Sample time\tSample depth\t\t\t\t\t\t\t\tSample temperature\t";
 		blockSignals(true);
-#if QT_VERSION >= 0x050000
 		ui->knownImports->setCurrentText("XP5");
-#else
-		ui->knownImports->setCurrentIndex(2);
-#endif
 		blockSignals(false);
 	}
 
@@ -401,17 +393,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		apd=true;
 		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
-#if QT_VERSION >= 0x050000
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
-#else
-		ui->CSVSeparator->setCurrentIndex(0);
-#endif
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
-#if QT_VERSION >= 0x050000
 			ui->knownImports->setCurrentText("APD Log Viewer");
-#else
-			ui->knownImports->setCurrentIndex(1);
-#endif
 		blockSignals(false);
 	}
 
@@ -430,16 +414,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			separator = ";";
 		if (ui->CSVSeparator->currentText() != separator) {
 			blockSignals(true);
-#if QT_VERSION >= 0x050000
 			ui->CSVSeparator->setCurrentText(separator);
-#else
-			if (separator == "Tab")
-				ui->CSVSeparator->setCurrentIndex(0);
-			else if (separator == ",")
-				ui->CSVSeparator->setCurrentIndex(1);
-			else
-				ui->CSVSeparator->setCurrentIndex(2);
-#endif
 			blockSignals(false);
 			currColumns = firstLine.split(separator);
 		}
@@ -490,16 +465,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
 			ui->CSVSeparator->blockSignals(true);
-#if QT_VERSION >= 0x050000
 			ui->CSVSeparator->setCurrentText(separator);
-#else
-			if (separator == "Tab")
-				ui->CSVSeparator->setCurrentIndex(0);
-			else if (separator == ",")
-				ui->CSVSeparator->setCurrentIndex(1);
-			else
-				ui->CSVSeparator->setCurrentIndex(2);
-#endif
 			ui->CSVSeparator->blockSignals(false);
 			if (separator == "Tab")
 				separator = "\t";

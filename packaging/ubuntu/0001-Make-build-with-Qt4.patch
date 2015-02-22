@@ -1,33 +1,19 @@
-From 936f3bab5be5d6c7d8da0a2d2d7e9da42bcd96c1 Mon Sep 17 00:00:00 2001
+From a5da35bf6fea4424d387ec5d1f94f520834ef77b Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
-Date: Thu, 19 Feb 2015 21:51:22 -0800
+Date: Tue, 17 Feb 2015 13:23:33 -0800
 Subject: [PATCH] Make build with Qt4
 
 This is just a best effort patch - Qt4 is no longer officially supported
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
 ---
- helpers.h                          |  1 +
  qt-ui/divelogexportdialog.cpp      |  7 ++++++-
  qt-ui/divelogexportdialog.h        |  4 ++++
  qt-ui/divelogimportdialog.cpp      | 34 ++++++++++++++++++++++++++++++++++
  qt-ui/downloadfromdivecomputer.cpp | 12 ++++++++++++
  qt-ui/plannerSettings.ui           |  4 ++--
- qthelper.cpp                       | 10 ++++++++++
- 7 files changed, 69 insertions(+), 3 deletions(-)
+ 5 files changed, 58 insertions(+), 3 deletions(-)
 
-diff --git a/helpers.h b/helpers.h
-index 885b73e58235..64fdc9ed5d27 100644
---- a/helpers.h
-+++ b/helpers.h
-@@ -8,6 +8,7 @@
- #define HELPERS_H
- 
- #include <QString>
-+#include <QPair>
- #include "dive.h"
- #include "qthelper.h"
- 
 diff --git a/qt-ui/divelogexportdialog.cpp b/qt-ui/divelogexportdialog.cpp
 index 43c41550f145..8c6d2899f0f0 100644
 --- a/qt-ui/divelogexportdialog.cpp
@@ -80,10 +66,10 @@ index 14f8f453980f..524416414a8e 100644
  	void showExplanation();
  	void exportHtmlInit(const QString &filename);
 diff --git a/qt-ui/divelogimportdialog.cpp b/qt-ui/divelogimportdialog.cpp
-index ce12ef7ec34b..f4e43ef9068f 100644
+index bb4701ce36d3..4b9c8f8c0740 100644
 --- a/qt-ui/divelogimportdialog.cpp
 +++ b/qt-ui/divelogimportdialog.cpp
-@@ -377,14 +377,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -376,14 +376,22 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  		seabear = true;
  		firstLine = "Sample time;Sample depth;Sample NDL;Sample TTS;Sample stopdepth;Sample temperature;Sample pressure";
  		blockSignals(true);
@@ -106,7 +92,7 @@ index ce12ef7ec34b..f4e43ef9068f 100644
  		blockSignals(false);
  	}
  
-@@ -393,9 +401,17 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -392,9 +400,17 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  		apd=true;
  		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
  		blockSignals(true);
@@ -124,7 +110,7 @@ index ce12ef7ec34b..f4e43ef9068f 100644
  		blockSignals(false);
  	}
  
-@@ -414,7 +430,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -413,7 +429,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  			separator = ";";
  		if (ui->CSVSeparator->currentText() != separator) {
  			blockSignals(true);
@@ -141,7 +127,7 @@ index ce12ef7ec34b..f4e43ef9068f 100644
  			blockSignals(false);
  			currColumns = firstLine.split(separator);
  		}
-@@ -465,7 +490,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
+@@ -464,7 +489,16 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
  
  		if (ui->CSVSeparator->currentText() != separator || separator == "Tab") {
  			ui->CSVSeparator->blockSignals(true);
@@ -159,10 +145,10 @@ index ce12ef7ec34b..f4e43ef9068f 100644
  			if (separator == "Tab")
  				separator = "\t";
 diff --git a/qt-ui/downloadfromdivecomputer.cpp b/qt-ui/downloadfromdivecomputer.cpp
-index c57aa1ef2c00..4e5b27c6b21f 100644
+index cd3dd90d0cc2..e5ddab840b03 100644
 --- a/qt-ui/downloadfromdivecomputer.cpp
 +++ b/qt-ui/downloadfromdivecomputer.cpp
-@@ -602,19 +602,31 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
+@@ -600,19 +600,31 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
  void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
  {
  	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
@@ -195,7 +181,7 @@ index c57aa1ef2c00..4e5b27c6b21f 100644
  
  Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 diff --git a/qt-ui/plannerSettings.ui b/qt-ui/plannerSettings.ui
-index 440fb534a6b5..89ffc89e1c38 100644
+index af03fd1fbfb9..aaf99750e26f 100644
 --- a/qt-ui/plannerSettings.ui
 +++ b/qt-ui/plannerSettings.ui
 @@ -338,8 +338,8 @@
@@ -209,60 +195,6 @@ index 440fb534a6b5..89ffc89e1c38 100644
              </property>
              <property name="maxVisibleItems">
               <number>6</number>
-diff --git a/qthelper.cpp b/qthelper.cpp
-index b26bdf467dec..1981571b2007 100644
---- a/qthelper.cpp
-+++ b/qthelper.cpp
-@@ -12,6 +12,7 @@
- #include <QDir>
- #include <QDebug>
- #include <QSettings>
-+#if QT_VERSION >= 0x050000
- #include <QStandardPaths>
- #include <QJsonDocument>
- #include <QJsonArray>
-@@ -21,6 +22,9 @@
- #include <QNetworkAccessManager>
- #include <QUrlQuery>
- #include <QEventLoop>
-+#else
-+#include <QDesktopServices>
-+#endif
- 
- #include <libxslt/documents.h>
- 
-@@ -304,6 +308,7 @@ extern "C" const char *system_default_directory(void)
- 	static char filename[PATH_MAX];
- 
- 	if (!*filename) {
-+#if QT_VERSION >= 0x050000
- 		enum QStandardPaths::StandardLocation location;
- #if QT_VERSION >= 0x050400
- 		location = QStandardPaths::AppDataLocation;
-@@ -311,6 +316,9 @@ extern "C" const char *system_default_directory(void)
- 		location = QStandardPaths::DataLocation;
- #endif
- 		QString name = QStandardPaths::standardLocations(location).first();
-+#else
-+		QString name = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-+#endif
- 		QDir dir(name);
- 		dir.mkpath(name);
- 		// Why no "dir.encodeName()"? Crazy Qt
-@@ -379,6 +387,7 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
- 
- extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32_t uuid)
- {
-+#if QT_VERSION >= 0x050000
- 	QNetworkRequest request;
- 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
- 	request.setUrl(QString("http://open.mapquestapi.com/nominatim/v1/reverse.php?format=json&accept-language=%1&lat=%2&lon=%3")
-@@ -400,4 +409,5 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
- 		struct dive_site *ds = get_dive_site_by_uuid(uuid);
- 		ds->notes = add_to_string(ds->notes, "countrytag: %s", address.value("country").toString().toUtf8().data());
- 	}
-+#endif
- }
 -- 
 1.8.0.rc0.18.gf84667d
 

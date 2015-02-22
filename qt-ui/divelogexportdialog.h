@@ -3,9 +3,7 @@
 
 #include <QDialog>
 #include <QTextStream>
-#if QT_VERSION >= 0x050000
 #include <QFuture>
-#endif
 #include "helpers.h"
 #include "statistics.h"
 
@@ -30,9 +28,7 @@ slots:
 	void on_exportGroup_buttonClicked(QAbstractButton *);
 
 private:
-#if QT_VERSION >= 0x050000
 	QFuture<int> future;
-#endif
 	Ui::DiveLogExportDialog *ui;
 	void showExplanation();
 	void exportHtmlInit(const QString &filename);

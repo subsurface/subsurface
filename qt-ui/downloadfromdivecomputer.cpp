@@ -602,31 +602,19 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 {
 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
-#if QT_VERSION >= 0x050000
 	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()), QVector<int>() << Qt::CheckStateRole);
-#else
-	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()));
-#endif
 }
 
 void DiveImportedModel::selectAll()
 {
 	memset(checkStates, true, lastIndex - firstIndex + 1);
-#if QT_VERSION >= 0x050000
 	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
-#else
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex));
-#endif
 }
 
 void DiveImportedModel::selectNone()
 {
 	memset(checkStates, false, lastIndex - firstIndex + 1);
-#if QT_VERSION >= 0x050000
 	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
-#else
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex ));
-#endif
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
