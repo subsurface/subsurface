@@ -9,6 +9,7 @@
 #include <QDesktopWidget>
 #include <QNetworkProxy>
 #include <QLibraryInfo>
+#include <QTextCodec>
 
 static QApplication *application = NULL;
 static MainWindow *window = NULL;
