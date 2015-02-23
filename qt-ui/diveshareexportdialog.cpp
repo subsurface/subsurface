@@ -4,6 +4,7 @@
 #include "save-html.h"
 #include "usersurvey.h"
 #include "subsurfacewebservices.h"
+#include "helpers.h"
 
 #include <QDesktopServices>
 #include <QSettings>
@@ -130,7 +131,7 @@ void DiveShareExportDialog::doUpload()
 	else
 		request.setUrl(QUrl(DIVESHARE_BASE_URI "/upload"));
 
-	request.setRawHeader("User-Agent", UserSurvey::getUserAgent().toUtf8());
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	if (ui->txtUID->text().length() != 0)
 		request.setRawHeader("X-UID", ui->txtUID->text().toUtf8());
 

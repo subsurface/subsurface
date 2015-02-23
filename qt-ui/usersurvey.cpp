@@ -49,22 +49,6 @@ QString UserSurvey::getVersion()
 	return sysInfo;
 }
 
-QString UserSurvey::getUserAgent()
-{
-	QString arch;
-	// fill in the system data - use ':' as separator
-	// replace all other ':' with ' ' so that this is easy to parse
-	QString userAgent = QString("Subsurface:%1:").arg(subsurface_version());
-	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
-	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
-	userAgent.append(arch);
-	if (arch == "i386")
-		userAgent.append("/" + SubsurfaceSysInfo::currentCpuArchitecture());
-	userAgent.append(":" + uiLanguage(NULL));
-	return userAgent;
-
-}
-
 UserSurvey::~UserSurvey()
 {
 	delete ui;

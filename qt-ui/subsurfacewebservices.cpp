@@ -1,4 +1,5 @@
 #include "subsurfacewebservices.h"
+#include "helpers.h"
 #include "webservice.h"
 #include "mainwindow.h"
 #include "usersurvey.h"
@@ -232,7 +233,7 @@ WebServices::WebServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	timeout.setSingleShot(true);
 	defaultApplyText = ui.buttonBox->button(QDialogButtonBox::Apply)->text();
-	userAgent = UserSurvey::getUserAgent();
+	userAgent = getUserAgent();
 }
 
 void WebServices::hidePassword()

@@ -37,6 +37,7 @@ QString uiLanguage(QLocale *callerLoc);
 QLocale getLocale();
 QString getDateFormat();
 void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
+QString getUserAgent();
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m

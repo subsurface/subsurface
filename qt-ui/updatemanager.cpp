@@ -1,5 +1,6 @@
 #include "updatemanager.h"
 #include "usersurvey.h"
+#include "helpers.h"
 #include <QtNetwork>
 #include <QMessageBox>
 #include <QUuid>
@@ -53,7 +54,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
-	QString userAgent = UserSurvey::getUserAgent();
+	QString userAgent = getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
 }
