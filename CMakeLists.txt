@@ -105,6 +105,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	deco.c
 	device.c
 	dive.c
+	divesite.c
 	divelist.c
 	equipment.c
 	file.c
@@ -128,6 +129,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	time.c
 	uemis.c
 	uemis-downloader.c
+	version.c
 	linux.c
 	#gettextfrommoc should be added because we are using it on the c-code.
 	gettextfromc.cpp
@@ -176,6 +178,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/usersurvey.cpp
 	qt-ui/configuredivecomputerdialog.cpp
 	qt-ui/filtermodels.cpp
+	qt-ui/undocommands.cpp
 )
 
 #the profile widget
