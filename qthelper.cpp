@@ -71,6 +71,9 @@ extern "C" const char *printGPSCoords(int lat, int lon)
 	return strdup(result.toUtf8().data());
 }
 
+/**
+* Try to parse in a generic manner a coordinate.
+*/
 static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 		       const QString& negatives, const QString& others,
 		       double& value)
@@ -92,7 +95,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 			numberDefined = true;
 			posBeforeNumber = pos;
 			pos += numberRe.cap(1).size() - 1;
-		} else if (positives.indexOf(txt[pos].toUpper()) >= 0) {
+		} else if (positives.indexOf(txt[pos]) >= 0) {
 			if (sign != 0)
 				return false;
 			sign = 1;
@@ -102,7 +105,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 				++pos;
 				break;
 			}
-		} else if (negatives.indexOf(txt[pos].toUpper()) >= 0) {
+		} else if (negatives.indexOf(txt[pos]) >= 0) {
 			if (sign != 0) {
 				if (others.indexOf(txt[pos]) >= 0)
 					//special case for the '-' sign => next coordinate
@@ -116,10 +119,11 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 				++pos;
 				break;
 			}
-		} else if (others.indexOf(txt[pos].toUpper()) >= 0) {
+		} else if (others.indexOf(txt[pos]) >= 0) {
 			//we are at the next coordinate.
 			break;
-		} else if (DEGREE_SIGNS.indexOf(txt[pos]) >= 0) {
+		} else if (DEGREE_SIGNS.indexOf(txt[pos]) >= 0 ||
+			   (txt[pos].isSpace() && !degreesDefined && numberDefined)) {
 			if (!numberDefined)
 				return false;
 			if (degreesDefined) {
@@ -131,20 +135,18 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 			value += number;
 			numberDefined = false;
 			degreesDefined = true;
-		} else if (txt[pos] == '\'') {
+		} else if (txt[pos] == '\'' || (txt[pos].isSpace() && !minutesDefined && numberDefined)) {
 			if (!numberDefined || minutesDefined)
 				return false;
 			value += number / 60.0;
 			numberDefined = false;
 			minutesDefined = true;
-		} else if (txt[pos] == '"') {
+		} else if (txt[pos] == '"' || (txt[pos].isSpace() && !secondsDefined && numberDefined)) {
 			if (!numberDefined || secondsDefined)
 				return false;
 			value += number / 3600.0;
 			numberDefined = false;
 			secondsDefined = true;
-		} else if (txt[pos] == ' ' || txt[pos] == '\t') {
-			//ignore spaces
 		} else {
 			return false;
 		}
@@ -152,31 +154,53 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 	}
 	if (!degreesDefined && numberDefined) {
 		value = number; //just a single number => degrees
-		numberDefined = false;
-		degreesDefined = true;
-	}
-	if (!degreesDefined || numberDefined)
+	} else if (!minutesDefined && numberDefined) {
+		value += number / 60.0;
+	} else if (!secondsDefined && numberDefined) {
+		value += number / 3600.0;
+	} else if (numberDefined) {
 		return false;
+	}
 	if (sign == -1) value *= -1.0;
 	return true;
 }
 
-bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
-{
-	const QString trimmed = gps_text.trimmed();
-	if (trimmed.isEmpty()) {
-		*latitude = 0.0;
-		*longitude = 0.0;
+/**
+* Parse special coordinate formats that cannot be handled by parseCoord.
+*/
+static bool parseSpecialCoords(const QString& txt, double& latitude, double& longitude) {
+	QRegExp xmlFormat("(-?\\d+(?:\\.\\d+)?)\\s+(-?\\d+(?:\\.\\d+)?)");
+	if (xmlFormat.exactMatch(txt)) {
+		latitude = xmlFormat.cap(1).toDouble();
+		longitude = xmlFormat.cap(2).toDouble();
 		return true;
 	}
-	int pos = 0;
+	return false;
+}
+
+bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
+{
 	static const QString POS_LAT = QString("+N") + translate("gettextFromC", "N");
 	static const QString NEG_LAT = QString("-S") + translate("gettextFromC", "S");
 	static const QString POS_LON = QString("+E") + translate("gettextFromC", "E");
 	static const QString NEG_LON = QString("-W") + translate("gettextFromC", "W");
-	return parseCoord(gps_text, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
-		parseCoord(gps_text, pos, POS_LON, NEG_LON, "", *longitude) &&
-		pos == gps_text.size();
+
+	//remove the useless spaces (but keep the ones separating numbers)
+	static const QRegExp SPACE_CLEANER("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
+		NEG_LON + DEGREE_SIGNS + "'\"\\s])\\s*");
+	const QString normalized = gps_text.trimmed().toUpper().replace(SPACE_CLEANER, "\\1");
+
+	if (normalized.isEmpty()) {
+		*latitude = 0.0;
+		*longitude = 0.0;
+		return true;
+	}
+	if (parseSpecialCoords(normalized, *latitude, *longitude))
+		return true;
+	int pos = 0;
+	return parseCoord(normalized, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
+		parseCoord(normalized, pos, POS_LON, NEG_LON, "", *longitude) &&
+		pos == normalized.size();
 }
 
 #if 0 // we'll need something like this for the dive site management, eventually

@@ -77,6 +77,29 @@ void TestGpsCoords::testSpaceDecimalParse()
 		coord2double(52.83), coord2double(1.61));
 }
 
+void TestGpsCoords::testXmlFormatParse()
+{
+	testParseOK("46.473881 6.784696",
+		coord2double(46.473881), coord2double(6.784696));
+}
+
+void TestGpsCoords::testNegativeXmlFormatParse()
+{
+	testParseOK("46.473881 -6.784696",
+		coord2double(46.473881), -coord2double(6.784696));
+}
+
+void TestGpsCoords::testNoUnitParse()
+{
+	testParseOK("48 51.491n 2 17.677e",
+		coord2double(48, 51.491), coord2double(2, 17.677));
+}
+
+void TestGpsCoords::testPrefixNoUnitParse()
+{
+	testParseOK("n48 51.491 w2 17.677",
+		coord2double(48, 51.491), -coord2double(2, 17.677));
+}
 
 void TestGpsCoords::testParseOK(const QString &txt, double expectedLat,
 	double expectedLon)

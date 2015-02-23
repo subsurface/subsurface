@@ -18,6 +18,10 @@ private slots:
 	void testDecimalParse();
 	void testSpaceDecimalParse();
 	void testDecimalInversedParse();
+	void testXmlFormatParse();
+	void testNoUnitParse();
+	void testNegativeXmlFormatParse();
+	void testPrefixNoUnitParse();
 
 private:
 	static void testParseOK(const QString &txt, double expectedLat,
