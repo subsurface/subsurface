@@ -20,7 +20,11 @@
  */
 #if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
   #define git_remote_lookup(res, repo, name) git_remote_load(res, repo, name)
-  #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote, signature, reflog)
+  #if LIBGIT2_VER_MINOR <= 20
+    #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote)
+  #else
+    #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote, signature, reflog)
+  #endif
 #endif
 
 static char *get_local_dir(const char *remote, const char *branch)
