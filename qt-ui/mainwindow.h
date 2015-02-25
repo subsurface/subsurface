@@ -90,6 +90,7 @@ public:
 	void printPlan();
 	void checkSurvey(QSettings *s);
 	void setApplicationState(const QByteArray& state);
+	void showV2Dialog();
 	QUndoStack *undoStack;
 private
 slots:

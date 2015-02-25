@@ -1345,6 +1345,18 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 	refreshDisplay();
 }
 
+void MainWindow::showV2Dialog()
+{
+	// here we need to ask the user if / how they want to do the reverse geo coding
+	// for now this is just a warning that things could take a long time
+	QMessageBox d(QMessageBox::Information,
+		      tr("Welcom to Subsurface %1").arg(subsurface_version()),
+		      tr("Importing data files from earlier versions of Subsurface can take a significant amount of time"),
+		      QMessageBox::Ok,
+		      this);
+	d.exec();
+}
+
 void MainWindow::loadFiles(const QStringList fileNames)
 {
 	if (fileNames.isEmpty())
@@ -1362,6 +1374,13 @@ void MainWindow::loadFiles(const QStringList fileNames)
 			set_filename(fileNamePtr.data(), true);
 			setTitle(MWTF_FILENAME);
 		} else {
+			if (!v2_question_shown && abort_read_of_old_file) {
+				v2_question_shown = true;
+				abort_read_of_old_file = false;
+				showV2Dialog();
+				i--; // so we re-try this file
+				continue;
+			}
 			failedParses.append(fileNames.at(i));
 		}
 	}

@@ -22,6 +22,8 @@
 int verbose, quit;
 int metric = 1;
 int last_xml_version = -1;
+bool abort_read_of_old_file = false;
+bool v2_question_shown = false;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
@@ -1669,44 +1671,54 @@ static void userid_stop(void)
 	in_userid = false;
 }
 
-static void entry(const char *name, char *buf)
+static bool entry(const char *name, char *buf)
 {
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
-	    !strncmp(name, "version.divelog", sizeof("version.divelog") - 1))
+	    !strncmp(name, "version.divelog", sizeof("version.divelog") - 1)) {
 		last_xml_version = atoi(buf);
+		if (last_xml_version < 3 && !v2_question_shown) {
+			// let's ask the user what they want to do about reverse geo coding
+			// and warn them that opening older XML files can take a while
+			// since C code shouldn't call the UI we set a global flag and bail
+			// from reading the file for now
+			abort_read_of_old_file = true;
+			return false;
+		}
+	}
 	if (in_userid) {
 		try_to_fill_userid(name, buf);
-		return;
+		return true;
 	}
 	if (in_settings) {
 		try_to_fill_dc_settings(name, buf);
 		try_to_match_autogroup(name, buf);
-		return;
+		return true;
 	}
 	if (cur_dive_site) {
 		try_to_fill_dive_site(&cur_dive_site, name, buf);
-		return;
+		return true;
 	}
 	if (!cur_event.deleted) {
 		try_to_fill_event(name, buf);
-		return;
+		return true;
 	}
 	if (cur_sample) {
 		try_to_fill_sample(cur_sample, name, buf);
-		return;
+		return true;
 	}
 	if (cur_dc) {
 		try_to_fill_dc(cur_dc, name, buf);
-		return;
+		return true;
 	}
 	if (cur_dive) {
 		try_to_fill_dive(cur_dive, name, buf);
-		return;
+		return true;
 	}
 	if (cur_trip) {
 		try_to_fill_trip(&cur_trip, name, buf);
-		return;
+		return true;
 	}
+	return true;
 }
 
 static const char *nodename(xmlNode *node, char *buf, int len)
@@ -1748,7 +1760,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 
 #define MAXNAME 32
 
-static void visit_one_node(xmlNode *node)
+static bool visit_one_node(xmlNode *node)
 {
 	char *content;
 	static char buffer[MAXNAME];
@@ -1756,28 +1768,29 @@ static void visit_one_node(xmlNode *node)
 
 	content = node->content;
 	if (!content || xmlIsBlankNode(node))
-		return;
+		return true;
 
 	name = nodename(node, buffer, sizeof(buffer));
 
-	entry(name, content);
+	return entry(name, content);
 }
 
-static void traverse(xmlNode *root);
+static bool traverse(xmlNode *root);
 
-static void traverse_properties(xmlNode *node)
+static bool traverse_properties(xmlNode *node)
 {
 	xmlAttr *p;
+	bool ret = true;
 
 	for (p = node->properties; p; p = p->next)
-		traverse(p->children);
+		if ((ret = traverse(p->children)) == false)
+			break;
+	return ret;
 }
 
-static void visit(xmlNode *n)
+static bool visit(xmlNode *n)
 {
-	visit_one_node(n);
-	traverse_properties(n);
-	traverse(n->children);
+	return visit_one_node(n) && traverse_properties(n) && traverse(n->children);
 }
 
 static void DivingLog_importer(void)
@@ -1840,15 +1853,17 @@ static struct nesting {
 	  { NULL, }
   };
 
-static void traverse(xmlNode *root)
+static bool traverse(xmlNode *root)
 {
 	xmlNode *n;
+	bool ret = true;
 
 	for (n = root; n; n = n->next) {
 		struct nesting *rule = nesting;
 
 		if (!n->name) {
-			visit(n);
+			if ((ret = visit(n)) == false)
+				break;
 			continue;
 		}
 
@@ -1860,10 +1875,12 @@ static void traverse(xmlNode *root)
 
 		if (rule->start)
 			rule->start();
-		visit(n);
+		if ((ret = visit(n)) == false)
+			break;
 		if (rule->end)
 			rule->end();
 	}
+	return ret;
 }
 
 /* Per-file reset */
@@ -1910,6 +1927,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 {
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
+	int ret = 0;
 
 	target_table = table;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
@@ -1924,11 +1942,14 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	reset_all();
 	dive_start();
 	doc = test_xslt_transforms(doc, params);
-	traverse(xmlDocGetRootElement(doc));
+	if (!traverse(xmlDocGetRootElement(doc))) {
+		// we decided to give up on parsing... why?
+		ret = -1;
+	}
 	dive_end();
 	xmlFreeDoc(doc);
 
-	return 0;
+	return ret;
 }
 
 void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char *starttime)
