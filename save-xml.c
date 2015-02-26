@@ -359,6 +359,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	put_format(b, "  </divecomputer>\n");
 }
 
+extern char * hashstring(char * filename);
+
 static void save_picture(struct membuffer *b, struct picture *pic)
 {
 	put_string(b, "  <picture filename='");
@@ -377,6 +379,9 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 		put_degrees(b, pic->latitude, " gps='", " ");
 		put_degrees(b, pic->longitude, "", "'");
 	}
+	if (hashstring(pic->filename))
+		put_format(b, " hash='%s'", hashstring(pic->filename));
+
 	put_string(b, "/>\n");
 }
 

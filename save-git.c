@@ -585,6 +585,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 
 	show_utf8(&buf, "filename ", pic->filename, "\n");
 	show_gps(&buf, pic->latitude, pic->longitude);
+	show_utf8(&buf, "hash ", pic->hash, "\n");
 
 	/* Picture loading will load even negative offsets.. */
 	if (offset < 0) {

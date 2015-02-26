@@ -1296,6 +1296,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("gps.picture", gps_picture_location, cur_picture))
 		return;
+	if (MATCH("hash.picture", utf8_string, &cur_picture->hash))
+		return;
 	if (MATCH("cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
 	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))

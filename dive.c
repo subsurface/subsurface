@@ -392,6 +392,7 @@ static void copy_pl(struct picture *sp, struct picture *dp)
 {
 	*dp = *sp;
 	dp->filename = copy_string(sp->filename);
+	dp->hash = copy_string(sp->hash);
 }
 
 /* copy an element in a list of tags */
@@ -2936,6 +2937,7 @@ static void picture_free(struct picture *p)
 	if (!p)
 		return;
 	free(p->filename);
+	free(p->hash);
 	free(p);
 }
 void dive_remove_picture(char *filename)

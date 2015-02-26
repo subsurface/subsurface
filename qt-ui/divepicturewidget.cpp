@@ -3,7 +3,25 @@
 #include "dive.h"
 #include "divelist.h"
 #include <QtConcurrentMap>
+#include <QtConcurrentRun>
 #include <QDir>
+#include <QCryptographicHash>
+#include <mainwindow.h>
+#include <qthelper.h>
+
+SHashedImage::SHashedImage(struct picture *picture) : QImage(picture->filename)
+{
+	if (isNull()) {
+		// Hash lookup.
+		load(fileFromHash(picture->hash));
+		if (!isNull())
+			QtConcurrent::run(updateHash, picture);
+	} else {
+		QByteArray hash = hashFile(QString(picture->filename));
+		free(picture->hash);
+		picture->hash = strdup(hash.toHex().data());
+	}
+}
 
 DivePictureModel *DivePictureModel::instance()
 {
@@ -15,20 +33,21 @@ DivePictureModel::DivePictureModel() : numberOfPictures(0)
 {
 }
 
-typedef QPair<QString, QImage> SPixmap;
-typedef QList<SPixmap> SPixmapList;
+typedef struct picture *picturepointer;
+typedef QPair<picturepointer, QImage> SPixmap;
+typedef QList<struct picture *> SPictureList;
 
-SPixmap scaleImages(const QString &s)
+SPixmap scaleImages(picturepointer picture)
 {
 	static QHash <QString, QImage > cache;
 	SPixmap ret;
-	ret.first = s;
-	if (cache.contains(s)) {
-		ret.second = cache.value(s);
+	ret.first = picture;
+	if (cache.contains(picture->filename) && !cache.value(picture->filename).isNull()) {
+		ret.second = cache.value(picture->filename);
 	} else {
 		int dim = defaultIconMetrics().sz_pic;
-		QImage p = QImage(s).scaled(dim, dim, Qt::KeepAspectRatio);
-		cache.insert(s, p);
+		QImage p = SHashedImage(picture).scaled(dim, dim, Qt::KeepAspectRatio);
+		cache.insert(picture->filename, p);
 		ret.second = p;
 	}
 	return ret;
@@ -49,14 +68,15 @@ void DivePictureModel::updateDivePictures()
 	}
 
 	stringPixmapCache.clear();
-	QStringList pictures;
+	SPictureList pictures;
 	FOR_EACH_PICTURE_NON_PTR(displayed_dive) {
 		stringPixmapCache[QString(picture->filename)].offsetSeconds = picture->offset.seconds;
-		pictures.push_back(QString(picture->filename));
+		pictures.push_back(picture);
 	}
 
-	Q_FOREACH (const SPixmap &pixmap, QtConcurrent::blockingMapped<SPixmapList>(pictures, scaleImages))
-		stringPixmapCache[pixmap.first].image = pixmap.second;
+	QList<SPixmap> list = QtConcurrent::blockingMapped(pictures, scaleImages);
+	Q_FOREACH (const SPixmap &pixmap, list)
+		stringPixmapCache[pixmap.first->filename].image = pixmap.second;
 
 	beginInsertRows(QModelIndex(), 0, numberOfPictures - 1);
 	endInsertRows();
@@ -121,5 +141,5 @@ DivePictureWidget::DivePictureWidget(QWidget *parent) : QListView(parent)
 void DivePictureWidget::doubleClicked(const QModelIndex &index)
 {
 	QString filePath = model()->data(index, Qt::DisplayPropertyRole).toString();
-	emit photoDoubleClicked(filePath);
+	emit photoDoubleClicked(localFilePath(filePath));
 }

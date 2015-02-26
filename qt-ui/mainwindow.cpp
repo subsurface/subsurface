@@ -37,6 +37,8 @@
 #endif
 #include <QNetworkProxy>
 #include <QUndoStack>
+#include <qthelper.h>
+#include <QtConcurrentRun>
 
 MainWindow *MainWindow::m_Instance = NULL;
 
@@ -50,6 +52,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
 	ui.setupUi(this);
+	read_hashes();
 	// Define the States of the Application Here, Currently the states are situations where the different
 	// widgets will change on the mainwindow.
 
@@ -201,6 +204,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+	write_hashes();
 	m_Instance = NULL;
 }
 

@@ -5,9 +5,16 @@
 #include <QListView>
 #include <QThread>
 
+typedef QPair<QString, QByteArray> SHashedFilename;
+
 struct PhotoHelper {
 	QImage image;
 	int offsetSeconds;
+};
+
+class SHashedImage : public QImage {
+public:
+	SHashedImage(struct picture *picture);
 };
 
 class DivePictureModel : public QAbstractTableModel {

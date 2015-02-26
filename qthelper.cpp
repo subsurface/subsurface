@@ -27,6 +27,11 @@
 #include <QUrlQuery>
 #include <QEventLoop>
 #include <QDateTime>
+#include <QSaveFile>
+#include <QDir>
+#include <QImageReader>
+#include <QtConcurrent>
+#include "divepicturewidget.h"
 
 #include <libxslt/documents.h>
 
@@ -779,4 +784,68 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 		struct dive_site *ds = get_dive_site_by_uuid(uuid);
 		ds->notes = add_to_string(ds->notes, "countrytag: %s", address.value("country").toString().toUtf8().data());
 	}
+}
+
+QHash<QString, QByteArray> hashOf;
+QHash<QByteArray, QString> localFilenameOf;
+
+extern "C" char * hashstring(char * filename)
+{
+	return hashOf[QString(filename)].toHex().data();
+}
+
+void read_hashes()
+{
+	QFile hashfile(QString(system_default_directory()).append("/hashes"));
+	if (hashfile.open(QIODevice::ReadOnly)) {
+		QDataStream stream(&hashfile);
+		stream >> localFilenameOf;
+		hashfile.close();
+	}
+}
+
+void write_hashes()
+{
+	QSaveFile hashfile(QString(system_default_directory()).append("/hashes"));
+	if (hashfile.open(QIODevice::WriteOnly)) {
+		QDataStream stream(&hashfile);
+		stream << localFilenameOf;
+		hashfile.commit();
+	} else {
+		qDebug() << "cannot open" << hashfile.fileName();
+	}
+}
+
+void add_hash(const QString filename, QByteArray hash)
+{
+	hashOf[filename] =  hash;
+	localFilenameOf[hash] = filename;
+}
+
+QByteArray hashFile(const QString filename)
+{
+	QCryptographicHash hash(QCryptographicHash::Sha1);
+	QFile imagefile(filename);
+	imagefile.open(QIODevice::ReadOnly);
+	hash.addData(&imagefile);
+	add_hash(filename, hash.result());
+	return hash.result();
+}
+
+QString localFilePath(const QString originalFilename)
+{
+	return localFilenameOf[hashOf[originalFilename]];
+}
+
+QString fileFromHash(char *hash)
+{
+	return localFilenameOf[QByteArray::fromHex(hash)];
+}
+
+void updateHash(struct picture *picture) {
+	QByteArray hash = hashFile(fileFromHash(picture->hash));
+	hashOf[QString(picture->filename)] = hash;
+	char *old = picture->hash;
+	picture->hash = strdup(hash.toHex());
+	free(old);
 }
