@@ -104,6 +104,7 @@ slots:
 	void on_actionPrint_triggered();
 	void on_actionPreferences_triggered();
 	void on_actionQuit_triggered();
+	void on_actionHash_images_triggered();
 
 	/* log menu actions */
 	void on_actionDownloadDC_triggered();

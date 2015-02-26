@@ -50,7 +50,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -67,6 +67,7 @@
     <addaction name="actionPrint"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
+    <addaction name="actionHash_images"/>
     <addaction name="actionConfigure_Dive_Computer"/>
     <addaction name="separator"/>
     <addaction name="actionRecent1"/>
@@ -688,6 +689,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionHash_images">
+   <property name="text">
+    <string>Hash images</string>
    </property>
   </action>
  </widget>

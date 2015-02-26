@@ -319,6 +319,24 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
+void MainWindow::on_actionHash_images_triggered()
+{
+	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir(), filter());
+	dialog.setFileMode(QFileDialog::Directory);
+	dialog.setViewMode(QFileDialog::Detail);
+	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
+	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
+	QStringList dirnames;
+	if (dialog.exec())
+		dirnames = dialog.selectedFiles();
+	if (dirnames.isEmpty())
+		return;
+	foreach (QString dir, dirnames) {
+		QtConcurrent::run(learnImages, QDir(dir), 10, false);
+	}
+
+}
+
 ProfileWidget2 *MainWindow::graphics() const
 {
 	return qobject_cast<ProfileWidget2*>(applicationState["Default"].topRight->layout()->itemAt(1)->widget());

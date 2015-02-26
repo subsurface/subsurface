@@ -849,3 +849,27 @@ void updateHash(struct picture *picture) {
 	picture->hash = strdup(hash.toHex());
 	free(old);
 }
+
+void learnImages(const QDir dir, int max_recursions, bool recursed)
+{
+	QDir current(dir);
+	QStringList filters, files;
+
+	if (max_recursions) {
+		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
+			learnImages(QDir(dir.filePath(dirname)), max_recursions - 1, true);
+		}
+	}
+
+	foreach (QString format, QImageReader::supportedImageFormats()) {
+		filters.append(QString("*.").append(format));
+	}
+
+	foreach (QString file, dir.entryList(filters, QDir::Files)) {
+		files.append(dir.absoluteFilePath(file));
+	}
+
+	QtConcurrent::blockingMap(files, hashFile);
+	if (!recursed)
+		DivePictureModel::instance()->updateDivePictures();
+}
