@@ -1308,12 +1308,12 @@ int MainWindow::file_save(void)
 
 void MainWindow::showError(QString message)
 {
-	if (message.isEmpty())
-		return;
-	ui.mainErrorMessage->setText(message);
-	ui.mainErrorMessage->setCloseButtonVisible(true);
-	ui.mainErrorMessage->setMessageType(KMessageWidget::Error);
-	ui.mainErrorMessage->animatedShow();
+	ui.mainErrorMessage->showNotification(message, KMessageWidget::Error);
+}
+
+NotificationWidget *MainWindow::getNotificationWidget()
+{
+	return ui.mainErrorMessage;
 }
 
 void MainWindow::setTitle(enum MainWindowTitleFormat format)

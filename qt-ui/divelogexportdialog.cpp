@@ -9,6 +9,7 @@
 #include "subsurfacewebservices.h"
 #include "worldmap-save.h"
 #include "save-html.h"
+#include "mainwindow.h"
 
 #define GET_UNIT(name, field, f, t)                   \
 	v = settings.value(QString(name));            \
@@ -312,8 +313,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		settings.setValue("LastDir", fileInfo.dir().path());
 		settings.endGroup();
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
-		if (!stylesheet.isEmpty())
+		if (!stylesheet.isEmpty()) {
 			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
+			MainWindow::instance()->getNotificationWidget()->showNotification("Exporting...", KMessageWidget::Information);
+			MainWindow::instance()->getNotificationWidget()->setFuture(future);
+		}
 	}
 }
 

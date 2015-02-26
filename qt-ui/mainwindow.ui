@@ -40,7 +40,7 @@
      </widget>
     </item>
     <item>
-     <widget class="KMessageWidget" name="mainErrorMessage" native="true"/>
+     <widget class="NotificationWidget" name="mainErrorMessage" native="true"/>
     </item>
    </layout>
   </widget>
@@ -699,9 +699,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KMessageWidget</class>
+   <class>NotificationWidget</class>
    <extends>QWidget</extends>
-   <header>kmessagewidget.h</header>
+   <header>notificationwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

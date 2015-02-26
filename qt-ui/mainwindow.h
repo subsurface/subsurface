@@ -13,6 +13,7 @@
 #include <QUuid>
 
 #include "ui_mainwindow.h"
+#include "notificationwidget.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -92,6 +93,7 @@ public:
 	void setApplicationState(const QByteArray& state);
 	void showV2Dialog();
 	QUndoStack *undoStack;
+	NotificationWidget *getNotificationWidget();
 private
 slots:
 	/* file menu action */
