@@ -1395,13 +1395,14 @@ void MainWindow::loadFiles(const QStringList fileNames)
 				v2_question_shown = true;
 				abort_read_of_old_file = false;
 				showV2Dialog();
+				getNotificationWidget()->showNotification(tr("Please Wait, Importing your files..."), KMessageWidget::Information);
 				i--; // so we re-try this file
 				continue;
 			}
 			failedParses.append(fileNames.at(i));
 		}
 	}
-
+	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);
