@@ -214,7 +214,7 @@ function getExpanded(dive)
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
-		  '</td></tr></table><table><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Max_Depth + ': </td><td>' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</td></tr><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
 		  '</td></tr><tr><td class="words">' + translate.DiveMaster + ': </td><td>' + dive.divemaster +
 		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
 		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
@@ -940,7 +940,7 @@ function get_dive_HTML(dive)
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
-		  '</td></tr></table><table><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
+		  '</td></tr></table><table><tr><td class="words">' + translate.Max_Depth + ': </td><td>' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</td></tr><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
 		  '</td></tr><tr><td class="words">' + translate.DiveMaster + ': </td><td>' + dive.divemaster +
 		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
 		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
