@@ -246,7 +246,7 @@ MainWindow *MainWindow::instance()
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
-	showError(get_error_string());
+	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
 	globe()->reload();
@@ -1266,11 +1266,11 @@ int MainWindow::file_save_as(void)
 		information()->acceptChanges();
 
 	if (save_dives(filename.toUtf8().data())) {
-		showError(get_error_string());
+		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return -1;
 	}
 
-	showError(get_error_string());
+	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
@@ -1297,18 +1297,13 @@ int MainWindow::file_save(void)
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
 	if (save_dives(existing_filename)) {
-		showError(get_error_string());
+		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return -1;
 	}
-	showError(get_error_string());
+	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
 	return 0;
-}
-
-void MainWindow::showError(QString message)
-{
-	ui.mainErrorMessage->showNotification(message, KMessageWidget::Error);
 }
 
 NotificationWidget *MainWindow::getNotificationWidget()

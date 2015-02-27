@@ -650,7 +650,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// so if we are calculation TTS / NDL then let's force that off.
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
 		MainWindow::instance()->turnOffNdlTts();
-		MainWindow::instance()->showError(tr("Show NDL / TTS was disabled because of excessive processing time"));
+		MainWindow::instance()->getNotificationWidget()->showNotification(tr("Show NDL / TTS was disabled because of excessive processing time"), KMessageWidget::Error);
 	}
 }
 

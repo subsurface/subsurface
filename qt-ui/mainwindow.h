@@ -71,7 +71,6 @@ public:
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();
-	void showError(QString message);
 	void setTitle(enum MainWindowTitleFormat format);
 
 	// Some shortcuts like "change DC" or "copy/paste dive components"

@@ -649,7 +649,7 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 			return;
 		}
 	}
-	MainWindow::instance()->showError(get_error_string());
+	MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
