@@ -2,6 +2,7 @@
 #define UNDOCOMMANDS_H
 
 #include <QUndoCommand>
+#include <QMap>
 #include "dive.h"
 
 class UndoDeleteDive : public QUndoCommand {
@@ -23,6 +24,17 @@ public:
 private:
 	QList<int> dives;
 	int timeChanged;
+};
+
+class UndoRenumberDives : public QUndoCommand {
+public:
+	UndoRenumberDives(QMap<int,int> originalNumbers, int startNumber);
+	virtual void undo();
+	virtual void redo();
+
+private:
+	QMap<int,int> oldNumbers;
+	int start;
 };
 
 #endif // UNDOCOMMANDS_H

@@ -142,8 +142,17 @@ void RenumberDialog::renumberOnlySelected(bool selected)
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
-		renumber_dives(ui.spinBox->value(), selectedOnly);
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		QMap<int,int> renumberedDives;
+		int i;
+		struct dive *dive = NULL;
+		for_each_dive (i, dive) {
+			if (!selectedOnly || dive->selected)
+				renumberedDives.insert(dive->id, dive->number);
+		}
+		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives, ui.spinBox->value());
+		MainWindow::instance()->undoStack->push(undoCommand);
+	}
 }
 
 RenumberDialog::RenumberDialog(QWidget *parent) : QDialog(parent), selectedOnly(false)

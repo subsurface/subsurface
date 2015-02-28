@@ -62,3 +62,34 @@ void UndoShiftTime::redo()
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
 }
+
+
+UndoRenumberDives::UndoRenumberDives(QMap<int, int> originalNumbers, int startNumber)
+{
+	oldNumbers = originalNumbers;
+	start = startNumber;
+	setText("renumber dive");
+	if (oldNumbers.count() > 1)
+		setText(QString("renumber %1 dives").arg(QString::number(oldNumbers.count())));
+}
+
+void UndoRenumberDives::undo()
+{
+	foreach (int key, oldNumbers.keys()) {
+		struct dive* d = get_dive_by_uniq_id(key);
+		d->number = oldNumbers.value(key);
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}
+
+void UndoRenumberDives::redo()
+{
+	int i = start;
+	foreach (int key, oldNumbers.keys()) {
+		struct dive* d = get_dive_by_uniq_id(key);
+		d->number = i++;
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}
