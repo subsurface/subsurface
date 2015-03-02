@@ -5,6 +5,7 @@
 #include <QListView>
 #include <QThread>
 #include <QFuture>
+#include <QNetworkReply>
 
 typedef QPair<QString, QByteArray> SHashedFilename;
 
@@ -16,6 +17,18 @@ struct PhotoHelper {
 class SHashedImage : public QImage {
 public:
 	SHashedImage(struct picture *picture);
+};
+
+class ImageDownloader : public QObject {
+	Q_OBJECT;
+public:
+	ImageDownloader(struct picture *picture);
+	void load();
+private:
+	struct picture *picture;
+	QNetworkAccessManager manager;
+private slots:
+	void saveImage(QNetworkReply *reply);
 };
 
 class DivePictureModel : public QAbstractTableModel {

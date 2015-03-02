@@ -2,26 +2,78 @@
 #include "metrics.h"
 #include "dive.h"
 #include "divelist.h"
+#include <unistd.h>
 #include <QtConcurrentMap>
 #include <QtConcurrentRun>
 #include <QFuture>
 #include <QDir>
 #include <QCryptographicHash>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <mainwindow.h>
 #include <qthelper.h>
+#include <QStandardPaths>
+
+void loadPicuture(struct picture *picture)
+{
+	ImageDownloader download(picture);
+	download.load();
+}
 
 SHashedImage::SHashedImage(struct picture *picture) : QImage(picture->filename)
 {
 	if (isNull()) {
 		// Hash lookup.
 		load(fileFromHash(picture->hash));
-		if (!isNull())
+		if (!isNull()) {
 			QtConcurrent::run(updateHash, picture);
+		} else {
+			QtConcurrent::run(loadPicuture, picture);
+		}
 	} else {
 		QByteArray hash = hashFile(QString(picture->filename));
 		free(picture->hash);
 		picture->hash = strdup(hash.toHex().data());
 	}
+}
+
+ImageDownloader::ImageDownloader(struct picture *pic)
+{
+	picture = pic;
+}
+
+void ImageDownloader::load(){
+	QUrl url(picture->filename);
+	if (url.isValid()) {
+		QEventLoop loop;
+		QNetworkRequest request(url);
+		connect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(saveImage(QNetworkReply *)));
+		QNetworkReply *reply = manager.get(request);
+		while (reply->isRunning()) {
+			loop.processEvents();
+			sleep(1);
+		}
+	}
+
+}
+
+void ImageDownloader::saveImage(QNetworkReply *reply)
+{
+	QByteArray imageData = reply->readAll();
+	QCryptographicHash hash(QCryptographicHash::Sha1);
+	hash.addData(imageData);
+	QFile imageFile(QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first().append("/").append(hash.result().toHex()));
+	if (imageFile.open(QIODevice::WriteOnly)) {
+		QDataStream stream(&imageFile);
+		stream.writeRawData(imageData.data(), imageData.length());
+		imageFile.waitForBytesWritten(-1);
+		imageFile.close();
+		add_hash(imageFile.fileName(), hash.result());
+		learnHash(picture, hash.result());
+		DivePictureModel::instance()->updateDivePictures();
+	}
+	reply->manager()->deleteLater();
+	reply->deleteLater();
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -47,8 +99,10 @@ SPixmap scaleImages(picturepointer picture)
 		ret.second = cache.value(picture->filename);
 	} else {
 		int dim = defaultIconMetrics().sz_pic;
-		QImage p = SHashedImage(picture).scaled(dim, dim, Qt::KeepAspectRatio);
-		cache.insert(picture->filename, p);
+		QImage p = SHashedImage(picture);
+		if(!p.isNull())
+			p = p.scaled(dim, dim, Qt::KeepAspectRatio);
+			cache.insert(picture->filename, p);
 		ret.second = p;
 	}
 	return ret;

@@ -850,6 +850,13 @@ QByteArray hashFile(const QString filename)
 	return hash.result();
 }
 
+void learnHash(struct picture *picture, QByteArray hash)
+{
+	free(picture->hash);
+	hashOf[QString(picture->filename)] = hash;
+	picture->hash = strdup(hash.toHex());
+}
+
 QString localFilePath(const QString originalFilename)
 {
 	return localFilenameOf[hashOf[originalFilename]];
