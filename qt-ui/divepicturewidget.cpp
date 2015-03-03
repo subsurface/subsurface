@@ -20,8 +20,11 @@ void loadPicuture(struct picture *picture)
 	download.load();
 }
 
-SHashedImage::SHashedImage(struct picture *picture) : QImage(picture->filename)
+SHashedImage::SHashedImage(struct picture *picture) : QImage()
 {
+	QUrl url = QUrl::fromUserInput(QString(picture->filename));
+	if(url.isLocalFile())
+		load(url.toLocalFile());
 	if (isNull()) {
 		// Hash lookup.
 		load(fileFromHash(picture->hash));
@@ -31,7 +34,7 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage(picture->filename)
 			QtConcurrent::run(loadPicuture, picture);
 		}
 	} else {
-		QByteArray hash = hashFile(QString(picture->filename));
+		QByteArray hash = hashFile(url.toLocalFile());
 		free(picture->hash);
 		picture->hash = strdup(hash.toHex().data());
 	}
@@ -43,7 +46,7 @@ ImageDownloader::ImageDownloader(struct picture *pic)
 }
 
 void ImageDownloader::load(){
-	QUrl url(picture->filename);
+	QUrl url = QUrl::fromUserInput(QString(picture->filename));
 	if (url.isValid()) {
 		QEventLoop loop;
 		QNetworkRequest request(url);
