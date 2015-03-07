@@ -1112,7 +1112,7 @@ bool DivePlannerPointsModel::tankInUse(struct gasmix gasmix)
 			continue;
 		if (!p.entered) // removing deco gases is ok
 			continue;
-		if (gasmix_distance(&p.gasmix, &gasmix) < 200)
+		if (gasmix_distance(&p.gasmix, &gasmix) < 100)
 			return true;
 	}
 	return false;
@@ -1139,7 +1139,7 @@ void DivePlannerPointsModel::tanksUpdated()
 					struct gasmix gas;
 					gas.o2.permille = oldGases.at(i).first;
 					gas.he.permille = oldGases.at(i).second;
-					if (gasmix_distance(&gas, &p.gasmix) < 200) {
+					if (gasmix_distance(&gas, &p.gasmix) < 100) {
 						p.gasmix.o2.permille = gases.at(i).first;
 						p.gasmix.he.permille = gases.at(i).second;
 					}

@@ -115,7 +115,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	int gasidx = -1;
 
 	while (++gasidx < MAX_CYLINDERS)
-		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, mix) < 200)
+		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, mix) < 100)
 			return gasidx;
 	return -1;
 }
@@ -210,7 +210,7 @@ static int verify_gas_exists(struct gasmix mix_in)
 		cyl = displayed_dive.cylinder + i;
 		if (cylinder_nodata(cyl))
 			continue;
-		if (gasmix_distance(&cyl->gasmix, &mix_in) < 200)
+		if (gasmix_distance(&cyl->gasmix, &mix_in) < 100)
 			return i;
 	}
 	fprintf(stderr, "this gas %s should have been on the cylinder list\nThings will fail now\n", gasname(&mix_in));
