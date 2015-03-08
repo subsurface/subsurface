@@ -35,6 +35,8 @@ struct lv_event {
 	} pressure;
 };
 
+uint16_t primary_sensor;
+
 static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
 {
 	// Skip 4 bytes
@@ -45,6 +47,7 @@ static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_
 static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
 {
 	int skip = 4;
+	uint16_t current_sensor;
 
 	switch (code) {
 	case 0x0002:	//	Unknown
@@ -67,8 +70,23 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	case 0x000f:
 		// Tank pressure
 		event->time = array_uint32_le(ps + ps_ptr);
-		event->pressure.sensor = 0; //array_uint16_le(ps + ps_ptr + 4);
-		event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
+
+		/* As far as I know, Liquivision supports 2 sensors, own and buddie's. This is my
+		 * best guess how it is represented. */
+
+		current_sensor = array_uint16_le(ps + ps_ptr + 4);
+		if (primary_sensor == 0) {
+			primary_sensor = current_sensor;
+		}
+		if (current_sensor == primary_sensor) {
+			event->pressure.sensor = 0;
+			event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
+		} else {
+			/* Ignoring the buddy sensor for no as we cannot draw it on the profile.
+			event->pressure.sensor = 1;
+			event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
+			*/
+		}
 		// 1 byte PSR
 		// 1 byte ST
 		skip = 10;
@@ -97,8 +115,14 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 	struct sample *sample;
 
 	while (ptr < buf_size) {
+		int i;
 		dive = alloc_dive();
+		primary_sensor = 0;
 		dc = &dive->dc;
+
+		/* Just the main cylinder until we can handle the buddy cylinder porperly */
+		for (i = 0; i < 1; i++)
+			fill_default_cylinder(&dive->cylinder[i]);
 
 		// Model 0=Xen, 1,2=Xeo, 4=Lynx, other=Liquivision
 		model = *(buf + ptr);
