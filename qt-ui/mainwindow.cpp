@@ -1414,18 +1414,19 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.ssrf *.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd);;"
-			"Cochran files (*.can);;"
-			"CSV files (*.csv);;"
-			"DiveLog.de files (*.dld);;"
-			"JDiveLog files (*.jlb);;"
-			"Liquivision files (*.lvd);;"
-			"MkVI files (*.txt);;"
-			"Suunto files (*.sde *.db);;"
-			"Divesoft files (*.dlf);;"
-			"UDDF/UDCF files (*.uddf *.udcf);;"
-			"XML files (*.xml);;"
-			"APD log viewer (*.apd);;"
+		tr("Dive log files (*.ssrf *.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd"
+			"*.SSRF *.CAN *.CSV *.DB *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;"
+			"Cochran files (*.can *.CAN);;"
+			"CSV files (*.csv *.CSV);;"
+			"DiveLog.de files (*.dld *.DLD);;"
+			"JDiveLog files (*.jlb *.JLB);;"
+			"Liquivision files (*.lvd *.LVD);;"
+			"MkVI files (*.txt *.TXT);;"
+			"Suunto files (*.sde *.db *.SDE *.DB);;"
+			"Divesoft files (*.dlf *.DLF);;"
+			"UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;"
+			"XML files (*.xml *.XML);;"
+			"APD log viewer (*.apd *.APD);;"
 			"All files (*)"));
 
 	if (fileNames.isEmpty())
