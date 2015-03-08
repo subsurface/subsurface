@@ -307,11 +307,10 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 
 		/* Check for SetPoint change */
 		if (oldpo2 != po2) {
-			if (lasttime)
-				/* this is a bad idea - we should get a different SAMPLE_EVENT type
-				 * reserved for this in libdivecomputer... overloading SMAPLE_EVENT_PO2
-				 * with a different meaning will only cause confusion elsewhere in the code */
-				add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, "SP change");
+			/* this is a bad idea - we should get a different SAMPLE_EVENT type
+			 * reserved for this in libdivecomputer... overloading SMAPLE_EVENT_PO2
+			 * with a different meaning will only cause confusion elsewhere in the code */
+			add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, "SP change");
 			oldpo2 = po2;
 		}
 
