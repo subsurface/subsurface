@@ -137,8 +137,12 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		} else if (place_len) {
 			location = strndup(buf + ptr + len + 4, place_len);
 		}
-		dive->dive_site_uuid = create_dive_site(location);
-		free(location);
+
+		/* Store the location only if we have one */
+		if (len || place_len) {
+			dive->dive_site_uuid = create_dive_site(location);
+			free(location);
+		}
 
 		ptr += len + 4 + place_len;
 
