@@ -672,6 +672,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.setupUi(this);
 	ui.diveSiteMessage->setText("You are editing the Dive Site");
 	ui.diveSiteMessage->setCloseButtonVisible(false);
+	ui.diveSiteMessage->hide();
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
