@@ -696,10 +696,14 @@ void LocationInformationWidget::setLocationId(uint32_t uuid)
 		ui.diveSiteCoordinates->clear();
 	}
 	displayed_dive_site = *currentDs;
-	ui.diveSiteName->setText(displayed_dive_site.name);
-	ui.diveSiteDescription->setText(displayed_dive_site.description);
-	ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
-	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	if (displayed_dive_site.name)
+		ui.diveSiteName->setText(displayed_dive_site.name);
+	if (displayed_dive_site.description)
+		ui.diveSiteDescription->setText(displayed_dive_site.description);
+	if (displayed_dive_site.notes)
+		ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	if (displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg)
+		ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
 }
 
 void LocationInformationWidget::updateGpsCoordinates()
@@ -769,5 +773,30 @@ void LocationInformationWidget::markChangedWidget(QWidget *w)
 
 void LocationInformationWidget::enableEdition()
 {
+	MainWindow::instance()->dive_list()->setEnabled(false);
+	MainWindow::instance()->setEnabledToolbar(false);
+	ui.diveSiteMessage->show();
+}
 
+void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
+{
+	markChangedWidget(ui.diveSiteCoordinates);
+}
+
+void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
+{
+	if (!same_string(qPrintable(text), currentDs->description))
+		markChangedWidget(ui.diveSiteDescription);
+}
+
+void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
+{
+	if (!same_string(qPrintable(text), currentDs->name))
+		markChangedWidget(ui.diveSiteName);
+}
+
+void LocationInformationWidget::on_diveSiteNotes_textChanged()
+{
+	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  currentDs->notes))
+		markChangedWidget(ui.diveSiteNotes);
 }
