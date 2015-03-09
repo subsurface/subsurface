@@ -134,7 +134,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
 
 #ifdef NO_PRINTING
-	ui.printPlan->hide();
+	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
 
