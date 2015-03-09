@@ -71,20 +71,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// filled from a dive, they are made writeable
 	setEnabled(false);
 
-	ui.location->installEventFilter(this);
-	ui.divemaster->installEventFilter(this);
-	ui.buddy->installEventFilter(this);
-	ui.suit->installEventFilter(this);
-	ui.notes->viewport()->installEventFilter(this);
-	ui.rating->installEventFilter(this);
-	ui.visibility->installEventFilter(this);
-	ui.airtemp->installEventFilter(this);
-	ui.watertemp->installEventFilter(this);
-	ui.dateEdit->installEventFilter(this);
-	ui.timeEdit->installEventFilter(this);
-	ui.tagWidget->installEventFilter(this);
-	ui.DiveType->installEventFilter(this);
-
 	Q_FOREACH (QObject *obj, ui.statisticsTab->children()) {
 		QLabel *label = qobject_cast<QLabel *>(obj);
 		if (label)
