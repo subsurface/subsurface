@@ -232,6 +232,7 @@ public slots:
 	void updateGpsCoordinates(void);
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
+	void resetPallete();
 
 	void on_diveSiteCoordinates_textChanged(const QString& text);
 	void on_diveSiteDescription_textChanged(const QString& text);

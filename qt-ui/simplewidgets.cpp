@@ -740,6 +740,8 @@ void LocationInformationWidget::acceptChanges()
 		setLocationId(currentDs->uuid);
 	}
 	mark_divelist_changed(true);
+	resetPallete();
+	ui.diveSiteNotes->hide();
 	emit informationManagementEnded();
 }
 
@@ -753,6 +755,8 @@ void LocationInformationWidget::rejectChanges()
 	} else {
 		setLocationId(currentDs->uuid);
 	}
+	resetPallete();
+	ui.diveSiteNotes->hide();
 	emit informationManagementEnded();
 }
 
@@ -799,4 +803,13 @@ void LocationInformationWidget::on_diveSiteNotes_textChanged()
 {
 	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  currentDs->notes))
 		markChangedWidget(ui.diveSiteNotes);
+}
+
+void LocationInformationWidget::resetPallete()
+{
+	QPalette p;
+	ui.diveSiteCoordinates->setPalette(p);
+	ui.diveSiteDescription->setPalette(p);
+	ui.diveSiteName->setPalette(p);
+	ui.diveSiteNotes->setPalette(p);
 }
