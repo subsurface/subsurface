@@ -230,13 +230,15 @@ public slots:
 
 	void setLocationId(uint32_t uuid);
 	void updateGpsCoordinates(void);
-
+	void markChangedWidget(QWidget *w);
+	void enableEdition();
 signals:
 	void informationManagementEnded();
 
 private:
 	struct dive_site *currentDs;
 	Ui::LocationInformation ui;
+	bool modified;
 };
 
 bool isGnome3Session();
