@@ -140,10 +140,12 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		}
 
 		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O2\":\"%u.%u%%\"", FRACTION(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"He\":\"%u.%u%%\"", FRACTION(cylinder->gasmix.he.permille, 10));
 		} else {
 			write_attribute(b, "O2", "Air", "");
 		}
+
 		put_string(b, "}");
 	}
 

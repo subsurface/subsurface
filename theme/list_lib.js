@@ -855,7 +855,14 @@ function get_cylinder_HTML(cylinder)
 		cEPressure = Math.round(put_pressure_unit(nonZeroCEPressure)).toFixed(1) + " " + pressure_unit;
 	}
 
-	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' + '<td class="Cyl">' + cSPressure + '</td><td class="Cyl">' + cEPressure + '</td><td class="Cyl">' + cylinder.O2 + '</td></tr>';
+	var pressure_string = cylinder.O2;
+	if (cylinder.O2 !== "Air") {
+		pressure_string = 'O2: ' + cylinder.O2;
+	}
+	if (cylinder.He && cylinder.He !== "0.0%") {
+		pressure_string += ' / He: ' + cylinder.He;
+	}
+	return '<tr><td class="Cyl">' + cylinder.Type + '</td><td class="Cyl">' + cylinder.Size + '</td><td class="Cyl">' + cylinder.WPressure + '</td>' + '<td class="Cyl">' + cSPressure + '</td><td class="Cyl">' + cEPressure + '</td><td class="Cyl">' + pressure_string + '</td></tr>';
 }
 
 /**
@@ -880,7 +887,7 @@ function get_event_value(event)
 	if (event.type == 11 || event.type == 25) { // gas change
 		var he = event.value >> 16;
 		var o2 = event.value & 0xffff;
-		return 'He: ' + he + ' - O2: ' + o2;
+		return 'O2: ' + o2 + ' / He: ' + he;
 	}
 	if (event.type == 23) { // heading
 		return event.value;
