@@ -457,7 +457,7 @@ int parse_file(const char *filename)
 	}
 
 	/* DataTrak/Wlog */
-	if (fmt && (!strcasecmp(fmt + 1, "LOG"))) {
+	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
 		datatrak_import(filename, &dive_table);
 		return 0;
 	}

@@ -16,7 +16,6 @@ unsigned int tmp_2bytes;
 char is_nitrox, is_O2, is_SCR;
 unsigned long tmp_4bytes;
 
-
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
 {
 	return (x << 8) + y;
@@ -24,16 +23,15 @@ static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
 
 static unsigned long four_bytes_to_long(unsigned char x, unsigned char y, unsigned char z, unsigned char t)
 {
-	return (((long)x << 24) + ((long)y << 16) + ((long)z << 8) + ((long)t));
+	return ((long)x << 24) + ((long)y << 16) + ((long)z << 8) + (long)t;
 }
 
-static unsigned char* byte_to_bits(unsigned char byte)
+static unsigned char *byte_to_bits(unsigned char byte)
 {
-	unsigned char i, *bits = (unsigned char*) malloc(8 * sizeof(unsigned char));
+	unsigned char i, *bits = (unsigned char *)malloc(8);
 
-	for (i = 0; i < 8; i++) {
-		bits[i] = (byte & (1 << i));
-	}
+	for (i = 0; i < 8; i++)
+		bits[i] = byte & (1 << i);
 	return bits;
 }
 
@@ -46,30 +44,28 @@ static unsigned char* byte_to_bits(unsigned char byte)
 static time_t date_time_to_ssrfc(unsigned long date, int time)
 {
 	time_t tmp;
-	tmp = ((date - 135140) * 86400) + (time * 60);
+	tmp = (date - 135140) * 86400 + time * 60;
 	return tmp;
 }
 
 static unsigned char to_8859(unsigned char char_cp850)
 {
-	unsigned char outchar;
-	unsigned char char_8859[46] = {0xc7, 0xfc, 0xe9, 0xe2, 0xe4, 0xe0, 0xe5, 0xe7,
-				      0xea, 0xeb, 0xe8, 0xef, 0xee, 0xec, 0xc4, 0xc5,
-				      0xc9, 0xe6, 0xc6, 0xf4, 0xf6, 0xf2, 0xfb, 0xf9,
-				      0xff, 0xd6, 0xdc, 0xf8, 0xa3, 0xd8, 0xd7, 0x66,
-				      0xe1, 0xed, 0xf3, 0xfa, 0xf1, 0xd1, 0xaa, 0xba,
-				      0xbf, 0xae, 0xac, 0xbd, 0xbc, 0xa1};
-	outchar = char_8859[char_cp850 - 0x80];
-	return (outchar);
+	static const unsigned char char_8859[46] = { 0xc7, 0xfc, 0xe9, 0xe2, 0xe4, 0xe0, 0xe5, 0xe7,
+	                                             0xea, 0xeb, 0xe8, 0xef, 0xee, 0xec, 0xc4, 0xc5,
+	                                             0xc9, 0xe6, 0xc6, 0xf4, 0xf6, 0xf2, 0xfb, 0xf9,
+	                                             0xff, 0xd6, 0xdc, 0xf8, 0xa3, 0xd8, 0xd7, 0x66,
+	                                             0xe1, 0xed, 0xf3, 0xfa, 0xf1, 0xd1, 0xaa, 0xba,
+	                                             0xbf, 0xae, 0xac, 0xbd, 0xbc, 0xa1 };
+	return char_8859[char_cp850 - 0x80];
 }
 
 static char *to_utf8(unsigned char *in_string)
 {
-	int outlen, inlen, i=0, j=0;
+	int outlen, inlen, i = 0, j = 0;
 	inlen = strlen(in_string);
-	outlen = (inlen * 2) + 1;
+	outlen = inlen * 2 + 1;
 
-	char *out_string = calloc(outlen, sizeof(char));
+	char *out_string = calloc(outlen, 1);
 	for (i = 0; i < inlen; i++) {
 		if (in_string[i] < 127)
 			out_string[j] = in_string[i];
@@ -82,25 +78,25 @@ static char *to_utf8(unsigned char *in_string)
 		}
 		j++;
 	}
-	out_string[j+1] = '\0';
-	return(out_string);
+	out_string[j + 1] = '\0';
+	return out_string;
 }
 
 /*
  * Subsurface sample structure doesn't support the flags and alarms in the dt .log
  * so will treat them as dc events.
  */
-static struct sample *dtrak_profile(struct dive *dt_dive, FILE* archivo)
+static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 {
 	int i, j = 1, interval, o2percent = dt_dive->cylinder[0].gasmix.o2.permille / 10;
 	struct sample *sample = dt_dive->dc.sample;
 	struct divecomputer *dc = &dt_dive->dc;
 
 	for (i = 1; i <= dt_dive->dc.alloc_samples; i++) {
-		fread(&lector_bytes, sizeof(unsigned char), 2, archivo);
+		fread(&lector_bytes, 1, 2, archivo);
 		interval= 20 * (i + 1);
 		sample = add_sample(sample, interval, dc);
-		sample->depth.mm = ((two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0xFFC0) * 1000 / 410);
+		sample->depth.mm = (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0xFFC0) * 1000 / 410;
 		byte = byte_to_bits(two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0x003F);
 		if (byte[0] != 0)
 			sample->in_deco = true;
@@ -124,50 +120,50 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE* archivo)
 			}
 			j = 0;
 		}
+		// In commit 5f44fdd setpoint replaced po2, so although this is not necesarily CCR dive ...
 		if (is_O2)
-			// In commit 5f44fdd setpoint replaced po2, so although this is not necesarily CCR dive ...
 			sample->setpoint.mbar = calculate_depth_to_mbar(sample->depth.mm, dt_dive->surface_pressure, 0) * o2percent / 100;
 		j++;
 	}
-	return(sample);
+	return sample;
 }
 
 /*
  * Reads the header of a file and returns the header struct
  * If it's not a DATATRAK file returns header zero initalized
  */
-static dtrakheader read_file_header(FILE* archivo)
+static dtrakheader read_file_header(FILE *archivo)
 {
-	dtrakheader fileheader = {0,0,0,0};
+	dtrakheader fileheader = { 0 };
 	const short headerbytes = 12;
-	unsigned char *lector = (unsigned char *) malloc(headerbytes * sizeof(unsigned char));
+	unsigned char *lector = (unsigned char *)malloc(headerbytes);
 
-	fread(lector, sizeof(unsigned char), headerbytes, archivo);
+	fread(lector, 1, headerbytes, archivo);
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
-		puts("Error, el archivo no parece un divelog DATATRAK");
-		return(fileheader);
+		puts("Error: the file does not appear to be a DATATRAK divelog");
+		return fileheader;
 	}
 	fileheader.header = (lector[0] << 8) + lector[1];
 	fileheader.dc_serial_1 = two_bytes_to_int(lector[2], lector[3]);
 	fileheader.dc_serial_2 = two_bytes_to_int(lector[4], lector[5]);
-	fileheader.divesNum = two_bytes_to_int (lector[7], lector[6]);
+	fileheader.divesNum = two_bytes_to_int(lector[7], lector[6]);
 	free(lector);
-	return(fileheader);
+	return fileheader;
 }
 
 
 /*
  * Parses the dive extracting its data and filling a subsurface's dive structure
  */
-static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
+static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 {
 	unsigned char n;
 	int  profile_length;
 	char *tmp_notes_str = NULL;
-	unsigned char	*tmp_string1 = NULL,
-			*locality = NULL,
-			*dive_point = NULL,
-			buffer[1024];
+	unsigned char *tmp_string1 = NULL,
+	              *locality = NULL,
+	              *dive_point = NULL,
+	              buffer[1024];
 	struct divecomputer *dc = &dt_dive->dc;
 
 	is_nitrox = is_O2 = is_SCR = 0;
@@ -176,19 +172,18 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	 * Parse byte to byte till next dive entry
 	 */
 	n = 0;
-	fread(&lector_bytes[n], sizeof(char), 1, archivo);
-	while (lector_bytes[n] != 0xA0) {
-		fread(&lector_bytes[n], sizeof(char), 1, archivo);
-	}
+	fread(&lector_bytes[n], 1, 1, archivo);
+	while (lector_bytes[n] != 0xA0)
+		fread(&lector_bytes[n], 1, 1, archivo);
 
 	/*
 	 * Found dive header 0xA000, verify second byte
 	 */
-	fread(&lector_bytes[n+1], sizeof(char), 1, archivo);
+	fread(&lector_bytes[n+1], 1, 1, archivo);
 	if (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) != 0xA000) {
-		printf("ERROR, Byte = %4x\n", two_bytes_to_int(lector_bytes[0], lector_bytes[1]));
+		printf("Error: byte = %4x\n", two_bytes_to_int(lector_bytes[0], lector_bytes[1]));
 		dt_dive = NULL;
-		return(*dt_dive);
+		return *dt_dive;
 	}
 
 	/*
@@ -203,7 +198,7 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	 */
 	read_bytes(2);
 
-	dt_dive->dc.when = dt_dive->when = (timestamp_t) date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
+	dt_dive->dc.when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
 
 	/*
 	 * Now, Locality, 1st byte is long of string, rest is string
@@ -352,14 +347,14 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->maxdepth.mm = dt_dive->dc.maxdepth.mm = (int32_t) tmp_2bytes * 10;
+		dt_dive->maxdepth.mm = dt_dive->dc.maxdepth.mm = (int32_t)tmp_2bytes * 10;
 
 	/*
 	 * Dive time in minutes.
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->duration.seconds = dt_dive->dc.duration.seconds = (uint32_t) tmp_2bytes * 60;
+		dt_dive->duration.seconds = dt_dive->dc.duration.seconds = (uint32_t)tmp_2bytes * 60;
 
 	/*
 	 * Minimum water temperature in C*100. If unknown, set it to 0K which
@@ -375,7 +370,7 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	 * Air used in bar*100.
 	 */
 	read_bytes(2);
-	if ((tmp_2bytes != 0x7FFF) && (dt_dive->cylinder[0].type.size.mliter))
+	if (tmp_2bytes != 0x7FFF && dt_dive->cylinder[0].type.size.mliter)
 		dt_dive->cylinder[0].gas_used.mliter = dt_dive->cylinder[0].type.size.mliter * (tmp_2bytes / 100.0);
 
 	/*
@@ -458,8 +453,8 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
 		snprintf(buffer, sizeof(buffer), "%s: %s\n",
-				QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
-				tmp_string1);
+		         QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
+		         tmp_string1);
 		tmp_notes_str = strdup(buffer);
 		free(tmp_string1);
 	}
@@ -481,15 +476,14 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
 		int len = snprintf(buffer, sizeof(buffer), "%s%s:\n%s",
-				tmp_notes_str ? tmp_notes_str : "",
-				QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
-				tmp_string1);
-		dt_dive->notes = calloc((len +1), sizeof(char));
+		                   tmp_notes_str ? tmp_notes_str : "",
+		                   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
+		                   tmp_string1);
+		dt_dive->notes = calloc((len +1), 1);
 		dt_dive->notes = memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
-		if (tmp_notes_str != NULL) {
+		if (tmp_notes_str != NULL)
 			free(tmp_notes_str);
-		}
 	}
 
 	/*
@@ -520,56 +514,56 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	 * least in EXAMPLE.LOG file, shipped with the software.
 	 */
 	read_bytes(1);
-	switch(tmp_1byte) {
-		case (0x00):
+	switch (tmp_1byte) {
+		case 0x00:
 			dt_dive->dc.model = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Manually entered dive"));
 			break;
-		case (0x1C):
+		case 0x1C:
 			dt_dive->dc.model = strdup("Aladin Air");
 			break;
-		case (0x1D):
+		case 0x1D:
 			dt_dive->dc.model = strdup("Spiro Monitor 2 plus");
 			break;
-		case (0x1E):
+		case 0x1E:
 			dt_dive->dc.model = strdup("Aladin Sport");
 			break;
-		case (0x1F):
+		case 0x1F:
 			dt_dive->dc.model = strdup("Aladin Pro");
 			break;
-		case (0x34):
+		case 0x34:
 			dt_dive->dc.model = strdup("Aladin Air X");
 			break;
-		case (0x3D):
+		case 0x3D:
 			dt_dive->dc.model = strdup("Spiro Monitor 2 plus");
 			break;
-		case (0x3F):
+		case 0x3F:
 			dt_dive->dc.model = strdup("Mares Genius");
 			break;
-		case (0x44):
+		case 0x44:
 			dt_dive->dc.model = strdup("Aladin Air X");
 			break;
-		case (0x48):
+		case 0x48:
 			dt_dive->dc.model = strdup("Spiro Monitor 3 Air");
 			break;
-		case (0xA4):
+		case 0xA4:
 			dt_dive->dc.model = strdup("Aladin Air X O2");
 			break;
-		case (0xB1):
+		case 0xB1:
 			dt_dive->dc.model = strdup("Citizen Hyper Aqualand");
 			break;
-		case (0xB2):
+		case 0xB2:
 			dt_dive->dc.model = strdup("Citizen ProMaster");
 			break;
-		case (0xB3):
+		case 0xB3:
 			dt_dive->dc.model = strdup("Mares Guardian");
 			break;
-		case (0xBC):
+		case 0xBC:
 			dt_dive->dc.model = strdup("Aladin Air X Nitrox");
 			break;
-		case (0xF4):
+		case 0xF4:
 			dt_dive->dc.model = strdup("Aladin Air X Nitrox");
 			break;
-		case (0xFF):
+		case 0xFF:
 			dt_dive->dc.model = strdup("Aladin Pro Nitrox");
 			break;
 		default:
@@ -594,7 +588,6 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 	read_bytes(2);
 	profile_length = tmp_2bytes;
 	if (profile_length != 0) {
-
 		/*
 		 * 8 x 2 bytes for the tissues saturation useless for subsurface
 		 * and other 6 bytes without known use
@@ -613,7 +606,7 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 			read_bytes(1);
 			if (is_nitrox) {
 				dt_dive->cylinder[0].gasmix.o2.permille =
-						(tmp_1byte & 0x0F ? 20.0 + 2 * (tmp_1byte & 0x0F) : 21.0) * 10;
+					(tmp_1byte & 0x0F ? 20.0 + 2 * (tmp_1byte & 0x0F) : 21.0) * 10;
 			} else {
 				dt_dive->cylinder[0].gasmix.o2.permille = tmp_1byte * 10;
 				read_bytes(1)  // Jump over one byte, unknown use
@@ -624,7 +617,7 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 		 * 2bytes per sample plus another one each three samples. Also includes the
 		 * bytes jumped over (22) and the nitrox (2) or O2 (3).
 		 */
-		int samplenum = is_O2 ? ((profile_length - 25) * 3 / 8) : ((profile_length - 24) * 3 / 7);
+		int samplenum = is_O2 ? (profile_length - 25) * 3 / 8 : (profile_length - 24) * 3 / 7;
 
 		dc->events = calloc(samplenum, sizeof(struct event));
 		dc->alloc_samples = samplenum;
@@ -646,17 +639,17 @@ static struct dive dt_dive_parser(FILE* archivo, struct dive *dt_dive)
 		dt_dive->cylinder[0].end.mbar = dt_dive->cylinder[0].start.mbar -
 			((dt_dive->cylinder[0].gas_used.mliter / dt_dive->cylinder[0].type.size.mliter) * 1000);
 	}
-	return(*dt_dive);
+	return *dt_dive;
 }
 
 void datatrak_import(const char *file, struct dive_table *table)
 {
-	FILE* archivo;
-	dtrakheader *fileheader = (dtrakheader *) malloc(sizeof(dtrakheader));
+	FILE *archivo;
+	dtrakheader *fileheader = (dtrakheader *)malloc(sizeof(dtrakheader));
 	int i = 0;
 
-	if ((archivo = fopen(file, "rb")) == NULL) {
-		puts("Error, couldn't open the file");
+	if ((archivo = subsurface_fopen(file, "rb")) == NULL) {
+		puts("Error: couldn't open the file");
 		return;
 	}
 
@@ -666,12 +659,12 @@ void datatrak_import(const char *file, struct dive_table *table)
 	*fileheader = read_file_header(archivo);
 
 	if (fileheader->header == 0)
-		puts("Error. Not a DATATRAK/WLOG file\n");
+		puts("Error: not a DATATRAK/WLOG file\n");
 	while (i < fileheader->divesNum) {
 		struct dive *ptdive = alloc_dive();
 		*ptdive = dt_dive_parser(archivo, ptdive);
 		if (!ptdive)
-			puts("Error, no dive\n");
+			puts("Error: no dive\n");
 		i++;
 		record_dive(ptdive);
 	}
