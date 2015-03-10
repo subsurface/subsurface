@@ -698,12 +698,20 @@ void LocationInformationWidget::setLocationId(uint32_t uuid)
 	displayed_dive_site = *currentDs;
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
+	else
+		ui.diveSiteName->clear();
 	if (displayed_dive_site.description)
 		ui.diveSiteDescription->setText(displayed_dive_site.description);
+	else
+		ui.diveSiteDescription->clear();
 	if (displayed_dive_site.notes)
 		ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	else
+		ui.diveSiteNotes->clear();
 	if (displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg)
 		ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	else
+		ui.diveSiteCoordinates->clear();
 }
 
 void LocationInformationWidget::updateGpsCoordinates()
@@ -740,9 +748,7 @@ void LocationInformationWidget::acceptChanges()
 		setLocationId(currentDs->uuid);
 	}
 	mark_divelist_changed(true);
-	resetPallete();
-	ui.diveSiteNotes->hide();
-	MainWindow::instance()->setEnabledToolbar(true);
+	resetState();
 	emit informationManagementEnded();
 }
 
@@ -756,9 +762,7 @@ void LocationInformationWidget::rejectChanges()
 	} else {
 		setLocationId(currentDs->uuid);
 	}
-	resetPallete();
-	ui.diveSiteNotes->hide();
-	MainWindow::instance()->setEnabledToolbar(true);
+	resetState();
 	emit informationManagementEnded();
 }
 
@@ -776,6 +780,14 @@ void LocationInformationWidget::markChangedWidget(QWidget *w)
 	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
 	w->setPalette(p);
 	modified = true;
+}
+
+void LocationInformationWidget::resetState()
+{
+	modified = false;
+	resetPallete();
+	ui.diveSiteMessage->hide();
+	MainWindow::instance()->setEnabledToolbar(true);
 }
 
 void LocationInformationWidget::enableEdition()
