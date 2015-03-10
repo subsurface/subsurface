@@ -805,6 +805,14 @@ var points;  //reference to the samples array of the shown dive.
 var ZERO_C_IN_MKELVIN = 273150;
 var plot1;
 
+function firstNonZero()
+{
+	for(var i = 0; i <= items[dive_id].samples.length-1; i++){
+		if(items[dive_id].samples[i][2] !== 0)
+			return items[dive_id].samples[i][2];
+	}
+}
+
 function lastNonZero()
 {
 	for(var i = items[dive_id].samples.length-1; i >= 0; i--){
@@ -847,7 +855,8 @@ function get_cylinder_HTML(cylinder)
 	var cEPressure = cylinder.EPressure;
 
 	if (cSPressure === "--") {
-		cSPressure = Math.round(put_pressure_unit(items[dive_id].samples[0][2])).toFixed(1) + " " + pressure_unit;
+		var nonZeroCSPressure = firstNonZero();
+		cSPressure = Math.round(put_pressure_unit(nonZeroCSPressure)).toFixed(1) + " " + pressure_unit;
 	}
 
 	if (cEPressure === "--") {
