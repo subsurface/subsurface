@@ -172,6 +172,7 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/modeldelegates.cpp
 	qt-ui/models.cpp
 	qt-ui/metrics.cpp
+	qt-ui/notificationwidget.cpp
 	qt-ui/preferences.cpp
 	qt-ui/printdialog.cpp
 	qt-ui/printlayout.cpp
