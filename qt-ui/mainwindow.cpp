@@ -327,14 +327,15 @@ void MainWindow::on_actionHash_images_triggered()
 	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
 	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
 	QStringList dirnames;
+	QList<QFuture<void> > futures;
 	if (dialog.exec())
 		dirnames = dialog.selectedFiles();
 	if (dirnames.isEmpty())
 		return;
 	foreach (QString dir, dirnames) {
-		QtConcurrent::run(learnImages, QDir(dir), 10, false);
+		futures << QtConcurrent::run(learnImages, QDir(dir), 10, false);
 	}
-
+	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
 }
 
 ProfileWidget2 *MainWindow::graphics() const

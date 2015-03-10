@@ -870,6 +870,4 @@ void learnImages(const QDir dir, int max_recursions, bool recursed)
 	}
 
 	QtConcurrent::blockingMap(files, hashFile);
-	if (!recursed)
-		DivePictureModel::instance()->updateDivePictures();
 }

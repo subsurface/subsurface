@@ -4,6 +4,7 @@
 #include "divelist.h"
 #include <QtConcurrentMap>
 #include <QtConcurrentRun>
+#include <QFuture>
 #include <QDir>
 #include <QCryptographicHash>
 #include <mainwindow.h>
@@ -51,6 +52,14 @@ SPixmap scaleImages(picturepointer picture)
 		ret.second = p;
 	}
 	return ret;
+}
+
+void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void> > futures)
+{
+	Q_FOREACH (QFuture<void> f, futures) {
+		f.waitForFinished();
+	}
+	updateDivePictures();
 }
 
 void DivePictureModel::updateDivePictures()
