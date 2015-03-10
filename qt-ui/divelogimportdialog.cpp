@@ -514,7 +514,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 
 	while (rows < 10 && !f.atEnd()) {
-		QString currLine = f.readLine();
+		QString currLine = f.readLine().trimmed();
 		currColumns = currLine.split(separator);
 		fileColumns.append(currColumns);
 		rows += 1;
