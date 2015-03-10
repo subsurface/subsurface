@@ -784,7 +784,8 @@ void LocationInformationWidget::enableEdition()
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
 {
-	markChangedWidget(ui.diveSiteCoordinates);
+	if (!same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg)))
+		markChangedWidget(ui.diveSiteCoordinates);
 }
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
