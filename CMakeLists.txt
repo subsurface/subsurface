@@ -152,6 +152,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	devicedetails.cpp
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
+	divesitehelpers.cpp
 )
 
 #the interface, in C++
@@ -265,6 +266,9 @@ MACRO(test NAME FILE)
 ENDMACRO()
 
 ENABLE_TESTING()
+ADD_DEFINITIONS(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
+ADD_DEFINITIONS(-g)
 test(TestUnitConversion testunitconversion.cpp)
 test(TestProfile testprofile.cpp)
 test(TestGpsCoords testgpscoords.cpp)
+test(TestParse testparse.cpp)
