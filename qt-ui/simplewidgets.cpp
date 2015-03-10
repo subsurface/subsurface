@@ -742,6 +742,7 @@ void LocationInformationWidget::acceptChanges()
 	mark_divelist_changed(true);
 	resetPallete();
 	ui.diveSiteNotes->hide();
+	MainWindow::instance()->setEnabledToolbar(true);
 	emit informationManagementEnded();
 }
 
@@ -757,6 +758,7 @@ void LocationInformationWidget::rejectChanges()
 	}
 	resetPallete();
 	ui.diveSiteNotes->hide();
+	MainWindow::instance()->setEnabledToolbar(true);
 	emit informationManagementEnded();
 }
 
