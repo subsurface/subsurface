@@ -670,17 +670,21 @@ void MultiFilter::closeFilter()
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
 {
 	ui.setupUi(this);
-	ui.diveSiteMessage->setText("You are editing the Dive Site");
 	ui.diveSiteMessage->setCloseButtonVisible(false);
-	ui.diveSiteMessage->hide();
+	ui.diveSiteMessage->show();
 
-	QAction *action = new QAction(tr("Apply changes"), this);
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
-	ui.diveSiteMessage->addAction(action);
+	// create the three buttons and only show the close button for now
+	closeAction = new QAction(tr("Close"), this);
+	connect(closeAction, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
 
-	action = new QAction(tr("Discard changes"), this);
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
-	ui.diveSiteMessage->addAction(action);
+	acceptAction = new QAction(tr("Apply changes"), this);
+	connect(acceptAction, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
+
+	rejectAction = new QAction(tr("Discard changes"), this);
+	connect(rejectAction, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
+
+	ui.diveSiteMessage->setText(tr("Dive site management"));
+	ui.diveSiteMessage->addAction(closeAction);
 }
 
 void LocationInformationWidget::setLocationId(uint32_t uuid)
@@ -786,15 +790,24 @@ void LocationInformationWidget::resetState()
 {
 	modified = false;
 	resetPallete();
-	ui.diveSiteMessage->hide();
+	MainWindow::instance()->dive_list()->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
+	ui.diveSiteMessage->setText(tr("Dive site management"));
+	ui.diveSiteMessage->addAction(closeAction);
+	ui.diveSiteMessage->removeAction(acceptAction);
+	ui.diveSiteMessage->removeAction(rejectAction);
+	ui.diveSiteMessage->setCloseButtonVisible(false);
 }
 
 void LocationInformationWidget::enableEdition()
 {
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
-	ui.diveSiteMessage->show();
+	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
+	ui.diveSiteMessage->removeAction(closeAction);
+	ui.diveSiteMessage->addAction(acceptAction);
+	ui.diveSiteMessage->addAction(rejectAction);
+	ui.diveSiteMessage->setCloseButtonVisible(false);
 }
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)

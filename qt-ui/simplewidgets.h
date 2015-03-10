@@ -246,6 +246,7 @@ private:
 	struct dive_site *currentDs;
 	Ui::LocationInformation ui;
 	bool modified;
+	QAction *closeAction, *acceptAction, *rejectAction;
 };
 
 bool isGnome3Session();
