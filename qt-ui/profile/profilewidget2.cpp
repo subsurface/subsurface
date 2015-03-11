@@ -1393,21 +1393,16 @@ void ProfileWidget2::changeGas()
 
 	if (seconds == 0) {
 		bool eventRemoved = false;
-		QString tempStr = "gaschange";
-		char *gaschangeStr = tempStr.toUtf8().data();
-
-		struct event *gasChangeEvent = get_next_event(current_dc->events, gaschangeStr);
-		struct event *temp;
-
-		while (gasChangeEvent) {
-			temp = get_next_event(current_dc->events, gaschangeStr);
+		struct event *gasChangeEvent = current_dc->events;
+		while ((gasChangeEvent = get_next_event(gasChangeEvent, "gaschange")) != NULL) {
 			if (gasChangeEvent->time.seconds == 0) {
 				remove_event(gasChangeEvent);
 				eventRemoved = true;
+				gasChangeEvent = current_dc->events;
+			} else {
+				gasChangeEvent = gasChangeEvent->next;
 			}
-			gasChangeEvent = temp;
 		}
-
 		if (eventRemoved) {
 			mark_divelist_changed(true);
 			replot();
