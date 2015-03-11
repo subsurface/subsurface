@@ -1391,6 +1391,29 @@ void ProfileWidget2::changeGas()
 	struct gasmix gasmix;
 	int seconds = timeAxis->valueAt(scenePos);
 
+	if (seconds == 0) {
+		bool eventRemoved = false;
+		QString tempStr = "gaschange";
+		char *gaschangeStr = tempStr.toUtf8().data();
+
+		struct event *gasChangeEvent = get_next_event(current_dc->events, gaschangeStr);
+		struct event *temp;
+
+		while (gasChangeEvent) {
+			temp = get_next_event(current_dc->events, gaschangeStr);
+			if (gasChangeEvent->time.seconds == 0) {
+				remove_event(gasChangeEvent);
+				eventRemoved = true;
+			}
+			gasChangeEvent = temp;
+		}
+
+		if (eventRemoved) {
+			mark_divelist_changed(true);
+			replot();
+		}
+	}
+
 	validate_gas(gas.toUtf8().constData(), &gasmix);
 	QRegExp rx("\\(\\D*(\\d+)");
 	int tank;
