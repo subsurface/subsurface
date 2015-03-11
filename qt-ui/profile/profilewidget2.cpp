@@ -1391,6 +1391,9 @@ void ProfileWidget2::changeGas()
 	struct gasmix gasmix;
 	int seconds = timeAxis->valueAt(scenePos);
 
+	// no gas changes before the dive starts
+	seconds = seconds > 0 ?: 0;
+
 	if (seconds == 0) {
 		bool eventRemoved = false;
 		struct event *gasChangeEvent = current_dc->events;
