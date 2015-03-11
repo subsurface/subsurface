@@ -336,7 +336,7 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	return best;
 }
 
-struct event *get_next_event(struct event *event, char *name)
+struct event *get_next_event(struct event *event, const char *name)
 {
 	if (!name || !*name)
 		return NULL;
