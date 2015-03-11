@@ -733,6 +733,8 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 
 void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 {
+	if (zoomLevel)
+		return;
 	QGraphicsView::mousePressEvent(event);
 	if (currentState == PLAN)
 		shouldCalculateMaxTime = false;
@@ -740,18 +742,24 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 
 void ProfileWidget2::divePlannerHandlerClicked()
 {
+	if (zoomLevel)
+		return;
 	shouldCalculateMaxDepth = false;
 	replot();
 }
 
 void ProfileWidget2::divePlannerHandlerReleased()
 {
+	if (zoomLevel)
+		return;
 	shouldCalculateMaxDepth = true;
 	replot();
 }
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
+	if (zoomLevel)
+		return;
 	QGraphicsView::mouseReleaseEvent(event);
 	if (currentState == PLAN) {
 		shouldCalculateMaxTime = true;
