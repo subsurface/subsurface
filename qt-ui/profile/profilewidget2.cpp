@@ -1394,24 +1394,16 @@ void ProfileWidget2::changeGas()
 	// no gas changes before the dive starts
 	seconds = seconds > 0 ?: 0;
 
-	if (seconds == 0) {
-		bool eventRemoved = false;
-		struct event *gasChangeEvent = current_dc->events;
-		while ((gasChangeEvent = get_next_event(gasChangeEvent, "gaschange")) != NULL) {
-			if (gasChangeEvent->time.seconds == 0) {
-				remove_event(gasChangeEvent);
-				eventRemoved = true;
-				gasChangeEvent = current_dc->events;
-			} else {
-				gasChangeEvent = gasChangeEvent->next;
-			}
-		}
-		if (eventRemoved) {
-			mark_divelist_changed(true);
-			replot();
+	// if there is a gas change at this time stamp, remove it before adding the new one
+	struct event *gasChangeEvent = current_dc->events;
+	while ((gasChangeEvent = get_next_event(gasChangeEvent, "gaschange")) != NULL) {
+		if (gasChangeEvent->time.seconds == seconds) {
+			remove_event(gasChangeEvent);
+			gasChangeEvent = current_dc->events;
+		} else {
+			gasChangeEvent = gasChangeEvent->next;
 		}
 	}
-
 	validate_gas(gas.toUtf8().constData(), &gasmix);
 	QRegExp rx("\\(\\D*(\\d+)");
 	int tank;
