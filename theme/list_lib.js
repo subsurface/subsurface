@@ -994,19 +994,93 @@ function get_status_HTML(dive)
 	       '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CNS: </td><td>' + dive.cns + '</td></tr></table>';
 };
 
-function get_dive_photos(dive)
+/**
+* Dive Photo View
+*/
+
+var success;
+var error;
+var missing_ids;
+
+function show_loaded_photos()
 {
+	//dive photos in the current dive
+	var dive = items[dive_id];
+	var slider = "";
+	document.getElementById("divephotos").style.display = 'block';
+	for (var i = 0; i < dive.photos.length; i++) {
+		slider += '<img src="' + location.pathname + '_files/photos/' + dive.photos[i].filename + '" alt="" height="240" width="240">';
+	}
+	document.getElementById("slider").innerHTML = slider;
+}
+
+function remove_missing_photos()
+{
+	//dive photos in the current dive
+	var dive = items[dive_id];
+	var actually_removed = 0;
+
+	console.log(missing_ids.length);
+	for(i = 0; i < missing_ids.length; i++){
+		dive.photos.splice(missing_ids[i] - actually_removed, 1);
+		actually_removed++;
+	}
+}
+
+function check_loaded_photos()
+{
+	//hide the photos div if all photos are missing
+	if (error >= items[dive_id].photos.length) {
+		document.getElementById("divephotos").style.display = 'none';
+		return;
+	}
+
+	//remove missing photos from the list
+	remove_missing_photos();
+
+	//view all remaining photos
+	show_loaded_photos();
+}
+
+function check_loading_finished()
+{
+	//if all images wasn't loaded yet
+	if (success + error < items[dive_id].photos.length)
+		return;
+
+	check_loaded_photos();
+}
+
+function load_photo(url, i) {
+	var img = new Image();
+	img.onload = function() {
+		success++;
+		check_loading_finished();
+	};
+	img.onerror = function() {
+		error++;
+		missing_ids.push(i);
+		check_loading_finished();
+	};
+	img.src = url;
+}
+
+function load_all_photos(dive)
+{
+	//init
+	success = 0;
+	error = 0;
+	missing_ids = new Array();
+
+	//exit if no photos in this dive.
 	if (!dive.photos || dive.photos.length <= 0) {
 		document.getElementById("divephotos").style.display = 'none';
 		return "";
 	}
-	var slider = "";
-	document.getElementById("divephotos").style.display = 'block';
+
 	for (var i = 0; i < dive.photos.length; i++) {
-		slider += '<img src="' + location.pathname +
-			  '_files/photos/' + dive.photos[i].filename + '" alt="" height="240" width="240">';
+		load_photo(location.pathname + '_files/photos/' + dive.photos[i].filename, i);
 	}
-	return slider;
 }
 
 function prev_photo()
@@ -1017,7 +1091,7 @@ function prev_photo()
 		items[dive_id].photos[i] = items[dive_id].photos[i + 1]
 	}
 	items[dive_id].photos[i] = temp;
-	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
+	show_loaded_photos();
 }
 
 function next_photo()
@@ -1028,9 +1102,12 @@ function next_photo()
 		items[dive_id].photos[i] = items[dive_id].photos[i - 1]
 	}
 	items[dive_id].photos[0] = temp;
-	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
+	show_loaded_photos();
 }
 
+/**
+* Helper functions
+*/
 function mkelvin_to_C(mkelvin)
 {
 	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
@@ -1266,7 +1343,7 @@ function showDiveDetails(dive)
 	document.getElementById("dive_equipment").innerHTML += get_weights_HTML(items[dive_id]);
 	document.getElementById("bookmarks").innerHTML = get_bookmarks_HTML(items[dive_id]);
 	document.getElementById("divestats").innerHTML = get_status_HTML(items[dive_id]);
-	document.getElementById("slider").innerHTML = get_dive_photos(items[dive_id]);
+	load_all_photos(items[dive_id]);
 	setDiveTitle(items[dive_id]);
 
 	//hide the list of dives and show the canvas.
