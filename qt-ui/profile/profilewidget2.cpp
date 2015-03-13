@@ -1391,10 +1391,10 @@ void ProfileWidget2::changeGas()
 
 	// backup the things on the dataModel, since we will clear that out.
 	struct gasmix gasmix;
-	int seconds = timeAxis->valueAt(scenePos);
+	qreal sec_val = timeAxis->valueAt(scenePos);
 
 	// no gas changes before the dive starts
-	seconds = seconds > 0 ?: 0;
+	unsigned int seconds = (sec_val < 0.0) ? 0 : (unsigned int)sec_val;
 
 	// if there is a gas change at this time stamp, remove it before adding the new one
 	struct event *gasChangeEvent = current_dc->events;
