@@ -1069,6 +1069,7 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
+	clearHandlers();
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
