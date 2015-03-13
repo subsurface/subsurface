@@ -329,7 +329,7 @@ void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_d
 		put_HTML_samples(b, dive);
 		put_HTML_bookmarks(b, dive);
 		write_dive_status(b, dive);
-		if (photos_dir)
+		if (photos_dir && strcmp(photos_dir, ""))
 			save_photos(b, photos_dir, dive);
 		write_divecomputers(b, dive);
 	}

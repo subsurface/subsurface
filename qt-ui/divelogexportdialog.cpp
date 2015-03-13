@@ -56,6 +56,9 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 	if (settings.contains("listOnly")) {
 		ui->exportListOnly->setChecked(settings.value("listOnly").toBool());
 	}
+	if (settings.contains("exportPhotos")) {
+		ui->exportPhotos->setChecked(settings.value("exportPhotos").toBool());
+	}
 	settings.endGroup();
 }
 
@@ -105,8 +108,12 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	QString json_settings = exportFiles + QDir::separator() + "settings.js";
 	QString translation = exportFiles + QDir::separator() + "translation.js";
 	QString stat_file = exportFiles + QDir::separator() + "stat.js";
-	QString photos_directory = exportFiles + QDir::separator() + "photos" + QDir::separator();
-	mainDir.mkdir(photos_directory);
+
+	QString photos_directory;
+	if (ui->exportPhotos->isChecked()) {
+		photos_directory = exportFiles + QDir::separator() + "photos" + QDir::separator();
+		mainDir.mkdir(photos_directory);
+	}
 	exportFiles += "/";
 
 	exportHTMLsettings(json_settings);
@@ -143,6 +150,7 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	settings.setValue("subsurfaceNumbers", ui->exportSubsurfaceNumber->isChecked());
 	settings.setValue("yearlyStatistics", ui->exportStatistics->isChecked());
 	settings.setValue("listOnly", ui->exportListOnly->isChecked());
+	settings.setValue("exportPhotos", ui->exportPhotos->isChecked());
 	settings.endGroup();
 
 	QString fontSize = ui->fontSizeSelection->currentText();

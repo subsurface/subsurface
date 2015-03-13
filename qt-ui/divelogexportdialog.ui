@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>423</height>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -233,9 +233,9 @@
           </layout>
          </widget>
          <widget class="QGroupBox" name="groupBox">
-           <property name="enabled">
-             <bool>false</bool>
-           </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -338,10 +338,20 @@
             </attribute>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="exportListOnly">
             <property name="text">
              <string>Export list only</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="exportPhotos">
+            <property name="text">
+             <string>Export photos</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -363,6 +373,9 @@
           <bool>false</bool>
          </property>
          <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="fontLabel">
             <property name="text">
@@ -513,20 +526,40 @@
    </hints>
   </connection>
   <connection>
-    <sender>exportCSV</sender>
-    <signal>toggled(bool)</signal>
-    <receiver>groupBox</receiver>
-    <slot>setEnabled(bool)</slot>
+   <sender>exportCSV</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>exportCSVDetails</sender>
-    <signal>toggled(bool)</signal>
-    <receiver>groupBox</receiver>
-    <slot>setEnabled(bool)</slot>
+   <sender>exportCSVDetails</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="exportGroup"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="exportGroup"/>
  </buttongroups>
 </ui>
