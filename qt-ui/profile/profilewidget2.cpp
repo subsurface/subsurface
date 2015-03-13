@@ -1053,6 +1053,7 @@ void ProfileWidget2::clearHandlers()
 	if (handles.count()) {
 		foreach (DiveHandler *handle, handles) {
 			scene()->removeItem(handle);
+			delete handle;
 		}
 		handles.clear();
 	}
