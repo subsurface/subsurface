@@ -303,11 +303,12 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	setOffset(newDateTime.toTime_t() - dcImageEpoch);
 }
 
-ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent) : QDialog(parent), m_amount(0)
+ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) : QDialog(parent), m_amount(0), fileNames(fileNames)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
+	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime &)), this, SLOT(timeEditChanged(const QTime &)));
 	dcImageEpoch = (time_t)0;
 }
 
@@ -325,6 +326,41 @@ void ShiftImageTimesDialog::setOffset(time_t offset)
 		offset *= -1;
 	}
 	ui.timeEdit->setTime(QTime(offset / 3600, (offset % 3600) / 60, offset % 60));
+}
+
+void ShiftImageTimesDialog::updateInvalid()
+{
+	timestamp_t timestamp;
+	QDateTime time;
+	bool allValid = true;
+	ui.warningLabel->hide();
+	ui.invalidLabel->hide();
+	ui.invalidLabel->clear();
+
+	Q_FOREACH (const QString &fileName, fileNames) {
+		if (picture_check_valid(fileName.toUtf8().data(), m_amount))
+			continue;
+
+		// We've found invalid image
+		picture_get_timestamp(fileName.toUtf8().data(), &timestamp);
+		dcImageEpoch = timestamp;
+		time.setTime_t(timestamp + m_amount);
+		ui.invalidLabel->setText(ui.invalidLabel->text() + fileName + " " + time.toString() + "\n");
+		allValid = false;
+	}
+
+	if (!allValid){
+		ui.warningLabel->show();
+		ui.invalidLabel->show();
+	}
+}
+
+void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
+{
+	m_amount = time.hour() * 3600 + time.minute() * 60;
+	if (ui.backwards->isChecked())
+			m_amount *= -1;
+	updateInvalid();
 }
 
 bool isGnome3Session()

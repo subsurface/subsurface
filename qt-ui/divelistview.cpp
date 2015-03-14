@@ -850,9 +850,10 @@ void DiveListView::loadImages()
 		return;
 
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
-	ShiftImageTimesDialog shiftDialog(this);
+	ShiftImageTimesDialog shiftDialog(this, fileNames);
 	shiftDialog.setOffset(lastImageTimeOffset());
-	shiftDialog.exec();
+	if (!shiftDialog.exec())
+		return;
 	updateLastImageTimeOffset(shiftDialog.amount());
 
 	Q_FOREACH (const QString &fileName, fileNames) {
@@ -861,7 +862,7 @@ void DiveListView::loadImages()
 		for_each_dive (j, dive) {
 			if (!dive->selected)
 				continue;
-			dive_create_picture(dive, qstrdup(fileName.toUtf8().data()), shiftDialog.amount());
+			dive_create_picture(dive, copy_string(fileName.toUtf8().data()), shiftDialog.amount());
 		}
 	}
 

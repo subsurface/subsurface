@@ -97,7 +97,7 @@ private:
 class ShiftImageTimesDialog : public QDialog {
 	Q_OBJECT
 public:
-	explicit ShiftImageTimesDialog(QWidget *parent);
+	explicit ShiftImageTimesDialog(QWidget *parent, QStringList fileNames);
 	time_t amount() const;
 	void setOffset(time_t offset);
 private
@@ -105,8 +105,11 @@ slots:
 	void buttonClicked(QAbstractButton *button);
 	void syncCameraClicked();
 	void dcDateTimeChanged(const QDateTime &);
+	void timeEditChanged(const QTime &time);
+	void updateInvalid();
 
 private:
+	QStringList fileNames;
 	Ui::ShiftImageTimesDialog ui;
 	time_t m_amount;
 	time_t dcImageEpoch;
