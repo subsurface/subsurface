@@ -337,7 +337,7 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 	return xslt;
 }
 
-extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp)
+extern "C" void picture_load_exif_data(struct picture *p)
 {
 	EXIFInfo exif;
 	memblock mem;
@@ -346,12 +346,27 @@ extern "C" void picture_load_exif_data(struct picture *p, timestamp_t *timestamp
 		goto picture_load_exit;
 	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
 		goto picture_load_exit;
-	*timestamp = exif.epoch();
 	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
 	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
 
 picture_load_exit:
 	free(mem.buffer);
+	return;
+}
+
+extern "C" void picture_get_timestamp(char *filename, timestamp_t *t)
+{
+	EXIFInfo exif;
+	memblock mem;
+	int retval;
+
+	if (readfile(filename, &mem) <= 0)
+		return;
+	retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
+	free(mem.buffer);
+	if (retval != PARSE_EXIF_SUCCESS)
+		return;
+	*t = exif.epoch();
 	return;
 }
 

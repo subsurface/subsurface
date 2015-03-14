@@ -2884,22 +2884,47 @@ static bool new_picture_for_dive(struct dive *d, char *filename)
 // only add pictures that have timestamps between 30 minutes before the dive and
 // 30 minutes after the dive ends
 #define D30MIN (30 * 60)
+bool dive_check_picture_time(struct dive *d, char *filename, int shift_time)
+{
+	timestamp_t timestamp = 0;
+	picture_get_timestamp(filename, &timestamp);
+	offset_t offset;
+	if (timestamp) {
+		offset.seconds = timestamp - d->when + shift_time;
+		if (offset.seconds > -D30MIN && offset.seconds < (int)d->duration.seconds + D30MIN) {
+			// this picture belongs to this dive
+			return true;
+		}
+	}
+	return false;
+}
+
+bool picture_check_valid(char *filename, int shift_time)
+{
+	bool result = false;
+	int i;
+	struct dive *d;
+
+	for_each_dive (i, d)
+		if (d->selected)
+			result = result || dive_check_picture_time(d, filename, shift_time);
+	return result;
+}
+
 void dive_create_picture(struct dive *d, char *filename, int shift_time)
 {
 	timestamp_t timestamp;
 	if (!new_picture_for_dive(d, filename))
 		return;
+	if (!dive_check_picture_time(d, filename, shift_time))
+		return;
+
 	struct picture *p = alloc_picture();
 	p->filename = filename;
-	picture_load_exif_data(p, &timestamp);
-	if (timestamp) {
-		p->offset.seconds = timestamp - d->when + shift_time;
-		if (p->offset.seconds < -D30MIN || p->offset.seconds > (int)d->duration.seconds + D30MIN) {
-			// this picture doesn't belong to this dive
-			free(p);
-			return;
-		}
-	}
+	picture_get_timestamp(filename, &timestamp);
+	p->offset.seconds = timestamp - d->when + shift_time;
+	picture_load_exif_data(p);
+
 	dive_add_picture(d, p);
 	dive_set_geodata_from_picture(d, p);
 }
@@ -2940,6 +2965,7 @@ static void picture_free(struct picture *p)
 	free(p->hash);
 	free(p);
 }
+
 void dive_remove_picture(char *filename)
 {
 	struct picture **ep = &current_dive->picture_list;

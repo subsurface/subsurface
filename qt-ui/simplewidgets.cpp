@@ -272,9 +272,7 @@ void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
 
 void ShiftImageTimesDialog::syncCameraClicked()
 {
-	struct memblock mem;
-	EXIFInfo exiv;
-	int retval;
+	timestamp_t timestamp;
 	QPixmap picture;
 	QDateTime dcDateTime = QDateTime();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
@@ -290,13 +288,9 @@ void ShiftImageTimesDialog::syncCameraClicked()
 
 	scene->addPixmap(picture.scaled(ui.DCImage->size()));
 	ui.DCImage->setScene(scene);
-	if (readfile(fileNames.at(0).toUtf8().data(), &mem) <= 0)
-		return;
-	retval = exiv.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
-	free(mem.buffer);
-	if (retval != PARSE_EXIF_SUCCESS)
-		return;
-	dcImageEpoch = exiv.epoch();
+
+	picture_get_timestamp(fileNames.at(0).toUtf8().data(), &timestamp);
+	dcImageEpoch = timestamp;
 	dcDateTime.setTime_t(dcImageEpoch);
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
