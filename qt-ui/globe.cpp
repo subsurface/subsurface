@@ -294,7 +294,7 @@ void GlobeGPS::zoomOutForNoGPS()
 	// we show a dive with GPS location we need to zoom in again
 	if (fixZoomTimer->isActive())
 		fixZoomTimer->stop();
-	setZoom(1200, Marble::Automatic);
+	setZoom(0, Marble::Automatic);
 	if (!needResetZoom) {
 		needResetZoom = true;
 		currentZoomLevel = zoom();
