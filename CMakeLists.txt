@@ -259,7 +259,7 @@ ADD_DEPENDENCIES(subsurface_generated_ui version)
 ADD_DEPENDENCIES(subsurface_corelib version)
 
 MACRO(test NAME FILE)
-    ADD_EXECUTABLE(${NAME} tests/${FILE})
+    ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
     TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer)
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()
