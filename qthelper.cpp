@@ -304,9 +304,12 @@ int dive_getUniqID(struct dive *d)
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {
 	QFile f(QLatin1String(":/xslt/") + (const char *)uri);
-	if (!f.open(QIODevice::ReadOnly))
-		return NULL;
-
+	if (!f.open(QIODevice::ReadOnly)) {
+		if (verbose > 0) {
+			qDebug() << "cannot open stylesheet" << QLatin1String(":/xslt/") + (const char *)uri;
+			return NULL;
+		}
+	}
 	/* Load and parse the data */
 	QByteArray source = f.readAll();
 
