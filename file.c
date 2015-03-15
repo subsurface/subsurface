@@ -1002,8 +1002,19 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return ret;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat, int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf, int divemasterf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf)
+int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat,
+		      int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf,
+		      int divemasterf, int buddyf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf,
+		      int o2f, int hef, int airtempf, int watertempf)
 {
+	if (verbose > 4) {
+		fprintf(stderr, "filename %s, sepidx %d, units %d, dateformat %d, durationformat %d\n", filename, sepidx, units, dateformat, durationformat);
+		fprintf(stderr, "numberf %d, datef %d, timef %d, durationf %d, locationf %d, gpsf %d, maxdepthf %d, meandepthf %d\n", numberf, datef, timef, durationf, locationf, gpsf, maxdepthf, meandepthf);
+		fprintf(stderr, "divemasterf %d, buddyf %d, notesf %d, weightf %d, tagsf %d, cylsizef %d, startpresf %d, endpresf %d\n", divemasterf, buddyf, notesf, weightf, tagsf, cylsizef, startpresf, endpresf);
+		fprintf(stderr, "o2f %d, hef %d, airtempf %d, watertempf %d\n", o2f, hef, airtempf, watertempf);
+	} else {
+		fprintf(stderr, "verbose %d\n", verbose);
+	}
 	struct memblock mem;
 	int pnr = 0;
 	char *params[53];
