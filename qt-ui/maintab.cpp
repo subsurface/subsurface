@@ -1114,18 +1114,6 @@ void MainTab::on_location_textChanged(const QString &text)
 	if (currentTrip) {
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(ui.location->text().toUtf8().data());
-	} else {
-		// this means we switched dive sites... this requires a lot more thinking
-		//
-		//
-		//  FIXME
-		//
-		// TODO
-		//
-		//
-		//
-		// free(displayed_dive.location);
-		// displayed_dive.location = strdup(ui.location->text().toUtf8().data());
 	}
 	markChangedWidget(ui.location);
 }
@@ -1134,11 +1122,12 @@ void MainTab::on_location_textChanged(const QString &text)
 void MainTab::on_location_editingFinished()
 {
 	// find the dive site or create it
-	const char *name = ui.location->text().toUtf8().data();
+	const char *name = copy_string(qPrintable(ui.location->text()));
 	uint32_t uuid = get_dive_site_uuid_by_name(name, NULL);
 	if (!uuid)
 		uuid = create_dive_site(name);
 	displayed_dive.dive_site_uuid = uuid;
+	free((void*)name);
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
