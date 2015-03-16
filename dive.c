@@ -2951,7 +2951,7 @@ unsigned int dive_get_picture_count(struct dive *d)
 void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
-	if (!dive_site_has_gps_location(ds) && (pic->latitude.udeg || pic->longitude.udeg)) {
+	if (ds && !dive_site_has_gps_location(ds) && (pic->latitude.udeg || pic->longitude.udeg)) {
 		ds->latitude = pic->latitude;
 		ds->longitude = pic->longitude;
 	}
