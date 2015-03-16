@@ -130,7 +130,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(mainTab, SIGNAL(requestDiveSiteEdit(uint32_t)), this, SLOT(enableDiveSiteEdit(uint32_t)));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
-	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(refreshDisplay()));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
 
 #ifdef NO_PRINTING
