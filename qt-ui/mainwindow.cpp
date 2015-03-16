@@ -221,6 +221,7 @@ LocationInformationWidget *MainWindow::locationInformationWidget() {
 }
 
 void MainWindow::enableDiveSiteEdit(uint32_t id) {
+	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
 	setApplicationState("EditDiveSite");
 }
 
