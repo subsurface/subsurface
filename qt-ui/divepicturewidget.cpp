@@ -65,7 +65,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	QByteArray imageData = reply->readAll();
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(imageData);
-	QFile imageFile(QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first().append("/").append(hash.result().toHex()));
+	QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+	QDir dir(path);
+	if (!dir.exists())
+		dir.mkpath(path);
+	QFile imageFile(path.append("/").append(hash.result().toHex()));
 	if (imageFile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&imageFile);
 		stream.writeRawData(imageData.data(), imageData.length());
