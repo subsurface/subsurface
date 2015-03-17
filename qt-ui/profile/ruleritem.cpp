@@ -83,7 +83,11 @@ void RulerItem2::settingsChanged()
 	ProfileWidget2 *profWidget = NULL;
 	if (scene() && scene()->views().count())
 		profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-	setVisible(profWidget->currentState == ProfileWidget2::PROFILE ? prefs.rulergraph : false);
+
+	if (profWidget && profWidget->currentState == ProfileWidget2::PROFILE)
+		setVisible(prefs.rulergraph);
+	else
+		setVisible(false);
 }
 
 void RulerItem2::recalculate()
