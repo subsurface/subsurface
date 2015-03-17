@@ -12,11 +12,9 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 
 	QFontMetrics fm(defaultModelFont());
 	int text_ht = fm.height();
-	int text_em = fm.width('m');
 
 	metrics.icon = &defaultIconMetrics();
 
-	metrics.col_width = 7*text_em;
 	metrics.rm_col_width = metrics.icon->sz_small + 2*metrics.icon->spacing;
 	metrics.header_ht = text_ht + 10; // TODO DPI
 
@@ -138,7 +136,8 @@ void TableView::edit(const QModelIndex &index)
 
 int TableView::defaultColumnWidth(int col)
 {
-	return col == CylindersModel::REMOVE ? metrics.rm_col_width : metrics.col_width;
+	QString text = ui.tableView->model()->headerData(col, Qt::Horizontal).toString();
+	return text.isEmpty() ? metrics.rm_col_width : defaultModelFontMetrics().width(text) + 4; // add small margin
 }
 
 QTableView *TableView::view()
