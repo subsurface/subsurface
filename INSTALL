@@ -215,6 +215,28 @@ cross builds under Linux (currently on Fedora 20). A shell script to do
 that (plus the .nsi file to create the installer with makensis) are
 included in the packaging/windows directory.
 
+On OpenSUSE, for mingw64 packages you should add the specific
+repository from their site. After that you can run the following
+command:
+sudo zypper install mingw64-cross-libqt5-qttools mingw64-mpc-devel \
+      mingw64-filesystem mingw64-pkg-config mingw64-cross-gcc \
+      mingw64-gcc-c++ mingw64-libusb-1_0-devel \
+      mingw64-cross-libqt5-qttools mingw64-libqt5-qtwebkit \
+      mingw64-libqt5-qtwebkit-devel mingw64-cross-libqt5-qmake \
+      mingw64-libqt5-qtscript mingw64-libqt5-qtscript-devel \
+      mingw64-libqt5-qtsvg mingw64-libqt5-qtsvg-devel \
+      mingw64-libqt5-qtdeclarative mingw64-libqt5-qtdeclarative-devel \
+      mingw64-libssh2-devel mingw64-libzip-devel \
+      mingw64-sqlite-devel mingw64-win_iconv-devel \
+      mingw64-libxslt-devel mingw64-libqt5-qttools
+
+[Observation] - Sometimes on OpenSUSE platform there is a problem with
+the mingw64-libzip-devel package(the zipconf header is not installed in
+the right place) and you have to create a symbolic link using the following
+command:
+  sudo ln -s /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libzip/include/zipconf.h \
+	     /usr/x86_64-w64-mingw32/sys-root/mingw/include/zipconf.h
+
 Everywhere below the mingw64- prefix is used for the cross tools. If you
 really need a 32bit binary you need to use mingw32- as prefix and you may
 also run into issues creating an installable binary with Qt5 (i.e., you
@@ -258,9 +280,11 @@ $ sudo mingw64-make install
 
 To compile libgit2, use:
 
-$ mkdir -p ~/src/libgit2/build
 $ git clone git://github.com/libgit2/libgit2 ~/src/libgit2
-$ cd ~/src/libgit2/build
+$ mkdir ~/src/libgit2/build
+$ cd ~/src/libgit2
+$ git checkout v0.21.5
+$ cd build
 $ mingw64-cmake ..
 $ mingw64-make
 $ sudo mingw64-make install
@@ -270,10 +294,10 @@ To compile Subsurface, use:
 $ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ cd git checkout v4.4   # this get's you the last release
-                         # skip this step to build the latest development
-			 # version
-$ packagin/windows/mingw-make.sh Qt5 SPECIAL_MARBLE_PREFIX=1
+$ git checkout v4.4-branch	# this get's you the last release
+				# skip this step to build the latest development
+				# version
+$ packaging/windows/mingw-make.sh Qt5-64
 $ packaging/windows/mingw-make.sh install
 $ packaging/windows/mingw-make.sh installer
 

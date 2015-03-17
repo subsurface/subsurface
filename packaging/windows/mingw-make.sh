@@ -16,8 +16,10 @@ rm $BASEDIR/../../ssrf-version.h > /dev/null 2>&1
 
 if [[ $1 == "Qt5-64" ]] ; then
 	export PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/bin:$PATH
+	MINGW_MAKE="mingw64-make"
 else
 	export PATH=/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
+	MINGW_MAKE="mingw32-make"
 fi
 export objdump=mingw-objdump
 
@@ -74,4 +76,4 @@ else
 		$BASEDIR/../../subsurface.pro
 fi
 
-mingw32-make $@
+$MINGW_MAKE $@
