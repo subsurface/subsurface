@@ -2,18 +2,18 @@
 #include "mainwindow.h"
 #include "divelist.h"
 
-UndoDeleteDive::UndoDeleteDive(QList<dive *> diveList)
+UndoDeleteDive::UndoDeleteDive(QList<dive *> deletedDives)
+	: diveList(deletedDives)
 {
-	dives = diveList;
 	setText("delete dive");
-	if (dives.count() > 1)
-		setText(QString("delete %1 dives").arg(QString::number(dives.count())));
+	if (diveList.count() > 1)
+		setText(QString("delete %1 dives").arg(QString::number(diveList.count())));
 }
 
 void UndoDeleteDive::undo()
 {
-	for (int i = 0; i < dives.count(); i++)
-		record_dive(dives.at(i));
+	for (int i = 0; i < diveList.count(); i++)
+		record_dive(diveList.at(i));
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
 }
@@ -21,32 +21,31 @@ void UndoDeleteDive::undo()
 void UndoDeleteDive::redo()
 {
 	QList<struct dive*> newList;
-	for (int i = 0; i < dives.count(); i++) {
+	for (int i = 0; i < diveList.count(); i++) {
 		//make a copy of the dive before deleting it
 		struct dive* d = alloc_dive();
-		copy_dive(dives.at(i), d);
+		copy_dive(diveList.at(i), d);
 		newList.append(d);
 		//delete the dive
-		delete_single_dive(get_divenr(dives.at(i)));
+		delete_single_dive(get_divenr(diveList.at(i)));
 	}
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
-	dives.clear();
-	dives = newList;
+	diveList.clear();
+	diveList = newList;
 }
 
 
-UndoShiftTime::UndoShiftTime(QList<int> diveList, int amount)
+UndoShiftTime::UndoShiftTime(QList<int> changedDives, int amount)
+	: diveList(changedDives), timeChanged(amount)
 {
 	setText("shift time");
-	dives = diveList;
-	timeChanged = amount;
 }
 
 void UndoShiftTime::undo()
 {
-	for (int i = 0; i < dives.count(); i++) {
-		struct dive* d = get_dive_by_uniq_id(dives.at(i));
+	for (int i = 0; i < diveList.count(); i++) {
+		struct dive* d = get_dive_by_uniq_id(diveList.at(i));
 		d->when -= timeChanged;
 	}
 	mark_divelist_changed(true);
@@ -55,8 +54,8 @@ void UndoShiftTime::undo()
 
 void UndoShiftTime::redo()
 {
-	for (int i = 0; i < dives.count(); i++) {
-		struct dive* d = get_dive_by_uniq_id(dives.at(i));
+	for (int i = 0; i < diveList.count(); i++) {
+		struct dive* d = get_dive_by_uniq_id(diveList.at(i));
 		d->when += timeChanged;
 	}
 	mark_divelist_changed(true);

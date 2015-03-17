@@ -7,22 +7,22 @@
 
 class UndoDeleteDive : public QUndoCommand {
 public:
-	UndoDeleteDive(QList<struct dive*> diveList);
+	UndoDeleteDive(QList<struct dive*> deletedDives);
 	virtual void undo();
 	virtual void redo();
 
 private:
-	QList<struct dive*> dives;
+	QList<struct dive*> diveList;
 };
 
 class UndoShiftTime : public QUndoCommand {
 public:
-	UndoShiftTime(QList<int> diveList, int amount);
+	UndoShiftTime(QList<int> changedDives, int amount);
 	virtual void undo();
 	virtual void redo();
 
 private:
-	QList<int> dives;
+	QList<int> diveList;
 	int timeChanged;
 };
 
