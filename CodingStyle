@@ -42,6 +42,7 @@ Basic rules
 
 	if (condition) {
 		dosomething();
+		dosomethingelse();
 	}
 
 - both sides of an if / else clause either use or do not use curly braces:
