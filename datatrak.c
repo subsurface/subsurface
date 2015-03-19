@@ -217,7 +217,9 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	 * Locality and Dive points.
 	 */
 	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	dt_dive->dive_site_uuid = create_dive_site(buffer);
+	dt_dive->dive_site_uuid = get_dive_site_uuid_by_name(buffer, NULL);
+	if (dt_dive->dive_site_uuid == 0)
+		dt_dive->dive_site_uuid = create_dive_site(buffer);
 	free(locality);
 	free(dive_point);
 
