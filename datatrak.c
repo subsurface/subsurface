@@ -404,6 +404,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	if (byte[1] != 0) {
 		taglist_add_tag(&dt_dive->tag_list, strdup("rebreather"));
 		is_SCR = 1;
+		dt_dive->dc.divemode = PSCR;
 	}
 
 	/*
