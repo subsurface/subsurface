@@ -718,6 +718,8 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		/* is it a valid entry or nothing ? */
 		if (strcmp(tp, "1.0") != 0 || strstr(inbuf, "divelog{1.0{{{{")) {
 			free(buf);
+			free(tp);
+			free(bp);
 			return false;
 		}
 	} else if (strcmp(tp, "dive") == 0) {
@@ -725,11 +727,15 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		tp = next_token(&bp);
 		if (strcmp(tp, "1.0") != 0) {
 			free(buf);
+			free(tp);
+			free(bp);
 			return false;
 		}
 	} else {
 		/* don't understand the buffer */
 		free(buf);
+		free(bp);
+		free(tp);
 		return false;
 	}
 	if (log) {
@@ -742,6 +748,9 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			fprintf(debugfile, "p_r_b entry deleted\n");
 #endif
 			/* oops, this one isn't valid, suggest to try the previous one */
+			free(buf);
+			free(bp);
+			free(tp);
 			return false;
 		}
 	}
