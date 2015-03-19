@@ -613,7 +613,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 	graphics()->setPlanState();
 
-	// create a simple starting dive, using the first gas from the just copied cylidners
+	// create a simple starting dive, using the first gas from the just copied cylinders
 	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();

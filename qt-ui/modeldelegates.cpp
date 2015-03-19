@@ -252,7 +252,7 @@ TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoM
 void TankInfoDelegate::reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
 	MainWindow::instance()->graphics()->setReplot(true);
-	// FIXME: We need to replot after a cylidner is selected but the replot below overwrites
+	// FIXME: We need to replot after a cylinder is selected but the replot below overwrites
 	//        the newly selected cylinder.
 	//	MainWindow::instance()->graphics()->replot();
 }
