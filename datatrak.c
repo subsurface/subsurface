@@ -140,7 +140,7 @@ static dtrakheader read_file_header(FILE *archivo)
 
 	fread(lector, 1, headerbytes, archivo);
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
-		puts("Error: the file does not appear to be a DATATRAK divelog");
+		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK divelog"));
 		return fileheader;
 	}
 	fileheader.header = (lector[0] << 8) + lector[1];
@@ -652,7 +652,7 @@ void datatrak_import(const char *file, struct dive_table *table)
 	int i = 0;
 
 	if ((archivo = subsurface_fopen(file, "rb")) == NULL) {
-		puts("Error: couldn't open the file");
+		report_error(translate("gettextFromC", "Error: couldn't open the file %s"), file);
 		return;
 	}
 
@@ -660,14 +660,11 @@ void datatrak_import(const char *file, struct dive_table *table)
 	 * Verify fileheader,  get number of dives in datatrak divelog
 	 */
 	*fileheader = read_file_header(archivo);
-
-	if (fileheader->header == 0)
-		puts("Error: not a DATATRAK/WLOG file\n");
 	while (i < fileheader->divesNum) {
 		struct dive *ptdive = alloc_dive();
 		*ptdive = dt_dive_parser(archivo, ptdive);
 		if (!ptdive)
-			puts("Error: no dive\n");
+			report_error(translate("gettextFromC", "Error: no dive"));
 		i++;
 		record_dive(ptdive);
 	}
