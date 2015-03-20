@@ -584,9 +584,9 @@ void MainWindow::setupForAddAndPlan(const char *model)
 
 void MainWindow::on_actionReplanDive_triggered()
 {
-	if (!plannerStateClean())
+	if (!plannerStateClean() || !current_dive || !current_dive->dc.model)
 		return;
-	if (!current_dive || !current_dive->dc.model || strcmp(current_dive->dc.model, "planned dive")) {
+	else if (strcmp(current_dive->dc.model, "planned dive")) {
 		qDebug() << "trying to replan a dive that's not a planned dive:" << current_dive->dc.model;
 		return;
 	}
