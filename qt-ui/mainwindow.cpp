@@ -1259,8 +1259,15 @@ int MainWindow::file_save_as(void)
 {
 	QString filename;
 	const char *default_filename = existing_filename;
-	filename = QFileDialog::getSaveFileName(this, tr("Save file as"), default_filename,
-						tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
+	                             tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+
+	/* if the exit/cancel button is pressed return */
+	if (!selection_dialog.exec())
+		return 0;
+
+	/* get the first selected file */
+	filename = selection_dialog.selectedFiles().at(0);
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
