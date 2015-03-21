@@ -44,7 +44,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	// Fixes for the layout needed for mac
 #ifdef Q_OS_MAC
 	int ht = metrics.height();
-	header()->setMinimumHeight(ht + 10);
+	header()->setMinimumHeight(ht + 4);
 #endif
 
 	// TODO FIXME we need this to get the header names
