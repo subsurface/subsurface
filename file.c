@@ -930,7 +930,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	char curdate[DATESTR];
 	char curtime[TIMESTR];
 	char *ptr, *ptr_old = NULL;
-	char *NL;
+	char *NL = NULL;
 
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
@@ -951,13 +951,6 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		NL = "\r\n";
 	}
 
-	/*
-	 * If file does not contain empty lines, it is not a valid
-	 * Seabear CSV file.
-	 */
-	if (!ptr)
-		return -1;
-
 	if (!ptr_old) {
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
@@ -967,6 +960,13 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		NL = "\n";
 	} else
 		ptr_old += 4;
+
+	/*
+	 * If file does not contain empty lines, it is not a valid
+	 * Seabear CSV file.
+	 */
+	if (NL == NULL)
+		return -1;
 
 	/*
 	 * On my current sample of Seabear DC log file, the date is
