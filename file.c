@@ -909,11 +909,12 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	return ret;
 }
 
-int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+#define SBPARAMS 29
+int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta)
 {
 	int ret;
 	struct memblock mem;
-	char *params[27];
+	char *params[SBPARAMS];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
@@ -925,6 +926,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	char pressurebuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
+	char deltabuf[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep = NULL;
 	char curdate[DATESTR];
@@ -990,6 +992,11 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		memcpy(params[21] + 3, ptr + 14, 2);
 		params[21][5] = 0;
 	}
+
+	snprintf(deltabuf, MAXCOLDIGITS, "%s", delta);
+	params[SBPARAMS - 3] = "delta";
+	params[SBPARAMS - 2] = deltabuf;
+	params[SBPARAMS - 1] = NULL;
 
 	/* Move the CSV data to the start of mem buffer */
 	memmove(mem.buffer, ptr_old, mem.size - (ptr_old - (char*)mem.buffer));

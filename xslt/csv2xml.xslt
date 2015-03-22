@@ -16,6 +16,7 @@
   <xsl:param name="time" select="time"/>
   <xsl:param name="units" select="units"/>
   <xsl:param name="separatorIndex" select="separatorIndex"/>
+  <xsl:param name="delta" select="delta"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -41,6 +42,7 @@
           <divecomputerid deviceid="ffffffff" model="csv" />
           <xsl:call-template name="printLine">
             <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>
+            <xsl:with-param name="lineno" select="'1'"/>
             <xsl:with-param name="remaining" select="substring-after(//csv, $lf)"/>
           </xsl:call-template>
         </dive>
@@ -50,33 +52,47 @@
 
   <xsl:template name="printLine">
     <xsl:param name="line"/>
+    <xsl:param name="lineno"/>
     <xsl:param name="remaining"/>
 
     <!-- We only want to process lines with different time stamps, and
          timeField is not necessarily the first field -->
     <xsl:if test="$line != substring-before($remaining, $lf)">
-      <xsl:variable name="curTime">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$timeField"/>
-          <xsl:with-param name="line" select="$line"/>
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:variable name="prevTime">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$timeField"/>
-          <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
-        </xsl:call-template>
-      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="$delta != '' and $delta > 0">
+          <xsl:variable name="curTime">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$timeField"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:variable name="prevTime">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$timeField"/>
+              <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+            </xsl:call-template>
+          </xsl:variable>
 
-      <xsl:if test="$curTime != $prevTime">
-        <xsl:call-template name="printFields">
-          <xsl:with-param name="line" select="$line"/>
-        </xsl:call-template>
-      </xsl:if>
+          <xsl:if test="$curTime != $prevTime">
+            <xsl:call-template name="printFields">
+              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="lineno" select="$lineno"/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="printFields">
+            <xsl:with-param name="line" select="$line"/>
+            <xsl:with-param name="lineno" select="'0'"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+
     </xsl:if>
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
         <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+        <xsl:with-param name="lineno" select="$lineno + 1"/>
         <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
       </xsl:call-template>
     </xsl:if>
@@ -84,18 +100,34 @@
 
   <xsl:template name="printFields">
     <xsl:param name="line"/>
+    <xsl:param name="lineno"/>
 
     <xsl:variable name="value">
-      <xsl:call-template name="getFieldByIndex">
-        <xsl:with-param name="index" select="$timeField"/>
-        <xsl:with-param name="line" select="$line"/>
-      </xsl:call-template>
+      <xsl:choose>
+        <xsl:when test="$delta != '' and $delta > 0">
+          <xsl:value-of select="'1'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$timeField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
+
 
     <xsl:if test="number($value) = $value or number(substring-before($value, ':')) = substring-before($value, ':')">
       <sample>
         <xsl:attribute name="time">
           <xsl:choose>
+            <xsl:when test="$delta != '' and $delta > 0">
+              <xsl:call-template name="sec2time">
+                <xsl:with-param name="timeSec">
+                  <xsl:value-of select="$lineno * 1"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:when>
             <xsl:when test="number($value) = $value">
               <!-- We assume time in seconds -->
 

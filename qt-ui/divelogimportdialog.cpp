@@ -316,6 +316,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	ui->setupUi(this);
 	fileNames = fn;
 	column = 0;
+	delta = "0";
 
 	/* Add indexes of XSLTs requiring special handling to the list */
 	specialCSV << 3;
@@ -375,7 +376,53 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QString firstLine = f.readLine();
 	if (firstLine.contains("SEABEAR")) {
 		seabear = true;
-		firstLine = "Sample time;Sample depth;Sample NDL;Sample TTS;Sample stopdepth;Sample temperature;Sample pressure";
+
+		/*
+		 * Parse header - currently only interested in sample
+		 * interval, or if we have old format (if interval value
+		 * is missing from the header).
+		 */
+
+		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+			if (firstLine.contains("//Log interval: "))
+				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed();
+		}
+
+		/*
+		 * Parse CSV fields
+		 * The pO2 values from CCR diving are ignored later on.
+		 */
+
+		firstLine = f.readLine().trimmed();
+
+		currColumns = firstLine.split(';');
+		Q_FOREACH (QString columnText, currColumns) {
+			if (columnText == "Time") {
+				headers.append("Sample time");
+			} else if (columnText == "Depth") {
+				headers.append("Sample depth");
+			} else if (columnText == "Temperature") {
+				headers.append("Sample temperature");
+			} else if (columnText == "NDT") {
+				headers.append("Sample NDL");
+			} else if (columnText == "TTS") {
+				headers.append("Sample TTS");
+			} else if (columnText == "pO2_1") {
+				headers.append("Sample pO2_1");
+			} else if (columnText == "pO2_2") {
+				headers.append("Sample pO2_2");
+			} else if (columnText == "pO2_3") {
+				headers.append("Sample pO2_3");
+			} else if (columnText == "Ceiling") {
+				headers.append("Sample ceiling");
+			} else {
+				// We do not know about this value
+				qDebug() << "Seabear import found an un-handled field: " << columnText;
+				headers.append("");
+			}
+		}
+
+		firstLine = headers.join(";");
 		blockSignals(true);
 		ui->knownImports->setCurrentText("Seabear CSV");
 		blockSignals(false);
@@ -543,7 +590,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       r.indexOf(tr("Sample pressure")),
 						       ui->CSVSeparator->currentIndex(),
 						       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-						       ui->CSVUnits->currentIndex()
+						       ui->CSVUnits->currentIndex(),
+						       delta.toUtf8().data()
 						       ) < 0)
 					return;
 

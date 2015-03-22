@@ -95,6 +95,7 @@ private:
 	QList<int> specialCSV;
 	int column;
 	ColumnNameResult *resultModel;
+	QString delta;
 
 	struct CSVAppConfig {
 		QString name;
