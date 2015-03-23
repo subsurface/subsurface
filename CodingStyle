@@ -73,8 +73,9 @@ Basic rules
 - in a C++ constructor initialization list, the colon is on the same line and
   continuation lines are aligned as the rule above:
 
-	ClassName::ClassName() : x(1), y(2),
-				 z(3)
+	ClassName::ClassName() : x(1),
+		y(2),
+		z(3)
 	{
 	}
 
