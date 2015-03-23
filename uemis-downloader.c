@@ -861,8 +861,10 @@ const char *do_uemis_import(device_data_t *data)
 	if (dive_table.nr == 0)
 		keep_number = true;
 	uemis_info(translate("gettextFromC", "Initialise communication"));
-	if (!uemis_init(mountpath))
+	if (!uemis_init(mountpath)) {
+		free(reqtxt_path);
 		return translate("gettextFromC", "Uemis init failed");
+	}
 	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 		goto bail;
 	deviceid = strdup(param_buff[0]);
@@ -994,5 +996,6 @@ bail:
 			result = param_buff[2];
 	}
 	free(deviceid);
+	free(reqtxt_path);
 	return result;
 }
