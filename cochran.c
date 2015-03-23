@@ -233,6 +233,7 @@ static void cochran_parse_header(const unsigned char *decode, unsigned mod,
 		break;
 	default:
 		printf ("Unknown log format v%c\n", buf[0x137]);
+		free(buf);
 		exit(1);
 		break;
 	}
