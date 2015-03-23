@@ -652,6 +652,7 @@ int parse_txt_file(const char *filename, const char *csv)
 									QT_TRANSLATE_NOOP("gettextFromC", "Mouth piece position not connected"));
 							break;
 						}
+						break;
 					case 3:
 						//Power Off event
 						add_event(dc, cur_sampletime, 0, 0, 0,
