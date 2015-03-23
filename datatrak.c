@@ -120,6 +120,8 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 			}
 			j = 0;
 		}
+		free(byte);
+
 		// In commit 5f44fdd setpoint replaced po2, so although this is not necesarily CCR dive ...
 		if (is_O2)
 			sample->setpoint.mbar = calculate_depth_to_mbar(sample->depth.mm, dt_dive->surface_pressure, 0) * o2percent / 100;
@@ -141,6 +143,7 @@ static dtrakheader read_file_header(FILE *archivo)
 	fread(lector, 1, headerbytes, archivo);
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
 		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK divelog"));
+		free(lector);
 		return fileheader;
 	}
 	fileheader.header = (lector[0] << 8) + lector[1];
@@ -393,6 +396,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh")));
 	if (byte[7] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
+	free(byte);
 
 	/*
 	 * Dive Type 2 - Bit table, use tags again
@@ -408,6 +412,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		is_SCR = 1;
 		dt_dive->dc.divemode = PSCR;
 	}
+	free(byte);
 
 	/*
 	 *  Dive Activity 1 - Bit table, use tags again
@@ -430,6 +435,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "ice")));
 	if (byte[7] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "search")));
+	free(byte);
 
 
 	/*
@@ -447,6 +453,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "photo")));
 	if (byte[4] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "other")));
+	free(byte);
 
 	/*
 	 * Other activities - String  1st byte = long
@@ -653,6 +660,7 @@ void datatrak_import(const char *file, struct dive_table *table)
 
 	if ((archivo = subsurface_fopen(file, "rb")) == NULL) {
 		report_error(translate("gettextFromC", "Error: couldn't open the file %s"), file);
+		free(fileheader);
 		return;
 	}
 
