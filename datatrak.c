@@ -401,7 +401,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	/*
 	 * Dive Type 2 - Bit table, use tags again
 	 */
-	read_bytes (1);
+	read_bytes(1);
 	byte = byte_to_bits(tmp_1byte);
 	if (byte[0] != 0) {
 		taglist_add_tag(&dt_dive->tag_list, strdup("nitrox"));
@@ -679,5 +679,5 @@ void datatrak_import(const char *file, struct dive_table *table)
 	taglist_cleanup(&g_tag_list);
 	fclose(archivo);
 	sort_table(table);
-	free (fileheader);
+	free(fileheader);
 }
