@@ -1460,6 +1460,7 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 	case 'S':
 		if (!strncmp(name, "Site", 4))
 			return parse_site_entry(repo, entry, name + 5);
+		break;
 	case '0':
 		if (trip && !strcmp(name, "00-Trip"))
 			return parse_trip_entry(repo, entry);
