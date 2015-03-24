@@ -73,6 +73,11 @@ struct preferences {
 	char *proxy_pass;
 	bool doo2breaks;
 	bool drop_stone_mode;
+	bool last_stop;
+	bool verbatim_plan;
+	bool display_runtime;
+	bool display_duration;
+	bool display_transitions;
 	int bottomsac;
 	int decosac;
 	int o2consumption; // ml per min

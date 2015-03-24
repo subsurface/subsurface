@@ -501,9 +501,6 @@
             <property name="text">
              <string>Display runtime</string>
             </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -516,9 +513,6 @@
             </property>
             <property name="text">
              <string>Display segment duration</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
             </property>
            </widget>
           </item>

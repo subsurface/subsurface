@@ -388,6 +388,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	QSettings s;
 	QStringList rebreater_modes;
 	s.beginGroup("Planner");
+	prefs.last_stop = s.value("last_stop", prefs.last_stop).toBool();
+	prefs.verbatim_plan = s.value("verbatim_plan", prefs.verbatim_plan).toBool();
+	prefs.display_duration = s.value("display_duration", prefs.display_duration).toBool();
+	prefs.display_runtime = s.value("display_runtime", prefs.display_runtime).toBool();
+	prefs.display_transitions = s.value("display_transitions", prefs.display_transitions).toBool();
 	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
 	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
 	prefs.ascratestops = s.value("ascratestops", prefs.ascratestops).toInt();
@@ -404,6 +409,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	s.endGroup();
 
 	updateUnitsUI();
+	ui.lastStop->setChecked(prefs.last_stop);
+	ui.verbatim_plan->setChecked(prefs.verbatim_plan);
+	ui.display_duration->setChecked(prefs.display_duration);
+	ui.display_runtime->setChecked(prefs.display_runtime);
+	ui.display_transitions->setChecked(prefs.display_transitions);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
@@ -459,6 +469,11 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 {
 	QSettings s;
 	s.beginGroup("Planner");
+	s.setValue("last_stop", prefs.last_stop);
+	s.setValue("verbatim_plan", prefs.verbatim_plan);
+	s.setValue("display_duration", prefs.display_duration);
+	s.setValue("display_runtime", prefs.display_runtime);
+	s.setValue("display_transitions", prefs.display_transitions);
 	s.setValue("ascrate75", prefs.ascrate75);
 	s.setValue("ascrate50", prefs.ascrate50);
 	s.setValue("ascratestops", prefs.ascratestops);
@@ -814,30 +829,35 @@ int DivePlannerPointsModel::getSurfacePressure()
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
 	set_last_stop(value);
+	prefs.last_stop = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
 	set_verbatim(value);
+	prefs.verbatim_plan = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
 	set_display_runtime(value);
+	prefs.display_runtime = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
 	set_display_duration(value);
+	prefs.display_duration = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
 	set_display_transitions(value);
+	prefs.display_transitions = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
