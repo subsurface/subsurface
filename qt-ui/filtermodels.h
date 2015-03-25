@@ -6,7 +6,7 @@
 
 class MultiFilterInterface {
 public:
-	MultiFilterInterface() : checkState(NULL){};
+	MultiFilterInterface() : checkState(NULL), anyChecked(false) {}
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	virtual void clearFilter() = 0;
 	bool *checkState;
