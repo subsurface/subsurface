@@ -722,6 +722,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
 	mode(NOTHING),
+	recalc(false),
 	tempGFHigh(100),
 	tempGFLow(100)
 {
