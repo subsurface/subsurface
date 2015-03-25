@@ -34,6 +34,7 @@ ELSE()
 	ENDIF()
 ENDIF()
 pkg_config_library(LIBXSLT libxslt)
+pkg_config_library(LIBZIP libzip)
 
 SET(LIBDCDEVEL "" CACHE STRING "libraries")
 IF(DEFINED LIBDCDEVEL)
@@ -256,7 +257,6 @@ target_link_libraries( subsurface
   subsurface_statistics
   subsurface_corelib
   ${SUBSURFACE_LINK_LIBRARIES}
-  -lzip
 )
 
 ADD_DEPENDENCIES(subsurface_statistics subsurface_generated_ui)
@@ -267,7 +267,7 @@ ADD_DEPENDENCIES(subsurface_corelib version)
 
 MACRO(test NAME FILE)
     ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
-    TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip )
+    TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES})
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()
 
