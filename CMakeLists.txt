@@ -28,18 +28,25 @@ ELSE()
 	include_directories(${LIBGIT2DEVEL}/include)
 	link_directories(${LIBGIT2DEVEL}/build)
 	if(LIBGIT2STATIC STREQUAL "")
-		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} libgit2.so libssl.so libcrypto.so)
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lgit2 -lssl -lcrypto)
 	ELSE()
-		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} libgit2.a libssl.so libcrypto.so)
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} libgit2.a -lssl -lcrypto)
 	ENDIF()
 ENDIF()
 pkg_config_library(LIBXSLT libxslt)
 
 SET(LIBDCDEVEL "" CACHE STRING "libraries")
-IF(NOT (LIBDCDEVEL STREQUAL ""))
+IF(DEFINED LIBDCDEVEL)
 	cmake_policy(SET CMP0015 OLD)
 	include_directories(${LIBDCDEVEL}/include )
 	link_directories(${LIBDCDEVEL}/src/.libs)
+	if(LIBDCSTATIC STREQUAL "")
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -ldivecomputer)
+	ELSE()
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} libdivecomputer.a -lusb-1.0)
+	ENDIF()
+ELSE()
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -ldivecomputer)
 ENDIF()
 
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_DIR}" insource)
@@ -66,7 +73,7 @@ IF(NOT DEFINED LIBMARBLEDEVEL)
 	INCLUDE_DIRECTORIES(${MARBLE_INCLUDE_DIR})
 ELSE()
 	INCLUDE_DIRECTORIES(${LIBMARBLEDEVEL}/include)
-	SET(MARBLE_LIBRARIES ${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so)
+	SET(MARBLE_LIBRARIES -L${LIBMARBLEDEVEL}/lib -lssrfmarblewidget)
 ENDIF()
 
 # Generate the ssrf-config.h every 'make'
@@ -249,7 +256,6 @@ target_link_libraries( subsurface
   subsurface_statistics
   subsurface_corelib
   ${SUBSURFACE_LINK_LIBRARIES}
-  -ldivecomputer
   -lzip
 )
 
@@ -261,7 +267,7 @@ ADD_DEPENDENCIES(subsurface_corelib version)
 
 MACRO(test NAME FILE)
     ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
-    TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip -ldivecomputer)
+    TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES} -lzip )
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()
 
