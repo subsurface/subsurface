@@ -805,6 +805,7 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 }
 
 QHash<QString, QByteArray> hashOf;
+QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
 
 extern "C" char * hashstring(char * filename)
@@ -836,6 +837,7 @@ void write_hashes()
 
 void add_hash(const QString filename, QByteArray hash)
 {
+	QMutexLocker locker(&hashOfMutex);
 	hashOf[filename] =  hash;
 	localFilenameOf[hash] = filename;
 }
@@ -853,6 +855,7 @@ QByteArray hashFile(const QString filename)
 void learnHash(struct picture *picture, QByteArray hash)
 {
 	free(picture->hash);
+	QMutexLocker locker(&hashOfMutex);
 	hashOf[QString(picture->filename)] = hash;
 	picture->hash = strdup(hash.toHex());
 }
@@ -869,6 +872,7 @@ QString fileFromHash(char *hash)
 
 void updateHash(struct picture *picture) {
 	QByteArray hash = hashFile(fileFromHash(picture->hash));
+	QMutexLocker locker(&hashOfMutex);
 	hashOf[QString(picture->filename)] = hash;
 	char *old = picture->hash;
 	picture->hash = strdup(hash.toHex());
