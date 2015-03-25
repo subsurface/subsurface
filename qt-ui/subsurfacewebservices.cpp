@@ -680,7 +680,9 @@ void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)
 	}
 }
 
-DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f), uploadMode(false)
+DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f),
+	multipart(NULL),
+	uploadMode(false)
 {
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
