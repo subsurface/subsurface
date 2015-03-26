@@ -1,15 +1,23 @@
+# cmake based build of Subsurface
+
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
+
+# global settings
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/marbledata)
+INCLUDE_DIRECTORIES( . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
+
+# compiler specific settings
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 endif()
 
-INCLUDE_DIRECTORIES( . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
+# pkgconfig for required libraries
+
 FIND_PACKAGE(PkgConfig)
 
 MACRO(pkg_config_library LIBNAME pcfile)
@@ -22,6 +30,11 @@ ENDMACRO()
 
 pkg_config_library(LIBXML libxml-2.0)
 pkg_config_library(LIBSQLITE3 sqlite3)
+pkg_config_library(LIBXSLT libxslt)
+pkg_config_library(LIBZIP libzip)
+
+# more libraries with special handling in case we build them ourselves
+
 if(NOT DEFINED LIBGIT2DEVEL)
 	pkg_config_library(LIBGIT2 libgit2)
 ELSE()
@@ -33,8 +46,6 @@ ELSE()
 		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} libgit2.a -lssl -lcrypto)
 	ENDIF()
 ENDIF()
-pkg_config_library(LIBXSLT libxslt)
-pkg_config_library(LIBZIP libzip)
 
 SET(LIBDCDEVEL "" CACHE STRING "libraries")
 IF(DEFINED LIBDCDEVEL)
@@ -50,6 +61,18 @@ ELSE()
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -ldivecomputer)
 ENDIF()
 
+IF(NOT DEFINED LIBMARBLEDEVEL)
+	FIND_PACKAGE(Marble REQUIRED)
+	include_directories(${MARBLE_INCLUDE_DIR})
+	link_directories(${MARBLE_LIB_DIR})
+ELSE()
+	include_directories(${LIBMARBLEDEVEL}/include)
+	link_directories(${LIBMARBLEDEVEL}/lib)
+	SET(MARBLE_LIBRARIES -L${LIBMARBLEDEVEL}/lib -lssrfmarblewidget)
+ENDIF()
+
+# handle out of tree build correctly
+
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_DIR}" insource)
 GET_FILENAME_COMPONENT(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
@@ -58,6 +81,7 @@ IF(NOT (insource OR insourcedir))
 ENDIF()
 
 #configure Qt.
+
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5Concurrent REQUIRED)
 FIND_PACKAGE(Qt5Widgets REQUIRED)
@@ -69,17 +93,8 @@ FIND_PACKAGE(Qt5Test REQUIRED)
 SET(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
 SET(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
-IF(NOT DEFINED LIBMARBLEDEVEL)
-	FIND_PACKAGE(Marble REQUIRED)
-	include_directories(${MARBLE_INCLUDE_DIR})
-	link_directories(${MARBLE_LIB_DIR})
-ELSE()
-	include_directories(${LIBMARBLEDEVEL}/include)
-	link_directories(${LIBMARBLEDEVEL}/lib)
-	SET(MARBLE_LIBRARIES -L${LIBMARBLEDEVEL}/lib -lssrfmarblewidget)
-ENDIF()
-
 # Generate the ssrf-config.h every 'make'
+
 FILE(WRITE ${CMAKE_BINARY_DIR}/version.h.in "
     #define VERSION_STRING \"@VERSION_STRING@\"
     #define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
@@ -119,6 +134,8 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
                      -P ${CMAKE_BINARY_DIR}/version.cmake
 )
 
+# set up the different target platforms
+
 SET(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	SET(PLATFORM_SRC linux.c)
@@ -134,6 +151,7 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 ENDIF()
 
 # compile the core library, in C.
+
 SET(SUBSURFACE_CORE_LIB_SRCS
 	cochran.c
 	datatrak.c
@@ -179,7 +197,8 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	${PLATFORM_SRC}
 )
 
-#the interface, in C++
+# the interface, in C++
+
 SET(SUBSURFACE_INTERFACE
 	qt-ui/updatemanager.cpp
 	qt-ui/about.cpp
@@ -218,7 +237,8 @@ SET(SUBSURFACE_INTERFACE
 	qt-ui/undocommands.cpp
 )
 
-#the profile widget
+# the profile widget
+
 SET(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/profilewidget2.cpp
 	qt-ui/profile/diverectitem.cpp
@@ -235,7 +255,8 @@ SET(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/tankitem.cpp
 )
 
-#the yearly statistics widget.
+# the yearly statistics widget.
+
 SET(SUBSURFACE_STATISTICS_LIB_SRCS
 	qt-ui/statistics/statisticswidget.cpp
 	qt-ui/statistics/yearstatistics.cpp
@@ -243,12 +264,15 @@ SET(SUBSURFACE_STATISTICS_LIB_SRCS
 	qt-ui/statistics/monthstatistics.cpp
 )
 
-#the main app.
+# the main app.
+
 SET(SUBSURFACE_APP
 	main.cpp
 	qt-gui.cpp
 	qthelper.cpp
 )
+
+# create the libraries
 
 FILE(GLOB SUBSURFACE_UI qt-ui/*.ui)
 QT5_WRAP_UI(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
@@ -265,6 +289,8 @@ TARGET_LINK_LIBRARIES(subsurface_generated_ui ${QT_LIBRARIES})
 ADD_LIBRARY(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
 TARGET_LINK_LIBRARIES(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
+# create the executables
+
 ADD_EXECUTABLE(subsurface ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 target_link_libraries( subsurface
   subsurface_generated_ui
@@ -280,6 +306,8 @@ ADD_DEPENDENCIES(subsurface_profile subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_interface subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_generated_ui version)
 ADD_DEPENDENCIES(subsurface_corelib version)
+
+# QTest based tests
 
 MACRO(test NAME FILE)
     ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
