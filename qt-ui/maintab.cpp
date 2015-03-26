@@ -280,11 +280,15 @@ void MainTab::updateTextLabels(bool showUnits)
 
 void MainTab::enableEdition(EditMode newEditMode)
 {
+	const bool isTripEdit = MainWindow::instance() &&
+		MainWindow::instance()->dive_list()->selectedTrips().count() == 1;
+
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
 	modified = false;
 	copyPaste = false;
 	if ((newEditMode == DIVE || newEditMode == NONE) &&
+	    !isTripEdit &&
 	    current_dive->dc.model &&
 	    strcmp(current_dive->dc.model, "manually added dive") == 0) {
 		// editCurrentDive will call enableEdition with newEditMode == MANUALLY_ADDED_DIVE
@@ -306,7 +310,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (amount_selected == 1 && newEditMode != ADD)
 		MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
 
-	if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+	if (isTripEdit) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
 		memset(&displayedTrip, 0, sizeof(displayedTrip));
