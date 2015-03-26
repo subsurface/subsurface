@@ -119,6 +119,19 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
                      -P ${CMAKE_BINARY_DIR}/version.cmake
 )
 
+SET(PLATFORM_SRC unknown_platform.c)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	SET(PLATFORM_SRC linux.c)
+ENDIF()
+IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	SET(PLATFORM_SRC macos.c)
+ENDIF()
+IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	SET(PLATFORM_SRC windows.c)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32)
+	remove_definitions(-DUNICODE)
+ENDIF()
+
 # compile the core library, in C.
 SET(SUBSURFACE_CORE_LIB_SRCS
 	cochran.c
@@ -151,7 +164,6 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	uemis.c
 	uemis-downloader.c
 	version.c
-	linux.c
 	#gettextfrommoc should be added because we are using it on the c-code.
 	gettextfromc.cpp
 	#dirk ported some core functionality to c++.
@@ -163,6 +175,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
+	${PLATFORM_SRC}
 )
 
 #the interface, in C++
