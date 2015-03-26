@@ -319,6 +319,15 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
+void learnImageDirs(QStringList dirnames)
+{
+	QList<QFuture<void> > futures;
+	foreach (QString dir, dirnames) {
+		futures << QtConcurrent::run(learnImages, QDir(dir), 10, false);
+	}
+	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
+}
+
 void MainWindow::on_actionHash_images_triggered()
 {
 	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir(), filter());
@@ -327,15 +336,11 @@ void MainWindow::on_actionHash_images_triggered()
 	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
 	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
 	QStringList dirnames;
-	QList<QFuture<void> > futures;
 	if (dialog.exec())
 		dirnames = dialog.selectedFiles();
 	if (dirnames.isEmpty())
 		return;
-	foreach (QString dir, dirnames) {
-		futures << QtConcurrent::run(learnImages, QDir(dir), 10, false);
-	}
-	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
+	QtConcurrent::run(learnImageDirs,dirnames);
 }
 
 ProfileWidget2 *MainWindow::graphics() const
