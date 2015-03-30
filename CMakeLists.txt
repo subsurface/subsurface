@@ -323,16 +323,19 @@ test(TestProfile testprofile.cpp)
 test(TestGpsCoords testgpscoords.cpp)
 test(TestParse testparse.cpp)
 
+ADD_CUSTOM_TARGET(documentation ALL mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ \\; make -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc)
+
 # install Subsurface
 # first some variables with files that need installing
 
 set(DOCFILES
 	README
 	ReleaseNotes/ReleaseNotes.txt
-	SupportedDivecomputers.txt Documentation/user-manual.html
-	Documentation/user-manual_es.html
-	Documentation/user-manual_fr.html
-	Documentation/user-manual_ru.html
+	SupportedDivecomputers.txt
+	${CMAKE_BINARY_DIR}/Documentation/user-manual.html
+	${CMAKE_BINARY_DIR}/Documentation/user-manual_es.html
+	${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
+	${CMAKE_BINARY_DIR}/Documentation/user-manual_ru.html
 )
 
 set(TRANSLATION_SRC
