@@ -957,9 +957,9 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
 			ptr += 1;
+			NL = "\n";
 		}
 		ptr_old += 2;
-		NL = "\n";
 	} else
 		ptr_old += 4;
 
