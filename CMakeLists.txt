@@ -139,15 +139,24 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
 SET(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	SET(PLATFORM_SRC linux.c)
+	if(NOT DEFINED LRELEASE)
+		set(LRELEASE lrelease)
+	endif()
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	SET(PLATFORM_SRC macos.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -framework CoreServices)
+	if(NOT DEFINED LRELEASE)
+		set(LRELEASE lrelease)
+	endif()
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	SET(PLATFORM_SRC windows.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32)
 	remove_definitions(-DUNICODE)
+	if(NOT DEFINED LRELEASE)
+		set(LRELEASE lrelease.exe)
+	endif()
 ENDIF()
 
 # compile the core library, in C.
@@ -374,9 +383,20 @@ set(TRANSLATION_SRC
 # into a single string, so we assemble it file name by file name
 foreach(TRANSLATION ${TRANSLATION_SRC})
 	string(REGEX REPLACE \\.ts .qm TRANSLATION_QM ${TRANSLATION})
-	set(TRANSLATIONS ${TRANSLATIONS} ${TRANSLATION_QM})
+	string(REGEX REPLACE "/" "-" TRANSLATION_TARGET ${TRANSLATION_QM})
+	MESSAGE(STATUS ${TRANSLATION} "->" ${CMAKE_BINARY_DIR}/${TRANSLATION_QM})
+	ADD_CUSTOM_COMMAND(
+		OUTPUT ${CMAKE_BINARY_DIR}/${TRANSLATION_QM}
+		COMMAND mkdir -p ${CMAKE_BINARY_DIR}/translations \\; ${LRELEASE} ${CMAKE_SOURCE_DIR}/${TRANSLATION} -qm ${CMAKE_BINARY_DIR}/${TRANSLATION_QM}
+		DEPENDS ${TRANSLATION}
+		)
+	ADD_CUSTOM_TARGET(
+		generate_translations_${TRANSLATION_TARGET}
+		DEPENDS ${CMAKE_BINARY_DIR}/${TRANSLATION_QM}
+		)
+	ADD_DEPENDENCIES(subsurface generate_translations_${TRANSLATION_TARGET})
+	set(TRANSLATIONS ${TRANSLATIONS} ${CMAKE_BINARY_DIR}/${TRANSLATION_QM})
 endforeach()
-
 
 # now for each platform the install instructions
 
