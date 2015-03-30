@@ -322,3 +322,89 @@ test(TestUnitConversion testunitconversion.cpp)
 test(TestProfile testprofile.cpp)
 test(TestGpsCoords testgpscoords.cpp)
 test(TestParse testparse.cpp)
+
+# install Subsurface
+# first some variables with files that need installing
+
+set(DOCFILES
+	README
+	ReleaseNotes/ReleaseNotes.txt
+	SupportedDivecomputers.txt Documentation/user-manual.html
+	Documentation/user-manual_es.html
+	Documentation/user-manual_fr.html
+	Documentation/user-manual_ru.html
+)
+
+set(TRANSLATION_SRC
+	translations/subsurface_source.ts
+	translations/subsurface_bg_BG.ts
+	translations/subsurface_cs.ts
+	translations/subsurface_da_DK.ts
+	translations/subsurface_de_CH.ts
+	translations/subsurface_de_DE.ts
+	translations/subsurface_en_GB.ts
+	translations/subsurface_es_ES.ts
+	translations/subsurface_et_EE.ts
+	translations/subsurface_fi_FI.ts
+	translations/subsurface_fr_FR.ts
+	translations/subsurface_it_IT.ts
+	translations/subsurface_lv_LV.ts
+	translations/subsurface_nb_NO.ts
+	translations/subsurface_nl_NL.ts
+	translations/subsurface_pl_PL.ts
+	translations/subsurface_pt_BR.ts
+	translations/subsurface_pt_PT.ts
+	translations/subsurface_ru_RU.ts
+	translations/subsurface_sk_SK.ts
+	translations/subsurface_sv_SE.ts
+	translations/subsurface_tr.ts
+	translations/subsurface_zh_TW.ts
+)
+
+# disabled translations as they are below 50%:
+# translations/subsurface_el_GR.ts \
+# translations/subsurface_he.ts \
+# translations/subsurface_hu.ts \
+# translations/subsurface_ro_RO.ts \
+
+# if we apply the REGEX to TRANSLATION_SRC then the list of files turns
+# into a single string, so we assemble it file name by file name
+foreach(TRANSLATION ${TRANSLATION_SRC})
+	string(REGEX REPLACE \\.ts .qm TRANSLATION_QM ${TRANSLATION})
+	set(TRANSLATIONS ${TRANSLATIONS} ${TRANSLATION_QM})
+endforeach()
+
+
+# now for each platform the install instructions
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+#	# OS X bundling rules
+#	#  "make mac-deploy" deploys the external libs (Qt, libdivecomputer, libusb, etc.) into the bundle
+#	#  "make install" installs the bundle to /Applications
+#	#  "make mac-create-dmg" creates Subsurface.dmg
+ENDIF()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+#	# Windows bundling rules
+#	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
+#	# which libs we need.
+#	# "make install", copies everything into a staging area
+#	# "make installer", uses makensis to create an installer executable
+ENDIF()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+#	# Android template directory
+#	SET(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
+ENDIF()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
+	install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
+	install(FILES subsurface.desktop DESTINATION share/applications)
+	install(FILES subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
+	install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
+	install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
+	install(DIRECTORY theme DESTINATION share/subsurface)
+	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
+	install(TARGETS subsurface DESTINATION bin)
+ENDIF()
