@@ -169,7 +169,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 		for (int i = 0; i < dataModel->rowCount(); i++, entry++) {
 			int max = maxCeiling(i);
 			// Don't scream if we violate the ceiling by a few cm
-			if (entry->depth < max - 100) {
+			if (entry->depth < max - 100 && entry->sec > 0) {
 				profileColor = QColor(Qt::red);
 				if (!eventAdded) {
 					add_event(&displayed_dive.dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max / 1000, "planned waypoint above ceiling");

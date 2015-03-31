@@ -82,6 +82,7 @@ slots:
 	void setDisplayRuntime(bool value);
 	void setDisplayDuration(bool value);
 	void setDisplayTransitions(bool value);
+	void setRecreationalMode(bool value);
 	void savePlan();
 	void saveDuplicatePlan();
 	void remove(const QModelIndex &index);

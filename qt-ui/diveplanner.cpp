@@ -393,6 +393,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.display_duration = s.value("display_duration", prefs.display_duration).toBool();
 	prefs.display_runtime = s.value("display_runtime", prefs.display_runtime).toBool();
 	prefs.display_transitions = s.value("display_transitions", prefs.display_transitions).toBool();
+	prefs.recreational_mode = s.value("recreational_mode", prefs.recreational_mode).toBool();
 	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
 	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
 	prefs.ascratestops = s.value("ascratestops", prefs.ascratestops).toInt();
@@ -414,6 +415,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_duration->setChecked(prefs.display_duration);
 	ui.display_runtime->setChecked(prefs.display_runtime);
 	ui.display_transitions->setChecked(prefs.display_transitions);
+	ui.recreational_mode->setChecked(prefs.recreational_mode);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
@@ -427,6 +429,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
+	connect(ui.recreational_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setRecreationalMode(bool)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscRate75(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.ascRate50, SIGNAL(valueChanged(int)), this, SLOT(setAscRate50(int)));
@@ -474,6 +477,7 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("display_duration", prefs.display_duration);
 	s.setValue("display_runtime", prefs.display_runtime);
 	s.setValue("display_transitions", prefs.display_transitions);
+	s.setValue("recreational_mode", prefs.recreational_mode);
 	s.setValue("ascrate75", prefs.ascrate75);
 	s.setValue("ascrate50", prefs.ascrate50);
 	s.setValue("ascratestops", prefs.ascratestops);
@@ -859,6 +863,12 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 	set_display_transitions(value);
 	prefs.display_transitions = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
+void DivePlannerPointsModel::setRecreationalMode(bool value)
+{
+	prefs.recreational_mode = value;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)

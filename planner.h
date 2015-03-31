@@ -2,6 +2,7 @@
 #define PLANNER_H
 
 #define LONGDECO 1
+#define NOT_RECREATIONAL 2
 
 #ifdef __cplusplus
 extern "C" {

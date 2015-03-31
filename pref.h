@@ -78,6 +78,7 @@ struct preferences {
 	bool display_runtime;
 	bool display_duration;
 	bool display_transitions;
+	bool recreational_mode;
 	int bottomsac;
 	int decosac;
 	int o2consumption; // ml per min
