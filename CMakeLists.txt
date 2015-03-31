@@ -373,6 +373,21 @@ set(TRANSLATION_SRC
 	translations/subsurface_zh_TW.ts
 )
 
+set(QTTRANSLATIONS_BASE
+	qt_da.qm
+	qt_de.qm
+	qt_es.qm
+	qt_fr.qm
+	qt_he.qm
+	qt_hu.qm
+	qt_pl.qm
+	qt_pt.qm
+	qt_ru.qm
+	qt_sk.qm
+	qt_sv.qm
+	qt_zh_TW.qm
+)
+
 # disabled translations as they are below 50%:
 # translations/subsurface_el_GR.ts \
 # translations/subsurface_he.ts \
@@ -396,6 +411,10 @@ foreach(TRANSLATION ${TRANSLATION_SRC})
 		)
 	ADD_DEPENDENCIES(subsurface generate_translations_${TRANSLATION_TARGET})
 	set(TRANSLATIONS ${TRANSLATIONS} ${CMAKE_BINARY_DIR}/${TRANSLATION_QM})
+endforeach()
+
+foreach(QTTRANSLATION ${QTTRANSLATIONS_BASE})
+	set(QTTRANSLATIONS ${QTTRANSLATIONS} ${QT_TRANSLATION_DIR}/${QTTRANSLATION})
 endforeach()
 
 # now for each platform the install instructions
