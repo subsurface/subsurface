@@ -316,6 +316,19 @@ ADD_DEPENDENCIES(subsurface_interface subsurface_generated_ui)
 ADD_DEPENDENCIES(subsurface_generated_ui version)
 ADD_DEPENDENCIES(subsurface_corelib version)
 
+# add platform specific actions
+IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	ADD_CUSTOM_COMMAND(
+		OUTPUT ${CMAKE_BINARY_DIR}/qt.conf
+		COMMAND echo \"[Paths]\" > ${CMAKE_BINARY_DIR}/qt.conf \; echo \"Prefix=.\" >> ${CMAKE_BINARY_DIR}/qt.conf
+		)
+	ADD_CUSTOM_TARGET(
+		generate_qtconf
+		DEPENDS ${CMAKE_BINARY_DIR}/qt.conf
+		)
+	ADD_DEPENDENCIES(subsurface generate_qtconf)
+ENDIF()
+
 # QTest based tests
 
 MACRO(test NAME FILE)
@@ -431,6 +444,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 #	# which libs we need.
 #	# "make install", copies everything into a staging area
 #	# "make installer", uses makensis to create an installer executable
+	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
+	install(DIRECTORY marbledata/maps DESTINATION ${WINDOWSSTAGING}/data)
+	install(DIRECTORY marbledata/bitmaps DESTINATION ${WINDOWSSTAGING}/data)
+	install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
+	install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
+	install(DIRECTORY theme DESTINATION ${WINDOWSSTAGING})
+	install(FILES ${TRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
+	install(FILES ${QTTRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
+	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
+	install(TARGETS subsurface DESTINATION ${WINDOWSSTAGING})
+	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
