@@ -108,6 +108,9 @@ FILE(WRITE ${CMAKE_BINARY_DIR}/version.cmake "
     ELSE ()
         SET(VER_OS linux)
     ENDIF ()
+    IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
+        SET(VER_OS win)
+    ENDIF ()
     EXECUTE_PROCESS(
         COMMAND sh scripts/get-version \${VER_OS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -127,10 +130,19 @@ FILE(WRITE ${CMAKE_BINARY_DIR}/version.cmake "
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     CONFIGURE_FILE(\${SRC} \${DST} @ONLY)
+    IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
+        EXECUTE_PROCESS(
+            COMMAND cat ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.nsi.in
+            COMMAND sed -e \"s/VERSIONTOKEN/\${VERSION_STRING}/\"
+            COMMAND sed -e \"s/PRODVTOKEN/\${CANONICAL_VERSION_STRING}/\"
+            OUTPUT_FILE ${CMAKE_BINARY_DIR}/staging/subsurface.nsi
+        )
+    ENDIF()
 ")
 ADD_CUSTOM_TARGET(version ALL COMMAND
     ${CMAKE_COMMAND} -D SRC=${CMAKE_BINARY_DIR}/version.h.in
                      -D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
+                     -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
                      -P ${CMAKE_BINARY_DIR}/version.cmake
 )
 
