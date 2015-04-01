@@ -467,6 +467,18 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
 	install(TARGETS subsurface DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
+	if(NOT DEFINED MAKENSIS)
+		set(MAKENSIS makensis)
+	endif()
+# stupid cmake doesn't allow a target to depend on the "install" target.
+# How lame is that...
+	add_custom_target(fake_install
+		COMMAND "${CMAKE_COMMAND}" --build . --target install
+		DEPENDS subsurface)
+	add_custom_target(installer
+		COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
+		DEPENDS fake_install
+		)
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
