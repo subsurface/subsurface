@@ -840,7 +840,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	bool stopping = false;
 	bool clear_to_ascend;
 	int clock, previous_point_time;
-	int avg_depth, bottom_time = 0;
+	int avg_depth, max_depth, bottom_time = 0;
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas;
@@ -865,7 +865,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		current_cylinder = 0;
 	}
 	depth = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].depth.mm;
-	avg_depth = average_depth(diveplan);
+	average_max_depth(diveplan, &avg_depth, &max_depth);
 	last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
@@ -905,7 +905,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	bottom_time = clock = previous_point_time = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].time.seconds;
 	gi = gaschangenr - 1;
 	if(prefs.recreational_mode) {
-		bool safety_stop = prefs.safetystop;
+		bool safety_stop = prefs.safetystop && max_depth >= 10000;
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		while (trial_ascent(depth, 0, avg_depth, bottom_time, tissue_tolerance, &displayed_dive.cylinder[current_cylinder].gasmix,
 				  po2, diveplan->surface_pressure / 1000.0)) {

@@ -2838,15 +2838,14 @@ void set_userid(char *rUserId)
 		prefs.userid[30]='\0';
 }
 
-int average_depth(struct diveplan *dive)
+void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 {
 	int integral = 0;
 	int last_time = 0;
 	int last_depth = 0;
 	struct divedatapoint *dp = dive->dp;
 
-	if (!dp)
-		return 0;
+	*max_depth = 0;
 
 	while (dp) {
 		if (dp->time) {
@@ -2854,13 +2853,15 @@ int average_depth(struct diveplan *dive)
 			integral += (dp->depth + last_depth) * (dp->time - last_time) / 2;
 			last_time = dp->time;
 			last_depth = dp->depth;
+			if (dp->depth > *max_depth)
+				*max_depth = dp->depth;
 		}
 		dp = dp->next;
 	}
 	if (last_time)
-		return integral / last_time;
+		*avg_depth = integral / last_time;
 	else
-		return 0;
+		*avg_depth = *max_depth = 0;
 }
 
 struct picture *alloc_picture()
