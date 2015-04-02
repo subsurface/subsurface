@@ -262,21 +262,21 @@
           <property name="spacing">
            <number>2</number>
           </property>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="QLabel" name="label_16">
             <property name="text">
              <string>GF high</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1" colspan="2">
+          <item row="6" column="1" colspan="2">
            <widget class="QCheckBox" name="backgasBreaks">
             <property name="text">
              <string>Plan backgas breaks</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
+          <item row="3" column="2">
            <widget class="QSpinBox" name="gfhigh">
             <property name="suffix">
              <string>%</string>
@@ -289,14 +289,14 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1" colspan="2">
+          <item row="5" column="1" colspan="2">
            <widget class="QCheckBox" name="lastStop">
             <property name="text">
              <string>Last stop at 6m</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QComboBox" name="rebreathermode">
             <property name="currentText">
              <string/>
@@ -306,7 +306,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="2" column="2">
            <widget class="QSpinBox" name="gflow">
             <property name="suffix">
              <string>%</string>
@@ -319,14 +319,14 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1" colspan="2">
+          <item row="4" column="1" colspan="2">
            <widget class="QCheckBox" name="drop_stone_mode">
             <property name="text">
              <string>Drop to first depth</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -339,7 +339,7 @@
             </property>
            </spacer>
           </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="QLabel" name="label_15">
             <property name="text">
              <string>GF low</string>
@@ -350,6 +350,16 @@
            <widget class="QCheckBox" name="recreational_mode">
             <property name="text">
              <string>Recreational mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="safetystop">
+            <property name="text">
+             <string>Safety stop</string>
+            </property>
+            <property name="tristate">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

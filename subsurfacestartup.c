@@ -51,6 +51,7 @@ struct preferences default_prefs = {
 	.display_duration = true,
 	.display_transitions = true,
 	.recreational_mode = false,
+	.safetystop = true,
 	.bottomsac = 20000,
 	.decosac = 17000,
 	.o2consumption = 720,
