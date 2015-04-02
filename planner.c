@@ -905,6 +905,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	bottom_time = clock = previous_point_time = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].time.seconds;
 	gi = gaschangenr - 1;
 	if(prefs.recreational_mode) {
+		bool safety_stop = true;
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		while (trial_ascent(depth, 0, avg_depth, bottom_time, tissue_tolerance, &displayed_dive.cylinder[current_cylinder].gasmix,
 				  po2, diveplan->surface_pressure / 1000.0)) {
@@ -932,6 +933,14 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 						       TIMESTEP, po2, &displayed_dive, prefs.decosac);
 			clock += TIMESTEP;
 			depth -= deltad;
+			if (depth <= 5000 && safety_stop) {
+				plan_add_segment(diveplan, clock - previous_point_time, 5000, gas, po2, false);
+				previous_point_time = clock;
+				clock += 180;
+				plan_add_segment(diveplan, clock - previous_point_time, 5000, gas, po2, false);
+				previous_point_time = clock;
+				safety_stop = false;
+			}
 		} while (depth > 0);
 		plan_add_segment(diveplan, clock - previous_point_time, 0, gas, po2, false);
 		create_dive_from_plan(diveplan, is_planner);
