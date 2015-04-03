@@ -41,6 +41,7 @@ typedef struct device_data_t
 	struct dive_table *download_table;
 } device_data_t;
 
+const char *errmsg (dc_status_t rc);
 const char *do_libdivecomputer_import(device_data_t *data);
 const char *do_uemis_import(device_data_t *data);
 

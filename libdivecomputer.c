@@ -26,6 +26,40 @@ double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns;
 static bool in_deco, first_temp_is_air;
 
+/*
+ * Directly taken from libdivecomputer's examples/common.c to improve
+ * the error messages resulting from libdc's return codes
+ */
+const char *errmsg (dc_status_t rc)
+{
+	switch (rc) {
+	case DC_STATUS_SUCCESS:
+		return "Success";
+	case DC_STATUS_UNSUPPORTED:
+		return "Unsupported operation";
+	case DC_STATUS_INVALIDARGS:
+		return "Invalid arguments";
+	case DC_STATUS_NOMEMORY:
+		return "Out of memory";
+	case DC_STATUS_NODEVICE:
+		return "No device found";
+	case DC_STATUS_NOACCESS:
+		return "Access denied";
+	case DC_STATUS_IO:
+		return "Input/output error";
+	case DC_STATUS_TIMEOUT:
+		return "Timeout";
+	case DC_STATUS_PROTOCOL:
+		return "Protocol error";
+	case DC_STATUS_DATAFORMAT:
+		return "Data format error";
+	case DC_STATUS_CANCELLED:
+		return "Cancelled";
+	default:
+		return "Unknown error";
+	}
+}
+
 static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 {
 	return dc_parser_new(parser, devdata->device);
