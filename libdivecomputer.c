@@ -434,6 +434,157 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 }
 #endif
 
+static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t *devdata, struct dive *dive)
+{
+	dc_status_t rc = 0;
+	dc_datetime_t dt = { 0 };
+	struct tm tm;
+
+	rc = dc_parser_get_datetime(parser, &dt);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the datetime"));
+		return rc;
+	}
+
+	dive->dc.deviceid = devdata->deviceid;
+
+	if (rc == DC_STATUS_SUCCESS) {
+		tm.tm_year = dt.year;
+		tm.tm_mon = dt.month - 1;
+		tm.tm_mday = dt.day;
+		tm.tm_hour = dt.hour;
+		tm.tm_min = dt.minute;
+		tm.tm_sec = dt.second;
+		dive->when = dive->dc.when = utc_mktime(&tm);
+	}
+
+	// Parse the divetime.
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, get_dive_date_c_string(dive->when));
+	unsigned int divetime = 0;
+	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.duration.seconds = divetime;
+
+	// Parse the maxdepth.
+	double maxdepth = 0.0;
+	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.maxdepth.mm = rint(maxdepth * 1000);
+
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	// if this is defined then we have a fairly late version of libdivecomputer
+	// from the 0.5 development cylcle - most likely temperatures and tank sizes
+	// are supported
+
+	// Parse temperatures
+	double temperature;
+	dc_field_type_t temp_fields[] = {DC_FIELD_TEMPERATURE_SURFACE,
+					 DC_FIELD_TEMPERATURE_MAXIMUM,
+					 DC_FIELD_TEMPERATURE_MINIMUM};
+	for (int i = 0; i < 3; i++) {
+		rc = dc_parser_get_field(parser, temp_fields[i], 0, &temperature);
+		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+			dev_info(devdata, translate("gettextFromC", "Error parsing temperature"));
+			return rc;
+		}
+		if (rc == DC_STATUS_SUCCESS)
+			switch(i) {
+			case 0:
+				dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
+				break;
+			case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
+			case 2:
+				dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
+				break;
+			}
+	}
+#endif
+
+	// Parse the gas mixes.
+	unsigned int ngases = 0;
+	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix count"));
+		return rc;
+	}
+
+#if DC_VERSION_CHECK(0, 3, 0)
+	// Check if the libdivecomputer version already supports salinity & atmospheric
+	dc_salinity_t salinity = {
+		.type = DC_WATER_SALT,
+		.density = SEAWATER_SALINITY / 10.0
+	};
+	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.salinity = rint(salinity.density * 10.0);
+
+	double surface_pressure = 0;
+	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
+#endif
+
+#ifdef DC_FIELD_STRING
+	// The dive parsing may give us more device information
+	int idx;
+	for (idx = 0; idx < 100; idx++) {
+		dc_field_string_t str = { NULL };
+		rc = dc_parser_get_field(parser, DC_FIELD_STRING, idx, &str);
+		if (rc != DC_STATUS_SUCCESS)
+			break;
+		if (!str.desc || !str.value)
+			break;
+		parse_string_field(dive, &str);
+	}
+#endif
+
+#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
+	dc_divemode_t divemode;
+	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error obtaining divemode"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		switch(divemode) {
+		case DC_DIVEMODE_FREEDIVE:
+			dive->dc.divemode = FREEDIVE;
+			break;
+		case DC_DIVEMODE_GAUGE:
+		case DC_DIVEMODE_OC: /* Open circuit */
+			dive->dc.divemode = OC;
+			break;
+		case DC_DIVEMODE_CC:  /* Closed circuit */
+			dive->dc.divemode = CCR;
+			break;
+		}
+#endif
+
+	rc = parse_gasmixes(devdata, dive, parser, ngases, NULL);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
+		return rc;
+	}
+
+	return DC_STATUS_SUCCESS;
+}
+
 /* returns true if we want libdivecomputer's dc_device_foreach() to continue,
  *  false otherwise */
 static int dive_cb(const unsigned char *data, unsigned int size,
@@ -465,147 +616,16 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	import_dive_number++;
 	dive = alloc_dive();
-	rc = dc_parser_get_datetime(parser, &dt);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the datetime"));
-		goto error_exit;
-	}
-	dive->dc.model = strdup(devdata->model);
-	dive->dc.deviceid = devdata->deviceid;
-	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
-	if (rc == DC_STATUS_SUCCESS) {
-		tm.tm_year = dt.year;
-		tm.tm_mon = dt.month - 1;
-		tm.tm_mday = dt.day;
-		tm.tm_hour = dt.hour;
-		tm.tm_min = dt.minute;
-		tm.tm_sec = dt.second;
-		dive->when = dive->dc.when = utc_mktime(&tm);
-	}
-	// Parse the divetime.
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, get_dive_date_c_string(dive->when));
-	unsigned int divetime = 0;
-	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the divetime"));
-		goto error_exit;
-	}
-	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.duration.seconds = divetime;
-
-	// Parse the maxdepth.
-	double maxdepth = 0.0;
-	rc = dc_parser_get_field(parser, DC_FIELD_MAXDEPTH, 0, &maxdepth);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the maxdepth"));
-		goto error_exit;
-	}
-	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.maxdepth.mm = rint(maxdepth * 1000);
-
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
-	// if this is defined then we have a fairly late version of libdivecomputer
-	// from the 0.5 development cylcle - most likely temperatures and tank sizes
-	// are supported
-
-	// Parse temperatures
-	double temperature;
-	dc_field_type_t temp_fields[] = {DC_FIELD_TEMPERATURE_SURFACE,
-					 DC_FIELD_TEMPERATURE_MAXIMUM,
-					 DC_FIELD_TEMPERATURE_MINIMUM};
-	for (int i = 0; i < 3; i++) {
-		rc = dc_parser_get_field(parser, temp_fields[i], 0, &temperature);
-		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-			dev_info(devdata, translate("gettextFromC", "Error parsing temperature"));
-			goto error_exit;
-		}
-		if (rc == DC_STATUS_SUCCESS)
-			switch(i) {
-			case 0:
-				dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
-				break;
-			case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
-			case 2:
-				dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
-				break;
-			}
-	}
-#endif
-
-	// Parse the gas mixes.
-	unsigned int ngases = 0;
-	rc = dc_parser_get_field(parser, DC_FIELD_GASMIX_COUNT, 0, &ngases);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix count"));
-		goto error_exit;
-	}
-
-#if DC_VERSION_CHECK(0, 3, 0)
-	// Check if the libdivecomputer version already supports salinity & atmospheric
-	dc_salinity_t salinity = {
-		.type = DC_WATER_SALT,
-		.density = SEAWATER_SALINITY / 10.0
-	};
-	rc = dc_parser_get_field(parser, DC_FIELD_SALINITY, 0, &salinity);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining water salinity"));
-		goto error_exit;
-	}
-	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.salinity = rint(salinity.density * 10.0);
-
-	double surface_pressure = 0;
-	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining surface pressure"));
-		goto error_exit;
-	}
-	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
-#endif
-
-#ifdef DC_FIELD_STRING
-	// The dive parsing may give us more device information
-	int idx;
-	for (idx = 0; idx < 100; idx++) {
-		dc_field_string_t str = { NULL };
-		rc = dc_parser_get_field(parser, DC_FIELD_STRING, idx, &str);
-		if (rc != DC_STATUS_SUCCESS)
-			break;
-		if (!str.desc || !str.value)
-			break;
-		parse_string_field(dive, &str);
-	}
-#endif
-
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
-	dc_divemode_t divemode;
-	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
-	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining divemode"));
-		goto error_exit;
-	}
-	if (rc == DC_STATUS_SUCCESS)
-		switch(divemode) {
-		case DC_DIVEMODE_FREEDIVE:
-			dive->dc.divemode = FREEDIVE;
-			break;
-		case DC_DIVEMODE_GAUGE:
-		case DC_DIVEMODE_OC: /* Open circuit */
-			dive->dc.divemode = OC;
-			break;
-		case DC_DIVEMODE_CC:  /* Closed circuit */
-			dive->dc.divemode = CCR;
-			break;
-		}
-#endif
-
-	rc = parse_gasmixes(devdata, dive, parser, ngases, data);
+	// Parse the dive's header data
+	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
+		dev_info(devdata, translate("getextFromC", "Error parsing the header"));
 		goto error_exit;
 	}
+
+	dive->dc.model = strdup(devdata->model);
+	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
