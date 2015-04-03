@@ -9,6 +9,9 @@
 #include "display.h"
 
 #include "libdivecomputer.h"
+#include <libdivecomputer/uwatec.h>
+#include <libdivecomputer/hw.h>
+
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
@@ -929,4 +932,64 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	}
 
 	return err;
+}
+
+/*
+ * Parse data buffers instead of dc devices downloaded data.
+ * Intended to be used to parse profile data from binary files during import tasks.
+ * Actually included Uwatec families because of works on datatrak and smartrak logs
+ * and OSTC families for OSTCTools logs import.
+ * For others, simply include them in the switch  (check parameters).
+ * Note that dc_descriptor_t in data  *must* have been filled using dc_descriptor_iterator()
+ * calls.
+ */
+dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size)
+{
+	dc_status_t rc;
+	dc_parser_t *parser = NULL;
+
+	switch (data->descriptor->type) {
+	case DC_FAMILY_UWATEC_ALADIN:
+	case DC_FAMILY_UWATEC_MEMOMOUSE:
+		rc = uwatec_memomouse_parser_create(&parser, data->context, 0, 0);
+		break;
+	case DC_FAMILY_UWATEC_SMART:
+	case DC_FAMILY_UWATEC_MERIDIAN:
+		rc = uwatec_smart_parser_create (&parser, data->context, data->descriptor->model, 0, 0);
+		break;
+	case DC_FAMILY_HW_OSTC:
+		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 0);
+		break;
+	case DC_FAMILY_HW_FROG:
+	case DC_FAMILY_HW_OSTC3:
+		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 1);
+		break;
+	}
+	if  (rc != DC_STATUS_SUCCESS) {
+		report_error("Error creating parser.");
+		dc_parser_destroy (parser);
+		return rc;
+	}
+	rc = dc_parser_set_data(parser, buffer, size);
+	if (rc != DC_STATUS_SUCCESS) {
+		report_error("Error registering the data.");
+		dc_parser_destroy (parser);
+		return rc;
+	}
+	// Do not parse Aladin/Memomouse headers as they are fakes
+	// Do not return on error, we can still parse the samples
+	if (data->descriptor->type != DC_FAMILY_UWATEC_ALADIN && data->descriptor->type != DC_FAMILY_UWATEC_MEMOMOUSE) {
+		rc = libdc_header_parser (parser, data, dive);
+		if (rc != DC_STATUS_SUCCESS) {
+			report_error("Error parsing the dive header data. Dive # %d\nStatus = %s", dive->number, errmsg(rc));
+		}
+	}
+	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dc);
+	if (rc != DC_STATUS_SUCCESS) {
+		report_error("Error parsing the sample data. Dive # %d\nStatus = %s", dive->number, errmsg(rc));
+		dc_parser_destroy (parser);
+		return rc;
+	}
+	dc_parser_destroy(parser);
+	return(DC_STATUS_SUCCESS);
 }
