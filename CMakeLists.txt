@@ -470,11 +470,65 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
 	endif()
-# stupid cmake doesn't allow a target to depend on the "install" target.
-# How lame is that...
+
+	# next figure out the DLLs we need to include in the installer
+	# since this needs to run at install time we create a new cmake
+	# script that then gets executed at install time with install(CODE...)
+	FILE(WRITE ${CMAKE_BINARY_DIR}/dlllist.cmake "
+		MESSAGE(STATUS \"processing dlllist.cmake\")
+		# figure out which command to use for objdump
+		EXECUTE_PROCESS(
+			COMMAND ${CMAKE_C_COMPILER} -dumpmachine
+			OUTPUT_VARIABLE OBJDUMP
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			)
+		# figure out where we should search for libraries
+		EXECUTE_PROCESS(
+			COMMAND ${CMAKE_C_COMPILER} -print-search-dirs
+			COMMAND sed -nE \"/^libraries: =/{s///;s,/lib/?\\\(:|\\\$\\\$\\\),/bin\\\\1,g;p;q;}\"
+			OUTPUT_VARIABLE ADDPATH
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			)
+		# since cmake doesn't appear to give us a variable with
+		# all libraries we link against, grab the link.txt script
+		# instead and drop the command name from it (before the
+		# first space) -- this will fail if the full path for the
+		# linker used contains a space...
+		EXECUTE_PROCESS(
+			COMMAND tail -1 CMakeFiles/subsurface.dir/link.txt
+			COMMAND cut -d\\  -f 2-
+			OUTPUT_VARIABLE LINKER_LINE
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			)
+		# finally run our win-ldd.pl script against that to
+		# collect all the required dlls
+		EXECUTE_PROCESS(
+			COMMAND sh -c \"OBJDUMP=\${OBJDUMP}-objdump PATH=$ENV{PATH}:\${ADDPATH} perl ${CMAKE_SOURCE_DIR}/scripts/win-ldd.pl subsurface.exe \${LINKER_LINE}\"
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+			OUTPUT_VARIABLE DLLS
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			)
+		# replace newlines with semicolons so this is a cmake list
+		string(REPLACE \"\\n\" \";\" DLLLIST \${DLLS})
+		# executing 'install' as a command seems hacky, but you
+		# can't use the install() cmake function in a script
+		foreach(DLL \${DLLLIST})
+			EXECUTE_PROCESS(COMMAND install \${DLL} \${STAGING})
+		endforeach()
+	")
+	# the script we created above is now added as a command to run at
+	# install time - so this ensures that subsurface.exe has been
+	# built before this is run
+	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_BINARY_DIR}/dlllist.cmake)")
+
+	# create the subsurface-x.y.z.exe installer - this needs to depend
+	# on the install target but cmake doesn't allow that, so we depend
+	# on the fake target instead
 	add_custom_target(fake_install
 		COMMAND "${CMAKE_COMMAND}" --build . --target install
-		DEPENDS subsurface)
+		DEPENDS subsurface
+		)
+
 	add_custom_target(installer
 		COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
 		DEPENDS fake_install
