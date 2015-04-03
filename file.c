@@ -22,8 +22,6 @@
 #define O_BINARY 0
 #endif
 
-extern void datatrak_import(const char *file, struct dive_table *table);
-
 int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd;
