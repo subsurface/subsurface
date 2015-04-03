@@ -460,6 +460,12 @@ int parse_file(const char *filename)
 		return 0;
 	}
 
+	/* OSTCtools */
+	if (fmt && (!strcasecmp(fmt + 1, "DIVE"))) {
+		ostctools_import(filename, &dive_table);
+		return 0;
+	}
+
 	ret = parse_file_buffer(filename, &mem);
 	free(mem.buffer);
 	return ret;

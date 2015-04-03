@@ -213,7 +213,8 @@ SOURCES =  \
 	qt-ui/diveshareexportdialog.cpp \
 	qt-ui/filtermodels.cpp \
 	qt-ui/undocommands.cpp \
-	qt-ui/notificationwidget.cpp
+	qt-ui/notificationwidget.cpp \
+	ostctools.c
 
 android: SOURCES += android.cpp
 else: win32: SOURCES += windows.c

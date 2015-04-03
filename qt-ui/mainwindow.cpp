@@ -1463,6 +1463,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"XML files (*.xml *.XML);;"
 			"APD log viewer (*.apd *.APD);;"
 			"Datatrak/WLog Files (*.log *.LOG);;"
+			"OSTCtools Files (*.dive *.DIVE);;"
 			"All files (*)"));
 
 	if (fileNames.isEmpty())
