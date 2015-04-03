@@ -68,8 +68,7 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 	return dc_parser_new(parser, devdata->device);
 }
 
-static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases,
-			  const unsigned char *data)
+static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases)
 {
 	static bool shown_warning = false;
 	int i, rc;
@@ -579,7 +578,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 		}
 #endif
 
-	rc = parse_gasmixes(devdata, dive, parser, ngases, NULL);
+	rc = parse_gasmixes(devdata, dive, parser, ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		dev_info(devdata, translate("gettextFromC", "Error parsing the gas mix"));
 		return rc;
