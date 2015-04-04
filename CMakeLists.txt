@@ -469,7 +469,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
-	install(CODE "execute_process(COMMAND mac-deploy Subsurface.app)")
+	install(CODE "execute_process(COMMAND macdeployqt Subsurface.app)")
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
