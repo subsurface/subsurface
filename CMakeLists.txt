@@ -450,10 +450,18 @@ endforeach()
 # now for each platform the install instructions
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-#	# OS X bundling rules
-#	#  "make mac-deploy" deploys the external libs (Qt, libdivecomputer, libusb, etc.) into the bundle
-#	#  "make install" installs the bundle to /Applications
-#	#  "make mac-create-dmg" creates Subsurface.dmg
+	# right now make install creates a self contained .app file in Subsurface.app
+	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/Resources)
+	install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
+	install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
+	install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
+	install(FILES ${DOCFILES} DESTINATION ${RESOURCEDIR}/share/Documentation)
+	install(DIRECTORY theme DESTINATION ${RESOURCEDIR})
+	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
+	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
+	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
+	install(TARGETS subsurface DESTINATION ${RESOURCEDIR}/../MacOS)
+	install(CODE "execute_process(COMMAND mac-deploy Subsurface.app)")
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
