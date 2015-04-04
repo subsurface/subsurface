@@ -17,6 +17,8 @@
 #define TIMESTEP 3 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
+#define RESERVE 40000 /* Remaining gas in recreational mode */
+
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
@@ -800,6 +802,17 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
+void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time)
+{
+	while (depth > 0) {
+		int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+		if (deltad > depth)
+			deltad = depth;
+		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.bottomsac, cylinder, true);
+		depth -= deltad;
+	}
+}
+
 bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time, double tissue_tolerance, struct gasmix *gasmix, int po2, double surface_pressure)
 {
 
@@ -823,6 +836,20 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 	}
 	restore_deco_state(trial_cache);
 	return clear_to_ascend;
+}
+
+bool enough_gas(int current_cylinder)
+{
+	cylinder_t *cyl;
+
+	cyl = &displayed_dive.cylinder[current_cylinder];
+
+	if (!cyl->start.mbar)
+		return true;
+	if (cyl->type.size.mliter)
+		return (float) (cyl->end.mbar - RESERVE)	 * cyl->type.size.mliter / 1000.0 > (float) cyl->deco_gas_used.mliter;
+	else
+		return true;
 }
 
 int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
@@ -906,16 +933,19 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	gi = gaschangenr - 1;
 	if(prefs.recreational_mode) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
+		track_ascent_gas(depth, &displayed_dive.cylinder[current_cylinder], avg_depth, bottom_time);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		while (trial_ascent(depth, 0, avg_depth, bottom_time, tissue_tolerance, &displayed_dive.cylinder[current_cylinder].gasmix,
-				  po2, diveplan->surface_pressure / 1000.0)) {
+				  po2, diveplan->surface_pressure / 1000.0) &&
+		       enough_gas(current_cylinder)) {
 			tissue_tolerance = add_segment(depth_to_mbar(depth, &displayed_dive) / 1000.0,
 						       &displayed_dive.cylinder[current_cylinder].gasmix,
 						       DECOTIMESTEP, po2, &displayed_dive, prefs.bottomsac);
+			update_cylinder_pressure(&displayed_dive, depth, depth, DECOTIMESTEP, prefs.bottomsac, &displayed_dive.cylinder[current_cylinder], false);
 			clock += DECOTIMESTEP;
 		}
 		clock -= DECOTIMESTEP;
-		plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
+		plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, true);
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
