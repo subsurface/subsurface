@@ -162,6 +162,17 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	if(NOT DEFINED LRELEASE)
 		set(LRELEASE lrelease)
 	endif()
+	SET(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
+	SET(MACOSX_BUNDLE_INFO_STRING "Subsurface")
+	SET(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
+	SET(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
+	SET(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
+	SET(MACOSX_BUNDLE_BUNDLE_VERSION "4.4.1")
+	SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "4.4.1")
+	SET(MACOSX_BUNDLE_LONG_VERSION_STRING "4.4.1")
+	SET(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
+	SET_SOURCE_FILES_PROPERTIES(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+	SET(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	SET(PLATFORM_SRC windows.c)
@@ -315,7 +326,7 @@ TARGET_LINK_LIBRARIES(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
 # create the executables
 
-ADD_EXECUTABLE(subsurface ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+ADD_EXECUTABLE(subsurface ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 target_link_libraries( subsurface
   subsurface_generated_ui
   subsurface_interface
@@ -449,7 +460,6 @@ endforeach()
 # now for each platform the install instructions
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	# right now make install creates a self contained .app file in Subsurface.app
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/Resources)
 	install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
 	install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
@@ -459,7 +469,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
-	install(TARGETS subsurface DESTINATION ${RESOURCEDIR}/../MacOS)
 	install(CODE "execute_process(COMMAND mac-deploy Subsurface.app)")
 ENDIF()
 
