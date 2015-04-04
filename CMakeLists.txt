@@ -190,6 +190,7 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	liquivision.c
 	load-git.c
 	membuffer.c
+	ostctools.c
 	parse-xml.c
 	planner.c
 	profile.c
