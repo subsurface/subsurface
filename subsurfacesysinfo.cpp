@@ -551,7 +551,11 @@ QString SubsurfaceSysInfo::prettyProductName()
 	case MV_MAVERICKS:
 		basename = "OS X Mavericks (";
 		break;
+#ifdef MV_YOSEMITE
 	case MV_YOSEMITE:
+#else
+	case 0x000C: // MV_YOSEMITE
+#endif
 		basename = "OS X Yosemite (";
 		break;
 	}
