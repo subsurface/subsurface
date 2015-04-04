@@ -781,7 +781,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	dive->notes = strdup(buffer);
 }
 
-int ascend_velocity(int depth, int avg_depth, int bottom_time)
+int ascent_velocity(int depth, int avg_depth, int bottom_time)
 {
 	/* We need to make this configurable */
 
@@ -805,7 +805,7 @@ int ascend_velocity(int depth, int avg_depth, int bottom_time)
 void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time)
 {
 	while (depth > 0) {
-		int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > depth)
 			deltad = depth;
 		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.bottomsac, cylinder, true);
@@ -821,7 +821,7 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 
 	cache_deco_state(tissue_tolerance, &trial_cache);
 	while (trial_depth > stoplevel) {
-		int deltad = ascend_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
+		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > trial_depth) /* don't test against depth above surface */
 			deltad = trial_depth;
 		tissue_tolerance = add_segment(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0,
@@ -893,7 +893,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	}
 	depth = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].depth.mm;
 	average_max_depth(diveplan, &avg_depth, &max_depth);
-	last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
+	last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!is_planner) {
@@ -949,11 +949,11 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
-			int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
-			if (ascend_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
+			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 				plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 				previous_point_time = clock;
-				last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
+				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
 			if (depth - deltad < 0)
 				deltad = depth;
@@ -998,12 +998,12 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		/* We will break out when we hit the surface */
 		do {
 			/* Ascend to next stop depth */
-			int deltad = ascend_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
-			if (ascend_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
+			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 				plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 				previous_point_time = clock;
 				stopping = false;
-				last_ascend_rate = ascend_velocity(depth, avg_depth, bottom_time);
+				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
 			if (depth - deltad < stoplevels[stopidx])
 				deltad = depth - stoplevels[stopidx];
