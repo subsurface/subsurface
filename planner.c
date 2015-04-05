@@ -881,6 +881,17 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	create_dive_from_plan(diveplan, is_planner);
 
+	if (prefs.verbatim_plan)
+		plan_verbatim = true;
+	if (prefs.display_runtime)
+		plan_display_runtime = true;
+	if (prefs.display_duration)
+		plan_display_duration = true;
+	if (prefs.display_transitions)
+		plan_display_transitions = true;
+	if (prefs.last_stop)
+		decostoplevels[1] = 6000;
+
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
 
