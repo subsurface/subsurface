@@ -67,7 +67,7 @@ void DivePlannerPointsModel::createSimpleDive()
 	if (!prefs.drop_stone_mode)
 		plannerModel->addStop(M_OR_FT(15, 45), 1 * 60, &gas, 0, true);
 
-	plannerModel->addStop(M_OR_FT(15, 45), 40 * 60, &gas, 0, true);
+	plannerModel->addStop(M_OR_FT(15, 45), 20 * 60, &gas, 0, true);
 	if (!isPlanner()) {
 		plannerModel->addStop(M_OR_FT(5, 15), 42 * 60, &gas, 0, true);
 		plannerModel->addStop(M_OR_FT(5, 15), 45 * 60, &gas, 0, true);
