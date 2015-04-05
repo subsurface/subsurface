@@ -150,12 +150,14 @@ ADD_CUSTOM_TARGET(version ALL COMMAND
 
 SET(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	set(SUBSURFACE_TARGET subsurface)
 	SET(PLATFORM_SRC linux.c)
 	if(NOT DEFINED LRELEASE)
 		set(LRELEASE lrelease)
 	endif()
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	set(SUBSURFACE_TARGET Subsurface)
 	SET(PLATFORM_SRC macos.c)
 	FIND_LIBRARY(APP_SERVICES_LIBRARY ApplicationServices )
 	SET(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
@@ -175,6 +177,7 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	SET(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set(SUBSURFACE_TARGET subsurface)
 	SET(PLATFORM_SRC windows.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32)
 	remove_definitions(-DUNICODE)
@@ -326,8 +329,8 @@ TARGET_LINK_LIBRARIES(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
 # create the executables
 
-ADD_EXECUTABLE(subsurface ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-target_link_libraries( subsurface
+ADD_EXECUTABLE(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+target_link_libraries( ${SUBSURFACE_TARGET}
   subsurface_generated_ui
   subsurface_interface
   subsurface_profile
@@ -352,7 +355,7 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		generate_qtconf
 		DEPENDS ${CMAKE_BINARY_DIR}/qt.conf
 		)
-	ADD_DEPENDENCIES(subsurface generate_qtconf)
+	ADD_DEPENDENCIES(${SUBSURFACE_TARGET} generate_qtconf)
 ENDIF()
 
 # QTest based tests
@@ -487,7 +490,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(FILES ${TRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
-	install(TARGETS subsurface DESTINATION ${WINDOWSSTAGING})
+	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
@@ -525,7 +528,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# finally run our win-ldd.pl script against that to
 		# collect all the required dlls
 		EXECUTE_PROCESS(
-			COMMAND sh -c \"OBJDUMP=\${OBJDUMP}-objdump PATH=$ENV{PATH}:\${ADDPATH} perl ${CMAKE_SOURCE_DIR}/scripts/win-ldd.pl subsurface.exe \${LINKER_LINE}\"
+			COMMAND sh -c \"OBJDUMP=\${OBJDUMP}-objdump PATH=$ENV{PATH}:\${ADDPATH} perl ${CMAKE_SOURCE_DIR}/scripts/win-ldd.pl ${SUBSURFACE_TARGET}.exe \${LINKER_LINE}\"
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 			OUTPUT_VARIABLE DLLS
 			OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -548,7 +551,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# on the fake target instead
 	add_custom_target(fake_install
 		COMMAND "${CMAKE_COMMAND}" --build . --target install
-		DEPENDS subsurface
+		DEPENDS ${SUBSURFACE_TARGET}
 		)
 
 	add_custom_target(installer
@@ -571,5 +574,5 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
 	install(DIRECTORY theme DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
-	install(TARGETS subsurface DESTINATION bin)
+	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 ENDIF()
