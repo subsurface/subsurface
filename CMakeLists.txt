@@ -155,6 +155,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	if(NOT DEFINED LRELEASE)
 		set(LRELEASE lrelease)
 	endif()
+	# in some builds we appear to be missing libz for some strange reason...
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(SUBSURFACE_TARGET Subsurface)
