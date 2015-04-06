@@ -578,6 +578,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 	IF(DEFINED LIBMARBLEDEVEL)
-		install(FILES ${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so* DESTINATION lib)
+		install(
+			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
+			CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
+			)
 	ENDIF()
 ENDIF()
