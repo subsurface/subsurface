@@ -92,12 +92,14 @@ sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
 # and now for precise (precise can't build Qt5 based packages)
-prev=vivid
-rel=precise
-sed -i "s/${prev}/${rel}/g" debian/changelog
-cp debian/12.04.control debian/control
-cp debian/12.04.rules debian/rules
-debuild -S
+# with the switch to cmake the amount of effort to build Qt4 packages
+# on precise just doesn't seem worth it anymore
+#prev=vivid
+#rel=precise
+#sed -i "s/${prev}/${rel}/g" debian/changelog
+#cp debian/12.04.control debian/control
+#cp debian/12.04.rules debian/rules
+#debuild -S
 
 cd ..
 

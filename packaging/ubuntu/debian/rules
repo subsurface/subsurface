@@ -3,10 +3,11 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
-
+export DEB_BUILD_OPTIONS+=nocheck
+export DEB_CMAKE_INSTALL_PREFIX=/usr
 
 %:
-	dh $@
+	dh $@ --buildsystem=cmake --builddirectory=subsurface-build --parallel
 
 override_dh_auto_clean:
 	(cd libdivecomputer ; make clean || true)
@@ -32,7 +33,16 @@ override_dh_auto_configure:
 		ln -s src/lib/marble lib ; \
 		mkdir include ; cd include ; for i in `find ../../marble-source -name \*.h` ; do ln -s $$i . ; done ; \
 		ln -s . marble )
-	qmake LIBDCDEVEL=./libdivecomputer LIBGIT2DEVEL=./libgit2 LIBGIT2STATIC=1 LIBMARBLEDEVEL=./marble-build SPECIAL_MARBLE_PREFIX=1 subsurface.pro
+	(mkdir subsurface-build ; cd subsurface-build ; \
+		cmake -DCMAKE_BUILD_TYPE=Release \
+			-DPREFER_GIT_FROMSOURCE=1 \
+			-DLIBGIT2_INCLUDE_DIR=$$(pwd)/../libgit2/include \
+			-DLIBGIT2_LIBRARIES=$$(pwd)/../libgit2/build/libgit2.a \
+			-DLIBDIVECOMPUTER_INCLUDE_DIR=$$(pwd)/../libdivecomputer/include \
+			-DLIBDIVECOMPUTER_LIBRARIES=$$(pwd)/../libdivecomputer/src/.libs/libdivecomputer.a \
+			-DMARBLE_INCLUDE_DIR=$$(pwd)/../marble-build/include \
+			-DMARBLE_LIBRARIES=$$(pwd)/../marble-build/lib/libssrfmarblewidget.so \
+			$$(pwd)/.. ; )
 
 override_dh_installchangelogs:
 	dh_installchangelogs
