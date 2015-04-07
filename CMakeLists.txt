@@ -17,16 +17,8 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
 endif()
 
 # pkgconfig for required libraries
-
 FIND_PACKAGE(PkgConfig)
-
-MACRO(pkg_config_library LIBNAME pcfile)
-	pkg_check_modules(${LIBNAME} REQUIRED ${pcfile})
-	include_directories(${${LIBNAME}_INCLUDE_DIRS})
-	link_directories(${${LIBNAME}_LIBRARY_DIRS})
-	add_definitions(${${LIBNAME}_CFLAGS_OTHER})
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${${LIBNAME}_LIBRARIES})
-ENDMACRO()
+INCLUDE(cmake/Modules/pkgconfig_helper.cmake)
 
 pkg_config_library(LIBXML libxml-2.0)
 pkg_config_library(LIBSQLITE3 sqlite3)
