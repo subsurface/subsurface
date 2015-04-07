@@ -7,6 +7,10 @@ cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
+OPTION(PREFER_GIT_FROMSOURCE "Turn off if you wanna use system's libgit 0.21.5" ON)
+OPTION(PREFER_GIT_STATIC "Turn off if you wanna use a shared library" ON)
+OPTION(PREFER_LIBDC_STATIC "Turn off if you wanna use a shared library" ON)
+
 SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
 INCLUDE_DIRECTORIES( . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
 
@@ -27,7 +31,7 @@ pkg_config_library(LIBZIP libzip)
 
 # more libraries with special handling in case we build them ourselves
 
-if(NOT DEFINED LIBGIT2DEVEL)
+if(NOT ${PREFER_GIT_FROMSOURCE})
 	pkg_config_library(LIBGIT2 libgit2)
 ELSE()
 	include_directories(${LIBGIT2DEVEL}/include)
