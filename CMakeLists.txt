@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
-SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/marbledata)
+SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
 INCLUDE_DIRECTORIES( . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
 
 # compiler specific settings
