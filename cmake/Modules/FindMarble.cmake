@@ -8,13 +8,30 @@
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
 
+# in cache already
 IF ( MARBLE_INCLUDE_DIR AND MARBLE_LIBRARIES )
-   # in cache already
    SET( MARBLE_FIND_QUIETLY TRUE )
 ENDIF ( MARBLE_INCLUDE_DIR AND MARBLE_LIBRARIES )
 
-FIND_PATH( MARBLE_INCLUDE_DIR NAMES marble/MarbleModel.h )
-FIND_LIBRARY( MARBLE_LIBRARIES NAMES marblewidget )
+FIND_PATH( MARBLE_INCLUDE_DIR
+NAMES marble/MarbleModel.h
+HINTS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../marble/src/lib
+    ${CMAKE_CURRENT_SOURCE_DIR}/../marble-source/src/lib
+    /usr/local/include
+    /usr/include
+)
+
+FIND_LIBRARY( MARBLE_LIBRARIES
+NAMES
+    ssrfmarblewidget
+    marblewidget
+HINTS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../marble
+    ${CMAKE_CURRENT_SOURCE_DIR}/../marble-source
+    /usr/local/include
+    /usr/include
+)
 
 INCLUDE( FindPackageHandleStandardArgs )
 FIND_PACKAGE_HANDLE_STANDARD_ARGS( marble DEFAULT_MSG MARBLE_INCLUDE_DIR MARBLE_LIBRARIES )
