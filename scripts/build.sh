@@ -45,7 +45,7 @@ if [ ! -d libgit2 ] ; then
 	fi
 fi
 cd libgit2
-git checkout v0.21.5
+git checkout v0.22.0
 mkdir -p build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$SRC/install -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
@@ -97,6 +97,8 @@ make -j4
 make install
 
 cd $SRC/subsurface
-$QMAKE CONFIG+=setRpath LIBDCDEVEL=1 LIBMARBLEDEVEL=$SRC/install SPECIAL_MARBLE_PREFIX=1 LIBGIT2DEVEL=$SRC/libgit2 subsurface.pro
+mkdir -p build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$SRC/install ..
 make -j4
 
