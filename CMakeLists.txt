@@ -53,15 +53,8 @@ ELSE()
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -ldivecomputer)
 ENDIF()
 
-IF(NOT DEFINED LIBMARBLEDEVEL)
-	FIND_PACKAGE(Marble REQUIRED)
-	include_directories(${MARBLE_INCLUDE_DIR})
-	link_directories(${MARBLE_LIB_DIR})
-ELSE()
-	include_directories(${LIBMARBLEDEVEL}/include)
-	link_directories(${LIBMARBLEDEVEL}/lib)
-	SET(MARBLE_LIBRARIES -L${LIBMARBLEDEVEL}/lib -lssrfmarblewidget)
-ENDIF()
+FIND_PACKAGE(Marble REQUIRED)
+include_directories(${MARBLE_INCLUDE_DIR})
 
 # handle out of tree build correctly
 
