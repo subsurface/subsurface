@@ -16,6 +16,7 @@ ENDIF ( MARBLE_INCLUDE_DIR AND MARBLE_LIBRARIES )
 FIND_PATH( MARBLE_INCLUDE_DIR
 NAMES marble/MarbleModel.h
 HINTS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../install/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../marble/src/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../marble-source/src/lib
     /usr/local/include
@@ -27,6 +28,7 @@ NAMES
     ssrfmarblewidget
     marblewidget
 HINTS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../install/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../marble
     ${CMAKE_CURRENT_SOURCE_DIR}/../marble-source
     /usr/local/include
