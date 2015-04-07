@@ -19,20 +19,6 @@ if [[ ! -d "subsurface" ]] ; then
 	exit 1
 fi
 
-# qmake or qmake-qt5 ?
-qmake -v | grep "version 5" > /dev/null 2>&1
-if [[ $? -eq 0 ]] ; then
-	QMAKE=qmake
-else
-	qmake-qt5 -v | grep "version 5" > /dev/null 2>&1
-	if [[ $? -eq 0 ]] ; then
-		QMAKE=qmake-qt5
-	else
-		echo "can't find a working qmake for Qt5"
-		exit 1
-	fi
-fi
-
 mkdir -p install
 
 # build libgit2
