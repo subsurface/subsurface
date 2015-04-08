@@ -592,7 +592,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	if (!plannerStateClean() || !current_dive || !current_dive->dc.model)
 		return;
 	else if (strcmp(current_dive->dc.model, "planned dive")) {
-		qDebug() << "trying to replan a dive that's not a planned dive:" << current_dive->dc.model;
+		QMessageBox::warning(this, tr("Warning"), tr("trying to replan a dive that's not a planned dive."));
 		return;
 	}
 	// put us in PLAN mode
@@ -668,6 +668,7 @@ void MainWindow::on_actionEditDive_triggered()
 
 	const bool isTripEdit = dive_list()->selectedTrips().count() >= 1;
 	if (!current_dive || isTripEdit || strcmp(current_dive->dc.model, "manually added dive")) {
+		QMessageBox::warning(this, tr("Warning"), tr("Trying to edit a dive that's not a manually added dive."));
 		return;
 	}
 
