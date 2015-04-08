@@ -1,5 +1,12 @@
 #!/bin/bash
 # start from the directory above the combined subsurface & subsurface/libdivecomputer directory
+#
+# in order to be able to make changes to the debian/* files without changing the source
+# this script assumes that the debian/* files plus a separate debian.changelog are in
+# this directory as well - this makes testing builds on launchpad easier
+# for most people all it should take is to run
+#   cp -a packaging/ubuntu/debian .
+#
 if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer || ! -d subsurface/libgit2 ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
 	echo "which includes libdivecomputer and libgit2 as subdirectories)."
@@ -15,55 +22,50 @@ LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
 #
 echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
 #
-if [[ -d subsurface_$VERSION ]]; then
-	rm -rf subsurface_$VERSION.bak.prev
-	mv subsurface_$VERSION.bak subsurface_$VERSION.bak.prev
-	mv subsurface_$VERSION subsurface_$VERSION.bak
-fi
-mkdir subsurface_$VERSION
-if [[ "x$GITREVISION" != "x" ]] ; then
-	rm -f subsurfacedaily-$VERSION
-	ln -s subsurface_$VERSION subsurfacedaily-$VERSION
-else
-	rm -f subsurfacebeta-$VERSION
-	ln -s subsurface_$VERSION subsurfacebeta-$VERSION
-fi
+if [[ ! -d subsurface_$VERSION ]]; then
+	mkdir subsurface_$VERSION
+	if [[ "x$GITREVISION" != "x" ]] ; then
+		rm -f subsurfacedaily-$VERSION
+		ln -s subsurface_$VERSION subsurfacedaily-$VERSION
+	else
+		rm -f subsurfacebeta-$VERSION
+		ln -s subsurface_$VERSION subsurfacebeta-$VERSION
+	fi
 
-#
-#
-echo "copying sources"
-#
-(cd subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
-cd subsurface_$VERSION
-rm -rf .git libdivecomputer/.git libgit2/.git marble-source/.git
-echo $GITVERSION > .gitversion
-echo $LIBDCREVISION > libdivecomputer/revision
-# dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION
-# rm debian/*.ex debian/*.EX debian/README.*
-#
-#
-echo "creating source tar file for OBS and Ununtu PPA"
-#
-if [[ "x$GITREVISION" != "x" ]] ; then
-	(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+	#
+	#
+	echo "copying sources"
+	#
+	(cd subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
+	cd subsurface_$VERSION;
+	rm -rf .git libdivecomputer/.git libgit2/.git marble-source/.git
+	echo $GITVERSION > .gitversion
+	echo $LIBDCREVISION > libdivecomputer/revision
+	# dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION
+	# rm debian/*.ex debian/*.EX debian/README.*
+	#
+	#
+	echo "creating source tar file for OBS and Ununtu PPA"
+	#
+	if [[ "x$GITREVISION" != "x" ]] ; then
+		(cd .. ; tar ch subsurfacedaily-$VERSION | xz > home:Subsurface-Divelog/Subsurface-daily/subsurface-$VERSION.orig.tar.xz) &
+	else
+		(cd .. ; tar ch subsurfacebeta-$VERSION | xz > home:Subsurface-Divelog/Subsurface-beta/subsurface-$VERSION.orig.tar.xz) &
+	fi
+	tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 else
-	(cd .. ; tar ch subsurfacebeta-$VERSION | xz > home:Subsurface-Divelog/Subsurface-beta/subsurface-$VERSION.orig.tar.xz) &
+	echo "using existing source tree"
+	cd subsurface_$VERSION
 fi
-tar cf - . | xz > ../subsurface_$VERSION.orig.tar.xz
 #
 #
 echo "preparint the debian directory"
 #
 export DEBEMAIL=dirk@hohndel.org
+rm -rf debian
 mkdir -p debian
-cp -a packaging/ubuntu/debian .
+cp -a ../debian .
 cp ../debian.changelog debian/changelog
-# do something clever with changelog
-#mv debian/changelog debian/autocl
-#head -1 debian/autocl | sed -e 's/)/~trusty)/' -e 's/unstable/trusty/' > debian/changelog
-#cat ../subsurface/packaging/ubuntu/debian/changelog >> debian/changelog
-#tail -1 debian/autocl >> debian/changelog
-#rm -f debian/autocl
 
 rev=0
 while [ $rev -le "99" ]
