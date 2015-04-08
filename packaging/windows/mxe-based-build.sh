@@ -148,16 +148,15 @@ if [ ! -d staging ] ; then
 	cd ../..
 fi
 
-export objdump=$BASEDIR/mxe/usr/bin/i686-w64-mingw32.shared-objdump
+cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	-DCMAKE_PREFIX_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5 \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DLIBDCDEVEL=$BUILDDIR/libdivecomputer \
+	-DLIBGIT2DEVEL=$BUILDDIR/libgit2 \
+	-DLIBMARBLEDEVEL=$BUILDDIR/marble \
+	-DLRELEASE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
+	-DQT_TRANSLATION_DIR=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
+	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
+	$BASEDIR/../subsurface
 
-i686-w64-mingw32.shared-qmake-qt5 \
-	LIBMARBLEDEVEL=../marble \
-	LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
-	LIBDCDEVEL=../libdivecomputer \
-	QMAKE_LRELEASE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
-	SPECIAL_MARBLE_PREFIX=1 \
-	MAKENSIS=i686-w64-mingw32.shared-makensis \
-	$BASEDIR/../subsurface/subsurface.pro
-
-
-make -j12 $@
+make -j12 VERBOSE=1 $@
