@@ -802,13 +802,17 @@ int ascent_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time)
+void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop)
 {
 	while (depth > 0) {
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > depth)
 			deltad = depth;
 		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.bottomsac, cylinder, true);
+		if (depth <= 5000 && safety_stop){
+			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.bottomsac, cylinder, true);
+			safety_stop = false;
+		}
 		depth -= deltad;
 	}
 }
@@ -944,7 +948,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	gi = gaschangenr - 1;
 	if(prefs.recreational_mode) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
-		track_ascent_gas(depth, &displayed_dive.cylinder[current_cylinder], avg_depth, bottom_time);
+		track_ascent_gas(depth, &displayed_dive.cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		while (trial_ascent(depth, 0, avg_depth, bottom_time, tissue_tolerance, &displayed_dive.cylinder[current_cylinder].gasmix,
 				  po2, diveplan->surface_pressure / 1000.0) &&
