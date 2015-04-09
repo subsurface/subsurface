@@ -33,39 +33,21 @@ effort patch in packaging/ubuntu/0001-Make-build-with-Qt4.patch that
 attempts to continue to allow building with Qt4, but that is not
 officially supported and will result in missing functionality.
 
+As of Subsurface 4.5 we are switching our build system to cmake. qmake
+based builds are no longer supported.
+
 Build options for Subsurface
 ----------------------------
 
-The following options are recognized when passed to qmake:
+The following options are recognized when passed to cmake:
 
- -config debug        Create a debug build
- -config release      Create a release build
-		      The default depends on how Qt was built.
- V=1                  Disable the "silent" build mode
- LIBDCDEVEL=1         Search for libdivecomputer in ../libdivecomputer
- LIBMARBLEDEVEL=path  Search for marble library and includes in path
- SPECIAL_MARBLE_PREFIX=1 Use libssrfmarblewidget as library name
-                      This is needed when building with our marble branch
- LIBGIT2DEVEL=path    Search for libgit2 library and includes in path
- INCLUDEPATH+=xxx     Add xxx to the include paths to the compiler
-		      (pass the actual path, without -I)
- LIBS+=xxx            Add xxx to the linker flags. -l and -L options are
-		      recognized.
- DEFINES+=SHOW_PLOT_INFO_TABLE=1
-		      Only available in debug builds, this creates a
-		      second window that shows all elements in the
-		      plot_info structure as a table - very useful when
-		      debugging issues with the profile
+ -DCMAKE_BUILD_TYPE=Release	create a release build
+ -DCMAKE_BUILD_TYPE=Debug	create a debug build
 
-The INCLUDEPATH and LIBS options are useful to tell the buildsystem
-about non-standard installation paths for the dependencies (such as
-Marble). They can be repeated as often as needed, or multiple
-arguments can be passed on the same switch, separated by a space. For
-example:
+The Makefile that was created using cmake can be forced into a much more
+verbose mode by calling
 
-  qmake LIBS+="-L$HOME/marble/lib -L$HOME/libdivecomputer/lib" \
-	INCLUDEPATH+="$HOME/marble/include $HOME/libdivecomputer/include"
-
+ make VERBOSE=1
 
 Building Subsurface 4 under Linux
 ---------------------------------
@@ -190,21 +172,16 @@ $ make install
 $ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ qmake SPECIAL_MARBLE_PREFIX=1 INCLUDEPATH+=/usr/local/include \
-	LIBS+=-L/usr/local/lib \
-	LIBS+='-L/usr/local/Cellar/libzip/0.11.2/lib -lzip -lz' \
-	INCLUDEPATH+=/usr/local/Cellar/libzip/0.11.2/include V=1 \
-	LIBMARBLEDEVEL=../marble-source/marble-build/
+$ mkdir build
+$ cd build
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
 $ make -j4
-$ make install_mac_bundle
+$ make install
 
-After the above is done, Subsurface will be installed to /Applications.
+After the above is done, Subsurface.app will be available in the
+subsurface/build/staging directory. This folder can then be moved
+to /Applications install Subsurface for every user.
 
-Another option is to create a .dmg for distribution:
-
-$ qmake
-$ make
-$ make mac-create-dmg
 
 
 Cross-building Subsurface on Linux for Windows
