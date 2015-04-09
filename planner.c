@@ -806,9 +806,9 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > depth)
 			deltad = depth;
-		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.bottomsac, cylinder, true);
+		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true);
 		if (depth <= 5000 && safety_stop){
-			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.bottomsac, cylinder, true);
+			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.decosac, cylinder, true);
 			safety_stop = false;
 		}
 		depth -= deltad;
