@@ -17,8 +17,6 @@
 #define TIMESTEP 3 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
-#define RESERVE 40000 /* Remaining gas in recreational mode */
-
 int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
@@ -845,13 +843,12 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 bool enough_gas(int current_cylinder)
 {
 	cylinder_t *cyl;
-
 	cyl = &displayed_dive.cylinder[current_cylinder];
 
 	if (!cyl->start.mbar)
 		return true;
 	if (cyl->type.size.mliter)
-		return (float) (cyl->end.mbar - RESERVE)	 * cyl->type.size.mliter / 1000.0 > (float) cyl->deco_gas_used.mliter;
+		return (float) (cyl->end.mbar - prefs.reserve_gas)	 * cyl->type.size.mliter / 1000.0 > (float) cyl->deco_gas_used.mliter;
 	else
 		return true;
 }

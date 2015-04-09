@@ -54,6 +54,7 @@ struct preferences default_prefs = {
 	.safetystop = true,
 	.bottomsac = 20000,
 	.decosac = 17000,
+	.reserve_gas=40000,
 	.o2consumption = 720,
 	.pscr_ratio = 100,
 	.show_pictures_in_profile = true,

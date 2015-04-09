@@ -93,6 +93,7 @@ slots:
 	void loadFromDive(dive *d);
 	void emitDataChanged();
 	void setRebreatherMode(int mode);
+	void setReserveGas(int reserve);
 
 signals:
 	void planCreated();

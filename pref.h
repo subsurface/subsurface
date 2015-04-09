@@ -80,6 +80,7 @@ struct preferences {
 	bool display_transitions;
 	bool recreational_mode;
 	bool safetystop;
+	int reserve_gas;
 	int bottomsac;
 	int decosac;
 	int o2consumption; // ml per min
