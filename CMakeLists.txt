@@ -155,6 +155,9 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 ENDIF()
 
+# include translations
+add_subdirectory(translations)
+
 # compile the core library, in C.
 
 SET(SUBSURFACE_CORE_LIB_SRCS
@@ -357,32 +360,6 @@ set(DOCFILES
 	${CMAKE_BINARY_DIR}/Documentation/user-manual_ru.html
 )
 
-QT5_ADD_TRANSLATION(TRANSLATIONS
-	translations/subsurface_source.ts
-	translations/subsurface_bg_BG.ts
-	translations/subsurface_cs.ts
-	translations/subsurface_da_DK.ts
-	translations/subsurface_de_CH.ts
-	translations/subsurface_de_DE.ts
-	translations/subsurface_en_GB.ts
-	translations/subsurface_es_ES.ts
-	translations/subsurface_et_EE.ts
-	translations/subsurface_fi_FI.ts
-	translations/subsurface_fr_FR.ts
-	translations/subsurface_it_IT.ts
-	translations/subsurface_lv_LV.ts
-	translations/subsurface_nb_NO.ts
-	translations/subsurface_nl_NL.ts
-	translations/subsurface_pl_PL.ts
-	translations/subsurface_pt_BR.ts
-	translations/subsurface_pt_PT.ts
-	translations/subsurface_ru_RU.ts
-	translations/subsurface_sk_SK.ts
-	translations/subsurface_sv_SE.ts
-	translations/subsurface_tr.ts
-	translations/subsurface_zh_TW.ts
-)
-
 set(QTTRANSLATIONS_BASE
 	qt_da.qm
 	qt_de.qm
@@ -397,14 +374,6 @@ set(QTTRANSLATIONS_BASE
 	qt_sv.qm
 	qt_zh_TW.qm
 )
-
-# disabled translations as they are below 50%:
-# translations/subsurface_el_GR.ts \
-# translations/subsurface_he.ts \
-# translations/subsurface_hu.ts \
-# translations/subsurface_ro_RO.ts \
-
-ADD_CUSTOM_TARGET (translations ALL DEPENDS ${TRANSLATIONS})
 
 if(QT_TRANSLATION_DIR STREQUAL "")
 	set(QT_TRANSLATION_DIR ${Qt5Core_DIR}/../../../translations)
