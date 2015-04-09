@@ -25,6 +25,7 @@
 #                /libgit2
 #                /marble
 #                /subsurface
+#                /install-root     <- target for our temporary installs
 #
 # then start this script from ~/src/win/win32
 #
@@ -39,6 +40,7 @@ if [[ ! -d libgit2 || ! -d marble || ! -d subsurface ]] ; then
 fi
 
 BASEDIR=$(cd "`dirname $0`/.."; pwd)
+INSTALL_ROOT=$(pwd)/install-root
 
 echo "Building in $BASEDIR ..."
 
@@ -82,17 +84,11 @@ cd ..
 
 cd libgit2 || exit 1
 cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 	-DBUILD_CLAR=OFF \
 	$BASEDIR/../subsurface/libgit2
 make -j12
-
-# fake install
-if [ ! -h include ] ; then
-	ln -s $BASEDIR/../subsurface/libgit2/include .
-fi
-if [ ! -h build ] ; then
-	ln -s . build
-fi
+make install
 cd ..
 
 # libdivecomputer (can't figure out how to do out-of tree builds?)
@@ -100,8 +96,9 @@ cd ..
 cd libdivecomputer || exit 1
 git pull
 autoreconf --install
-./configure --host=i686-w64-mingw32.shared --enable-static --disable-shared
+./configure --host=i686-w64-mingw32.shared --enable-static --disable-shared --prefix=$INSTALL_ROOT
 make -j12
+make install
 cd ..
 
 # marble:
@@ -109,26 +106,15 @@ cd ..
 cd marble
 cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 	-DCMAKE_PREFIX_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5 \
+	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
  	-DQTONLY=ON -DQT5BUILD=ON \
         -DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
         -DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
         -DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
         -DBUILD_WITH_DBUS=OFF $BASEDIR/../subsurface/marble-source
 make -j12
+make install
 
-# fake install
-if [ ! -d include ] ; then
-	mkdir include
-	cd include
-        for i in $(find $BASEDIR/../subsurface/marble-source -name \*.h); do ln -s $i .; done
-	ln -s . marble
-	cd ..
-fi
-if [ ! -d lib ] ; then
-	mkdir lib
-fi
-cp src/lib/marble/libssrfmarblewidget.dll lib
-cd ..
 
 ###############
 fi
@@ -151,10 +137,12 @@ fi
 cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 	-DCMAKE_PREFIX_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5 \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DLIBDCDEVEL=$BUILDDIR/libdivecomputer \
-	-DLIBGIT2DEVEL=$BUILDDIR/libgit2 \
-	-DLIBMARBLEDEVEL=$BUILDDIR/marble \
-	-DLRELEASE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
+	-DLIBGIT2_INCLUDE_DIR=$(INSTALL_ROOT)/include \
+	-DLIBGIT2_LIBRARIES=$(INSTALL_ROOT)/lib/libgit2.a \
+	-DLIBDIVECOMPUTER_INCLUDE_DIR=$(INSTALL_ROOT)/include \
+	-DLIBDIVECOMPUTER_LIBRARIES=$(INSTALL_ROOT)/lib/libdivecomputer.a \
+	-DMARBLE_INCLUDE_DIR=$(INSTALL_ROOT)/include \
+	-DMARBLE_LIBRARIES=$(INSTALL_ROOT)/lib/libssrfmarblewidget.dll \
 	-DQT_TRANSLATION_DIR=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
 	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 	$BASEDIR/../subsurface
