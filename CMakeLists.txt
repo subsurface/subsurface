@@ -55,7 +55,7 @@ ENDIF()
 
 #configure Qt.
 
-FIND_PACKAGE(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test)
+FIND_PACKAGE(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools)
 SET(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
 SET(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
@@ -357,7 +357,7 @@ set(DOCFILES
 	${CMAKE_BINARY_DIR}/Documentation/user-manual_ru.html
 )
 
-set(TRANSLATION_SRC
+QT5_ADD_TRANSLATION(TRANSLATIONS
 	translations/subsurface_source.ts
 	translations/subsurface_bg_BG.ts
 	translations/subsurface_cs.ts
@@ -404,19 +404,7 @@ set(QTTRANSLATIONS_BASE
 # translations/subsurface_hu.ts \
 # translations/subsurface_ro_RO.ts \
 
-# if we apply the REGEX to TRANSLATION_SRC then the list of files turns
-# into a single string, so we assemble it file name by file name
-foreach(TRANSLATION ${TRANSLATION_SRC})
-	string(REGEX REPLACE \\.ts .qm TRANSLATION_QM ${TRANSLATION})
-	string(REGEX REPLACE "/" "-" TRANSLATION_TARGET ${TRANSLATION_QM})
-	ADD_CUSTOM_COMMAND(
-		OUTPUT ${CMAKE_BINARY_DIR}/${TRANSLATION_QM}
-		COMMAND mkdir -p ${CMAKE_BINARY_DIR}/translations \\; ${LRELEASE} ${CMAKE_SOURCE_DIR}/${TRANSLATION} -qm ${CMAKE_BINARY_DIR}/${TRANSLATION_QM}
-		DEPENDS ${TRANSLATION}
-		)
-	set(TRANSLATIONS ${TRANSLATIONS} ${CMAKE_BINARY_DIR}/${TRANSLATION_QM})
-endforeach()
-SET_SOURCE_FILES_PROPERTIES(main.cpp PROPERTIES OBJECT_DEPENDS "${TRANSLATIONS}")
+ADD_CUSTOM_TARGET (translations ALL DEPENDS ${TRANSLATIONS})
 
 if(QT_TRANSLATION_DIR STREQUAL "")
 	set(QT_TRANSLATION_DIR ${Qt5Core_DIR}/../../../translations)
