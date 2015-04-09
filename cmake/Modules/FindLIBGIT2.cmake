@@ -16,7 +16,7 @@ ENDIF ()
 FIND_PATH( LIBGIT2_INCLUDE_DIR
 NAMES git2.h
 HINTS
-    ${CMAKE_CURRENT_SOURCE_DIR}/../install/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../libgit2/include
     /usr/local/include
     /usr/include
@@ -27,7 +27,7 @@ NAMES
     libgit2.a
     git2
 HINTS
-    ${CMAKE_CURRENT_SOURCE_DIR}/../install/lib
+    ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../libgit2/build
     /usr/local/include
     /usr/include
