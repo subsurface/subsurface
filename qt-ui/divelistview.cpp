@@ -622,10 +622,14 @@ void DiveListView::removeFromTrip()
 	//TODO: move this to C-code.
 	int i;
 	struct dive *d;
+	QMap<struct dive*, dive_trip*> divesToRemove;
 	for_each_dive (i, d) {
 		if (d->selected)
-			remove_dive_from_trip(d, false);
+			divesToRemove.insert(d, d->divetrip);
 	}
+	UndoRemoveDivesFromTrip *undoCommand = new UndoRemoveDivesFromTrip(divesToRemove);
+	MainWindow::instance()->undoStack->push(undoCommand);
+
 	rememberSelection();
 	reload(currentLayout, false);
 	fixMessyQtModelBehaviour();

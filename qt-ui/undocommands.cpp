@@ -92,3 +92,32 @@ void UndoRenumberDives::redo()
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
 }
+
+
+UndoRemoveDivesFromTrip::UndoRemoveDivesFromTrip(QMap<dive *, dive_trip *> removedDives)
+{
+	divesToUndo = removedDives;
+	setText("remove dive(s) from trip");
+}
+
+void UndoRemoveDivesFromTrip::undo()
+{
+	QMapIterator<dive*, dive_trip*> i(divesToUndo);
+	while (i.hasNext()) {
+		i.next();
+		add_dive_to_trip(i.key (), i.value());
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}
+
+void UndoRemoveDivesFromTrip::redo()
+{
+	QMapIterator<dive*, dive_trip*> i(divesToUndo);
+	while (i.hasNext()) {
+		i.next();
+		remove_dive_from_trip(i.key(), false);
+	}
+	mark_divelist_changed(true);
+	MainWindow::instance()->refreshDisplay();
+}

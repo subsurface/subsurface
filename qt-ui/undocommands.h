@@ -37,4 +37,14 @@ private:
 	int start;
 };
 
+class UndoRemoveDivesFromTrip : public QUndoCommand {
+public:
+	UndoRemoveDivesFromTrip(QMap<struct dive*, dive_trip*> removedDives);
+	virtual void undo();
+	virtual void redo();
+
+private:
+	QMap<struct dive*, dive_trip*> divesToUndo;
+};
+
 #endif // UNDOCOMMANDS_H
