@@ -22,10 +22,11 @@ endif()
 FIND_PACKAGE(PkgConfig)
 INCLUDE(cmake/Modules/pkgconfig_helper.cmake)
 
-pkg_config_library(LIBXML libxml-2.0)
-pkg_config_library(LIBSQLITE3 sqlite3)
-pkg_config_library(LIBXSLT libxslt)
-pkg_config_library(LIBZIP libzip)
+pkg_config_library(LIBXML libxml-2.0 REQUIRED)
+pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
+pkg_config_library(LIBXSLT libxslt REQUIRED)
+pkg_config_library(LIBZIP libzip REQUIRED)
+pkg_config_library(LIBUSB libusb-1.0 QUIET)
 
 # more libraries with special handling in case we build them ourselves
 
