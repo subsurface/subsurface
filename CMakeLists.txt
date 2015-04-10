@@ -398,7 +398,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
-	install(CODE "execute_process(COMMAND macdeployqt Subsurface.app)")
+	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
+	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
+	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} Subsurface.app)")
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
