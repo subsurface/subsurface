@@ -1,0 +1,204 @@
+<html>
+<head>
+	<style>
+		body {
+			background-color: white;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		h1 {
+			font-size: 0.9cm;
+			float: left;
+		}
+
+		.mainContainer {
+			width: 96%;
+			height: 50%;
+			margin-left: 2%;
+			margin-right: 2%;
+			margin-top: 0;
+			margin-bottom: 0;
+			overflow: hidden;
+			border-width: 0px;
+			page-break-inside: avoid;
+		}
+
+		.innerContainer {
+			height: 85%;
+			border-style: solid;
+			padding: 0.5%;
+			margin-top: 1%;
+			margin-bottom: 1%;
+			overflow: hidden;
+		}
+
+		.table_class {
+			overflow: hidden;
+			max-width: 25%;
+			min-width: 25%;
+			box-shadow: 5px 5px 5px #888888;
+			margin: 1.5%;
+			float: left;
+		}
+
+		.notes_table_class {
+			overflow: hidden;
+			max-width: 100%;
+			min-width: 100%;
+			box-shadow: 5px 5px 5px #888888;
+			margin: 1.5%;
+			float: left;
+		}
+
+		.fieldTitle {
+			background-color: #CfC7C5;
+			overflow: hidden;
+		}
+
+		.diveProfile {
+			width: 37%;
+			height: 70%;
+			margin: 1.5%;
+			float: right;
+			border-style: solid;
+			padding: 3mm;
+		}
+
+		.diveDetails {
+			width: 92%;
+			float: left;
+		}
+
+		.dataPart {
+			height: 45%;
+			max-height: 60%;
+		}
+
+		.notesPart {
+			height: 35%;
+		}
+
+		.textArea {
+			max-height: 43ex;
+			overflow: hidden !important;
+			text-overflow: ellipsis;
+		}
+	</style>
+</head>
+<body>
+{% block main_rows %}
+	{% for dive in dives %}
+		<div class="mainContainer">
+			<div class="innerContainer">
+				<div class="diveDetails">
+					<div class="dataPart">
+						<table class="table_class" border="1">
+							<tbody><tr>
+								<td class="fieldTitle">
+									<h1> Dive No. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.number }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Date </h1>
+								</td>
+									<td><h1> {{ dive.date }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Location </h1>
+								</td>
+								<td>
+									<h1> {{ dive.location }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Max depth </h1>
+								</td>
+								<td>
+									<h1> {{ dive.depth }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Duration </h1>
+								</td>
+								<td>
+									<h1> {{ dive.duration }} </h1>
+								</td>
+							</tr>
+						</tbody></table>
+						<table class="table_class" border="1">
+							<tbody><tr>
+								<td class="fieldTitle">
+									<h1> Time. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.time }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Air Temp. </h1>
+								</td>
+									<td><h1> {{ dive.airTemp }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Water Temp. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.waterTemp }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Buddy </h1>
+								</td>
+								<td>
+									<h1> {{ dive.buddy }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Dive Master </h1>
+								</td>
+								<td>
+									<h1> {{ dive.divemaster }} </h1>
+								</td>
+							</tr>
+						</tbody></table>
+						<div class="diveProfile">
+							<h1> Dive profile area </h1>
+						</div>
+					</div>
+					<div class="notesPart">
+						<table class="notes_table_class" border="1">
+							<tbody><tr>
+								<td class="fieldTitle">
+									<h1> Notes </h1>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="textArea">
+										<h1> {{ dive.notes }} </h1>
+									</div>
+								</td>
+							</tr>
+						</tbody></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
+</body>
+</html>
