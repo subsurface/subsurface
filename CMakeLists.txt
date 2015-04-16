@@ -290,6 +290,13 @@ TARGET_LINK_LIBRARIES(subsurface_generated_ui ${QT_LIBRARIES})
 ADD_LIBRARY(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
 TARGET_LINK_LIBRARIES(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
+# add pthread to the end of the library list on Linux
+# this is only needed on Ubuntu (why do these idiots break everything?)
+# but shouldn't hurt on other Linux versions
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	SET(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
+endif()
+
 # create the executables
 
 ADD_EXECUTABLE(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
