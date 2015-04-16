@@ -31,7 +31,7 @@ pkg_config_library(LIBUSB libusb-1.0 QUIET)
 # more libraries with special handling in case we build them ourselves
 
 if(NOT ${PREFER_GIT_FROMSOURCE})
-	pkg_config_library(LIBGIT2 libgit2)
+	pkg_config_library(LIBGIT2 libgit2 REQUIRED)
 ELSE()
 	FIND_PACKAGE(LIBGIT2 REQUIRED)
 	INCLUDE_DIRECTORIES(${LIBGIT2_INCLUDE_DIR})
