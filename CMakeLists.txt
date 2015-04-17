@@ -8,6 +8,7 @@ cmake_minimum_required(VERSION 2.8.11)
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 OPTION(PREFER_GIT_FROMSOURCE "Turn off if you wanna use system's libgit 0.21.5" ON)
+OPTION(NO_MARBLE "disable the marble widget" OFF)
 OPTION(NO_TESTS "disable the tests" OFF)
 OPTION(NO_DOCS "disable the docs" OFF)
 
@@ -42,8 +43,22 @@ ENDIF()
 FIND_PACKAGE(Libdivecomputer REQUIRED)
 INCLUDE_DIRECTORIES(${LIBDIVECOMPUTER_INCLUDE_DIR})
 
-FIND_PACKAGE(Marble REQUIRED)
-include_directories(${MARBLE_INCLUDE_DIR})
+# optional marble
+
+IF(NOT NO_MARBLE)
+	FIND_PACKAGE(MARBLE QUIET)
+	IF(MARBLE_FOUND)
+		include_directories(${MARBLE_INCLUDE_DIR})
+	ELSE()
+		SET(NO_MARBLE ON)
+	ENDIF()
+ENDIF()
+
+IF(NO_MARBLE)
+	message(STATUS marble NOT AVAIL)
+	ADD_DEFINITIONS(-DNO_MARBLE)
+	SET(MARBLE_LIBRARIES "")
+ENDIF()
 
 SET(SUBSURFACE_LINK_LIBRARIES   ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES}  ${LIBGIT2_LIBRARIES} -lusb-1.0)
 
@@ -53,7 +68,9 @@ STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_D
 GET_FILENAME_COMPONENT(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 STRING(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
 IF(NOT (insource OR insourcedir))
-	add_custom_target(link_marble_data ALL COMMAND rm -f marbledata && ln -s ${${PROJECT_NAME}_SOURCE_DIR}/marbledata ${${PROJECT_NAME}_BINARY_DIR}/marbledata)
+	IF(NOT NO_MARBLE)
+		add_custom_target(link_marble_data ALL COMMAND rm -f marbledata && ln -s ${${PROJECT_NAME}_SOURCE_DIR}/marbledata ${${PROJECT_NAME}_BINARY_DIR}/marbledata)
+	ENDIF()
 ENDIF()
 
 #configure Qt.
