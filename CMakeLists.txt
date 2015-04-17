@@ -7,7 +7,8 @@ cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
-OPTION(PREFER_GIT_FROMSOURCE "Turn off if you wanna use system's libgit 0.21.5" ON)
+OPTION(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
+OPTION(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 OPTION(NO_MARBLE "disable the marble widget" OFF)
 OPTION(NO_TESTS "disable the tests" OFF)
 OPTION(NO_DOCS "disable the docs" OFF)
@@ -33,15 +34,21 @@ pkg_config_library(LIBUSB libusb-1.0 QUIET)
 
 # more libraries with special handling in case we build them ourselves
 
-if(NOT ${PREFER_GIT_FROMSOURCE})
+IF(LIBGIT2_FROM_PKGCONFIG)
 	pkg_config_library(LIBGIT2 libgit2 REQUIRED)
+	SET(LIBGIT2_LIBRARIES "")
 ELSE()
 	FIND_PACKAGE(LIBGIT2 REQUIRED)
 	INCLUDE_DIRECTORIES(${LIBGIT2_INCLUDE_DIR})
 ENDIF()
 
-FIND_PACKAGE(Libdivecomputer REQUIRED)
-INCLUDE_DIRECTORIES(${LIBDIVECOMPUTER_INCLUDE_DIR})
+IF(LIBDC_FROM_PKGCONFIG)
+	pkg_config_library(LIBDC libdivecomputer REQUIRED)
+	SET(LIBDIVECOMPUTER_LIBRARIES "")
+ELSE()
+	FIND_PACKAGE(Libdivecomputer REQUIRED)
+	INCLUDE_DIRECTORIES(${LIBDIVECOMPUTER_INCLUDE_DIR})
+ENDIF()
 
 # optional marble
 
