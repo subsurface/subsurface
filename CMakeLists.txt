@@ -329,7 +329,8 @@ endif()
 # create the executables
 
 add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-target_link_libraries(${SUBSURFACE_TARGET}
+target_link_libraries(
+	${SUBSURFACE_TARGET}
 	subsurface_generated_ui
 	subsurface_interface
 	subsurface_profile
@@ -349,11 +350,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_custom_command(
 		OUTPUT ${CMAKE_BINARY_DIR}/qt.conf
 		COMMAND echo \"[Paths]\" > ${CMAKE_BINARY_DIR}/qt.conf \; echo \"Prefix=.\" >> ${CMAKE_BINARY_DIR}/qt.conf
-		)
+	)
 	add_custom_target(
 		generate_qtconf
 		DEPENDS ${CMAKE_BINARY_DIR}/qt.conf
-		)
+	)
 	add_dependencies(${SUBSURFACE_TARGET} generate_qtconf)
 endif()
 
@@ -465,14 +466,14 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			COMMAND ${CMAKE_C_COMPILER} -dumpmachine
 			OUTPUT_VARIABLE OBJDUMP
 			OUTPUT_STRIP_TRAILING_WHITESPACE
-			)
+		)
 		# figure out where we should search for libraries
 		execute_process(
 			COMMAND ${CMAKE_C_COMPILER} -print-search-dirs
 			COMMAND sed -nE \"/^libraries: =/{s///;s,/lib/?\\\(:|\\\$\\\$\\\),/bin\\\\1,g;p;q;}\"
 			OUTPUT_VARIABLE ADDPATH
 			OUTPUT_STRIP_TRAILING_WHITESPACE
-			)
+		)
 		# since cmake doesn't appear to give us a variable with
 		# all libraries we link against, grab the link.txt script
 		# instead and drop the command name from it (before the
@@ -483,7 +484,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			COMMAND cut -d\\ -f 2-
 			OUTPUT_VARIABLE LINKER_LINE
 			OUTPUT_STRIP_TRAILING_WHITESPACE
-			)
+		)
 		# finally run our win-ldd.pl script against that to
 		# collect all the required dlls
 		execute_process(
@@ -491,7 +492,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 			OUTPUT_VARIABLE DLLS
 			OUTPUT_STRIP_TRAILING_WHITESPACE
-			)
+		)
 		# replace newlines with semicolons so this is a cmake list
 		string(REPLACE \"\\n\" \";\" DLLLIST \${DLLS})
 		# executing 'install' as a command seems hacky, but you
@@ -508,15 +509,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# create the subsurface-x.y.z.exe installer - this needs to depend
 	# on the install target but cmake doesn't allow that, so we depend
 	# on the fake target instead
-	add_custom_target(fake_install
+	add_custom_target(
+		fake_install
 		COMMAND "${CMAKE_COMMAND}" --build . --target install
 		DEPENDS ${SUBSURFACE_TARGET}
-		)
+	)
 
-	add_custom_target(installer
+	add_custom_target(
+		installer
 		COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
 		DEPENDS fake_install
-		)
+	)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -538,6 +541,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		install(
 			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
 			CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
-			)
+		)
 	endif()
 endif()
