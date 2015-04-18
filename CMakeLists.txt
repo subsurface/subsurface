@@ -62,7 +62,7 @@ if(NOT NO_MARBLE)
 endif()
 
 if(NO_MARBLE)
-	message(STATUS marble NOT AVAIL)
+	message(STATUS "building without marble widget support")
 	add_definitions(-DNO_MARBLE)
 	set(MARBLE_LIBRARIES "")
 endif()
