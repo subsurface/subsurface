@@ -359,7 +359,7 @@ endif()
 
 # QTest based tests
 
-macro(test NAME FILE)
+macro(TEST NAME FILE)
 	add_executable(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
 	target_link_libraries(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
 	add_test(NAME ${NAME} COMMAND ${NAME})
@@ -369,10 +369,10 @@ enable_testing()
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 add_definitions(-g)
 if(NOT NO_TESTS)
-	test(TestUnitConversion testunitconversion.cpp)
-	test(TestProfile testprofile.cpp)
-	test(TestGpsCoords testgpscoords.cpp)
-	test(TestParse testparse.cpp)
+	TEST(TestUnitConversion testunitconversion.cpp)
+	TEST(TestProfile testprofile.cpp)
+	TEST(TestGpsCoords testgpscoords.cpp)
+	TEST(TestParse testparse.cpp)
 endif()
 
 if(NOT NO_DOCS)
