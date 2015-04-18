@@ -14,12 +14,12 @@ OPTION(NO_TESTS "disable the tests" OFF)
 OPTION(NO_DOCS "disable the docs" OFF)
 
 SET(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
-INCLUDE_DIRECTORIES( . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
+INCLUDE_DIRECTORIES(. ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
 
 # compiler specific settings
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 endif()
 
 # pkgconfig for required libraries
@@ -67,7 +67,7 @@ IF(NO_MARBLE)
 	SET(MARBLE_LIBRARIES "")
 ENDIF()
 
-SET(SUBSURFACE_LINK_LIBRARIES   ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES}  ${LIBGIT2_LIBRARIES} -lusb-1.0)
+SET(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} -lusb-1.0)
 
 # handle out of tree build correctly
 
@@ -80,7 +80,7 @@ IF(NOT (insource OR insourcedir))
 	ENDIF()
 ENDIF()
 
-#configure Qt.
+# configure Qt.
 
 FIND_PACKAGE(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools)
 SET(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
@@ -93,50 +93,53 @@ FILE(WRITE ${CMAKE_BINARY_DIR}/version.h.in "
     #define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
     #define CANONICAL_VERSION_STRING \"@CANONICAL_VERSION_STRING@\"
 ")
+
 FILE(WRITE ${CMAKE_BINARY_DIR}/version.cmake "
-    IF (\${APPLE})
-        SET(VER_OS darwin)
-    ELSEIF (\${WIN32})
-        SET(VER_OS win)
-    ELSE ()
-        SET(VER_OS linux)
-    ENDIF ()
-    IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
-        SET(VER_OS win)
-    ENDIF ()
-    EXECUTE_PROCESS(
-        COMMAND sh scripts/get-version \${VER_OS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE VERSION_STRING
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    EXECUTE_PROCESS(
-        COMMAND sh scripts/get-version linux
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE GIT_VERSION_STRING
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    EXECUTE_PROCESS(
-        COMMAND sh scripts/get-version full
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE CANONICAL_VERSION_STRING
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    CONFIGURE_FILE(\${SRC} \${DST} @ONLY)
-    IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
-        EXECUTE_PROCESS(
-            COMMAND cat ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.nsi.in
-            COMMAND sed -e \"s/VERSIONTOKEN/\${VERSION_STRING}/\"
-            COMMAND sed -e \"s/PRODVTOKEN/\${CANONICAL_VERSION_STRING}/\"
-            OUTPUT_FILE ${CMAKE_BINARY_DIR}/staging/subsurface.nsi
-        )
-    ENDIF()
+	IF (\${APPLE})
+		SET(VER_OS darwin)
+	ELSEIF (\${WIN32})
+		SET(VER_OS win)
+	ELSE ()
+		SET(VER_OS linux)
+	ENDIF ()
+	IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
+		SET(VER_OS win)
+	ENDIF ()
+	EXECUTE_PROCESS(
+		COMMAND sh scripts/get-version \${VER_OS}
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	EXECUTE_PROCESS(
+		COMMAND sh scripts/get-version linux
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	EXECUTE_PROCESS(
+		COMMAND sh scripts/get-version full
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE CANONICAL_VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	CONFIGURE_FILE(\${SRC} \${DST} @ONLY)
+	IF(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
+		EXECUTE_PROCESS(
+			COMMAND cat ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.nsi.in
+			COMMAND sed -e \"s/VERSIONTOKEN/\${VERSION_STRING}/\"
+			COMMAND sed -e \"s/PRODVTOKEN/\${CANONICAL_VERSION_STRING}/\"
+			OUTPUT_FILE ${CMAKE_BINARY_DIR}/staging/subsurface.nsi
+		)
+	ENDIF()
 ")
-ADD_CUSTOM_TARGET(version ALL COMMAND
-    ${CMAKE_COMMAND} -D SRC=${CMAKE_BINARY_DIR}/version.h.in
-                     -D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
-                     -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
-                     -P ${CMAKE_BINARY_DIR}/version.cmake
+
+ADD_CUSTOM_TARGET(
+	version ALL COMMAND ${CMAKE_COMMAND} ${CMAKE_COMMAND}
+	-D SRC=${CMAKE_BINARY_DIR}/version.h.in
+	-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
+	-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+	-P ${CMAKE_BINARY_DIR}/version.cmake
 )
 
 # set up the different target platforms
@@ -210,9 +213,9 @@ SET(SUBSURFACE_CORE_LIB_SRCS
 	uemis.c
 	uemis-downloader.c
 	version.c
-	#gettextfrommoc should be added because we are using it on the c-code.
+	# gettextfrommoc should be added because we are using it on the c-code.
 	gettextfromc.cpp
-	#dirk ported some core functionality to c++.
+	# dirk ported some core functionality to c++.
 	qthelper.cpp
 	divecomputer.cpp
 	exif.cpp
@@ -326,13 +329,13 @@ endif()
 # create the executables
 
 ADD_EXECUTABLE(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-target_link_libraries( ${SUBSURFACE_TARGET}
-  subsurface_generated_ui
-  subsurface_interface
-  subsurface_profile
-  subsurface_statistics
-  subsurface_corelib
-  ${SUBSURFACE_LINK_LIBRARIES}
+target_link_libraries(${SUBSURFACE_TARGET}
+	subsurface_generated_ui
+	subsurface_interface
+	subsurface_profile
+	subsurface_statistics
+	subsurface_corelib
+	${SUBSURFACE_LINK_LIBRARIES}
 )
 
 ADD_DEPENDENCIES(subsurface_statistics subsurface_generated_ui)
@@ -357,9 +360,9 @@ ENDIF()
 # QTest based tests
 
 MACRO(test NAME FILE)
-    ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
-    TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES}  ${SUBSURFACE_LINK_LIBRARIES})
-    ADD_TEST(NAME ${NAME} COMMAND ${NAME})
+	ADD_EXECUTABLE(${NAME} tests/${FILE} ${SUBSURFACE_RESOURCES})
+	TARGET_LINK_LIBRARIES(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
+	ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()
 
 ENABLE_TESTING()
@@ -432,11 +435,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-#	# Windows bundling rules
-#	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
-#	# which libs we need.
-#	# "make install", copies everything into a staging area
-#	# "make installer", uses makensis to create an installer executable
+	# Windows bundling rules
+	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
+	# which libs we need.
+	# "make install", copies everything into a staging area
+	# "make installer", uses makensis to create an installer executable
 	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
 	install(DIRECTORY marbledata/maps DESTINATION ${WINDOWSSTAGING}/data)
 	install(DIRECTORY marbledata/bitmaps DESTINATION ${WINDOWSSTAGING}/data)
@@ -477,7 +480,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# linker used contains a space...
 		EXECUTE_PROCESS(
 			COMMAND tail -1 CMakeFiles/subsurface.dir/link.txt
-			COMMAND cut -d\\  -f 2-
+			COMMAND cut -d\\ -f 2-
 			OUTPUT_VARIABLE LINKER_LINE
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 			)
@@ -517,8 +520,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
-#	# Android template directory
-#	SET(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
+	# Android template directory
+	SET(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
 ENDIF()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
