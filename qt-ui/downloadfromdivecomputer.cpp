@@ -422,7 +422,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 {
 	struct dive *dive;
 
-	if (currentState != DONE)
+	if (currentState != DONE && currentState != ERROR)
 		return;
 
 	// record all the dives in the 'real' dive_table
