@@ -67,6 +67,7 @@ HEADERS = \
 	qthelper.h \
 	units.h \
 	divecomputer.h \
+	templatelayout.h \
 	qt-ui/about.h \
 	qt-ui/completionmodels.h \
 	qt-ui/divecomputermanagementdialog.h \
@@ -160,6 +161,7 @@ SOURCES =  \
 	profile.c \
 	gaspressures.c \
 	divecomputer.cpp \
+	templatelayout.cpp \
 	worldmap-save.c \
 	save-html.c \
 	qt-gui.cpp \

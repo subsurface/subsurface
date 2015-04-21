@@ -260,6 +260,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
+	templatelayout.cpp
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
