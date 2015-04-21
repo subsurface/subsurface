@@ -750,6 +750,9 @@ static void try_to_match_autogroup(const char *name, char *buf)
 
 void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
+	/* sanity check so we don't crash */
+	if (idx < 0 || idx >= MAX_CYLINDERS)
+		return;
 	/* The gas switch event format is insane for historical reasons */
 	struct gasmix *mix = &dive->cylinder[idx].gasmix;
 	int o2 = get_o2(mix);
