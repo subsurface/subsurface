@@ -1,6 +1,9 @@
 #include "downloadfromdivecomputer.h"
 #include "helpers.h"
 #include "mainwindow.h"
+#include "divelistview.h"
+#include "display.h"
+#include "uemis.h"
 
 #include <QTimer>
 #include <QFileDialog>
@@ -281,6 +284,14 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// list of downloaded dives from the last attempt
 		diveImportedModel->clearTable();
 		clear_table(&downloadTable);
+	}
+	if (ui.vendor->currentText() == "Uemis") {
+		if (currentState == ERROR && downloadTable.nr > 0)
+			// let the uemis code know how far we've gotten
+			uemis_set_max_diveid_from_dialog(downloadTable.dives[downloadTable.nr - 1]->dc.diveid);
+		else
+			// fresh download, so only look at what's in the dive_table
+			uemis_set_max_diveid_from_dialog(0);
 	}
 	updateState(DOWNLOADING);
 

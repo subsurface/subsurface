@@ -814,6 +814,13 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	return true;
 }
 
+static int max_diveid_from_dialog;
+
+void uemis_set_max_diveid_from_dialog(int diveid)
+{
+	max_diveid_from_dialog = diveid;
+}
+
 static char *uemis_get_divenr(char *deviceidstr)
 {
 	uint32_t deviceid, maxdiveid = 0;
@@ -831,7 +838,7 @@ static char *uemis_get_divenr(char *deviceidstr)
 				maxdiveid = dc->diveid;
 		}
 	}
-	snprintf(divenr, 10, "%d", maxdiveid);
+	snprintf(divenr, 10, "%d", maxdiveid > max_diveid_from_dialog ? maxdiveid : max_diveid_from_dialog);
 	return strdup(divenr);
 }
 
