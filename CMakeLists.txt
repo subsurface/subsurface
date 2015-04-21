@@ -261,6 +261,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
 	templatelayout.cpp
+	printer.cpp
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
