@@ -877,9 +877,9 @@ const char *do_uemis_import(device_data_t *data)
 	if (import_thread_cancelled)
 		goto bail;
 	param_buff[1] = "notempty";
-	/* if we have an empty divelist or force it, then we start downloading from the
-	 * first dive on the Uemis; otherwise check which was the last dive downloaded */
-	if (!force_download && dive_table.nr > 0)
+	/* if we force it we start downloading from the first dive on the Uemis;
+	 *  otherwise check which was the last dive downloaded */
+	if (!force_download)
 		newmax = uemis_get_divenr(deviceid);
 	else
 		newmax = strdup("0");
