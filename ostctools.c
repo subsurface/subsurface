@@ -78,6 +78,9 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	// Open the archive
 	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
 		report_error(translate("gettextFromC", "Error: couldn't open the file"));
+		free(devdata);
+		free(buffer);
+		free(ostcdive);
 		return;
 	}
 
