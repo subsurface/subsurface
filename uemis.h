@@ -16,6 +16,7 @@ void uemis_parse_divelog_binary(char *base64, void *divep);
 int uemis_get_weight_unit(int diveid);
 void uemis_mark_divelocation(int diveid, int divespot, uint32_t dive_site_uuid);
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude);
+void uemis_set_max_diveid_from_dialog(int diveid);
 
 typedef struct
 {
