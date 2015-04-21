@@ -335,13 +335,6 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	u_sample = (uemis_sample_t *)(data + i);
 	while ((i <= datalen) && (data[i] != 0 || data[i+1] != 0)) {
 		/* it seems that a dive_time of 0 indicates the end of the valid readings */
-		/* the SDA usually records more samples after the end of the dive --
-		 * we want to discard those, but not cut the dive short; sadly the dive
-		 * duration in the header is a) in minutes and b) up to 3 minutes short */
-		if (u_sample->dive_time > dive->dc.duration.seconds + 180) {
-			i += 0x25;
-			continue;
-		}
 		if (u_sample->active_tank != active) {
 			active = u_sample->active_tank;
 			add_gas_switch_event(dive, dc, u_sample->dive_time, active);
