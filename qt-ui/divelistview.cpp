@@ -182,8 +182,13 @@ void DiveListView::rememberSelection()
 		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
 			continue;
 		struct dive *d = (struct dive *)index.data(DiveTripModel::DIVE_ROLE).value<void *>();
-		if (d)
+		if (d) {
 			selectedDives.insert(d->divetrip, get_divenr(d));
+		} else {
+			struct dive_trip *t = (struct dive_trip *)index.data(DiveTripModel::TRIP_ROLE).value<void *>();
+			if (t)
+				selectedDives.insert(t, -1);
+		}
 	}
 	selectionSaved = true;
 }
@@ -202,8 +207,10 @@ void DiveListView::restoreSelection()
 		QList<int> selectedDivesOnTrip = selectedDives.values(trip);
 
 		// Only select trip if all of its dives were selected
-		if (trip != NULL && divesOnTrip.count() == selectedDivesOnTrip.count())
+		if(selectedDivesOnTrip.contains(-1)) {
 			selectTrip(trip);
+			selectedDivesOnTrip.removeAll(-1);
+		}
 		selectDives(selectedDivesOnTrip);
 	}
 }
