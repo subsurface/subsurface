@@ -114,6 +114,13 @@ fi
 cd $SRC/subsurface
 mkdir -p build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \
+	-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
+	-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.dylib \
+	-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
+	-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
+	-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
+	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.dylib
+
 make -j4
 make install
