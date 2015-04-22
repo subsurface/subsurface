@@ -780,6 +780,8 @@ void MainTab::acceptChanges()
 			time_t offset = cd->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
+		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
+			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
 
 		saveTags();
 
