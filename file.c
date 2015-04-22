@@ -1024,8 +1024,6 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 		fprintf(stderr, "numberf %d, datef %d, timef %d, durationf %d, locationf %d, gpsf %d, maxdepthf %d, meandepthf %d\n", numberf, datef, timef, durationf, locationf, gpsf, maxdepthf, meandepthf);
 		fprintf(stderr, "divemasterf %d, buddyf %d, notesf %d, weightf %d, tagsf %d, cylsizef %d, startpresf %d, endpresf %d\n", divemasterf, buddyf, notesf, weightf, tagsf, cylsizef, startpresf, endpresf);
 		fprintf(stderr, "o2f %d, hef %d, airtempf %d, watertempf %d\n", o2f, hef, airtempf, watertempf);
-	} else {
-		fprintf(stderr, "verbose %d\n", verbose);
 	}
 	struct memblock mem;
 	int pnr = 0;
