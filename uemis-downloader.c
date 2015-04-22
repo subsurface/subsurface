@@ -906,8 +906,14 @@ const char *do_uemis_import(device_data_t *data)
 			free(t);
 			once = false;
 		}
+		/* clean up mbuf */
+		endptr = strstr(mbuf, "{{{");
+		if (endptr)
+			*(endptr + 2) = '\0';
+		/* last object_id we parsed */
+		sscanf(newmax, "%d", &end);
 #if UEMIS_DEBUG & 4
-		fprintf(debugfile, "d_u_i after download and parse start %d end %d newmax %s\n", start, end, newmax);
+		fprintf(debugfile, "d_u_i after download and parse start %d end %d newmax %s progress %4.2f\n", start, end, newmax, progress_bar_fraction);
 #endif
 		/* if the user clicked cancel, exit gracefully */
 		if (import_thread_cancelled)
@@ -920,12 +926,6 @@ const char *do_uemis_import(device_data_t *data)
 			result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 			break;
 		}
-		/* clean up mbuf */
-		endptr = strstr(mbuf, "{{{");
-		if (endptr)
-			*(endptr + 2) = '\0';
-		/* last object_id we parsed */
-		sscanf(newmax, "%d", &end);
 	}
 	if (end == -2 && sscanf(newmax, "%d", &end) != 1)
 		end = start;
