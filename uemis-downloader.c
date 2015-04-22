@@ -967,7 +967,7 @@ const char *do_uemis_import(device_data_t *data)
 		if (!success || !param_buff[3])
 			break;
 		/* finally, if the memory is getting too full, maybe we better stop, too */
-		if (progress_bar_fraction > 0.85) {
+		if (progress_bar_fraction > 0.80) {
 			result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 			break;
 		}
