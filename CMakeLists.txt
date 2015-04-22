@@ -53,7 +53,7 @@ endif()
 # optional marble
 
 if(NOT NO_MARBLE)
-	find_package(MARBLE QUIET)
+	find_package(Marble QUIET)
 	if(MARBLE_FOUND)
 		include_directories(${MARBLE_INCLUDE_DIR})
 	else()
