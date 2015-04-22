@@ -847,7 +847,8 @@ const char *do_uemis_import(device_data_t *data)
 	const char *mountpath = data->devname;
 	short force_download = data->force_download;
 	char *newmax = NULL;
-	int start, end = -2, i, offset;
+	int first, start, end = -2;
+	int i, offset = 0;
 	uint32_t deviceidnr;
 	char objectid[10];
 	char *deviceid = NULL;
@@ -883,7 +884,7 @@ const char *do_uemis_import(device_data_t *data)
 		newmax = uemis_get_divenr(deviceid);
 	else
 		newmax = strdup("0");
-	start = atoi(newmax);
+	first = start = atoi(newmax);
 	for (;;) {
 #if UEMIS_DEBUG & 4
 		fprintf(debugfile, "d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
@@ -915,6 +916,46 @@ const char *do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 		fprintf(debugfile, "d_u_i after download and parse start %d end %d newmax %s progress %4.2f\n", start, end, newmax, progress_bar_fraction);
 #endif
+		/* now download the additional dive data with "getDive" for the dives
+		 * we just downloaded - yes, this is completely insane - why isn't all of
+		 * this downloaded in the first place??? */
+		for (i = start; i <= end; i++) {
+			snprintf(objectid, sizeof(objectid), "%d", i + offset);
+			param_buff[2] = objectid;
+#if UEMIS_DEBUG & 2
+			fprintf(debugfile, "getDive %d, object_id %s\n", i, objectid);
+#endif
+			/* there is no way I have found to directly get the dive information
+			 * for dive #i as the object_id and logfilenr can be different in the
+			 * getDive call; so we get the first one, compare the actual divenr
+			 * with the one that we wanted, calculate the offset and try again.
+			 * What an insane design... */
+			success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
+			if (mbuf) {
+				int divenr;
+				(void)process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, &divenr);
+#if UEMIS_DEBUG & 2
+				fprintf(debugfile, "got dive %d, looking for dive %d\n", divenr, i);
+#endif
+				if (divenr != i) {
+					if (divenr == -1) {
+						offset--;
+					} else {
+						offset += i - divenr;
+					}
+#if UEMIS_DEBUG & 2
+					fprintf(debugfile, " -> trying again with offset %d\n", offset);
+#endif
+					i = start - 1;
+					if (i + offset < 0)
+						break;
+					continue;
+				}
+			}
+			if (!success || import_thread_cancelled)
+				break;
+		}
+		start = end + 1;
 		/* if the user clicked cancel, exit gracefully */
 		if (import_thread_cancelled)
 			goto bail;
@@ -930,46 +971,9 @@ const char *do_uemis_import(device_data_t *data)
 	if (end == -2 && sscanf(newmax, "%d", &end) != 1)
 		end = start;
 #if UEMIS_DEBUG & 2
-	fprintf(debugfile, "done: read from object_id %d to %d\n", start, end);
+	fprintf(debugfile, "done: read from object_id %d to %d\n", first, end);
 #endif
 	free(newmax);
-	offset = 0;
-	for (i = start; i <= end; i++) {
-		snprintf(objectid, sizeof(objectid), "%d", i + offset);
-		param_buff[2] = objectid;
-#if UEMIS_DEBUG & 2
-		fprintf(debugfile, "getDive %d, object_id %s\n", i, objectid);
-#endif
-		/* there is no way I have found to directly get the dive information
-		 * for dive #i as the object_id and logfilenr can be different in the
-		 * getDive call; so we get the first one, compare the actual divenr
-		 * with the one that we wanted, calculate the offset and try again.
-		 * What an insane design... */
-		success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
-		if (mbuf) {
-			int divenr;
-			(void)process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, &divenr);
-#if UEMIS_DEBUG & 2
-			fprintf(debugfile, "got dive %d, looking for dive %d\n", divenr, i);
-#endif
-			if (divenr != i) {
-				if (divenr == -1) {
-					offset--;
-				} else {
-					offset += i - divenr;
-				}
-#if UEMIS_DEBUG & 2
-				fprintf(debugfile, " -> trying again with offset %d\n", offset);
-#endif
-				i = start - 1;
-				if (i + offset < 0)
-					break;
-				continue;
-			}
-		}
-		if (!success || import_thread_cancelled)
-			break;
-	}
 	success = true;
 	for (i = 0; i <= nr_divespots; i++) {
 		char divespotnr[10];
