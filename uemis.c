@@ -285,7 +285,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	struct dive *dive = datap;
 	struct divecomputer *dc = &dive->dc;
 	int template, gasoffset;
-	int active = 0;
+	uint8_t active = 0;
 	char version[5];
 
 	datalen = uemis_convert_base64(base64, &data);
@@ -334,10 +334,13 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	i = 0x123;
 	u_sample = (uemis_sample_t *)(data + i);
 	while ((i <= datalen) && (data[i] != 0 || data[i+1] != 0)) {
-		/* it seems that a dive_time of 0 indicates the end of the valid readings */
 		if (u_sample->active_tank != active) {
-			active = u_sample->active_tank;
-			add_gas_switch_event(dive, dc, u_sample->dive_time, active);
+			if (u_sample->active_tank >= MAX_CYLINDERS) {
+				fprintf(stderr, "got invalid sensor #%d was #%d\n", u_sample->active_tank, active);
+			} else {
+				active = u_sample->active_tank;
+				add_gas_switch_event(dive, dc, u_sample->dive_time, active);
+			}
 		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = u_sample->dive_time;
