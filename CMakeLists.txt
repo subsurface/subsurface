@@ -328,7 +328,7 @@ endif()
 
 # create the executables
 
-add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 target_link_libraries(
 	${SUBSURFACE_TARGET}
 	subsurface_generated_ui
