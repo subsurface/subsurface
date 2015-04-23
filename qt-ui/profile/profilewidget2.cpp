@@ -1222,6 +1222,10 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
+
+	if (same_string(current_dc->model, "manually added dive"))
+		QAction *editProfileAction = m.addAction(tr("Edit the profile"), MainWindow::instance(), SLOT(editCurrentDive()));
+
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
 		action->setText(tr("Remove event"));
