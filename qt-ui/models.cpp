@@ -388,6 +388,7 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 
 void CylindersModel::remove(const QModelIndex &index)
 {
+	int mapping[MAX_CYLINDERS];
 	if (index.column() != REMOVE) {
 		return;
 	}
@@ -395,6 +396,7 @@ void CylindersModel::remove(const QModelIndex &index)
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 	struct gasmix *mygas = &cyl->gasmix;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		mapping[i] = i;
 		if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
 			continue;
 		struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
@@ -419,11 +421,24 @@ void CylindersModel::remove(const QModelIndex &index)
 		// as first gas
 		memmove(cyl, &displayed_dive.cylinder[same_gas], sizeof(*cyl));
 		remove_cylinder(&displayed_dive, same_gas);
+		mapping[same_gas] = 0;
+		for (int i = same_gas + 1; i < MAX_CYLINDERS; i++)
+			mapping[i] = i - 1;
 	} else {
 		remove_cylinder(&displayed_dive, index.row());
+		if (same_gas > index.row())
+			same_gas--;
+		mapping[index.row()] = same_gas;
+		for (int i = index.row() + 1; i < MAX_CYLINDERS; i++)
+			mapping[i] = i - 1;
 	}
 	changed = true;
 	endRemoveRows();
+	struct divecomputer *dc = &displayed_dive.dc;
+	while (dc) {
+		dc_cylinder_renumber(&displayed_dive, dc, mapping);
+		dc = dc->next;
+	}
 }
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),

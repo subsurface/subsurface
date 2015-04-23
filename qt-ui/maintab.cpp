@@ -813,6 +813,16 @@ void MainTab::acceptChanges()
 				cd->cylinder[i] = displayed_dive.cylinder[i];
 				cd->cylinder[i].type.description = copy_string(displayed_dive.cylinder[i].type.description);
 			}
+			/* if cylinders changed we may have changed gas change events
+			 * - so far this is ONLY supported for a single selected dive */
+			struct divecomputer *tdc = &current_dive->dc;
+			struct divecomputer *sdc = &displayed_dive.dc;
+			while(tdc && sdc) {
+				free_events(tdc->events);
+				copy_events(sdc, tdc);
+				tdc = tdc->next;
+				sdc = sdc->next;
+			}
 			do_replot = true;
 		}
 

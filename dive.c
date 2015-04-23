@@ -1758,7 +1758,7 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 	add_gas_switch_event(dive, dc, 0, 0);
 }
 
-static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
+void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
 {
 	int i;
 	struct event *ev;
@@ -2259,7 +2259,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded
 	return NULL;
 }
 
-static void free_events(struct event *ev)
+void free_events(struct event *ev)
 {
 	while (ev) {
 		struct event *next = ev->next;

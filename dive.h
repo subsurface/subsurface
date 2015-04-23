@@ -349,6 +349,7 @@ struct dive {
 };
 
 extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type);
+extern void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[]);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
@@ -721,6 +722,7 @@ extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern void renumber_dives(int start_nr, bool selected_only);
 extern void copy_events(struct divecomputer *s, struct divecomputer *d);
+extern void free_events(struct event *ev);
 extern void copy_cylinders(struct dive *s, struct dive *d, bool used_only);
 extern void copy_samples(struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(struct dive *dive, int idx);
