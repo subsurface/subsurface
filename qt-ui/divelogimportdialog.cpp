@@ -24,7 +24,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
-		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
+		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure");
 }
@@ -639,6 +639,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						r.indexOf(tr("Avg. depth")),
 						r.indexOf(tr("Divemaster")),
 						r.indexOf(tr("Buddy")),
+						r.indexOf(tr("Suit")),
 						r.indexOf(tr("Notes")),
 						r.indexOf(tr("Weight")),
 						r.indexOf(tr("Tags")),

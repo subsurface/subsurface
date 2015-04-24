@@ -17,6 +17,7 @@
   <xsl:param name="meanDepthField" select="meanDepthField"/>
   <xsl:param name="divemasterField" select="divemasterField"/>
   <xsl:param name="buddyField" select="buddyField"/>
+  <xsl:param name="suitField" select="suitField"/>
   <xsl:param name="notesField" select="notesField"/>
   <xsl:param name="weightField" select="weightField"/>
   <xsl:param name="dateformat" select="dateformat"/>
@@ -341,6 +342,15 @@
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </buddy>
+      </xsl:if>
+
+      <xsl:if test="$suitField >= 0">
+        <suit>
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$suitField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </suit>
       </xsl:if>
 
       <xsl:if test="$notesField >= 0">

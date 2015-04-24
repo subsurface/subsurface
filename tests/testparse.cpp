@@ -15,7 +15,7 @@ void TestParse::testParseCSV()
 				   1, // mm/dd/yyyy
 				   2, // min:sec
 				   0, 1, 2, 3, -1, -1, 4, -1, // Dive #, date, time, duration, maxdepth, avgdepth
-				   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), 0);
+				   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 }
 
