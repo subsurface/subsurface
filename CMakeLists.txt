@@ -127,7 +127,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/version.cmake "
 	if(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
 		execute_process(
 			COMMAND cat ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.nsi.in
-			COMMAND sed -e \"s/VERSIONTOKEN/\${VERSION_STRING}/\"
+			COMMAND sed -e \"s/VERSIONTOKEN/\${GIT_VERSION_STRING}/\"
 			COMMAND sed -e \"s/PRODVTOKEN/\${CANONICAL_VERSION_STRING}/\"
 			OUTPUT_FILE ${CMAKE_BINARY_DIR}/staging/subsurface.nsi
 		)
