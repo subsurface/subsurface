@@ -1,4 +1,29 @@
-// _Subsurface_ 4.4.1 Release Notes
+// _Subsurface_ 4.5 pre-beta Release Notes
+
+_Subsurface_ 4.5 pre-beta - April 2015
+--------------------------------
+
+Some of the changes since _Subsurface_ 4.4.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dive site handling - dive sites are now a first class citizen in
+Subsurface and can be managed as such. Dives include a reference to a dive
+site. This also caused changes to our file format (and we bumped the file
+format version to 3).
+
+Improved image import and management. Subsurface now does a better job
+when handling changes in image folder location and can add images from
+URLs instead of just local files.
+
+Undo / redo support. While this does not cover all operations, yet, many
+operations can now been un-done and subsequently re-done.
+
+Many fixes and improvements for import third part files and CSV files
+
+Ability to load dives exported with OSTCTools
+
+Support for more GPS coordinate formats
+
 
 _Subsurface_ 4.4.1 - February 2015
 --------------------------------
