@@ -2885,7 +2885,7 @@ static bool new_picture_for_dive(struct dive *d, char *filename)
 // only add pictures that have timestamps between 30 minutes before the dive and
 // 30 minutes after the dive ends
 #define D30MIN (30 * 60)
-bool dive_check_picture_time(struct dive *d, char *filename, int shift_time, timestamp_t timestamp)
+bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp)
 {
 	offset_t offset;
 	if (timestamp) {
@@ -2905,7 +2905,7 @@ bool picture_check_valid(char *filename, int shift_time)
 
 	timestamp_t timestamp = picture_get_timestamp(filename);
 	for_each_dive (i, dive)
-		if (dive->selected && dive_check_picture_time(dive, filename, shift_time, timestamp))
+		if (dive->selected && dive_check_picture_time(dive, shift_time, timestamp))
 			return true;
 	return false;
 }
@@ -2915,11 +2915,11 @@ void dive_create_picture(struct dive *dive, char *filename, int shift_time)
 	timestamp_t timestamp = picture_get_timestamp(filename);
 	if (!new_picture_for_dive(dive, filename))
 		return;
-	if (!dive_check_picture_time(dive, filename, shift_time, timestamp))
+	if (!dive_check_picture_time(dive, shift_time, timestamp))
 		return;
 
 	struct picture *picture = alloc_picture();
-	picture->filename = filename;
+	picture->filename = strdup(filename);
 	picture->offset.seconds = timestamp - dive->when + shift_time;
 	picture_load_exif_data(picture);
 

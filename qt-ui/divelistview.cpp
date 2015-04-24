@@ -4,17 +4,21 @@
  * classes for the divelist of Subsurface
  *
  */
-#include "divelistview.h"
 #include "filtermodels.h"
 #include "modeldelegates.h"
 #include "mainwindow.h"
 #include "divepicturewidget.h"
 #include "display.h"
+#include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
 #include <QFileDialog>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QStandardPaths>
 #include "qthelper.h"
 #include "undocommands.h"
+#include "divelistview.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
@@ -834,6 +838,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
 		popup.addAction(tr("Shift times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("Load images"), this, SLOT(loadImages()));
+		popup.addAction(tr("Load image(s) from web"), this, SLOT(loadWebImages()));
 	}
 
 	// "collapse all" really closes all trips,
@@ -859,8 +864,12 @@ void DiveListView::loadImages()
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open image files"), lastUsedImageDir(), tr("Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
 	if (fileNames.isEmpty())
 		return;
-
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());
+	matchImagesToDives(fileNames);
+}
+
+void DiveListView::matchImagesToDives(QStringList fileNames)
+{
 	ShiftImageTimesDialog shiftDialog(this, fileNames);
 	shiftDialog.setOffset(lastImageTimeOffset());
 	if (!shiftDialog.exec())
@@ -881,6 +890,60 @@ void DiveListView::loadImages()
 	copy_dive(current_dive, &displayed_dive);
 	DivePictureModel::instance()->updateDivePictures();
 }
+
+void DiveListView::loadWebImages()
+{
+	URLDialog urlDialog(this);
+	if (!urlDialog.exec())
+		return;
+	loadImageFromURL(QUrl::fromUserInput(urlDialog.url()));
+
+}
+
+void DiveListView::loadImageFromURL(QUrl url)
+{
+	if (url.isValid()) {
+		QEventLoop loop;
+		QNetworkRequest request(url);
+		QNetworkReply *reply = manager.get(request);
+		while (reply->isRunning()) {
+			loop.processEvents();
+			sleep(1);
+		}
+		QByteArray imageData = reply->readAll();
+
+		QImage image = QImage();
+		image.loadFromData(imageData);
+		if (image.isNull())
+			// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
+			// In this case we would call the function recursively on the list of image source urls;
+			return;
+
+		// Since we already downloaded the image we can cache it as well.
+		QCryptographicHash hash(QCryptographicHash::Sha1);
+		hash.addData(imageData);
+		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+		QDir dir(path);
+		if (!dir.exists())
+			dir.mkpath(path);
+		QFile imageFile(path.append("/").append(hash.result().toHex()));
+		if (imageFile.open(QIODevice::WriteOnly)) {
+			QDataStream stream(&imageFile);
+			stream.writeRawData(imageData.data(), imageData.length());
+			imageFile.waitForBytesWritten(-1);
+			imageFile.close();
+			add_hash(imageFile.fileName(), hash.result());
+			struct picture picture;
+			picture.hash = NULL;
+			picture.filename = strdup(url.toString().toUtf8().data());
+			learnHash(&picture, hash.result());
+			matchImagesToDives(QStringList(url.toString()));
+		}
+	}
+
+
+}
+
 
 QString DiveListView::lastUsedImageDir()
 {

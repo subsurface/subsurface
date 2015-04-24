@@ -63,6 +63,10 @@ void ImageDownloader::load(){
 void ImageDownloader::saveImage(QNetworkReply *reply)
 {
 	QByteArray imageData = reply->readAll();
+	QImage image = QImage();
+	image.loadFromData(imageData);
+	if (image.isNull())
+		return;
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(imageData);
 	QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();

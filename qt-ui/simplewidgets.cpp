@@ -361,6 +361,20 @@ void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
 	updateInvalid();
 }
 
+URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
+{
+	ui.setupUi(this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+}
+
+QString URLDialog::url() const
+{
+	return ui.urlField->toPlainText();
+}
+
 bool isGnome3Session()
 {
 #if defined(QT_OS_WIW) || defined(QT_OS_MAC)

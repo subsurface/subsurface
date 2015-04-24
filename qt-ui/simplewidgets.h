@@ -14,6 +14,7 @@ class QNetworkReply;
 #include "ui_setpoint.h"
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
+#include "ui_urldialog.h"
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
 #include "ui_filterwidget.h"
@@ -113,6 +114,15 @@ private:
 	Ui::ShiftImageTimesDialog ui;
 	time_t m_amount;
 	time_t dcImageEpoch;
+};
+
+class URLDialog : public QDialog {
+	Q_OBJECT
+public:
+	explicit URLDialog(QWidget *parent);
+	QString url() const;
+private:
+	Ui::URLDialog ui;
 };
 
 class QCalendarWidget;

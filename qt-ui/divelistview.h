@@ -13,6 +13,7 @@
 
 #include <QTreeView>
 #include <QLineEdit>
+#include <QNetworkAccessManager>
 #include "models.h"
 
 class DiveListView : public QTreeView {
@@ -51,6 +52,7 @@ slots:
 	void renumberDives();
 	void shiftTimes();
 	void loadImages();
+	void loadWebImages();
 	static QString lastUsedImageDir();
 
 signals:
@@ -78,6 +80,9 @@ private:
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
 	void addToTrip(int delta);
+	void matchImagesToDives(QStringList fileNames);
+	void loadImageFromURL(QUrl url);
+	QNetworkAccessManager manager;
 };
 
 #endif // DIVELISTVIEW_H

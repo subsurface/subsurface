@@ -337,22 +337,6 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 	return xslt;
 }
 
-extern "C" void picture_load_exif_data(struct picture *p)
-{
-	EXIFInfo exif;
-	memblock mem;
-
-	if (readfile(p->filename, &mem) <= 0)
-		goto picture_load_exit;
-	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
-		goto picture_load_exit;
-	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
-	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
-
-picture_load_exit:
-	free(mem.buffer);
-	return;
-}
 
 extern "C" timestamp_t picture_get_timestamp(char *filename)
 {
@@ -360,7 +344,8 @@ extern "C" timestamp_t picture_get_timestamp(char *filename)
 	memblock mem;
 	int retval;
 
-	if (readfile(filename, &mem) <= 0)
+	// filename might not be the actual filename, so let's go via the hash.
+	if (readfile(localFilePath(QString(filename)).toUtf8().data(), &mem) <= 0)
 		return 0;
 	retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
 	free(mem.buffer);
@@ -853,7 +838,8 @@ QByteArray hashFile(const QString filename)
 
 void learnHash(struct picture *picture, QByteArray hash)
 {
-	free(picture->hash);
+	if (picture->hash)
+		free(picture->hash);
 	QMutexLocker locker(&hashOfMutex);
 	hashOf[QString(picture->filename)] = hash;
 	picture->hash = strdup(hash.toHex());
@@ -861,7 +847,10 @@ void learnHash(struct picture *picture, QByteArray hash)
 
 QString localFilePath(const QString originalFilename)
 {
-	return localFilenameOf[hashOf[originalFilename]];
+	if (hashOf.contains(originalFilename) && localFilenameOf.contains(hashOf[originalFilename]))
+		return localFilenameOf[hashOf[originalFilename]];
+	else
+		return originalFilename;
 }
 
 QString fileFromHash(char *hash)
@@ -898,4 +887,21 @@ void learnImages(const QDir dir, int max_recursions, bool recursed)
 	}
 
 	QtConcurrent::blockingMap(files, hashFile);
+}
+
+extern "C" void picture_load_exif_data(struct picture *p)
+{
+	EXIFInfo exif;
+	memblock mem;
+
+	if (readfile(localFilePath(QString(p->filename)).toUtf8().data(), &mem) <= 0)
+		goto picture_load_exit;
+	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
+		goto picture_load_exit;
+	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
+	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
+
+picture_load_exit:
+	free(mem.buffer);
+	return;
 }
