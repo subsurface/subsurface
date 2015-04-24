@@ -377,7 +377,12 @@ if(NOT NO_TESTS)
 endif()
 
 if(NOT NO_DOCS)
-	add_custom_target(documentation ALL mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ \\; make -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc)
+	add_custom_target(
+		documentation ALL
+		mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ \\;
+		cp -a ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/ \\;
+		make -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc
+	)
 endif()
 
 # install Subsurface
