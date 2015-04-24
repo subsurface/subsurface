@@ -383,7 +383,7 @@ struct picture {
 	for (struct picture *picture = (_divestruct).picture_list; picture; picture = picture->next)
 
 extern struct picture *alloc_picture();
-extern bool dive_check_picture_time(struct dive *d, char *filename, int shift_time);
+extern bool dive_check_picture_time(struct dive *d, char *filename, int shift_time, timestamp_t timestamp);
 extern void dive_create_picture(struct dive *d, char *filename, int shift_time);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern void dive_remove_picture(char *filename);
