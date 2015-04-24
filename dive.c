@@ -2887,8 +2887,7 @@ static bool new_picture_for_dive(struct dive *d, char *filename)
 #define D30MIN (30 * 60)
 bool dive_check_picture_time(struct dive *d, char *filename, int shift_time)
 {
-	timestamp_t timestamp = 0;
-	picture_get_timestamp(filename, &timestamp);
+	timestamp_t timestamp = picture_get_timestamp(filename);
 	offset_t offset;
 	if (timestamp) {
 		offset.seconds = timestamp - d->when + shift_time;
@@ -2912,27 +2911,25 @@ bool picture_check_valid(char *filename, int shift_time)
 	return result;
 }
 
-void dive_create_picture(struct dive *d, char *filename, int shift_time)
+void dive_create_picture(struct dive *dive, char *filename, int shift_time)
 {
-	timestamp_t timestamp;
-	if (!new_picture_for_dive(d, filename))
+	if (!new_picture_for_dive(dive, filename))
 		return;
-	if (!dive_check_picture_time(d, filename, shift_time))
+	if (!dive_check_picture_time(dive, filename, shift_time))
 		return;
 
-	struct picture *p = alloc_picture();
-	p->filename = filename;
-	picture_get_timestamp(filename, &timestamp);
-	p->offset.seconds = timestamp - d->when + shift_time;
-	picture_load_exif_data(p);
+	struct picture *picture = alloc_picture();
+	picture->filename = filename;
+	picture->offset.seconds = picture_get_timestamp(filename) - dive->when + shift_time;
+	picture_load_exif_data(picture);
 
-	dive_add_picture(d, p);
-	dive_set_geodata_from_picture(d, p);
+	dive_add_picture(dive, picture);
+	dive_set_geodata_from_picture(dive, picture);
 }
 
-void dive_add_picture(struct dive *d, struct picture *newpic)
+void dive_add_picture(struct dive *dive, struct picture *newpic)
 {
-	struct picture **pic_ptr = &d->picture_list;
+	struct picture **pic_ptr = &dive->picture_list;
 	/* let's keep the list sorted by time */
 	while (*pic_ptr && (*pic_ptr)->offset.seconds <= newpic->offset.seconds)
 		pic_ptr = &(*pic_ptr)->next;
@@ -2941,45 +2938,45 @@ void dive_add_picture(struct dive *d, struct picture *newpic)
 	return;
 }
 
-unsigned int dive_get_picture_count(struct dive *d)
+unsigned int dive_get_picture_count(struct dive *dive)
 {
 	unsigned int i = 0;
-	FOR_EACH_PICTURE (d)
+	FOR_EACH_PICTURE (dive)
 		i++;
 	return i;
 }
 
-void dive_set_geodata_from_picture(struct dive *d, struct picture *pic)
+void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
-	if (!dive_site_has_gps_location(ds) && (pic->latitude.udeg || pic->longitude.udeg)) {
+	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	if (!dive_site_has_gps_location(ds) && (picture->latitude.udeg || picture->longitude.udeg)) {
 		if (ds) {
-			ds->latitude = pic->latitude;
-			ds->longitude = pic->longitude;
+			ds->latitude = picture->latitude;
+			ds->longitude = picture->longitude;
 		} else {
-			d->dive_site_uuid = create_dive_site_with_gps("", pic->latitude, pic->longitude);
+			dive->dive_site_uuid = create_dive_site_with_gps("", picture->latitude, picture->longitude);
 		}
 	}
 }
 
-static void picture_free(struct picture *p)
+static void picture_free(struct picture *picture)
 {
-	if (!p)
+	if (!picture)
 		return;
-	free(p->filename);
-	free(p->hash);
-	free(p);
+	free(picture->filename);
+	free(picture->hash);
+	free(picture);
 }
 
 void dive_remove_picture(char *filename)
 {
-	struct picture **ep = &current_dive->picture_list;
-	while (ep && !same_string((*ep)->filename, filename))
-		ep = &(*ep)->next;
-	if (ep) {
-		struct picture *temp = (*ep)->next;
-		picture_free(*ep);
-		*ep = temp;
+	struct picture **picture = &current_dive->picture_list;
+	while (picture && !same_string((*picture)->filename, filename))
+		picture = &(*picture)->next;
+	if (picture) {
+		struct picture *temp = (*picture)->next;
+		picture_free(*picture);
+		*picture = temp;
 	}
 }
 

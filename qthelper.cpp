@@ -354,20 +354,19 @@ picture_load_exit:
 	return;
 }
 
-extern "C" void picture_get_timestamp(char *filename, timestamp_t *t)
+extern "C" timestamp_t picture_get_timestamp(char *filename)
 {
 	EXIFInfo exif;
 	memblock mem;
 	int retval;
 
 	if (readfile(filename, &mem) <= 0)
-		return;
+		return 0;
 	retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
 	free(mem.buffer);
 	if (retval != PARSE_EXIF_SUCCESS)
-		return;
-	*t = exif.epoch();
-	return;
+		return 0;
+	return exif.epoch();
 }
 
 extern "C" const char *system_default_directory(void)

@@ -390,7 +390,7 @@ extern void dive_remove_picture(char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);
 extern bool picture_check_valid(char *filename, int shift_time);
 extern void picture_load_exif_data(struct picture *p);
-extern void picture_get_timestamp(char *filename, timestamp_t *t);
+extern timestamp_t picture_get_timestamp(char *filename);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);

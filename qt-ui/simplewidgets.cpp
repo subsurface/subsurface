@@ -272,7 +272,6 @@ void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
 
 void ShiftImageTimesDialog::syncCameraClicked()
 {
-	timestamp_t timestamp;
 	QPixmap picture;
 	QDateTime dcDateTime = QDateTime();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
@@ -289,8 +288,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	scene->addPixmap(picture.scaled(ui.DCImage->size()));
 	ui.DCImage->setScene(scene);
 
-	picture_get_timestamp(fileNames.at(0).toUtf8().data(), &timestamp);
-	dcImageEpoch = timestamp;
+	dcImageEpoch = picture_get_timestamp(fileNames.at(0).toUtf8().data());
 	dcDateTime.setTime_t(dcImageEpoch);
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
@@ -342,7 +340,7 @@ void ShiftImageTimesDialog::updateInvalid()
 			continue;
 
 		// We've found invalid image
-		picture_get_timestamp(fileName.toUtf8().data(), &timestamp);
+		timestamp = picture_get_timestamp(fileName.toUtf8().data());
 		dcImageEpoch = timestamp;
 		time.setTime_t(timestamp + m_amount);
 		ui.invalidLabel->setText(ui.invalidLabel->text() + fileName + " " + time.toString() + "\n");
