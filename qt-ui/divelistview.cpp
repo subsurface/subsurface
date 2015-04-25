@@ -836,8 +836,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("Merge selected dives"), this, SLOT(mergeDives()));
 	if (amount_selected >= 1) {
 		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
-		popup.addAction(tr("Shift times"), this, SLOT(shiftTimes()));
-		popup.addAction(tr("Load images"), this, SLOT(loadImages()));
+		popup.addAction(tr("Shift dive times"), this, SLOT(shiftTimes()));
+		popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(loadImages()));
 		popup.addAction(tr("Load image(s) from web"), this, SLOT(loadWebImages()));
 	}
 
