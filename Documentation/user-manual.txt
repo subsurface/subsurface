@@ -89,7 +89,7 @@ Start Using the Program
 -----------------------
 
 The _Subsurface_ window is usually divided into four panels with a *Main
-Menu* (File Import Log View Filter Help) at the top of the window (for Windows
+Menu* (File Import Log View Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
 1. The *Dive List* to the bottom left containing a list of all the dives in the
@@ -2240,9 +2240,8 @@ during a dive is indicated on the right hand side of the above figure for a dive
 
 === The Dive List context menu
 
-Many actions within _Subsurface_ are dependent on a context menu used
-mostly to manipulate  groups of dives. The context menu is found by selecting
-a dive or a group of dives and then right-clicking.
+Several actions on either a single dive or a group of dives can be performed using the Dive List
+Context Menu, found by selecting either a single dive or a group of dives and then right-clicking.
 
 image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
 
@@ -2280,12 +2279,17 @@ given a choice with respect to the lowest sequence number to be used.
 Completing this operation results in new sequence numbers (based on date/time)
 for the dives in the *Dive List* panel.
 
+One can also renumber a few selected dives in the dive list. Select the dives that
+need renumbering. Right-click on the selected list and use the Dive List Context Menu
+to perform the renumbering. A popup window appears requiring the user to specify
+the starting number for the renumbering process.
+
 [[S_Group]]
 === Grouping dives into trips and manipulating trips
 
 For regular divers, the dive list can rapidly become very long. _Subsurface_
 can group dives into _trips_. It performs this by grouping dives that have
-date/times that are not separated in time by more than two days, thus creating
+date/times not separated in time by more than two days, thus creating
 a single heading for each diving trip represented in the dive log. Below is an
 ungrouped dive list (*A*, on the left) as well as the corresponding grouped dive
 list comprising five dive trips (*B*, on the right):
@@ -2294,7 +2298,7 @@ image::images/Group2.jpg["Figure: Grouping dives",align="center"]
 
 Grouping into trips allows a rapid way of accessing individual dives without
 having to scan a long lists of dives. In order to group the dives in a dive list,
-(from the Main Menu) users must select _Log ->  Autogroup_. The *Dive List* panel
+(from the Main Menu) select _Log ->  Autogroup_. The *Dive List* panel
 now shows only the titles for the trips.
 
 ==== Editing the title and associated information for a particular trip
@@ -2319,16 +2323,16 @@ the selected trip, revealing the individual dives performed during the trip.
 
 ==== Collapsing or expanding dive information for different trips
 
-If a user right-clicks after selecting a particular trip in the dive list, the
-resulting context menu allows several possibilities to expand or collapse dives
+After selecting a particular trip in the dive list, the
+context menu allows several possibilities to expand or collapse dives
 within trips. This includes expanding all trips, collapsing all trips and
 collapsing all trips except the selected one.
 
 ==== Merging dives from more than one trip into a single trip
 
-By right-clicking on a selected trip title in the *Dive List* panel, a
-context menu shows up that allows the merging of trips by either merging of the selected trip
-with the trip below or with the trip above.
+After selecting a trip title, the context menu allows the merging
+of trips by either merging the selected trip with the trip below or with the
+trip above.(Merge trip with trip below; Merge trip with trip above)
 
 ==== Splitting a single trip into more than one trip
 
@@ -2358,16 +2362,14 @@ calibration dives of the dive computer or dives of extremely short duration.
 Users can unlink dives from the trip to which they belong. In order to do this,
 select and right-click
 the relevant dives to bring up the context menu. Then select the option *Remove dive(s)
-from trip*. The dive(s) now appear immediately above the trip to
-which they belonged.
+from trip*. The dive(s) now appear immediately above or below the trip to
+which they belonged, depending on the date and time of the unliked dive.
 
 ==== Add a dive to the trip immediately above
 
 Selected dives can be moved from the trip to which they belong and placed within
-the trip immediately above the currently active trip. To do this, select
-and right-click
-the dive(s) to bring up the context menu, and then select *Add dive(s) to trip
-immediately above*.
+a separate trip. To do this, select and right-click
+the dive(s) to bring up the context menu, and then select *Create new trip above*.
 
 ==== Shift the start time of dive(s)
 
@@ -2379,7 +2381,7 @@ adjusted. This action brings up the context menu on which the *Shift times*
 option should be selected. User must then specify the
 time
 (in hours and minutes) by which the dives should be adjusted and click on the
-option indicating whether the time adjustment should be forwards or backwards.
+option indicating whether the time adjustment should be ealier or later.
 
 ==== Merge dives into a single dive
 
@@ -2405,10 +2407,10 @@ dive site, or otherwise the cave dives with a particular buddy.
 To open the filter, select _Log ->  Filter divelist_ from the main menu. This opens the
 _Filter Panel_ at the top of the _Subsurface_ window. Three icons are located at the top
 right hand of the filter panel. The _Filter Panel_ can be reset
-(i.e. all current filters cleared) by selecting the *+*. The _Filter Panel_ may also be
-minimised by selecting the middle icon. When minimised, only these three icons are shown.
+(i.e. all current filters cleared) by selecting the *yellow angled arrow*. The _Filter Panel_ may also be
+minimised by selecting the *green up-arrow". When minimised, only these three icons are shown.
 The panel can be maximised by clicking the icon that minimised the panel. The filter may also be
-reset and closed by selecting the button with the flag.
+reset and closed by selecting the *red button* with the white cross.
 An example of the _Filter Panel_ is shown in the figure below.
 
 image::images/Filterpanel.jpg["Figure: Filter panel",align="center"]
@@ -2421,13 +2423,13 @@ textbox above the tags check list results in the tags check list being reduced
 to "_cave_" and "_cavern_". Filtering of the check list enables the rapid finding
 of search terms for filtering the dive list.
 
-To activate filtering of the dive list, the check box of at least one item in one of
-the four check lists needs to be checked. The dive list is then shortened to include
-only the dives that pertain to the selection criteria specified in the check lists.
+To activate filtering of the dive list, check at least tone check box in one of
+the four check lists. The dive list is then shortened to include
+only the dives that pertain to the criteria specified in the check lists.
 The four check lists work as a filter with _AND_ operators, Subsurface
 filters therefore  for _cave_ as a tag AND _Joe Smith_ as a buddy; but the
 filters within a category are inclusive - filtering for _cave_ and _boat_
-shows those dives that have either one or both of these tags.
+shows those dives that have either one OR both of these tags.
 
 [[S_ExportLog]]
 == Exporting the dive log or parts of the dive log
@@ -3588,7 +3590,7 @@ conventions to export dive log data.
 4. Within the list of dives, select the dives you would like to import later:
 	* To select certain dives: hold 'ctrl' and click the dive
 	* To select all dives:  Select the first dive, hold down shift and
-          select the last dive
+	  select the last dive
 5. With the dives marked, use the program menu _File ->  Export_
 6. The export pop-up will show. Within this pop-up, there is one field called 'Export Path'.
 	* Click the browse button next to the field Export Path
