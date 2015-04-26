@@ -376,6 +376,15 @@ void PlannerSettingsWidget::decoSacChanged(const double decosac)
 	plannerModel->setDecoSac(decosac);
 }
 
+void PlannerSettingsWidget::disableDecoElements(bool value)
+{
+	ui.lastStop->setDisabled(value);
+	ui.backgasBreaks->setDisabled(value);
+	ui.bottompo2->setDisabled(value);
+	ui.decopo2->setDisabled(value);
+	ui.reserve_gas->setDisabled(!value);
+}
+
 void DivePlannerWidget::printDecoPlan()
 {
 	MainWindow::instance()->printPlan();
@@ -457,6 +466,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(recreationChanged(bool)), this, SLOT(disableDecoElements(bool)));
+
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
@@ -876,6 +887,7 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 void DivePlannerPointsModel::setRecreationalMode(bool value)
 {
 	prefs.recreational_mode = value;
+	emit recreationChanged(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 

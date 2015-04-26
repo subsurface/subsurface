@@ -100,6 +100,7 @@ signals:
 	void planCanceled();
 	void cylinderModelEdited();
 	void startTimeChanged(QDateTime);
+	void recreationChanged(bool);
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
@@ -183,6 +184,7 @@ slots:
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
 	void setBackgasBreaks(bool dobreaks);
+	void disableDecoElements(bool value);
 
 private:
 	Ui::plannerSettingsWidget ui;
