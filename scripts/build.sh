@@ -71,8 +71,8 @@ cd libdivecomputer
 git checkout Subsurface-4.4
 if [ ! -f configure ] ; then
 	autoreconf --install
-	./configure --prefix=$INSTALL_ROOT
 fi
+./configure --prefix=$INSTALL_ROOT
 make -j4
 make install
 
