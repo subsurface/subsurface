@@ -8,7 +8,7 @@
 #       /libdivecomputer
 #
 # the script will build these three libraries from source, even if
-# they are installed as part of the host OS since we have seen 
+# they are installed as part of the host OS since we have seen
 # numerous cases where building with random versions (especially older,
 # but sometimes also newer versions than recommended here) will lead
 # to all kinds of unnecessary pain
@@ -100,16 +100,6 @@ cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 cd src/lib/marble
 make -j4
 make install
-
-if [ $PLATFORM = Darwin ] ; then
-	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-	cd $INSTALL_ROOT/lib
-	NAME=$(otool -L libssrfmarblewidget.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-	echo $NAME | grep / > /dev/null 2>&1
-	if [ $? -eq 1 ] ; then
-		install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
-	fi
-fi
 
 cd $SRC/subsurface
 mkdir -p build
