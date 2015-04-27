@@ -92,9 +92,9 @@ Empezar a usar el programa
 --------------------------
 
 La ventana _Subsurface_ está, habitualmente, dividida en cuatro paneles con un
-*Menú principal* (Archivo Importar Registro Vista Filtros Ayuda) en la parte
-superior (en Windows y Linux) o en la parte superior de la pantalla (en Mac y
-Ubuntu Unity). Los cuatro paneles son:
+*Menú principal* (Archivo Importar Registro Vista Ayuda) en la parte superior
+(en Windows y Linux) o en la parte superior de la pantalla (en Mac y Ubuntu
+Unity). Los cuatro paneles son:
 
 1. La *Lista de inmersiones* abajo a la izquierda. Contienen una lista de todos
 los buceos en tu registro. Puedes seleccionar y resaltar una inmersión de la
@@ -2272,10 +2272,9 @@ lado derecho de la figura anterior, para un buceador usando EAN32.
 
 === El menú contextual de la Lista de Inmersiones
 
-Muchas acciones en _Subsurface_ dependen de un menú contextual que se usa
-básicamente para manipular grupos de inmersiones. El menú contextual se
-encuentra seleccionando una inmersión o un grupo de ellas y haciendo
-clic-derecho.
+Varias acciones sobre, bien una inmersión, bien un grupo de ellas, se pueden
+efectuar utilizando el Menú Contextual de la Lista de inmersiones, al que se
+accede seleccionando una inmersión o un grupo de ellas y haciendo clic-derecho.
 
 image::images/ContextMenu.jpg["Figura: Menú contextual",align="center"]
 
@@ -2318,6 +2317,12 @@ secuencia inferior que se va a usar. Completar esta operación supone obtener
 nuevos números de secuencia (basados en fecha/hora) para los buceos del panel
 *Lista de Inmersiones*.
 
+También se pueden renumerar algunas inmersiones seleccionadas de la lista. Se
+seleccionan las inmersiones que necesiten renumerarse. Se hace clic-derecho
+sobre la lista seleccionada y se utiliza la lista contextual para efectuar el
+renumerado. Aparecerá una ventana solicitando al usuario que especifique el
+número de inicio para el proceso de numeración.
+
 [[S_Group]]
 === Agrupar las inmersiones en viajes y manipularlos
 
@@ -2354,16 +2359,16 @@ uno o más viajes clicando la punta de flecha a la izquierda del título. Con el
 se expande el viaje mostrando los buceos individuales efectuados.
 
 ==== Colapsar o expandir información de diferentes viajes
-Si se hace clic-derecho después de seleccionar un viaje concreto de la lista, el
-menú resultante te ofrece varias posibilidades de expandir o contraer buceos
-incluidos en viajes. Entre ellas expandir todos los viajes, contraer todos los
-viajes y contraer todos excepto el seleccionado.
+
+Tras seleccionar un viaje concreto de la lista, el menú contextual resultante
+ofrece varias posibilidades de expandir o contraer buceos incluidos en viajes.
+Entre ellas expandir todos los viajes, contraer todos los viajes y contraer
+todos excepto el seleccionado.
 
 ==== Mezclar inmersiones de más de un viaje en uno solo
 
-Al hacer clic-derecho en el título de un viaje seleccionado del panel *Lista de
-Inmersiones*, el menú permite mezclar viajes con el viaje de abajo o con el de
-arriba.
+Tras seleccionar el título de un viaje del panel *Lista de Inmersiones*, el
+menú permite mezclar viajes con el viaje de abajo o con el de arriba.
 
 ==== Separar un viaje en más de uno
 
@@ -2391,7 +2396,8 @@ inmersiones de prueba o buceos de duración extremadamente corta.
 Se pueden separar inmersiones del viaje al que pertenecen. Para ello se
 selecciona y hace clic-derecho en los buceos para mostrar el menú. Luego se
 selecciona *Quitar inmersión(es) del viaje*. Las inmersiones que han sido
-separadas aparecerán ahora encima del viaje al que pertenecieron.
+separadas aparecerán ahora encima o debajo del viaje al que pertenecieron, en
+función de la fecha y la hora de la inmersión separada.
 
 ==== Añadir una inmersión al viaje de arriba
 
@@ -2439,10 +2445,11 @@ Para abrir el filtrado, seleccionar _Registro -> Filtrar la lista de inmersiones
 desde el menú principal. Esto abrirá el _Panel de filtrado_ en la parte de arriba
 de la ventana de _Subsurface_. Arriba a la derecha del panel se ubican tres
 iconos. El _Panel de filtrado_ puede reiniciarse (p.e. limpiar todos los filtros
-actuales) seleccionando el *+*. El _Panel de filtrado_ también puede minimizarse
-seleccionando el icono central. Cuando está minimizado solo se muestran los tres
-iconos. El panel puede maximizarse clicando el icono que lo minimizó. El filtro
-se cierra y reinicia seleccionando el icono con la bandera.
+actuales) seleccionando la flecha amarilla. El _Panel de filtrado_ también puede
+minimizarse seleccionando la *flecha verde*. Cuando está minimizado solo se
+muestran los tres iconos. El panel puede maximizarse clicando el icono que lo
+minimizó. El filtro se cierra y reinicia seleccionando el *botón rojo* con la
+cruz blanca.
 Un ejemplo del _Panel de filtrado_ se muestra en la figura a continuación.
 
 image::images/Filterpanel.jpg["Figura: Panel de filtrado",align="center"]
