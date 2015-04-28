@@ -661,6 +661,9 @@ extern int save_dives_logic(const char *filename, bool select_only);
 extern int save_dive(FILE *f, struct dive *dive);
 extern int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt);
 
+struct membuffer;
+extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive);
+
 struct git_oid;
 struct git_repository;
 #define dummy_git_repository ((git_repository *)3ul) /* Random bogus pointer, not NULL */

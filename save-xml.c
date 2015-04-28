@@ -385,7 +385,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "/>\n");
 }
 
-void save_one_dive(struct membuffer *b, struct dive *dive)
+void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
 {
 	struct divecomputer *dc;
 
@@ -420,7 +420,7 @@ int save_dive(FILE *f, struct dive *dive)
 {
 	struct membuffer buf = { 0 };
 
-	save_one_dive(&buf, dive);
+	save_one_dive_to_mb(&buf, dive);
 	flush_buffer(&buf, f);
 	/* Error handling? */
 	return 0;
@@ -445,7 +445,7 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip)
 	 */
 	for_each_dive(i, dive) {
 		if (dive->divetrip == trip)
-			save_one_dive(b, dive);
+			save_one_dive_to_mb(b, dive);
 	}
 
 	put_format(b, "</trip>\n");
@@ -542,14 +542,14 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 			if (!dive->selected)
 				continue;
-			save_one_dive(b, dive);
+			save_one_dive_to_mb(b, dive);
 
 		} else {
 			trip = dive->divetrip;
 
 			/* Bare dive without a trip? */
 			if (!trip) {
-				save_one_dive(b, dive);
+				save_one_dive_to_mb(b, dive);
 				continue;
 			}
 
