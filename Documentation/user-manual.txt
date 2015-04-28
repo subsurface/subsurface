@@ -2767,6 +2767,7 @@ This panel allows two type of selections:
 
 ** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 
+[[GradientFactors_Ref]]
 ** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a grey line across
    the dive profile, indicating the mean depth of the dive up to a particular point in time during
    that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
@@ -2927,7 +2928,70 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
 - The dialogue indicating _Dive Planner Points_ is usually not used at this stage of the dive
   planning.
 
-*The planning is performed in three stages*
+==== Recreational dives
+
+The _Subsurface_ dive planner allows a sophisticated way of planning recreational dives, i.e. dives
+that remain within no-decompression limits.
+The dive planner automatically takes
+into account the nitrogen load incurred in previous dives. But conventional dive tables are also used in a
+way that can take into account previous dives. Why use a dive planner for recreational dives? Using
+recreational dive tables, the maximum depth of a dive is taken into acount. However, few dives are
+undertaken at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means that dive tables
+overestimate the nitrogen load incurred during previous dives. The _Subsurface_
+dive planner calculates nitrogen load according to the real dive profiles of all uploaded previous dives,
+in a similar way as dive computers calculate nitrogen load during a dive. This mean that the diver gets 'credit'
+in terms of nitrogen loading for not remaining at maximum depth during previous dives, enabling planning a
+longer subsequent dive. For the planner to work it is therefore crucial to upload all previous dives
+onto _Subsurface_ before performing dive planning.
+
+To plan a dive, the appropriate settings need to be
+defined.
+
+- Ensure that the date and time is set to that of the intended dive. This allows calculation of
+the nitrogen load incurred during previous dives.
+
+- Immediately under the heading _Planning_ are two checkboxes _Recreational_ and _Safety Stop_. For
+planning recreational dives, check these two checkboxes.
+
+- Then define the cylinder size,
+the gas mixture (air or % oxygen) and the starting cylinder pressure in the top left-hand
+section of the planner under _Available gases_.
+
+- The planner calculates whether the specified cylinder contains enough air/gas to complete
+the planned dive. In order for this to be realistic, under _Gas options_, specify an appropriate
+surface air consumption (SAC) rate for _Bottom SAC_. Suitable values are between 15 l/min and 30 l/min,
+with novice divers or difficult dives requiring SAC rates closer to 30l/min.
+
+- Define the amount of gas in the cylinder at the end of the bottom section of the dive just before ascent. A
+value of 50 bar is often used.
+
+- Define the depth of the dive by dragging the waypoints (white dots) on the dive profile or
+(even better) defining the appropriate depth using the table under _Dive planner points_. If
+this is a multilevel dive, set the appropriate dive depths to represent the dive plan by adding
+waypoints to the dive profile or by adding appropriate dive planner points to the _Dive Planner Points_
+table.
+
+- The ascent speed can be changed. The default ascent speeds are those considered safe for recreational
+divers.
+
+The dive profile in the planner indicates the maximum dive time within no-deco limits using the
+Bühlmann ZH-L16 algorithm and the gas and depth settings specified as described above. The _Subsurface_ planner
+allows rapid assessment of dive duration as a function of dive depth, given the nitrogen load incurred during previous dives. The
+dive plan includes estimates of the amount of air/gas used, depending on the cylinder settings specified
+under _Available gases_. If the initial cylinder pressure is set to 0, the dive duration shown is the
+true no-deco limit (NDL) without taking into account gas used during the dive. If the surface above the dive profile is RED
+it means that recreational dive limits are exceeded and either the dive duration or the dive depth needs to be reduced.
+
+Below is an image of a dive plan for a recreational dive at 30 metres. Although the no-deco limit (NDL) is 23
+minutes, the duration of the dive is limited by the amount of air in the cylinder, reflected by the information in the
+text box at the bottom right of the panel.
+
+image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+
+==== Non-recreational open circuit dives, including decompression
+
+Non-recreational dive planning involves exceeding the no-deco limits and/or using multiple breathing gases.
+Such dives are planned in three stages:
 
 *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
@@ -2951,7 +3015,6 @@ at deeper levels are often in the range of 8-12 m/min, while ascent rates near t
 often in the range of 4-9 m/min. The descent rate is also specified. If the option _Drop to first depth_
 is activated, then the descent phase of the planned dive will be at the maximal descent rate specified
 in the _Rates_ section of the dive setup.
-
 
 *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
 pressure for oxygen needs to be specified for the
@@ -3041,6 +3104,25 @@ level is indicated in the _Dive Plan Details_. This duration INCLUDES the transi
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
 
+=== Planning pSCR dives
+
+To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
+_Open circuit_ in the dropdown list.
+The parameters of the pSCR diver can be set by selecting  _File ->   Preferences ->   Graph_
+from the main menu, where the gas consumption calculation takes into account the pSCR dump
+ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
+accross the mouthpiece of the rebreather into account. If the
+pO~2~ drops below what is considered a save value, a warning appears in the _Dive plan
+details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
+cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
+are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
+are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
+to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
+in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
+
+image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
+
 === Planning CCR dives
 
 To plan a dive using a closed circuit rebreather, select the _CCR_ option in the dropdown
@@ -3064,25 +3146,6 @@ image::images/Planner_CCR1_f20.jpg["FIGURE: Planning a CCR dive: setup",align="c
 
 Note that, in the _Dive plan details_, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 litres are the norm.
-
-=== Planning pSCR dives
-
-To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
-_Open circuit_ in the dropdown list.
-The parameters of the pSCR diver can be set by selecting  _File ->   Preferences ->   Graph_
-from the main menu, where the gas consumption calculation takes into account the pSCR dump
-ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
-accross the mouthpiece of the rebreather into account. If the
-pO~2~ drops below what is considered a save value, a warning appears in the _Dive plan
-details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
-cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
-are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
-are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
-to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
-in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
-
-image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
-
 
 [[S_Replan]]
 === Modifying an existing dive plan
