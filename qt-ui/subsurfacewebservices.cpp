@@ -7,6 +7,7 @@
 #include "globe.h"
 #include "maintab.h"
 #include "display.h"
+#include "membuffer.h"
 #include <errno.h>
 
 #include <QDir>
@@ -145,11 +146,12 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	/* walk the dive list in chronological order */
 	int i;
 	struct dive *dive;
+	struct membuffer mb = { 0 };
 	for_each_dive (i, dive) {
 		FILE *f;
 		char filename[PATH_MAX];
 		int streamsize;
-		char *membuf;
+		const char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
 
@@ -159,29 +161,11 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		 */
 		if (selected && !dive->selected)
 			continue;
-		QString innerTmpFile = tempfile;
-		QString tmpSuffix = QString::number(qrand() % 9999) + ".tmp";
-		innerTmpFile.replace(".dld", tmpSuffix);
-		f = subsurface_fopen(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)), "w+");
-		if (!f) {
-			report_error(tr("cannot create temporary file: %s").toUtf8(), qt_error_string().toUtf8().data());
-			goto error_close_zip;
-		}
-		save_dive(f, dive);
-		fseek(f, 0, SEEK_END);
-		streamsize = ftell(f);
-		rewind(f);
-
-		membuf = (char *)malloc(streamsize + 1);
-		if (!membuf || (streamsize = fread(membuf, 1, streamsize, f)) == 0) {
-			report_error(tr("internal error: %s").toUtf8(), qt_error_string().toUtf8().data());
-			fclose(f);
-			free((void *)membuf);
-			goto error_close_zip;
-		}
-		membuf[streamsize] = 0;
-		fclose(f);
-		unlink(QFile::encodeName(QDir::toNativeSeparators(innerTmpFile)));
+		/* make sure the buffer is empty and add the dive */
+		mb.len = 0;
+		save_one_dive_to_mb(&mb, dive);
+		membuf = mb_cstring(&mb);
+		streamsize = strlen(membuf);
 		/*
 		 * Parse the memory buffer into XML document and
 		 * transform it to divelogs.de format, finally dumping
@@ -191,7 +175,6 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		if (!doc) {
 			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
 			report_error(tr("internal error").toUtf8());
-			free((void *)membuf);
 			goto error_close_zip;
 		}
 		free((void *)membuf);
