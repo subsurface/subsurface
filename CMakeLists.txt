@@ -488,7 +488,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# linker used contains a space...
 		execute_process(
 			COMMAND tail -1 CMakeFiles/subsurface.dir/link.txt
-			COMMAND cut -d\\ -f 2-
+			COMMAND cut -d\\  -f 2-
 			OUTPUT_VARIABLE LINKER_LINE
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
