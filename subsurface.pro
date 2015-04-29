@@ -253,6 +253,7 @@ FORMS = \
 	qt-ui/diveshareexportdialog.ui \
 	qt-ui/filterwidget.ui \
 	qt-ui/plannerDetails.ui \
+	qt-ui/urldialog.ui \
 	qt-ui/locationInformation.ui
 
 # Nether usermanual or printing is supported on android right now
