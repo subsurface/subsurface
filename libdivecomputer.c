@@ -963,6 +963,9 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	case DC_FAMILY_HW_OSTC3:
 		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 1);
 		break;
+	default:
+		report_error("Device type not handled!");
+		return DC_STATUS_UNSUPPORTED;
 	}
 	if  (rc != DC_STATUS_SUCCESS) {
 		report_error("Error creating parser.");
