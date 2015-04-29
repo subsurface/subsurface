@@ -116,11 +116,15 @@
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="LocationLabel">
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="LocationLabelLayout">
+          <item>
+           <widget class="QLabel" name="LocationLabel">
+            <property name="text">
+             <string>Location</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
