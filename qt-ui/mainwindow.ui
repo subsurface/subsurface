@@ -699,7 +699,7 @@
   </action>
   <action name="actionHash_images">
    <property name="text">
-    <string>Hash images</string>
+    <string>Find moved images</string>
    </property>
   </action>
  </widget>
