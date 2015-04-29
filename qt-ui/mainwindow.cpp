@@ -330,6 +330,7 @@ void learnImageDirs(QStringList dirnames)
 
 void MainWindow::on_actionHash_images_triggered()
 {
+	QFuture<void> future;
 	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir(), filter());
 	dialog.setFileMode(QFileDialog::Directory);
 	dialog.setViewMode(QFileDialog::Detail);
@@ -340,7 +341,10 @@ void MainWindow::on_actionHash_images_triggered()
 		dirnames = dialog.selectedFiles();
 	if (dirnames.isEmpty())
 		return;
-	QtConcurrent::run(learnImageDirs,dirnames);
+	future = QtConcurrent::run(learnImageDirs,dirnames);
+	MainWindow::instance()->getNotificationWidget()->showNotification(tr("Scanning images...(this can take a while)"), KMessageWidget::Information);
+	MainWindow::instance()->getNotificationWidget()->setFuture(future);
+
 }
 
 ProfileWidget2 *MainWindow::graphics() const
