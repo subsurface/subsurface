@@ -31,6 +31,10 @@ added support for Scubapro Meridian and Chromis
 
 added / improved support for Oceanic Veo 2, Veo 3 and VTX
 
+Known issues (and this was the case in 4.4 and 4.4.1 as well):
+Suunto Eon Steel support on MacOS is currently not working as MacOS grabs
+the device before Subsurface gets to see it.
+
 Some of the changes since _Subsurface_ 4.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
