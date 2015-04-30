@@ -290,11 +290,48 @@
           <!--  <name select="{concat(@time, ' - ', preceding-sibling::sample[1]/@time)}"/>-->
         </xsl:when>
         <xsl:otherwise>
-          <SAMPLE>
-            <DEPTH>
-              <xsl:value-of select="substring-before(./@depth, ' ')"/>
-            </DEPTH>
-          </SAMPLE>
+          <xsl:choose>
+            <!-- Suunto EON Steel special case -->
+            <xsl:when test="$special = 1">
+              <xsl:variable name="cur">
+                <xsl:call-template name="time2sec">
+                  <xsl:with-param name="time">
+                    <xsl:value-of select="@time"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:variable name="prev">
+                <xsl:call-template name="time2sec">
+                  <xsl:with-param name="time">
+                    <xsl:value-of select="preceding-sibling::sample[1]/@time"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:variable name="prevprev">
+                <xsl:call-template name="time2sec">
+                  <xsl:with-param name="time">
+                    <xsl:value-of select="preceding-sibling::sample[2]/@time"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$cur - $prev &gt;= 10 or $prev = 0 or $prevprev = 0">
+                  <SAMPLE>
+                    <DEPTH>
+                      <xsl:value-of select="substring-before(./@depth, ' ')"/>
+                    </DEPTH>
+                  </SAMPLE>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <SAMPLE>
+                <DEPTH>
+                  <xsl:value-of select="substring-before(./@depth, ' ')"/>
+                </DEPTH>
+              </SAMPLE>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
