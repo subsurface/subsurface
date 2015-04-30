@@ -206,29 +206,37 @@
     </xsl:variable>
 
     <SAMPLEINTERVAL>
-      <xsl:variable name="first">
-        <xsl:call-template name="time2sec">
-          <xsl:with-param name="time">
-            <xsl:value-of select="node()/sample[1]/@time"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:variable name="second">
-        <xsl:call-template name="time2sec">
-          <xsl:with-param name="time">
-            <xsl:value-of select="node()/sample[2]/@time"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:variable>
       <xsl:choose>
-        <xsl:when test="$manual = 0">
-          <xsl:value-of select="$second - $first"/>
+        <xsl:when test="divecomputer/@model = 'Suunto EON Steel'">
+          <xsl:text>10</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="60"/>
+          <xsl:variable name="first">
+            <xsl:call-template name="time2sec">
+              <xsl:with-param name="time">
+                <xsl:value-of select="node()/sample[1]/@time"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:variable name="second">
+            <xsl:call-template name="time2sec">
+              <xsl:with-param name="time">
+                <xsl:value-of select="node()/sample[2]/@time"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:choose>
+            <xsl:when test="$manual = 0">
+              <xsl:value-of select="$second - $first"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="60"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </SAMPLEINTERVAL>
+
     <xsl:for-each select="divecomputer[1]/sample">
       <xsl:choose>
         <xsl:when test="$manual = 1 and @time != '0:00 min'">
