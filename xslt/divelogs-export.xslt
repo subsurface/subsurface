@@ -205,9 +205,18 @@
       </xsl:choose>
     </xsl:variable>
 
-    <SAMPLEINTERVAL>
+    <!-- Test if dive computer requires special handling -->
+    <xsl:variable name="special">
       <xsl:choose>
         <xsl:when test="divecomputer/@model = 'Suunto EON Steel'">
+          <xsl:text>1</xsl:text>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <SAMPLEINTERVAL>
+      <xsl:choose>
+        <xsl:when test="$special = 1">
           <xsl:text>10</xsl:text>
         </xsl:when>
         <xsl:otherwise>
