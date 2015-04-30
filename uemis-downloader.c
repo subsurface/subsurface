@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 #include "gettext.h"
 #include "libdivecomputer.h"
@@ -440,6 +441,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	int timeout = UEMIS_LONG_TIMEOUT;
 
 	reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+	if (reqtxt_file == -1) {
+		*error_text = "can't open req.txt";
+		fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+		return false;
+	}
 	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
