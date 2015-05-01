@@ -22,12 +22,17 @@
     <TIME>
       <xsl:value-of select="@time"/>
     </TIME>
-    <DIVETIMESEC>
+
+    <xsl:variable name="duration">
       <xsl:call-template name="time2sec">
         <xsl:with-param name="time">
           <xsl:value-of select="@duration"/>
         </xsl:with-param>
       </xsl:call-template>
+    </xsl:variable>
+
+    <DIVETIMESEC>
+      <xsl:value-of select="$duration"/>
     </DIVETIMESEC>
     <LOCATION>
       <xsl:value-of select="location"/>
