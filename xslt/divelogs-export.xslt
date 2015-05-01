@@ -222,7 +222,10 @@
     <SAMPLEINTERVAL>
       <xsl:choose>
         <xsl:when test="$special = 1">
-          <xsl:text>10</xsl:text>
+          <xsl:variable name="samples">
+            <xsl:value-of select="count(//sample/@time)"/>
+          </xsl:variable>
+          <xsl:value-of select="ceiling($duration div $samples)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="first">
