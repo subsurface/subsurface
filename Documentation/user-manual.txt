@@ -1643,6 +1643,54 @@ program only shows a small white dot where each photo should be on the dive prof
 In addition the _Photos_ tab only shows the file names of the photos. This is normal behaviour.
 If, later, the external drive with the photos is connected again, the photos can be seen in the normal way.
 
+[[Moving_images]]
+==== Moving photographs among directories, hard disks or computers
+
+After a photograph has been loaded into _Subsurface_ and associated with a specific dive, the directory
+ where the photo lies is stored, allowing _Subsurface_ to find the photograph when the dive is
+ opened again. If the photo or the whole photo collection is moved to another drive or to a different
+ machine, it is unlikely that the directory structure will remain identical to that of the original uploaded
+ photo. When this happens, _Subsurface_ looks for the photos at their original location before they were moved,
+ cannot find them and therefore cannot display them. Because, after moving photos, large numbers of photos
+ may need to be deleted and re-imported from the new location, _Subsurface_ has a mechanism that eases the
+ process of updating the directory information for each photo: automatic updates using fingerprints.
+
+When a photo is loaded into _Subsurface_, a fingerprint for the image is calculated and stored with the
+ other reference information for that photo. After moving a photo collection (that has already been loaded
+ into _Subsurface_) to a different directory, disk or computer, _Subsurface_ can  perform the
+ following steps:
+
+- look through a particular directory (and all its subdirectories recursively) where photos have been moved
+ to,
+
+- calculate fingerprints for all photos in this directory, and
+
+- if there is a match between a calculated fingerprint and the one originally calculated when a photo was
+ loaded into _Subsurface_ (even if the original file name has changed), to automatically update the
+ directory information so that _Subsurface_ can find the photo in the new moved directory.
+
+This is achieved by selecting from the Main Menu: _File ->      Find moved images_. This brings up a window within
+ which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
+ the _Scan_ button towards the bottom right of the panel. The process may require several minutes to
+ complete, after which _subsurface_ will show the appropriate photographs when a particular dive is opened.
+
+
+[[Image_fingerprint_upgrade]]
+****
+*Upgrading existing photo collections without fingerprints*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+Software for the automated update of existing photo collections is under developement. Currently single
+dives must be upgraded one at a time. Select the toolbar button on the *Dive profile* panel that enables
+the display of images. The thumbnails of images are shown on the dive profile. Then open the dive and
+change anything in the *Notes* panel that brings up the blue edit bar at the top of the notes panel
+to save the edits. For instance, add a space character at the end of the _Notes_ text box and immediately
+delete that space character. Select the optio _Apply changes_ in the blue edit bar to save the dive information.
+Fingerprints are calculated while saving this specific dive.
+
+****
+
 
 === Logging special types of dives
 
@@ -2406,6 +2454,14 @@ below shows the depth profile of two such dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
+==== Undo dive manipulations
+
+Important actions on dives or trips, described above, can be undone or redone.
+This includes: _delete dives_, _merge dives_, _renumber dives_ and _shift dive times_.
+To do this after performing any of these actions, from the *Main Menu* select
+_Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
+
+
 [[S_Filter]]
 === Filtering the dive list
 
@@ -2914,17 +2970,18 @@ any warning messages about the dive plan are printed.
 image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align="center"]
 
 
-=== Open circuit dives as an example of dive planning
+=== Open circuit dives
 
--  Towards the left bottom of the planner (circled in blue in the image below) is a dropbox with three options. Select the appropriate one of these:
+-  Towards the centre bottom of the planner (circled in blue in the image above) is a dropbox with three options. Select the appropriate one of these:
  ** Open Circuit (the default)
  ** CCR
  ** pSCR
 
+- Choose the Open Circuit option.
 - In the top left-hand area of the planning screen, ensure that the constant dive parameters are
-  appropriate. These are: Start date and time of the dive, Atmospheric Pressure and Altitude
+  appropriate. These are: Start date and time of the intended dive, Atmospheric Pressure and Altitude
   above sea level of the dive site. The atmospheric pressure can also be entered as an altitude
-  in metres, assuming an atmospheric pressure of 1.013 bar.
+  in metres, assuming a sea-level atmospheric pressure of 1.013 bar.
 
 - In the table labeled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
@@ -2935,8 +2992,20 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
   concentration in the boxes provided in this dialogue. Add additional cylinders by using the
   "+" icon to the top righthand of the dialogue.
 
-- The dialogue indicating _Dive Planner Points_ is usually not used at this stage of the dive
-  planning.
+- The profile of the planned dive can be created in two ways:
+ *  Drag the waypoints
+    (the small white circles) on the existing dive profile in a way to represent the dive. Additional
+    waypoints can be created by double-clicking the existing dive profile. Waypoints can be deleted
+    by right-clicking a particular waypoint and selecting the _delete_ item from the resulting
+    context menu.
+ *  The most efficient way to create a dive profile is to enter the appropriate values into the table
+    marked _Dive planner points_. The first line of the table represents the duration and the final
+    depth of the descent from the surface. Subsequent segments describe the bottom phase of the dive.
+    The _CC set point_ column is only relevant for closed circuit divers.
+    The ascent is usually not specified because this is what the planner is supposed to calculate.
+    Add additional segments to the profile by selecting the "+" icon at the top right hand of the
+    table. Segments entered into the _Dive planner points_ table automatically appear in the *Dive
+    Profile* diagram.
 
 ==== Recreational dives
 
@@ -2960,29 +3029,30 @@ defined.
 - Ensure that the date and time is set to that of the intended dive. This allows calculation of
 the nitrogen load incurred during previous dives.
 
-- Immediately under the heading _Planning_ are two checkboxes _Recreational_ and _Safety Stop_. For
-planning recreational dives, check these two checkboxes.
+- Immediately under the heading _Planning_ are two checkboxes _Recreational_ and _Safety Stop_.
+  Check these two boxes.
 
 - Then define the cylinder size,
-the gas mixture (air or % oxygen) and the starting cylinder pressure in the top left-hand
-section of the planner under _Available gases_.
+  the gas mixture (air or % oxygen) and the starting cylinder pressure in the top left-hand
+  section of the planner under _Available gases_.
 
 - The planner calculates whether the specified cylinder contains enough air/gas to complete
-the planned dive. In order for this to be realistic, under _Gas options_, specify an appropriate
-surface air consumption (SAC) rate for _Bottom SAC_. Suitable values are between 15 l/min and 30 l/min,
-with novice divers or difficult dives requiring SAC rates closer to 30l/min.
+  the planned dive. In order for this to be realistic, under _Gas options_, specify an appropriate
+  surface air consumption (SAC) rate for _Bottom SAC_. Suitable values are between 15 l/min and 30 l/min,
+  with novice divers or difficult dives requiring SAC rates closer to 30l/min.
 
-- Define the amount of gas in the cylinder at the end of the bottom section of the dive just before ascent. A
-value of 50 bar is often used.
+- Define the amount of gas that the cylinder must have at the end of the bottom section of the
+  dive just before ascent. A value of 50 bar is often used.
 
 - Define the depth of the dive by dragging the waypoints (white dots) on the dive profile or
-(even better) defining the appropriate depth using the table under _Dive planner points_. If
-this is a multilevel dive, set the appropriate dive depths to represent the dive plan by adding
-waypoints to the dive profile or by adding appropriate dive planner points to the _Dive Planner Points_
-table.
+  (even better) defining the appropriate depths using the table under _Dive planner points_ as
+  desribed under the previous heading. If
+  this is a multilevel dive, set the appropriate dive depths to represent the dive plan by adding
+  waypoints to the dive profile or by adding appropriate dive planner points to the _Dive Planner Points_
+  table.
 
 - The ascent speed can be changed. The default ascent speeds are those considered safe for recreational
-divers.
+  divers.
 
 The dive profile in the planner indicates the maximum dive time within no-deco limits using the
 Bühlmann ZH-L16 algorithm and the gas and depth settings specified as described above. The _Subsurface_ planner
