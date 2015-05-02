@@ -1089,23 +1089,49 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 }
 
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
+// here's what I think... add the tags that were added to the displayed dive and remove the tags
+// that were removed from it
 void MainTab::saveTags()
 {
 	struct dive *cd = current_dive;
+	struct tag_entry *added_list = NULL;
+	struct tag_entry *removed_list = NULL;
+	struct tag_entry *tl;
+
 	taglist_free(displayed_dive.tag_list);
 	displayed_dive.tag_list = NULL;
 	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
 		taglist_add_tag(&displayed_dive.tag_list, tag.toUtf8().data());
 	taglist_cleanup(&displayed_dive.tag_list);
+
+	// figure out which tags were added and which tags were removed
+	added_list = taglist_added(cd->tag_list, displayed_dive.tag_list);
+	removed_list = taglist_added(displayed_dive.tag_list, cd->tag_list);
+	// dump_taglist("added tags:", added_list);
+	// dump_taglist("removed tags:", removed_list);
+
 	// we need to check if the tags were changed before just overwriting them
-	if (taglist_equal(displayed_dive.tag_list, cd->tag_list))
+	if (added_list == NULL && removed_list == NULL)
 		return;
+
 	MODIFY_SELECTED_DIVES(
-		QString tag;
+		// create a new tag list and all the existing tags that were not
+		// removed and then all the added tags
+		struct tag_entry *new_tag_list;
+		new_tag_list = NULL;
+		tl = mydive->tag_list;
+		while (tl) {
+			if (!taglist_contains(removed_list, tl->tag->name))
+				taglist_add_tag(&new_tag_list, tl->tag->name);
+			tl = tl->next;
+		}
+		tl = added_list;
+		while (tl) {
+			taglist_add_tag(&new_tag_list, tl->tag->name);
+			tl = tl->next;
+		}
 		taglist_free(mydive->tag_list);
-		mydive->tag_list = NULL;
-		Q_FOREACH (tag, ui.tagWidget->getBlockStringList())
-			taglist_add_tag(&mydive->tag_list, tag.toUtf8().data());
+		mydive->tag_list = new_tag_list;
 	);
 }
 
