@@ -2645,7 +2645,29 @@ static bool taglist_contains_all(struct tag_entry *subtl, struct tag_entry *supe
 		subtl = subtl->next;
 	}
 	return true;
+}
 
+struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entry *new_list)
+{
+	struct tag_entry *added_list = NULL;
+	while (new_list) {
+		if (!taglist_contains(original_list, new_list->tag->name))
+			taglist_add_tag(&added_list, new_list->tag->name);
+		new_list = new_list->next;
+	}
+	return added_list;
+}
+
+void dump_taglist(const char *intro, struct tag_entry *tl)
+{
+	char *comma = "";
+	fprintf(stderr, "%s", intro);
+	while(tl) {
+		fprintf(stderr, "%s %s", comma, tl->tag->name);
+		comma = ",";
+		tl = tl->next;
+	}
+	fprintf(stderr, "\n");
 }
 
 // if tl1 is both a subset and superset of tl2 they must be the same
