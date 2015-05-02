@@ -146,12 +146,14 @@ add_custom_target(
 
 set(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	set(FBSUPPORT 1)
 	set(SUBSURFACE_TARGET subsurface)
 	set(PLATFORM_SRC linux.c)
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	set(FBSUPPORT 1)
 	set(SUBSURFACE_TARGET Subsurface)
 	set(PLATFORM_SRC macos.c)
 	find_library(APP_SERVICES_LIBRARY ApplicationServices)
@@ -169,6 +171,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set(FBSUPPORT 1)
 	set(SUBSURFACE_TARGET subsurface)
 	set(PLATFORM_SRC windows.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32)
@@ -227,6 +230,10 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	${PLATFORM_SRC}
 )
 
+if(FBSUPPORT)
+	add_definitions(-DFBSUPPORT)
+	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
+endif()
 # the interface, in C++
 
 set(SUBSURFACE_INTERFACE
@@ -265,6 +272,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/configuredivecomputerdialog.cpp
 	qt-ui/filtermodels.cpp
 	qt-ui/undocommands.cpp
+	${SOCIALNETWORKS}
 )
 
 # the profile widget
