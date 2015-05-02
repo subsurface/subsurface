@@ -17,6 +17,11 @@ add and improve support for some dive computers.
 Some of the changes since _Subsurface_ 4.4.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Improved editing of tags when multiple dives are selected
+
+Improved handling of the sample interval when uploading data to
+divelogs.de
+
 Fixed several issues with downloads from the UEMIS SDA
 
 added support for the new models of the Heinrichs & Weikamp OSTC 2 and OSTC 3
