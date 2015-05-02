@@ -230,6 +230,8 @@ struct tag_entry {
 extern struct tag_entry *g_tag_list;
 
 struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag);
+struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entry *new_list);
+void dump_taglist(const char *intro, struct tag_entry *tl);
 
 /*
  * Writes all divetags in tag_list to buffer, limited by the buffer's (len)gth.
