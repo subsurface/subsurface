@@ -428,6 +428,24 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:attribute>
+              <xsl:if test="alarm = 'gas_change'">
+                <xsl:attribute name="value">
+                  <xsl:choose>
+                    <xsl:when test="contains(extra, 'EAN')">
+                      <xsl:value-of select="translate(extra, translate(extra, '1234567890', ''), '')"/>
+                    </xsl:when>
+                    <xsl:when test="contains(extra, 'Trimix')">
+                      <xsl:variable name="trimix">
+                        <xsl:value-of select="translate(extra, translate(extra, '1234567890/', ''), '')"/>
+                      </xsl:variable>
+                      <xsl:value-of select="substring-after($trimix, '/') * 65536 + substring-before($trimix, '/')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="extra"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+              </xsl:if>
             </event>
           </xsl:if>
         </xsl:for-each>
