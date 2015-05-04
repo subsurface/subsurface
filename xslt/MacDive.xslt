@@ -339,6 +339,18 @@
           </xsl:if>
         </temperature>
 
+        <xsl:if test="current != ''">
+          <extradata key="current" value="{current}"/>
+        </xsl:if>
+
+        <xsl:if test="surfaceConditions != ''">
+          <extradata key="surfaceConditions" value="{surfaceConditions}"/>
+        </xsl:if>
+
+        <xsl:if test="entryType != ''">
+          <extradata key="entryType" value="{entryType}"/>
+        </xsl:if>
+
         <xsl:for-each select="samples/sample">
           <sample>
             <xsl:attribute name="time">
