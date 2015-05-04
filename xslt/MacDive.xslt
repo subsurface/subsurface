@@ -420,6 +420,9 @@
                   <xsl:when test="alarm = 'user_depth_alarm'">
                     <xsl:value-of select="'maxdepth'"/>
                   </xsl:when>
+                  <xsl:when test="alarm = 'gas_change'">
+                    <xsl:value-of select="'gaschange'"/>
+                  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="alarm"/>
                   </xsl:otherwise>
