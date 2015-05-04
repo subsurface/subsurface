@@ -66,49 +66,6 @@
         </xsl:call-template>
       </xsl:attribute>
 
-      <xsl:choose>
-        <xsl:when test="maxdepth != ''">
-          <depth>
-            <xsl:attribute name="max">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="maxdepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="mean">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="avgdepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-          </depth>
-        </xsl:when>
-        <xsl:otherwise>
-          <depth>
-            <xsl:attribute name="max">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="maxDepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="mean">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="averageDepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-          </depth>
-        </xsl:otherwise>
-      </xsl:choose>
-
       <xsl:variable name="delta">
         <xsl:value-of select="sampleInterval"/>
       </xsl:variable>
@@ -175,12 +132,6 @@
         <xsl:value-of select="notes"/>
       </notes>
 
-      <divecomputer deviceid="ffffffff">
-        <xsl:attribute name="model">
-          <xsl:value-of select="computer"/>
-        </xsl:attribute>
-      </divecomputer>
-
       <xsl:if test="o2percent != ''">
         <cylinder>
           <xsl:attribute name="o2">
@@ -243,6 +194,87 @@
         </cylinder>
       </xsl:for-each>
 
+      <xsl:if test="diveMaster">
+        <divemaster>
+          <xsl:value-of select="diveMaster"/>
+        </divemaster>
+      </xsl:if>
+      <buddy>
+        <xsl:for-each select="buddies/buddy">
+          <xsl:choose>
+            <xsl:when test="following-sibling::*[1] != ''">
+              <xsl:value-of select="concat(., ', ')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="."/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </buddy>
+
+      <xsl:if test="weight != ''">
+        <weightsystem>
+          <xsl:attribute name="weight">
+            <xsl:call-template name="weightConvert">
+              <xsl:with-param name="weight" select="translate(weight, ',', '.')"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
+          </xsl:attribute>
+          <xsl:attribute name="description">
+            <xsl:value-of select="'unknown'"/>
+          </xsl:attribute>
+        </weightsystem>
+      </xsl:if>
+
+      <divecomputer deviceid="ffffffff">
+        <xsl:attribute name="model">
+          <xsl:value-of select="computer"/>
+        </xsl:attribute>
+      </divecomputer>
+
+      <xsl:choose>
+        <xsl:when test="maxdepth != ''">
+          <depth>
+            <xsl:attribute name="max">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="maxdepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="mean">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="avgdepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </depth>
+        </xsl:when>
+        <xsl:otherwise>
+          <depth>
+            <xsl:attribute name="max">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="maxDepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+            <xsl:attribute name="mean">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="averageDepth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </depth>
+        </xsl:otherwise>
+      </xsl:choose>
+
       <temperature>
 
         <!-- If we have temperature reading and it is non-zero, we use
@@ -303,38 +335,6 @@
           </xsl:if>
         </xsl:if>
       </temperature>
-
-      <xsl:if test="diveMaster">
-        <divemaster>
-          <xsl:value-of select="diveMaster"/>
-        </divemaster>
-      </xsl:if>
-      <buddy>
-        <xsl:for-each select="buddies/buddy">
-          <xsl:choose>
-            <xsl:when test="following-sibling::*[1] != ''">
-              <xsl:value-of select="concat(., ', ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-      </buddy>
-
-      <xsl:if test="weight != ''">
-        <weightsystem>
-          <xsl:attribute name="weight">
-            <xsl:call-template name="weightConvert">
-              <xsl:with-param name="weight" select="translate(weight, ',', '.')"/>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <xsl:attribute name="description">
-            <xsl:value-of select="'unknown'"/>
-          </xsl:attribute>
-        </weightsystem>
-      </xsl:if>
 
       <xsl:for-each select="samples/sample">
         <sample>
