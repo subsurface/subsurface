@@ -96,12 +96,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Air temp.</source>
-        <translation>Lufttemp</translation>
+        <translation>Lufttemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Water temp.</source>
-        <translation>Vattentemperatur</translation>
+        <translation>Vattentemp.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
@@ -266,7 +266,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1337"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1634"/>
         <source>Serial No.</source>
-        <translation>Serienummer.</translation>
+        <translation>Serienummer</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="239"/>
@@ -741,7 +741,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1091"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2287"/>
         <source>Change depth [m]</source>
-        <translation>Bytesljup [m]</translation>
+        <translation>Bytesdjup [m]</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1096"/>
@@ -1020,7 +1020,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1027"/>
         <source>Backup dive computer settings</source>
-        <translation>Backuppa dykdatorns inställningar</translation>
+        <translation>Säkerhetskopiera dykdatorns inställningar</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1033"/>
@@ -3283,7 +3283,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="345"/>
         <source>P&amp;references</source>
-        <translation>Inställning&amp;r</translation>
+        <translation>Inställninga&amp;r</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="375"/>
@@ -3293,7 +3293,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="396"/>
         <source>&amp;Copy dive components</source>
-        <translation>Kopiera dyk-komponeneter</translation>
+        <translation>Kopiera dykkomponenter</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="399"/>
@@ -3328,7 +3328,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="476"/>
         <source>&amp;Next DC</source>
-        <translation>&amp;Nästa DC</translation>
+        <translation>&amp;Nästa dykdator</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="484"/>
@@ -4200,12 +4200,12 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Använd knappen nedan för att koppla Subsurface till ditt Facebook-konto.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Logga in för att koppla Subsurface till Facebook. Det tillgängliggör möjligheten att publicera dyk till din Facebook-timeline.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -5218,12 +5218,12 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <source>Supported dive computer</source>
-        <translation>Stödd dykdator</translation>
+        <translation>Kompatibel dykdator</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android/iPhone följeslagar-app</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
