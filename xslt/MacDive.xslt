@@ -230,150 +230,113 @@
         <xsl:attribute name="model">
           <xsl:value-of select="computer"/>
         </xsl:attribute>
-      </divecomputer>
 
-      <xsl:choose>
-        <xsl:when test="maxdepth != ''">
-          <depth>
-            <xsl:attribute name="max">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="maxdepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="mean">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="avgdepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-          </depth>
-        </xsl:when>
-        <xsl:otherwise>
-          <depth>
-            <xsl:attribute name="max">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="maxDepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="mean">
-              <xsl:call-template name="depthConvert">
-                <xsl:with-param name="depth">
-                  <xsl:value-of select="averageDepth"/>
-                </xsl:with-param>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-          </depth>
-        </xsl:otherwise>
-      </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="maxdepth != ''">
+            <depth>
+              <xsl:attribute name="max">
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="maxdepth"/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="mean">
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="avgdepth"/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+            </depth>
+          </xsl:when>
+          <xsl:otherwise>
+            <depth>
+              <xsl:attribute name="max">
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="maxDepth"/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="mean">
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="averageDepth"/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+            </depth>
+          </xsl:otherwise>
+        </xsl:choose>
 
-      <temperature>
+        <temperature>
 
-        <!-- If we have temperature reading and it is non-zero, we use
+          <!-- If we have temperature reading and it is non-zero, we use
              it. If the temperature is zero, we only use it if we have
              temperature samples from the dive. -->
-        <xsl:if test="tempAir != ''">
-          <xsl:variable name="air">
-            <xsl:call-template name="tempConvert">
-              <xsl:with-param name="temp" select="tempAir"/>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
-            <xsl:attribute name="air">
-              <xsl:value-of select="$air"/>
-            </xsl:attribute>
-          </xsl:if>
-        </xsl:if>
-
-        <xsl:if test="tempLow != ''">
-          <xsl:variable name="water">
-            <xsl:call-template name="tempConvert">
-              <xsl:with-param name="temp" select="tempLow"/>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
-            <xsl:attribute name="water">
-              <xsl:value-of select="$water"/>
-            </xsl:attribute>
-          </xsl:if>
-        </xsl:if>
-
-        <xsl:if test="tempair != ''">
-          <xsl:variable name="air">
-            <xsl:call-template name="tempConvert">
-              <xsl:with-param name="temp" select="tempair"/>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
-            <xsl:attribute name="air">
-              <xsl:value-of select="$air"/>
-            </xsl:attribute>
-          </xsl:if>
-        </xsl:if>
-        <xsl:if test="templow != ''">
-          <xsl:variable name="water">
-            <xsl:call-template name="tempConvert">
-              <xsl:with-param name="temp" select="temlow"/>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
-            <xsl:attribute name="water">
-              <xsl:value-of select="$water"/>
-            </xsl:attribute>
-          </xsl:if>
-        </xsl:if>
-      </temperature>
-
-      <xsl:for-each select="samples/sample">
-        <sample>
-          <xsl:attribute name="time">
-            <xsl:call-template name="timeConvert">
-              <xsl:with-param name="timeSec">
-                <xsl:value-of select="time"/>
-              </xsl:with-param>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <xsl:attribute name="depth">
-            <xsl:call-template name="depthConvert">
-              <xsl:with-param name="depth">
-                <xsl:value-of select="depth"/>
-              </xsl:with-param>
-              <xsl:with-param name="units" select="$units"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <xsl:if test="pressure != '' and $pressureSamples &gt; 0">
-            <xsl:attribute name="pressure">
-              <xsl:call-template name="pressureConvert">
-                <xsl:with-param name="number" select="pressure"/>
-                <xsl:with-param name="units" select="$units"/>
-              </xsl:call-template>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
-            <xsl:attribute name="temp">
+          <xsl:if test="tempAir != ''">
+            <xsl:variable name="air">
               <xsl:call-template name="tempConvert">
-                <xsl:with-param name="temp" select="temperature"/>
+                <xsl:with-param name="temp" select="tempAir"/>
                 <xsl:with-param name="units" select="$units"/>
               </xsl:call-template>
-            </xsl:attribute>
+            </xsl:variable>
+            <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
+              <xsl:attribute name="air">
+                <xsl:value-of select="$air"/>
+              </xsl:attribute>
+            </xsl:if>
           </xsl:if>
-        </sample>
 
-        <xsl:if test="alarm != ''">
-          <event>
+          <xsl:if test="tempLow != ''">
+            <xsl:variable name="water">
+              <xsl:call-template name="tempConvert">
+                <xsl:with-param name="temp" select="tempLow"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
+              <xsl:attribute name="water">
+                <xsl:value-of select="$water"/>
+              </xsl:attribute>
+            </xsl:if>
+          </xsl:if>
+
+          <xsl:if test="tempair != ''">
+            <xsl:variable name="air">
+              <xsl:call-template name="tempConvert">
+                <xsl:with-param name="temp" select="tempair"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:if test="substring-before($air, ' ') != 0 or $temperatureSamples &gt; 0">
+              <xsl:attribute name="air">
+                <xsl:value-of select="$air"/>
+              </xsl:attribute>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="templow != ''">
+            <xsl:variable name="water">
+              <xsl:call-template name="tempConvert">
+                <xsl:with-param name="temp" select="temlow"/>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:if test="substring-before($water, ' ') != 0 or $temperatureSamples &gt; 0">
+              <xsl:attribute name="water">
+                <xsl:value-of select="$water"/>
+              </xsl:attribute>
+            </xsl:if>
+          </xsl:if>
+        </temperature>
+
+        <xsl:for-each select="samples/sample">
+          <sample>
             <xsl:attribute name="time">
               <xsl:call-template name="timeConvert">
                 <xsl:with-param name="timeSec">
@@ -382,37 +345,74 @@
                 <xsl:with-param name="units" select="$units"/>
               </xsl:call-template>
             </xsl:attribute>
-            <xsl:attribute name="name">
-              <xsl:choose>
-                <xsl:when test="alarm = 'attention'">
-                  <xsl:value-of select="'violation'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'ascent_rate'">
-                  <xsl:value-of select="'ascent'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'deep_stop'">
-                  <xsl:value-of select="'deepstop'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'deco'">
-                  <xsl:value-of select="'deco stop'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'po2_high'">
-                  <xsl:value-of select="'PO2'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'tissue_warning'">
-                  <xsl:value-of select="'tissue level warning'"/>
-                </xsl:when>
-                <xsl:when test="alarm = 'user_depth_alarm'">
-                  <xsl:value-of select="'maxdepth'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="alarm"/>
-                </xsl:otherwise>
-              </xsl:choose>
+            <xsl:attribute name="depth">
+              <xsl:call-template name="depthConvert">
+                <xsl:with-param name="depth">
+                  <xsl:value-of select="depth"/>
+                </xsl:with-param>
+                <xsl:with-param name="units" select="$units"/>
+              </xsl:call-template>
             </xsl:attribute>
-          </event>
-        </xsl:if>
-      </xsl:for-each>
+            <xsl:if test="pressure != '' and $pressureSamples &gt; 0">
+              <xsl:attribute name="pressure">
+                <xsl:call-template name="pressureConvert">
+                  <xsl:with-param name="number" select="pressure"/>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
+              <xsl:attribute name="temp">
+                <xsl:call-template name="tempConvert">
+                  <xsl:with-param name="temp" select="temperature"/>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+            </xsl:if>
+          </sample>
+
+          <xsl:if test="alarm != ''">
+            <event>
+              <xsl:attribute name="time">
+                <xsl:call-template name="timeConvert">
+                  <xsl:with-param name="timeSec">
+                    <xsl:value-of select="time"/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="name">
+                <xsl:choose>
+                  <xsl:when test="alarm = 'attention'">
+                    <xsl:value-of select="'violation'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'ascent_rate'">
+                    <xsl:value-of select="'ascent'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'deep_stop'">
+                    <xsl:value-of select="'deepstop'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'deco'">
+                    <xsl:value-of select="'deco stop'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'po2_high'">
+                    <xsl:value-of select="'PO2'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'tissue_warning'">
+                    <xsl:value-of select="'tissue level warning'"/>
+                  </xsl:when>
+                  <xsl:when test="alarm = 'user_depth_alarm'">
+                    <xsl:value-of select="'maxdepth'"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="alarm"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+            </event>
+          </xsl:if>
+        </xsl:for-each>
+      </divecomputer>
 
     </dive>
   </xsl:template>
