@@ -113,34 +113,63 @@
         <xsl:value-of select="sampleInterval"/>
       </xsl:variable>
 
-      <location>
-        <xsl:for-each select="country|location|site">
-          <xsl:choose>
-            <xsl:when test="following-sibling::location[1] != ''">
-              <xsl:value-of select="concat(., ' / ')"/>
-            </xsl:when>
-            <xsl:when test="following-sibling::site[1] != ''">
-              <xsl:value-of select="concat(., ' / ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-      </location>
+      <xsl:choose>
+        <xsl:when test="site/country|site/location|site/name|site/lat|site/lon">
+          <location debug="true">
+            <xsl:for-each select="site/country|site/location|site/name">
+              <xsl:choose>
+                <xsl:when test="following-sibling::location[1] != ''">
+                  <xsl:value-of select="concat(., ' / ')"/>
+                </xsl:when>
+                <xsl:when test="following-sibling::name[1] != ''">
+                  <xsl:value-of select="concat(., ' / ')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
+          </location>
 
       <!-- This will discard GPS coordinates of 0 0 but I suppose that
            is better than all non-gps dives to be in that location -->
-      <xsl:if test="sitelat != 0">
-        <gps>
-          <xsl:value-of select="concat(sitelat, ' ', sitelon)"/>
-        </gps>
-      </xsl:if>
-      <xsl:if test="siteLat != 0">
-        <gps>
-          <xsl:value-of select="concat(siteLat, ' ', siteLon)"/>
-        </gps>
-      </xsl:if>
+          <xsl:if test="site/lat != 0">
+            <gps>
+              <xsl:value-of select="concat(site/lat, ' ', site/lon)"/>
+            </gps>
+          </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+          <location>
+            <xsl:for-each select="country|location|site">
+              <xsl:choose>
+                <xsl:when test="following-sibling::location[1] != ''">
+                  <xsl:value-of select="concat(., ' / ')"/>
+                </xsl:when>
+                <xsl:when test="following-sibling::site[1] != ''">
+                  <xsl:value-of select="concat(., ' / ')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
+          </location>
+
+      <!-- This will discard GPS coordinates of 0 0 but I suppose that
+           is better than all non-gps dives to be in that location -->
+          <xsl:if test="sitelat != 0">
+            <gps>
+              <xsl:value-of select="concat(sitelat, ' ', sitelon)"/>
+            </gps>
+          </xsl:if>
+          <xsl:if test="siteLat != 0">
+            <gps>
+              <xsl:value-of select="concat(siteLat, ' ', siteLon)"/>
+            </gps>
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
 
       <notes>
         <xsl:value-of select="notes"/>
