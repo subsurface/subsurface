@@ -66,6 +66,10 @@
         </xsl:call-template>
       </xsl:attribute>
 
+      <xsl:attribute name="tags">
+        <xsl:value-of select="entryType"/>
+      </xsl:attribute>
+
       <xsl:variable name="delta">
         <xsl:value-of select="sampleInterval"/>
       </xsl:variable>
