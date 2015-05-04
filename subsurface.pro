@@ -19,7 +19,7 @@ else: TARGET = subsurface
 
 QMAKE_CLEAN += $$TARGET
 
-VERSION = 4.4.1
+VERSION = 4.4.2
 
 HEADERS = \
 	cochran.h \

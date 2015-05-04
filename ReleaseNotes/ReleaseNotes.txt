@@ -4,7 +4,7 @@ _Subsurface_ 4.4.2 - April 2015
 --------------------------------
 
 The _Subsurface_ development team proudly announces
-the release of version 4.4.1 of _Subsurface_, an open
+the release of version 4.4.2 of _Subsurface_, an open
 source divelog and dive planning program for Windows, Mac and Linux.
 
 License: GPLv2
