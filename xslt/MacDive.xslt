@@ -67,7 +67,16 @@
       </xsl:attribute>
 
       <xsl:attribute name="tags">
-        <xsl:value-of select="entryType"/>
+        <xsl:for-each select="tags/tag|entryType">
+          <xsl:choose>
+            <xsl:when test="position() = 1">
+              <xsl:value-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat(',', .)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
       </xsl:attribute>
 
       <xsl:variable name="delta">
