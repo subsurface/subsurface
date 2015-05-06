@@ -208,6 +208,21 @@
         </cylinder>
       </xsl:for-each>
 
+      <xsl:for-each select="gases/gas">
+        <event name="gaschange">
+          <xsl:attribute name="time">
+            <xsl:call-template name="sec2time">
+              <xsl:with-param name="timeSec">
+                <xsl:value-of select="sum(preceding-sibling::gas/duration)"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+          <xsl:attribute name="value">
+            <xsl:value-of select="helium * 65536 + oxygen"/>
+          </xsl:attribute>
+        </event>
+      </xsl:for-each>
+
       <xsl:if test="diveMaster">
         <divemaster>
           <xsl:value-of select="diveMaster"/>
