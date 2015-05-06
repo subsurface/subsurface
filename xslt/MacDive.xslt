@@ -412,7 +412,7 @@
             </xsl:if>
           </sample>
 
-          <xsl:if test="alarm != ''">
+          <xsl:if test="alarm != '' and alarm != gas_change">
             <event>
               <xsl:attribute name="time">
                 <xsl:call-template name="timeConvert">
@@ -445,32 +445,11 @@
                   <xsl:when test="alarm = 'user_depth_alarm'">
                     <xsl:value-of select="'maxdepth'"/>
                   </xsl:when>
-                  <xsl:when test="alarm = 'gas_change'">
-                    <xsl:value-of select="'gaschange'"/>
-                  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="alarm"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:attribute>
-              <xsl:if test="alarm = 'gas_change'">
-                <xsl:attribute name="value">
-                  <xsl:choose>
-                    <xsl:when test="contains(extra, 'EAN')">
-                      <xsl:value-of select="translate(extra, translate(extra, '1234567890', ''), '')"/>
-                    </xsl:when>
-                    <xsl:when test="contains(extra, 'Trimix')">
-                      <xsl:variable name="trimix">
-                        <xsl:value-of select="translate(extra, translate(extra, '1234567890/', ''), '')"/>
-                      </xsl:variable>
-                      <xsl:value-of select="substring-after($trimix, '/') * 65536 + substring-before($trimix, '/')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="extra"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:attribute>
-              </xsl:if>
             </event>
           </xsl:if>
         </xsl:for-each>
