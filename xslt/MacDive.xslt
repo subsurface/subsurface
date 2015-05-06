@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:strip-space elements="*"/>
+  <xsl:include href="commonTemplates.xsl"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="/">
@@ -572,18 +573,6 @@
     </xsl:choose>
   </xsl:template>
   <!-- end convert weight -->
-
-  <xsl:template name="temperatureSamples">
-    <xsl:param name="units"/>
-    <xsl:choose>
-      <xsl:when test="$units = 'Imperial'">
-        <xsl:value-of select="count(descendant::temperature[. != 32])"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="count(descendant::temperature[. != 0])"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
   <xsl:template name="pressureSamples">
     <xsl:value-of select="count(descendant::pressure[. &gt; 0])"/>
