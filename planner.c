@@ -520,7 +520,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
-	char buffer[20000], temp[1000];
+	char buffer[2000000], temp[100000];
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0;
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange = !plan_verbatim, postponed = plan_verbatim;

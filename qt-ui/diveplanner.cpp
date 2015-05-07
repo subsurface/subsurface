@@ -92,10 +92,13 @@ void DivePlannerPointsModel::setupStartTime()
 
 void DivePlannerPointsModel::loadFromDive(dive *d)
 {
+	int depthsum = 0;
+	int samplecount = 0;
 	bool oldRec = recalc;
 	recalc = false;
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
+	duration_t newtime = {};
 	struct gasmix gas;
 	free_dps(&diveplan);
 	diveplan.when = d->when;
@@ -104,13 +107,27 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// if it is we only add the manually entered samples as waypoints to the diveplan
 	// otherwise we have to add all of them
 	bool hasMarkedSamples = d->dc.sample[0].manually_entered;
-	for (int i = 0; i < d->dc.samples - 1; i++) {
-		const sample &s = d->dc.sample[i];
-		if (s.time.seconds == 0 || (hasMarkedSamples && !s.manually_entered))
-			continue;
-		get_gas_at_time(d, &d->dc, lasttime, &gas);
-		plannerModel->addStop(s.depth.mm, s.time.seconds, &gas, 0, true);
-		lasttime = s.time;
+	// if this dive has more than 100 samples (so it is probably a logged dive),
+	// average samples so we end up with a total of 100 samples.
+	int plansamples = d->dc.samples <= 100 ? d->dc.samples : 100;
+	int j = 0;
+	for (int i = 0; i < plansamples - 1; i++) {
+		while (j * plansamples <= i * d->dc.samples) {
+			const sample &s = d->dc.sample[j];
+			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
+				depthsum += s.depth.mm;
+				++samplecount;
+				newtime = s.time;
+			}
+			j++;
+		}
+		if (samplecount) {
+			get_gas_at_time(d, &d->dc, lasttime, &gas);
+			plannerModel->addStop(depthsum / samplecount, newtime.seconds, &gas, 0, true);
+			lasttime = newtime;
+			depthsum = 0;
+			samplecount = 0;
+		}
 	}
 	recalc = oldRec;
 	emitDataChanged();

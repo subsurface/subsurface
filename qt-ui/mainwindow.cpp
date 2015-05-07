@@ -596,8 +596,9 @@ void MainWindow::on_actionReplanDive_triggered()
 	if (!plannerStateClean() || !current_dive || !current_dive->dc.model)
 		return;
 	else if (strcmp(current_dive->dc.model, "planned dive")) {
-		QMessageBox::warning(this, tr("Warning"), tr("trying to replan a dive that's not a planned dive."));
-		return;
+		if (QMessageBox::warning(this, tr("Warning"), tr("trying to replan a dive that's not a planned dive."),
+				     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
+					return;
 	}
 	// put us in PLAN mode
 	DivePlannerPointsModel::instance()->clear();
