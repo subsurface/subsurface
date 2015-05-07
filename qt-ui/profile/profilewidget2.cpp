@@ -1537,6 +1537,7 @@ void ProfileWidget2::repositionDiveHandlers()
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	// Re-position the user generated dive handlers
+	struct gasmix mix, lastmix;
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		struct divedatapoint datapoint = plannerModel->at(i);
 		if (datapoint.time == 0) // those are the magic entries for tanks
@@ -1561,8 +1562,9 @@ void ProfileWidget2::repositionDiveHandlers()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setVisible(datapoint.entered);
-		gases[i]->setText(dpGasToStr(plannerModel->at(i)));
+		gases[i]->setText(dpGasToStr(datapoint));
+		gases[i]->setVisible(datapoint.entered &&
+				(i == 0 || gases[i]->text() != gases[i-1]->text()));
 	}
 }
 
