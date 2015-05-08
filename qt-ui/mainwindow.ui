@@ -458,7 +458,7 @@
   </action>
   <action name="actionReplanDive">
    <property name="text">
-    <string>Re-plan &amp;dive</string>
+    <string>Edit &amp;dive in planner</string>
    </property>
   </action>
   <action name="profPO2">
