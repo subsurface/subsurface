@@ -1328,6 +1328,11 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 			if (current_dive->divetrip)
 				add_dive_to_trip(copy, current_dive->divetrip);
 			record_dive(copy);
+			QString oldnotes(current_dive->notes);
+			if (oldnotes.indexOf(QString(disclaimer)) >= 0)
+				oldnotes.truncate(oldnotes.indexOf(QString(disclaimer)));
+			oldnotes.append(displayed_dive.notes);
+			displayed_dive.notes = strdup(oldnotes.toUtf8().data());
 		}
 		copy_dive(&displayed_dive, current_dive);
 	}
