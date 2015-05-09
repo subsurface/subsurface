@@ -853,7 +853,9 @@ bool enough_gas(int current_cylinder)
 		return true;
 }
 
-int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
+// Work out the stops. Return value is if there were any mandatory stops.
+
+bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
 {
 	struct sample *sample;
 	int po2;
@@ -876,6 +878,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 	int breaktime = -1;
 	int breakcylinder = 0;
 	int error = 0;
+	bool decodive = false;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
@@ -912,7 +915,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, gas, po2, false);
 		create_dive_from_plan(diveplan, is_planner);
-		return(error);
+		return(false);
 	}
 	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
 
@@ -992,7 +995,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 		free(stoplevels);
 		free(gaschanges);
 
-		return(error);
+		return(false);
 	}
 
 	if (best_first_ascend_cylinder != current_cylinder) {
@@ -1056,6 +1059,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 				break; /* We did not hit the ceiling */
 
 			/* Add a minute of deco time and then try again */
+			decodive = true;
 			if (!stopping) {
 				/* The last segment was an ascend segment.
 				 * Add a waypoint for start of this deco stop */
@@ -1116,7 +1120,7 @@ int plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool s
 
 	free(stoplevels);
 	free(gaschanges);
-	return error;
+	return decodive;
 }
 
 /*

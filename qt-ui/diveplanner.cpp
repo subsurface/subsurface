@@ -1310,7 +1310,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	plannerModel->setRecalc(oldRecalc);
 
 	//TODO: C-based function here?
-	plan(&diveplan, &cache, isPlanner(), true);
+	bool did_deco = plan(&diveplan, &cache, isPlanner(), true);
 	if (!current_dive || displayed_dive.id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing on
 		record_dive(clone_dive(&displayed_dive));
@@ -1331,7 +1331,8 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 			QString oldnotes(current_dive->notes);
 			if (oldnotes.indexOf(QString(disclaimer)) >= 0)
 				oldnotes.truncate(oldnotes.indexOf(QString(disclaimer)));
-			oldnotes.append(displayed_dive.notes);
+			if (did_deco)
+				oldnotes.append(displayed_dive.notes);
 			displayed_dive.notes = strdup(oldnotes.toUtf8().data());
 		}
 		copy_dive(&displayed_dive, current_dive);
