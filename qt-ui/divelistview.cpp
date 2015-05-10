@@ -514,6 +514,8 @@ void DiveListView::toggleColumnVisibilityByIndex()
 
 void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	if (!isVisible())
+		return;
 	if (!current.isValid())
 		return;
 	scrollTo(current);
