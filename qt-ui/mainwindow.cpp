@@ -32,6 +32,7 @@
 #include "divelogimportdialog.h"
 #include "divelogexportdialog.h"
 #include "usersurvey.h"
+#include "divesitehelpers.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
@@ -199,6 +200,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	undoRedoActions.append(undoAction);
 	undoRedoActions.append(redoAction);
 	ui.menu_Edit->addActions(undoRedoActions);
+
+	ReverseGeoLoockupThread *geoLoockup = ReverseGeoLoockupThread::instance();
+	connect(geoLoockup, SIGNAL(start()),information(), SLOT(setDisabled()));
+	connect(geoLoockup, SIGNAL(finished()), information(), SLOT(setEnabled()));
 }
 
 MainWindow::~MainWindow()
@@ -1292,7 +1297,7 @@ int MainWindow::file_save_as(void)
 	QString filename;
 	const char *default_filename = existing_filename;
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
-	                             tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+				     tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 
 	/* if the exit/cancel button is pressed return */
 	if (!selection_dialog.exec())
@@ -1447,6 +1452,10 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	process_dives(false, false);
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);
+
+	// searches for geo lookup information in a thread so it doesn`t
+	// freezes the ui.
+	ReverseGeoLoockupThread::instance()->start();
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
