@@ -797,8 +797,24 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	dive_trip_t *trip = (dive_trip_t *)contextMenuIndex.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
-		popup.addAction(tr("Expand all"), this, SLOT(expandAll()));
-		popup.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
+		// verify if there is a node that`s not expanded.
+		bool needs_expand = false;
+		bool needs_collapse = false;
+		for(int i = 0, end = model()->rowCount(); i < end; i++) {
+			QModelIndex idx = model()->index(i, 0);
+			if (idx.data(DiveTripModel::DIVE_ROLE).value<void *>())
+				continue;
+
+			if (!isExpanded(idx))
+				needs_expand = true;
+			else
+				needs_collapse = true;
+		}
+		if (needs_expand)
+			popup.addAction(tr("Expand all"), this, SLOT(expandAll()));
+		if (needs_collapse)
+			popup.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
+
 		collapseAction = popup.addAction(tr("Collapse others"), this, SLOT(collapseAll()));
 		if (d) {
 			popup.addAction(tr("Remove dive(s) from trip"), this, SLOT(removeFromTrip()));
