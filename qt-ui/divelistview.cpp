@@ -800,22 +800,29 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		// verify if there is a node that`s not expanded.
 		bool needs_expand = false;
 		bool needs_collapse = false;
+		uint expanded_nodes = 0;
 		for(int i = 0, end = model()->rowCount(); i < end; i++) {
 			QModelIndex idx = model()->index(i, 0);
 			if (idx.data(DiveTripModel::DIVE_ROLE).value<void *>())
 				continue;
 
-			if (!isExpanded(idx))
+			if (!isExpanded(idx)) {
 				needs_expand = true;
-			else
+			} else {
 				needs_collapse = true;
+				expanded_nodes ++;
+			}
 		}
 		if (needs_expand)
 			popup.addAction(tr("Expand all"), this, SLOT(expandAll()));
 		if (needs_collapse)
 			popup.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
 
-		collapseAction = popup.addAction(tr("Collapse others"), this, SLOT(collapseAll()));
+		// verify if there`s a need for collapse others
+		if (expanded_nodes > 1)
+			collapseAction = popup.addAction(tr("Collapse others"), this, SLOT(collapseAll()));
+
+
 		if (d) {
 			popup.addAction(tr("Remove dive(s) from trip"), this, SLOT(removeFromTrip()));
 			popup.addAction(tr("Create new trip above"), this, SLOT(newTripAbove()));
