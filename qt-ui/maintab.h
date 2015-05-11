@@ -112,6 +112,8 @@ private:
 	bool copyPaste;
 	void resetPallete();
 	void saveTags();
+	void saveTaggedStrings();
+	void diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList);
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;

@@ -26,6 +26,7 @@
 #include <QShortcut>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QStringList>
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
@@ -755,15 +756,11 @@ void MainTab::acceptChanges()
 		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
-		if (!same_string(displayed_dive.buddy, cd->buddy))
-			MODIFY_SELECTED_DIVES(EDIT_TEXT(buddy));
 		if (!same_string(displayed_dive.suit, cd->suit))
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(suit));
 		if (!same_string(displayed_dive.notes, cd->notes))
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(notes));
 		if (!same_string(displayed_dive.divemaster, cd->divemaster))
-			MODIFY_SELECTED_DIVES(EDIT_TEXT(divemaster));
-		if (displayed_dive.rating != cd->rating)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(rating));
 		if (displayed_dive.visibility != cd->visibility)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
@@ -783,6 +780,9 @@ void MainTab::acceptChanges()
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
 
+		// three text fields are somewhat special and are represented as tags
+		// in the UI - they need somewhat smarter handling
+		saveTaggedStrings();
 		saveTags();
 
 		if (editMode != ADD && cylindersModel->changed) {
@@ -1133,6 +1133,73 @@ void MainTab::saveTags()
 		taglist_free(mydive->tag_list);
 		mydive->tag_list = new_tag_list;
 	);
+}
+
+// buddy and divemaster are represented in the UI just like the tags, but the internal
+// representation is just a string (with commas as delimiters). So we need to do the same
+// thing we did for tags, just differently
+void MainTab::saveTaggedStrings()
+{
+	QStringList addedList, removedList;
+	struct dive *cd = current_dive;
+
+	diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList);
+	MODIFY_SELECTED_DIVES(
+		QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
+		QString newString;
+		QString comma;
+		Q_FOREACH (const QString tag, oldList) {
+			if (!removedList.contains(tag, Qt::CaseInsensitive)) {
+				newString += comma + tag;
+				comma = ", ";
+			}
+		}
+		Q_FOREACH (const QString tag, addedList) {
+			if (!oldList.contains(tag, Qt::CaseInsensitive)) {
+				newString += comma + tag;
+				comma = ", ";
+			}
+		}
+		free(mydive->buddy);
+		mydive->buddy = copy_string(qPrintable(newString));
+	);
+	addedList.clear();
+	removedList.clear();
+	diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList);
+	MODIFY_SELECTED_DIVES(
+		QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
+		QString newString;
+		QString comma;
+		Q_FOREACH (const QString tag, oldList) {
+			if (!removedList.contains(tag, Qt::CaseInsensitive)) {
+				newString += comma + tag;
+				comma = ", ";
+			}
+		}
+		Q_FOREACH (const QString tag, addedList) {
+			if (!oldList.contains(tag, Qt::CaseInsensitive)) {
+				newString += comma + tag;
+				comma = ", ";
+			}
+		}
+		free(mydive->divemaster);
+		mydive->divemaster = copy_string(qPrintable(newString));
+	);
+}
+
+void MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
+{
+	QStringList displayedList, currentList;
+	currentList = currentString.split(',', QString::SkipEmptyParts);
+	displayedList = displayedString.split(',', QString::SkipEmptyParts);
+	Q_FOREACH ( const QString tag, currentList) {
+		if (!displayedList.contains(tag, Qt::CaseInsensitive))
+			removedList << tag.trimmed();
+	}
+	Q_FOREACH (const QString tag, displayedList) {
+		if (!currentList.contains(tag, Qt::CaseInsensitive))
+			addedList << tag.trimmed();
+	}
 }
 
 void MainTab::on_tagWidget_textChanged()
