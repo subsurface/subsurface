@@ -1296,8 +1296,12 @@ int MainWindow::file_save_as(void)
 {
 	QString filename;
 	const char *default_filename = existing_filename;
+
+	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
 				     tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
+	selection_dialog.setFileMode(QFileDialog::AnyFile);
 
 	/* if the exit/cancel button is pressed return */
 	if (!selection_dialog.exec())
