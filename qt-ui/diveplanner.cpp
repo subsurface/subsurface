@@ -241,7 +241,7 @@ void DiveHandler::changeGas()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
-	plannerModel->setData(index, action->text());
+	plannerModel->gaschange(index.sibling(index.row() + 1, index.column()), action->text());
 }
 
 void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -739,6 +739,18 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		editStop(index.row(), p);
 	}
 	return QAbstractItemModel::setData(index, value, role);
+}
+
+void DivePlannerPointsModel::gaschange(const QModelIndex &index, QString newgas)
+{
+	int i = index.row();
+	gasmix oldgas = divepoints[i].gasmix;
+	gasmix gas = { 0 };
+	if (!validate_gas(newgas.toUtf8().data(), &gas))
+		return;
+	while (i < plannerModel->rowCount() && gasmix_distance(&oldgas, &divepoints[i].gasmix) == 0)
+		divepoints[i++].gasmix = gas;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
