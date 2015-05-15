@@ -17,25 +17,25 @@
 #include <QUrlQuery>
 #include <QEventLoop>
 
-struct GeoLoockupInfo {
+struct GeoLookupInfo {
 	degrees_t lat;
 	degrees_t lon;
 	uint32_t uuid;
 };
 
-QVector<GeoLoockupInfo> geo_loockup_data;
+QVector<GeoLookupInfo> geo_lookup_data;
 
-ReverseGeoLoockupThread* ReverseGeoLoockupThread::instance() {
-	static ReverseGeoLoockupThread* self = new ReverseGeoLoockupThread();
+ReverseGeoLookupThread* ReverseGeoLookupThread::instance() {
+	static ReverseGeoLookupThread* self = new ReverseGeoLookupThread();
 	return self;
 }
 
-ReverseGeoLoockupThread::ReverseGeoLoockupThread(QObject *obj) : QThread(obj)
+ReverseGeoLookupThread::ReverseGeoLookupThread(QObject *obj) : QThread(obj)
 {
 }
 
-void ReverseGeoLoockupThread::run() {
-	if (geo_loockup_data.isEmpty())
+void ReverseGeoLookupThread::run() {
+	if (geo_lookup_data.isEmpty())
 		return;
 
 	QNetworkRequest request;
@@ -44,7 +44,7 @@ void ReverseGeoLoockupThread::run() {
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	QEventLoop loop;
 	QString apiCall("http://open.mapquestapi.com/nominatim/v1/reverse.php?format=json&accept-language=%1&lat=%2&lon=%3");
-	Q_FOREACH (const GeoLoockupInfo& info, geo_loockup_data ) {
+	Q_FOREACH (const GeoLookupInfo& info, geo_lookup_data ) {
 		request.setUrl(apiCall.arg(uiLanguage(NULL)).arg(info.lat.udeg / 1000000.0).arg(info.lon.udeg / 1000000.0));
 		QNetworkReply *reply = rgl->get(request);
 		QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
@@ -66,11 +66,11 @@ void ReverseGeoLoockupThread::run() {
 	rgl->deleteLater();
 }
 
-extern "C" void add_geo_information_for_loockup(degrees_t latitude, degrees_t longitude, uint32_t uuid) {
-	GeoLoockupInfo info;
+extern "C" void add_geo_information_for_lookup(degrees_t latitude, degrees_t longitude, uint32_t uuid) {
+	GeoLookupInfo info;
 	info.lat = latitude;
 	info.lon = longitude;
 	info.uuid = uuid;
 
-	geo_loockup_data.append(info);
+	geo_lookup_data.append(info);
 }

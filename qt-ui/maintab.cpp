@@ -209,13 +209,13 @@ MainTab::~MainTab()
 	}
 }
 
-void MainTab::enableGeoLoockupEdition()
+void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
 	ui.manageDiveSite->show();
 }
 
-void MainTab::disableGeoLoockupEdition()
+void MainTab::disableGeoLookupEdition()
 {
 	ui.waitingSpinner->start();
 	ui.manageDiveSite->hide();

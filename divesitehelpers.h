@@ -4,14 +4,14 @@
 #include "units.h"
 #include <QThread>
 
-class ReverseGeoLoockupThread : public QThread {
+class ReverseGeoLookupThread : public QThread {
 Q_OBJECT
 public:
-	static ReverseGeoLoockupThread *instance();
+	static ReverseGeoLookupThread *instance();
 	void run() Q_DECL_OVERRIDE;
 
 private:
-	ReverseGeoLoockupThread(QObject *parent = 0);
+	ReverseGeoLookupThread(QObject *parent = 0);
 };
 
 #endif // DIVESITEHELPERS_H

@@ -202,9 +202,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	undoRedoActions.append(redoAction);
 	ui.menu_Edit->addActions(undoRedoActions);
 
-	ReverseGeoLoockupThread *geoLoockup = ReverseGeoLoockupThread::instance();
-	connect(geoLoockup, SIGNAL(started()),information(), SLOT(disableGeoLoockupEdition()));
-	connect(geoLoockup, SIGNAL(finished()), information(), SLOT(enableGeoLoockupEdition()));
+	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
+	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
+	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
 }
 
 MainWindow::~MainWindow()
@@ -1460,7 +1460,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 	// searches for geo lookup information in a thread so it doesn`t
 	// freezes the ui.
-	ReverseGeoLoockupThread::instance()->start();
+	ReverseGeoLookupThread::instance()->start();
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);

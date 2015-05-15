@@ -94,8 +94,8 @@ slots:
 	void removeSelectedPhotos();
 	void prepareDiveSiteEdit();
 	void showLocation();
-	void enableGeoLoockupEdition();
-	void disableGeoLoockupEdition();
+	void enableGeoLookupEdition();
+	void disableGeoLookupEdition();
 
 private:
 	Ui::MainTab ui;
