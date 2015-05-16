@@ -94,6 +94,8 @@ slots:
 	void removeSelectedPhotos();
 	void prepareDiveSiteEdit();
 	void showLocation();
+	void enable();
+	void disable();
 
 private:
 	Ui::MainTab ui;

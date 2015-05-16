@@ -199,6 +199,16 @@ MainTab::~MainTab()
 	}
 }
 
+void MainTab::enable()
+{
+	setEnabled(true);
+}
+
+void MainTab::disable()
+{
+	setDisabled(true);
+}
+
 void MainTab::prepareDiveSiteEdit() {
 	emit requestDiveSiteEdit(displayed_dive.dive_site_uuid);
 }

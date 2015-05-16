@@ -202,8 +202,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.menu_Edit->addActions(undoRedoActions);
 
 	ReverseGeoLoockupThread *geoLoockup = ReverseGeoLoockupThread::instance();
-	connect(geoLoockup, SIGNAL(start()),information(), SLOT(setDisabled()));
-	connect(geoLoockup, SIGNAL(finished()), information(), SLOT(setEnabled()));
+	connect(geoLoockup, SIGNAL(started()),information(), SLOT(disable()));
+	connect(geoLoockup, SIGNAL(finished()), information(), SLOT(enable()));
 }
 
 MainWindow::~MainWindow()
