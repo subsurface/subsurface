@@ -2815,8 +2815,8 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	// (ptr[7] << 8) + ptr[6] Is "Serial"
 	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
 	cur_dc->serial = strdup(serial);
-	// Dive start time in seconds since 2000-01-01 12:00 UTC +0
-	cur_dc->when = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + ptr[8] + 946728000;
+	// Dive start time in seconds since 2000-01-01 00:00
+	cur_dc->when = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + ptr[8] + 946684800;
 	cur_dive->when = cur_dc->when;
 
 	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
