@@ -64,12 +64,12 @@ CREATE_MODEL_SET_DATA_METHOD( CLASS ); \
 CREATE_INSTANCE_METHOD( CLASS ); \
 CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION )
 
-CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel, count_dives_with_tag);
-CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel, count_dives_with_person);
-CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel, count_dives_with_location);
-CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit);
+CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel, count_dives_with_tag)
+CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel, count_dives_with_person)
+CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel, count_dives_with_location)
+CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit)
 
-CREATE_INSTANCE_METHOD(MultiFilterSortModel);
+CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : QStringListModel(parent)
 {
