@@ -273,6 +273,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/filtermodels.cpp
 	qt-ui/undocommands.cpp
 	qt-ui/locationinformation.cpp
+	qt-ui/qtwaitingspinner.cpp
 	${SOCIALNETWORKS}
 )
 
