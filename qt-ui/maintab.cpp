@@ -15,6 +15,7 @@
 #include "display.h"
 #include "profile/profilewidget2.h"
 #include "diveplanner.h"
+#include "divesitehelpers.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
@@ -406,7 +407,7 @@ void MainTab::updateDiveInfo(bool clear)
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
 		return;
-	if (!isEnabled() && !clear)
+	if (!isEnabled() && !clear && !ReverseGeoLoockupThread::instance()->isRunning())
 		setEnabled(true);
 	if (isEnabled() && clear)
 		setEnabled(false);
