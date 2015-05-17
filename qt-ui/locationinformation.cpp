@@ -13,7 +13,8 @@ LocationInformationModel::LocationInformationModel(QObject *obj)
 
 int LocationInformationModel::rowCount(const QModelIndex &parent) const
 {
-
+	Q_UNUSED(parent);
+	return internalRowCount;
 }
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
