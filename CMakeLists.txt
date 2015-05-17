@@ -272,6 +272,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/configuredivecomputerdialog.cpp
 	qt-ui/filtermodels.cpp
 	qt-ui/undocommands.cpp
+	qt-ui/locationinformation.cpp
 	${SOCIALNETWORKS}
 )
 

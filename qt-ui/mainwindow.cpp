@@ -33,6 +33,7 @@
 #include "divelogexportdialog.h"
 #include "usersurvey.h"
 #include "divesitehelpers.h"
+#include "locationinformation.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif

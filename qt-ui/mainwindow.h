@@ -37,6 +37,7 @@ class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
 class QUndoStack;
+class LocationInformationWidget;
 
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
