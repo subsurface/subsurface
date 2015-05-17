@@ -18,7 +18,15 @@ int LocationInformationModel::rowCount(const QModelIndex &parent) const
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
 {
+	if (!index.isValid())
+		return QVariant();
+	struct dive_site *ds = get_dive_site(index.row());
 
+	switch(role) {
+		case Qt::DisplayRole : return qPrintable(ds->name);
+	}
+
+	return QVariant();
 }
 
 void LocationInformationModel::update()
