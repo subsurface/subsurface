@@ -200,12 +200,12 @@ MainTab::~MainTab()
 	}
 }
 
-void MainTab::enable()
+void MainTab::enableGeoLoockupEdition()
 {
 	setEnabled(true);
 }
 
-void MainTab::disable()
+void MainTab::disableGeoLoockupEdition()
 {
 	setDisabled(true);
 }
