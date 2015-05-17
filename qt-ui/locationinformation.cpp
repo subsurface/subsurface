@@ -7,6 +7,37 @@
 #include <QDebug>
 #include <QShowEvent>
 
+LocationInformationModel::LocationInformationModel(QObject *obj)
+{
+}
+
+int LocationInformationModel::rowCount(const QModelIndex &parent) const
+{
+
+}
+
+QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
+{
+
+}
+
+void LocationInformationModel::update()
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds);
+
+	if (rowCount()) {
+		beginRemoveRows(QModelIndex(), 0, rowCount());
+		endRemoveRows();
+	}
+	if (i) {
+		beginInsertRows(QModelIndex(), 0, i);
+		internalRowCount = i;
+		endRemoveRows();
+	}
+}
+
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
 {
 	ui.setupUi(this);
