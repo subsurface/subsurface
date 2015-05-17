@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QShowEvent>
 
-LocationInformationModel::LocationInformationModel(QObject *obj)
+LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractListModel(obj), internalRowCount(0)
 {
 }
 
@@ -37,13 +37,13 @@ void LocationInformationModel::update()
 	for_each_dive_site (i, ds);
 
 	if (rowCount()) {
-		beginRemoveRows(QModelIndex(), 0, rowCount());
+		beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 		endRemoveRows();
 	}
 	if (i) {
 		beginInsertRows(QModelIndex(), 0, i);
 		internalRowCount = i;
-		endRemoveRows();
+		endInsertRows();
 	}
 }
 
@@ -66,6 +66,14 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	ui.diveSiteMessage->addAction(closeAction);
 
+	ui.currentLocation->setModel(new LocationInformationModel());
+	connect(ui.currentLocation, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentDiveSite(int)));
+}
+
+void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
+{
+	currentDs = get_dive_site(dive_nr);
+	setLocationId(currentDs->uuid);
 }
 
 void LocationInformationWidget::setLocationId(uint32_t uuid)
@@ -151,8 +159,13 @@ void LocationInformationWidget::rejectChanges()
 	emit informationManagementEnded();
 }
 
-void LocationInformationWidget::showEvent(QShowEvent *ev) {
+void LocationInformationWidget::showEvent(QShowEvent *ev)
+{
+	LocationInformationModel *m = (LocationInformationModel*) ui.currentLocation->model();
 	ui.diveSiteMessage->setCloseButtonVisible(false);
+	m->update();
+	QGroupBox::showEvent(ev);
+
 }
 
 void LocationInformationWidget::markChangedWidget(QWidget *w)

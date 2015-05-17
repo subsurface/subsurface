@@ -20,20 +20,19 @@ class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
-
+protected:
+	void showEvent(QShowEvent *);
+\
 public slots:
 	void acceptChanges();
 	void rejectChanges();
-
-	void showEvent(QShowEvent *);
-
 	void setLocationId(uint32_t uuid);
 	void updateGpsCoordinates(void);
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
 	void resetState();
 	void resetPallete();
-
+	void setCurrentDiveSite(int dive_nr);
 	void on_diveSiteCoordinates_textChanged(const QString& text);
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);
