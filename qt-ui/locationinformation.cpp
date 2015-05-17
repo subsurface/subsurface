@@ -73,7 +73,10 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
 {
 	currentDs = get_dive_site(dive_nr);
-	setLocationId(currentDs->uuid);
+	if (currentDs)
+		setLocationId(currentDs->uuid);
+	else
+		setLocationId(displayed_dive.dive_site_uuid);
 }
 
 void LocationInformationWidget::setLocationId(uint32_t uuid)
