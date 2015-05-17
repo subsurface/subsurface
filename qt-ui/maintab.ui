@@ -22,8 +22,7 @@
      <number>0</number>
     </property>
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true">
-     </widget>
+     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -41,8 +40,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>441</width>
-         <height>753</height>
+         <width>417</width>
+         <height>744</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -141,6 +140,9 @@
              <string>manage</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QtWaitingSpinner" name="waitingSpinner" native="true"/>
           </item>
          </layout>
         </item>
@@ -385,8 +387,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>68</width>
-         <height>40</height>
+         <width>98</width>
+         <height>55</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -441,8 +443,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>441</width>
-         <height>363</height>
+         <width>330</width>
+         <height>334</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -758,8 +760,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>446</width>
-         <height>215</height>
+         <width>328</width>
+         <height>208</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="statsScrollAreaLayout">
@@ -1008,6 +1010,12 @@
    <class>DivePictureWidget</class>
    <extends>QListView</extends>
    <header>divepicturewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QtWaitingSpinner</class>
+   <extends>QWidget</extends>
+   <header>qtwaitingspinner.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

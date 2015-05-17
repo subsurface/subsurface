@@ -186,6 +186,15 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.socialNetworks->setVisible(false);
 #endif
 
+	ui.waitingSpinner->setRoundness(70.0);
+	ui.waitingSpinner->setMinimumTrailOpacity(15.0);
+	ui.waitingSpinner->setTrailFadePercentage(70.0);
+	ui.waitingSpinner->setNumberOfLines(8);
+	ui.waitingSpinner->setLineLength(5);
+	ui.waitingSpinner->setLineWidth(3);
+	ui.waitingSpinner->setInnerRadius(5);
+	ui.waitingSpinner->setRevolutionsPerSecond(1);
+
 	acceptingEdit = false;
 }
 
@@ -202,12 +211,14 @@ MainTab::~MainTab()
 
 void MainTab::enableGeoLoockupEdition()
 {
-	setEnabled(true);
+	ui.waitingSpinner->stop();
+	ui.manageDiveSite->show();
 }
 
 void MainTab::disableGeoLoockupEdition()
 {
-	setDisabled(true);
+	ui.waitingSpinner->start();
+	ui.manageDiveSite->hide();
 }
 
 void MainTab::prepareDiveSiteEdit() {
@@ -407,7 +418,7 @@ void MainTab::updateDiveInfo(bool clear)
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
 		return;
-	if (!isEnabled() && !clear && !ReverseGeoLoockupThread::instance()->isRunning())
+	if (!isEnabled() && !clear )
 		setEnabled(true);
 	if (isEnabled() && clear)
 		setEnabled(false);
