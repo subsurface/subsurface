@@ -16,6 +16,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QStandardPaths>
+#include <QMessageBox>
 #include "qthelper.h"
 #include "undocommands.h"
 #include "divelistview.h"
@@ -566,15 +567,32 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		Q_EMIT currentDiveChanged(selected_dive);
 }
 
-static bool can_merge(const struct dive *a, const struct dive *b)
+enum asked_user {NOTYET, MERGE, DONTMERGE};
+
+static bool can_merge(const struct dive *a, const struct dive *b, enum asked_user *have_asked)
 {
 	if (!a || !b)
 		return false;
 	if (a->when > b->when)
 		return false;
 	/* Don't merge dives if there's more than half an hour between them */
-	if (a->when + a->duration.seconds + 30 * 60 < b->when)
-		return false;
+	if (a->when + a->duration.seconds + 30 * 60 < b->when) {
+		if (*have_asked == NOTYET) {
+			if (QMessageBox::warning(MainWindow::instance(),
+						 MainWindow::instance()->tr("Warning"),
+						 MainWindow::instance()->tr("Trying to merge dives with %1min interval in between").arg(
+							 (b->when - a->when  - a->duration.seconds) / 60),
+					     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel) {
+				*have_asked = DONTMERGE;
+				return false;
+			} else {
+				*have_asked = MERGE;
+				return true;
+			}
+		} else {
+			return *have_asked == MERGE ? true : false;
+		}
+	}
 	return true;
 }
 
@@ -582,10 +600,11 @@ void DiveListView::mergeDives()
 {
 	int i;
 	struct dive *dive, *maindive = NULL;
+	enum asked_user have_asked = NOTYET;
 
 	for_each_dive (i, dive) {
 		if (dive->selected) {
-			if (!can_merge(maindive, dive)) {
+			if (!can_merge(maindive, dive, &have_asked)) {
 				maindive = dive;
 			} else {
 				maindive = merge_two_dives(maindive, dive);
