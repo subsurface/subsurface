@@ -1643,7 +1643,7 @@ program only shows a small white dot where each photo should be on the dive prof
 In addition the _Photos_ tab only shows the file names of the photos. This is normal behaviour.
 If, later, the external drive with the photos is connected again, the photos can be seen in the normal way.
 
-[[Moving_images]]
+[[S_FindMovedImages]]
 ==== Moving photographs among directories, hard disks or computers
 
 After a photograph has been loaded into _Subsurface_ and associated with a specific dive, the directory
@@ -3294,6 +3294,8 @@ dealing with the appropriate operations.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
   the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
+- <<S_FindMovedImages, _Find moved images_>> - If photos taken during dives have been moved to
+      a different disk or directory, locate them and link them to the appropriate dives.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
@@ -3310,8 +3312,9 @@ dealing with the appropriate operations.
 
 === Log
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
+- _Edit dive_ - Edit a dive of which the profile was entered by hande and not from a dive computer.
 - <<S_DivePlanner,_Plan Dive_>> - This feature allows the planning of dives.
-- <<S_Replan,_Re-plan dive_>> - Edit a dive plan that has been saved into the *Dive List*.
+- <<S_Replan,_Edit dive in planner_>> - Edit a dive plan that has been saved into the *Dive List*.
 - <<S_CopyComponents,_Copy dive components_>> - By selecting this option, one can copy information
   from several fields of a dive log onto the clipboard.
 - _Paste dive components_ - Paste, into the selected dives in the *Dive List*,
@@ -3597,7 +3600,9 @@ dive computer and download dive information.
 
 Under Windows, a similar situation exists. Drivers for the MCS7780 are
 available from some Internet web sites e.g.
-http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com].
+http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA
+drivers for the Uwatec can also be downloaded from the ScubaPro web site, drivers being located on
+the download page for the ScubaPro SmartTrak software.
 
 For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
