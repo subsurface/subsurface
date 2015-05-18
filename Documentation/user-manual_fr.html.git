@@ -511,10 +511,10 @@ ligne de commande.</p></div>
 <div class="sect1">
 <h2 id="S_StartUsing">3. Commencer à utiliser le programme</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>La fenêtre <em>Subsurface</em> est généralement divisée en 4 panneaux avec un <strong>Menu
-principal</strong> (Fichier Importer Journal Vue Aide) en haut de la fenêtre (pour
-Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu Unity). Les
-quatre panneaux sont :</p></div>
+<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
+Menu</strong> (File Import Log View Help) at the top of the window (for Windows and
+Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels
+are:</p></div>
 <div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, contenant une liste de toutes les
 plongées du journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut
 être sélectionnée et mise en surbrillance dans la liste en cliquant
@@ -1572,7 +1572,18 @@ accessible through the Import dialogue are also supported, as explained
 below.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_mares_dive_organiser_v2_1">5.3.2. Importing from Mares Dive Organiser V2.1</h4>
+<h4 id="_importing_from_heinrichs_weikamp_ostc_tools">5.3.2. Importing from Heinrichs Weikamp OSTC Tools</h4>
+<div class="paragraph"><p><em>OSTC Tools</em> is a Microsoft-based suite of dive download and dive management
+tools for the OSTC family of dive computers. <em>OSTC Tools</em> downloads dive
+data from the dive computer and stores it as a binary file with file
+extension <em>.dive</em> . Subsurface can directly import these files when using
+the universal import dialogue. From the dropdown list at the bottom right
+select <em>All files</em>.  This makes the <em>OSTC Tools</em> dive logs visible in the
+file list panel. Select one or more dive, then click the <em>Open</em> button. The
+OSTC dives are shown in the <strong>Dive List</strong> panel.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_importing_from_mares_dive_organiser_v2_1">5.3.3. Importing from Mares Dive Organiser V2.1</h4>
 <div class="paragraph"><p>Since Mares utilise proprietary Windows software not compatible with
 multi-platform applications, these dive logs cannot be directly imported
 into <em>Subsurface</em>. Mares dive logs need to be imported using a three-step
@@ -1604,7 +1615,7 @@ Finally, import the dives from <em>divelogs.de</em> to <em>Subsurface</em>, usin
 </ol></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">5.3.3. Importing dives from <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">5.3.4. Importing dives from <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>The import of dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. The <em>Import &#8594; Import from Divelogs.de</em> option should be
 selected from the Main Menu. This brings up a dialogue box (see figure on
@@ -1621,7 +1632,7 @@ after which the imported dives appear in the <em>Subsurface</em> <strong>Dive Li
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSVData">5.3.4. Importing data in CSV format</h4>
+<h4 id="S_ImportingCSVData">5.3.5. Importing data in CSV format</h4>
 <div class="paragraph"><p>A comma-separated file (.csv) can be used to import dive information either
 as dive profiles (as in the case of the APD Inspiration and Evolution closed
 circuit rebreathers) or as dive metadata (in case the user keeps dive data
@@ -2374,6 +2385,69 @@ where each photo should be on the dive profile.  In addition the <em>Photos</em>
 tab only shows the file names of the photos. This is normal behaviour.  If,
 later, the external drive with the photos is connected again, the photos can
 be seen in the normal way.</p></div>
+</div>
+<div class="sect3">
+<h4 id="Moving_images">5.5.5. Moving photographs among directories, hard disks or computers</h4>
+<div class="paragraph"><p>After a photograph has been loaded into <em>Subsurface</em> and associated with a specific dive, the directory
+ where the photo lies is stored, allowing <em>Subsurface</em> to find the photograph when the dive is
+ opened again. If the photo or the whole photo collection is moved to another drive or to a different
+ machine, it is unlikely that the directory structure will remain identical to that of the original uploaded
+ photo. When this happens, <em>Subsurface</em> looks for the photos at their original location before they were moved,
+ cannot find them and therefore cannot display them. Because, after moving photos, large numbers of photos
+ may need to be deleted and re-imported from the new location, <em>Subsurface</em> has a mechanism that eases the
+ process of updating the directory information for each photo: automatic updates using fingerprints.</p></div>
+<div class="paragraph"><p>When a photo is loaded into <em>Subsurface</em>, a fingerprint for the image is calculated and stored with the
+ other reference information for that photo. After moving a photo collection (that has already been loaded
+ into <em>Subsurface</em>) to a different directory, disk or computer, <em>Subsurface</em> can  perform the
+ following steps:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+look through a particular directory (and all its subdirectories recursively)
+  where photos have been moved
+ to,
+</p>
+</li>
+<li>
+<p>
+calculate fingerprints for all photos in this directory, and
+</p>
+</li>
+<li>
+<p>
+if there is a match between a calculated fingerprint and the one originally
+  calculated when a photo was
+ loaded into <em>Subsurface</em> (even if the original file name has changed), to
+ automatically update the directory information so that <em>Subsurface</em> can find
+ the photo in the new moved directory.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This is achieved by selecting from the Main Menu: <em>File &#8594;      Find moved images</em>. This brings up a window within
+ which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
+ the <em>Scan</em> button towards the bottom right of the panel. The process may require several minutes to
+ complete, after which <em>subsurface</em> will show the appropriate photographs when a particular dive is opened.</p></div>
+<div class="sidebarblock" id="Image_fingerprint_upgrade">
+<div class="content">
+<div class="paragraph"><p><strong>Upgrading existing photo collections without fingerprints</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Software for the automated update of existing photo collections is under
+developement. Currently single dives must be upgraded one at a time. Select
+the toolbar button on the <strong>Dive profile</strong> panel that enables the display of
+images. The thumbnails of images are shown on the dive profile. Then open
+the dive and change anything in the <strong>Notes</strong> panel that brings up the blue
+edit bar at the top of the notes panel to save the edits. For instance, add
+a space character at the end of the <em>Notes</em> text box and immediately delete
+that space character. Select the optio <em>Apply changes</em> in the blue edit bar
+to save the dive information.  Fingerprints are calculated while saving this
+specific dive.</td>
+</tr></table>
+</div>
+</div></div>
 </div>
 </div>
 <div class="sect2">
@@ -3253,9 +3327,9 @@ Graph <strong>E</strong> indicates the situation after remaining at 4.5 meters f
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_the_dive_list_context_menu">7.1. The Dive List context menu</h3>
-<div class="paragraph"><p>Many actions within <em>Subsurface</em> are dependent on a context menu used mostly
-to manipulate groups of dives. The context menu is found by selecting a dive
-or a group of dives and then right-clicking.</p></div>
+<div class="paragraph"><p>Several actions on either a single dive or a group of dives can be performed
+using the Dive List Context Menu, found by selecting either a single dive or
+a group of dives and then right-clicking.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
@@ -3301,16 +3375,20 @@ may sometimes need to renumber the dives.  This is performed by selecting
 respect to the lowest sequence number to be used.  Completing this operation
 results in new sequence numbers (based on date/time)  for the dives in the
 <strong>Dive List</strong> panel.</p></div>
+<div class="paragraph"><p>One can also renumber a few selected dives in the dive list. Select the
+dives that need renumbering. Right-click on the selected list and use the
+Dive List Context Menu to perform the renumbering. A popup window appears
+requiring the user to specify the starting number for the renumbering
+process.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_Group">7.3. Grouping dives into trips and manipulating trips</h3>
 <div class="paragraph"><p>For regular divers, the dive list can rapidly become very long. <em>Subsurface</em>
 can group dives into <em>trips</em>. It performs this by grouping dives that have
-date/times that are not separated in time by more than two days, thus
-creating a single heading for each diving trip represented in the dive
-log. Below is an ungrouped dive list (<strong>A</strong>, on the left) as well as the
-corresponding grouped dive list comprising five dive trips (<strong>B</strong>, on the
-right):</p></div>
+date/times not separated in time by more than two days, thus creating a
+single heading for each diving trip represented in the dive log. Below is an
+ungrouped dive list (<strong>A</strong>, on the left) as well as the corresponding grouped
+dive list comprising five dive trips (<strong>B</strong>, on the right):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Group2.jpg" alt="Figure: Grouping dives" />
@@ -3318,8 +3396,8 @@ right):</p></div>
 </div>
 <div class="paragraph"><p>Grouping into trips allows a rapid way of accessing individual dives without
 having to scan a long lists of dives. In order to group the dives in a dive
-list, (from the Main Menu) users must select <em>Log &#8594; Autogroup</em>. The <strong>Dive
-List</strong> panel now shows only the titles for the trips.</p></div>
+list, (from the Main Menu) select <em>Log &#8594; Autogroup</em>. The <strong>Dive List</strong> panel
+now shows only the titles for the trips.</p></div>
 <div class="sect3">
 <h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">7.3.1. Editing the title and associated information for a particular trip</h4>
 <div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip
@@ -3342,16 +3420,16 @@ the trip.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_collapsing_or_expanding_dive_information_for_different_trips">7.3.3. Collapsing or expanding dive information for different trips</h4>
-<div class="paragraph"><p>If a user right-clicks after selecting a particular trip in the dive list,
-the resulting context menu allows several possibilities to expand or
-collapse dives within trips. This includes expanding all trips, collapsing
-all trips and collapsing all trips except the selected one.</p></div>
+<div class="paragraph"><p>After selecting a particular trip in the dive list, the context menu allows
+several possibilities to expand or collapse dives within trips. This
+includes expanding all trips, collapsing all trips and collapsing all trips
+except the selected one.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">7.3.4. Merging dives from more than one trip into a single trip</h4>
-<div class="paragraph"><p>By right-clicking on a selected trip title in the <strong>Dive List</strong> panel, a
-context menu shows up that allows the merging of trips by either merging of
-the selected trip with the trip below or with the trip above.</p></div>
+<div class="paragraph"><p>After selecting a trip title, the context menu allows the merging of trips
+by either merging the selected trip with the trip below or with the trip
+above.(Merge trip with trip below; Merge trip with trip above)</p></div>
 </div>
 <div class="sect3">
 <h4 id="_splitting_a_single_trip_into_more_than_one_trip">7.3.5. Splitting a single trip into more than one trip</h4>
@@ -3384,14 +3462,14 @@ duration.</p></div>
 <div class="paragraph"><p>Users can unlink dives from the trip to which they belong. In order to do
 this, select and right-click the relevant dives to bring up the context
 menu. Then select the option <strong>Remove dive(s)  from trip</strong>. The dive(s) now
-appear immediately above the trip to which they belonged.</p></div>
+appear immediately above or below the trip to which they belonged, depending
+on the date and time of the unliked dive.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_add_a_dive_to_the_trip_immediately_above">7.4.3. Add a dive to the trip immediately above</h4>
 <div class="paragraph"><p>Selected dives can be moved from the trip to which they belong and placed
-within the trip immediately above the currently active trip. To do this,
-select and right-click the dive(s) to bring up the context menu, and then
-select <strong>Add dive(s) to trip immediately above</strong>.</p></div>
+within a separate trip. To do this, select and right-click the dive(s) to
+bring up the context menu, and then select <strong>Create new trip above</strong>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_shift_the_start_time_of_dive_s">7.4.4. Shift the start time of dive(s)</h4>
@@ -3402,7 +3480,7 @@ and right-click the dive(s) to be adjusted. This action brings up the
 context menu on which the <strong>Shift times</strong> option should be selected. User must
 then specify the time (in hours and minutes) by which the dives should be
 adjusted and click on the option indicating whether the time adjustment
-should be forwards or backwards.</p></div>
+should be ealier or later.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_merge_dives_into_a_single_dive">7.4.5. Merge dives into a single dive</h4>
@@ -3421,6 +3499,14 @@ dives that were merged:</p></div>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_undo_dive_manipulations">7.4.6. Undo dive manipulations</h4>
+<div class="paragraph"><p>Important actions on dives or trips, described above, can be undone or
+redone.  This includes: <em>delete dives</em>, <em>merge dives</em>, <em>renumber dives</em> and
+<em>shift dive times</em>.  To do this after performing any of these actions, from
+the <strong>Main Menu</strong> select <em>Edit</em>. This brings up the possibility to <em>Undo</em> or
+<em>Redo</em> an action.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Filter">7.5. Filtering the dive list</h3>
@@ -3432,12 +3518,12 @@ dives with a particular buddy.</p></div>
 <div class="paragraph"><p>To open the filter, select <em>Log &#8594; Filter divelist</em> from the main menu. This
 opens the <em>Filter Panel</em> at the top of the <em>Subsurface</em> window. Three icons
 are located at the top right hand of the filter panel. The <em>Filter Panel</em>
-can be reset (i.e. all current filters cleared) by selecting the <strong>+</strong>. The
-<em>Filter Panel</em> may also be minimised by selecting the middle icon. When
-minimised, only these three icons are shown.  The panel can be maximised by
-clicking the icon that minimised the panel. The filter may also be reset and
-closed by selecting the button with the flag.  An example of the <em>Filter
-Panel</em> is shown in the figure below.</p></div>
+can be reset (i.e. all current filters cleared) by selecting the <strong>yellow
+angled arrow</strong>. The <em>Filter Panel</em> may also be minimised by selecting the
+<strong>green up-arrow". When minimised, only these three icons are shown.  The
+panel can be maximised by clicking the icon that minimised the panel. The
+filter may also be reset and closed by selecting the *red button</strong> with the
+white cross.  An example of the <em>Filter Panel</em> is shown in the figure below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Filterpanel.jpg" alt="Figure: Filter panel" />
@@ -3451,14 +3537,13 @@ check list. For instance, typing "<em>ca</em>" in the filter textbox above the t
 check list results in the tags check list being reduced to "<em>cave</em>" and
 "<em>cavern</em>". Filtering of the check list enables the rapid finding of search
 terms for filtering the dive list.</p></div>
-<div class="paragraph"><p>To activate filtering of the dive list, the check box of at least one item
-in one of the four check lists needs to be checked. The dive list is then
-shortened to include only the dives that pertain to the selection criteria
-specified in the check lists.  The four check lists work as a filter with
-<em>AND</em> operators, Subsurface filters therefore for <em>cave</em> as a tag AND <em>Joe
-Smith</em> as a buddy; but the filters within a category are inclusive -
-filtering for <em>cave</em> and <em>boat</em> shows those dives that have either one or
-both of these tags.</p></div>
+<div class="paragraph"><p>To activate filtering of the dive list, check at least tone check box in one
+of the four check lists. The dive list is then shortened to include only the
+dives that pertain to the criteria specified in the check lists.  The four
+check lists work as a filter with <em>AND</em> operators, Subsurface filters
+therefore for <em>cave</em> as a tag AND <em>Joe Smith</em> as a buddy; but the filters
+within a category are inclusive - filtering for <em>cave</em> and <em>boat</em> shows
+those dives that have either one OR both of these tags.</p></div>
 </div>
 </div>
 </div>
@@ -3978,7 +4063,7 @@ the dive profile:
    that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
    ascent.
 </p>
-<div class="ulist"><ul>
+<div class="ulist" id="GradientFactors_Ref"><ul>
 <li>
 <p>
 <strong>Misc</strong>:
@@ -4194,12 +4279,12 @@ messages about the dive plan are printed.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_open_circuit_dives_as_an_example_of_dive_planning">13.2. Open circuit dives as an example of dive planning</h3>
+<h3 id="_open_circuit_dives">13.2. Open circuit dives</h3>
 <div class="ulist"><ul>
 <li>
 <p>
-Towards the left bottom of the planner (circled in blue in the image below)
-   is a dropbox with three options. Select the appropriate one of these:
+Towards the centre bottom of the planner (circled in blue in the image
+   above) is a dropbox with three options. Select the appropriate one of these:
 </p>
 <div class="ulist"><ul>
 <li>
@@ -4221,11 +4306,16 @@ pSCR
 </li>
 <li>
 <p>
+Choose the Open Circuit option.
+</p>
+</li>
+<li>
+<p>
 In the top left-hand area of the planning screen, ensure that the constant
-  dive parameters are appropriate. These are: Start date and time of the dive,
-  Atmospheric Pressure and Altitude above sea level of the dive site. The
-  atmospheric pressure can also be entered as an altitude in metres, assuming
-  an atmospheric pressure of 1.013 bar.
+  dive parameters are appropriate. These are: Start date and time of the
+  intended dive, Atmospheric Pressure and Altitude above sea level of the dive
+  site. The atmospheric pressure can also be entered as an altitude in metres,
+  assuming a sea-level atmospheric pressure of 1.013 bar.
 </p>
 </li>
 <li>
@@ -4242,12 +4332,127 @@ In the table labeled <em>Available Gases</em>, add the information of the cylind
 </li>
 <li>
 <p>
-The dialogue indicating <em>Dive Planner Points</em> is usually not used at this
-  stage of the dive planning.
+The profile of the planned dive can be created in two ways:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Drag the waypoints (the small white circles) on the existing dive profile in
+    a way to represent the dive. Additional waypoints can be created by
+    double-clicking the existing dive profile. Waypoints can be deleted by
+    right-clicking a particular waypoint and selecting the <em>delete</em> item from
+    the resulting context menu.
+</p>
+</li>
+<li>
+<p>
+The most efficient way to create a dive profile is to enter the appropriate
+    values into the table marked <em>Dive planner points</em>. The first line of the
+    table represents the duration and the final depth of the descent from the
+    surface. Subsequent segments describe the bottom phase of the dive.  The <em>CC
+    set point</em> column is only relevant for closed circuit divers.  The ascent is
+    usually not specified because this is what the planner is supposed to
+    calculate.  Add additional segments to the profile by selecting the "+" icon
+    at the top right hand of the table. Segments entered into the <em>Dive planner
+    points</em> table automatically appear in the <strong>Dive Profile</strong> diagram.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p><strong>The planning is performed in three stages</strong></p></div>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_recreational_dives">13.2.1. Recreational dives</h4>
+<div class="paragraph"><p>The <em>Subsurface</em> dive planner allows a sophisticated way of planning
+recreational dives, i.e. dives that remain within no-decompression limits.
+The dive planner automatically takes into account the nitrogen load incurred
+in previous dives. But conventional dive tables are also used in a way that
+can take into account previous dives. Why use a dive planner for
+recreational dives? Using recreational dive tables, the maximum depth of a
+dive is taken into acount. However, few dives are undertaken at a constant
+depth corresponding to the maximum depth (i.e. a "square" dive
+profile). This means that dive tables overestimate the nitrogen load
+incurred during previous dives. The <em>Subsurface</em> dive planner calculates
+nitrogen load according to the real dive profiles of all uploaded previous
+dives, in a similar way as dive computers calculate nitrogen load during a
+dive. This mean that the diver gets <em>credit</em> in terms of nitrogen loading
+for not remaining at maximum depth during previous dives, enabling planning
+a longer subsequent dive. For the planner to work it is therefore crucial to
+upload all previous dives onto <em>Subsurface</em> before performing dive planning.</p></div>
+<div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
+<div class="paragraph"><p>Ensure that the date and time is set to that of the intended dive. This
+allows calculation of the nitrogen load incurred during previous dives.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Immediately under the heading <em>Planning</em> are two checkboxes <em>Recreational</em>
+  and <em>Safety Stop</em>.  Check these two boxes.
+</p>
+</li>
+<li>
+<p>
+Then define the cylinder size, the gas mixture (air or % oxygen) and the
+  starting cylinder pressure in the top left-hand section of the planner under
+  <em>Available gases</em>.
+</p>
+</li>
+<li>
+<p>
+The planner calculates whether the specified cylinder contains enough
+  air/gas to complete the planned dive. In order for this to be realistic,
+  under <em>Gas options</em>, specify an appropriate surface air consumption (SAC)
+  rate for <em>Bottom SAC</em>. Suitable values are between 15 l/min and 30 l/min,
+  with novice divers or difficult dives requiring SAC rates closer to 30l/min.
+</p>
+</li>
+<li>
+<p>
+Define the amount of gas that the cylinder must have at the end of the
+  bottom section of the dive just before ascent. A value of 50 bar is often
+  used.
+</p>
+</li>
+<li>
+<p>
+Define the depth of the dive by dragging the waypoints (white dots) on the
+  dive profile or (even better) defining the appropriate depths using the
+  table under <em>Dive planner points</em> as desribed under the previous heading. If
+  this is a multilevel dive, set the appropriate dive depths to represent the
+  dive plan by adding waypoints to the dive profile or by adding appropriate
+  dive planner points to the <em>Dive Planner Points</em> table.
+</p>
+</li>
+<li>
+<p>
+The ascent speed can be changed. The default ascent speeds are those
+  considered safe for recreational divers.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The dive profile in the planner indicates the maximum dive time within
+no-deco limits using the Bühlmann ZH-L16 algorithm and the gas and depth
+settings specified as described above. The <em>Subsurface</em> planner allows rapid
+assessment of dive duration as a function of dive depth, given the nitrogen
+load incurred during previous dives. The dive plan includes estimates of the
+amount of air/gas used, depending on the cylinder settings specified under
+<em>Available gases</em>. If the initial cylinder pressure is set to 0, the dive
+duration shown is the true no-deco limit (NDL) without taking into account
+gas used during the dive. If the surface above the dive profile is RED it
+means that recreational dive limits are exceeded and either the dive
+duration or the dive depth needs to be reduced.</p></div>
+<div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30
+metres. Although the no-deco limit (NDL) is 23 minutes, the duration of the
+dive is limited by the amount of air in the cylinder, reflected by the
+information in the text box at the bottom right of the panel.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/rec_diveplan.jpg" alt="FIGURE: A recreational dive plan: setup" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_non_recreational_open_circuit_dives_including_decompression">13.2.2. Non-recreational open circuit dives, including decompression</h4>
+<div class="paragraph"><p>Non-recreational dive planning involves exceeding the no-deco limits and/or
+using multiple breathing gases.  Such dives are planned in three stages:</p></div>
 <div class="paragraph"><p><strong>a) Nitrogen management</strong>: This is performed by specifying the rates for descent and ascent,
 as well as the gradient factors (GFLow and GFHigh) under the headings <em>Rates</em> and <em>Planning</em>
 to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the <em>Preferences</em>
@@ -4371,8 +4576,30 @@ INCLUDES the transition time to get to that level. However, if the <em>Display
 transition in deco</em> option is checked, the transitions are shown separately
 from the segment durations at a particular level.</p></div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_planning_ccr_dives">13.3. Planning CCR dives</h3>
+<h3 id="_planning_pscr_dives">13.3. Planning pSCR dives</h3>
+<div class="paragraph"><p>To plan a dive using a passive semi-closed rebreather (pSCR), select <em>pSCR</em> rather than
+<em>Open circuit</em> in the dropdown list.
+The parameters of the pSCR diver can be set by selecting  <em>File &#8594;   Preferences &#8594;   Graph</em>
+from the main menu, where the gas consumption calculation takes into account the pSCR dump
+ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
+accross the mouthpiece of the rebreather into account. If the
+pO<sub>2</sub> drops below what is considered a save value, a warning appears in the <em>Dive plan
+details</em>. A typical pSCR configuration is with a single cylinder and one or more bail-out
+cylinders. Therefore the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
+are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
+are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
+to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
+in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_planning_ccr_dives">13.4. Planning CCR dives</h3>
 <div class="paragraph"><p>To plan a dive using a closed circuit rebreather, select the <em>CCR</em> option in
 the dropdown list, circled in blue in the image below.</p></div>
 <div class="paragraph"><p><strong>Available gases</strong>: In the <em>Available gases</em> table, enter the cylinder information for the
@@ -4393,27 +4620,6 @@ algorithm does not switch deco-gases automatically while in CCR mode (i.e. when 
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment
 is not calculated, so gas consumptions of 0 litres are the norm.</p></div>
-</div>
-<div class="sect2">
-<h3 id="_planning_pscr_dives">13.4. Planning pSCR dives</h3>
-<div class="paragraph"><p>To plan a dive using a passive semi-closed rebreather (pSCR), select <em>pSCR</em> rather than
-<em>Open circuit</em> in the dropdown list.
-The parameters of the pSCR diver can be set by selecting  <em>File &#8594;   Preferences &#8594;   Graph</em>
-from the main menu, where the gas consumption calculation takes into account the pSCR dump
-ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
-accross the mouthpiece of the rebreather into account. If the
-pO<sub>2</sub> drops below what is considered a save value, a warning appears in the <em>Dive plan
-details</em>. A typical pSCR configuration is with a single cylinder and one or more bail-out
-cylinders. Therefore the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
-are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
-are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
-to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
-in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="S_Replan">13.5. Modifying an existing dive plan</h3>
@@ -5260,8 +5466,8 @@ To select certain dives: hold <em>ctrl</em> and click the dive
 </li>
 <li>
 <p>
-To select all dives: Select the first dive, hold down shift and
-          select the last dive
+To select all dives: Select the first dive, hold down shift and select the
+          last dive
 </p>
 </li>
 </ul></div>
@@ -5684,7 +5890,7 @@ dive”.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-20 09:40:45 CET
+Last updated 2015-05-18 11:34:51 CEST
 </div>
 </div>
 </body>
