@@ -2053,8 +2053,9 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 			break;
 		case 257:
 			/* 257 Dive active */
-			/* This seems to be given after surface
-				 * when descending again. Ignoring it. */
+			/* This seems to be given after surface when
+			 * descending again. */
+			strcpy(cur_event.name, "surface");
 			break;
 		case 258:
 			/* 258 Bookmark */
