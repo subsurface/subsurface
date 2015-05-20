@@ -84,19 +84,23 @@ extern "C" const char *printGPSCoords(int lat, int lon)
 	if (!lat && !lon)
 		return strdup("");
 
-	lath = lat >= 0 ? translate("gettextFromC", "N") : translate("gettextFromC", "S");
-	lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
-	lat = abs(lat);
-	lon = abs(lon);
-	latdeg = lat / 1000000U;
-	londeg = lon / 1000000U;
-	latmin = (lat % 1000000U) * 60U;
-	lonmin = (lon % 1000000U) * 60U;
-	latsec = (latmin % 1000000) * 60;
-	lonsec = (lonmin % 1000000) * 60;
-	result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
-		       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
-		       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
+	if (prefs.coordinates_traditional) {
+		lath = lat >= 0 ? translate("gettextFromC", "N") : translate("gettextFromC", "S");
+		lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
+		lat = abs(lat);
+		lon = abs(lon);
+		latdeg = lat / 1000000U;
+		londeg = lon / 1000000U;
+		latmin = (lat % 1000000U) * 60U;
+		lonmin = (lon % 1000000U) * 60U;
+		latsec = (latmin % 1000000) * 60;
+		lonsec = (lonmin % 1000000) * 60;
+		result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
+			       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
+			       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
+	} else {
+		result.sprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
+	}
 	return strdup(result.toUtf8().data());
 }
 

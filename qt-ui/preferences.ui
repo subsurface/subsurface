@@ -22,127 +22,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QListWidget" name="listWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <property name="movement">
-        <enum>QListView::Static</enum>
-       </property>
-       <property name="isWrapping" stdset="0">
-        <bool>true</bool>
-       </property>
-       <property name="layoutMode">
-        <enum>QListView::Batched</enum>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="gridSize">
-        <size>
-         <width>70</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::IconMode</enum>
-       </property>
-       <property name="uniformItemSizes">
-        <bool>false</bool>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="currentRow">
-        <number>-1</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Defaults</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/subsurface-icon</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Units</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/units</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Graph</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/graph</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Language</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/advanced</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Network</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/network</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Facebook</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/facebook</normalon>
-         </iconset>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -583,6 +462,42 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_11">
+           <property name="title">
+            <string>GPS coordinates</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Location Display</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="gpsTraditional">
+              <property name="text">
+               <string>traditional (dms)</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">buttonGroup_7</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="gpsDecimal">
+              <property name="text">
+               <string>decimal</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">buttonGroup_7</string>
+              </attribute>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
          <item>
           <spacer name="verticalSpacer">
@@ -1077,6 +992,127 @@
        </widget>
       </widget>
      </item>
+     <item>
+      <widget class="QListWidget" name="listWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="textElideMode">
+        <enum>Qt::ElideNone</enum>
+       </property>
+       <property name="movement">
+        <enum>QListView::Static</enum>
+       </property>
+       <property name="isWrapping" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="layoutMode">
+        <enum>QListView::Batched</enum>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="gridSize">
+        <size>
+         <width>70</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="viewMode">
+        <enum>QListView::IconMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="currentRow">
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Defaults</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/subsurface-icon</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Units</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/units</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Graph</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/graph</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Language</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/advanced</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Network</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/network</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Facebook</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/facebook</normalon>
+         </iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -1431,12 +1467,13 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="verticalSpeed"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="verticalSpeed"/>
+  <buttongroup name="buttonGroup_7"/>
  </buttongroups>
 </ui>

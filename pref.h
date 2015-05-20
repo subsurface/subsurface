@@ -48,6 +48,7 @@ struct preferences {
 	short display_invalid_dives;
 	short unit_system;
 	struct units units;
+	bool coordinates_traditional;
 	short show_sac;
 	short display_unused_tanks;
 	short show_average_depth;

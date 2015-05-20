@@ -7,6 +7,7 @@ struct preferences prefs;
 struct preferences default_prefs = {
 	.units = SI_UNITS,
 	.unit_system = METRIC,
+	.coordinates_traditional = true,
 	.pp_graphs = {
 		.po2 = false,
 		.pn2 = false,

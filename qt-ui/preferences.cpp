@@ -146,6 +146,8 @@ void PreferencesDialog::setUiFromPrefs()
 		ui.imperial->setChecked(true);
 	else
 		ui.personalize->setChecked(true);
+	ui.gpsTraditional->setChecked(prefs.coordinates_traditional);
+	ui.gpsDecimal->setChecked(!prefs.coordinates_traditional);
 
 	ui.celsius->setChecked(prefs.units.temperature == units::CELSIUS);
 	ui.fahrenheit->setChecked(prefs.units.temperature == units::FAHRENHEIT);
@@ -306,6 +308,7 @@ void PreferencesDialog::syncSettings()
 	s.setValue("volume", ui.cuft->isChecked() ? units::CUFT : units::LITER);
 	s.setValue("weight", ui.lbs->isChecked() ? units::LBS : units::KG);
 	s.setValue("vertical_speed_time", ui.vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
+	s.setValue("coordinates", ui.gpsTraditional->isChecked());
 	s.endGroup();
 
 	// Defaults
@@ -384,6 +387,7 @@ void PreferencesDialog::loadSettings()
 		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
 	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
+	GET_BOOL("coordinates", coordinates_traditional);
 	s.endGroup();
 	s.beginGroup("TecDetails");
 	GET_BOOL("po2graph", pp_graphs.po2);
