@@ -89,10 +89,10 @@
           <location debug="true">
             <xsl:for-each select="site/country|site/location|site/name">
               <xsl:choose>
-                <xsl:when test="following-sibling::location[1] != ''">
+                <xsl:when test="following-sibling::location[1] != '' and . != ''">
                   <xsl:value-of select="concat(., ' / ')"/>
                 </xsl:when>
-                <xsl:when test="following-sibling::name[1] != ''">
+                <xsl:when test="following-sibling::name[1] != '' and . != ''">
                   <xsl:value-of select="concat(., ' / ')"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -114,10 +114,10 @@
           <location>
             <xsl:for-each select="country|location|site">
               <xsl:choose>
-                <xsl:when test="following-sibling::location[1] != ''">
+                <xsl:when test="following-sibling::location[1] != '' and . != ''">
                   <xsl:value-of select="concat(., ' / ')"/>
                 </xsl:when>
-                <xsl:when test="following-sibling::site[1] != ''">
+                <xsl:when test="following-sibling::site[1] != '' and . != ''">
                   <xsl:value-of select="concat(., ' / ')"/>
                 </xsl:when>
                 <xsl:otherwise>
