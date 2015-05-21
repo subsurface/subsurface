@@ -92,7 +92,7 @@ like this:
 
 mkdir -p ~/src
 cd ~/src
-git clone -b v4.4.1 git://subsurface-divelog.org/subsurface
+git clone -b v4.4.2 git://subsurface-divelog.org/subsurface
 ./subsurface/scripts/build.sh # <- this step will take quite a while as it
                               #    compiles a handful of libraries before
 			      #    building Subsurface
@@ -271,10 +271,10 @@ To compile Subsurface, use:
 $ cd ~/src
 $ git clone git://subsurface-divelog.org/subsurface.git
 $ cd subsurface
-$ git checkout v4.4-branch	# this get's you the last release
-				# skip this step to build the latest development
-				# version
-$ packaging/windows/mingw-make.sh Qt5-64
+$ cd git checkout v4.4.2   # this get's you the last release
+                         # skip this step to build the latest development
+			 # version
+$ packagin/windows/mingw-make.sh Qt5 SPECIAL_MARBLE_PREFIX=1
 $ packaging/windows/mingw-make.sh install
 $ packaging/windows/mingw-make.sh installer
 

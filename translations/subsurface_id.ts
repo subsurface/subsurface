@@ -5,12 +5,12 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="522"/>
         <source>Person: </source>
-        <translation type="unfinished"/>
+        <translation>Personil:</translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="523"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Cari teman dan divemaster</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     <message>
         <location filename="../qt-ui/filtermodels.cpp" line="230"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Tidak ada teman</translation>
     </message>
 </context>
 <context>
@@ -26,7 +26,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Selam#</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -36,7 +36,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -51,7 +51,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -61,17 +61,17 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Ukuran sIlinder</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan awal</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan akhir</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
@@ -91,47 +91,47 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur Udara</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur air</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Kedalaman Maks.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Kedalaman rata-rata</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu sampel</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Sampel Kedalaman</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
@@ -1181,7 +1181,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="102"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="109"/>
@@ -1758,7 +1758,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="578"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="97"/>
@@ -1793,7 +1793,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="576"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Selam#</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="577"/>
@@ -1808,22 +1808,22 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="581"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="588"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="592"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="593"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="78"/>
@@ -1869,7 +1869,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="570"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="599"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu sampel</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="475"/>
@@ -1877,7 +1877,7 @@
         <location filename="../qt-ui/divelogimportdialog.cpp" line="554"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="600"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Sampel Kedalaman</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="477"/>
@@ -1963,27 +1963,27 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="589"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Ukuran sIlinder</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="590"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan awal</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="591"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan akhir</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="594"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur Udara</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="595"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur air</translation>
     </message>
 </context>
 <context>
@@ -2100,7 +2100,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="111"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="113"/>
@@ -2749,7 +2749,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="275"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="206"/>
@@ -2782,14 +2782,14 @@
         <location filename="../qt-ui/maintab.ui" line="675"/>
         <location filename="../qt-ui/maintab.cpp" line="280"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur Udara</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="107"/>
         <location filename="../qt-ui/maintab.ui" line="694"/>
         <location filename="../qt-ui/maintab.cpp" line="281"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur air</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="282"/>
@@ -2820,7 +2820,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="618"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Kedalaman Maks.</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="656"/>
@@ -2861,7 +2861,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="88"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="452"/>
@@ -2882,7 +2882,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="637"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Kedalaman rata-rata</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="599"/>
@@ -6904,7 +6904,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="454"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Waktu</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="455"/>
@@ -6914,12 +6914,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="456"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur Udara</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="457"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temperatur air</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="462"/>
@@ -6984,7 +6984,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="472"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="473"/>
@@ -7039,7 +7039,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="485"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Kedalaman Maks.</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="487"/>
@@ -7084,12 +7084,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="502"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan awal</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="503"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Tekanan akhir</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="511"/>

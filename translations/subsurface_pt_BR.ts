@@ -51,7 +51,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -66,12 +66,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão inicial</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão final</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
@@ -116,12 +116,12 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="27"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="561"/>
         <source>Setting successfully written to device</source>
-        <translation type="unfinished"/>
+        <translation>Configurações armazenadas com sucesso</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="570"/>
@@ -227,22 +227,22 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="67"/>
         <source>Save changes to device</source>
-        <translation type="unfinished"/>
+        <translation>Salvar alterações no dispositivo</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="93"/>
         <source>Backup</source>
-        <translation type="unfinished"/>
+        <translation>Backup</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="100"/>
         <source>Restore backup</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar backup</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="110"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Atualizar firmware</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="134"/>
@@ -266,14 +266,14 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1337"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1634"/>
         <source>Serial No.</source>
-        <translation type="unfinished"/>
+        <translation>No. Serial</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="239"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1360"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1657"/>
         <source>Firmware version</source>
-        <translation type="unfinished"/>
+        <translation>Versão da firmware</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="256"/>
@@ -290,22 +290,22 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="290"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>Inglês</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="295"/>
         <source>German</source>
-        <translation type="unfinished"/>
+        <translation>Alemão</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="300"/>
         <source>French</source>
-        <translation type="unfinished"/>
+        <translation>Francês</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="305"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>Italiano</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="313"/>
@@ -337,28 +337,28 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="347"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1802"/>
         <source>Date format</source>
-        <translation type="unfinished"/>
+        <translation>Formato da data</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="358"/>
         <source>MMDDYY</source>
-        <translation type="unfinished"/>
+        <translation>MMDDAA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="363"/>
         <source>DDMMYY</source>
-        <translation type="unfinished"/>
+        <translation>DDMMAA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="368"/>
         <source>YYMMDD</source>
-        <translation type="unfinished"/>
+        <translation>AAMMDD</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="841"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2022"/>
         <source>Saturation</source>
-        <translation type="unfinished"/>
+        <translation>Saturação</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="439"/>
@@ -409,7 +409,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="392"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Médio</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="397"/>
@@ -425,13 +425,13 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="533"/>
         <source>2s</source>
-        <translation type="unfinished"/>
+        <translation>2s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="538"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1450"/>
         <source>10s</source>
-        <translation type="unfinished"/>
+        <translation>10s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="405"/>
@@ -442,7 +442,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="416"/>
         <source>m/°C</source>
-        <translation type="unfinished"/>
+        <translation>m/°C</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="421"/>
@@ -462,22 +462,22 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="562"/>
         <source>Red</source>
-        <translation type="unfinished"/>
+        <translation>Vermelho</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="567"/>
         <source>Green</source>
-        <translation type="unfinished"/>
+        <translation>Verde</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="572"/>
         <source>Blue</source>
-        <translation type="unfinished"/>
+        <translation>Azul</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="429"/>
         <source>Salinity (0-5%)</source>
-        <translation type="unfinished"/>
+        <translation>Salinidade (0-5%)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="580"/>
@@ -554,7 +554,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="597"/>
         <source>Reset device to default settings</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar para configurações padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="611"/>
@@ -571,7 +571,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="605"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1813"/>
         <source>Advanced settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações avançadas</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="618"/>
@@ -653,7 +653,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2127"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2212"/>
         <source>%He</source>
-        <translation type="unfinished"/>
+        <translation>%He</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="926"/>
@@ -675,31 +675,31 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="936"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2142"/>
         <source>Gas 1</source>
-        <translation type="unfinished"/>
+        <translation>Gás 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="941"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2147"/>
         <source>Gas 2</source>
-        <translation type="unfinished"/>
+        <translation>Gás 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="946"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2152"/>
         <source>Gas 3</source>
-        <translation type="unfinished"/>
+        <translation>Gás 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="951"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2157"/>
         <source>Gas 4</source>
-        <translation type="unfinished"/>
+        <translation>Gás 4</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="956"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2162"/>
         <source>Gas 5</source>
-        <translation type="unfinished"/>
+        <translation>Gás 5</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1021"/>
@@ -779,7 +779,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1153"/>
         <source>Sensor</source>
-        <translation type="unfinished"/>
+        <translation>Sensor</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1161"/>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1697"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1940"/>
@@ -832,7 +832,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2122"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2207"/>
         <source>%O₂</source>
-        <translation type="unfinished"/>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1124"/>
@@ -843,13 +843,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1216"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2355"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1223"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2362"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1290"/>
@@ -886,17 +886,17 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1455"/>
         <source>20s</source>
-        <translation type="unfinished"/>
+        <translation>20s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1460"/>
         <source>30s</source>
-        <translation type="unfinished"/>
+        <translation>30s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1465"/>
         <source>60s</source>
-        <translation type="unfinished"/>
+        <translation>60s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1480"/>
@@ -912,17 +912,17 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1511"/>
         <source>24h</source>
-        <translation type="unfinished"/>
+        <translation>24h</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1516"/>
         <source>12h</source>
-        <translation type="unfinished"/>
+        <translation>12h</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1524"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Formato da hora</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1539"/>
@@ -937,7 +937,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1555"/>
         <source>s</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1562"/>
@@ -962,17 +962,17 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1741"/>
         <source>MM/DD/YY</source>
-        <translation type="unfinished"/>
+        <translation>MM/DD/AA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1746"/>
         <source>DD/MM/YY</source>
-        <translation type="unfinished"/>
+        <translation>DD/MM/AA</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1751"/>
         <source>YY/MM/DD</source>
-        <translation type="unfinished"/>
+        <translation>AA/MM/DD</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1935"/>
@@ -998,7 +998,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1028"/>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1050"/>
         <source>Backup files (*.xml)</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos de backup (*.xml)</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1034"/>
@@ -1024,7 +1024,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1033"/>
         <source>XML backup error</source>
-        <translation type="unfinished"/>
+        <translation>Erro no XML de backup</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1049"/>
@@ -1060,7 +1060,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1072"/>
         <source>All files (*.*)</source>
-        <translation type="unfinished"/>
+        <translation>Todos arquivos (*.*)</translation>
     </message>
 </context>
 <context>
@@ -1098,7 +1098,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="78"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="79"/>
@@ -1151,7 +1151,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="60"/>
         <source>GPS coordinates</source>
-        <translation type="unfinished"/>
+        <translation>Coordenadas do GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="67"/>
@@ -1262,7 +1262,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="562"/>
         <source>Date/time</source>
-        <translation type="unfinished"/>
+        <translation>Data/hora</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="564"/>
@@ -1277,7 +1277,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="588"/>
         <source>h:</source>
-        <translation type="unfinished"/>
+        <translation>h:</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="588"/>
@@ -1355,7 +1355,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/models.cpp" line="1275"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gás</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1280"/>
@@ -1774,17 +1774,17 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="59"/>
         <source>dd.mm.yyyy</source>
-        <translation type="unfinished"/>
+        <translation>dd.mm.aaaa</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="64"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>mm/dd/aaaa</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="69"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>aaaa-mm-dd</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="125"/>
@@ -1809,7 +1809,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="581"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="588"/>
@@ -1819,12 +1819,12 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="592"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="593"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="78"/>
@@ -1839,7 +1839,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.ui" line="88"/>
         <source>Minutes:seconds</source>
-        <translation type="unfinished"/>
+        <translation>Minutos:segundos</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="580"/>
@@ -1856,7 +1856,7 @@ o computador de mergulho selecionado?</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="393"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="397"/>
         <source>Tab</source>
-        <translation type="unfinished"/>
+        <translation>Tab</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="435"/>
@@ -1969,12 +1969,12 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="590"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão inicial</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="591"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão final</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="594"/>
@@ -2022,7 +2022,7 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/diveplanner.ui" line="220"/>
         <source> kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation> kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -2146,17 +2146,17 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="141"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Sensor 3</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="147"/>
@@ -2318,7 +2318,7 @@ o computador de mergulho selecionado?</translation>
         <location filename="../qt-ui/models.cpp" line="1470"/>
         <location filename="../qt-ui/models.cpp" line="1516"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gás</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="1521"/>
@@ -2586,12 +2586,12 @@ o computador de mergulho selecionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Selecionar tudo</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="224"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Desfazer seleções</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="73"/>
@@ -3359,7 +3359,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="566"/>
         <source>&amp;Check for updates</source>
-        <translation>&amp;Checar por updates</translation>
+        <translation>&amp;Buscar atualizações</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="571"/>
@@ -3700,7 +3700,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="245"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Atualizar firmware</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="247"/>
@@ -3838,7 +3838,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="208"/>
         <source>Use default</source>
-        <translation type="unfinished"/>
+        <translation>Usar padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="218"/>
@@ -3974,7 +3974,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="875"/>
         <source>System default</source>
-        <translation type="unfinished"/>
+        <translation>Padrão do sistema</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="914"/>
@@ -4034,7 +4034,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="196"/>
         <source>Default dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo de log padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="227"/>
@@ -4044,12 +4044,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="244"/>
         <source>Default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Cilindro padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="250"/>
         <source>Use default cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Usar o cilindro padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="300"/>
@@ -4059,7 +4059,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="306"/>
         <source>Default user ID</source>
-        <translation type="unfinished"/>
+        <translation>ID de usuário padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="316"/>
@@ -4214,7 +4214,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.cpp" line="503"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Se você clicar em OK, todas as configurações do Subsurface vão ser restauradas para os valores padrão. Isso será aplicado imediatamente. </translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="489"/>
@@ -4224,7 +4224,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.cpp" line="489"/>
         <source>Open default log file</source>
-        <translation type="unfinished"/>
+        <translation>Abrir arquivo de log padrão</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="502"/>
@@ -4827,7 +4827,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/socialnetworks.cpp" line="287"/>
         <source>h:</source>
         <comment>abbreviation for hours plus separator</comment>
-        <translation type="unfinished"/>
+        <translation>h:</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="288"/>
@@ -5084,7 +5084,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="82"/>
         <source>Subsurface was unable to check for updates.</source>
-        <translation>Subsurface não conseguiu localizar updates</translation>
+        <translation>Subsurface não conseguiu localizar atualizações</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="87"/>
@@ -5139,12 +5139,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="138"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="140"/>
         <source>Automatic check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Buscar atualizações automaticamente</translation>
     </message>
 </context>
 <context>
@@ -7128,12 +7128,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="502"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão inicial</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="503"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Pressão final</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="511"/>
@@ -7174,7 +7174,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../save-html.c" line="504"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gás</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="505"/>

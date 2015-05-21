@@ -3,7 +3,7 @@
 _Subsurface_ 4.5 pre-beta - April 2015
 --------------------------------
 
-Some of the changes since _Subsurface_ 4.4.1
+Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Dive site handling - dive sites are now a first class citizen in
@@ -24,21 +24,31 @@ Ability to load dives exported with OSTCTools
 
 Support for more GPS coordinate formats
 
+Some of the changes since _Subsurface_ 4.4.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-_Subsurface_ 4.4.1 - February 2015
---------------------------------
+Improved editing of tags when multiple dives are selected
 
-The _Subsurface_ development team proudly announces
-the release of version 4.4.1 of _Subsurface_, an open
-source divelog and dive planning program for Windows, Mac and Linux.
+Improved handling of the sample interval when uploading data to
+divelogs.de
 
-License: GPLv2
+Fixed several issues with downloads from the UEMIS SDA
 
-_Subsurface_ can be found at: http://_Subsurface_-divelog.org
+added support for the new models of the Heinrichs & Weikamp OSTC 2 and OSTC 3
 
-This is just a small update to _Subsurface_ 4.4, mainly intended to update
-the user manual translations to be consistent with 4.4, to fix a small
-number of bugs and to update to the latest libdivecomputer.
+added support for the Tusa IQ-700
+
+added support for the Mares Smart
+
+added more DiveSystems iDive models
+
+added support for Scubapro Meridian and Chromis
+
+added / improved support for Oceanic Veo 2, Veo 3 and VTX
+
+Known issues (and this was the case in 4.4 and 4.4.1 as well):
+Suunto Eon Steel support on MacOS is currently not working as MacOS grabs
+the device before Subsurface gets to see it.
 
 Some of the changes since _Subsurface_ 4.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -305,10 +305,20 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		thread->deleteLater();
 	}
 
-	data.devname = strdup(ui.device->currentText().toUtf8().data());
 	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
 	data.product = strdup(ui.product->currentText().toUtf8().data());
+	if (same_string(data.vendor, "Uemis")) {
+		char *colon;
+		char *devname = strdup(ui.device->currentText().toUtf8().data());
 
+		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
+			*(colon + 2) = '\0';
+			fprintf(stderr, "shortened devname to \"%s\"", data.devname);
+		}
+		data.devname = devname;
+	} else {
+		data.devname = strdup(ui.device->currentText().toUtf8().data());
+	}
 	data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
 	data.force_download = ui.forceDownload->isChecked();
 	data.create_new_trip = ui.createNewTrip->isChecked();
