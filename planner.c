@@ -807,7 +807,7 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 		if (deltad > depth)
 			deltad = depth;
 		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true);
-		if (depth <= 5000 && safety_stop){
+		if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
 			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.decosac, cylinder, true);
 			safety_stop = false;
 		}
@@ -978,7 +978,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						       TIMESTEP, po2, &displayed_dive, prefs.decosac);
 			clock += TIMESTEP;
 			depth -= deltad;
-			if (depth <= 5000 && safety_stop) {
+			if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
 				plan_add_segment(diveplan, clock - previous_point_time, 5000, gas, po2, false);
 				previous_point_time = clock;
 				clock += 180;
