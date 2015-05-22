@@ -207,10 +207,18 @@ void LocationInformationWidget::enableEdition()
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 }
 
+extern bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
+
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg)))
-		markChangedWidget(ui.diveSiteCoordinates);
+	if (!same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg))) {
+		double latitude, longitude;
+		if (parseGpsText(text, &latitude, &longitude)) {
+			displayed_dive_site.latitude.udeg = latitude * 1000000;
+			displayed_dive_site.longitude.udeg = longitude * 1000000;
+			markChangedWidget(ui.diveSiteCoordinates);
+		}
+	}
 }
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
