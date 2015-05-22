@@ -1,3 +1,19 @@
+message(" ")
+message(" ")
+message("qmake support will soon be removed from Subsurface")
+message("if you haven't switched to cmake, yet, please consider doing so")
+message("if this isn't possible for some reason, please let the mailing list know")
+message(" ")
+message(" ")
+message(" ")
+message(" ")
+message("you can still use qmake by removing the error statement below")
+message("simply edit $${PWD}/subsurface.pro")
+#
+# remove the following if you still need to use qmake
+#
+error(1)
+
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 include(subsurface-configure.pri)
