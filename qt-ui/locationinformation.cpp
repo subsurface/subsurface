@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "divelistview.h"
 #include "qthelper.h"
+#include "globe.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -146,6 +147,7 @@ void LocationInformationWidget::acceptChanges()
 	mark_divelist_changed(true);
 	resetState();
 	emit informationManagementEnded();
+	emit coordinatesChanged();
 }
 
 void LocationInformationWidget::rejectChanges()
@@ -160,6 +162,7 @@ void LocationInformationWidget::rejectChanges()
 	}
 	resetState();
 	emit informationManagementEnded();
+	emit coordinatesChanged();
 }
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
@@ -217,6 +220,7 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 			displayed_dive_site.latitude.udeg = latitude * 1000000;
 			displayed_dive_site.longitude.udeg = longitude * 1000000;
 			markChangedWidget(ui.diveSiteCoordinates);
+			emit coordinatesChanged();
 		}
 	}
 }

@@ -21,7 +21,6 @@ public:
 	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent = 0);
 	void reload();
-	void repopulateLabels();
 	void centerOnCurrentDive();
 	bool eventFilter(QObject *, QEvent *);
 
@@ -44,6 +43,7 @@ signals:
 
 public
 slots:
+	void repopulateLabels();
 	void changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void fixZoom();

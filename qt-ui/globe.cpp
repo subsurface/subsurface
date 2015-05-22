@@ -231,6 +231,7 @@ void GlobeGPS::repopulateLabels()
 		}
 	}
 	model()->treeModel()->addDocument(loadedDives);
+	centerOn(displayed_dive_site.longitude.udeg / 1000000.0, displayed_dive_site.latitude.udeg / 1000000.0, true);
 }
 
 void GlobeGPS::reload()

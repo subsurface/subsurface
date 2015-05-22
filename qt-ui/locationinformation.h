@@ -39,6 +39,7 @@ public slots:
 	void on_diveSiteNotes_textChanged();
 signals:
 	void informationManagementEnded();
+	void coordinatesChanged();
 
 private:
 	struct dive_site *currentDs;
