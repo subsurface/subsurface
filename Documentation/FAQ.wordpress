@@ -126,7 +126,7 @@ Users have reported difficulties with some Bluetooth controllers.  If you have a
 
 Make sure you know how to put your dive computer into upload mode.  On the Shearwater Petrel and Petrel 2, cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...' and the countdown continues.  When downloading the dive from Subsurface, the display reads 'Sending' then 'Sent Dive'.
 
-To establish the connection you need to have root access through sudo or su, and you will need to have the correct permissions on your system to download the dives.  On Fedora 22 and probably most other systems, this means becoming a member of the dialout group if you are already.  This can be done graphically, or on the command terminal, enter:
+To establish the connection you need to have root access through sudo or su, and you will need to have the correct permissions on your system to download the dives.  On Fedora 22 and probably most other systems, this means becoming a member of the dialout group if you are not already.  This can be done graphically, or on the command terminal, enter:
 <pre><code style="font-size: 8pt;">sudo usermod -a -G dialout username</code></pre>
 Log out and log in for the change to take effect.
 
@@ -185,10 +185,10 @@ Once you have paired your dive computer, you are ready to set up the RFCOMM conn
 
 <em>Establishing the RFCOMM connection</em>
 The command to establish an RFCOMM connection is:
-<pre><code style="font-size: 8pt;">sudo rfcomm -i <controller> connect <dev> <bdaddr> [channel]</code></pre>
-<controller> is the Bluetooth controller, hci0
-<dev> is the RFCOMM device file, rfcomm0
-<bdaddr> is the dive computer's MAC address, 00:11:22:33:44:55
+<pre><code style="font-size: 8pt;">sudo rfcomm -i &lt;controller&gt; connect &lt;dev&gt; &lt;bdaddr&gt; [channel]</code></pre>
+&lt;controller&gt; is the Bluetooth controller, hci0
+&lt;dev&gt; is the RFCOMM device file, rfcomm0
+&lt;bdaddr&gt; is the dive computer's MAC address, 00:11:22:33:44:55
 [channel] is the dive computer's Bluetooth channel we need to connect to.  If you omit it, channel 0 will be assumed.  Based on a limited number of user reports, the channel for different dive computers is probably:
 <ul>
 <li>Shearwater Petrel 2: channel 5
