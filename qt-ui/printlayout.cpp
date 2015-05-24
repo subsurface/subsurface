@@ -248,13 +248,8 @@ QTableView *PrintLayout::createProfileTable(ProfilePrintModel *model, const int 
 	table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	hHeader->setVisible(false);
 	vHeader->setVisible(false);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	hHeader->setResizeMode(QHeaderView::Fixed);
-	vHeader->setResizeMode(QHeaderView::Fixed);
-#else
 	hHeader->setSectionResizeMode(QHeaderView::Fixed);
 	vHeader->setSectionResizeMode(QHeaderView::Fixed);
-#endif
 	// set the model
 	table->setModel(model);
 
@@ -322,13 +317,8 @@ void PrintLayout::printTable()
 	table.setFocusPolicy(Qt::NoFocus);
 	table.horizontalHeader()->setVisible(false);
 	table.verticalHeader()->setVisible(false);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	table.horizontalHeader()->setResizeMode(QHeaderView::Fixed);
-	table.verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
 	table.horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	table.verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#endif
 	table.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	table.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	// fit table to one page initially
@@ -428,13 +418,7 @@ void PrintLayout::printTable()
 	for (i = 0; i < total; i++) {
 		if (i > 0)
 			printer->newPage();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-		(void)headingRowHeightD2;
-		QRegion region(0, pageIndexes.at(i) - 1,
-			       table.width(),
-			       pageIndexes.at(i + 1) - pageIndexes.at(i) + 1);
-		table.render(&painter, QPoint(0, 0), region);
-#else
+
 		QRegion region(0, pageIndexes.at(i) + headingRowHeightD2 - 1,
 			       table.width(),
 			       pageIndexes.at(i + 1) - (pageIndexes.at(i) + headingRowHeightD2) + 1);
@@ -445,7 +429,7 @@ void PrintLayout::printTable()
 		table.render(&picPainter, QPoint(0, 0), region);
 		picPainter.end();
 		painter.drawPicture(QPoint(0, headingRowHeightD2), pic);
-#endif
+
 		progress++;
 		emit signalProgress(done + (progress * 10) / total);
 	}
