@@ -23,9 +23,7 @@
 #include <unistd.h> // for dup(2)
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QUrlQuery>
-#endif
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
@@ -403,13 +401,9 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 void SubsurfaceWebServices::startDownload()
 {
 	QUrl url("http://api.hohndel.org/api/dive/get/");
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	url.addQueryItem("login", ui.userID->text().toUpper());
-#else
 	QUrlQuery query;
 	query.addQueryItem("login", ui.userID->text().toUpper());
 	url.setQuery(query);
-#endif
 
 	QNetworkRequest request;
 	request.setUrl(url);
@@ -731,19 +725,11 @@ void DivelogsDeWebServices::startDownload()
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	QUrl body;
-	body.addQueryItem("user", ui.userID->text());
-	body.addQueryItem("pass", ui.password->text());
-
-	reply = manager()->post(request, body.encodedQuery());
-#else
 	QUrlQuery body;
 	body.addQueryItem("user", ui.userID->text());
 	body.addQueryItem("pass", ui.password->text());
 
 	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
-#endif
 	connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
 		this, SLOT(downloadError(QNetworkReply::NetworkError)));
@@ -776,22 +762,12 @@ void DivelogsDeWebServices::listDownloadFinished()
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	QUrl body;
-	body.addQueryItem("user", ui.userID->text());
-	body.addQueryItem("pass", ui.password->text());
-	body.addQueryItem("ids", diveList.idList);
-
-	reply = manager()->post(request, body.encodedQuery());
-#else
 	QUrlQuery body;
 	body.addQueryItem("user", ui.userID->text());
 	body.addQueryItem("pass", ui.password->text());
 	body.addQueryItem("ids", diveList.idList);
 
 	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
-#endif
-
 	connect(reply, SIGNAL(readyRead()), this, SLOT(saveToZipFile()));
 	connectSignalsForDownload(reply);
 }
