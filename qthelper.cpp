@@ -190,7 +190,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 * Parse special coordinate formats that cannot be handled by parseCoord.
 */
 static bool parseSpecialCoords(const QString& txt, double& latitude, double& longitude) {
-	QRegExp xmlFormat("(-?\\d+(?:\\.\\d+)?)\\s+(-?\\d+(?:\\.\\d+)?)");
+	QRegExp xmlFormat("(-?\\d+(?:\\.\\d+)?),?\\s+(-?\\d+(?:\\.\\d+)?)");
 	if (xmlFormat.exactMatch(txt)) {
 		latitude = xmlFormat.cap(1).toDouble();
 		longitude = xmlFormat.cap(2).toDouble();
