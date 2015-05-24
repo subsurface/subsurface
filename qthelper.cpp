@@ -41,18 +41,6 @@ static QString dateFormat;
 static QString timeFormat;
 static QLocale loc;
 
-#if defined(Q_OS_WIN) && QT_VERSION < 0x050000
-static QByteArray encodeUtf8(const QString &fname)
-{
-	return fname.toUtf8();
-}
-
-static QString decodeUtf8(const QByteArray &fname)
-{
-	return QString::fromUtf8(fname);
-}
-#endif
-
 #define translate(_context, arg) trGettext(arg)
 static const QString DEGREE_SIGNS("dD" UTF8_DEGREE);
 
