@@ -159,7 +159,6 @@ void GroupedLineEdit::keyPressEvent(QKeyEvent *e)
 
 void GroupedLineEdit::paintEvent(QPaintEvent *e)
 {
-#if QT_VERSION >= 0x050000 || !defined __APPLE__
 	// for reasons we don't understand, touching the painter
 	// here (even drawing the fill rect) causes the QPlainTextEdit
 	// paintEvent to not draw the text on Qt4 & MacOS.
@@ -173,11 +172,8 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 	i.toFront();
 	foreach (const Private::Block &block, d->blocks) {
 		qreal start_x = line.cursorToX(block.start, QTextLine::Leading);
-#if QT_VERSION >= 0x050000
 		qreal end_x = line.cursorToX(block.end-1, QTextLine::Trailing);
-#else
-		qreal end_x = line.cursorToX(block.end, QTextLine::Trailing);
-#endif
+
 		QPainterPath path;
 		QRectF rectangle(
 			start_x - 1.0 - double(horizontalScrollBar()->value()),
@@ -196,6 +192,5 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 			painter.setBrush(i.next().darker());
 		painter.drawPath(path);
 	}
-#endif
 	QPlainTextEdit::paintEvent(e);
 }
