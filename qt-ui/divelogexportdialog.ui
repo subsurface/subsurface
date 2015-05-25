@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>468</height>
+    <height>548</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,16 +19,43 @@
    </iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
+     </property>
+     <property name="documentMode">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="General_tab">
       <attribute name="title">
        <string>General export</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="description">
          <property name="sizePolicy">
@@ -85,7 +112,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Subsurface XML</string>
+             <string>Subsurface &amp;XML</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -117,7 +144,7 @@
           <item>
            <widget class="QRadioButton" name="exportDivelogs">
             <property name="text">
-             <string>divelogs.de</string>
+             <string>di&amp;velogs.de</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -167,7 +194,7 @@
           <item>
            <widget class="QRadioButton" name="exportImageDepths">
             <property name="text">
-             <string>Image depths</string>
+             <string>I&amp;mage depths</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -179,95 +206,97 @@
        </item>
        <item row="0" column="1">
         <widget class="QWidget" name="widget" native="true">
-         <widget class="QGroupBox" name="exportSelection">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>230</width>
-            <height>100</height>
-           </rect>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>100</height>
-           </size>
+          <property name="rightMargin">
+           <number>0</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
+          <property name="bottomMargin">
+           <number>0</number>
           </property>
-          <property name="title">
-           <string>Selection</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QRadioButton" name="exportSelected">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="text">
-              <string>Selected dives</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="exportAll">
-             <property name="text">
-              <string>All dives</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>100</y>
-            <width>204</width>
-            <height>101</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>CSV units</string>
-          </property>
-          <widget class="QComboBox" name="CSVUnits_2">
-           <property name="geometry">
-            <rect>
-             <x>30</x>
-             <y>30</y>
-             <width>102</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <item>
-            <property name="text">
-             <string>Metric</string>
+          <item>
+           <widget class="QGroupBox" name="exportSelection">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Imperial</string>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>100</height>
+             </size>
             </property>
-           </item>
-          </widget>
-         </widget>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Selection</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QRadioButton" name="exportSelected">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Selected dives</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="exportAll">
+               <property name="text">
+                <string>All dives</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="title">
+             <string>CSV units</string>
+            </property>
+            <widget class="QComboBox" name="CSVUnits_2">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>30</y>
+               <width>102</width>
+               <height>27</height>
+              </rect>
+             </property>
+             <item>
+              <property name="text">
+               <string>Metric</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Imperial</string>
+              </property>
+             </item>
+            </widget>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -277,6 +306,18 @@
        <string>HTML</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QGroupBox" name="GeneralOptions">
          <property name="title">
@@ -331,7 +372,7 @@
              </size>
             </property>
             <property name="text">
-             <string>All dives</string>
+             <string>All di&amp;ves</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">buttonGroup</string>
