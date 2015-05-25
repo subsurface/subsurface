@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>940</width>
-    <height>756</height>
+    <width>814</width>
+    <height>739</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,141 @@
    </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QListWidget" name="listWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="textElideMode">
+        <enum>Qt::ElideNone</enum>
+       </property>
+       <property name="movement">
+        <enum>QListView::Static</enum>
+       </property>
+       <property name="isWrapping" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="layoutMode">
+        <enum>QListView::Batched</enum>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="gridSize">
+        <size>
+         <width>110</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="viewMode">
+        <enum>QListView::ListMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>true</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="currentRow">
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Defaults</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/subsurface-icon</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Units</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/units</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Graph</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/graph</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Language</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/advanced</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Network</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/network</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Facebook</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/facebook</normalon>
+         </iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="sizePolicy">
@@ -34,12 +167,45 @@
        </property>
        <widget class="QWidget" name="defaults_page">
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
             <string>Lists and tables</string>
            </property>
            <layout class="QFormLayout" name="formLayout_2">
+            <property name="horizontalSpacing">
+             <number>5</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
               <property name="text">
@@ -69,6 +235,24 @@
             <string>Dives</string>
            </property>
            <layout class="QFormLayout" name="formLayout">
+            <property name="horizontalSpacing">
+             <number>5</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_9">
               <property name="text">
@@ -123,6 +307,24 @@
             <string>Default cylinder</string>
            </property>
            <layout class="QFormLayout" name="formLayout_6">
+            <property name="horizontalSpacing">
+             <number>5</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
@@ -146,6 +348,18 @@
             <string>Animations</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_15">
               <property name="text">
@@ -179,6 +393,21 @@
             <string>Subsurface web service</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_16">
               <property name="text">
@@ -205,6 +434,21 @@
             <string>Clear all settings</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7b">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QPushButton" name="resetSettings">
               <property name="text">
@@ -232,6 +476,21 @@
        </widget>
        <widget class="QWidget" name="units_page">
         <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
@@ -244,7 +503,7 @@
            <item>
             <widget class="QRadioButton" name="metric">
              <property name="text">
-              <string>Metric</string>
+              <string>&amp;Metric</string>
              </property>
              <attribute name="buttonGroup">
               <string notr="true">buttonGroup_6</string>
@@ -264,7 +523,7 @@
            <item>
             <widget class="QRadioButton" name="personalize">
              <property name="text">
-              <string>Personalize</string>
+              <string>Personali&amp;ze</string>
              </property>
              <attribute name="buttonGroup">
               <string notr="true">buttonGroup_6</string>
@@ -516,6 +775,21 @@
        </widget>
        <widget class="QWidget" name="graph_page">
         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox_4">
            <property name="title">
@@ -782,6 +1056,21 @@
        </widget>
        <widget class="QWidget" name="language_page">
         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
@@ -823,6 +1112,21 @@
        </widget>
        <widget class="QWidget" name="network_page">
         <layout class="QVBoxLayout" name="verticalLayout_15">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox_10">
            <property name="title">
@@ -964,6 +1268,21 @@
        </widget>
        <widget class="QWidget" name="facebook_page">
         <layout class="QVBoxLayout" name="fbLayout">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QLabel" name="FBLabel">
            <property name="wordWrap">
@@ -990,127 +1309,6 @@
          </item>
         </layout>
        </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QListWidget" name="listWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <property name="movement">
-        <enum>QListView::Static</enum>
-       </property>
-       <property name="isWrapping" stdset="0">
-        <bool>true</bool>
-       </property>
-       <property name="layoutMode">
-        <enum>QListView::Batched</enum>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="gridSize">
-        <size>
-         <width>70</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::IconMode</enum>
-       </property>
-       <property name="uniformItemSizes">
-        <bool>false</bool>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="currentRow">
-        <number>-1</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Defaults</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/subsurface-icon</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Units</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/units</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Graph</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/graph</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Language</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/advanced</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Network</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/network</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Facebook</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/facebook</normalon>
-         </iconset>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -1468,12 +1666,12 @@
  </connections>
  <buttongroups>
   <buttongroup name="verticalSpeed"/>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_7"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_6"/>
  </buttongroups>
 </ui>
