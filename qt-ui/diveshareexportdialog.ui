@@ -6,14 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>309</height>
+    <width>593</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item>
     <widget class="QFrame" name="frameConfigure">
      <property name="frameShape">
@@ -26,8 +38,23 @@
       <number>0</number>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
@@ -43,12 +70,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="cmdClear">
+         <widget class="QToolButton" name="cmdClear">
           <property name="text">
            <string>⌫</string>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -126,13 +150,32 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QTextBrowser" name="txtResult">
         <property name="readOnly">
          <bool>true</bool>
         </property>
         <property name="html">
-		<string></string>
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Oxygen-Sans'; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="openExternalLinks">
          <bool>true</bool>
@@ -221,22 +264,6 @@
     <hint type="destinationlabel">
      <x>159</x>
      <y>215</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdClear</sender>
-   <signal>clicked()</signal>
-   <receiver>txtUID</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>148</x>
-     <y>36</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>105</x>
-     <y>27</y>
     </hint>
    </hints>
   </connection>
