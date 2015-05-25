@@ -17,7 +17,6 @@ set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
 include_directories(. ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
 
 # compiler specific settings
-
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 endif()
@@ -33,7 +32,6 @@ pkg_config_library(LIBZIP libzip REQUIRED)
 pkg_config_library(LIBUSB libusb-1.0 QUIET)
 
 # more libraries with special handling in case we build them ourselves
-
 if(LIBGIT2_FROM_PKGCONFIG)
 	pkg_config_library(LIBGIT2 libgit2 REQUIRED)
 	set(LIBGIT2_LIBRARIES "")
@@ -51,7 +49,6 @@ else()
 endif()
 
 # optional marble
-
 if(NOT NO_MARBLE)
 	find_package(Marble QUIET)
 	if(MARBLE_FOUND)
@@ -70,7 +67,6 @@ endif()
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} -lusb-1.0)
 
 # handle out of tree build correctly
-
 string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_DIR}" insource)
 get_filename_component(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
@@ -81,13 +77,11 @@ if(NOT (insource OR insourcedir))
 endif()
 
 # configure Qt.
-
 find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools)
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
-
 file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
 "#define VERSION_STRING \"@VERSION_STRING@\"
 #define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
@@ -143,7 +137,6 @@ add_custom_target(
 )
 
 # set up the different target platforms
-
 set(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(FBSUPPORT 1)
@@ -183,7 +176,6 @@ endif()
 add_subdirectory(translations)
 
 # compile the core library, in C.
-
 set(SUBSURFACE_CORE_LIB_SRCS
 	cochran.c
 	datatrak.c
@@ -229,13 +221,14 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesitehelpers.cpp
 	${PLATFORM_SRC}
 )
+source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
 	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
-# the interface, in C++
 
+# the interface, in C++
 set(SUBSURFACE_INTERFACE
 	qt-ui/updatemanager.cpp
 	qt-ui/about.cpp
@@ -276,9 +269,9 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/qtwaitingspinner.cpp
 	${SOCIALNETWORKS}
 )
+source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 
 # the profile widget
-
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/profilewidget2.cpp
 	qt-ui/profile/diverectitem.cpp
@@ -294,29 +287,30 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/ruleritem.cpp
 	qt-ui/profile/tankitem.cpp
 )
+source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
 
 # the yearly statistics widget.
-
 set(SUBSURFACE_STATISTICS_LIB_SRCS
 	qt-ui/statistics/statisticswidget.cpp
 	qt-ui/statistics/yearstatistics.cpp
 	qt-ui/statistics/statisticsbar.cpp
 	qt-ui/statistics/monthstatistics.cpp
 )
+source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 
 # the main app.
-
 set(SUBSURFACE_APP
 	main.cpp
 	qt-gui.cpp
 	qthelper.cpp
 )
+source_group("Subsurface App" FILES ${SUBSURFACE_APP})
 
 # create the libraries
-
 file(GLOB SUBSURFACE_UI qt-ui/*.ui)
 qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
+source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
 
 add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
 target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
@@ -337,7 +331,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 # create the executables
-
 add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 target_link_libraries(
 	${SUBSURFACE_TARGET}
@@ -369,7 +362,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 # QTest based tests
-
 macro(TEST NAME FILE)
 	add_executable(${NAME} EXCLUDE_FROM_ALL tests/${FILE} ${SUBSURFACE_RESOURCES})
 	target_link_libraries(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
@@ -399,7 +391,6 @@ endif()
 
 # install Subsurface
 # first some variables with files that need installing
-
 set(DOCFILES
 	README
 	ReleaseNotes/ReleaseNotes.txt
