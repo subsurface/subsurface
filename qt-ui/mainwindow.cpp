@@ -163,36 +163,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
 
-
-	// and now for some layout hackery
-	// this gets us consistent margins everywhere and a much more balanced look
-	QMargins margins(5, 5, 5, 5);
-	QMargins zeroMargins(0, 0, 0, 0);
-	QList<QString> noMarginList;
-	noMarginList << "notesAndSocialNetworksLayout" <<
-			"coordinatesDiveTypeLayout" <<
-			"mainTabOuterLayout" <<
-			"ratingVisibilityWidgets" <<
-			"temperatureLabels" <<
-			"airWaterTempLayout" <<
-			"fullWindowLayout" <<
-			"profileOuterLayout";
-	Q_FOREACH (QLayout *layout, findChildren<QLayout *>()) {
-		// lots of internally used layouts by Qt have no names
-		// don't mess with those (or scroll bars look terrible, among other things
-		if (layout->objectName().isEmpty())
-			continue;
-		// this allows us to exclude specific layouts where the one size fits all
-		// doesn't fit
-		if (noMarginList.contains(layout->objectName()))
-			layout->setContentsMargins(zeroMargins);
-		else
-			layout->setContentsMargins(margins);
-	}
-	toolBar->setContentsMargins(zeroMargins);
-
 	updateManager = new UpdateManager(this);
-
 	undoStack = new QUndoStack(this);
 	QAction *undoAction = undoStack->createUndoAction(this, tr("&Undo"));
 	QAction *redoAction = undoStack->createRedoAction(this, tr("&Redo"));
