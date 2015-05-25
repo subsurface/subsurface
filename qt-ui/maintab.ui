@@ -17,6 +17,9 @@
    <attribute name="title">
     <string>Notes</string>
    </attribute>
+   <attribute name="toolTip">
+    <string>General notes about the current selection</string>
+   </attribute>
    <layout class="QGridLayout" name="diveNotesLayout">
     <property name="leftMargin">
      <number>5</number>
@@ -470,7 +473,22 @@
    <attribute name="title">
     <string>Equipment</string>
    </attribute>
+   <attribute name="toolTip">
+    <string>Used equipment in the current selection</string>
+   </attribute>
    <layout class="QGridLayout" name="equiptmentTabLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <item row="0" column="0">
      <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
     </item>
@@ -490,8 +508,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>435</width>
-         <height>736</height>
+         <width>449</width>
+         <height>750</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -526,7 +544,22 @@
    <attribute name="title">
     <string>Info</string>
    </attribute>
+   <attribute name="toolTip">
+    <string>Dive information</string>
+   </attribute>
    <layout class="QGridLayout" name="diveInfoLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <item row="0" column="0">
      <widget class="KMessageWidget" name="diveInfoMessage" native="true"/>
     </item>
@@ -546,8 +579,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>435</width>
-         <height>736</height>
+         <width>449</width>
+         <height>750</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -843,7 +876,22 @@
    <attribute name="title">
     <string>Stats</string>
    </attribute>
+   <attribute name="toolTip">
+    <string>Simple statistics about the selection</string>
+   </attribute>
    <layout class="QGridLayout" name="statsLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <item row="0" column="1">
      <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
     </item>
@@ -863,8 +911,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>435</width>
-         <height>736</height>
+         <width>449</width>
+         <height>750</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="statsScrollAreaLayout">
@@ -1049,7 +1097,22 @@
    <attribute name="title">
     <string>Photos</string>
    </attribute>
+   <attribute name="toolTip">
+    <string>All photos from the current selection</string>
+   </attribute>
    <layout class="QVBoxLayout" name="photosLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <item>
      <widget class="DivePictureWidget" name="photosView">
       <property name="viewMode">
@@ -1063,18 +1126,27 @@
    <attribute name="title">
     <string>Extra data</string>
    </attribute>
-   <layout class="QVBoxLayout" name="extraDataOuterLayout">
+   <attribute name="toolTip">
+    <string>Adittional data from the dive computer</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <item>
-     <widget class="QGroupBox" name="groupBox_16">
-      <property name="title">
-       <string>Additional data from dive computer</string>
-      </property>
-      <layout class="QHBoxLayout" name="extraDataLayout">
-       <item>
-        <widget class="QTableView" name="extraData"/>
-       </item>
-      </layout>
-     </widget>
+     <widget class="QTableView" name="extraData"/>
     </item>
    </layout>
   </widget>
