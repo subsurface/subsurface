@@ -95,6 +95,9 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	QWidget *profileContainer = new QWidget();
 	QHBoxLayout *profLayout = new QHBoxLayout();
+	profLayout->setSpacing(0);
+	profLayout->setMargin(0);
+	profLayout->setContentsMargins(0,0,0,0);
 	profLayout->addWidget(toolBar);
 	profLayout->addWidget(profileWidget);
 	profileContainer->setLayout(profLayout);
