@@ -189,11 +189,11 @@ The command to establish an RFCOMM connection is:
 &lt;controller&gt; is the Bluetooth controller, hci0
 &lt;dev&gt; is the RFCOMM device file, rfcomm0
 &lt;bdaddr&gt; is the dive computer's MAC address, 00:11:22:33:44:55
-[channel] is the dive computer's Bluetooth channel we need to connect to.  If you omit it, channel 0 will be assumed.  Based on a limited number of user reports, the channel for different dive computers is probably:
+[channel] is the dive computer's Bluetooth channel we need to connect to.  If you omit it, channel 1 will be assumed.  Based on a limited number of user reports, the channel for different dive computers is probably:
 <ul>
 <li>Shearwater Petrel 2: channel 5
-<li>Shearwater Petrel 1: channel 0
-<li>OSTC Sport: Channel 0
+<li>Shearwater Petrel 1: channel 1
+<li>OSTC Sport: Channel 1
 </ul>
 E.g. to connect a Shearwater Petrel 2, set the dive computer to upload mode and enter:
 <pre><code style="font-size: 8pt;">sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5
@@ -203,7 +203,7 @@ Press CTRL-C for hangup</code></pre>
 To connect a Shearwater Petrel 1 or OSTC Sport, set the dive computer to upload mode and enter:
 <pre><code style="font-size: 8pt;">sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55
 (enter password when prompted)
-Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 0
+Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
 Press CTRL-C for hangup</code></pre>
 If you don't know what channel your dive computer uses, or the channel in the list above doesn't work, the command 'sdptool records' should help determine the appropriate channel.  The output below is from a Shearwater Petrel 2.
 <pre><code style="font-size: 8pt;">sdptool -i hci0 records 00:11:22:33:44:55

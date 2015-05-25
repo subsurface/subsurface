@@ -3610,12 +3610,12 @@ The command to establish an RFCOMM connection is:
 - <bdaddr> is the dive computer's MAC address, +00:11:22:33:44:55+
 - [channel] is the dive computer's Bluetooth channel we need to connect to.
 
-If one omits it, channel 0 is assumed.  Based on a limited number of user reports,
+If one omits it, channel 1 is assumed.  Based on a limited number of user reports,
 the appropriate channel for the dive computer is probably:
 
 - _Shearwater Petrel 2_: channel 5
-- _Shearwater Petrel 1_: channel 0
-- _Heinrichs-Weikamp OSTC Sport_: channel 0
+- _Shearwater Petrel 1_: channel 1
+- _Heinrichs-Weikamp OSTC Sport_: channel 1
 
 E.g. to connect a _Shearwater Petrel 2_, set the dive computer to upload mode and enter:
 
@@ -3629,7 +3629,7 @@ This gives the response:
 To connect a _Shearwater Petrel 1+ or + HW OSTC Sport+, set the dive computer to upload mode and enter:
 
 	sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55   (enter a password, probably 0000, when prompted)
-	Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 0
+	Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
 	Press CTRL-C for hangup
 
 If the specific channel the dive computer needs is not known, or the channel in the list above doesn't
