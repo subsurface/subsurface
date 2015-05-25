@@ -513,6 +513,18 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <property name="spacing">
          <number>2</number>
         </property>
@@ -520,6 +532,18 @@
          <widget class="QWidget" name="widget" native="true">
           <layout class="QVBoxLayout" name="cylinderWeightsLayout">
            <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -584,6 +608,18 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <property name="spacing">
          <number>2</number>
         </property>
@@ -892,9 +928,6 @@
     <property name="bottomMargin">
      <number>5</number>
     </property>
-    <item row="0" column="1">
-     <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
-    </item>
     <item row="1" column="1">
      <widget class="QScrollArea" name="scrollArea_4">
       <property name="frameShape">
@@ -915,48 +948,33 @@
          <height>750</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="statsScrollAreaLayout">
-        <property name="spacing">
-         <number>2</number>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QGroupBox" name="groupBoxb">
-          <property name="title">
-           <string>Depth</string>
-          </property>
-          <layout class="QHBoxLayout" name="statsDepthLayout">
-           <item>
-            <widget class="MinMaxAvgWidget" name="depthLimits" native="true"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QGroupBox" name="groupBox_8b">
-          <property name="title">
-           <string>Temperature</string>
-          </property>
-          <layout class="QHBoxLayout" name="statsTempLayout">
-           <item>
-            <widget class="MinMaxAvgWidget" name="tempLimits" native="true"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QGroupBox" name="groupBox_4b">
-          <property name="title">
-           <string>SAC</string>
-          </property>
-          <layout class="QHBoxLayout" name="statsSacLayout">
-           <item>
-            <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <layout class="QVBoxLayout" name="statsOuterDurationLayout">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QGroupBox" name="groupBoxb">
+            <property name="title">
+             <string>Depth</string>
+            </property>
+            <layout class="QHBoxLayout" name="statsDepthLayout">
+             <item>
+              <widget class="MinMaxAvgWidget" name="depthLimits" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QGroupBox" name="groupBox_14">
             <property name="title">
@@ -970,25 +988,34 @@
            </widget>
           </item>
           <item>
-           <spacer name="innerSpacer0">
+           <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>0</width>
-              <height>0</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
         </item>
-        <item row="1" column="1">
-         <layout class="QVBoxLayout" name="statsOuterTotalTimeDivesLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QGroupBox" name="groupBox_8b">
+            <property name="title">
+             <string>Temperature</string>
+            </property>
+            <layout class="QHBoxLayout" name="statsTempLayout">
+             <item>
+              <widget class="MinMaxAvgWidget" name="tempLimits" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QGroupBox" name="groupBox_11b">
             <property name="title">
@@ -1028,25 +1055,34 @@
            </widget>
           </item>
           <item>
-           <spacer name="innerSpacer1">
+           <spacer name="verticalSpacer_3">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>0</width>
-              <height>0</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
         </item>
-        <item row="1" column="2">
-         <layout class="QVBoxLayout" name="statsOuterGasConsumptionLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QGroupBox" name="groupBox_4b">
+            <property name="title">
+             <string>SAC</string>
+            </property>
+            <layout class="QHBoxLayout" name="statsSacLayout">
+             <item>
+              <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QGroupBox" name="groupBox_13">
             <property name="title">
@@ -1067,17 +1103,14 @@
            </widget>
           </item>
           <item>
-           <spacer name="innerSpacer2">
+           <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>0</width>
-              <height>0</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
@@ -1088,8 +1121,12 @@
        <zorder>groupBox_8b</zorder>
        <zorder>groupBox_4b</zorder>
        <zorder>groupBoxb</zorder>
+       <zorder>diveStatisticsMessage</zorder>
       </widget>
      </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
     </item>
    </layout>
   </widget>
