@@ -3,6 +3,7 @@
 
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
+#include <stdint.h>
 
 class MultiFilterInterface {
 public:
@@ -93,7 +94,7 @@ public
 slots:
 	void myInvalidate();
 	void clearFilter();
-	void startFilterDiveSite(int32_t uuid);
+	void startFilterDiveSite(uint32_t uuid);
 	void stopFilterDiveSite();
 
 signals:

@@ -4,6 +4,7 @@
 #include "divelistview.h"
 #include "qthelper.h"
 #include "globe.h"
+#include "filtermodels.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -69,6 +70,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 
 	ui.currentLocation->setModel(new LocationInformationModel());
 	connect(ui.currentLocation, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentDiveSite(int)));
+	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
+	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 }
 
 void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
@@ -91,7 +94,11 @@ void LocationInformationWidget::setLocationId(uint32_t uuid)
 	if(!currentDs)
 		return;
 
+	if (displayed_dive_site.uuid == currentDs->uuid)
+		return;
+
 	displayed_dive_site = *currentDs;
+
 	if (ui.currentLocation->currentText() != displayed_dive_site.name) {
 		// this will trigger setCurrentDiveSite again, and thus,
 		// will gethere with the correct uuid.
@@ -115,6 +122,8 @@ void LocationInformationWidget::setLocationId(uint32_t uuid)
 		ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
 	else
 		ui.diveSiteCoordinates->clear();
+
+	emit startFilterDiveSite(displayed_dive_site.uuid);
 }
 
 void LocationInformationWidget::updateGpsCoordinates()
@@ -125,6 +134,7 @@ void LocationInformationWidget::updateGpsCoordinates()
 
 void LocationInformationWidget::acceptChanges()
 {
+	emit stopFilterDiveSite();
 	char *uiString;
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
@@ -156,6 +166,7 @@ void LocationInformationWidget::acceptChanges()
 
 void LocationInformationWidget::rejectChanges()
 {
+	emit stopFilterDiveSite();
 	Q_ASSERT(currentDs != NULL);
 	if (dive_site_is_empty(currentDs)) {
 		delete_dive_site(currentDs->uuid);
@@ -169,6 +180,7 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
+	emit startFilterDiveSite(displayed_dive_site.uuid);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 	QGroupBox::showEvent(ev);
 }

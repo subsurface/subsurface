@@ -41,7 +41,7 @@ signals:
 	void informationManagementEnded();
 	void coordinatesChanged();
 	void startFilterDiveSite(uint32_t uuid);
-	void stopFilterFiveSite();
+	void stopFilterDiveSite();
 private:
 	struct dive_site *currentDs;
 	Ui::LocationInformation ui;
