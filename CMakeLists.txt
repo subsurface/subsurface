@@ -9,6 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
+option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(NO_MARBLE "disable the marble widget" OFF)
 option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
@@ -93,8 +94,16 @@ endif()
 
 # setup Grantlee
 
-find_package(Grantlee5)
-set(GRANTLEE_LIBRARIES Grantlee5::Templates)
+if(NEW_PRINTING)
+	if(LIBGRANTLEE_FROM_PKGCONFIG)
+		pkg_config_library(GRANTLEE libgrantlee REQUIRED)
+		set(GRANTLEE_LIBRARIES "")
+	else()
+		find_package(Grantlee5)
+		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
+	endif()
+	add_definitions(-DNEW_PRINTING)
+endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${GRANTLEE_LIBRARIES} -lusb-1.0)
 
