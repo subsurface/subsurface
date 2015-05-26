@@ -375,6 +375,10 @@ void MultiFilterSortModel::myInvalidate()
 	}
 
 	emit filterFinished();
+
+	if (curr_dive_site) {
+		dlv->expandAll();
+	}
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
