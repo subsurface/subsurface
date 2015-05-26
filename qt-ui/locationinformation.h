@@ -22,7 +22,7 @@ public:
 	LocationInformationWidget(QWidget *parent = 0);
 protected:
 	void showEvent(QShowEvent *);
-\
+
 public slots:
 	void acceptChanges();
 	void rejectChanges();
@@ -40,7 +40,8 @@ public slots:
 signals:
 	void informationManagementEnded();
 	void coordinatesChanged();
-
+	void startFilterDiveSite(uint32_t uuid);
+	void stopFilterFiveSite();
 private:
 	struct dive_site *currentDs;
 	Ui::LocationInformation ui;

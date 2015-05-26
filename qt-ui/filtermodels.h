@@ -93,12 +93,16 @@ public
 slots:
 	void myInvalidate();
 	void clearFilter();
+	void startFilterDiveSite(int32_t uuid);
+	void stopFilterDiveSite();
+
 signals:
 	void filterFinished();
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	QList<MultiFilterInterface *> models;
 	bool justCleared;
+	struct dive_site *curr_dive_site;
 };
 
 #endif

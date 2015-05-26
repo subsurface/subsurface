@@ -292,7 +292,7 @@ void LocationFilterModel::repopulate()
 	anyChecked = false;
 }
 
-MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent), justCleared(false)
+MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent), justCleared(false), curr_dive_site(NULL)
 {
 }
 
@@ -386,5 +386,17 @@ void MultiFilterSortModel::clearFilter()
 		iface->clearFilter();
 	}
 	justCleared = false;
+	myInvalidate();
+}
+
+void MultiFilterSortModel::startFilterDiveSite(int32_t uuid)
+{
+	curr_dive_site = get_dive_site_by_uuid(uuid);
+	myInvalidate();
+}
+
+void MultiFilterSortModel::stopFilterDiveSite()
+{
+	curr_dive_site = NULL;
 	myInvalidate();
 }
