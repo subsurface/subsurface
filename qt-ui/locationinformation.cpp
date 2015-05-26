@@ -82,6 +82,11 @@ void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
 
 void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
+	LocationInformationModel *m = (LocationInformationModel*) ui.currentLocation->model();
+	if (m->rowCount() == 0) {
+		m->update();
+	}
+
 	currentDs = get_dive_site_by_uuid(uuid);
 	if(!currentDs)
 		return;
@@ -164,11 +169,8 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
-	LocationInformationModel *m = (LocationInformationModel*) ui.currentLocation->model();
 	ui.diveSiteMessage->setCloseButtonVisible(false);
-	m->update();
 	QGroupBox::showEvent(ev);
-
 }
 
 void LocationInformationWidget::markChangedWidget(QWidget *w)
