@@ -83,15 +83,9 @@ void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
 void LocationInformationWidget::setLocationId(uint32_t uuid)
 {
 	currentDs = get_dive_site_by_uuid(uuid);
+	if(!currentDs)
+		return;
 
-	if (!currentDs) {
-		currentDs = get_dive_site_by_uuid(create_dive_site(""));
-		displayed_dive.dive_site_uuid = currentDs->uuid;
-		ui.diveSiteName->clear();
-		ui.diveSiteDescription->clear();
-		ui.diveSiteNotes->clear();
-		ui.diveSiteCoordinates->clear();
-	}
 	displayed_dive_site = *currentDs;
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
