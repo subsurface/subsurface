@@ -140,10 +140,8 @@ void LocationInformationWidget::acceptChanges()
 	if (dive_site_is_empty(currentDs)) {
 		delete_dive_site(currentDs->uuid);
 		displayed_dive.dive_site_uuid = 0;
-		setLocationId(0);
-	} else {
-		setLocationId(currentDs->uuid);
 	}
+
 	mark_divelist_changed(true);
 	resetState();
 	emit informationManagementEnded();
@@ -156,10 +154,8 @@ void LocationInformationWidget::rejectChanges()
 	if (dive_site_is_empty(currentDs)) {
 		delete_dive_site(currentDs->uuid);
 		displayed_dive.dive_site_uuid = 0;
-		setLocationId(0);
-	} else {
-		setLocationId(currentDs->uuid);
 	}
+
 	resetState();
 	emit informationManagementEnded();
 	emit coordinatesChanged();
