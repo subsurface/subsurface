@@ -87,6 +87,13 @@ void LocationInformationWidget::setLocationId(uint32_t uuid)
 		return;
 
 	displayed_dive_site = *currentDs;
+	if (ui.currentLocation->currentText() != displayed_dive_site.name) {
+		// this will trigger setCurrentDiveSite again, and thus,
+		// will gethere with the correct uuid.
+		ui.currentLocation->setCurrentText(displayed_dive_site.name);
+		return;
+	}
+
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
 	else
