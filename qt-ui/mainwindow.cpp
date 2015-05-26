@@ -259,7 +259,6 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
-	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
 }
 
 void MainWindow::on_actionNew_triggered()
