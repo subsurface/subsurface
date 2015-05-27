@@ -219,13 +219,17 @@ void LocationInformationWidget::enableEdition()
 	ui.diveSiteMessage->addAction(acceptAction);
 	ui.diveSiteMessage->addAction(rejectAction);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
+	if (!currentDs) {
+		displayed_dive.dive_site_uuid = create_dive_site(NULL);
+		currentDs = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+	}
 }
 
 extern bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg))) {
+	if (!currentDs || !same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg))) {
 		double latitude, longitude;
 		if (parseGpsText(text, &latitude, &longitude)) {
 			displayed_dive_site.latitude.udeg = latitude * 1000000;
