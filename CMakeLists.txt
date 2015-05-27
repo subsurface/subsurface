@@ -135,8 +135,14 @@ if(NOT (insource OR insourcedir))
 endif()
 
 # configure Qt.
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools)
+if(SUBSURFACE_MOBILE)
+	set(QT_QUICK Quick)
+endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools ${QT_QUICK})
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
+if(SUBSURFACE_MOBILE)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::Quick)
+endif()
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
@@ -416,17 +422,32 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 # create the executables
-add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-target_link_libraries(
-	${SUBSURFACE_TARGET}
-	subsurface_generated_ui
-	subsurface_interface
-	subsurface_profile
-	subsurface_statistics
-	subsurface_models
-	subsurface_corelib
-	${SUBSURFACE_LINK_LIBRARIES}
+if(SUBSURFACE_MOBILE)
+	add_definitions(-DSUBSURFACE_MOBILE)
+	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
+	add_executable(subsurface-mobile ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	target_link_libraries(
+		subsurface-mobile
+		subsurface_generated_ui
+		subsurface_interface
+		subsurface_profile
+		subsurface_statistics
+		subsurface_models
+		subsurface_corelib
+		${SUBSURFACE_LINK_LIBRARIES})
+else()
+	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	target_link_libraries(
+		${SUBSURFACE_TARGET}
+		subsurface_generated_ui
+		subsurface_interface
+		subsurface_profile
+		subsurface_statistics
+		subsurface_models
+		subsurface_corelib
+		${SUBSURFACE_LINK_LIBRARIES}
 )
+endif()
 
 add_dependencies(subsurface_statistics subsurface_generated_ui)
 add_dependencies(subsurface_profile subsurface_generated_ui)
@@ -661,7 +682,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY theme DESTINATION share/subsurface)
 	install(DIRECTORY printing_templates DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
-	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
+	if(SUBSURFACE_MOBILE)
+		install(TARGETS subsurface-mobile DESTINATION bin)
+	else()
+		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
+	endif()
 	if(DEFINED LIBMARBLEDEVEL)
 		install(
 			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
