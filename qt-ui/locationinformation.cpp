@@ -242,13 +242,13 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), currentDs->description))
+	if (!currentDs || !same_string(qPrintable(text), currentDs->description))
 		markChangedWidget(ui.diveSiteDescription);
 }
 
 void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), currentDs->name)) {
+	if (!currentDs || !same_string(qPrintable(text), currentDs->name)) {
 		free(displayed_dive_site.name);
 		displayed_dive_site.name = copy_string(qPrintable(text));
 		markChangedWidget(ui.diveSiteName);
@@ -258,7 +258,7 @@ void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 
 void LocationInformationWidget::on_diveSiteNotes_textChanged()
 {
-	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  currentDs->notes))
+	if (! currentDs || !same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  currentDs->notes))
 		markChangedWidget(ui.diveSiteNotes);
 }
 
