@@ -1508,16 +1508,14 @@ void ReadSettingsThread::run()
 			supported = false;
 			break;
 		}
+		dc_device_close(m_data->device);
+
+		if (!supported) {
+			lastError = tr("This feature is not yet available for the selected dive computer.");
+			emit error(lastError);
+		}
 	} else {
 		lastError = tr("Could not a establish connection to the dive computer.");
-		emit error(lastError);
-		// So we don't trigger the "unsupported" clause later..
-		supported = true;
-	}
-	dc_device_close(m_data->device);
-
-	if (!supported) {
-		lastError = tr("This feature is not yet available for the selected dive computer.");
 		emit error(lastError);
 	}
 }
