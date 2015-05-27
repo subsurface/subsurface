@@ -874,7 +874,7 @@ static const char *do_device_import(device_data_t *data)
 	return NULL;
 }
 
-static void
+void
 logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };

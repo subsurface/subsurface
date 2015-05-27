@@ -1,5 +1,6 @@
 #include "configuredivecomputerthreads.h"
 #include "libdivecomputer/hw.h"
+#include "libdivecomputer.h"
 #include <QDateTime>
 #include <QStringList>
 
@@ -1463,8 +1464,25 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : D
 
 void ReadSettingsThread::run()
 {
+	FILE *fp = NULL;
 	bool supported = false;
 	dc_status_t rc;
+
+	if (m_data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
+
+	m_data->libdc_logfile = fp;
+
+	rc = dc_context_new(&m_data->context);
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Unable to create libdivecomputer context"));
+		return;
+	}
+
+	if (fp) {
+		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(m_data->context, logfunc, fp);
+	}
 
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
@@ -1516,6 +1534,10 @@ void ReadSettingsThread::run()
 	} else {
 		emit error(tr("Could not a establish connection to the dive computer."));
 	}
+	dc_context_free(m_data->context);
+
+	if (fp)
+		fclose(fp);
 }
 
 WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
@@ -1529,8 +1551,25 @@ void WriteSettingsThread::setDeviceDetails(DeviceDetails *details)
 
 void WriteSettingsThread::run()
 {
+	FILE *fp = NULL;
 	bool supported = false;
 	dc_status_t rc;
+
+	if (m_data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
+
+	m_data->libdc_logfile = fp;
+
+	rc = dc_context_new(&m_data->context);
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Unable to create libdivecomputer context"));
+		return;
+	}
+
+	if (fp) {
+		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(m_data->context, logfunc, fp);
+	}
 
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
@@ -1576,6 +1615,11 @@ void WriteSettingsThread::run()
 	} else {
 		emit error(tr("Could not a establish connection to the dive computer."));
 	}
+
+	dc_context_free(m_data->context);
+
+	if (fp)
+		fclose(fp);
 }
 
 
@@ -1585,8 +1629,25 @@ FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data,
 
 void FirmwareUpdateThread::run()
 {
+	FILE *fp = NULL;
 	bool supported = false;
 	dc_status_t rc;
+
+	if (m_data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
+
+	m_data->libdc_logfile = fp;
+
+	rc = dc_context_new(&m_data->context);
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Unable to create libdivecomputer context"));
+		return;
+	}
+
+	if (fp) {
+		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(m_data->context, logfunc, fp);
+	}
 
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
@@ -1594,7 +1655,7 @@ void FirmwareUpdateThread::run()
 		if (rc != DC_STATUS_SUCCESS) {
 			emit error("Error registering the event handler.");
 			dc_device_close(m_data->device);
-			return;
+			goto firmware_run_out;
 		}
 		switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
@@ -1621,6 +1682,11 @@ void FirmwareUpdateThread::run()
 	} else {
 		emit error(tr("Could not a establish connection to the dive computer."));
 	}
+firmware_run_out:
+	dc_context_free(m_data->context);
+
+	if (fp)
+		fclose(fp);
 }
 
 
@@ -1630,8 +1696,26 @@ ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) :
 
 void ResetSettingsThread::run()
 {
+	FILE *fp = NULL;
 	bool supported = false;
 	dc_status_t rc;
+
+	if (m_data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
+
+	m_data->libdc_logfile = fp;
+
+	rc = dc_context_new(&m_data->context);
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Unable to create libdivecomputer context"));
+		return;
+	}
+
+	if (fp) {
+		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(m_data->context, logfunc, fp);
+	}
+
 	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
 	if (rc == DC_STATUS_SUCCESS) {
 #if DC_VERSION_CHECK(0, 5, 0)
@@ -1649,4 +1733,8 @@ void ResetSettingsThread::run()
 	} else {
 		emit error(tr("Could not a establish connection to the dive computer."));
 	}
+	dc_context_free(m_data->context);
+
+	if (fp)
+		fclose(fp);
 }
