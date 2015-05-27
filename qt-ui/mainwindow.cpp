@@ -1277,6 +1277,7 @@ int MainWindow::file_save_as(void)
 				     tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
+	selection_dialog.setDefaultSuffix("");
 
 	/* if the exit/cancel button is pressed return */
 	if (!selection_dialog.exec())
@@ -1284,6 +1285,13 @@ int MainWindow::file_save_as(void)
 
 	/* get the first selected file */
 	filename = selection_dialog.selectedFiles().at(0);
+
+	/* now for reasons I don't understand we appear to add a .ssrf to
+	 * git style filenames <path>/directory[branch]
+	 * so let's remove that */
+	QRegExp r("\\[.*\\]\\.ssrf$", Qt::CaseInsensitive);
+	if (filename.contains(r))
+		filename.remove(QRegExp("\\.ssrf$", Qt::CaseInsensitive));
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
