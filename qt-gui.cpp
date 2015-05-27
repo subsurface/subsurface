@@ -9,7 +9,9 @@
 #include <QDesktopWidget>
 #include <QNetworkProxy>
 #include <QLibraryInfo>
-#include <QTextCodec>
+
+#include <QQuickWindow>
+#include <QQmlApplicationEngine>
 
 #include "qt-gui.h"
 
@@ -28,7 +30,15 @@ void init_ui()
 
 void run_ui()
 {
+#ifdef SUBSURFACE_MOBILE
+	QQmlApplicationEngine engine;
+	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+	QObject *mainWindow = engine.rootObjects().value(0);
+	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(mainWindow);
+	qml_window->show();
+#else
 	window->show();
+#endif
 	qApp->exec();
 }
 
