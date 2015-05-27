@@ -124,6 +124,9 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 		this, SLOT(deviceDetailsReceived(DeviceDetails *)));
 	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 	connect(ui.resetButton, SIGNAL(clicked()), this, SLOT(resetSettings()));
+	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
+	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
+	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
@@ -1116,4 +1119,26 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 	if (selected_vendor == QString("Uemis"))
 		dcType = DC_TYPE_UEMIS;
 	fill_device_list(dcType);
+}
+
+void ConfigureDiveComputerDialog::checkLogFile(int state)
+{
+	ui.chooseLogFile->setEnabled(state == Qt::Checked);
+	device_data.libdc_log = (state == Qt::Checked);
+	if (state == Qt::Checked && logFile.isEmpty()) {
+		pickLogFile();
+	}
+}
+
+void ConfigureDiveComputerDialog::pickLogFile()
+{
+	QString filename = existing_filename ?: prefs.default_filename;
+	QFileInfo fi(filename);
+	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
+	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer download logfile"),
+					       filename, tr("Log files (*.log)"));
+	if (!logFile.isEmpty()) {
+		free(logfile_name);
+		logfile_name = strdup(logFile.toUtf8().data());
+	}
 }

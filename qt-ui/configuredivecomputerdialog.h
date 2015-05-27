@@ -58,6 +58,8 @@ public:
 
 private
 slots:
+	void checkLogFile(int state);
+	void pickLogFile();
 	void readSettings();
 	void resetSettings();
 	void configMessage(QString msg);
@@ -77,6 +79,8 @@ slots:
 
 private:
 	Ui::ConfigureDiveComputerDialog ui;
+
+	QString logFile;
 
 	QStringList vendorList;
 	QHash<QString, QStringList> productList;

@@ -129,6 +129,20 @@
       </spacer>
      </item>
      <item>
+      <widget class="QCheckBox" name="logToFile">
+       <property name="text">
+        <string>Save libdivecomputer logfile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="chooseLogFile">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cancel">
        <property name="text">
         <string>Cancel</string>
