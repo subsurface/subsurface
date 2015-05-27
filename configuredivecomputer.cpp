@@ -547,7 +547,7 @@ void ConfigureDiveComputer::setError(QString err)
 void ConfigureDiveComputer::readThreadFinished()
 {
 	setState(DONE);
-	if (readThread->lastError.isEmpty()) {
+	if (lastError.isEmpty()) {
 		//No error
 		emit message(tr("Dive computer details read successfully"));
 	}
@@ -556,7 +556,7 @@ void ConfigureDiveComputer::readThreadFinished()
 void ConfigureDiveComputer::writeThreadFinished()
 {
 	setState(DONE);
-	if (writeThread->lastError.isEmpty()) {
+	if (lastError.isEmpty()) {
 		//No error
 		emit message(tr("Setting successfully written to device"));
 	}
@@ -565,7 +565,7 @@ void ConfigureDiveComputer::writeThreadFinished()
 void ConfigureDiveComputer::firmwareThreadFinished()
 {
 	setState(DONE);
-	if (firmwareThread->lastError.isEmpty()) {
+	if (lastError.isEmpty()) {
 		//No error
 		emit message(tr("Device firmware successfully updated"));
 	}
@@ -574,7 +574,7 @@ void ConfigureDiveComputer::firmwareThreadFinished()
 void ConfigureDiveComputer::resetThreadFinished()
 {
 	setState(DONE);
-	if (resetThread->lastError.isEmpty()) {
+	if (lastError.isEmpty()) {
 		//No error
 		emit message(tr("Device settings successfully reset"));
 	}

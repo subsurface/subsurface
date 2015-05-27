@@ -1511,12 +1511,10 @@ void ReadSettingsThread::run()
 		dc_device_close(m_data->device);
 
 		if (!supported) {
-			lastError = tr("This feature is not yet available for the selected dive computer.");
-			emit error(lastError);
+			emit error(tr("This feature is not yet available for the selected dive computer."));
 		}
 	} else {
-		lastError = tr("Could not a establish connection to the dive computer.");
-		emit error(lastError);
+		emit error(tr("Could not a establish connection to the dive computer."));
 	}
 }
 
@@ -1573,12 +1571,10 @@ void WriteSettingsThread::run()
 		dc_device_close(m_data->device);
 
 		if (!supported) {
-			lastError = tr("This feature is not yet available for the selected dive computer.");
-			emit error(lastError);
+			emit error(tr("This feature is not yet available for the selected dive computer."));
 		}
 	} else {
-		lastError = tr("Could not a establish connection to the dive computer.");
-		emit error(lastError);
+		emit error(tr("Could not a establish connection to the dive computer."));
 	}
 }
 
@@ -1618,14 +1614,12 @@ void FirmwareUpdateThread::run()
 		dc_device_close(m_data->device);
 
 		if (!supported) {
-			lastError = tr("This feature is not yet available for the selected dive computer.");
-			emit error(lastError);
+			emit error(tr("This feature is not yet available for the selected dive computer."));
 		} else if (rc != DC_STATUS_SUCCESS) {
-			lastError = tr("Firmware update failed!");
+			emit error(tr("Firmware update failed!"));
 		}
 	} else {
-		lastError = tr("Could not a establish connection to the dive computer.");
-		emit error(lastError);
+		emit error(tr("Could not a establish connection to the dive computer."));
 	}
 }
 
@@ -1650,11 +1644,9 @@ void ResetSettingsThread::run()
 		dc_device_close(m_data->device);
 
 		if (!supported) {
-			lastError = tr("This feature is not yet available for the selected dive computer.");
-			emit error(lastError);
+			emit error(tr("This feature is not yet available for the selected dive computer."));
 		}
 	} else {
-		lastError = tr("Could not a establish connection to the dive computer.");
-		emit error(lastError);
+		emit error(tr("Could not a establish connection to the dive computer."));
 	}
 }

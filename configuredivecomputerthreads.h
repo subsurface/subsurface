@@ -13,7 +13,6 @@ class DeviceThread : public QThread {
 public:
 	DeviceThread(QObject *parent, device_data_t *data);
 	virtual void run() = 0;
-	QString lastError;
 signals:
 	void error(QString err);
 	void progress(int value);
