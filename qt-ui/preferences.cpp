@@ -465,6 +465,10 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("proxy_user", proxy_user);
 	GET_TXT("proxy_pass", proxy_pass);
 	s.endGroup();
+
+	s.beginGroup("RemoteStorage");
+	GET_TXT("passphrase", passphrase);
+	s.endGroup();
 }
 
 void PreferencesDialog::buttonClicked(QAbstractButton *button)

@@ -248,6 +248,7 @@ void free_prefs(void)
 	free((void*)prefs.default_filename);
 	free((void*)prefs.default_cylinder);
 	free((void*)prefs.divelist_font);
+	free((void*)prefs.passphrase);
 	free(prefs.proxy_host);
 	free(prefs.proxy_user);
 	free(prefs.proxy_pass);

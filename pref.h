@@ -90,6 +90,7 @@ struct preferences {
 	bool show_pictures_in_profile;
 	bool use_default_file;
 	facebook_prefs_t facebook;
+	char *passphrase;
 };
 enum unit_system_values {
 	METRIC,
