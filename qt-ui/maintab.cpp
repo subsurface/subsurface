@@ -782,7 +782,7 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(suit));
 		if (!same_string(displayed_dive.notes, cd->notes))
 			MODIFY_SELECTED_DIVES(EDIT_TEXT(notes));
-		if (!same_string(displayed_dive.divemaster, cd->divemaster))
+		if (displayed_dive.rating != cd->rating)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(rating));
 		if (displayed_dive.visibility != cd->visibility)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
