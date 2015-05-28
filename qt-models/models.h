@@ -18,21 +18,7 @@
 #include "../dive.h"
 #include "../divelist.h"
 #include "../divecomputer.h"
-
-// Encapsulates Boilerplate.
-class CleanerTableModel : public QAbstractTableModel {
-	Q_OBJECT
-public:
-	explicit CleanerTableModel(QObject *parent = 0);
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-
-protected:
-	void setHeaderDataStrings(const QStringList &headers);
-
-private:
-	QStringList headers;
-};
+#include "cleanertablemodel.h"
 
 /* Encapsulates the tank_info global variable
  * to show on Qt's Model View System.*/
