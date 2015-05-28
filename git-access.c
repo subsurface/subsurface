@@ -69,6 +69,19 @@ static int try_to_update(git_repository *rep, git_reference *local, git_referenc
 	return report_error("Local and remote do not match, not updating");
 }
 
+#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+int credential_cb(git_cred **out,
+		  const char *url,
+		  const char *username_from_url,
+		  unsigned int allowed_types,
+		  void *payload)
+{
+	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+	const char *passphrase = copy_string(prefs.passphrase);
+	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
+}
+#endif
+
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
 {
 	int error;
@@ -95,7 +108,12 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	}
 
 	// NOTE! A fetch error is not fatal, we just report it
-	error = git_remote_fetch(origin, NULL, NULL, NULL);
+	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
+#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+	if (strncmp(remote, "ssh://", 6) == 0)
+		opts.callbacks.credentials = credential_cb;
+#endif
+	error = git_remote_fetch(origin, NULL, &opts, NULL);
 	git_remote_free(origin);
 	if (error) {
 		report_error("Unable to update cache for remote '%s'", remote);
@@ -129,7 +147,10 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-
+#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+	if (strncmp(remote, "ssh://", 6) == 0)
+		opts.fetch_opts.callbacks.credentials = credential_cb;
+#endif
 	opts.checkout_branch = branch;
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
 	if (error) {
