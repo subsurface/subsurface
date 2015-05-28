@@ -19,6 +19,7 @@
 #include "divesitehelpers.h"
 #include "cylindermodel.h"
 #include "weightmodel.h"
+#include "divecomputerextradatamodel.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
