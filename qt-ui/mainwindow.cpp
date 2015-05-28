@@ -31,6 +31,7 @@
 #endif
 #include "tankinfomodel.h"
 #include "weigthsysteminfomodel.h"
+#include "yearlystatisticsmodel.h"
 #include "diveplannermodel.h"
 #include "divelogimportdialog.h"
 #include "divelogexportdialog.h"

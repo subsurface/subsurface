@@ -1,4 +1,5 @@
 #include "statisticswidget.h"
+#include "yearlystatisticsmodel.h"
 #include "models.h"
 #include <QModelIndex>
 

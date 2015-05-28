@@ -25,7 +25,6 @@
 *
 */
 
-
 struct DiveItem : public TreeItem {
 	enum Column {
 		NR,
@@ -60,7 +59,6 @@ struct DiveItem : public TreeItem {
 };
 
 struct TripItem;
-
 
 class DiveTripModel : public TreeModel {
 	Q_OBJECT
@@ -107,33 +105,6 @@ private:
 	void setupModelData();
 	QMap<dive_trip_t *, TripItem *> trips;
 	Layout currentLayout;
-};
-
-class YearlyStatisticsModel : public TreeModel {
-	Q_OBJECT
-public:
-	enum {
-		YEAR,
-		DIVES,
-		TOTAL_TIME,
-		AVERAGE_TIME,
-		SHORTEST_TIME,
-		LONGEST_TIME,
-		AVG_DEPTH,
-		MIN_DEPTH,
-		MAX_DEPTH,
-		AVG_SAC,
-		MIN_SAC,
-		MAX_SAC,
-		AVG_TEMP,
-		MIN_TEMP,
-		MAX_TEMP,
-		COLUMNS
-	};
-
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	YearlyStatisticsModel(QObject *parent = 0);
-	void update_yearly_stats();
 };
 
 /* TablePrintModel:
