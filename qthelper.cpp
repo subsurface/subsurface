@@ -909,3 +909,114 @@ QString get_divepoint_gas_string(const divedatapoint &p)
 {
 	return get_gas_string(p.gasmix);
 }
+
+weight_t string_to_weight(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_kg = QObject::tr("kg");
+	QString local_lbs = QObject::tr("lbs");
+	weight_t weight;
+
+	if (rest.startsWith("kg") || rest.startsWith(local_kg))
+		goto kg;
+	// using just "lb" instead of "lbs" is intentional - some people might enter the singular
+	if (rest.startsWith("lb") || rest.startsWith(local_lbs))
+		goto lbs;
+	if (prefs.units.weight == prefs.units.LBS)
+		goto lbs;
+kg:
+	weight.grams = rint(value * 1000);
+	return weight;
+lbs:
+	weight.grams = lbs_to_grams(value);
+	return weight;
+}
+
+depth_t string_to_depth(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_ft = QObject::tr("ft");
+	QString local_m = QObject::tr("m");
+	depth_t depth;
+
+	if (rest.startsWith("m") || rest.startsWith(local_m))
+		goto m;
+	if (rest.startsWith("ft") || rest.startsWith(local_ft))
+		goto ft;
+	if (prefs.units.length == prefs.units.FEET)
+		goto ft;
+m:
+	depth.mm = rint(value * 1000);
+	return depth;
+ft:
+	depth.mm = feet_to_mm(value);
+	return depth;
+}
+
+pressure_t string_to_pressure(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_psi = QObject::tr("psi");
+	QString local_bar = QObject::tr("bar");
+	pressure_t pressure;
+
+	if (rest.startsWith("bar") || rest.startsWith(local_bar))
+		goto bar;
+	if (rest.startsWith("psi") || rest.startsWith(local_psi))
+		goto psi;
+	if (prefs.units.pressure == prefs.units.PSI)
+		goto psi;
+bar:
+	pressure.mbar = rint(value * 1000);
+	return pressure;
+psi:
+	pressure.mbar = psi_to_mbar(value);
+	return pressure;
+}
+
+volume_t string_to_volume(const char *str, pressure_t workp)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	QString rest = QString(end).trimmed();
+	QString local_l = QObject::tr("l");
+	QString local_cuft = QObject::tr("cuft");
+	volume_t volume;
+
+	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))
+		goto l;
+	if (rest.startsWith("cuft") || rest.startsWith(local_cuft))
+		goto cuft;
+	/*
+	 * If we don't have explicit units, and there is no working
+	 * pressure, we're going to assume "liter" even in imperial
+	 * measurements.
+	 */
+	if (!workp.mbar)
+		goto l;
+	if (prefs.units.volume == prefs.units.LITER)
+		goto l;
+cuft:
+	if (workp.mbar)
+		value /= bar_to_atm(workp.mbar / 1000.0);
+	value = cuft_to_l(value);
+l:
+	volume.mliter = rint(value * 1000);
+	return volume;
+}
+
+fraction_t string_to_fraction(const char *str)
+{
+	const char *end;
+	double value = strtod_flags(str, &end, 0);
+	fraction_t fraction;
+
+	fraction.permille = rint(value * 10);
+	return fraction;
+}

@@ -8,7 +8,7 @@
 #include "profile/profilewidget2.h"
 #include "tankinfomodel.h"
 #include "weigthsysteminfomodel.h"
-
+#include "weightmodel.h"
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QTextDocument>

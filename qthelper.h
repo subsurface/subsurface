@@ -27,4 +27,10 @@ void add_hash(const QString filename, QByteArray hash);
 QString localFilePath(const QString originalFilename);
 QString fileFromHash(char *hash);
 void learnHash(struct picture *picture, QByteArray hash);
+weight_t string_to_weight(const char *str);
+depth_t string_to_depth(const char *str);
+pressure_t string_to_pressure(const char *str);
+volume_t string_to_volume(const char *str, pressure_t workp);
+fraction_t string_to_fraction(const char *str);
+
 #endif // QTHELPER_H

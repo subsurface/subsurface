@@ -18,6 +18,7 @@
 #include "diveplanner.h"
 #include "divesitehelpers.h"
 #include "cylindermodel.h"
+#include "weightmodel.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"

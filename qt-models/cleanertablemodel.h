@@ -3,6 +3,10 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
+#include <QPixmap>
+
+/* Retrieve the trash icon pixmap, common to most table models */
+const QPixmap &trashIcon();
 
 /* When using a QAbstractTableModel, consider using this instead
  * of the default implementation, as it's easyer to setup the columns
