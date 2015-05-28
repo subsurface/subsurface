@@ -209,6 +209,7 @@ static struct git_repository *is_remote_git_repository(const char *remote, const
 struct git_repository *is_git_repository(const char *filename, const char **branchp)
 {
 	int flen, blen, ret;
+	int offset = 1;
 	struct stat st;
 	git_repository *repo;
 	char *loc, *branch;
@@ -223,8 +224,10 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		blen++;
 
 	/* Ignore slashes at the end of the repo name */
-	while (flen && filename[flen-1] == '/')
+	while (flen && filename[flen-1] == '/') {
 		flen--;
+		offset++;
+	}
 
 	if (!flen)
 		return NULL;
@@ -248,7 +251,7 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	if (!loc)
 		return dummy_git_repository;
 
-	branch = format_string("%.*s", blen, filename+flen+1);
+	branch = format_string("%.*s", blen, filename + flen + offset);
 	if (!branch) {
 		free(loc);
 		return dummy_git_repository;
