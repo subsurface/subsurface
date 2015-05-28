@@ -204,6 +204,12 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.proxyPassword->setText(prefs.proxy_pass);
 	ui.proxyType->setCurrentIndex(ui.proxyType->findData(prefs.proxy_type));
 	ui.btnUseDefaultFile->setChecked(prefs.use_default_file);
+
+	s.beginGroup("RemoteStorage");
+	ui.remote_storage_email->setText(prefs.remote_storage_email);
+	ui.remote_storage_pin->setText(prefs.passphrase);
+	ui.save_PIN_local->setChecked(prefs.save_PIN_local);
+	s.endGroup();
 }
 
 void PreferencesDialog::restorePrefs()
@@ -355,6 +361,14 @@ void PreferencesDialog::syncSettings()
 	s.setValue("proxy_pass", ui.proxyPassword->text());
 	s.endGroup();
 
+	s.beginGroup("RemoteStorage");
+	SAVE_OR_REMOVE("remote_storage_email", default_prefs.remote_storage_email, ui.remote_storage_email->text());
+	SAVE_OR_REMOVE("save_PIN_local", default_prefs.save_PIN_local, ui.save_PIN_local->isChecked());
+	if (ui.save_PIN_local->isChecked())
+		SAVE_OR_REMOVE("passphrase", default_prefs.passphrase, ui.remote_storage_pin->text());
+	else
+		s.remove("passphrase");
+	s.endGroup();
 	loadSettings();
 	emit settingsChanged();
 }
@@ -468,6 +482,8 @@ void PreferencesDialog::loadSettings()
 
 	s.beginGroup("RemoteStorage");
 	GET_TXT("passphrase", passphrase);
+	GET_TXT("remote_storage_email", remote_storage_email);
+	GET_BOOL("save_PIN_local", save_PIN_local);
 	s.endGroup();
 }
 

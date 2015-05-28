@@ -91,6 +91,8 @@ struct preferences {
 	bool use_default_file;
 	facebook_prefs_t facebook;
 	char *passphrase;
+	char *remote_storage_email;
+	bool save_PIN_local;
 };
 enum unit_system_values {
 	METRIC,
