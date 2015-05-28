@@ -20,25 +20,11 @@
 #include "../divelist.h"
 #include "../divecomputer.h"
 #include "cleanertablemodel.h"
-
+#include "treemodel.h"
 /*! An AbstractItemModel for recording dive trip information such as a list of dives.
 *
 */
 
-struct TreeItem {
-	Q_DECLARE_TR_FUNCTIONS(TreeItemDT);
-
-public:
-	virtual ~TreeItem();
-	TreeItem();
-	virtual QVariant data(int column, int role) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-
-	int row() const;
-	QList<TreeItem *> children;
-	TreeItem *parent;
-};
 
 struct DiveItem : public TreeItem {
 	enum Column {
@@ -75,21 +61,6 @@ struct DiveItem : public TreeItem {
 
 struct TripItem;
 
-class TreeModel : public QAbstractItemModel {
-	Q_OBJECT
-public:
-	TreeModel(QObject *parent = 0);
-	virtual ~TreeModel();
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
-
-protected:
-	int columns;
-	TreeItem *rootItem;
-};
 
 class DiveTripModel : public TreeModel {
 	Q_OBJECT
