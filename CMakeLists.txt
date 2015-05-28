@@ -15,7 +15,13 @@ option(NO_DOCS "disable the docs" OFF)
 option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 
 set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
-include_directories(. ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR} qt-ui qt-ui/profile)
+include_directories(.
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_BINARY_DIR}
+	qt-ui
+	qt-models
+	qt-ui/profile
+)
 
 # compiler specific settings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
@@ -238,11 +244,19 @@ if(FBSUPPORT)
 	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
 
+# the data models that will interface
+# with the views.
+set(SUBSURFACE_MODELS_LIB_SRCS
+	qt-models/models.cpp
+	qt-models/filtermodels.cpp
+	qt-models/completionmodels.cpp
+)
+source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
+
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
 	qt-ui/updatemanager.cpp
 	qt-ui/about.cpp
-	qt-ui/completionmodels.cpp
 	qt-ui/divecomputermanagementdialog.cpp
 	qt-ui/divelistview.cpp
 	qt-ui/diveplanner.cpp
@@ -254,7 +268,6 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/maintab.cpp
 	qt-ui/mainwindow.cpp
 	qt-ui/modeldelegates.cpp
-	qt-ui/models.cpp
 	qt-ui/metrics.cpp
 	qt-ui/notificationwidget.cpp
 	qt-ui/preferences.cpp
@@ -273,7 +286,6 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/divepicturewidget.cpp
 	qt-ui/usersurvey.cpp
 	qt-ui/configuredivecomputerdialog.cpp
-	qt-ui/filtermodels.cpp
 	qt-ui/undocommands.cpp
 	qt-ui/locationinformation.cpp
 	qt-ui/qtwaitingspinner.cpp
@@ -324,6 +336,8 @@ source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
 
 add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
 target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
+add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
+target_link_libraries(subsurface_models ${QT_LIBRARIES})
 add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
 target_link_libraries(subsurface_profile ${QT_LIBRARIES})
 add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
@@ -348,6 +362,7 @@ target_link_libraries(
 	subsurface_interface
 	subsurface_profile
 	subsurface_statistics
+	subsurface_models
 	subsurface_corelib
 	${SUBSURFACE_LINK_LIBRARIES}
 )
