@@ -6,6 +6,7 @@
 #include "models.h"
 #include "starwidget.h"
 #include "profile/profilewidget2.h"
+#include "tankinfomodel.h"
 
 #include <QCompleter>
 #include <QKeyEvent>

@@ -1,4 +1,5 @@
 #include "cylindermodel.h"
+#include "tankinfomodel.h"
 #include "models.h"
 #include "helpers.h"
 #include "dive.h"
