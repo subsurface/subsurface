@@ -1736,14 +1736,14 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 		return "root";
 	}
 
-	if (node->type == XML_CDATA_SECTION_NODE || (node->parent && !strcmp(node->name, "text")))
+	if (node->type == XML_CDATA_SECTION_NODE || (node->parent && !strcmp((const char *)node->name, "text")))
 		node = node->parent;
 
 	/* Make sure it's always NUL-terminated */
 	p[--len] = 0;
 
 	for (;;) {
-		const char *name = node->name;
+		const char *name = (const char *)node->name;
 		char c;
 		while ((c = *name++) != 0) {
 			/* Cheaper 'tolower()' for ASCII */
@@ -1768,7 +1768,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 
 static bool visit_one_node(xmlNode *node)
 {
-	char *content;
+	xmlChar *content;
 	static char buffer[MAXNAME];
 	const char *name;
 
@@ -1778,7 +1778,7 @@ static bool visit_one_node(xmlNode *node)
 
 	name = nodename(node, buffer, sizeof(buffer));
 
-	return entry(name, content);
+	return entry(name, (char *)content);
 }
 
 static bool traverse(xmlNode *root);
@@ -1874,7 +1874,7 @@ static bool traverse(xmlNode *root)
 		}
 
 		do {
-			if (!strcmp(rule->name, n->name))
+			if (!strcmp(rule->name, (const char *)n->name))
 				break;
 			rule++;
 		} while (rule->name);
@@ -1921,7 +1921,7 @@ const char *preprocess_divelog_de(const char *buffer)
 				return buffer;
 
 		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
-		ret = xmlStringLenDecodeEntities(ctx, ret, strlen(ret), XML_SUBSTITUTE_REF, 0, 0, 0);
+		ret = (char *)xmlStringLenDecodeEntities(ctx, (xmlChar *)ret, strlen(ret), XML_SUBSTITUTE_REF, 0, 0, 0);
 
 		return ret;
 	}
@@ -3138,17 +3138,17 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params)
 	char *attribute;
 
 	while (info->root) {
-		if ((strcasecmp(root_element->name, info->root) == 0)) {
+		if ((strcasecmp((const char *)root_element->name, info->root) == 0)) {
 			if (info->attribute == NULL)
 				break;
-			else if (xmlGetProp(root_element, info->attribute) != NULL)
+			else if (xmlGetProp(root_element, (const xmlChar *)info->attribute) != NULL)
 				break;
 		}
 		info++;
 	}
 
 	if (info->root) {
-		attribute = xmlGetProp(xmlFirstElementChild(root_element), "name");
+		attribute = (char *)xmlGetProp(xmlFirstElementChild(root_element), (const xmlChar *)"name");
 		if (attribute) {
 			if (strcasecmp(attribute, "subsurface") == 0) {
 				free((void *)attribute);

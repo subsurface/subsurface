@@ -200,7 +200,7 @@ static void cochran_parse_header(const unsigned char *decode, unsigned mod,
 
 	/* Do the "null decode" using a one-byte decode array of '\0' */
 	/* Copies in plaintext, will be overwritten later */
-	partial_decode(0, 0x0102, "", 0, 1, in, size, buf);
+	partial_decode(0, 0x0102, (const unsigned char *)"", 0, 1, in, size, buf);
 
 	/*
 	 * The header scrambling is different form the dive
@@ -778,7 +778,7 @@ int try_to_open_cochran(const char *filename, struct memblock *mem)
 	if (mem->size < 0x40000)
 		return 0;
 
-	offsets = (int *) mem->buffer;
+	offsets = (unsigned int *) mem->buffer;
 	dive1 = offsets[0];
 	dive2 = offsets[1];
 

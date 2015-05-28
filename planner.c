@@ -470,7 +470,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	int *stoplevels = malloc(total * sizeof(int));
+	unsigned int *stoplevels = malloc(total * sizeof(int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
@@ -866,7 +866,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	double tissue_tolerance = 0.0;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
-	int *stoplevels = NULL;
+	unsigned int *stoplevels = NULL;
 	bool stopping = false;
 	bool clear_to_ascend;
 	int clock, previous_point_time;

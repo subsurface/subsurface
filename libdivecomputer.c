@@ -409,7 +409,7 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 #ifdef DC_FIELD_STRING
 static uint32_t calculate_string_hash(const char *str)
 {
-	return calculate_diveid(str, strlen(str));
+	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
 static void parse_string_field(struct dive *dive, dc_field_string_t *str)

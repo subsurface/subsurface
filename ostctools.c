@@ -67,8 +67,8 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	FILE *archive;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 	dc_family_t dc_fam;
-	unsigned char *buffer = calloc(65536, 1),
-		      *tmp;
+	unsigned char *buffer = calloc(65536, 1);
+	char *tmp;
 	struct dive *ostcdive = alloc_dive();
 	dc_status_t rc = 0;
 	int model = 0, i = 0;
@@ -125,7 +125,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	// a model number so will use 0.
 	ostc_prepare_data(model, dc_fam, devdata);
 	tmp = calloc(strlen(devdata->vendor)+strlen(devdata->model)+28,1);
-	sprintf(tmp,"%s %s (Imported from OSTCTools)", devdata->vendor, devdata->model);
+	sprintf(tmp, "%s %s (Imported from OSTCTools)", devdata->vendor, devdata->model);
 	ostcdive->dc.model =  copy_string(tmp);
 	free(tmp);
 
