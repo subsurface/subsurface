@@ -255,6 +255,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/tankinfomodel.cpp
 	qt-models/weigthsysteminfomodel.cpp
 	qt-models/weightmodel.cpp
+	qt-models/divecomputermodel.cpp
 	qt-models/divecomputerextradatamodel.cpp
 	qt-models/completionmodels.cpp
 )
