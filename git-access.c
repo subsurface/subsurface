@@ -26,6 +26,13 @@
     #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote, signature, reflog)
   #endif
 #endif
+/*
+ * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
+ */
+#if USE_LIBGIT23_API
+  #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
+	git_branch_create(out, repo, branch_name, target, force)
+#endif
 
 static char *get_local_dir(const char *remote, const char *branch)
 {

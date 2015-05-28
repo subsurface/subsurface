@@ -34,6 +34,15 @@
 #else
   #define git_treebuilder_write(id, repo, bld)   git_treebuilder_write(id, bld)
 #endif
+/*
+ * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
+ */
+#if USE_LIBGIT23_API
+  #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
+	git_branch_create(out, repo, branch_name, target, force)
+  #define git_reference_set_target(out, ref, id, author, log_message) \
+	git_reference_set_target(out, ref, id, log_message)
+#endif
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
