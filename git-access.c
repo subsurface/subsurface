@@ -69,7 +69,7 @@ static int try_to_update(git_repository *rep, git_reference *local, git_referenc
 	return report_error("Local and remote do not match, not updating");
 }
 
-#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+#if USE_LIBGIT23_API
 int credential_cb(git_cred **out,
 		  const char *url,
 		  const char *username_from_url,
@@ -109,7 +109,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 	// NOTE! A fetch error is not fatal, we just report it
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
-#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+#if USE_LIBGIT23_API
 	if (strncmp(remote, "ssh://", 6) == 0)
 		opts.callbacks.credentials = credential_cb;
 #endif
@@ -147,7 +147,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-#if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
+#if USE_LIBGIT23_API
 	if (strncmp(remote, "ssh://", 6) == 0)
 		opts.fetch_opts.callbacks.credentials = credential_cb;
 #endif
