@@ -11,6 +11,7 @@
 #include "modeldelegates.h"
 #include "models.h"
 #include "profile/profilewidget2.h"
+#include "divetripmodel.h"
 
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct print_options *optionsPtr)
 {

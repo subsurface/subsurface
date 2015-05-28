@@ -258,6 +258,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/divecomputermodel.cpp
 	qt-models/treemodel.cpp
 	qt-models/yearlystatisticsmodel.cpp
+	qt-models/divetripmodel.cpp
 	qt-models/divecomputerextradatamodel.cpp
 	qt-models/completionmodels.cpp
 )

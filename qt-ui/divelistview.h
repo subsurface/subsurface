@@ -15,6 +15,7 @@
 #include <QLineEdit>
 #include <QNetworkAccessManager>
 #include "models.h"
+#include "divetripmodel.h"
 
 class DiveListView : public QTreeView {
 	Q_OBJECT
