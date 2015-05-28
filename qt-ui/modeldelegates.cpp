@@ -2,6 +2,7 @@
 #include "dive.h"
 #include "gettextfromc.h"
 #include "mainwindow.h"
+#include "cylindermodel.h"
 #include "models.h"
 #include "starwidget.h"
 #include "profile/profilewidget2.h"

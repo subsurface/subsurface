@@ -12,6 +12,7 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
+#include <QPixmap>
 
 #include "metrics.h"
 
@@ -77,48 +78,6 @@ private:
 
 /* Retrieve the trash icon pixmap, common to most table models */
 const QPixmap &trashIcon();
-
-/* Encapsulation of the Cylinder Model, that presents the
- * Current cylinders that are used on a dive. */
-class CylindersModel : public CleanerTableModel {
-	Q_OBJECT
-public:
-	enum Column {
-		REMOVE,
-		TYPE,
-		SIZE,
-		WORKINGPRESS,
-		START,
-		END,
-		O2,
-		HE,
-		DEPTH,
-		USE,
-		COLUMNS
-	};
-
-	explicit CylindersModel(QObject *parent = 0);
-	static CylindersModel *instance();
-	/*reimp*/ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ Qt::ItemFlags flags(const QModelIndex &index) const;
-	/*reimp*/ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-
-	void passInData(const QModelIndex &index, const QVariant &value);
-	void add();
-	void clear();
-	void updateDive();
-	void copyFromDive(struct dive *d);
-	cylinder_t *cylinderAt(const QModelIndex &index);
-	bool changed;
-
-public
-slots:
-	void remove(const QModelIndex &index);
-
-private:
-	int rows;
-};
 
 /* Encapsulation of the Weight Model, that represents
  * the current weights on a dive. */

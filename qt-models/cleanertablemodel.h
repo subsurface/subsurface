@@ -19,9 +19,18 @@ public:
 
 protected:
 	void setHeaderDataStrings(const QStringList &headers);
+signals:
+
+	/* instead of using QMessageBox directly, wire a QWidget to this signal and display the result.
+	 * This is because the QModels will be used from the Mobile version and the desktop version. */
+	void warningMessage(const QString& title, const QString& message);
 
 private:
 	QStringList headers;
 };
+
+/* Has the string value changed */
+#define CHANGED() \
+	(vString = value.toString()) != data(index, role).toString()
 
 #endif

@@ -11,6 +11,7 @@
 #include "tankitem.h"
 #include "pref.h"
 #include "divepicturewidget.h"
+#include "diveplannermodel.h"
 #include "models.h"
 #include "maintab.h"
 #include "diveplanner.h"
@@ -1562,7 +1563,7 @@ void ProfileWidget2::repositionDiveHandlers()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText(dpGasToStr(datapoint));
+		gases[i]->setText(get_divepoint_gas_string(datapoint));
 		gases[i]->setVisible(datapoint.entered &&
 				(i == 0 || gases[i]->text() != gases[i-1]->text()));
 	}

@@ -29,6 +29,7 @@
 #include <QPrintDialog>
 #include "printdialog.h"
 #endif
+#include "diveplannermodel.h"
 #include "divelogimportdialog.h"
 #include "divelogexportdialog.h"
 #include "usersurvey.h"

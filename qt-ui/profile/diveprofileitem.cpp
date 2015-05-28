@@ -6,6 +6,7 @@
 #include "dive.h"
 #include "profile.h"
 #include "preferences.h"
+#include "diveplannermodel.h"
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
 #include "mainwindow.h"
@@ -758,7 +759,7 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 
 void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
-	QString gas = gasToStr(gasmix);
+	QString gas = get_gas_string(gasmix);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar) + gasname_offset );
 	text->setText(gas);

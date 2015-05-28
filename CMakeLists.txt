@@ -248,6 +248,8 @@ endif()
 # with the views.
 set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/cleanertablemodel.cpp
+	qt-models/cylindermodel.cpp
+	qt-models/diveplannermodel.cpp
 	qt-models/models.cpp
 	qt-models/filtermodels.cpp
 	qt-models/completionmodels.cpp
