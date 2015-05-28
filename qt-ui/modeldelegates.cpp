@@ -7,6 +7,7 @@
 #include "starwidget.h"
 #include "profile/profilewidget2.h"
 #include "tankinfomodel.h"
+#include "weigthsysteminfomodel.h"
 
 #include <QCompleter>
 #include <QKeyEvent>

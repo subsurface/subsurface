@@ -30,6 +30,7 @@
 #include "printdialog.h"
 #endif
 #include "tankinfomodel.h"
+#include "weigthsysteminfomodel.h"
 #include "diveplannermodel.h"
 #include "divelogimportdialog.h"
 #include "divelogexportdialog.h"

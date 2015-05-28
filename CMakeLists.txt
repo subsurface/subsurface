@@ -253,6 +253,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/models.cpp
 	qt-models/filtermodels.cpp
 	qt-models/tankinfomodel.cpp
+	qt-models/weigthsysteminfomodel.cpp
 	qt-models/completionmodels.cpp
 )
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
