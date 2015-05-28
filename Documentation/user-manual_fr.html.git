@@ -511,10 +511,10 @@ ligne de commande.</p></div>
 <div class="sect1">
 <h2 id="S_StartUsing">3. Commencer à utiliser le programme</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
-Menu</strong> (File Import Log View Help) at the top of the window (for Windows and
-Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels
-are:</p></div>
+<div class="paragraph"><p>La fenêtre <em>Subsurface</em> est généralement divisée en 4 panneaux avec un <strong>Menu
+principal</strong> (Fichier Importer Journal Vue Aide) en haut de la fenêtre (pour
+Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu Unity). Les
+quatre panneaux sont :</p></div>
 <div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, contenant une liste de toutes les
 plongées du journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut
 être sélectionnée et mise en surbrillance dans la liste en cliquant
@@ -2387,7 +2387,7 @@ later, the external drive with the photos is connected again, the photos can
 be seen in the normal way.</p></div>
 </div>
 <div class="sect3">
-<h4 id="Moving_images">5.5.5. Moving photographs among directories, hard disks or computers</h4>
+<h4 id="S_FindMovedImages">5.5.5. Moving photographs among directories, hard disks or computers</h4>
 <div class="paragraph"><p>After a photograph has been loaded into <em>Subsurface</em> and associated with a specific dive, the directory
  where the photo lies is stored, allowing <em>Subsurface</em> to find the photograph when the dive is
  opened again. If the photo or the whole photo collection is moved to another drive or to a different
@@ -4723,6 +4723,14 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
+<a href="#S_FindMovedImages"><em>Find moved images</em></a> - If photos taken during dives
+  have been moved to
+      a different disk or directory, locate them and link them to the appropriate
+      dives.
+</p>
+</li>
+<li>
+<p>
 <a href="#S_Preferences"><em>Préférences</em></a> - Définir les  préférences de <em>Subsurface</em>.
 </p>
 </li>
@@ -4781,14 +4789,20 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
+<em>Edit dive</em> - Edit a dive of which the profile was entered by hande and not
+  from a dive computer.
+</p>
+</li>
+<li>
+<p>
 <a href="#S_DivePlanner"><em>Planifier une plongée</em></a> - Cette fonctionnalité permet de
   planifier des plongées.
 </p>
 </li>
 <li>
 <p>
-<a href="#S_Replan"><em>Replanifier une plongée</em></a> - Modifier une plongée planifiée qui
-  a été enregistrée dans la <strong>liste des plongées</strong>.
+<a href="#S_Replan"><em>Modifier la plongée dans le planificateur</em></a> - Modifier une
+  plongée planifiée qui a été enregistrée dans la <strong>liste des plongées</strong>.
 </p>
 </li>
 <li>
@@ -5077,72 +5091,249 @@ Log</em> and wait for the <em>Wait PC</em> message.</p></div>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><div class="title">Sur Windows :</div><p>Bluetooth is most likely already enabled. For pairing with the dive computer
+<div class="sect3">
+<h4 id="_sur_windows">15.3.1. Sur Windows :</h4>
+<div class="paragraph"><p>Bluetooth is most likely already enabled. For pairing with the dive computer
 choose <em>Control Panel &#8594; Bluetooth Devices &#8594; Add Wireless Device</em>.  This
-should bring up a dialog showing your dive computer (in Bluetooth mode) and
-allowing pairing. Right click on it and choose <em>Propertie s&#8594; COM Ports</em> to
-identify the port used for your dive computer. If there are several ports
-listed, use the one saying "Outgoing" instead of "Incoming".</p></div>
+should bring up a dialog showing your dive computer (which should be in
+Bluetooth mode) and allowing pairing. Right click on it and choose
+<em>Properties&#8594; COM Ports</em> to identify the port used for your dive
+computer. If there are several ports listed, use the one saying "Outgoing"
+instead of "Incoming".</p></div>
 <div class="paragraph"><p>For downloading to <em>Subsurface</em>, the <em>Subsurface</em> drop-down list should
 contain this COM port already. If not, enter it manually.</p></div>
 <div class="paragraph"><p>Note: If there are issues afterwards when downloading from the dive computer
 using other software, remove the existing pairing with the dive computer.</p></div>
-<div class="paragraph"><div class="title">Sur MacOS :</div><p>Click on the Bluetooth symbol in the menu bar and select <em>Set up Bluetooth
+</div>
+<div class="sect3">
+<h4 id="_sur_macos">15.3.2. Sur MacOS :</h4>
+<div class="paragraph"><p>Click on the Bluetooth symbol in the menu bar and select <em>Set up Bluetooth
 Device&#8230;</em>. The dive computer should then show up in the list of
 devices. Select it and go through the pairing process. This step should only
 be needed once for initial setup.</p></div>
 <div class="paragraph"><p>Once the pairing is completed the correct device is shown in the <em>Device or
 Mount Point</em> drop-down in the <em>Subsurface</em> <strong>Import</strong> dialog.</p></div>
-<div class="paragraph"><div class="title">Sur Linux</div><p>Ensure Bluetooth is enabled on the <em>Subsurface</em> computer.  On most common
+</div>
+<div class="sect3">
+<h4 id="_sur_linux">15.3.3. Sur Linux</h4>
+<div class="paragraph"><p>Ensure Bluetooth is enabled on the <em>Subsurface</em> computer.  On most common
 distributions this should be true out of the box and pairing should be
-straight forward. For instance, Gnome3 shows a Bluetooth icon in the upper
-right corner of the desktop where one selects <em>Set up New Device</em>. This
-should show a dialog where one can select the dive computer (which already
-should be in Bluetooth mode) and pair it.  If a PIN is required, try
-manually setting <em>0000</em>.</p></div>
-<div class="paragraph"><p>In the rare cases where the above is not true, then depending on your
-system, try <code>initd</code> or <code>systemd</code>. This might be different and also involve
-loading modules specific to your hardware. In case your system is running
-<code>systemd</code>, manually run <code>systemctl start bluetooth.service</code> to enable it, in
-case of <code>initd</code>, run something like <code>rc.config start bluetoothd</code> or
-<code>/etc/init.d/bluetooth start</code>.</p></div>
-<div class="paragraph"><p>One may also use a manual approach by using such commands:</p></div>
+straight forward. For instance, Gnome3 shows a Bluetooth icon on the right
+of the toolbar at the top of the screen.  Users have reported difficulties
+with some Bluetooth controllers.  If you have an onboard controller, try
+that first.  It is simplest if you remove any USB Bluetooth dongles.  If you
+have a USB dongle that came with your dive computer, try that before any
+others.</p></div>
+<div class="paragraph"><p>Setting up a connection to download dives from your Bluetooth-enabled
+device, such as the <em>Shearwater Petrel</em>, is not yet an automated process and
+will generally require the command prompt.  It is essentially a three step
+process.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<code>hciconfig</code> shows the Bluetooth devices available on your computer (not dive
-   computer), most likely one will see a hci0, if not try <code>hcitool -a</code> to see
-   inactive devices and run <code>sudo hciconfig hci0 up</code> to bring them up.
+Enable the Bluetooth controller and pair your dive computer&lt;/li&gt;
 </p>
 </li>
 <li>
 <p>
-<code>hcitool scanning</code> gets a list of bluetooth enabled client devices, look for
-   the dive computer and remember the MAC address are shown there
+Establish an RFCOMM connection
 </p>
 </li>
 <li>
 <p>
-<code>bluez-simple-agent hci0 10:00:E8:C4:BE:C4</code> pairs the dive computer with the
-   bluetooth stack of the <em>Subsurface</em> computer, copy/paste the MAC address
-   from the output of <em>hcitool scanning</em>
+Download the dives with Subsurface
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Unfortunately on Linux binding to a communication device has to be done
-manually by running:</p></div>
+<div class="paragraph"><p>Ensure the dive computer is in upload mode. On the <em>Shearwater Petrel</em> and
+<em>Petrel 2</em>, cycle through the menu, select <em>Dive Log</em>, then <em>Upload Log</em>.
+The display will read <em>Initializing</em>, then <em>Wait PC 3:00</em> and will
+countdown.  Once the connection is established, the display reads <em>Wait CMD
+&#8230;</em> and the countdown continues. When downloading the dive from Subsurface,
+the display reads <em>Sending</em> then <em>Sent Dive</em>.</p></div>
+<div class="paragraph"><p>To establish the connection, establish root access through <code>sudo</code> or <code>su</code>.
+The correct permission is required to download the dives in the computer. On
+most Linux systems this means becoming a member of the dialout group (This
+is identical as for many dive computers using a Linux USB port, descibed in
+the previous section). On the command terminal, enter:</p></div>
+<div class="paragraph"><p><code>sudo usermod -a -G dialout username</code></p></div>
+<div class="paragraph"><p>Then log out and log in for the change to take effect.</p></div>
+<div class="sect4">
+<h5 id="_enabling_the_bluetooth_controller_and_pairing_your_dive_computer">Enabling the Bluetooth controller and pairing your dive computer</h5>
+<div class="paragraph"><p>Attempt to set up the Bluetooth controller and pair your dive computer using
+the graphical environment of the operating system. After setting the dive
+computer to upload mode, click the Bluetooth icon in the system tray and
+select <em>Add new device</em>. The dive computer should appear. If asked for a
+password, enter 0000.  Write down or copy the MAC address of your dive
+computer - this needed later and should be in the form  00:11:22:33:44:55.</p></div>
+<div class="paragraph"><p>If the graphical method didn&#8217;t work, pair the device from the command
+line. Open a terminal and use <code>hciconfig</code> to check the Bluetooth controller
+status</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>$ hciconfig
+hci0:   Type: BR/EDR  Bus: USB
+        BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
+        *DOWN*
+        RX bytes:504 acl:0 sco:0 events:22 errors:0
+        TX bytes:92 acl:0 sco:0 commands:21 errors:0</code></pre>
+</div></div>
+<div class="paragraph"><p>This indicates a Bluetooth controller with MAC address 01:23:45:67:89:AB,
+connected as hci0.  Its status is <em>DOWN</em>, i.e. not powered.  Additional
+controllers will appear as hci1, etc.  If there is not a Bluetooth dongle
+plugged in upon booting the computer, hci0 is probably the onboard.  Now
+power on the controller and enable authentication:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>sudo hciconfig hci0 up auth+  (enter password when prompted)
+hciconfig
+hci0:  Type: BR/EDR  Bus: USB
+        BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
+        *UP RUNNING PSCAN AUTH*
+        RX bytes:1026 acl:0 sco:0 events:47 errors:0
+        TX bytes:449 acl:0 sco:0 commands:46 errors:0</code></pre>
+</div></div>
+<div class="paragraph"><p><code>Check that the status now includes +<em>UP</em>, <em>RUNNING</em> AND <em>AUTH</em></code>.</p></div>
+<div class="paragraph"><p>If there are multiple controllers running, it&#8217;s easiest to off the unused
+controller(s). For example, for <code>hci1</code>:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>sudo hciconfig hci1 down</code></pre>
+</div></div>
+<div class="paragraph"><p>Next step is to <em>trust</em> and <em>pair</em> the dive computer. On distros with Bluez
+5, such as Fedora 22, one can use a tool called <code>blutootctl</code>, which will
+bring up its own command prompt.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>bluetoothctl
+[NEW] Controller 01:23:45:67:89:AB localhost.localdomain [default]
+[bluetooth]# agent on
+Agent registered
+[bluetooth]# default-agent
+Default agent request successful
+[bluetooth]# scan on                        &lt;----now set your dive computer to upload mode
+Discovery started
+[CHG] Controller 01:23:45:67:89:AB Discovering: yes
+[NEW] Device 00:11:22:33:44:55 Petrel
+[bluetooth]# trust 00:11:22:33:44:55        &lt;----you can use the tab key to autocomplete the MAC address
+[CHG] Device 00:11:22:33:44:55 Trusted: yes
+Changing 00:11:22:33:44:55 trust succeeded
+[bluetooth]# pair 00:11:22:33:44:55
+Attempting to pair with 00:11:22:33:44:55
+[CHG] Device 00:11:22:33:44:55 Connected: yes
+[CHG] Device 00:11:22:33:44:55 UUIDs: 00001101-0000-1000-8000-0089abc12345
+[CHG] Device 00:11:22:33:44:55 Paired: yes
+Pairing successful
+[CHG] Device 00:11:22:33:44:55 Connected: no</code></pre>
+</div></div>
+<div class="paragraph"><p>If asked for a password, enter 0000. It&#8217;s ok if the last line says
+<em>Connected: no</em>. The important part is the line above, <code>Pairing successful</code>.</p></div>
+<div class="paragraph"><p>If the system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04),
+there is probably not a <code>bluetoothctl</code>, but a script called
+<code>bluez-simple-agent</code> or just <code>simple-agent</code>.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>hcitool -i hci0 scanning
+Scanning ...
+        00:11:22:33:44:55       Petrel
+        bluez-simple-agent hci0 00:11:22:33:44:55</code></pre>
+</div></div>
+<div class="paragraph"><p>Once ther dive computer is pired, set up the RFCOMM connection</p></div>
+</div>
+<div class="sect4">
+<h5 id="_establishing_the_rfcomm_connection">Establishing the RFCOMM connection</h5>
+<div class="paragraph"><p>The command to establish an RFCOMM connection is:</p></div>
+<div class="paragraph"><p><code>sudo rfcomm -i &lt;controller&gt; connect &lt;dev&gt; &lt;bdaddr&gt; [channel]</code></p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<code>rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4</code> binds the dive computer to a
-   communication device in the desktop computer, in case rfcomm is already
-   taken use rfcomm1 or up. IMPORTANT: Copy/paste the MAC address from the
-   output of <code>hcitool scanning</code>, the MAC address shown above will not work.
+&lt;controller&gt;+ is the Bluetooth controller, <code>hci0</code>.
+</p>
+</li>
+<li>
+<p>
+&lt;dev&gt; is the RFCOMM device file, <code>rfcomm0</code>
+</p>
+</li>
+<li>
+<p>
+&lt;bdaddr&gt; is the dive computer&#8217;s MAC address, <code>00:11:22:33:44:55</code>
+</p>
+</li>
+<li>
+<p>
+[channel] is the dive computer&#8217;s Bluetooth channel we need to connect to.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>For downloading dives in <em>Subsurface</em> specify the device name connected to
-the MAC address in the last step above, e.g. <em>/dev/rfcomm0</em>.</p></div>
+<div class="paragraph"><p>If one omits it, channel 1 is assumed.  Based on a limited number of user
+reports, the appropriate channel for the dive computer is probably:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Shearwater Petrel 2</em>: channel 5
+</p>
+</li>
+<li>
+<p>
+<em>Shearwater Petrel 1</em>: channel 1
+</p>
+</li>
+<li>
+<p>
+<em>Heinrichs-Weikamp OSTC Sport</em>: channel 1
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>E.g. to connect a <em>Shearwater Petrel 2</em>, set the dive computer to upload
+mode and enter:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5 (enter a password, probably 0000, when prompted)</code></pre>
+</div></div>
+<div class="paragraph"><p>This gives the response:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 5
+Press CTRL-C for hangup</code></pre>
+</div></div>
+<div class="paragraph"><p>To connect a _Shearwater Petrel 1+ or + HW OSTC Sport+, set the dive
+computer to upload mode and enter:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55   (enter a password, probably 0000, when prompted)
+Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
+Press CTRL-C for hangup</code></pre>
+</div></div>
+<div class="paragraph"><p>If the specific channel the dive computer needs is not known, or the channel
+in the list above doesn&#8217;t work, the command <code>sdptool records</code> should help
+determine the appropriate channel. The output below is for a <em>Shearwater
+Petrel 2</em>.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>sdptool -i hci0 records 00:11:22:33:44:55
+Service Name: Serial Port
+Service RecHandle: 0x10000
+Service Class ID List:
+        "Serial Port" (0x1101)
+        Protocol Descriptor List:
+        "L2CAP" (0x0100)
+        "RFCOMM" (0x0003)
+        Channel: 5</code></pre>
+</div></div>
+<div class="paragraph"><p>For a Bluetooth dive computer not in the list above, or if the channel
+listed is not correct, please let the Subsurface developers know on the user
+forum or the developer mailing list <em>subsurface@subsurface-divelog.org</em>.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_download_the_dives_with_subsurface_lt_em_gt">Download the dives with Subsurface&lt;/em&gt;</h5>
+<div class="paragraph"><p>After establishing the RFCOMM connection and while the dive computer&#8217;s
+upload mode countdown is still running, go to_Subsurface_, select
+<em>Import&#8594;Import from dive computer</em> and enter appropriate Vendor
+(e.g. <em>Shearwater</em>), Dive Computer (<em>Petrel</em>), Device or Mount Point
+(<em>/dev/rfcomm0</em>) and click <em>Download</em>.</p></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -5207,7 +5398,10 @@ name from the console as follows: <code>irattach irda0</code></td>
 computer and download dive information.</p></div>
 <div class="paragraph"><p>Under Windows, a similar situation exists. Drivers for the MCS7780 are
 available from some Internet web sites e.g.
-<a href="http://www.drivers-download.com/Drv/MosChip/MCS7780/">www.drivers-download.com</a>.</p></div>
+<a href="http://www.drivers-download.com/Drv/MosChip/MCS7780/">www.drivers-download.com</a>.
+Windows-based IrDA drivers for the Uwatec can also be downloaded from the
+ScubaPro web site, drivers being located on the download page for the
+ScubaPro SmartTrak software.</p></div>
 <div class="paragraph"><p>For the Apple Mac, IrDA communication via the MCS7780 link is not available
 for OSX 10.6 or higher.</p></div>
 </div>
@@ -5703,12 +5897,12 @@ following a few simple rules:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-Date: use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy
+Date : utiliser un des formats suivants : aaaa-mm-jj, jj.mm.aaaa, mm/jj/aaaa
 </p>
 </li>
 <li>
 <p>
-Duration: the format should be minutes:seconds.
+Durée : le format est minutes:secondes.
 </p>
 </li>
 <li>
@@ -5719,17 +5913,19 @@ Unit system: only one unit system should be used (i.e., no mixture between
 </li>
 <li>
 <p>
-Tags and buddies: values should be separated using a comma.
+Étiquettes et équipiers : les valeurs doivent être séparées par des
+   virgules.
 </p>
 </li>
 <li>
 <p>
-GPS position: users must use decimal degrees, e.g. 30.22496 30.821798
+Position GPS : vous devez utiliser les degrés décimaux, par exemple :
+   30.22496 30.821798
 </p>
 </li>
 </ol></div>
 <div class="sect2">
-<h3 id="_em_libreoffice_calc_em_and_em_openoffice_calc_em">18.1. <em>LibreOffice Calc</em> and <em>OpenOffice Calc</em></h3>
+<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">18.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
 <div class="paragraph"><p>These are open source spreadsheet applications forming parts of larger open
 source office suite applications. The user interaction with <em>LibreOffice</em>
 and <em>OpenOffice</em> is very similar.  In Libreoffice Calc the time format
@@ -5890,7 +6086,7 @@ dive”.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-18 11:34:51 CEST
+Last updated 2015-05-28 16:14:18 CEST
 </div>
 </div>
 </body>
