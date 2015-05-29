@@ -108,12 +108,14 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	}
 
 	// NOTE! A fetch error is not fatal, we just report it
-	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 #if USE_LIBGIT23_API
+	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (strncmp(remote, "ssh://", 6) == 0)
 		opts.callbacks.credentials = credential_cb;
-#endif
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
+#else
+	error = git_remote_fetch(origin, NULL, NULL, NULL);
+#endif
 	git_remote_free(origin);
 	if (error) {
 		report_error("Unable to update cache for remote '%s'", remote);
