@@ -42,6 +42,7 @@
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
+#include "divepicturemodel.h"
 #include <QNetworkProxy>
 #include <QUndoStack>
 #include <qthelper.h>

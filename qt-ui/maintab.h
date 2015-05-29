@@ -19,6 +19,7 @@
 class WeightModel;
 class CylindersModel;
 class ExtraDataModel;
+class DivePictureModel;
 class QCompleter;
 
 struct Completers {

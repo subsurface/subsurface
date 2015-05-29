@@ -13,6 +13,7 @@
 #include "divepicturewidget.h"
 #include "diveplannermodel.h"
 #include "models.h"
+#include "divepicturemodel.h"
 #include "maintab.h"
 #include "diveplanner.h"
 
