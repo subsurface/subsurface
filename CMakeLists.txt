@@ -262,6 +262,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/divetripmodel.cpp
 	qt-models/divecomputerextradatamodel.cpp
 	qt-models/completionmodels.cpp
+	qt-models/profileprintmodel.cpp
 )
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 

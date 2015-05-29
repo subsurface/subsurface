@@ -13,6 +13,7 @@
 #include "profile/profilewidget2.h"
 #include "divetripmodel.h"
 #include "tableprintmodel.h"
+#include "profileprintmodel.h"
 
 PrintLayout::PrintLayout(PrintDialog *dialogPtr, QPrinter *printerPtr, struct print_options *optionsPtr)
 {
