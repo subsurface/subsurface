@@ -8,7 +8,6 @@
 #define MODELS_H
 
 #include <QAbstractTableModel>
-#include <QCoreApplication>
 #include <QStringList>
 #include <QStringListModel>
 #include <QSortFilterProxyModel>

@@ -11,7 +11,6 @@
 #include "statistics.h"
 #include "modeldelegates.h"
 #include "diveplannermodel.h"
-#include "models.h"
 #include "divelistview.h"
 #include "display.h"
 #include "profile/profilewidget2.h"

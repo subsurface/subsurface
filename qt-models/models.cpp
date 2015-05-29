@@ -5,30 +5,10 @@
  *
  */
 #include "models.h"
-#include "diveplanner.h"
-#include "mainwindow.h"
 #include "helpers.h"
-#include "dive.h"
-#include "device.h"
-#include "statistics.h"
-#include "qthelper.h"
-#include "gettextfromc.h"
-#include "display.h"
-#include "color.h"
-#include "divetripmodel.h"
 
-#include "cleanertablemodel.h"
-#include "weigthsysteminfomodel.h"
-#include <QCoreApplication>
-#include <QDebug>
-#include <QDir>
+#include <QLocale>
 #include <QSettings>
-#include <QColor>
-#include <QBrush>
-#include <QFont>
-#include <QIcon>
-#include <QMessageBox>
-#include <QStringListModel>
 
 // initialize the trash icon if necessary
 

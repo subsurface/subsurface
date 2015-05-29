@@ -20,6 +20,7 @@
 #include "qthelper.h"
 #include "undocommands.h"
 #include "divelistview.h"
+#include "models.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};

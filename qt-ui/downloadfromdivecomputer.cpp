@@ -4,6 +4,7 @@
 #include "divelistview.h"
 #include "display.h"
 #include "uemis.h"
+#include "models.h"
 
 #include <QTimer>
 #include <QFileDialog>

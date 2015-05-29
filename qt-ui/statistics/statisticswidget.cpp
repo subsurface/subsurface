@@ -1,6 +1,5 @@
 #include "statisticswidget.h"
 #include "yearlystatisticsmodel.h"
-#include "models.h"
 #include <QModelIndex>
 
 YearlyStatisticsWidget::YearlyStatisticsWidget(QWidget *parent): QGraphicsView(parent)
