@@ -264,6 +264,8 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/completionmodels.cpp
 	qt-models/profileprintmodel.cpp
 	qt-models/divepicturemodel.cpp
+        qt-models/diveplotdatamodel.cpp
+
 )
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 
@@ -316,7 +318,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	qt-ui/profile/divetextitem.cpp
 	qt-ui/profile/animationfunctions.cpp
 	qt-ui/profile/divecartesianaxis.cpp
-	qt-ui/profile/diveplotdatamodel.cpp
 	qt-ui/profile/diveprofileitem.cpp
 	qt-ui/profile/diveeventitem.cpp
 	qt-ui/profile/divetooltipitem.cpp
