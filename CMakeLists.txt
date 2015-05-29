@@ -13,6 +13,7 @@ option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(NO_MARBLE "disable the marble widget" OFF)
 option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
+option(NO_PRINTING "disable the printing support" ON)
 option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 
 set(CMAKE_MODULE_PATH
@@ -94,7 +95,7 @@ endif()
 
 # setup Grantlee
 
-if(NEW_PRINTING)
+if(NOT NO_PRINTING)
 	if(LIBGRANTLEE_FROM_PKGCONFIG)
 		pkg_config_library(GRANTLEE libgrantlee REQUIRED)
 		set(GRANTLEE_LIBRARIES "")
@@ -102,7 +103,16 @@ if(NEW_PRINTING)
 		find_package(Grantlee5)
 		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
 	endif()
-	add_definitions(-DNEW_PRINTING)
+	set(SUBSURFACE_PRINTING_SRCS
+		printer.cpp
+		templatelayout.cpp
+	)
+endif()
+
+if(NO_PRINTING)
+	message(STATUS "building without printing support")
+	add_definitions(-DNO_PRINTING)
+	set(GRANTLEE_LIBRARIES "")
 endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${GRANTLEE_LIBRARIES} -lusb-1.0)
@@ -260,8 +270,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
-	templatelayout.cpp
-	printer.cpp
+	${SUBSURFACE_PRINTING_SRCS}
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
