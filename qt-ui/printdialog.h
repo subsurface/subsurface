@@ -18,7 +18,6 @@ public:
 
 private:
 	PrintOptions *optionsWidget;
-	PrintLayout *printLayout;
 	QProgressBar *progressBar;
 	QPrinter printer;
 	struct print_options printOptions;
