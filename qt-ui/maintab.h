@@ -65,8 +65,7 @@ slots:
 	void updateDiveInfo(bool clear = false);
 	void acceptChanges();
 	void rejectChanges();
-	void on_location_textChanged(const QString &text);
-	void on_location_editingFinished();
+	void on_location_currentTextChanged(const QString &text);
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();
 	void on_suit_textChanged(const QString &text);

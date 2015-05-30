@@ -760,7 +760,6 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
-	on_location_editingFinished(); // complete coordinates *before* saving
 	if (editMode == ADD) {
 		// We need to add the dive we just created to the dive list and select it.
 		// Easy, right?
@@ -1255,7 +1254,13 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
-void MainTab::on_location_textChanged(const QString &text)
+/* TODO: This seems wrong.
+ * The code here below should be triggered when the user changes
+ * the Location in the combobox (this was a LineEdit, but the code is
+ * mostly the same ). Check the currentTrip there to see if it`s being
+ * correctly triggered.
+ */
+void MainTab::on_location_currentTextChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
@@ -1263,9 +1268,13 @@ void MainTab::on_location_textChanged(const QString &text)
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(qPrintable(ui.location->currentText()));
 	}
+	if (current_dive && text == QString(get_dive_site_by_uuid(current_dive->dive_site_uuid)->name))
+		return;
 	markChangedWidget(ui.location);
 }
 
+/* TODO:
+ * Check if we need to move this to location management.
 // If we have GPS data for the location entered, add it.
 void MainTab::on_location_editingFinished()
 {
@@ -1277,6 +1286,7 @@ void MainTab::on_location_editingFinished()
 	displayed_dive.dive_site_uuid = uuid;
 	free((void*)name);
 }
+*/
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
