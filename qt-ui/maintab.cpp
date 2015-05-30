@@ -414,7 +414,7 @@ bool MainTab::isEditing()
 
 void MainTab::showLocation()
 {
-	ui.location->setText(get_dive_location(&displayed_dive));
+	ui.location->setCurrentText(get_dive_location(&displayed_dive));
 }
 
 void MainTab::updateDiveInfo(bool clear)
@@ -461,7 +461,7 @@ void MainTab::updateDiveInfo(bool clear)
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds)
-			ui.location->setText(ds->name);
+			ui.location->setCurrentText(ds->name);
 		else
 			ui.location->clear();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
@@ -494,7 +494,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
-			ui.location->setText(currentTrip->location);
+			ui.location->setCurrentText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
 			clearEquipment();
@@ -1248,7 +1248,7 @@ void MainTab::on_location_textChanged(const QString &text)
 		return;
 	if (currentTrip) {
 		free(displayedTrip.location);
-		displayedTrip.location = strdup(ui.location->text().toUtf8().data());
+		displayedTrip.location = strdup(qPrintable(ui.location->currentText()));
 	}
 	markChangedWidget(ui.location);
 }
@@ -1257,7 +1257,7 @@ void MainTab::on_location_textChanged(const QString &text)
 void MainTab::on_location_editingFinished()
 {
 	// find the dive site or create it
-	const char *name = copy_string(qPrintable(ui.location->text()));
+	const char *name = copy_string(qPrintable(ui.location->currentText()));
 	uint32_t uuid = get_dive_site_uuid_by_name(name, NULL);
 	if (!uuid)
 		uuid = create_dive_site(name);
@@ -1433,7 +1433,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.divesite)
-		ui.location->setText(get_dive_location(&displayed_dive));
+		ui.location->setCurrentText(get_dive_location(&displayed_dive));
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);

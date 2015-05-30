@@ -186,9 +186,12 @@
              <number>2</number>
             </property>
             <item>
-             <widget class="QLineEdit" name="location">
-              <property name="readOnly">
-               <bool>false</bool>
+             <widget class="QComboBox" name="location">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
              </widget>
             </item>
@@ -1255,7 +1258,6 @@
   <tabstop>timeEdit</tabstop>
   <tabstop>airtemp</tabstop>
   <tabstop>watertemp</tabstop>
-  <tabstop>location</tabstop>
   <tabstop>divemaster</tabstop>
   <tabstop>buddy</tabstop>
   <tabstop>rating</tabstop>
