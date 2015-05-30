@@ -10,10 +10,26 @@ TemplateLayout::TemplateLayout()
 TemplateLayout::~TemplateLayout()
 {
 	delete m_engine;
-};
+}
+
+int TemplateLayout::getTotalWork()
+{
+	int dives = 0, i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		//TODO check for exporting selected dives only
+		if (!dive->selected)
+			continue;
+		dives++;
+	}
+	return dives;
+}
 
 QString TemplateLayout::generate()
 {
+	int progress = 0;
+	int totalWork = getTotalWork();
+
 	QString htmlContent;
 	m_engine = new Grantlee::Engine(this);
 
@@ -35,6 +51,8 @@ QString TemplateLayout::generate()
 			continue;
 		Dive d(dive);
 		diveList.append(QVariant::fromValue(d));
+		progress++;
+		emit progressUpdated(progress * 100.0 / totalWork);
 	}
 	mapping.insert("dives", diveList);
 
@@ -52,7 +70,6 @@ QString TemplateLayout::generate()
 		qDebug() << "Can't render template";
 		return htmlContent;
 	}
-
 	return htmlContent;
 }
 

@@ -96,6 +96,7 @@ void PrintDialog::printClicked(void)
 	if (printDialog.exec() == QDialog::Accepted) {
 		switch (printOptions.type) {
 		case print_options::DIVELIST:
+			connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 			printer->print();
 			break;
 		case print_options::TABLE:

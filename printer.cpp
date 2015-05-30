@@ -17,6 +17,7 @@ Printer::Printer(QPrinter *printer)
 	printer->setPaperSize(QPrinter::A4);
 	printer->setPrintRange(QPrinter::AllPages);
 	printer->setResolution(300);
+	done = 0;
 }
 
 void Printer::render()
@@ -33,15 +34,25 @@ void Printer::render()
 	for (int i = 0; i < Pages; i++) {
 		webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer);
 		webView->page()->mainFrame()->scroll(0, A4_300DPI_HIGHT);
+		//rendering progress is 4/5 of total work
+		emit(progessUpdated((i * 80.0 / Pages) + done));
 		if (i < Pages - 1)
 			printer->newPage();
 	}
 	painter.end();
 }
 
+//value: ranges from 0 : 100 and shows the progress of the templating engine
+void Printer::templateProgessUpdated(int value)
+{
+	done = value / 5; //template progess if 1/5 of total work
+	emit progessUpdated(done);
+}
+
 void Printer::print()
 {
 	TemplateLayout t;
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	webView = new QWebView();
 	webView->setHtml(t.generate());
 	render();

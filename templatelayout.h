@@ -13,6 +13,10 @@ public:
 
 private:
 	Grantlee::Engine *m_engine;
+	int getTotalWork();
+
+signals:
+	void progressUpdated(int value);
 };
 
 class Dive {
