@@ -324,7 +324,6 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/notificationwidget.cpp
 	qt-ui/preferences.cpp
 	qt-ui/printdialog.cpp
-	qt-ui/printlayout.cpp
 	qt-ui/printoptions.cpp
 	qt-ui/simplewidgets.cpp
 	qt-ui/starwidget.cpp

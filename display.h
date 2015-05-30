@@ -37,18 +37,13 @@ extern struct divecomputer *select_dc(struct dive *);
 
 struct print_options {
 	enum print_type {
-		PRETTY,
-		TABLE,
-		TWOPERPAGE,
-		ONEPERPAGE,
 		DIVELIST,
+		TABLE,
 		STATISTICS
 	} type;
 	bool print_selected;
 	bool color_selected;
-	bool notes_up;
 	bool landscape;
-	int margins[4]; // left, top, right, bottom
 };
 
 extern unsigned int dc_number;
