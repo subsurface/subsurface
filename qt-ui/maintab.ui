@@ -55,8 +55,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>445</width>
-         <height>760</height>
+         <width>447</width>
+         <height>766</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -74,8 +74,14 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <property name="horizontalSpacing">
+          <property name="leftMargin">
            <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="horizontalSpacing">
+           <number>8</number>
           </property>
           <property name="verticalSpacing">
            <number>0</number>
@@ -202,6 +208,12 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
           <property name="horizontalSpacing">
            <number>5</number>
           </property>
@@ -246,6 +258,12 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,1">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
           <property name="horizontalSpacing">
            <number>5</number>
           </property>
@@ -514,8 +532,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>447</width>
+         <height>756</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -609,8 +627,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>286</width>
-         <height>300</height>
+         <width>447</width>
+         <height>756</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -950,8 +968,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>297</width>
-         <height>177</height>
+         <width>447</width>
+         <height>756</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
