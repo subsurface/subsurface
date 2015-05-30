@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QPrinter>
-#include "../display.h"
+#include "printoptions.h"
 
 class QProgressBar;
 class PrintOptions;

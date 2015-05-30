@@ -5,6 +5,17 @@
 
 #include "ui_printoptions.h"
 
+struct print_options {
+	enum print_type {
+		DIVELIST,
+		TABLE,
+		STATISTICS
+	} type;
+	bool print_selected;
+	bool color_selected;
+	bool landscape;
+};
+
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {
 	Q_OBJECT

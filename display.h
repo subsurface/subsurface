@@ -35,17 +35,6 @@ typedef enum {
 
 extern struct divecomputer *select_dc(struct dive *);
 
-struct print_options {
-	enum print_type {
-		DIVELIST,
-		TABLE,
-		STATISTICS
-	} type;
-	bool print_selected;
-	bool color_selected;
-	bool landscape;
-};
-
 extern unsigned int dc_number;
 
 extern unsigned int amount_selected;
