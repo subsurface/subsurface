@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QPrinter>
 #include "printoptions.h"
+#include "printer.h"
 
 class QProgressBar;
 class PrintOptions;
@@ -19,7 +20,8 @@ public:
 private:
 	PrintOptions *optionsWidget;
 	QProgressBar *progressBar;
-	QPrinter printer;
+	Printer *printer;
+	QPrinter qprinter;
 	struct print_options printOptions;
 
 private

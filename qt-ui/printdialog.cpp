@@ -25,11 +25,14 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = s.value("print_selected").toBool();
 		printOptions.color_selected = s.value("color_selected").toBool();
 		printOptions.landscape = s.value("landscape").toBool();
-		printer.setOrientation((QPrinter::Orientation)printOptions.landscape);
+		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
 	}
 
 	// create a print options object and pass our options struct
 	optionsWidget = new PrintOptions(this, &printOptions);
+
+	// create a new printer object
+	printer = new Printer(&qprinter);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
@@ -89,8 +92,17 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
-	QPrintDialog printDialog(&printer, this);
+	QPrintDialog printDialog(&qprinter, this);
 	if (printDialog.exec() == QDialog::Accepted) {
+		switch (printOptions.type) {
+		case print_options::DIVELIST:
+			printer->print();
+			break;
+		case print_options::TABLE:
+			break;
+		case print_options::STATISTICS:
+			break;
+		}
 		close();
 	}
 }
