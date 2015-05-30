@@ -1,4 +1,4 @@
-#ifndef WEIGTHSYSTEMINFOMODEL_H
+#ifndef WEIGHTSYSTEMINFOMODEL_H
 #define WEIGHTSYSTEMINFOMODEL_H
 
 #include "cleanertablemodel.h"
