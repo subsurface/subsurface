@@ -1,6 +1,12 @@
 #include "divelocationmodel.h"
 #include "dive.h"
 
+LocationInformationModel *LocationInformationModel::instance()
+{
+	static LocationInformationModel *self = new LocationInformationModel();
+	return self;
+}
+
 LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractListModel(obj), internalRowCount(0)
 {
 }

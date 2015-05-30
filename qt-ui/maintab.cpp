@@ -20,7 +20,7 @@
 #include "weightmodel.h"
 #include "divepicturemodel.h"
 #include "divecomputerextradatamodel.h"
-
+#include "divelocationmodel.h"
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
@@ -97,6 +97,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
+	ui.location->setModel(LocationInformationModel::instance());
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
@@ -199,6 +200,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.waitingSpinner->setInnerRadius(5);
 	ui.waitingSpinner->setRevolutionsPerSecond(1);
 
+	connect(ReverseGeoLookupThread::instance(), SIGNAL(finished()),
+			LocationInformationModel::instance(), SLOT(update()));
+
+	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
+			this, &MainTab::setCurrentLocationIndex);
+
 	acceptingEdit = false;
 }
 
@@ -211,6 +218,12 @@ MainTab::~MainTab()
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
+}
+
+void MainTab::setCurrentLocationIndex()
+{
+	if (current_dive)
+		ui.location->setCurrentText(get_dive_site_by_uuid(current_dive->dive_site_uuid)->name);
 }
 
 void MainTab::enableGeoLookupEdition()

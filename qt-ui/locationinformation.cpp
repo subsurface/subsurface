@@ -28,7 +28,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	ui.diveSiteMessage->addAction(closeAction);
 
-	ui.currentLocation->setModel(new LocationInformationModel());
+	ui.currentLocation->setModel(LocationInformationModel::instance());
 	connect(ui.currentLocation, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentDiveSite(int)));
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
