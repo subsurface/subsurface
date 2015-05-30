@@ -1270,6 +1270,9 @@ void MainTab::on_location_currentTextChanged(const QString &text)
 	}
 	if (current_dive && text == QString(get_dive_site_by_uuid(current_dive->dive_site_uuid)->name))
 		return;
+
+	uint32_t uuid = ui.location->currentData(LocationInformationModel::DIVE_SITE_UUID).toInt();
+	displayed_dive.dive_site_uuid = uuid;
 	markChangedWidget(ui.location);
 }
 

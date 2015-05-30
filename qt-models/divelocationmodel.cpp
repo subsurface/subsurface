@@ -25,6 +25,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 
 	switch(role) {
 		case Qt::DisplayRole : return qPrintable(ds->name);
+		case DIVE_SITE_UUID  : return ds->uuid;
 	}
 
 	return QVariant();
