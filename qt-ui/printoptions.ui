@@ -30,7 +30,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="2">
-       <widget class="QRadioButton" name="radioSixDives">
+       <widget class="QRadioButton" name="radioDiveListPrint">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -38,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;6 dives per page</string>
+         <string>&amp;Dive list Print</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -46,32 +46,6 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QRadioButton" name="radioOneDive">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;1 dive per page</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QRadioButton" name="radioTwoDives">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;2 dives per page</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
        <widget class="QRadioButton" name="radioTablePrint">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -80,7 +54,20 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Table print</string>
+         <string>&amp;Table Print</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QRadioButton" name="radioStatisticsPrint">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&amp;Statistics Print</string>
         </property>
        </widget>
       </item>
@@ -136,40 +123,30 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="ordering">
+    <widget class="QGroupBox" name="template_2">
      <property name="title">
-      <string>Ordering</string>
+      <string>Template</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QRadioButton" name="profileOnTop">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Prof&amp;ile on top</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
+       <widget class="QComboBox" name="printTemplate">
+        <item>
+         <property name="text">
+          <string>2 Dives per page</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="notesOnTop">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QPushButton" name="editButton">
+        <property name="maximumSize">
+         <size>
+          <width>106</width>
+          <height>26</height>
+         </size>
         </property>
         <property name="text">
-         <string>&amp;Notes on top</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
+         <string>Edit</string>
         </property>
        </widget>
       </item>
@@ -179,12 +156,10 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>radioSixDives</tabstop>
-  <tabstop>radioTwoDives</tabstop>
+  <tabstop>radioDiveListPrint</tabstop>
+  <tabstop>radioStatisticsPrint</tabstop>
   <tabstop>printSelected</tabstop>
   <tabstop>printInColor</tabstop>
-  <tabstop>profileOnTop</tabstop>
-  <tabstop>notesOnTop</tabstop>
  </tabstops>
  <resources/>
  <connections/>

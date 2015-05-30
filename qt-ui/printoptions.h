@@ -20,14 +20,11 @@ private:
 
 private
 slots:
-	void radioSixDivesClicked(bool check);
-	void radioTwoDivesClicked(bool check);
-	void radioOneDiveClicked(bool check);
-	void radioTablePrintClicked(bool check);
 	void printInColorClicked(bool check);
 	void printSelectedClicked(bool check);
-	void notesOnTopClicked(bool check);
-	void profileOnTopClicked(bool check);
+	void on_radioStatisticsPrint_clicked(bool check);
+	void on_radioTablePrint_clicked(bool check);
+	void on_radioDiveListPrint_clicked(bool check);
 };
 
 #endif // PRINTOPTIONS_H

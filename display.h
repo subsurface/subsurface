@@ -40,7 +40,9 @@ struct print_options {
 		PRETTY,
 		TABLE,
 		TWOPERPAGE,
-		ONEPERPAGE
+		ONEPERPAGE,
+		DIVELIST,
+		STATISTICS
 	} type;
 	bool print_selected;
 	bool color_selected;
