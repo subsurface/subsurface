@@ -343,10 +343,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 
-	// only setup the globe for editing if we are editing exactly one existing dive
-	if (amount_selected == 1 && newEditMode != ADD)
-		MainWindow::instance()->globe()->prepareForGetDiveCoordinates();
-
 	if (isTripEdit) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
@@ -1265,7 +1261,7 @@ void MainTab::on_location_currentTextChanged(const QString &text)
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(qPrintable(ui.location->currentText()));
 	}
-	if (current_dive && text == QString(get_dive_site_by_uuid(current_dive->dive_site_uuid)->name))
+	if (current_dive && text == QString(get_dive_site_by_uuid(displayed_dive.dive_site_uuid)->name))
 		return;
 
 	uint32_t uuid = ui.location->currentData(LocationInformationModel::DIVE_SITE_UUID).toInt();
