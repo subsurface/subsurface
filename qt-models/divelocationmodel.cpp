@@ -42,8 +42,8 @@ void LocationInformationModel::update()
 		endRemoveRows();
 	}
 	if (i) {
-		beginInsertRows(QModelIndex(), 0, i);
-		internalRowCount = i;
+		beginInsertRows(QModelIndex(), 0, i-1);
+		internalRowCount = i-1;
 		endInsertRows();
 	}
 }
