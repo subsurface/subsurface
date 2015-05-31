@@ -219,8 +219,13 @@ MainTab::~MainTab()
 
 void MainTab::setCurrentLocationIndex()
 {
-	if (current_dive)
-		ui.location->setCurrentText(get_dive_site_by_uuid(current_dive->dive_site_uuid)->name);
+	if (current_dive) {
+		struct dive_site *ds = get_dive_site_by_uuid(current_dive->dive_site_uuid);
+		if (ds)
+			ui.location->setCurrentText(ds->name);
+		else
+			ui.location->setCurrentText("");
+	}
 }
 
 void MainTab::enableGeoLookupEdition()
