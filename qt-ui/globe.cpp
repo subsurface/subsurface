@@ -255,10 +255,6 @@ void GlobeGPS::centerOnCurrentDive()
 	qreal longitude = ds->longitude.udeg / 1000000.0;
 	qreal latitude = ds->latitude.udeg / 1000000.0;
 
-	if ((!dive_site_has_gps_location(ds) || MainWindow::instance()->information()->isEditing()) && amount_selected == 1) {
-		prepareForGetDiveCoordinates();
-		return;
-	}
 	if (!dive_site_has_gps_location(ds)) {
 		zoomOutForNoGPS();
 		return;
@@ -319,9 +315,9 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 // This needs to update the dive site, not just this dive
 void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
-	struct dive_site *ds;
 	messageWidget->hide();
 
+	// TODO: Check if this is still necessary.
 	if (MainWindow::instance()->dive_list()->selectionModel()->selection().isEmpty())
 		return;
 
@@ -335,7 +331,7 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	// change the location of the displayed_dive and put the UI in edit mode
 	displayed_dive_site.latitude.udeg = lrint(lat * 1000000.0);
 	displayed_dive_site.longitude.udeg = lrint(lon * 1000000.0);
-	emit(coordinatesChanged());
+	emit coordinatesChanged();
 	repopulateLabels();
 	editingDiveLocation = false;
 }
