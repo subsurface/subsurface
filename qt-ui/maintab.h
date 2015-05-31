@@ -23,7 +23,6 @@ class DivePictureModel;
 class QCompleter;
 
 struct Completers {
-	QCompleter *location;
 	QCompleter *divemaster;
 	QCompleter *buddy;
 	QCompleter *suit;

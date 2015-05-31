@@ -104,17 +104,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
-	completers.location = new QCompleter(&locationModel, ui.location);
 	completers.suit = new QCompleter(&suitModel, ui.suit);
 	completers.tags = new QCompleter(&tagModel, ui.tagWidget);
 	completers.buddy->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.divemaster->setCaseSensitivity(Qt::CaseInsensitive);
-	completers.location->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.suit->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.tags->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.buddy->setCompleter(completers.buddy);
 	ui.divemaster->setCompleter(completers.divemaster);
-	ui.location->setCompleter(completers.location);
 	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
 
