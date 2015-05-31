@@ -33,17 +33,14 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 
 void LocationInformationModel::update()
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds);
 
 	if (rowCount()) {
 		beginRemoveRows(QModelIndex(), 0, rowCount()-1);
 		endRemoveRows();
 	}
-	if (i) {
-		beginInsertRows(QModelIndex(), 0, i-1);
-		internalRowCount = i-1;
+	if (dive_site_table.nr) {
+		beginInsertRows(QModelIndex(), 0, dive_site_table.nr);
+		internalRowCount = dive_site_table.nr;
 		endInsertRows();
 	}
 }
