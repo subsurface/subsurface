@@ -126,8 +126,7 @@ void LocationInformationWidget::acceptChanges()
 
 void LocationInformationWidget::rejectChanges()
 {
-	Q_ASSERT(currentDs != NULL);
-	if (dive_site_is_empty(currentDs)) {
+	if (currentDs && dive_site_is_empty(currentDs)) {
 		delete_dive_site(currentDs->uuid);
 		displayed_dive.dive_site_uuid = 0;
 	}
