@@ -103,6 +103,8 @@ slots:
 	void on_actionSave_triggered();
 	void on_actionSaveAs_triggered();
 	void on_actionClose_triggered();
+	void on_actionCloudstorageopen_triggered();
+	void on_actionCloudstoragesave_triggered();
 	void on_actionPrint_triggered();
 	void on_actionPreferences_triggered();
 	void on_actionQuit_triggered();

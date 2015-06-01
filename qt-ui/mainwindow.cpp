@@ -305,6 +305,70 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
+static int getCloudURL(QString &filename)
+{
+	QString email = QString(prefs.cloud_storage_email);
+	email.replace("@", "_at_");
+	email.replace(QRegularExpression("[^a-zA-Z0-9._+-]"), "");
+	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
+		return report_error("Please configure Cloud storage email and password in the preferences");
+	if (email != prefs.cloud_storage_email_encoded) {
+		free(prefs.cloud_storage_email_encoded);
+		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
+	}
+	filename = QString("https://cloud.subsurface-divelog.org/git/%1[%1]").arg(email);
+	return 0;
+}
+
+void MainWindow::on_actionCloudstorageopen_triggered()
+{
+	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
+		return;
+
+	QString filename;
+	if (getCloudURL(filename)) {
+		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+		return;
+	}
+	qDebug() << filename;
+
+	closeCurrentFile();
+
+	int error;
+
+	QByteArray fileNamePtr = QFile::encodeName(filename);
+	error = parse_file(fileNamePtr.data());
+	if (!error) {
+		set_filename(fileNamePtr.data(), true);
+		setTitle(MWTF_FILENAME);
+	}
+	getNotificationWidget()->hideNotification();
+	process_dives(false, false);
+	refreshDisplay();
+	ui.actionAutoGroup->setChecked(autogroup);
+}
+
+void MainWindow::on_actionCloudstoragesave_triggered()
+{
+	QString filename;
+	if (getCloudURL(filename)) {
+		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+		return;
+	}
+	qDebug() << filename;
+	if (information()->isEditing())
+		information()->acceptChanges();
+
+	if (save_dives(filename.toUtf8().data())) {
+		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+		return;
+	}
+	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	set_filename(filename.toUtf8().data(), true);
+	setTitle(MWTF_FILENAME);
+	mark_divelist_changed(false);
+}
+
 void learnImageDirs(QStringList dirnames)
 {
 	QList<QFuture<void> > futures;

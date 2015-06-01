@@ -87,7 +87,7 @@ int credential_https_cb(git_cred **out,
 			unsigned int allowed_types,
 			void *payload)
 {
-	const char *username = "ssrftest";
+	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
@@ -202,7 +202,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
  *    https://host/repo[branch]
  *    file://repo[branch]
  */
-static struct git_repository *is_remote_git_repository(const char *remote, const char *branch)
+static struct git_repository *is_remote_git_repository(char *remote, const char *branch)
 {
 	char c, *localdir;
 	const char *p = remote;
@@ -241,6 +241,21 @@ static struct git_repository *is_remote_git_repository(const char *remote, const
 	 * caches will sadly force that to split into multiple
 	 * individual repositories.
 	 */
+
+	/*
+	 * next we need to make sure that any encoded username
+	 * has been extracted from an https:// based URL
+	 */
+	if  (!strncmp(remote, "https://", 8)) {
+		char *at = strchr(remote, '@');
+		if (at) {
+			/* grab the part between "https://" and "@" as encoded email address
+			 * (that's our username) and move the rest of the URL forward, remembering
+			 * to copy the closing NUL as well */
+			prefs.cloud_storage_email_encoded = strndup(remote + 8, at - remote - 8);
+			memmove(remote + 8, at + 1, strlen(at + 1) + 1);
+		}
+	}
 	localdir = get_local_dir(remote, branch);
 	if (!localdir)
 		return NULL;

@@ -62,7 +62,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>22</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -74,6 +74,9 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
+    <addaction name="actionCloudstorageopen"/>
+    <addaction name="actionCloudstoragesave"/>
+    <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionExport"/>
     <addaction name="actionPrint"/>
@@ -81,7 +84,6 @@
     <addaction name="separator"/>
     <addaction name="actionHash_images"/>
     <addaction name="actionConfigure_Dive_Computer"/>
-    <addaction name="separator"/>
     <addaction name="actionRecent1"/>
     <addaction name="actionRecent2"/>
     <addaction name="actionRecent3"/>
@@ -712,6 +714,16 @@
   <action name="actionHash_images">
    <property name="text">
     <string>&amp;Find moved images</string>
+   </property>
+  </action>
+  <action name="actionCloudstorageopen">
+   <property name="text">
+    <string>Cloud storage open</string>
+   </property>
+  </action>
+  <action name="actionCloudstoragesave">
+   <property name="text">
+    <string>Cloud storage save</string>
    </property>
   </action>
  </widget>

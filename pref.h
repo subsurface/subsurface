@@ -92,6 +92,7 @@ struct preferences {
 	facebook_prefs_t facebook;
 	char *cloud_storage_password;
 	char *cloud_storage_email;
+	char *cloud_storage_email_encoded;
 	bool save_password_local;
 };
 enum unit_system_values {
