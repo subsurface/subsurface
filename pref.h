@@ -90,9 +90,9 @@ struct preferences {
 	bool show_pictures_in_profile;
 	bool use_default_file;
 	facebook_prefs_t facebook;
-	char *passphrase;
-	char *remote_storage_email;
-	bool save_PIN_local;
+	char *cloud_storage_password;
+	char *cloud_storage_email;
+	bool save_password_local;
 };
 enum unit_system_values {
 	METRIC,

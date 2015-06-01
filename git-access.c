@@ -77,7 +77,7 @@ int credential_ssh_cb(git_cred **out,
 		  void *payload)
 {
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
-	const char *passphrase = copy_string(prefs.passphrase);
+	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
 }
 
@@ -88,7 +88,7 @@ int credential_https_cb(git_cred **out,
 			void *payload)
 {
 	const char *username = "ssrftest";
-	const char *password = copy_string(prefs.passphrase);
+	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 #endif
