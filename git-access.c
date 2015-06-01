@@ -70,7 +70,7 @@ static int try_to_update(git_repository *rep, git_reference *local, git_referenc
 }
 
 #if USE_LIBGIT23_API
-int credential_cb(git_cred **out,
+int credential_ssh_cb(git_cred **out,
 		  const char *url,
 		  const char *username_from_url,
 		  unsigned int allowed_types,
@@ -79,6 +79,17 @@ int credential_cb(git_cred **out,
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = copy_string(prefs.passphrase);
 	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
+}
+
+int credential_https_cb(git_cred **out,
+			const char *url,
+			const char *username_from_url,
+			unsigned int allowed_types,
+			void *payload)
+{
+	const char *username = "ssrftest";
+	const char *password = copy_string(prefs.passphrase);
+	return git_cred_userpass_plaintext_new(out, username, password);
 }
 #endif
 
@@ -111,7 +122,9 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (strncmp(remote, "ssh://", 6) == 0)
-		opts.callbacks.credentials = credential_cb;
+		opts.callbacks.credentials = credential_ssh_cb;
+	else if (strncmp(remote, "https://", 8) == 0)
+		opts.callbacks.credentials = credential_https_cb;
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 #else
 	error = git_remote_fetch(origin, NULL, NULL, NULL);
@@ -151,7 +164,9 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
 #if USE_LIBGIT23_API
 	if (strncmp(remote, "ssh://", 6) == 0)
-		opts.fetch_opts.callbacks.credentials = credential_cb;
+		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
+	else if (strncmp(remote, "https://", 8) == 0)
+		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 #endif
 	opts.checkout_branch = branch;
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
