@@ -1020,3 +1020,18 @@ fraction_t string_to_fraction(const char *str)
 	fraction.permille = rint(value * 10);
 	return fraction;
 }
+
+int getCloudURL(QString &filename)
+{
+	QString email = QString(prefs.cloud_storage_email);
+	email.replace("@", "_at_");
+	email.replace(QRegularExpression("[^a-zA-Z0-9._+-]"), "");
+	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
+		return report_error("Please configure Cloud storage email and password in the preferences");
+	if (email != prefs.cloud_storage_email_encoded) {
+		free(prefs.cloud_storage_email_encoded);
+		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
+	}
+	filename = QString("https://cloud.subsurface-divelog.org/git/%1[%1]").arg(email);
+	return 0;
+}

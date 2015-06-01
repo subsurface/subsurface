@@ -32,5 +32,5 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-
+int getCloudURL(QString &filename);
 #endif // QTHELPER_H

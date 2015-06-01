@@ -310,21 +310,6 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
-static int getCloudURL(QString &filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace("@", "_at_");
-	email.replace(QRegularExpression("[^a-zA-Z0-9._+-]"), "");
-	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
-		return report_error("Please configure Cloud storage email and password in the preferences");
-	if (email != prefs.cloud_storage_email_encoded) {
-		free(prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
-	}
-	filename = QString("https://cloud.subsurface-divelog.org/git/%1[%1]").arg(email);
-	return 0;
-}
-
 void MainWindow::on_actionCloudstorageopen_triggered()
 {
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
