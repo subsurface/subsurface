@@ -40,7 +40,8 @@ if [ ! -d libgit2 ] ; then
 	fi
 fi
 cd libgit2
-git checkout v0.22.0
+# let's build with a recent enough version of master for the latest features
+git checkout c11daac9de2
 mkdir -p build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
@@ -116,7 +117,8 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 	-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
-	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT
+	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+	-DUSE_LIBGIT23_API=1
 
 make -j4
 make install
