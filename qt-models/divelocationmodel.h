@@ -2,6 +2,7 @@
 #define DIVELOCATIONMODEL_H
 
 #include <QAbstractListModel>
+#include <stdint.h>
 
 class LocationInformationModel : public QAbstractListModel {
 Q_OBJECT
