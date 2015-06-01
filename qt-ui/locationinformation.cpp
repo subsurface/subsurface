@@ -34,16 +34,16 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 }
 
-void LocationInformationWidget::setCurrentDiveSite(int dive_nr)
+void LocationInformationWidget::setCurrentDiveSiteByIndex(int dive_nr)
 {
 	currentDs = get_dive_site(dive_nr);
 	if (currentDs)
-		setLocationId(currentDs->uuid);
+		setCurrentDiveSiteByUuid(currentDs->uuid);
 	else
-		setLocationId(displayed_dive.dive_site_uuid);
+		setCurrentDiveSiteByUuid(displayed_dive.dive_site_uuid);
 }
 
-void LocationInformationWidget::setLocationId(uint32_t uuid)
+void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 {
 	currentDs = get_dive_site_by_uuid(uuid);
 	if(!currentDs)

@@ -10,6 +10,8 @@ public:
 	static LocationInformationModel *instance();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
+	int32_t addDiveSite(const QString& name, int lat = 0, int lon = 0);
+
 public slots:
 	void update();
 private:

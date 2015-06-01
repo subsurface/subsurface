@@ -216,7 +216,7 @@ void MainWindow::on_actionManage_dive_sites_triggered() {
 }
 
 void MainWindow::enableDiveSiteEdit(uint32_t id) {
-	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
+	locationInformationWidget()->setCurrentDiveSiteByUuid(id);
 	setApplicationState("EditDiveSite");
 }
 
@@ -404,7 +404,7 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
-	locationInformationWidget()->setLocationId(0);
+	locationInformationWidget()->setCurrentDiveSiteByUuid(0);
 	globe()->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
@@ -632,7 +632,7 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
-	locationInformationWidget()->setLocationId(0);
+	locationInformationWidget()->setCurrentDiveSiteByUuid(0);
 }
 
 void MainWindow::on_actionReplanDive_triggered()

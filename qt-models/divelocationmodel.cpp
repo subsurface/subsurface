@@ -49,3 +49,14 @@ void LocationInformationModel::update()
 		endInsertRows();
 	}
 }
+
+int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int lat)
+{
+	degrees_t latitude, longitude;
+	latitude.udeg = lat;
+	longitude.udeg = lon;
+
+	int32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
+	update();
+	return uuid;
+}

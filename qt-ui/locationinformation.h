@@ -15,13 +15,13 @@ protected:
 public slots:
 	void acceptChanges();
 	void rejectChanges();
-	void setLocationId(uint32_t uuid);
+	void setCurrentDiveSiteByUuid(uint32_t uuid);
 	void updateGpsCoordinates(void);
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
 	void resetState();
 	void resetPallete();
-	void setCurrentDiveSite(int dive_nr);
+	void setCurrentDiveSiteByIndex(int dive_nr);
 	void on_diveSiteCoordinates_textChanged(const QString& text);
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);

@@ -21,6 +21,8 @@
 #include "divepicturemodel.h"
 #include "divecomputerextradatamodel.h"
 #include "divelocationmodel.h"
+#include "divesite.h"
+
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
@@ -55,7 +57,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	connect(ui.manageDiveSite, SIGNAL(clicked()), this, SLOT(prepareDiveSiteEdit()));
+	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(prepareDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -231,17 +233,19 @@ void MainTab::setCurrentLocationIndex()
 void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
-	ui.manageDiveSite->show();
+	ui.addDiveSite->show();
 }
 
 void MainTab::disableGeoLookupEdition()
 {
 	ui.waitingSpinner->start();
-	ui.manageDiveSite->hide();
+	ui.addDiveSite->hide();
 }
 
 void MainTab::prepareDiveSiteEdit() {
-	emit requestDiveSiteEdit(displayed_dive.dive_site_uuid);
+	uint32_t dive_site_uuid = LocationInformationModel::instance()->addDiveSite(tr("Unnamed"));
+	displayed_dive.dive_site_uuid = dive_site_uuid;
+	emit requestDiveSiteEdit(dive_site_uuid);
 }
 
 void MainTab::toggleTriggeredColumn()
