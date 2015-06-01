@@ -211,6 +211,10 @@ LocationInformationWidget *MainWindow::locationInformationWidget() {
 	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
 }
 
+void MainWindow::on_actionManage_dive_sites_triggered() {
+	enableDiveSiteEdit(displayed_dive.dive_site_uuid);
+}
+
 void MainWindow::enableDiveSiteEdit(uint32_t id) {
 	locationInformationWidget()->setLocationId(displayed_dive.dive_site_uuid);
 	setApplicationState("EditDiveSite");

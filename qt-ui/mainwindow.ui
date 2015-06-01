@@ -99,6 +99,7 @@
     <addaction name="actionEditDive"/>
     <addaction name="actionDivePlanner"/>
     <addaction name="actionReplanDive"/>
+    <addaction name="actionManage_dive_sites"/>
     <addaction name="copy"/>
     <addaction name="paste"/>
     <addaction name="separator"/>
@@ -718,12 +719,17 @@
   </action>
   <action name="actionCloudstorageopen">
    <property name="text">
-    <string>Cloud storage open</string>
+    <string>C&amp;loud storage open</string>
    </property>
   </action>
   <action name="actionCloudstoragesave">
    <property name="text">
-    <string>Cloud storage save</string>
+    <string>Clo&amp;ud storage save</string>
+   </property>
+  </action>
+  <action name="actionManage_dive_sites">
+   <property name="text">
+    <string>Manage dive sites</string>
    </property>
   </action>
  </widget>

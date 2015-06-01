@@ -138,6 +138,7 @@ slots:
 	void on_actionDivePlanner_triggered();
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();
+	void on_actionManage_dive_sites_triggered();
 
 	void current_dive_changed(int divenr);
 	void initialUiSetup();
