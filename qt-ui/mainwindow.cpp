@@ -148,6 +148,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
+#ifndef USE_LIBGIT23_API
+	ui.menuFile->removeAction(ui.actionCloudstorageopen);
+	ui.menuFile->removeAction(ui.actionCloudstoragesave);
+	qDebug() << "disabled / made invisible the cloud storage stuff";
+#endif
 
 	ui.mainErrorMessage->hide();
 	graphics()->setEmptyState();
