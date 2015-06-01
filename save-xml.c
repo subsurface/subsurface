@@ -10,6 +10,7 @@
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
+#include "strndup.h"
 
 /*
  * We're outputting utf8 in xml.
@@ -45,9 +46,7 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 		return;
 	while (len && isascii(text[len - 1]) && isspace(text[len - 1]))
 		len--;
-	/* strndup would be easier, but that doesn't appear to exist on Windows / Mac */
-	cleaned = strdup(text);
-	cleaned[len] = '\0';
+	cleaned = strndup(text, len);
 	put_string(b, pre);
 	quote(b, cleaned, is_attribute);
 	put_string(b, post);

@@ -3,7 +3,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "file.h"
-
+#include "strndup.h"
 
 // Convert bytes into an INT
 #define array_uint16_le(p) ((unsigned int) (p)[0] \
@@ -11,21 +11,6 @@
 #define array_uint32_le(p) ((unsigned int) (p)[0] \
 							+ ((p)[1]<<8) + ((p)[2]<<16) \
 							+ ((p)[3]<<24))
-
-#if __WIN32__
-static char *strndup (const char *s, size_t n)
-{
-	char *cpy;
-	size_t len = strlen(s);
-	if (n < len)
-		len = n;
-	if ((cpy = malloc(len + 1)) != NULL) {
-		cpy[len] = '\0';
-		memcpy(cpy, s, len);
-	}
-	return cpy;
-}
-#endif
 
 struct lv_event {
 	time_t time;

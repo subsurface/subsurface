@@ -12,6 +12,7 @@
 
 #include "dive.h"
 #include "membuffer.h"
+#include "strndup.h"
 
 /*
  * The libgit2 people are incompetent at making libraries. They randomly change
