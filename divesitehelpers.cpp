@@ -16,6 +16,7 @@
 #include <QNetworkAccessManager>
 #include <QUrlQuery>
 #include <QEventLoop>
+#include <QTimer>
 
 struct GeoLookupInfo {
 	degrees_t lat;
@@ -46,21 +47,43 @@ void ReverseGeoLookupThread::run() {
 	QString apiCall("http://open.mapquestapi.com/nominatim/v1/reverse.php?format=json&accept-language=%1&lat=%2&lon=%3");
 	Q_FOREACH (const GeoLookupInfo& info, geo_lookup_data ) {
 		request.setUrl(apiCall.arg(uiLanguage(NULL)).arg(info.lat.udeg / 1000000.0).arg(info.lon.udeg / 1000000.0));
+
 		QNetworkReply *reply = rgl->get(request);
-		QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		QTimer timer;
+		timer.setSingleShot(true);
+
+		QEventLoop loop;
+		connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+		connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		timer.start(500);   // 30 secs. timeout
 		loop.exec();
-		QJsonParseError errorObject;
-		QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll(), &errorObject);
-		if (errorObject.error != QJsonParseError::NoError) {
-			qDebug() << errorObject.errorString();
-		} else {
+
+		if(timer.isActive()) {
+			timer.stop();
+			if(reply->error() > 0)
+				goto clear_reply;
+
+			int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+			if (v < 200 || v >= 300)
+				goto clear_reply;
+
+			QJsonParseError errorObject;
+			QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll(), &errorObject);
+			if (errorObject.error != QJsonParseError::NoError)
+				goto clear_reply;
+
 			QJsonObject obj = jsonDoc.object();
 			QJsonObject address = obj.value("address").toObject();
-			qDebug() << "found country:" << address.value("country").toString();
+
 			struct dive_site *ds = get_dive_site_by_uuid(info.uuid);
 			ds->notes = add_to_string(ds->notes, "countrytag: %s", address.value("country").toString().toUtf8().data());
+
+		} else {
+			disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+			reply->abort();
 		}
 
+		clear_reply:
 		reply->deleteLater();
 	}
 	rgl->deleteLater();
