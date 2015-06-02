@@ -29,6 +29,9 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		return QVariant();
 	struct dive_site *ds = get_dive_site(index.row());
 
+	if (!ds)
+		return QVariant();
+
 	switch(role) {
 		case Qt::DisplayRole : return qPrintable(ds->name);
 		case DIVE_SITE_UUID  : return ds->uuid;
@@ -77,7 +80,8 @@ bool LocationInformationModel::removeRows(int row, int count, const QModelIndex 
 
 	beginRemoveRows(QModelIndex(), row, row);
 	struct dive_site *ds = get_dive_site(row);
-	delete_dive_site(ds->uuid);
+	if (ds)
+		delete_dive_site(ds->uuid);
 	endRemoveRows();
 	return true;
 }
