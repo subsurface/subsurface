@@ -202,9 +202,12 @@ void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString
 
 void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 {
-	if (!currentDs || !same_string(qPrintable(text), currentDs->name)) {
-		free(displayed_dive_site.name);
-		displayed_dive_site.name = copy_string(qPrintable(text));
+	if (currentDs && text != currentDs->name) {
+		// This needs to be changed directly into the model so that
+		// the changes are replyed on the ComboBox with the current selection.
+
+		QModelIndex idx = ui.currentLocation->model()->index(ui.currentLocation->currentIndex(),0);
+		LocationInformationModel::instance()->setData(idx, text, Qt::EditRole);
 		markChangedWidget(ui.diveSiteName);
 		emit coordinatesChanged();
 	}

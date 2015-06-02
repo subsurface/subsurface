@@ -60,3 +60,18 @@ int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int 
 	update();
 	return uuid;
 }
+
+bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (!index.isValid())
+		return false;
+
+	if (role != Qt::EditRole)
+		return false;
+
+	struct dive_site *ds = get_dive_site(index.row());
+	free(ds->name);
+	ds->name = copy_string(qPrintable(value.toString()));
+	emit dataChanged(index, index);
+	return true;
+}
