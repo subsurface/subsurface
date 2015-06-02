@@ -21,7 +21,6 @@ public slots:
 	void enableEdition();
 	void resetState();
 	void resetPallete();
-	void setCurrentDiveSiteByIndex(int dive_nr);
 	void on_diveSiteCoordinates_textChanged(const QString& text);
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);
