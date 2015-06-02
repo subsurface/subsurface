@@ -151,5 +151,9 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \
 	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
 	-DUSE_LIBGIT23_API=1
 
+if [ $PLATFORM = Darwin ] ; then
+	rm -rf Subsurface.app
+fi
+
 make -j4
 make install
