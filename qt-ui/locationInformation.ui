@@ -42,70 +42,17 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>1</number>
-     </property>
-     <item>
-      <widget class="QComboBox" name="currentLocation"/>
-     </item>
-     <item>
-      <widget class="QToolButton" name="addLocation">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../subsurface.qrc">
-         <normaloff>:/plus</normaloff>:/plus</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="editLocation">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../subsurface.qrc">
-         <normaloff>:/edit</normaloff>:/edit</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="removeLocation">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../subsurface.qrc">
-         <normaloff>:/trash</normaloff>:/trash</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="diveSiteName"/>
+   <item row="0" column="0" colspan="3">
+    <widget class="KMessageWidget" name="diveSiteMessage" native="true"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Coordinates</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="diveSiteCoordinates"/>
-   </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Description</string>
@@ -113,19 +60,9 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLineEdit" name="diveSiteDescription"/>
+    <widget class="QLineEdit" name="diveSiteCoordinates"/>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Notes</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1" rowspan="2" colspan="2">
-    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
-   </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -138,8 +75,31 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="0" colspan="3">
-    <widget class="KMessageWidget" name="diveSiteMessage" native="true"/>
+   <item row="6" column="1" rowspan="2" colspan="2">
+    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Notes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="diveSiteName"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="diveSiteDescription"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Coordinates</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="currentLocation"/>
    </item>
   </layout>
  </widget>
@@ -151,8 +111,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../subsurface.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
