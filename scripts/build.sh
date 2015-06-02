@@ -96,11 +96,11 @@ if [ ! -d libdivecomputer ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../libdivecomputer libdivecomputer
 	else
-		git clone -b Subsurface-4.4 git://subsurface-divelog.org/libdc libdivecomputer
+		git clone -b Subsurface-testing git://subsurface-divelog.org/libdc libdivecomputer
 	fi
 fi
 cd libdivecomputer
-git checkout Subsurface-4.4
+git checkout Subsurface-testing
 if [ ! -f configure ] ; then
 	autoreconf --install
 fi
@@ -116,11 +116,11 @@ if [ ! -d marble-source ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../marble-source marble-source
 	else
-		git clone -b Subsurface-4.4 git://subsurface-divelog.org/marble marble-source
+		git clone -b Subsurface-testing git://subsurface-divelog.org/marble marble-source
 	fi
 fi
 cd marble-source
-git checkout Subsurface-4.4
+git checkout Subsurface-testing
 mkdir -p build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
