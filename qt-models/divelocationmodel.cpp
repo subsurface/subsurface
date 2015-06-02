@@ -1,7 +1,7 @@
 #include "divelocationmodel.h"
 #include "dive.h"
 
-bool dive_site_less_then(dive_site *a, dive_site *b)
+bool dive_site_less_than(dive_site *a, dive_site *b)
 {
 	return QString(a->name) <= QString(b->name);
 }
@@ -45,7 +45,7 @@ void LocationInformationModel::update()
 	if (dive_site_table.nr) {
 		beginInsertRows(QModelIndex(), 0, dive_site_table.nr);
 		internalRowCount = dive_site_table.nr;
-		std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr - 1, dive_site_less_then);
+		std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 		endInsertRows();
 	}
 }
