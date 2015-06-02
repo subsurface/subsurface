@@ -2268,7 +2268,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 
 extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
-	int i, interval, retval = 0;
+	int i, interval, retval = 0, block_size;
 	sqlite3 *handle = (sqlite3 *)param;
 	unsigned const char *sampleBlob;
 	char *err = NULL;
@@ -2330,10 +2330,25 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 
 	interval = data[16] ? atoi(data[16]) : 0;
 	sampleBlob = (unsigned const char *)data[24];
+
+	if (sampleBlob) {
+		switch (sampleBlob[0]) {
+			case 2:
+				block_size = 19;
+				break;
+			case 3:
+				block_size = 23;
+				break;
+			default:
+				block_size = 16;
+				break;
+		}
+	}
+
 	for (i = 0; interval && sampleBlob && i * interval < cur_dive->duration.seconds; i++) {
-		float *depth = (float *)&sampleBlob[i * 16 + 3];
-		int32_t temp = (sampleBlob[i * 16 + 10] << 8) + sampleBlob[i * 16 + 11];
-		int32_t pressure = (sampleBlob[i * 16 + 9] << 16) + (sampleBlob[i * 16 + 8] << 8) + sampleBlob[i * 16 + 7];
+		float *depth = (float *)&sampleBlob[i * block_size + 3];
+		int32_t temp = (sampleBlob[i * block_size + 10] << 8) + sampleBlob[i * block_size + 11];
+		int32_t pressure = (sampleBlob[i * block_size + 9] << block_size) + (sampleBlob[i * block_size + 8] << 8) + sampleBlob[i * block_size + 7];
 
 		sample_start();
 		cur_sample->time.seconds = i * interval;
