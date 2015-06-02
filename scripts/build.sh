@@ -17,6 +17,9 @@
 # of the current directory (except on Mac where the Subsurface.app ends up
 # in subsurface/build
 
+# create a log file of the build
+exec 1> >(tee build.log) 2>&1
+
 SRC=$(pwd)
 PLATFORM=$(uname)
 
