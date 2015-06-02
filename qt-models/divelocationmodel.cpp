@@ -1,5 +1,6 @@
 #include "divelocationmodel.h"
 #include "dive.h"
+#include <QDebug>
 
 bool dive_site_less_than(dive_site *a, dive_site *b)
 {

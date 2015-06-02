@@ -28,8 +28,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	ui.diveSiteMessage->addAction(closeAction);
 
-	ui.currentLocation->setModel(LocationInformationModel::instance());
-	connect(ui.currentLocation, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentDiveSite(int)));
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 }
@@ -53,13 +51,6 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 		return;
 
 	displayed_dive_site = *currentDs;
-
-	if (ui.currentLocation->currentText() != displayed_dive_site.name) {
-		// this will trigger setCurrentDiveSite again, and thus,
-		// will gethere with the correct uuid.
-		ui.currentLocation->setCurrentText(displayed_dive_site.name);
-		return;
-	}
 
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
@@ -206,7 +197,13 @@ void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 		// This needs to be changed directly into the model so that
 		// the changes are replyed on the ComboBox with the current selection.
 
-		QModelIndex idx = ui.currentLocation->model()->index(ui.currentLocation->currentIndex(),0);
+		int i;
+		struct dive_site *ds;
+		for_each_dive_site(i,ds)
+			if (ds->uuid == currentDs->uuid)
+				break;
+
+		QModelIndex idx = LocationInformationModel::instance()->index(i,0);
 		LocationInformationModel::instance()->setData(idx, text, Qt::EditRole);
 		markChangedWidget(ui.diveSiteName);
 		emit coordinatesChanged();

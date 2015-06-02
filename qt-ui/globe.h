@@ -39,7 +39,7 @@ private:
 	bool doubleClick;
 
 signals:
-	void coordinatesChanged(void);
+	void coordinatesChanged();
 
 public
 slots:
