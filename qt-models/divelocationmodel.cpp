@@ -39,16 +39,10 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 
 void LocationInformationModel::update()
 {
-	if (rowCount()) {
-		beginRemoveRows(QModelIndex(), 0, rowCount()-1);
-		endRemoveRows();
-	}
-	if (dive_site_table.nr) {
-		beginInsertRows(QModelIndex(), 0, dive_site_table.nr);
-		internalRowCount = dive_site_table.nr;
-		std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
-		endInsertRows();
-	}
+	beginResetModel();
+	internalRowCount = dive_site_table.nr;
+	std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	endResetModel();
 }
 
 int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int lat)
@@ -74,5 +68,16 @@ bool LocationInformationModel::setData(const QModelIndex &index, const QVariant 
 	free(ds->name);
 	ds->name = copy_string(qPrintable(value.toString()));
 	emit dataChanged(index, index);
+	return true;
+}
+
+bool LocationInformationModel::removeRows(int row, int count, const QModelIndex & parent) {
+	if(row >= rowCount())
+		return false;
+
+	beginRemoveRows(QModelIndex(), row, row);
+	struct dive_site *ds = get_dive_site(row);
+	delete_dive_site(ds->uuid);
+	endRemoveRows();
 	return true;
 }

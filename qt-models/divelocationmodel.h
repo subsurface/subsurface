@@ -13,6 +13,8 @@ public:
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
 	int32_t addDiveSite(const QString& name, int lat = 0, int lon = 0);
 	bool setData(const QModelIndex &index, const QVariant &value, int role);
+	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+
 public slots:
 	void update();
 private:

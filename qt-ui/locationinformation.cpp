@@ -91,7 +91,7 @@ void LocationInformationWidget::acceptChanges()
 		currentDs->notes = copy_string(uiString);
 	}
 	if (dive_site_is_empty(currentDs)) {
-		delete_dive_site(currentDs->uuid);
+		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
 	}
 
@@ -104,7 +104,7 @@ void LocationInformationWidget::acceptChanges()
 void LocationInformationWidget::rejectChanges()
 {
 	if (currentDs && dive_site_is_empty(currentDs)) {
-		delete_dive_site(currentDs->uuid);
+		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
 	}
 	resetState();
