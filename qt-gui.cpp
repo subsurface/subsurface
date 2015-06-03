@@ -31,6 +31,7 @@ void init_ui()
 void run_ui()
 {
 #ifdef SUBSURFACE_MOBILE
+	window->hide();
 	QQmlApplicationEngine engine;
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	QObject *mainWindow = engine.rootObjects().value(0);
