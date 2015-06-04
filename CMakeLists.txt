@@ -14,7 +14,12 @@ option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 
-set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules)
+set(CMAKE_MODULE_PATH
+	${CMAKE_MODULE_PATH}
+	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
+	${${PROJECT_NAME}_SOURCE_SIR}/../install-root/lib/cmake/libssh2
+)
+
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
@@ -54,7 +59,8 @@ else()
 	if(USE_LIBGIT23_API)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_LIBGIT23_API")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_LIBGIT23_API")
-		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} -lssh2)
+		find_package(libssh2 REQUIRED)
+		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBSSH2_LIBRARIES})
 	endif()
 endif()
 
