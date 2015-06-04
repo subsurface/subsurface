@@ -56,7 +56,9 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 	else
 		ui.diveSiteCoordinates->clear();
 
-	emit startFilterDiveSite(displayed_dive_site.uuid);
+	if (current_mode == EDIT_DIVE_SITE)
+		emit startFilterDiveSite(displayed_dive_site.uuid);
+	emit startEditDiveSite(uuid);
 }
 
 void LocationInformationWidget::updateGpsCoordinates()
