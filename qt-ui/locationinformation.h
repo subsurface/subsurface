@@ -8,6 +8,7 @@
 class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
 public:
+	enum mode{CREATE_DIVE_SITE, EDIT_DIVE_SITE};
 	LocationInformationWidget(QWidget *parent = 0);
 protected:
 	void showEvent(QShowEvent *);
@@ -15,8 +16,9 @@ protected:
 public slots:
 	void acceptChanges();
 	void rejectChanges();
-	void setCurrentDiveSiteByUuid(uint32_t uuid);
-	void updateGpsCoordinates(void);
+	void updateGpsCoordinates();
+	void editDiveSite(uint32_t uuid);
+	void createDiveSite();
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
 	void resetState();
@@ -25,7 +27,11 @@ public slots:
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);
 	void on_diveSiteNotes_textChanged();
+private slots:
+	void setCurrentDiveSiteByUuid(uint32_t uuid);
 signals:
+	void startEditDiveSite(uint32_t uuid);
+	void endEditDiveSite();
 	void informationManagementEnded();
 	void coordinatesChanged();
 	void startFilterDiveSite(uint32_t uuid);
@@ -35,6 +41,7 @@ private:
 	Ui::LocationInformation ui;
 	bool modified;
 	QAction *closeAction, *acceptAction, *rejectAction;
+	mode current_mode;
 };
 
 #endif

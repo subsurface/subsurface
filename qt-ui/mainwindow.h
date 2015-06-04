@@ -185,6 +185,7 @@ slots:
 	void planCanceled();
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
+	void enableDiveSiteCreation();
 
 private:
 	Ui::MainWindow ui;

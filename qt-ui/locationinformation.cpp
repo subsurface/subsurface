@@ -101,6 +101,19 @@ void LocationInformationWidget::acceptChanges()
 	emit coordinatesChanged();
 }
 
+void LocationInformationWidget::editDiveSite(uint32_t uuid)
+{
+	current_mode = EDIT_DIVE_SITE;
+	setCurrentDiveSiteByUuid(uuid);
+}
+
+void LocationInformationWidget::createDiveSite()
+{
+	uint32_t uid = LocationInformationModel::instance()->addDiveSite(tr("untitled"));
+	current_mode = CREATE_DIVE_SITE;
+	setCurrentDiveSiteByUuid(uid);
+}
+
 void LocationInformationWidget::rejectChanges()
 {
 	if (currentDs && dive_site_is_empty(currentDs)) {

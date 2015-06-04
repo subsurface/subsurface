@@ -215,8 +215,13 @@ void MainWindow::on_actionManage_dive_sites_triggered() {
 	enableDiveSiteEdit(displayed_dive.dive_site_uuid);
 }
 
-void MainWindow::enableDiveSiteEdit(uint32_t id) {
-	locationInformationWidget()->setCurrentDiveSiteByUuid(id);
+void MainWindow::enableDiveSiteCreation() {
+	locationInformationWidget()->createDiveSite();
+	setApplicationState("EditDiveSite");
+}
+
+ void MainWindow::enableDiveSiteEdit(uint32_t id) {
+	locationInformationWidget()->editDiveSite(id);
 	setApplicationState("EditDiveSite");
 }
 
