@@ -56,7 +56,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-	void requestDiveSiteEdit(uint32_t uuid);
+	void requestDiveSiteAdd();
 	void diveSiteChanged();
 public
 slots:
