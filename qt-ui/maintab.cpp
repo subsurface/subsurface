@@ -1275,20 +1275,29 @@ void MainTab::on_tagWidget_textChanged()
  * mostly the same ). Check the currentTrip there to see if it`s being
  * correctly triggered.
  */
-void MainTab::on_location_currentTextChanged(const QString &text)
+
+
+void MainTab::on_location_currentIndexChanged(int idx)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
+
 	if (currentTrip) {
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(qPrintable(ui.location->currentText()));
 	}
-	if (current_dive && text == QString(get_dive_site_by_uuid(displayed_dive.dive_site_uuid)->name))
+
+	if (!get_dive_site(idx))
 		return;
 
-	uint32_t uuid = ui.location->currentData(LocationInformationModel::DIVE_SITE_UUID).toInt();
-	displayed_dive.dive_site_uuid = uuid;
-	markChangedWidget(ui.location);
+	if (current_dive) {
+		struct dive_site *ds_from_dive = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		if(ds_from_dive && ui.location->currentText() == ds_from_dive->name)
+			return;
+		displayed_dive.dive_site_uuid = get_dive_site(idx)->uuid;
+		markChangedWidget(ui.location);
+		emit diveSiteChanged();
+	}
 }
 
 /* TODO:

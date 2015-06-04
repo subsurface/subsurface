@@ -57,6 +57,7 @@ signals:
 	void addDiveFinished();
 	void dateTimeChanged();
 	void requestDiveSiteEdit(uint32_t uuid);
+	void diveSiteChanged();
 public
 slots:
 	void addCylinder_clicked();
@@ -64,7 +65,7 @@ slots:
 	void updateDiveInfo(bool clear = false);
 	void acceptChanges();
 	void rejectChanges();
-	void on_location_currentTextChanged(const QString &text);
+	void on_location_currentIndexChanged(int idx);
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();
 	void on_suit_textChanged(const QString &text);
