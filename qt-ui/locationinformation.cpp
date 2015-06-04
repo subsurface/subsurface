@@ -64,7 +64,6 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 void LocationInformationWidget::updateGpsCoordinates()
 {
 	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
-	MainWindow::instance()->setApplicationState("EditDiveSite");
 }
 
 void LocationInformationWidget::acceptChanges()
