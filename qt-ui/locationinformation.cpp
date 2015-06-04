@@ -156,10 +156,6 @@ void LocationInformationWidget::enableEdition()
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
-	if (!currentDs) {
-		displayed_dive.dive_site_uuid = create_dive_site(NULL);
-		currentDs = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-	}
 }
 
 extern bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
