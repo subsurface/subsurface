@@ -1,5 +1,5 @@
 #include "qmlmanager.h"
-
+#include <QUrl>
 
 QMLManager::QMLManager()
 {

@@ -15,6 +15,10 @@
 
 #include "qt-gui.h"
 
+#ifdef SUBSURFACE_MOBILE
+	#include "qt-mobile/qmlmanager.h"
+#endif
+
 static MainWindow *window = NULL;
 
 void init_ui()
@@ -32,6 +36,7 @@ void run_ui()
 {
 #ifdef SUBSURFACE_MOBILE
 	window->hide();
+	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	QQmlApplicationEngine engine;
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	QObject *mainWindow = engine.rootObjects().value(0);
