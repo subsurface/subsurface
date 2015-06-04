@@ -187,29 +187,19 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 void GlobeGPS::repopulateLabels()
 {
+	if (!current_dive)
+		return;
+
 	struct dive_site *ds;
+	int idx;
+	QMap<QString, GeoDataPlacemark *> locationMap;
 	if (loadedDives) {
 		model()->treeModel()->removeDocument(loadedDives);
 		delete loadedDives;
 	}
 	loadedDives = new GeoDataDocument;
-	QMap<QString, GeoDataPlacemark *> locationMap;
 
-	int idx = -2;
-	struct dive *dive;
-	// normally we use for_each_dive (idx, dive) to loop over all dives,
-	// but we need to include the displayed_dive while things are
-	// edited, so let's hand roll this loop
-	while (++idx < dive_table.nr) {
-		dive = (idx == -1 ? &displayed_dive : get_dive(idx));
-		if (dive == current_dive)
-			// don't show that flag, it's either already shown as displayed_dive
-			// or it's the one that we are moving right now...
-			continue;
-		if (idx == -1)
-			ds = &displayed_dive_site;
-		else
-			ds = get_dive_site_for_dive(dive);
+	for_each_dive_site(idx, ds) {
 		if (dive_site_has_gps_location(ds)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
 			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
@@ -230,8 +220,12 @@ void GlobeGPS::repopulateLabels()
 			loadedDives->append(place);
 		}
 	}
+
 	model()->treeModel()->addDocument(loadedDives);
-	centerOn(displayed_dive_site.longitude.udeg / 1000000.0, displayed_dive_site.latitude.udeg / 1000000.0, true);
+	struct dive_site *center = displayed_dive_site.uuid != 0 ?
+			&displayed_dive_site : get_dive_site_by_uuid(current_dive->dive_site_uuid);
+	if(center)
+		centerOn(displayed_dive_site.longitude.udeg / 1000000.0, displayed_dive_site.latitude.udeg / 1000000.0, true);
 }
 
 void GlobeGPS::reload()
