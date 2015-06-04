@@ -144,6 +144,12 @@ void LocationInformationWidget::markChangedWidget(QWidget *w)
 
 void LocationInformationWidget::resetState()
 {
+	if (displayed_dive.id) {
+		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		if(ds) {
+			displayed_dive_site = *ds;
+		}
+	}
 	modified = false;
 	resetPallete();
 	MainWindow::instance()->dive_list()->setEnabled(true);
