@@ -54,8 +54,11 @@ int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int 
 	latitude.udeg = lat;
 	longitude.udeg = lon;
 
+	beginInsertRows(QModelIndex(), dive_site_table.nr, dive_site_table.nr);
 	int32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
-	update();
+	std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	internalRowCount = dive_site_table.nr;
+	endInsertRows();
 	return uuid;
 }
 
