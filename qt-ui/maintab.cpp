@@ -116,7 +116,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.divemaster->setCompleter(completers.divemaster);
 	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
-
+	ui.diveNotesMessage->hide();
+	ui.diveEquipmentMessage->hide();
+	ui.diveInfoMessage->hide();
+	ui.diveStatisticsMessage->hide();
 	setMinimumHeight(0);
 	setMinimumWidth(0);
 
@@ -312,9 +315,12 @@ void MainTab::displayMessage(QString str)
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
 	updateTextLabels();
-	ui.tagWidget->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-	ui.buddy->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-	ui.divemaster->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
+
+// TODO: this doesn't exists anymore. Find out why it was removed from
+// the KMessageWidget and try to see if this is still needed.
+//	ui.tagWidget->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
+//	ui.buddy->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
+//	ui.divemaster->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
 }
 
 void MainTab::updateTextLabels(bool showUnits)
