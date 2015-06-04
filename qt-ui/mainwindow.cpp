@@ -270,7 +270,6 @@ void MainWindow::current_dive_changed(int divenr)
 {
 	if (divenr >= 0) {
 		select_dive(divenr);
-		globe()->centerOnCurrentDive();
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
@@ -404,7 +403,6 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
-	locationInformationWidget()->setCurrentDiveSiteByUuid(0);
 	globe()->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
@@ -632,7 +630,6 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
-	locationInformationWidget()->setCurrentDiveSiteByUuid(0);
 }
 
 void MainWindow::on_actionReplanDive_triggered()
