@@ -124,9 +124,8 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
-	if (displayed_dive_site.uuid)
+	if (displayed_dive_site.uuid && current_mode == EDIT_DIVE_SITE)
 		emit startFilterDiveSite(displayed_dive_site.uuid);
-	ui.diveSiteMessage->setCloseButtonVisible(false);
 	QGroupBox::showEvent(ev);
 }
 
