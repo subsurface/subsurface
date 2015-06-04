@@ -44,7 +44,7 @@ void LocationInformationModel::update()
 {
 	beginResetModel();
 	internalRowCount = dive_site_table.nr;
-	std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	endResetModel();
 }
 
@@ -55,8 +55,8 @@ int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int 
 	longitude.udeg = lon;
 
 	beginInsertRows(QModelIndex(), dive_site_table.nr, dive_site_table.nr);
-	int32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
-	std::sort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	uint32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
+	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	internalRowCount = dive_site_table.nr;
 	endInsertRows();
 	return uuid;

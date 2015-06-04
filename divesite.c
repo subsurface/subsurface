@@ -103,7 +103,6 @@ uint32_t create_dive_site(const char *name)
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude)
 {
 	struct dive_site *ds = alloc_dive_site();
-	ds->uuid = dive_site_getUniqId();
 	ds->name = copy_string(name);
 	ds->latitude = latitude;
 	ds->longitude = longitude;
