@@ -31,6 +31,9 @@ fi
 mkdir -p install-root
 INSTALL_ROOT=$SRC/install-root
 
+# make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
+export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
+
 echo Building in $SRC, installing in $INSTALL_ROOT
 
 # if on a mac, let's build our own libssh2
@@ -63,6 +66,8 @@ fi
 
 # build libgit2
 
+cd $SRC
+
 if [ ! -d libgit2 ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../libgit2 libgit2
@@ -72,15 +77,16 @@ if [ ! -d libgit2 ] ; then
 fi
 cd libgit2
 # let's build with a recent enough version of master for the latest features
-git pull
-if [ ! git checkout c11daac9de2 ] ; then
+git pull origin master
+if ! git checkout c11daac9de2 ; then
 	echo "Can't find the right commit in libgit2 - giving up"
 	exit 1
 fi
 mkdir -p build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
-cmake --build . --target install
+make -j4
+make install
 
 if [ $PLATFORM = Darwin ] ; then
 	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
@@ -105,7 +111,7 @@ if [ ! -d libdivecomputer ] ; then
 fi
 cd libdivecomputer
 git pull
-if [ ! git checkout Subsurface-testing ] ; then
+if ! git checkout Subsurface-testing ; then
 	echo "can't check out the Subsurface-testing branch of libdivecomputer -- giving up"
 	exit 1
 fi
@@ -129,7 +135,7 @@ if [ ! -d marble-source ] ; then
 fi
 cd marble-source
 git pull
-if [ ! git checkout Subsurface-testing ] ; then
+if ! git checkout Subsurface-testing ; then
 	echo "can't check out the Subsurface-testing branch of marble -- giving up"
 	exit 1
 fi
@@ -157,7 +163,7 @@ if [ ! -d grantlee ] ; then
 	fi
 fi
 cd grantlee
-if [ ! git checkout v5.0.0 ] ; then
+if ! git checkout v5.0.0 ; then
 	echo "can't check out v5.0.0 of grantlee -- giving up"
 	exit 1
 fi
