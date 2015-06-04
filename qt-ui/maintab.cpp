@@ -1269,14 +1269,6 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
-/* TODO: This seems wrong.
- * The code here below should be triggered when the user changes
- * the Location in the combobox (this was a LineEdit, but the code is
- * mostly the same ). Check the currentTrip there to see if it`s being
- * correctly triggered.
- */
-
-
 void MainTab::on_location_currentIndexChanged(int idx)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
@@ -1299,21 +1291,6 @@ void MainTab::on_location_currentIndexChanged(int idx)
 		emit diveSiteChanged();
 	}
 }
-
-/* TODO:
- * Check if we need to move this to location management.
-// If we have GPS data for the location entered, add it.
-void MainTab::on_location_editingFinished()
-{
-	// find the dive site or create it
-	const char *name = copy_string(qPrintable(ui.location->currentText()));
-	uint32_t uuid = get_dive_site_uuid_by_name(name, NULL);
-	if (!uuid)
-		uuid = create_dive_site(name);
-	displayed_dive.dive_site_uuid = uuid;
-	free((void*)name);
-}
-*/
 
 void MainTab::on_suit_textChanged(const QString &text)
 {
@@ -1344,25 +1321,6 @@ void MainTab::on_notes_textChanged()
 	}
 	markChangedWidget(ui.notes);
 }
-
-#if 0 // we'll need something like this for the dive site management
-void MainTab::on_coordinates_textChanged(const QString &text)
-{
-	if (editMode == IGNORE || acceptingEdit == true)
-		return;
-	bool gpsChanged = false;
-	bool parsed = false;
-	QPalette p;
-	ui.coordinates->setPalette(p); // reset palette
-	gpsChanged = gpsHasChanged(&displayed_dive, &displayed_dive, text, &parsed);
-	if (gpsChanged)
-		markChangedWidget(ui.coordinates); // marks things yellow
-	if (!parsed) {
-		p.setBrush(QPalette::Base, QColor(Qt::red).lighter());
-		ui.coordinates->setPalette(p); // marks things red
-	}
-}
-#endif
 
 void MainTab::on_rating_valueChanged(int value)
 {
@@ -1413,30 +1371,6 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 	if (index.isValid() && index.column() != WeightModel::REMOVE)
 		ui.weights->edit(index);
 }
-
-#if 0 // we'll need this for dive sites
-void MainTab::updateCoordinatesText(qreal lat, qreal lon)
-{
-	int ulat = rint(lat * 1000000);
-	int ulon = rint(lon * 1000000);
-	ui.coordinates->setText(printGPSCoords(ulat, ulon));
-}
-
-void MainTab::updateGpsCoordinates()
-{
-	if (editMode == NONE)
-		enableEdition();
-
-	struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-	if (ds && dive_site_has_gps_location(ds)) {
-		ui.coordinates->setText(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg));
-		ui.coordinates->setModified(true);
-	} else if (!ui.coordinates->text().isEmpty()) {
-		ui.coordinates->setModified(true);
-		ui.coordinates->clear();
-	}
-}
-#endif
 
 void MainTab::escDetected()
 {
