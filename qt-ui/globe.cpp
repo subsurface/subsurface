@@ -298,18 +298,22 @@ void GlobeGPS::zoomOutForNoGPS()
 	}
 }
 
+void GlobeGPS::endGetDiveCoordinates()
+{
+	messageWidget->animatedHide();
+	editingDiveLocation = false;
+}
+
 void GlobeGPS::prepareForGetDiveCoordinates()
 {
-	if (!messageWidget->isVisible()) {
-		messageWidget->setMessageType(KMessageWidget::Warning);
-		messageWidget->setText(QObject::tr("Move the map and double-click to set the dive location"));
-		messageWidget->setWordWrap(true);
-		messageWidget->setCloseButtonVisible(false);
-		messageWidget->animatedShow();
-		editingDiveLocation = true;
-		if (!dive_has_gps_location(current_dive))
-			zoomOutForNoGPS();
-	}
+	messageWidget->setMessageType(KMessageWidget::Warning);
+	messageWidget->setText(QObject::tr("Move the map and double-click to set the dive location"));
+	messageWidget->setWordWrap(true);
+	messageWidget->setCloseButtonVisible(false);
+	messageWidget->animatedShow();
+	editingDiveLocation = true;
+	if (!dive_has_gps_location(current_dive))
+		zoomOutForNoGPS();
 }
 
 // This needs to update the dive site, not just this dive

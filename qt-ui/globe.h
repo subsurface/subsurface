@@ -49,6 +49,8 @@ slots:
 	void fixZoom();
 	void zoomOutForNoGPS();
 	void prepareForGetDiveCoordinates();
+	void endGetDiveCoordinates();
+
 };
 
 #else // NO_MARBLE
