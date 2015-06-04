@@ -423,9 +423,10 @@ endif()
 
 # create the executables
 if(SUBSURFACE_MOBILE)
+	set(MOBILE_SRC qt-mobile/qmlmanager.cpp)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
-	add_executable(subsurface-mobile ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	target_link_libraries(
 		subsurface-mobile
 		subsurface_generated_ui
