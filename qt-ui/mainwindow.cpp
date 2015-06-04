@@ -139,10 +139,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
-	connect(mainTab, SIGNAL(requestDiveSiteEdit(uint32_t)), this, SLOT(enableDiveSiteEdit(uint32_t)));
+	connect(mainTab, SIGNAL(requestDiveSiteAdd()), this, SLOT(enableDiveSiteCreation()));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
 	connect(locationInformation, SIGNAL(coordinatesChanged()), globe(), SLOT(repopulateLabels()));
+	connect(globeGps, SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
+	connect(locationInformation, SIGNAL(startEditDiveSite(uint32_t)), globeGps, SLOT(prepareForGetDiveCoordinates()));
+	connect(locationInformation, SIGNAL(endEditDiveSite()), globeGps, SLOT(prepareForGetDiveCoordinates()));
+	connect(information(), SIGNAL(diveSiteChanged()), globeGps, SLOT(centerOnCurrentDive()));
 
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
@@ -220,7 +224,7 @@ void MainWindow::enableDiveSiteCreation() {
 	setApplicationState("EditDiveSite");
 }
 
- void MainWindow::enableDiveSiteEdit(uint32_t id) {
+void MainWindow::enableDiveSiteEdit(uint32_t id) {
 	locationInformationWidget()->editDiveSite(id);
 	setApplicationState("EditDiveSite");
 }
@@ -417,8 +421,8 @@ void MainWindow::cleanUpEmpty()
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    information()->isEditing() ||
-	    currentApplicationState == "EditDiveSite") {
+		information()->isEditing() ||
+		currentApplicationState == "EditDiveSite") {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
@@ -567,7 +571,7 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 bool MainWindow::plannerStateClean()
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    information()->isEditing()) {
+		information()->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
 		return false;
 	}
@@ -643,7 +647,7 @@ void MainWindow::on_actionReplanDive_triggered()
 		return;
 	else if (strcmp(current_dive->dc.model, "planned dive")) {
 		if (QMessageBox::warning(this, tr("Warning"), tr("trying to replan a dive that's not a planned dive."),
-				     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
+					 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
 					return;
 	}
 	// put us in PLAN mode
@@ -727,6 +731,7 @@ void MainWindow::on_actionEditDive_triggered()
 	disableShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics()->setAddState();
+	globe()->endGetDiveCoordinates();
 	setApplicationState("EditDive");
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
@@ -1128,7 +1133,7 @@ void MainWindow::writeSettings()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    information()->isEditing()) {
+		information()->isEditing()) {
 		on_actionQuit_triggered();
 		event->ignore();
 		return;
@@ -1340,7 +1345,7 @@ int MainWindow::file_save_as(void)
 
 	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
-				     tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+					 tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
@@ -1466,10 +1471,10 @@ void MainWindow::showV2Dialog()
 	// here we need to ask the user if / how they want to do the reverse geo coding
 	// for now this is just a warning that things could take a long time
 	QMessageBox d(QMessageBox::Information,
-		      tr("Welcom to Subsurface %1").arg(subsurface_version()),
-		      tr("Importing data files from earlier versions of Subsurface can take a significant amount of time"),
-		      QMessageBox::Ok,
-		      this);
+			  tr("Welcom to Subsurface %1").arg(subsurface_version()),
+			  tr("Importing data files from earlier versions of Subsurface can take a significant amount of time"),
+			  QMessageBox::Ok,
+			  this);
 	d.exec();
 }
 

@@ -57,7 +57,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(prepareDiveSiteEdit()));
+	connect(ui.addDiveSite, SIGNAL(clicked()), this, SIGNAL(requestDiveSiteAdd()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
