@@ -245,16 +245,6 @@ void MainTab::disableGeoLookupEdition()
 	ui.addDiveSite->hide();
 }
 
-void MainTab::prepareDiveSiteEdit() {
-	// TODO: This is wrong. We can only set this if we Accepted the dive site edit
-	// And not if we cancelled. Currently we are seting directly without even
-	// thinking - but too tired, fix this tomorrow.
-
-	uint32_t dive_site_uuid = LocationInformationModel::instance()->addDiveSite(tr("Unnamed"));
-	displayed_dive.dive_site_uuid = dive_site_uuid;
-	emit requestDiveSiteEdit(dive_site_uuid);
-}
-
 void MainTab::toggleTriggeredColumn()
 {
 	QAction *action = qobject_cast<QAction *>(sender());

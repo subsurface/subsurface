@@ -92,7 +92,6 @@ slots:
 	void escDetected(void);
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
-	void prepareDiveSiteEdit();
 	void showLocation();
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
