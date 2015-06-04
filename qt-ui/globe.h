@@ -21,7 +21,6 @@ public:
 	using MarbleWidget::centerOn;
 	GlobeGPS(QWidget *parent = 0);
 	void reload();
-	void centerOnCurrentDive();
 	bool eventFilter(QObject *, QEvent *);
 
 protected:
@@ -50,7 +49,7 @@ slots:
 	void zoomOutForNoGPS();
 	void prepareForGetDiveCoordinates();
 	void endGetDiveCoordinates();
-
+	void centerOnCurrentDive();
 };
 
 #else // NO_MARBLE
