@@ -10,6 +10,7 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
+#ifndef NO_PRINTING
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	// check if the options were previously stored in the settings; if not use some defaults.
@@ -111,3 +112,4 @@ void PrintDialog::printClicked(void)
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
 }
+#endif

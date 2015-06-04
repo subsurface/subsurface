@@ -6,6 +6,7 @@
 #include "printoptions.h"
 #include "printer.h"
 
+#ifndef NO_PRINTING
 class QProgressBar;
 class PrintOptions;
 class PrintLayout;
@@ -31,4 +32,5 @@ slots:
 	void printClicked();
 	void onPaintRequested(QPrinter *);
 };
+#endif
 #endif // PRINTDIALOG_H
