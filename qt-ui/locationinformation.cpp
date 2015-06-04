@@ -13,11 +13,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 {
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
-	ui.diveSiteMessage->show();
-
-	// create the three buttons and only show the close button for now
-	closeAction = new QAction(tr("Close"), this);
-	connect(closeAction, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
 
 	acceptAction = new QAction(tr("Apply changes"), this);
 	connect(acceptAction, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -26,7 +21,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(rejectAction, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
 
 	ui.diveSiteMessage->setText(tr("Dive site management"));
-	ui.diveSiteMessage->addAction(closeAction);
+	ui.diveSiteMessage->addAction(acceptAction);
+	ui.diveSiteMessage->addAction(rejectAction);
 
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
@@ -153,10 +149,6 @@ void LocationInformationWidget::resetState()
 	MainWindow::instance()->dive_list()->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.diveSiteMessage->setText(tr("Dive site management"));
-	ui.diveSiteMessage->addAction(closeAction);
-	ui.diveSiteMessage->removeAction(acceptAction);
-	ui.diveSiteMessage->removeAction(rejectAction);
-	ui.diveSiteMessage->setCloseButtonVisible(false);
 }
 
 void LocationInformationWidget::enableEdition()
@@ -164,10 +156,6 @@ void LocationInformationWidget::enableEdition()
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
-	ui.diveSiteMessage->removeAction(closeAction);
-	ui.diveSiteMessage->addAction(acceptAction);
-	ui.diveSiteMessage->addAction(rejectAction);
-	ui.diveSiteMessage->setCloseButtonVisible(false);
 	if (!currentDs) {
 		displayed_dive.dive_site_uuid = create_dive_site(NULL);
 		currentDs = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
