@@ -467,6 +467,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
+	ui.location->blockSignals(true);
 
 	divePictureModel->updateDivePictures();
 
@@ -708,6 +709,9 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
+
+	ui.location->blockSignals(false);
+	emit diveSiteChanged();
 }
 
 void MainTab::addCylinder_clicked()
