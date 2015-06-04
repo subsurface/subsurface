@@ -87,6 +87,8 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->notes);
 		currentDs->notes = copy_string(uiString);
 	}
+	if (current_mode == CREATE_DIVE_SITE)
+		displayed_dive.dive_site_uuid = currentDs->uuid;
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
