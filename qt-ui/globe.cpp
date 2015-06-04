@@ -310,13 +310,9 @@ void GlobeGPS::prepareForGetDiveCoordinates()
 		zoomOutForNoGPS();
 }
 
-// This needs to update the dive site, not just this dive
 void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 {
-	messageWidget->hide();
-
-	// TODO: Check if this is still necessary.
-	if (MainWindow::instance()->dive_list()->selectionModel()->selection().isEmpty())
+	if (!editingDiveLocation)
 		return;
 
 	// convert to degrees if in radian.
@@ -331,7 +327,6 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	displayed_dive_site.longitude.udeg = lrint(lon * 1000000.0);
 	emit coordinatesChanged();
 	repopulateLabels();
-	editingDiveLocation = false;
 }
 
 void GlobeGPS::mousePressEvent(QMouseEvent *event)
