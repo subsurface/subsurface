@@ -145,6 +145,33 @@ cd src/lib/marble
 make -j4
 make install
 
+# build grantlee
+
+cd $SRC
+
+if [ ! -d grantlee ] ; then
+	if [[ $1 = local ]] ; then
+		git clone $SRC/../grantlee grantlee
+	else
+		git clone git://gitorious.org/grantlee/grantlee
+	fi
+fi
+cd grantlee
+if [ ! git checkout v5.0.0 ] ; then
+	echo "can't check out v5.0.0 of grantlee -- giving up"
+	exit 1
+fi
+mkdir -p build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+	-DBUILD__TESTS=NO \
+	$SRC/grantlee
+make -j4
+make install
+
+# finally, build Subsurface
+
 if [ $PLATFORM = Darwin ] ; then
 	SH_LIB_EXT=dylib
 else
@@ -161,6 +188,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \
 	-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 	-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+	-DNO_PRINTING=OFF \
 	-DUSE_LIBGIT23_API=1
 
 if [ $PLATFORM = Darwin ] ; then
