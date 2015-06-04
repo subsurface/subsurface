@@ -229,7 +229,7 @@ void MainTab::setCurrentLocationIndex()
 		if (ds)
 			ui.location->setCurrentText(ds->name);
 		else
-			ui.location->setCurrentText("");
+			ui.location->setCurrentIndex(-1);
 	}
 }
 
@@ -491,7 +491,7 @@ void MainTab::updateDiveInfo(bool clear)
 		if (ds)
 			ui.location->setCurrentText(ds->name);
 		else
-			ui.location->clear();
+			ui.location->setCurrentIndex(-1);
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
