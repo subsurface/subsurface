@@ -72,7 +72,11 @@ if [ ! -d libgit2 ] ; then
 fi
 cd libgit2
 # let's build with a recent enough version of master for the latest features
-git checkout c11daac9de2
+git pull
+if [ ! git checkout c11daac9de2 ] ; then
+	echo "Can't find the right commit in libgit2 - giving up"
+	exit 1
+fi
 mkdir -p build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
@@ -100,7 +104,11 @@ if [ ! -d libdivecomputer ] ; then
 	fi
 fi
 cd libdivecomputer
-git checkout Subsurface-testing
+git pull
+if [ ! git checkout Subsurface-testing ] ; then
+	echo "can't check out the Subsurface-testing branch of libdivecomputer -- giving up"
+	exit 1
+fi
 if [ ! -f configure ] ; then
 	autoreconf --install
 fi
@@ -120,7 +128,11 @@ if [ ! -d marble-source ] ; then
 	fi
 fi
 cd marble-source
-git checkout Subsurface-testing
+git pull
+if [ ! git checkout Subsurface-testing ] ; then
+	echo "can't check out the Subsurface-testing branch of marble -- giving up"
+	exit 1
+fi
 mkdir -p build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
