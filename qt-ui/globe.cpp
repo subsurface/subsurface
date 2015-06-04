@@ -380,6 +380,9 @@ bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
 void GlobeGPS::prepareForGetDiveCoordinates()
 {
 }
+void GlobeGPS::endGetDiveCoordinates()
+{
+}
 void GlobeGPS::reload()
 {
 }

@@ -67,6 +67,7 @@ public:
 public
 slots:
 	void prepareForGetDiveCoordinates();
+	void endGetDiveCoordinates();
 };
 
 #endif // NO_MARBLE
