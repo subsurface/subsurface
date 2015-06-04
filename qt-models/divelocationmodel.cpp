@@ -85,6 +85,7 @@ bool LocationInformationModel::removeRows(int row, int count, const QModelIndex 
 	struct dive_site *ds = get_dive_site(row);
 	if (ds)
 		delete_dive_site(ds->uuid);
+	internalRowCount = dive_site_table.nr;
 	endRemoveRows();
 	return true;
 }
