@@ -113,10 +113,15 @@ void LocationInformationWidget::createDiveSite()
 
 void LocationInformationWidget::rejectChanges()
 {
-	if (currentDs && dive_site_is_empty(currentDs)) {
+	if (current_mode == CREATE_DIVE_SITE) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
-		displayed_dive.dive_site_uuid = 0;
+		if (displayed_dive.dive_site_uuid) {
+			displayed_dive_site = *get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		}
+	} else if ((currentDs && dive_site_is_empty(currentDs))) {
+		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 	}
+
 	resetState();
 	emit stopFilterDiveSite();
 	emit informationManagementEnded();
