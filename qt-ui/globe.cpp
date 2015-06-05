@@ -235,24 +235,20 @@ void GlobeGPS::reload()
 	repopulateLabels();
 }
 
-void GlobeGPS::centerOnCurrentDive()
+void GlobeGPS::centerOnDiveSite(uint32_t uuid)
 {
-	struct dive_site *ds = get_dive_site_for_dive(current_dive);
-	// dive has changed, if we had the 'editingDive', hide it.
-	if (messageWidget->isVisible() && (!ds || dive_site_has_gps_location(ds) || amount_selected != 1))
-		messageWidget->hide();
-
-	editingDiveLocation = false;
-	if (!ds)
+	if (uuid == 0)
 		return;
 
-	qreal longitude = ds->longitude.udeg / 1000000.0;
-	qreal latitude = ds->latitude.udeg / 1000000.0;
+	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 
 	if (!dive_site_has_gps_location(ds)) {
 		zoomOutForNoGPS();
 		return;
 	}
+
+	qreal longitude = ds->longitude.udeg / 1000000.0;
+	qreal latitude = ds->latitude.udeg / 1000000.0;
 
 	// if no zoom is set up, set the zoom as seen from 3km above
 	// if we come back from a dive without GPS data, reset to the last zoom value

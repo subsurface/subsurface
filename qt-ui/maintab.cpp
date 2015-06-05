@@ -701,7 +701,8 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
 	ui.location->blockSignals(false);
-	emit diveSiteChanged();
+
+	emit diveSiteChanged(displayed_dive.dive_site_uuid);
 }
 
 void MainTab::addCylinder_clicked()
@@ -997,7 +998,7 @@ void MainTab::rejectChanges()
 	DivePictureModel::instance()->updateDivePictures();
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
-	MainWindow::instance()->globe()->centerOnCurrentDive();
+	MainWindow::instance()->globe()->centerOnDiveSite(displayed_dive.dive_site_uuid);
 	MainWindow::instance()->globe()->reload();
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();
@@ -1280,9 +1281,12 @@ void MainTab::on_location_currentIndexChanged(int idx)
 		struct dive_site *ds_from_dive = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if(ds_from_dive && ui.location->currentText() == ds_from_dive->name)
 			return;
-		displayed_dive.dive_site_uuid = get_dive_site(idx)->uuid;
+		ds_from_dive = get_dive_site(idx);
+		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
+
+
 		markChangedWidget(ui.location);
-		emit diveSiteChanged();
+		emit diveSiteChanged(ds_from_dive->uuid);
 	}
 }
 

@@ -2,6 +2,7 @@
 #define GLOBE_H
 #ifndef NO_MARBLE
 
+#include <stdint.h>
 #include <marble/MarbleWidget.h>
 #include <marble/GeoDataCoordinates.h>
 
@@ -49,7 +50,7 @@ slots:
 	void zoomOutForNoGPS();
 	void prepareForGetDiveCoordinates();
 	void endGetDiveCoordinates();
-	void centerOnCurrentDive();
+	void centerOnDiveSite(uint32_t uuid);
 };
 
 #else // NO_MARBLE
@@ -62,7 +63,7 @@ public:
 	GlobeGPS(QWidget *parent);
 	void reload();
 	void repopulateLabels();
-	void centerOnCurrentDive();
+	void centerOnDiveSite(uint32_t uuid);
 	bool eventFilter(QObject *, QEvent *);
 public
 slots:

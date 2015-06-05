@@ -146,7 +146,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(globeGps, SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
 	connect(locationInformation, SIGNAL(startEditDiveSite(uint32_t)), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(locationInformation, SIGNAL(endEditDiveSite()), globeGps, SLOT(prepareForGetDiveCoordinates()));
-	connect(information(), SIGNAL(diveSiteChanged()), globeGps, SLOT(centerOnCurrentDive()));
+	connect(information(), SIGNAL(diveSiteChanged(uint32_t)), globeGps, SLOT(centerOnDiveSite(uint32_t)));
 
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
