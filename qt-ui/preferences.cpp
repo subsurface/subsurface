@@ -9,6 +9,8 @@
 #include <QNetworkProxy>
 #include <QNetworkCookieJar>
 
+#include "subsurfacewebservices.h"
+
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
@@ -360,10 +362,21 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 
 	s.beginGroup("CloudStorage");
-	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, ui.cloud_storage_email->text());
+	QString email = ui.cloud_storage_email->text();
+	QString password = ui.cloud_storage_password->text();
+	if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
+		// connect to backend server to check / create credentials
+		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+		}
+		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+		QNetworkReply *reply = cloudAuth->authenticate(email, password);
+	}
+	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
 	SAVE_OR_REMOVE("save_password_local", default_prefs.save_password_local, ui.save_password_local->isChecked());
 	if (ui.save_password_local->isChecked())
-		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, ui.cloud_storage_password->text());
+		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, password);
 	else
 		s.remove("password");
 	s.endGroup();

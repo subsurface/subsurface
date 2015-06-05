@@ -928,3 +928,43 @@ QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 	reply = manager()->get(request);
 	return reply;
 }
+
+CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(parent)
+{
+	userAgent = getUserAgent();
+
+}
+
+#define CLOUDBACKEND "https://cloud.subsurface-divelog.org/storage"
+
+QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password)
+{
+	QNetworkRequest *request = new QNetworkRequest(QUrl(CLOUDBACKEND));
+	request->setRawHeader("Accept", "text/xml, text/plain");
+	request->setRawHeader("User-Agent", userAgent.toUtf8());
+	request->setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
+	reply = WebServices::manager()->post(*request, qPrintable(QString(email + " " + password)));
+	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
+	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+		SLOT(uploadError(QNetworkReply::NetworkError)));
+	return reply;
+}
+
+void CloudStorageAuthenticate::uploadFinished()
+{
+	qDebug() << "Completed connection with cloud storage backend, response" << reply->readAll();
+}
+
+void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)
+{
+	qDebug() << "Received error response from cloud storage backend:" << reply->errorString();
+}
+
+void CloudStorageAuthenticate::sslErrors(QList<QSslError> errorList)
+{
+	qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
+	Q_FOREACH (QSslError err, errorList) {
+		qDebug() << err.errorString();
+	}
+}
