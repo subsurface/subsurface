@@ -10,12 +10,12 @@
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 
-#include <QQuickWindow>
-#include <QQmlApplicationEngine>
 
 #include "qt-gui.h"
 
 #ifdef SUBSURFACE_MOBILE
+	#include <QQuickWindow>
+	#include <QQmlApplicationEngine>
 	#include "qt-mobile/qmlmanager.h"
 #endif
 
