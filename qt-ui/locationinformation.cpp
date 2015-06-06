@@ -34,9 +34,6 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 	if(!currentDs)
 		return;
 
-	if (displayed_dive_site.uuid == currentDs->uuid)
-		return;
-
 	displayed_dive_site = *currentDs;
 
 	if (displayed_dive_site.name)
