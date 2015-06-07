@@ -204,6 +204,7 @@ void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 			if (ds->uuid == currentDs->uuid)
 				break;
 
+		displayed_dive_site.name = copy_string(qPrintable(text));
 		QModelIndex idx = LocationInformationModel::instance()->index(i,0);
 		LocationInformationModel::instance()->setData(idx, text, Qt::EditRole);
 		markChangedWidget(ui.diveSiteName);
