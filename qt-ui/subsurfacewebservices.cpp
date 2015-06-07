@@ -953,7 +953,10 @@ QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString pas
 
 void CloudStorageAuthenticate::uploadFinished()
 {
-	qDebug() << "Completed connection with cloud storage backend, response" << reply->readAll();
+	QString cloudAuthReply(reply->readAll());
+	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
+	prefs.show_cloud_pin = (cloudAuthReply == "[VERIFY]");
+	emit finishedAuthenticate(prefs.show_cloud_pin);
 }
 
 void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)

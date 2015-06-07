@@ -59,7 +59,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);
 	connect(fb, &FacebookManager::justLoggedOut, this, &PreferencesDialog::facebookDisconnect);
 #endif
-
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
@@ -102,6 +101,12 @@ void PreferencesDialog::facebookDisconnect()
 		facebookWebView->show();
 	}
 #endif
+}
+
+void PreferencesDialog::cloudPinNeeded(bool toggle)
+{
+	ui.cloud_storage_pin->setEnabled(toggle);
+	ui.cloud_storage_pin->setVisible(toggle);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
@@ -210,6 +215,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.cloud_storage_email->setText(prefs.cloud_storage_email);
 	ui.cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui.save_password_local->setChecked(prefs.save_password_local);
+	ui.cloud_storage_pin->setVisible(prefs.show_cloud_pin);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -364,6 +370,7 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("CloudStorage");
 	QString email = ui.cloud_storage_email->text();
 	QString password = ui.cloud_storage_password->text();
+	QString pin = ui.cloud_storage_pin->text();
 	if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
 		// connect to backend server to check / create credentials
 		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
@@ -371,6 +378,7 @@ void PreferencesDialog::syncSettings()
 			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 		}
 		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+		connect(cloudAuth, SIGNAL(finishedAuthenticate(bool)), this, SLOT(cloudPinNeeded(bool)));
 		QNetworkReply *reply = cloudAuth->authenticate(email, password);
 	}
 	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
@@ -379,6 +387,7 @@ void PreferencesDialog::syncSettings()
 		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, password);
 	else
 		s.remove("password");
+	SAVE_OR_REMOVE("show_cloud_pin", default_prefs.show_cloud_pin, prefs.show_cloud_pin);
 	s.endGroup();
 	loadSettings();
 	emit settingsChanged();
@@ -495,6 +504,7 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("password", cloud_storage_password);
 	GET_TXT("email", cloud_storage_email);
 	GET_BOOL("save_password_local", save_password_local);
+	GET_BOOL("show_cloud_pin", show_cloud_pin);
 	s.endGroup();
 }
 

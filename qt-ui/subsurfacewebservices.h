@@ -111,11 +111,13 @@ slots:
 	virtual void buttonClicked(QAbstractButton *button) { }
 };
 
-class CloudStorageAuthenticate : QObject {
+class CloudStorageAuthenticate : public QObject {
 	Q_OBJECT
 public:
 	QNetworkReply* authenticate(QString email, QString password);
 	explicit CloudStorageAuthenticate(QObject *parent);
+signals:
+	void finishedAuthenticate(bool toggle);
 private
 slots:
 	void uploadError(QNetworkReply::NetworkError error);
