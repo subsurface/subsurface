@@ -143,7 +143,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
 	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
 	connect(locationInformation, SIGNAL(coordinatesChanged()), globe(), SLOT(repopulateLabels()));
-	connect(globeGps, SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
 	connect(locationInformation, SIGNAL(startEditDiveSite(uint32_t)), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(locationInformation, SIGNAL(endEditDiveSite()), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(information(), SIGNAL(diveSiteChanged(uint32_t)), globeGps, SLOT(centerOnDiveSite(uint32_t)));
