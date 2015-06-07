@@ -116,9 +116,12 @@ void LocationInformationWidget::rejectChanges()
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		if (displayed_dive.dive_site_uuid) {
 			displayed_dive_site = *get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		} else {
+			displayed_dive_site.uuid = 0;
 		}
 	} else if ((currentDs && dive_site_is_empty(currentDs))) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
+		displayed_dive_site.uuid = 0;
 	}
 
 	resetState();
