@@ -624,6 +624,8 @@ static inline bool dive_site_has_gps_location(struct dive_site *ds)
 
 static inline int dive_has_gps_location(struct dive *dive)
 {
+	if (!dive)
+		return false;
 	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
