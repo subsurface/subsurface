@@ -187,9 +187,6 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 void GlobeGPS::repopulateLabels()
 {
-	if (!current_dive)
-		return;
-
 	struct dive_site *ds;
 	int idx;
 	QMap<QString, GeoDataPlacemark *> locationMap;
@@ -200,9 +197,12 @@ void GlobeGPS::repopulateLabels()
 	loadedDives = new GeoDataDocument;
 
 	for_each_dive_site(idx, ds) {
+		if (ds->uuid == displayed_dive_site.uuid)
+			continue;
 		if (dive_site_has_gps_location(ds)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
 			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
+
 			// don't add dive locations twice, unless they are at least 50m apart
 			if (locationMap[QString(ds->name)]) {
 				GeoDataCoordinates existingLocation = locationMap[QString(ds->name)]->coordinate();
@@ -221,9 +221,18 @@ void GlobeGPS::repopulateLabels()
 		}
 	}
 
+	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
+		GeoDataPlacemark *place = new GeoDataPlacemark(displayed_dive_site.name);
+		place->setCoordinate(displayed_dive_site.longitude.udeg / 1000000.0,
+							 displayed_dive_site.latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
+		locationMap[QString(displayed_dive_site.name)] = place;
+		loadedDives->append(place);
+	}
 	model()->treeModel()->addDocument(loadedDives);
+
 	struct dive_site *center = displayed_dive_site.uuid != 0 ?
-			&displayed_dive_site : get_dive_site_by_uuid(current_dive->dive_site_uuid);
+			&displayed_dive_site : current_dive ?
+			get_dive_site_by_uuid(current_dive->dive_site_uuid) : NULL;
 	if(center)
 		centerOn(displayed_dive_site.longitude.udeg / 1000000.0, displayed_dive_site.latitude.udeg / 1000000.0, true);
 }
