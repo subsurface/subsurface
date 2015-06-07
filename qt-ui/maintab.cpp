@@ -800,6 +800,7 @@ void MainTab::acceptChanges()
 			// preserve any changes to the profile
 			free(current_dive->dc.sample);
 			copy_samples(&displayed_dive.dc, &current_dive->dc);
+			addedId = displayed_dive.id;
 		}
 		struct dive *cd = current_dive;
 		// now check if something has changed and if yes, edit the selected dives that
