@@ -1024,8 +1024,7 @@ fraction_t string_to_fraction(const char *str)
 int getCloudURL(QString &filename)
 {
 	QString email = QString(prefs.cloud_storage_email);
-	email.replace("@", "_at_");
-	email.replace(QRegularExpression("[^a-zA-Z0-9._+-]"), "");
+	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
 	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
 		return report_error("Please configure Cloud storage email and password in the preferences");
 	if (email != prefs.cloud_storage_email_encoded) {

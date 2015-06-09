@@ -114,7 +114,7 @@ slots:
 class CloudStorageAuthenticate : public QObject {
 	Q_OBJECT
 public:
-	QNetworkReply* authenticate(QString email, QString password);
+	QNetworkReply* authenticate(QString email, QString password, QString pin = "");
 	explicit CloudStorageAuthenticate(QObject *parent);
 signals:
 	void finishedAuthenticate(bool toggle);

@@ -935,15 +935,25 @@ CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(pa
 
 }
 
-#define CLOUDBACKEND "https://cloud.subsurface-divelog.org/storage"
+#define CLOUDURL "https://cloud.subsurface-divelog.org/"
+#define CLOUDBACKENDSTORAGE CLOUDURL "storage"
+#define CLOUDBACKENDVERIFY CLOUDURL "verify"
 
-QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password)
+QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password, QString pin)
 {
-	QNetworkRequest *request = new QNetworkRequest(QUrl(CLOUDBACKEND));
+	QString payload(email + " " + password);
+	QUrl requestUrl;
+	if (pin == "") {
+		requestUrl = QUrl(CLOUDBACKENDSTORAGE);
+	} else {
+		requestUrl = QUrl(CLOUDBACKENDVERIFY);
+		payload += " " + pin;
+	}
+	QNetworkRequest *request = new QNetworkRequest(requestUrl);
 	request->setRawHeader("Accept", "text/xml, text/plain");
 	request->setRawHeader("User-Agent", userAgent.toUtf8());
 	request->setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
-	reply = WebServices::manager()->post(*request, qPrintable(QString(email + " " + password)));
+	reply = WebServices::manager()->post(*request, qPrintable(payload));
 	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
 	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
@@ -955,8 +965,13 @@ void CloudStorageAuthenticate::uploadFinished()
 {
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
-	prefs.show_cloud_pin = (cloudAuthReply == "[VERIFY]");
-	emit finishedAuthenticate(prefs.show_cloud_pin);
+	if (cloudAuthReply == "[VERIFIED]") {
+		prefs.show_cloud_pin = false;
+		emit finishedAuthenticate(prefs.show_cloud_pin);
+	} else if (cloudAuthReply == "[VERIFY]") {
+		prefs.show_cloud_pin = true;
+		emit finishedAuthenticate(prefs.show_cloud_pin);
+	}
 }
 
 void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)
