@@ -85,6 +85,7 @@ static bool merge_locations_into_dives(void)
 							 */
 							if ((dive->when + dive->duration.seconds - gpsfix->when) < (nextgpsfix->when - gpsfix->when)) {
 								copy_gps_location(gpsfix, dive);
+								changed++;
 								tracer = j;
 								break;
 							}
