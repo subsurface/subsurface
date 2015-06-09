@@ -999,8 +999,10 @@ void MainTab::rejectChanges()
 	DivePictureModel::instance()->updateDivePictures();
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
+#ifndef NO_MARBLE
 	MainWindow::instance()->globe()->centerOnDiveSite(displayed_dive.dive_site_uuid);
 	MainWindow::instance()->globe()->reload();
+#endif
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();
 	MainWindow::instance()->setEnabledToolbar(true);

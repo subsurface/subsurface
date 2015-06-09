@@ -346,8 +346,11 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
 			mark_divelist_changed(true);
+#ifndef NO_MARBLE
+
 			MainWindow::instance()->globe()->repopulateLabels();
 			MainWindow::instance()->globe()->centerOnDiveSite(current_dive->dive_site_uuid);
+#endif
 			MainWindow::instance()->information()->updateDiveInfo();
 		}
 
