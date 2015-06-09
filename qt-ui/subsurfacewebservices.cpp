@@ -382,8 +382,10 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 				usedUuids.insert(d->dive_site_uuid);
 		}
 		for_each_dive_site(i, ds) {
-			if (!usedUuids.contains(ds->uuid) && same_string(ds->notes, "SubsurfaceWebservice"))
+			if (!usedUuids.contains(ds->uuid) && same_string(ds->notes, "SubsurfaceWebservice")) {
 				delete_dive_site(ds->uuid);
+				i--; // otherwise we skip one site
+			}
 		}
 	} break;
 	case QDialogButtonBox::RejectRole:
