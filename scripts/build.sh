@@ -159,7 +159,7 @@ if [ ! -d grantlee ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../grantlee grantlee
 	else
-		git clone git://gitorious.org/grantlee/grantlee
+		git clone https://gitorious.org/grantlee/grantlee.git
 	fi
 fi
 cd grantlee
