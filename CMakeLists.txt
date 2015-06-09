@@ -423,7 +423,7 @@ endif()
 
 # create the executables
 if(SUBSURFACE_MOBILE)
-	set(MOBILE_SRC qt-mobile/qmlmanager.cpp)
+	set(MOBILE_SRC qt-mobile/qmlmanager.cpp qt-models/divelistmodel.cpp)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
 	add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})

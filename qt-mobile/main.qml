@@ -37,4 +37,53 @@ ApplicationWindow {
 			}
 		}
 	}
+
+	Rectangle {
+		width: parent.width; height: parent.height
+		anchors.fill: parent
+
+		Component {
+			id: diveDelegate
+			Item {
+				id: wrapper
+				width: parent.width; height: 55
+				Column {
+					Text { text: '#:' + diveNumber + "(" + location + ")"  }
+					Text { text: date }
+					Text { text: duration + " " + depth }
+				}
+				MouseArea { anchors.fill: parent; onClicked: diveListView.currentIndex = index }
+
+				states: State {
+					name: "Current"
+					when: wrapper.ListView.isCurrentItem
+					PropertyChanges { target: wrapper; x:20 }
+				}
+				transitions: Transition {
+					NumberAnimation { properties: "x"; duration: 200  }
+				}
+			}
+		}
+
+		Component {
+			id: highlightBar
+			Rectangle {
+				width: parent.width; height: 50
+				color: "#FFFF88"
+				y: diveListView.currentItem.y;
+				Behavior on y {  SpringAnimation  { spring: 2; damping: 0.1 } }
+			}
+		}
+
+		ListView {
+			id: diveListView
+			width: parent.width; height: parent.height
+			anchors.fill: parent
+			model: diveModel
+			delegate: diveDelegate
+			focus: true
+			highlight: highlightBar
+			highlightFollowsCurrentItem: false
+		}
+	}
 }

@@ -16,7 +16,9 @@
 #ifdef SUBSURFACE_MOBILE
 	#include <QQuickWindow>
 	#include <QQmlApplicationEngine>
+	#include <QQmlContext>
 	#include "qt-mobile/qmlmanager.h"
+	#include "qt-models/divelistmodel.h"
 #endif
 
 static MainWindow *window = NULL;
@@ -38,6 +40,9 @@ void run_ui()
 	window->hide();
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	QQmlApplicationEngine engine;
+	DiveListModel diveListModel;
+	QQmlContext *ctxt = engine.rootContext();
+	ctxt->setContextProperty("diveModel", &diveListModel);
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	QObject *mainWindow = engine.rootObjects().value(0);
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(mainWindow);
