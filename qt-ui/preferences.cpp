@@ -107,6 +107,8 @@ void PreferencesDialog::cloudPinNeeded(bool toggle)
 {
 	ui.cloud_storage_pin->setEnabled(toggle);
 	ui.cloud_storage_pin->setVisible(toggle);
+	ui.cloud_storage_pin_label->setEnabled(toggle);
+	ui.cloud_storage_pin_label->setVisible(toggle);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
@@ -216,6 +218,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui.save_password_local->setChecked(prefs.save_password_local);
 	ui.cloud_storage_pin->setVisible(prefs.show_cloud_pin);
+	ui.cloud_storage_pin_label->setVisible(prefs.show_cloud_pin);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -370,8 +373,18 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("CloudStorage");
 	QString email = ui.cloud_storage_email->text();
 	QString password = ui.cloud_storage_password->text();
-	QString pin = ui.cloud_storage_pin->text();
-	if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
+	if (ui.cloud_storage_pin->isVisible()) {
+		QString pin = ui.cloud_storage_pin->text();
+		if (!pin.isEmpty()) {
+			// connect to backend server to check / create credentials
+			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+			if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+			}
+			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+			QNetworkReply *reply = cloudAuth->authenticate(email, password, pin);
+		}
+	} else if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
 		// connect to backend server to check / create credentials
 		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
 		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
