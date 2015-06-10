@@ -1267,7 +1267,7 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 					newds->latitude = ds->latitude;
 					newds->longitude = ds->longitude;
 				}
-				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
+				newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 			} else {
 				// add the existing dive site to the current dive
 				fprintf(stderr, "we have an existing location, using {%s}\n", ds->name);
