@@ -1468,13 +1468,19 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 void MainWindow::showV2Dialog()
 {
 	// here we need to ask the user if / how they want to do the reverse geo coding
-	// for now this is just a warning that things could take a long time
+	//
+	// since the reverse geo coding now happens in its own thread the warning isn't needed
+	// anymore, but I'll leave this function / the logic to call it around because we are likely
+	// too have to add questions about how the user wants to do the reverse geo coding...
+	//
+#if 0
 	QMessageBox d(QMessageBox::Information,
 			  tr("Welcom to Subsurface %1").arg(subsurface_version()),
 			  tr("Importing data files from earlier versions of Subsurface can take a significant amount of time"),
 			  QMessageBox::Ok,
 			  this);
 	d.exec();
+#endif
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)
