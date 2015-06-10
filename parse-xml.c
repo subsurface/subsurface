@@ -133,6 +133,7 @@ const struct units IMPERIAL_units = IMPERIAL_UNITS;
 static struct divecomputer *cur_dc;
 static struct dive *cur_dive;
 static struct dive_site *cur_dive_site;
+degrees_t cur_latitude, cur_longitude;
 static dive_trip_t *cur_trip = NULL;
 static struct sample *cur_sample;
 static struct picture *cur_picture;
@@ -1179,9 +1180,16 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 	fprintf(stderr, "got lat %f lon %f\n", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
 	uint32_t uuid = dive->dive_site_uuid;
 	if (uuid == 0) {
-		uuid = get_dive_site_uuid_by_gps(latitude, longitude, &ds);
+		// check if we have a dive site within 20 meters of that gps fix
+		uuid = get_dive_site_uuid_by_gps_proximity(latitude, longitude, 20, &ds);
+
 		if (ds) {
-			fprintf(stderr, "found dive site {%s} with these coordinates\n", ds->name);
+			// found a site nearby; in case it turns out this one had a different name let's
+			// remember the original coordinates so we can create the correct dive site later
+			fprintf(stderr, "found dive site {%s} with these coordinates (%11.6f/%11.6f)\n",
+				ds->name, ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0);
+			cur_latitude = latitude;
+			cur_longitude = longitude;
 			dive->dive_site_uuid = uuid;
 		} else {
 			fprintf(stderr, "found no uuid in dive, no existing dive site with these coordinates, creating a new divesite without name and above GPS\n");
@@ -1247,9 +1255,19 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 				fprintf(stderr, "so now add name {%s}\n", buffer);
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
-				// coin toss, let's just keep the first name we found and add the new one to the notes
-				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s}\n", ds->name, buffer);
-				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), buffer);
+				// if it's not the same name, it's not the same dive site
+				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s} -- need to undo this\n", ds->name, buffer);
+				dive->dive_site_uuid = create_dive_site(buffer);
+				struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
+				if (cur_latitude.udeg || cur_longitude.udeg) {
+					// we started this uuid with GPS data, so lets use those
+					newds->latitude = cur_latitude;
+					newds->longitude = cur_longitude;
+				} else {
+					newds->latitude = ds->latitude;
+					newds->longitude = ds->longitude;
+				}
+				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 			} else {
 				// add the existing dive site to the current dive
 				fprintf(stderr, "we have an existing location, using {%s}\n", ds->name);
@@ -1538,6 +1556,8 @@ static void dive_end(void)
 		record_dive_to_table(cur_dive, target_table);
 	cur_dive = NULL;
 	cur_dc = NULL;
+	cur_latitude.udeg = 0;
+	cur_longitude.udeg = 0;
 	cur_cylinder_index = 0;
 	cur_ws_index = 0;
 }
