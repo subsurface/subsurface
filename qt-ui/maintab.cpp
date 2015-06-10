@@ -237,6 +237,7 @@ void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
 	ui.addDiveSite->show();
+	MainWindow::instance()->getNotificationWidget()->hideNotification();
 }
 
 void MainTab::disableGeoLookupEdition()
