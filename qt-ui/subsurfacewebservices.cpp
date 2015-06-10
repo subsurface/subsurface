@@ -334,6 +334,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		int i;
 		struct dive *d;
 		struct dive_site *ds;
+		bool changed = false;
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toLocal8Bit();
 		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
@@ -346,12 +347,8 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		}
 		/* now merge the data in the gps_location table into the dive_table */
 		if (merge_locations_into_dives()) {
+			changed = true;
 			mark_divelist_changed(true);
-#ifndef NO_MARBLE
-
-			MainWindow::instance()->globe()->repopulateLabels();
-			MainWindow::instance()->globe()->centerOnDiveSite(current_dive->dive_site_uuid);
-#endif
 			MainWindow::instance()->information()->updateDiveInfo();
 		}
 
@@ -387,6 +384,15 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 				i--; // otherwise we skip one site
 			}
 		}
+#ifndef NO_MARBLE
+		// finally now that all the extra GPS fixes that weren't used have been deleted
+		// we can update the globe
+		if (changed) {
+			MainWindow::instance()->globe()->repopulateLabels();
+			MainWindow::instance()->globe()->centerOnDiveSite(current_dive->dive_site_uuid);
+		}
+#endif
+
 	} break;
 	case QDialogButtonBox::RejectRole:
 		if (reply != NULL && reply->isOpen()) {
