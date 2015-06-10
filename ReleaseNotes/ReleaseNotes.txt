@@ -6,6 +6,9 @@ _Subsurface_ 4.5 pre-beta - April 2015
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+CLoud storage. Subsurface offers a cloud storage backend that allows using
+the same data file from multiple computers.
+
 Dive site handling - dive sites are now a first class citizen in
 Subsurface and can be managed as such. Dives include a reference to a dive
 site. This also caused changes to our file format (and we bumped the file
