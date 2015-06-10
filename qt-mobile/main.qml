@@ -69,7 +69,8 @@ ApplicationWindow {
 			id: highlightBar
 			Rectangle {
 				width: parent.width; height: 50
-				color: "#FFFF88"
+				color: "lightsteelblue"
+				radius: 5
 				y: diveListView.currentItem.y;
 				Behavior on y {  SpringAnimation  { spring: 2; damping: 0.1 } }
 			}
