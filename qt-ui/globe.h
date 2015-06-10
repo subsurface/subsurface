@@ -74,4 +74,7 @@ slots:
 };
 
 #endif // NO_MARBLE
+
+extern "C" double getDistance(int lat1, int lon1, int lat2, int lon2);
+
 #endif // GLOBE_H

@@ -34,6 +34,28 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 	return 0;
 }
 
+/* this is in globe.cpp, so including the .h file is a pain */
+extern double getDistance(int lat1, int lon1, int lat2, int lon2);
+
+/* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
+uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longitude, int distance, struct dive_site **dsp)
+{
+	int i;
+	int uuid = 0;
+	struct dive_site *ds;
+	double cur_distance, min_distance = distance + 0.001;
+	for_each_dive_site (i, ds) {
+		if (dive_site_has_gps_location(ds) &&
+		    (cur_distance = getDistance(ds->latitude.udeg, ds->longitude.udeg, latitude.udeg, longitude.udeg)) < min_distance) {
+			min_distance = cur_distance;
+			uuid = ds->uuid;
+			if (dsp)
+				*dsp = ds;
+		}
+	}
+	return uuid;
+}
+
 /* try to create a uniqe ID - fingers crossed */
 static uint32_t dive_site_getUniqId()
 {

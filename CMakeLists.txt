@@ -128,8 +128,8 @@ if(NOT (insource OR insourcedir))
 endif()
 
 # configure Qt.
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools)
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools Positioning)
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg Qt5::Positioning)
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
