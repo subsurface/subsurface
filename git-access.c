@@ -63,11 +63,86 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 	return 1;
 }
 
-static int try_to_update(git_repository *rep, git_reference *local, git_reference *remote)
+/*
+ * The remote is strictly newer than the local branch.
+ */
+static int reset_to_remote(git_repository *repo, git_reference *local, const git_oid *new_id)
 {
+	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
+	git_object *target;
+
+	// If it's not checked out (bare or not HEAD), just update the reference */
+	if (git_repository_is_bare(repo) || git_branch_is_head(local) != 1) {
+		git_reference *out;
+
+		if (git_reference_set_target(&out, local, new_id, "Update to remote"))
+			return report_error("Could not update local ref to newer remote ref");
+
+		git_reference_free(out);
+
+		// Not really an error, just informational
+		report_error("Updated local branch from remote");
+
+		return 0;
+	}
+
+	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT))
+		return report_error("Could not look up remote commit");
+
+	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
+	if (git_reset(repo, target, GIT_RESET_HARD, &opts))
+		return report_error("Local head checkout failed after update");
+
+	// Not really an error, just informational
+	report_error("Updated local information from remote");
+
+	return 0;
+}
+
+static int try_to_update(git_repository *repo, git_reference *local, git_reference *remote)
+{
+	git_oid base;
+	const git_oid *local_id, *remote_id;
+
 	if (!git_reference_cmp(local, remote))
 		return 0;
-	return report_error("Local and remote do not match, not updating");
+
+	local_id = git_reference_target(local);
+	remote_id = git_reference_target(remote);
+
+	if (!local_id || !remote_id)
+		return report_error("Unable to get local or remote SHA1");
+
+	if (git_merge_base(&base, repo, local_id, remote_id))
+		return report_error("Unable to find common commit of local and remote branches");
+
+	/* Is the remote strictly newer? Use it */
+	if (git_oid_equal(&base, local_id))
+		return reset_to_remote(repo, local, remote_id);
+
+	/* Is the local repo the more recent one? We're done */
+	if (git_oid_equal(&base, remote_id)) {
+		report_error("Local cache more recent than remote");
+		return 0;
+	}
+
+	/* Merging a bare repository always needs user action */
+	if (git_repository_is_bare(repo))
+		return report_error("Local and remote have diverged, merge of bare branch needed");
+
+	/* Merging will definitely need the head branch too */
+	if (git_branch_is_head(local) != 1)
+		return report_error("Local and remote do not match, local branch not HEAD - cannot update");
+
+	/*
+	 * Some day we migth try a clean merge here.
+	 *
+	 * But I couldn't find any good examples of this, so for now
+	 * you'd need to merge divergent histories manually. But we've
+	 * at least verified above that we have a working tree and the
+	 * current branch is checked out, so we *could* try to merge.
+	 */
+	return report_error("Local and remote have diverged, need to merge");
 }
 
 #if USE_LIBGIT23_API
